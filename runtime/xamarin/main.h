@@ -58,6 +58,8 @@ enum NSObjectFlags {
 	NSObjectFlagsHasManagedRef = 32,
 	// 64, // Used by SoM
 	NSObjectFlagsIsCustomType = 128,
+	NSObjectFlagsKnowsIfIsUserType = 256,
+	NSObjectFlagsIsUserType = 512,
 };
 
 enum XamarinGCHandleType : int {

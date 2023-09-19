@@ -54,10 +54,8 @@ namespace ObjCRuntime {
 		static object lock_obj;
 		static IntPtr NSObjectClass;
 		static bool initialized;
-
 		static bool useCFNetworkHandler = false;
 		static bool useNSUrlSessionHandler = false;
-
 
 		internal static IntPtrEqualityComparer IntPtrEqualityComparer;
 		internal static TypeEqualityComparer TypeEqualityComparer;
@@ -290,7 +288,9 @@ namespace ObjCRuntime {
 		}
 
 		internal static bool UseCFNetworkHandler => useCFNetworkHandler;
+
 		internal static bool UseNSUrlSessionHandler => useNSUrlSessionHandler;
+
 		internal static bool Initialized {
 			get { return initialized; }
 		}

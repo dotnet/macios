@@ -1296,7 +1296,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</ItemGroup>
 	</Target>
 
-	<!-- TODO: check for duplicate items -->
 	<Target Name="_ComputeBundleResourceOutputPaths"
 		Condition="'$(_CanOutputAppBundle)' == 'true'"
 		DependsOnTargets="_CollectBundleResources;_GenerateBundleName;_DetectSigningIdentity;_ReadAppManifest">

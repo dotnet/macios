@@ -63,9 +63,9 @@ namespace Xamarin.Tests {
 			return Execute ("restore", project, properties, false);
 		}
 
-		public static ExecutionResult AssertBuild (string project, Dictionary<string, string>? properties = null, TimeSpan? timeout = null)
+		public static ExecutionResult AssertBuild (string project, Dictionary<string, string>? properties = null, string? target = null, TimeSpan? timeout = null)
 		{
-			return Execute ("build", project, properties, true, timeout: timeout);
+			return Execute ("build", project, properties, true, target: target, timeout: timeout);
 		}
 
 		public static ExecutionResult AssertBuildFailure (string project, Dictionary<string, string>? properties = null)

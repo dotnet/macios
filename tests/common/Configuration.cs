@@ -533,6 +533,14 @@ namespace Xamarin.Tests {
 			return Path.Combine (GetRefDirectory (targetFramework), GetBaseLibraryName (targetFramework));
 		}
 
+		public static IList<string> GetAllRuntimeIdentifiers ()
+		{
+			var rv = new List<string> ();
+			foreach (var platform in GetAllPlatforms ())
+				rv.AddRange (GetRuntimeIdentifiers (platform));
+			return rv;
+		}
+
 		public static IList<string> GetRuntimeIdentifiers (ApplePlatform platform)
 		{
 			return GetVariableArray ($"DOTNET_{platform.AsString ().ToUpper ()}_RUNTIME_IDENTIFIERS");

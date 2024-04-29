@@ -285,7 +285,15 @@ namespace Xamarin.MacDev.Tasks {
 			var items = new List<AssetInfo> ();
 			var specs = new PArray ();
 
-			var imageAssets = ImageAssets
+			var filteredImageAssets = ImageAssets
+				.Where (item => {
+					// Ignore MacOS .DS_Store files...
+					return !Path.GetFileName (item.ItemSpec).Equals (".DS_Store", StringComparison.OrdinalIgnoreCase);
+				});
+
+			filteredImageAssets = CollectBundleResources.ComputeLogicalNameAndDetectDuplicates (this, filteredImageAssets, ProjectDir, string.Empty, "ImageAsset").ToArray ();
+
+			var imageAssets = filteredImageAssets
 				.Select (imageAsset => {
 					var vpath = BundleResource.GetVirtualProjectPath (this, imageAsset);
 					var catalogFullPath = imageAsset.GetMetadata ("FullPath");
@@ -299,13 +307,9 @@ namespace Xamarin.MacDev.Tasks {
 					// keep walking up the directory structure until we get to the .xcassets directory
 					FindXCAssetsDirectory (catalog, catalogFullPath, out var catalog2, out var catalogFullPath2);
 					catalog = catalog2;
-					catalogFullPath2 = catalogFullPath2;
+					catalogFullPath = catalogFullPath2;
 
 					return new AssetInfo (imageAsset, vpath, catalog, catalogFullPath, assetType);
-				})
-				.Where (asset => {
-					// Ignore MacOS .DS_Store files...
-					return !Path.GetFileName (asset.VirtualProjectPath).Equals (".DS_Store", StringComparison.OrdinalIgnoreCase);
 				})
 				.Where (asset => {
 					if (string.IsNullOrEmpty (asset.Catalog)) {

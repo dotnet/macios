@@ -36,8 +36,6 @@ namespace Cecil.Tests {
 			"GameplayKit.GKPath::.ctor(System.Numerics.Vector2[],System.Single,System.Boolean)",
 			"GameplayKit.GKPath::.ctor(System.Numerics.Vector3[],System.Single,System.Boolean)",
 			"ModelIO.MDLNoiseTexture::.ctor(System.Single,System.String,CoreGraphics.NVector2i,ModelIO.MDLTextureChannelEncoding,ModelIO.MDLNoiseTextureType)",
-			"MultipeerConnectivity.MCSession::.ctor(MultipeerConnectivity.MCPeerID,Security.SecIdentity,MultipeerConnectivity.MCEncryptionPreference)",
-			"MultipeerConnectivity.MCSession::.ctor(MultipeerConnectivity.MCPeerID,Security.SecIdentity,Security.SecCertificate[],MultipeerConnectivity.MCEncryptionPreference)",
 			"ObjCRuntime.Runtime::RegisterNSObject(Foundation.NSObject,System.IntPtr)",
 			"ScreenCaptureKit.SCContentFilter::.ctor(ScreenCaptureKit.SCDisplay,ScreenCaptureKit.SCRunningApplication[],ScreenCaptureKit.SCWindow[],ScreenCaptureKit.SCContentFilterOption)",
 			"ScreenCaptureKit.SCContentFilter::.ctor(ScreenCaptureKit.SCDisplay,ScreenCaptureKit.SCWindow[],ScreenCaptureKit.SCContentFilterOption)",

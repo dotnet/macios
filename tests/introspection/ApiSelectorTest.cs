@@ -1271,8 +1271,6 @@ namespace Introspection {
 			// GKScore
 			case "initWithCategory:":
 			case "initWithLeaderboardIdentifier:":
-			// MCSession
-			case "initWithPeer:securityIdentity:encryptionPreference:":
 			// INSetProfileInCarIntent and INSaveProfileInCarIntent
 			case "initWithProfileNumber:profileName:defaultProfile:":
 			case "initWithProfileNumber:profileLabel:defaultProfile:":

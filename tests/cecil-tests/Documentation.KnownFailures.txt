@@ -26352,8 +26352,6 @@ M:MultipeerConnectivity.MCNearbyServiceBrowserDelegate.LostPeer(MultipeerConnect
 M:MultipeerConnectivity.MCPeerID.#ctor(System.String)
 M:MultipeerConnectivity.MCPeerID.Copy(Foundation.NSZone)
 M:MultipeerConnectivity.MCPeerID.EncodeTo(Foundation.NSCoder)
-M:MultipeerConnectivity.MCSession.#ctor(MultipeerConnectivity.MCPeerID,Security.SecIdentity,MultipeerConnectivity.MCEncryptionPreference)
-M:MultipeerConnectivity.MCSession.#ctor(MultipeerConnectivity.MCPeerID,Security.SecIdentity,Security.SecCertificate[],MultipeerConnectivity.MCEncryptionPreference)
 M:MultipeerConnectivity.MCSession.#ctor(MultipeerConnectivity.MCPeerID)
 M:MultipeerConnectivity.MCSession.CancelConnectPeer(MultipeerConnectivity.MCPeerID)
 M:MultipeerConnectivity.MCSession.ConnectPeer(MultipeerConnectivity.MCPeerID,Foundation.NSData)

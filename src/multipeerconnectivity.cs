@@ -62,7 +62,7 @@ namespace MultipeerConnectivity {
 		// nice binding, i.e. the first item of NSArray must be an SecIdentity followed by (0...) SecCertificate
 		[Internal]
 		[Export ("initWithPeer:securityIdentity:encryptionPreference:")]
-		IntPtr Init (MCPeerID myPeerID, [NullAllowed] NSArray identity, MCEncryptionPreference encryptionPreference);
+		IntPtr _Init (MCPeerID myPeerID, [NullAllowed] NSArray identity, MCEncryptionPreference encryptionPreference);
 
 		[Export ("sendData:toPeers:withMode:error:")]
 		bool SendData (NSData data, MCPeerID [] peerIDs, MCSessionSendDataMode mode, out NSError error);

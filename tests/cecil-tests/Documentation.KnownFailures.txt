@@ -6610,6 +6610,9 @@ F:CoreServices.LSRoles.None
 F:CoreServices.LSRoles.Shell
 F:CoreServices.LSRoles.Viewer
 F:CoreSpotlight.CSIndexErrorCode.MismatchedClientState
+F:CoreSpotlight.CSSearchableItemUpdateListenerOptions.Default
+F:CoreSpotlight.CSSearchableItemUpdateListenerOptions.Priority
+F:CoreSpotlight.CSSearchableItemUpdateListenerOptions.Summarization
 F:CoreSpotlight.CSSearchQuerySourceOptions.AllowMail
 F:CoreSpotlight.CSSearchQuerySourceOptions.Default
 F:CoreSpotlight.CSSuggestionKind.Custom
@@ -28868,6 +28871,7 @@ M:CoreServices.LaunchServices.Open(Foundation.NSUrl)
 M:CoreServices.LaunchServices.Register(Foundation.NSUrl,System.Boolean)
 M:CoreServices.LaunchServices.SetDefaultHandlerForUrlScheme(System.String,System.String)
 M:CoreServices.LaunchServices.SetDefaultRoleHandlerForContentType(System.String,System.String,CoreServices.LSRoles)
+M:CoreSpotlight.CoreSpotlightConstants.#ctor
 M:CoreSpotlight.CSCustomAttributeKey.#ctor(System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean)
 M:CoreSpotlight.CSCustomAttributeKey.#ctor(System.String)
 M:CoreSpotlight.CSCustomAttributeKey.Copy(Foundation.NSZone)
@@ -28877,8 +28881,10 @@ M:CoreSpotlight.CSImportExtension.Update(CoreSpotlight.CSSearchableItemAttribute
 M:CoreSpotlight.CSIndexExtensionRequestHandler.BeginRequestWithExtensionContext(Foundation.NSExtensionContext)
 M:CoreSpotlight.CSIndexExtensionRequestHandler.DidFinishThrottle(CoreSpotlight.CSSearchableIndex)
 M:CoreSpotlight.CSIndexExtensionRequestHandler.DidThrottle(CoreSpotlight.CSSearchableIndex)
+M:CoreSpotlight.CSIndexExtensionRequestHandler.DidUpdate(CoreSpotlight.CSSearchableItem[])
 M:CoreSpotlight.CSIndexExtensionRequestHandler.GetData(CoreSpotlight.CSSearchableIndex,System.String,System.String,Foundation.NSError@)
 M:CoreSpotlight.CSIndexExtensionRequestHandler.GetFileUrl(CoreSpotlight.CSSearchableIndex,System.String,System.String,System.Boolean,Foundation.NSError@)
+M:CoreSpotlight.CSIndexExtensionRequestHandler.GetSearchableItems(System.String[],CoreSpotlight.CSSearchableIndexDelegateGetSearchableItemsHandler)
 M:CoreSpotlight.CSIndexExtensionRequestHandler.ReindexAllSearchableItems(CoreSpotlight.CSSearchableIndex,System.Action)
 M:CoreSpotlight.CSIndexExtensionRequestHandler.ReindexSearchableItems(CoreSpotlight.CSSearchableIndex,System.String[],System.Action)
 M:CoreSpotlight.CSLocalizedString.#ctor(Foundation.NSDictionary)
@@ -28911,12 +28917,16 @@ M:CoreSpotlight.CSSearchableIndex.ProvideDataAsync(System.String,System.String,S
 M:CoreSpotlight.CSSearchableIndexBundleDataResult.#ctor(Foundation.NSData)
 M:CoreSpotlight.CSSearchableIndexDelegate_Extensions.DidFinishThrottle(CoreSpotlight.ICSSearchableIndexDelegate,CoreSpotlight.CSSearchableIndex)
 M:CoreSpotlight.CSSearchableIndexDelegate_Extensions.DidThrottle(CoreSpotlight.ICSSearchableIndexDelegate,CoreSpotlight.CSSearchableIndex)
+M:CoreSpotlight.CSSearchableIndexDelegate_Extensions.DidUpdate(CoreSpotlight.ICSSearchableIndexDelegate,CoreSpotlight.CSSearchableItem[])
 M:CoreSpotlight.CSSearchableIndexDelegate_Extensions.GetData(CoreSpotlight.ICSSearchableIndexDelegate,CoreSpotlight.CSSearchableIndex,System.String,System.String,Foundation.NSError@)
 M:CoreSpotlight.CSSearchableIndexDelegate_Extensions.GetFileUrl(CoreSpotlight.ICSSearchableIndexDelegate,CoreSpotlight.CSSearchableIndex,System.String,System.String,System.Boolean,Foundation.NSError@)
+M:CoreSpotlight.CSSearchableIndexDelegate_Extensions.GetSearchableItems(CoreSpotlight.ICSSearchableIndexDelegate,System.String[],CoreSpotlight.CSSearchableIndexDelegateGetSearchableItemsHandler)
 M:CoreSpotlight.CSSearchableIndexDelegate.DidFinishThrottle(CoreSpotlight.CSSearchableIndex)
 M:CoreSpotlight.CSSearchableIndexDelegate.DidThrottle(CoreSpotlight.CSSearchableIndex)
+M:CoreSpotlight.CSSearchableIndexDelegate.DidUpdate(CoreSpotlight.CSSearchableItem[])
 M:CoreSpotlight.CSSearchableIndexDelegate.GetData(CoreSpotlight.CSSearchableIndex,System.String,System.String,Foundation.NSError@)
 M:CoreSpotlight.CSSearchableIndexDelegate.GetFileUrl(CoreSpotlight.CSSearchableIndex,System.String,System.String,System.Boolean,Foundation.NSError@)
+M:CoreSpotlight.CSSearchableIndexDelegate.GetSearchableItems(System.String[],CoreSpotlight.CSSearchableIndexDelegateGetSearchableItemsHandler)
 M:CoreSpotlight.CSSearchableIndexDelegate.ReindexAllSearchableItems(CoreSpotlight.CSSearchableIndex,System.Action)
 M:CoreSpotlight.CSSearchableIndexDelegate.ReindexSearchableItems(CoreSpotlight.CSSearchableIndex,System.String[],System.Action)
 M:CoreSpotlight.CSSearchableItem.#ctor(System.String,System.String,CoreSpotlight.CSSearchableItemAttributeSet)
@@ -28927,6 +28937,7 @@ M:CoreSpotlight.CSSearchableItemAttributeSet.#ctor(System.String)
 M:CoreSpotlight.CSSearchableItemAttributeSet.#ctor(UniformTypeIdentifiers.UTType)
 M:CoreSpotlight.CSSearchableItemAttributeSet.Copy(Foundation.NSZone)
 M:CoreSpotlight.CSSearchableItemAttributeSet.EncodeTo(Foundation.NSCoder)
+M:CoreSpotlight.CSSearchableItemAttributeSet.MoveFrom(CoreSpotlight.CSSearchableItemAttributeSet)
 M:CoreSpotlight.CSSearchQuery.#ctor(System.String,CoreSpotlight.CSSearchQueryContext)
 M:CoreSpotlight.CSSearchQuery.#ctor(System.String,System.String[])
 M:CoreSpotlight.CSSearchQuery.Cancel
@@ -28948,8 +28959,10 @@ M:CoreSpotlight.CSUserQuery.UserEngaged(CoreSpotlight.CSSuggestion,CoreSpotlight
 M:CoreSpotlight.CSUserQueryContext.Create(CoreSpotlight.CSSuggestion)
 M:CoreSpotlight.ICSSearchableIndexDelegate.DidFinishThrottle(CoreSpotlight.CSSearchableIndex)
 M:CoreSpotlight.ICSSearchableIndexDelegate.DidThrottle(CoreSpotlight.CSSearchableIndex)
+M:CoreSpotlight.ICSSearchableIndexDelegate.DidUpdate(CoreSpotlight.CSSearchableItem[])
 M:CoreSpotlight.ICSSearchableIndexDelegate.GetData(CoreSpotlight.CSSearchableIndex,System.String,System.String,Foundation.NSError@)
 M:CoreSpotlight.ICSSearchableIndexDelegate.GetFileUrl(CoreSpotlight.CSSearchableIndex,System.String,System.String,System.Boolean,Foundation.NSError@)
+M:CoreSpotlight.ICSSearchableIndexDelegate.GetSearchableItems(System.String[],CoreSpotlight.CSSearchableIndexDelegateGetSearchableItemsHandler)
 M:CoreSpotlight.ICSSearchableIndexDelegate.ReindexAllSearchableItems(CoreSpotlight.CSSearchableIndex,System.Action)
 M:CoreSpotlight.ICSSearchableIndexDelegate.ReindexSearchableItems(CoreSpotlight.CSSearchableIndex,System.String[],System.Action)
 M:CoreTelephony.CTCellularPlanProvisioning.AddPlan(CoreTelephony.CTCellularPlanProvisioningRequest,System.Action{CoreTelephony.CTCellularPlanProvisioningAddPlanResult})
@@ -54419,9 +54432,12 @@ P:CoreServices.FSEventStream.DeviceBeingWatched
 P:CoreServices.FSEventStream.LatestEventId
 P:CoreServices.FSEventStream.PathsBeingWatched
 P:CoreServices.FSEventStreamEventsArgs.Events
+P:CoreSpotlight.CoreSpotlightConstants.CoreSpotlightVersionNumber
+P:CoreSpotlight.CoreSpotlightConstants.CoreSpotlightVersionString
 P:CoreSpotlight.CSSearchableIndex.IndexDelegate
 P:CoreSpotlight.CSSearchableIndexBundleDataResult.Arg1
 P:CoreSpotlight.CSSearchableItem.IsUpdate
+P:CoreSpotlight.CSSearchableItem.UpdateListenerOptions
 P:CoreSpotlight.CSSearchableItemAttributeSet.ActionIdentifier
 P:CoreSpotlight.CSSearchableItemAttributeSet.ActionIdentifiers
 P:CoreSpotlight.CSSearchableItemAttributeSet.DarkThumbnailUrl
@@ -54470,6 +54486,7 @@ P:CoreSpotlight.CSSearchableItemAttributeSet.Information
 P:CoreSpotlight.CSSearchableItemAttributeSet.InstantMessageAddresses
 P:CoreSpotlight.CSSearchableItemAttributeSet.Instructions
 P:CoreSpotlight.CSSearchableItemAttributeSet.IsoSpeed
+P:CoreSpotlight.CSSearchableItemAttributeSet.IsPriority
 P:CoreSpotlight.CSSearchableItemAttributeSet.Item(CoreSpotlight.CSCustomAttributeKey)
 P:CoreSpotlight.CSSearchableItemAttributeSet.KeySignature
 P:CoreSpotlight.CSSearchableItemAttributeSet.Keywords
@@ -54541,6 +54558,7 @@ P:CoreSpotlight.CSSearchableItemAttributeSet.SupportsNavigation
 P:CoreSpotlight.CSSearchableItemAttributeSet.SupportsPhoneCall
 P:CoreSpotlight.CSSearchableItemAttributeSet.Tempo
 P:CoreSpotlight.CSSearchableItemAttributeSet.TextContent
+P:CoreSpotlight.CSSearchableItemAttributeSet.TextContentSummary
 P:CoreSpotlight.CSSearchableItemAttributeSet.Theme
 P:CoreSpotlight.CSSearchableItemAttributeSet.Thoroughfare
 P:CoreSpotlight.CSSearchableItemAttributeSet.ThumbnailData
@@ -54549,6 +54567,7 @@ P:CoreSpotlight.CSSearchableItemAttributeSet.TimeSignature
 P:CoreSpotlight.CSSearchableItemAttributeSet.Timestamp
 P:CoreSpotlight.CSSearchableItemAttributeSet.Title
 P:CoreSpotlight.CSSearchableItemAttributeSet.TotalBitRate
+P:CoreSpotlight.CSSearchableItemAttributeSet.TranscribedTextContent
 P:CoreSpotlight.CSSearchableItemAttributeSet.Url
 P:CoreSpotlight.CSSearchableItemAttributeSet.Version
 P:CoreSpotlight.CSSearchableItemAttributeSet.VideoBitRate
@@ -69220,9 +69239,12 @@ T:CoreServices.LaunchServices
 T:CoreServices.LSAcceptanceFlags
 T:CoreServices.LSResult
 T:CoreServices.LSRoles
+T:CoreSpotlight.CoreSpotlightConstants
 T:CoreSpotlight.CSImportExtension
 T:CoreSpotlight.CSSearchableIndexBundleDataResult
+T:CoreSpotlight.CSSearchableIndexDelegateGetSearchableItemsHandler
 T:CoreSpotlight.CSSearchableIndexEndIndexHandler
+T:CoreSpotlight.CSSearchableItemUpdateListenerOptions
 T:CoreSpotlight.CSSearchQueryContext
 T:CoreSpotlight.CSSearchQuerySourceOptions
 T:CoreSpotlight.CSSuggestion

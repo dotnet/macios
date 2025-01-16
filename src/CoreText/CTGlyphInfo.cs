@@ -37,10 +37,6 @@ using CoreFoundation;
 using CGGlyph = System.UInt16;
 using CGFontIndex = System.UInt16;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreText {
 
 	#region Glyph Info Values
@@ -60,12 +56,10 @@ namespace CoreText {
 	}
 	#endregion
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTGlyphInfo : NativeObject {
 		[Preserve (Conditional = true)]
 		internal CTGlyphInfo (NativeHandle handle, bool owns)
@@ -181,27 +175,17 @@ namespace CoreText {
 			get { return CTGlyphInfoGetCharacterCollection (Handle); }
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (13, 0)]
-		[TV (13, 0)]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern ushort /* CGGlyph */ CTGlyphInfoGetGlyph (IntPtr /* CTGlyphInfoRef */ glyphInfo);
 
-#if NET
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (13, 0)]
-		[TV (13, 0)]
-#endif
 		public CGGlyph GetGlyph ()
 		{
 			return CTGlyphInfoGetGlyph (Handle);

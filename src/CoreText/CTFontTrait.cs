@@ -38,25 +38,6 @@ using ObjCRuntime;
 using System.Runtime.Versioning;
 
 namespace CoreText {
-
-#if !NET
-	public static class CTFontTraitKey {
-		public static readonly NSString? Symbolic;
-		public static readonly NSString? Weight;
-		public static readonly NSString? Width;
-		public static readonly NSString? Slant;
-
-		static CTFontTraitKey ()
-		{
-			var handle = Libraries.CoreText.Handle;
-			Symbolic = Dlfcn.GetStringConstant (handle, "kCTFontSymbolicTrait");
-			Weight = Dlfcn.GetStringConstant (handle, "kCTFontWeightTrait");
-			Width = Dlfcn.GetStringConstant (handle, "kCTFontWidthTrait");
-			Slant = Dlfcn.GetStringConstant (handle, "kCTFontSlantTrait");
-		}
-	}
-#endif
-
 	[Flags]
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontTraits.h
 	public enum CTFontSymbolicTraits : uint {
@@ -118,12 +99,10 @@ namespace CoreText {
 		Symbolic = ((uint) 12 << CTFontTraits.ClassMaskShift),
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontTraits {
 
 		public CTFontTraits ()

@@ -35,31 +35,12 @@ using ObjCRuntime;
 using Foundation;
 using CoreFoundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreText {
 
-	#region Text Tab Constants
-#if !NET
-	public static class CTTextTabOptionKey {
-
-		public static readonly NSString ColumnTerminators;
-
-		static CTTextTabOptionKey ()
-		{
-			ColumnTerminators = Dlfcn.GetStringConstant (Libraries.CoreText.Handle, "kCTTabColumnTerminatorsAttributeName")!;
-		}
-	}
-#endif
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTTextTabOptions {
 
 		public CTTextTabOptions ()
@@ -96,14 +77,11 @@ namespace CoreText {
 			return self.Dictionary.GetHandle ();
 		}
 	}
-	#endregion
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTTextTab : NativeObject {
 		[Preserve (Conditional = true)]
 		internal CTTextTab (NativeHandle handle, bool owns)

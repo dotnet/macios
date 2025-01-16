@@ -37,10 +37,6 @@ using Foundation;
 using CoreFoundation;
 using CoreGraphics;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreText {
 
 	[Flags]
@@ -59,34 +55,10 @@ namespace CoreText {
 		WindingNumber,
 	}
 
-#if !NET
-	public static class CTFrameAttributeKey {
-
-		public static readonly NSString? Progression;
-
-		public static readonly NSString? PathFillRule;
-		public static readonly NSString? PathWidth;
-		public static readonly NSString? ClippingPaths;
-		public static readonly NSString? PathClippingPath;
-
-		static CTFrameAttributeKey ()
-		{
-			var handle = Libraries.CoreText.Handle;
-			Progression = Dlfcn.GetStringConstant (handle, "kCTFrameProgressionAttributeName");
-			PathFillRule = Dlfcn.GetStringConstant (handle, "kCTFramePathFillRuleAttributeName");
-			PathWidth = Dlfcn.GetStringConstant (handle, "kCTFramePathWidthAttributeName");
-			ClippingPaths = Dlfcn.GetStringConstant (handle, "kCTFrameClippingPathsAttributeName");
-			PathClippingPath = Dlfcn.GetStringConstant (handle, "kCTFramePathClippingPathAttributeName");
-		}
-	}
-#endif
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFrameAttributes {
 
 		public CTFrameAttributes ()
@@ -130,12 +102,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFrame : NativeObject {
 		[Preserve (Conditional = true)]
 		internal CTFrame (NativeHandle handle, bool owns)

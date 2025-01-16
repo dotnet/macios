@@ -37,10 +37,6 @@ using Foundation;
 using CoreFoundation;
 using CoreGraphics;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreText {
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTLine.h
@@ -85,12 +81,10 @@ namespace CoreText {
 		IncludeLanguageExtents = 1 << 5, // iOS8 and Mac 10.11
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTLine : NativeObject {
 		[Preserve (Conditional = true)]
 		internal CTLine (NativeHandle handle, bool owns)
@@ -245,26 +239,15 @@ namespace CoreText {
 		}
 
 		public delegate void CaretEdgeEnumerator (double offset, nint charIndex, bool leadingEdge, ref bool stop);
-#if !NET
-		unsafe delegate void CaretEdgeEnumeratorProxy (IntPtr block, double offset, nint charIndex, byte leadingEdge, byte* stop);
-#endif
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern void CTLineEnumerateCaretOffsets (IntPtr line, BlockLiteral* blockEnumerator);
 
-#if !NET
-		static unsafe readonly CaretEdgeEnumeratorProxy static_enumerate = TrampolineEnumerate;
-
-		[MonoPInvokeCallback (typeof (CaretEdgeEnumeratorProxy))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		unsafe static void TrampolineEnumerate (IntPtr blockPtr, double offset, nint charIndex, byte leadingEdge, byte* stopPointer)
 		{
 			var del = BlockLiteral.GetTarget<CaretEdgeEnumerator> (blockPtr);
@@ -275,12 +258,10 @@ namespace CoreText {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void EnumerateCaretOffsets (CaretEdgeEnumerator enumerator)
 		{
@@ -288,13 +269,8 @@ namespace CoreText {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (enumerator));
 
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, double, nint, byte, byte*, void> trampoline = &TrampolineEnumerate;
 				using var block = new BlockLiteral (trampoline, enumerator, typeof (CTLine), nameof (TrampolineEnumerate));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_enumerate, enumerator);
-#endif
 				CTLineEnumerateCaretOffsets (Handle, &block);
 			}
 		}

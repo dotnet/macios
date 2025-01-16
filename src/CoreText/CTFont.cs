@@ -42,10 +42,6 @@ using Foundation;
 
 using CGGlyph = System.UInt16;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreText {
 
 	[Flags]
@@ -56,21 +52,13 @@ namespace CoreText {
 		Default = 0,
 		/// <summary>Prevents font activation.</summary>
 		PreventAutoActivation = 1 << 0,
-#if NET
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0), Mac (13, 0)]
-#endif
 		PreventAutoDownload = 1 << 1,
 		/// <summary>Give preferences to Apple/System fonts.</summary>
 		PreferSystemFont = 1 << 2,
-#if !NET
-		[Obsolete ("This API is not available on this platform.")]
-		IncludeDisabled = 1 << 7,
-#endif
 	}
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFont.h
@@ -288,7 +276,6 @@ namespace CoreText {
 	public enum CTFontTableOptions : uint {
 		/// <summary>To be added.</summary>
 		None = 0,
-#if NET
 		/// <summary>To be added.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
@@ -297,9 +284,6 @@ namespace CoreText {
 		[ObsoletedOSPlatform ("maccatalyst13.1")]
 		[ObsoletedOSPlatform ("macos10.8")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[Deprecated (PlatformName.TvOS, 16, 0)]
-#endif
 		ExcludeSynthetic = (1 << 0),
 	}
 
@@ -311,7 +295,6 @@ namespace CoreText {
 		Ligatures = 1,
 		/// <summary>To be added.</summary>
 		CursiveConnection = 2,
-#if NET
 		/// <summary>Developers should not use this deprecated field. </summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -319,10 +302,8 @@ namespace CoreText {
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("macos10.7")]
 		[ObsoletedOSPlatform ("ios6.0")]
-#else
-		[Deprecated (PlatformName.iOS, 6, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 7)]
-#endif
+		[ObsoletedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("maccatalyst")]
 		LetterCase = 3,
 		/// <summary>To be added.</summary>
 		VerticalSubstitution = 4,
@@ -394,12 +375,10 @@ namespace CoreText {
 		CJKRomanSpacing = 103,
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatures {
 
 		public CTFontFeatures ()
@@ -473,12 +452,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureSelectors {
 
 		public CTFontFeatureSelectors ()
@@ -503,8 +480,10 @@ namespace CoreText {
 			case FontFeatureGroup.CursiveConnection:
 				return new CTFontFeatureCursiveConnection (dictionary);
 #pragma warning disable 618
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'CTFontFeatureLetterCase' is obsoleted on: 'ios' 6.0 and later, 'maccatalyst' 6.0 and later, 'macOS/OSX' 10.7 and later.
 			case FontFeatureGroup.LetterCase:
 				return new CTFontFeatureLetterCase (dictionary);
+#pragma warning restore CA1422
 #pragma warning restore 618
 			case FontFeatureGroup.VerticalSubstitution:
 				return new CTFontFeatureVerticalSubstitutionConnection (dictionary);
@@ -632,12 +611,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureAllTypographicFeatures : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -661,12 +638,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureLigatures : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -730,17 +705,14 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	[ObsoletedOSPlatform ("macos10.7")]
 	[ObsoletedOSPlatform ("ios6.0")]
-#else
-	[Deprecated (PlatformName.iOS, 6, 0)]
-	[Deprecated (PlatformName.MacOSX, 10, 7)]
-#endif
+	[ObsoletedOSPlatform ("tvos")]
+	[ObsoletedOSPlatform ("maccatalyst")]
 	public class CTFontFeatureLetterCase : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -772,12 +744,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureCursiveConnection : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -803,12 +773,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureVerticalSubstitutionConnection : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -832,12 +800,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureLinguisticRearrangementConnection : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -861,12 +827,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureNumberSpacing : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -894,12 +858,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureSmartSwash : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -939,12 +901,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureDiacritics : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -970,12 +930,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureVerticalPosition : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1005,12 +963,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureFractions : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1036,12 +992,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureOverlappingCharacters : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1065,12 +1019,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureTypographicExtras : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1114,12 +1066,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureMathematicalExtras : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1163,12 +1113,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureOrnamentSets : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1202,12 +1150,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureCharacterAlternatives : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1229,12 +1175,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureDesignComplexity : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1264,12 +1208,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureStyleOptions : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1301,12 +1243,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureCharacterShape : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1356,12 +1296,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureNumberCase : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1385,12 +1323,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureTextSpacing : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1424,12 +1360,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureTransliteration : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1469,12 +1403,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureAnnotation : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1516,12 +1448,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureKanaSpacing : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1545,12 +1475,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureIdeographicSpacing : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1576,12 +1504,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureUnicodeDecomposition : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1613,15 +1539,12 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureRubyKana : CTFontFeatureSelectors {
 		public enum Selector {
-#if NET
 			/// <summary>Developers should not use this deprecated field. </summary>
 			[SupportedOSPlatform ("ios")]
 			[SupportedOSPlatform ("macos")]
@@ -1629,12 +1552,7 @@ namespace CoreText {
 			[UnsupportedOSPlatform ("maccatalyst")]
 			[ObsoletedOSPlatform ("macos10.8")]
 			[ObsoletedOSPlatform ("ios5.1")]
-#else
-			[Deprecated (PlatformName.iOS, 5, 1)]
-			[Deprecated (PlatformName.MacOSX, 10, 8)]
-#endif
 			NoRubyKana = 0,
-#if NET
 			/// <summary>To be added.</summary>
 			[SupportedOSPlatform ("ios")]
 			[SupportedOSPlatform ("macos")]
@@ -1642,10 +1560,6 @@ namespace CoreText {
 			[UnsupportedOSPlatform ("maccatalyst")]
 			[ObsoletedOSPlatform ("macos10.8")]
 			[ObsoletedOSPlatform ("ios5.1")]
-#else
-			[Deprecated (PlatformName.iOS, 5, 1)]
-			[Deprecated (PlatformName.MacOSX, 10, 8)]
-#endif
 			RubyKana = 1,
 			/// <summary>To be added.</summary>
 			RubyKanaOn = 2,
@@ -1668,12 +1582,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureCJKSymbolAlternatives : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1705,12 +1617,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureIdeographicAlternatives : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1742,12 +1652,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureCJKVerticalRomanPlacement : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1771,15 +1679,12 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureItalicCJKRoman : CTFontFeatureSelectors {
 		public enum Selector {
-#if NET
 			/// <summary>To be added.</summary>
 			[SupportedOSPlatform ("ios")]
 			[SupportedOSPlatform ("macos")]
@@ -1787,12 +1692,7 @@ namespace CoreText {
 			[UnsupportedOSPlatform ("maccatalyst")]
 			[ObsoletedOSPlatform ("macos10.8")]
 			[ObsoletedOSPlatform ("ios5.1")]
-#else
-			[Deprecated (PlatformName.iOS, 5, 1)]
-			[Deprecated (PlatformName.MacOSX, 10, 8)]
-#endif
 			NoCJKItalicRoman = 0,
-#if NET
 			/// <summary>Developers should not use this deprecated field. </summary>
 			[SupportedOSPlatform ("ios")]
 			[SupportedOSPlatform ("macos")]
@@ -1800,10 +1700,6 @@ namespace CoreText {
 			[UnsupportedOSPlatform ("maccatalyst")]
 			[ObsoletedOSPlatform ("macos10.8")]
 			[ObsoletedOSPlatform ("ios5.1")]
-#else
-			[Deprecated (PlatformName.iOS, 5, 1)]
-			[Deprecated (PlatformName.MacOSX, 10, 8)]
-#endif
 			CJKItalicRoman = 1,
 			/// <summary>To be added.</summary>
 			CJKItalicRomanOn = 2,
@@ -1826,12 +1722,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureCaseSensitiveLayout : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1859,12 +1753,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureAlternateKana : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1892,12 +1784,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureStylisticAlternatives : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -1999,12 +1889,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureContextualAlternates : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -2036,12 +1924,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureLowerCase : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -2067,12 +1953,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureUpperCase : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -2098,12 +1982,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureCJKRomanSpacing : CTFontFeatureSelectors {
 		public enum Selector {
 			/// <summary>To be added.</summary>
@@ -2131,12 +2013,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontFeatureSettings {
 
 		internal CTFontFeatureSettings (NSDictionary dictionary)
@@ -2170,12 +2050,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontVariationAxes {
 
 		public CTFontVariationAxes ()
@@ -2235,7 +2113,6 @@ namespace CoreText {
 			set { Adapter.SetValue (Dictionary, CTFontVariationAxisKey.Name, value); }
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -2243,19 +2120,16 @@ namespace CoreText {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public bool? Hidden {
 			get { return Adapter.GetBoolValue (Dictionary, CTFontVariationAxisKey.Hidden); }
 			set { Adapter.SetValue (Dictionary, CTFontVariationAxisKey.Hidden, value); }
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontVariation {
 
 		public CTFontVariation ()
@@ -2388,23 +2262,19 @@ namespace CoreText {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public CTFont (string name, nfloat size, CTFontOptions options)
 			: base (Create (name, size, options), true)
 		{
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern IntPtr CTFontCreateWithNameAndOptions (IntPtr name, nfloat size, CGAffineTransform* matrix, nuint options);
 
@@ -2426,12 +2296,10 @@ namespace CoreText {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public CTFont (string name, nfloat size, ref CGAffineTransform matrix, CTFontOptions options)
 			: base (Create (name, size, ref matrix, options), true)
 		{
@@ -2451,23 +2319,19 @@ namespace CoreText {
 			return handle;
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public CTFont (CTFontDescriptor descriptor, nfloat size, CTFontOptions options)
 			: base (Create (descriptor, size, options), true)
 		{
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern IntPtr CTFontCreateWithFontDescriptorAndOptions (IntPtr descriptor, nfloat size, CGAffineTransform* matrix, nuint options);
 
@@ -2485,12 +2349,10 @@ namespace CoreText {
 			return handle;
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public CTFont (CTFontDescriptor descriptor, nfloat size, CTFontOptions options, ref CGAffineTransform matrix)
 			: base (Create (descriptor, size, options, ref matrix), true)
 		{
@@ -2679,15 +2541,10 @@ namespace CoreText {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (13, 0)]
-		[TV (13, 0)]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern /* CTFontRef */ IntPtr CTFontCreateForStringWithLanguage (
 			/* CTFontRef */ IntPtr currentFont,
@@ -2695,15 +2552,10 @@ namespace CoreText {
 			NSRange range,
 			/* CFStringRef _Nullable */ IntPtr language);
 
-#if NET
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (13, 0)]
-		[TV (13, 0)]
-#endif
 		public CTFont? ForString (string value, NSRange range, string? language)
 		{
 			if (value is null)
@@ -2920,27 +2772,17 @@ namespace CoreText {
 			return GetGlyphsForCharacters (characters, glyphs, Math.Min (characters.Length, glyphs.Length));
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos14.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (14, 0)]
-		[iOS (14, 0)]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern unsafe /* CFStringRef _Nullable */ IntPtr CTFontCopyNameForGlyph (/* CTFontRef */ IntPtr font, CGGlyph glyph);
 
-#if NET
 		[SupportedOSPlatform ("tvos14.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (14, 0)]
-		[iOS (14, 0)]
-#endif
 		public string? GetGlyphName (CGGlyph glyph)
 		{
 			return CFString.FromHandle (CTFontCopyNameForGlyph (Handle, glyph), releaseHandle: true);
@@ -3320,14 +3162,10 @@ namespace CoreText {
 
 		#endregion
 
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		extern static /* CGRect */ CGRect CTFontGetTypographicBoundsForAdaptiveImageProvider (
 			/* CTFontRef */ IntPtr font,
@@ -3336,14 +3174,10 @@ namespace CoreText {
 		/// <summary>Computes metrics that clients performing their own typesetting of an adaptive image glyph need.</summary>
 		/// <returns>The typographic bounds in points expressed as a rectangle, where the rectangle's Width property corresponds to the advance width, the rectangle's Bottom property corresponds to the ascent (above the baseline), and Top property corresponds to the descent (below the baseline).</returns>
 		/// <param name="provider">The adaptive image provider used during the computation. If null, then default results will be returned, on the assumption that an image is not yet available.</param>
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		public CGRect GetTypographicBoundsForAdaptiveImageProvider (ICTAdaptiveImageProviding? provider)
 		{
 			CGRect result = CTFontGetTypographicBoundsForAdaptiveImageProvider (Handle, provider.GetHandle ());
@@ -3351,14 +3185,10 @@ namespace CoreText {
 			return result;
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		extern static void CTFontDrawImageFromAdaptiveImageProviderAtPoint (
 			/* CTFontRef */ IntPtr font,
@@ -3370,14 +3200,10 @@ namespace CoreText {
 		/// <param name="provider">The adaptive image provider used during the rendering.</param>
 		/// <param name="point">The adaptive image glyph is rendered relative to this point.</param>
 		/// <param name="context">The <see cref="CoreGraphics.CGBitmapContext" /> where the adaptive image glyph is drawn.</param>
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		public void DrawImage (ICTAdaptiveImageProviding provider, CGPoint point, CGContext context)
 		{
 			CTFontDrawImageFromAdaptiveImageProviderAtPoint (Handle, provider.GetNonNullHandle (nameof (provider)), point, context.GetNonNullHandle (nameof (context)));
@@ -3385,14 +3211,10 @@ namespace CoreText {
 			GC.KeepAlive (context);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos13.0")]
-#else
-		[TV (13, 0), iOS (13, 0), MacCatalyst (13, 0)]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		extern static byte CTFontHasTable (
 			/* CTFontRef */ IntPtr font,
@@ -3402,14 +3224,10 @@ namespace CoreText {
 		/// <param name="tag">The table identifier to check for.</param>
 		/// <returns>Whether the table is present in the font or not.</returns>
 		/// <remarks>The check behaves as if <see cref="CTFontTableOptions.None" /> was specified.</remarks>
-#if NET
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos13.0")]
-#else
-		[TV (13, 0), iOS (13, 0), MacCatalyst (13, 0)]
-#endif
 		public bool HasTable (CTFontTable tag)
 		{
 			return CTFontHasTable (GetCheckedHandle (), tag) != 0;

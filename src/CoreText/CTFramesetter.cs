@@ -36,18 +36,11 @@ using Foundation;
 using CoreFoundation;
 using CoreGraphics;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreText {
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFramesetter : NativeObject {
 		[Preserve (Conditional = true)]
 		internal CTFramesetter (NativeHandle handle, bool owns)
@@ -107,21 +100,17 @@ namespace CoreText {
 			}
 		}
 		#endregion
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFramesetterCreateWithTypesetter (IntPtr typesetter);
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static CTFramesetter? Create (CTTypesetter typesetter)
 		{
 			if (typesetter is null)

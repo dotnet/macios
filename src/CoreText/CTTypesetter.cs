@@ -37,20 +37,14 @@ using Foundation;
 using CoreFoundation;
 using CoreGraphics;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreText {
 
 	#region Typesetter Values
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTTypesetterOptions {
 
 		public CTTypesetterOptions ()
@@ -70,7 +64,6 @@ namespace CoreText {
 		///         <remarks>To be added.</remarks>
 		public NSDictionary Dictionary { get; private set; }
 
-#if NET
 		/// <summary>Developers should not use this deprecated property. </summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -79,9 +72,9 @@ namespace CoreText {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("ios6.0")]
-#else
-		[Deprecated (PlatformName.iOS, 6, 0)]
-#endif
+		[ObsoletedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("maccatalyst")]
 		public bool DisableBidiProcessing {
 			get {
 				return CFDictionary.GetBooleanValue (Dictionary.Handle,
@@ -103,7 +96,6 @@ namespace CoreText {
 			set { Adapter.SetValue (Dictionary, CTTypesetterOptionKey.ForceEmbeddingLevel, value); }
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -111,7 +103,6 @@ namespace CoreText {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public bool AllowUnboundedLayout {
 			get => CFDictionary.GetBooleanValue (Dictionary.Handle, CTTypesetterOptionKey.AllowUnboundedLayout.Handle);
 			set {
@@ -131,12 +122,10 @@ namespace CoreText {
 	}
 	#endregion
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTTypesetter : NativeObject {
 		[Preserve (Conditional = true)]
 		internal CTTypesetter (NativeHandle handle, bool owns)

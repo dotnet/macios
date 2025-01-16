@@ -36,17 +36,12 @@ using Foundation;
 using CoreFoundation;
 using CoreGraphics;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreText {
 
 	#region Run Delegate Callbacks
 	delegate void CTRunDelegateDeallocateCallback (IntPtr refCon);
 	delegate nfloat CTRunDelegateGetCallback (IntPtr refCon);
 
-#if NET
 	[StructLayout (LayoutKind.Sequential)]
 	struct CTRunDelegateCallbacks {
 		public /* CFIndex */ nint version;
@@ -55,24 +50,12 @@ namespace CoreText {
 		public unsafe delegate* unmanaged<IntPtr, nfloat> getDescent;
 		public unsafe delegate* unmanaged<IntPtr, nfloat> getWidth;
 	}
-#else
-	[StructLayout (LayoutKind.Sequential)]
-	struct CTRunDelegateCallbacks {
-		public /* CFIndex */ nint version;
-		public IntPtr dealloc;
-		public IntPtr getAscent;
-		public IntPtr getDescent;
-		public IntPtr getWidth;
-	}
-#endif
 	#endregion
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTRunDelegateOperations : IDisposable {
 		// This instance is kept alive using a GCHandle until the Deallocate callback has been called,
 		// which is called when the corresponding CTRunDelegate is freed (retainCount reaches 0).
@@ -103,7 +86,6 @@ namespace CoreText {
 		{
 		}
 
-#if NET
 		public virtual nfloat GetAscent ()
 		{
 			return 0;
@@ -118,28 +100,11 @@ namespace CoreText {
 		{
 			return 0;
 		}
-#else
-		public virtual float GetAscent ()
-		{
-			return 0.0f;
-		}
-
-		public virtual float GetDescent ()
-		{
-			return 0.0f;
-		}
-
-		public virtual float GetWidth ()
-		{
-			return 0.0f;
-		}
-#endif
 
 		CTRunDelegateCallbacks? callbacks; // prevent GC since they are called from native code
 		internal CTRunDelegateCallbacks GetCallbacks ()
 		{
 			if (!callbacks.HasValue) {
-#if NET
 				unsafe {
 					callbacks = new CTRunDelegateCallbacks () {
 						version = 1,
@@ -149,25 +114,11 @@ namespace CoreText {
 						getWidth = &GetWidth,
 					};
 				}
-#else
-				callbacks = new CTRunDelegateCallbacks () {
-					version = 1, // kCTRunDelegateVersion1
-					dealloc = Marshal.GetFunctionPointerForDelegate (DeallocateDelegate),
-					getAscent = Marshal.GetFunctionPointerForDelegate (GetAscentDelegate),
-					getDescent = Marshal.GetFunctionPointerForDelegate (GetDescentDelegate),
-					getWidth = Marshal.GetFunctionPointerForDelegate (GetWidthDelegate),
-				};
-#endif
 			}
 			return callbacks.Value;
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		static CTRunDelegateDeallocateCallback DeallocateDelegate = Deallocate;
-		[MonoPInvokeCallback (typeof (CTRunDelegateDeallocateCallback))]
-#endif
 		static void Deallocate (IntPtr refCon)
 		{
 			var self = GetOperations (refCon);
@@ -188,12 +139,7 @@ namespace CoreText {
 			return c.Target as CTRunDelegateOperations;
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		static CTRunDelegateGetCallback GetAscentDelegate = GetAscent;
-		[MonoPInvokeCallback (typeof (CTRunDelegateGetCallback))]
-#endif
 		static nfloat GetAscent (IntPtr refCon)
 		{
 			var self = GetOperations (refCon);
@@ -202,12 +148,7 @@ namespace CoreText {
 			return (nfloat) self.GetAscent ();
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		static CTRunDelegateGetCallback GetDescentDelegate = GetDescent;
-		[MonoPInvokeCallback (typeof (CTRunDelegateGetCallback))]
-#endif
 		static nfloat GetDescent (IntPtr refCon)
 		{
 			var self = GetOperations (refCon);
@@ -216,12 +157,7 @@ namespace CoreText {
 			return (nfloat) self.GetDescent ();
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		static CTRunDelegateGetCallback GetWidthDelegate = GetWidth;
-		[MonoPInvokeCallback (typeof (CTRunDelegateGetCallback))]
-#endif
 		static nfloat GetWidth (IntPtr refCon)
 		{
 			var self = GetOperations (refCon);
@@ -231,12 +167,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTRunDelegate : NativeObject, IDisposable {
 		[Preserve (Conditional = true)]
 		internal CTRunDelegate (NativeHandle handle, bool owns)

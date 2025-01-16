@@ -37,10 +37,6 @@ using ObjCRuntime;
 using Foundation;
 using CoreFoundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreText {
 
 	#region Paragraph Style Values
@@ -104,7 +100,6 @@ namespace CoreText {
 		LineHeightMultiple = 7,
 		MaximumLineHeight = 8,
 		MinimumLineHeight = 9,
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -113,11 +108,6 @@ namespace CoreText {
 		[ObsoletedOSPlatform ("ios6.0", "Use 'MaximumLineSpacing' instead.")]
 		[ObsoletedOSPlatform ("tvos16.0", "Use 'MaximumLineSpacing' instead.")]
 		[ObsoletedOSPlatform ("maccatalyst13.1", "Use 'MaximumLineSpacing' instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 6, 0, message: "Use 'MaximumLineSpacing' instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 8, message: "Use 'MaximumLineSpacing' instead.")]
-		[Deprecated (PlatformName.TvOS, 16, 0, message: "Use 'MaximumLineSpacing' instead.")]
-#endif
 		LineSpacing = 10,
 		ParagraphSpacing = 11,
 		ParagraphSpacingBefore = 12,
@@ -244,12 +234,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTParagraphStyleSettings {
 
 		public CTParagraphStyleSettings ()
@@ -357,8 +345,10 @@ namespace CoreText {
 				values.Add (CreateValue (CTParagraphStyleSpecifier.MaximumLineHeight, MaximumLineHeight.Value));
 			if (MinimumLineHeight.HasValue)
 				values.Add (CreateValue (CTParagraphStyleSpecifier.MinimumLineHeight, MinimumLineHeight.Value));
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'CTParagraphStyleSpecifier.LineSpacing' is obsoleted on: 'ios' 6.0 and later (Use 'MaximumLineSpacing' instead.), 'maccatalyst' 6.0 and later (Use 'MaximumLineSpacing' instead.), 'macOS/OSX' 10.8 and later (Use 'MaximumLineSpacing' instead.), 'tvos' 16.0 and later (Use 'MaximumLineSpacing' instead.).
 			if (LineSpacing.HasValue)
 				values.Add (CreateValue (CTParagraphStyleSpecifier.LineSpacing, LineSpacing.Value));
+#pragma warning restore CA1422
 			if (ParagraphSpacing.HasValue)
 				values.Add (CreateValue (CTParagraphStyleSpecifier.ParagraphSpacing, ParagraphSpacing.Value));
 			if (ParagraphSpacingBefore.HasValue)
@@ -402,12 +392,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTParagraphStyle : NativeObject {
 		[Preserve (Conditional = true)]
 		internal CTParagraphStyle (NativeHandle handle, bool owns)
@@ -515,129 +503,89 @@ namespace CoreText {
 			get { return (CTWritingDirection) GetByteValue (CTParagraphStyleSpecifier.BaseWritingDirection); }
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public nfloat FirstLineHeadIndent {
-#else
-		public float FirstLineHeadIndent {
-#endif
 			get { return GetFloatValue (CTParagraphStyleSpecifier.FirstLineHeadIndent); }
 		}
 
-#if NET
 		unsafe nfloat GetFloatValue (CTParagraphStyleSpecifier spec)
-#else
-		unsafe float GetFloatValue (CTParagraphStyleSpecifier spec)
-#endif
 		{
 			nfloat value;
 			if (CTParagraphStyleGetValueForSpecifier (Handle, spec, (nuint) sizeof (nfloat), &value) == 0)
 				throw new InvalidOperationException ("Unable to get property value.");
-#if NET
 			return value;
-#else
-			return (float) value;
-#endif
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public nfloat HeadIndent {
-#else
-		public float HeadIndent {
-#endif
 			get { return GetFloatValue (CTParagraphStyleSpecifier.HeadIndent); }
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public nfloat TailIndent {
-#else
-		public float TailIndent {
-#endif
 			get { return GetFloatValue (CTParagraphStyleSpecifier.TailIndent); }
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public nfloat DefaultTabInterval {
-#else
-		public float DefaultTabInterval {
-#endif
 			get { return GetFloatValue (CTParagraphStyleSpecifier.DefaultTabInterval); }
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public nfloat LineHeightMultiple {
-#else
-		public float LineHeightMultiple {
-#endif
 			get { return GetFloatValue (CTParagraphStyleSpecifier.LineHeightMultiple); }
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public nfloat MaximumLineHeight {
-#else
-		public float MaximumLineHeight {
-#endif
 			get { return GetFloatValue (CTParagraphStyleSpecifier.MaximumLineHeight); }
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public nfloat MinimumLineHeight {
-#else
-		public float MinimumLineHeight {
-#endif
 			get { return GetFloatValue (CTParagraphStyleSpecifier.MinimumLineHeight); }
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("macos10.8", "Use 'MaximumLineSpacing' instead.")]
+		[ObsoletedOSPlatform ("ios6.0", "Use 'MaximumLineSpacing' instead.")]
+		[ObsoletedOSPlatform ("tvos16.0", "Use 'MaximumLineSpacing' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst13.1", "Use 'MaximumLineSpacing' instead.")]
 		public nfloat LineSpacing {
-#else
-		public float LineSpacing {
-#endif
 			get { return GetFloatValue (CTParagraphStyleSpecifier.LineSpacing); }
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public nfloat ParagraphSpacing {
-#else
-		public float ParagraphSpacing {
-#endif
 			get { return GetFloatValue (CTParagraphStyleSpecifier.ParagraphSpacing); }
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public nfloat ParagraphSpacingBefore {
-#else
-		public float ParagraphSpacingBefore {
-#endif
 			get { return GetFloatValue (CTParagraphStyleSpecifier.ParagraphSpacingBefore); }
 		}
 		#endregion

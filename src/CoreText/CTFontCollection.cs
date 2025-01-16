@@ -37,35 +37,13 @@ using Foundation;
 using CoreFoundation;
 using CoreGraphics;
 
-#if NET
 using CFIndex = System.IntPtr;
-#else
-using CFIndex = System.nint;
-#endif
-
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
 
 namespace CoreText {
-
-#if !NET
-	public static class CTFontCollectionOptionKey {
-		public static readonly NSString? RemoveDuplicates;
-
-		static CTFontCollectionOptionKey ()
-		{
-			RemoveDuplicates = Dlfcn.GetStringConstant (Libraries.CoreText.Handle, "kCTFontCollectionRemoveDuplicatesOption");
-		}
-	}
-#endif
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontCollectionOptions {
 
 		public CTFontCollectionOptions ()
@@ -119,12 +97,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontCollection : NativeObject {
 		[Preserve (Conditional = true)]
 		internal CTFontCollection (NativeHandle handle, bool owns)
@@ -180,21 +156,17 @@ namespace CoreText {
 			return CFArray.ArrayFromHandleFunc (cfArrayRef, fd => new CTFontDescriptor (fd, false), true)!;
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontCollectionCreateMatchingFontDescriptorsWithOptions (IntPtr collection, IntPtr options);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-#endif
 		public CTFontDescriptor [] GetMatchingFontDescriptors (CTFontCollectionOptions? options)
 		{
 			var cfArrayRef = CTFontCollectionCreateMatchingFontDescriptorsWithOptions (Handle, options.GetHandle ());
@@ -203,24 +175,12 @@ namespace CoreText {
 			return CFArray.ArrayFromHandleFunc (cfArrayRef, fd => new CTFontDescriptor (fd, false), true)!;
 		}
 
-#if NET
 		[DllImport (Constants.CoreTextLibrary)]
 		static unsafe extern IntPtr CTFontCollectionCreateMatchingFontDescriptorsSortedWithCallback (
 				IntPtr collection, delegate* unmanaged<IntPtr, IntPtr, IntPtr, CFIndex> sortCallback,
 				IntPtr refCon);
-#else
-		[DllImport (Constants.CoreTextLibrary)]
-		static extern IntPtr CTFontCollectionCreateMatchingFontDescriptorsSortedWithCallback (
-				IntPtr collection, CTFontCollectionSortDescriptorsCallback sortCallback, IntPtr refCon);
 
-		delegate CFIndex CTFontCollectionSortDescriptorsCallback (IntPtr first, IntPtr second, IntPtr refCon);
-#endif
-
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (CTFontCollectionSortDescriptorsCallback))]
-#endif
 		static CFIndex CompareDescriptors (IntPtr first, IntPtr second, IntPtr context)
 		{
 			GCHandle c = GCHandle.FromIntPtr (context);
@@ -236,19 +196,12 @@ namespace CoreText {
 			GCHandle comparison = GCHandle.Alloc (comparer);
 			try {
 				IntPtr cfArrayRef;
-#if NET
 				unsafe {
 					cfArrayRef = CTFontCollectionCreateMatchingFontDescriptorsSortedWithCallback (
 						Handle,
 						&CompareDescriptors,
 						GCHandle.ToIntPtr (comparison));
 				}
-#else
-				cfArrayRef = CTFontCollectionCreateMatchingFontDescriptorsSortedWithCallback (
-						Handle,
-						new CTFontCollectionSortDescriptorsCallback (CompareDescriptors),
-						GCHandle.ToIntPtr (comparison));
-#endif
 				if (cfArrayRef == IntPtr.Zero)
 					return Array.Empty<CTFontDescriptor> ();
 				return CFArray.ArrayFromHandleFunc (cfArrayRef, fd => new CTFontDescriptor (fd, false), true)!;

@@ -50,32 +50,17 @@ namespace CoreText {
 		None = 0,
 		/// <summary>To be added.</summary>
 		Process = 1,
-#if NET
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-#else
-		[iOS (13, 0)]
-		[TV (13, 0)]
-#endif
 		Persistent = 2,
-#if NET
 		/// <summary>To be added.</summary>
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoiOS]
-		[NoTV]
-#endif
 		Session = 3,
-#if !NET
-		[NoiOS]
-		[NoTV]
-		User = Persistent,
-#endif
 	}
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontManager.h
@@ -86,16 +71,15 @@ namespace CoreText {
 		Disabled = 1,
 		/// <summary>To be added.</summary>
 		Enabled = 2,
-#if NET
 		/// <summary>Developers should not use this deprecated field. It's now treated as 'Default'.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("ios", "It's now treated as 'Default'.")]
+		[ObsoletedOSPlatform ("maccatalyst", "It's now treated as 'Default'.")]
+		[ObsoletedOSPlatform ("tvos", "It's now treated as 'Default'.")]
 		[ObsoletedOSPlatform ("macos10.13", "It's now treated as 'Default'.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 13, message: "It's now treated as 'Default'.")]
-#endif
 		PromptUser = 3,
 	}
 
@@ -105,16 +89,11 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern byte CTFontManagerIsSupportedFont (IntPtr url);
 
-#if NET
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.6")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 6)]
-		[Unavailable (PlatformName.iOS)]
-#endif
 		public static bool IsFontSupported (NSUrl url)
 		{
 			if (url is null)
@@ -174,7 +153,6 @@ namespace CoreText {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -182,15 +160,10 @@ namespace CoreText {
 		[ObsoletedOSPlatform ("macos10.15")]
 		[ObsoletedOSPlatform ("tvos13.0")]
 		[ObsoletedOSPlatform ("ios13.0")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 15)]
-		[Deprecated (PlatformName.iOS, 13, 0)]
-		[Deprecated (PlatformName.TvOS, 13, 0)]
-#endif
+		[ObsoletedOSPlatform ("maccatalyst13.1")]
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern byte CTFontManagerRegisterFontsForURLs (IntPtr arrayRef, CTFontManagerScope scope, IntPtr* error_array);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -198,11 +171,7 @@ namespace CoreText {
 		[ObsoletedOSPlatform ("macos10.15", "Use 'RegisterFonts' instead.")]
 		[ObsoletedOSPlatform ("tvos13.0", "Use 'RegisterFonts' instead.")]
 		[ObsoletedOSPlatform ("ios13.0", "Use 'RegisterFonts' instead.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'RegisterFonts' instead.")]
-		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'RegisterFonts' instead.")]
-		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'RegisterFonts' instead.")]
-#endif
+		[ObsoletedOSPlatform ("maccatalyst13.1", "Use 'RegisterFonts' instead.")]
 		public static NSError []? RegisterFontsForUrl (NSUrl [] fontUrls, CTFontManagerScope scope)
 		{
 			using (var arr = EnsureNonNullArray (fontUrls, nameof (fontUrls))) {
@@ -216,25 +185,9 @@ namespace CoreText {
 			}
 		}
 
-#if NET
-		// [SupportedOSPlatform ("tvos13.0")] - Not valid on delegate declaration
-		// [SupportedOSPlatform ("macos")]
-		// [SupportedOSPlatform ("ios13.0")]
-		// [SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		public delegate bool CTFontRegistrationHandler (NSError [] errors, bool done);
 
-#if !NET
-		internal delegate byte InnerRegistrationHandler (IntPtr block, IntPtr errors, byte done);
-		static readonly InnerRegistrationHandler callback = TrampolineRegistrationHandler;
-
-		[MonoPInvokeCallback (typeof (InnerRegistrationHandler))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static unsafe byte TrampolineRegistrationHandler (IntPtr block, /* NSArray */ IntPtr errors, byte done)
 		{
 			var del = BlockLiteral.GetTarget<CTFontRegistrationHandler> (block);
@@ -245,27 +198,17 @@ namespace CoreText {
 			return rv ? (byte) 1 : (byte) 0;
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern void CTFontManagerRegisterFontURLs (/* CFArrayRef */ IntPtr fontUrls, CTFontManagerScope scope, byte enabled, BlockLiteral* registrationHandler);
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static void RegisterFonts (NSUrl [] fontUrls, CTFontManagerScope scope, bool enabled, CTFontRegistrationHandler registrationHandler)
 		{
@@ -277,13 +220,8 @@ namespace CoreText {
 					}
 				} else {
 					unsafe {
-#if NET
 						delegate* unmanaged<IntPtr, IntPtr, byte, byte> trampoline = &TrampolineRegistrationHandler;
 						using var block = new BlockLiteral (trampoline, registrationHandler, typeof (CTFontManager), nameof (TrampolineRegistrationHandler));
-#else
-						using var block = new BlockLiteral ();
-						block.SetupBlockUnsafe (callback, registrationHandler);
-#endif
 						CTFontManagerRegisterFontURLs (arr.Handle, scope, enabled.AsByte (), &block);
 					}
 				}
@@ -316,7 +254,6 @@ namespace CoreText {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -324,15 +261,9 @@ namespace CoreText {
 		[ObsoletedOSPlatform ("macos10.15")]
 		[ObsoletedOSPlatform ("tvos13.0")]
 		[ObsoletedOSPlatform ("ios13.0")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 15)]
-		[Deprecated (PlatformName.iOS, 13, 0)]
-		[Deprecated (PlatformName.TvOS, 13, 0)]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern byte CTFontManagerUnregisterFontsForURLs (IntPtr arrayRef, CTFontManagerScope scope, IntPtr* error_array);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -340,11 +271,7 @@ namespace CoreText {
 		[ObsoletedOSPlatform ("macos10.15", "Use 'UnregisterFonts' instead.")]
 		[ObsoletedOSPlatform ("tvos13.0", "Use 'UnregisterFonts' instead.")]
 		[ObsoletedOSPlatform ("ios13.0", "Use 'UnregisterFonts' instead.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'UnregisterFonts' instead.")]
-		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'UnregisterFonts' instead.")]
-		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'UnregisterFonts' instead.")]
-#endif
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'UnregisterFonts' instead.")]
 		public static NSError []? UnregisterFontsForUrl (NSUrl [] fontUrls, CTFontManagerScope scope)
 		{
 			IntPtr error_array = IntPtr.Zero;
@@ -358,27 +285,17 @@ namespace CoreText {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern unsafe void CTFontManagerUnregisterFontURLs (/* CFArrayRef */ IntPtr fontUrls, CTFontManagerScope scope, BlockLiteral* registrationHandler);
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe static void UnregisterFonts (NSUrl [] fontUrls, CTFontManagerScope scope, CTFontRegistrationHandler registrationHandler)
 		{
@@ -387,34 +304,25 @@ namespace CoreText {
 					CTFontManagerUnregisterFontURLs (arr.Handle, scope, null);
 					GC.KeepAlive (arr);
 				} else {
-#if NET
 					delegate* unmanaged<IntPtr, IntPtr, byte, byte> trampoline = &TrampolineRegistrationHandler;
 					using var block = new BlockLiteral (trampoline, registrationHandler, typeof (CTFontManager), nameof (TrampolineRegistrationHandler));
-#else
-					using var block = new BlockLiteral ();
-					block.SetupBlockUnsafe (callback, registrationHandler);
-#endif
 					CTFontManagerUnregisterFontURLs (arr.Handle, scope, &block);
 					GC.KeepAlive (arr);
 				}
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern /* CFArrayRef */ IntPtr CTFontManagerCreateFontDescriptorsFromURL (/* CFURLRef */ IntPtr fileURL);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static CTFontDescriptor [] GetFonts (NSUrl url)
 		{
 			if (url is null)
@@ -434,7 +342,6 @@ namespace CoreText {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("ios")]
@@ -443,16 +350,9 @@ namespace CoreText {
 		[ObsoletedOSPlatform ("tvos18.0", "Use 'CreateFontDescriptors' or 'RegisterFontsForUrl' instead.")]
 		[ObsoletedOSPlatform ("ios18.0", "Use 'CreateFontDescriptors' or 'RegisterFontsForUrl' instead.")]
 		[ObsoletedOSPlatform ("maccatalyst18.0", "Use 'CreateFontDescriptors' or 'RegisterFontsForUrl' instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'CreateFontDescriptors' or 'RegisterFontsForUrl' instead.")]
-		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'CreateFontDescriptors' or 'RegisterFontsForUrl' instead.")]
-		[Deprecated (PlatformName.TvOS, 18, 0, message: "Use 'CreateFontDescriptors' or 'RegisterFontsForUrl' instead.")]
-		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'CreateFontDescriptors' or 'RegisterFontsForUrl' instead.")]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern byte CTFontManagerRegisterGraphicsFont (IntPtr cgfont, IntPtr* error);
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("ios")]
@@ -461,12 +361,6 @@ namespace CoreText {
 		[ObsoletedOSPlatform ("tvos18.0", "Use 'CreateFontDescriptors' or 'RegisterFontsForUrl' instead.")]
 		[ObsoletedOSPlatform ("ios18.0", "Use 'CreateFontDescriptors' or 'RegisterFontsForUrl' instead.")]
 		[ObsoletedOSPlatform ("maccatalyst18.0", "Use 'CreateFontDescriptors' or 'RegisterFontsForUrl' instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'CreateFontDescriptors' or 'RegisterFontsForUrl' instead.")]
-		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'CreateFontDescriptors' or 'RegisterFontsForUrl' instead.")]
-		[Deprecated (PlatformName.TvOS, 18, 0, message: "Use 'CreateFontDescriptors' or 'RegisterFontsForUrl' instead.")]
-		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'CreateFontDescriptors' or 'RegisterFontsForUrl' instead.")]
-#endif
 		public static bool RegisterGraphicsFont (CGFont font, [NotNullWhen (true)] out NSError? error)
 		{
 			if (font is null)
@@ -489,7 +383,6 @@ namespace CoreText {
 			return ret;
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("ios")]
@@ -498,16 +391,9 @@ namespace CoreText {
 		[ObsoletedOSPlatform ("tvos18.0")]
 		[ObsoletedOSPlatform ("ios18.0")]
 		[ObsoletedOSPlatform ("maccatalyst18.0")]
-#else
-		[Deprecated (PlatformName.iOS, 18, 0)]
-		[Deprecated (PlatformName.MacCatalyst, 18, 0)]
-		[Deprecated (PlatformName.TvOS, 18, 0)]
-		[Deprecated (PlatformName.MacOSX, 15, 0)]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern byte CTFontManagerUnregisterGraphicsFont (IntPtr cgfont, IntPtr* error);
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("ios")]
@@ -516,12 +402,6 @@ namespace CoreText {
 		[ObsoletedOSPlatform ("tvos18.0")]
 		[ObsoletedOSPlatform ("ios18.0")]
 		[ObsoletedOSPlatform ("maccatalyst18.0")]
-#else
-		[Deprecated (PlatformName.iOS, 18, 0)]
-		[Deprecated (PlatformName.MacCatalyst, 18, 0)]
-		[Deprecated (PlatformName.TvOS, 18, 0)]
-		[Deprecated (PlatformName.MacOSX, 15, 0)]
-#endif
 		public static bool UnregisterGraphicsFont (CGFont font, out NSError? error)
 		{
 			if (font is null)
@@ -544,24 +424,12 @@ namespace CoreText {
 			return ret;
 		}
 
-#if !NET
-		static CTFontManager ()
-		{
-			var handle = Libraries.CoreText.Handle;
-#pragma warning disable CS0618 // Type or member is obsolete
-			ErrorFontUrlsKey = Dlfcn.GetStringConstant (handle, "kCTFontManagerErrorFontURLsKey");
-#pragma warning restore CS0618 // Type or member is obsolete
-		}
-#endif // !NET
-
 		static NSString? _RegisteredFontsChangedNotification;
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		static NSString? RegisteredFontsChangedNotification {
 			get {
 				if (_RegisteredFontsChangedNotification is null)
@@ -569,11 +437,6 @@ namespace CoreText {
 				return _RegisteredFontsChangedNotification;
 			}
 		}
-
-#if !NET
-		[Obsolete ("Use the 'CTFontManagerErrorKeys.FontUrlsKey' property instead.")]
-		public readonly static NSString? ErrorFontUrlsKey;
-#endif
 
 		public static partial class Notifications {
 			public static NSObject ObserveRegisteredFontsChanged (EventHandler<NSNotificationEventArgs> handler)
@@ -583,27 +446,17 @@ namespace CoreText {
 
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern unsafe void CTFontManagerRegisterFontDescriptors (/* CFArrayRef */ IntPtr fontDescriptors, CTFontManagerScope scope, byte enabled, BlockLiteral* registrationHandler);
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe static void RegisterFontDescriptors (CTFontDescriptor [] fontDescriptors, CTFontManagerScope scope, bool enabled, CTFontRegistrationHandler registrationHandler)
 		{
@@ -612,40 +465,25 @@ namespace CoreText {
 					CTFontManagerRegisterFontDescriptors (arr.Handle, scope, enabled.AsByte (), null);
 					GC.KeepAlive (arr);
 				} else {
-#if NET
 					delegate* unmanaged<IntPtr, IntPtr, byte, byte> trampoline = &TrampolineRegistrationHandler;
 					using var block = new BlockLiteral (trampoline, registrationHandler, typeof (CTFontManager), nameof (TrampolineRegistrationHandler));
-#else
-					using var block = new BlockLiteral ();
-					block.SetupBlockUnsafe (callback, registrationHandler);
-#endif
 					CTFontManagerRegisterFontDescriptors (arr.Handle, scope, enabled.AsByte (), &block);
 					GC.KeepAlive (arr);
 				}
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern unsafe void CTFontManagerUnregisterFontDescriptors (/* CFArrayRef */ IntPtr fontDescriptors, CTFontManagerScope scope, BlockLiteral* registrationHandler);
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe static void UnregisterFontDescriptors (CTFontDescriptor [] fontDescriptors, CTFontManagerScope scope, CTFontRegistrationHandler registrationHandler)
 		{
@@ -654,13 +492,8 @@ namespace CoreText {
 					CTFontManagerUnregisterFontDescriptors (arr.Handle, scope, null);
 					GC.KeepAlive (arr);
 				} else {
-#if NET
 					delegate* unmanaged<IntPtr, IntPtr, byte, byte> trampoline = &TrampolineRegistrationHandler;
 					using var block = new BlockLiteral (trampoline, registrationHandler, typeof (CTFontManager), nameof (TrampolineRegistrationHandler));
-#else
-					using var block = new BlockLiteral ();
-					block.SetupBlockUnsafe (callback, registrationHandler);
-#endif
 					CTFontManagerUnregisterFontDescriptors (arr.Handle, scope, &block);
 					GC.KeepAlive (arr);
 				}
@@ -668,27 +501,17 @@ namespace CoreText {
 		}
 
 #if __IOS__
-#if NET
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos")]
-#else
-		[iOS (13,0)]
-#endif
+		[UnsupportedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("tvos")]
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern /* CFArrayRef */ IntPtr CTFontManagerCopyRegisteredFontDescriptors (CTFontManagerScope scope, byte enabled);
 
-#if NET
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
-#else
-		[iOS (13,0)]
-		[NoTV]
-		[NoMac]
-#endif
 		public static CTFontDescriptor []? GetRegisteredFontDescriptors (CTFontManagerScope scope, bool enabled)
 		{
 			var p = CTFontManagerCopyRegisteredFontDescriptors (scope, enabled.AsByte ());
@@ -713,27 +536,17 @@ namespace CoreText {
 			return new CTFontDescriptor (p, owns: true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern unsafe /* CFArrayRef */ IntPtr CTFontManagerCreateFontDescriptorsFromData (/* CFDataRef */ IntPtr data);
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		public static CTFontDescriptor []? CreateFontDescriptors (NSData data)
 		{
 			if (data is null)
@@ -746,30 +559,18 @@ namespace CoreText {
 		}
 
 #if __IOS__
-#if NET
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
-#else
-		[NoTV]
-		[NoMac]
-		[iOS (13,0)]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern unsafe void CTFontManagerRegisterFontsWithAssetNames (/* CFArrayRef */ IntPtr fontAssetNames, /* CFBundleRef _Nullable */ IntPtr bundle, CTFontManagerScope scope, byte enabled, BlockLiteral* registrationHandler);
 
 		// reminder that NSBundle and CFBundle are NOT toll-free bridged :(
-#if NET
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
-#else
-		[NoTV]
-		[NoMac]
-		[iOS (13,0)]
-#endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe static void RegisterFonts (string [] assetNames, CFBundle bundle, CTFontManagerScope scope, bool enabled, CTFontRegistrationHandler registrationHandler)
 		{
@@ -779,13 +580,8 @@ namespace CoreText {
 					GC.KeepAlive (arr);
 					GC.KeepAlive (bundle);
 				} else {
-#if NET
 					delegate* unmanaged<IntPtr, IntPtr, byte, byte> trampoline = &TrampolineRegistrationHandler;
 					using var block = new BlockLiteral (trampoline, registrationHandler, typeof (CTFontManager), nameof (TrampolineRegistrationHandler));
-#else
-					using var block = new BlockLiteral ();
-					block.SetupBlockUnsafe (callback, registrationHandler);
-#endif
 					CTFontManagerRegisterFontsWithAssetNames (arr.Handle, bundle.GetHandle (), scope, enabled.AsByte (), &block);
 					GC.KeepAlive (arr);
 					GC.KeepAlive (bundle);
@@ -793,41 +589,16 @@ namespace CoreText {
 			}
 		}
 
-#if NET
-		// [SupportedOSPlatform ("ios13.0")] - Not valid on delegate declaration
-		// [SupportedOSPlatform ("maccatalyst")]
-		// [UnsupportedOSPlatform ("tvos")]
-		// [UnsupportedOSPlatform ("macos")]
-#else
-		[NoTV]
-		[NoMac]
-		[iOS (13,0)]
-#endif
 		public delegate void CTFontManagerRequestFontsHandler (CTFontDescriptor [] unresolvedFontDescriptors);
 
-#if NET
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
-#else
-		[NoTV]
-		[NoMac]
-		[iOS (13,0)]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern unsafe void CTFontManagerRequestFonts (/* CFArrayRef */ IntPtr fontDescriptors, BlockLiteral* completionHandler);
 
-#if !NET
-		internal delegate void InnerRequestFontsHandler (IntPtr block, IntPtr fontDescriptors);
-		static readonly InnerRequestFontsHandler requestCallback = TrampolineRequestFonts;
-#endif
-
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (InnerRequestFontsHandler))]
-#endif
 		static unsafe void TrampolineRequestFonts (IntPtr block, /* CFArray */ IntPtr fontDescriptors)
 		{
 			var del = BlockLiteral.GetTarget<CTFontManagerRequestFontsHandler> (block);
@@ -835,16 +606,10 @@ namespace CoreText {
 				del (NSArray.ArrayFromHandle<CTFontDescriptor> (fontDescriptors));
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
-#else
-		[NoTV]
-		[NoMac]
-		[iOS (13,0)]
-#endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static void RequestFonts (CTFontDescriptor [] fontDescriptors, CTFontManagerRequestFontsHandler completionHandler)
 		{
@@ -853,13 +618,8 @@ namespace CoreText {
 
 			using (var arr = EnsureNonNullArray (fontDescriptors, nameof (fontDescriptors))) {
 				unsafe {
-#if NET
 					delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineRequestFonts;
 					using var block = new BlockLiteral (trampoline, completionHandler, typeof (CTFontManager), nameof (TrampolineRequestFonts));
-#else
-					using var block = new BlockLiteral ();
-					block.SetupBlockUnsafe (requestCallback, completionHandler);
-#endif
 					CTFontManagerRequestFonts (arr.Handle, &block);
 				}
 			}

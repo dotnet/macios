@@ -69,7 +69,7 @@ namespace Cecil.Tests {
 			} finally {
 				Console.WriteLine ($"There's a total of {totalWarnings} warnings.");
 			}
-			Assert.AreEqual (813, totalWarnings, "Total warnings"); // this is just to see how the warning count changes as issues are fixed.
+			Assert.AreEqual (797, totalWarnings, "Total warnings"); // this is just to see how the warning count changes as issues are fixed.
 		}
 
 		public record ObsoletedFailure : IComparable {
@@ -190,18 +190,11 @@ namespace Cecil.Tests {
 			"CoreMidi.MidiDevice.Add(System.String, System.Boolean, System.UIntPtr, System.UIntPtr, CoreMidi.MidiEntity)",
 			"CoreMidi.MidiEndpoint.Received(CoreMidi.MidiPacket[])",
 			"CoreMidi.MidiPort.Send(CoreMidi.MidiEndpoint, CoreMidi.MidiPacket[])",
-			"CoreText.CTFontFeatureLetterCase",
-			"CoreText.CTFontManager.RegisterFontsForUrl(Foundation.NSUrl[], CoreText.CTFontManagerScope)",
-			"CoreText.CTFontManager.UnregisterFontsForUrl(Foundation.NSUrl[], CoreText.CTFontManagerScope)",
-			"CoreText.CTFontManagerAutoActivation CoreText.CTFontManagerAutoActivation::PromptUser",
-			"CoreText.CTTypesetterOptionKey.get_DisableBidiProcessing()",
-			"CoreText.FontFeatureGroup CoreText.FontFeatureGroup::LetterCase",
 			"Foundation.NSData HealthKit.HKVerifiableClinicalRecord::JwsRepresentation()",
 			"Foundation.NSDate HealthKit.HKWorkoutEvent::Date()",
 			"Foundation.NSString CoreData.NSPersistentStoreCoordinator::DidImportUbiquitousContentChangesNotification()",
 			"Foundation.NSString CoreData.NSPersistentStoreCoordinator::PersistentStoreUbiquitousContentNameKey()",
 			"Foundation.NSString CoreData.NSPersistentStoreCoordinator::PersistentStoreUbiquitousContentUrlKey()",
-			"Foundation.NSString CoreText.CTTypesetterOptionKey::DisableBidiProcessing()",
 			"Foundation.NSString Foundation.NSUrl::UbiquitousItemIsDownloadingKey()",
 			"Foundation.NSUrl.get_UbiquitousItemIsDownloadingKey()",
 			"Foundation.NSUrlSessionConfiguration.BackgroundSessionConfiguration(System.String)",
@@ -277,7 +270,6 @@ namespace Cecil.Tests {
 			"System.Boolean AVFoundation.AVCapturePhotoSettings::DualCameraDualPhotoDeliveryEnabled()",
 			"System.Boolean AVFoundation.AVCaptureResolvedPhotoSettings::DualCameraFusionEnabled()",
 			"System.Boolean CoreGraphics.CGColorSpace::IsHdr()",
-			"System.Boolean CoreText.CTTypesetterOptions::DisableBidiProcessing()",
 			"System.Boolean NetworkExtension.NEFilterProviderConfiguration::FilterBrowsers()",
 			"System.Boolean Security.SecRecord::UseNoAuthenticationUI()",
 			"System.Double Speech.SFTranscription::AveragePauseDuration()",

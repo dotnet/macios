@@ -1054,6 +1054,10 @@ namespace CoreMedia {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
 		public string? DroppedFrameReason {
 			get {
 				return GetStringValue (CMSampleAttachmentKey.DroppedFrameReason);

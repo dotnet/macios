@@ -21985,6 +21985,7 @@ M:CoreMedia.CMTimebase.AddTimer(Foundation.NSTimer,Foundation.NSRunLoop)
 M:CoreMedia.CMTimebase.CopyMaster
 M:CoreMedia.CMTimebase.CopyMasterClock
 M:CoreMedia.CMTimebase.CopyMasterTimebase
+M:CoreMedia.CMTimebase.CopySource
 M:CoreMedia.CMTimebase.CopyUltimateMasterClock
 M:CoreMedia.CMTimebase.GetMaster
 M:CoreMedia.CMTimebase.GetMasterClock

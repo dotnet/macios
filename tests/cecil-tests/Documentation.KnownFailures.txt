@@ -66922,7 +66922,6 @@ T:CoreImage.CIDither
 T:CoreImage.CIDocumentEnhancer
 T:CoreImage.CIEdgePreserveUpsampleFilter
 T:CoreImage.CIFilterApply
-T:CoreImage.CIFilterGenerator
 T:CoreImage.CIFilterMode
 T:CoreImage.CIGaborGradients
 T:CoreImage.CIGuidedFilter

@@ -1908,6 +1908,7 @@ WEBKIT_SOURCES = \
 
 SHARED_API_SOURCES = \
 	ObjCRuntime/ObsoleteConstants.cs \
+	MinimumVersions.cs \
 
 SHARED_CORE_SOURCES = \
 	DotNetGlobals.cs \

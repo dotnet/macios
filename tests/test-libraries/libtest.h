@@ -91,6 +91,23 @@ typedef unsigned int (^RegistrarTestBlock) (unsigned int magic);
 
 	@property (nonatomic, retain) NSObject* someObject;
 	@property (nonatomic, retain) NSArray* someArray;
+
+	@property void* VoidArg1;
+	@property void* VoidArg2;
+	@property void* VoidArg3;
+	@property void* VoidArg4;
+	@property void* VoidArg5;
+	@property void* VoidArg6;
+	@property void* VoidArg7;
+	@property void* VoidArg8;
+	@property void* VoidArg9;
+	@property void* VoidArg10;
+	@property void* VoidArg11;
+	@property void* VoidArg12;
+
+	@property float FloatArg1;
+	@property double DoubleArg1;
+
 #include "libtest.properties.h"
 
 	-(void) V;

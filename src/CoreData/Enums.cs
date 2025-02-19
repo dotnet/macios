@@ -105,9 +105,13 @@ namespace CoreData {
 	/// <summary>An enumeration whose values specify cascade options after deletion of an object.</summary>
 	[Native]
 	public enum NSDeleteRule : ulong {
+		/// <summary>To be added.</summary>
 		NoAction,
+		/// <summary>To be added.</summary>
 		Nullify,
+		/// <summary>To be added.</summary>
 		Cascade,
+		/// <summary>To be added.</summary>
 		Deny,
 	}
 
@@ -115,13 +119,17 @@ namespace CoreData {
 	/// <summary>Constants defining the types of a fetch request.</summary>
 	[Native]
 	public enum NSPersistentStoreRequestType : ulong {
+		/// <summary>Indicates that the fetch request was for retrieving objects.</summary>
 		Fetch = 1,
+		/// <summary>Indicates that the fetch request was to save managed objects.</summary>
 		Save,
 		[iOS (13, 0)]
 		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		BatchInsert = 5,
+		/// <summary>Indicates that the fetch request was for a batch update.</summary>
 		BatchUpdate = 6,
+		/// <summary>Indicates that the fetch request was for a batch delete.</summary>
 		BatchDelete = 7,
 	}
 
@@ -129,8 +137,11 @@ namespace CoreData {
 	/// <summary>Enumerates types of concurrenty patterns that can be used by a <see cref="T:CoreData.NSManagedObjectContext" />.</summary>
 	[Native]
 	public enum NSManagedObjectContextConcurrencyType : ulong {
+		/// <summary>To be added.</summary>
 		Confinement,
+		/// <summary>To be added.</summary>
 		PrivateQueue,
+		/// <summary>To be added.</summary>
 		MainQueue,
 	}
 
@@ -272,19 +283,28 @@ namespace CoreData {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSPersistentHistoryChangeType : long {
+		/// <summary>To be added.</summary>
 		Insert,
+		/// <summary>To be added.</summary>
 		Update,
+		/// <summary>To be added.</summary>
 		Delete,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSPersistentHistoryResultType : long {
+		/// <summary>To be added.</summary>
 		StatusOnly = 0,
+		/// <summary>To be added.</summary>
 		ObjectIds = 1,
+		/// <summary>To be added.</summary>
 		Count = 2,
+		/// <summary>To be added.</summary>
 		TransactionsOnly = 3,
+		/// <summary>To be added.</summary>
 		ChangesOnly = 4,
+		/// <summary>To be added.</summary>
 		TransactionsAndChanges = 5,
 	}
 

@@ -35,6 +35,9 @@ namespace ExternalAccessory {
 		[Export ("connectionID")]
 		nuint ConnectionID { get; }
 
+		/// <summary>Gets the accessory display name.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("name")]
 		string Name { get; }
 
@@ -121,9 +124,15 @@ namespace ExternalAccessory {
 
 	[MacCatalyst (13, 1)]
 	interface EAAccessoryEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("EAAccessoryKey")]
 		EAAccessory Accessory { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("EAAccessorySelectedKey")]
 		EAAccessory Selected { get; }
 	}
@@ -133,6 +142,9 @@ namespace ExternalAccessory {
 	// Objective-C exception thrown.  Name: EAAccessoryManagerInitException Reason: -init is not supported. Use +sharedAccessoryManager.
 	[DisableDefaultCtor]
 	interface EAAccessoryManager {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("sharedAccessoryManager")]
 		EAAccessoryManager SharedAccessoryManager { get; }
@@ -149,10 +161,12 @@ namespace ExternalAccessory {
 		[Export ("connectedAccessories")]
 		EAAccessory [] ConnectedAccessories { get; }
 
+		/// <include file="../docs/api/ExternalAccessory/EAAccessoryManager.xml" path="/Documentation/Docs[@DocId='P:ExternalAccessory.EAAccessoryManager.DidConnectNotification']/*" />
 		[Field ("EAAccessoryDidConnectNotification")]
 		[Notification (typeof (EAAccessoryEventArgs))]
 		NSString DidConnectNotification { get; }
 
+		/// <include file="../docs/api/ExternalAccessory/EAAccessoryManager.xml" path="/Documentation/Docs[@DocId='P:ExternalAccessory.EAAccessoryManager.DidDisconnectNotification']/*" />
 		[Field ("EAAccessoryDidDisconnectNotification")]
 		[Notification (typeof (EAAccessoryEventArgs))]
 		NSString DidDisconnectNotification { get; }
@@ -173,18 +187,30 @@ namespace ExternalAccessory {
 		[Export ("initWithAccessory:forProtocol:")]
 		NativeHandle Constructor (EAAccessory accessory, string protocol);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("accessory")]
 		EAAccessory Accessory { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("protocolString")]
 		string ProtocolString { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("inputStream")]
 		NSInputStream InputStream { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("outputStream")]
 		NSOutputStream OutputStream { get; }

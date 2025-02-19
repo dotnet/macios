@@ -489,6 +489,9 @@ namespace AudioUnit {
 		[Export ("profileStateForCable:channel:")]
 		MidiCIProfileState GetProfileState (byte cable, byte channel);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("profileChangedBlock", ArgumentSemantic.Assign)]
@@ -621,40 +624,82 @@ namespace AudioUnit {
 		[Export ("initWithFormat:error:")]
 		NativeHandle Constructor (AVAudioFormat format, [NullAllowed] out NSError outError);
 
+		/// <summary>Gets a value that provides a detailed description of the channels and formats of audio data.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("format")]
 		AVAudioFormat Format { get; }
 
 		[Export ("setFormat:error:")]
 		bool SetFormat (AVAudioFormat format, [NullAllowed] out NSError outError);
 
+		/// <summary>Gets or sets a value that determines whether the bus is active.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
+		/// <summary>Gets or sets the name for the bus.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("name")]
 		string Name { get; set; }
 
+		/// <summary>Gets the zero-based location of this audio bus in the array that contains it.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("index")]
 		nuint Index { get; }
 
+		/// <summary>Gets a value of type <see cref="T:AudioUnit.AUAudioUnitBusType" /> that tells whether this is an input or output connection.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("busType")]
 		AUAudioUnitBusType BusType { get; }
 
+		/// <summary>Gets the audio unit that owns this bus.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("ownerAudioUnit", ArgumentSemantic.Assign)]
 		AUAudioUnit OwnerAudioUnit { get; }
 
+		/// <summary>Gets an array of audio channel layout tags that are supported by this bus.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("supportedChannelLayoutTags", ArgumentSemantic.Copy)]
 		NSNumber [] SupportedChannelLayoutTags { get; }
 
+		/// <summary>Gets or sets the latency of the processing context for the audio unit.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>For input units, this is the time, in seconds, since the arriving audio was acquired. For ouput units, this is the delay, in seconds, until the output is presented.</remarks>
 		[Export ("contextPresentationLatency")]
 		double ContextPresentationLatency { get; set; }
 
 		// AUAudioUnitImplementation
+		/// <summary>Gets or sets an array that contains the allowable channel counts for this bus. <see langword="null" /> indicates that any number less than <see cref="P:AudioUnit.AUAudioUnitBus.MaximumChannelCount" /> is supported.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("supportedChannelCounts", ArgumentSemantic.Retain)]
 		NSNumber [] SupportedChannelCounts { get; set; }
 
+		/// <summary>Gets or sets the maximum number of audio channels that the bus supports.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("maximumChannelCount")]
 		uint MaximumChannelCount { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("shouldAllocateBuffer")]
 		bool ShouldAllocateBuffer { get; set; }
@@ -674,6 +719,9 @@ namespace AudioUnit {
 		[Export ("initWithAudioUnit:busType:")]
 		NativeHandle Constructor (AUAudioUnit owner, AUAudioUnitBusType busType);
 
+		/// <summary>Gets the number of buses in the array.</summary>
+		///         <value>The number of buses in the array.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("count")]
 		nuint Count { get; }
 
@@ -681,6 +729,9 @@ namespace AudioUnit {
 		[Export ("objectAtIndexedSubscript:")]
 		AUAudioUnitBus GetObject (nuint index);
 
+		/// <summary>Gets a Boolean value that tells whether buses can be added and removed from the array.</summary>
+		///         <value>A Boolean value that tells whether buses can be added and removed from the array.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("countChangeable")]
 		bool CountChangeable { [Bind ("isCountChangeable")] get; }
 
@@ -695,9 +746,15 @@ namespace AudioUnit {
 		[Export ("removeObserverFromAllBusses:forKeyPath:context:")]
 		void RemoveObserver (NSObject observer, string keyPath, /* void * */ IntPtr context);
 
+		/// <summary>Gets the audio unit that owns this array.</summary>
+		///         <value>The audio unit that owns this array.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("ownerAudioUnit", ArgumentSemantic.Assign)]
 		AUAudioUnit OwnerAudioUnit { get; }
 
+		/// <summary>Gets a value that tells whether this is an input or output bus array.</summary>
+		///         <value>A value that tells whether this is an input or output bus array.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("busType")]
 		AUAudioUnitBusType BusType { get; }
 

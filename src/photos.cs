@@ -213,9 +213,15 @@ namespace Photos {
 		[NullAllowed]
 		CLLocation Location { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("favorite", ArgumentSemantic.Assign)]
 		bool Favorite { [Bind ("isFavorite")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hidden", ArgumentSemantic.Assign)]
 		bool Hidden { [Bind ("isHidden")] get; set; }
 

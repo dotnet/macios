@@ -26,8 +26,11 @@ namespace UserNotificationsUI {
 	[Unavailable (PlatformName.TvOS)]
 	[Native]
 	public enum UNNotificationContentExtensionMediaPlayPauseButtonType : ulong {
+		/// <summary>Indicates that no playback controls should be overlayed on top of the notification content.</summary>
 		None,
+		/// <summary>Indicates that the default playback control display method should be used.</summary>
 		Default,
+		/// <summary>Indicates that playback controls should be overlayed on top of the notification content.</summary>
 		Overlay,
 	}
 
@@ -36,8 +39,11 @@ namespace UserNotificationsUI {
 	[Unavailable (PlatformName.TvOS)]
 	[Native]
 	public enum UNNotificationContentExtensionResponseOption : ulong {
+		/// <summary>Indicates that the notification interface will not be dismissed, and that the content extension will handle the action.</summary>
 		DoNotDismiss,
+		/// <summary>Indicates that the notification interface will be dismissed, and that the content extension will handle the action.</summary>
 		Dismiss,
+		/// <summary>Indicates that the notification interface will be dismissed, and that the notification will be forwarded to the app for it to respond.</summary>
 		DismissAndForwardAction,
 	}
 

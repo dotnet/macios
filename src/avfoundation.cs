@@ -1627,9 +1627,15 @@ namespace AVFoundation {
 		[Export ("stop")]
 		void Stop ();
 
+		/// <summary>Whether the <see cref="T:AVFoundation.AVAudioPlayer" /> is playing sound.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("playing")]
 		bool Playing { [Bind ("isPlaying")] get; }
 
+		/// <summary>The number of audio channels in the sound associated with the <see cref="T:AVFoundation.AVAudioPlayer" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("numberOfChannels")]
 		nuint NumberOfChannels { get; }
 
@@ -1639,6 +1645,13 @@ namespace AVFoundation {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the AVFoundation.IAVAudioPlayerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the AVFoundation.IAVAudioPlayerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate"), NullAllowed]
 		IAVAudioPlayerDelegate Delegate { get; set; }
 
@@ -1658,9 +1671,17 @@ namespace AVFoundation {
 		[Export ("currentTime")]
 		double CurrentTime { get; set; }
 
+		/// <summary>The number of times the sound should repeat.</summary>
+		///         <value>The default value is 0.</value>
+		///         <remarks>
+		///           <para>This zero-based value specifies the number of times the sound is repeated after its initial playing. In other words, a value of 1 will result in the sound being played 2 times.</para>
+		///         </remarks>
 		[Export ("numberOfLoops")]
 		nint NumberOfLoops { get; set; }
 
+		/// <summary>Whether audio-level metering can be used with the <see cref="T:AVFoundation.AVAudioPlayer" />.</summary>
+		///         <value>The default value is <see langword="false" />.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("meteringEnabled")]
 		bool MeteringEnabled { [Bind ("isMeteringEnabled")] get; set; }
 
@@ -1673,28 +1694,48 @@ namespace AVFoundation {
 		[Export ("averagePowerForChannel:")]
 		float AveragePower (nuint channelNumber); // defined as 'float'
 
+		/// <summary>A value that increases while the <see cref="T:AVFoundation.AVAudioPlayer" /> is playing or paused. Used for synchronizing multiple audio players.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("deviceCurrentTime")]
 		double DeviceCurrentTime { get; }
 
+		/// <summary>The current stereo pan (left-right) position.</summary>
+		///         <value>This value ranges from -1.0 (full left) to 1.0 (full right)</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("pan")]
 		float Pan { get; set; } // defined as 'float'
 
 		[Export ("playAtTime:")]
 		bool PlayAtTime (double time);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("settings")]
 		[Protected]
 		NSDictionary WeakSettings { get; }
 
+		/// <summary>Information about the sound associated with the <see cref="T:AVFoundation.AVAudioPlayer" /></summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakSettings")]
 		AudioSettings SoundSetting { get; }
 
+		/// <summary>Whether the <see cref="T:AVFoundation.AVAudioPlayer" /> can have its playback rate adjusted.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enableRate")]
 		bool EnableRate { get; set; }
 
 		[Export ("rate")]
 		float Rate { get; set; } // defined as 'float'		
 
+		/// <summary>The channel descriptions for the audio player.</summary>
+		///         <value>The default value of this property is <see langword="null" />.<para tool="nullallowed">This value can be <see langword="null" />.</para></value>
+		///         <remarks>
+		///           <para>If assigned, the <see cref="T:AVFoundation.AVAudioSessionChannelDescription" /> array must be the same size as the <see cref="P:AVFoundation.AVAudioPlayer.NumberOfChannels" />.</para>
+		///         </remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("channelAssignments", ArgumentSemantic.Copy), NullAllowed]
@@ -1736,6 +1777,9 @@ namespace AVFoundation {
 		[Export ("format")]
 		AVAudioFormat Format { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS, NoTV, MacCatalyst (15, 0)]
 		[NullAllowed, Export ("currentDevice")]
 		string CurrentDevice { get; set; }
@@ -1887,25 +1931,46 @@ namespace AVFoundation {
 		[Export ("deleteRecording")]
 		bool DeleteRecording ();
 
+		/// <summary>Whether the <see cref="T:AVFoundation.AVAudioRecorder" /> is currently recording.</summary>
+		///         <value>
+		///           <see langword="true" /> if the <see cref="T:AVFoundation.AVAudioRecorder" /> is currently recording.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("recording")]
 		bool Recording { [Bind ("isRecording")] get; }
 
 		[Export ("url")]
 		NSUrl Url { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("settings")]
 		NSDictionary WeakSettings { get; }
 
+		/// <summary>The audio recording settings being used.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakSettings")]
 		AudioSettings Settings { get; }
 
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the AVFoundation.IAVAudioRecorderDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the AVFoundation.IAVAudioRecorderDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate"), NullAllowed]
 		IAVAudioRecorderDelegate Delegate { get; set; }
 
 #if !XAMCORE_5_0
+		/// <summary>The current location, in seconds, of the recording insertion point.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		///         <altmember cref="P:AVFoundation.AVAudioRecorder.DeviceCurrentTime" />
 		[Obsolete ("Use the 'CurrentTime' property instead.")]
 		[Wrap ("CurrentTime", IsVirtual = true)]
 		double currentTime { get; }
@@ -1914,6 +1979,10 @@ namespace AVFoundation {
 		[Export ("currentTime")]
 		double CurrentTime { get; }
 
+		/// <summary>Whether audio-level metering can be used with the <see cref="T:AVFoundation.AVAudioRecorder" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		///         <altmember cref="M:AVFoundation.AVAudioRecorder.UpdateMeters" />
 		[Export ("meteringEnabled")]
 		bool MeteringEnabled { [Bind ("isMeteringEnabled")] get; set; }
 
@@ -1926,6 +1995,10 @@ namespace AVFoundation {
 		[Export ("averagePowerForChannel:")]
 		float AveragePower (nuint channelNumber); // defined as 'float'
 
+		/// <summary>The channel descriptions for the audio player.</summary>
+		///         <value>The default value of this property is <see langword="null" />.<para tool="nullallowed">This value can be <see langword="null" />.</para></value>
+		///         <remarks>
+		///         </remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("channelAssignments", ArgumentSemantic.Copy), NullAllowed]
@@ -1939,6 +2012,9 @@ namespace AVFoundation {
 		[Export ("recordAtTime:forDuration:")]
 		bool RecordAt (double time, double duration);
 
+		/// <summary>A value that increases while the <see cref="T:AVFoundation.AVAudioRecorder" /> is recording or paused. May be used for synchronizing multiple recorders.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("deviceCurrentTime")]
 		double DeviceCurrentTime { get; }
@@ -2926,9 +3002,15 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AVAudioSessionDataSourceDescription {
+		/// <summary>Gets the system-assigned ID for the data source.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("dataSourceID")]
 		NSNumber DataSourceID { get; }
 
+		/// <summary>Name for the source, suitable to be shown to the user.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("dataSourceName")]
 		string DataSourceName { get; }
 

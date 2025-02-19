@@ -37,11 +37,17 @@ namespace MapKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKMapType : ulong {
+		/// <summary>Standard cartographic imagery.</summary>
 		Standard = 0,
+		/// <summary>Photos taken from space.</summary>
 		Satellite,
+		/// <summary>A combination of satellite and cartographic imagery.</summary>
 		Hybrid,
+		/// <summary>A flyover using satellite images.</summary>
 		SatelliteFlyover,
+		/// <summary>A flyover that combines satellite and cartographic imagery.</summary>
 		HybridFlyover,
+		/// <summary>A muted map that emphasized developer data.</summary>
 		[MacCatalyst (13, 1)]
 		MutedStandard,
 	}
@@ -76,7 +82,9 @@ namespace MapKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKOverlayLevel : long {
+		/// <summary>The overlay should render above roads, but below labels, points of interest, and annotation views.</summary>
 		AboveRoads = 0,
+		/// <summary>The overlay should render above all map content except for annotation views.</summary>
 		AboveLabels,
 	}
 
@@ -125,8 +133,11 @@ namespace MapKit {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'MKPinAnnotationView.PinTintColor' instead.")]
 	[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'MKPinAnnotationView.PinTintColor' instead.")]
 	public enum MKPinAnnotationColor : ulong {
+		/// <summary>To be added.</summary>
 		Red,
+		/// <summary>To be added.</summary>
 		Green,
+		/// <summary>To be added.</summary>
 		Purple,
 	}
 
@@ -134,12 +145,15 @@ namespace MapKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKUserTrackingMode : ulong {
+		/// <summary>To be added.</summary>
 		None,
+		/// <summary>To be added.</summary>
 		Follow,
 #if !XAMCORE_5_0 && !(IOS || MACCATALYST)
 		[Obsolete ("This is only available on iOS and MacCatalyst.")]
 		FollowWithHeading,
 #elif IOS || MACCATALYST
+		/// <summary>To be added.</summary>
 		FollowWithHeading,
 #endif
 	}
@@ -151,7 +165,9 @@ namespace MapKit {
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'MKLocalSearchCompleterResultType' instead.")]
 	public enum MKSearchCompletionFilterType : long {
+		/// <summary>Include related search queries in the completion results, in addition to place names.</summary>
 		AndQueries = 0,
+		/// <summary>Only include place names in the completion results.</summary>
 		Only,
 	}
 
@@ -172,7 +188,9 @@ namespace MapKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKScaleViewAlignment : long {
+		/// <summary>To be added.</summary>
 		Leading,
+		/// <summary>To be added.</summary>
 		Trailing,
 	}
 

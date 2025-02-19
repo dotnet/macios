@@ -38,22 +38,53 @@ namespace ContactsUI {
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
+		/// <summary>The names of the displayed keys (see <see cref="T:Contacts.CNContactKey" />).</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // TODO: Maybe we can Strongify this puppy
 		[Export ("displayedPropertyKeys")]
 		NSString [] DisplayedPropertyKeys { get; set; }
 
+		/// <summary>An instance of the ContactsUI.ICNContactPickerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the ContactsUI.ICNContactPickerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Export ("delegate", ArgumentSemantic.Weak)]
 		[NullAllowed]
 		ICNContactPickerDelegate Delegate { get; set; }
 
+		/// <summary>If not <see langword="null" />, only contacts that satisfy this <see cref="T:Foundation.NSPredicate" /> will be selectable by the user.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("predicateForEnablingContact", ArgumentSemantic.Copy)]
 		NSPredicate PredicateForEnablingContact { get; set; }
 
+		/// <summary>If not <see langword="null" />, if this <see cref="T:Foundation.NSPredicate" /> returns <see langword="true" />, the <see cref="T:Contacts.CNContact" /> will be returned on selection. Otherwise, the default action for the selected contact will be taken.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("predicateForSelectionOfContact", ArgumentSemantic.Copy)]
 		NSPredicate PredicateForSelectionOfContact { get; set; }
 
+		/// <summary>If not <see langword="null" />, if this <see cref="T:Foundation.NSPredicate" /> returns <see langword="true" />, the <see cref="T:Contacts.CNContact" /> will be returned on selection. Otherwise, the default action for the selected property will be taken.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("predicateForSelectionOfProperty", ArgumentSemantic.Copy)]
 		NSPredicate PredicateForSelectionOfProperty { get; set; }
@@ -172,58 +203,112 @@ namespace ContactsUI {
 		[Export ("viewControllerForNewContact:")]
 		CNContactViewController FromNewContact ([NullAllowed] CNContact contact);
 
+		/// <summary>The property keys to be displayed. (see <see cref="T:Contacts.CNContactKey" />)</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[NullAllowed] // TODO: Maybe we can Strongify this puppy
 		[Export ("displayedPropertyKeys")]
 		NSString [] DisplayedPropertyKeys { get; set; }
 
+		/// <summary>An instance of the ContactsUI.ICNContactViewControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the ContactsUI.ICNContactViewControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("delegate", ArgumentSemantic.Weak)]
 		[NullAllowed]
 		ICNContactViewControllerDelegate Delegate { get; set; }
 
+		/// <summary>The <see cref="T:Contacts.CNContactStore" /> from which the <see cref="P:ContactsUI.CNContactViewController.Contact" /> was retrieved and to which it will be saved.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("contactStore", ArgumentSemantic.Strong)]
 		CNContactStore ContactStore { get; set; }
 
+		/// <summary>If set, the <see cref="T:Contacts.CNGroup" /> to which to add the <see cref="P:ContactsUI.CNContactViewController.Contact" />.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("parentGroup", ArgumentSemantic.Strong)]
 		CNGroup ParentGroup { get; set; }
 
+		/// <summary>Gets or sets the parent container.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("parentContainer", ArgumentSemantic.Strong)]
 		CNContainer ParentContainer { get; set; }
 
+		/// <summary>The name to be displayed if the <see cref="T:Contacts.CNContact" /> does not have a name that can be displayed.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>
+		///           <para>There is not a "Display Name" property that is checked. Rather, the <see cref="T:Contacts.CNContact" /> must have a <see langword="null" /><see cref="P:Contacts.CNContact.GivenName" /> and <see cref="P:Contacts.CNContact.FamilyName" />.</para>
+		///         </remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("alternateName")]
 		string AlternateName { get; set; }
 
+		/// <summary>Message displayed below the name.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("message")]
 		string Message { get; set; }
 
+		/// <summary>Whether editing the contact is allowed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("allowsEditing", ArgumentSemantic.Assign)]
 		bool AllowsEditing { get; set; }
 
+		/// <summary>Whether buttons triggering actions (such as sending a text) are displayed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("allowsActions", ArgumentSemantic.Assign)]
 		bool AllowsActions { get; set; }
 
+		/// <summary>Whether to show data from contacts linked to the <see cref="P:ContactsUI.CNContactViewController.Contact" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("shouldShowLinkedContacts", ArgumentSemantic.Assign)]

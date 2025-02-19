@@ -109,6 +109,11 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>An optional property that can substitute for the <see cref="P:UIKit.UICollectionView.DataSource" /> and <see cref="P:UIKit.UICollectionView.Delegate" /> properties</summary>
+		///         <value>The default value is <see langword="null" />.</value>
+		///         <remarks>
+		///           <para>Rather than specify separate classes and provide two objects for the  <see cref="P:UIKit.UICollectionView.DataSource" /> and <see cref="P:UIKit.UICollectionView.Delegate" /> properties, one can provide a single class of type <see cref="T:UIKit.UICollectionViewSource" /> (which itself is simply defined as ).</para>
+		///         </remarks>
 		public UICollectionViewSource Source {
 			get {
 				var d = WeakDelegate as UICollectionViewSource;

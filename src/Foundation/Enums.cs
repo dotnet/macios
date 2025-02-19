@@ -176,24 +176,31 @@ namespace Foundation {
 
 	/// <summary>Enumerates classes of tags that are returned from a text classifier.</summary>
 	public enum NSLinguisticTagScheme {
+		/// <summary>Indicates that tokens will be tagged with information about whether they are words, whitespace, or punctuation.</summary>
 		[Field ("NSLinguisticTagSchemeTokenType")]
 		Token,
 
+		/// <summary>Indicates that tokens will be returned for whether they are part of speech or whitespace, or their punctuation type if they are punctuation.</summary>
 		[Field ("NSLinguisticTagSchemeLexicalClass")]
 		LexicalClass,
 
+		/// <summary>Indicates that tokens will be tagged as names of which they are a part.</summary>
 		[Field ("NSLinguisticTagSchemeNameType")]
 		Name,
 
+		/// <summary>Indicates that tokens will be tagged those tags indicated by <see cref="F:Foundation.NSLinguisticTagScheme.LexicalClass" /> and <see cref="F:Foundation.NSLinguisticTagScheme.Name" />.</summary>
 		[Field ("NSLinguisticTagSchemeNameTypeOrLexicalClass")]
 		NameOrLexicalClass,
 
+		/// <summary>Indicates that tokens will be tagged with their stem, if known.</summary>
 		[Field ("NSLinguisticTagSchemeLemma")]
 		Lemma,
 
+		/// <summary>Indicates that tokens will be tagged with their language, if known.</summary>
 		[Field ("NSLinguisticTagSchemeLanguage")]
 		Language,
 
+		/// <summary>Indicates that tokens will be tagged with the script in which they were written.</summary>
 		[Field ("NSLinguisticTagSchemeScript")]
 		Script,
 	}

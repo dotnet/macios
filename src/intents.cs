@@ -656,8 +656,11 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INRestaurantReservationUserBookingStatus : ulong {
+		/// <summary>Indicates that the request is still being processed.</summary>
 		Pending,
+		/// <summary>The reservation is confirmed.</summary>
 		Confirmed,
+		/// <summary>The reservation could not be made.</summary>
 		Denied,
 	}
 
@@ -927,9 +930,13 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INSiriAuthorizationStatus : long {
+		/// <summary>The user has not yet interacted with the permissions dialog.</summary>
 		NotDetermined = 0,
+		/// <summary>The Intent is restricted due to general restrictions on Siri.</summary>
 		Restricted,
+		/// <summary>The user has denied permission.</summary>
 		Denied,
+		/// <summary>The user has granted the Intent its permissions.</summary>
 		Authorized,
 	}
 
@@ -1022,20 +1029,31 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INVocabularyStringType : long {
+		/// <summary>Identifies a person in the Contacts database.</summary>
 		ContactName = 1,
+		/// <summary>Identifies a group of related contacts.</summary>
 		ContactGroupName,
+		/// <summary>Identifies a keyword or other photo metadata.</summary>
 		PhotoTag = 100,
+		/// <summary>Identifies a photo album.</summary>
 		PhotoAlbumName,
+		/// <summary>Identifies a workout.</summary>
 		WorkoutActivityName = 200,
+		/// <summary>Identifies a car profile.</summary>
 		CarProfileName = 300,
+		/// <summary>Identifies a car name.</summary>
 		[MacCatalyst (13, 1)]
 		CarName,
+		/// <summary>Identifies a payments organization nickname.</summary>
 		[MacCatalyst (13, 1)]
 		PaymentsOrganizationName = 400,
+		/// <summary>Identifies a payments account nickname.</summary>
 		[MacCatalyst (13, 1)]
 		PaymentsAccountNickname,
+		/// <summary>Identifies a notebook item title.</summary>
 		[MacCatalyst (13, 1)]
 		NotebookItemTitle = 500,
+		/// <summary>Identifies a notebook item group name.</summary>
 		[MacCatalyst (13, 1)]
 		NotebookItemGroupName,
 		[iOS (13, 0)]
@@ -1788,16 +1806,27 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INPlayMediaIntentResponseCode : long {
+		/// <summary>To be added.</summary>
 		Unspecified = 0,
+		/// <summary>To be added.</summary>
 		Ready = 1,
+		/// <summary>To be added.</summary>
 		ContinueInApp = 2,
+		/// <summary>To be added.</summary>
 		InProgress = 3,
+		/// <summary>To be added.</summary>
 		Success = 4,
+		/// <summary>To be added.</summary>
 		HandleInApp = 5,
+		/// <summary>To be added.</summary>
 		Failure = 6,
+		/// <summary>To be added.</summary>
 		FailureRequiringAppLaunch = 7,
+		/// <summary>To be added.</summary>
 		FailureUnknownMediaType = 8,
+		/// <summary>To be added.</summary>
 		FailureNoUnplayedContent = 9,
+		/// <summary>To be added.</summary>
 		FailureRestrictedContent = 10,
 		FailureMaxStreamLimitReached = 11,
 	}
@@ -1806,9 +1835,13 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INPlaybackRepeatMode : long {
+		/// <summary>To be added.</summary>
 		Unknown = 0,
+		/// <summary>To be added.</summary>
 		None,
+		/// <summary>To be added.</summary>
 		All,
+		/// <summary>To be added.</summary>
 		One,
 	}
 

@@ -4726,6 +4726,10 @@ namespace Foundation {
 		[Field ("kCFErrorDomainCFNetwork", "CFNetwork")]
 		NSString CFNetworkErrorDomain { get; }
 
+		/// <summary>The CoreMotion error domain.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoMac, NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("CMErrorDomain", "CoreMotion")]
@@ -12288,12 +12292,21 @@ namespace Foundation {
 
 		// NSItemProvider_UIKitAdditions category
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("teamData", ArgumentSemantic.Copy)]
 		NSData TeamData { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[NoMac]
 		[MacCatalyst (13, 1)]
@@ -16383,8 +16396,17 @@ namespace Foundation {
 	[MacCatalyst (15, 0)]
 	[StrongDictionary ("NSScriptCommandArgumentDescriptionKeys")]
 	partial interface NSScriptCommandArgumentDescription {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string AppleEventCode { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string Type { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string Optional { get; set; }
 	}
 
@@ -16393,11 +16415,29 @@ namespace Foundation {
 	[MacCatalyst (15, 0)]
 	[StrongDictionary ("NSScriptCommandDescriptionDictionaryKeys")]
 	partial interface NSScriptCommandDescriptionDictionary {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string CommandClass { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string AppleEventCode { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string AppleEventClassCode { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string Type { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string ResultAppleEventCode { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSMutableDictionary Arguments { get; set; }
 	}
 

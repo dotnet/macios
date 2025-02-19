@@ -1395,6 +1395,13 @@ namespace UIKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the UIKit.IUIActionSheetDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUIActionSheetDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IUIActionSheetDelegate Delegate { get; set; }
 
@@ -1423,6 +1430,9 @@ namespace UIKit {
 		[Export ("firstOtherButtonIndex")]
 		nint FirstOtherButtonIndex { get; }
 
+		/// <summary>A property indicating if the action sheet is displayed.</summary>
+		///         <value>If <see langword="true" /> then the action sheet is displayed. Read-only.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("visible")]
 		bool Visible { [Bind ("isVisible")] get; }
 
@@ -1865,6 +1875,13 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'UIAlertController' instead.")]
 		NativeHandle Constructor ([NullAllowed] string title, [NullAllowed] string message, [NullAllowed] IUIAlertViewDelegate viewDelegate, [NullAllowed] string cancelButtonTitle, IntPtr otherButtonTitles, IntPtr mustBeNull, IntPtr mustAlsoBeNull);
 
+		/// <summary>An instance of the UIKit.IUIAlertViewDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUIAlertViewDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IUIAlertViewDelegate Delegate { get; set; }
 
@@ -1895,6 +1912,10 @@ namespace UIKit {
 		[Export ("firstOtherButtonIndex")]
 		nint FirstOtherButtonIndex { get; }
 
+		/// <summary>Used to determine if the alert view is currently being displayed.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>Indicates if the alert view is currently displayed to the user.</remarks>
 		[Export ("visible")]
 		bool Visible { [Bind ("isVisible")] get; }
 
@@ -2321,6 +2342,13 @@ namespace UIKit {
 		[ThreadSafe, NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the UIKit.IUIApplicationDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUIApplicationDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IUIApplicationDelegate Delegate { get; set; }
 
@@ -2336,12 +2364,24 @@ namespace UIKit {
 		[Export ("endIgnoringInteractionEvents")]
 		void EndIgnoringInteractionEvents ();
 
+		/// <summary>Whether the receiver is ignoring touch events.</summary>
+		///         <value>
+		///           <see langword="true" /> if there have been more calls to <see cref="M:UIKit.UIApplication.BeginIgnoringInteractionEvents" /> than calls to <see cref="M:UIKit.UIApplication.EndIgnoringInteractionEvents" />.</value>
+		///         <remarks>
+		///         </remarks>
+		///         <altmember cref="M:UIKit.UIApplication.BeginIgnoringInteractionEvents" />
+		///         <altmember cref="M:UIKit.UIApplication.EndIgnoringInteractionEvents" />
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use UIView's 'UserInteractionEnabled' property instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use UIView's 'UserInteractionEnabled' property instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use UIView's 'UserInteractionEnabled' property instead.")]
 		[Export ("isIgnoringInteractionEvents")]
 		bool IsIgnoringInteractionEvents { get; }
 
+		/// <summary>If <see langword="true" />, indicates that the screen should not dim even when no input is occurring.</summary>
+		///         <value>The default value is <see langword="false" />.</value>
+		///         <remarks>
+		///           <para>The idle timer dims the screen after some amount of time has passed without user interaction. Application developers who wish to keep the screen fully powered can set this property to <see langword="true" />. For instance, games whose input is restricted to the accelerometer may set this value to <see langword="true" />.</para>
+		///         </remarks>
 		[Export ("idleTimerDisabled")]
 		bool IdleTimerDisabled { [Bind ("isIdleTimerDisabled")] get; set; }
 
@@ -2385,6 +2425,11 @@ namespace UIKit {
 		[Export ("sendAction:to:from:forEvent:")]
 		bool SendAction (Selector action, [NullAllowed] NSObject target, [NullAllowed] NSObject sender, [NullAllowed] UIEvent forEvent);
 
+		/// <summary>Controls the status of the network activity indicator on the device.</summary>
+		///         <value>A Boolean that switches the indicator of network activity on or off.</value>
+		///         <remarks>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Provide a custom UI in your app instead if needed.")]
 		[NoTV]
 		[MacCatalyst (13, 1)]
@@ -2406,6 +2451,9 @@ namespace UIKit {
 		[Export ("setStatusBarStyle:animated:")]
 		void SetStatusBarStyle (UIStatusBarStyle statusBarStyle, bool animated);
 
+		/// <summary>Whether the status bar is visible.</summary>
+		///         <value>Boolean that determines whether the status bar is hidden.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Export ("statusBarHidden")]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'UIViewController.PrefersStatusBarHidden' instead.")]
@@ -2487,30 +2535,37 @@ namespace UIKit {
 		[Export ("enabledRemoteNotificationTypes")]
 		UIRemoteNotificationType EnabledRemoteNotificationTypes { get; }
 
+		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.DidFinishLaunchingNotification']/*" />
 		[Field ("UIApplicationDidFinishLaunchingNotification")]
 		[Notification (typeof (UIApplicationLaunchEventArgs))]
 		NSString DidFinishLaunchingNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.DidBecomeActiveNotification']/*" />
 		[Field ("UIApplicationDidBecomeActiveNotification")]
 		[Notification]
 		NSString DidBecomeActiveNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.WillResignActiveNotification']/*" />
 		[Field ("UIApplicationWillResignActiveNotification")]
 		[Notification]
 		NSString WillResignActiveNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.DidReceiveMemoryWarningNotification']/*" />
 		[Field ("UIApplicationDidReceiveMemoryWarningNotification")]
 		[Notification]
 		NSString DidReceiveMemoryWarningNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.WillTerminateNotification']/*" />
 		[Field ("UIApplicationWillTerminateNotification")]
 		[Notification]
 		NSString WillTerminateNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.SignificantTimeChangeNotification']/*" />
 		[Field ("UIApplicationSignificantTimeChangeNotification")]
 		[Notification]
 		NSString SignificantTimeChangeNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.WillChangeStatusBarOrientationNotification']/*" />
 		[NoTV]
 		[Field ("UIApplicationWillChangeStatusBarOrientationNotification")]
 		[Notification (typeof (UIStatusBarOrientationChangeEventArgs))]
@@ -2519,6 +2574,7 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ViewWillTransitionToSize' instead.")]
 		NSString WillChangeStatusBarOrientationNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.DidChangeStatusBarOrientationNotification']/*" />
 		[NoTV]
 		[Field ("UIApplicationDidChangeStatusBarOrientationNotification")]
 		[Notification (typeof (UIStatusBarOrientationChangeEventArgs))]
@@ -2527,6 +2583,10 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ViewWillTransitionToSize' instead.")]
 		NSString DidChangeStatusBarOrientationNotification { get; }
 
+		/// <summary>Represents the value associated with the constant UIApplicationStatusBarOrientationUserInfoKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Field ("UIApplicationStatusBarOrientationUserInfoKey")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'ViewWillTransitionToSize' instead.")]
@@ -2534,6 +2594,7 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ViewWillTransitionToSize' instead.")]
 		NSString StatusBarOrientationUserInfoKey { get; }
 
+		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.WillChangeStatusBarFrameNotification']/*" />
 		[NoTV]
 		[Field ("UIApplicationWillChangeStatusBarFrameNotification")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'ViewWillTransitionToSize' instead.")]
@@ -2542,6 +2603,7 @@ namespace UIKit {
 		[Notification (typeof (UIStatusBarFrameChangeEventArgs))]
 		NSString WillChangeStatusBarFrameNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.DidChangeStatusBarFrameNotification']/*" />
 		[NoTV]
 		[Field ("UIApplicationDidChangeStatusBarFrameNotification")]
 		[Notification (typeof (UIStatusBarFrameChangeEventArgs))]
@@ -2550,6 +2612,10 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ViewWillTransitionToSize' instead.")]
 		NSString DidChangeStatusBarFrameNotification { get; }
 
+		/// <summary>Represents the value associated with the constant UIApplicationStatusBarFrameUserInfoKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Field ("UIApplicationStatusBarFrameUserInfoKey")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'ViewWillTransitionToSize' instead.")]
@@ -2557,17 +2623,42 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ViewWillTransitionToSize' instead.")]
 		NSString StatusBarFrameUserInfoKey { get; }
 
+		/// <summary>Launch Options Key: the application was launched in response to open a URL.  the value associated with the key contains the URL to open.</summary>
+		///         <value>Represents the value associated with the constant UIApplicationLaunchOptionsURLKey.
+		///         </value>
+		///         <remarks>
+		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)">M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)</a></format></para>
+		///         </remarks>
 		[Field ("UIApplicationLaunchOptionsURLKey")]
 		NSString LaunchOptionsUrlKey { get; }
 
+		/// <summary>Launch Options Key: the value associated with the key is the bundle-id of the application that launched this application.</summary>
+		///         <value>Represents the value associated with the constant UIApplicationLaunchOptionsSourceApplicationKey
+		///         </value>
+		///         <remarks>
+		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)">M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)</a></format></para>
+		///         </remarks>
 		[Field ("UIApplicationLaunchOptionsSourceApplicationKey")]
 		NSString LaunchOptionsSourceApplicationKey { get; }
 
+		/// <summary>Notification constant for LaunchOptionsRemoteNot</summary>
+		///         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+		///         <remarks>
+		///           <para>The value associated with this key will be an NSDictionary with the payload from the remote notification that was received. </para>
+		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)">M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)</a></format></para>
+		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("UIApplicationLaunchOptionsRemoteNotificationKey")]
 		NSString LaunchOptionsRemoteNotificationKey { get; }
 
+		/// <summary>Launch Options Key: Use this key to find out if custom data was passed to the program by the opening application. The value of this key will be a property list. </summary>
+		///         <value>
+		///           Represents the value associated with the constant UIApplicationLaunchOptionsAnnotationKey
+		///         </value>
+		///         <remarks>
+		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)">M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)</a></format></para>
+		///         </remarks>
 		[Field ("UIApplicationLaunchOptionsAnnotationKey")]
 		NSString LaunchOptionsAnnotationKey { get; }
 
@@ -2602,6 +2693,13 @@ namespace UIKit {
 		[Export ("clearKeepAliveTimeout")]
 		void ClearKeepAliveTimeout ();
 
+		/// <summary>Whether content protection is available.</summary>
+		///         <value>
+		///           <see langword="true" /> if data protection is enabled and the device is locked. Otherwise, <see langword="false" />.</value>
+		///         <remarks>
+		///           <para>If this method returns <see langword="false" />, the application will not be allowed to read or write files whose <see cref="P:Foundation.NSFileManager.FileProtectionKey" /> is <see cref="P:Foundation.NSFileManager.FileProtectionComplete" /> or <see cref="P:Foundation.NSFileManager.FileProtectionCompleteUnlessOpen" />.</para>
+		///         </remarks>
+		///         <altmember cref="P:UIKit.UIApplication.ProtectedDataDidBecomeAvailable" />
 		[Export ("protectedDataAvailable")]
 		bool ProtectedDataAvailable { [Bind ("isProtectedDataAvailable")] get; }
 
@@ -2653,34 +2751,63 @@ namespace UIKit {
 		[Export ("endReceivingRemoteControlEvents")]
 		void EndReceivingRemoteControlEvents ();
 
+		/// <summary>Represents the value associated with the constant UIBackgroundTaskInvalid</summary>
+		///         <value>Returns a token that indicates an invalid task request.
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIBackgroundTaskInvalid")]
 		nint BackgroundTaskInvalid { get; }
 
+		/// <summary>Represents the value associated with the constant UIMinimumKeepAliveTimeout</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'PushKit' for Voice Over IP applications.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'PushKit' for Voice Over IP applications.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'PushKit' for Voice Over IP applications.")]
 		[Field ("UIMinimumKeepAliveTimeout")]
 		double /* NSTimeInternal */ MinimumKeepAliveTimeout { get; }
 
+		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.ProtectedDataWillBecomeUnavailable']/*" />
 		[Field ("UIApplicationProtectedDataWillBecomeUnavailable")]
 		[Notification]
 		NSString ProtectedDataWillBecomeUnavailable { get; }
 
+		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.ProtectedDataDidBecomeAvailable']/*" />
 		[Field ("UIApplicationProtectedDataDidBecomeAvailable")]
 		[Notification]
 		NSString ProtectedDataDidBecomeAvailable { get; }
 
+		/// <summary>Launch Options Key: Application was started up in response to a location event.</summary>
+		///         <value>Represents the value associated with the constant UIApplicationLaunchOptionsLocationKey</value>
+		///         <remarks>
+		///           <para>The value of this key will be an NSNumber.   The application should respond by creating a <see cref="T:CoreLocation.CLLocationManager" /> instance to and get the information from that object.</para>
+		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)">M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)</a></format>.</para>
+		///         </remarks>
 		[Field ("UIApplicationLaunchOptionsLocationKey")]
 		NSString LaunchOptionsLocationKey { get; }
 
+		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.DidEnterBackgroundNotification']/*" />
 		[Field ("UIApplicationDidEnterBackgroundNotification")]
 		[Notification]
 		NSString DidEnterBackgroundNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.WillEnterForegroundNotification']/*" />
 		[Field ("UIApplicationWillEnterForegroundNotification")]
 		[Notification]
 		NSString WillEnterForegroundNotification { get; }
 
+		/// <summary>Notification constant for LaunchOptionsLocalNot</summary>
+		///         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+		///         <remarks>
+		///           <para>
+		///             The value of this key will be a <see cref="T:UIKit.UILocalNotification" /> instance.
+		///           </para>
+		///           <para>
+		///             This key will be present on the launch options if a local notification was delivered and the application was not running.
+		///           </para>
+		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)">M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)</a></format></para>
+		///         </remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'UNUserNotificationCenterDelegate.DidReceiveNotificationResponse' instead.")]
 		[MacCatalyst (13, 1)]
@@ -2699,17 +2826,35 @@ namespace UIKit {
 		[Export ("setNewsstandIconImage:")]
 		void SetNewsstandIconImage ([NullAllowed] UIImage image);
 
+		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.LaunchOptionsNewsstandDownloadsKey']/*" />
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("UIApplicationLaunchOptionsNewsstandDownloadsKey")]
 		NSString LaunchOptionsNewsstandDownloadsKey { get; }
 
+		/// <summary>Represents the value associated with the constant UIApplicationLaunchOptionsBluetoothCentralsKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)">M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)</a></format></para>
+		///         </remarks>
 		[Field ("UIApplicationLaunchOptionsBluetoothCentralsKey")]
 		NSString LaunchOptionsBluetoothCentralsKey { get; }
 
+		/// <summary>Represents the value associated with the constant UIApplicationLaunchOptionsBluetoothPeripheralsKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)">M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)</a></format></para>
+		///         </remarks>
 		[Field ("UIApplicationLaunchOptionsBluetoothPeripheralsKey")]
 		NSString LaunchOptionsBluetoothPeripheralsKey { get; }
 
+		/// <summary>The presence of this key indicates that the application was launched via a shortcut item.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)">M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)</a></format></para>
+		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("UIApplicationLaunchOptionsShortcutItemKey")]
@@ -2736,19 +2881,32 @@ namespace UIKit {
 		[Export ("supportedInterfaceOrientationsForWindow:")]
 		UIInterfaceOrientationMask SupportedInterfaceOrientationsForWindow ([NullAllowed][Transient] UIWindow window);
 
+		/// <summary>Represents the value associated with the constant UITrackingRunLoopMode</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UITrackingRunLoopMode")]
 		NSString UITrackingRunLoopMode { get; }
 
+		/// <summary>Represents the value associated with the constant UIApplicationStateRestorationBundleVersionKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIApplicationStateRestorationBundleVersionKey")]
 		NSString StateRestorationBundleVersionKey { get; }
 
+		/// <summary>Represents the value associated with the constant UIApplicationStateRestorationUserInterfaceIdiomKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIApplicationStateRestorationUserInterfaceIdiomKey")]
 		NSString StateRestorationUserInterfaceIdiomKey { get; }
 
 		//
 		// 7.0
 		//
+		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.ContentSizeCategoryChangedNotification']/*" />
 		[Field ("UIContentSizeCategoryDidChangeNotification")]
 		[Notification (typeof (UIContentSizeCategoryChangedEventArgs))]
 		NSString ContentSizeCategoryChangedNotification { get; }
@@ -2758,10 +2916,18 @@ namespace UIKit {
 		[Export ("beginBackgroundTaskWithName:expirationHandler:")]
 		nint BeginBackgroundTask ([NullAllowed] string taskName, [NullAllowed] Action expirationHandler);
 
+		/// <summary>Represents the value associated with the constant UIApplicationBackgroundFetchIntervalMinimum</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UIApplicationBackgroundFetchIntervalMinimum")]
 		double BackgroundFetchIntervalMinimum { get; }
 
+		/// <summary>Represents the value associated with the constant UIApplicationBackgroundFetchIntervalNever</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UIApplicationBackgroundFetchIntervalNever")]
 		double BackgroundFetchIntervalNever { get; }
@@ -2822,9 +2988,17 @@ namespace UIKit {
 		[Static]
 		void RegisterObjectForStateRestoration (IUIStateRestoring uistateRestoringObject, string restorationIdentifier);
 
+		/// <summary>Represents the value associated with the constant UIApplicationStateRestorationTimestampKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIApplicationStateRestorationTimestampKey")]
 		NSString StateRestorationTimestampKey { get; }
 
+		/// <summary>Represents the value associated with the constant UIApplicationStateRestorationSystemVersionKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIApplicationStateRestorationSystemVersionKey")]
 		NSString StateRestorationSystemVersionKey { get; }
 
@@ -2832,11 +3006,13 @@ namespace UIKit {
 		[Export ("backgroundRefreshStatus")]
 		UIBackgroundRefreshStatus BackgroundRefreshStatus { get; }
 
+		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.BackgroundRefreshStatusDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIApplicationBackgroundRefreshStatusDidChangeNotification")]
 		NSString BackgroundRefreshStatusDidChangeNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.UserDidTakeScreenshotNotification']/*" />
 		[Notification]
 		[Field ("UIApplicationUserDidTakeScreenshotNotification")]
 		NSString UserDidTakeScreenshotNotification { get; }
@@ -2844,6 +3020,10 @@ namespace UIKit {
 		// 
 		// 8.0
 		//
+		/// <summary>Represents the value associated with the constant UIApplicationOpenSettingsURLString</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UIApplicationOpenSettingsURLString")]
 		NSString OpenSettingsUrlString { get; }
@@ -2861,6 +3041,9 @@ namespace UIKit {
 		UIUserNotificationSettings CurrentUserNotificationSettings { get; }
 
 		// from @interface UIApplication (UIRemoteNotifications)
+		/// <summary>Indicates whether app is registered for remote notifications.</summary>
+		///         <value>A Boolean that indicates whether the app is currently registered for remote notifications.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("isRegisteredForRemoteNotifications")]
 		bool IsRegisteredForRemoteNotifications { get; }
@@ -2878,14 +3061,29 @@ namespace UIKit {
 		[Export ("registerUserNotificationSettings:")]
 		void RegisterUserNotificationSettings (UIUserNotificationSettings notificationSettings);
 
+		/// <summary>Represents the value associated with the constant UIApplicationLaunchOptionsUserActivityDictionaryKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)">M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)</a></format></para>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UIApplicationLaunchOptionsUserActivityDictionaryKey")]
 		NSString LaunchOptionsUserActivityDictionaryKey { get; }
 
+		/// <summary>Represents the value associated with the constant UIApplicationLaunchOptionsUserActivityTypeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)&amp;scope=Xamarin" title="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)">M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)</a></format></para>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UIApplicationLaunchOptionsUserActivityTypeKey")]
 		NSString LaunchOptionsUserActivityTypeKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("UIApplicationLaunchOptionsCloudKitShareMetadataKey")]
@@ -3112,6 +3310,9 @@ namespace UIKit {
 
 	[MacCatalyst (13, 1)]
 	interface UIContentSizeCategoryChangedEventArgs {
+		/// <summary>The new size of the content, e.g., the new font size, in points.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("UIContentSizeCategoryNewValueKey")]
 		NSString WeakNewValue { get; }
 	}
@@ -3941,6 +4142,9 @@ namespace UIKit {
 		[Export ("selected")]
 		bool Selected { [Bind ("isSelected")] get; set; }
 
+		/// <summary>Allows control over whether a UIBarButtonItem is enabled or disabled.</summary>
+		///         <value>True if the UIBarButtonItem is enabled. False if it is disabled.</value>
+		///         <remarks>If a UIBarButtonItem is enabled, it can be interacted with. If it is disabled, it still appears, but cannot be interacted with.</remarks>
 		[Export ("enabled")]
 		[Override]
 		bool Enabled { [Bind ("isEnabled")] get; set; }

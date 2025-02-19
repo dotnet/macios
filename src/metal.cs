@@ -2783,16 +2783,25 @@ namespace Metal {
 		[Export ("attributeType")]
 		MTLDataType AttributeType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("active")]
 		bool Active { [Bind ("isActive")] get; }
 
 		[Export ("name")]
 		string Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("patchData")]
 		bool PatchData { [Bind ("isPatchData")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("patchControlPointData")]
 		bool PatchControlPointData { [Bind ("isPatchControlPointData")] get; }

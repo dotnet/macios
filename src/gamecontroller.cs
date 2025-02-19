@@ -595,11 +595,11 @@ namespace GameController {
 		void StopWirelessControllerDiscovery ();
 
 		/// <include file="../docs/api/GameController/GCController.xml" path="/Documentation/Docs[@DocId='P:GameController.GCController.DidConnectNotification']/*" />
-	[Notification, Field ("GCControllerDidConnectNotification")]
+		[Notification, Field ("GCControllerDidConnectNotification")]
 		NSString DidConnectNotification { get; }
 
 		/// <include file="../docs/api/GameController/GCController.xml" path="/Documentation/Docs[@DocId='P:GameController.GCController.DidDisconnectNotification']/*" />
-	[Notification, Field ("GCControllerDidDisconnectNotification")]
+		[Notification, Field ("GCControllerDidDisconnectNotification")]
 		NSString DidDisconnectNotification { get; }
 
 		/// <summary>Gets the object that contains motion data, if the controller supports motion.</summary>

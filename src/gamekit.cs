@@ -588,7 +588,7 @@ namespace GameKit {
 		void LoadPlayersForIdentifiers (string [] identifiers, [NullAllowed] GKPlayersHandler completionHandler);
 
 		/// <include file="../docs/api/GameKit/GKPlayer.xml" path="/Documentation/Docs[@DocId='P:GameKit.GKPlayer.DidChangeNotificationNameNotification']/*" />
-	[Field ("GKPlayerDidChangeNotificationName")]
+		[Field ("GKPlayerDidChangeNotificationName")]
 		[Notification]
 		// This name looks wrong, see the "Notification" at the end.
 		NSString DidChangeNotificationNameNotification { get; }

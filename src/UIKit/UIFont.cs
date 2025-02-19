@@ -53,6 +53,13 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <summary>The preferred UIFont for the Headline dynamic type.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="M:UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged*" /> (see remarks and example at <see cref="M:UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -64,6 +71,13 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <summary>The preferred UIFont for the Body dynamic type.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="M:UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged*" /> (see remarks and example at <see cref="M:UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -75,6 +89,13 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <summary>The preferred UIFont for the Subheadline dynamic type.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="M:UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged*" /> (see remarks and example at <see cref="M:UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -86,6 +107,13 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <summary>The preferred UIFont for the Footnote dynamic type.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="M:UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged*" /> (see remarks and example at <see cref="M:UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -97,6 +125,13 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <summary>The preferred UIFont for the Caption1 dynamic type.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="M:UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged*" /> (see remarks and example at <see cref="M:UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -108,6 +143,13 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <summary>The preferred UIFont for the Caption2 dynamic type.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para>To implement dynamic type, application developers must act in reaction to <see cref="M:UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged*" /> (see remarks and example at <see cref="M:UIKit.UIFont.GetPreferredFontForTextStyle(UIKit.UIFontTextStyle,UIKit.UITraitCollection)" />). </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -119,6 +161,12 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <summary>The preferred UIFont for the Title1 dynamic type.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -130,6 +178,12 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <summary>The preferred UIFont for the Title2 dynamic type.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -141,6 +195,12 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <summary>The preferred UIFont for the Title3 dynamic type.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -152,6 +212,12 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <summary>The preferred UIFont for the Callout dynamic type.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]

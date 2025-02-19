@@ -27,6 +27,11 @@ namespace UIKit {
 			FeatureSettings = features;
 		}
 
+		/// <summary>The font family.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string Family {
 			get {
 				return GetStringValue (UIFontDescriptor.FamilyAttribute);
@@ -36,6 +41,11 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Font name.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string Name {
 			get {
 				return GetStringValue (UIFontDescriptor.NameAttribute);
@@ -45,6 +55,11 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>The font face.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string Face {
 			get {
 				return GetStringValue (UIFontDescriptor.FaceAttribute);
@@ -55,6 +70,10 @@ namespace UIKit {
 		}
 
 		// Size is encoded as a string, but should contain a float
+		/// <summary>Font size.</summary>
+		///         <value>Null if not set.</value>
+		///         <remarks>
+		///         </remarks>
 		public float? Size {
 			get {
 				return GetFloatValue (UIFontDescriptor.SizeAttribute);
@@ -64,6 +83,11 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Font visible name.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string VisibleName {
 			get {
 				return GetStringValue (UIFontDescriptor.VisibleNameAttribute);
@@ -73,6 +97,11 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Text style.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSString TextStyle {
 			get {
 				return Dictionary [UIFontDescriptor.TextStyleAttribute] as NSString;
@@ -83,6 +112,10 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Affine transformation matrix for the font.</summary>
+		///         <value>The default is the identity matrix;   Null if not set.</value>
+		///         <remarks>
+		///         </remarks>
 		public CGAffineTransform? Matrix {
 			get {
 				NSObject value;
@@ -100,6 +133,11 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Describes the character set supported by the specified font.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSCharacterSet CharacterSet {
 			get {
 				return Dictionary [UIFontDescriptor.CharacterSetAttribute] as NSCharacterSet;
@@ -113,6 +151,15 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Specifies the list of sub descriptors to be used before the system default fallbacks.</summary>
+		///         <value>The default is the list of descriptors based on the user locale.</value>
+		///         <remarks>
+		///
+		/// 	  By setting this property, developers can override the list
+		/// 	  of UIFontDescriptors to be used before using the system
+		/// 	  defaults.
+		///
+		/// 	</remarks>
 		public UIFontDescriptor [] CascadeList {
 			get {
 				return GetArray<UIFontDescriptor> (UIFontDescriptor.CascadeListAttribute);
@@ -127,6 +174,11 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Font traits.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public UIFontTraits Traits {
 			get {
 				var traits = GetNSDictionary (UIFontDescriptor.TraitsAttribute);
@@ -144,6 +196,10 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Override for font's fixed advance for individual glyphs.</summary>
+		///         <value>Default value is 0, null if not set.</value>
+		///         <remarks>
+		///         </remarks>
 		public float? FixedAdvance {
 			get {
 				return GetFloatValue (UIFontDescriptor.FixedAdvanceAttribute);
@@ -153,6 +209,10 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Weakly-typed version of the FeatureSettings properties</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>This uses the raw, untyped version of the FeatureSettings.</remarks>
 		public NSDictionary [] WeakFeatureSettings {
 			get {
 				return GetArray<NSDictionary> (UIFontDescriptor.FeatureSettingsAttribute);
@@ -166,6 +226,7 @@ namespace UIKit {
 			}
 		}
 
+		/// <include file="../../docs/api/UIKit/UIFontAttributes.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIFontAttributes.FeatureSettings']/*" />
 		public UIFontFeature [] FeatureSettings {
 			get {
 				var dictArray = WeakFeatureSettings;
@@ -186,36 +247,72 @@ namespace UIKit {
 
 #if !COREBUILD
 	public partial class UIFontDescriptor {
+		/// <summary>Gets the <see cref="T:UIKit.UIFontDescriptor" /> describing the preferred font for headlines.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public static UIFontDescriptor PreferredHeadline {
 			get {
 				return GetPreferredDescriptorForTextStyle (UIFontTextStyle.Headline);
 			}
 		}
 
+		/// <summary>Gets the <see cref="T:UIKit.UIFontDescriptor" /> describing the preferred font for body text.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public static UIFontDescriptor PreferredBody {
 			get {
 				return GetPreferredDescriptorForTextStyle (UIFontTextStyle.Body);
 			}
 		}
 
+		/// <summary>Gets the <see cref="T:UIKit.UIFontDescriptor" /> describing the preferred font for subheadings.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public static UIFontDescriptor PreferredSubheadline {
 			get {
 				return GetPreferredDescriptorForTextStyle (UIFontTextStyle.Subheadline);
 			}
 		}
 
+		/// <summary>Gets the <see cref="T:UIKit.UIFontDescriptor" /> describing the preferred font for footnotes.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public static UIFontDescriptor PreferredFootnote {
 			get {
 				return GetPreferredDescriptorForTextStyle (UIFontTextStyle.Footnote);
 			}
 		}
 
+		/// <summary>Gets the <see cref="T:UIKit.UIFontDescriptor" /> describing the preferred font for captions.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public static UIFontDescriptor PreferredCaption1 {
 			get {
 				return GetPreferredDescriptorForTextStyle (UIFontTextStyle.Caption1);
 			}
 		}
 
+		/// <summary>Gets the <see cref="T:UIKit.UIFontDescriptor" /> describing the preferred font for 'caption 2'.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public static UIFontDescriptor PreferredCaption2 {
 			get {
 				return GetPreferredDescriptorForTextStyle (UIFontTextStyle.Caption2);
@@ -223,6 +320,12 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <summary>Gets the <see cref="T:UIKit.UIFontDescriptor" /> describing the preferred font for titles ('Title 1').</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -234,6 +337,12 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <summary>Gets the <see cref="T:UIKit.UIFontDescriptor" /> describing the preferred font for level 2 titles ('Title 2').</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -245,6 +354,12 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <summary>Gets the <see cref="T:UIKit.UIFontDescriptor" /> describing the preferred font for level 3 titles ('Title 3').</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -256,6 +371,12 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <summary>Gets the <see cref="T:UIKit.UIFontDescriptor" /> describing the preferred font for callouts.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -328,48 +449,100 @@ namespace UIKit {
 			return null;
 		}
 
+		/// <summary>The font family.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public string Family {
 			get {
 				return GetStringValue (UIFontDescriptor.FamilyAttribute);
 			}
 		}
 
+		/// <summary>Name of the descriptor.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public string Name {
 			get {
 				return GetStringValue (UIFontDescriptor.NameAttribute);
 			}
 		}
 
+		/// <summary>The font face.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public string Face {
 			get {
 				return GetStringValue (UIFontDescriptor.FaceAttribute);
 			}
 		}
 
+		/// <summary>Font size (if set).</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public float? Size {
 			get {
 				return GetFloatValue (UIFontDescriptor.SizeAttribute);
 			}
 		}
 
+		/// <summary>The visible name for this descriptor.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public string VisibleName {
 			get {
 				return GetStringValue (UIFontDescriptor.VisibleNameAttribute);
 			}
 		}
 
+		/// <summary>Name of the style to use for text.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public NSString TextStyle {
 			get {
 				return GetStringValue (UIFontDescriptor.TextStyleAttribute);
 			}
 		}
 
+		/// <summary>Describes the character set supported by the specified font.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para>
+		///           </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
+		///         <remarks>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public NSCharacterSet CharacterSet {
 			get {
 				return GetObject (UIFontDescriptor.CharacterSetAttribute) as NSCharacterSet;
 			}
 		}
 
+		/// <summary>Specifies the list of sub descriptors to be used before the system default fallbacks.</summary>
+		///         <value>The default is the list of descriptors based on the user locale.</value>
+		///         <remarks>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public UIFontDescriptor [] CascadeList {
 			get {
 				var o = GetObject (UIFontDescriptor.CascadeListAttribute) as NSArray;
@@ -379,6 +552,12 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Font's traits.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public UIFontTraits Traits {
 			get {
 				var traits = GetObject (UIFontDescriptor.TraitsAttribute) as NSDictionary;
@@ -388,12 +567,23 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Override for font's fixed advance for individual glyphs.</summary>
+		///         <value>Default value is 0, null if not set.</value>
+		///         <remarks>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public float? FixedAdvance {
 			get {
 				return GetFloatValue (UIFontDescriptor.FixedAdvanceAttribute);
 			}
 		}
 
+		/// <summary>Weakly typed version of the feature settings.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public NSDictionary [] WeakFeatureSettings {
 			get {
 				var wf = GetObject (UIFontDescriptor.FeatureSettingsAttribute) as NSArray;
@@ -403,6 +593,7 @@ namespace UIKit {
 			}
 		}
 
+		/// <include file="../../docs/api/UIKit/UIFontDescriptor.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIFontDescriptor.FeatureSettings']/*" />
 		public UIFontFeature [] FeatureSettings {
 			get {
 				var dictArray = WeakFeatureSettings;
@@ -419,17 +610,29 @@ namespace UIKit {
 
 	// that's a convenience enum that maps to UIFontDescriptorXXX which are internal (hidden) NSString
 	public enum UIFontDescriptorAttribute {
+		/// <summary>Key to specify that font family must be matched.</summary>
 		Family,
+		/// <summary>Key to specify that font face must be matched.</summary>
 		Face,
+		/// <summary>Key to specify that the font name must be matched.</summary>
 		Name,
+		/// <summary>Key to specify that the font size must be matched.</summary>
 		Size,
+		/// <summary>Key to specify the font's visible name.</summary>
 		VisibleName,
+		/// <summary>Key to retrieve the font transformation matrix.</summary>
 		Matrix,
+		/// <summary>Key to specify that character sets must be matched.</summary>
 		CharacterSet,
+		/// <summary>Key to specify a list of sub-descriptors.</summary>
 		CascadeList,
+		/// <summary>Key to specify a dictionary fully describing the font's traits.</summary>
 		Traits,
+		/// <summary>Key to represent a value that overrides the glyph advancement specified by the font.</summary>
 		FixedAdvance,
+		/// <summary>Key to represent an array of dictionaries containing non-default font attributes.</summary>
 		FeatureSettings,
+		/// <summary>Key to specify that the text style must be matched.</summary>
 		TextStyle,
 	}
 
@@ -437,6 +640,9 @@ namespace UIKit {
 		public UIFontTraits () { }
 		public UIFontTraits (NSDictionary dictionary) : base (dictionary) { }
 
+		/// <summary>The symbolic traits, if any, of the UIFont.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public UIFontDescriptorSymbolicTraits? SymbolicTrait {
 			get {
 				return (UIFontDescriptorSymbolicTraits?) GetInt32Value (UIFontDescriptor.SymbolicTrait);
@@ -446,6 +652,9 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>The weight of the UIFont, if set.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? Weight {
 			get {
 				return GetInt32Value (UIFontDescriptor.WeightTrait);
@@ -455,6 +664,9 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>The width of the UIFont, if set.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? Width {
 			get {
 				return GetInt32Value (UIFontDescriptor.WidthTrait);
@@ -464,6 +676,9 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>The slant, if any, of the UIFont.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? Slant {
 			get {
 				return GetInt32Value (UIFontDescriptor.SlantTrait);

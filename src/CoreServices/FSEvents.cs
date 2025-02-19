@@ -22,11 +22,16 @@ namespace CoreServices {
 	// FSEvents.h: typedef UInt32                          FSEventStreamCreateFlags;
 	[Flags]
 	public enum FSEventStreamCreateFlags : uint {
+		/// <summary>To be added.</summary>
 		None = 0x00000000,
 		/*UseCFTypes = 0x00000001,*/
+		/// <summary>To be added.</summary>
 		NoDefer = 0x00000002,
+		/// <summary>To be added.</summary>
 		WatchRoot = 0x00000004,
+		/// <summary>To be added.</summary>
 		IgnoreSelf = 0x00000008,
+		/// <summary>To be added.</summary>
 		FileEvents = 0x00000010,
 #if NET
 		[SupportedOSPlatform ("macos")]
@@ -45,28 +50,51 @@ namespace CoreServices {
 	// FSEvents.h: typedef UInt32                          FSEventStreamEventFlags;
 	[Flags]
 	public enum FSEventStreamEventFlags : uint {
+		/// <summary>To be added.</summary>
 		None = 0x00000000,
+		/// <summary>To be added.</summary>
 		MustScanSubDirs = 0x00000001,
+		/// <summary>To be added.</summary>
 		UserDropped = 0x00000002,
+		/// <summary>To be added.</summary>
 		KernelDropped = 0x00000004,
+		/// <summary>To be added.</summary>
 		EventIdsWrapped = 0x00000008,
+		/// <summary>To be added.</summary>
 		HistoryDone = 0x00000010,
+		/// <summary>To be added.</summary>
 		RootChanged = 0x00000020,
+		/// <summary>To be added.</summary>
 		Mount = 0x00000040,
+		/// <summary>To be added.</summary>
 		Unmount = 0x00000080,
+		/// <summary>To be added.</summary>
 		ItemCreated = 0x00000100,
+		/// <summary>To be added.</summary>
 		ItemRemoved = 0x00000200,
+		/// <summary>To be added.</summary>
 		ItemInodeMetaMod = 0x00000400,
+		/// <summary>To be added.</summary>
 		ItemRenamed = 0x00000800,
+		/// <summary>To be added.</summary>
 		ItemModified = 0x00001000,
+		/// <summary>To be added.</summary>
 		ItemFinderInfoMod = 0x00002000,
+		/// <summary>To be added.</summary>
 		ItemChangeOwner = 0x00004000,
+		/// <summary>To be added.</summary>
 		ItemXattrMod = 0x00008000,
+		/// <summary>To be added.</summary>
 		ItemIsFile = 0x00010000,
+		/// <summary>To be added.</summary>
 		ItemIsDir = 0x00020000,
+		/// <summary>To be added.</summary>
 		ItemIsSymlink = 0x00040000,
+		/// <summary>To be added.</summary>
 		OwnEvent = 0x00080000,
+		/// <summary>To be added.</summary>
 		ItemIsHardlink = 0x00100000,
+		/// <summary>To be added.</summary>
 		ItemIsLastHardlink = 0x00200000,
 #if NET
 		[SupportedOSPlatform ("macos")]
@@ -78,8 +106,17 @@ namespace CoreServices {
 	[SupportedOSPlatform ("macos")]
 #endif
 	public struct FSEvent {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ulong Id { get; internal set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Path { get; internal set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public FSEventStreamEventFlags Flags { get; internal set; }
 		public ulong FileId { get; internal set; }
 
@@ -88,6 +125,8 @@ namespace CoreServices {
 			return String.Format ("[FSEvent: Id={0}, Path={1}, Flags={2}, FileId={3}]", Id, Path, Flags, FileId);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public const ulong SinceNowId = UInt64.MaxValue;
 
 		[DllImport (Constants.CoreServicesLibrary)]
@@ -110,6 +149,9 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern ulong FSEventsGetCurrentEventId ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static ulong CurrentEventId {
 			get { return FSEventsGetCurrentEventId (); }
 		}
@@ -150,6 +192,9 @@ namespace CoreServices {
 	[SupportedOSPlatform ("macos")]
 #endif
 	public sealed class FSEventStreamEventsArgs : EventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public FSEvent [] Events { get; private set; }
 
 		internal FSEventStreamEventsArgs (FSEvent [] events)
@@ -451,6 +496,9 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern IntPtr FSEventStreamCopyDescription (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Description {
 			get {
 				if (Handle == IntPtr.Zero) {
@@ -571,6 +619,9 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern IntPtr FSEventStreamCopyPathsBeingWatched (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? []? PathsBeingWatched {
 			get {
 				var cfarray = FSEventStreamCopyPathsBeingWatched (GetCheckedHandle ());
@@ -607,6 +658,9 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern ulong FSEventStreamGetLatestEventId (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ulong LatestEventId {
 			get {
 				return FSEventStreamGetLatestEventId (GetCheckedHandle ());

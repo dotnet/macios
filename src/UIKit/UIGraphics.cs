@@ -141,6 +141,11 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static CGRect UIGraphicsGetPDFContextBounds ();
 
+		/// <summary>Return the current bounds for the PDF page.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static CGRect PDFContextBounds {
 			get {
 				return UIGraphicsGetPDFContextBounds ();

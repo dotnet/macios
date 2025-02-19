@@ -625,6 +625,9 @@ namespace AVKit {
 		[Export ("videoGravity")]
 		string VideoGravity { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMacCatalyst]
 		[Export ("readyForDisplay")]
 		bool ReadyForDisplay { [Bind ("isReadyForDisplay")] get; }
@@ -1138,9 +1141,13 @@ namespace AVKit {
 	[NoMacCatalyst]
 	[Native]
 	public enum AVCaptureViewControlsStyle : long {
+		/// <summary>To be added.</summary>
 		Inline,
+		/// <summary>To be added.</summary>
 		Floating,
+		/// <summary>To be added.</summary>
 		InlineDeviceSelection,
+		/// <summary>To be added.</summary>
 		Default = Inline,
 	}
 
@@ -1149,7 +1156,9 @@ namespace AVKit {
 	[NoMacCatalyst]
 	[Native]
 	public enum AVPlayerViewTrimResult : long {
+		/// <summary>To be added.</summary>
 		OKButton,
+		/// <summary>To be added.</summary>
 		CancelButton,
 	}
 

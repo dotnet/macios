@@ -27,7 +27,11 @@ namespace AVFoundation {
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVAudio3DVectorOrientation {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Vector3 Forward;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Vector3 Up;
 
 		public AVAudio3DVectorOrientation (Vector3 forward, Vector3 up)
@@ -79,8 +83,14 @@ namespace AVFoundation {
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVAudio3DAngularOrientation {
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float Yaw;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float Pitch;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float Roll;
 
 		public override string ToString ()
@@ -129,8 +139,14 @@ namespace AVFoundation {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVCaptureWhiteBalanceGains {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float RedGain;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float GreenGain;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float BlueGain;
 
 		public AVCaptureWhiteBalanceGains (float redGain, float greenGain, float blueGain)
@@ -186,7 +202,11 @@ namespace AVFoundation {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVCaptureWhiteBalanceChromaticityValues {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float X;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float Y;
 
 		public AVCaptureWhiteBalanceChromaticityValues (float x, float y)
@@ -237,7 +257,11 @@ namespace AVFoundation {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVCaptureWhiteBalanceTemperatureAndTintValues {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float Temperature;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float Tint;
 
 		public AVCaptureWhiteBalanceTemperatureAndTintValues (float temperature, float tint)

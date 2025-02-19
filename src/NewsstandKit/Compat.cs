@@ -15,6 +15,9 @@ namespace NewsstandKit {
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("The NewsstandKit framework has been removed from iOS.")]
 	public unsafe partial class NKAssetDownload : NSObject {
+		/// <summary>The handle for this class.</summary>
+		///         <value>The pointer to the Objective-C class.</value>
+		///         <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
 		public override NativeHandle ClassHandle { get { throw new InvalidOperationException (Constants.NewsstandKitRemoved); } }
 
 		protected NKAssetDownload (NSObjectFlag t) : base (t)
@@ -32,24 +35,36 @@ namespace NewsstandKit {
 			throw new InvalidOperationException (Constants.NewsstandKitRemoved);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual string Identifier {
 			get {
 				throw new InvalidOperationException (Constants.NewsstandKitRemoved);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual NKIssue? Issue {
 			get {
 				throw new InvalidOperationException (Constants.NewsstandKitRemoved);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual NSUrlRequest UrlRequest {
 			get {
 				throw new InvalidOperationException (Constants.NewsstandKitRemoved);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual NSDictionary? UserInfo {
 			get {
 				throw new InvalidOperationException (Constants.NewsstandKitRemoved);
@@ -68,6 +83,9 @@ namespace NewsstandKit {
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("The NewsstandKit framework has been removed from iOS.")]
 	public unsafe partial class NKIssue : NSObject {
+		/// <summary>The handle for this class.</summary>
+		///         <value>The pointer to the Objective-C class.</value>
+		///         <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
 		public override NativeHandle ClassHandle { get { throw new InvalidOperationException (Constants.NewsstandKitRemoved); } }
 
 		protected NKIssue (NSObjectFlag t) : base (t)
@@ -85,36 +103,52 @@ namespace NewsstandKit {
 			throw new InvalidOperationException (Constants.NewsstandKitRemoved);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual NSUrl ContentUrl {
 			get {
 				throw new InvalidOperationException (Constants.NewsstandKitRemoved);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual NSDate Date {
 			get {
 				throw new InvalidOperationException (Constants.NewsstandKitRemoved);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual NKAssetDownload [] DownloadingAssets {
 			get {
 				throw new InvalidOperationException (Constants.NewsstandKitRemoved);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual string Name {
 			get {
 				throw new InvalidOperationException (Constants.NewsstandKitRemoved);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual NKIssueContentStatus Status {
 			get {
 				throw new InvalidOperationException (Constants.NewsstandKitRemoved);
 			}
 		}
 
+		/// <include file="../../docs/api/NewsstandKit/NKIssue.xml" path="/Documentation/Docs[@DocId='P:NewsstandKit.NKIssue.DownloadCompletedNotification']/*" />
 		public static NSString DownloadCompletedNotification {
 			get {
 				throw new InvalidOperationException (Constants.NewsstandKitRemoved);
@@ -139,14 +173,20 @@ namespace NewsstandKit {
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("The NewsstandKit framework has been removed from iOS.")]
 	public enum NKIssueContentStatus : long {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Downloading = 1,
+		/// <summary>To be added.</summary>
 		Available = 2,
 	}
 
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("The NewsstandKit framework has been removed from iOS.")]
 	public unsafe partial class NKLibrary : NSObject {
+		/// <summary>The handle for this class.</summary>
+		///         <value>The pointer to the Objective-C class.</value>
+		///         <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
 		public override NativeHandle ClassHandle { get { throw new InvalidOperationException (Constants.NewsstandKitRemoved); } }
 
 		protected NKLibrary (NSObjectFlag t) : base (t)
@@ -174,6 +214,9 @@ namespace NewsstandKit {
 			throw new InvalidOperationException (Constants.NewsstandKitRemoved);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual NKIssue? CurrentlyReadingIssue {
 			get {
 				throw new InvalidOperationException (Constants.NewsstandKitRemoved);
@@ -183,18 +226,27 @@ namespace NewsstandKit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual NKAssetDownload [] DownloadingAssets {
 			get {
 				throw new InvalidOperationException (Constants.NewsstandKitRemoved);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual NKIssue [] Issues {
 			get {
 				throw new InvalidOperationException (Constants.NewsstandKitRemoved);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NKLibrary? SharedLibrary {
 			get {
 				throw new InvalidOperationException (Constants.NewsstandKitRemoved);

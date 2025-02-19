@@ -509,25 +509,58 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface PKPaymentRequest {
+		/// <summary>The developer's merchant identifier.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("merchantIdentifier")]
 		string MerchantIdentifier { get; set; }
 
+		/// <summary>The ISO 3166 country code for the country defining the payment request.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("countryCode")]
 		string CountryCode { get; set; }
 
+		/// <summary>The set of payment networks supported (Use values from <see cref="T:PassKit.PKPaymentNetwork" />).</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("supportedNetworks", ArgumentSemantic.Copy)]
 		NSString [] SupportedNetworks { get; set; }
 
+		/// <summary>Defines the developer's payment-processing capabilities.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("merchantCapabilities", ArgumentSemantic.UnsafeUnretained)]
 		PKMerchantCapability MerchantCapabilities { get; set; }
 
+		/// <summary>An array of <see cref="T:PassKit.PKPaymentSummaryItem" /> objects that summarize the amount of payment.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("paymentSummaryItems", ArgumentSemantic.Copy)]
 		PKPaymentSummaryItem [] PaymentSummaryItems { get; set; }
 
+		/// <summary>The ISO 4217 currency code in which the payment request is being made.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("currencyCode")]
 		string CurrencyCode { get; set; }
@@ -545,6 +578,9 @@ namespace PassKit {
 		[Export ("shippingContactEditingMode", ArgumentSemantic.Assign)]
 		PKShippingContactEditingMode ShippingContactEditingMode { get; set; }
 
+		/// <summary>The set of billing address fields that must be filled in.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'RequiredBillingContactFields' instead.")]
 		[MacCatalyst (13, 1)]
@@ -560,6 +596,9 @@ namespace PassKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'BillingContact' instead.")]
 		ABRecord BillingAddress { get; set; }
 
+		/// <summary>The set of shipping address fields that must be filled in.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'RequiredShippingContactFields' instead.")]
 		[MacCatalyst (13, 1)]
@@ -575,39 +614,81 @@ namespace PassKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ShippingContact' instead.")]
 		ABRecord ShippingAddress { get; set; }
 
+		/// <summary>The set of supported shipping methods.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("shippingMethods", ArgumentSemantic.Copy)]
 		PKShippingMethod [] ShippingMethods { get; set; }
 
+		/// <summary>Developer-specified extra data or state.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("applicationData", ArgumentSemantic.Copy)]
 		NSData ApplicationData { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("shippingType", ArgumentSemantic.Assign)]
 		PKShippingType ShippingType { get; set; }
 
+		/// <summary>Prepopulated shipping address.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("shippingContact", ArgumentSemantic.Strong)]
 		PKContact ShippingContact { get; set; }
 
+		/// <summary>Prepopulated billing address.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("billingContact", ArgumentSemantic.Strong)]
 		PKContact BillingContact { get; set; }
 
+		/// <summary>Gets the list of payment networks that are supported.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("availableNetworks")]
 		NSString [] AvailableNetworks { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("requiredBillingContactFields", ArgumentSemantic.Strong)]
 		NSSet WeakRequiredBillingContactFields { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("requiredShippingContactFields", ArgumentSemantic.Strong)]
 		NSSet WeakRequiredShippingContactFields { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("supportedCountries", ArgumentSemantic.Copy)]
 		NSSet<NSString> SupportedCountries { get; set; }
@@ -1666,9 +1747,15 @@ namespace PassKit {
 	[BaseType (typeof (NSObject))]
 	interface PKDisbursementRequest {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("currencyCode")]
 		string CurrencyCode { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("summaryItems", ArgumentSemantic.Copy)]
 		PKPaymentSummaryItem [] SummaryItems { get; set; }
 

@@ -100,10 +100,15 @@ namespace CarPlay {
 	[Flags]
 	[Native]
 	enum CPManeuverDisplayStyle : long {
+		/// <summary>To be added.</summary>
 		Default,
+		/// <summary>To be added.</summary>
 		LeadingSymbol,
+		/// <summary>To be added.</summary>
 		TrailingSymbol,
+		/// <summary>To be added.</summary>
 		SymbolOnly,
+		/// <summary>To be added.</summary>
 		InstructionOnly,
 	}
 
@@ -974,9 +979,15 @@ namespace CarPlay {
 		[DesignatedInitializer]
 		NativeHandle Constructor ([NullAllowed] Action<CPMapButton> handler);
 
+		/// <summary>Gets or sets whether the button is enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
+		/// <summary>Gets or sets whether the button is visible.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hidden")]
 		bool Hidden { [Bind ("isHidden")] get; set; }
 
@@ -1027,6 +1038,9 @@ namespace CarPlay {
 		[Export ("hidesButtonsWithNavigationBar")]
 		bool HidesButtonsWithNavigationBar { get; set; }
 
+		/// <summary>Gets or sets the delegate object for the map.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakMapDelegate")]
 		[NullAllowed]
 		ICPMapTemplateDelegate MapDelegate { get; set; }
@@ -1040,6 +1054,9 @@ namespace CarPlay {
 		[Export ("dismissPanningInterfaceAnimated:")]
 		void DismissPanningInterface (bool animated);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("panningInterfaceVisible")]
 		bool PanningInterfaceVisible { [Bind ("isPanningInterfaceVisible")] get; }
 

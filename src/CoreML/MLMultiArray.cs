@@ -84,7 +84,7 @@ namespace CoreML {
 		///             <code lang="csharp lang-csharp"><![CDATA[
 		/// NSError err;
 		/// var ma = new CoreML.MLMultiArray(new NSNumber[] { 3, 5, 7, 9 },CoreML.MLMultiArrayDataType.Int32, out err);
-		/// if (err != null) 
+		/// if (err is not null) 
 		/// {
 		///    HandleError(err);
 		///    return;

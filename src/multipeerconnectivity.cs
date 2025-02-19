@@ -246,7 +246,7 @@ namespace MultipeerConnectivity {
 		MCPeerID MyPeerID { get; }
 
 		/// <include file="../docs/api/MultipeerConnectivity/MCNearbyServiceAdvertiser.xml" path="/Documentation/Docs[@DocId='P:MultipeerConnectivity.MCNearbyServiceAdvertiser.DiscoveryInfo']/*" />
-	[NullAllowed]
+		[NullAllowed]
 		[Export ("discoveryInfo")]
 		NSDictionary DiscoveryInfo { get; }
 

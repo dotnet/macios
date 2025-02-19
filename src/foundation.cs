@@ -1348,7 +1348,7 @@ namespace Foundation {
 		NSDate StartOfDayForDate (NSDate date);
 
 		/// <include file="../docs/api/Foundation/NSCalendar.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSCalendar.DayChangedNotification']/*" />
-	[MacCatalyst (13, 1)]
+		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSCalendarDayChangedNotification")]
 		NSString DayChangedNotification { get; }
@@ -10967,7 +10967,7 @@ namespace Foundation {
 		void EndAccessingResources ();
 
 		/// <include file="../docs/api/Foundation/NSBundleResourceRequest.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSBundleResourceRequest.LowDiskSpaceNotification']/*" />
-	[Field ("NSBundleResourceRequestLowDiskSpaceNotification")]
+		[Field ("NSBundleResourceRequestLowDiskSpaceNotification")]
 		[Notification]
 		NSString LowDiskSpaceNotification { get; }
 

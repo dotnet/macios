@@ -33,9 +33,13 @@ namespace SpriteKit {
 	/// <summary>An enumeration whose values specify the time-varying behavior of a <see cref="T:SpriteKit.SKAction" />. Used with <see cref="P:SpriteKit.SKAction.TimingMode" />.</summary>
 	[Native]
 	public enum SKActionTimingMode : long {
+		/// <summary>Render the animation with no easing.</summary>
 		Linear = 0,
+		/// <summary>Ease the animation in.</summary>
 		EaseIn = 1,
+		/// <summary>Ease the animation out.</summary>
 		EaseOut = 2,
+		/// <summary>Ease the animation in and out.</summary>
 		EaseInEaseOut = 3
 	}
 
@@ -127,14 +131,23 @@ namespace SpriteKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKAttributeType : long {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Float = 1,
+		/// <summary>To be added.</summary>
 		VectorFloat2 = 2,
+		/// <summary>To be added.</summary>
 		VectorFloat3 = 3,
+		/// <summary>To be added.</summary>
 		VectorFloat4 = 4,
+		/// <summary>To be added.</summary>
 		HalfFloat = 5,
+		/// <summary>To be added.</summary>
 		VectorHalfFloat2 = 6,
+		/// <summary>To be added.</summary>
 		VectorHalfFloat3 = 7,
+		/// <summary>To be added.</summary>
 		VectorHalfFloat4 = 8,
 	}
 

@@ -23,9 +23,13 @@ namespace MapKit {
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum MKDirectionsTransportType : ulong {
+		/// <summary>Routing for automobiles.</summary>
 		Automobile = 1 << 0,
+		/// <summary>Routing for walking.</summary>
 		Walking = 1 << 1,
+		/// <summary>Routing for public transport.</summary>
 		Transit = 1 << 2,
+		/// <summary>The routing type is not specified.</summary>
 		Any = 0x0FFFFFFF,
 	}
 
@@ -46,9 +50,13 @@ namespace MapKit {
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum MKDistanceFormatterUnits : ulong {
+		/// <summary>To be added.</summary>
 		Default,
+		/// <summary>To be added.</summary>
 		Metric,
+		/// <summary>To be added.</summary>
 		Imperial,
+		/// <summary>To be added.</summary>
 		ImperialWithYards,
 	}
 
@@ -56,8 +64,11 @@ namespace MapKit {
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum MKDistanceFormatterUnitStyle : ulong {
+		/// <summary>To be added.</summary>
 		Default = 0,
+		/// <summary>To be added.</summary>
 		Abbreviated,
+		/// <summary>To be added.</summary>
 		Full,
 	}
 
@@ -74,10 +85,15 @@ namespace MapKit {
 	[Native]
 	[ErrorDomain ("MKErrorDomain")]
 	public enum MKErrorCode : ulong {
+		/// <summary>To be added.</summary>
 		Unknown = 1,
+		/// <summary>To be added.</summary>
 		ServerFailure,
+		/// <summary>To be added.</summary>
 		LoadingThrottled,
+		/// <summary>To be added.</summary>
 		PlacemarkNotFound,
+		/// <summary>To be added.</summary>
 		DirectionsNotFound,
 		DecodingFailed,
 	}
@@ -88,10 +104,15 @@ namespace MapKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKAnnotationViewDragState : ulong {
+		/// <summary>To be added.</summary>
 		None,
+		/// <summary>To be added.</summary>
 		Starting,
+		/// <summary>To be added.</summary>
 		Dragging,
+		/// <summary>To be added.</summary>
 		Canceling,
+		/// <summary>To be added.</summary>
 		Ending,
 	}
 
@@ -137,7 +158,9 @@ namespace MapKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKAnnotationViewCollisionMode : long {
+		/// <summary>Indicates that the entire frame rectangle should be used for collision detection.</summary>
 		Rectangle,
+		/// <summary>Indicates that a circle inscribed within the frame rectangle should be used for collision detection.</summary>
 		Circle,
 		[TV (14, 0)]
 		[iOS (14, 0)]
@@ -156,8 +179,11 @@ namespace MapKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKFeatureVisibility : long {
+		/// <summary>Indicates that the title text is shown or hidden in response to the map state.</summary>
 		Adaptive,
+		/// <summary>Indicates that the title text is hidden.</summary>
 		Hidden,
+		/// <summary>Indicates that the title text is always visible.</summary>
 		Visible,
 	}
 

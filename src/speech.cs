@@ -27,19 +27,28 @@ namespace Speech {
 	[Native]
 	[MacCatalyst (13, 1), TV (18, 0)]
 	public enum SFSpeechRecognitionTaskState : long {
+		/// <summary>The recognition task is beginning.</summary>
 		Starting = 0,
+		/// <summary>The task is attempting to recognize speech.</summary>
 		Running = 1,
+		/// <summary>The task is ending.</summary>
 		Finishing = 2,
+		/// <summary>Speech recognition is in the process of being canceled.</summary>
 		Canceling = 3,
+		/// <summary>Speech recognition has completed.</summary>
 		Completed = 4,
 	}
 
 	[Native]
 	[MacCatalyst (13, 1), TV (18, 0)]
 	public enum SFSpeechRecognitionTaskHint : long {
+		/// <summary>No hint exists.</summary>
 		Unspecified = 0,
+		/// <summary>Free-form dictation.</summary>
 		Dictation = 1,
+		/// <summary>A request that may involve keywords associated with search.</summary>
 		Search = 2,
+		/// <summary>Confirming or denying a request.</summary>
 		Confirmation = 3,
 	}
 
@@ -47,9 +56,13 @@ namespace Speech {
 	[Native]
 	[MacCatalyst (13, 1), TV (18, 0)]
 	public enum SFSpeechRecognizerAuthorizationStatus : long {
+		/// <summary>Permission has not been presented.</summary>
 		NotDetermined,
+		/// <summary>The user has denied permission for speech recognition.</summary>
 		Denied,
+		/// <summary>To be added.</summary>
 		Restricted,
+		/// <summary>The user has allowed speech recognition.</summary>
 		Authorized,
 	}
 
@@ -154,6 +167,9 @@ namespace Speech {
 		[Export ("transcriptions", ArgumentSemantic.Copy)]
 		SFTranscription [] Transcriptions { get; }
 
+		/// <summary>Gets whether this is the final attempt at recognition.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("final")]
 		bool Final { [Bind ("isFinal")] get; }
 
@@ -173,12 +189,18 @@ namespace Speech {
 		[Export ("state")]
 		SFSpeechRecognitionTaskState State { get; }
 
+		/// <summary>Gets whether the speech recognition activity is in its final stage.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("finishing")]
 		bool Finishing { [Bind ("isFinishing")] get; }
 
 		[Export ("finish")]
 		void Finish ();
 
+		/// <summary>Gets whether the speech recognition attempt was cancelled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancelled")]
 		bool Cancelled { [Bind ("isCancelled")] get; }
 
@@ -269,6 +291,11 @@ namespace Speech {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSLocale locale);
 
+		/// <summary>Gets whether speech recognition is currently available.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>Speech recognition is not supported on all devices and is always relient on Internet access.</para>
+		///         </remarks>
 		[Export ("available")]
 		bool Available { [Bind ("isAvailable")] get; }
 

@@ -98,6 +98,11 @@ namespace AudioUnit {
 	public class ExtAudioFile : IDisposable {
 		IntPtr _extAudioFile;
 
+		/// <summary>The client data format's maximum packet size in bytes.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public uint? ClientMaxPacketSize {
 			get {
 				uint size = sizeof (uint);
@@ -111,6 +116,11 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>The file data format's maximum packet size in bytes.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public uint? FileMaxPacketSize {
 			get {
 				uint size = sizeof (uint);
@@ -126,6 +136,11 @@ namespace AudioUnit {
 		}
 
 
+		/// <summary>The underlying AudioFile.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public IntPtr? AudioFile {
 			get {
 				uint size = (uint) IntPtr.Size;
@@ -140,6 +155,10 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>Returns underlying <see cref="T:AudioToolbox.AudioConverter" /> instance.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>AudioConverter changes are not propagated automatically. After changing any property <see cref="M:AudioUnit.ExtAudioFile.SynchronizeAudioConverter" /> method has to be called to synchronize the converter output format with the file data format.</remarks>
 		public AudioConverter? AudioConverter {
 			get {
 				uint size = sizeof (uint);
@@ -154,6 +173,11 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>The file's length in sample frames.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public long FileLengthFrames {
 			get {
 				long length;
@@ -170,6 +194,11 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>The file's actual data format.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public AudioStreamBasicDescription FileDataFormat {
 			get {
 				AudioStreamBasicDescription dc = new AudioStreamBasicDescription ();
@@ -185,6 +214,10 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>Specified the format of linear PCM.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property has to be set when encoding or decoding a non-PCM file data format.</remarks>
 		public AudioStreamBasicDescription ClientDataFormat {
 			get {
 				uint size = (uint) Marshal.SizeOf<AudioStreamBasicDescription> ();

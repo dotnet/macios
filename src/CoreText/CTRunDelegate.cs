@@ -269,6 +269,9 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTRunDelegateGetRefCon (IntPtr runDelegate);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CTRunDelegateOperations? Operations {
 			get {
 				return CTRunDelegateOperations.GetOperations (CTRunDelegateGetRefCon (Handle));

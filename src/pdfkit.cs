@@ -817,6 +817,9 @@ namespace PdfKit {
 		[Export ("color")]
 		NSColor Color { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NullAllowed]
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
@@ -832,6 +835,9 @@ namespace PdfKit {
 		[NullAllowed]
 		string Contents { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[NoMacCatalyst]
@@ -1242,33 +1248,63 @@ namespace PdfKit {
 	[NoMacCatalyst]
 	[BaseType (typeof (PdfAnnotation), Name = "PDFAnnotationButtonWidget")]
 	interface PdfAnnotationButtonWidget {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("controlType")]
 		PdfWidgetControlType ControlType { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("state")]
 		nint State { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("highlighted")]
 		bool Highlighted { [Bind ("isHighlighted")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("backgroundColor")]
 		NSColor BackgroundColor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allowsToggleToOff")]
 		bool AllowsToggleToOff { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("font")]
 		NSFont Font { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fontColor")]
 		NSColor FontColor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("caption")]
 		string Caption { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fieldName")]
 		string FieldName { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("onStateValue")]
 		string OnStateValue { get; set; }
 	}
@@ -1279,25 +1315,46 @@ namespace PdfKit {
 	[NoMacCatalyst]
 	[BaseType (typeof (PdfAnnotation), Name = "PDFAnnotationChoiceWidget")]
 	interface PdfAnnotationChoiceWidget {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("stringValue")]
 		string Text { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("backgroundColor")]
 		NSColor BackgroundColor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("font")]
 		NSFont Font { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fontColor")]
 		NSColor FontColor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fieldName")]
 		string FieldName { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isListChoice")]
 		bool IsListChoice { get; set; }
 
 		// NSArray of NSString
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("choices")]
 		string [] Choices { get; set; }
 	}
@@ -1308,6 +1365,9 @@ namespace PdfKit {
 	[NoMacCatalyst]
 	[BaseType (typeof (PdfAnnotation), Name = "PDFAnnotationCircle")]
 	interface PdfAnnotationCircle {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("interiorColor")]
 		NSColor InteriorColor { get; set; }
 	}
@@ -1318,12 +1378,21 @@ namespace PdfKit {
 	[NoMacCatalyst]
 	[BaseType (typeof (PdfAnnotation), Name = "PDFAnnotationFreeText")]
 	interface PdfAnnotationFreeText {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("font")]
 		NSFont Font { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fontColor")]
 		NSColor FontColor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("alignment")]
 		NSTextAlignment Alignment { get; set; }
 	}
@@ -1334,6 +1403,9 @@ namespace PdfKit {
 	[NoMacCatalyst]
 	[BaseType (typeof (PdfAnnotation), Name = "PDFAnnotationInk")]
 	interface PdfAnnotationInk {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("paths")]
 		NSBezierPath [] Paths { get; }
 
@@ -1358,18 +1430,33 @@ namespace PdfKit {
 	[NoMacCatalyst]
 	[BaseType (typeof (PdfAnnotation), Name = "PDFAnnotationLine")]
 	interface PdfAnnotationLine {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("startPoint")]
 		CGPoint StartPoint { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("endPoint")]
 		CGPoint EndPoint { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("startLineStyle")]
 		PdfLineStyle StartLineStyle { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("endLineStyle")]
 		PdfLineStyle EndLineStyle { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("interiorColor")]
 		NSColor InteriorColor { get; set; }
 	}
@@ -1380,9 +1467,15 @@ namespace PdfKit {
 	[NoMacCatalyst]
 	[BaseType (typeof (PdfAnnotation), Name = "PDFAnnotationLink")]
 	interface PdfAnnotationLink {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("destination")]
 		PdfDestination Destination { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("URL")]
 		NSUrl Url { get; set; }
 
@@ -1396,9 +1489,15 @@ namespace PdfKit {
 	[NoMacCatalyst]
 	[BaseType (typeof (PdfAnnotation), Name = "PDFAnnotationMarkup")]
 	interface PdfAnnotationMarkup {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("quadrilateralPoints", ArgumentSemantic.Assign), NullAllowed]
 		NSArray WeakQuadrilateralPoints { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("markupType")]
 		PdfMarkupType MarkupType { get; set; }
 	}
@@ -1409,6 +1508,9 @@ namespace PdfKit {
 	[NoMacCatalyst]
 	[BaseType (typeof (PdfAnnotation), Name = "PDFAnnotationPopup")]
 	interface PdfAnnotationPopup {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isOpen")]
 		bool IsOpen { get; set; }
 	}
@@ -1419,6 +1521,9 @@ namespace PdfKit {
 	[NoMacCatalyst]
 	[BaseType (typeof (PdfAnnotation), Name = "PDFAnnotationSquare")]
 	interface PdfAnnotationSquare {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("interiorColor")]
 		NSColor InteriorColor { get; set; }
 	}
@@ -1429,6 +1534,9 @@ namespace PdfKit {
 	[NoMacCatalyst]
 	[BaseType (typeof (PdfAnnotation), Name = "PDFAnnotationStamp")]
 	interface PdfAnnotationStamp {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("name")]
 		string Name { get; set; }
 	}

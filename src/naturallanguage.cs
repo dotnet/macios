@@ -58,6 +58,9 @@ namespace NaturalLanguage {
 		[NullAllowed, Export ("dominantLanguage")]
 		NSString _DominantLanguage { get; }
 
+		/// <summary>Gets the language in which the text that was analyzed with <see cref="M:NaturalLanguage.NLLanguageRecognizer.Process(System.String)" /> was most likely written.</summary>
+		///         <value>The the language in which the text was most likely written.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("NLLanguageExtensions.GetValue (_DominantLanguage)")]
 		NLLanguage DominantLanguage { get; }
 
@@ -67,6 +70,9 @@ namespace NaturalLanguage {
 		NSDictionary<NSString, NSNumber> GetNativeLanguageHypotheses (nuint maxHypotheses);
 
 		// left in case the user does not want to get a c# dict
+		/// <summary>Gets or sets a list of language hints that use native types.</summary>
+		///         <value>A list of language hints that use native types.</value>
+		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("languageHints", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSNumber> NativeLanguageHints { get; set; }
@@ -75,6 +81,9 @@ namespace NaturalLanguage {
 		[Export ("languageConstraints", ArgumentSemantic.Copy)]
 		NSString [] _LanguageConstraints { get; set; }
 
+		/// <summary>Gets or sets the array of languages from which the recognizer must choose.</summary>
+		///         <value>The array of languages from which the recognizer must choose..</value>
+		///         <remarks>To be added.</remarks>
 		NLLanguage [] LanguageConstraints {
 			[Wrap ("Array.ConvertAll (_LanguageConstraints, e => NLLanguageExtensions.GetValue (e))")]
 			get;
@@ -123,6 +132,9 @@ namespace NaturalLanguage {
 		[return: NullAllowed]
 		NLModel Create (MLModel mlModel, [NullAllowed] out NSError error);
 
+		/// <summary>Gets the configuration information, such as which language the model supports, or the current version of the model.</summary>
+		///         <value>The configuration information, such as which language the model supports, or the current version of the model.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("configuration", ArgumentSemantic.Copy)]
 		NLModelConfiguration Configuration { get; }
 
@@ -216,9 +228,15 @@ namespace NaturalLanguage {
 		[Export ("tagSchemes", ArgumentSemantic.Copy)]
 		NSString [] _TagSchemes { get; }
 
+		/// <summary>Gets the tagging schemes that are supported by this tagger.</summary>
+		///         <value>The tagging schemes that are supported by this tagger.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Array.ConvertAll (_TagSchemes, e => NLTagSchemeExtensions.GetValue (e))")]
 		NLTagScheme [] TagSchemes { get; }
 
+		/// <summary>Gets or sets the string to tag.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("string", ArgumentSemantic.Retain)]
 		string String { get; set; }
 
@@ -238,6 +256,9 @@ namespace NaturalLanguage {
 		[NullAllowed, Export ("dominantLanguage")]
 		NSString _DominantLanguage { get; }
 
+		/// <summary>Gets the dominant language for the tagged text.</summary>
+		///         <value>The dominant language for the tagged text.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("NLLanguageExtensions.GetValue (_DominantLanguage)")]
 		NLLanguage DominantLanguage { get; }
 

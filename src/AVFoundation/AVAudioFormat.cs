@@ -36,6 +36,9 @@ namespace AVFoundation {
 			return !(a == b);
 		}
 
+		/// <summary>Gets the audio stream description.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("StreamDescription")]
 #if NET
 		[SupportedOSPlatform ("ios")]

@@ -54,6 +54,8 @@ namespace AudioToolbox {
 #if MONOMAC
 		// TODO:
 #else
+		/// <summary>A special system sound that can be used to make the device vibrate.</summary>
+		///         <remarks>This system sound does nothing on iPod touches.</remarks>
 		public static readonly SystemSound Vibrate = new SystemSound ((uint) SystemSoundId.Vibrate, false);
 #endif
 
@@ -97,6 +99,9 @@ namespace AudioToolbox {
 		}
 #endif
 
+		/// <summary>Gets or sets whether to override user preferences when calling <see cref="M:AudioToolbox.SystemSound.PlaySystemSound" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsUISound {
 			get {
 				uint out_size = sizeof (uint);
@@ -126,6 +131,9 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <summary>Controls whether the sound will complete playing, even if the application dies.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool CompletePlaybackIfAppDies {
 			get {
 				uint out_size = sizeof (uint);

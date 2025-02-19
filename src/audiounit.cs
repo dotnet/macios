@@ -712,9 +712,15 @@ namespace AudioUnit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AUAudioUnitPreset : NSSecureCoding {
+		/// <summary>Gets or sets a unique identifier for the preset.</summary>
+		///         <value>The unique identifier for the preset.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("number", ArgumentSemantic.Assign)]
 		nint Number { get; set; }
 
+		/// <summary>Gets or sets the name of the preset.</summary>
+		///         <value>The name of the preset.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("name")]
 		string Name { get; set; }
 	}
@@ -831,12 +837,21 @@ namespace AudioUnit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AUParameterNode {
+		/// <summary>Gets the permanent unique identifier for the node.</summary>
+		///         <value>The unique identifier for the node.</value>
+		///         <remarks>App developers must not change this property, as doing so will invalidate host documents between releases.</remarks>
 		[Export ("identifier")]
 		string Identifier { get; }
 
+		/// <summary>Gets or sets the key path, the concatenation of the parameter's and its parents' identifiers.</summary>
+		///         <value>The key path, the concatenation of the parameter's and its parents' identifiers.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("keyPath")]
 		string KeyPath { get; }
 
+		/// <summary>Gets the localized display name for the node.</summary>
+		///         <value>The localized display name for the node.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displayName")]
 		string DisplayName { get; }
 
@@ -857,12 +872,21 @@ namespace AudioUnit {
 		[Wrap ("new AUParameterObserverToken { ObserverToken = TokenByAddingParameterRecordingObserver (observer) }")]
 		AUParameterObserverToken CreateTokenByAddingParameterRecordingObserver (AUParameterRecordingObserver observer);
 
+		/// <summary>Gets or sets the <see cref="T:AudioUnit.AUImplementorValueObserver" /> that notifies the audio unit when a parameter value changes.</summary>
+		///         <value>The <see cref="T:AudioUnit.AUImplementorValueObserver" /> that notifies the audio unit when a parameter value changes.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("implementorValueObserver", ArgumentSemantic.Copy)]
 		AUImplementorValueObserver ImplementorValueObserver { get; set; }
 
+		/// <summary>Gets or sets the <see cref="T:AudioUnit.AUImplementorValueObserver" /> that updates stale parameter values.</summary>
+		///         <value>The <see cref="T:AudioUnit.AUImplementorValueObserver" /> that updates stale parameter values.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("implementorValueProvider", ArgumentSemantic.Copy)]
 		AUImplementorValueProvider ImplementorValueProvider { get; set; }
 
+		/// <summary>Gets or sets the callback that provides a parameter value when provided with a string representation of the value of the parameter.</summary>
+		///         <value>The callback that provides a parameter value when provided with a string representation of the value of the parameter.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("implementorValueFromStringCallback", ArgumentSemantic.Copy)]
 		AUImplementorValueFromStringCallback ImplementorValueFromStringCallback { get; set; }
 
@@ -872,9 +896,15 @@ namespace AudioUnit {
 		[Wrap ("RemoveParameterObserver (token.ObserverToken)")]
 		void RemoveParameterObserver (AUParameterObserverToken token);
 
+		/// <summary>Gets or sets the callback that provides a string representation of the value of the parameter.</summary>
+		///         <value>The callback that provides the string representation of the value of the parameter.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("implementorStringFromValueCallback", ArgumentSemantic.Copy),]
 		AUImplementorStringFromValueCallback ImplementorStringFromValueCallback { get; set; }
 
+		/// <summary>Callback for retrieving an abbreviated display name.</summary>
+		///         <value>The possibly abbreviated name.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("implementorDisplayNameWithLengthCallback", ArgumentSemantic.Copy)]
 		AUImplementorDisplayNameWithLengthCallback ImplementorDisplayNameWithLengthCallback { get; set; }
 
@@ -894,9 +924,15 @@ namespace AudioUnit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AUParameterNode))]
 	interface AUParameterGroup : NSSecureCoding {
+		/// <summary>Gets an array of the child nodes in the parameter group.</summary>
+		///         <value>An array of the child nodes in the parameter group.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("children")]
 		AUParameterNode [] Children { get; }
 
+		/// <summary>Gets an array that contains all the parameters in the parameter group, including parameters in parameter group children.</summary>
+		///         <value>An array that contains all the parameters in the parameter group, including parameters in parameter group children.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allParameters")]
 		AUParameter [] AllParameters { get; }
 	}

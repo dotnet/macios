@@ -20,6 +20,9 @@ using CoreVideo;
 
 namespace VideoToolbox {
 	public partial class VTCompressionProperties {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public VTProfileLevel ProfileLevel {
 			get {
 				var key = GetNSStringValue (VTCompressionPropertyKey.ProfileLevel);
@@ -288,6 +291,9 @@ namespace VideoToolbox {
 		}
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
@@ -320,6 +326,9 @@ namespace VideoToolbox {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public List<VTDataRateLimit>? DataRateLimits {
 			get {
 				using (var arr = GetNativeValue<NSArray> (VTCompressionPropertyKey.DataRateLimits)) {
@@ -351,6 +360,9 @@ namespace VideoToolbox {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public VTFieldDetail FieldDetail {
 			get {
 				var key = GetNSStringValue (VTCompressionPropertyKey.FieldDetail);
@@ -388,6 +400,9 @@ namespace VideoToolbox {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public VTColorPrimaries ColorPrimaries {
 			get {
 				var key = GetNSStringValue (VTCompressionPropertyKey.ColorPrimaries);
@@ -425,6 +440,9 @@ namespace VideoToolbox {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public VTTransferFunction TransferFunction {
 			get {
 				var key = GetNSStringValue (VTCompressionPropertyKey.TransferFunction);
@@ -457,6 +475,9 @@ namespace VideoToolbox {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public VTYCbCrMatrix YCbCrMatrix {
 			get {
 				var key = GetNSStringValue (VTCompressionPropertyKey.YCbCrMatrix);
@@ -489,6 +510,9 @@ namespace VideoToolbox {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public VTMultiPassStorage? MultiPassStorage {
 			get {
 				return GetNativeValue<VTMultiPassStorage> (VTCompressionPropertyKey.MultiPassStorage);

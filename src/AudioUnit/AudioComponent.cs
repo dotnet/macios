@@ -743,6 +743,9 @@ namespace AudioUnit {
 		static extern /* CFArrayRef */ IntPtr AudioUnitExtensionCopyComponentList (IntPtr /* CFString */ extensionIdentifier);
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -811,6 +814,8 @@ namespace AudioUnit {
 #endif
 	public static class AudioComponentValidationParameter {
 		//		#define kAudioComponentValidationParameter_ForceValidation		 "ForceValidation"
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static NSString ForceValidation = new NSString ("ForceValidation");
 
 		//		#define kAudioComponentValidationParameter_LoadOutOfProcess		 "LoadOutOfProcess"
@@ -826,6 +831,8 @@ namespace AudioUnit {
 		public static NSString LoadOutOfProcess = new NSString ("LoadOutOfProcess");
 
 		//		#define kAudioComponentValidationParameter_TimeOut				"TimeOut"
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static NSString TimeOut = new NSString ("TimeOut");
 	}
 

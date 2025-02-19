@@ -17,6 +17,9 @@ namespace AVFoundation {
 #if !MONOMAC
 	public partial class AVAssetDownloadUrlSession : NSUrlSession {
 
+		/// <summary>Gets the shared session data.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public new static NSUrlSession SharedSession {
 			get {
 				throw new NotSupportedException ("NS_UNAVAILABLE");

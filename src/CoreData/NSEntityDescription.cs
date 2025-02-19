@@ -14,6 +14,9 @@ using ObjCRuntime;
 namespace CoreData {
 	public partial class NSEntityDescription {
 #if NET
+		/// <summary>Gets or sets the uniqueness constraints for this entity.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]

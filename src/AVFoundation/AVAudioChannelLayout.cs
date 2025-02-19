@@ -41,6 +41,9 @@ namespace AVFoundation {
 			Marshal.FreeHGlobal (handleToLayout);
 		}
 
+		/// <summary>The underlying <see cref="T:AudioToolbox.AudioChannelLayout" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioChannelLayout? Layout {
 			get {
 				return AudioChannelLayout.FromHandle (_Layout);

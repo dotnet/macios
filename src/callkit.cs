@@ -173,8 +173,11 @@ namespace CallKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CXHandleType : long {
+		/// <summary>The handle is an arbitrary string.</summary>
 		Generic = 1,
+		/// <summary>The handle is a phone number.</summary>
 		PhoneNumber = 2,
+		/// <summary>The handle is an email address.</summary>
 		EmailAddress = 3,
 	}
 
@@ -725,6 +728,9 @@ namespace CallKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSUuid callUuid, bool onHold);
 
+		/// <summary>Gets or sets a value that tells whether the call is on hold.</summary>
+		///         <value>A value that tells whether the call is on hold.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("onHold")]
 		bool OnHold { [Bind ("isOnHold")] get; set; }
 	}
@@ -746,6 +752,9 @@ namespace CallKit {
 		[Export ("initWithCallUUID:muted:")]
 		NativeHandle Constructor (NSUuid callUuid, bool muted);
 
+		/// <summary>Gets or sets a value that controls whether the call is muted.</summary>
+		///         <value>A value that controls whether the call is muted.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("muted")]
 		bool Muted { [Bind ("isMuted")] get; set; }
 	}
@@ -771,6 +780,9 @@ namespace CallKit {
 		[NullAllowed, Export ("contactIdentifier")]
 		string ContactIdentifier { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("video")]
 		bool Video { [Bind ("isVideo")] get; set; }
 
@@ -797,6 +809,10 @@ namespace CallKit {
 		[Export ("UUID", ArgumentSemantic.Copy)]
 		NSUuid Uuid { get; }
 
+		/// <summary>Gets a value that tells whether the transaction is complete.</summary>
+		///         <value>
+		///           <see langword="true" /> if the transaction is complete. Otherwise, <see langword="false" />.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("complete", ArgumentSemantic.Assign)]
 		bool Complete { [Bind ("isComplete")] get; }
 

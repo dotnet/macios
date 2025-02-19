@@ -24,7 +24,9 @@ namespace IdentityLookup {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum ILMessageFilterAction : long {
+		/// <summary>Indicates that there is not enough information to choose an action.</summary>
 		None = 0,
+		/// <summary>Indicates that the message will be allowed.</summary>
 		Allow = 1,
 		Junk = 2,
 #if !NET
@@ -45,10 +47,15 @@ namespace IdentityLookup {
 	[ErrorDomain ("ILMessageFilterErrorDomain")]
 	[Native]
 	public enum ILMessageFilterError : long {
+		/// <summary>To be added.</summary>
 		System = 1,
+		/// <summary>To be added.</summary>
 		InvalidNetworkUrl = 2,
+		/// <summary>To be added.</summary>
 		NetworkUrlUnauthorized = 3,
+		/// <summary>To be added.</summary>
 		NetworkRequestFailed = 4,
+		/// <summary>To be added.</summary>
 		RedundantNetworkDeferral = 5,
 	}
 
@@ -58,9 +65,13 @@ namespace IdentityLookup {
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum ILClassificationAction : long {
+		/// <summary>Indicates that no action should be taken.</summary>
 		None = 0,
+		/// <summary>Indicates that the user reported that the message is not junk.</summary>
 		ReportNotJunk = 1,
+		/// <summary>Indicates that the user reported that the message is junk.</summary>
 		ReportJunk = 2,
+		/// <summary>Indicates that the user reported that the message is junk, and that they want to block the sender.</summary>
 		ReportJunkAndBlockSender = 3,
 	}
 

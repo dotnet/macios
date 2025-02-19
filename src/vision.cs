@@ -50,22 +50,39 @@ namespace Vision {
 	[Native]
 	enum VNErrorCode : long {
 		TuriCore = -1,
+		/// <summary>Indicates that no error occurred.</summary>
 		Ok = 0,
+		/// <summary>Indicates that the request was cancelled, either by the user or programmatically.</summary>
 		RequestCancelled,
+		/// <summary>Indicates an error relating to the image format.</summary>
 		InvalidFormat,
+		/// <summary>Indicates that the request failed in the underlying Core ML model.</summary>
 		OperationFailed,
+		/// <summary>Indicates an error relating to either an array or normalized units.</summary>
 		OutOfBoundsError,
+		/// <summary>Indicates an error relating to request options.</summary>
 		InvalidOption,
+		/// <summary>Indicates an error relating to the IO of the image, images, or underlying Core ML model.</summary>
 		IOError,
+		/// <summary>Indicates that a required option was not specified by the developer.</summary>
 		MissingOption,
+		/// <summary>Indicates that the underlying model can not answer the request.</summary>
 		NotImplemented,
+		/// <summary>An error occurred within the Vision system services.</summary>
 		InternalError,
+		/// <summary>Indicates that the request cannot be completed with the memory available to the app.</summary>
 		OutOfMemory,
+		/// <summary>Indicates an error of a non-determined type.</summary>
 		UnknownError,
+		/// <summary>Indicates that the requested operation is not supported on this image or image sequence.</summary>
 		InvalidOperation,
+		/// <summary>Indicates a non-specific error relating to the image.</summary>
 		InvalidImage,
+		/// <summary>An incompatible argument was passed to a vision request.</summary>
 		InvalidArgument,
+		/// <summary>Indicates that the underlying CoreML model is invalid or incompatible with the request.</summary>
 		InvalidModel,
+		/// <summary>To be added.</summary>
 		UnsupportedRevision,
 		DataUnavailable,
 		TimeStampNotFound,
@@ -79,7 +96,9 @@ namespace Vision {
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNRequestTrackingLevel : ulong {
+		/// <summary>Tracking should emphasize accuracy.</summary>
 		Accurate = 0,
+		/// <summary>Tracking should emphasize low latency.</summary>
 		Fast,
 	}
 
@@ -87,8 +106,11 @@ namespace Vision {
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNImageCropAndScaleOption : ulong {
+		/// <summary>If the image is not of the expected size, image processing should occur on the center portion.</summary>
 		CenterCrop = 0,
+		/// <summary>If the image is not of the expected size, the image is scaled to fill the longer dimension, adding transparency in the other dimension.</summary>
 		ScaleFit = 1,
+		/// <summary>If the image is not of the expected size, the image is scaled to fill both dimensions, changing the aspect ratio as necessary.</summary>
 		ScaleFill = 2,
 		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		ScaleFitRotate90Ccw = 256 + ScaleFit,
@@ -207,22 +229,29 @@ namespace Vision {
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNRequestRevision : ulong {
+		/// <summary>To be added.</summary>
 		Unspecified = 0,
+		/// <summary>To be added.</summary>
 		One = 1,
+		/// <summary>To be added.</summary>
 		Two = 2,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNCoreMLRequestRevision : ulong {
+		/// <summary>To be added.</summary>
 		Unspecified = 0,
+		/// <summary>To be added.</summary>
 		One = 1,
 	}
 
 	[MacCatalyst (15, 0)]
 	[Native]
 	enum VNDetectBarcodesRequestRevision : ulong {
+		/// <summary>To be added.</summary>
 		Unspecified = 0,
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.MacOSX, 14, 0, message: "Use 'Three' instead.")]
 		[Deprecated (PlatformName.iOS, 17, 0, message: "Use 'Three' instead.")]
 		[Deprecated (PlatformName.TvOS, 17, 0, message: "Use 'Three' instead.")]
@@ -244,8 +273,11 @@ namespace Vision {
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNDetectFaceLandmarksRequestRevision : ulong {
+		/// <summary>To be added.</summary>
 		Unspecified = 0,
+		/// <summary>To be added.</summary>
 		One = 1,
+		/// <summary>To be added.</summary>
 		Two = 2,
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -255,8 +287,11 @@ namespace Vision {
 	[MacCatalyst (15, 0)]
 	[Native]
 	enum VNDetectFaceRectanglesRequestRevision : ulong {
+		/// <summary>To be added.</summary>
 		Unspecified = 0,
+		/// <summary>To be added.</summary>
 		One = 1,
+		/// <summary>To be added.</summary>
 		Two = 2,
 		[TV (15, 0), iOS (15, 0)]
 		[MacCatalyst (15, 0)]
@@ -266,42 +301,54 @@ namespace Vision {
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNDetectHorizonRequestRevision : ulong {
+		/// <summary>To be added.</summary>
 		Unspecified = 0,
+		/// <summary>To be added.</summary>
 		One = 1,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNDetectRectanglesRequestRevision : ulong {
+		/// <summary>To be added.</summary>
 		Unspecified = 0,
+		/// <summary>To be added.</summary>
 		One = 1,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNDetectTextRectanglesRequestRevision : ulong {
+		/// <summary>To be added.</summary>
 		Unspecified = 0,
+		/// <summary>To be added.</summary>
 		One = 1,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNTranslationalImageRegistrationRequestRevision : ulong {
+		/// <summary>To be added.</summary>
 		Unspecified = 0,
+		/// <summary>To be added.</summary>
 		One = 1,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNHomographicImageRegistrationRequestRevision : ulong {
+		/// <summary>To be added.</summary>
 		Unspecified = 0,
+		/// <summary>To be added.</summary>
 		One = 1,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNTrackObjectRequestRevision : ulong {
+		/// <summary>To be added.</summary>
 		Unspecified = 0,
+		/// <summary>To be added.</summary>
 		One = 1,
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -311,47 +358,64 @@ namespace Vision {
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNTrackRectangleRequestRevision : ulong {
+		/// <summary>To be added.</summary>
 		Unspecified = 0,
+		/// <summary>To be added.</summary>
 		One = 1,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNDetectedObjectObservationRequestRevision : ulong {
+		/// <summary>To be added.</summary>
 		Unspecified = 0,
+		/// <summary>To be added.</summary>
 		One = 1,
+		/// <summary>To be added.</summary>
 		Two = 2,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNFaceObservationRequestRevision : ulong {
+		/// <summary>To be added.</summary>
 		Unspecified = 0,
+		/// <summary>To be added.</summary>
 		One = 1,
+		/// <summary>To be added.</summary>
 		Two = 2,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNRecognizedObjectObservationRequestRevision : ulong {
+		/// <summary>To be added.</summary>
 		Unspecified = 0,
+		/// <summary>To be added.</summary>
 		One = 1,
+		/// <summary>To be added.</summary>
 		Two = 2,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNRectangleObservationRequestRevision : ulong {
+		/// <summary>To be added.</summary>
 		Unspecified = 0,
+		/// <summary>To be added.</summary>
 		One = 1,
+		/// <summary>To be added.</summary>
 		Two = 2,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNTextObservationRequestRevision : ulong {
+		/// <summary>To be added.</summary>
 		Unspecified = 0,
+		/// <summary>To be added.</summary>
 		One = 1,
+		/// <summary>To be added.</summary>
 		Two = 2,
 	}
 
@@ -1114,6 +1178,9 @@ namespace Vision {
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNCoreMLRequestRevision> (WeakSupportedRevisions)")]
@@ -1248,6 +1315,9 @@ namespace Vision {
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNDetectFaceLandmarksRequestRevision> (WeakSupportedRevisions)")]
@@ -1291,6 +1361,9 @@ namespace Vision {
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNDetectFaceRectanglesRequestRevision> (WeakSupportedRevisions)")]
@@ -1334,6 +1407,9 @@ namespace Vision {
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNDetectHorizonRequestRevision> (WeakSupportedRevisions)")]
@@ -1395,6 +1471,9 @@ namespace Vision {
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNDetectRectanglesRequestRevision> (WeakSupportedRevisions)")]
@@ -1441,6 +1520,9 @@ namespace Vision {
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNDetectTextRectanglesRequestRevision> (WeakSupportedRevisions)")]
@@ -1828,6 +1910,9 @@ namespace Vision {
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNTranslationalImageRegistrationRequestRevision> (WeakSupportedRevisions)")]
@@ -1988,6 +2073,9 @@ namespace Vision {
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNHomographicImageRegistrationRequestRevision> (WeakSupportedRevisions)")]
@@ -2488,13 +2576,25 @@ namespace Vision {
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("VNImageOptionKeys")]
 	interface VNImageOptions {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("PropertiesKey")] // Have the option to set your own dict
 		NSDictionary WeakProperties { get; set; }
 
+		/// <summary>Gets or sets the <see cref="T:CoreGraphics.CGImageProperties" /> used with the <see cref="T:Vision.VNImageRequestHandler" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[StrongDictionary] // Yep we need CoreGraphics to disambiguate
 		CoreGraphics.CGImageProperties Properties { get; set; }
 
+		/// <summary>Gets or sets the camera intrinsic data, used in camera calibration.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSData CameraIntrinsics { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		CIContext CIContext { get; set; }
 	}
 
@@ -2848,6 +2948,9 @@ namespace Vision {
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNTrackObjectRequestRevision> (WeakSupportedRevisions)")]
@@ -2894,6 +2997,9 @@ namespace Vision {
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNTrackRectangleRequestRevision> (WeakSupportedRevisions)")]
@@ -2927,6 +3033,9 @@ namespace Vision {
 		[Export ("trackingLevel", ArgumentSemantic.Assign)]
 		VNRequestTrackingLevel TrackingLevel { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lastFrame")]
 		bool LastFrame { [Bind ("isLastFrame")] get; set; }
 

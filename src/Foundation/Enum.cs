@@ -92,8 +92,11 @@ namespace Foundation {
 
 	[Native]
 	public enum NSComparisonResult : long {
+		/// <summary>To be added.</summary>
 		Ascending = -1,
+		/// <summary>To be added.</summary>
 		Same,
+		/// <summary>To be added.</summary>
 		Descending,
 	}
 
@@ -190,82 +193,119 @@ namespace Foundation {
 
 	[Native]
 	public enum NSDateFormatterStyle : ulong {
+		/// <summary>To be added.</summary>
 		None,
+		/// <summary>To be added.</summary>
 		Short,
+		/// <summary>To be added.</summary>
 		Medium,
+		/// <summary>To be added.</summary>
 		Long,
+		/// <summary>To be added.</summary>
 		Full,
 	}
 
 	[Native]
 	public enum NSDateFormatterBehavior : ulong {
+		/// <summary>To be added.</summary>
 		Default = 0,
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
 		Mode_10_0 = 1000,
+		/// <summary>To be added.</summary>
 		Mode_10_4 = 1040,
 	}
 
 	[Native]
 	public enum NSHttpCookieAcceptPolicy : ulong {
+		/// <summary>To be added.</summary>
 		Always,
+		/// <summary>To be added.</summary>
 		Never,
+		/// <summary>To be added.</summary>
 		OnlyFromMainDocumentDomain,
 	}
 
 	[Flags]
 	[Native]
 	public enum NSCalendarUnit : ulong {
+		/// <summary>To be added.</summary>
 		Era = 2,
+		/// <summary>To be added.</summary>
 		Year = 4,
+		/// <summary>To be added.</summary>
 		Month = 8,
+		/// <summary>To be added.</summary>
 		Day = 16,
+		/// <summary>To be added.</summary>
 		Hour = 32,
+		/// <summary>To be added.</summary>
 		Minute = 64,
+		/// <summary>To be added.</summary>
 		Second = 128,
+		/// <summary>Developers should not use this deprecated field. </summary>
 		[Deprecated (PlatformName.MacOSX, 10, 10)]
 		[Deprecated (PlatformName.iOS, 8, 0)]
 		[Deprecated (PlatformName.TvOS, 9, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		Week = 256,
+		/// <summary>To be added.</summary>
 		Weekday = 512,
+		/// <summary>To be added.</summary>
 		WeekdayOrdinal = 1024,
+		/// <summary>To be added.</summary>
 		Quarter = 2048,
 
+		/// <summary>To be added.</summary>
 		WeekOfMonth = (1 << 12),
+		/// <summary>To be added.</summary>
 		WeekOfYear = (1 << 13),
+		/// <summary>To be added.</summary>
 		YearForWeakOfYear = (1 << 14),
 
+		/// <summary>To be added.</summary>
 		Nanosecond = (1 << 15),
 		DayOfYear = (1 << 16),
 
+		/// <summary>To be added.</summary>
 		Calendar = (1 << 20),
+		/// <summary>To be added.</summary>
 		TimeZone = (1 << 21),
 	}
 
 	[Flags]
 	[Native]
 	public enum NSDataReadingOptions : ulong {
+		/// <summary>Use the kernel's virtual memory map to load the file, if possible. If sucessful, this replaces read/write memory that can be very expensive with discardable memory that is backed by a file.</summary>
 		Mapped = 1 << 0,
+		/// <summary>Notify the kernel that it should not try to cache the contents of this file in its buffer cache.</summary>
 		Uncached = 1 << 1,
+		/// <summary>Force NSData to try to use the kernel's mapping support to load the file.   If sucessful, this replaces read/write memory that can be very expensive with discardable memory that is backed by a file.</summary>
 		MappedAlways = 1 << 3,
 	}
 
 	[Flags]
 	[Native]
 	public enum NSDataWritingOptions : ulong {
+		/// <summary>To be added.</summary>
 		Atomic = 1,
 
+		/// <summary>To be added.</summary>
 		WithoutOverwriting = 2,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		FileProtectionNone = 0x10000000,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		FileProtectionComplete = 0x20000000,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		FileProtectionMask = 0xf0000000,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		FileProtectionCompleteUnlessOpen = 0x30000000,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		FileProtectionCompleteUntilFirstUserAuthentication = 0x40000000,
 		[iOS (17, 0), NoMac, MacCatalyst (17, 0), TV (17, 0)]
@@ -301,48 +341,83 @@ namespace Foundation {
 	[Flags]
 	[Native]
 	public enum NSDataSearchOptions : ulong {
+		/// <summary>Starts search from the end, instead of the start.</summary>
 		SearchBackwards = 1,
+		/// <summary>Limits the search to the start (or end if SearchBackwards is specified)</summary>
 		SearchAnchored = 2,
 	}
 
 	[Native]
 	public enum NSExpressionType : ulong {
+		/// <summary>To be added.</summary>
 		ConstantValue = 0,
+		/// <summary>To be added.</summary>
 		EvaluatedObject,
+		/// <summary>To be added.</summary>
 		Variable,
+		/// <summary>To be added.</summary>
 		KeyPath,
+		/// <summary>To be added.</summary>
 		Function,
+		/// <summary>To be added.</summary>
 		UnionSet,
+		/// <summary>To be added.</summary>
 		IntersectSet,
+		/// <summary>To be added.</summary>
 		MinusSet,
+		/// <summary>To be added.</summary>
 		Subquery = 13,
+		/// <summary>To be added.</summary>
 		NSAggregate,
+		/// <summary>To be added.</summary>
 		AnyKey = 15,
+		/// <summary>To be added.</summary>
 		Block = 19,
+		/// <summary>To be added.</summary>
 		Conditional = 20,
 	}
 
 	public enum NSCocoaError : int {
+		/// <summary>To be added.</summary>
 		None,
 
+		/// <summary>To be added.</summary>
 		FileNoSuchFile = 4,
+		/// <summary>To be added.</summary>
 		FileLocking = 255,
+		/// <summary>To be added.</summary>
 		FileReadUnknown = 256,
+		/// <summary>To be added.</summary>
 		FileReadNoPermission = 257,
+		/// <summary>To be added.</summary>
 		FileReadInvalidFileName = 258,
+		/// <summary>To be added.</summary>
 		FileReadCorruptFile = 259,
+		/// <summary>To be added.</summary>
 		FileReadNoSuchFile = 260,
+		/// <summary>To be added.</summary>
 		FileReadInapplicableStringEncoding = 261,
+		/// <summary>To be added.</summary>
 		FileReadUnsupportedScheme = 262,
+		/// <summary>To be added.</summary>
 		FileReadTooLarge = 263,
+		/// <summary>To be added.</summary>
 		FileReadUnknownStringEncoding = 264,
+		/// <summary>To be added.</summary>
 		FileWriteUnknown = 512,
+		/// <summary>To be added.</summary>
 		FileWriteNoPermission = 513,
+		/// <summary>To be added.</summary>
 		FileWriteInvalidFileName = 514,
+		/// <summary>To be added.</summary>
 		FileWriteFileExists = 516,
+		/// <summary>To be added.</summary>
 		FileWriteInapplicableStringEncoding = 517,
+		/// <summary>To be added.</summary>
 		FileWriteUnsupportedScheme = 518,
+		/// <summary>To be added.</summary>
 		FileWriteOutOfSpace = 640,
+		/// <summary>To be added.</summary>
 		FileWriteVolumeReadOnly = 642,
 
 #if MONOMAC
@@ -350,73 +425,131 @@ namespace Foundation {
 		FileManagerUnmountBusyError = 769,
 #endif
 
+		/// <summary>To be added.</summary>
 		KeyValueValidation = 1024,
+		/// <summary>To be added.</summary>
 		Formatting = 2048,
+		/// <summary>To be added.</summary>
 		UserCancelled = 3072,
+		/// <summary>To be added.</summary>
 		FeatureUnsupported = 3328,
+		/// <summary>To be added.</summary>
 		ExecutableNotLoadable = 3584,
+		/// <summary>To be added.</summary>
 		ExecutableArchitectureMismatch = 3585,
+		/// <summary>To be added.</summary>
 		ExecutableRuntimeMismatch = 3586,
+		/// <summary>To be added.</summary>
 		ExecutableLoad = 3587,
+		/// <summary>To be added.</summary>
 		ExecutableLink = 3588,
+		/// <summary>To be added.</summary>
 		FileErrorMinimum = 0,
+		/// <summary>To be added.</summary>
 		FileErrorMaximum = 1023,
+		/// <summary>To be added.</summary>
 		ValidationErrorMinimum = 1024,
+		/// <summary>To be added.</summary>
 		ValidationErrorMaximum = 2047,
+		/// <summary>To be added.</summary>
 		ExecutableErrorMinimum = 3584,
+		/// <summary>To be added.</summary>
 		ExecutableErrorMaximum = 3839,
+		/// <summary>To be added.</summary>
 		FormattingErrorMinimum = 2048,
+		/// <summary>To be added.</summary>
 		FormattingErrorMaximum = 2559,
 
+		/// <summary>To be added.</summary>
 		PropertyListReadCorrupt = 3840,
+		/// <summary>To be added.</summary>
 		PropertyListReadUnknownVersion = 3841,
+		/// <summary>To be added.</summary>
 		PropertyListReadStream = 3842,
+		/// <summary>To be added.</summary>
 		PropertyListWriteStream = 3851,
+		/// <summary>To be added.</summary>
 		PropertyListWriteInvalid = 3852,
+		/// <summary>To be added.</summary>
 		PropertyListErrorMinimum = 3840,
+		/// <summary>To be added.</summary>
 		PropertyListErrorMaximum = 4095,
 
+		/// <summary>To be added.</summary>
 		XpcConnectionInterrupted = 4097,
+		/// <summary>To be added.</summary>
 		XpcConnectionInvalid = 4099,
+		/// <summary>To be added.</summary>
 		XpcConnectionReplyInvalid = 4101,
 		XpcConnectionCodeSigningRequirementFailure = 4102,
+		/// <summary>To be added.</summary>
 		XpcConnectionErrorMinimum = 4096,
+		/// <summary>To be added.</summary>
 		XpcConnectionErrorMaximum = 4224,
 
+		/// <summary>To be added.</summary>
 		UbiquitousFileUnavailable = 4353,
+		/// <summary>To be added.</summary>
 		UbiquitousFileNotUploadedDueToQuota = 4354,
+		/// <summary>To be added.</summary>
 		UbiquitousFileUbiquityServerNotAvailable = 4355,
+		/// <summary>To be added.</summary>
 		UbiquitousFileErrorMinimum = 4352,
+		/// <summary>To be added.</summary>
 		UbiquitousFileErrorMaximum = 4607,
 
+		/// <summary>To be added.</summary>
 		UserActivityHandoffFailedError = 4608,
+		/// <summary>To be added.</summary>
 		UserActivityConnectionUnavailableError = 4609,
+		/// <summary>To be added.</summary>
 		UserActivityRemoteApplicationTimedOutError = 4610,
+		/// <summary>To be added.</summary>
 		UserActivityHandoffUserInfoTooLargeError = 4611,
 
+		/// <summary>To be added.</summary>
 		UserActivityErrorMinimum = 4608,
+		/// <summary>To be added.</summary>
 		UserActivityErrorMaximum = 4863,
 
+		/// <summary>To be added.</summary>
 		CoderReadCorruptError = 4864,
+		/// <summary>To be added.</summary>
 		CoderValueNotFoundError = 4865,
+		/// <summary>To be added.</summary>
 		CoderInvalidValueError = 4866,
+		/// <summary>To be added.</summary>
 		CoderErrorMinimum = 4864,
+		/// <summary>To be added.</summary>
 		CoderErrorMaximum = 4991,
 
+		/// <summary>To be added.</summary>
 		BundleErrorMinimum = 4992,
+		/// <summary>To be added.</summary>
 		BundleErrorMaximum = 5119,
 
+		/// <summary>To be added.</summary>
 		BundleOnDemandResourceOutOfSpaceError = 4992,
+		/// <summary>To be added.</summary>
 		BundleOnDemandResourceExceededMaximumSizeError = 4993,
+		/// <summary>To be added.</summary>
 		BundleOnDemandResourceInvalidTagError = 4994,
 
+		/// <summary>To be added.</summary>
 		CloudSharingNetworkFailureError = 5120,
+		/// <summary>To be added.</summary>
 		CloudSharingQuotaExceededError = 5121,
+		/// <summary>To be added.</summary>
 		CloudSharingTooManyParticipantsError = 5122,
+		/// <summary>To be added.</summary>
 		CloudSharingConflictError = 5123,
+		/// <summary>To be added.</summary>
 		CloudSharingNoPermissionError = 5124,
+		/// <summary>To be added.</summary>
 		CloudSharingOtherError = 5375,
+		/// <summary>To be added.</summary>
 		CloudSharingErrorMinimum = 5120,
+		/// <summary>To be added.</summary>
 		CloudSharingErrorMaximum = 5375,
 
 		CompressionFailedError = 5376,
@@ -517,7 +650,9 @@ namespace Foundation {
 	[Flags]
 	[Native]
 	public enum NSEnumerationOptions : ulong {
+		/// <summary>To be added.</summary>
 		SortConcurrent = 1,
+		/// <summary>To be added.</summary>
 		Reverse = 2,
 	}
 
@@ -534,8 +669,11 @@ namespace Foundation {
 
 	[Native]
 	public enum NSComparisonPredicateModifier : ulong {
+		/// <summary>To be added.</summary>
 		Direct,
+		/// <summary>To be added.</summary>
 		All,
+		/// <summary>To be added.</summary>
 		Any,
 	}
 
@@ -560,16 +698,23 @@ namespace Foundation {
 	[Flags]
 	[Native]
 	public enum NSComparisonPredicateOptions : ulong {
+		/// <summary>To be added.</summary>
 		None = 0x00,
+		/// <summary>To be added.</summary>
 		CaseInsensitive = 1 << 0,
+		/// <summary>To be added.</summary>
 		DiacriticInsensitive = 1 << 1,
+		/// <summary>To be added.</summary>
 		Normalized = 1 << 2,
 	}
 
 	[Native]
 	public enum NSCompoundPredicateType : ulong {
+		/// <summary>To be added.</summary>
 		Not,
+		/// <summary>To be added.</summary>
 		And,
+		/// <summary>To be added.</summary>
 		Or,
 	}
 
@@ -586,8 +731,11 @@ namespace Foundation {
 	[Native]
 	public enum NSDirectoryEnumerationOptions : ulong {
 		None = 0,
+		/// <summary>To be added.</summary>
 		SkipsSubdirectoryDescendants = 1 << 0,
+		/// <summary>To be added.</summary>
 		SkipsPackageDescendants = 1 << 1,
+		/// <summary>To be added.</summary>
 		SkipsHiddenFiles = 1 << 2,
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -662,10 +810,15 @@ namespace Foundation {
 
 	[Native]
 	public enum NSCalculationError : ulong {
+		/// <summary>To be added.</summary>
 		None,
+		/// <summary>To be added.</summary>
 		PrecisionLoss,
+		/// <summary>To be added.</summary>
 		Underflow,
+		/// <summary>To be added.</summary>
 		Overflow,
+		/// <summary>To be added.</summary>
 		DivideByZero,
 	}
 
@@ -738,22 +891,28 @@ namespace Foundation {
 	[Flags]
 	[Native]
 	public enum NSFileVersionReplacingOptions : ulong {
+		/// <summary>To be added.</summary>
 		ByMoving = 1 << 0,
 	}
 
 	[Flags]
 	[Native]
 	public enum NSFileVersionAddingOptions : ulong {
+		/// <summary>To be added.</summary>
 		ByMoving = 1 << 0,
 	}
 
 	[Flags]
 	[Native]
 	public enum NSFileCoordinatorReadingOptions : ulong {
+		/// <summary>To be added.</summary>
 		WithoutChanges = 1,
+		/// <summary>To be added.</summary>
 		ResolvesSymbolicLink = 1 << 1,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		ImmediatelyAvailableMetadataOnly = 1 << 2,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		ForUploading = 1 << 3,
 	}
@@ -761,9 +920,13 @@ namespace Foundation {
 	[Flags]
 	[Native]
 	public enum NSFileCoordinatorWritingOptions : ulong {
+		/// <summary>To be added.</summary>
 		ForDeleting = 1,
+		/// <summary>To be added.</summary>
 		ForMoving = 2,
+		/// <summary>To be added.</summary>
 		ForMerging = 4,
+		/// <summary>To be added.</summary>
 		ForReplacing = 8,
 		[MacCatalyst (13, 1)]
 		ContentIndependentMetadataOnly = 16,
@@ -824,31 +987,53 @@ namespace Foundation {
 
 	[Flags]
 	public enum NSAlignmentOptions : long {
+		/// <summary>To be added.</summary>
 		MinXInward = 1 << 0,
+		/// <summary>To be added.</summary>
 		MinYInward = 1 << 1,
+		/// <summary>To be added.</summary>
 		MaxXInward = 1 << 2,
+		/// <summary>To be added.</summary>
 		MaxYInward = 1 << 3,
+		/// <summary>To be added.</summary>
 		WidthInward = 1 << 4,
+		/// <summary>To be added.</summary>
 		HeightInward = 1 << 5,
 
+		/// <summary>To be added.</summary>
 		MinXOutward = 1 << 8,
+		/// <summary>To be added.</summary>
 		MinYOutward = 1 << 9,
+		/// <summary>To be added.</summary>
 		MaxXOutward = 1 << 10,
+		/// <summary>To be added.</summary>
 		MaxYOutward = 1 << 11,
+		/// <summary>To be added.</summary>
 		WidthOutward = 1 << 12,
+		/// <summary>To be added.</summary>
 		HeightOutward = 1 << 13,
 
+		/// <summary>To be added.</summary>
 		MinXNearest = 1 << 16,
+		/// <summary>To be added.</summary>
 		MinYNearest = 1 << 17,
+		/// <summary>To be added.</summary>
 		MaxXNearest = 1 << 18,
+		/// <summary>To be added.</summary>
 		MaxYNearest = 1 << 19,
+		/// <summary>To be added.</summary>
 		WidthNearest = 1 << 20,
+		/// <summary>To be added.</summary>
 		HeightNearest = 1 << 21,
 
+		/// <summary>To be added.</summary>
 		RectFlipped = unchecked((long) (1UL << 63)),
 
+		/// <summary>To be added.</summary>
 		AllEdgesInward = MinXInward | MaxXInward | MinYInward | MaxYInward,
+		/// <summary>To be added.</summary>
 		AllEdgesOutward = MinXOutward | MaxXOutward | MinYOutward | MaxYOutward,
+		/// <summary>To be added.</summary>
 		AllEdgesNearest = MinXNearest | MaxXNearest | MinYNearest | MaxYNearest,
 	}
 
@@ -869,8 +1054,11 @@ namespace Foundation {
 	[Flags]
 	[Native ("NSAttributedStringEnumerationOptions")]
 	public enum NSAttributedStringEnumeration : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Reverse = 1 << 1,
+		/// <summary>To be added.</summary>
 		LongestEffectiveRangeNotRequired = 1 << 20,
 	}
 
@@ -905,24 +1093,39 @@ namespace Foundation {
 	[Flags]
 	[Native]
 	public enum NSByteCountFormatterUnits : ulong {
+		/// <summary>To be added.</summary>
 		UseDefault = 0,
+		/// <summary>To be added.</summary>
 		UseBytes = 1 << 0,
+		/// <summary>To be added.</summary>
 		UseKB = 1 << 1,
+		/// <summary>To be added.</summary>
 		UseMB = 1 << 2,
+		/// <summary>To be added.</summary>
 		UseGB = 1 << 3,
+		/// <summary>To be added.</summary>
 		UseTB = 1 << 4,
+		/// <summary>To be added.</summary>
 		UsePB = 1 << 5,
+		/// <summary>To be added.</summary>
 		UseEB = 1 << 6,
+		/// <summary>To be added.</summary>
 		UseZB = 1 << 7,
+		/// <summary>To be added.</summary>
 		UseYBOrHigher = 0x0FF << 8,
+		/// <summary>To be added.</summary>
 		UseAll = 0x0FFFF,
 	}
 
 	[Native]
 	public enum NSByteCountFormatterCountStyle : long {
+		/// <summary>To be added.</summary>
 		File,
+		/// <summary>To be added.</summary>
 		Memory,
+		/// <summary>To be added.</summary>
 		Decimal,
+		/// <summary>To be added.</summary>
 		Binary,
 	}
 
@@ -965,23 +1168,32 @@ namespace Foundation {
 	[Flags]
 	[Native]
 	public enum NSCalendarOptions : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		WrapCalendarComponents = 1 << 0,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		MatchStrictly = 1 << 1,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		SearchBackwards = 1 << 2,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		MatchPreviousTimePreservingSmallerUnits = 1 << 8,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		MatchNextTimePreservingSmallerUnits = 1 << 9,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		MatchNextTime = 1 << 10,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		MatchFirst = 1 << 12,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		MatchLast = 1 << 13,
 	}
@@ -1019,17 +1231,24 @@ namespace Foundation {
 	[Flags]
 	[Native]
 	public enum NSDataBase64DecodingOptions : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		IgnoreUnknownCharacters = 1,
 	}
 
 	[Flags]
 	[Native]
 	public enum NSDataBase64EncodingOptions : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		SixtyFourCharacterLineLength = 1,
+		/// <summary>To be added.</summary>
 		SeventySixCharacterLineLength = 1 << 1,
+		/// <summary>To be added.</summary>
 		EndLineWithCarriageReturn = 1 << 4,
+		/// <summary>To be added.</summary>
 		EndLineWithLineFeed = 1 << 5,
 	}
 
@@ -1066,15 +1285,22 @@ namespace Foundation {
 
 	[Flags]
 	public enum NSActivityOptions : ulong {
+		/// <summary>To be added.</summary>
 		IdleDisplaySleepDisabled = 1UL << 40,
+		/// <summary>To be added.</summary>
 		IdleSystemSleepDisabled = 1UL << 20,
+		/// <summary>To be added.</summary>
 		SuddenTerminationDisabled = 1UL << 14,
+		/// <summary>To be added.</summary>
 		AutomaticTerminationDisabled = 1UL << 15,
 		AnimationTrackingEnabled = 1uL << 45,
 		TrackingEnabled = 1uL << 46,
 		UserInteractive = (UserInitiated | LatencyCritical),
+		/// <summary>To be added.</summary>
 		UserInitiated = 0x00FFFFFFUL | IdleSystemSleepDisabled,
+		/// <summary>To be added.</summary>
 		Background = 0x000000ffUL,
+		/// <summary>To be added.</summary>
 		LatencyCritical = 0xFF00000000UL,
 		InitiatedAllowingIdleSystemSleep = UserInitiated & ~IdleSystemSleepDisabled,
 	}
@@ -1102,11 +1328,17 @@ namespace Foundation {
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum NSDateComponentsFormatterUnitsStyle : long {
+		/// <summary>To be added.</summary>
 		Positional = 0,
+		/// <summary>To be added.</summary>
 		Abbreviated,
+		/// <summary>To be added.</summary>
 		Short,
+		/// <summary>To be added.</summary>
 		Full,
+		/// <summary>To be added.</summary>
 		SpellOut,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		Brief,
 	}
@@ -1115,12 +1347,19 @@ namespace Foundation {
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum NSDateComponentsFormatterZeroFormattingBehavior : ulong {
+		/// <summary>To be added.</summary>
 		None = (0),
+		/// <summary>To be added.</summary>
 		Default = (1 << 0),
+		/// <summary>To be added.</summary>
 		DropLeading = (1 << 1),
+		/// <summary>To be added.</summary>
 		DropMiddle = (1 << 2),
+		/// <summary>To be added.</summary>
 		DropTrailing = (1 << 3),
+		/// <summary>To be added.</summary>
 		DropAll = (DropLeading | DropMiddle | DropTrailing),
+		/// <summary>To be added.</summary>
 		Pad = (1 << 16),
 	}
 
@@ -1138,19 +1377,28 @@ namespace Foundation {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSDateIntervalFormatterStyle : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Short = 1,
+		/// <summary>To be added.</summary>
 		Medium = 2,
+		/// <summary>To be added.</summary>
 		Long = 3,
+		/// <summary>To be added.</summary>
 		Full = 4,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSEnergyFormatterUnit : long {
+		/// <summary>To be added.</summary>
 		Joule = 11,
+		/// <summary>To be added.</summary>
 		Kilojoule = 14,
+		/// <summary>To be added.</summary>
 		Calorie = (7 << 8) + 1,
+		/// <summary>To be added.</summary>
 		Kilocalorie = (7 << 8) + 2,
 	}
 
@@ -1288,7 +1536,9 @@ namespace Foundation {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSDecodingFailurePolicy : long {
+		/// <summary>To be added.</summary>
 		RaiseException,
+		/// <summary>To be added.</summary>
 		SetErrorAndReturn,
 	}
 

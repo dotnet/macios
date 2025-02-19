@@ -47,8 +47,11 @@ namespace GameplayKit {
 	[Flags]
 	[MacCatalyst (13, 1)]
 	public enum GKMeshGraphTriangulationMode : ulong {
+		/// <summary>To be added.</summary>
 		Vertices = 1 << 0,
+		/// <summary>To be added.</summary>
 		Centers = 1 << 1,
+		/// <summary>To be added.</summary>
 		EdgeMidpoints = 1 << 2,
 	}
 
@@ -1642,6 +1645,9 @@ namespace GameplayKit {
 			get;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("seamless")]
 		bool Seamless { [Bind ("isSeamless")] get; }
 
@@ -1766,6 +1772,9 @@ namespace GameplayKit {
 		[Export ("displacement")]
 		double Displacement { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("distanceEnabled")]
 		bool DistanceEnabled { [Bind ("isDistanceEnabled")] get; set; }
 

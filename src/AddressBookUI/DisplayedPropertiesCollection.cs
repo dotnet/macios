@@ -37,6 +37,9 @@ namespace AddressBookUI {
 			this.s = s;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int Count {
 			get { return g ()!.Length; }
 		}

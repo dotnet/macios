@@ -71,7 +71,9 @@ namespace CoreMedia {
 	/// <summary>An enumeration whose values specify a subtitling standard.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMSubtitleFormatType : uint {
+		/// <summary>To be added.</summary>
 		Text3G = 0x74783367, // 'tx3g'
+		/// <summary>To be added.</summary>
 		WebVTT = 0x77767474, // 'wvtt'
 	}
 
@@ -93,9 +95,13 @@ namespace CoreMedia {
 	/// <summary>An enumeration whose values specify the type of a time code.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMTimeCodeFormatType : uint {
+		/// <summary>To be added.</summary>
 		TimeCode32 = 0x746D6364, // 'tmcd',
+		/// <summary>To be added.</summary>
 		TimeCode64 = 0x74633634, // 'tc64',
+		/// <summary>To be added.</summary>
 		Counter32 = 0x636E3332, // 'cn32',
+		/// <summary>To be added.</summary>
 		Counter64 = 0x636E3634, // 'cn64'
 	}
 
@@ -103,12 +109,19 @@ namespace CoreMedia {
 	/// <summary>An enumeration whose values specify the rounding method to be used with a <see cref="T:CoreMedia.CMTime" />.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMTimeRoundingMethod : uint {
+		/// <summary>To be added.</summary>
 		RoundHalfAwayFromZero = 1,
+		/// <summary>To be added.</summary>
 		RoundTowardZero = 2,
+		/// <summary>To be added.</summary>
 		RoundAwayFromZero = 3,
+		/// <summary>To be added.</summary>
 		QuickTime = 4,
+		/// <summary>To be added.</summary>
 		RoundTowardPositiveInfinity = 5,
+		/// <summary>To be added.</summary>
 		RoundTowardNegativeInfinity = 6,
+		/// <summary>To be added.</summary>
 		Default = RoundHalfAwayFromZero,
 	}
 
@@ -116,7 +129,9 @@ namespace CoreMedia {
 	/// <summary>An enumeration whose values specify types of video codecs.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMVideoCodecType : uint {
+		/// <summary>Indicates YCbCR content.</summary>
 		YUV422YpCbCr8 = 0x32767579,
+		/// <summary>Indicates Apple animation format.</summary>
 		Animation = 0x726c6520,
 		Cinepak = 0x63766964,
 		JPEG = 0x6a706567,
@@ -124,6 +139,7 @@ namespace CoreMedia {
 		JPEG_XL = ('j' << 24) + ('x' << 16) + ('l' << 8) + 'c', // 'jxlc'
 		SorensonVideo = 0x53565131,
 		SorensonVideo3 = 0x53565133,
+		/// <summary>Indicates ITU-T H.263 content.</summary>
 		H263 = 0x68323633,
 		H264 = 0x61766331,
 		Mpeg4Video = 0x6d703476,
@@ -264,21 +280,37 @@ namespace CoreMedia {
 	/// <summary>An enumeration whose values specify errors relating to <see cref="T:CoreMedia.CMSampleBuffer" />s.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMSampleBufferError : int {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		AllocationFailed = -12730,
+		/// <summary>To be added.</summary>
 		RequiredParameterMissing = -12731,
+		/// <summary>To be added.</summary>
 		AlreadyHasDataBuffer = -12732,
+		/// <summary>To be added.</summary>
 		BufferNotReady = -12733,
+		/// <summary>To be added.</summary>
 		SampleIndexOutOfRange = -12734,
+		/// <summary>To be added.</summary>
 		BufferHasNoSampleSizes = -12735,
+		/// <summary>To be added.</summary>
 		BufferHasNoSampleTimingInfo = -12736,
+		/// <summary>To be added.</summary>
 		ArrayTooSmall = -12737,
+		/// <summary>To be added.</summary>
 		InvalidEntryCount = -12738,
+		/// <summary>To be added.</summary>
 		CannotSubdivide = -12739,
+		/// <summary>To be added.</summary>
 		SampleTimingInfoInvalid = -12740,
+		/// <summary>To be added.</summary>
 		InvalidMediaTypeForOperation = -12741,
+		/// <summary>To be added.</summary>
 		InvalidSampleData = -12742,
+		/// <summary>To be added.</summary>
 		InvalidMediaFormat = -12743,
+		/// <summary>To be added.</summary>
 		Invalidated = -12744,
 	}
 
@@ -310,11 +342,17 @@ namespace CoreMedia {
 	/// <summary>An enumeration whose values specify errors relating to <see cref="T:CoreMedia.CMTimebase" />s.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMTimebaseError : int {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		MissingRequiredParameter = -12748,
+		/// <summary>To be added.</summary>
 		InvalidParameter = -12749,
+		/// <summary>To be added.</summary>
 		AllocationFailed = -12750,
+		/// <summary>To be added.</summary>
 		TimerIntervalTooShort = -12751,
+		/// <summary>To be added.</summary>
 		ReadOnly = -12757,
 	}
 
@@ -322,10 +360,15 @@ namespace CoreMedia {
 	/// <summary>An enumeration whose values specify errors returned by <see cref="M:CoreMedia.CMClockOrTimebase.GetRelativeRateAndAnchorTime(CoreMedia.CMClockOrTimebase,CoreMedia.CMClockOrTimebase,System.Double@,CoreMedia.CMTime@,CoreMedia.CMTime@)" />.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMSyncError : int {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		MissingRequiredParameter = -12752,
+		/// <summary>To be added.</summary>
 		InvalidParameter = -12753,
+		/// <summary>To be added.</summary>
 		AllocationFailed = -12754,
+		/// <summary>To be added.</summary>
 		RateMustBeNonZero = -12755,
 	}
 }

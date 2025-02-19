@@ -58,7 +58,33 @@ namespace AddressBook {
 			Info = info;
 		}
 
+		/// <summary>
+		///           The <see cref="T:AddressBook.ABAddressBook" />
+		///           which raised the
+		///           <see cref="E:AddressBook.ABAddressBook.ExternalChange" />
+		///           event.
+		///         </summary>
+		///         <value>
+		///           A <see cref="T:AddressBook.ABAddressBook" /> which raised the
+		///           <see cref="E:AddressBook.ABAddressBook.ExternalChange" />
+		///           event.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public ABAddressBook AddressBook { get; private set; }
+		/// <summary>
+		///           Additional informationa about the
+		///           <see cref="E:AddressBook.ABAddressBook.ExternalChange" />
+		///           event.
+		///         </summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSDictionary" /> containing
+		///           additional information about the
+		///           <see cref="E:AddressBook.ABAddressBook.ExternalChange" />
+		///           event.  This may be <see langword="null" />.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSDictionary? Info { get; private set; }
 	}
 
@@ -121,6 +147,16 @@ namespace AddressBook {
 	[UnsupportedOSPlatform ("tvos")]
 	public class ABAddressBook : NativeObject, IEnumerable<ABRecord> {
 
+		/// <summary>
+		///           Identifies the error domain under which address book errors are grouped.
+		///         </summary>
+		///         <remarks>
+		///           When an <see cref="T:CoreFoundation.CFException" /> is
+		///           thrown from a <see cref="T:AddressBook.ABAddressBook" />
+		///           method, the
+		///           <see cref="P:CoreFoundation.CFException.Domain" /> property
+		///           will be equal to <c>ErrorDomain</c>.
+		///         </remarks>
 		public static readonly NSString ErrorDomain;
 
 		GCHandle sender;
@@ -222,6 +258,18 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static byte ABAddressBookHasUnsavedChanges (IntPtr addressBook);
+		/// <summary>
+		///           Indicates whether or not this instance has changes which haven't been
+		///           saved to the global address book.
+		///         </summary>
+		///         <value>
+		///           <see langword="true" /> if the current instance has unsaved changes;
+		///           otherwise, <see langword="false" />.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
+		///         <altmember cref="M:AddressBook.ABAddressBook.Save" />
+		///         <altmember cref="M:AddressBook.ABAddressBook.Revert" />
 		public bool HasUnsavedChanges {
 			get {
 				return ABAddressBookHasUnsavedChanges (GetCheckedHandle ()) != 0;
@@ -278,6 +326,17 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static nint ABAddressBookGetPersonCount (IntPtr addressBook);
+		/// <summary>
+		///           Gets the number of <see cref="T:AddressBook.ABPerson" />
+		///           records in the address book.
+		///         </summary>
+		///         <value>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> containing the number of
+		///           <see cref="T:AddressBook.ABPerson" />
+		///           records in the address book.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public nint PeopleCount {
 			get {
 				return ABAddressBookGetPersonCount (GetCheckedHandle ());
@@ -316,6 +375,16 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static nint ABAddressBookGetGroupCount (IntPtr addressBook);
+		/// <summary>
+		///           Gets the number of groups in the address book.
+		///         </summary>
+		///         <value>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> containing the number of
+		///           <see cref="T:AddressBook.ABGroup" /> records
+		///           in the address book.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public nint GroupCount {
 			get {
 				return ABAddressBookGetGroupCount (GetCheckedHandle ());

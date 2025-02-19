@@ -125,9 +125,13 @@ namespace SpriteKit {
 	/// <summary>An enumeration of directions for use with <see cref="T:SpriteKit.SKTransition" />s.</summary>
 	[Native]
 	public enum SKTransitionDirection : long {
+		/// <summary>The transition moves from bottom to top.</summary>
 		Up = 0,
+		/// <summary>The transition moves from top to bottom.</summary>
 		Down = 1,
+		/// <summary>The transition moves from left to right.</summary>
 		Right = 2,
+		/// <summary>The transition moves from right to left.</summary>
 		Left = 3,
 	}
 
@@ -205,9 +209,13 @@ namespace SpriteKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKTileSetType : ulong {
+		/// <summary>To be added.</summary>
 		Grid,
+		/// <summary>To be added.</summary>
 		Isometric,
+		/// <summary>To be added.</summary>
 		HexagonalFlat,
+		/// <summary>To be added.</summary>
 		HexagonalPointy,
 	}
 

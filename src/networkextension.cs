@@ -80,9 +80,13 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NEHotspotConfigurationEapType : long {
+		/// <summary>To be added.</summary>
 		Tls = 13,
+		/// <summary>To be added.</summary>
 		Ttls = 21,
+		/// <summary>To be added.</summary>
 		Peap = 25,
+		/// <summary>To be added.</summary>
 		Fast = 43,
 	}
 
@@ -108,8 +112,11 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NEHotspotConfigurationEapTlsVersion : long {
+		/// <summary>To be added.</summary>
 		Tls1_0 = 0,
+		/// <summary>To be added.</summary>
 		Tls1_1 = 1,
+		/// <summary>To be added.</summary>
 		Tls1_2 = 2,
 	}
 
@@ -470,6 +477,9 @@ namespace NetworkExtension {
 		[Export ("initWithSigningIdentifier:designatedRequirement:")]
 		NativeHandle Constructor (string signingIdentifier, string designatedRequirement);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS, MacCatalyst (15, 0)]
 		[Export ("matchDesignatedRequirement")]
 		string MatchDesignatedRequirement { get; }

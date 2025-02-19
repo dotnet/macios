@@ -45,8 +45,11 @@ namespace CoreGraphics {
 	// uint32_t -> CGGradient.h
 	[Flags]
 	public enum CGGradientDrawingOptions : uint {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>The fill will draw before the start location.</summary>
 		DrawsBeforeStartLocation = (1 << 0),
+		/// <summary>The fill will extend beyond the end location.</summary>
 		DrawsAfterEndLocation = (1 << 1),
 	}
 

@@ -42,9 +42,13 @@ namespace CoreGraphics {
 
 	// convenience enum mapped to kCGImagePropertyColorModelXXX fields (see imageio.cs)
 	public enum CGImageColorModel {
+		/// <summary>To be added.</summary>
 		RGB,
+		/// <summary>To be added.</summary>
 		Gray,
+		/// <summary>To be added.</summary>
 		CMYK,
+		/// <summary>To be added.</summary>
 		Lab,
 	}
 
@@ -67,6 +71,9 @@ namespace CoreGraphics {
 		{
 		}
 
+		/// <summary>Gets or sets whether an image has an alpha channel.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? Alpha {
 			get {
 				return GetBoolValue (Keys.HasAlpha);
@@ -76,6 +83,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Gets or sets the color model for an image, as a <see cref="T:CoreGraphics.CGImageColorModel" /> object.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGImageColorModel? ColorModel {
 			get {
 				var v = GetNSStringValue (Keys.ColorModel);
@@ -112,6 +122,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Gets or sets the number of bits in the color sample of each pixel for an image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? Depth {
 			get {
 				return GetInt32Value (Keys.Depth);
@@ -121,6 +134,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Gets or sets the resolution, in dots per inch, of an image for the x axis.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? DPIHeightF {
 			get {
 				return GetFloatValue (Keys.DPIHeight);
@@ -130,6 +146,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Gets or sets the resolution, in dots per inch, of an image for the y axis.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? DPIWidthF {
 			get {
 				return GetFloatValue (Keys.DPIWidth);
@@ -139,6 +158,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Gets or sets the size of the image file, in bytes.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? FileSize {
 			get {
 				return GetInt32Value (Keys.FileSize);
@@ -148,6 +170,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Gets or sets whether an image contains floating-point pixel samples.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? IsFloat {
 			get {
 				return GetBoolValue (Keys.IsFloat);
@@ -175,6 +200,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Gets or sets the number of pixels in an image for the y axis.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? PixelHeight {
 			get {
 				return GetInt32Value (Keys.PixelHeight);

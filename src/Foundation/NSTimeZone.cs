@@ -11,6 +11,9 @@ namespace Foundation {
 		static ReadOnlyCollection<string> known_time_zone_names;
 
 		// avoid exposing an array - it's too easy to break
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static ReadOnlyCollection<string> KnownTimeZoneNames {
 			get {
 				if (known_time_zone_names is null)

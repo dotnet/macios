@@ -85,6 +85,9 @@ namespace Photos {
 		[Export ("hidden")]
 		bool Hidden { [Bind ("isHidden")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "No longer supported.")]
 		[NoTV]
 		[NoiOS]
@@ -160,6 +163,9 @@ namespace Photos {
 		[Export ("playbackStyle", ArgumentSemantic.Assign)]
 		PHAssetPlaybackStyle PlaybackStyle { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMacCatalyst]
 		[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use 'PHPhotosError.IdentifierNotFound' instead.")]
 		[NoTV]
@@ -445,6 +451,9 @@ namespace Photos {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface PHAssetResourceRequestOptions : NSCopying {
+		/// <summary>Whether the resource data needs to be downloaded from iCloud.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("networkAccessAllowed")]
 		bool NetworkAccessAllowed { [Bind ("isNetworkAccessAllowed")] get; set; }
 
@@ -1004,9 +1013,15 @@ namespace Photos {
 		[Export ("normalizedCropRect", ArgumentSemantic.Assign)]
 		CGRect NormalizedCropRect { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("networkAccessAllowed", ArgumentSemantic.Assign)]
 		bool NetworkAccessAllowed { [Bind ("isNetworkAccessAllowed")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("synchronous", ArgumentSemantic.Assign)]
 		bool Synchronous { [Bind ("isSynchronous")] get; set; }
 
@@ -1048,18 +1063,38 @@ namespace Photos {
 	[Static]
 	interface PHImageKeys {
 
+		/// <summary>Represents the value associated with the constant PHImageResultIsInCloudKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PHImageResultIsInCloudKey")]
 		NSString ResultIsInCloud { get; }
 
+		/// <summary>Represents the value associated with the constant PHImageResultIsDegradedKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PHImageResultIsDegradedKey")]
 		NSString ResultIsDegraded { get; }
 
+		/// <summary>Represents the value associated with the constant PHImageCancelledKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PHImageCancelledKey")]
 		NSString Cancelled { get; }
 
+		/// <summary>Represents the value associated with the constant PHImageErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PHImageErrorKey")]
 		NSString Error { get; }
 
+		/// <summary>Represents the value associated with the constant PHImageResultRequestIDKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PHImageResultRequestIDKey")]
 		NSString ResultRequestID { get; }
 	}
@@ -1128,6 +1163,10 @@ namespace Photos {
 		int /* PHImageRequestID = int32_t */ RequestAvAsset (PHAsset asset, [NullAllowed] PHVideoRequestOptions options, PHImageManagerRequestAvAssetHandler resultHandler);
 #endif
 
+		/// <summary>Represents the value associated with the constant PHImageManagerMaximumSize</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PHImageManagerMaximumSize")]
 		CGSize MaximumSize { get; }
 

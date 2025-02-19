@@ -40,7 +40,9 @@ namespace CarPlay {
 	[NoTV, NoMac]
 	[Native]
 	enum CPBarButtonType : ulong {
+		/// <summary>The button displays text.</summary>
 		Text,
+		/// <summary>The button displays an image.</summary>
 		Image,
 	}
 
@@ -80,7 +82,9 @@ namespace CarPlay {
 	[Flags]
 	[Native]
 	enum CPLimitableUserInterface : ulong {
+		/// <summary>The keyboard may be limited.</summary>
 		Keyboard = 1uL << 0,
+		/// <summary>The length of lists may be limited.</summary>
 		Lists = 1uL << 1,
 	}
 
@@ -333,6 +337,9 @@ namespace CarPlay {
 		[Export ("initWithType:handler:")]
 		NativeHandle Constructor (CPBarButtonType type, [NullAllowed] Action<CPBarButton> handler);
 
+		/// <summary>Gets or sets whether the button is enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
@@ -392,6 +399,9 @@ namespace CarPlay {
 		[DesignatedInitializer]
 		NativeHandle Constructor (string [] titleVariants, UIImage image, [NullAllowed] Action<CPGridButton> handler);
 
+		/// <summary>Gets or sets whether the button is enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
@@ -437,6 +447,13 @@ namespace CarPlay {
 	[DisableDefaultCtor]
 	interface CPInterfaceController {
 
+		/// <summary>An instance of the CarPlay.ICPInterfaceControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the CarPlay.ICPInterfaceControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		ICPInterfaceControllerDelegate Delegate { get; set; }
@@ -705,6 +722,9 @@ namespace CarPlay {
 		string SectionIndexTitle { get; }
 
 #if !XAMCORE_5_0
+		/// <summary>The contents of the section.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("true ? throw new InvalidOperationException (Constants.BrokenBinding) : new NSArray ()", IsVirtual = true)]
 		[Obsolete ("Use 'Items2 : ICPListTemplateItem []' instead.")]
 		CPListItem [] Items { get; }
@@ -759,6 +779,13 @@ namespace CarPlay {
 		[Export ("initWithTitle:sections:assistantCellConfiguration:")]
 		NativeHandle Constructor ([NullAllowed] string title, CPListSection [] sections, [NullAllowed] CPAssistantCellConfiguration assistantCellConfiguration);
 
+		/// <summary>An instance of the CarPlay.ICPListTemplateDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the CarPlay.ICPListTemplateDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'CPListItem.Handler' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'CPListItem.Handler' instead.")]
 		[Wrap ("WeakDelegate")]

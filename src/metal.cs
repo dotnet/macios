@@ -3171,6 +3171,9 @@ namespace Metal {
 		[Export ("depthCompareFunction")]
 		MTLCompareFunction DepthCompareFunction { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("depthWriteEnabled")]
 		bool DepthWriteEnabled { [Bind ("isDepthWriteEnabled")] get; set; }
 

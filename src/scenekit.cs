@@ -2072,22 +2072,52 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SCNSceneSourceLoading")]
 	interface SCNSceneLoadingOptions {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSUrl [] AssetDirectoryUrls { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool CreateNormalsIfAbsent { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool FlattenScene { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool CheckConsistency { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool OverrideAssetUrls { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool StrictConformance { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool UseSafeMode { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("SCNSceneSourceLoading.OptionPreserveOriginalTopology")]
 		bool PreserveOriginalTopology { get; set; }
 
 		// note: generator's StrongDictionary does not support No* attributes yet
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		float ConvertUnitsToMeters { get; set; } /* 'floating value encapsulated in a NSNumber' probably a float since it's a graphics framework */
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		bool ConvertToYUp { get; set; }
@@ -2140,6 +2170,9 @@ namespace SceneKit {
 			set;
 		}
 
+		/// <summary>Gets or sets a Boolean value that hides or shows the node's contents.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hidden")]
 		bool Hidden { [Bind ("isHidden")] get; set; }
 
@@ -2176,6 +2209,12 @@ namespace SceneKit {
 		[Export ("rendererDelegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakRendererDelegate { get; set; }
 
+		/// <summary>Gets or sets the rendering delegate for the node.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("WeakRendererDelegate")]
 		ISCNNodeRendererDelegate RendererDelegate { get; set; }
@@ -2297,6 +2336,9 @@ namespace SceneKit {
 		[Export ("physicsField", ArgumentSemantic.Retain)]
 		SCNPhysicsField PhysicsField { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether animations on the node's contents are paused.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("paused")]
 		bool Paused { [Bind ("isPaused")] get; set; }
@@ -3046,6 +3088,10 @@ namespace SceneKit {
 
 
 
+		/// <summary>Represents the value associated with the constant SCNSceneExportDestinationURL</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneExportDestinationURL")]
 		NSString ExportDestinationUrl { get; }
 
@@ -3077,6 +3123,9 @@ namespace SceneKit {
 		[Export ("fogColor", ArgumentSemantic.Retain)]
 		NSObject FogColor { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the scene is paused.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("paused")]
 		bool Paused { [Bind ("isPaused")] get; set; }
@@ -3131,15 +3180,31 @@ namespace SceneKit {
 
 		#endregion
 
+		/// <summary>Represents the value associated with the constant SCNSceneStartTimeAttributeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneStartTimeAttributeKey")]
 		NSString StartTimeAttributeKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneEndTimeAttributeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneEndTimeAttributeKey")]
 		NSString EndTimeAttributeKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneFrameRateAttributeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneFrameRateAttributeKey")]
 		NSString FrameRateAttributeKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneUpAxisAttributeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneUpAxisAttributeKey")]
 		NSString UpAxisAttributeKey { get; }
@@ -3515,9 +3580,18 @@ namespace SceneKit {
 		[Export ("delegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakSceneRendererDelegate { get; set; }
 
+		/// <summary>Gets or sets the delegate for the renderer.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakSceneRendererDelegate")]
 		ISCNSceneRendererDelegate SceneRendererDelegate { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that starts and stops the scene.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("playing")]
 		bool Playing { [Bind ("isPlaying")] get; set; }
@@ -3535,6 +3609,9 @@ namespace SceneKit {
 		[Export ("autoenablesDefaultLighting")]
 		bool AutoenablesDefaultLighting { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether SceneKit reduces aliasing by jittering the point of view.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("jitteringEnabled")]
 		bool JitteringEnabled { [Bind ("isJitteringEnabled")] get; set; }
@@ -4684,12 +4761,24 @@ namespace SceneKit {
 	[Static]
 	interface SCNPhysicsTestKeys {
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsTestCollisionBitMaskKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsTestCollisionBitMaskKey")]
 		NSString CollisionBitMaskKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsTestSearchModeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsTestSearchModeKey")]
 		NSString SearchModeKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsTestBackfaceCullingKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsTestBackfaceCullingKey")]
 		NSString BackfaceCullingKey { get; }
 	}
@@ -5831,6 +5920,9 @@ namespace SceneKit {
 		[Export ("unload")]
 		void Unload ();
 
+		/// <summary>Whether the scene at <see cref="P:SceneKit.SCNReferenceNode.ReferenceUrl" /> has been loaded.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("loaded")]
 		bool Loaded { [Bind ("isLoaded")] get; }
 	}

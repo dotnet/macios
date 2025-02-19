@@ -33,16 +33,23 @@ namespace ScriptingBridge {
 		QueueReply = 0x00000002,
 		/// <summary>To be added.</summary>
 		WaitReply = 0x00000003,
+		/// <summary>To be added.</summary>
 		DontReconnect = 0x00000080,
 		/// <summary>To be added.</summary>
 		WantReceipt = 0x00000200,
+		/// <summary>To be added.</summary>
 		NeverInteract = 0x00000010,
+		/// <summary>To be added.</summary>
 		CanInteract = 0x00000020,
+		/// <summary>To be added.</summary>
 		AlwaysInteract = 0x00000030,
 		/// <summary>To be added.</summary>
 		CanSwitchLayer = 0x00000040,
+		/// <summary>To be added.</summary>
 		DontRecord = 0x00001000,
+		/// <summary>To be added.</summary>
 		DontExecute = 0x00002000,
+		/// <summary>To be added.</summary>
 		ProcessNonReplyEvents = 0x00008000,
 	}
 
@@ -50,23 +57,41 @@ namespace ScriptingBridge {
 	// DirectoryService.framework/Headers/DirServicesTypes.h:typedef UInt32 OptionBits;
 	[Flags]
 	public enum LSLaunchFlags : uint {
+		/// <summary>To be added.</summary>
 		LaunchDefaults = 0x00000001,
+		/// <summary>To be added.</summary>
 		LaunchAndPrint = 0x00000002,
+		/// <summary>To be added.</summary>
 		LaunchReserved2 = 0x00000004,
+		/// <summary>To be added.</summary>
 		LaunchReserved3 = 0x00000008,
+		/// <summary>To be added.</summary>
 		LaunchReserved4 = 0x00000010,
+		/// <summary>To be added.</summary>
 		LaunchReserved5 = 0x00000020,
+		/// <summary>To be added.</summary>
 		LaunchAndDisplayErrors = 0x00000040,
+		/// <summary>To be added.</summary>
 		LaunchInhibitBGOnly = 0x00000080,
+		/// <summary>To be added.</summary>
 		LaunchDontAddToRecents = 0x00000100,
+		/// <summary>To be added.</summary>
 		LaunchDontSwitch = 0x00000200,
+		/// <summary>To be added.</summary>
 		LaunchNoParams = 0x00000800,
+		/// <summary>To be added.</summary>
 		LaunchAsync = 0x00010000,
+		/// <summary>To be added.</summary>
 		LaunchStartClassic = 0x00020000,
+		/// <summary>To be added.</summary>
 		LaunchInClassic = 0x00040000,
+		/// <summary>To be added.</summary>
 		LaunchNewInstance = 0x00080000,
+		/// <summary>To be added.</summary>
 		LaunchAndHide = 0x00100000,
+		/// <summary>To be added.</summary>
 		LaunchAndHideOthers = 0x00200000,
+		/// <summary>To be added.</summary>
 		LaunchHasUntrustedContents = 0x00400000,
 	}
 

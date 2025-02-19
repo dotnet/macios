@@ -372,15 +372,25 @@ namespace MetalPerformanceShaders {
 
 	[Introduced (PlatformName.MacCatalyst, 13, 0)]
 	public enum MPSCnnLossType : uint {
+		/// <summary>To be added.</summary>
 		MeanAbsoluteError = 0,
+		/// <summary>To be added.</summary>
 		MeanSquaredError,
+		/// <summary>To be added.</summary>
 		SoftMaxCrossEntropy,
+		/// <summary>To be added.</summary>
 		SigmoidCrossEntropy,
+		/// <summary>To be added.</summary>
 		CategoricalCrossEntropy,
+		/// <summary>To be added.</summary>
 		Hinge,
+		/// <summary>To be added.</summary>
 		Huber,
+		/// <summary>To be added.</summary>
 		CosineDistance,
+		/// <summary>To be added.</summary>
 		Log,
+		/// <summary>To be added.</summary>
 		KullbackLeiblerDivergence,
 		//Count, // must always be last, and because of this it will cause breaking changes.
 	}

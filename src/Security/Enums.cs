@@ -22,7 +22,9 @@ namespace Security {
 		OpWr = -49,
 		/// <summary>Invalid or incomplete parameters passed.</summary>
 		Param = -50,
+		/// <summary>Indicates that write permissions are already granted.</summary>
 		WritePermissions = -61,
+		/// <summary>Failure to allocate memory.</summary>
 		Allocate = -108,
 		/// <summary>Indicates that the user cancelled the operation.</summary>
 		UserCanceled = -128,
@@ -50,6 +52,7 @@ namespace Security {
 		ItemNotFound = -25300,
 		/// <summary>Indicates that the interaction with the Security Server was not allowed.</summary>
 		InteractionNotAllowed = -25308,
+		/// <summary>Indicates that data could not be decoded.</summary>
 		Decode = -26275,
 		/// <summary>Indicates that a callback was duplicated</summary>
 		DuplicateCallback = -25297,
@@ -65,9 +68,11 @@ namespace Security {
 		InvalidItemRef = -25304,
 		/// <summary>Indicates an invalid search reference.</summary>
 		InvalidSearchRef = -25305,
+		/// <summary>Indicates that no such class was found.</summary>
 		NoSuchClass = -25306,
 		/// <summary>Indicates that no default key chain was found.</summary>
 		NoDefaultKeychain = -25307,
+		/// <summary>Indicates that an attribute is read-only.</summary>
 		ReadOnlyAttribute = -25309,
 		/// <summary>Indicates that the wrong security version was encountered.</summary>
 		WrongSecVersion = -25310,
@@ -91,64 +96,115 @@ namespace Security {
 		InvalidPrefsDomain = -25319,
 		/// <summary>Indicates that a dark wake state prevented a UI from being displayed.</summary>
 		InDarkWake = -25320,
+		/// <summary>Indicates that the ACL was not in its canonical form.</summary>
 		ACLNotSimple = -25240,
+		/// <summary>Indicates that a trust policy could not be found.</summary>
 		PolicyNotFound = -25241,
+		/// <summary>Indicates an invalid trust setting.</summary>
 		InvalidTrustSetting = -25242,
 		NoAccessForItem = -25243,
+		/// <summary>Indicates an invalid owner change.</summary>
 		InvalidOwnerEdit = -25244,
 		TrustNotAvailable = -25245,
+		/// <summary>Indicates that an unsupported format was encountered.</summary>
 		UnsupportedFormat = -25256,
 		UnknownFormat = -25257,
+		/// <summary>Indicates that an attempt was made to send a sensitive key unwrapped.</summary>
 		KeyIsSensitive = -25258,
+		/// <summary>Indicates that a module failed to load.</summary>
 		MultiplePrivateKeys = -25259,
+		/// <summary>Indicates that a pass phrase is required.</summary>
 		PassphraseRequired = -25260,
+		/// <summary>Indicates an invalid password reference.</summary>
 		InvalidPasswordRef = -25261,
 		InvalidTrustSettings = -25262,
+		/// <summary>Indicates that trust settings were not found.</summary>
 		NoTrustSettings = -25263,
+		/// <summary>Indicates that a PKCS12 import failure caused a MAC failure.</summary>
 		Pkcs12VerifyFailure = -25264,
+		/// <summary>Indicates that the parent of the certificate is not actually the signer.</summary>
 		NotSigner = -26267,
+		/// <summary>To be added.</summary>
 		MissingEntitlement = -34018,
 		RestrictedApi = -34020,
+		/// <summary>Indicates that a service was not available.</summary>
 		ServiceNotAvailable = -67585,
 		InsufficientClientID = -67586,
+		/// <summary>Indicates that a device reset.</summary>
 		DeviceReset = -67587,
 		DeviceFailed = -67588,
+		/// <summary>Indicates that an application ACL subject could not be added..</summary>
 		AppleAddAppACLSubject = -67589,
+		/// <summary>Indicates that a public key was incomplete.</summary>
 		ApplePublicKeyIncomplete = -67590,
+		/// <summary>Indicates a signature mismatch.</summary>
 		AppleSignatureMismatch = -67591,
+		/// <summary>Indicates that the start date for a key was invalid.</summary>
 		AppleInvalidKeyStartDate = -67592,
+		/// <summary>Indicates that the end date for a key was invalid.</summary>
 		AppleInvalidKeyEndDate = -67593,
+		/// <summary>Indicates that a conversion error occurred.</summary>
 		ConversionError = -67594,
+		/// <summary>Indicates that rollback to SSLv2 encountered an error.</summary>
 		AppleSSLv2Rollback = -67595,
+		/// <summary>Indicates that a quota was exceeded.</summary>
 		QuotaExceeded = -67596,
+		/// <summary>Indicates that a file was too large.</summary>
 		FileTooBig = -67597,
+		/// <summary>Indicates that a database blob ws not valid.</summary>
 		InvalidDatabaseBlob = -67598,
+		/// <summary>Indicates an invalid key blob.</summary>
 		InvalidKeyBlob = -67599,
+		/// <summary>Indicates that a database blob was not compatible.</summary>
 		IncompatibleDatabaseBlob = -67600,
+		/// <summary>Indicates that a database key blob was incompatible.</summary>
 		IncompatibleKeyBlob = -67601,
+		/// <summary>Indicates that a hostname mismatch occurred.</summary>
 		HostNameMismatch = -67602,
 		UnknownCriticalExtensionFlag = -67603,
+		/// <summary>Indicates that basic constraints were not found.</summary>
 		NoBasicConstraints = -67604,
+		/// <summary>Indicates that no basic CA constraints were found.</summary>
 		NoBasicConstraintsCA = -67605,
+		/// <summary>Indicates that the authority key ID was not valid.</summary>
 		InvalidAuthorityKeyID = -67606,
+		/// <summary>Indicates an invalid subject key ID.</summary>
 		InvalidSubjectKeyID = -67607,   /* The subject key ID is not valid. */
+		/// <summary>Indicates an invalid key usage for a particular policy.</summary>
 		InvalidKeyUsageForPolicy = -67608,  /* The key usage is not valid for the specified policy. */
+		/// <summary>Indicate an invalid extended key usage.</summary>
 		InvalidExtendedKeyUsage = -67609,   /* The extended key usage is not valid. */
+		/// <summary>Indicates an invalid linkage to an ID.</summary>
 		InvalidIDLinkage = -67610,  /* The ID linkage is not valid. */
+		/// <summary>Indicates that a path was too long.</summary>
 		PathLengthConstraintExceeded = -67611,  /* The path length constraint was exceeded. */
+		/// <summary>Indicates an invalid root.</summary>
 		InvalidRoot = -67612,   /* The root or anchor certificate is not valid. */
+		/// <summary>Indicates that a CRL was expired.</summary>
 		CRLExpired = -67613,    /* The CRL has expired. */
+		/// <summary>Indicates that a CRL was not yet valid.</summary>
 		CRLNotValidYet = -67614,    /* The CRL is not yet valid. */
+		/// <summary>Indicates that a CRL could not be found.</summary>
 		CRLNotFound = -67615,   /* The CRL was not found. */
+		/// <summary>Indicates that a CRL server was down.</summary>
 		CRLServerDown = -67616, /* The CRL server is down. */
+		/// <summary>Indicates that a URI was bad.</summary>
 		CRLBadURI = -67617, /* The CRL has a bad Uniform Resource Identifier. */
+		/// <summary>Indicates that an unknown certificate extension was encountered.</summary>
 		UnknownCertExtension = -67618,  /* An unknown certificate extension was encountered. */
+		/// <summary>Indicates that an unknown CRL extension was encountered.</summary>
 		UnknownCRLExtension = -67619,   /* An unknown CRL extension was encountered. */
+		/// <summary>Indicates that a CRL was untrusted.</summary>
 		CRLNotTrusted = -67620, /* The CRL is not trusted. */
+		/// <summary>Indicates that a CRL revocation policy failed.</summary>
 		CRLPolicyFailed = -67621,   /* The CRL policy failed. */
+		/// <summary>Indicates that the issuing distribution point was not valid.</summary>
 		IDPFailure = -67622,    /* The issuing distribution point was not valid. */
+		/// <summary>Indicates that a email addresses could not be found.</summary>
 		SMIMEEmailAddressesNotFound = -67623,   /* An email address mismatch was encountered. */
+		/// <summary>Indicates that a bad SMIME extended key usage was encountered.</summary>
 		SMIMEBadExtendedKeyUsage = -67624,  /* The appropriate extended key usage for SMIME was not found. */
+		/// <summary>Indicates that a bad SMIME key usage was encountered.</summary>
 		SMIMEBadKeyUsage = -67625,  /* The key usage is not compatible with SMIME. */
 		SMIMEKeyUsageNotCritical = -67626,  /* The key usage extension is not marked as critical. */
 		SMIMENoEmailAddress = -67627,   /* No email address was found in the certificate. */
@@ -441,34 +497,44 @@ namespace Security {
 	// values are defined in Security.framework/Headers/SecKey.h 
 	/// <summary>An enumeration whose values specify the type of padding to be used in encryption and decryption.</summary>
 	public enum SecPadding {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		PKCS1 = 1,
 
+		/// <summary>To be added.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		OAEP = 2,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		Raw = 0x4000,
 
+		/// <summary>To be added.</summary>
 		[Obsolete ("Don't use hash algorithm.")]
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		PKCS1MD2 = 0x8000,
 
+		/// <summary>To be added.</summary>
 		[Obsolete ("Don't use hash algorithm.")]
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		PKCS1MD5 = 0x8001,
 
+		/// <summary>To be added.</summary>
 		PKCS1SHA1 = 0x8002,
 
+		/// <summary>To be added.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		PKCS1SHA224 = 0x8003,
+		/// <summary>To be added.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		PKCS1SHA256 = 0x8004,
+		/// <summary>To be added.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		PKCS1SHA384 = 0x8005,
@@ -538,10 +604,15 @@ namespace Security {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SecKeyOperationType : long {
+		/// <summary>To be added.</summary>
 		Sign = 0,
+		/// <summary>To be added.</summary>
 		Verify = 1,
+		/// <summary>To be added.</summary>
 		Encrypt = 2,
+		/// <summary>To be added.</summary>
 		Decrypt = 3,
+		/// <summary>To be added.</summary>
 		KeyExchange = 4,
 	}
 
@@ -551,12 +622,19 @@ namespace Security {
 	[Flags]
 	[Native]
 	public enum SecRevocation : ulong {
+		/// <summary>To be added.</summary>
 		None,
+		/// <summary>To be added.</summary>
 		OCSPMethod = 1,
+		/// <summary>To be added.</summary>
 		CRLMethod = 2,
+		/// <summary>To be added.</summary>
 		PreferCRL = 4,
+		/// <summary>To be added.</summary>
 		RequirePositiveResponse = 8,
+		/// <summary>To be added.</summary>
 		NetworkAccessDisabled = 16,
+		/// <summary>To be added.</summary>
 		UseAnyAvailableMethod = OCSPMethod | CRLMethod,
 	}
 }

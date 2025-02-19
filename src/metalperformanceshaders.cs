@@ -1079,22 +1079,37 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithCoder:device:")]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("neuronType")]
 		MPSCnnNeuronType NeuronType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("a")]
 		float A { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("b")]
 		float B { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("c")]
 		float C { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("data", ArgumentSemantic.Retain)]
 		NSData Data { get; }
@@ -1113,9 +1128,15 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronLinear {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("a")]
 		float A { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("b")]
 		float B { get; }
 
@@ -1140,6 +1161,9 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronReLU {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("a")]
 		float A { get; }
 
@@ -1185,9 +1209,15 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronTanH {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("a")]
 		float A { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("b")]
 		float B { get; }
 
@@ -3648,9 +3678,15 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSCnnNeuron), Name = "MPSCNNNeuronHardSigmoid")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronHardSigmoid {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("a")]
 		float A { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("b")]
 		float B { get; }
 
@@ -3673,9 +3709,15 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSCnnNeuron), Name = "MPSCNNNeuronSoftPlus")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronSoftPlus {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("a")]
 		float A { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("b")]
 		float B { get; }
 
@@ -3716,6 +3758,9 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSCnnNeuron), Name = "MPSCNNNeuronELU")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronElu {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("a")]
 		float A { get; }
 
@@ -3737,9 +3782,15 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSCnnNeuron), Name = "MPSCNNNeuronReLUN")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronReLun {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("a")]
 		float A { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("b")]
 		float B { get; }
 
@@ -4638,12 +4689,21 @@ namespace MetalPerformanceShaders {
 		[Export ("nodeWithSource:descriptor:")]
 		MPSCnnNeuronNode Create (MPSNNImageNode sourceNode, MPSNNNeuronDescriptor descriptor);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("a")]
 		float A { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("b")]
 		float B { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("c")]
 		float C { get; }
@@ -4721,6 +4781,9 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithSourceGradient:sourceImage:gradientState:descriptor:")]
 		NativeHandle Constructor (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState, MPSNNNeuronDescriptor descriptor);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("descriptor")]
 		MPSNNNeuronDescriptor Descriptor { get; }
 	}
@@ -5882,6 +5945,9 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithSource:lossDescriptor:")]
 		NativeHandle Constructor (MPSNNImageNode source, MPSCnnLossDescriptor descriptor);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("inputLabels", ArgumentSemantic.Retain)]
 		MPSNNLabelsNode InputLabels { get; }
 	}
@@ -8629,15 +8695,27 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnLossDataDescriptor : NSCopying {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("layout")]
 		MPSDataLayout Layout { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("size")]
 		MTLSize Size { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bytesPerRow")]
 		nuint BytesPerRow { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bytesPerImage")]
 		nuint BytesPerImage { get; set; }
 
@@ -8659,13 +8737,22 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, MTLSize lossImageSize, MPSCnnLossDataDescriptor labelsDescriptor, [NullAllowed] MPSCnnLossDataDescriptor weightsDescriptor);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lossImage")]
 		MPSImage LossImage { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("labelsImage")]
 		MPSImage LabelsImage { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("weightsImage")]
 		MPSImage WeightsImage { get; }
@@ -8676,24 +8763,45 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnLossDescriptor : NSCopying {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lossType", ArgumentSemantic.Assign)]
 		MPSCnnLossType LossType { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("reductionType", ArgumentSemantic.Assign)]
 		MPSCnnReductionType ReductionType { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("weight")]
 		float Weight { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("labelSmoothing")]
 		float LabelSmoothing { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("numberOfClasses")]
 		nuint NumberOfClasses { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("epsilon")]
 		float Epsilon { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("delta")]
 		float Delta { get; set; }
 
@@ -8707,24 +8815,45 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnLoss {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lossType")]
 		MPSCnnLossType LossType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("reductionType")]
 		MPSCnnReductionType ReductionType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("weight")]
 		float Weight { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("labelSmoothing")]
 		float LabelSmoothing { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("numberOfClasses")]
 		nuint NumberOfClasses { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("epsilon")]
 		float Epsilon { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("delta")]
 		float Delta { get; }
 
@@ -9131,18 +9260,33 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronGradient {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronType")]
 		MPSCnnNeuronType NeuronType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("a")]
 		float A { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("b")]
 		float B { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("c")]
 		float C { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("data", ArgumentSemantic.Retain)]
 		NSData Data { get; }
 

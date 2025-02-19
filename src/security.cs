@@ -151,37 +151,51 @@ namespace Security {
 
 	[Static]
 	interface SecMatchLimit {
+		/// <summary>Return a single match.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecMatchLimitOne")]
 		IntPtr MatchLimitOne { get; }
 
+		/// <summary>Return all matches.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecMatchLimitAll")]
 		IntPtr MatchLimitAll { get; }
 	}
 
 	enum SecKeyType {
+		/// <summary>To be added.</summary>
 		Invalid = -1,
 
+		/// <summary>RSA algorithm.</summary>
 		[Field ("kSecAttrKeyTypeRSA")]
 		RSA = 0,
 
+		/// <summary>Elliptic curve DSA algorithm.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecAttrKeyTypeEC")]
 		EC = 1,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecAttrKeyTypeECSECPrimeRandom")]
 		ECSecPrimeRandom = 2,
 	}
 
 	enum SecKeyClass {
+		/// <summary>To be added.</summary>
 		Invalid = -1,
 
+		/// <summary>Public part of a symetric key.</summary>
 		[Field ("kSecAttrKeyClassPublic")]
 		Public = 0,
 
+		/// <summary>Private part of an asymetric key.</summary>
 		[Field ("kSecAttrKeyClassPrivate")]
 		Private = 1,
 
+		/// <summary>A symetric key.</summary>
 		[Field ("kSecAttrKeyClassSymmetric")]
 		Symmetric = 2,
 	}
@@ -1356,8 +1370,14 @@ namespace Security {
 	[StrongDictionary ("SecKeyKeyExchangeParameterKey")]
 	interface SecKeyKeyExchangeParameter {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		int RequestedSize { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSData SharedInfo { get; set; }
 	}
 
@@ -1385,12 +1405,24 @@ namespace Security {
 	[StrongDictionary ("SecSharedCredentialKeys")]
 	interface SecSharedCredentialInfo {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string Server { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string Account { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string Password { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		int Port { get; set; }
 	}
 

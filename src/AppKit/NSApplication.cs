@@ -37,7 +37,11 @@ using ObjCRuntime;
 
 namespace AppKit {
 	public partial class NSApplication : NSResponder {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static bool CheckForIllegalCrossThreadCalls = true;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static bool CheckForEventAndDelegateMismatches = true;
 
 #if !NET
@@ -159,6 +163,9 @@ namespace AppKit {
 #endif
 
 		// note: if needed override the protected Get|Set methods
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSApplicationActivationPolicy ActivationPolicy {
 			get { return GetActivationPolicy (); }
 			// ignore return value (bool)

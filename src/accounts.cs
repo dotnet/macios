@@ -200,6 +200,9 @@ namespace Accounts {
 		[Field ("ACAccountTypeIdentifierTencentWeibo")]
 		NSString TencentWeibo { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoTV]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use LinkedIn SDK instead.")]
@@ -286,9 +289,15 @@ namespace Accounts {
 	[NoMacCatalyst]
 	[Static]
 	interface ACLinkedInKey {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ACLinkedInAppIdKey")]
 		NSString AppId { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ACLinkedInPermissionsKey")]
 		NSString Permissions { get; }
 	}

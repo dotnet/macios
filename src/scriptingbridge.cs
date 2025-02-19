@@ -46,10 +46,16 @@ namespace ScriptingBridge {
 		[Export ("initWithData:")]
 		NativeHandle Constructor (NSObject data);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("get")]
 		NSObject Get { get; }
 
 		// part of SBObject.h include file, not in the official documentation
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lastError")]
 		NSError LastError { get; }
 	}
@@ -134,24 +140,42 @@ namespace ScriptingBridge {
 		[Export ("classForScriptingClass:")]
 		Class ClassForScripting (string className);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isRunning")]
 		bool IsRunning { get; }
 
 		[Export ("activate")]
 		void Activate ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("delegate", ArgumentSemantic.Retain), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		ISBApplicationDelegate Delegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("launchFlags")]
 		LSLaunchFlags LaunchFlags { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sendMode")]
 		AESendMode SendMode { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("timeout")]
 		nint Timeout { get; set; }
 	}

@@ -35,17 +35,25 @@ using NativeHandle = System.IntPtr;
 
 namespace SearchKit {
 	public enum SKIndexType {
+		/// <summary>To be added.</summary>
 		Unknown,
+		/// <summary>To be added.</summary>
 		Inverted,
+		/// <summary>To be added.</summary>
 		Vector,
+		/// <summary>To be added.</summary>
 		InvertedVector,
 	};
 
 	[Flags]
 	public enum SKSearchOptions {
+		/// <summary>To be added.</summary>
 		Default = 0,
+		/// <summary>To be added.</summary>
 		NoRelevanceScores = 1 << 0,
+		/// <summary>To be added.</summary>
 		SpaceMeansOr = 1 << 1,
+		/// <summary>To be added.</summary>
 		FindSimilar = 1 << 2,
 	}
 
@@ -160,6 +168,9 @@ namespace SearchKit {
 
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static IntPtr SKDocumentCopyURL (IntPtr h);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSUrl? Url {
 			get {
 				var url = SKDocumentCopyURL (GetCheckedHandle ());
@@ -169,6 +180,9 @@ namespace SearchKit {
 
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static IntPtr SKDocumentGetName (IntPtr h);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Name {
 			get {
 				var n = SKDocumentGetName (GetCheckedHandle ());
@@ -187,6 +201,9 @@ namespace SearchKit {
 		}
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static IntPtr SKDocumentGetSchemeName (IntPtr h);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Scheme {
 			get {
 				var s = SKDocumentGetSchemeName (GetCheckedHandle ());
@@ -387,6 +404,9 @@ namespace SearchKit {
 
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static nint SKIndexGetDocumentCount (IntPtr handle);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint DocumentCount {
 			get {
 				return SKIndexGetDocumentCount (Handle);
@@ -396,6 +416,9 @@ namespace SearchKit {
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static nint SKIndexGetMaximumDocumentID (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint MaximumDocumentID {
 			get {
 				return SKIndexGetMaximumDocumentID (Handle);
@@ -404,6 +427,9 @@ namespace SearchKit {
 
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static nint SKIndexGetMaximumTermID (IntPtr handle);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint MaximumTermID {
 			get {
 				return SKIndexGetMaximumTermID (Handle);
@@ -412,6 +438,9 @@ namespace SearchKit {
 
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static IntPtr SKIndexGetAnalysisProperties (IntPtr h);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SKTextAnalysis AnalysisProperties {
 			get {
 				return new SKTextAnalysis (Runtime.GetNSObject<NSDictionary> (SKIndexGetAnalysisProperties (Handle)));
@@ -470,6 +499,9 @@ namespace SearchKit {
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static nint SKIndexGetMaximumBytesBeforeFlush (IntPtr h);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Advice ("Apple recommends to use Flush instead of setting these parameters.")]
 		public nint MaximumBytesBeforeFlush {
 			get {
@@ -644,11 +676,17 @@ namespace SearchKit {
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static nint SKSummaryGetParagraphCount (IntPtr summary);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint SentenceCount {
 			get {
 				return SKSummaryGetSentenceCount (GetCheckedHandle ());
 			}
 		}
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint ParagraphCount {
 			get {
 				return SKSummaryGetParagraphCount (GetCheckedHandle ());

@@ -172,6 +172,9 @@ namespace MediaLibrary {
 		[Field ("MLPhotosAllMomentsGroupTypeIdentifier")]
 		NSString PhotosAllMomentsGroupTypeIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 15)]
 		[Field ("MLPhotosMomentGroupTypeIdentifier")]
 		NSString PhotosMomentGroupTypeIdentifier { get; }
@@ -207,6 +210,9 @@ namespace MediaLibrary {
 		[Field ("MLPhotosLastImportGroupTypeIdentifier")]
 		NSString PhotosLastImportGroupTypeIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLPhotosMyPhotoStreamTypeIdentifier")]
 		NSString PhotosMyPhotoStreamTypeIdentifier { get; }
 
@@ -231,6 +237,9 @@ namespace MediaLibrary {
 		[Field ("MLPhotosLivePhotosGroupTypeIdentifier")]
 		NSString PhotosLivePhotosGroupTypeIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLPhotosLongExposureGroupTypeIdentifier")]
 		NSString PhotosLongExposureGroupTypeIdentifier { get; }
 
@@ -240,6 +249,9 @@ namespace MediaLibrary {
 		[Field ("MLPhotosAnimatedGroupTypeIdentifier")]
 		NSString PhotosAnimatedGroupTypeIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLPhotosPanoramasGroupTypeIdentifier")]
 		NSString PhotosPanoramasGroupTypeIdentifier { get; }
 

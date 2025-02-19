@@ -21,4 +21,30 @@ if (success)
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/HealthKit/Reference/HKHealthStore_Class/index.html">Apple documentation for <c>HKHealthStore</c></related>
   </Docs>
+  <Docs DocId="P:HealthKit.HKHealthStore.UserPreferencesDidChangeNotification">
+        <summary>Notification constant for UserPreferencesDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        HKHealthStore.UserPreferencesDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification HKHealthStore", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification HKHealthStore", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (HKHealthStore.UserPreferencesDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
 </Documentation>

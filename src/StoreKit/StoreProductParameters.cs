@@ -44,6 +44,9 @@ namespace StoreKit {
 		}
 
 		// TODO: What is real iTunes Store item identifier length
+		/// <summary>Gets or sets the identifier for the ITunes item being advertised.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? ITunesItemIdentifier {
 			set {
 				SetNumberValue (SKStoreProductParameterKey.ITunesItemIdentifier, value);
@@ -53,6 +56,9 @@ namespace StoreKit {
 			}
 		}
 
+		/// <summary>Gets or sets a key for the affiliate token.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? AffiliateToken {
 			get {
 				return GetStringValue (SKStoreProductParameterKey.AffiliateToken);
@@ -62,6 +68,9 @@ namespace StoreKit {
 			}
 		}
 
+		/// <summary>Gets or sets a key for the campaign token.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? CampaignToken {
 			get {
 				return GetStringValue (SKStoreProductParameterKey.CampaignToken);

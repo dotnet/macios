@@ -203,7 +203,7 @@ param_iter_next (enum IteratorAction action, void *context, const char *type, si
 	if (target != NULL)
 		*(uint64_t *) target = 0;
 
-	char struct_name [5]; // we don't care about structs with more than 4 fields.
+	char struct_name [33]; // any struct with > 32 bytes (4 doubles) is always passed on the stack, which also means any struct with more than 32 fields will be passed on the stack.
 	xamarin_collapse_struct_name (type, struct_name, sizeof (struct_name), exception_gchandle);
 	if (*exception_gchandle != INVALID_GCHANDLE)
 		return;

@@ -54,23 +54,17 @@ dump_state (const char *prefix, struct XamarinCallState *state)
 static const char* registers[] =  { "rdi", "rsi", "rdx", "rcx", "r8", "r9", "err"  };
 #endif
 
+const unsigned long total_register_size = 48; // 48 == 6 registers * 8 bytes
+
 static unsigned long 
-param_read_primitive (struct ParamIterator *it, const char **type_ptr, uint8_t **target_ptr, size_t total_size, bool fp_struct, bool float_in_register_candidate, GCHandle *exception_gchandle)
+param_read_primitive (struct ParamIterator *it, const char **type_ptr, uint8_t **target_ptr, size_t total_size, bool fp_struct, bool float_in_register_candidate, bool read_register, GCHandle *exception_gchandle)
 {
 	// COOP: does not access managed memory: any mode.
 	char type = **type_ptr;
 	void *target = *target_ptr;
 
-	bool read_register = true;
-	unsigned long register_size = 48; // 48 == 6 registers * 8 bytes
-	if ((unsigned long)it->byte_count >= register_size) {
-		read_register = false;
-	} else if (register_size - (unsigned long)it->byte_count < total_size) {
-		read_register = false;
-		LOGZ (" total size (%i) is less that available register size (%i)", (int) total_size, (int) ((int) register_size - it->byte_count));
-	}
-
-	LOGZ (" reading primitive: type=%c target_ptr=%p target=%p total_size=%i fp_struct=%i float_in_register_candidate=%i read_register=%i it->byte_count=%i it->float_count=%i\n", type, target_ptr, target, (int) total_size, (int) fp_struct, (int) float_in_register_candidate, (int) read_register, it->byte_count, it->float_count);
+	LOGZ (" reading primitive: type=%c target_ptr=%p target=%p total_size=%i fp_struct=%i float_in_register_candidate=%i read_register=%i it->byte_count=%i it->float_count=%i\n",
+			type, target_ptr, target, (int) total_size, (int) fp_struct, (int) float_in_register_candidate, (int) read_register, it->byte_count, it->float_count);
 
 	// compute size
 	size_t size = xamarin_get_primitive_size (type);
@@ -113,10 +107,10 @@ param_read_primitive (struct ParamIterator *it, const char **type_ptr, uint8_t *
 		// there are 8 xmm registers, each 4 floats big.
 		// only 1 double is ever put in each xmm register.
 		// this means the last location is 7 * 4 = 28
-		if (total_size > size && !fp_struct && !read_register) {
+		/*if (total_size > size && !fp_struct && !read_register) {
 			// floating point values in a struct that has non-floating point fields are not stored in floating point registers.
 			goto DEFAULT;
-		} else if (it->float_count <= 28) {
+		} else */if (it->float_count <= 28) {
 			if (target != NULL) {
 				*(double*) target = *(double*) (it->float_count + (float*) &it->state->xmm0);
 				LOGZ (" reading double at xmm%i = %p into %p: %f\n", it->float_count / 4, (double *) target, target, *(double *) target);
@@ -254,6 +248,12 @@ param_iter_next (enum IteratorAction action, void *context, const char *type, si
 		return;
 	}
 
+	bool read_register = true;
+	if (total_register_size - (size_t) it->byte_count < size) {
+		read_register = false;
+		LOGZ (" total size of parameter (%i) is less than size of remaining registers (%i), so this argument will be passed on the stack\n", (int) size, (int) ((int) total_register_size - it->byte_count));
+	}
+
 	// passed in registers (and on the stack if not enough registers)
 	const char *t = struct_name;
 	unsigned long current_size = 0;
@@ -280,7 +280,7 @@ param_iter_next (enum IteratorAction action, void *context, const char *type, si
 		}
 
 		uint8_t *previous_target = targ;
-		unsigned long c = param_read_primitive (it, &t, &targ, size, fp_struct, float_in_register_candidate, exception_gchandle);
+		unsigned long c = param_read_primitive (it, &t, &targ, size, fp_struct, float_in_register_candidate, read_register, exception_gchandle);
 		if (*exception_gchandle != INVALID_GCHANDLE)
 			return;
 		if (targ != NULL)

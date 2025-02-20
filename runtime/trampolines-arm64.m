@@ -40,22 +40,6 @@ dump_state (struct XamarinCallState *state, const char *prefix)
 #define dump_state(...)
 #endif
 
-static size_t align_size (size_t target, uint64_t alignment)
-{
-	target = (target + (alignment - 1)) & ~(alignment - 1);
-	return target;
-}
-
-static void* align_ptr (void* target, uint64_t alignment)
-{
-	if (target == NULL)
-		return NULL;
-
-	uint64_t ptr = (uint64_t) target;
-	ptr = (ptr + (alignment - 1)) & ~(alignment - 1);
-	return (void *) ptr;
-}
-
 static int
 param_read_primitive (struct ParamIterator *it, const char *type_ptr, void *target, size_t total_size, bool prohibit_fp_registers, GCHandle *exception_gchandle)
 {

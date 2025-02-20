@@ -23,17 +23,24 @@ static class C {
 	// the numbers below are bitmasks of Architecture values.
 	static string [] structs_and_stret =  {
 		/* integral types */
-		"c:0", "cc:4", "ccc:5",  "cccc:4",
-		"s:0", "ss:4", "sss:5",  "ssss:4",
+		"c:0", "cc:4", "ccc:5",  "cccc:4", "cccccccc:0", "ccccccccccccccc:0", "cccccccccccccccc:0", "ccccccccccccccccc:2",
+		"s:0", "ss:4", "sss:5",  "ssss:4", "ssssssss:0", "sssssssss:2",
 		"i:0", "ii:4", "iii:5",  "iiii:5",  "iiiii:15",
 		"l:4", "ll:5", "lll:15", "llll:15", "lllll:15",
 		/* floating point types */
 		"f:4", "ff:4", "fff:5", "ffff:5",  "fffff:15",
 		"d:4", "dd:5", "ddd:7", "dddd:7",  "ddddd:15",
 		"fd:0", "df:0", "dddf:2", "fffd:2",
+		"ffd:0", "dff:0",
 		/* mixed types */
 		"if:4", "fi:4", // 8 bytes
 		"iff:5", // 12 bytes
+		"ffi:0", // 12 bytes
+		"fif:5", // 12 bytes
+		"fii:0",
+		"ifi:0",
+		"iif:0",
+		"ffii:5", // 16 bytes
 		"iiff:5", // 16 bytes
 		"id:5", "di:5", // 16 bytes
 		"iid:5", // 16 bytes
@@ -45,8 +52,14 @@ static class C {
 		"ldld:15",
 		"fifi:5",
 		"ifif:5",
-		"lllf:5",
-		"llld:15",
+		"lllf:2",
+		"llld:2",
+		"fcccc:0",
+		"ffcccc:0",
+		"fffcccc:0",
+		"fccfcc:0",
+		"fcfc:0",
+		"sfsf:0",
 	};
 
 	static string [] structs = structs_and_stret.Select ((v) => v.IndexOf (':') >= 0 ? v.Substring (0, v.IndexOf (':')) : v).ToArray ();
@@ -758,17 +771,23 @@ namespace Bindings.Test
 ");
 
 		foreach (var s in structs) {
+			w.AppendLine ($"\t[StructLayout (LayoutKind.Sequential)]");
 			w.AppendLine ($"\tpublic struct S{s} {{ ");
-			w.Append ("\t\t");
 			for (int i = 0; i < s.Length; i++) {
-				w.Append ("public ").Append (GetManagedName (s [i])).Append (" x").Append (i).Append ("; ");
+				w.Append ("\t\tpublic ").Append (GetManagedName (s [i])).Append (" x").Append (i).Append (";").AppendLine ();
 			}
 			w.AppendLine ();
-			w.Append ($"\t\tpublic override string ToString () {{ return $\"S{s} [");
+			for (int i = 1; i < s.Length; i++) {
+				w.AppendLine ($"\t\tunsafe int x{i}Offset {{ get {{ fixed (void* p0 = &x0) fixed (void* p{i} = &x{i}) return (int) ((ulong) p{i} - (ulong) p0); }} }}");
+			}
+			w.Append ($"\t\tpublic unsafe override string ToString () {{ return $\"S{s} [");
 			for (int i = 0; i < s.Length; i++) {
 				w.Append ("{x").Append (i).Append ("};");
 			}
 			w.Length--;
+			// for (int i = 1; i < s.Length; i++) {
+			// 	w.Append ($" #{i} at {{x{i}Offset}}");
+			// }
 			w.AppendLine ("]\"; } ");
 			w.AppendLine ("\t}");
 			w.AppendLine ();

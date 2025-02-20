@@ -773,26 +773,41 @@ namespace StoreKit {
 		[Export ("ProviderToken")]
 		string ProviderToken { get; set; }
 
+		/// <summary>Gets or sets the ad network's cryptograpic signature. Used for attribution.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("AdNetworkAttributionSignature")]
 		string AdNetworkAttributionSignature { get; set; }
 
+		/// <summary>Gets or sets the ad network campaign.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("AdNetworkCampaignIdentifier")]
 		uint AdNetworkCampaignIdentifier { get; set; }
 
+		/// <summary>Gets or sets the ad network's unique ID.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("AdNetworkIdentifier")]
 		string AdNetworkIdentifier { get; set; }
 
+		/// <summary>Gets or sets a cryptographic nonce value.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("AdNetworkNonce")]
 		NSUuid AdNetworkNonce { get; set; }
 
+		/// <summary>Gets or sets a key for the time of the ad impression.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("AdNetworkTimestamp")]
@@ -856,11 +871,17 @@ namespace StoreKit {
 		[Field ("SKStoreProductParameterAdvertisingPartnerToken")]
 		NSString AdvertisingPartnerToken { get; }
 
+		/// <summary>Represents the value associated with the constant SKStoreProductParameterAdNetworkAttributionSignature.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("SKStoreProductParameterAdNetworkAttributionSignature")]
 		NSString AdNetworkAttributionSignature { get; }
 
+		/// <summary>Represents the value associated with the constant SKStoreProductParameterAdNetworkCampaignIdentifier.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("SKStoreProductParameterAdNetworkCampaignIdentifier")]
@@ -870,16 +891,25 @@ namespace StoreKit {
 		[Field ("SKStoreProductParameterAdNetworkSourceIdentifier")]
 		NSString AdNetworkSourceIdentifier { get; }
 
+		/// <summary>Represents the value associated with the constant SKStoreProductParameterAdNetworkIdentifier.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("SKStoreProductParameterAdNetworkIdentifier")]
 		NSString AdNetworkIdentifier { get; }
 
+		/// <summary>Represents the value associated with the constant SKStoreProductParameterAdNetworkNonce.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("SKStoreProductParameterAdNetworkNonce")]
 		NSString AdNetworkNonce { get; }
 
+		/// <summary>Represents the value associated with the constant SKStoreProductParameterAdNetworkTimestamp.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("SKStoreProductParameterAdNetworkTimestamp")]
@@ -965,14 +995,26 @@ namespace StoreKit {
 		NSString _Action { get; set; }
 
 		// Headers comment: Identifier of the iTunes Store item the user is trying to access which requires cloud service setup (NSNumber).
+		/// <summary>Gets or sets the identifier for the item for which access is being requested.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		nint ITunesItemIdentifier { get; set; }
 
+		/// <summary>Gets or sets the affiliate token.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		string AffiliateToken { get; set; }
 
+		/// <summary>Gets or sets the campaign token.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		string CampaignToken { get; set; }
 
+		/// <summary>Gets or sets the setup message identifier.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		string MessageIdentifier { get; set; }
 	}
@@ -1006,6 +1048,7 @@ namespace StoreKit {
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	enum SKCloudServiceSetupAction {
+		/// <summary>Indicates a subscription action in a setup view.</summary>
 		[Field ("SKCloudServiceSetupActionSubscribe")]
 		Subscribe,
 	}
@@ -1016,12 +1059,16 @@ namespace StoreKit {
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	enum SKCloudServiceSetupMessageIdentifier {
+		/// <summary>Indicates a message for joining.</summary>
 		[Field ("SKCloudServiceSetupMessageIdentifierJoin")]
 		Join,
+		/// <summary>Indicates a message for connecting.</summary>
 		[Field ("SKCloudServiceSetupMessageIdentifierConnect")]
 		Connect,
+		/// <summary>Indicates a message for adding music</summary>
 		[Field ("SKCloudServiceSetupMessageIdentifierAddMusic")]
 		AddMusic,
+		/// <summary>Indicates a message for playing.</summary>
 		[Field ("SKCloudServiceSetupMessageIdentifierPlayMusic")]
 		PlayMusic,
 	}

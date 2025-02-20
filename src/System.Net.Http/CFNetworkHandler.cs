@@ -92,6 +92,8 @@ namespace System.Net.Http {
 
 		Dictionary<IntPtr, StreamBucket> streamBuckets;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CFNetworkHandler ()
 		{
 			allowAutoRedirect = true;
@@ -147,6 +149,9 @@ namespace System.Net.Http {
 
 		// TODO: Add more properties
 
+		/// <param name="disposing">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected override void Dispose (bool disposing)
 		{
 			// TODO: CloseStream remaining stream buckets if there are any

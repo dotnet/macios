@@ -18,11 +18,17 @@ namespace WebKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum WKNavigationType : long {
+		/// <summary>The user activated a link.</summary>
 		LinkActivated,
+		/// <summary>The user submitted a form.</summary>
 		FormSubmitted,
+		/// <summary>The user moved forward or backward through the browsing history.</summary>
 		BackForward,
+		/// <summary>A page was reloaded.</summary>
 		Reload,
+		/// <summary>The user resubmitted a form.</summary>
 		FormResubmitted,
+		/// <summary>An action that is not represented by this enumeration caused the navigation.</summary>
 		Other = -1,
 	}
 
@@ -30,7 +36,9 @@ namespace WebKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum WKNavigationActionPolicy : long {
+		/// <summary>Cancel navigation.</summary>
 		Cancel,
+		/// <summary>Allow navigation.</summary>
 		Allow,
 		[iOS (14, 5)]
 		[MacCatalyst (14, 5)]
@@ -41,7 +49,9 @@ namespace WebKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum WKNavigationResponsePolicy : long {
+		/// <summary>Cancel navigation.</summary>
 		Cancel,
+		/// <summary>Allow navigation.</summary>
 		Allow,
 		[iOS (14, 5)]
 		[MacCatalyst (14, 5)]
@@ -52,7 +62,9 @@ namespace WebKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum WKUserScriptInjectionTime : long {
+		/// <summary>Inject the script before the document begins to load.</summary>
 		AtDocumentStart,
+		/// <summary>Inject the script after the document is loaded..</summary>
 		AtDocumentEnd,
 	}
 
@@ -102,7 +114,9 @@ namespace WebKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum WKSelectionGranularity : long {
+		/// <summary>Jump to word boundaries as the user selects.</summary>
 		Dynamic,
+		/// <summary>Add or remove one character at a time as the user selects.</summary>
 		Character,
 	}
 

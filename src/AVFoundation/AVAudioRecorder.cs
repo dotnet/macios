@@ -45,6 +45,12 @@ namespace AVFoundation {
 			Handle = InitWithUrl (url, format, out error);
 		}
 
+		/// <param name="url">To be added.</param>
+		///         <param name="settings">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Static factory method for creating an <see cref="T:AVFoundation.AVAudioRecorder" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AVAudioRecorder? Create (NSUrl url, AudioSettings settings, out NSError? error)
 		{
 			if (settings is null)
@@ -61,6 +67,12 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <param name="url">To be added.</param>
+		///         <param name="format">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]

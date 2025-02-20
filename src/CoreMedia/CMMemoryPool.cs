@@ -21,6 +21,8 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* CMMemoryPoolRef */ IntPtr CMMemoryPoolCreate (/* CFDictionaryRef */ IntPtr options);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMMemoryPool ()
 			: base (CMMemoryPoolCreate (IntPtr.Zero), true)
 		{
@@ -35,6 +37,9 @@ namespace CoreMedia {
 			}
 		}
 
+		/// <param name="ageOutPeriod">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMMemoryPool (TimeSpan ageOutPeriod)
 			: base (Create (ageOutPeriod), true)
 		{
@@ -44,6 +49,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* CFAllocatorRef */ IntPtr CMMemoryPoolGetAllocator (/* CMMemoryPoolRef */ IntPtr pool);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CFAllocator GetAllocator ()
 		{
 			return new CFAllocator (CMMemoryPoolGetAllocator (Handle), false);
@@ -52,6 +60,8 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static void CMMemoryPoolFlush (/* CMMemoryPoolRef */ IntPtr pool);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Flush ()
 		{
 			CMMemoryPoolFlush (Handle);
@@ -60,6 +70,8 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static void CMMemoryPoolInvalidate (/* CMMemoryPoolRef */ IntPtr pool);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Invalidate ()
 		{
 			CMMemoryPoolInvalidate (Handle);

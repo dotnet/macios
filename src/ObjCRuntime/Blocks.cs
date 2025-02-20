@@ -300,6 +300,11 @@ namespace ObjCRuntime {
 		}
 
 		// trampoline must be static, and someone else needs to keep a ref to it
+		/// <param name="trampoline">The trampoline must be a static delegate. The developer's code must keep a reference to it.</param>
+		///         <param name="userDelegate">The user code to invoke.</param>
+		///         <summary>Sets up a block using a trampoline and a user delegate.</summary>
+		///         <remarks>
+		///         </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public void SetupBlockUnsafe (Delegate trampoline, Delegate userDelegate)
 		{
@@ -307,6 +312,11 @@ namespace ObjCRuntime {
 		}
 
 		// trampoline must be static, but it's not necessary to keep a ref to it
+		/// <param name="trampoline">The trampoline must be a static delegate. Xamarin.iOS will automatically keep a reference to this delegate.</param>
+		///         <param name="userDelegate">The user code to invoke.</param>
+		///         <summary>Sets up a block using a trampoline and a user delegate.</summary>
+		///         <remarks>
+		///         </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public void SetupBlock (Delegate trampoline, Delegate userDelegate)
 		{
@@ -361,6 +371,10 @@ namespace ObjCRuntime {
 
 		}
 
+		/// <summary>Releases the resources associated with this block.</summary>
+		///         <remarks>
+		///           <para>This releases the GCHandle that points to the user delegate.</para>
+		///         </remarks>
 		public void CleanupBlock ()
 		{
 			Dispose ();
@@ -415,6 +429,11 @@ namespace ObjCRuntime {
 		}
 
 #if NET
+		/// <typeparam name="T">Desired type to get, the delegate must be compatible with this type.</typeparam>
+		///         <summary>This method supports the Xamarin.iOS runtime and is not intended for use by application developers.</summary>
+		///         <returns>Returns a delegate of the given type that can be used to invoke the Objective-C block in the provided handle.</returns>
+		///         <remarks>
+		///         </remarks>
 		public T GetDelegateForBlock<T> () where T : System.MulticastDelegate
 #else
 		public T GetDelegateForBlock<T> () where T : class
@@ -424,6 +443,13 @@ namespace ObjCRuntime {
 		}
 
 #if NET
+		/// <typeparam name="T">The type of the managed delegate to return.</typeparam>
+		///         <param name="block">The pointer to the native block.</param>
+		///         <summary>If this block represents a managed delegate, this method will return that managed delegate.</summary>
+		///         <returns>The managed delegate for this block.</returns>
+		///         <remarks>
+		///           <para>Behavior is undefined if this block does not represent a managed delegate.</para>
+		///         </remarks>
 		public unsafe static T GetTarget<T> (IntPtr block) where T : System.MulticastDelegate
 #else
 		public unsafe static T GetTarget<T> (IntPtr block) where T : class /* /* requires C# 7.3+: System.MulticastDelegate */
@@ -432,6 +458,11 @@ namespace ObjCRuntime {
 			return (T) ((BlockLiteral*) block)->Target;
 		}
 
+		/// <param name="block">The pointer to the native block.</param>
+		///         <summary>This method determines whether a block is wrapping a managed delegate or if it's an Objective-C block.</summary>
+		///         <returns>Returns true if the specified block contains a managed delegate.</returns>
+		///         <remarks>
+		///         </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static bool IsManagedBlock (IntPtr block)
 		{

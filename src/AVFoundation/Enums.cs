@@ -115,8 +115,11 @@ namespace AVFoundation {
 	[Native]
 	// NSInteger - AVCaptureDevice.h
 	public enum AVCaptureFlashMode : long {
+		/// <summary>Never use the flash.</summary>
 		Off,
+		/// <summary>Always use the flash.</summary>
 		On,
+		/// <summary>Automatic.</summary>
 		Auto,
 	}
 
@@ -138,8 +141,11 @@ namespace AVFoundation {
 	[Native]
 	// NSInteger - AVCaptureDevice.h
 	public enum AVCaptureFocusMode : long {
+		/// <summary>Focus that will not change automatically.</summary>
 		Locked,
+		/// <summary>Normal autofocus.</summary>
 		AutoFocus,
+		/// <summary>Autofocus that attempts to track the subject.</summary>
 		ContinuousAutoFocus,
 	}
 
@@ -148,8 +154,11 @@ namespace AVFoundation {
 	[Native]
 	// NSInteger - AVCaptureDevice.h
 	public enum AVCaptureDevicePosition : long {
+		/// <summary>The capturing hardware's location is unknown.</summary>
 		Unspecified = 0,
+		/// <summary>The capturing hardware is on the back of the device.</summary>
 		Back = 1,
+		/// <summary>The capturing hardware is on the front of the device.</summary>
 		Front = 2,
 	}
 
@@ -158,9 +167,13 @@ namespace AVFoundation {
 	[Native]
 	// NSInteger - AVCaptureDevice.h
 	public enum AVCaptureExposureMode : long {
+		/// <summary>Exposure setting is locked.</summary>
 		Locked,
+		/// <summary>The camera performs auto expose.</summary>
 		AutoExpose,
+		/// <summary>Performs auto-expose and adjusts the setting continously. </summary>
 		ContinuousAutoExposure,
+		/// <summary>Exposure is limited by the <see cref="P:AVFoundation.AVCaptureDevice.ISO" /> and <see cref="P:AVFoundation.AVCaptureDevice.ExposureDuration" /> properties.</summary>
 		[MacCatalyst (14, 0)]
 		Custom,
 	}
@@ -356,8 +369,11 @@ namespace AVFoundation {
 	[Native]
 	// NSInteger - AVPlayerItem.h
 	public enum AVPlayerItemStatus : long {
+		/// <summary>The status of the item is not known.</summary>
 		Unknown,
+		/// <summary>The item is ready to play.</summary>
 		ReadyToPlay,
+		/// <summary>The item could not be played.</summary>
 		Failed,
 	}
 
@@ -633,7 +649,9 @@ namespace AVFoundation {
 	[Native]
 	// NSInteger - AVSpeechSynthesis.h
 	public enum AVSpeechBoundary : long {
+		/// <summary>The speech should stop or pause immediately.</summary>
 		Immediate,
+		/// <summary>The speech should stop or pause after the current word.</summary>
 		Word,
 	}
 
@@ -889,7 +907,9 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum AVSpeechSynthesisVoiceQuality : long {
+		/// <summary>To be added.</summary>
 		Default = 1,
+		/// <summary>To be added.</summary>
 		Enhanced = 2,
 		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0), Mac (13, 0)]
 		Premium = 3,
@@ -1039,9 +1059,13 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum AVPlayerLooperStatus : long {
+		/// <summary>The status of the looper is not currently available.</summary>
 		Unknown,
+		/// <summary>The looper is ready to play.</summary>
 		Ready,
+		/// <summary>Looping failed (see <see cref="P:AVFoundation.AVPlayerLooper.Error" />).</summary>
 		Failed,
+		/// <summary>Looping has been cancelled.</summary>
 		Cancelled,
 	}
 
@@ -1330,12 +1354,15 @@ namespace AVFoundation {
 
 	[MacCatalyst (13, 1)]
 	public enum AVVideoApertureMode {
+		/// <summary>To be added.</summary>
 		[Field ("AVVideoApertureModeCleanAperture")]
 		CleanAperture = 0,
 
+		/// <summary>To be added.</summary>
 		[Field ("AVVideoApertureModeProductionAperture")]
 		ProductionAperture = 1,
 
+		/// <summary>To be added.</summary>
 		[Field ("AVVideoApertureModeEncodedPixels")]
 		EncodedPixels = 2,
 	}
@@ -1364,18 +1391,23 @@ namespace AVFoundation {
 
 	[MacCatalyst (15, 0)]
 	public enum AVVideoCodecType {
+		/// <summary>To be added.</summary>
 		[Field ("AVVideoCodecTypeH264")]
 		H264 = 0,
 
+		/// <summary>To be added.</summary>
 		[Field ("AVVideoCodecTypeJPEG")]
 		Jpeg = 1,
 
+		/// <summary>To be added.</summary>
 		[Field ("AVVideoCodecTypeAppleProRes422")]
 		AppleProRes422 = 3,
 
+		/// <summary>To be added.</summary>
 		[Field ("AVVideoCodecTypeAppleProRes4444")]
 		AppleProRes4444 = 4,
 
+		/// <summary>To be added.</summary>
 		[Field ("AVVideoCodecTypeHEVC")]
 		Hevc = 5,
 

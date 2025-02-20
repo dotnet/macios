@@ -23,11 +23,21 @@ namespace JavaScriptCore {
 
 	public partial class JSValue {
 
+		/// <summary>Returns a string representation of the value of the current instance.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			return _ToString ();
 		}
 
+		/// <param name="value">To be added.</param>
+		///         <param name="context">To be added.</param>
+		///         <summary>Creates a JavaScript string from the provided string.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		static public JSValue From (string value, JSContext context)
 		{
 			using (var str = new NSString (value)) {

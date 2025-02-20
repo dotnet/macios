@@ -61,6 +61,10 @@ namespace CoreLocation {
 		///         <remarks>The value is relative to the zero meridian. Positive values point east, negative values point west.</remarks>
 		public /* CLLocationDegrees */ double Longitude;
 
+		/// <param name="latitude">The latitude in degrees, where positive values are north of the equator.</param>
+		///         <param name="longitude">The longitude in degrees relative to the zero meridian, where positive values are east of the meridian.</param>
+		///         <summary>Constructor that allows the latitude and longitude to be specified.</summary>
+		///         <remarks>To be added.</remarks>
 		public CLLocationCoordinate2D (double latitude, double longitude)
 		{
 			Latitude = latitude;
@@ -70,11 +74,19 @@ namespace CoreLocation {
 		[DllImport (Constants.CoreLocationLibrary)]
 		static extern /* BOOL */ byte CLLocationCoordinate2DIsValid (CLLocationCoordinate2D cord);
 
+		/// <summary>Whether the coordinate is valid.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>This method will return false if the latitude is greater than 90 or less than -90. It will also return false if longitude is greater than 180 or less than -180.</para>
+		///         </remarks>
 		public bool IsValid ()
 		{
 			return CLLocationCoordinate2DIsValid (this) != 0;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return $"(Latitude={Latitude}, Longitude={Longitude}";
@@ -84,6 +96,12 @@ namespace CoreLocation {
 #if IOS && !COREBUILD // This code comes from Intents.CLPlacemark_INIntentsAdditions Category
 	public partial class CLPlacemark {
 #if NET
+		/// <param name="location">To be added.</param>
+		///         <param name="name">To be added.</param>
+		///         <param name="postalAddress">To be added.</param>
+		///         <summary>Creates a new placemark from the given name, location, and postal address.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]

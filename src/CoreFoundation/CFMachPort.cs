@@ -59,6 +59,8 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static void CFMachPortInvalidate (IntPtr handle);
 
+		/// <summary>Stops the Mach port from sending or receiving messages, but does not destroy it.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Invalidate ()
 		{
 			CFMachPortInvalidate (Handle);
@@ -78,6 +80,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static IntPtr CFMachPortCreateRunLoopSource (IntPtr allocator, IntPtr port, IntPtr order);
 
+		/// <summary>Creates the run loop source for the Mach port.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CFRunLoopSource CreateRunLoopSource ()
 		{
 			// order is currently ignored, we must pass 0

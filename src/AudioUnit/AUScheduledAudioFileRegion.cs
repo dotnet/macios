@@ -69,6 +69,10 @@ namespace AudioUnit {
 		///         <remarks>To be added.</remarks>
 		public uint FramesToPlay { get; set; }
 
+		/// <param name="audioFile">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AUScheduledAudioFileRegion (AudioFile audioFile, AUScheduledAudioFileRegionCompletionHandler? completionHandler = null)
 		{
 			if (audioFile is null)
@@ -142,12 +146,18 @@ namespace AudioUnit {
 			Dispose (false);
 		}
 
+		/// <summary>Releases the resources used by the AUScheduledAudioFileRegion object.</summary>
+		///         <remarks>
+		///           <para>The Dispose method releases the resources used by the AUScheduledAudioFileRegion class.</para>
+		///           <para>Calling the Dispose method when the application is finished using the AUScheduledAudioFileRegion ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.  For more information on releasing resources see ``Cleaning up Unmananaged Resources'' at https://msdn.microsoft.com/en-us/library/498928w2.aspx</para>
+		///         </remarks>
 		public void Dispose ()
 		{
 			Dispose (true);
 			GC.SuppressFinalize (this);
 		}
 
+		/// <include file="../../docs/api/AudioUnit/AUScheduledAudioFileRegion.xml" path="/Documentation/Docs[@DocId='M:AudioUnit.AUScheduledAudioFileRegion.Dispose(System.Boolean)']/*" />
 		protected virtual void Dispose (bool disposing)
 		{
 			if (disposing)

@@ -28,16 +28,31 @@ namespace Twitter {
 	[BaseType (typeof (NSObject))]
 	interface TWRequest {
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("account")]
 		ACAccount Account { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("requestMethod")]
 		TWRequestMethod RequestMethod { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("URL")]
 		NSUrl Url { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("parameters")]
 		NSDictionary Parameters { get; }
 
@@ -47,6 +62,9 @@ namespace Twitter {
 		[Export ("addMultiPartData:withName:type:")]
 		void AddMultiPartData (NSData data, string name, string type);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("signedURLRequest")]
 		NSUrlRequest SignedUrlRequest { get; }
 
@@ -66,9 +84,15 @@ namespace Twitter {
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("completionHandler")]
 		Action<TWTweetComposeViewControllerResult> CompletionHandler { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("canSendTweet")]
 		bool CanSendTweet { get; }

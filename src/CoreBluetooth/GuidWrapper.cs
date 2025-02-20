@@ -26,11 +26,16 @@ namespace CoreBluetooth {
 
 	public partial class CBCentralManager {
 
+		/// <include file="../../docs/api/CoreBluetooth/CBCentralManager.xml" path="/Documentation/Docs[@DocId='M:CoreBluetooth.CBCentralManager.ConnectPeripheral(CoreBluetooth.CBPeripheral,CoreBluetooth.PeripheralConnectionOptions)']/*" />
 		public void ConnectPeripheral (CBPeripheral peripheral, PeripheralConnectionOptions? options = null)
 		{
 			ConnectPeripheral (peripheral, options?.Dictionary);
 		}
 
+		/// <param name="peripheralUuids">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>Scans for peripherals that are advertising any of the specified <paramref name="peripheralUuids" /> with the specified  <paramref name="options" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public void ScanForPeripherals (CBUUID []? peripheralUuids, NSDictionary? options)
 		{
 			if (peripheralUuids is null)
@@ -39,21 +44,35 @@ namespace CoreBluetooth {
 				ScanForPeripherals (NSArray.FromObjects (peripheralUuids), options);
 		}
 
+		/// <param name="peripheralUuids">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>Scans for peripherals that are advertising any of the specified <paramref name="peripheralUuids" /> with the specified  <paramref name="options" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public void ScanForPeripherals (CBUUID [] peripheralUuids, PeripheralScanningOptions? options = null)
 		{
 			ScanForPeripherals (peripheralUuids, options?.Dictionary);
 		}
 
+		/// <param name="peripheralUuids">To be added.</param>
+		///         <summary>Scans for peripherals that are advertising any of the specified <paramref name="peripheralUuids" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public void ScanForPeripherals (CBUUID [] peripheralUuids)
 		{
 			ScanForPeripherals (peripheralUuids, null as NSDictionary);
 		}
 
+		/// <param name="serviceUuid">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>Scans for peripherals that are advertising the specified <paramref name="serviceUuid" /> with the specified  <paramref name="options" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public void ScanForPeripherals (CBUUID serviceUuid, NSDictionary? options)
 		{
 			ScanForPeripherals (new [] { serviceUuid }, options);
 		}
 
+		/// <param name="serviceUuid">To be added.</param>
+		///         <summary>Scans for peripherals that are advertising the specified <paramref name="serviceUuid" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public void ScanForPeripherals (CBUUID serviceUuid)
 		{
 			ScanForPeripherals (new [] { serviceUuid }, null as NSDictionary);
@@ -62,11 +81,16 @@ namespace CoreBluetooth {
 
 	public partial class CBPeripheral {
 
+		/// <summary>Discovers all available services.</summary>
+		///         <remarks>To be added.</remarks>
 		public void DiscoverServices ()
 		{
 			DiscoverServices ((NSArray?) null);
 		}
 
+		/// <param name="services">To be added.</param>
+		///         <summary>Discovers the specified <paramref name="services" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public void DiscoverServices (CBUUID []? services)
 		{
 			if (services is null)
@@ -75,6 +99,10 @@ namespace CoreBluetooth {
 				DiscoverServices (NSArray.FromObjects (services));
 		}
 
+		/// <param name="includedServiceUUIDs">To be added.</param>
+		///         <param name="forService">To be added.</param>
+		///         <summary>Discovers the included services in <paramref name="forService" /> that are of the service types that are identified by the UUIDs in <paramref name="includedServiceUUIDs" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public void DiscoverIncludedServices (CBUUID []? includedServiceUUIDs, CBService forService)
 		{
 			if (includedServiceUUIDs is null)
@@ -83,11 +111,48 @@ namespace CoreBluetooth {
 				DiscoverIncludedServices (NSArray.FromObjects (includedServiceUUIDs), forService);
 		}
 
+		/// <param name="forService">Service that you want to discover all the characteristics for.</param>
+		///         <summary>Discover all characteristics in a service (slow).</summary>
+		///         <remarks>
+		///           <para>
+		/// 	    When the characteristics are discovered, the event
+		/// 	    DiscoverCharacteristic is raised (or alternatively, if you
+		/// 	    set a Delegate, the method DiscoverCharacteristic on the
+		/// 	    delegate is invoked with the results).
+		/// 	  </para>
+		///           <para>
+		/// 	    Once the characterstics have been discovered, they are
+		/// 	    available on the <see cref="P:CoreBluetooth.CBService.Characteristics" />
+		/// 	    property.
+		/// 	  </para>
+		///           <para>
+		/// 	    This method is potentially slow and will return all the
+		/// 	    characteristics supported by the service.  Ideally, you
+		/// 	    should use the overload that allows you to specifify an
+		/// 	    array of CBUUIDs as that will be faster.
+		/// 	  </para>
+		///         </remarks>
 		public void DiscoverCharacteristics (CBService forService)
 		{
 			DiscoverCharacteristics ((NSArray?) null, forService);
 		}
 
+		/// <param name="charactersticUUIDs">Array of CBUUIDs containing the characteristics that you are probing for.</param>
+		///         <param name="forService">Service that you want to discover the characteristics for.</param>
+		///         <summary>Discovers the list of characteristics in the specified service.</summary>
+		///         <remarks>
+		///           <para>
+		/// 	    When the characteristics are discovered, the event
+		/// 	    DiscoverCharacteristic is raised (or alternatively, if you
+		/// 	    set a Delegate, the method DiscoverCharacteristic on the
+		/// 	    delegate is invoked with the results).
+		/// 	  </para>
+		///           <para>
+		/// 	    Once the characterstics have been discovered, they are
+		/// 	    available on the <see cref="P:CoreBluetooth.CBService.Characteristics" />
+		/// 	    property.
+		/// 	  </para>
+		///         </remarks>
 		public void DiscoverCharacteristics (CBUUID []? charactersticUUIDs, CBService forService)
 		{
 			if (charactersticUUIDs is null)

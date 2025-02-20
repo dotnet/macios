@@ -20,18 +20,38 @@ namespace Security {
 
 		// the Apple* prefix was kept since they are Apple-specific (not an RFC) OIDs
 
+		/// <summary>Represents the value associated with the constant kSecPolicyAppleX509Basic</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPolicyAppleX509Basic")]
 		NSString AppleX509Basic { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPolicyAppleSSL</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPolicyAppleSSL")]
 		NSString AppleSSL { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPolicyAppleSMIME</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPolicyAppleSMIME")]
 		NSString AppleSMIME { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPolicyAppleEAP</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPolicyAppleEAP")]
 		NSString AppleEAP { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPolicyAppleIPsec</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPolicyAppleIPsec")]
 		NSString AppleIPsec { get; }
 
@@ -47,27 +67,52 @@ namespace Security {
 		[Field ("kSecPolicyApplePKINITServer")]
 		NSString ApplePKINITServer { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPolicyAppleCodeSigning</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPolicyAppleCodeSigning")]
 		NSString AppleCodeSigning { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecPolicyMacAppStoreReceipt")]
 		NSString MacAppStoreReceipt { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPolicyAppleIDValidation</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPolicyAppleIDValidation")]
 		NSString AppleIDValidation { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPolicyAppleTimeStamping</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPolicyAppleTimeStamping")]
 		NSString AppleTimeStamping { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPolicyAppleRevocation</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecPolicyAppleRevocation")]
 		NSString AppleRevocation { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecPolicyApplePassbookSigning")]
 		NSString ApplePassbookSigning { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecPolicyApplePayIssuerEncryption")]
 		NSString ApplePayIssuerEncryption { get; }
@@ -75,19 +120,38 @@ namespace Security {
 
 	[Static]
 	interface SecPolicyPropertyKey {
+		/// <summary>Represents the value associated with the constant kSecPolicyOid</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPolicyOid")]
 		NSString Oid { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPolicyName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPolicyName")]
 		NSString Name { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPolicyClient</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPolicyClient")]
 		NSString Client { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPolicyRevocationFlags</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecPolicyRevocationFlags")]
 		NSString RevocationFlags { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecPolicyTeamIdentifier")]
 		NSString TeamIdentifier { get; }
@@ -108,9 +172,17 @@ namespace Security {
 
 	[Static]
 	interface SecTrustPropertyKey {
+		/// <summary>Represents the value associated with the constant kSecPropertyTypeTitle</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPropertyTypeTitle")]
 		NSString Title { get; }
 
+		/// <summary>Represents the value associated with the constant kSecPropertyTypeError</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecPropertyTypeError")]
 		NSString Error { get; }
 	}
@@ -118,28 +190,58 @@ namespace Security {
 	[Static]
 	[MacCatalyst (13, 1)]
 	interface SecTrustResultKey {
+		/// <summary>Represents the value associated with the constant kSecTrustEvaluationDate</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecTrustEvaluationDate")]
 		NSString EvaluationDate { get; }
 
+		/// <summary>Represents the value associated with the constant kSecTrustExtendedValidation</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecTrustExtendedValidation")]
 		NSString ExtendedValidation { get; }
 
+		/// <summary>Represents the value associated with the constant kSecTrustOrganizationName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecTrustOrganizationName")]
 		NSString OrganizationName { get; }
 
+		/// <summary>Represents the value associated with the constant kSecTrustResultValue</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecTrustResultValue")]
 		NSString ResultValue { get; }
 
+		/// <summary>Represents the value associated with the constant kSecTrustRevocationChecked</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecTrustRevocationChecked")]
 		NSString RevocationChecked { get; }
 
+		/// <summary>Represents the value associated with the constant kSecTrustRevocationValidUntilDate</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecTrustRevocationValidUntilDate")]
 		NSString RevocationValidUntilDate { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecTrustCertificateTransparency")]
 		NSString CertificateTransparency { get; }
 
+		/// <summary>Developers should not use this deprecated property. </summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
 		[Deprecated (PlatformName.TvOS, 11, 0)]
@@ -359,36 +461,66 @@ namespace Security {
 
 	[StrongDictionary ("SecAttributeKeys")]
 	interface SecPublicPrivateKeyAttrs {
+		/// <summary>Gets or sets the label for the key pair.</summary>
+		///         <value>The label for the key pair.</value>
+		///         <remarks>To be added.</remarks>
 		string Label { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key pair is permanent.</summary>
+		///         <value>A Boolean value that controls whether the key pair is permanent.</value>
+		///         <remarks>To be added.</remarks>
 		bool IsPermanent { get; set; }
 
+		/// <summary>Gets or sets the application's private tag.</summary>
+		///         <value>The application's private tag.</value>
+		///         <remarks>To be added.</remarks>
 		NSData ApplicationTag { get; set; }
 
+		/// <summary>Gets or sets a value that describes the minimum size of attack that can defeat the key pair. This value can be significantly smaller than the actual key size.</summary>
+		///         <value>A value that describes the minimum size of attack that can defeat the key pair. This value can be significantly smaller than the actual key size.</value>
+		///         <remarks>To be added.</remarks>
 		int EffectiveKeySize { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key pair can be used for encryption.</summary>
+		///         <value>A Boolean value that controls whether the key pair can be used for encryption.</value>
+		///         <remarks>To be added.</remarks>
 #if MONOMAC
 		[Advice ("On macOS when passed to 'GenerateKeyPair', 'false' seems to be the only valid value. Otherwise 'UnsupportedKeyUsageMask' is returned.")]
 #endif
 		bool CanEncrypt { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key pair can be used for decryption.</summary>
+		///         <value>A  Boolean value that controls whether the key pair can be used for decryption.</value>
+		///         <remarks>To be added.</remarks>
 #if MONOMAC
 		[Advice ("On macOS when passed to 'GenerateKeyPair', 'false' seems to be the only valid value. Otherwise 'UnsupportedKeyUsageMask' is returned.")]
 #endif
 		bool CanDecrypt { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key pair can be used for key derivation.</summary>
+		///         <value>A  Boolean value that controls whether the key pair can be used for key derivation.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanDerive { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key pair can be used for signing.</summary>
+		///         <value>A Boolean value that controls whether the key pair can be used for signing.</value>
+		///         <remarks>To be added.</remarks>
 #if MONOMAC
 		[Advice ("On macOS when passed to 'GenerateKeyPair', 'false' seems to be the only valid value. Otherwise 'UnsupportedKeyUsageMask' is returned.")]
 #endif
 		bool CanSign { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key pair can be used for verifying signatures.</summary>
+		///         <value>A Boolean value that controls whether the key pair can be used for verifying signatures.</value>
+		///         <remarks>To be added.</remarks>
 #if MONOMAC
 		[Advice ("On macOS when passed to 'GenerateKeyPair', 'false' seems to be the only valid value. Otherwise 'UnsupportedKeyUsageMask' is returned.")]
 #endif
 		bool CanVerify { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key pair can be used for key unwrapping.</summary>
+		///         <value>A Boolean value that controls whether the key pair can be used for key unwrapping.</value>
+		///         <remarks>To be added.</remarks>
 #if MONOMAC
 		[Advice ("On macOS when passed to 'GenerateKeyPair', 'false' seems to be the only valid value. Otherwise 'UnsupportedKeyUsageMask' is returned.")]
 #endif
@@ -1296,6 +1428,7 @@ namespace Security {
 
 	[MacCatalyst (13, 1)]
 	enum SslSessionConfig {
+		/// <summary>Developers should not use this deprecated field. </summary>
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
 		[Deprecated (PlatformName.TvOS, 11, 0)]
@@ -1303,15 +1436,19 @@ namespace Security {
 		[Field ("kSSLSessionConfig_default")]
 		Default,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSSLSessionConfig_ATSv1")]
 		Ats1,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSSLSessionConfig_ATSv1_noPFS")]
 		Ats1NoPfs,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSSLSessionConfig_standard")]
 		Standard,
 
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
 		[Deprecated (PlatformName.TvOS, 11, 0)]
@@ -1319,9 +1456,11 @@ namespace Security {
 		[Field ("kSSLSessionConfig_RC4_fallback")]
 		RC4Fallback,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSSLSessionConfig_TLSv1_fallback")]
 		Tls1Fallback,
 
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
 		[Deprecated (PlatformName.TvOS, 11, 0)]
@@ -1329,15 +1468,19 @@ namespace Security {
 		[Field ("kSSLSessionConfig_TLSv1_RC4_fallback")]
 		Tls1RC4Fallback,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSSLSessionConfig_legacy")]
 		Legacy,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSSLSessionConfig_legacy_DHE")]
 		LegacyDhe,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSSLSessionConfig_anonymous")]
 		Anonymous,
 
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
 		[Deprecated (PlatformName.TvOS, 11, 0)]
@@ -1346,6 +1489,7 @@ namespace Security {
 		[Field ("kSSLSessionConfig_3DES_fallback")]
 		ThreeDesFallback,
 
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
 		[Deprecated (PlatformName.TvOS, 11, 0)]

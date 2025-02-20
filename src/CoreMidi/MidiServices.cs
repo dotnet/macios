@@ -113,6 +113,8 @@ namespace CoreMidi {
 		[DllImport (Constants.CoreMidiLibrary)]
 		extern static void MIDIRestart ();
 
+		/// <summary>Restarts the MIDI Subsystem.</summary>
+		///         <remarks>This stops the MIDI subsystems and forces it to be reinitialized.</remarks>
 		public static void Restart ()
 		{
 			MIDIRestart ();
@@ -275,6 +277,10 @@ namespace CoreMidi {
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe extern static int /* OSStatus = SInt32 */ MIDIObjectGetDataProperty (MidiObjectRef obj, IntPtr str, IntPtr* data);
 
+		/// <param name="property">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSData? GetData (IntPtr property)
 		{
 			IntPtr val;
@@ -507,6 +513,10 @@ namespace CoreMidi {
 				gch.Free ();
 		}
 
+		/// <param name="name">Name for this client</param>
+		///         <summary>Creates a new MidiClient.</summary>
+		///         <remarks>
+		///         </remarks>
 		public MidiClient (string name)
 		{
 			using (var nsstr = new NSString (name)) {
@@ -536,12 +546,22 @@ namespace CoreMidi {
 		///         </remarks>
 		public string Name { get; private set; }
 
+		/// <summary>To be added.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			return Name;
 		}
 
 #if NET
+		/// <param name="name">To be added.</param>
+		///         <param name="statusCode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -569,6 +589,11 @@ namespace CoreMidi {
 		}
 
 #if NET
+		/// <param name="name">To be added.</param>
+		///         <param name="status">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -588,11 +613,21 @@ namespace CoreMidi {
 			return null;
 		}
 
+		/// <param name="name">name for the input port.</param>
+		///         <summary>Creates a new MIDI input port.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>The input port can be used to read events from MIDI, the returned MidiPort raises an event to notify you of new data available.</remarks>
 		public MidiPort CreateInputPort (string name)
 		{
 			return new MidiPort (this, name, true);
 		}
 
+		/// <param name="name">name for the output port.</param>
+		///         <summary>Creates a new MIDI output port.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>You can use an output MIDI port to transmit MIDI packets.</remarks>
 		public MidiPort CreateOutputPort (string name)
 		{
 			return new MidiPort (this, name, false);
@@ -749,6 +784,11 @@ namespace CoreMidi {
 		///         </remarks>
 		public ushort Length;
 
+		/// <param name="timestamp">To be added.</param>
+		///         <param name="length">To be added.</param>
+		///         <param name="bytes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MidiPacket (long timestamp, ushort length, IntPtr bytes)
 		{
 			TimeStamp = timestamp;
@@ -756,10 +796,20 @@ namespace CoreMidi {
 			byteptr = bytes;
 		}
 
+		/// <param name="timestamp">Timestamp for the packet.</param>
+		///         <param name="bytes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MidiPacket (long timestamp, byte [] bytes) : this (timestamp, bytes, 0, bytes.Length, false)
 		{
 		}
 
+		/// <param name="timestamp">To be added.</param>
+		///         <param name="bytes">To be added.</param>
+		///         <param name="start">To be added.</param>
+		///         <param name="len">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MidiPacket (long timestamp, byte [] bytes, int start, int len) : this (timestamp, bytes, start, len, true)
 		{
 		}
@@ -789,12 +839,18 @@ namespace CoreMidi {
 			Dispose (false);
 		}
 
+		/// <summary>Releases the resources used by the MidiPacket object.</summary>
+		///         <remarks>
+		///           <para>The Dispose method releases the resources used by the MidiPacket class.</para>
+		///           <para>Calling the Dispose method when the application is finished using the MidiPacket ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.  For more information on releasing resources see ``Cleaning up Unmananaged Resources'' at https://msdn.microsoft.com/en-us/library/498928w2.aspx</para>
+		///         </remarks>
 		public void Dispose ()
 		{
 			Dispose (true);
 			GC.SuppressFinalize (this);
 		}
 
+		/// <include file="../../docs/api/CoreMidi/MidiPacket.xml" path="/Documentation/Docs[@DocId='M:CoreMidi.MidiPacket.Dispose(System.Boolean)']/*" />
 		protected virtual void Dispose (bool disposing)
 		{
 			// make sure we don't leave pointers to potentially freed memory.
@@ -1016,6 +1072,7 @@ namespace CoreMidi {
 				gch.Free ();
 		}
 
+		/// <include file="../../docs/api/CoreMidi/MidiPort.xml" path="/Documentation/Docs[@DocId='M:CoreMidi.MidiPort.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			MessageReceived = null;
@@ -1060,6 +1117,12 @@ namespace CoreMidi {
 		[DllImport (Constants.CoreMidiLibrary)]
 		extern static int /* OSStatus = SInt32 */MIDIPortDisconnectSource (MidiPortRef port, MidiEndpointRef endpoint);
 
+		/// <param name="endpoint">
+		///         </param>
+		///         <summary>Connects an input port to an endpoint.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>This method can be called multiple times to connect various endpoints to this port.</remarks>
 		public MidiError ConnectSource (MidiEndpoint endpoint)
 		{
 			if (endpoint is null)
@@ -1069,6 +1132,13 @@ namespace CoreMidi {
 			return result;
 		}
 
+		/// <param name="endpoint">
+		///         </param>
+		///         <summary>Disconnects the port from the specified endpoint.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public MidiError Disconnect (MidiEndpoint endpoint)
 		{
 			if (endpoint is null)
@@ -1078,6 +1148,11 @@ namespace CoreMidi {
 			return result;
 		}
 
+		/// <summary>Returns a human-readable description of this port.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			return (input ? "[input:" : "[output:") + Client + ":" + PortName + "]";
@@ -1097,6 +1172,12 @@ namespace CoreMidi {
 		extern static MidiError /* OSStatus = SInt32 */ MIDISend (MidiPortRef port, MidiEndpointRef endpoint, IntPtr packets);
 
 #if NET
+		/// <param name="endpoint">Endpoint to send packets to.</param>
+		///         <param name="packets">The packets to send to the endpoint.</param>
+		///         <summary>Sends a set of MidiPackets to the specified endpoint.</summary>
+		///         <returns>A status code</returns>
+		///         <remarks>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -2440,6 +2521,9 @@ namespace CoreMidi {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public nuint GetNumberOfDevices ()
 		{
 			if (handle == MidiObject.InvalidRef)

@@ -34,66 +34,123 @@ namespace iTunesLibrary {
 
 	[BaseType (typeof (NSObject))]
 	interface ITLibAlbum {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("title")]
 		string Title { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("sortTitle")]
 		string SortTitle { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("compilation")]
 		bool Compilation { [Bind ("isCompilation")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("artist", ArgumentSemantic.Retain)]
 		ITLibArtist Artist { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("discCount")]
 		nuint DiscCount { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("discNumber")]
 		nuint DiscNumber { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rating")]
 		nint Rating { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("ratingComputed")]
 		bool RatingComputed { [Bind ("isRatingComputed")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("gapless")]
 		bool Gapless { [Bind ("isGapless")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("trackCount")]
 		nuint TrackCount { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("albumArtist")]
 		string AlbumArtist { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("sortAlbumArtist")]
 		string SortAlbumArtist { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("persistentID", ArgumentSemantic.Retain)]
 		NSNumber PersistentId { get; }
 	}
 
 	[BaseType (typeof (NSObject))]
 	interface ITLibArtist {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("name")]
 		string Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("sortName")]
 		string SortName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("persistentID", ArgumentSemantic.Retain)]
 		NSNumber PersistentId { get; }
 	}
 
 	[BaseType (typeof (NSObject))]
 	interface ITLibArtwork {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("image", ArgumentSemantic.Retain)]
 		NSImage Image { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("imageData", ArgumentSemantic.Retain)]
 		NSData ImageData { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("imageDataFormat", ArgumentSemantic.Assign)]
 		ITLibArtworkFormat ImageDataFormat { get; }
 	}
@@ -102,6 +159,9 @@ namespace iTunesLibrary {
 
 	[BaseType (typeof (NSObject))]
 	interface ITLibMediaEntity {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("persistentID", ArgumentSemantic.Retain)]
 		NSNumber PersistentId { get; }
 
@@ -118,186 +178,363 @@ namespace iTunesLibrary {
 
 	[BaseType (typeof (ITLibMediaEntity))]
 	interface ITLibMediaItem {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("title")]
 		string Title { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("sortTitle")]
 		string SortTitle { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("artist", ArgumentSemantic.Retain)]
 		ITLibArtist Artist { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("composer")]
 		string Composer { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("sortComposer")]
 		string SortComposer { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rating")]
 		nint Rating { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("ratingComputed")]
 		bool RatingComputed { [Bind ("isRatingComputed")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("startTime")]
 		nuint StartTime { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopTime")]
 		nuint StopTime { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("album", ArgumentSemantic.Retain)]
 		ITLibAlbum Album { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("genre")]
 		string Genre { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("kind")]
 		string Kind { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("mediaKind", ArgumentSemantic.Assign)]
 		ITLibMediaItemMediaKind MediaKind { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fileSize")]
 		ulong FileSize { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("size")]
 		nuint Size { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("totalTime")]
 		nuint TotalTime { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("trackNumber")]
 		nuint TrackNumber { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("category")]
 		string Category { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("description")]
 		string Description { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lyricsContentRating", ArgumentSemantic.Assign)]
 		ITLibMediaItemLyricsContentRating LyricsContentRating { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("contentRating")]
 		string ContentRating { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("modifiedDate", ArgumentSemantic.Retain)]
 		NSDate ModifiedDate { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("addedDate", ArgumentSemantic.Retain)]
 		NSDate AddedDate { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bitrate")]
 		nuint Bitrate { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sampleRate")]
 		nuint SampleRate { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("beatsPerMinute")]
 		nuint BeatsPerMinute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("playCount")]
 		nuint PlayCount { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("lastPlayedDate", ArgumentSemantic.Retain)]
 		NSDate LastPlayedDate { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("playStatus", ArgumentSemantic.Assign)]
 		ITLibMediaItemPlayStatus PlayStatus { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("location", ArgumentSemantic.Retain)]
 		NSUrl Location { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("artworkAvailable")]
 		bool ArtworkAvailable { [Bind ("hasArtworkAvailable")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("artwork", ArgumentSemantic.Retain)]
 		ITLibArtwork Artwork { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("comments")]
 		string Comments { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("purchased")]
 		bool Purchased { [Bind ("isPurchased")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("cloud")]
 		bool Cloud { [Bind ("isCloud")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("drmProtected")]
 		bool DrmProtected { [Bind ("isDRMProtected")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("video")]
 		bool Video { [Bind ("isVideo")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("videoInfo", ArgumentSemantic.Retain)]
 		ITLibMediaItemVideoInfo VideoInfo { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("releaseDate", ArgumentSemantic.Retain)]
 		NSDate ReleaseDate { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("year")]
 		nuint Year { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fileType")]
 		nuint FileType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("skipCount")]
 		nuint SkipCount { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("skipDate", ArgumentSemantic.Retain)]
 		NSDate SkipDate { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("voiceOverLanguage")]
 		string VoiceOverLanguage { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("volumeAdjustment")]
 		nint VolumeAdjustment { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("volumeNormalizationEnergy")]
 		nuint VolumeNormalizationEnergy { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("userDisabled")]
 		bool UserDisabled { [Bind ("isUserDisabled")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("grouping")]
 		string Grouping { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("locationType", ArgumentSemantic.Assign)]
 		ITLibMediaItemLocationType LocationType { get; }
 	}
 
 	[BaseType (typeof (NSObject))]
 	interface ITLibMediaItemVideoInfo {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("series")]
 		string Series { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("sortSeries")]
 		string SortSeries { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("season")]
 		nuint Season { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("episode")]
 		string Episode { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("episodeOrder")]
 		nint EpisodeOrder { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hd")]
 		bool HD { [Bind ("isHD")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("videoWidth")]
 		nuint VideoWidth { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("videoHeight")]
 		nuint VideoHeight { get; }
 	}
 
 	[BaseType (typeof (ITLibMediaEntity))]
 	interface ITLibPlaylist {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("name")]
 		string Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use 'Primary' instead.")]
 		[Export ("master")]
 		bool Master { [Bind ("isMaster")] get; }
@@ -305,21 +542,39 @@ namespace iTunesLibrary {
 		[Export ("primary")]
 		bool Primary { [Bind ("isPrimary")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("parentID", ArgumentSemantic.Retain)]
 		NSNumber ParentId { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("visible")]
 		bool Visible { [Bind ("isVisible")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allItemsPlaylist")]
 		bool AllItemsPlaylist { [Bind ("isAllItemsPlaylist")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("items", ArgumentSemantic.Retain)]
 		ITLibMediaItem [] Items { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("distinguishedKind", ArgumentSemantic.Assign)]
 		ITLibDistinguishedPlaylistKind DistinguishedKind { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("kind", ArgumentSemantic.Assign)]
 		ITLibPlaylistKind Kind { get; }
 	}
@@ -327,30 +582,57 @@ namespace iTunesLibrary {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ITLibrary {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("applicationVersion")]
 		string ApplicationVersion { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("features", ArgumentSemantic.Assign)]
 		ITLibExportFeature Features { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("apiMajorVersion")]
 		nuint ApiMajorVersion { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("apiMinorVersion")]
 		nuint ApiMinorVersion { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("mediaFolderLocation", ArgumentSemantic.Copy)]
 		NSUrl MediaFolderLocation { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("musicFolderLocation", ArgumentSemantic.Copy)]
 		NSUrl MusicFolderLocation { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("showContentRating")]
 		bool ShowContentRating { [Bind ("shouldShowContentRating")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allMediaItems", ArgumentSemantic.Retain)]
 		ITLibMediaItem [] AllMediaItems { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allPlaylists", ArgumentSemantic.Retain)]
 		ITLibPlaylist [] AllPlaylists { get; }
 

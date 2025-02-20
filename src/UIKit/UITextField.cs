@@ -23,6 +23,9 @@ namespace UIKit {
 		{
 			this.Reason = reason;
 		}
+		/// <summary>Gets or sets the reason why the edit was ended.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public UITextFieldDidEndEditingReason Reason { get; set; }
 	}
 
@@ -176,26 +179,41 @@ namespace UIKit {
 			remove { EnsureUITextFieldDelegate ().editingStarted -= value; }
 		}
 
+		/// <summary>Delegate invoked by the object to get a value.</summary>
+		///         <value />
+		///         <remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
 		public UITextFieldCondition ShouldBeginEditing {
 			get { return EnsureUITextFieldDelegate ().shouldBeginEditing; }
 			set { EnsureUITextFieldDelegate ().shouldBeginEditing = value; }
 		}
 
+		/// <summary>Delegate invoked by the object to get a value.</summary>
+		///         <value>A delegate, usually a method, a anonymous method or a lambda function.</value>
+		///         <remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
 		public UITextFieldChange ShouldChangeCharacters {
 			get { return EnsureUITextFieldDelegate ().shouldChangeCharacters; }
 			set { EnsureUITextFieldDelegate ().shouldChangeCharacters = value; }
 		}
 
+		/// <summary>Delegate invoked by the object to get a value.</summary>
+		///         <value>The delegate/method.</value>
+		///         <remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
 		public UITextFieldCondition ShouldClear {
 			get { return EnsureUITextFieldDelegate ().shouldClear; }
 			set { EnsureUITextFieldDelegate ().shouldClear = value; }
 		}
 
+		/// <summary>Delegate invoked by the object to get a value.</summary>
+		///         <value />
+		///         <remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
 		public UITextFieldCondition ShouldEndEditing {
 			get { return EnsureUITextFieldDelegate ().shouldEndEditing; }
 			set { EnsureUITextFieldDelegate ().shouldEndEditing = value; }
 		}
 
+		/// <summary>Delegate invoked by the object to get a value.</summary>
+		///         <value>A delegate that holds a method, an anonymous method or a lambda function.</value>
+		///         <remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
 		public UITextFieldCondition ShouldReturn {
 			get { return EnsureUITextFieldDelegate ().shouldReturn; }
 			set { EnsureUITextFieldDelegate ().shouldReturn = value; }

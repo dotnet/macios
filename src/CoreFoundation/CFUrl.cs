@@ -68,6 +68,10 @@ namespace CoreFoundation {
 		{
 		}
 
+		/// <param name="filename">To be added.</param>
+		///         <summary>Creates a CFUrl from a pathname.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		static public CFUrl? FromFile (string filename)
 		{
 			if (filename is null)
@@ -88,6 +92,11 @@ namespace CoreFoundation {
 			/* CFStringRef */ IntPtr URLString,
 			/* CFStringRef */ IntPtr baseURL);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="baseurl">To be added.</param>
+		///         <summary>Creates a CFUrl from a string and a base URL. </summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		static public CFUrl? FromUrlString (string url, CFUrl? baseurl)
 		{
 			if (url is null)
@@ -112,6 +121,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFStringRef */ IntPtr CFURLGetString (/* CFURLRef */ IntPtr anURL);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string? ToString ()
 		{
 			return CFString.FromHandle (CFURLGetString (Handle));
@@ -155,6 +167,16 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>Type identifier for the CoreFoundation.CFUrl type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
+		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[bool isCFUrl = (CFType.GetTypeID (foo.Handle) == CFUrl.GetTypeID ());]]></code>
+		///           </example>
+		///         </remarks>
 		[DllImport (Constants.CoreFoundationLibrary, EntryPoint = "CFURLGetTypeID")]
 		public extern static /* CFTypeID */ nint GetTypeID ();
 #endif // !COREBUILD

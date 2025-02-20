@@ -51,10 +51,12 @@ namespace Foundation {
 	/// <summary>Run loop modes for <see cref="T:Foundation.NSRunLoop" />.</summary>
 	public enum NSRunLoopMode {
 
+		/// <summary>The default mode to handle input sources.   The most common run loop mode.</summary>
 		[DefaultEnumValue]
 		[Field ("NSDefaultRunLoopMode")]
 		Default,
 
+		/// <summary>Run loop mode constant used to run handlers in any of the declared “common” modes.</summary>
 		[Field ("NSRunLoopCommonModes")]
 		Common,
 
@@ -69,10 +71,12 @@ namespace Foundation {
 		EventTracking,
 #else
 		// iOS-specific Enums start in 100 to avoid conflicting with future extensions to MonoMac
+		/// <summary>The NSRunLoop mode used when tracking controls. Use this to receive timers and events during UI tracking.</summary>
 		[Field ("UITrackingRunLoopMode", "UIKit")]
 		UITracking = 100,
 #endif
 		// If it is not part of these enumerations
+		/// <summary>To be added.</summary>
 		[Field (null)]
 		Other = 1000,
 	}
@@ -168,9 +172,13 @@ namespace Foundation {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSUrlSessionMultipathServiceType : long {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Handover = 1,
+		/// <summary>To be added.</summary>
 		Interactive = 2,
+		/// <summary>To be added.</summary>
 		Aggregate = 3,
 	}
 

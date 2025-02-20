@@ -111,6 +111,10 @@ namespace CoreVideo {
 			/* CVPixelBufferPoolRef __nonnull */ IntPtr pixelBufferPool,
 			/* CVPixelBufferRef  __nullable * __nonnull */ IntPtr* pixelBufferOut);
 
+		/// <summary>Creates a new CVPixelBuffer in the pool.</summary>
+		///         <returns>The newly allocated CVPixelBuffer.</returns>
+		///         <remarks>
+		///         </remarks>
 		public CVPixelBuffer CreatePixelBuffer ()
 		{
 			CVReturn ret;
@@ -132,6 +136,12 @@ namespace CoreVideo {
 			/* CFDictionaryRef __nullable */ IntPtr auxAttributes,
 			/* CVPixelBufferRef  __nullable * __nonnull */ IntPtr* pixelBufferOut);
 
+		/// <param name="allocationSettings">Allocation settings for creating this CVPixelBuffer.</param>
+		///         <param name="error">Return error code</param>
+		///         <summary>Creates a new CVPixelBuffer in the pool.</summary>
+		///         <returns>The newly allocated CVPixelBuffer.</returns>
+		///         <remarks>
+		///         </remarks>
 		public CVPixelBuffer? CreatePixelBuffer (CVPixelBufferPoolAllocationSettings? allocationSettings, out CVReturn error)
 		{
 			IntPtr pb;
@@ -166,12 +176,21 @@ namespace CoreVideo {
 			return handle;
 		}
 
+		/// <param name="poolAttributes">Loosely typed set of configuration parameters for the CVPixelBufferPool.</param>
+		///         <param name="pixelBufferAttributes">Configuration parameters for creating the CVPixelBuffers in the pool.</param>
+		///         <summary>Creates a CVPixelBufferPool with the specified parameters (weak types).</summary>
+		///         <remarks>It is best to use the strongly typed constructor.</remarks>
 		[Advice ("Use overload with CVPixelBufferPoolSettings")]
 		public CVPixelBufferPool (NSDictionary? poolAttributes, NSDictionary? pixelBufferAttributes)
 			: base (Create (poolAttributes, pixelBufferAttributes), true)
 		{
 		}
 
+		/// <param name="settings">Configuration parameters for the CVPixelBufferPool</param>
+		///         <param name="pixelBufferAttributes">Configuration parameters for creating the CVPixelBuffers in the pool.</param>
+		///         <summary>Creates a CVPixelBufferPool with the specified parameters.</summary>
+		///         <remarks>
+		///         </remarks>
 		public CVPixelBufferPool (CVPixelBufferPoolSettings? settings, CVPixelBufferAttributes? pixelBufferAttributes)
 			: this (settings?.GetDictionary (), pixelBufferAttributes?.GetDictionary ())
 		{
@@ -185,6 +204,9 @@ namespace CoreVideo {
 		static extern void CVPixelBufferPoolFlush (/* CVPixelBufferPoolRef __nonnull */ IntPtr pool,
 			CVPixelBufferPoolFlushFlags options);
 
+		/// <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]

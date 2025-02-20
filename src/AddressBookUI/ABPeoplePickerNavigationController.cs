@@ -24,6 +24,10 @@ namespace AddressBookUI {
 	[UnsupportedOSPlatform ("tvos")]
 	public class ABPeoplePickerSelectPersonEventArgs : EventArgs {
 
+		/// <param name="person">To be added.</param>
+		///         <summary>Initializes a new instance of the ABPeoplePickerSelectPersonEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public ABPeoplePickerSelectPersonEventArgs (ABPerson person)
 		{
 			Person = person;
@@ -48,6 +52,12 @@ namespace AddressBookUI {
 	[UnsupportedOSPlatform ("tvos")]
 	public class ABPeoplePickerPerformActionEventArgs : ABPeoplePickerSelectPersonEventArgs {
 
+		/// <param name="person">To be added.</param>
+		///         <param name="property">To be added.</param>
+		///         <param name="identifier">To be added.</param>
+		///         <summary>Initializes a new instance of the ABPeoplePickerPerformActionEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public ABPeoplePickerPerformActionEventArgs (ABPerson person, ABPersonProperty property, int? identifier)
 			: base (person)
 		{
@@ -73,6 +83,10 @@ namespace AddressBookUI {
 	[UnsupportedOSPlatform ("tvos")]
 	public class ABPeoplePickerSelectPerson2EventArgs : EventArgs {
 
+		/// <param name="person">To be added.</param>
+		///         <summary>Initializes a new instance of the ABPeoplePickerSelectPerson2EventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public ABPeoplePickerSelectPerson2EventArgs (ABPerson person)
 		{
 			Person = person;
@@ -92,6 +106,12 @@ namespace AddressBookUI {
 	[UnsupportedOSPlatform ("tvos")]
 	public class ABPeoplePickerPerformAction2EventArgs : ABPeoplePickerSelectPerson2EventArgs {
 
+		/// <param name="person">To be added.</param>
+		///         <param name="property">To be added.</param>
+		///         <param name="identifier">To be added.</param>
+		///         <summary>Initializes a new instance of the ABPeoplePickerPerformAction2EventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public ABPeoplePickerPerformAction2EventArgs (ABPerson person, ABPersonProperty property, int? identifier)
 			: base (person)
 		{
@@ -230,6 +250,9 @@ namespace AddressBookUI {
 			return d;
 		}
 
+		/// <param name="e">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal virtual void OnSelectPerson (ABPeoplePickerSelectPersonEventArgs e)
 		{
 			var h = EnsureEventDelegate<InternalABPeoplePickerNavigationControllerDelegate> ().selectPerson;
@@ -237,6 +260,9 @@ namespace AddressBookUI {
 				h (this, e);
 		}
 
+		/// <param name="e">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal virtual void OnSelectPerson2 (ABPeoplePickerSelectPerson2EventArgs e)
 		{
 			var h = EnsureEventDelegate<InternalABPeoplePickerNavigationControllerDelegate> ().selectPerson2;
@@ -244,6 +270,9 @@ namespace AddressBookUI {
 				h (this, e);
 		}
 
+		/// <param name="e">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal virtual void OnPerformAction (ABPeoplePickerPerformActionEventArgs e)
 		{
 			var h = EnsureEventDelegate<InternalABPeoplePickerNavigationControllerDelegate> ().performAction;
@@ -251,6 +280,9 @@ namespace AddressBookUI {
 				h (this, e);
 		}
 
+		/// <param name="e">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal virtual void OnPerformAction2 (ABPeoplePickerPerformAction2EventArgs e)
 		{
 			var h = EnsureEventDelegate<InternalABPeoplePickerNavigationControllerDelegate> ().performAction2;
@@ -258,6 +290,9 @@ namespace AddressBookUI {
 				h (this, e);
 		}
 
+		/// <param name="e">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal virtual void OnCancelled (EventArgs e)
 		{
 			var h = EnsureEventDelegate<InternalABPeoplePickerNavigationControllerDelegate> ().cancelled;

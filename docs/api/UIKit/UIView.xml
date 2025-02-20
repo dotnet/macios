@@ -994,4 +994,31 @@ public class BlueLayer : CALayer
     <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Animation/CoreAnimation/Animate_a_UIView_using_UIKit">Animate a UIView using UIKit</related>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIView_Class/index.html">Apple documentation for <c>UIView</c></related>
   </Docs>
+  <Docs DocId="M:UIKit.UIView.BeginAnimations(System.String)">
+        <param name="animation">The animation identifier.</param>
+        <summary>Indicates the beginning of an animation block.</summary>
+        <remarks>
+          <para>Application developers should prefer to use the more compact syntax of the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIView%20Animate&amp;scope=Xamarin" title="M:UIKit.UIView.Animate*">M:UIKit.UIView.Animate*</a></format> method.</para>
+          <para>Older versions of iOS used a matched set of <see cref="M:UIKit.UIView.BeginAnimations(System.String,System.IntPtr)" /> and <see cref="M:UIKit.UIView.CommitAnimations" /> to specify an animation block. The following code, taken from the "Animate a UIView using UIKit" recipe, shows the technique:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+UIView.BeginAnimations ("slideAnimation");
+
+UIView.SetAnimationDuration (2);
+UIView.SetAnimationCurve (UIViewAnimationCurve.EaseInOut);
+UIView.SetAnimationRepeatCount (2);
+UIView.SetAnimationRepeatAutoreverses (true);
+UIView.SetAnimationDelegate (this);
+UIView.SetAnimationDidStopSelector (
+  new Selector ("slideAnimationFinished:"));
+_imageView.Center = new PointF (UIScreen.MainScreen.Bounds.Right -
+  _imageView.Frame.Width / 2, _imageView.Center.Y);
+UIView.CommitAnimations ();
+              ]]></code>
+          </example>
+        </remarks>
+        <altmember cref="M:UIKit.UIView.CommitAnimations" />
+        <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Animation/CoreAnimation/Animate_a_UIView_using_UIKit" />
+        <!-- TODO: Switch to UUID-based URL -->
+      </Docs>
 </Documentation>

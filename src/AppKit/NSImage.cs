@@ -34,6 +34,9 @@ using CoreGraphics;
 namespace AppKit {
 
 	public partial class NSImage {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGImage CGImage {
 			get {
 				var rect = CGRect.Empty;
@@ -66,6 +69,9 @@ namespace AppKit {
 		}
 
 		// note: if needed override the protected Get|Set methods
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Name {
 			get { return GetName (); }
 			// ignore return value (bool)
@@ -80,6 +86,9 @@ namespace AppKit {
 
 	public partial class NSImageRep {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGImage CGImage {
 			get {
 				var rect = CGRect.Empty;

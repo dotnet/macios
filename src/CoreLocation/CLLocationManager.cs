@@ -43,6 +43,22 @@ namespace CoreLocation {
 	public partial class CLLocationManager : NSObject {
 
 #if IOS
+		/// <param name="t">Type of the class, must derive from CLRegion.</param>
+		///         <summary>Determines whether the device supports region monitoring for the specified kind of CLRegion.</summary>
+		///         <returns>True if the device supports it, false otherwise.</returns>
+		///         <remarks>
+		///           <para>
+		///             This method merely determines whether region monitoring is
+		///             available in the hardware, it does not determine whether the
+		///             user has enabled location services or whether the
+		///             application has been granted permission to use this.  You
+		///             must request permission separately.
+		///           </para>
+		///           <para>
+		///             To determine whether you have permission to access
+		///             location services, use <see cref="T:CoreLocation.CLLocationManager" />.
+		///           </para>
+		///         </remarks>
 		public static bool IsMonitoringAvailable (Type t)
 		{
 			if (SystemVersion.CheckiOS (7, 0))

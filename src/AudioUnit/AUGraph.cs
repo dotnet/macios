@@ -106,11 +106,18 @@ namespace AudioUnit {
 			return handle;
 		}
 
+		/// <summary>Creates a new AudioUnit graph.</summary>
+		///         <remarks>
+		///         </remarks>
 		public AUGraph ()
 			: this (Create (), true)
 		{
 		}
 
+		/// <param name="errorCode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AUGraph? Create (out int errorCode)
 		{
 			IntPtr handle;

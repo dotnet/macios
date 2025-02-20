@@ -39,6 +39,11 @@ namespace AVFoundation {
 
 		}
 
+		/// <param name="outputFileUrl">To be added.</param>
+		///         <param name="startRecordingFromConnections">To be added.</param>
+		///         <param name="finishedRecording">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void StartRecordingToOutputFile (NSUrl outputFileUrl, Action<NSObject []> startRecordingFromConnections, Action<NSObject [], NSError?> finishedRecording)
 		{
 			StartRecordingToOutputFile (outputFileUrl, new recordingProxy (startRecordingFromConnections, finishedRecording));

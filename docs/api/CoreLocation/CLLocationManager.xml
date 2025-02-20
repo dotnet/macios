@@ -220,4 +220,27 @@ locationManager.StartRangingBeacons(beaconRegion)
     <related type="article" href="https://blog.xamarin.com/play-find-the-monkey-with-ios7-ibeacons">Play 'Find the Monkey' with iOS 7 iBeacons</related>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreLocation/Reference/CLLocationManager_Class/index.html">Apple documentation for <c>CLLocationManager</c></related>
   </Docs>
+  <Docs DocId="M:CoreLocation.CLLocationManager.IsMonitoringAvailable(ObjCRuntime.Class)">
+        <param name="regionClass">Objective-C class, must derive from CLRegion.</param>
+        <summary>Determines whether the device supports region monitoring for the specified kind of CLRegion.</summary>
+        <returns>True if the device supports it, false otherwise.</returns>
+        <remarks>
+          <para>
+            This method merely determines whether region monitoring is
+            available in the hardware, it does not determine whether the
+            user has enabled location services or whether the
+            application has been granted permission to use this.  You
+            must request permission separately.
+          </para>
+          <para>
+            To determine whether you have permission to access
+            location services, use <see cref="T:CoreLocation.CLLocationManager" />.
+          </para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));                
+                ]]></code>
+          </example>
+        </remarks>
+      </Docs>
 </Documentation>

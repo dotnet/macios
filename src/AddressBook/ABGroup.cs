@@ -78,6 +78,11 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABGroupCreate ();
 
+		/// <summary>
+		///           Constructs and initializes a
+		///           <see cref="T:AddressBook.ABGroup" /> instance.
+		///         </summary>
+		///         <remarks>To be added.</remarks>
 		public ABGroup ()
 			: base (ABGroupCreate (), true)
 		{
@@ -87,6 +92,9 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABGroupCreateInSource (IntPtr source);
 
+		/// <param name="source">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public ABGroup (ABRecord source)
 			: base (IntPtr.Zero, true)
 		{
@@ -140,6 +148,17 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		unsafe extern static byte ABGroupAddMember (IntPtr group, IntPtr person, IntPtr* error);
+		/// <param name="person">
+		///           The <see cref="T:AddressBook.ABRecord" /> to add to the group.
+		///         </param>
+		///         <summary>
+		///           Adds a <see cref="T:AddressBook.ABRecord" /> to the group.
+		///         </summary>
+		///         <remarks>
+		///         </remarks>
+		///         <exception cref="T:CoreFoundation.CFException">
+		///           The record couldn't be added to group.
+		///         </exception>
 		public void Add (ABRecord person)
 		{
 			if (person is null)
@@ -155,11 +174,30 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABGroupCopyArrayOfAllMembers (IntPtr group);
 
+		/// <summary>
+		///           Returns an enumerator that iterates through all members in the group.
+		///         </summary>
+		///         <returns>
+		///           An <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Collections%20IEnumerator&amp;scope=Xamarin" title="T:System.Collections.IEnumerator">T:System.Collections.IEnumerator</a></format>
+		///           which will return all members in the group.
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return GetEnumerator ();
 		}
 
+		/// <summary>
+		///           Returns an enumerator that iterates through all members in the group.
+		///         </summary>
+		///         <returns>
+		///           An
+		///           <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Collections%20Generic%20IEnumerator{%20Address%20Book%20ABRecord}&amp;scope=Xamarin" title="T:System.Collections.Generic.IEnumerator{AddressBook.ABRecord}">T:System.Collections.Generic.IEnumerator{AddressBook.ABRecord}</a></format>
+		///           which will return all members in the group.
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public IEnumerator<ABRecord> GetEnumerator ()
 		{
 			var cfArrayRef = ABGroupCopyArrayOfAllMembers (Handle);
@@ -174,6 +212,21 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABGroupCopyArrayOfAllMembersWithSortOrdering (IntPtr group, ABPersonSortBy sortOrdering);
 
+		/// <param name="sortOrdering">
+		///           A <see cref="T:AddressBook.ABPersonSortBy" /> which
+		///           specifies the odering of members in the returned array.
+		///         </param>
+		///         <summary>
+		///           Returns the group members sorted by the specified
+		///           <paramref name="sortOrdering" />.
+		///         </summary>
+		///         <returns>
+		///           A <see cref="T:AddressBook.ABRecord" /> array
+		///           containing the members of the group sorted by the
+		///           specified <paramref name="sortOrdering" />.
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public ABRecord [] GetMembers (ABPersonSortBy sortOrdering)
 		{
 			var cfArrayRef = ABGroupCopyArrayOfAllMembersWithSortOrdering (Handle, sortOrdering);
@@ -184,6 +237,18 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		unsafe extern static byte ABGroupRemoveMember (IntPtr group, IntPtr member, IntPtr* error);
+		/// <param name="member">
+		///           A <see cref="T:AddressBook.ABRecord" /> containing
+		///           the record to remove from the group.
+		///         </param>
+		///         <summary>
+		///           Removes <paramref name="member" /> from the group.
+		///         </summary>
+		///         <remarks>
+		///         </remarks>
+		///         <exception cref="T:CoreFoundation.CFException">
+		///           The record couldn't be remove from the group.
+		///         </exception>
 		public void Remove (ABRecord member)
 		{
 			if (member is null)

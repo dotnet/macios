@@ -82,6 +82,10 @@ namespace UIKit {
 		extern static /* NSObject */ IntPtr UIAccessibilityFocusedElement (IntPtr assistiveTechnologyIdentifier);
 
 #if NET
+		/// <param name="assistiveTechnologyIdentifier">To be added.</param>
+		///         <summary>Retrieves the currently focused element for the given <paramref name="assistiveTechnologyIdentifier" /> assistive technology.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -165,11 +169,21 @@ namespace UIKit {
 		extern static void UIAccessibilityPostNotification (/* UIAccessibilityNotifications */ int notification, /* id */ IntPtr argument);
 		// typedef uint32_t UIAccessibilityNotifications
 
+		/// <param name="notification">Notification to post.</param>
+		///         <param name="argument">Parameter to the notification.</param>
+		///         <summary>Posts an accessibility notification.</summary>
+		///         <remarks>
+		///         </remarks>
 		public static void PostNotification (UIAccessibilityPostNotification notification, NSObject argument)
 		{
 			PostNotification (NotificationEnumToInt (notification), argument);
 		}
 
+		/// <param name="notification">Notification to post.</param>
+		///         <param name="argument">Parameter to the notification.</param>
+		///         <summary>Posts an accessibility notification.</summary>
+		///         <remarks>
+		///         </remarks>
 		public static void PostNotification (int notification, NSObject argument)
 		{
 			UIAccessibilityPostNotification (notification, argument is null ? IntPtr.Zero : argument.Handle);
@@ -196,6 +210,11 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static void UIAccessibilityZoomFocusChanged (/* UIAccessibilityZoomType */ IntPtr type, CGRect frame, IntPtr view);
 
+		/// <param name="type">To be added.</param>
+		///         <param name="frame">To be added.</param>
+		///         <param name="view">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void ZoomFocusChanged (UIAccessibilityZoomType type, CGRect frame, UIView view)
 		{
 			UIAccessibilityZoomFocusChanged ((IntPtr) type, frame, view is not null ? view.Handle : IntPtr.Zero);
@@ -203,6 +222,9 @@ namespace UIKit {
 		}
 
 		// UIAccessibilityZoom.h
+		/// <summary>Used to inform the user that the accessibility zoom gesture conflicts with a gesture used by this application.</summary>
+		///         <remarks>
+		///         </remarks>
 		[DllImport (Constants.UIKitLibrary, EntryPoint = "UIAccessibilityRegisterGestureConflictWithZoom")]
 		extern public static void RegisterGestureConflictWithZoom ();
 
@@ -216,6 +238,11 @@ namespace UIKit {
 		extern static /* UIBezierPath* */ IntPtr UIAccessibilityConvertPathToScreenCoordinates (/* UIBezierPath* */ IntPtr path, /* UIView* */ IntPtr view);
 
 #if NET
+		/// <param name="path">The path object that is the target of conversion.</param>
+		///         <param name="view">The view on which the coordinate system path definition was defined.</param>
+		///         <summary>Converts the path to screen coordinates and returns a new path using those values.</summary>
+		///         <returns>A new path object utilizing the same shape as path, but in which the points are specified in screen coordinates.</returns>
+		///         <remarks>Adjusts the points of your path to values the accessibility system can use.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -243,6 +270,11 @@ namespace UIKit {
 		extern static CGRect UIAccessibilityConvertFrameToScreenCoordinates (CGRect rect, /* UIView* */ IntPtr view);
 
 #if NET
+		/// <param name="rect">The rectangle, in view coordinates, to convert.</param>
+		///         <param name="view">The view in whose coordinates <paramref name="rect" /> are specified.</param>
+		///         <summary>Converts the provided rectangle in the specified view to screen coordinates.</summary>
+		///         <returns>A rectangle with coordinates in screen space.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -267,6 +299,17 @@ namespace UIKit {
 		extern unsafe static void UIAccessibilityRequestGuidedAccessSession (/* BOOL */ byte enable, /* void(^completionHandler)(BOOL didSucceed) */ BlockLiteral* completionHandler);
 
 #if NET
+		/// <param name="enable">Determines whether you want to enter (true) enable or leave (false) guided access mode.</param>
+		///         <param name="completionHandler">Method to invoke once the system has successfully transitioned to that state.   The method takes a boolean that determines if the transition was successfull.</param>
+		///         <summary>Requests that the system to enter Guided Access mode.</summary>
+		///         <remarks>
+		///           <para>
+		/// 	    When an application is running in Guided Access mode, it can prevent the home button from working, and can control other features of the operating system from working.
+		/// 	  </para>
+		///           <para>
+		/// 	    For this API call to succeed, the application must be Supervised, and the application must have been enabled for single app mode using Mobile Device Management.
+		/// 	  </para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -287,6 +330,10 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <param name="enable">Determines whether you want to enter (true) enable or leave (false) guided access mode.</param>
+		///         <summary>Asynchronously requests a transition between normal and Single App modes.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]

@@ -311,6 +311,7 @@ namespace UIKit {
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		SpacingEdgeToEdge = 0 << 19,
+		/// <summary>Arrange objects to that their baselines align.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		SpacingBaselineToBaseline = 1 << 19,
@@ -329,8 +330,11 @@ namespace UIKit {
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum NSLayoutRelation : long {
+		/// <summary>A less-than-or-equal relationship.</summary>
 		LessThanOrEqual = -1,
+		/// <summary>An equality relationship.</summary>
 		Equal = 0,
+		/// <summary>A greater-than-or-equal relationship.</summary>
 		GreaterThanOrEqual = 1,
 	}
 
@@ -377,6 +381,7 @@ namespace UIKit {
 	public enum NSTextLayoutOrientation : long {
 		/// <summary>To be added.</summary>
 		Horizontal,
+		/// <summary>Lines are rendered vertically, extending from right to left.</summary>
 		Vertical,
 	}
 
@@ -386,7 +391,9 @@ namespace UIKit {
 	[Flags]
 	[MacCatalyst (13, 1)]
 	public enum NSTextStorageEditActions : ulong {
+		/// <summary>Attributes were modified.</summary>
 		Attributes = 1,
+		/// <summary>Characters were modified.</summary>
 		Characters = 2,
 	}
 
@@ -413,6 +420,10 @@ namespace UIKit {
 		[Export ("textContainers")]
 		NSTextContainer [] TextContainers { get; }
 
+		/// <param name="container">An <see cref="T:UIKit.NSTextContainer" /> to be appended to the <see cref="P:UIKit.NSLayoutManager.TextContainers" /> property.</param>
+		///         <summary>Appends a <see cref="T:UIKit.NSTextContainer" /> to the <see cref="P:UIKit.NSLayoutManager.TextContainers" /> property.</summary>
+		///         <remarks>To be added.</remarks>
+		///         <altmember cref="M:UIKit.NSLayoutManager.InsertTextContainer" />
 		[Export ("addTextContainer:")]
 		void AddTextContainer (NSTextContainer container);
 
@@ -1814,42 +1825,108 @@ namespace UIKit {
 	[BaseType (typeof (NSObject))]
 	[MacCatalyst (13, 1)]
 	interface NSParagraphStyle : NSSecureCoding, NSMutableCopying {
+		/// <summary>The distance, in points, between the bottom of one line fragment and the top of the next.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("lineSpacing")]
 		nfloat LineSpacing { get; [NotImplemented] set; }
 
+		/// <summary>Distance, in points, after the paragraph.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("paragraphSpacing")]
 		nfloat ParagraphSpacing { get; [NotImplemented] set; }
 
 		[Export ("alignment")]
 		TextAlignment Alignment { get; [NotImplemented] set; }
 
+		/// <summary>The indentation of the paragraph's lines, other than the first. (See <see cref="P:UIKit.NSParagraphStyle.FirstLineHeadIndent" />.)</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("headIndent")]
 		nfloat HeadIndent { get; [NotImplemented] set; }
 
+		/// <summary>The distance, in points, from the margin of a text container to the end of lines.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("tailIndent")]
 		nfloat TailIndent { get; [NotImplemented] set; }
 
+		/// <summary>The indentation of the paragraph's first line.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("firstLineHeadIndent")]
 		nfloat FirstLineHeadIndent { get; [NotImplemented] set; }
 
+		/// <summary>The minimum height, in points, of lines in the paragraph.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("minimumLineHeight")]
 		nfloat MinimumLineHeight { get; [NotImplemented] set; }
 
+		/// <summary>The paragraph's maximum line height, in points.</summary>
+		///         <value>The default of 0 indicates no limit.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("maximumLineHeight")]
 		nfloat MaximumLineHeight { get; [NotImplemented] set; }
 
 		[Export ("lineBreakMode")]
 		LineBreakMode LineBreakMode { get; [NotImplemented] set; }
 
+		/// <summary>The normal writing direction.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("baseWritingDirection")]
 		NSWritingDirection BaseWritingDirection { get; [NotImplemented] set; }
 
+		/// <summary>The natural line height of the paragraph is multiplied by this factor before constraint to minimum and maximum.</summary>
+		///         <value>Default is 0.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("lineHeightMultiple")]
 		nfloat LineHeightMultiple { get; [NotImplemented] set; }
 
+		/// <summary>Distance, in points, between a paragraph's top and its first line.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("paragraphSpacingBefore")]
 		nfloat ParagraphSpacingBefore { get; [NotImplemented] set; }
 
+		/// <summary>The paragraph's threshold for hyphenation.</summary>
+		///         <value>Ranges from 0 to 1, indicating ratio of text width to the width of line fragment. Default is 0, indicating that the layout manager's hyphenation factor is used.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("hyphenationFactor")]
 		float HyphenationFactor { get; [NotImplemented] set; } // Returns a float, not nfloat.
 
@@ -1868,6 +1945,12 @@ namespace UIKit {
 		NSWritingDirection DefaultWritingDirection ([NullAllowed] string languageName);
 #endif
 
+		/// <summary>The default text style.</summary>
+		///         <value>Defaults are: natural text alignment, 12 28pt left-aligned tabs, word-wrapping line breaks.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Static]
 		[Export ("defaultParagraphStyle", ArgumentSemantic.Copy)]
 		NSParagraphStyle Default { get; }
@@ -1879,9 +1962,21 @@ namespace UIKit {
 		NSParagraphStyle DefaultParagraphStyle { get; [NotImplemented] set; }
 #endif
 
+		/// <summary>The value, in points, of tab intervals.</summary>
+		///         <value>Default is 0.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("defaultTabInterval")]
 		nfloat DefaultTabInterval { get; [NotImplemented] set; }
 
+		/// <summary>The paragraph's tab stops, sorted by location.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("tabStops", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		NSTextTab [] TabStops { get; [NotImplemented] set; }
@@ -1929,6 +2024,12 @@ namespace UIKit {
 	[BaseType (typeof (NSParagraphStyle))]
 	[MacCatalyst (13, 1)]
 	interface NSMutableParagraphStyle {
+		/// <summary>The distance, in points, between the bottom of one line fragment and the top of the next.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("lineSpacing")]
 		[Override]
 		nfloat LineSpacing { get; set; }
@@ -1937,22 +2038,52 @@ namespace UIKit {
 		[Override]
 		TextAlignment Alignment { get; set; }
 
+		/// <summary>The indentation of the paragraph's lines, other than the first. (See <see cref="P:UIKit.NSMutableParagraphStyle.FirstLineHeadIndent" />.)</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("headIndent")]
 		[Override]
 		nfloat HeadIndent { get; set; }
 
+		/// <summary>The distance, in points, from the margin of a text container to the end of lines.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("tailIndent")]
 		[Override]
 		nfloat TailIndent { get; set; }
 
+		/// <summary>The indentation of the paragraph's first line.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("firstLineHeadIndent")]
 		[Override]
 		nfloat FirstLineHeadIndent { get; set; }
 
+		/// <summary>The minimum height, in points, of lines in the paragraph.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("minimumLineHeight")]
 		[Override]
 		nfloat MinimumLineHeight { get; set; }
 
+		/// <summary>The paragraph's maximum line height, in points.</summary>
+		///         <value>The default of 0 indicates no limit.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("maximumLineHeight")]
 		[Override]
 		nfloat MaximumLineHeight { get; set; }
@@ -1961,22 +2092,52 @@ namespace UIKit {
 		[Override]
 		LineBreakMode LineBreakMode { get; set; }
 
+		/// <summary>The norml writing direction.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("baseWritingDirection")]
 		[Override]
 		NSWritingDirection BaseWritingDirection { get; set; }
 
+		/// <summary>The natural line height of the paragraph is multiplied by this factor before constraint to minimum and maximum.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("lineHeightMultiple")]
 		[Override]
 		nfloat LineHeightMultiple { get; set; }
 
+		/// <summary>Distance, in points, after the paragraph.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("paragraphSpacing")]
 		[Override]
 		nfloat ParagraphSpacing { get; set; }
 
+		/// <summary>Distance, in points, between a paragraph's top and its first line.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("paragraphSpacingBefore")]
 		[Override]
 		nfloat ParagraphSpacingBefore { get; set; }
 
+		/// <summary>The paragraph's threshold for hyphenation.</summary>
+		///         <value>Ranges from 0 to 1, indicating ratio of text width to the width of line fragment. Default is 0, indicating that the layout manager's hyphenation factor is used.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("hyphenationFactor")]
 		[Override]
 		float HyphenationFactor { get; set; } // Returns a float, not nfloat.
@@ -1985,10 +2146,22 @@ namespace UIKit {
 		[Export ("usesDefaultHyphenation")]
 		bool UsesDefaultHyphenation { get; set; }
 
+		/// <summary>The value, in points, of tab intervals.</summary>
+		///         <value>The default is 0.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("defaultTabInterval")]
 		[Override]
 		nfloat DefaultTabInterval { get; set; }
 
+		/// <summary>The paragraph's tab stops, sorted by location.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("tabStops", ArgumentSemantic.Copy)]
 		[Override]
 		[NullAllowed]
@@ -2524,6 +2697,7 @@ namespace UIKit {
 		: NSAnimatablePropertyContainer
 #endif
 {
+		/// <include file="../docs/api/UIKit/NSLayoutConstraint.xml" path="/Documentation/Docs[@DocId='M:UIKit.NSLayoutConstraint.FromVisualFormat(System.String,UIKit.NSLayoutFormatOptions,Foundation.NSDictionary,Foundation.NSDictionary)']/*" />
 		[Static]
 		[Export ("constraintsWithVisualFormat:options:metrics:views:")]
 		NSLayoutConstraint [] FromVisualFormat (string format, NSLayoutFormatOptions formatOptions, [NullAllowed] NSDictionary metrics, NSDictionary views);
@@ -2619,10 +2793,14 @@ namespace UIKit {
 		[Export ("active")]
 		bool Active { [Bind ("isActive")] get; set; }
 
+		/// <include file="../docs/api/UIKit/NSLayoutConstraint.xml" path="/Documentation/Docs[@DocId='M:UIKit.NSLayoutConstraint.ActivateConstraints(UIKit.NSLayoutConstraint[])']/*" />
 		[MacCatalyst (13, 1)]
 		[Static, Export ("activateConstraints:")]
 		void ActivateConstraints (NSLayoutConstraint [] constraints);
 
+		/// <param name="constraints">Constraints to deactivate.</param>
+		///         <summary>Deactivates all of the constraints passed.</summary>
+		///         <remarks>This method has the same effect as setting the <see cref="P:UIKit.NSLayoutConstraint.Active" /> property to <see langword="false" />.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("deactivateConstraints:")]
 		void DeactivateConstraints (NSLayoutConstraint [] constraints);
@@ -2698,6 +2876,12 @@ namespace UIKit {
 		[PostGet ("Contents")]
 		NativeHandle Constructor ([NullAllowed] NSData contentData, [NullAllowed] string uti);
 
+		/// <summary>The contents of the text attachment. Modification invalidates the Image property.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("contents", ArgumentSemantic.Retain)]
@@ -2717,6 +2901,12 @@ namespace UIKit {
 		[Export ("bounds")]
 		CGRect Bounds { get; set; }
 
+		/// <summary>The file wrapper associated with this NSTextAttachment.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("fileWrapper", ArgumentSemantic.Retain)]
 		NSFileWrapper FileWrapper { get; set; }
@@ -2788,6 +2978,9 @@ namespace UIKit {
 		[Export ("initWithString:")]
 		NativeHandle Constructor (string str);
 
+		/// <summary>The NSLayoutManagers associated with this NSTextStorage. Read-only.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("layoutManagers")]
 #if MONOMAC || NET
 		NSLayoutManager [] LayoutManagers { get; }
@@ -2803,6 +2996,9 @@ namespace UIKit {
 		[PostGet ("LayoutManagers")]
 		void RemoveLayoutManager (NSLayoutManager aLayoutManager);
 
+		/// <summary>The kinds of edits pending for this NSTextStorage.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("editedMask")]
 #if MONOMAC && !NET
 		NSTextStorageEditedFlags EditedMask {
@@ -2816,11 +3012,17 @@ namespace UIKit {
 #endif
 		}
 
+		/// <summary>The range in this NSTextStorage in which pending changes have been made.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("editedRange")]
 		NSRange EditedRange {
 			get;
 		}
 
+		/// <summary>The change in length for the pending changes.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("changeInLength")]
 		nint ChangeInLength {
 			get;
@@ -2830,6 +3032,13 @@ namespace UIKit {
 		[Export ("delegate", ArgumentSemantic.Assign)]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the UIKit.INSTextStorageDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.INSTextStorageDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		INSTextStorageDelegate Delegate { get; set; }
 
@@ -2843,6 +3052,9 @@ namespace UIKit {
 		[Export ("processEditing")]
 		void ProcessEditing ();
 
+		/// <summary>Whether this NSTextStorage fixes attributes lazily. Read-only.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fixesAttributesLazily")]
 		bool FixesAttributesLazily { get; }
 
@@ -3214,6 +3426,9 @@ namespace UIKit {
 		[Export ("shadowOffset", ArgumentSemantic.Assign)]
 		CGSize ShadowOffset { get; set; }
 
+		/// <summary>The radius of the shadow blur.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("shadowBlurRadius", ArgumentSemantic.Assign)]
 		nfloat ShadowBlurRadius { get; set; }
 
@@ -3262,6 +3477,10 @@ namespace UIKit {
 		[Export ("columnTerminatorsForLocale:")]
 		NSCharacterSet GetColumnTerminators ([NullAllowed] NSLocale locale);
 
+		/// <summary>Represents the value associated with the constant NSTabColumnTerminatorsAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTabColumnTerminatorsAttributeName")]
 		NSString ColumnTerminatorsAttributeName { get; }
 	}
@@ -3310,6 +3529,14 @@ namespace UIKit {
 		[Export ("size")]
 		CGSize Size { get; set; }
 
+		/// <summary>An array of <see cref="T:UIKit.UIBezierPath" />s from which text will be excluded.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>
+		///           <para>Exclusion paths are defined in the <see cref="T:UIKit.NSTextContainer" />'s coordinate system (see <see cref="M:UIKit.UIView.ConvertRectFromView(CoreGraphics.CGRect,UIKit.UIView)" />).</para>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("exclusionPaths", ArgumentSemantic.Copy)]
 		BezierPath [] ExclusionPaths { get; set; }
@@ -3318,9 +3545,15 @@ namespace UIKit {
 		[Export ("lineBreakMode")]
 		LineBreakMode LineBreakMode { get; set; }
 
+		/// <summary>The amount, in points, by which text is inset within line fragment rectangles. Default is 5.0 points.</summary>
+		///         <value>The default value is 5.0.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lineFragmentPadding")]
 		nfloat LineFragmentPadding { get; set; }
 
+		/// <summary>The maximum number of lines that can be stored in the receiver.</summary>
+		///         <value>The default value of 0 indicates no limit.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("maximumNumberOfLines")]
 		nuint MaximumNumberOfLines { get; set; }
@@ -3333,9 +3566,15 @@ namespace UIKit {
 		CGRect GetLineFragmentRect (CGRect proposedRect, nuint characterIndex, NSWritingDirection baseWritingDirection, out CGRect remainingRect);
 #endif
 
+		/// <summary>Whether the <see cref="T:UIKit.NSTextContainer" /> changes its <see cref="P:UIKit.NSTextContainer.Size" /> as its associated <see cref="T:UIKit.UITextView" /> is resized.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("widthTracksTextView")]
 		bool WidthTracksTextView { get; set; }
 
+		/// <summary>Whether the <see cref="T:UIKit.NSTextContainer" /> changes its <see cref="P:UIKit.NSTextContainer.Size" /> as its associated <see cref="T:UIKit.UITextView" /> is resized.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("heightTracksTextView")]
 		bool HeightTracksTextView { get; set; }
 
@@ -3343,6 +3582,9 @@ namespace UIKit {
 		[Export ("replaceLayoutManager:")]
 		void ReplaceLayoutManager (NSLayoutManager newLayoutManager);
 
+		/// <summary>Gets a Boolean value that tells whether the receiver's text container is a simply connected rectangular region that has the exact orientation of the text view.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("simpleRectangularTextContainer")]
 		bool IsSimpleRectangularTextContainer { [Bind ("isSimpleRectangularTextContainer")] get; }

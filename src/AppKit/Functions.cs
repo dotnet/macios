@@ -37,6 +37,8 @@ namespace AppKit {
 	// Class to access C functions
 	public partial class AppKitFramework {
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[DllImport (Constants.AppKitLibrary)]
 		public static extern void NSBeep ();
 	}

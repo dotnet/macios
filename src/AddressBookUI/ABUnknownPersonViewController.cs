@@ -23,6 +23,10 @@ namespace AddressBookUI {
 	[UnsupportedOSPlatform ("tvos")]
 	public class ABUnknownPersonCreatedEventArgs : EventArgs {
 
+		/// <param name="person">To be added.</param>
+		///         <summary>Initializes a new instance of the ABUnknownPersonCreatedEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public ABUnknownPersonCreatedEventArgs (ABPerson? person)
 		{
 			Person = person;
@@ -109,6 +113,9 @@ namespace AddressBookUI {
 			return d;
 		}
 
+		/// <param name="e">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal virtual void OnPerformDefaultAction (ABPersonViewPerformDefaultActionEventArgs e)
 		{
 			var h = EnsureEventDelegate ().performDefaultAction;
@@ -116,6 +123,9 @@ namespace AddressBookUI {
 				h (this, e);
 		}
 
+		/// <param name="e">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal virtual void OnPersonCreated (ABUnknownPersonCreatedEventArgs e)
 		{
 			var h = EnsureEventDelegate ().personCreated;

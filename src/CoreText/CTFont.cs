@@ -2529,6 +2529,11 @@ namespace CoreText {
 			/* CFStringRef __nonnull */ IntPtr @string,
 			NSRange range);
 
+		/// <param name="value">To be added.</param>
+		///         <param name="range">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTFont? ForString (string value, NSRange range)
 		{
 			if (value is null)
@@ -2579,6 +2584,9 @@ namespace CoreText {
 		static extern /* CTFontDescriptorRef __nonnull */ IntPtr CTFontCopyFontDescriptor (
 			/* CTFontRef __nonnull */ IntPtr font);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTFontDescriptor GetFontDescriptor ()
 		{
 			var h = CTFontCopyFontDescriptor (Handle);
@@ -2589,6 +2597,10 @@ namespace CoreText {
 		static extern /* CFTypeRef __nullable */ IntPtr CTFontCopyAttribute (/* CTFontRef __nonnull */ IntPtr font,
 			/* CFStringRef __nonnull */ IntPtr attribute);
 
+		/// <param name="attribute">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSObject? GetAttribute (NSString attribute)
 		{
 			if (attribute is null)
@@ -2631,6 +2643,9 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontCopyTraits (IntPtr font);
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTFontTraits? GetTraits ()
 		{
 			var d = Runtime.GetNSObject<NSDictionary> (CTFontCopyTraits (Handle), true);
@@ -2686,6 +2701,10 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontCopyName (IntPtr font, IntPtr nameKey);
+		/// <param name="nameKey">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public string? GetName (CTFontNameKey nameKey)
 		{
 			var id = CTFontNameKeyId.ToId (nameKey);
@@ -2697,11 +2716,20 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern IntPtr CTFontCopyLocalizedName (IntPtr font, IntPtr nameKey, IntPtr* actualLanguage);
 
+		/// <param name="nameKey">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public string? GetLocalizedName (CTFontNameKey nameKey)
 		{
 			return GetLocalizedName (nameKey, out _);
 		}
 
+		/// <param name="nameKey">To be added.</param>
+		///         <param name="actualLanguage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public string? GetLocalizedName (CTFontNameKey nameKey, out string? actualLanguage)
 		{
 			IntPtr actual;
@@ -2741,6 +2769,9 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontCopySupportedLanguages (IntPtr font);
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public string? [] GetSupportedLanguages ()
 		{
 			var cfArrayRef = CTFontCopySupportedLanguages (Handle);

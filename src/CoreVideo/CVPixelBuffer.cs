@@ -26,6 +26,16 @@ namespace CoreVideo {
 	[SupportedOSPlatform ("tvos")]
 	public partial class CVPixelBuffer : CVImageBuffer {
 #if !COREBUILD
+		/// <summary>Type identifier for the CoreVideo.CVPixelBuffer type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
+		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[bool isCVPixelBuffer = (CFType.GetTypeID (foo.Handle) == CVPixelBuffer.GetTypeID ());]]></code>
+		///           </example>
+		///         </remarks>
 		[DllImport (Constants.CoreVideoLibrary, EntryPoint = "CVPixelBufferGetTypeID")]
 		public extern static /* CFTypeID */ nint GetTypeID ();
 

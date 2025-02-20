@@ -157,6 +157,7 @@ namespace CoreFoundation {
 		{
 		}
 
+		/// <include file="../../docs/api/CoreFoundation/CFMessagePort.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.CFMessagePort.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero) {
@@ -219,6 +220,12 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		static extern IntPtr CFMessagePortGetInvalidationCallBack (/* CFMessagePortRef */ IntPtr ms);
 
+		/// <param name="name">To be added.</param>
+		///         <param name="callback">To be added.</param>
+		///         <param name="allocator">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CFMessagePort? CreateLocalPort (string? name, CFMessagePortCallBack callback, CFAllocator? allocator = null)
 		{
 			if (callback is null)

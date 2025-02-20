@@ -58,6 +58,9 @@ namespace AVFoundation {
 			Bottom = bottom;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return string.Format ("(left={0},top={1},right={2},bottom={3})", Left, Top, Right, Bottom);

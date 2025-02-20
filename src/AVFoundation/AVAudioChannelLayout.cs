@@ -30,6 +30,9 @@ namespace AVFoundation {
 			return handleToLayout;
 		}
 
+		/// <param name="layout">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public AVAudioChannelLayout (AudioChannelLayout layout)
 			: this (CreateLayoutPtr (layout, out var handleToLayout))

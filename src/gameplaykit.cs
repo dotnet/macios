@@ -1103,6 +1103,11 @@ namespace GameplayKit {
 		[Export ("pathWithGraphNodes:radius:")]
 		GKPath FromGraphNodes (GKGraphNode [] nodes, float radius);
 
+		/// <param name="graphNodes">To be added.</param>
+		///         <param name="radius">To be added.</param>
+		///         <summary>Factory method to create a <see cref="T:GameplayKit.GKPath" /> with the specified <paramref name="graphNodes" /> and <paramref name="radius" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static] // Avoid breaking change
 		[Wrap ("FromGraphNodes (nodes: graphNodes, radius: radius)")]
 		GKPath FromGraphNodes (GKGraphNode2D [] graphNodes, float radius);

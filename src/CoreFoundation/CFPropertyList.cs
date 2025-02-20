@@ -46,6 +46,11 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		unsafe static extern IntPtr CFPropertyListCreateWithData (IntPtr allocator, IntPtr dataRef, nuint options, nint* format, /* CFError * */ IntPtr* error);
 
+		/// <param name="data">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static (CFPropertyList? PropertyList, CFPropertyListFormat Format, NSError? Error)
 			FromData (NSData data, CFPropertyListMutabilityOptions options = CFPropertyListMutabilityOptions.Immutable)
 		{
@@ -69,6 +74,10 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static IntPtr CFPropertyListCreateDeepCopy (IntPtr allocator, IntPtr propertyList, nuint mutabilityOption);
 
+		/// <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CFPropertyList DeepCopy (CFPropertyListMutabilityOptions options = CFPropertyListMutabilityOptions.MutableContainersAndLeaves)
 		{
 			return new CFPropertyList (CFPropertyListCreateDeepCopy (IntPtr.Zero, Handle, (nuint) (ulong) options), owns: true);

@@ -383,46 +383,82 @@ namespace AudioUnit {
 			ComponentFlagsMask = 0;
 		}
 
+		/// <param name="type">To be added.</param>
+		///         <param name="subType">To be added.</param>
+		///         <summary>Initializes an <see cref="T:AudioUnit.AudioComponentDescription" /> with the given type and given subtype.   This method is here for cases where you might want to create a component description that is not covered by the built-in enumerations for component subtypes.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponentDescription CreateGeneric (AudioComponentType type, int subType)
 		{
 			return new AudioComponentDescription (type, subType);
 		}
 
+		/// <param name="outputType">To be added.</param>
+		///         <summary>Creates an output component description.</summary>
+		///         <returns>An initialized AudioComponentDescription with the <see cref="F:AudioUnit.AudioComponentDescription.ComponentType" /> set to <see cref="F:AudioUnit.AudioComponentType.Output" /> and the specified output type.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponentDescription CreateOutput (AudioTypeOutput outputType)
 		{
 			return new AudioComponentDescription (AudioComponentType.Output, (int) outputType);
 		}
 
+		/// <param name="musicDevice">To be added.</param>
+		///         <summary>Creates a music effect component description.</summary>
+		///         <returns>An initialized AudioComponentDescription with the <see cref="F:AudioUnit.AudioComponentDescription.ComponentType" /> set to <see cref="F:AudioUnit.AudioComponentType.MusicDevice" /> and the specified device.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponentDescription CreateMusicDevice (AudioTypeMusicDevice musicDevice)
 		{
 			return new AudioComponentDescription (AudioComponentType.MusicDevice, (int) musicDevice);
 		}
 
+		/// <param name="converter">To be added.</param>
+		///         <summary>Creates an audio converter component description.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponentDescription CreateConverter (AudioTypeConverter converter)
 		{
 			return new AudioComponentDescription (AudioComponentType.FormatConverter, (int) converter);
 		}
 
+		/// <param name="effect">To be added.</param>
+		///         <summary>Creates an audio effect component description.</summary>
+		///         <returns>An initialized AudioComponentDescription with the <see cref="F:AudioUnit.AudioComponentDescription.ComponentType" /> set to <see cref="F:AudioUnit.AudioComponentType.Effect" /> and the specified effect.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponentDescription CreateEffect (AudioTypeEffect effect)
 		{
 			return new AudioComponentDescription (AudioComponentType.Effect, (int) effect);
 		}
 
+		/// <param name="mixer">To be added.</param>
+		///         <summary>Creates an audio mixer component description.</summary>
+		///         <returns>An initialized AudioComponentDescription with the <see cref="F:AudioUnit.AudioComponentDescription.ComponentType" /> set to <see cref="F:AudioUnit.AudioComponentType.Mixer" /> and the specified mixer.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponentDescription CreateMixer (AudioTypeMixer mixer)
 		{
 			return new AudioComponentDescription (AudioComponentType.Mixer, (int) mixer);
 		}
 
+		/// <param name="panner">To be added.</param>
+		///         <summary>Creates a panner component description.</summary>
+		///         <returns>An initialized AudioComponentDescription with the <see cref="F:AudioUnit.AudioComponentDescription.ComponentType" /> set to <see cref="F:AudioUnit.AudioComponentType.Panner" /> and the specified panner.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponentDescription CreatePanner (AudioTypePanner panner)
 		{
 			return new AudioComponentDescription (AudioComponentType.Panner, (int) panner);
 		}
 
+		/// <param name="generator">To be added.</param>
+		///         <summary>Creates an audio generator component description.</summary>
+		///         <returns>An initialized AudioComponentDescription with the <see cref="F:AudioUnit.AudioComponentDescription.ComponentType" /> set to <see cref="F:AudioUnit.AudioComponentType.Generator" /> and the specified generator.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponentDescription CreateGenerator (AudioTypeGenerator generator)
 		{
 			return new AudioComponentDescription (AudioComponentType.Generator, (int) generator);
 		}
 
+		/// <summary>Returns a debugging message showing the component type and subtype for this description.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			const string fmt = "[componentType={0}, subType={1}]";

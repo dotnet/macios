@@ -22,21 +22,61 @@ namespace UIKit {
 			return FromRGBA (red, green, blue, 1.0f);
 		}
 
+		/// <param name="red">Red component, 0 to 255.</param>
+		///         <param name="green">Green component 0 to 255.</param>
+		///         <param name="blue">Blue component value 0 to 255.</param>
+		///         <summary>Creates a solid color using the red, green and blue components specified.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///           <para>
+		///           </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public static UIColor FromRGB (byte red, byte green, byte blue)
 		{
 			return FromRGBA (red / 255.0f, green / 255.0f, blue / 255.0f, 1.0f);
 		}
 
+		/// <param name="red">To be added.</param>
+		///         <param name="green">To be added.</param>
+		///         <param name="blue">To be added.</param>
+		///         <summary>Creates a color from the specified combinated of red, green, and blue components.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public static UIColor FromRGB (int red, int green, int blue)
 		{
 			return FromRGB ((byte) red, (byte) green, (byte) blue);
 		}
 
+		/// <param name="red">Red component, 0 to 255.</param>
+		///         <param name="green">Green component 0 to 255.</param>
+		///         <param name="blue">Blue component value 0 to 255.</param>
+		///         <param name="alpha">Alpha (transparency) value 0 to 255.</param>
+		///         <summary>Creates a color with the specified alpha transparency using the red, green and blue components specified.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///           <para>
+		///           </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public static UIColor FromRGBA (byte red, byte green, byte blue, byte alpha)
 		{
 			return FromRGBA (red / 255.0f, green / 255.0f, blue / 255.0f, alpha / 255.0f);
 		}
 
+		/// <param name="red">To be added.</param>
+		///         <param name="green">To be added.</param>
+		///         <param name="blue">To be added.</param>
+		///         <param name="alpha">To be added.</param>
+		///         <summary>Creates a color from the specified combination of red, green, and blue elements, with the specified transparency.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public static UIColor FromRGBA (int red, int green, int blue, int alpha)
 		{
 			return FromRGBA ((byte) red, (byte) green, (byte) blue, (byte) alpha);

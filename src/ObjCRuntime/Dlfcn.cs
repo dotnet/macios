@@ -104,6 +104,11 @@ namespace ObjCRuntime {
 		}
 #endif
 
+		/// <param name="handle">Handle previously returned by dlopen</param>
+		///         <summary>Closes and unloads the native shared library referenced by the handle.</summary>
+		///         <returns>A Unix error code, or zero on success.</returns>
+		///         <remarks>
+		///         </remarks>
 		[DllImport (Constants.libSystemLibrary)]
 		public static extern int dlclose (IntPtr handle);
 
@@ -116,6 +121,12 @@ namespace ObjCRuntime {
 			return _dlopen (pathPtr, mode);
 		}
 
+		/// <param name="path">Path to the dynamic library.</param>
+		///         <param name="mode">Bitmask, values defined in the Unix dlopen(2) man page.</param>
+		///         <summary>Loads the specified dynamic library into memory. </summary>
+		///         <returns>The handle to the library, or IntPtr.Zero on failure.</returns>
+		///         <remarks>
+		///         </remarks>
 		public static IntPtr dlopen (string? path, int mode)
 		{
 			return dlopen (path, mode, showWarning: true);
@@ -155,12 +166,29 @@ namespace ObjCRuntime {
 		[DllImport (Constants.libSystemLibrary)]
 		static extern IntPtr dlsym (IntPtr handle, IntPtr symbol);
 
+		/// <include file="../../docs/api/ObjCRuntime/Dlfcn.xml" path="/Documentation/Docs[@DocId='M:ObjCRuntime.Dlfcn.dlsym(System.IntPtr,System.String)']/*" />
 		public static IntPtr dlsym (IntPtr handle, string symbol)
 		{
 			using var symbolPtr = new TransientString (symbol);
 			return dlsym (handle, symbolPtr);
 		}
 
+		/// <param name="lookupType">Determines how the symbol is looked up</param>
+		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
+		///         <summary>Returns the address of the specified symbol in the
+		/// 	current process.</summary>
+		///         <returns>
+		/// 	  Returns <see langword="null" /> if the symbol was not found.   The error condition can be probed using the <see cref="M:ObjCRuntime.Dlfcn.dlerror" />.
+		///         </returns>
+		///         <remarks>
+		///           <para>
+		/// 	    Returns the address of the specified symbol in the dynamic library.
+		/// 	  </para>
+		///           <para>
+		/// 	    The <paramref name="lookupType" /> controls which libraries
+		/// 	    the dynamic linker will search.   
+		/// 	  </para>
+		///         </remarks>
 		public static IntPtr dlsym (RTLD lookupType, string symbol)
 		{
 			return dlsym ((IntPtr) lookupType, symbol);
@@ -169,12 +197,23 @@ namespace ObjCRuntime {
 		[DllImport (Constants.libSystemLibrary, EntryPoint = "dlerror")]
 		internal static extern IntPtr dlerror_ ();
 
+		/// <summary>Returns a diagnostics message for the last failure when using any of the methods in this class.</summary>
+		///         <returns>Human-readable message.</returns>
+		///         <remarks>
+		///         </remarks>
 		public static string? dlerror ()
 		{
 			// we can't free the string returned from dlerror
 			return Marshal.PtrToStringAnsi (dlerror_ ());
 		}
 
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
+		///         <summary>Gets the NSString value exposed with the given symbol from the dynamic library.</summary>
+		///         <returns>The value from the library, or null on error.</returns>
+		///         <remarks>
+		///           <para>If this routine fails, it will return null.</para>
+		///         </remarks>
 		public static NSString? GetStringConstant (IntPtr handle, string symbol)
 		{
 			var indirect = dlsym (handle, symbol);
@@ -186,6 +225,13 @@ namespace ObjCRuntime {
 			return Runtime.GetNSObject<NSString> (actual);
 		}
 
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
+		///         <summary>Gets the pointer in memory to the specified symbol.</summary>
+		///         <returns>The value from the library, or IntPtr.Zero on failure.</returns>
+		///         <remarks>
+		///           <para>Use this to get a generic pointer to a public symbol in the library.</para>
+		///         </remarks>
 		public static IntPtr GetIndirect (IntPtr handle, string symbol)
 		{
 			return dlsym (handle, symbol);
@@ -205,6 +251,13 @@ namespace ObjCRuntime {
 			}
 		}
 
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="M:ObjCRuntime.Dlfcn.dlopen(System.String,System.Int32)" />.</param>
+		///         <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
+		///         <summary>Gets an NSNumber value exposed with the given symbol from the dynamic library.</summary>
+		///         <returns>The value from the library, or null on error.</returns>
+		///         <remarks>
+		///           <para>If this routine fails, it will return null.</para>
+		///         </remarks>
 		public static NSNumber? GetNSNumber (IntPtr handle, string symbol)
 		{
 			var indirect = dlsym (handle, symbol);

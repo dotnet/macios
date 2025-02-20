@@ -74,12 +74,19 @@ namespace UIKit {
 	[Native]
 	[Flags]
 	public enum UIFocusHeading : ulong {
+		/// <summary>There is no known focus heading.</summary>
 		None = 0,
+		/// <summary>The focus is moving towards the top of the screen.</summary>
 		Up = 1 << 0,
+		/// <summary>The focus is moving towards the bottom of the screen.</summary>
 		Down = 1 << 1,
+		/// <summary>The focus is moving towards the user's left.</summary>
 		Left = 1 << 2,
+		/// <summary>The focus is moving to  the user's right.</summary>
 		Right = 1 << 3,
+		/// <summary>The focus is moving forward through the collection.</summary>
 		Next = 1 << 4,
+		/// <summary>The focus is moving backwards through the collection.</summary>
 		Previous = 1 << 5,
 		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 		First = 1uL << 8,
@@ -90,16 +97,22 @@ namespace UIKit {
 	[Native] // NSInteger -> UIApplication.h
 	[MacCatalyst (13, 1)]
 	public enum UIBackgroundRefreshStatus : long {
+		/// <summary>Indicates that backgrounding is implicitly restricted and cannot be enabled (e.g., due to parental restrictions).</summary>
 		Restricted,
+		/// <summary>Indicates that the application user has explicitly disabled backgrounding capability.</summary>
 		Denied,
+		/// <summary>Indicates that background processing is allowed.</summary>
 		Available,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native] // NSUInteger -> UIApplication.h
 	public enum UIBackgroundFetchResult : ulong {
+		/// <summary>New data was downloaded successfully.</summary>
 		NewData,
+		/// <summary>There was no new data to download.</summary>
 		NoData,
+		/// <summary>The attempt to download data failed.</summary>
 		Failed,
 	}
 
@@ -108,35 +121,209 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIApplicationShortcutIconType : long {
+		/// <summary>Icon for a "Compose" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Compose.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Compose,
+		/// <summary>Icon for a "Play" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Play.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Play,
+		/// <summary>Icon for a "Pause" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Pause.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Pause,
+		/// <summary>Icon for a "Add" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Add.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Add,
+		/// <summary>Icon for a "Location" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Location.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Location,
+		/// <summary>Icon for a "Search" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Search.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Search,
+		/// <summary>Icon for a "Share" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Share.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Share,
 		// iOS 9.1 
+		/// <summary>Icon for a "Prohibit" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Prohibit.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Prohibit,
+		/// <summary>Icon for a "Contact" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Contact.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Contact,
+		/// <summary>Icon for a "Home" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Home.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Home,
+		/// <summary>Icon for a "MarkLocation" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.MarkLocation.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		MarkLocation,
+		/// <summary>Icon for a "Favorite" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Favorite.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Favorite,
+		/// <summary>Icon for a "Love" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Love.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Love,
+		/// <summary>Icon for a "Cloud" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Cloud.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Cloud,
+		/// <summary>Icon for a "Invitation" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Invitation.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Invitation,
+		/// <summary>Icon for a "Confirmation" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Confirmation.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Confirmation,
+		/// <summary>Icon for a "Mail" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Mail.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Mail,
+		/// <summary>Icon for a "Message" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Message.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Message,
+		/// <summary>Icon for a "Date" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Date.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Date,
+		/// <summary>Icon for a "Time" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Time.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Time,
+		/// <summary>Icon for a "CapturePhoto" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.CapturePhoto.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		CapturePhoto,
+		/// <summary>Icon for a "CaptureVideo" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.CaptureVideo.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		CaptureVideo,
+		/// <summary>Icon for a "Task" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Task.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Task,
+		/// <summary>Icon for a "TaskCompleted" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.TaskCompleted.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		TaskCompleted,
+		/// <summary>Icon for a "Alarm" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Alarm.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Alarm,
+		/// <summary>Icon for a "Bookmark" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Bookmark.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Bookmark,
+		/// <summary>Icon for a "Shuffle" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Shuffle.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Shuffle,
+		/// <summary>Icon for a "Audio" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Audio.png" alt="Application shortcut icon." />
+		///           </para>
+		///         </remarks>
 		Audio,
+		/// <summary>Icon for a "Update" Quick Action</summary>
+		///         <remarks>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Update.png" alt="Shortcut icon for update" />
+		///           </para>
+		///         </remarks>
 		Update,
 	}
 
@@ -145,8 +332,11 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIImpactFeedbackStyle : long {
+		/// <summary>A light impact.</summary>
 		Light,
+		/// <summary>A moderate impact.</summary>
 		Medium,
+		/// <summary>A strong impact.</summary>
 		Heavy,
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -161,8 +351,11 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UINotificationFeedbackType : long {
+		/// <summary>A task has succeeded.</summary>
 		Success,
+		/// <summary>A task has produced a warning.</summary>
 		Warning,
+		/// <summary>A task has failed.</summary>
 		Error,
 	}
 
@@ -171,7 +364,9 @@ namespace UIKit {
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	public enum UIGuidedAccessErrorCode : long {
+		/// <summary>To be added.</summary>
 		PermissionDenied,
+		/// <summary>To be added.</summary>
 		Failed = long.MaxValue,
 	}
 
@@ -179,10 +374,15 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIGuidedAccessAccessibilityFeature : ulong {
+		/// <summary>To be added.</summary>
 		VoiceOver = 1uL << 0,
+		/// <summary>To be added.</summary>
 		Zoom = 1uL << 1,
+		/// <summary>To be added.</summary>
 		AssistiveTouch = 1uL << 2,
+		/// <summary>To be added.</summary>
 		InvertColors = 1uL << 3,
+		/// <summary>To be added.</summary>
 		GrayscaleDisplay = 1uL << 4,
 	}
 
@@ -608,6 +808,13 @@ namespace UIKit {
 		[Export ("updateInterval")]
 		double UpdateInterval { get; set; }
 
+		/// <summary>An instance of the UIKit.IUIAccelerometerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUIAccelerometerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IUIAccelerometerDelegate Delegate { get; set; }
 
@@ -1026,9 +1233,15 @@ namespace UIKit {
 	}
 
 	interface UIAccessibilityAnnouncementFinishedEventArgs {
+		/// <summary>The announcement that has finished.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("UIAccessibilityAnnouncementKeyStringValue")]
 		string Announcement { get; }
 
+		/// <summary>Whether the announcement was successfully delivered. </summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("UIAccessibilityAnnouncementKeyWasSuccessful")]
 		bool WasSuccessful { get; }
 	}
@@ -1585,52 +1798,125 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface UIActivityType {
+		/// <summary>Represents the value associated with the constant UIActivityTypePostToFacebook</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		[Field ("UIActivityTypePostToFacebook")]
 		NSString PostToFacebook { get; }
 
+		/// <summary>Represents the value associated with the constant UIActivityTypePostToTwitter</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIActivityTypePostToTwitter")]
 		NSString PostToTwitter { get; }
 
+		/// <summary>Represents the value associated with the constant UIActivityTypePostToWeibo</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIActivityTypePostToWeibo")]
 		NSString PostToWeibo { get; }
 
+		/// <summary>Represents the value associated with the constant UIActivityTypeMessage</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIActivityTypeMessage")]
 		NSString Message { get; }
 
+		/// <summary>Sends the provided content by email.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		/// 	  The object must hold an individual <see cref="T:Foundation.NSString" />, <see cref="T:Foundation.NSUrl" /> (pointing to a local file) or a <see cref="T:UIKit.UIImage" />.  
+		/// 	</remarks>
 		[Field ("UIActivityTypeMail")]
 		NSString Mail { get; }
 
+		/// <summary>Used to print the provided object.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		/// 	  The object must hold an individual <see cref="T:Foundation.NSData" />, <see cref="T:Foundation.NSUrl" /> (pointing to a local resource), <see cref="T:UIKit.UIImage" />,  <see cref="T:UIKit.UIPrintPageRenderer" />, <see cref="T:UIKit.UIPrintFormatter" /> or <see cref="T:UIKit.UIPrintInfo" />.
+		/// 	</remarks>
 		[Field ("UIActivityTypePrint")]
 		NSString Print { get; }
 
+		/// <summary>Makes the object available on the pasteboard.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		/// 	  The object must hold an individual <see cref="T:Foundation.NSString" />, <see cref="T:Foundation.NSUrl" />, <see cref="T:UIKit.UIColor" />, <see cref="T:UIKit.UIImage" />.  Or you can provide a
+		/// 	  collection of those objects by passing an NSDictionary with those objects.
+		/// 	</remarks>
 		[Field ("UIActivityTypeCopyToPasteboard")]
 		NSString CopyToPasteboard { get; }
 
+		/// <summary>Assigns a UIImage to a contact.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The value provided must be a <see cref="T:UIKit.UIImage" />.</remarks>
 		[Field ("UIActivityTypeAssignToContact")]
 		NSString AssignToContact { get; }
 
+		/// <summary>Represents the value associated with the constant UIActivityTypeSaveToCameraRoll</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIActivityTypeSaveToCameraRoll")]
 		NSString SaveToCameraRoll { get; }
 
+		/// <summary>This activity adds a URL to the Safari Reading List.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("UIActivityTypeAddToReadingList")]
 		NSString AddToReadingList { get; }
 
+		/// <summary>Represents the value associated with the constant UIActivityTypePostToFlickr</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIActivityTypePostToFlickr")]
 		NSString PostToFlickr { get; }
 
+		/// <summary>Represents the value associated with the constant UIActivityTypePostToVimeo</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIActivityTypePostToVimeo")]
 		NSString PostToVimeo { get; }
 
+		/// <summary>Represents the value associated with the constant UIActivityTypePostToTencentWeibo</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIActivityTypePostToTencentWeibo")]
 		NSString PostToTencentWeibo { get; }
 
+		/// <summary>Makes the provided object available over AirDrop.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		/// 	  The object must hold an individual <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:AssetsLibrary:ALAsset&amp;scope=Xamarin" title="T:AssetsLibrary:ALAsset">T:AssetsLibrary:ALAsset</a></format>, <see cref="T:Foundation.NSAttributedString" />, <see cref="T:Foundation.NSString" />, <see cref="T:Foundation.NSUrl" />, <see cref="T:UIKit.UIImage" />.  Or you can provide a
+		/// 	  collection of those objects by passing an NSDictionary or an
+		/// 	  NSArray with those objects.
+		/// 	</remarks>
 		[Field ("UIActivityTypeAirDrop")]
 		NSString AirDrop { get; }
 
+		/// <summary>Indicates the activity of opening a document in iBooks.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UIActivityTypeOpenInIBooks")]
 		NSString OpenInIBooks { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UIActivityTypeMarkupAsPDF")]
 		NSString MarkupAsPdf { get; }
@@ -1789,6 +2075,9 @@ namespace UIKit {
 		[Export ("style")]
 		UIAlertActionStyle Style { get; }
 
+		/// <summary>Gets a value that tells whether the user can expect the action to run when its button is tapped.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
@@ -2008,9 +2297,15 @@ namespace UIKit {
 		[Export ("spacing")]
 		nfloat Spacing { get; set; }
 
+		/// <summary>Whether the vertical spacing between subviews is measured from their baselines.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("baselineRelativeArrangement")]
 		bool BaselineRelativeArrangement { [Bind ("isBaselineRelativeArrangement")] get; set; }
 
+		/// <summary>Whether subviews are arranged relative to this <see cref="T:UIKit.UIStackView" />'s <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIView%20Layout%20Margin&amp;scope=Xamarin" title="P:UIKit.UIView.LayoutMargin">P:UIKit.UIView.LayoutMargin</a></format>.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("layoutMarginsRelativeArrangement")]
 		bool LayoutMarginsRelativeArrangement { [Bind ("isLayoutMarginsRelativeArrangement")] get; set; }
 
@@ -2035,6 +2330,7 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface UIStateRestoration {
+		/// <include file="../docs/api/UIKit/UIStateRestoration.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIStateRestoration.ViewControllerStoryboardKey']/*" />
 		[Field ("UIStateRestorationViewControllerStoryboardKey")]
 		NSString ViewControllerStoryboardKey { get; }
 
@@ -2147,9 +2443,15 @@ namespace UIKit {
 		[Export ("delay")]
 		double Delay { get; }
 
+		/// <summary>Gets or sets whether the user can interact with the animation.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("userInteractionEnabled")]
 		bool UserInteractionEnabled { [Bind ("isUserInteractionEnabled")] get; set; }
 
+		/// <summary>Gets or sets whether the app manages hit-testing while the animation is in progress.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("manualHitTestingEnabled")]
 		bool ManualHitTestingEnabled { [Bind ("isManualHitTestingEnabled")] get; set; }
 
@@ -2258,6 +2560,9 @@ namespace UIKit {
 	/// <summary>Provides data for the  event.</summary>
 	[MacCatalyst (13, 1)]
 	interface UIStatusBarFrameChangeEventArgs {
+		/// <summary>The RectangleF defining the Frame of the UIStatusBar.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("UIApplicationStatusBarFrameUserInfoKey")]
 		CGRect StatusBarFrame { get; }
 	}
@@ -2265,6 +2570,9 @@ namespace UIKit {
 	/// <summary>Provides data for the  event.</summary>
 	[MacCatalyst (13, 1)]
 	interface UIStatusBarOrientationChangeEventArgs {
+		/// <summary>The new orientation of the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIStatus%20Bar&amp;scope=Xamarin" title="T:UIKit.UIStatusBar">T:UIKit.UIStatusBar</a></format>.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("UIApplicationStatusBarOrientationUserInfoKey")]
@@ -2273,20 +2581,38 @@ namespace UIKit {
 
 	[MacCatalyst (13, 1)]
 	interface UIApplicationLaunchEventArgs {
+		/// <summary>The URL that this app was launched to handle.</summary>
+		///         <value>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("UIApplicationLaunchOptionsURLKey")]
 		NSUrl Url { get; }
 
+		/// <summary>The bundle ID of the app that launched this app.</summary>
+		///         <value>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("UIApplicationLaunchOptionsSourceApplicationKey")]
 		string SourceApplication { get; }
 
+		/// <summary>A dictionary whose payload is a remote notification for the app to process.</summary>
+		///         <value>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("UIApplicationLaunchOptionsRemoteNotificationKey")]
 		NSDictionary RemoteNotifications { get; }
 
+		/// <summary>Whether the app was launched due to user interaction (as opposed to opening due to a notification or to handle a URL).</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[ProbePresence]
 		[Export ("UIApplicationLaunchOptionsLocationKey")]
 		bool LocationLaunch { get; }
@@ -2295,10 +2621,22 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("UIApplicationOpenUrlOptionKeys")]
 	interface UIApplicationOpenUrlOptions {
+		/// <summary>A property-list object.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSObject Annotation { get; set; }
+		/// <summary>The application that generated the open request.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string SourceApplication { get; set; }
+		/// <summary>Whether the URL should be opened in place.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool OpenInPlace { get; set; }
 
+		/// <summary>Gets or sets whether URLs must be universal links.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		bool UniversalLinksOnly { get; set; }
 	}
@@ -3320,43 +3658,56 @@ namespace UIKit {
 	[Static]
 	[MacCatalyst (13, 1)]
 	public enum UIContentSizeCategory {
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("UIContentSizeCategoryUnspecified")]
 		Unspecified,
 
+		/// <summary>Quite small.</summary>
 		[Field ("UIContentSizeCategoryExtraSmall")]
 		ExtraSmall,
 
+		/// <summary>A small font.</summary>
 		[Field ("UIContentSizeCategorySmall")]
 		Small,
 
+		/// <summary>A medium-sized font.</summary>
 		[Field ("UIContentSizeCategoryMedium")]
 		Medium,
 
+		/// <summary>A large font.</summary>
 		[Field ("UIContentSizeCategoryLarge")]
 		Large,
 
+		/// <summary>An extra-large font.</summary>
 		[Field ("UIContentSizeCategoryExtraLarge")]
 		ExtraLarge,
 
+		/// <summary>A font that's larger than ExtraLarge.</summary>
 		[Field ("UIContentSizeCategoryExtraExtraLarge")]
 		ExtraExtraLarge,
 
+		/// <summary>A font that's larger than ExtraExtraLarge.</summary>
 		[Field ("UIContentSizeCategoryExtraExtraExtraLarge")]
 		ExtraExtraExtraLarge,
 
+		/// <summary>A medium font reflecting the current accessibility settings.</summary>
 		[Field ("UIContentSizeCategoryAccessibilityMedium")]
 		AccessibilityMedium,
 
+		/// <summary>A medium font reflecting the current accessibility settings.</summary>
 		[Field ("UIContentSizeCategoryAccessibilityLarge")]
 		AccessibilityLarge,
 
+		/// <summary>A medium font reflecting the current accessibility settings.</summary>
 		[Field ("UIContentSizeCategoryAccessibilityExtraLarge")]
 		AccessibilityExtraLarge,
 
+		/// <summary>A medium font reflecting the current accessibility settings.</summary>
 		[Field ("UIContentSizeCategoryAccessibilityExtraExtraLarge")]
 		AccessibilityExtraExtraLarge,
 
+		/// <summary>A medium font reflecting the current accessibility settings.</summary>
 		[Field ("UIContentSizeCategoryAccessibilityExtraExtraExtraLarge")]
 		AccessibilityExtraExtraExtraLarge,
 	}
@@ -3967,6 +4318,10 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface UIExtensionPointIdentifier {
+		/// <summary>Represents the value associated with the constant UIApplicationKeyboardExtensionPointIdentifier</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UIApplicationKeyboardExtensionPointIdentifier")]
 		NSString Keyboard { get; }
@@ -4340,6 +4695,9 @@ namespace UIKit {
 		[NullAllowed, Export ("representativeItem", ArgumentSemantic.Strong)]
 		UIBarButtonItem RepresentativeItem { get; set; }
 
+		/// <summary>Gets a Boolean value that tells whether the representative item is being displayed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displayingRepresentativeItem")]
 		bool DisplayingRepresentativeItem { [Bind ("isDisplayingRepresentativeItem")] get; }
 
@@ -5001,9 +5359,15 @@ namespace UIKit {
 		[Export ("contentView")]
 		UIView ContentView { get; }
 
+		/// <summary>The selection state of this UICollectionViewCell.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("selected")]
 		bool Selected { [Bind ("isSelected")] get; set; }
 
+		/// <summary>The highlight state of this UICollectionViewCell.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("highlighted")]
 		bool Highlighted { [Bind ("isHighlighted")] get; set; }
 
@@ -5132,6 +5496,9 @@ namespace UIKit {
 		[Export ("sectionFootersPinToVisibleBounds")]
 		bool SectionFootersPinToVisibleBounds { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UICollectionViewFlowLayoutAutomaticSize")]
 		CGSize AutomaticSize { get; }
@@ -5457,9 +5824,17 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface UICollectionElementKindSectionKey {
+		/// <summary>Represents the value associated with the constant UICollectionElementKindSectionHeader</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UICollectionElementKindSectionHeader")]
 		NSString Header { get; }
 
+		/// <summary>Represents the value associated with the constant UICollectionElementKindSectionFooter</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UICollectionElementKindSectionFooter")]
 		NSString Footer { get; }
 	}
@@ -6329,6 +6704,12 @@ namespace UIKit {
 		[Export ("collisionDelegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakCollisionDelegate { get; set; }
 
+		/// <summary>The delegate object that receives events relating to collisions.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakCollisionDelegate")]
 		IUICollisionBehaviorDelegate CollisionDelegate { get; set; }
 
@@ -6493,6 +6874,7 @@ namespace UIKit {
 		[Async]
 		void RevertToContentsOfUrl (NSUrl url, [NullAllowed] UIOperationHandler completionHandler);
 
+		/// <include file="../docs/api/UIKit/UIDocument.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIDocument.StateChangedNotification']/*" />
 		[Field ("UIDocumentStateChangedNotification")]
 		[Notification]
 		NSString StateChangedNotification { get; }
@@ -6506,6 +6888,12 @@ namespace UIKit {
 		[Export ("updateUserActivityState:")]
 		void UpdateUserActivityState (NSUserActivity userActivity);
 
+		/// <summary>Gets the key that specifies the document's URL in the <see cref="P:UIKit.UIDocument.UserActivity" /> property.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSUserActivityDocumentURLKey")]
 		NSString UserActivityDocumentUrlKey { get; }
@@ -6654,6 +7042,9 @@ namespace UIKit {
 		[Export ("charge", ArgumentSemantic.Assign)]
 		nfloat Charge { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the item is anchoed to its current position.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("anchored")]
 		bool Anchored { [Bind ("isAnchored")] get; set; }
@@ -6980,40 +7371,51 @@ namespace UIKit {
 	}
 
 	public enum UIFontTextStyle {
+		/// <summary>Indicated headline text.</summary>
 		[Field ("UIFontTextStyleHeadline")]
 		Headline,
 
+		/// <summary>Indicates body text.</summary>
 		[Field ("UIFontTextStyleBody")]
 		Body,
 
+		/// <summary>Indicates a subheading.</summary>
 		[Field ("UIFontTextStyleSubheadline")]
 		Subheadline,
 
+		/// <summary>Indicates footnote text.</summary>
 		[Field ("UIFontTextStyleFootnote")]
 		Footnote,
 
+		/// <summary>Indicates primary captions.</summary>
 		[Field ("UIFontTextStyleCaption1")]
 		Caption1,
 
+		/// <summary>Indicates alternate captions.</summary>
 		[Field ("UIFontTextStyleCaption2")]
 		Caption2,
 
+		/// <summary>Indicates a first level heading.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("UIFontTextStyleTitle1")]
 		Title1,
 
+		/// <summary>Indicates a second level heading.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("UIFontTextStyleTitle2")]
 		Title2,
 
+		/// <summary>Indicates a third level heading.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("UIFontTextStyleTitle3")]
 		Title3,
 
+		/// <summary>Indicates callout text.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("UIFontTextStyleCallout")]
 		Callout,
 
+		/// <summary>Indicates a large title.</summary>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("UIFontTextStyleLargeTitle")]
@@ -7726,19 +8128,39 @@ namespace UIKit {
 	/// <summary>Provides data for the  event.</summary>
 	[MacCatalyst (13, 1)]
 	interface UIKeyboardEventArgs {
+		/// <summary>The initial frame for the keyboard and accessory input view before the animation starts.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Export ("UIKeyboardFrameBeginUserInfoKey")]
 		CGRect FrameBegin { get; }
 
+		/// <summary>The target frame that the keyboard and accessory input view will have when the animation ends.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("UIKeyboardFrameEndUserInfoKey")]
 		CGRect FrameEnd { get; }
 
+		/// <summary>The duration in seconds that the animation to show or hide the keyboard will take.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("UIKeyboardAnimationDurationUserInfoKey")]
 		double AnimationDuration { get; }
 
+		/// <summary>Describes the animation curve that will be used to animate the keyboard when it appears or disappears.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("UIKeyboardAnimationCurveUserInfoKey")]
@@ -7912,18 +8334,38 @@ namespace UIKit {
 		[Export ("commandWithTitle:image:action:input:modifierFlags:propertyList:alternates:")]
 		UIKeyCommand Create (string title, [NullAllowed] UIImage image, Selector action, string input, UIKeyModifierFlags modifierFlags, [NullAllowed] NSObject propertyList, UICommandAlternate [] alternates);
 
+		/// <summary>Represents the value associated with the constant UIKeyInputUpArrow</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIKeyInputUpArrow")]
 		NSString UpArrow { get; }
 
+		/// <summary>Represents the value associated with the constant UIKeyInputDownArrow</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIKeyInputDownArrow")]
 		NSString DownArrow { get; }
 
+		/// <summary>Represents the value associated with the constant UIKeyInputLeftArrow</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIKeyInputLeftArrow")]
 		NSString LeftArrow { get; }
 
+		/// <summary>Represents the value associated with the constant UIKeyInputRightArrow</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIKeyInputRightArrow")]
 		NSString RightArrow { get; }
 
+		/// <summary>Represents the value associated with the constant UIKeyInputEscape</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIKeyInputEscape")]
 		NSString Escape { get; }
 
@@ -8051,6 +8493,9 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface UITextRange {
+		/// <summary>Whether this UITextRange is empty.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isEmpty")]
 		bool IsEmpty { get; }
 
@@ -8529,6 +8974,10 @@ namespace UIKit {
 		[NullAllowed]
 		NSDictionary UserInfo { get; set; }
 
+		/// <summary>Developers should not use this deprecated property. Developers should use 'UNNotificationSound.DefaultSound' instead.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'UNNotificationSound.DefaultSound' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'UNNotificationSound.DefaultSound' instead.")]
 		[Field ("UILocalNotificationDefaultSoundName")]
@@ -8653,6 +9102,9 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIControl))]
 	interface UIRefreshControl : UIAppearance {
+		/// <summary>Whether the UIRefreshControl is currently refreshing.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("refreshing")]
 		bool Refreshing { [Bind ("isRefreshing")] get; }
 
@@ -8769,6 +9221,11 @@ namespace UIKit {
 		[Export ("stopAnimating")]
 		void StopAnimating ();
 
+		/// <summary>Returns <see langword="true" /> if the activity is animating, <see langword="false" /> if it is not.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Export ("isAnimating")]
 		bool IsAnimating { get; }
 
@@ -9593,12 +10050,21 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface UIWindowLevel {
+		/// <summary>The normal window group (below alert windows).</summary>
+		///         <value>The value is 0.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIWindowLevelNormal")]
 		nfloat Normal { get; }
 
+		/// <summary>The alert window group. This is the top-most level.</summary>
+		///         <value>The value is 100F.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIWindowLevelAlert")]
 		nfloat Alert { get; }
 
+		/// <summary>The status bar group. This group displays below other groups.</summary>
+		///         <value>The value is 1000.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("UIWindowLevelStatusBar")]
@@ -9639,6 +10105,9 @@ namespace UIKit {
 		[Export ("resignKeyWindow")]
 		void ResignKeyWindow ();
 
+		/// <summary>Whether this UIWindow is the key window for the app.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isKeyWindow")]
 		bool IsKeyWindow { get; }
 
@@ -9679,18 +10148,22 @@ namespace UIKit {
 			set;
 		}
 
+		/// <include file="../docs/api/UIKit/UIWindow.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIWindow.DidBecomeVisibleNotification']/*" />
 		[Field ("UIWindowDidBecomeVisibleNotification")]
 		[Notification]
 		NSString DidBecomeVisibleNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIWindow.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIWindow.DidBecomeHiddenNotification']/*" />
 		[Field ("UIWindowDidBecomeHiddenNotification")]
 		[Notification]
 		NSString DidBecomeHiddenNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIWindow.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIWindow.DidBecomeKeyNotification']/*" />
 		[Field ("UIWindowDidBecomeKeyNotification")]
 		[Notification]
 		NSString DidBecomeKeyNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIWindow.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIWindow.DidResignKeyNotification']/*" />
 		[Field ("UIWindowDidResignKeyNotification")]
 		[Notification]
 		NSString DidResignKeyNotification { get; }
@@ -10338,9 +10811,15 @@ namespace UIKit {
 		[NullAllowed]
 		UIColor HighlightedTextColor { get; set; }
 
+		/// <summary>Whether this UILabel should be drawn with a highlight.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("highlighted")]
 		bool Highlighted { [Bind ("isHighlighted")] get; set; }
 
+		/// <summary>The enabled state to use when drawing this UILabel's Text.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
@@ -10434,6 +10913,10 @@ namespace UIKit {
 		[NullAllowed]
 		UIImage HighlightedImage { get; set; }
 
+		/// <summary>Whether the UIImageView is highlighted.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>This property determines whether the regular or highlighted images are displayed. When Highlighted = true, a non-animated UIImageView will show the <see cref="P:UIKit.UIImageView.HighlightedImage" /> and an animated UIImageView will display the <see cref="P:UIKit.UIImageView.HighlightedAnimationImages" />. If both these properties are null or if <see cref="P:UIKit.UIImageView.Highlighted" /> = false, the <see cref="P:UIKit.UIImageView.Image" /> and <see cref="P:UIKit.UIImageView.AnimationImages" /> properties will be used.</remarks>
 		[Export ("highlighted")]
 		bool Highlighted { [Bind ("isHighlighted")] get; set; }
 
@@ -10457,6 +10940,10 @@ namespace UIKit {
 		[Export ("stopAnimating")]
 		void StopAnimating ();
 
+		/// <summary>Whether the animation is running or not.</summary>
+		///         <value>true if the animation is running, otherwise false.</value>
+		///         <remarks>
+		///         </remarks>
 		[Export ("isAnimating")]
 		bool IsAnimating { get; }
 
@@ -10781,6 +11268,13 @@ namespace UIKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the UIKit.IUIDocumentInteractionControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUIDocumentInteractionControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IUIDocumentInteractionControllerDelegate Delegate { get; set; }
 
@@ -11177,22 +11671,27 @@ namespace UIKit {
 		[Export ("menuItems", ArgumentSemantic.Copy)]
 		UIMenuItem [] MenuItems { get; set; }
 
+		/// <include file="../docs/api/UIKit/UIMenuController.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIMenuController.WillShowMenuNotification']/*" />
 		[Field ("UIMenuControllerWillShowMenuNotification")]
 		[Notification]
 		NSString WillShowMenuNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIMenuController.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIMenuController.DidShowMenuNotification']/*" />
 		[Field ("UIMenuControllerDidShowMenuNotification")]
 		[Notification]
 		NSString DidShowMenuNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIMenuController.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIMenuController.WillHideMenuNotification']/*" />
 		[Field ("UIMenuControllerWillHideMenuNotification")]
 		[Notification]
 		NSString WillHideMenuNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIMenuController.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIMenuController.DidHideMenuNotification']/*" />
 		[Field ("UIMenuControllerDidHideMenuNotification")]
 		[Notification]
 		NSString DidHideMenuNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIMenuController.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIMenuController.MenuFrameDidChangeNotification']/*" />
 		[Field ("UIMenuControllerMenuFrameDidChangeNotification")]
 		[Notification]
 		NSString MenuFrameDidChangeNotification { get; }
@@ -11825,6 +12324,10 @@ namespace UIKit {
 		[Export ("instantiateWithOwner:options:")]
 		NSObject [] Instantiate ([NullAllowed] NSObject ownerOrNil, [NullAllowed] NSDictionary optionsOrNil);
 
+		/// <summary>Represents the value associated with the constant UINibExternalObjects</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UINibExternalObjects")]
 		NSString ExternalObjectsKey { get; }
 	}
@@ -12059,9 +12562,15 @@ namespace UIKit {
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	interface UIPasteboardChangeEventArgs {
+		/// <summary>The types that were added to the <see cref="T:UIKit.UIPasteboard" />.</summary>
+		///         <value>Individual values will be equivalent to <see cref="P:UIKit.UIPasteboard.TypeListColor" />, <see cref="P:UIKit.UIPasteboard.TypeListImage" />, <see cref="P:UIKit.UIPasteboard.TypeListString" />, or <see cref="P:UIKit.UIPasteboard.TypeListURL" />.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("UIPasteboardChangedTypesAddedKey")]
 		string [] TypesAdded { get; }
 
+		/// <summary>The types that were removed from the <see cref="T:UIKit.UIPasteboard" />..</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("UIPasteboardChangedTypesRemovedKey")]
 		string [] TypesRemoved { get; }
 	}
@@ -12324,9 +12833,15 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface UIPasteboardNames {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIPasteboardNameGeneral")]
 		NSString General { get; }
 
+		/// <summary>Developers should not use this deprecated property. The 'Find' pasteboard is no longer available.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 10, 0, message: "The 'Find' pasteboard is no longer available.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "The 'Find' pasteboard is no longer available.")]
 		[Field ("UIPasteboardNameFind")]
@@ -12338,7 +12853,13 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("UIPasteboardOptionKeys")]
 	interface UIPasteboardOptions {
+		/// <summary>Gets or sets the date at which the system will remove the data from the pasteboard.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSDate ExpirationDate { get; set; }
+		/// <summary>Gets or sets whether the pasteboard items should not be shareable via Handoff.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool LocalOnly { get; set; }
 	}
 
@@ -12346,9 +12867,15 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface UIPasteboardOptionKeys {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIPasteboardOptionExpirationDate")]
 		NSString ExpirationDateKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIPasteboardOptionLocalOnly")]
 		NSString LocalOnlyKey { get; }
 	}
@@ -12373,6 +12900,12 @@ namespace UIKit {
 		[Export ("dataSource", ArgumentSemantic.Assign)]
 		NSObject WeakDataSource { get; set; }
 
+		/// <summary>The UIPickerViewDataSource that provides elements to this UIPickerView.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Wrap ("WeakDataSource")]
 		IUIPickerViewDataSource DataSource { get; set; }
@@ -12387,6 +12920,13 @@ namespace UIKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the UIKit.IUIPickerViewDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUIPickerViewDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IUIPickerViewDelegate Delegate { get; set; }
 
@@ -12600,6 +13140,13 @@ namespace UIKit {
 		[Export ("delegate", ArgumentSemantic.UnsafeUnretained), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the UIKit.IUIAdaptivePresentationControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUIAdaptivePresentationControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IUIAdaptivePresentationControllerDelegate Delegate { get; set; }
 
@@ -13183,18 +13730,22 @@ namespace UIKit {
 		[Export ("overscanCompensation")]
 		UIScreenOverscanCompensation OverscanCompensation { get; set; }
 
+		/// <include file="../docs/api/UIKit/UIScreen.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIScreen.BrightnessDidChangeNotification']/*" />
 		[Field ("UIScreenBrightnessDidChangeNotification")]
 		[Notification]
 		NSString BrightnessDidChangeNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIScreen.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIScreen.ModeDidChangeNotification']/*" />
 		[Field ("UIScreenModeDidChangeNotification")]
 		[Notification]
 		NSString ModeDidChangeNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIScreen.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIScreen.DidDisconnectNotification']/*" />
 		[Field ("UIScreenDidDisconnectNotification")]
 		[Notification]
 		NSString DidDisconnectNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIScreen.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIScreen.DidConnectNotification']/*" />
 		[Field ("UIScreenDidConnectNotification")]
 		[Notification]
 		NSString DidConnectNotification { get; }
@@ -13204,6 +13755,7 @@ namespace UIKit {
 		[Field ("UIScreenReferenceDisplayModeStatusDidChangeNotification")]
 		NSString ReferenceDisplayModeStatusDidChangeNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIScreen.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIScreen.CapturedDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("UIScreenCapturedDidChangeNotification")]
 		[Notification]
@@ -13254,6 +13806,9 @@ namespace UIKit {
 		[NullAllowed, Export ("focusedItem", ArgumentSemantic.Weak)]
 		IUIFocusItem FocusedItem { get; }
 
+		/// <summary>Gets a Boolean value that tells whether a part of the screen is being captured, mirrored, or transmitted via AriPlay.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 17, 2, message: "Use 'UITraitCollection.SceneCaptureState' property instead.")]
 		[Deprecated (PlatformName.TvOS, 17, 2, message: "Use 'UITraitCollection.SceneCaptureState' property instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 17, 2, message: "Use 'UITraitCollection.SceneCaptureState' property instead.")]
@@ -13324,6 +13879,13 @@ namespace UIKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the UIKit.IUIScrollViewDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUIScrollViewDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IUIScrollViewDelegate Delegate { get; set; }
 
@@ -13379,14 +13941,23 @@ namespace UIKit {
 		[Export ("indexDisplayMode")]
 		UIScrollViewIndexDisplayMode IndexDisplayMode { get; set; }
 
+		/// <include file="../docs/api/UIKit/UIScrollView.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIScrollView.PagingEnabled']/*" />
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("pagingEnabled")]
 		bool PagingEnabled { [Bind ("isPagingEnabled")] get; set; }
 
+		/// <summary>If <see langword="true" />, and the user begins scrolling in one axis (i.e. horizontally) then the scroll view disables scrolling in the other axis (i.e. vertically).</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>If this property is <see langword="false" />, then scrolling is permitted both horizontally and vertically.</remarks>
 		[Export ("directionalLockEnabled")]
 		bool DirectionalLockEnabled { [Bind ("isDirectionalLockEnabled")] get; set; }
 
+		/// <summary>If set to <see langword="true" /> then scrolling is enabled.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>If <see langword="false" />, then touch events will not be processed by the scroll view. They continue to be forwarded up the responder chain.</remarks>
 		[Export ("scrollEnabled")]
 		bool ScrollEnabled { [Bind ("isScrollEnabled")] get; set; }
 
@@ -13398,12 +13969,27 @@ namespace UIKit {
 		[Export ("transfersVerticalScrollingToParent")]
 		bool TransfersVerticalScrollingToParent { get; set; }
 
+		/// <summary>Returns <see langword="true" /> if the user has touched the content and scrolling is about to begin.</summary>
+		///         <value>
+		///           <see langword="true" /> while tracking is active, otherwise <see langword="false" />.
+		///                 </value>
+		///         <remarks>
+		///         </remarks>
 		[Export ("tracking")]
 		bool Tracking { [Bind ("isTracking")] get; }
 
+		/// <summary>Returns <see langword="true" /> if the content has begun scrolling. Read-only.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>This property can not be depended upon to be updated immediately after the scrolling has started.</remarks>
 		[Export ("dragging")]
 		bool Dragging { [Bind ("isDragging")] get; }
 
+		/// <summary>If this property returns <see langword="true" />, then scrolling is still occuring in the scroll view but the user is not dragging their finger.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Export ("decelerating")]
 		bool Decelerating { [Bind ("isDecelerating")] get; }
 
@@ -13454,9 +14040,19 @@ namespace UIKit {
 		[Export ("bouncesZoom")]
 		bool BouncesZoom { get; set; }
 
+		/// <summary>Returns <see langword="true" /> if the content view is zooming in or out. Read-only.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Export ("zooming")]
 		bool Zooming { [Bind ("isZooming")] get; }
 
+		/// <summary>Returns <see langword="true" /> if the scroll view is bouncing back to the zoom scaling limits specified by<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIScroll%20View%20Minimum%20Scroll%20View&amp;scope=Xamarin" title="P:UIKit.UIScrollView.MinimumScrollView">P:UIKit.UIScrollView.MinimumScrollView</a></format> and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIScroll%20View%20Maximum%20Scroll%20View&amp;scope=Xamarin" title="P:UIKit.UIScrollView.MaximumScrollView">P:UIKit.UIScrollView.MaximumScrollView</a></format>. Read-only.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Export ("zoomBouncing")]
 		bool ZoomBouncing { [Bind ("isZoomBouncing")] get; }
 
@@ -13481,9 +14077,19 @@ namespace UIKit {
 		[Export ("pinchGestureRecognizer")]
 		UIPinchGestureRecognizer PinchGestureRecognizer { get; }
 
+		/// <summary>Represents the value associated with the constant UIScrollViewDecelerationRateNormal</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("UIScrollViewDecelerationRateNormal")]
 		nfloat DecelerationRateNormal { get; }
 
+		/// <summary>Represents the value associated with the constant UIScrollViewDecelerationRateFast</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("UIScrollViewDecelerationRateFast")]
 		nfloat DecelerationRateFast { get; }
 
@@ -13597,6 +14203,13 @@ namespace UIKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the UIKit.IUISearchBarDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUISearchBarDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IUISearchBarDelegate Delegate { get; set; }
 
@@ -13637,6 +14250,9 @@ namespace UIKit {
 		[Export ("scopeButtonTitles", ArgumentSemantic.Copy)]
 		string [] ScopeButtonTitles { get; set; }
 
+		/// <summary>True if the search bar is translucent.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("translucent", ArgumentSemantic.Assign)]
 		bool Translucent { [Bind ("isTranslucent")] get; set; }
 
@@ -13646,6 +14262,9 @@ namespace UIKit {
 		void SetShowsCancelButton (bool showsCancelButton, bool animated);
 
 		// 3.2
+		/// <summary>Whether the search results button is selected.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("searchResultsButtonSelected")]
@@ -13851,15 +14470,31 @@ namespace UIKit {
 		[Export ("searchResultsUpdater", ArgumentSemantic.UnsafeUnretained)]
 		NSObject WeakSearchResultsUpdater { get; set; }
 
+		/// <summary>Gets or sets the <see cref="T:UIKit.UISearchResultsUpdating" /> object that updates the contents of the <see cref="T:UIKit.UIViewController" />.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakSearchResultsUpdater")]
 		IUISearchResultsUpdating SearchResultsUpdater { get; set; }
 
+		/// <summary>Gets or sets whether to display the search interface by default. The default is <see langword="true" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("active", ArgumentSemantic.UnsafeUnretained)]
 		bool Active { [Bind ("isActive")] get; set; }
 
 		[Export ("delegate", ArgumentSemantic.UnsafeUnretained), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the UIKit.IUISearchControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUISearchControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IUISearchControllerDelegate Delegate { get; set; }
 
@@ -13979,9 +14614,19 @@ namespace UIKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the UIKit.IUISearchDisplayDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUISearchDisplayDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IUISearchDisplayDelegate Delegate { get; set; }
 
+		/// <summary>Whether the search interface is visible.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("active")]
 		bool Active { [Bind ("isActive")] get; set; }
 
@@ -14001,6 +14646,9 @@ namespace UIKit {
 		[NullAllowed]
 		NSObject SearchResultsWeakDataSource { get; set; }
 
+		/// <summary>The UITableViewDataSource holding the search results.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("SearchResultsWeakDataSource")]
 		IUITableViewDataSource SearchResultsDataSource { get; set; }
 
@@ -14008,6 +14656,9 @@ namespace UIKit {
 		[NullAllowed]
 		NSObject SearchResultsWeakDelegate { get; set; }
 
+		/// <summary>The delegate object for events relating to the search results table view.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("SearchResultsWeakDelegate")]
 		IUITableViewDelegate SearchResultsDelegate { get; set; }
 
@@ -14165,6 +14816,10 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "The 'SegmentedControlStyle' property no longer has any effect.")]
 		UISegmentedControlStyle ControlStyle { get; set; }
 
+		/// <summary>Determines if segments show the selected state.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>Default is false, which means the segments will show their selected state.</remarks>
 		[Export ("momentary")]
 		bool Momentary { [Bind ("isMomentary")] get; set; }
 
@@ -14302,6 +14957,11 @@ namespace UIKit {
 		[NullAllowed]
 		UIImage MaxValueImage { get; set; }
 
+		/// <summary>If set to <see langword="true" /> then update events are continuously sent as the slider is updated. If set to <see langword="false" />, then an update event is only sent when the slider is finally updated</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Export ("continuous")]
 		bool Continuous { [Bind ("isContinuous")] get; set; }
 
@@ -14384,66 +15044,150 @@ namespace UIKit {
 
 	[Static]
 	interface UIStringAttributeKey {
+		/// <summary>Represents the value associated with the constant NSFontAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontAttributeName")]
 		NSString Font { get; }
 
+		/// <summary>Represents the value associated with the constant NSForegroundColorAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSForegroundColorAttributeName")]
 		NSString ForegroundColor { get; }
 
+		/// <summary>Represents the value associated with the constant NSBackgroundColorAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSBackgroundColorAttributeName")]
 		NSString BackgroundColor { get; }
 
+		/// <summary>Represents the value associated with the constant NSStrokeColorAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSStrokeColorAttributeName")]
 		NSString StrokeColor { get; }
 
+		/// <summary>Represents the value associated with the constant NSStrikethroughStyleAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSStrikethroughStyleAttributeName")]
 		NSString StrikethroughStyle { get; }
 
+		/// <summary>Represents the value associated with the constant NSShadowAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSShadowAttributeName")]
 		NSString Shadow { get; }
 
+		/// <summary>Represents the value associated with the constant NSParagraphStyleAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSParagraphStyleAttributeName")]
 		NSString ParagraphStyle { get; }
 
+		/// <summary>Represents the value associated with the constant NSLigatureAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSLigatureAttributeName")]
 		NSString Ligature { get; }
 
+		/// <summary>Represents the value associated with the constant NSKernAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSKernAttributeName")]
 		NSString KerningAdjustment { get; }
 
+		/// <summary>Represents the value associated with the constant NSUnderlineStyleAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSUnderlineStyleAttributeName")]
 		NSString UnderlineStyle { get; }
 
+		/// <summary>Represents the value associated with the constant NSStrokeWidthAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSStrokeWidthAttributeName")]
 		NSString StrokeWidth { get; }
 
+		/// <summary>Represents the value associated with the constant NSVerticalGlyphFormAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSVerticalGlyphFormAttributeName")]
 		NSString VerticalGlyphForm { get; }
 
+		/// <summary>Represents the value associated with the constant NSTextEffectAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextEffectAttributeName")]
 		NSString TextEffect { get; }
 
+		/// <summary>Represents the value associated with the constant NSAttachmentAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAttachmentAttributeName")]
 		NSString Attachment { get; }
 
+		/// <summary>Represents the value associated with the constant NSLinkAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSLinkAttributeName")]
 		NSString Link { get; }
 
+		/// <summary>Represents the value associated with the constant NSBaselineOffsetAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSBaselineOffsetAttributeName")]
 		NSString BaselineOffset { get; }
 
+		/// <summary>Represents the value associated with the constant NSUnderlineColorAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSUnderlineColorAttributeName")]
 		NSString UnderlineColor { get; }
 
+		/// <summary>Represents the value associated with the constant NSStrikethroughColorAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSStrikethroughColorAttributeName")]
 		NSString StrikethroughColor { get; }
 
+		/// <summary>Represents the value associated with the constant NSObliquenessAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSObliquenessAttributeName")]
 		NSString Obliqueness { get; }
 
+		/// <summary>Represents the value associated with the constant NSExpansionAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSExpansionAttributeName")]
 		NSString Expansion { get; }
 
+		/// <summary>Represents the value associated with the constant NSWritingDirectionAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWritingDirectionAttributeName")]
 		NSString WritingDirection { get; }
 
@@ -14503,6 +15247,10 @@ namespace UIKit {
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
+		/// <summary>This property returns if the state of the switch is on or off.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>Setting the property changes the state of the switch without an animation.</remarks>
 		[Export ("on")]
 		bool On { [Bind ("isOn")] get; set; }
 
@@ -14561,6 +15309,13 @@ namespace UIKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the UIKit.IUITabBarDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUITabBarDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IUITabBarDelegate Delegate { get; set; }
@@ -14587,6 +15342,9 @@ namespace UIKit {
 		[Export ("endCustomizingAnimated:")]
 		bool EndCustomizing (bool animated);
 
+		/// <summary>Whether the user is currently customizing the UITabBar.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("isCustomizing")]
@@ -14641,6 +15399,9 @@ namespace UIKit {
 		[Export ("barStyle")]
 		UIBarStyle BarStyle { get; set; }
 
+		/// <summary>Whether this UITabBar is translucent or not.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("translucent")]
 		bool Translucent { [Bind ("isTranslucent")] get; set; }
 
@@ -14711,6 +15472,13 @@ namespace UIKit {
 		[Export ("tabBar")]
 		UITabBar TabBar { get; }
 
+		/// <summary>An instance of the UIKit.IUITabBarControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUITabBarControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IUITabBarControllerDelegate Delegate { get; set; }
 
@@ -14896,6 +15664,9 @@ namespace UIKit {
 		, UISpringLoadedInteractionSupporting, UIPopoverPresentationControllerSourceItem
 #endif
 	{
+		/// <summary>Text displayed in the upper-right corner of the item, surrounded by a red oval.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		[Override]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
@@ -15024,6 +15795,15 @@ namespace UIKit {
 		[NullAllowed]
 		NSObject WeakDataSource { get; set; }
 
+		/// <summary>The object that acts as the data source for the table view.</summary>
+		///         <value>
+		///           <para>
+		///           </para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>
+		///           <para>The data source must subclass <see cref="T:UIKit.UITableViewDataSource" />. MonoTouch provides an alternative to implementing both <see cref="T:UIKit.UITableViewDataSource" /> and <see cref="T:UIKit.UITableViewDelegate" />: the <see cref="T:UIKit.UITableViewSource" /> class which should be assigned to <see cref="P:UIKit.UITableView.Source" />.</para>
+		///         </remarks>
 		[Wrap ("WeakDataSource")]
 		IUITableViewDataSource DataSource { get; set; }
 
@@ -15032,6 +15812,13 @@ namespace UIKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the UIKit.IUITableViewDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUITableViewDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[New]
 		IUITableViewDelegate Delegate { get; set; }
@@ -15126,6 +15913,10 @@ namespace UIKit {
 		[Export ("reconfigureRowsAtIndexPaths:")]
 		void ReconfigureRows (NSIndexPath [] indexPaths);
 
+		/// <summary>Whether the table view is in editing mode.</summary>
+		///         <value>
+		///           <see langword="true" /> if the table is currently in editing mode, <see langword="false" /> if not. The default is <see langword="false" />.</value>
+		///         <remarks>When this property is <see langword="true" />, the table view is in editing mode: cells may show an insertion or deletion control on their left side and a reordering control on the right (depending on how the cell is configured). Tapping a control causes the table view to invoke the <see cref="T:UIKit.UITableViewSource" /> method <see cref="M:UIKit.UITableViewSource.CommitEditingStyle(UIKit.UITableView,UIKit.UITableViewCellEditingStyle,Foundation.NSIndexPath)" />.</remarks>
 		[Export ("editing")]
 		bool Editing { [Bind ("isEditing")] get; set; }
 
@@ -15182,11 +15973,20 @@ namespace UIKit {
 		[Export ("backgroundView", ArgumentSemantic.Retain), NullAllowed]
 		UIView BackgroundView { get; set; }
 
+		/// <summary>Represents the value associated with the constant <c>UITableViewIndexSearch</c></summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
+		///         <altmember cref="M:UIKit.UITableViewSource.SectionIndexTitles" />
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("UITableViewIndexSearch")]
 		NSString IndexSearch { get; }
 
+		/// <summary>Represents the value associated with the constant UITableViewAutomaticDimension</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>Return this value from <see cref="T:UIKit.UITableViewSource" /> (or <see cref="T:UIKit.UITableViewDelegate" />) methods that request dimension metrics when you want the UITableView to use a default value. For example, return this constant from <see cref="M:UIKit.UITableViewSource.GetHeightForHeader(UIKit.UITableView,System.nint)" /> or <see cref="M:UIKit.UITableViewSource.GetHeightForFooter(UIKit.UITableView,System.nint)" /> and the table view will use automatically use a height that accomodates the value returned from <see cref="M:UIKit.UITableViewSource.TitleForHeader(UIKit.UITableView,System.nint)" /> or <see cref="M:UIKit.UITableViewSource.TitleForFooter(UIKit.UITableView,System.nint)" /> respectively.</remarks>
 		[Field ("UITableViewAutomaticDimension")]
 		nfloat AutomaticDimension { get; }
 
@@ -15209,6 +16009,7 @@ namespace UIKit {
 		[Export ("registerNib:forCellReuseIdentifier:")]
 		void RegisterNibForCellReuse ([NullAllowed] UINib nib, NSString reuseIdentifier);
 
+		/// <include file="../docs/api/UIKit/UITableView.xml" path="/Documentation/Docs[@DocId='P:UIKit.UITableView.SelectionDidChangeNotification']/*" />
 		[Field ("UITableViewSelectionDidChangeNotification")]
 		[Notification]
 		NSString SelectionDidChangeNotification { get; }
@@ -15749,9 +16550,16 @@ namespace UIKit {
 		[Export ("selectionStyle")]
 		UITableViewCellSelectionStyle SelectionStyle { get; set; }
 
+		/// <summary>Whether the cell is selected.</summary>
+		///         <value>Default value is <see langword="false" />.</value>
+		///         <remarks>
+		///           <para>Selection affects the appearance of labels, image and background. When the Selected property is set to <see langword="true" />, the labels are drawn in white and the background is set to the <see cref="P:UIKit.UITableViewCell.SelectedBackgroundView" /> (if set).</para>
+		///           <para>When this property is set to <see langword="true" />, the transition to the new appearance is not animated. Use the <see cref="M:UIKit.UITableViewCell.SetSelected(System.Boolean,System.Boolean)" /> method for animated selection-state transitions.</para>
+		///         </remarks>
 		[Export ("selected")]
 		bool Selected { [Bind ("isSelected")] get; set; }
 
+		/// <include file="../docs/api/UIKit/UITableViewCell.xml" path="/Documentation/Docs[@DocId='P:UIKit.UITableViewCell.Highlighted']/*" />
 		[Export ("highlighted")]
 		bool Highlighted { [Bind ("isHighlighted")] get; set; }
 
@@ -15790,6 +16598,10 @@ namespace UIKit {
 		[Export ("indentationWidth")]
 		nfloat IndentationWidth { get; set; }
 
+		/// <summary>Whether the cell is in an editable state.</summary>
+		///         <value>
+		///           <see langword="true" /> if the cell is in the editing state, <see langword="false" /> if the cell is in the normal state.</value>
+		///         <remarks>In the editing state, a cell displays the editing controls specified for it: the green insertion control or the red deletion control on the left, and/or the reordering control on the right. Use <see cref="P:UIKit.UITableViewCell.EditingStyle" /> and <see cref="P:UIKit.UITableViewCell.ShowsReorderControl" /> to specify which controls appear in the cell.</remarks>
 		[Export ("editing")]
 		bool Editing { [Bind ("isEditing")] get; set; }
 
@@ -16302,6 +17114,13 @@ namespace UIKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the UIKit.IUITextFieldDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUITextFieldDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IUITextFieldDelegate Delegate { get; set; }
 
@@ -16313,6 +17132,11 @@ namespace UIKit {
 		[NullAllowed]
 		UIImage DisabledBackground { get; set; }
 
+		/// <summary>A value that indicates if the user is editing the text in the view. Read-only.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <see langword="true" /> if the text is being edited, otherwise <see langword="false" />.</remarks>
 		[Export ("isEditing")]
 		bool IsEditing { get; }
 
@@ -16372,18 +17196,24 @@ namespace UIKit {
 		[NullAllowed]
 		UIView InputView { get; set; }
 
+		/// <include file="../docs/api/UIKit/UITextField.xml" path="/Documentation/Docs[@DocId='P:UIKit.UITextField.TextDidBeginEditingNotification']/*" />
 		[Field ("UITextFieldTextDidBeginEditingNotification")]
 		[Notification]
 		NSString TextDidBeginEditingNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UITextField.xml" path="/Documentation/Docs[@DocId='P:UIKit.UITextField.TextDidEndEditingNotification']/*" />
 		[Field ("UITextFieldTextDidEndEditingNotification")]
 		[Notification]
 		NSString TextDidEndEditingNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UITextField.xml" path="/Documentation/Docs[@DocId='P:UIKit.UITextField.TextFieldTextDidChangeNotification']/*" />
 		[Field ("UITextFieldTextDidChangeNotification")]
 		[Notification]
 		NSString TextFieldTextDidChangeNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UITextFieldDidEndEditingReasonKey")]
 		NSString DidEndEditingReasonKey { get; }
@@ -16495,6 +17325,20 @@ namespace UIKit {
 		[Export ("textColor", ArgumentSemantic.Retain)]
 		UIColor TextColor { get; set; }
 
+		/// <summary>This property determines if the text view is editable or not.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
+		///         <altmember cref="P:UIKit.UITextView.AllowsEditingTextAttributes" />
+		///         <altmember cref="P:UIKit.UITextView.AttributedText" />
+		///         <altmember cref="P:UIKit.UITextView.DataDetectorTypes" />
+		///         <altmember cref="P:UIKit.UITextView.Font" />
+		///         <altmember cref="P:UIKit.UITextView.Text" />
+		///         <altmember cref="P:UIKit.UITextView.TextAlignment" />
+		///         <altmember cref="P:UIKit.UITextView.TextContainerInsert" />
+		///         <altmember cref="P:UIKit.UITextView.TextColor" />
+		///         <altmember cref="P:UIKit.UITextView.TypingAttributes" />
 		[Export ("editable")]
 		[NoTV]
 		[MacCatalyst (13, 1)]
@@ -16509,6 +17353,13 @@ namespace UIKit {
 		[Export ("scrollRangeToVisible:")]
 		void ScrollRangeToVisible (NSRange range);
 
+		/// <summary>An instance of the UIKit.IUITextViewDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUITextViewDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[New]
 		IUITextViewDelegate Delegate { get; set; }
@@ -16534,14 +17385,17 @@ namespace UIKit {
 		[NullAllowed]
 		UIView InputView { get; set; }
 
+		/// <include file="../docs/api/UIKit/UITextView.xml" path="/Documentation/Docs[@DocId='P:UIKit.UITextView.TextDidBeginEditingNotification']/*" />
 		[Field ("UITextViewTextDidBeginEditingNotification")]
 		[Notification]
 		NSString TextDidBeginEditingNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UITextView.xml" path="/Documentation/Docs[@DocId='P:UIKit.UITextView.TextDidChangeNotification']/*" />
 		[Field ("UITextViewTextDidChangeNotification")]
 		[Notification]
 		NSString TextDidChangeNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UITextView.xml" path="/Documentation/Docs[@DocId='P:UIKit.UITextView.TextDidEndEditingNotification']/*" />
 		[Field ("UITextViewTextDidEndEditingNotification")]
 		[Notification]
 		NSString TextDidEndEditingNotification { get; }
@@ -16589,6 +17443,12 @@ namespace UIKit {
 		}
 #endif // XAMCORE_6_0
 
+		/// <summary>Whether the application user can select content and interact with links and text attachments.</summary>
+		///         <value>The default value is <see langword="true" />.</value>
+		///         <remarks>To be added.</remarks>
+		///         <altmember cref="P:UIKit.UITextView.ClearsOnInsertion" />
+		///         <altmember cref="M:UIKit.UITextView.ScrollRangeToVisible" />
+		///         <altmember cref="P:UIKit.UITextView.SelectedRange" />
 		[Export ("selectable")]
 		bool Selectable { [Bind ("isSelectable")] get; set; }
 
@@ -16820,6 +17680,10 @@ namespace UIKit {
 		[NullAllowed]
 		UIBarButtonItem [] Items { get; set; }
 
+		/// <summary>If <see langword="true" />, then the toolbar is translucent.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>Translucency is primarily intended for landscape orientation.</remarks>
 		[Appearance]
 		[Export ("translucent", ArgumentSemantic.Assign)]
 		bool Translucent { [Bind ("isTranslucent")] get; set; }
@@ -16874,6 +17738,13 @@ namespace UIKit {
 		[NullAllowed, Export ("compactScrollEdgeAppearance", ArgumentSemantic.Copy)]
 		UIToolbarAppearance CompactScrollEdgeAppearance { get; set; }
 
+		/// <summary>An instance of the UIKit.IUIToolbarDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUIToolbarDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IUIToolbarDelegate Delegate { get; set; }
 	}
@@ -17022,6 +17893,13 @@ namespace UIKit {
 		[Static]
 		bool CanEditVideoAtPath (string path);
 
+		/// <summary>An instance of the UIKit.IUIVideoEditorControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUIVideoEditorControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		// id<UINavigationControllerDelegate, UIVideoEditorControllerDelegate>
 		IUIVideoEditorControllerDelegate Delegate { get; set; }
@@ -17096,6 +17974,23 @@ namespace UIKit {
 		[Export ("bounds")]
 		new CGRect Bounds { get; set; }
 
+		/// <summary>Determines whether input events are processed by this view.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para>
+		///             This property is used to control whether input events are
+		///             delivered to the view.  By default all views receive
+		///             events.  
+		///
+		///           </para>
+		///           <para>
+		///             During animations, UIKit will disable event delivery to
+		///             your view unless you pass the <see cref="T:UIKit.UIViewAnimationOptions" />.AllowUserInteraction
+		///             flag to your animation function.
+		///
+		///           </para>
+		///         </remarks>
 		[Export ("userInteractionEnabled")]
 		bool UserInteractionEnabled { [Bind ("isUserInteractionEnabled")] get; set; }
 
@@ -17115,11 +18010,37 @@ namespace UIKit {
 		[Export ("transform")]
 		new CGAffineTransform Transform { get; set; }
 
+		/// <summary>Controls whether the UIView can handle multitouch events.</summary>
+		///         <value>State of multiple touch recotgnition.</value>
+		///         <remarks>
+		///           UIViews by default only handle a single touch event at once.  If you
+		///           want your view to handle multiple touches, you must set this property
+		///           to true.
+		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("multipleTouchEnabled")]
 		bool MultipleTouchEnabled { [Bind ("isMultipleTouchEnabled")] get; set; }
 
+		/// <summary>Restricts the event delivery to this view.</summary>
+		///         <value>The default value is false.</value>
+		///         <remarks>
+		///           <para>
+		///             When this property is set, if this view starts tracking a
+		///             touch, no other views in the window will receive these
+		///             events.  Additionally, a view that has set this property
+		///             to true wont receive any events that are associated with
+		///             other views in the window.
+		///           </para>
+		///           <para>
+		///             If a finger touches a view that hast this property set,
+		///             the event is only delivered if no other view in the window
+		///             is tracking a finger.  If a finger touches a non-exclusive
+		///             window, the event is only delivered if there are no
+		///             exclusive views tracking a finger.
+		///
+		///           </para>
+		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("exclusiveTouch")]
@@ -17238,12 +18159,34 @@ namespace UIKit {
 		[Export ("alpha")]
 		nfloat Alpha { get; set; }
 
+		/// <summary>Determines whether the view is opaque or not.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para>
+		///             If you set this value to true, you should make sure that
+		///             the entire area is painted, if you do not, the behavior is
+		///             undefined.  You should also set the <see cref="P:UIKit.UIView.Alpha" /> property to 1.0.
+		///
+		///           </para>
+		///           <para>
+		///             Whenever possible, you should try to set the view as
+		///             opaque, as that informs UIKit that the view does not need
+		///             to be composited and blended with underlying views.
+		///           </para>
+		///         </remarks>
 		[Export ("opaque")]
 		bool Opaque { [Bind ("isOpaque")] get; set; }
 
 		[Export ("clearsContextBeforeDrawing")]
 		bool ClearsContextBeforeDrawing { get; set; }
 
+		/// <summary>Specifies whether the <see cref="T:UIKit.UIView" /> displays or not.</summary>
+		///         <value>The default value is <see langword="false" />.</value>
+		///         <remarks>
+		///           <para>A hidden <see cref="T:UIKit.UIView" /> does not display and does not receive input events. It does, however, participate in resizing and layout events and remains in its <see cref="P:UIKit.UIView.Superview" />'s list of <see cref="P:UIKit.UIView.Subviews" />s.</para>
+		///           <para>A hidden <see cref="T:UIKit.UIView" /> hides its descendant views in addition to hiding itself. This does not affect the <see cref="P:UIKit.UIView.Hidden" /> property of the descendant views. Thus, a <see cref="T:UIKit.UIView" /> may be hidden even though its <see cref="P:UIKit.UIView.Hidden" /> property is <see langword="false" />.</para>
+		///         </remarks>
 		[Export ("hidden")]
 		bool Hidden { [Bind ("isHidden")] get; set; }
 
@@ -17503,12 +18446,28 @@ namespace UIKit {
 		[RequiresSuper]
 		void UpdateConstraints ();
 
+		/// <summary>Represents the value associated with the constant UIViewNoIntrinsicMetric</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para>This property is associated with the <see cref="P:UIKit.UIView.IntrinsicContentSize" /> method. This value indicates that the <see cref="T:UIKit.UIView" /> has no natural size in a particular dimension.</para>
+		///         </remarks>
 		[Field ("UIViewNoIntrinsicMetric")]
 		nfloat NoIntrinsicMetric { get; }
 
+		/// <summary>Represents the value associated with the constant UILayoutFittingCompressedSize</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>Indicates that <see cref="M:UIKit.UIView.SystemLayoutSizeFittingSize(CoreGraphics.CGSize,System.Single,System.Single)" /> should calculate the smallest possible size.</remarks>
+		///         <altmember cref="M:UIKit.UIView.SystemLayoutSizeFittingSize" />
 		[Field ("UILayoutFittingCompressedSize")]
 		CGSize UILayoutFittingCompressedSize { get; }
 
+		/// <summary>Represents the value associated with the constant UILayoutFittingExpandedSize</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>Indicates that <see cref="M:UIKit.UIView.SystemLayoutSizeFittingSize(CoreGraphics.CGSize,System.Single,System.Single)" /> should calculate the largest possible size.</remarks>
+		///         <altmember cref="M:UIKit.UIView.SystemLayoutSizeFittingSize" />
 		[Field ("UILayoutFittingExpandedSize")]
 		CGSize UILayoutFittingExpandedSize { get; }
 
@@ -17709,6 +18668,9 @@ namespace UIKit {
 		[Export ("removeLayoutGuide:")]
 		void RemoveLayoutGuide (UILayoutGuide guide);
 
+		/// <summary>Whether the <see cref="T:UIKit.UIView" /> is the focused view.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("focused")]
 		bool Focused { [Bind ("isFocused")] get; }
@@ -17883,6 +18845,16 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		void ViewDidUnload ();
 
+		/// <summary>A <see cref="T:System.Boolean" /> indicating whether the <see cref="P:UIKit.UIViewController.View" /> is loaded into memory.</summary>
+		///         <value>
+		///           <see langword="true" /> if the <see cref="P:UIKit.UIViewController.View" /> is currently loaded into memory.</value>
+		///         <remarks>
+		///           <para>
+		///             The <see cref="P:UIKit.UIViewController.View" /> property may be lazily loaded into memory when accessed. This function may be used to determine if that loading has already taken place. 
+		///           </para>
+		///         </remarks>
+		///         <altmember cref="P:UIKit.UIViewController.View" />
+		///         <altmember cref="M:UIKit.UIViewController.LoadView" />
 		[Export ("isViewLoaded")]
 		bool IsViewLoaded { get; }
 
@@ -18024,6 +18996,16 @@ namespace UIKit {
 		void WillAnimateSecondHalfOfRotation (UIInterfaceOrientation fromInterfaceOrientation, double duration);
 
 		// These come from @interface UIViewController (UIViewControllerEditing)
+		/// <summary>
+		///           <see langword="true" /> if the <see cref="T:UIKit.UIViewController" /> allows the application user to edit the <see cref="T:UIKit.UIView" /> contents.</summary>
+		///         <value>
+		///           <see langword="true" /> if in editing mode, <see langword="false" /> otherwise.</value>
+		///         <remarks>
+		///           <para>
+		///             If the application developer wishes to allow editing in the <see cref="T:UIKit.UIViewController" />, they should set this value to <see langword="true" />. If the <see cref="T:UIKit.UIBarButtonItem" /> retrieved by the <see cref="P:UIKit.UIViewController.EditButtonItem" /> is visible in the <see cref="T:UIKit.UINavigationBar" />, that button’s <see cref="P:UIKit.UIBarItem.Title" /> will reflect this value.
+		///           </para>
+		///         </remarks>
+		///         <altmember cref="P:UIKit.UIViewController.EditButtonItem" />
 		[Export ("editing")]
 		bool Editing { [Bind ("isEditing")] get; set; }
 
@@ -18111,6 +19093,10 @@ namespace UIKit {
 		CGSize ContentSizeForViewInPopover { get; set; }
 
 		// This is defined in a category in UIPopoverSupport.h: UIViewController (UIPopoverController)
+		/// <summary>
+		///           <see langword="true" /> if this <see cref="T:UIKit.UIViewController" /> should be presented modally by a <see cref="T:UIKit.UIPopoverController" />.</summary>
+		///         <value>The default value is <see langword="false" />.</value>
+		///         <remarks>Application developers should set this property to <see langword="true" /> if this <see cref="T:UIKit.UIViewController" /> is intended to be presented modally by a <see cref="T:UIKit.UIPopoverController" />. Setting this property to <see langword="true" /> disallows actions outside this <see cref="T:UIKit.UIViewController" /> when it is displayed.</remarks>
 		[Export ("modalInPopover")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'ModalInPresentation' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'ModalInPresentation' instead.")]
@@ -18158,15 +19144,27 @@ namespace UIKit {
 		[Export ("viewDidLayoutSubviews")]
 		void ViewDidLayoutSubviews ();
 
+		/// <include file="../docs/api/UIKit/UIViewController.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIViewController.IsBeingPresented']/*" />
 		[Export ("isBeingPresented")]
 		bool IsBeingPresented { get; }
 
+		/// <summary>
+		///           <see langword="true" /> if the current <see cref="T:UIKit.UIViewController" /> is in the process of being dismissed.</summary>
+		///         <value>
+		///           <see langword="true" /> only if called during the execution of <see cref="M:UIKit.UIViewController.ViewWillDisappear(System.Boolean)" /> or <see cref="M:UIKit.UIViewController.ViewDidDisappear(System.Boolean)" /></value>
+		///         <remarks>
+		///           <para>The dismissal process is bookended by the functions <see cref="M:UIKit.UIViewController.ViewWillDisappear(System.Boolean)" /> and <see cref="M:UIKit.UIViewController.ViewDidDisappear(System.Boolean)" />. While those are executing, this property will return <see langword="true" />, at all other times, it will return <see langword="false" />.</para>
+		///         </remarks>
+		///         <altmember cref="M:UIKit.UIViewController.ViewWillDisappear" />
+		///         <altmember cref="M:UIKit.UIViewController.ViewDidDisappear" />
 		[Export ("isBeingDismissed")]
 		bool IsBeingDismissed { get; }
 
+		/// <include file="../docs/api/UIKit/UIViewController.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIViewController.IsMovingToParentViewController']/*" />
 		[Export ("isMovingToParentViewController")]
 		bool IsMovingToParentViewController { get; }
 
+		/// <include file="../docs/api/UIKit/UIViewController.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIViewController.IsMovingFromParentViewController']/*" />
 		[Export ("isMovingFromParentViewController")]
 		bool IsMovingFromParentViewController { get; }
 
@@ -18359,6 +19357,12 @@ namespace UIKit {
 		[Export ("transitioningDelegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakTransitioningDelegate { get; set; }
 
+		/// <summary>A delegate object that is responsible for producing <see cref="T:UIKit.IUIViewControllerAnimatedTransitioning" />s for custom presentation.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakTransitioningDelegate")]
 		IUIViewControllerTransitioningDelegate TransitioningDelegate { get; set; }
 
@@ -18447,6 +19451,7 @@ namespace UIKit {
 		[NullAllowed, Export ("sheetPresentationController")]
 		UISheetPresentationController SheetPresentationController { get; }
 
+		/// <include file="../docs/api/UIKit/UIViewController.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIViewController.ShowDetailTargetDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("UIViewControllerShowDetailTargetDidChangeNotification")]
 		[Notification]
@@ -18502,6 +19507,11 @@ namespace UIKit {
 		[Export ("previewActionItems")]
 		IUIPreviewActionItem [] PreviewActionItems { get; }
 
+		/// <summary>Constant used to identify broken <see cref="T:UIKit.UIViewController" /> hierarchies.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>This identifier is used to identify the exception thrown when a <see cref="T:UIKit.UIView" /> is added to the <see cref="T:UIKit.UIView" /> hierarchy, but that <see cref="T:UIKit.UIView" />'s <see cref="T:UIKit.UIViewController" /> is not part of the <see cref="T:UIKit.UIViewController" /> hierarchy. In other words, the <see cref="T:UIKit.UIView" /> hierarchy and <see cref="T:UIKit.UIViewController" /> hierarchy must be consistent.</para>
+		///         </remarks>
 		[Field ("UIViewControllerHierarchyInconsistencyException")]
 		NSString HierarchyInconsistencyException { get; }
 
@@ -18690,10 +19700,16 @@ namespace UIKit {
 		[Export ("containerView")]
 		UIView ContainerView { get; }
 
+		/// <summary>Whether the transition is animated.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("isAnimated")]
 		bool IsAnimated { get; }
 
+		/// <summary>Whether the transition is interactive.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("isInteractive")]
 		bool IsInteractive { get; }
@@ -19092,16 +20108,32 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	partial interface UITransitionContext {
+		/// <summary>Represents the value associated with the constant UITransitionContextFromViewControllerKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITransitionContextFromViewControllerKey")]
 		NSString FromViewControllerKey { get; }
 
+		/// <summary>Represents the value associated with the constant UITransitionContextToViewControllerKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITransitionContextToViewControllerKey")]
 		NSString ToViewControllerKey { get; }
 
+		/// <summary>Represents the value associated with the constant UITransitionContextFromViewKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UITransitionContextFromViewKey")]
 		NSString FromViewKey { get; }
 
+		/// <summary>Represents the value associated with the constant UITransitionContextToViewKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UITransitionContextToViewKey")]
 		NSString ToViewKey { get; }
@@ -19494,87 +20526,168 @@ namespace UIKit {
 	[Static]
 	[MacCatalyst (13, 1)]
 	interface UITextContentType {
+		/// <summary>Indicates a text field that holds a name, which may consist of several parts.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypeName")]
 		NSString Name { get; }
 
+		/// <summary>Indicates a text field that holds a name prefix such as an honorific ("Mr.", "Ms.", "Dr.", etc.).</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypeNamePrefix")]
 		NSString NamePrefix { get; }
 
+		/// <summary>Indicates a text field that holds a given name.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypeGivenName")]
 		NSString GivenName { get; }
 
+		/// <summary>Indicates a text field that holds a middle name.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypeMiddleName")]
 		NSString MiddleName { get; }
 
+		/// <summary>Indicates a text field that holds a family name.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypeFamilyName")]
 		NSString FamilyName { get; }
 
+		/// <summary>Indicates a text field that holds the suffix to a name (e.g., "Jr.").</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypeNameSuffix")]
 		NSString NameSuffix { get; }
 
+		/// <summary>Indicates a text field that holds a preferred name.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypeNickname")]
 		NSString Nickname { get; }
 
+		/// <summary>Indicates a text field that holds the title of a job.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypeJobTitle")]
 		NSString JobTitle { get; }
 
+		/// <summary>Indicates a text field that holds the name of an organization.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypeOrganizationName")]
 		NSString OrganizationName { get; }
 
+		/// <summary>Indicates a text field that holds a precise location (such as an address, latitude and longitude coordinates, or a named point of interest).</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypeLocation")]
 		NSString Location { get; }
 
+		/// <summary>Indicates a text fieldn address field that holds a complete street address, which may have several parts.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypeFullStreetAddress")]
 		NSString FullStreetAddress { get; }
 
+		/// <summary>Indicates a text fieldn address field that holds the first line of a street address.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypeStreetAddressLine1")]
 		NSString StreetAddressLine1 { get; }
 
+		/// <summary>Indicates a text fieldn address field that holds the second line of a street address.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypeStreetAddressLine2")]
 		NSString StreetAddressLine2 { get; }
 
+		/// <summary>Indicates a text fieldn address field that contains a city name.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypeAddressCity")]
 		NSString AddressCity { get; }
 
+		/// <summary>Indicates a text fieldn address field that holds a state name or state code.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypeAddressState")]
 		NSString AddressState { get; }
 
+		/// <summary>Indicates a text fieldn address field that contains a city name and state name or state code.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypeAddressCityAndState")]
 		NSString AddressCityAndState { get; }
 
+		/// <summary>Indicates a text fieldn address field that holds a sublocality, such as a county.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypeSublocality")]
 		NSString Sublocality { get; }
 
+		/// <summary>Indicates a text fieldn address field that holds the name of a country.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypeCountryName")]
 		NSString CountryName { get; }
 
+		/// <summary>Indicates a text field that holds a postal code.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypePostalCode")]
 		NSString PostalCode { get; }
 
+		/// <summary>Indicates a text field field that holds a telephone number.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypeTelephoneNumber")]
 		NSString TelephoneNumber { get; }
 
+		/// <summary>Indicates a text field that holds an email address.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypeEmailAddress")]
 		NSString EmailAddress { get; }
 
+		/// <summary>Indicates a text field field that holds a URL.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypeURL")]
 		NSString Url { get; }
 
+		/// <summary>Indicates a text field that holds a credit-card number.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypeCreditCardNumber")]
 		NSString CreditCardNumber { get; }
 
+		/// <summary>Indicates a text field user name field.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UITextContentTypeUsername")]
 		NSString Username { get; }
 
+		/// <summary>Indicates a text field password field.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UITextContentTypePassword")]
 		NSString Password { get; }
 
+		/// <summary>Indicates a text field that accepts a new password.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UITextContentTypeNewPassword")]
 		NSString NewPassword { get; }
 
+		/// <summary>Indicates a text field that acceps a one-time passcode.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UITextContentTypeOneTimeCode")]
 		NSString OneTimeCode { get; }
@@ -19711,6 +20824,13 @@ namespace UIKit {
 		[PostGet ("ChildViewControllers")]
 		UIViewController [] ViewControllers { get; set; }
 
+		/// <summary>An instance of the UIKit.IUISplitViewControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUISplitViewControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IUISplitViewControllerDelegate Delegate { get; set; }
 
@@ -19724,6 +20844,9 @@ namespace UIKit {
 		//
 		// iOS 8
 		//
+		/// <summary>Gets whether to display only one child view controller.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("collapsed")]
 		bool Collapsed { [Bind ("isCollapsed")] get; }
@@ -19799,6 +20922,10 @@ namespace UIKit {
 		[Export ("showDetailViewController:sender:")]
 		void ShowDetailViewController (UIViewController vc, [NullAllowed] NSObject sender);
 
+		/// <summary>Represents the value associated with the constant UISplitViewControllerAutomaticDimension</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UISplitViewControllerAutomaticDimension")]
 		nfloat AutomaticDimension { get; }
@@ -19959,6 +21086,9 @@ namespace UIKit {
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
+		/// <summary>The continuous vs. noncontinuous state of this UIStepper.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("continuous")]
 		bool Continuous { [Bind ("isContinuous")] get; set; }
 
@@ -20168,6 +21298,13 @@ namespace UIKit {
 		[Export ("passthroughViews", ArgumentSemantic.Copy)]
 		UIView [] PassthroughViews { get; set; }
 
+		/// <summary>An instance of the UIKit.IUIPopoverControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUIPopoverControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IUIPopoverControllerDelegate Delegate { get; set; }
 
@@ -20175,6 +21312,11 @@ namespace UIKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>If <see langword="true" />, then the popover is present and visible.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Export ("popoverVisible")]
 		bool PopoverVisible { [Bind ("isPopoverVisible")] get; }
 
@@ -20242,6 +21384,13 @@ namespace UIKit {
 		[Export ("delegate", ArgumentSemantic.UnsafeUnretained)]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the UIKit.IUIPopoverPresentationControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUIPopoverPresentationControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IUIPopoverPresentationControllerDelegate Delegate { get; set; }
@@ -20403,6 +21552,7 @@ namespace UIKit {
 		[NullAllowed]
 		string PrimaryLanguage { get; }
 
+		/// <include file="../docs/api/UIKit/UITextInputMode.xml" path="/Documentation/Docs[@DocId='P:UIKit.UITextInputMode.CurrentInputModeDidChangeNotification']/*" />
 		[Field ("UITextInputCurrentInputModeDidChangeNotification")]
 		[Notification]
 		NSString CurrentInputModeDidChangeNotification { get; }
@@ -20465,6 +21615,13 @@ namespace UIKit {
 		[Export ("delegate", ArgumentSemantic.UnsafeUnretained), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the UIKit.IUIPrinterPickerControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUIPrinterPickerControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IUIPrinterPickerControllerDelegate Delegate { get; set; }
 
@@ -20661,6 +21818,13 @@ namespace UIKit {
 	// Objective-C exception thrown.  Name: NSGenericException Reason: -[UIPrintInteractionController init] not allowed
 	[DisableDefaultCtor]
 	interface UIPrintInteractionController {
+		/// <summary>An instance of the UIKit.IUIPrintInteractionControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUIPrintInteractionControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IUIPrintInteractionControllerDelegate Delegate { get; set; }
 
@@ -20699,6 +21863,10 @@ namespace UIKit {
 		[Static]
 		bool CanPrint (NSUrl url);
 
+		/// <summary>Whether printing is available.</summary>
+		///         <value>
+		///           <see langword="true" />  if the device supports printing, otherwise <see langword="false" /> . The application can show or hide any print button based upon this value.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("printingAvailable")]
 		[Static]
 		bool PrintingAvailable { [Bind ("isPrintingAvailable")] get; }
@@ -21449,10 +22617,18 @@ namespace UIKit {
 		[Export ("activationMode", ArgumentSemantic.Assign)]
 		UIUserNotificationActivationMode ActivationMode { get; }
 
+		/// <summary>Designates if the user needs to unlock the device before the action is performed. (read-only)</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("authenticationRequired", ArgumentSemantic.Assign)]
 		bool AuthenticationRequired { [Bind ("isAuthenticationRequired")] get; }
 
+		/// <summary>Designates if the action is destructive. (read-only)</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("destructive", ArgumentSemantic.Assign)]
 		bool Destructive { [Bind ("isDestructive")] get; }
@@ -21465,6 +22641,9 @@ namespace UIKit {
 		[Export ("behavior", ArgumentSemantic.Assign)]
 		UIUserNotificationActionBehavior Behavior { get; [NotImplemented] set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'UNTextInputNotificationAction.TextInputButtonTitle' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'UNTextInputNotificationAction.TextInputButtonTitle' instead.")]
@@ -21472,6 +22651,9 @@ namespace UIKit {
 		NSString TextInputActionButtonTitleKey { get; }
 
 		// note: defined twice, where watchOS is defined it says it's not in iOS, the other one (for iOS 9) says it's not in tvOS
+		/// <summary>Developers should not use this deprecated property. Developers should use 'UNTextInputNotificationResponse.UserText' instead.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'UNTextInputNotificationResponse.UserText' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'UNTextInputNotificationResponse.UserText' instead.")]
@@ -21500,9 +22682,15 @@ namespace UIKit {
 		[Export ("activationMode", ArgumentSemantic.Assign)]
 		UIUserNotificationActivationMode ActivationMode { get; set; }
 
+		/// <summary>Gets or sets a value that tells whether the device must be unlocked before the action is run.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("authenticationRequired", ArgumentSemantic.Assign)]
 		bool AuthenticationRequired { [Bind ("isAuthenticationRequired")] get; set; }
 
+		/// <summary>Gets or sets a value that tells whether the action deletes data.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("destructive", ArgumentSemantic.Assign)]
 		bool Destructive { [Bind ("isDestructive")] get; set; }
 
@@ -21534,6 +22722,13 @@ namespace UIKit {
 		[Export ("initWithURL:inMode:")]
 		NativeHandle Constructor (NSUrl url, UIDocumentPickerMode mode);
 
+		/// <summary>An instance of the UIKit.IUIDocumentMenuDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUIDocumentMenuDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IUIDocumentMenuDelegate Delegate { get; set; }
 
@@ -21624,6 +22819,13 @@ namespace UIKit {
 		[Export ("delegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the UIKit.IUIDocumentPickerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUIDocumentPickerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IUIDocumentPickerDelegate Delegate { get; set; }
 
@@ -21848,6 +23050,9 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UILayoutGuide))]
 	interface UIFocusGuide {
+		/// <summary>Gets or sets a Boolean value that controls whether non view areas can become focused.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
@@ -21944,20 +23149,28 @@ namespace UIKit {
 		[NullAllowed, Export ("nextFocusedItem", ArgumentSemantic.Weak)]
 		IUIFocusItem NextFocusedItem { get; }
 
+		/// <include file="../docs/api/UIKit/UIFocusUpdateContext.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIFocusUpdateContext.DidUpdateNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIFocusDidUpdateNotification")]
 		NSString DidUpdateNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIFocusUpdateContext.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIFocusUpdateContext.MovementDidFailNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIFocusMovementDidFailNotification")]
 		NSString MovementDidFailNotification { get; }
 
+		/// <summary>Gets the focus update context key.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UIFocusUpdateContextKey")]
 		NSString Key { get; }
 
+		/// <summary>Represents the value that is associated with the constant UIFocusUpdateAnimationCoordinatorKey.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UIFocusUpdateAnimationCoordinatorKey")]
 		NSString AnimationCoordinatorKey { get; }
@@ -22502,9 +23715,17 @@ namespace UIKit {
 		[Export ("allowsSimultaneousRecognitionDuringLift")]
 		bool AllowsSimultaneousRecognitionDuringLift { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the drag interaction can receive touches and can participate in an interaction.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
+		/// <summary>Gets a Boolean value that tells whether the interaction is enabled by default on the device.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>This value is <see langword="true" /> on the iPad. On the iPhone, it is <see langword="false" />.</para>
+		///         </remarks>
 		[Static]
 		[Export ("enabledByDefault")]
 		bool EnabledByDefault { [Bind ("isEnabledByDefault")] get; }
@@ -22636,6 +23857,9 @@ namespace UIKit {
 		[Export ("operation")]
 		UIDropOperation Operation { get; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the insertion point is offset from the touch point to allow the user to precisely place items for dropping.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("precise")]
 		bool Precise { [Bind ("isPrecise")] get; set; }
 
@@ -23809,9 +25033,13 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIPencilPreferredAction : long {
+		/// <summary>To be added.</summary>
 		Ignore = 0,
+		/// <summary>To be added.</summary>
 		SwitchEraser,
+		/// <summary>To be added.</summary>
 		SwitchPrevious,
+		/// <summary>To be added.</summary>
 		ShowColorPalette,
 		[iOS (16, 0), MacCatalyst (16, 0)]
 		ShowInkAttributes,
@@ -23858,6 +25086,9 @@ namespace UIKit {
 		[Export ("initWithDelegate:")]
 		NativeHandle Constructor (IUIPencilInteractionDelegate @delegate);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IUIPencilInteractionDelegate Delegate { get; set; }
@@ -23865,6 +25096,9 @@ namespace UIKit {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 	}

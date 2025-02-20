@@ -81,6 +81,9 @@ namespace AppKit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Advice ("The 'Activated' event must be set before setting 'ValidateMenuItem'.")]
 		public Func<NSMenuItem, bool>? ValidateMenuItem {
 			get {

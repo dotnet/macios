@@ -166,15 +166,31 @@ namespace CoreData {
 		[Export ("initWithPersistentStoreCoordinator:configurationName:URL:options:")]
 		NativeHandle Constructor ([NullAllowed] NSPersistentStoreCoordinator coordinator, [NullAllowed] string configurationName, NSUrl url, [NullAllowed] NSDictionary options);
 
+		/// <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("load:")]
 		bool Load (out NSError error);
 
+		/// <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("save:")]
 		bool Save (out NSError error);
 
+		/// <param name="managedObject">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("newCacheNodeForManagedObject:")]
 		NSAtomicStoreCacheNode NewCacheNodeForManagedObject (NSManagedObject managedObject);
 
+		/// <param name="node">To be added.</param>
+		///         <param name="managedObject">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("updateCacheNode:fromManagedObject:")]
 		void UpdateCacheNode (NSAtomicStoreCacheNode node, NSManagedObject managedObject);
 
@@ -188,6 +204,9 @@ namespace CoreData {
 		NSSet CacheNodes { get; }
 #endif
 
+		/// <param name="cacheNodes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addCacheNodes:")]
 
 #if XAMCORE_5_0
@@ -196,6 +215,9 @@ namespace CoreData {
 		void AddCacheNodes (NSSet cacheNodes);
 #endif
 
+		/// <param name="cacheNodes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("willRemoveCacheNodes:")]
 #if XAMCORE_5_0
 		void WillRemoveCacheNodes (NSSet<NSAtomicStoreCacheNode> cacheNodes);
@@ -203,16 +225,33 @@ namespace CoreData {
 		void WillRemoveCacheNodes (NSSet cacheNodes);
 #endif
 
+		/// <param name="objectID">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("cacheNodeForObjectID:")]
 		[return: NullAllowed]
 		NSAtomicStoreCacheNode CacheNodeForObjectID (NSManagedObjectID objectID);
 
+		/// <param name="entity">To be added.</param>
+		///         <param name="data">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("objectIDForEntity:referenceObject:")]
 		NSManagedObjectID ObjectIDForEntity (NSEntityDescription entity, NSObject data);
 
+		/// <param name="managedObject">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("newReferenceObjectForManagedObject:")]
 		NSAtomicStore NewReferenceObjectForManagedObject (NSManagedObject managedObject);
 
+		/// <param name="objectID">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("referenceObjectForObjectID:")]
 		NSAtomicStore ReferenceObjectForObjectID (NSManagedObjectID objectID);
 	}
@@ -327,10 +366,21 @@ namespace CoreData {
 		NSDictionary PropertyCache { get; set; }
 #endif
 
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("valueForKey:")]
 		[return: NullAllowed]
 		NSAtomicStoreCacheNode ValueForKey (string key);
 
+		/// <param name="value">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setValue:forKey:")]
 		void SetValue ([NullAllowed] NSObject value, string key);
 

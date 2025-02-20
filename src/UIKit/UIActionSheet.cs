@@ -29,7 +29,8 @@ namespace UIKit {
 		}
 #endif
 
-		public UIActionSheet (string title, IUIActionSheetDelegate del, string cancelTitle, string destroy, params string [] other)
+		/// <include file="../../docs/api/UIKit/UIActionSheet.xml" path="/Documentation/Docs[@DocId='M:UIKit.UIActionSheet.#ctor(System.String,UIKit.IUIActionSheetDelegate,System.String,System.String,System.String[])']/*" />
+	public UIActionSheet (string title, IUIActionSheetDelegate del, string cancelTitle, string destroy, params string [] other)
 			: this (title, del, null, null, (string) null)
 		{
 			if (destroy is not null)
@@ -58,17 +59,30 @@ namespace UIKit {
 		}
 #endif
 
+		/// <param name="title">To be added.</param>
+		///         <param name="del">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public UIActionSheet (string title, IUIActionSheetDelegate del)
 		: this (title, del, null, null, (string) null) { }
 
+		/// <param name="title">A title to be displayed in the title area of the action sheet.</param>
+		///         <summary>Initialize an <see cref="T:UIKit.UIActionSheet" /> with a title.</summary>
+		///         <remarks>Pass <see langword="null" /> to <paramref name="title" /> if there is no text to display in the title area.</remarks>
 		public UIActionSheet (string title)
 		: this (title, null, null, null, (string) null) { }
 
+		/// <param name="name">Text for the button.</param>
+		///         <summary>Adds a button with the specified text.</summary>
+		///         <remarks>This method exists to allow the class to be initialized with C# 3.0 object initializers.   This is equivalent to calling AddButton (name).</remarks>
 		public void Add (string name)
 		{
 			AddButton (name);
 		}
 
+		/// <summary>Obtains an enumerator that returns the button titles.</summary>
+		///         <returns>An IEnumerator.</returns>
+		///         <remarks>To be added.</remarks>
 		public IEnumerator GetEnumerator ()
 		{
 			for (int i = 0; i < ButtonCount; i++)

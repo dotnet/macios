@@ -82,6 +82,8 @@ namespace CoreFoundation {
 		IntPtr release;
 		IntPtr copyDescription;
 
+		/// <summary>Call this method to retain the Info pointer.</summary>
+		///         <remarks>Every call to Retain must have a corresponding call to Release, otherwise memory might be leaked.</remarks>
 		public void Retain ()
 		{
 			if (retain == IntPtr.Zero || Info == IntPtr.Zero)
@@ -90,6 +92,9 @@ namespace CoreFoundation {
 			CFReadStreamRef_InvokeRetain (retain, Info);
 		}
 
+		/// <summary>Call this method to release the Info pointer.</summary>
+		///         <remarks>
+		///         </remarks>
 		public void Release ()
 		{
 			if (release == IntPtr.Zero || Info == IntPtr.Zero)
@@ -98,6 +103,10 @@ namespace CoreFoundation {
 			CFReadStreamRef_InvokeRelease (release, Info);
 		}
 
+		/// <summary>Gets a description of this structure and its data.</summary>
+		///         <returns>A description of this structure and its data.</returns>
+		///         <remarks>
+		///         </remarks>
 		public override string? ToString ()
 		{
 			if (copyDescription != IntPtr.Zero) {
@@ -197,6 +206,15 @@ namespace CoreFoundation {
 		internal unsafe extern static void CFStreamCreatePairWithSocket (/* CFAllocatorRef */ IntPtr allocator, CFSocketNativeHandle sock,
 			/* CFReadStreamRef* */ IntPtr* readStream, /* CFWriteStreamRef* */ IntPtr* writeStream);
 
+		/// <param name="socket">Existing socket.</param>
+		///         <param name="readStream">On return, contains a stream that can
+		/// 	be used to read from that end point.</param>
+		///         <param name="writeStream">On return, contains a stream that
+		/// 	can be used to write to the end point.</param>
+		///         <summary>Creates a reading and a writing CFStream on top of an
+		/// 	existing socket.</summary>
+		///         <remarks>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -232,6 +250,7 @@ namespace CoreFoundation {
 			/* CFSocketSignature* */ CFSocketSignature* sig,
 			/* CFReadStreamRef* */ IntPtr* readStream, /* CFWriteStreamRef* */ IntPtr* writeStream);
 
+		/// <include file="../../docs/api/CoreFoundation/CFStream.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.CFStream.CreatePairWithPeerSocketSignature(System.Net.Sockets.AddressFamily,System.Net.Sockets.SocketType,System.Net.Sockets.ProtocolType,System.Net.IPEndPoint,CoreFoundation.CFReadStream@,CoreFoundation.CFWriteStream@)']/*" />
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -272,6 +291,15 @@ namespace CoreFoundation {
 			/* CFReadStreamRef __nullable * __nullable */ IntPtr* readStream,
 			/* CFWriteStreamRef __nullable * __nullable */ IntPtr* writeStream);
 
+		/// <param name="endpoint">Endpoint to connect to.</param>
+		///         <param name="readStream">On return, contains a stream that can
+		/// 	be used to read from that end point.</param>
+		///         <param name="writeStream">On return, contains a stream that
+		/// 	can be used to write to the end point.</param>
+		///         <summary>Creates a reading and a writing CFStreams that are connected over
+		/// 	TCP/IP to the specified endpoint.</summary>
+		///         <remarks>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -308,6 +336,16 @@ namespace CoreFoundation {
 			/* CFStringRef */ IntPtr host, /* UInt32 */ int port,
 			/* CFReadStreamRef* */ IntPtr* readStream, /* CFWriteStreamRef* */ IntPtr* writeStream);
 
+		/// <param name="host">Hostname to connect to.</param>
+		///         <param name="port">TCP port to connect to .</param>
+		///         <param name="readStream">On return, contains a stream that can
+		/// 	be used to read from that end point.</param>
+		///         <param name="writeStream">On return, contains a stream that
+		/// 	can be used to write to the end point.</param>
+		///         <summary>Creates a reading and a writing CFStreams that are connected over
+		/// 	TCP/IP to the specified host and port.</summary>
+		///         <remarks>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -436,8 +474,13 @@ namespace CoreFoundation {
 
 		#region Stream API
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public abstract CFException? GetError ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected void CheckError ()
 		{
 			var exc = GetError ();

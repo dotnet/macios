@@ -864,6 +864,10 @@ namespace AudioUnit {
 		void SetValue (float value, AUParameterObserverToken originator, ulong hostTime);
 
 		// -(NSString * __nonnull)stringFromValue:(const AUValue * __nullable)value;
+		/// <param name="value">The parameter value to represent as a string.</param>
+		///         <summary>Returns the string representation of the parameter value that corresponds to <paramref name="value" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("stringFromValue:")]
 		string GetString (ref float value);
 
@@ -1009,22 +1013,44 @@ namespace AudioUnit {
 		AUParameter GetParameter (uint paramID, uint scope, uint element);
 
 		//Factory
+		/// <include file="../docs/api/AudioUnit/AUParameterTree.xml" path="/Documentation/Docs[@DocId='M:AudioUnit.AUParameterTree.CreateParameter(System.String,System.String,System.UInt64,System.Single,System.Single,AudioUnit.AudioUnitParameterUnit,System.String,AudioUnit.AudioUnitParameterOptions,System.String[],Foundation.NSNumber[])']/*" />
 		[Static]
 		[Export ("createParameterWithIdentifier:name:address:min:max:unit:unitName:flags:valueStrings:dependentParameters:")]
 		AUParameter CreateParameter (string identifier, string name, ulong address, float min, float max, AudioUnitParameterUnit unit, [NullAllowed] string unitName, AudioUnitParameterOptions flags, [NullAllowed] string [] valueStrings, [NullAllowed] NSNumber [] dependentParameters);
 
+		/// <param name="identifier">A permanent non-localized name for the group.</param>
+		///         <param name="name">A localized display name.</param>
+		///         <param name="children">The array of parameter nodes that will become the group's children.</param>
+		///         <summary>Creates a parameter group with the specified <paramref name="identifier" />, <paramref name="name" />, and <paramref name="children" />.</summary>
+		///         <returns>A new parameter group.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("createGroupWithIdentifier:name:children:")]
 		AUParameterGroup CreateGroup (string identifier, string name, AUParameterNode [] children);
 
+		/// <param name="children">The template group's children.</param>
+		///         <summary>Creates a prototype parameter group for creating related classes of parameter groups.</summary>
+		///         <returns>A prototype parameter group for creating related classes of parameter groups.</returns>
+		///         <remarks>Template parameter groups can only appear in trees at the root.</remarks>
 		[Static]
 		[Export ("createGroupTemplate:")]
 		AUParameterGroup CreateGroupTemplate (AUParameterNode [] children);
 
+		/// <param name="templateGroup">The parameter group to copy.</param>
+		///         <param name="identifier">A permanent non-localized name for the new group.</param>
+		///         <param name="name">A localized display name for the new group.</param>
+		///         <param name="addressOffset">The offset, relative to the template group, of the new group's parameters.</param>
+		///         <summary>Copies a template parameter group and sets the <paramref name="identifier" />, <paramref name="name" />, and template-group-relative <paramref name="addressOffset" />.</summary>
+		///         <returns>The copied parameter group.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("createGroupFromTemplate:identifier:name:addressOffset:")]
 		AUParameterGroup CreateGroup (AUParameterGroup templateGroup, string identifier, string name, ulong addressOffset);
 
+		/// <param name="children">The children of the new tree.</param>
+		///         <summary>Creates a new parameter tree.</summary>
+		///         <returns>A new parameter tree.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("createTreeWithChildren:")]
 		AUParameterTree CreateTree (AUParameterNode [] children);

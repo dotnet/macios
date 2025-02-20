@@ -110,7 +110,7 @@ param_read_primitive (struct ParamIterator *it, const char **type_ptr, uint8_t *
 		/*if (total_size > size && !fp_struct && !read_register) {
 			// floating point values in a struct that has non-floating point fields are not stored in floating point registers.
 			goto DEFAULT;
-		} else */if (it->float_count <= 28) {
+		} else */if (read_register && it->float_count <= 28) {
 			if (target != NULL) {
 				*(double*) target = *(double*) (it->float_count + (float*) &it->state->xmm0);
 				LOGZ (" reading double at xmm%i = %p into %p: %f\n", it->float_count / 4, (double *) target, target, *(double *) target);
@@ -199,6 +199,73 @@ DEFAULT:
 }
 
 static void
+inc_register (int offset, bool* is_fp, int* fp_registers, int* i_registers, char type, const char* msg)
+{
+	LOGZ(" inc_register (%i, %i, %i, %i, %c, %s)\n", offset, (int) *is_fp, *fp_registers, *i_registers, type, msg);
+	if (offset % 8 != 0)
+		return;
+
+	if (*is_fp) {
+		*fp_registers = *fp_registers + 1;
+	} else {
+		*i_registers = *i_registers + 1;
+	}
+	*is_fp = false;
+}
+
+static void
+compute_register_usage (const char *type, int* fp_registers, int* i_registers)
+{
+	*fp_registers = 0;
+	*i_registers = 0;
+
+	int offset = 0;
+	bool is_fp = false;
+
+	int size = 0;
+	for (int i = 0; type [i] != 0; i++) {
+
+		// if we're starting a new eightbyte, increment a register count
+		if (i > 0)
+			inc_register (offset, &is_fp, fp_registers, i_registers, type [i], "A");
+
+		if (type [i] == 'f') {
+			size = 4;
+			if (offset % 8 == 0)
+				is_fp = true;
+			if (offset % size != 0) {
+				offset = align_int32 (offset, size);
+				// if we're starting a new eightbyte, increment a register count
+				inc_register (offset, &is_fp, fp_registers, i_registers, type [i], "B");
+			}
+		} else if (type [i] == 'd') {
+			size = 8;
+			if (offset % size != 0) {
+				offset = align_int32 (offset, size);
+				// if we're starting a new eightbyte, increment a register count
+				inc_register (offset, &is_fp, fp_registers, i_registers, type [i], "C");
+			}
+			offset = align_int32 (offset, 8);
+			is_fp = true;
+		} else {
+			size = (int) xamarin_get_primitive_size (type [i]);
+			is_fp = false;
+		}
+		if (size > 0 && offset % size != 0) {
+			offset = align_int32 (offset, size);
+			// if we're starting a new eightbyte, increment a register count
+			inc_register (offset, &is_fp, fp_registers, i_registers, type [i], "D");
+		}
+		offset += size;
+	}
+
+	if (size > 0)
+		inc_register (0 /* force inc by passing 0 */, &is_fp, fp_registers, i_registers, '?', "E");
+
+	LOGZ(" compute_register_usage (%s) => fp=%i i=%i\n", type, *fp_registers, *i_registers);
+}
+
+static void
 param_iter_next (enum IteratorAction action, void *context, const char *type, size_t size, void *target, GCHandle *exception_gchandle)
 {
 	// COOP: does not access managed memory: any mode.
@@ -248,10 +315,18 @@ param_iter_next (enum IteratorAction action, void *context, const char *type, si
 		return;
 	}
 
+	int fp_registers = 0;
+	int i_registers = 0;
+	compute_register_usage (struct_name, &fp_registers, &i_registers);
+
 	bool read_register = true;
-	if (total_register_size - (size_t) it->byte_count < size) {
+	int fp_registers_left = (28 - it->float_count) / 4;
+	int i_registers_left = ((int) total_register_size - it->byte_count) / 8;
+
+	if (fp_registers > fp_registers_left || i_registers > i_registers_left) {
 		read_register = false;
-		LOGZ (" total size of parameter (%i) is less than size of remaining registers (%i), so this argument will be passed on the stack\n", (int) size, (int) ((int) total_register_size - it->byte_count));
+		LOGZ (" not enough registers left, passing on stack. type %s requires %i integer registers and %i fp registers, there are only %i integer and %i fp registers left.\n",
+			type, (int) i_registers, (int) fp_registers, (int) i_registers_left, (int) fp_registers_left);
 	}
 
 	// passed in registers (and on the stack if not enough registers)

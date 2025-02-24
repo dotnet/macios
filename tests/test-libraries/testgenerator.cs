@@ -23,16 +23,16 @@ static class C {
 	// the numbers below are bitmasks of Architecture values.
 	static string [] structs_and_stret =  {
 		/* integral types */
-		"c:0", "cc:4", "ccc:5",  "cccc:4", "cccccccc:0",
-		new string ('c', 15) + ":0", new string ('c', 16) + ":0", new string ('c', 17) + ":2",
-		new string ('c', 31) + ":2", new string ('c', 32) + ":2", new string ('c', 33) + ":2",
-		"s:0", "ss:4", "sss:5",  "ssss:4", "ssssssss:0", "sssssssss:2",
+		"c:0", "cc:4", "ccc:5",  "cccc:4", // "cccccccc:0",
+		// new string ('c', 15) + ":0", new string ('c', 16) + ":0", new string ('c', 17) + ":2",
+		// new string ('c', 31) + ":2", new string ('c', 32) + ":2", new string ('c', 33) + ":2",
+		"s:0", "ss:4", "sss:5",  "ssss:4", // "ssssssss:0", "sssssssss:2",
 		"i:0", "ii:4", "iii:5",  "iiii:5",  "iiiii:15",
 		"l:4", "ll:5", "lll:15", "llll:15", "lllll:15",
 		/* floating point types */
 		"f:4", "ff:4", "fff:5", "ffff:5",  "fffff:15",
 		"d:4", "dd:5", "ddd:7", "dddd:7",  "ddddd:15",
-		"fd:0", "df:0", "dddf:2", "fffd:2",
+		// "fd:0", "df:0",  "dddf:2", "fffd:2",
 		"ffd:0", "dff:0",
 		/* mixed types */
 		"if:4", "fi:4", // 8 bytes

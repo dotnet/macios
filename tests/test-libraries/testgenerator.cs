@@ -491,7 +491,7 @@ namespace Bindings.Test {
 				w.Append ($"\t\t[Export (\"setProperty{s}:");
 				for (var x = 2; x < i; x++)
 					w.Append ($"p{x}:");
-				w.AppendLine ($"p{i}:p{i+1}:\")]");
+				w.AppendLine ($"p{i}:p{i + 1}:\")]");
 				w.Append ($"\t\tvoid SetProperty{s} (nint p1");
 				for (var x = 2; x < i; x++)
 					w.Append ($", nint p{x}");
@@ -502,7 +502,7 @@ namespace Bindings.Test {
 				w.Append ($"\t\t[Export (\"setPropertyFloat{s}:");
 				for (var x = 2; x < i; x++)
 					w.Append ($"p{x}:");
-				w.AppendLine ($"p{i}:p{i+1}:\")]");
+				w.AppendLine ($"p{i}:p{i + 1}:\")]");
 				w.Append ($"\t\tvoid SetPropertyFloat{s} (float f1");
 				for (var x = 2; x < i; x++)
 					w.Append ($", nint p{x}");
@@ -513,7 +513,7 @@ namespace Bindings.Test {
 				w.Append ($"\t\t[Export (\"setPropertyDouble{s}:");
 				for (var x = 2; x < i; x++)
 					w.Append ($"p{x}:");
-				w.AppendLine ($"p{i}:p{i+1}:\")]");
+				w.AppendLine ($"p{i}:p{i + 1}:\")]");
 				w.Append ($"\t\tvoid SetPropertyDouble{s} (double d1");
 				for (var x = 2; x < i; x++)
 					w.Append ($", nint p{x}");

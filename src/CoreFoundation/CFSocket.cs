@@ -765,11 +765,20 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static nint CFSocketConnectToAddress (IntPtr handle, IntPtr address, double timeout);
 
+		/// <param name="address">To be added.</param>
+		///         <param name="port">To be added.</param>
+		///         <param name="timeout">Time to wait for the operation to complete.   If the value is negative, no wait takes place, and instead the operation takes place in the background.</param>
+		///         <summary>Connects the socket to the specified IP address and port.</summary>
+		///         <remarks>This method throws a <see cref="T:CoreFoundation.CFSocketException" /> if the timeout expires before being able to complete the operation.</remarks>
 		public void Connect (IPAddress address, int port, double timeout)
 		{
 			Connect (new IPEndPoint (address, port), timeout);
 		}
 
+		/// <param name="endpoint">To be added.</param>
+		///         <param name="timeout">Time to wait for the operation to complete.   If the value is negative, no wait takes place, and instead the operation takes place in the background.</param>
+		///         <summary>Connects the socket to the specified endpoint.</summary>
+		///         <remarks>This method throws a <see cref="T:CoreFoundation.CFSocketException" /> if the timeout expires before being able to complete the operation.</remarks>
 		public void Connect (IPEndPoint endpoint, double timeout)
 		{
 			using (var address = new CFSocketAddress (endpoint)) {

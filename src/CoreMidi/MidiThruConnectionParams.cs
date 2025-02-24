@@ -362,6 +362,8 @@ namespace CoreMidi {
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe extern static void MIDIThruConnectionParamsInitialize (MidiThruConnectionParamsStruct* inConnectionParams);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MidiThruConnectionParams ()
 		{
 			// Always create a valid init point

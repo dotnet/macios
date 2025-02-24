@@ -298,11 +298,18 @@ namespace PrintCore {
 		///         <remarks>To be added.</remarks>
 		public double VerticalResolution => vRes;
 
+		/// <param name="horizontal">To be added.</param>
+		///         <param name="vertical">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public PMResolution (double horizontal, double vertical)
 		{
 			hRes = horizontal;
 			vRes = vertical;
 		}
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return $"[HorizontalResolution={hRes},VerticalResolution={vRes}]";
@@ -336,6 +343,12 @@ namespace PrintCore {
 		///         <remarks>To be added.</remarks>
 		public double Right => right;
 
+		/// <param name="top">To be added.</param>
+		///         <param name="bottom">To be added.</param>
+		///         <param name="left">To be added.</param>
+		///         <param name="right">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public PMRect (double top, double bottom, double left, double right)
 		{
 			this.top = top;
@@ -344,6 +357,9 @@ namespace PrintCore {
 			this.right = right;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return $"[Top={top},Bottom={bottom},Left={left},Right={right}]";
@@ -374,11 +390,20 @@ namespace PrintCore {
 		///         <remarks>To be added.</remarks>
 		public double Right => Rect.right;
 
+		/// <param name="top">To be added.</param>
+		///         <param name="bottom">To be added.</param>
+		///         <param name="left">To be added.</param>
+		///         <param name="right">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public PMPaperMargins (double top, double bottom, double left, double right)
 		{
 			Rect = new PMRect (top, bottom, left, right);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return Rect.ToString ();

@@ -835,6 +835,15 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <param name="packet">Packet number to map.</param>
+		///         <summary>Maps a packet number to an audio frame number in the audio file stream.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///           <para>
+		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	  </para>
+		///         </remarks>
 		public long PacketToFrame (long packet)
 		{
 			AudioFramePacketTranslation buffer;
@@ -850,6 +859,15 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <param name="frame">The audio frame number.</param>
+		///         <param name="frameOffsetInPacket">The frame offset in the packet.</param>
+		///         <summary>Returns the packet number and the frame offset in the packet (on the out parameter) corresponding to the requested audio frame.</summary>
+		///         <returns>The packet number that corresponds to the specified frame.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	  </para>
+		///         </remarks>
 		public long FrameToPacket (long frame, out int frameOffsetInPacket)
 		{
 			AudioFramePacketTranslation buffer;
@@ -868,6 +886,16 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <param name="packet">Packet number.</param>
+		///         <param name="isEstimate">On return, the value will be true if the byte offset is an estimate.</param>
+		///         <summary>Maps a packet number to a byte number in the audio file stream.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///           <para>
+		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	  </para>
+		///         </remarks>
 		public long PacketToByte (long packet, out bool isEstimate)
 		{
 			AudioBytePacketTranslation buffer;
@@ -886,6 +914,16 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <param name="byteval">The location in the file.</param>
+		///         <param name="byteOffsetInPacket">Return value, byte offset within the packet.</param>
+		///         <param name="isEstimate">Return value, whether the return is an estimate or not.</param>
+		///         <summary>Maps a position in the file to an audio packet.</summary>
+		///         <returns>The packet number that corresponds to this byte in the file.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	  </para>
+		///         </remarks>
 		public long ByteToPacket (long byteval, out int byteOffsetInPacket, out bool isEstimate)
 		{
 			AudioBytePacketTranslation buffer;

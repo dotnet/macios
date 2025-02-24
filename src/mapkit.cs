@@ -585,6 +585,10 @@ namespace MapKit {
 		[Export ("registerClass:forAnnotationViewWithReuseIdentifier:")]
 		void Register ([NullAllowed] Class viewClass, string identifier);
 
+		/// <param name="viewType">To be added.</param>
+		///         <param name="identifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("Register (viewType is null ? null : new Class (viewType), identifier)")]
 		void Register ([NullAllowed] Type viewType, string identifier);

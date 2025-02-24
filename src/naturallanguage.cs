@@ -122,10 +122,18 @@ namespace NaturalLanguage {
 		[Export ("revision")]
 		nuint Revision { get; }
 
+		/// <param name="type">The model type for which to inquire about the versions of support.</param>
+		///         <summary>Gets the revisions of natural language support that work with models of the specified type.</summary>
+		///         <returns>The revisions of natural language support that work with models of the specified type.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("supportedRevisionsForType:")]
 		NSIndexSet GetSupportedRevisions (NLModelType type);
 
+		/// <param name="type">The model type for which to inquire about the version of support.</param>
+		///         <summary>Gets the revision of the current natural language support for models of the specified type.</summary>
+		///         <returns>The revision of the current natural language support for models of the specified type.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("currentRevisionForType:")]
 		nuint GetCurrentRevision (NLModelType type);

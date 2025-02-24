@@ -257,6 +257,9 @@ namespace Foundation {
 			return IsEqualToOrderedSet (o);
 		}
 
+		/// <summary>Generates a hash code for the current instance.</summary>
+		///         <returns>A int containing the hash code for this instance.</returns>
+		///         <remarks>The algorithm used to generate the hash code is unspecified.</remarks>
 		public override int GetHashCode ()
 		{
 			return (int) GetNativeHash ();

@@ -42,6 +42,9 @@ namespace PassKit {
 		///         <remarks>To be added.</remarks>
 		public override NativeHandle ClassHandle => throw new InvalidOperationException (Constants.RemovedFromPassKit);
 
+		/// <param name="t">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected PKDisbursementVoucher (NSObjectFlag t) : base (t)
 		{
 			throw new InvalidOperationException (Constants.RemovedFromPassKit);
@@ -78,6 +81,9 @@ namespace PassKit {
 		///         <remarks>To be added.</remarks>
 		public override NativeHandle ClassHandle { get { throw new InvalidOperationException (Constants.RemovedFromPassKit); } }
 
+		/// <param name="t">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected PKDisbursementAuthorizationController (NSObjectFlag t) : base (t)
 		{
 			throw new InvalidOperationException (Constants.RemovedFromPassKit);
@@ -88,17 +94,27 @@ namespace PassKit {
 			throw new InvalidOperationException (Constants.RemovedFromPassKit);
 		}
 
+		/// <param name="disbursementRequest">To be added.</param>
+		///         <param name="delegate">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public PKDisbursementAuthorizationController (PKDisbursementRequest disbursementRequest, IPKDisbursementAuthorizationControllerDelegate @delegate)
 			: base (NSObjectFlag.Empty)
 		{
 			throw new InvalidOperationException (Constants.RemovedFromPassKit);
 		}
 
+		/// <param name="completion">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public unsafe virtual void AuthorizeDisbursement (global::System.Action<bool, NSError> completion)
 		{
 			throw new InvalidOperationException (Constants.RemovedFromPassKit);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe virtual Task<Tuple<bool, NSError>> AuthorizeDisbursementAsync ()
 		{
 			throw new InvalidOperationException (Constants.RemovedFromPassKit);
@@ -131,6 +147,9 @@ namespace PassKit {
 			}
 		}
 
+		/// <param name="disposing">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected override void Dispose (bool disposing)
 		{
 			throw new InvalidOperationException (Constants.RemovedFromPassKit);
@@ -147,7 +166,14 @@ namespace PassKit {
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("This class is removed.")]
 	public partial interface IPKDisbursementAuthorizationControllerDelegate : INativeObject, IDisposable {
+		/// <param name="controller">To be added.</param>
+		///         <param name="disbursementVoucher">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		void DidAuthorize (PKDisbursementAuthorizationController controller, PKDisbursementVoucher disbursementVoucher);
+		/// <param name="controller">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		void DidFinish (PKDisbursementAuthorizationController controller);
 	}
 
@@ -161,11 +187,16 @@ namespace PassKit {
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("This class is removed.")]
 	public unsafe abstract partial class PKDisbursementAuthorizationControllerDelegate : NSObject, IPKDisbursementAuthorizationControllerDelegate {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected PKDisbursementAuthorizationControllerDelegate () : base (NSObjectFlag.Empty)
 		{
 			throw new InvalidOperationException (Constants.RemovedFromPassKit);
 		}
 
+		/// <param name="t">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected PKDisbursementAuthorizationControllerDelegate (NSObjectFlag t) : base (t)
 		{
 			throw new InvalidOperationException (Constants.RemovedFromPassKit);
@@ -176,11 +207,18 @@ namespace PassKit {
 			throw new InvalidOperationException (Constants.RemovedFromPassKit);
 		}
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="disbursementVoucher">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public virtual void DidAuthorize (PKDisbursementAuthorizationController controller, PKDisbursementVoucher disbursementVoucher)
 		{
 			throw new InvalidOperationException (Constants.RemovedFromPassKit);
 		}
 
+		/// <param name="controller">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public virtual void DidFinish (PKDisbursementAuthorizationController controller)
 		{
 			throw new InvalidOperationException (Constants.RemovedFromPassKit);

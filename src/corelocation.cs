@@ -607,6 +607,7 @@ namespace CoreLocation {
 		[Export ("pausesLocationUpdatesAutomatically", ArgumentSemantic.Assign)]
 		bool PausesLocationUpdatesAutomatically { get; set; }
 
+		/// <include file="../docs/api/CoreLocation/CLLocationManager.xml" path="/Documentation/Docs[@DocId='M:CoreLocation.CLLocationManager.AllowDeferredLocationUpdatesUntil(System.Double,System.Double)']/*" />
 		[NoTV]
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Not used anymore. Call will not have any effect.")]
@@ -615,6 +616,9 @@ namespace CoreLocation {
 		[Export ("allowDeferredLocationUpdatesUntilTraveled:timeout:")]
 		void AllowDeferredLocationUpdatesUntil (double distance, double timeout);
 
+		/// <summary>Turns off deferred background location updates.</summary>
+		///         <remarks>To be added.</remarks>
+		///         <altmember cref="M:CoreLocation.CLLocationManager.AllowDeferredLocationUpdatesUntil" />
 		[NoTV]
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Not used anymore. Call will not have any effect.")]
@@ -678,6 +682,11 @@ namespace CoreLocation {
 		[Export ("requestStateForRegion:")]
 		void RequestState (CLRegion region);
 
+		/// <param name="region">The region being checked.</param>
+		///         <summary>Starts delivering notifications about beacons in <paramref name="region" />.</summary>
+		///         <remarks>
+		///           <para>Prior to calling this method, application developers must assign to <see cref="P:CoreLocation.CLLocationManager.Delegate" /> an object that implements the <see cref="M:CoreLocation.CLLocationManagerDelegate.DidRangeBeacons(CoreLocation.CLLocationManager,CoreLocation.CLBeacon[],CoreLocation.CLBeaconRegion)" /> and <see cref="M:CoreLocation.CLLocationManagerDelegate.RangingBeaconsDidFailForRegion(CoreLocation.CLLocationManager,CoreLocation.CLBeaconRegion,Foundation.NSError)" /> methods.</para>
+		///         </remarks>
 		[NoTV]
 		[NoMac]
 		[NoMacCatalyst]
@@ -691,6 +700,9 @@ namespace CoreLocation {
 		[Export ("startRangingBeaconsSatisfyingConstraint:")]
 		void StartRangingBeacons (CLBeaconIdentityConstraint constraint);
 
+		/// <param name="region">To be added.</param>
+		///         <summary>Stops tracking beacons in the <paramref name="region" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[NoMac]
 		[NoMacCatalyst]

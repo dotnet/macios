@@ -59,6 +59,11 @@ namespace Twitter {
 		[Export ("initWithURL:parameters:requestMethod:")]
 		NativeHandle Constructor (NSUrl url, [NullAllowed] NSDictionary parameters, TWRequestMethod requestMethod);
 
+		/// <param name="data">To be added.</param>
+		///         <param name="name">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addMultiPartData:withName:type:")]
 		void AddMultiPartData (NSData data, string name, string type);
 
@@ -68,6 +73,9 @@ namespace Twitter {
 		[Export ("signedURLRequest")]
 		NSUrlRequest SignedUrlRequest { get; }
 
+		/// <param name="handler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("performRequestWithHandler:")]
 		[Async (ResultTypeName = "TWRequestResult")]
 		void PerformRequest (TWRequestHandler handler);
@@ -97,18 +105,36 @@ namespace Twitter {
 		[Export ("canSendTweet")]
 		bool CanSendTweet { get; }
 
+		/// <param name="text">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("setInitialText:")]
 		bool SetInitialText (string text);
 
+		/// <param name="image">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("addImage:")]
 		bool AddImage (UIImage image);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeAllImages")]
 		bool RemoveAllImages ();
 
+		/// <param name="url">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("addURL:")]
 		bool AddUrl (NSUrl url);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeAllURLs")]
 		bool RemoveAllUrls ();
 	}

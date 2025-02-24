@@ -692,16 +692,60 @@ namespace Foundation {
 			GC.KeepAlive (obj);
 		}
 
+		/// <param name="sel">Selector to invoke</param>
+		///         <param name="obj">Object in which the selector is invoked</param>
+		///         <summary>Invokes asynchrously the specified code on the main UI thread.</summary>
+		///         <remarks>
+		///           <para>
+		/// 	    You use this method from a thread to invoke the code in
+		/// 	    the specified object that is exposed with the specified
+		/// 	    selector in the UI thread.  This is required for most
+		/// 	    operations that affect UIKit or AppKit as neither one of
+		/// 	    those APIs is thread safe.
+		/// 	  </para>
+		///           <para>
+		/// 	    The code is executed when the main thread goes back to its
+		/// 	    main loop for processing events.
+		/// 	  </para>
+		///           <para>
+		/// 	    Unlike <see cref="M:Foundation.NSObject.InvokeOnMainThread(ObjCRuntime.Selector,Foundation.NSObject)" />
+		/// 	    this method merely queues the invocation and returns
+		/// 	    immediately to the caller.
+		/// 	  </para>
+		///         </remarks>
 		public void BeginInvokeOnMainThread (Selector sel, NSObject obj)
 		{
 			InvokeOnMainThread (sel, obj, false);
 		}
 
+		/// <param name="sel">Selector to invoke</param>
+		///         <param name="obj">Object in which the selector is invoked</param>
+		///         <summary>Invokes synchrously the specified code on the main UI thread.</summary>
+		///         <remarks>
+		///           <para>
+		/// 	    You use this method from a thread to invoke the code in
+		/// 	    the specified object that is exposed with the specified
+		/// 	    selector in the UI thread.  This is required for most
+		/// 	    operations that affect UIKit or AppKit as neither one of
+		/// 	    those APIs is thread safe.
+		/// 	  </para>
+		///           <para>
+		/// 	    The code is executed when the main thread goes back to its
+		/// 	    main loop for processing events.
+		/// 	  </para>
+		///           <para>
+		/// 	    Unlike <see cref="M:Foundation.NSObject.BeginInvokeOnMainThread(ObjCRuntime.Selector,Foundation.NSObject)" />
+		/// 	    this method waits for the main thread to execute the method, and does not return until the code pointed by action has completed.
+		/// 	  </para>
+		///         </remarks>
 		public void InvokeOnMainThread (Selector sel, NSObject obj)
 		{
 			InvokeOnMainThread (sel, obj, true);
 		}
 
+		/// <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void BeginInvokeOnMainThread (Action action)
 		{
 			var d = new NSAsyncActionDispatcher (action);
@@ -718,6 +762,9 @@ namespace Foundation {
 			GC.KeepAlive (d);
 		}
 
+		/// <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void InvokeOnMainThread (Action action)
 		{
 			using (var d = new NSActionDispatcher (action)) {
@@ -734,6 +781,7 @@ namespace Foundation {
 			}
 		}
 
+		/// <include file="../../docs/api/Foundation/NSObject.xml" path="/Documentation/Docs[@DocId='M:Foundation.NSObject.FromObject(System.Object)']/*" />
 		public static NSObject FromObject (object obj)
 		{
 			if (obj is null)
@@ -829,6 +877,9 @@ namespace Foundation {
 		// if IsDirectBinding is false then we _likely_ have managed state and it's up to the subclass to provide
 		// a correct implementation of GetHashCode / Equals. We default to Object.GetHashCode (like classic)
 
+		/// <summary>Generates a hash code for the current instance.</summary>
+		///         <returns>A int containing the hash code for this instance.</returns>
+		///         <remarks>The algorithm used to generate the hash code is unspecified.</remarks>
 		public override int GetHashCode ()
 		{
 			if (!IsDirectBinding)
@@ -837,6 +888,10 @@ namespace Foundation {
 			return GetNativeHash ().GetHashCode ();
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object obj)
 		{
 			var o = obj as NSObject;
@@ -853,8 +908,17 @@ namespace Foundation {
 		}
 
 		// IEquatable<T>
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (NSObject obj) => Equals ((object) obj);
 
+		/// <summary>Returns a string representation of the value of the current instance.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			if (disposed)
@@ -862,12 +926,20 @@ namespace Foundation {
 			return Description ?? base.ToString ();
 		}
 
+		/// <param name="action">To be added.</param>
+		///         <param name="delay">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public virtual void Invoke (Action action, double delay)
 		{
 			var d = new NSAsyncActionDispatcher (action);
 			d.PerformSelector (NSDispatcher.Selector, null, delay);
 		}
 
+		/// <param name="action">To be added.</param>
+		///         <param name="delay">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public virtual void Invoke (Action action, TimeSpan delay)
 		{
 			var d = new NSAsyncActionDispatcher (action);
@@ -879,6 +951,7 @@ namespace Foundation {
 			handle = NativeHandle.Zero;
 		}
 
+		/// <include file="../../docs/api/Foundation/NSObject.xml" path="/Documentation/Docs[@DocId='M:Foundation.NSObject.Dispose(System.Boolean)']/*" />
 		protected virtual void Dispose (bool disposing)
 		{
 			if (disposed)
@@ -1019,11 +1092,13 @@ namespace Foundation {
 			}
 		}
 
+		/// <include file="../../docs/api/Foundation/NSObject.xml" path="/Documentation/Docs[@DocId='M:Foundation.NSObject.AddObserver(System.String,Foundation.NSKeyValueObservingOptions,System.Action{Foundation.NSObservedChange})']/*" />
 		public IDisposable AddObserver (string key, NSKeyValueObservingOptions options, Action<NSObservedChange> observer)
 		{
 			return AddObserver (new NSString (key), options, observer);
 		}
 
+		/// <include file="../../docs/api/Foundation/NSObject.xml" path="/Documentation/Docs[@DocId='M:Foundation.NSObject.AddObserver(Foundation.NSString,Foundation.NSKeyValueObservingOptions,System.Action{Foundation.NSObservedChange})']/*" />
 		public IDisposable AddObserver (NSString key, NSKeyValueObservingOptions options, Action<NSObservedChange> observer)
 		{
 			var o = new Observer (this, key, observer);
@@ -1031,6 +1106,10 @@ namespace Foundation {
 			return o;
 		}
 
+		/// <param name="kls">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static NSObject Alloc (Class kls)
 		{
@@ -1039,6 +1118,8 @@ namespace Foundation {
 			return new NSObject (h, true);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public void Init ()
 		{
@@ -1048,6 +1129,9 @@ namespace Foundation {
 			handle = Messaging.IntPtr_objc_msgSend (handle, Selector.GetHandle ("init"));
 		}
 
+		/// <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void InvokeInBackground (Action action)
 		{
 			// using the parameterized Thread.Start to avoid capturing

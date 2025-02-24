@@ -24,6 +24,10 @@ namespace SystemConfiguration {
 		[DllImport (Constants.SystemConfigurationLibrary)]
 		extern static IntPtr /* const char* */ SCErrorString (int code);
 
+		/// <param name="statusCode">To be added.</param>
+		///         <summary>Description for the status code.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string? GetErrorDescription (StatusCode statusCode)
 		{
 			var ptr = SCErrorString ((int) statusCode);

@@ -680,6 +680,10 @@ namespace FileProvider {
 		[Export ("defaultManager", ArgumentSemantic.Strong)]
 		NSFileProviderManager DefaultManager { get; }
 
+		/// <param name="containerItemIdentifier">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("signalEnumeratorForContainerItemIdentifier:completionHandler:")]
 		// Not Async'ified on purpose, because this can switch from app to extension.
 		void SignalEnumerator (string containerItemIdentifier, Action<NSError> completion);

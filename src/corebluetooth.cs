@@ -1263,6 +1263,9 @@ namespace CoreBluetooth {
 	// `delloc` a default instance crash applications and a default instance, without the ability to change the UUID, does not make sense
 	[DisableDefaultCtor]
 	interface CBCentral : NSCopying {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]

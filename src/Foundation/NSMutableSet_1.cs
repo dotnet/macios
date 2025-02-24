@@ -87,6 +87,9 @@ namespace Foundation {
 		{
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMutableSet (NSMutableSet<TKey> other)
 			: base (other)
 		{
@@ -99,6 +102,10 @@ namespace Foundation {
 
 		// Strongly typed versions of API from NSSet
 
+		/// <param name="probe">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public TKey LookupMember (TKey probe)
 		{
 			if (probe is null)
@@ -118,6 +125,10 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Contains (TKey obj)
 		{
 			if (obj is null)
@@ -128,6 +139,9 @@ namespace Foundation {
 			return result;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public TKey [] ToArray ()
 		{
 			return base.ToArray<TKey> ();
@@ -156,6 +170,9 @@ namespace Foundation {
 		}
 
 		// Strongly typed versions of API from NSMutableSet
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Add (TKey obj)
 		{
 			if (obj is null)
@@ -165,6 +182,9 @@ namespace Foundation {
 			GC.KeepAlive (obj);
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Remove (TKey obj)
 		{
 			if (obj is null)
@@ -174,6 +194,9 @@ namespace Foundation {
 			GC.KeepAlive (obj);
 		}
 
+		/// <param name="objects">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void AddObjects (params TKey [] objects)
 		{
 			if (objects is null)
@@ -197,6 +220,9 @@ namespace Foundation {
 		#endregion
 
 		#region IEnumerable implementation
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return new NSFastEnumerator<TKey> (this);

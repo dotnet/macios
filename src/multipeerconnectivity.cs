@@ -64,6 +64,16 @@ namespace MultipeerConnectivity {
 		[Export ("initWithPeer:securityIdentity:encryptionPreference:")]
 		IntPtr Init (MCPeerID myPeerID, [NullAllowed] NSArray identity, MCEncryptionPreference encryptionPreference);
 
+		/// <param name="data">To be added.</param>
+		///         <param name="peerIDs">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Enqueues for delivery the <paramref name="data" /> to the peers in <paramref name="peerIDs" />.</summary>
+		///         <returns>
+		///           <see langword="true" /> if the message was enqueued for delivery.</returns>
+		///         <remarks>
+		///           <para>Note that the return value only indicates successful enqueueing of the data for transmission, not a confirmation of delivery.</para>
+		///         </remarks>
 		[Export ("sendData:toPeers:withMode:error:")]
 		bool SendData (NSData data, MCPeerID [] peerIDs, MCSessionSendDataMode mode, out NSError error);
 
@@ -78,11 +88,30 @@ namespace MultipeerConnectivity {
 		[Export ("connectedPeers")]
 		MCPeerID [] ConnectedPeers { get; }
 
+		/// <param name="resourceUrl">The URL to the resource.</param>
+		///         <param name="resourceName">The name of the resource.</param>
+		///         <param name="peerID">The ID of the receiving peer.</param>
+		///         <param name="completionHandler">
+		///           <para>A handler that is run after delivery or failure.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Enqueues for delivery to <paramref name="peerID" /> the resource at <paramref name="resourceUrl" />.</summary>
+		///         <returns>
+		///           <see langword="true" /> if the resource was enqueued for delivery.</returns>
+		///         <remarks>
+		///           <para>Note that the return value only indicates successful enqueueing of the resource for transmission, not a confirmation of delivery. Delivery success or failure is passed in to the <paramref name="completionHandler" />.</para>
+		///         </remarks>
 		[Async]
 		[return: NullAllowed]
 		[Export ("sendResourceAtURL:withName:toPeer:withCompletionHandler:")]
 		NSProgress SendResource (NSUrl resourceUrl, string resourceName, MCPeerID peerID, [NullAllowed] Action<NSError> completionHandler);
 
+		/// <param name="streamName">To be added.</param>
+		///         <param name="peerID">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Creates a named stream to <paramref name="peerID" />.</summary>
+		///         <returns>A byte stream or <see langword="null" /> if the stream could not be created.</returns>
+		///         <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("startStreamWithName:toPeer:error:")]
 		NSOutputStream StartStream (string streamName, MCPeerID peerID, out NSError error);
@@ -144,6 +173,7 @@ namespace MultipeerConnectivity {
 
 		#region Custom Discovery Category
 
+		/// <include file="../docs/api/MultipeerConnectivity/MCSession.xml" path="/Documentation/Docs[@DocId='M:MultipeerConnectivity.MCSession.NearbyConnectionDataForPeer(MultipeerConnectivity.MCPeerID,MultipeerConnectivity.MCSessionNearbyConnectionDataForPeerCompletionHandler)']/*" />
 		[Async]
 		[Export ("nearbyConnectionDataForPeer:withCompletionHandler:")]
 		void NearbyConnectionDataForPeer (MCPeerID peerID, MCSessionNearbyConnectionDataForPeerCompletionHandler completionHandler);

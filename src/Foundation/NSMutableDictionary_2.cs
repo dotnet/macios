@@ -228,6 +228,10 @@ namespace Foundation {
 
 		// Strongly typed methods from NSMutableDictionary
 
+		/// <param name="key">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Add (TKey key, TValue value)
 		{
 			if (key is null)
@@ -241,6 +245,10 @@ namespace Foundation {
 			GC.KeepAlive (key);
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Remove (TKey key)
 		{
 			if (key is null)
@@ -252,11 +260,20 @@ namespace Foundation {
 			return last != Count;
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryGetValue (TKey key, out TValue value)
 		{
 			return (value = ObjectForKey (key)) is not null;
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool ContainsKey (TKey key)
 		{
 			return ObjectForKey (key) is not null;
@@ -314,6 +331,11 @@ namespace Foundation {
 				return GenericFromObjectsAndKeysInternal (no, nk);
 		}
 
+		/// <param name="objects">To be added.</param>
+		///         <param name="keys">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSMutableDictionary<TKey, TValue> FromObjectsAndKeys (object [] objects, object [] keys)
 		{
 			if (objects is null)
@@ -483,6 +505,9 @@ namespace Foundation {
 		#endregion
 
 		#region IEnumerable
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return ((IEnumerable<KeyValuePair<TKey, TValue>>) this).GetEnumerator ();

@@ -18,6 +18,9 @@ namespace Foundation {
 #endif
 
 #if MONOMAC
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public virtual Task<CloudKitRegistrationPreparationHandler> RegisterCloudKitShareAsync ()
 		{
 			var tcs = new TaskCompletionSource<CloudKitRegistrationPreparationHandler> ();

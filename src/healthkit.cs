@@ -679,6 +679,14 @@ namespace HealthKit {
 		[return: NullAllowed]
 		HKCdaDocumentSample Create (NSData documentData, NSDate startDate, NSDate endDate, [NullAllowed] NSDictionary metadata, out NSError validationError);
 
+		/// <param name="documentData">To be added.</param>
+		///         <param name="startDate">To be added.</param>
+		///         <param name="endDate">To be added.</param>
+		///         <param name="metadata">To be added.</param>
+		///         <param name="validationError">To be added.</param>
+		///         <summary>Creates a new <see cref="T:HealthKit.HKCdaDocumentSample" /> with the specified values.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Wrap ("Create (documentData, startDate, endDate, metadata.GetDictionary (), out validationError)")]
 		[return: NullAllowed]
 		HKCdaDocumentSample Create (NSData documentData, NSDate startDate, NSDate endDate, HKMetadata metadata, out NSError validationError);
@@ -730,6 +738,14 @@ namespace HealthKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)] // this is not the one we want to be seen (compat only)
 		HKCorrelation Create (HKCorrelationType correlationType, NSDate startDate, NSDate endDate, NSSet objects, [NullAllowed] NSDictionary metadata);
 
+		/// <param name="correlationType">To be added.</param>
+		///         <param name="startDate">To be added.</param>
+		///         <param name="endDate">To be added.</param>
+		///         <param name="objects">To be added.</param>
+		///         <param name="metadata">To be added.</param>
+		///         <summary>Creates a correlation between <paramref name="objects" /> for the supplied date range.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Wrap ("Create (correlationType, startDate, endDate, objects, metadata.GetDictionary ())")]
 		HKCorrelation Create (HKCorrelationType correlationType, NSDate startDate, NSDate endDate, NSSet objects, HKMetadata metadata);
 
@@ -1781,6 +1797,10 @@ namespace HealthKit {
 		NSString Identifier { get; }
 
 #if NET
+		/// <param name="hkTypeIdentifier">To be added.</param>
+		///         <summary>Returns the quantity type of <paramref name="hkTypeIdentifier" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Internal]
 #else
 		[Obsolete ("Use 'HKQuantityType.Create (HKQuantityTypeIdentifier)'.")]
@@ -1791,6 +1811,10 @@ namespace HealthKit {
 		HKQuantityType GetQuantityType ([NullAllowed] NSString hkTypeIdentifier);
 
 #if NET
+		/// <param name="hkCategoryTypeIdentifier">To be added.</param>
+		///         <summary>Returns the category type for <paramref name="hkCategoryTypeIdentifier" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Internal]
 #else
 		[Obsolete ("Use 'HKCategoryType.Create (HKCategoryTypeIdentifier)'.")]
@@ -1801,6 +1825,10 @@ namespace HealthKit {
 		HKCategoryType GetCategoryType ([NullAllowed] NSString hkCategoryTypeIdentifier);
 
 #if NET
+		/// <param name="hkCharacteristicTypeIdentifier">To be added.</param>
+		///         <summary>Returns the characteristic type of <paramref name="hkCharacteristicTypeIdentifier" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Internal]
 #else
 		[Obsolete ("Use 'HKCharacteristicType.Create (HKCharacteristicTypeIdentifier)'.")]
@@ -1811,6 +1839,10 @@ namespace HealthKit {
 		HKCharacteristicType GetCharacteristicType ([NullAllowed] NSString hkCharacteristicTypeIdentifier);
 
 #if NET
+		/// <param name="hkCorrelationTypeIdentifier">To be added.</param>
+		///         <summary>Returns the correlation type of <paramref name="hkCorrelationTypeIdentifier" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Internal]
 #else
 		[Obsolete ("Use 'HKCorrelationType.Create (HKCorrelationTypeIdentifier)'.")]
@@ -1851,6 +1883,10 @@ namespace HealthKit {
 		[return: NullAllowed]
 		HKClinicalType GetClinicalType (NSString identifier);
 
+		/// <param name="identifier">To be added.</param>
+		///         <summary>Returns the clinical type of the <paramref name="identifier" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetClinicalType (identifier.GetConstant ()!)")]
@@ -2058,6 +2094,14 @@ namespace HealthKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)] // this is not the one we want to be seen (compat only)
 		HKQuantitySample FromType (HKQuantityType quantityType, HKQuantity quantity, NSDate startDate, NSDate endDate, [NullAllowed] NSDictionary metadata);
 
+		/// <param name="quantityType">To be added.</param>
+		///         <param name="quantity">To be added.</param>
+		///         <param name="startDate">To be added.</param>
+		///         <param name="endDate">To be added.</param>
+		///         <param name="metadata">To be added.</param>
+		///         <summary>Creates a new HKQuantitySample, using a stronglty typed HKMetadata for the metadata.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("FromType (quantityType, quantity, startDate, endDate, metadata.GetDictionary ())")]
 		HKQuantitySample FromType (HKQuantityType quantityType, HKQuantity quantity, NSDate startDate, NSDate endDate, HKMetadata metadata);
@@ -2232,6 +2276,10 @@ namespace HealthKit {
 		[Export ("predicateForClinicalRecordsWithFHIRResourceType:")]
 		NSPredicate GetPredicateForClinicalRecords (NSString resourceType);
 
+		/// <param name="resourceType">The resource type for which to generate a query predicate.</param>
+		///         <summary>Creates and returns a predicate for a Fast Healthcare Interoperability Resources record of the specified resource type.</summary>
+		///         <returns>A predicate for a Fast Healthcare Interoperability Resources record of the specified resource type.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetPredicateForClinicalRecords (resourceType.GetConstant ()!)")]
@@ -2242,6 +2290,12 @@ namespace HealthKit {
 		[Export ("predicateForClinicalRecordsFromSource:FHIRResourceType:identifier:")]
 		NSPredicate GetPredicateForClinicalRecords (HKSource source, string resourceType, string identifier);
 
+		/// <param name="source">The HealthKit source for the predicate.</param>
+		///         <param name="resourceType">The resource type for which to generate a query predicate.</param>
+		///         <param name="identifier">The record identifier.</param>
+		///         <summary>Creates and returns a predicate for a Fast Healthcare Interoperability Resources record for the specified query parameters.</summary>
+		///         <returns>A predicate for a Fast Healthcare Interoperability Resources record oor the specified query parameters.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetPredicateForClinicalRecords (source, resourceType.GetConstant (), identifier)")]
@@ -4952,6 +5006,10 @@ namespace HealthKit {
 		[Export ("finishSeriesWithMetadata:completion:")]
 		void FinishSeries ([NullAllowed] NSDictionary metadata, HKQuantitySeriesSampleBuilderFinishSeriesDelegate completionHandler);
 
+		/// <param name="metadata">The metadata to add to the series.</param>
+		///         <param name="completionHandler">A handler to run when the operation completes.</param>
+		///         <summary>Finishes and saves the series.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Wrap ("FinishSeries (metadata.GetDictionary (), completionHandler)")]
 		void FinishSeries ([NullAllowed] HKMetadata metadata, HKQuantitySeriesSampleBuilderFinishSeriesDelegate completionHandler);

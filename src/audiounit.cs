@@ -799,10 +799,22 @@ namespace AudioUnit {
 		bool SetBusCount (nuint count, [NullAllowed] out NSError outError);
 
 		// -(void)addObserverToAllBusses:(NSObject * __nonnull)observer forKeyPath:(NSString * __nonnull)keyPath options:(NSKeyValueObservingOptions)options context:(void * __nullable)context;
+		/// <param name="observer">The KVO observer to add to all buses in the array.</param>
+		///         <param name="keyPath">The object-relative keypath that identifies the property to observe.</param>
+		///         <param name="options">The observing options for the observer.</param>
+		///         <param name="context">An object or value that is used to disambiguate observer calls.</param>
+		///         <summary>Adds a key-value observer to every bus in the array.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addObserverToAllBusses:forKeyPath:options:context:")]
 		void AddObserver (NSObject observer, string keyPath, NSKeyValueObservingOptions options, /* void * */ IntPtr context);
 
 		// -(void)removeObserverFromAllBusses:(NSObject * __nonnull)observer forKeyPath:(NSString * __nonnull)keyPath context:(void * __nullable)context;
+		/// <param name="observer">The KVO observer to remove from all buses in the array.</param>
+		///         <param name="keyPath">The object-relative keypath that identifies the observer to remove.</param>
+		///         <param name="context">The object or value that was used to disambiguate observer calls.</param>
+		///         <summary>Removes the specified key-value observer from every bus in the array.</summary>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeObserverFromAllBusses:forKeyPath:context:")]
 		void RemoveObserver (NSObject observer, string keyPath, /* void * */ IntPtr context);
 
@@ -819,6 +831,9 @@ namespace AudioUnit {
 		AUAudioUnitBusType BusType { get; }
 
 		//AUAudioUnitBusImplementation
+		/// <param name="busArray">An array of buses to copy into this bus array.</param>
+		///         <summary>Copies <paramref name="busArray" /> into this bus array, replacing the current buses in this array.</summary>
+		///         <remarks>This method is applicable only to subclasses of <see cref="T:AudioUnit.AUAudioUnit" />.</remarks>
 		[Export ("replaceBusses:")]
 		void ReplaceBusses (AUAudioUnitBus [] busArray);
 	}

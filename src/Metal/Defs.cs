@@ -279,6 +279,10 @@ namespace Metal {
 		///         <remarks>To be added.</remarks>
 		public MTLSize Size;
 
+		/// <param name="origin">To be added.</param>
+		///         <param name="size">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MTLRegion (MTLOrigin origin, MTLSize size)
 		{
 			Origin = origin;
@@ -358,6 +362,9 @@ namespace Metal {
 		[FieldOffset (0)]
 		public ulong Stencil;
 
+		/// <param name="color">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MTLClearValue (MTLClearColor color)
 		{
 			Depth = 0;
@@ -365,6 +372,9 @@ namespace Metal {
 			Color = color;
 		}
 
+		/// <param name="depth">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MTLClearValue (double depth)
 		{
 			Color.Red = 0;
@@ -376,6 +386,9 @@ namespace Metal {
 			Color.Alpha = 0;
 		}
 
+		/// <param name="stencil">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MTLClearValue (ulong stencil)
 		{
 			Color.Red = 0;
@@ -524,6 +537,12 @@ namespace Metal {
 		///         <remarks>To be added.</remarks>
 		public uint BaseInstance;
 
+		/// <param name="pathCount">To be added.</param>
+		///         <param name="instanceCount">To be added.</param>
+		///         <param name="patchStart">To be added.</param>
+		///         <param name="baseInstance">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MTLDrawPatchIndirectArguments (uint pathCount, uint instanceCount, uint patchStart, uint baseInstance)
 		{
 			PatchCount = pathCount;
@@ -584,6 +603,10 @@ namespace Metal {
 		public ushort [] InsideTessellationFactor;
 #endif
 
+		/// <param name="edgeTessellationFactor">To be added.</param>
+		///         <param name="insideTessellationFactor">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MTLQuadTessellationFactorsHalf (ushort [] edgeTessellationFactor, ushort [] insideTessellationFactor)
 		{
 			if (edgeTessellationFactor.Length > 4)
@@ -639,6 +662,10 @@ namespace Metal {
 		///         <remarks>To be added.</remarks>
 		public ushort InsideTessellationFactor;
 
+		/// <param name="edgeTessellationFactor">To be added.</param>
+		///         <param name="insideTessellationFactor">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MTLTriangleTessellationFactorsHalf (ushort [] edgeTessellationFactor, ushort insideTessellationFactor)
 		{
 			if (edgeTessellationFactor.Length > 3)

@@ -1070,15 +1070,24 @@ namespace GLKit {
 		[Export ("initWithFrame:context:")]
 		NativeHandle Constructor (CGRect frame, EAGLContext context);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("bindDrawable")]
 		void BindDrawable ();
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("snapshot")]
 		UIImage Snapshot ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("display")]
 		void Display ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("deleteDrawable")]
 		void DeleteDrawable ();
 	}
@@ -1193,6 +1202,7 @@ namespace GLKit {
 		IGLKViewControllerDelegate Delegate { get; set; }
 
 		// Pseudo-documented, if the user overrides it, call this instead of the delegate method
+		/// <include file="../docs/api/GLKit/GLKViewController.xml" path="/Documentation/Docs[@DocId='M:GLKit.GLKViewController.Update']/*" />
 		[Export ("update")]
 		void Update ();
 	}

@@ -71,6 +71,9 @@ namespace GameController {
 		unsafe static extern /* NSData * __nullable */ IntPtr NSDataFromGCMicroGamepadSnapShotDataV100 (
 			/* __nullable */ GCMicroGamepadSnapShotDataV100* snapshotData);
 
+		/// <summary>Converts the snapshot to an <see cref="T:Foundation.NSData" /> object.</summary>
+		///         <returns>An <see cref="T:Foundation.NSData" /> object that contains the snapshot data.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSData? ToNSData ()
 		{
 			unsafe {

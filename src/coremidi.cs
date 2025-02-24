@@ -497,9 +497,17 @@ namespace CoreMidi {
 		[Export ("contacts")]
 		NSSet Contacts { get; }
 
+		/// <param name="contact">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("addContact:")]
 		bool AddContact (MidiNetworkHost contact);
 
+		/// <param name="contact">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeContact:")]
 		bool RemoveContact (MidiNetworkHost contact);
 
@@ -509,9 +517,17 @@ namespace CoreMidi {
 		[Export ("connections")]
 		NSSet Connections { get; }
 
+		/// <param name="connection">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("addConnection:")]
 		bool AddConnection (MidiNetworkConnection connection);
 
+		/// <param name="connection">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeConnection:")]
 		bool RemoveConnection (MidiNetworkConnection connection);
 

@@ -67,21 +67,45 @@ namespace ScriptingBridge {
 		[Export ("initWithCapacity:")]
 		NativeHandle Constructor (nuint capacity);
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("objectWithName:")]
 		NSObject ObjectWithName (string name);
 
+		/// <param name="identifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("objectWithID:")]
 		NSObject ObjectWithID (NSObject identifier);
 
+		/// <param name="location">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("objectAtLocation:")]
 		NSObject ObjectAtLocation (NSObject location);
 
+		/// <param name="selector">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("arrayByApplyingSelector:")]
 		NSObject [] ArrayByApplyingSelector (Selector selector);
 
+		/// <param name="aSelector">To be added.</param>
+		///         <param name="argument">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("arrayByApplyingSelector:withObject:")]
 		NSObject [] ArrayByApplyingSelector (Selector aSelector, NSObject argument);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("get")]
 		NSObject [] Get ();
 	}
@@ -137,6 +161,10 @@ namespace ScriptingBridge {
 		[Export ("applicationWithProcessIdentifier:")]
 		IntPtr _FromProcessIdentifier (int /* pid_t = int */ pid);
 
+		/// <param name="className">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("classForScriptingClass:")]
 		Class ClassForScripting (string className);
 
@@ -146,6 +174,8 @@ namespace ScriptingBridge {
 		[Export ("isRunning")]
 		bool IsRunning { get; }
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("activate")]
 		void Activate ();
 

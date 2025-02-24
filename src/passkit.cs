@@ -114,12 +114,24 @@ namespace PassKit {
 		[Export ("isPassLibraryAvailable")]
 		bool IsAvailable { get; }
 
+		/// <param name="pass">To be added.</param>
+		///         <summary>Whether the specified <paramref name="pass" /> is available.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("containsPass:")]
 		bool Contains (PKPass pass);
 
+		/// <summary>The passes in the user's pass library.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("passes")]
 		PKPass [] GetPasses ();
 
+		/// <param name="identifier">To be added.</param>
+		///         <param name="serialNumber">To be added.</param>
+		///         <summary>Returns the  <see cref="T:PassKit.PKPass" /> whose <see cref="P:PassKit.PKPass.PassTypeIdentifier" /> and <see cref="P:PassKit.PKPass.SerialNumber" /> match the arguments.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("passWithPassTypeIdentifier:serialNumber:")]
 		[return: NullAllowed]
 		PKPass GetPass (string identifier, string serialNumber);
@@ -128,16 +140,35 @@ namespace PassKit {
 		[Export ("passesWithReaderIdentifier:")]
 		NSSet<PKSecureElementPass> GetPasses (string readerIdentifier);
 
+		/// <param name="passType">To be added.</param>
+		///         <summary>The passes in the user's pass library whose <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Pass%20Kit%20PKPass%20Type%20Pass%20Type&amp;scope=Xamarin" title="P:PassKit.PKPassType.PassType">P:PassKit.PKPassType.PassType</a></format> matches <paramref name="passType" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("passesOfType:")]
 		PKPass [] GetPasses (PKPassType passType);
 
+		/// <param name="pass">To be added.</param>
+		///         <summary>Removes the specified <paramref name="pass" /> from the pass library.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removePass:")]
 		void Remove (PKPass pass);
 
+		/// <param name="pass">To be added.</param>
+		///         <summary>Replaces an existing pass with <paramref name="pass" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
+		///         <!-- Huh? How do it know which one to replace? -->
 		[Export ("replacePassWithPass:")]
 		bool Replace (PKPass pass);
 
+		/// <param name="passes">To be added.</param>
+		///         <param name="completion">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Presents a standard UX for adding multiple passes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addPasses:withCompletionHandler:")]
 		[Async]
 		void AddPasses (PKPass [] passes, [NullAllowed] Action<PKPassLibraryAddPassesStatus> completion);
@@ -178,6 +209,14 @@ namespace PassKit {
 		[Export ("secureElementPassActivationAvailable")]
 		bool SecureElementPassActivationAvailable { [Bind ("isSecureElementPassActivationAvailable")] get; }
 
+		/// <param name="paymentPass">To be added.</param>
+		///         <param name="activationData">To be added.</param>
+		///         <param name="completion">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Activates the specified <paramref name="paymentPass" /> with the activation code in <paramref name="activationData" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 4, message: "Use 'ActivateSecureElementPass' instead.")]
 		[MacCatalyst (13, 1)]
@@ -192,6 +231,14 @@ namespace PassKit {
 		[Export ("activateSecureElementPass:withActivationData:completion:")]
 		void ActivateSecureElementPass (PKSecureElementPass secureElementPass, NSData activationData, [NullAllowed] Action<bool, NSError> completion);
 
+		/// <param name="paymentPass">To be added.</param>
+		///         <param name="activationCode">To be added.</param>
+		///         <param name="completion">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Activates the specified <paramref name="paymentPass" /> with the activation code in <paramref name="activationCode" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'ActivatePaymentPass (PKPaymentPass, NSData, Action<bool, NSError> completion)' instead.")]
 		[MacCatalyst (13, 1)]
@@ -200,10 +247,16 @@ namespace PassKit {
 		[Export ("activatePaymentPass:withActivationCode:completion:")]
 		void ActivatePaymentPass (PKPaymentPass paymentPass, string activationCode, [NullAllowed] Action<bool, NSError> completion);
 
+		/// <summary>Presents to the user the standard interface to set up credit cards for use with Apple Pay.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("openPaymentSetup")]
 		void OpenPaymentSetup ();
 
+		/// <param name="primaryAccountIdentifier">To be added.</param>
+		///         <summary>Whether the app can add a card to Apple Pay for <paramref name="primaryAccountIdentifier" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 4, message: "Use 'CanAddSecureElementPass' instead.")]
 		[MacCatalyst (13, 1)]
@@ -251,11 +304,18 @@ namespace PassKit {
 		[Export ("remoteSecureElementPasses", ArgumentSemantic.Copy)]
 		PKSecureElementPass [] RemoteSecureElementPasses { get; }
 
+		/// <param name="responseHandler">To be added.</param>
+		///         <summary>Stops the device from automatically presenting Apply Pay.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("requestAutomaticPassPresentationSuppressionWithResponseHandler:")]
 		nuint RequestAutomaticPassPresentationSuppression (Action<PKAutomaticPassPresentationSuppressionResult> responseHandler);
 
+		/// <param name="pass">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 4, message: "Use 'PresentSecureElementPass' instead.")]
 		[MacCatalyst (13, 1)]
@@ -410,6 +470,11 @@ namespace PassKit {
 	[BaseType (typeof (NSObject))]
 	interface PKPaymentAuthorizationViewControllerDelegate {
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="payment">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>Developers should not use this deprecated method. Developers should use 'DidAuthorizePayment2' instead.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'DidAuthorizePayment2' instead.")]
 		[MacCatalyst (13, 1)]
@@ -421,15 +486,28 @@ namespace PassKit {
 #endif
 		void DidAuthorizePayment (PKPaymentAuthorizationViewController controller, PKPayment payment, Action<PKPaymentAuthorizationStatus> completion);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="payment">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("paymentAuthorizationViewController:didAuthorizePayment:handler:")]
 		[EventArgs ("PKPaymentAuthorizationResult")]
 		void DidAuthorizePayment2 (PKPaymentAuthorizationViewController controller, PKPayment payment, Action<PKPaymentAuthorizationResult> completion);
 
+		/// <param name="controller">To be added.</param>
+		///         <summary>Indicates the payment authorization has completed.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("paymentAuthorizationViewControllerDidFinish:")]
 		[Abstract]
 		void PaymentAuthorizationViewControllerDidFinish (PKPaymentAuthorizationViewController controller);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="shippingMethod">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>Indicates the user selected a shippingmethod.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'DidSelectShippingMethod2' instead.")]
 		[MacCatalyst (13, 1)]
@@ -438,6 +516,11 @@ namespace PassKit {
 		[EventArgs ("PKPaymentShippingMethodSelected")]
 		void DidSelectShippingMethod (PKPaymentAuthorizationViewController controller, PKShippingMethod shippingMethod, PKPaymentShippingMethodSelected completion);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="shippingMethod">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("paymentAuthorizationViewController:didSelectShippingMethod:handler:")]
 		[EventArgs ("PKPaymentRequestShippingMethodUpdate")]
@@ -451,6 +534,9 @@ namespace PassKit {
 		[EventArgs ("PKPaymentShippingAddressSelected")]
 		void DidSelectShippingAddress (PKPaymentAuthorizationViewController controller, ABRecord address, PKPaymentShippingAddressSelected completion);
 
+		/// <param name="controller">To be added.</param>
+		///         <summary>Indicates that payment authorization will shortly begin.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("paymentAuthorizationViewControllerWillAuthorizePayment:")]
 #if !NET
@@ -458,6 +544,11 @@ namespace PassKit {
 #endif
 		void WillAuthorizePayment (PKPaymentAuthorizationViewController controller);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="contact">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>Called after the user has selected a shipping contact.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'DidSelectShippingContact' instead.")]
 		[MacCatalyst (13, 1)]
@@ -466,11 +557,21 @@ namespace PassKit {
 		[EventArgs ("PKPaymentSelectedContact")]
 		void DidSelectShippingContact (PKPaymentAuthorizationViewController controller, PKContact contact, PKPaymentShippingAddressSelected completion);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="contact">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("paymentAuthorizationViewController:didSelectShippingContact:handler:")]
 		[EventArgs ("PKPaymentRequestShippingContactUpdate")]
 		void DidSelectShippingContact2 (PKPaymentAuthorizationViewController controller, PKContact contact, Action<PKPaymentRequestShippingContactUpdate> completion);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="paymentMethod">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>Called after the user has selected a payment method.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'DidSelectPaymentMethod2' instead.")]
 		[MacCatalyst (13, 1)]
@@ -479,6 +580,11 @@ namespace PassKit {
 		[EventArgs ("PKPaymentMethodSelected")]
 		void DidSelectPaymentMethod (PKPaymentAuthorizationViewController controller, PKPaymentMethod paymentMethod, Action<PKPaymentSummaryItem []> completion);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="paymentMethod">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("paymentAuthorizationViewController:didSelectPaymentMethod:handler:")]
 		[EventArgs ("PKPaymentRequestPaymentMethodUpdate")]
@@ -539,9 +645,18 @@ namespace PassKit {
 		bool CanMakePayments { get; }
 
 		// These are the NSString constants
+		/// <param name="paymentNetworks">To be added.</param>
+		///         <summary>Whether the user can make payments in at least one of the specified <paramref name="paymentNetworks" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("canMakePaymentsUsingNetworks:")]
 		bool CanMakePaymentsUsingNetworks (NSString [] paymentNetworks);
 
+		/// <param name="supportedNetworks">To be added.</param>
+		///         <param name="capabilties">To be added.</param>
+		///         <summary>Whether the user can make payments in at least one of the specified networks with the specified capabilities.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("canMakePaymentsUsingNetworks:capabilities:")]
@@ -593,6 +708,11 @@ namespace PassKit {
 		[Export ("amount", ArgumentSemantic.Copy)]
 		NSDecimalNumber Amount { get; set; }
 
+		/// <param name="label">To be added.</param>
+		///         <param name="amount">To be added.</param>
+		///         <summary>Factory method to create a new <see cref="T:PassKit.PKPaymentSummaryItem" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("summaryItemWithLabel:amount:")]
 		PKPaymentSummaryItem Create (string label, NSDecimalNumber amount);
 
@@ -603,6 +723,12 @@ namespace PassKit {
 		[Export ("type", ArgumentSemantic.Assign)]
 		PKPaymentSummaryItemType Type { get; set; }
 
+		/// <param name="label">To be added.</param>
+		///         <param name="amount">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <summary>Creates and returns a new payment summary item with the specified data.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("summaryItemWithLabel:amount:type:")]
@@ -843,39 +969,85 @@ namespace PassKit {
 		[NullAllowed, Export ("supportedCountries", ArgumentSemantic.Copy)]
 		NSSet<NSString> SupportedCountries { get; set; }
 
+		/// <param name="field">To be added.</param>
+		///         <param name="localizedDescription">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("paymentContactInvalidErrorWithContactField:localizedDescription:")]
 		NSError CreatePaymentContactInvalidError (NSString field, [NullAllowed] string localizedDescription);
 
+		/// <param name="contactField">To be added.</param>
+		///         <param name="localizedDescription">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("CreatePaymentContactInvalidError (contactField.GetConstant ()!, localizedDescription)")]
 		NSError CreatePaymentContactInvalidError (PKContactFields contactField, [NullAllowed] string localizedDescription);
 
+		/// <param name="postalAddressKey">To be added.</param>
+		///         <param name="localizedDescription">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("paymentShippingAddressInvalidErrorWithKey:localizedDescription:")]
 		NSError CreatePaymentShippingAddressInvalidError (NSString postalAddressKey, [NullAllowed] string localizedDescription);
 
+		/// <param name="postalAddress">To be added.</param>
+		///         <param name="localizedDescription">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("CreatePaymentShippingAddressInvalidError (postalAddress.GetConstant ()!, localizedDescription)")]
 		NSError CreatePaymentShippingAddressInvalidError (CNPostalAddressKeyOption postalAddress, [NullAllowed] string localizedDescription);
 
+		/// <param name="postalAddressKey">To be added.</param>
+		///         <param name="localizedDescription">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("paymentBillingAddressInvalidErrorWithKey:localizedDescription:")]
 		NSError CreatePaymentBillingAddressInvalidError (NSString postalAddressKey, [NullAllowed] string localizedDescription);
 
+		/// <param name="postalAddress">To be added.</param>
+		///         <param name="localizedDescription">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("CreatePaymentBillingAddressInvalidError (postalAddress.GetConstant ()!, localizedDescription)")]
 		NSError CreatePaymentBillingAddressInvalidError (CNPostalAddressKeyOption postalAddress, [NullAllowed] string localizedDescription);
 
+		/// <param name="localizedDescription">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("paymentShippingAddressUnserviceableErrorWithLocalizedDescription:")]
@@ -1064,6 +1236,9 @@ namespace PassKit {
 	[Model]
 	[Protocol]
 	interface PKAddPassesViewControllerDelegate {
+		/// <param name="controller">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addPassesViewControllerDidFinish:")]
 		void Finished (PKAddPassesViewController controller);
 	}
@@ -1268,10 +1443,28 @@ namespace PassKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface PKAddPaymentPassViewControllerDelegate {
+		/// <param name="controller">To be added.</param>
+		///         <param name="certificates">To be added.</param>
+		///         <param name="nonce">To be added.</param>
+		///         <param name="nonceSignature">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>Called to create an "add payment" request.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("addPaymentPassViewController:generateRequestWithCertificateChain:nonce:nonceSignature:completionHandler:")]
 		void GenerateRequestWithCertificateChain (PKAddPaymentPassViewController controller, NSData [] certificates, NSData nonce, NSData nonceSignature, Action<PKAddPaymentPassRequest> handler);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="pass">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Called to prompt the user for an "add payment" request.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("addPaymentPassViewController:didFinishAddingPaymentPass:error:")]
 		void DidFinishAddingPaymentPass (PKAddPaymentPassViewController controller, [NullAllowed] PKPaymentPass pass, [NullAllowed] NSError error);
@@ -1356,6 +1549,10 @@ namespace PassKit {
 		[NullAllowed, Export ("webServiceURL", ArgumentSemantic.Copy)]
 		NSUrl WebServiceUrl { get; }
 
+		/// <param name="key">A value from <see cref="T:PassKit.PKPassLibraryUserInfoKey" />.</param>
+		///         <summary>Returns the localized value for the provided <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("localizedValueForFieldKey:")]
 		[return: NullAllowed]
 		NSObject GetLocalizedValue (NSString key); // TODO: Should be enum for PKPassLibraryUserInfoKey
@@ -1720,6 +1917,11 @@ namespace PassKit {
 	[DisableDefaultCtor]
 	interface PKPaymentButton {
 
+		/// <param name="buttonType">To be added.</param>
+		///         <param name="buttonStyle">To be added.</param>
+		///         <summary>Factory method to create a new <see cref="T:PassKit.PKPaymentButton" /> with the specified <see cref="T:PassKit.PKPaymentButtonType" /> and <see cref="T:PassKit.PKPaymentButtonStyle" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("buttonWithType:style:")]
 		// note: named like UIButton method
@@ -1746,6 +1948,10 @@ namespace PassKit {
 	[BaseType (typeof (UIButton))]
 	[DisableDefaultCtor]
 	interface PKAddPassButton {
+		/// <param name="addPassButtonStyle">To be added.</param>
+		///         <summary>Creates and returns a new button, with the specified button <paramref name="addPassButtonStyle" />, for adding passes to the Wallet.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("addPassButtonWithStyle:")]
 		PKAddPassButton Create (PKAddPassButtonStyle addPassButtonStyle);
@@ -1799,10 +2005,19 @@ namespace PassKit {
 		[Export ("canMakePayments")]
 		bool CanMakePayments { get; }
 
+		/// <param name="supportedNetworks">To be added.</param>
+		///         <summary>Gets a value that tells wether the user can make payments in at least one of the specified <paramref name="supportedNetworks" />.</summary>
+		///         <returns>A value that tells wether the user can make payments in at least one of the specified <paramref name="supportedNetworks" />.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("canMakePaymentsUsingNetworks:")]
 		bool CanMakePaymentsUsingNetworks (string [] supportedNetworks);
 
+		/// <param name="supportedNetworks">To be added.</param>
+		///         <param name="capabilties">To be added.</param>
+		///         <summary>Gets a value that tells wether the user can make payments in at least one of the specified <paramref name="supportedNetworks" /> with the specified <paramref name="capabilties" />.</summary>
+		///         <returns>A value that tells wether the user can make payments in at least one of the specified <paramref name="supportedNetworks" /> with the specified <paramref name="capabilties" />.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("canMakePaymentsUsingNetworks:capabilities:")]
 #if XAMCORE_5_0
@@ -1825,10 +2040,22 @@ namespace PassKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (PKPaymentRequest request);
 
+		/// <param name="completion">
+		///           <para>A handler that is called after the payment authorization UI is presented.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Presents the payment authorization UI and runs a handler after the sheet is displayed.</summary>
+		///         <remarks>The developer must use the <see cref="M:PassKit.PKPaymentAuthorizationController.Dismiss(System.Action)" /> method to dismiss the payment authorization UI.</remarks>
 		[Async]
 		[Export ("presentWithCompletion:")]
 		void Present ([NullAllowed] Action<bool> completion);
 
+		/// <param name="completion">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Dismisses the payment authorization UI and runs the specified completion handler.</summary>
+		///         <remarks>Developers call this method to dismiss the payment authorization UI, typically when they receive a call to the <see cref="M:PassKit.PKPaymentAuthorizationControllerDelegate.DidFinish(PassKit.PKPaymentAuthorizationController)" /> method.</remarks>
 		[Async]
 		[Export ("dismissWithCompletion:")]
 		void Dismiss ([NullAllowed] Action completion);
@@ -1871,6 +2098,11 @@ namespace PassKit {
 	[BaseType (typeof (NSObject))]
 	interface PKPaymentAuthorizationControllerDelegate {
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="payment">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>Developers should not use this deprecated method. Developers should use 'DidAuthorizePayment' overload with the 'Action&lt;PKPaymentAuthorizationResult&gt;' parameter instead.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'DidAuthorizePayment' overload with the 'Action<PKPaymentAuthorizationResult>' parameter instead.")]
 		[MacCatalyst (13, 1)]
@@ -1881,17 +2113,33 @@ namespace PassKit {
 		[Export ("paymentAuthorizationController:didAuthorizePayment:completion:")]
 		void DidAuthorizePayment (PKPaymentAuthorizationController controller, PKPayment payment, Action<PKPaymentAuthorizationStatus> completion);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="payment">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("paymentAuthorizationController:didAuthorizePayment:handler:")]
 		void DidAuthorizePayment (PKPaymentAuthorizationController controller, PKPayment payment, Action<PKPaymentAuthorizationResult> completion);
 
+		/// <param name="controller">The <see cref="T:PassKit.PKPaymentAuthorizationController" /> for which the payment authorization has finished.</param>
+		///         <summary>Method that is called when payment authorization has finished.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("paymentAuthorizationControllerDidFinish:")]
 		void DidFinish (PKPaymentAuthorizationController controller);
 
+		/// <param name="controller">The controller that owns this delegate.</param>
+		///         <summary>Method that is called when the user is authorizing a payment request.</summary>
+		///         <remarks>This method is called after the user authenticates, but before the request is authorized.</remarks>
 		[Export ("paymentAuthorizationControllerWillAuthorizePayment:")]
 		void WillAuthorizePayment (PKPaymentAuthorizationController controller);
 
+		/// <param name="controller">The controller that owns this delegate.</param>
+		///         <param name="shippingMethod">The new shipping method.</param>
+		///         <param name="completion">A handler that takes the authorization status for the payment and a list of updated payment summary items.</param>
+		///         <summary>Method that is called when a user selects a new shipping method.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'DidSelectShippingMethod' overload with the 'Action<PKPaymentRequestPaymentMethodUpdate>' parameter instead.")]
 		[MacCatalyst (13, 1)]
@@ -1899,10 +2147,20 @@ namespace PassKit {
 		[Export ("paymentAuthorizationController:didSelectShippingMethod:completion:")]
 		void DidSelectShippingMethod (PKPaymentAuthorizationController controller, PKShippingMethod shippingMethod, Action<PKPaymentAuthorizationStatus, PKPaymentSummaryItem []> completion);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="paymentMethod">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("paymentAuthorizationController:didSelectShippingMethod:handler:")]
 		void DidSelectShippingMethod (PKPaymentAuthorizationController controller, PKPaymentMethod paymentMethod, Action<PKPaymentRequestPaymentMethodUpdate> completion);
 
+		/// <param name="controller">The controller that owns this delegate.</param>
+		///         <param name="contact">The new shipping address.</param>
+		///         <param name="completion">A handler that takes the payment authorization status, a list of updated shipping method objects, and a list of updated payment summary items.</param>
+		///         <summary>Method that is called when a user selects a contact to ship to.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'DidSelectShippingContact' overload with the 'Action<PKPaymentRequestShippingContactUpdate>' parameter instead.")]
 		[MacCatalyst (13, 1)]
@@ -1910,10 +2168,20 @@ namespace PassKit {
 		[Export ("paymentAuthorizationController:didSelectShippingContact:completion:")]
 		void DidSelectShippingContact (PKPaymentAuthorizationController controller, PKContact contact, Action<PKPaymentAuthorizationStatus, PKShippingMethod [], PKPaymentSummaryItem []> completion);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="contact">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("paymentAuthorizationController:didSelectShippingContact:handler:")]
 		void DidSelectShippingContact (PKPaymentAuthorizationController controller, PKContact contact, Action<PKPaymentRequestShippingContactUpdate> completion);
 
+		/// <param name="controller">The controller that owns this delegate.</param>
+		///         <param name="paymentMethod">The payment method that was selected.</param>
+		///         <param name="completion">A handler that takes a list of updated payment summary items.</param>
+		///         <summary>Mehod that is called when the user selects a payment method.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'DidSelectPaymentMethod' overload with the 'Action<PKPaymentRequestPaymentMethodUpdate>' parameter instead.")]
 		[MacCatalyst (13, 1)]
@@ -1921,6 +2189,11 @@ namespace PassKit {
 		[Export ("paymentAuthorizationController:didSelectPaymentMethod:completion:")]
 		void DidSelectPaymentMethod (PKPaymentAuthorizationController controller, PKPaymentMethod paymentMethod, Action<PKPaymentSummaryItem []> completion);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="paymentMethod">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("paymentAuthorizationController:didSelectPaymentMethod:handler:")]
 		void DidSelectPaymentMethod (PKPaymentAuthorizationController controller, PKPaymentMethod paymentMethod, Action<PKPaymentRequestPaymentMethodUpdate> completion);
@@ -1972,6 +2245,10 @@ namespace PassKit {
 	[DisableDefaultCtor]
 	interface PKTransitPassProperties {
 
+		/// <param name="pass">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("passPropertiesForPass:")]
 		[return: NullAllowed]
@@ -2030,6 +2307,10 @@ namespace PassKit {
 #endif
 	[BaseType (typeof (PKTransitPassProperties))]
 	interface PKSuicaPassProperties {
+		/// <param name="pass">The pass for which to get properties.</param>
+		///         <summary>Returns the properties for the specified pass.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("passPropertiesForPass:")]
 		[return: NullAllowed]

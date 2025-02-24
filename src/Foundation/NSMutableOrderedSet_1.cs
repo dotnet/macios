@@ -57,22 +57,37 @@ namespace Foundation {
 		{
 		}
 
+		/// <param name="start">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMutableOrderedSet (TKey start) : base (start)
 		{
 		}
 
+		/// <param name="objs">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMutableOrderedSet (params TKey [] objs) : base (objs)
 		{
 		}
 
+		/// <param name="source">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMutableOrderedSet (NSSet<TKey> source) : base (source)
 		{
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMutableOrderedSet (NSOrderedSet<TKey> other) : base (other)
 		{
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMutableOrderedSet (NSMutableOrderedSet<TKey> other) : base (other)
 		{
 		}
@@ -92,6 +107,9 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSSet<TKey> AsSet ()
 		{
 			var ret = _AsSet ();
@@ -116,6 +134,9 @@ namespace Foundation {
 			GC.KeepAlive (newObject);
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Add (TKey obj)
 		{
 			if (obj is null)
@@ -125,6 +146,9 @@ namespace Foundation {
 			GC.KeepAlive (obj);
 		}
 
+		/// <param name="source">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void AddObjects (params TKey [] source)
 		{
 			if (source is null)
@@ -133,6 +157,10 @@ namespace Foundation {
 			_AddObjects (NSArray.FromNativeObjects (source));
 		}
 
+		/// <param name="objects">To be added.</param>
+		///         <param name="atIndexes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void InsertObjects (TKey [] objects, NSIndexSet atIndexes)
 		{
 			if (objects is null)
@@ -143,6 +171,10 @@ namespace Foundation {
 			_InsertObjects (NSArray.FromNativeObjects (objects), atIndexes);
 		}
 
+		/// <param name="indexSet">To be added.</param>
+		///         <param name="replacementObjects">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void ReplaceObjects (NSIndexSet indexSet, params TKey [] replacementObjects)
 		{
 			if (replacementObjects is null)
@@ -153,6 +185,9 @@ namespace Foundation {
 			_ReplaceObjects (indexSet, NSArray.FromNativeObjects (replacementObjects));
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void RemoveObject (TKey obj)
 		{
 			if (obj is null)
@@ -162,6 +197,9 @@ namespace Foundation {
 			GC.KeepAlive (obj);
 		}
 
+		/// <param name="objects">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void RemoveObjects (params TKey [] objects)
 		{
 			if (objects is null)
@@ -180,6 +218,9 @@ namespace Foundation {
 		#endregion
 
 		#region IEnumerable implementation
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return new NSFastEnumerator<TKey> (this);

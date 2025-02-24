@@ -234,15 +234,7 @@ namespace Cecil.Tests {
 			} else if (tr is TypeDefinition td && td.HasGenericParameters) {
 				name += tr.Name;
 			} else if (tr is ByReferenceType brt) {
-				if (brt.ElementType is GenericParameter gp) {
-					if (gp.DeclaringMethod is not null) {
-						name = $"``{gp.Position}@";
-					} else {
-						name = $"`{gp.Position}@";
-					}
-				} else {
-					name += brt.ElementType.Name + "@";
-				}
+				name = GetDocId (brt.ElementType) + "@";
 			} else if (tr is GenericParameter gp) {
 				if (gp.DeclaringMethod is not null) {
 					name = $"``{gp.Position}";

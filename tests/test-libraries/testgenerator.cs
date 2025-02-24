@@ -1664,7 +1664,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			w.AppendLine ($"\t\t\tpublic S{s} V{s};");
 		w.AppendLine ();
 		foreach (var s in structs) {
-			w.AppendLine ($"\t\t\tpublic override void SetProperty{s} (S{s} value) {{ V{s} = value; Console.WriteLine ($\"SetProperty ({{value}});\"); base.SetProperty{s} (value); }}");
+			w.AppendLine ($"\t\t\tpublic override void SetProperty{s} (S{s} value) {{ V{s} = value; TestRuntime.NSLog ($\"SetProperty ({{value}});\"); base.SetProperty{s} (value); }}");
 
 			for (var i = 2; i < 12; i++) {
 				w.Append ($"\t\t\tpublic override void SetProperty{s} (nint p1");

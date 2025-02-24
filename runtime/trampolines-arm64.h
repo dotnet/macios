@@ -9,11 +9,18 @@ struct BigDouble {
 	struct _f {
 		float f1;
 		float f2;
+		float f3;
+		float f4;
+	};
+	struct _d {
+		double d1;
+		double d2;
 	};
 	union {
 		__int128 bits;
-		long double d;
+		long double q;
 		_f f;
+		_d d;
 	};
 };
 

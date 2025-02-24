@@ -67,11 +67,18 @@ namespace CoreGraphics {
 			return left.dx != right.dx || left.dy != right.dy;
 		}
 
+		/// <summary />
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (dx, dy);
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary />
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? other)
 		{
 			if (other is CGVector vector)
@@ -88,6 +95,13 @@ namespace CoreGraphics {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static IntPtr NSStringFromCGVector (CGVector vector);
 
+		/// <summary>String representation of the vector, suitable to be passed later to <see cref="M:CoreGraphics.CGVector.FromString(System.String)" /> method.</summary>
+		///         <returns>
+		///           <para />
+		///         </returns>
+		///         <remarks>
+		///           <para />
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -104,6 +118,12 @@ namespace CoreGraphics {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static CGVector CGVectorFromString (IntPtr str);
 
+		/// <param name="s">String representation, created previously with either the <see cref="M:CoreGraphics.CGVector.ToString" /> method or serialized in the CGVector format.</param>
+		///         <summary>Creates a CGVector from a stringified representation of the vector.</summary>
+		///         <returns>The CGVector represented by the string representation.</returns>
+		///         <remarks>
+		///           <para />
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]

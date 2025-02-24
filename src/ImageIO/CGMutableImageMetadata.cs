@@ -29,6 +29,8 @@ namespace ImageIO {
 		[DllImport (Constants.ImageIOLibrary)]
 		extern static /* CGMutableImageMetadataRef __nonnull */ IntPtr CGImageMetadataCreateMutable ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGMutableImageMetadata ()
 			: base (CGImageMetadataCreateMutable (), true)
 		{
@@ -38,6 +40,9 @@ namespace ImageIO {
 		extern static /* CGMutableImageMetadataRef __nullable */ IntPtr CGImageMetadataCreateMutableCopy (
 			/* CGImageMetadataRef __nonnull */ IntPtr metadata);
 
+		/// <param name="metadata">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGMutableImageMetadata (CGImageMetadata metadata)
 			: base (CGImageMetadataCreateMutableCopy (metadata.GetNonNullHandle (nameof (metadata))), true)
 		{
@@ -49,6 +54,12 @@ namespace ImageIO {
 			/* CGMutableImageMetadataRef __nonnull */ IntPtr metadata, /* CFStringRef __nonnull */ IntPtr xmlns,
 			/* CFStringRef __nonnull */ IntPtr prefix, /* CFErrorRef __nullable */ IntPtr* error);
 
+		/// <param name="xmlns">To be added.</param>
+		///         <param name="prefix">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool RegisterNamespace (NSString xmlns, NSString prefix, out NSError? error)
 		{
 			if (xmlns is null)
@@ -71,6 +82,12 @@ namespace ImageIO {
 			/* CGImageMetadataTagRef __nullable */ IntPtr parent, /* CFStringRef __nonnull */ IntPtr path,
 			/* CGImageMetadataTagRef __nonnull */ IntPtr tag);
 
+		/// <param name="parent">To be added.</param>
+		///         <param name="path">To be added.</param>
+		///         <param name="tag">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool SetTag (CGImageMetadataTag? parent, NSString path, CGImageMetadataTag tag)
 		{
 			if (path is null)
@@ -89,6 +106,12 @@ namespace ImageIO {
 			/* CGImageMetadataTagRef __nullable */ IntPtr parent, /* CFStringRef __nonnull */ IntPtr path,
 			/* CFTypeRef __nonnull */ IntPtr value);
 
+		/// <param name="parent">To be added.</param>
+		///         <param name="path">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool SetValue (CGImageMetadataTag? parent, NSString path, NSObject value)
 		{
 			if (value is null)
@@ -98,6 +121,12 @@ namespace ImageIO {
 			return result;
 		}
 
+		/// <param name="parent">To be added.</param>
+		///         <param name="path">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool SetValue (CGImageMetadataTag? parent, NSString path, bool value)
 		{
 			return SetValue (parent, path, value ? CFBoolean.TrueHandle : CFBoolean.FalseHandle);
@@ -117,6 +146,11 @@ namespace ImageIO {
 		extern static byte CGImageMetadataRemoveTagWithPath (/* CGMutableImageMetadataRef __nonnull */ IntPtr metadata,
 			/* CGImageMetadataTagRef __nullable */ IntPtr parent, /* CFStringRef __nonnull */ IntPtr path);
 
+		/// <param name="parent">To be added.</param>
+		///         <param name="path">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool RemoveTag (CGImageMetadataTag? parent, NSString path)
 		{
 			if (path is null)
@@ -133,6 +167,12 @@ namespace ImageIO {
 			/* CFStringRef __nonnull */ IntPtr dictionaryName, /* CFStringRef __nonnull */ IntPtr propertyName,
 			/* CFTypeRef __nonnull */ IntPtr value);
 
+		/// <param name="dictionaryName">To be added.</param>
+		///         <param name="propertyName">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool SetValueMatchingImageProperty (NSString dictionaryName, NSString propertyName, NSObject value)
 		{
 			if (value is null)
@@ -142,6 +182,12 @@ namespace ImageIO {
 			return result;
 		}
 
+		/// <param name="dictionaryName">To be added.</param>
+		///         <param name="propertyName">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool SetValueMatchingImageProperty (NSString dictionaryName, NSString propertyName, bool value)
 		{
 			return SetValueMatchingImageProperty (dictionaryName, propertyName, value ? CFBoolean.TrueHandle : CFBoolean.FalseHandle);

@@ -89,6 +89,10 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern byte CTFontManagerIsSupportedFont (IntPtr url);
 
+		/// <param name="url">To be added.</param>
+		///         <summary>Developers should not use this deprecated method. </summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
@@ -106,6 +110,11 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern byte CTFontManagerRegisterFontsForURL (IntPtr fontUrl, CTFontManagerScope scope, IntPtr* error);
+		/// <param name="fontUrl">To be added.</param>
+		///         <param name="scope">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSError? RegisterFontsForUrl (NSUrl fontUrl, CTFontManagerScope scope)
 		{
 			if (fontUrl is null)
@@ -164,6 +173,11 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern byte CTFontManagerRegisterFontsForURLs (IntPtr arrayRef, CTFontManagerScope scope, IntPtr* error_array);
 
+		/// <param name="fontUrls">To be added.</param>
+		///         <param name="scope">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -231,6 +245,11 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern byte CTFontManagerUnregisterFontsForURL (IntPtr fotUrl, CTFontManagerScope scope, IntPtr* error);
 
+		/// <param name="fontUrl">To be added.</param>
+		///         <param name="scope">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSError? UnregisterFontsForUrl (NSUrl fontUrl, CTFontManagerScope scope)
 		{
 			if (fontUrl is null)
@@ -264,6 +283,11 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern byte CTFontManagerUnregisterFontsForURLs (IntPtr arrayRef, CTFontManagerScope scope, IntPtr* error_array);
 
+		/// <param name="fontUrls">To be added.</param>
+		///         <param name="scope">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]

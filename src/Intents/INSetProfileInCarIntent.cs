@@ -10,6 +10,11 @@ using UIKit;
 namespace Intents {
 
 	public partial class INSetProfileInCarIntent {
+		/// <param name="profileNumber">To be added.</param>
+		///         <param name="profileLabel">To be added.</param>
+		///         <param name="defaultProfile">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("ios12.0", "Use the overload that takes 'INSpeakableString carName'.")]

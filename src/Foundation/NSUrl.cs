@@ -32,12 +32,20 @@ namespace Foundation {
 #pragma warning disable 661 // `Foundation.NSUrl' defines operator == or operator != but does not override Object.GetHashCode()
 	public partial class NSUrl : IEquatable<NSUrl> {
 
+		/// <param name="path">To be added.</param>
+		///         <param name="relativeToUrl">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSUrl (string path, string relativeToUrl)
 			: this (path, new NSUrl (relativeToUrl))
 		{
 		}
 
 		// but NSUrl has it's own isEqual: selector, which we re-expose in a more .NET-ish way
+		/// <param name="url">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (NSUrl? url)
 		{
 			if (url is null)
@@ -70,37 +78,72 @@ namespace Foundation {
 				return new NSUrl (uri.OriginalString);
 		}
 
+		/// <param name="url">The filename.</param>
+		///         <summary>Creates an NSUrl from a filename.</summary>
+		///         <returns>An NSUrl that points to the given filename.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSUrl FromFilename (string url)
 		{
 			return new NSUrl (url, false);
 		}
 
+		/// <param name="url">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSUrl MakeRelative (string url)
 		{
 			return _FromStringRelative (url, this);
 		}
 
+		/// <summary>Returns a string representation of the value of the current instance.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			return AbsoluteString ?? base.ToString ();
 		}
 
+		/// <param name="nsUrlResourceKey">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryGetResource (NSString nsUrlResourceKey, out NSObject value, out NSError error)
 		{
 			return GetResourceValue (out value, nsUrlResourceKey, out error);
 		}
 
+		/// <param name="nsUrlResourceKey">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryGetResource (NSString nsUrlResourceKey, out NSObject value)
 		{
 			NSError error;
 			return GetResourceValue (out value, nsUrlResourceKey, out error);
 		}
 
+		/// <param name="nsUrlResourceKey">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool SetResource (NSString nsUrlResourceKey, NSObject value, out NSError error)
 		{
 			return SetResourceValue (value, nsUrlResourceKey, out error);
 		}
 
+		/// <param name="nsUrlResourceKey">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool SetResource (NSString nsUrlResourceKey, NSObject value)
 		{
 			NSError error;

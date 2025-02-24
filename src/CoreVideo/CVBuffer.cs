@@ -150,6 +150,11 @@ namespace CoreVideo {
 		}
 
 #if MONOMAC && !XAMCORE_5_0
+		/// <param name="key">To be added.</param>
+		///         <param name="attachmentMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the generic 'GetAttachment<T>' method instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public NSObject? GetAttachment (NSString key, out CVAttachmentMode attachmentMode)

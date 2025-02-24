@@ -274,6 +274,9 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public AudioChannelLayout OutputChannelMap { get; private set; }
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe float []? GetPanningMatrix ()
 		{
 			var type_size = sizeof (Layout);

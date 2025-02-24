@@ -55,12 +55,18 @@ namespace Security {
 		[Field ("kSecPolicyAppleIPsec")]
 		NSString AppleIPsec { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
 		[Field ("kSecPolicyApplePKINITClient")]
 		NSString ApplePKINITClient { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]

@@ -167,6 +167,10 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <param name="callback">Method to call every time the audio graph renders.</param>
+		///         <summary>Registers a method to be invoked every time the audio graph renders.</summary>
+		///         <returns>Status code.</returns>
+		///         <remarks>Use RemoveRenderNotify to remove the notification.</remarks>
 		public AudioUnitStatus AddRenderNotify (RenderDelegate callback)
 		{
 			if (callback is null)
@@ -188,6 +192,12 @@ namespace AudioUnit {
 			return error;
 		}
 
+		/// <param name="callback">callbackk to be removed.</param>
+		///         <summary>Removes a previously registered callback from being called every time the audio graph is rendered.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public AudioUnitStatus RemoveRenderNotify (RenderDelegate callback)
 		{
 			if (callback is null)
@@ -265,6 +275,8 @@ namespace AudioUnit {
 			return AudioUnitStatus.InvalidParameter;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Open ()
 		{
 			int err = AUGraphOpen (Handle);
@@ -272,12 +284,21 @@ namespace AudioUnit {
 				throw new InvalidOperationException (String.Format ("Cannot open AUGraph. Error code: {0}", err));
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public int TryOpen ()
 		{
 			int err = AUGraphOpen (Handle);
 			return err;
 		}
 
+		/// <param name="description">Description for the node that you want to add.</param>
+		///         <summary>Adds a node matching the description to the graph.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public int AddNode (AudioComponentDescription description)
 		{
 			AUGraphError err;
@@ -291,11 +312,19 @@ namespace AudioUnit {
 			return node;
 		}
 
+		/// <param name="node">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AUGraphError RemoveNode (int node)
 		{
 			return AUGraphRemoveNode (Handle, node);
 		}
 
+		/// <param name="averageCPULoad">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AUGraphError GetCPULoad (out float averageCPULoad)
 		{
 			averageCPULoad = default;
@@ -304,6 +333,10 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <param name="maxCPULoad">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AUGraphError GetMaxCPULoad (out float maxCPULoad)
 		{
 			maxCPULoad = default;
@@ -312,6 +345,11 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <param name="index">To be added.</param>
+		///         <param name="node">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AUGraphError GetNode (uint index, out int node)
 		{
 			node = default;
@@ -320,6 +358,10 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <param name="count">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AUGraphError GetNodeCount (out int count)
 		{
 			count = default;
@@ -328,6 +370,10 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <param name="node">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnit GetNodeInfo (int node)
 		{
 			AUGraphError error;
@@ -342,6 +388,11 @@ namespace AudioUnit {
 			return unit;
 		}
 
+		/// <param name="node">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnit? GetNodeInfo (int node, out AUGraphError error)
 		{
 			IntPtr ptr;
@@ -357,6 +408,12 @@ namespace AudioUnit {
 
 		// AudioComponentDescription struct in only correctly fixed for unified
 		// Following current Api behaviour of returning an AudioUnit instead of an error
+		/// <param name="node">To be added.</param>
+		///         <param name="cd">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnit? GetNodeInfo (int node, out AudioComponentDescription cd, out AUGraphError error)
 		{
 			IntPtr ptr;
@@ -371,6 +428,10 @@ namespace AudioUnit {
 			return new AudioUnit (ptr, false);
 		}
 
+		/// <param name="interactionsCount">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AUGraphError GetNumberOfInteractions (out uint interactionsCount)
 		{
 			interactionsCount = default;
@@ -379,6 +440,11 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <param name="node">To be added.</param>
+		///         <param name="interactionsCount">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AUGraphError GetNumberOfInteractions (int node, out uint interactionsCount)
 		{
 			interactionsCount = default;
@@ -402,6 +468,13 @@ namespace AudioUnit {
 					return res;
 				}
 		*/
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="sourceOutputNumber">To be added.</param>
+		///         <param name="destNode">To be added.</param>
+		///         <param name="destInputNumber">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AUGraphError ConnnectNodeInput (int sourceNode, uint sourceOutputNumber, int destNode, uint destInputNumber)
 		{
 			return AUGraphConnectNodeInput (Handle,
@@ -409,6 +482,11 @@ namespace AudioUnit {
 							  destNode, destInputNumber);
 		}
 
+		/// <param name="destNode">To be added.</param>
+		///         <param name="destInputNumber">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AUGraphError DisconnectNodeInput (int destNode, uint destInputNumber)
 		{
 			return AUGraphDisconnectNodeInput (Handle, destNode, destInputNumber);
@@ -419,6 +497,12 @@ namespace AudioUnit {
 		static readonly CallbackShared CreateRenderCallback = RenderCallbackImpl;
 #endif
 
+		/// <param name="destNode">To be added.</param>
+		///         <param name="destInputNumber">To be added.</param>
+		///         <param name="renderDelegate">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AUGraphError SetNodeInputCallback (int destNode, uint destInputNumber, RenderDelegate renderDelegate)
 		{
 			if (nodesCallbacks is null)
@@ -463,26 +547,43 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AUGraphError ClearConnections ()
 		{
 			return AUGraphClearConnections (Handle);
 		}
 
+		/// <summary>Starts the audio graph.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>Starts processing the audio graph from the root node.   The graph must be initialized before starting</remarks>
 		public AUGraphError Start ()
 		{
 			return AUGraphStart (Handle);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AUGraphError Stop ()
 		{
 			return AUGraphStop (Handle);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AUGraphError Initialize ()
 		{
 			return AUGraphInitialize (Handle);
 		}
 
+		/// <summary>Updates the state of the AudioUnit graph.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>To be added.</remarks>
 		public bool Update ()
 		{
 			byte isUpdated;
@@ -494,11 +595,14 @@ namespace AudioUnit {
 		// Quote from Learning CoreAudio Book:
 		// The CAShow() function logs (to standard output) a list of all the nodes in the graph, 
 		// along with the connections between them and the stream format used in each of those connections
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void LogAllNodes ()
 		{
 			CAShow (GetCheckedHandle ());
 		}
 
+		/// <include file="../../docs/api/AudioUnit/AUGraph.xml" path="/Documentation/Docs[@DocId='M:AudioUnit.AUGraph.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero && Owns) {

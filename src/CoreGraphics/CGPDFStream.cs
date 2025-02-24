@@ -79,6 +79,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static /* CFDataRef */ IntPtr CGPDFStreamCopyData (/* CGPDFStreamRef */ IntPtr stream, /* CGPDFDataFormat* */ CGPDFDataFormat* format);
 
+		/// <param name="format">To be added.</param>
+		///         <summary>The data associated with the PDF stream, and also returns the file format of the data.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSData? GetData (out CGPDFDataFormat format)
 		{
 			format = default;

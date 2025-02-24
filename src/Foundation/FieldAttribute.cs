@@ -33,10 +33,21 @@ using System;
 namespace Foundation {
 	[AttributeUsage (AttributeTargets.Property | AttributeTargets.Field)]
 	public sealed class FieldAttribute : Attribute {
+		/// <param name="symbolName">The unmanaged symbol that this field represents.</param>
+		///         <summary>Creates a new FieldAttribute instance with the specific symbol to bind.</summary>
+		///         <remarks>
+		/// 	  Used by Objective-C bindings to bind an unmanaged global variable as a static field.   
+		/// 	</remarks>
 		public FieldAttribute (string symbolName)
 		{
 			SymbolName = symbolName;
 		}
+		/// <param name="symbolName">The unmanaged symbol that this field represents.</param>
+		///         <param name="libraryName">The library name to bind.   Use "__Internal" for referencing symbols on libraries that are statically linked with your application.</param>
+		///         <summary>Creates a new FieldAttribute instance with the specific symbol to bind.</summary>
+		///         <remarks>
+		/// 	  Used by Objective-C bindings to bind an unmanaged global variable as a static field.   
+		/// 	</remarks>
 		public FieldAttribute (string symbolName, string libraryName)
 		{
 			SymbolName = symbolName;

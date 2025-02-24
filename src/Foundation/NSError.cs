@@ -41,6 +41,10 @@ namespace Foundation {
 	[SupportedOSPlatform ("tvos")]
 #endif
 	public class NSErrorEventArgs : EventArgs {
+		/// <param name="error">The underlying error.</param>
+		///         <summary>Initializes a new instance of the NSErrorEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public NSErrorEventArgs (NSError error)
 		{
 			Error = error;
@@ -54,6 +58,16 @@ namespace Foundation {
 
 	public partial class NSError : NSObject {
 #if !COREBUILD
+		/// <summary>Do not use the Default Constructor unless you are dealing with a low-level API that will initialize the object for you.</summary>
+		///         <remarks>
+		///
+		/// 	  The default constructor for NSError leaves the object in a
+		/// 	  partial state that can only be initialized by a handful of
+		/// 	  low-level Objective-C APIs.  In general, you should not use
+		/// 	  this constructor, you should instead use the constructor
+		/// 	  that takes an NSString error domain argument.
+		///
+		///         </remarks>
 		[Advice ("Always specify a domain and error code when creating an NSError instance")]
 		public NSError () : this (new NSString ("Invalid .ctor used"), 0, null)
 		{
@@ -68,6 +82,11 @@ namespace Foundation {
 		public NSError (NSString domain, nint code) : this (domain, code, null)
 		{
 		}
+		/// <summary>Returns a string representation of the value of the current instance.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			return LocalizedDescription;

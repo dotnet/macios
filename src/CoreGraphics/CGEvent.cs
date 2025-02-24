@@ -490,6 +490,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static IntPtr CGEventSetSource (IntPtr handle, IntPtr source);
 
+		/// <param name="eventSource">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetEventSource (CGEventSource eventSource)
 		{
 			if (eventSource is null)
@@ -538,6 +541,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static void CGEventTapEnable (IntPtr machPort, byte enable);
 
+		/// <param name="machPort">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void TapEnable (CFMachPort machPort)
 		{
 			if (machPort is null)
@@ -546,6 +552,9 @@ namespace CoreGraphics {
 			GC.KeepAlive (machPort);
 		}
 
+		/// <param name="machPort">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void TapDisable (CFMachPort machPort)
 		{
 			if (machPort is null)
@@ -557,6 +566,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static byte CGEventTapIsEnabled (IntPtr machPort);
 
+		/// <param name="machPort">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool IsTapEnabled (CFMachPort machPort)
 		{
 			if (machPort is null)
@@ -569,6 +582,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		unsafe extern static void CGEventKeyboardGetUnicodeString (IntPtr handle, nuint maxLen, nuint* actualLen, ushort* buffer);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe string GetUnicodeString ()
 		{
 			const int bufferLength = 40;
@@ -581,6 +597,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		unsafe extern static void CGEventKeyboardSetUnicodeString (IntPtr handle, nuint len, IntPtr buffer);
 
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetUnicodeString (string value)
 		{
 			if (value is null)
@@ -592,6 +611,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static void CGEventTapPostEvent (IntPtr proxy, IntPtr evtHandle);
 
+		/// <param name="tapProxyEvent">To be added.</param>
+		///         <param name="evt">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void TapPostEven (IntPtr tapProxyEvent, CGEvent evt)
 		{
 			if (evt is null)
@@ -604,6 +627,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static void CGEventPost (CGEventTapLocation location, IntPtr handle);
 
+		/// <param name="evt">To be added.</param>
+		///         <param name="location">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void Post (CGEvent evt, CGEventTapLocation location)
 		{
 			if (evt is null)
@@ -659,6 +686,9 @@ namespace CoreGraphics {
 			CGEventTapInformation* tapList,
 			uint* /* uint32_t* */ eventTapCount);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe CGEventTapInformation []? GetEventTapList ()
 		{
 			uint count;

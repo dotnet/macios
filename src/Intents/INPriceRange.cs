@@ -23,6 +23,11 @@ namespace Intents {
 
 	public partial class INPriceRange {
 
+		/// <param name="option">To be added.</param>
+		///         <param name="price">To be added.</param>
+		///         <param name="currencyCode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public INPriceRange (INPriceRangeOption option, NSDecimalNumber price, string currencyCode)
 			: base (NSObjectFlag.Empty)
 		{

@@ -318,6 +318,11 @@ namespace MetalKit {
 		[Export ("newTextureWithData:options:completionHandler:"), Internal]
 		void FromData (NSData data, [NullAllowed] NSDictionary options, MTKTextureLoaderCallback completionHandler);
 
+		/// <param name="data">The texture data.</param>
+		///         <param name="options">Options for loading the texture data.</param>
+		///         <param name="completionHandler">A handler to run after the texture is loaded.</param>
+		///         <summary>Creates and returns a Metal texture from the specified image data and options, and runs a completion handler when it completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("FromData (data, options.GetDictionary (), completionHandler)")]
 		[Async]
 		void FromData (NSData data, [NullAllowed] MTKTextureLoaderOptions options, MTKTextureLoaderCallback completionHandler);
@@ -325,6 +330,11 @@ namespace MetalKit {
 		[Export ("newTextureWithCGImage:options:completionHandler:"), Internal]
 		void FromCGImage (CGImage cgImage, [NullAllowed] NSDictionary options, MTKTextureLoaderCallback completionHandler);
 
+		/// <param name="cgImage">A Core Graphics image.</param>
+		///         <param name="options">Options for loading the texture data.</param>
+		///         <param name="completionHandler">A handler to run after the texture is loaded.</param>
+		///         <summary>Creates and returns a Metal texture from the specified Core Graphics image and options, and runs a completion handler when it completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("FromCGImage (cgImage, options.GetDictionary (), completionHandler)")]
 		[Async]
 		void FromCGImage (CGImage cgImage, [NullAllowed] MTKTextureLoaderOptions options, MTKTextureLoaderCallback completionHandler);
@@ -367,6 +377,12 @@ namespace MetalKit {
 		[return: NullAllowed]
 		IMTLTexture FromCGImage (CGImage cgImage, [NullAllowed] NSDictionary options, out NSError error);
 
+		/// <param name="cgImage">A Core Graphics image.</param>
+		///         <param name="options">Options for loading the texture data.</param>
+		///         <param name="error">Contains the error, if one occurred.</param>
+		///         <summary>Creates and returns a Metal texture from the specified Core Graphics image and options.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("FromCGImage (cgImage, options.GetDictionary (), out error)")]
 		[return: NullAllowed]
 		IMTLTexture FromCGImage (CGImage cgImage, [NullAllowed] MTKTextureLoaderOptions options, out NSError error);

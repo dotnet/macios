@@ -88,6 +88,12 @@ namespace MediaPlayer {
 #endif
 	interface MPMediaItem {
 #endif
+		/// <param name="groupingType">Grouping type.</param>
+		///         <summary>Returns the persistent ID for the specified grouping type.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		[NoMac]
 		[NoTV]
 		[MacCatalyst (13, 1)]
@@ -95,6 +101,12 @@ namespace MediaPlayer {
 		[Static]
 		string GetPersistentIDProperty (MPMediaGrouping groupingType);
 
+		/// <param name="groupingType">Grouping type.</param>
+		///         <summary>Returns the title for the specified grouping type</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		[NoMac]
 		[NoTV]
 		[MacCatalyst (13, 1)]
@@ -470,6 +482,10 @@ namespace MediaPlayer {
 		[Export ("initWithImage:")]
 		NativeHandle Constructor (UIImage image);
 
+		/// <param name="size">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>The return type is <see cref="T:UIKit.UIImage" /> on iOS and <see cref="T:AppKit.NSImage" /> on MacOS.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("imageWithSize:")]
 		[return: NullAllowed]
 		UIImage ImageWithSize (CGSize size);
@@ -853,9 +869,15 @@ namespace MediaPlayer {
 		[Export ("filterPredicates", ArgumentSemantic.Retain)]
 		NSSet FilterPredicates { get; set; }
 
+		/// <param name="predicate">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addFilterPredicate:")]
 		void AddFilterPredicate (MPMediaPredicate predicate);
 
+		/// <param name="predicate">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeFilterPredicate:")]
 		void RemoveFilterPredicate (MPMediaPredicate predicate);
 

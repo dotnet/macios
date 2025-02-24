@@ -591,6 +591,12 @@ namespace CoreML {
 		[return: NullAllowed]
 		IMLBatchProvider GetPredictions (IMLBatchProvider inputBatch, [NullAllowed] out NSError error);
 
+		/// <param name="inputBatch">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Gets the <see cref="T:CoreML.IMLBatchProvider" /> describing the outputs for the <paramref name="inputBatch" /> and <paramref name="options" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("predictionsFromBatch:options:error:")]
 		[return: NullAllowed]
@@ -832,6 +838,10 @@ namespace CoreML {
 		[Export ("objectAtIndexedSubscript:")]
 		NSNumber GetObject (nint idx);
 
+		/// <param name="key">A numeric identifier for the object to get.</param>
+		///         <summary>Retrieves the element at the point specified by <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("objectForKeyedSubscript:")]
 		NSNumber GetObject (NSNumber [] key);
 
@@ -844,6 +854,10 @@ namespace CoreML {
 		[Export ("setObject:atIndexedSubscript:")]
 		void SetObject (NSNumber obj, nint idx);
 
+		/// <param name="obj">The new value.</param>
+		///         <param name="key">A numeric identifier for the object to set.</param>
+		///         <summary>Sets the value at <paramref name="key" /> to <paramref name="obj" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setObject:forKeyedSubscript:")]
 		void SetObject (NSNumber obj, NSNumber [] key);
 

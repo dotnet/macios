@@ -513,12 +513,27 @@ namespace CoreWlan {
 		[Export ("initWithInterfaceName:")]
 		NativeHandle Constructor ([NullAllowed] string name);
 
+		/// <param name="power">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("setPower:error:")]
 		bool SetPower (bool power, out NSError error);
 
+		/// <param name="channel">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("setWLANChannel:error:")]
 		bool SetWlanChannel (CWChannel channel, out NSError error);
 
+		/// <param name="key">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("setPairwiseMasterKey:error:")]
 		bool SetPairwiseMasterKey ([NullAllowed] NSData key, out NSError error);
 
@@ -535,6 +550,12 @@ namespace CoreWlan {
 		[Internal]
 		NSSet _ScanForNetworksWithName ([NullAllowed] string networkName, out NSError error);
 
+		/// <param name="network">To be added.</param>
+		///         <param name="password">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("associateToNetwork:password:error:")]
 		bool AssociateToNetwork (CWNetwork network, [NullAllowed] string password, out NSError error);
 
@@ -553,9 +574,17 @@ namespace CoreWlan {
 		[Export ("startIBSSModeWithSSID:security:channel:password:error:")]
 		bool StartIbssModeWithSsid (NSData ssidData, CWIbssModeSecurity security, nuint channel, [NullAllowed] string password, out NSError error);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("disassociate")]
 		void Disassociate ();
 
+		/// <param name="configuration">To be added.</param>
+		///         <param name="authorization">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("commitConfiguration:authorization:error:")]
 		bool CommitConfiguration (CWConfiguration configuration, [NullAllowed] NSObject authorization, out NSError error);
 

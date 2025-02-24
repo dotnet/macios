@@ -488,6 +488,8 @@ namespace CoreFoundation {
 				throw exc;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Open ()
 		{
 			if (open || closed)
@@ -500,8 +502,13 @@ namespace CoreFoundation {
 			open = true;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected abstract bool DoOpen ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Close ()
 		{
 			if (!open)
@@ -523,14 +530,22 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected abstract void DoClose ();
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CFStreamStatus GetStatus ()
 		{
 			GetCheckedHandle ();
 			return DoGetStatus ();
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected abstract CFStreamStatus DoGetStatus ();
 
 		internal IntPtr GetProperty (NSString name)
@@ -539,8 +554,17 @@ namespace CoreFoundation {
 			return DoGetProperty (name);
 		}
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected abstract IntPtr DoGetProperty (NSString name);
 
+		/// <param name="name">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected abstract bool DoSetProperty (NSString name, INativeObject? value);
 
 		internal void SetProperty (NSString name, INativeObject? value)
@@ -570,11 +594,17 @@ namespace CoreFoundation {
 				private set;
 			}
 
+			/// <param name="type">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public StreamEventArgs (CFStreamEventType type)
 			{
 				this.EventType = type;
 			}
 
+			/// <summary>To be added.</summary>
+			///         <returns>To be added.</returns>
+			///         <remarks>To be added.</remarks>
 			public override string ToString ()
 			{
 				return string.Format ("[StreamEventArgs: EventType={0}]", EventType);
@@ -587,6 +617,9 @@ namespace CoreFoundation {
 		public event EventHandler<StreamEventArgs>? ErrorEvent;
 		public event EventHandler<StreamEventArgs>? ClosedEvent;
 
+		/// <param name="args">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected virtual void OnOpenCompleted (StreamEventArgs args)
 		{
 			var e = OpenCompletedEvent;
@@ -594,6 +627,9 @@ namespace CoreFoundation {
 				e (this, args);
 		}
 
+		/// <param name="args">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected virtual void OnHasBytesAvailableEvent (StreamEventArgs args)
 		{
 			var e = HasBytesAvailableEvent;

@@ -301,6 +301,10 @@ namespace CoreMidi {
 		[DllImport (Constants.CoreMidiLibrary)]
 		extern static int /* OSStatus = SInt32 */ MIDIObjectSetDataProperty (MidiObjectRef obj, IntPtr str, IntPtr data);
 
+		/// <param name="property">To be added.</param>
+		///         <param name="data">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetData (IntPtr property, NSData data)
 		{
 			if (data is null)
@@ -312,6 +316,10 @@ namespace CoreMidi {
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe extern static int /* OSStatus = SInt32 */ MIDIObjectGetStringProperty (MidiObjectRef obj, IntPtr str, IntPtr* data);
 
+		/// <param name="property">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public string? GetString (IntPtr property)
 		{
 			IntPtr val;
@@ -332,6 +340,10 @@ namespace CoreMidi {
 		[DllImport (Constants.CoreMidiLibrary)]
 		extern static int /* OSStatus = SInt32 */ MIDIObjectSetStringProperty (MidiObjectRef obj, IntPtr str, IntPtr nstr);
 
+		/// <param name="property">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetString (IntPtr property, string value)
 		{
 			if (value is null)
@@ -343,6 +355,10 @@ namespace CoreMidi {
 
 		[DllImport (Constants.CoreMidiLibrary)]
 		extern static MidiError /* OSStatus = SInt32 */ MIDIObjectRemoveProperty (MidiObjectRef obj, IntPtr str);
+		/// <param name="property">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public MidiError RemoveProperty (string property)
 		{
 			using (var nsstr = new NSString (property)) {
@@ -353,6 +369,11 @@ namespace CoreMidi {
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe extern static int /* OSStatus = SInt32 */ MIDIObjectGetProperties (MidiObjectRef obj, IntPtr* dict, byte deep);
 
+		/// <param name="deep">Whether this should query properties of nested objects need to be included.</param>
+		///         <summary>Returns the object properties as a dictionary.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary? GetDictionaryProperties (bool deep)
 		{
 			IntPtr val;
@@ -365,6 +386,9 @@ namespace CoreMidi {
 			return value;
 		}
 
+		/// <param name="handle">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MidiObject (MidiObjectRef handle)
 		: this (handle, true)
 		{
@@ -390,12 +414,18 @@ namespace CoreMidi {
 			handle = MidiObject.InvalidRef;
 		}
 
+		/// <summary>Releases the resources used by the MidiObject object.</summary>
+		///         <remarks>
+		///           <para>The Dispose method releases the resources used by the MidiObject class.</para>
+		///           <para>Calling the Dispose method when the application is finished using the MidiObject ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.  For more information on releasing resources see ``Cleaning up Unmananaged Resources'' at https://msdn.microsoft.com/en-us/library/498928w2.aspx</para>
+		///         </remarks>
 		public void Dispose ()
 		{
 			Dispose (true);
 			GC.SuppressFinalize (this);
 		}
 
+		/// <include file="../../docs/api/CoreMidi/MidiObject.xml" path="/Documentation/Docs[@DocId='M:CoreMidi.MidiObject.Dispose(System.Boolean)']/*" />
 		protected virtual void Dispose (bool disposing)
 		{
 			DisposeHandle ();
@@ -430,6 +460,11 @@ namespace CoreMidi {
 			}
 		}
 
+		/// <param name="uniqueId">To be added.</param>
+		///         <param name="result">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		static public MidiError FindByUniqueId (int uniqueId, out MidiObject? result)
 		{
 			MidiObjectRef handle;
@@ -716,6 +751,7 @@ namespace CoreMidi {
 			}
 		}
 
+		/// <include file="../../docs/api/CoreMidi/MidiClient.xml" path="/Documentation/Docs[@DocId='M:CoreMidi.MidiClient.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			SetupChanged = null;
@@ -2541,6 +2577,10 @@ namespace CoreMidi {
 			return new MidiDevice (h);
 		}
 
+		/// <param name="device">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public int Add (MidiDevice device)
 		{
 			if (handle == MidiObject.InvalidRef)
@@ -2676,6 +2716,7 @@ namespace CoreMidi {
 			}
 		}
 
+		/// <include file="../../docs/api/CoreMidi/MidiEndpoint.xml" path="/Documentation/Docs[@DocId='M:CoreMidi.MidiEndpoint.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			MessageReceived = null;
@@ -2712,12 +2753,19 @@ namespace CoreMidi {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void FlushOutput ()
 		{
 			MIDIFlushOutput (handle);
 		}
 
 #if NET
+		/// <param name="packets">Packets received.</param>
+		///         <summary>Broadcasts the packets to the client input ports which are connected to this source</summary>
+		///         <returns>Status code of the operation</returns>
+		///         <remarks>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -3070,6 +3118,13 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class ObjectAddedOrRemovedEventArgs : EventArgs {
+		/// <param name="parent">
+		///         </param>
+		///         <param name="child">
+		///         </param>
+		///         <summary>Initializes a new instance of the ObjectAddedOrRemovedEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public ObjectAddedOrRemovedEventArgs (MidiObject? parent, MidiObject? child)
 		{
 			Parent = parent;
@@ -3095,6 +3150,11 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class ObjectPropertyChangedEventArgs : EventArgs {
+		/// <param name="midiObject">The MIDI object whose property has changed.</param>
+		///         <param name="propertyName">The name of the MIDI property that changed.</param>
+		///         <summary>Initializes a new instance of the ObjectPropertyChangedEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public ObjectPropertyChangedEventArgs (MidiObject? midiObject, string? propertyName)
 		{
 			MidiObject = midiObject;
@@ -3120,6 +3180,11 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class IOErrorEventArgs : EventArgs {
+		/// <param name="device">The device that triggered the error.</param>
+		///         <param name="errorCode">OSStatus error code</param>
+		///         <summary>Initializes a new instance of the IOErrorEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public IOErrorEventArgs (MidiDevice device, int errorCode)
 		{
 			Device = device;
@@ -3189,12 +3254,18 @@ namespace CoreMidi {
 			}
 		}
 
+		/// <summary>Releases the resources used by the MidiPacketsEventArgs object.</summary>
+		///         <remarks>
+		///           <para>The Dispose method releases the resources used by the MidiPacketsEventArgs class.</para>
+		///           <para>Calling the Dispose method when the application is finished using the MidiPacketsEventArgs ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.  For more information on releasing resources see ``Cleaning up Unmananaged Resources'' at https://msdn.microsoft.com/en-us/library/498928w2.aspx</para>
+		///         </remarks>
 		public void Dispose ()
 		{
 			Dispose (true);
 			GC.SuppressFinalize (this);
 		}
 
+		/// <include file="../../docs/api/CoreMidi/MidiPacketsEventArgs.xml" path="/Documentation/Docs[@DocId='M:CoreMidi.MidiPacketsEventArgs.Dispose(System.Boolean)']/*" />
 		protected virtual void Dispose (bool disposing)
 		{
 			// The list of packets may have pointers into packetList, make sure

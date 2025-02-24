@@ -281,6 +281,13 @@ namespace HomeKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the HomeKit.IHMAccessoryBrowserDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the HomeKit.IHMAccessoryBrowserDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IHMAccessoryBrowserDelegate Delegate { get; set; }
 

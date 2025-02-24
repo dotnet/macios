@@ -40,6 +40,9 @@ using System.Runtime.InteropServices;
 
 namespace Foundation {
 	public partial class NSData : IEnumerable, IEnumerable<byte> {
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public byte [] ToArray ()
 		{
 			var res = new byte [Length];
@@ -48,6 +51,11 @@ namespace Foundation {
 			return res;
 		}
 
+		/// <summary>Enumerator for the NSData contents.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			IntPtr source = Bytes;
@@ -67,11 +75,20 @@ namespace Foundation {
 				yield return Marshal.ReadByte (source, (int) i);
 		}
 
+		/// <param name="s">String to wrap.</param>
+		///         <summary>Creates an NSData for a C# string, the string is encoded in UTF8.</summary>
+		///         <returns>Newly creates NSData.</returns>
+		///         <remarks>
+		///         </remarks>
 		public static NSData FromString (string s)
 		{
 			return FromString (s, NSStringEncoding.UTF8);
 		}
 
+		/// <param name="buffer">C# Byte array containing the data to wrap.</param>
+		///         <summary>Creates an NSData that wraps a managed C# byte array.</summary>
+		///         <returns>Newly created NSData object wrapping the contents of the array.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSData FromArray (byte [] buffer)
 		{
 			if (buffer is null)
@@ -87,6 +104,10 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="stream">System.IO.Stream to wrap as an NSData.</param>
+		///         <summary>Creates an NSData by loading the contents of the provided stream.</summary>
+		///         <returns>Newly created NSData, or null if it the stream does not support reading or the stream throws an exception.</returns>
+		///         <remarks>This method will load the contents of the stream starting at the current location in the stream.</remarks>
 		public static NSData? FromStream (Stream stream)
 		{
 			if (stream is null)
@@ -198,6 +219,21 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>Wraps the NSData into System.IO.Stream</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///           <para>Call Dispose on the returned Stream to release the reference to this NSData.</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// void DumpImage (Stream output, UIImage img)
+		/// {
+		///     NSData data = img.AsPNG ();
+		///     data.AsStream ().CopyTo (output);
+		/// }
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		public virtual Stream AsStream ()
 		{
 			unsafe {
@@ -208,6 +244,12 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="s">String to wrap.</param>
+		///         <param name="encoding">Encoding to use.</param>
+		///         <summary>Creates an NSData for a C# string, the string is encoded using the specified encoding.</summary>
+		///         <returns>Newly creates NSData.</returns>
+		///         <remarks>
+		///         </remarks>
 		public static NSData FromString (string s, NSStringEncoding encoding)
 		{
 			using (var ns = new NSString (s))
@@ -219,11 +261,22 @@ namespace Foundation {
 			return FromString (s, NSStringEncoding.UTF8);
 		}
 
+		/// <param name="encoding">The encoding to use to convert the contents.</param>
+		///         <summary>Returns a string representation of the value of the current instance.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public NSString ToString (NSStringEncoding encoding)
 		{
 			return new NSString (this, encoding);
 		}
 
+		/// <summary>Returns a string representation of the value of the current instance.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			// not every NSData can be converted into a (valid) UTF8 string and:
@@ -238,11 +291,23 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="file">To be added.</param>
+		///         <param name="auxiliaryFile">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Save (string file, bool auxiliaryFile, out NSError? error)
 		{
 			return Save (file, auxiliaryFile ? NSDataWritingOptions.Atomic : (NSDataWritingOptions) 0, out error);
 		}
 
+		/// <param name="file">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Save (string file, NSDataWritingOptions options, out NSError? error)
 		{
 			unsafe {
@@ -256,11 +321,23 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="url">To be added.</param>
+		///         <param name="auxiliaryFile">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Save (NSUrl url, bool auxiliaryFile, out NSError? error)
 		{
 			return Save (url, auxiliaryFile ? NSDataWritingOptions.Atomic : (NSDataWritingOptions) 0, out error);
 		}
 
+		/// <param name="url">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Save (NSUrl url, NSDataWritingOptions options, out NSError? error)
 		{
 			unsafe {

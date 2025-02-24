@@ -30,6 +30,11 @@ namespace Foundation {
 #endif
 
 #if NET
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -48,6 +53,10 @@ namespace Foundation {
 		}
 
 #if NET
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -65,6 +74,11 @@ namespace Foundation {
 		}
 
 #if NET
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <param name="result">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]

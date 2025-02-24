@@ -431,17 +431,41 @@ namespace MetalPerformanceShaders {
 		[Export ("edgeMode", ArgumentSemantic.Assign)]
 		MPSImageEdgeMode EdgeMode { get; set; }
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="texture">To be added.</param>
+		///         <param name="copyAllocator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Attempts to apply the kernel to <paramref name="texture" />, using <paramref name="copyAllocator" /> to allocate and write to a new texture if in-place application fails.</summary>
+		///         <returns>
+		///           <see langword="true" /> if in-place application succeeds. Otherwise, returns <see langword="false" />.</returns>
+		///         <remarks>If <see langword="true" /> is returned and a non-null copy allocator was supplied, <paramref name="texture" /> will point to the newly allocated texture, whether in-place or out-of-place. If no copy allocator is supplied, the reference <paramref name="texture" /> remains unchanged on failure.</remarks>
 		[Export ("encodeToCommandBuffer:inPlaceTexture:fallbackCopyAllocator:")]
 		bool EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, out NSObject /* IMTLTexture */ texture, [NullAllowed] MPSCopyAllocator copyAllocator);
 		// FIXME: can't use IMTLTexture now
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceTexture">To be added.</param>
+		///         <param name="destinationTexture">To be added.</param>
+		///         <summary>Encodes the kernel to <paramref name="commandBuffer" />, which will overwrite <paramref name="destinationTexture" /> with the result of applying the kernel to <paramref name="sourceTexture" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:sourceTexture:destinationTexture:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, IMTLTexture sourceTexture, IMTLTexture destinationTexture);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("encodeToCommandBuffer:sourceImage:destinationImage:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, MPSImage destinationImage);
 
+		/// <param name="destinationSize">To be added.</param>
+		///         <summary>Calculates and returns the area of the source texture that will be read for the specified <paramref name="destinationSize" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceRegionForDestinationSize:")]
 		MPSRegion SourceRegionForDestinationSize (MTLSize destinationSize);
 
@@ -1408,6 +1432,11 @@ namespace MetalPerformanceShaders {
 		[Internal, Export ("setBatchNormalizationParametersForInferenceWithMean:variance:gamma:beta:epsilon:")]
 		void SetBatchNormalizationParameters (IntPtr /* float* */ mean, IntPtr /* float* */ variance, [NullAllowed] IntPtr /* float* */ gamma, [NullAllowed] IntPtr /* float* */ beta, float epsilon);
 
+		/// <param name="neuronType">To be added.</param>
+		///         <param name="parameterA">To be added.</param>
+		///         <param name="parameterB">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.TvOS, 11, 3, message: "Use 'FusedNeuronDescriptor' property instead.")]
 		[Deprecated (PlatformName.iOS, 11, 3, message: "Use 'FusedNeuronDescriptor' property instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, 4, message: "Use 'FusedNeuronDescriptor' property instead.")]
@@ -1449,6 +1478,9 @@ namespace MetalPerformanceShaders {
 		[Export ("neuronParameterB")]
 		float NeuronParameterB { get; }
 
+		/// <param name="A">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.TvOS, 11, 3, message: "Use 'FusedNeuronDescriptor' property instead.")]
 		[Deprecated (PlatformName.iOS, 11, 3, message: "Use 'FusedNeuronDescriptor' property instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, 4, message: "Use 'FusedNeuronDescriptor' property instead.")]
@@ -2939,6 +2971,9 @@ namespace MetalPerformanceShaders {
 		[Export ("destinationImageDescriptorForSourceImages:sourceStates:forKernel:suggestedDescriptor:")]
 		MPSImageDescriptor GetDestinationImageDescriptor (NSArray<MPSImage> sourceImages, [NullAllowed] NSArray<MPSState> sourceStates, MPSKernel kernel, MPSImageDescriptor inDescriptor);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Please use 'GetResource (nuint, bool)' instead.")]
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Please use 'GetResource (nuint, bool)' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, 4, message: "Please use 'GetResource (nuint, bool)' instead.")]
@@ -3021,6 +3056,9 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:descriptor:")]
 		NativeHandle Constructor (IMTLDevice device, MPSVectorDescriptor descriptor);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("synchronizeOnCommandBuffer:")]
 		void Synchronize (IMTLCommandBuffer commandBuffer);

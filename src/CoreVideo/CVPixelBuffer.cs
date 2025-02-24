@@ -102,6 +102,10 @@ namespace CoreVideo {
 			/* CFArrayRef __nullable */ IntPtr attributes,
 			/* CFDictionaryRef __nullable * __nonnull */ IntPtr* resolvedDictionaryOut);
 
+		/// <param name="attributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary? GetAttributes (NSDictionary []? attributes)
 		{
 			CVReturn ret;
@@ -346,6 +350,9 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static CVReturn CVPixelBufferFillExtendedPixels (/* CVPixelBufferRef __nonnull */ IntPtr pixelBuffer);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CVReturn FillExtendedPixels ()
 		{
 			return CVPixelBufferFillExtendedPixels (Handle);
@@ -492,6 +499,10 @@ namespace CoreVideo {
 		extern static CVReturn CVPixelBufferLockBaseAddress (
 			/* CVPixelBufferRef __nonnull */ IntPtr pixelBuffer, CVPixelBufferLock lockFlags);
 
+		/// <param name="lockFlags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CVReturn Lock (CVPixelBufferLock lockFlags)
 		{
 			return CVPixelBufferLockBaseAddress (Handle, lockFlags);
@@ -501,6 +512,10 @@ namespace CoreVideo {
 		extern static CVReturn CVPixelBufferUnlockBaseAddress (
 			/* CVPixelBufferRef __nonnull */ IntPtr pixelBuffer, CVPixelBufferLock unlockFlags);
 
+		/// <param name="unlockFlags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CVReturn Unlock (CVPixelBufferLock unlockFlags)
 		{
 			return CVPixelBufferUnlockBaseAddress (Handle, unlockFlags);

@@ -131,6 +131,9 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="calendarType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSCalendar (NSCalendarType calendarType) : this (GetCalendarIdentifier (calendarType)) { }
 	}
 }

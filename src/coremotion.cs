@@ -313,6 +313,9 @@ namespace CoreMotion {
 		[Export ("roll")]
 		double Roll { get; }
 
+		/// <param name="attitude">To be added.</param>
+		///         <summary>Multiplies the attitude by the specified attitude.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("multiplyByInverseOfAttitude:")]
 		void MultiplyByInverseOfAttitude (CMAttitude attitude);
 	}
@@ -441,6 +444,12 @@ namespace CoreMotion {
 		[Export ("isStepCountingAvailable")]
 		bool IsStepCountingAvailable { get; }
 
+		/// <param name="start">To be added.</param>
+		///         <param name="end">To be added.</param>
+		///         <param name="queue">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>Queries for step-counting data.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("queryStepCountStartingFrom:to:toQueue:withHandler:")]
 		[Async]
 		void QueryStepCount (NSDate start, NSDate end, NSOperationQueue queue, CMStepQueryHandler handler);
@@ -448,6 +457,8 @@ namespace CoreMotion {
 		[Export ("startStepCountingUpdatesToQueue:updateOn:withHandler:")]
 		void StartStepCountingUpdates (NSOperationQueue queue, nint stepCounts, CMStepUpdateHandler handler);
 
+		/// <summary>End periodic updates of step-counting information.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopStepCountingUpdates")]
 		void StopStepCountingUpdates ();
 	}
@@ -558,14 +569,25 @@ namespace CoreMotion {
 		[Export ("isFloorCountingAvailable")]
 		bool IsFloorCountingAvailable { get; }
 
+		/// <param name="start">To be added.</param>
+		///         <param name="end">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>Requests pedometer data for the specified range.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("queryPedometerDataFromDate:toDate:withHandler:")]
 		[Async]
 		void QueryPedometerData (NSDate start, NSDate end, Action<CMPedometerData, NSError> handler);
 
+		/// <param name="start">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>Requests that the pedometer begin sending periodic updates to the app.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("startPedometerUpdatesFromDate:withHandler:")]
 		[Async]
 		void StartPedometerUpdates (NSDate start, Action<CMPedometerData, NSError> handler);
 
+		/// <summary>Requests that the pedometer stop sending periodic updates to the app.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopPedometerUpdates")]
 		void StopPedometerUpdates ();
 
@@ -593,11 +615,16 @@ namespace CoreMotion {
 		[Export ("isPedometerEventTrackingAvailable")]
 		bool IsPedometerEventTrackingAvailable { get; }
 
+		/// <param name="handler">An event handler for pedometer update events.</param>
+		///         <summary>Starts handling updates to pedestrian data.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Async]
 		[Export ("startPedometerEventUpdatesWithHandler:")]
 		void StartPedometerEventUpdates (Action<CMPedometerEvent, NSError> handler);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("stopPedometerEventUpdates")]
 		void StopPedometerEventUpdates ();
@@ -759,6 +786,8 @@ namespace CoreMotion {
 		[Async]
 		void StartRelativeAltitudeUpdates (NSOperationQueue queue, Action<CMAltitudeData, NSError> handler);
 
+		/// <summary>Stops periodic updates of altitude-adjustment data.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopRelativeAltitudeUpdates")]
 		void StopRelativeAltitudeUpdates ();
 
@@ -843,11 +872,19 @@ namespace CoreMotion {
 		[Export ("isAuthorizedForRecording")]
 		bool IsAuthorizedForRecording { get; }
 
+		/// <param name="fromDate">To be added.</param>
+		///         <param name="toDate">To be added.</param>
+		///         <summary>Retrieves accelerometer data for the specified time interval.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("accelerometerDataFromDate:toDate:")]
 		[return: NullAllowed]
 		CMSensorDataList GetAccelerometerData (NSDate fromDate, NSDate toDate);
 
+		/// <param name="duration">To be added.</param>
+		///         <summary>Begins recording sensor data for <paramref name="duration" /> seconds.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("recordAccelerometerForDuration:")]
 		void RecordAccelerometer (double duration);

@@ -16,7 +16,9 @@ namespace MultipeerConnectivity {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MCSessionSendDataMode : long {
+		/// <summary>Indicates guaranteed delivery.</summary>
 		Reliable,
+		/// <summary>Indicates non-guaranteed delivery.</summary>
 		Unreliable
 	}
 
@@ -25,8 +27,11 @@ namespace MultipeerConnectivity {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MCSessionState : long {
+		/// <summary>Indicates that the <see cref="T:MultipeerConnectivity.MCSession" /> is not connected.</summary>
 		NotConnected,
+		/// <summary>Indicates that the <see cref="T:MultipeerConnectivity.MCSession" /> is in the process of connecting.</summary>
 		Connecting,
+		/// <summary>Indicates that the <see cref="T:MultipeerConnectivity.MCSession" /> is connected.</summary>
 		Connected
 	}
 

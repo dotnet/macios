@@ -35,20 +35,40 @@ namespace GameController {
 	public struct GCGamepadSnapShotDataV100 {
 
 		// Standard information
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public ushort /* uint16_t */ Version; // 0x0100
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public ushort /* uint16_t */ Size;    // sizeof(GCGamepadSnapShotDataV100) or larger
 
 		// Standard gamepad data
 		// Axes in the range [-1.0, 1.0]
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ DPadX;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ DPadY;
 
 		// Buttons in the range [0.0, 1.0]
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ ButtonA;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ ButtonB;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ ButtonX;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ ButtonY;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ LeftShoulder;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ RightShoulder;
 
 		[DllImport (Constants.GameControllerLibrary)]

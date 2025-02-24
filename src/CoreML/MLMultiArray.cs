@@ -66,12 +66,40 @@ namespace CoreML {
 				SetObjectInternal (obj, arr.GetHandle ());
 		}
 
+		/// <summary>The dimensions of the array.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint [] Shape {
 			get {
 				return ConvertArray (_Shape);
 			}
 		}
 
+		/// <summary>The number of elements to skip to advance an index value by one in the chosen direction.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>
+		///             <see cref="T:CoreML.MLMultiArray" /> objects can be treated as one-dimensional arrays. The <see cref="P:CoreML.MLMultiArray.Strides" /> property retrieves the number of elements in a one-dimensional array that are necessary to "skip over" in order to advance by 1 in the desired dimension.</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// NSError err;
+		/// var ma = new CoreML.MLMultiArray(new NSNumber[] { 3, 5, 7, 9 },CoreML.MLMultiArrayDataType.Int32, out err);
+		/// if (err is not null) 
+		/// {
+		///    HandleError(err);
+		///    return;
+		/// }
+		/// var strides = ma.Strides;
+		/// /*
+		/// strides[0] = 315
+		/// strides[1] =  63
+		/// strides[2] =   9
+		/// strides[3] =   1
+		/// */        
+		///
+		///     ]]></code>
+		///           </example>
+		///         </remarks>
 		public nint [] Strides {
 			get {
 				return ConvertArray (_Strides);

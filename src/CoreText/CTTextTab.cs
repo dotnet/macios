@@ -74,8 +74,14 @@ namespace CoreText {
 			Dictionary = dictionary;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary Dictionary { get; private set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSCharacterSet ColumnTerminators {
 			get { return (NSCharacterSet) Dictionary [CTTextTabOptionKey.ColumnTerminators]; }
 			set { Adapter.SetValue (Dictionary, CTTextTabOptionKey.ColumnTerminators, value); }
@@ -122,12 +128,18 @@ namespace CoreText {
 		#region Text Tab Access
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern CTTextAlignment CTTextTabGetAlignment (IntPtr tab);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CTTextAlignment TextAlignment {
 			get { return CTTextTabGetAlignment (Handle); }
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern double CTTextTabGetLocation (IntPtr tab);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double Location {
 			get { return CTTextTabGetLocation (Handle); }
 		}

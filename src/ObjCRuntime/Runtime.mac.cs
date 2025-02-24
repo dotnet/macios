@@ -47,10 +47,16 @@ namespace ObjCRuntime {
 		internal const string AssemblyName = "Xamarin.Mac.dll";
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static string? FrameworksPath {
 			get; set;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static string? ResourcesPath {
 			get; set;
 		}

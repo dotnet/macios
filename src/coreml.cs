@@ -29,13 +29,21 @@ namespace CoreML {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MLFeatureType : long {
+		/// <summary>An invalid value for a feature.</summary>
 		Invalid = 0,
+		/// <summary>A 64-bit integer feature.</summary>
 		Int64 = 1,
+		/// <summary>A double-precision floating-point value feature.</summary>
 		Double = 2,
+		/// <summary>A string feature.</summary>
 		String = 3,
+		/// <summary>An image feature.</summary>
 		Image = 4,
+		/// <summary>A multidimensional array feature.</summary>
 		MultiArray = 5,
+		/// <summary>A dictionary / map feature. The dictionary is of type <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Object&amp;scope=Xamarin" title="T:System.Object">T:System.Object</a></format> -&gt; <see cref="T:Foundation.NSNumber" />.</summary>
 		Dictionary = 6,
+		/// <summary>Sequence data, such as a time series or words ordered as text.</summary>
 		[MacCatalyst (13, 1)]
 		Sequence = 7,
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -79,8 +87,11 @@ namespace CoreML {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MLImageSizeConstraintType : long {
+		/// <summary>The form of the constraint is unknown.</summary>
 		Unspecified = 0,
+		/// <summary>Only a specific set of sizes is allowed.</summary>
 		Enumerated = 2,
+		/// <summary>The allowed sizes are described using ranges.</summary>
 		Range = 3,
 	}
 
@@ -96,8 +107,11 @@ namespace CoreML {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MLComputeUnits : long {
+		/// <summary>To be added.</summary>
 		CpuOnly = 0,
+		/// <summary>To be added.</summary>
 		CpuAndGpu = 1,
+		/// <summary>To be added.</summary>
 		All = 2,
 		CPUAndNeuralEngine = 3,
 	}
@@ -135,6 +149,9 @@ namespace CoreML {
 	[BaseType (typeof (NSObject))]
 	interface MLDictionaryFeatureProvider : MLFeatureProvider, NSSecureCoding {
 
+		/// <summary>Gets the underlying <see cref="T:Foundation.NSDictionary" /> (String -&gt; <see cref="T:CoreML.MLFeatureValue" />).</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("dictionary")]
 		NSDictionary<NSString, MLFeatureValue> Dictionary { get; }
 
@@ -147,12 +164,21 @@ namespace CoreML {
 	[BaseType (typeof (NSObject))]
 	interface MLFeatureDescription : NSCopying, NSSecureCoding {
 
+		/// <summary>A developer-meaningful name for this feature.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("name")]
 		string Name { get; }
 
+		/// <summary>Gets the <see cref="T:CoreML.MLFeatureType" /> of this feature.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("type")]
 		MLFeatureType Type { get; }
 
+		/// <summary>Gets whether this feature may not be present in a valid model.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("optional")]
 		bool Optional { [Bind ("isOptional")] get; }
 
@@ -161,15 +187,36 @@ namespace CoreML {
 
 		// Category MLFeatureDescription (MLFeatureValueConstraints)
 
+		/// <summary>Gets the constraint for a multidimensional array.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("multiArrayConstraint", ArgumentSemantic.Assign)]
 		MLMultiArrayConstraint MultiArrayConstraint { get; }
 
+		/// <summary>Gets the constraint for an image.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("imageConstraint", ArgumentSemantic.Assign)]
 		MLImageConstraint ImageConstraint { get; }
 
+		/// <summary>Gets the key constraint for a dictionary.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("dictionaryConstraint", ArgumentSemantic.Assign)]
 		MLDictionaryConstraint DictionaryConstraint { get; }
 
+		/// <summary>Gets the <see cref="T:CoreML.MLSequenceConstraint" />, if any, that describes allowable variations in the feature.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("sequenceConstraint")]
 		MLSequenceConstraint SequenceConstraint { get; }
@@ -201,30 +248,64 @@ namespace CoreML {
 	[BaseType (typeof (NSObject))]
 	interface MLFeatureValue : NSCopying, NSSecureCoding {
 
+		/// <summary>Gets the <see cref="T:CoreML.MLFeatureType" /> kind of this <see cref="T:CoreML.MLFeatureValue" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("type")]
 		MLFeatureType Type { get; }
 
+		/// <summary>Gets whether the underlying value is undefined.</summary>
+		///         <value>
+		///           <see langword="true" /> if the value is undefined.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("undefined")]
 		bool Undefined { [Bind ("isUndefined")] get; }
 
+		/// <summary>Gets the underlying <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2064&amp;scope=Xamarin" title="T:System.Int64">T:System.Int64</a></format> feature value.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("int64Value")]
 		long Int64Value { get; }
 
+		/// <summary>Gets the underlying <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Double&amp;scope=Xamarin" title="T:System.Double">T:System.Double</a></format> feature value.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("doubleValue")]
 		double DoubleValue { get; }
 
+		/// <summary>Gets the underlying <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> feature value.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("stringValue")]
 		string StringValue { get; }
 
+		/// <summary>Gets the underlying <see cref="T:CoreML.MLMultiArray" /> feature value.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("multiArrayValue")]
 		MLMultiArray MultiArrayValue { get; }
 
+		/// <summary>Gets the underlying <see cref="T:Foundation.NSDictionary" /> (Object-&gt;NSNumber) feature value.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("dictionaryValue")]
 		NSDictionary<NSObject, NSNumber> DictionaryValue { get; }
 
+		/// <summary>Static factory method to create a <see cref="T:CoreML.MLFeatureValue" /> whose kind is <see cref="F:CoreML.MLFeatureType.Image" />.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("imageBufferValue")]
 		CVPixelBuffer ImageBufferValue { get; }
 
+		/// <summary>Gets the underlying <see cref="T:CoreML.MLSequence" /> value.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("sequenceValue")]
 		MLSequence SequenceValue { get; }
@@ -410,9 +491,15 @@ namespace CoreML {
 	[BaseType (typeof (NSObject))]
 	interface MLModel {
 
+		/// <summary>A developer-meaningful description of this <see cref="T:CoreML.MLModel" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>A properly-specified <see cref="T:CoreML.MLModelDescription" /> contains all the detail necessary for a user of the model to properly create inputs and interpret outputs. For instance, image resolution, column- vs. row-major matrix forms, etc.</remarks>
 		[Export ("modelDescription")]
 		MLModelDescription ModelDescription { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("configuration")]
 		MLModelConfiguration Configuration { get; }
@@ -594,6 +681,9 @@ namespace CoreML {
 	[BaseType (typeof (NSObject))]
 	interface MLMultiArray : NSSecureCoding {
 
+		/// <summary>Gets a pointer to the raw array data.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 13, 0, message: "Use 'GetBytes (Action<IntPtr, nint>)' or 'GetMutableBytes' async methods instead.")]
 		[Deprecated (PlatformName.iOS, 16, 0, message: "Use 'GetBytes (Action<IntPtr, nint>)' or 'GetMutableBytes' async methods instead.")]
 		[Deprecated (PlatformName.TvOS, 16, 0, message: "Use 'GetBytes (Action<IntPtr, nint>)' or 'GetMutableBytes' async methods instead.")]
@@ -601,6 +691,9 @@ namespace CoreML {
 		[Export ("dataPointer")]
 		IntPtr DataPointer { get; }
 
+		/// <summary>The type of the data elements stored in the array.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("dataType")]
 		MLMultiArrayDataType DataType { get; }
 
@@ -612,6 +705,9 @@ namespace CoreML {
 		[Export ("strides")]
 		IntPtr _Strides { get; }
 
+		/// <summary>The total number of elements in the array.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("count")]
 		nint Count { get; }
 
@@ -692,6 +788,9 @@ namespace CoreML {
 	[BaseType (typeof (NSObject))]
 	interface MLDictionaryConstraint : NSSecureCoding {
 
+		/// <summary>Gets the type for keys in a dictionary.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("keyType")]
 		MLFeatureType KeyType { get; }
 	}
@@ -702,15 +801,27 @@ namespace CoreML {
 	[BaseType (typeof (NSObject))]
 	interface MLImageConstraint : NSSecureCoding {
 
+		/// <summary>Gets the height of the image, in pixels.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("pixelsHigh")]
 		nint PixelsHigh { get; }
 
+		/// <summary>Gets the width of the image, in pixels.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("pixelsWide")]
 		nint PixelsWide { get; }
 
+		/// <summary>Gets the pixel format for the image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("pixelFormatType")]
 		uint PixelFormatType { get; }
 
+		/// <summary>Gets the <see cref="T:CoreML.MLImageSizeConstraint" />, if it exists.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("sizeConstraint")]
 		MLImageSizeConstraint SizeConstraint { get; }
@@ -726,9 +837,15 @@ namespace CoreML {
 		[Export ("shape")]
 		IntPtr _Shape { get; }
 
+		/// <summary>Gets the type of data that is stored in the array.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("dataType")]
 		MLMultiArrayDataType DataType { get; }
 
+		/// <summary>Gets the <see cref="T:CoreML.MLMultiArrayShapeConstraint" />, if any, describing constraints on the shape of the tensor.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("shapeConstraint")]
 		MLMultiArrayShapeConstraint ShapeConstraint { get; }
@@ -785,6 +902,9 @@ namespace CoreML {
 	[DisableDefaultCtor]
 	interface MLArrayBatchProvider : MLBatchProvider {
 
+		/// <summary>Retrieves all the <see cref="T:CoreML.IMLFeatureProvider" /> objects in this batch.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("array")]
 		IMLFeatureProvider [] Array { get; }
 
@@ -841,9 +961,15 @@ namespace CoreML {
 	[DisableDefaultCtor]
 	interface MLImageSize : NSSecureCoding {
 
+		/// <summary>The expected width, in pixels.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("pixelsWide")]
 		nint PixelsWide { get; }
 
+		/// <summary>The expected height, in pixels.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("pixelsHigh")]
 		nint PixelsHigh { get; }
 	}
@@ -854,15 +980,27 @@ namespace CoreML {
 	[DisableDefaultCtor]
 	interface MLImageSizeConstraint : NSSecureCoding {
 
+		/// <summary>Gets the type of constraint.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("type")]
 		MLImageSizeConstraintType Type { get; }
 
+		/// <summary>Gets an <see cref="T:Foundation.NSRange" /> that describes the allowable heights, in pixels, of image inputs.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("pixelsWideRange")]
 		NSRange PixelsWideRange { get; }
 
+		/// <summary>Gets an <see cref="T:Foundation.NSRange" /> that describes the allowable heights, in pixels, of image inputs.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("pixelsHighRange")]
 		NSRange PixelsHighRange { get; }
 
+		/// <summary>Gets the array of specific image sizes allowed by the model.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enumeratedImageSizes")]
 		MLImageSize [] EnumeratedImageSizes { get; }
 	}

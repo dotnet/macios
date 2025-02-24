@@ -39,6 +39,9 @@ namespace MultipeerConnectivity {
 		[Export ("initWithDisplayName:")]
 		NativeHandle Constructor (string myDisplayName);
 
+		/// <summary>The displayable name for the peer.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displayName")]
 		string DisplayName { get; }
 	}
@@ -216,19 +219,40 @@ namespace MultipeerConnectivity {
 		[Export ("stopAdvertisingPeer")]
 		void StopAdvertisingPeer ();
 
+		/// <summary>An object that can respond to the delegate protocol for this type</summary>
+		///         <value>The instance that will respond to events and data requests.</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+		///         </remarks>
 		[Export ("delegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the MultipeerConnectivity.IMCNearbyServiceAdvertiserDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the MultipeerConnectivity.IMCNearbyServiceAdvertiserDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IMCNearbyServiceAdvertiserDelegate Delegate { get; set; }
 
+		/// <summary>The identity by which this device will be known on the peer network.</summary>
+		///         <value>This will contain the data passed in to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)&amp;scope=Xamarin" title="C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)">C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)</a></format> constructor.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("myPeerID")]
 		MCPeerID MyPeerID { get; }
 
+		/// <include file="../docs/api/MultipeerConnectivity/MCNearbyServiceAdvertiser.xml" path="/Documentation/Docs[@DocId='P:MultipeerConnectivity.MCNearbyServiceAdvertiser.DiscoveryInfo']/*" />
 		[NullAllowed]
 		[Export ("discoveryInfo")]
 		NSDictionary DiscoveryInfo { get; }
 
+		/// <summary>The network protocol this peer supports.</summary>
+		///         <value>This will contain the data passed in to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)&amp;scope=Xamarin" title="C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)">C:MultipeerConnectivity.MCNearbyServiceAdvertiser(MultipeerConnectivity.MCPeerID,Foundation.NSDictionary,string)</a></format> constructor.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("serviceType")]
 		string ServiceType { get; }
 	}
@@ -291,15 +315,35 @@ namespace MultipeerConnectivity {
 		[Export ("invitePeer:toSession:withContext:timeout:")]
 		void InvitePeer (MCPeerID peerID, MCSession session, [NullAllowed] NSData context, double timeout);
 
+		/// <summary>An object that can respond to the delegate protocol for this type</summary>
+		///         <value>The instance that will respond to events and data requests.</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+		///         </remarks>
 		[Export ("delegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the MultipeerConnectivity.IMCNearbyServiceBrowserDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the MultipeerConnectivity.IMCNearbyServiceBrowserDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IMCNearbyServiceBrowserDelegate Delegate { get; set; }
 
+		/// <summary>The identity of the local peer.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("myPeerID")]
 		MCPeerID MyPeerID { get; }
 
+		/// <summary>The network protocol being browsed for.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("serviceType")]
 		string ServiceType { get; }
 	}

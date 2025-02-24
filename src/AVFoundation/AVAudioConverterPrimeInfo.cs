@@ -39,7 +39,11 @@ namespace AVFoundation {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVAudioConverterPrimeInfo {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public uint LeadingFrames;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public uint TrailingFrames;
 
 		public AVAudioConverterPrimeInfo (uint leadingFrames, uint trailingFrames)

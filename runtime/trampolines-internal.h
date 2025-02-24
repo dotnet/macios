@@ -6,7 +6,7 @@
 #include "xamarin/mono-runtime.h"
 #include "xamarin/runtime.h"
 
-//#define TRACE
+#define TRACE
 #ifdef TRACE
 #define LOGZ(...) fprintf (stderr, __VA_ARGS__);
 #else
@@ -50,6 +50,35 @@ void xamarin_invoke_trampoline (enum TrampolineType type, id self, SEL sel, iter
 
 int xamarin_get_frame_length (id self, SEL sel);
 const char * xamarin_skip_type_name (const char *ptr);
+
+
+static inline size_t align_size (size_t target, uint64_t alignment)
+{
+	target = (target + (alignment - 1)) & ~(alignment - 1);
+	return target;
+}
+
+static inline unsigned long align_ulong (unsigned long target, unsigned long alignment)
+{
+	target = (target + (alignment - 1)) & ~(alignment - 1);
+	return target;
+}
+
+static inline int32_t align_int32 (int32_t target, int32_t alignment)
+{
+	target = (target + (alignment - 1)) & ~(alignment - 1);
+	return target;
+}
+
+static inline void* align_ptr (void* target, uint64_t alignment)
+{
+	if (target == NULL)
+		return NULL;
+
+	uint64_t ptr = (uint64_t) target;
+	ptr = (ptr + (alignment - 1)) & ~(alignment - 1);
+	return (void *) ptr;
+}
 
 #ifdef __cplusplus
 } /* extern "C" */

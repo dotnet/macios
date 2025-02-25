@@ -61,7 +61,7 @@ steps:
 
 - template: ../common/install-qa-provisioning-profiles.yml
   parameters:
-    xamarinMaciosPath: $(Build.SourcesDirectory)
+    xamarinMaciosPath: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)
     env:
       AUTH_TOKEN_GITHUB_COM: ${{ parameters.gitHubToken }}
       AUTH_TOKEN_LA_DEV_APPLE_P12: ${{ parameters.xqaCertPass }}

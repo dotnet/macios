@@ -71,23 +71,6 @@ steps:
             artifact: '${{ parameters.uploadPrefix }}not-signed-package'
           continueOnError: true
 
-        - bash: |
-            set -x
-            set -e
-
-            make -C $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tests package-test-libraries.zip
-          name: introPkg
-          displayName: 'Package test libraries dependencies'
-          continueOnError: true  # not a terrible blocking issue
-          timeoutInMinutes: 60
-
-        - task: 1ES.PublishPipelineArtifact@1
-          displayName: 'Publish test libraries dependencies'
-          inputs:
-            path: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tests/package-test-libraries.zip
-            artifact: '${{ parameters.uploadPrefix }}package-test-libraries'
-          continueOnError: true
-
         - task: 1ES.PublishPipelineArtifact@1
           displayName: 'Publish Build.props'
           inputs:

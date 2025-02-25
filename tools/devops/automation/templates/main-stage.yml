@@ -171,6 +171,23 @@ stages:
       condition: eq(dependencies.${{ parameters.dependsOn }}.result, '${{ parameters.dependsOnResult }}')
     jobs:
 
+      - job: testNuGets
+        displayName: 'Test checkout'
+        pool:
+          name: AzurePipelines-EO
+          os: linux
+          image: 1ESPT-Ubuntu22.04
+
+        steps:
+          - template: ../common/checkout.yml
+            parameters:
+              resource: ${{ parameters.repositoryAlias }}
+              isPR: ${{ parameters.isPR }}
+              commit: ${{ parameters.commit }}
+              clean: true
+              path: s/$(BUILD_REPOSITORY_TITLE)-placeholder
+              fetchTags: false
+
       - job: configure
         displayName: 'Configure build'
         pool:

@@ -179,7 +179,7 @@ stages:
           image: 1ESPT-Ubuntu22.04
 
         steps:
-          - template: ../common/checkout.yml
+          - template: ./common/checkout.yml
             parameters:
               resource: ${{ parameters.repositoryAlias }}
               isPR: ${{ parameters.isPR }}

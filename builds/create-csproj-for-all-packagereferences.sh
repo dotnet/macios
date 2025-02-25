@@ -51,6 +51,9 @@ sed -i '' '/Xamarin.Tests.FrameworksInRuntimesNativeDirectory/d' "$TMPPATH"
 sed -i '' '/Xamarin.Tests.DynamicLibrariesInRuntimesNativeDirectory/d' "$TMPPATH"
 sed -i '' '/Xamarin.Tests.XCFrameworkWithStaticLibraryInRuntimesNativeDirectory/d' "$TMPPATH"
 
+# Remove packages we rarely need
+sed -i '' '/BenchmarkDotNet/d' "$TMPPATH"
+
 # Get only the name and version of each package, and write that back in a PackageDownload item
 sed -i '' 's@.*<PackageReference.*Include="\([a-zA-Z0-9._-]*\)".*Version="\([a-zA-Z0-9._-]*\)".*>.*@\t\t<PackageDownload Include="\1" Version="[\2]" />@g' "$TMPPATH"
 

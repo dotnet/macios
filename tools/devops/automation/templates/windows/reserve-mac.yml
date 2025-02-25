@@ -4,6 +4,9 @@ parameters:
   type: string
   default: "VSEng-VSMac-Xamarin-Shared"
 
+- name: isPR
+  type: boolean
+
 - name: repositoryAlias
   type: string
   default: self

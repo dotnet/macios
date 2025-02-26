@@ -348,7 +348,7 @@ namespace MediaToolbox {
 		/// <summary>To be added.</summary>
 		None = 0,
 		/// <summary>To be added.</summary>
-		InvalidArgument = -12780
+		InvalidArgument = -12780,
 	}
 
 	public class MTAudioProcessingTapCallbacks {

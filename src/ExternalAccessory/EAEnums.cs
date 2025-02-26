@@ -50,6 +50,6 @@ namespace ExternalAccessory {
 		AlreadyConnected,
 		NotFound,
 		Cancelled,
-		Failed
+		Failed,
 	}
 }

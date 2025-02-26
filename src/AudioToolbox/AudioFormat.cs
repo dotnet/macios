@@ -84,7 +84,7 @@ namespace AudioToolbox {
 		BadPropertySize = 0x2173697a,   // '!siz'
 		BadSpecifierSize = 0x21737063,  // '!spc'
 		UnsupportedDataFormat = 0x666d743f, // 'fmt?'
-		UnknownFormat = 0x21666d74  // '!fmt'
+		UnknownFormat = 0x21666d74, // '!fmt'
 
 		// TODO: Not documented
 		// '!dat'
@@ -105,7 +105,7 @@ namespace AudioToolbox {
 	public enum AudioBalanceFadeType : uint // UInt32 in AudioBalanceFades
 	{
 		MaxUnityGain = 0,
-		EqualPower = 1
+		EqualPower = 1,
 	}
 
 #if NET
@@ -182,7 +182,7 @@ namespace AudioToolbox {
 	public enum PanningMode : uint // UInt32 in AudioPanningInfo
 	{
 		SoundField = 3,
-		VectorBasedPanning = 4
+		VectorBasedPanning = 4,
 	}
 
 #if NET
@@ -250,7 +250,7 @@ namespace AudioToolbox {
 				Coord0 = Coordinates [0],
 				Coord1 = Coordinates [1],
 				Coord2 = Coordinates [2],
-				GainScale = GainScale
+				GainScale = GainScale,
 			};
 
 			if (OutputChannelMap is not null) {

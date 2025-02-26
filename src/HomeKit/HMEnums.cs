@@ -882,7 +882,7 @@ namespace HomeKit {
 		UInt32,
 		UInt64,
 		Data,
-		Tlv8
+		Tlv8,
 	}
 
 	/// <summary>Enumerates the states that a door can be in.</summary>
@@ -893,7 +893,7 @@ namespace HomeKit {
 		Closed,
 		Opening,
 		Closing,
-		Stopped
+		Stopped,
 	}
 
 	/// <summary>Enumerates the states that an indoor climate control unit can be in.</summary>
@@ -903,7 +903,7 @@ namespace HomeKit {
 		Off = 0,
 		Heat,
 		Cool,
-		Auto
+		Auto,
 	}
 
 	/// <summary>Enumerates rotation directions.</summary>
@@ -911,7 +911,7 @@ namespace HomeKit {
 	[Native]
 	public enum HMCharacteristicValueRotationDirection : long {
 		Clockwise = 0,
-		CounterClockwise
+		CounterClockwise,
 	}
 
 	/// <summary>Enumerates two common temperature measurement systems.</summary>
@@ -919,7 +919,7 @@ namespace HomeKit {
 	[Native]
 	public enum HMCharacteristicValueTemperatureUnit : long {
 		Celsius = 0,
-		Fahrenheit
+		Fahrenheit,
 	}
 
 	/// <summary>Enumerates the states that a lock can be in.</summary>
@@ -929,7 +929,7 @@ namespace HomeKit {
 		Unsecured = 0,
 		Secured,
 		Jammed,
-		Unknown
+		Unknown,
 	}
 
 	/// <summary>Enumerates values that describe the last known action that was taken on a lock.</summary>
@@ -955,7 +955,7 @@ namespace HomeKit {
 	[Native ("HMCharacteristicValueAirParticulateSize")]
 	public enum HMCharacteristicValueAirParticulate : long {
 		Size2_5 = 0,
-		Size10
+		Size10,
 	}
 
 	/// <summary>Enumerates the states of a security system.</summary>
@@ -966,7 +966,7 @@ namespace HomeKit {
 		AwayArm,
 		NightArm,
 		Disarmed,
-		Triggered
+		Triggered,
 	}
 
 	/// <summary>Enumerates the states of an object that opens and closes.</summary>
@@ -975,7 +975,7 @@ namespace HomeKit {
 	public enum HMCharacteristicValuePositionState : long {
 		Closing = 0,
 		Opening,
-		Stopped
+		Stopped,
 	}
 
 	/// <summary>Enumerates the status of a security system.</summary>
@@ -985,7 +985,7 @@ namespace HomeKit {
 		StayArm = 0,
 		AwayArm,
 		NightArm,
-		Disarm
+		Disarm,
 	}
 
 	/// <summary>Enumerates the valid battery status values.</summary>
@@ -993,7 +993,7 @@ namespace HomeKit {
 	[Native]
 	public enum HMCharacteristicValueBatteryStatus : long {
 		Normal = 0,
-		Low
+		Low,
 	}
 
 	/// <summary>Enumerates the state of a jammed device.</summary>
@@ -1001,7 +1001,7 @@ namespace HomeKit {
 	[Native]
 	public enum HMCharacteristicValueJammedStatus : long {
 		None = 0,
-		Jammed
+		Jammed,
 	}
 
 	/// <summary>Enumerates the states of a device that detected tampering.</summary>
@@ -1009,7 +1009,7 @@ namespace HomeKit {
 	[Native]
 	public enum HMCharacteristicValueTamperedStatus : long {
 		None = 0,
-		Tampered
+		Tampered,
 	}
 
 	/// <summary>Enumerates the values of a device that detects leaks.</summary>
@@ -1017,7 +1017,7 @@ namespace HomeKit {
 	[Native]
 	public enum HMCharacteristicValueLeakStatus : long {
 		None = 0,
-		Detected
+		Detected,
 	}
 
 	/// <summary>Enumerates the state of a smoke detector.</summary>
@@ -1025,7 +1025,7 @@ namespace HomeKit {
 	[Native]
 	public enum HMCharacteristicValueSmokeDetectionStatus : long {
 		None = 0,
-		Detected
+		Detected,
 	}
 
 	/// <summary>Enumerates the state of battery charging.</summary>
@@ -1051,7 +1051,7 @@ namespace HomeKit {
 	[Native]
 	public enum HMCharacteristicValueStatusFault : long {
 		NoFault = 0,
-		GeneralFault
+		GeneralFault,
 	}
 
 	/// <summary>Enumerates detection values.</summary>
@@ -1059,7 +1059,7 @@ namespace HomeKit {
 	[Native]
 	public enum HMCharacteristicValueCarbonMonoxideDetectionStatus : long {
 		NotDetected = 0,
-		Detected
+		Detected,
 	}
 
 	/// <summary>Enumerates detection values.</summary>
@@ -1067,7 +1067,7 @@ namespace HomeKit {
 	[Native]
 	public enum HMCharacteristicValueCarbonDioxideDetectionStatus : long {
 		NotDetected = 0,
-		Detected
+		Detected,
 	}
 
 	/// <summary>Enumerates values for occupancy.</summary>
@@ -1075,7 +1075,7 @@ namespace HomeKit {
 	[Native]
 	public enum HMCharacteristicValueOccupancyStatus : long {
 		NotOccupied = 0,
-		Occupied
+		Occupied,
 	}
 
 	/// <summary>Enumerates the security system alarm type.</summary>
@@ -1083,7 +1083,7 @@ namespace HomeKit {
 	[Native]
 	public enum HMCharacteristicValueSecuritySystemAlarmType : long {
 		NoAlarm = 0,
-		Unknown
+		Unknown,
 	}
 
 	// conveniance enum (ObjC uses NSString)
@@ -1258,7 +1258,7 @@ namespace HomeKit {
 		Good,
 		Fair,
 		Inferior,
-		Poor
+		Poor,
 	}
 
 	/// <summary>Enumerates the states of an <see cref="T:HomeKit.HMCameraStream" />.</summary>
@@ -1268,7 +1268,7 @@ namespace HomeKit {
 		Starting = 1,
 		Streaming = 2,
 		Stopping = 3,
-		NotStreaming = 4
+		NotStreaming = 4,
 	}
 
 	/// <summary>Settings for camera's with audio devices. Used with <see cref="P:HomeKit.HMCameraStream.AudioStreamSetting" />.</summary>
@@ -1277,7 +1277,7 @@ namespace HomeKit {
 	public enum HMCameraAudioStreamSetting : ulong {
 		Muted = 1,
 		IncomingAudioAllowed = 2,
-		BidirectionalAudioAllowed = 3
+		BidirectionalAudioAllowed = 3,
 	}
 
 	/// <summary>Enumerates the possible values of a <see cref="T:HomeKit.HMCharacteristic" /> that may either be locked or unlocked.</summary>

@@ -39,7 +39,7 @@ namespace AVFoundation {
 	// Convenience enum for native strings - AVVideoSettings.h
 	public enum AVVideoCodec : int {
 		H264 = 1,
-		JPEG = 2
+		JPEG = 2,
 	}
 
 	// Convenience enum for native strings - AVVideoSettings.h
@@ -53,7 +53,7 @@ namespace AVFoundation {
 		/// <summary>Preserves aspect ratio of the source and fills remaining areas with black to fit destination dimensions.</summary>
 		ResizeAspect,
 		/// <summary>Preserves aspect ratio of the source and crops picture to fit destination dimensions.</summary>
-		ResizeAspectFill
+		ResizeAspectFill,
 	}
 
 	// Convenience enum for native strings - AVVideoSettings.h
@@ -160,7 +160,7 @@ namespace AVFoundation {
 	// Convenience enum for native strings - AVVideoSettings.h
 	public enum AVVideoH264EntropyMode {
 		AdaptiveVariableLength,
-		AdaptiveBinaryArithmetic
+		AdaptiveBinaryArithmetic,
 	}
 #endif
 

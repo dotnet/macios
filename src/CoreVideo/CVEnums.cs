@@ -118,7 +118,7 @@ namespace CoreVideo {
 	[MacCatalyst (13, 1)]
 	public enum CVSMPTETimeFlags : uint {
 		Valid = (1 << 0),
-		Running = (1 << 1)
+		Running = (1 << 1),
 	}
 
 	/// <summary>An enumeration whose values specify SMPTE timecode types.</summary>

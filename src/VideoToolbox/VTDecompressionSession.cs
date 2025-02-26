@@ -236,7 +236,7 @@ namespace VideoToolbox {
 			var callbackHandle = GCHandle.Alloc (outputCallback);
 			var callbackStruct = new VTDecompressionOutputCallbackRecord () {
 				Proc = cback,
-				DecompressionOutputRefCon = GCHandle.ToIntPtr (callbackHandle)
+				DecompressionOutputRefCon = GCHandle.ToIntPtr (callbackHandle),
 			};
 			IntPtr ret;
 
@@ -251,7 +251,7 @@ namespace VideoToolbox {
 
 			if (result == VTStatus.Ok && ret != IntPtr.Zero)
 				return new VTDecompressionSession (ret, true) {
-					callbackHandle = callbackHandle
+					callbackHandle = callbackHandle,
 				};
 
 			callbackHandle.Free ();

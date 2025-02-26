@@ -16,7 +16,7 @@ namespace CoreGraphics {
 #endif
 	public enum CGCaptureOptions : uint {
 		None = 0,
-		NoFill = 1 << 0
+		NoFill = 1 << 0,
 	}
 
 #if NET

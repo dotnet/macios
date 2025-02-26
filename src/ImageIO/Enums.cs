@@ -48,7 +48,7 @@ namespace ImageIO {
 		/// <summary>To be added.</summary>
 		AlternateText = 5,
 		/// <summary>To be added.</summary>
-		Structure = 6
+		Structure = 6,
 	}
 
 	/// <summary>Enumerates orientation values.</summary>
@@ -60,7 +60,7 @@ namespace ImageIO {
 		LeftMirrored,
 		Right,
 		RightMirrored,
-		Left
+		Left,
 	}
 
 	// untyped enum / #defines
@@ -74,7 +74,7 @@ namespace ImageIO {
 		Sub = 0x10,
 		Up = 0x20,
 		Average = 0x40,
-		Paeth = 0x80
+		Paeth = 0x80,
 	}
 
 	[iOS (13, 0), TV (13, 0)]

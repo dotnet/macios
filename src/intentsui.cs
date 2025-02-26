@@ -31,7 +31,7 @@ namespace IntentsUI {
 		/// <summary>To be added.</summary>
 		SiriSnippet,
 		/// <summary>To be added.</summary>
-		MapsCard
+		MapsCard,
 	}
 
 	[NoMac]

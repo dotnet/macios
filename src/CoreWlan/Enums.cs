@@ -157,6 +157,6 @@ namespace CoreWlan {
 
 		[Deprecated (PlatformName.MacOSX, 11, 0)]
 		RangingReportEvent = 10,
-		Unknown = long.MaxValue
+		Unknown = long.MaxValue,
 	}
 }

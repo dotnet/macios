@@ -48,7 +48,7 @@ namespace ObjCRuntime {
 		/// <summary>A flag that signifies that the native library supports the Simulator (x86-64 architecture).</summary>
 		Simulator64 = 64,
 		/// <summary>A flag that signifies that the native library supports the Simulator (x86-64 architecture).</summary>
-		x86_64 = Simulator64
+		x86_64 = Simulator64,
 	}
 
 	public enum DlsymOption {

@@ -31,7 +31,7 @@ namespace CoreMedia {
 			PositiveInfinity = 4,
 			NegativeInfinity = 8,
 			Indefinite = 16,
-			ImpliedValueFlagsMask = PositiveInfinity | NegativeInfinity | Indefinite
+			ImpliedValueFlagsMask = PositiveInfinity | NegativeInfinity | Indefinite,
 		}
 #if !COREBUILD
 

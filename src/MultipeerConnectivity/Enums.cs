@@ -17,7 +17,7 @@ namespace MultipeerConnectivity {
 	[Native]
 	public enum MCSessionSendDataMode : long {
 		Reliable,
-		Unreliable
+		Unreliable,
 	}
 
 	// NSInteger -> MCSession.h
@@ -27,7 +27,7 @@ namespace MultipeerConnectivity {
 	public enum MCSessionState : long {
 		NotConnected,
 		Connecting,
-		Connected
+		Connected,
 	}
 
 	// NSInteger -> MCSession.h
@@ -40,7 +40,7 @@ namespace MultipeerConnectivity {
 		/// <summary>Connections should be encrypted.</summary>
 		Required = 1,
 		/// <summary>A preference for unencrypted connections.</summary>
-		None = 2
+		None = 2,
 	}
 
 	// NSInteger -> MCError.h
@@ -62,6 +62,6 @@ namespace MultipeerConnectivity {
 		/// <summary>The relevant operation was cancelled.</summary>
 		Cancelled,
 		/// <summary>Indicates that Multipeer Connectivity is not available.</summary>
-		Unavailable
+		Unavailable,
 	}
 }

@@ -26,7 +26,7 @@ namespace CallKit {
 	public enum CXCallDirectoryEnabledStatus : long {
 		Unknown = 0,
 		Disabled = 1,
-		Enabled = 2
+		Enabled = 2,
 	}
 
 	/// <summary>Enumerates Call Kit errors.</summary>

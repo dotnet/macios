@@ -199,7 +199,7 @@ namespace VideoToolbox {
 
 			if (result == VTStatus.Ok && ret != IntPtr.Zero)
 				return new VTCompressionSession (ret, true) {
-					callbackHandle = callbackHandle
+					callbackHandle = callbackHandle,
 				};
 
 			if (callbackHandle.IsAllocated)

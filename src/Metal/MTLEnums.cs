@@ -1779,7 +1779,7 @@ namespace Metal {
 		Lzfse = 1,
 		Lz4 = 2,
 		Lzma = 3,
-		LzBitmap = 4
+		LzBitmap = 4,
 	}
 
 	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]

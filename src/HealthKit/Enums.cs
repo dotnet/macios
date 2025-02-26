@@ -13,7 +13,7 @@ namespace HealthKit {
 		Immediate = 1,
 		Hourly,
 		Daily,
-		Weekly
+		Weekly,
 	}
 
 	// NSInteger -> HKDefines.h
@@ -24,7 +24,7 @@ namespace HealthKit {
 	public enum HKAuthorizationStatus : long {
 		NotDetermined = 0,
 		SharingDenied,
-		SharingAuthorized
+		SharingAuthorized,
 	}
 
 	// NSInteger -> HKDefines.h
@@ -37,7 +37,7 @@ namespace HealthKit {
 		Female,
 		Male,
 		[MacCatalyst (13, 1)]
-		Other
+		Other,
 	}
 
 	// NSInteger -> HKDefines.h
@@ -54,7 +54,7 @@ namespace HealthKit {
 		ABPositive,
 		ABNegative,
 		OPositive,
-		ONegative
+		ONegative,
 	}
 
 	// NSInteger -> HKMetadata.h
@@ -74,7 +74,7 @@ namespace HealthKit {
 		Toe,
 		EarDrum,
 		TemporalArtery,
-		Forehead
+		Forehead,
 	}
 
 	// NSInteger -> HKMetadata.h
@@ -89,7 +89,7 @@ namespace HealthKit {
 		Finger,
 		Hand,
 		EarLobe,
-		Foot
+		Foot,
 	}
 
 	// NSInteger -> HKObjectType.h
@@ -140,7 +140,7 @@ namespace HealthKit {
 	public enum HKQueryOptions : ulong {
 		None = 0,
 		StrictStartDate = 1 << 0,
-		StrictEndDate = 1 << 1
+		StrictEndDate = 1 << 1,
 	}
 
 	// NSUInteger -> HKStatistics.h
@@ -313,7 +313,7 @@ namespace HealthKit {
 		[MacCatalyst (17, 0), Mac (14, 0), iOS (17, 0), NoTV]
 		UnderwaterDiving,
 		[MacCatalyst (13, 1)]
-		Other = 3000
+		Other = 3000,
 	}
 
 	/// <summary>Enumerates events that can occur during a workout (Pause, Resume).</summary>
@@ -342,7 +342,7 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKCategoryValue : long {
-		NotApplicable = 0
+		NotApplicable = 0,
 	}
 
 	/// <summary>Enumerates the user's cervical mucus quality.</summary>
@@ -355,7 +355,7 @@ namespace HealthKit {
 		Sticky,
 		Creamy,
 		Watery,
-		EggWhite
+		EggWhite,
 	}
 
 	/// <summary>Enumerates the amount of menstrual flow.</summary>
@@ -411,7 +411,7 @@ namespace HealthKit {
 	[Native]
 	public enum HKCategoryValueAppleStandHour : long {
 		Stood = 0,
-		Idle
+		Idle,
 	}
 
 	[iOS (13, 0)]
@@ -433,7 +433,7 @@ namespace HealthKit {
 		III,
 		IV,
 		V,
-		VI
+		VI,
 	}
 
 	/// <summary>Enumerates constants that describe wheelchair use.</summary>

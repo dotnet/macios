@@ -9,6 +9,6 @@ namespace FinderSync {
 		ContextualMenuForItems = 0,
 		ContextualMenuForContainer = 1,
 		ContextualMenuForSidebar = 2,
-		ToolbarItemMenu = 3
+		ToolbarItemMenu = 3,
 	}
 }

@@ -41,7 +41,7 @@ namespace CoreBluetooth {
 		{
 			return FromBytes (new [] {
 				(byte)(servicePart >> 8),
-				(byte)servicePart
+				(byte)servicePart,
 			});
 		}
 

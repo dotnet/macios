@@ -101,7 +101,7 @@ namespace ObjCRuntime {
 
 		iOS_Arch32 = 0x0000000001000000,
 		iOS_Arch64 = 0x0000000002000000,
-		iOS_Arch = 0x00000000ff000000
+		iOS_Arch = 0x00000000ff000000,
 	}
 
 	[Obsolete ("Use [Introduced|Deprecated|Obsoleted|Unavailable] attributes with PlatformName.")]

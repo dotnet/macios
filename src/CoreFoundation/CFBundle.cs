@@ -25,7 +25,7 @@ namespace CoreFoundation {
 			/// <summary>To be added.</summary>
 			Framework,
 			/// <summary>To be added.</summary>
-			Bundle
+			Bundle,
 		}
 
 #if NET

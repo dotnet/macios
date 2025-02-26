@@ -481,7 +481,7 @@ namespace Security {
 		Fail,
 
 		[Field ("kSecUseAuthenticationUISkip")]
-		Skip
+		Skip,
 	}
 
 	/// <summary>Enumeration defining valid options for <see cref="P:Security.SecRecord.TokenID" />.</summary>
@@ -500,7 +500,7 @@ namespace Security {
 		Verify = 1,
 		Encrypt = 2,
 		Decrypt = 3,
-		KeyExchange = 4
+		KeyExchange = 4,
 	}
 
 	// untyped enum in Security.framework/Headers/SecPolicy.h but the API use CFOptionFlags

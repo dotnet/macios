@@ -433,6 +433,6 @@ namespace AudioToolbox {
 	public enum MusicSequenceType : uint {
 		Beats = 0x62656174,     // 'beat'
 		Seconds = 0x73656373,   // 'secs'
-		Samples = 0x73616d70    // 'samp'
+		Samples = 0x73616d70,   // 'samp'
 	}
 }

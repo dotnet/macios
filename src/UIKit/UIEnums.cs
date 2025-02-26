@@ -921,7 +921,7 @@ namespace UIKit {
 		Automatic = -1,
 		Default = UIBarStyle.Default,
 		BlackTranslucent = 2, // UIBarStyle.BlackTranslucent,
-		BlackOpaque = 1 // UIBarStyle.BlackOpaque,
+		BlackOpaque = 1, // UIBarStyle.BlackOpaque,
 	}
 
 	// NSInteger -> UIApplication.h

@@ -754,6 +754,6 @@ namespace PencilKit {
 	enum PKToolPickerCustomItemControlOptions : ulong {
 		None = 0,
 		Width = 1 << 0,
-		Opacity = 1 << 1
+		Opacity = 1 << 1,
 	}
 }

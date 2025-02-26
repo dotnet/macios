@@ -58,7 +58,7 @@ namespace SceneKit {
 			return Create (geometry, new SCNPhysicsShapeOptions {
 				ShapeType = shapeType,
 				KeepAsCompound = keepAsCompound,
-				Scale = scale
+				Scale = scale,
 			}.ToDictionary ());
 		}
 
@@ -75,7 +75,7 @@ namespace SceneKit {
 			return Create (node, new SCNPhysicsShapeOptions {
 				ShapeType = shapeType,
 				KeepAsCompound = keepAsCompound,
-				Scale = scale
+				Scale = scale,
 			}.ToDictionary ());
 		}
 

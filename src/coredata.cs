@@ -79,7 +79,7 @@ namespace CoreData {
 		AccountAdded = 1,
 		AccountRemoved,
 		ContentRemoved,
-		InitialImportCompleted
+		InitialImportCompleted,
 	}
 
 	[Native]
@@ -89,7 +89,7 @@ namespace CoreData {
 		UndoUpdate = 1 << 3,
 		Rollback = 1 << 4,
 		Refresh = 1 << 5,
-		MergePolicy = 1 << 6
+		MergePolicy = 1 << 6,
 	}
 
 	[BaseType (typeof (NSPersistentStore))]

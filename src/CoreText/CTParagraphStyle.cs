@@ -89,7 +89,7 @@ namespace CoreText {
 		/// <summary>To be added.</summary>
 		Embedding = (0 << 1),
 		/// <summary>To be added.</summary>
-		Override = (1 << 1)
+		Override = (1 << 1),
 	}
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTParagraphStyle.h

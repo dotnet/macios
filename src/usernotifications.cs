@@ -60,7 +60,7 @@ namespace UserNotifications {
 		None = 0,
 		AuthenticationRequired = (1 << 0),
 		Destructive = (1 << 1),
-		Foreground = (1 << 2)
+		Foreground = (1 << 2),
 	}
 
 	/// <summary>Contains flags that control whether a custom dismiss action is used, and whether the category is allowed in CarPlay application.</summary>
@@ -105,7 +105,7 @@ namespace UserNotifications {
 	public enum UNNotificationSetting : long {
 		NotSupported = 0,
 		Disabled,
-		Enabled
+		Enabled,
 	}
 
 	/// <summary>Enumerates the kinds of alerts that notifications display.</summary>
@@ -118,7 +118,7 @@ namespace UserNotifications {
 		/// <summary>The notification may display a temporary slide-down banner alert.</summary>
 		Banner,
 		/// <summary>The notification may display a modal alert.</summary>
-		Alert
+		Alert,
 	}
 
 	[MacCatalyst (13, 1)]
@@ -185,7 +185,7 @@ namespace UserNotifications {
 	public enum UNShowPreviewsSetting : long {
 		Always,
 		WhenAuthenticated,
-		Never
+		Never,
 	}
 
 	[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0)]

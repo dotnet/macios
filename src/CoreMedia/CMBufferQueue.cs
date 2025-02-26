@@ -117,7 +117,7 @@ namespace CoreMedia {
 					XisDataReady = isDataReady is not null ? &GetDataReady : null,
 					Xcompare = compare is not null ? &Compare : null,
 					cfStringPtr_dataBecameReadyNotification = dataBecameReadyNotification is null ? IntPtr.Zero : dataBecameReadyNotification.Handle,
-					XgetSize = getTotalSize is not null ? &GetTotalSize : null
+					XgetSize = getTotalSize is not null ? &GetTotalSize : null,
 				};
 			}
 

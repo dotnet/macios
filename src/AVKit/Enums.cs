@@ -14,7 +14,7 @@ namespace AVKit {
 		Inline,
 		Floating,
 		Minimal,
-		Default = Inline
+		Default = Inline,
 	}
 #endif
 

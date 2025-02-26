@@ -57,6 +57,6 @@ namespace SystemConfiguration {
 		/// <summary>Network service for connection is unavailable.</summary>
 		ConnectionNoService = 5001,
 		/// <summary>To be added.</summary>
-		ConnectionIgnore = 5002
+		ConnectionIgnore = 5002,
 	}
 }

@@ -62,7 +62,7 @@ namespace PdfKit {
 		/// <summary>Indicates an action that zooms in.</summary>
 		ZoomIn = 10,
 		/// <summary>Indicates an action that zooms out.</summary>
-		ZoomOut = 11
+		ZoomOut = 11,
 	}
 
 	[Native]
@@ -71,7 +71,7 @@ namespace PdfKit {
 		Unknown = -1,
 		PushButton = 0,
 		RadioButton = 1,
-		CheckBox = 2
+		CheckBox = 2,
 	}
 
 	[Native]
@@ -82,7 +82,7 @@ namespace PdfKit {
 		Circle = 2,
 		Diamond = 3,
 		OpenArrow = 4,
-		ClosedArrow = 5
+		ClosedArrow = 5,
 	}
 
 	[Native]
@@ -103,7 +103,7 @@ namespace PdfKit {
 		Help = 3,
 		NewParagraph = 4,
 		Paragraph = 5,
-		Insert = 6
+		Insert = 6,
 	}
 
 	[Native]
@@ -113,7 +113,7 @@ namespace PdfKit {
 		Dashed = 1,
 		Beveled = 2,
 		Inset = 3,
-		Underline = 4
+		Underline = 4,
 	}
 
 	/// <summary>Enumerates print scaling behaviors.</summary>
@@ -124,7 +124,7 @@ namespace PdfKit {
 	public enum PdfPrintScalingMode : long {
 		None = 0,
 		ToFit = 1,
-		DownToFit = 2
+		DownToFit = 2,
 	}
 
 	[Native]
@@ -132,7 +132,7 @@ namespace PdfKit {
 	public enum PdfDocumentPermissions : long {
 		None = 0,
 		User = 1,
-		Owner = 2
+		Owner = 2,
 	}
 
 	[Native]
@@ -142,7 +142,7 @@ namespace PdfKit {
 		Crop = 1,
 		Bleed = 2,
 		Trim = 3,
-		Art = 4
+		Art = 4,
 	}
 
 	[Native]
@@ -151,7 +151,7 @@ namespace PdfKit {
 		SinglePage = 0,
 		SinglePageContinuous = 1,
 		TwoUp = 2,
-		TwoUpContinuous = 3
+		TwoUpContinuous = 3,
 	}
 
 	[Flags]

@@ -70,7 +70,7 @@ namespace CoreFoundation {
 		/// <summary>An error occurred on the steeam.</summary>
 		ErrorOccurred = 8,
 		/// <summary>The end of the stream has been reached.</summary>
-		EndEncountered = 16
+		EndEncountered = 16,
 	}
 
 	// NSStream.h
@@ -180,7 +180,7 @@ namespace CoreFoundation {
 		/// <summary>To be added.</summary>
 		Closed,
 		/// <summary>To be added.</summary>
-		Error
+		Error,
 	}
 
 #if NET

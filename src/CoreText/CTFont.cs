@@ -287,7 +287,7 @@ namespace CoreText {
 		/// <summary>To be added.</summary>
 		UpperCase = 38,
 		/// <summary>To be added.</summary>
-		CJKRomanSpacing = 103
+		CJKRomanSpacing = 103,
 	}
 
 #if NET
@@ -539,7 +539,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			AllTypeFeaturesOn = 0,
 			/// <summary>To be added.</summary>
-			AllTypeFeaturesOff = 1
+			AllTypeFeaturesOff = 1,
 		}
 
 		public CTFontFeatureAllTypographicFeatures (NSDictionary dictionary)
@@ -608,7 +608,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			HistoricalLigaturesOn = 20,
 			/// <summary>To be added.</summary>
-			HistoricalLigaturesOff = 21
+			HistoricalLigaturesOff = 21,
 		}
 
 		public CTFontFeatureLigatures (NSDictionary dictionary)
@@ -650,7 +650,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			InitialCaps = 4,
 			/// <summary>To be added.</summary>
-			InitialCapsAndSmallCaps = 5
+			InitialCapsAndSmallCaps = 5,
 		}
 
 		public CTFontFeatureLetterCase (NSDictionary dictionary)
@@ -681,7 +681,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			PartiallyConnected = 1,
 			/// <summary>To be added.</summary>
-			Cursive = 2
+			Cursive = 2,
 		}
 
 		public CTFontFeatureCursiveConnection (NSDictionary dictionary)
@@ -710,7 +710,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			SubstituteVerticalFormsOn = 0,
 			/// <summary>To be added.</summary>
-			SubstituteVerticalFormsOff = 1
+			SubstituteVerticalFormsOff = 1,
 		}
 
 		public CTFontFeatureVerticalSubstitutionConnection (NSDictionary dictionary)
@@ -739,7 +739,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			LinguisticRearrangementOn = 0,
 			/// <summary>To be added.</summary>
-			LinguisticRearrangementOff = 1
+			LinguisticRearrangementOff = 1,
 		}
 
 		public CTFontFeatureLinguisticRearrangementConnection (NSDictionary dictionary)
@@ -772,7 +772,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			ThirdWidthNumbers = 2,
 			/// <summary>To be added.</summary>
-			QuarterWidthNumbers = 3
+			QuarterWidthNumbers = 3,
 		}
 
 		public CTFontFeatureNumberSpacing (NSDictionary dictionary)
@@ -817,7 +817,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			NonFinalSwashesOn = 8,
 			/// <summary>To be added.</summary>
-			NonFinalSwashesOff = 9
+			NonFinalSwashesOff = 9,
 		}
 
 		public CTFontFeatureSmartSwash (NSDictionary dictionary)
@@ -848,7 +848,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			HideDiacritics = 1,
 			/// <summary>To be added.</summary>
-			DecomposeDiacritics = 2
+			DecomposeDiacritics = 2,
 		}
 
 		public CTFontFeatureDiacritics (NSDictionary dictionary)
@@ -883,7 +883,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			Ordinals = 3,
 			/// <summary>To be added.</summary>
-			ScientificInferiors = 4
+			ScientificInferiors = 4,
 		}
 
 		public CTFontFeatureVerticalPosition (NSDictionary dictionary)
@@ -914,7 +914,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			VerticalFractions = 1,
 			/// <summary>To be added.</summary>
-			DiagonalFractions = 2
+			DiagonalFractions = 2,
 		}
 
 		public CTFontFeatureFractions (NSDictionary dictionary)
@@ -943,7 +943,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			PreventOverlapOn = 0,
 			/// <summary>To be added.</summary>
-			PreventOverlapOff = 1
+			PreventOverlapOff = 1,
 		}
 
 		public CTFontFeatureOverlappingCharacters (NSDictionary dictionary)
@@ -992,7 +992,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			PeriodsToEllipsisOn = 10,
 			/// <summary>To be added.</summary>
-			PeriodsToEllipsisOff = 11
+			PeriodsToEllipsisOff = 11,
 		}
 
 		public CTFontFeatureTypographicExtras (NSDictionary dictionary)
@@ -1041,7 +1041,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			MathematicalGreekOn = 10,
 			/// <summary>To be added.</summary>
-			MathematicalGreekOff = 11
+			MathematicalGreekOff = 11,
 		}
 
 		public CTFontFeatureMathematicalExtras (NSDictionary dictionary)
@@ -1080,7 +1080,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			InternationalSymbols = 5,
 			/// <summary>To be added.</summary>
-			MathSymbols = 6
+			MathSymbols = 6,
 		}
 
 		public CTFontFeatureOrnamentSets (NSDictionary dictionary)
@@ -1142,7 +1142,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			DesignLevel4 = 3,
 			/// <summary>To be added.</summary>
-			DesignLevel5 = 4
+			DesignLevel5 = 4,
 		}
 
 		public CTFontFeatureDesignComplexity (NSDictionary dictionary)
@@ -1179,7 +1179,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			TitlingCaps = 4,
 			/// <summary>To be added.</summary>
-			TallCaps = 5
+			TallCaps = 5,
 		}
 
 		public CTFontFeatureStyleOptions (NSDictionary dictionary)
@@ -1234,7 +1234,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			NLCCharacters = 13,
 			/// <summary>To be added.</summary>
-			TraditionalNamesCharacters = 14
+			TraditionalNamesCharacters = 14,
 		}
 
 		public CTFontFeatureCharacterShape (NSDictionary dictionary)
@@ -1263,7 +1263,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			LowerCaseNumbers = 0,
 			/// <summary>To be added.</summary>
-			UpperCaseNumbers = 1
+			UpperCaseNumbers = 1,
 		}
 
 		public CTFontFeatureNumberCase (NSDictionary dictionary)
@@ -1302,7 +1302,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			AltProportionalText = 5,
 			/// <summary>To be added.</summary>
-			AltHalfWidthText = 6
+			AltHalfWidthText = 6,
 		}
 
 		public CTFontFeatureTextSpacing (NSDictionary dictionary)
@@ -1347,7 +1347,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			HanjaToHangulAltTwo = 8,
 			/// <summary>To be added.</summary>
-			HanjaToHangulAltThree = 9
+			HanjaToHangulAltThree = 9,
 		}
 
 		public CTFontFeatureTransliteration (NSDictionary dictionary)
@@ -1394,7 +1394,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			InvertedBoxAnnotation = 9,
 			/// <summary>To be added.</summary>
-			InvertedRoundedBoxAnnotation = 10
+			InvertedRoundedBoxAnnotation = 10,
 		}
 
 		public CTFontFeatureAnnotation (NSDictionary dictionary)
@@ -1423,7 +1423,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			FullWidthKana = 0,
 			/// <summary>To be added.</summary>
-			ProportionalKana = 1
+			ProportionalKana = 1,
 		}
 
 		public CTFontFeatureKanaSpacing (NSDictionary dictionary)
@@ -1454,7 +1454,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			ProportionalIdeographs = 1,
 			/// <summary>To be added.</summary>
-			HalfWidthIdeographs = 2
+			HalfWidthIdeographs = 2,
 		}
 
 		public CTFontFeatureIdeographicSpacing (NSDictionary dictionary)
@@ -1491,7 +1491,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			TranscodingCompositionOn = 4,
 			/// <summary>To be added.</summary>
-			TranscodingCompositionOff = 5
+			TranscodingCompositionOff = 5,
 		}
 
 		public CTFontFeatureUnicodeDecomposition (NSDictionary dictionary)
@@ -1546,7 +1546,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			RubyKanaOn = 2,
 			/// <summary>To be added.</summary>
-			RubyKanaOff = 3
+			RubyKanaOff = 3,
 		}
 
 		public CTFontFeatureRubyKana (NSDictionary dictionary)
@@ -1583,7 +1583,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			CJKSymbolAltFour = 4,
 			/// <summary>To be added.</summary>
-			CJKSymbolAltFive = 5
+			CJKSymbolAltFive = 5,
 		}
 
 		public CTFontFeatureCJKSymbolAlternatives (NSDictionary dictionary)
@@ -1620,7 +1620,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			IdeographicAltFour = 4,
 			/// <summary>To be added.</summary>
-			IdeographicAltFive = 5
+			IdeographicAltFive = 5,
 		}
 
 		public CTFontFeatureIdeographicAlternatives (NSDictionary dictionary)
@@ -1649,7 +1649,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			CJKVerticalRomanCentered = 0,
 			/// <summary>To be added.</summary>
-			CJKVerticalRomanHBaseline = 1
+			CJKVerticalRomanHBaseline = 1,
 		}
 
 		public CTFontFeatureCJKVerticalRomanPlacement (NSDictionary dictionary)
@@ -1704,7 +1704,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			CJKItalicRomanOn = 2,
 			/// <summary>To be added.</summary>
-			CJKItalicRomanOff = 3
+			CJKItalicRomanOff = 3,
 		}
 
 		public CTFontFeatureItalicCJKRoman (NSDictionary dictionary)
@@ -1737,7 +1737,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			CaseSensitiveSpacingOn = 2,
 			/// <summary>To be added.</summary>
-			CaseSensitiveSpacingOff = 3
+			CaseSensitiveSpacingOff = 3,
 		}
 
 		public CTFontFeatureCaseSensitiveLayout (NSDictionary dictionary)
@@ -1770,7 +1770,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			AlternateVertKanaOn = 2,
 			/// <summary>To be added.</summary>
-			AlternateVertKanaOff = 3
+			AlternateVertKanaOff = 3,
 		}
 
 		public CTFontFeatureAlternateKana (NSDictionary dictionary)
@@ -1877,7 +1877,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			StylisticAltTwentyOn = 40,
 			/// <summary>To be added.</summary>
-			StylisticAltTwentyOff = 41
+			StylisticAltTwentyOff = 41,
 		}
 
 		public CTFontFeatureStylisticAlternatives (NSDictionary dictionary)
@@ -1914,7 +1914,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			ContextualSwashAlternatesOn = 4,
 			/// <summary>To be added.</summary>
-			ContextualSwashAlternatesOff = 5
+			ContextualSwashAlternatesOff = 5,
 		}
 
 		public CTFontFeatureContextualAlternates (NSDictionary dictionary)
@@ -1945,7 +1945,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			LowerCaseSmallCaps = 1,
 			/// <summary>To be added.</summary>
-			LowerCasePetiteCaps = 2
+			LowerCasePetiteCaps = 2,
 		}
 
 		public CTFontFeatureLowerCase (NSDictionary dictionary)
@@ -1976,7 +1976,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			UpperCaseSmallCaps = 1,
 			/// <summary>To be added.</summary>
-			UpperCasePetiteCaps = 2
+			UpperCasePetiteCaps = 2,
 		}
 
 		public CTFontFeatureUpperCase (NSDictionary dictionary)
@@ -2009,7 +2009,7 @@ namespace CoreText {
 			/// <summary>To be added.</summary>
 			DefaultCJKRoman = 2,
 			/// <summary>To be added.</summary>
-			FullWidthCJKRoman = 3
+			FullWidthCJKRoman = 3,
 		}
 
 		public CTFontFeatureCJKRomanSpacing (NSDictionary dictionary)

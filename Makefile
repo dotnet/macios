@@ -1,5 +1,5 @@
 TOP=.
-SUBDIRS=builds runtime src msbuild tools
+SUBDIRS=builds runtime src tools
 include $(TOP)/Make.config
 include $(TOP)/mk/versions.mk
 

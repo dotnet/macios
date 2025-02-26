@@ -186,6 +186,8 @@ stages:
             clean: true
             path: s/$(BUILD_REPOSITORY_TITLE)
             fetchTags: false
+        - bash: exit 1
+          displayName: Stop the build
 
       - job: configure
         displayName: 'Configure build'

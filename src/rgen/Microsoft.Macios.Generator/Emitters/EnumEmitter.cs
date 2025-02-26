@@ -102,7 +102,7 @@ class EnumEmitter : ICodeEmitter {
 			   classBlock.CreateBlock ($"public static {binding.Name} GetValueFromHandle (NativeHandle handle)",
 				   true)) {
 			getValueFromHandle.WriteRaw (
-@"using var str = Runtime.GetNSObject<NSString> (handle);
+@"using var str = Runtime.GetNSObject<NSString> (handle)!;
 return GetValue (str);
 ");
 		}

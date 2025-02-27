@@ -145,14 +145,14 @@ if test -z "$BASE_HASH"; then
 		if test -z "$PULL_REQUEST_TARGET_BRANCH"; then
 			echo "The target branch (using --pull-request-target-branch=) was not specified, trying to compute it."
 			PR_FILENAME=pr-$PULL_REQUEST_ID.json
-			curl --silent --fail --location --connect-timeout 15 --show-error https://api.github.com/repos/xamarin/xamarin-macios/pulls/21927 -o "$PR_FILENAME"
+			curl --silent --fail --location --connect-timeout 15 --show-error https://api.github.com/repos/dotnet/macios/pulls/$PULL_REQUEST_ID -o "$PR_FILENAME"
 			BASE_REF=$(python3 -c 'import json,sys;print(json.load(sys.stdin)["base"]["ref"]);' < "$PR_FILENAME")
 			rm -f "$PR_FILENAME"
 			PULL_REQUEST_TARGET_BRANCH=origin/"$BASE_REF"
 			echo "Computed pull request target branch: $BLUE$PULL_REQUEST_TARGET_BRANCH$CLEAR"
 		fi
 
-		git fetch --no-tags --progress -- https://github.com/xamarin/xamarin-macios +refs/pull/"$PULL_REQUEST_ID"/*:refs/remotes/origin/pr/"$PULL_REQUEST_ID"/*
+		git fetch --no-tags --progress -- https://github.com/dotnet/macios +refs/pull/"$PULL_REQUEST_ID"/*:refs/remotes/origin/pr/"$PULL_REQUEST_ID"/*
 		# The current hash is either a merge commit from GH, or the commit just before the merge commit.
 		# However, we don't know if refs/pull/PULL_REQUEST_ID/merge or refs/pull/PULL_REQUEST_ID/head are pointing to the right place,
 		# because someone might have pushed more commits to the pull request. So we need some computations here...
@@ -255,7 +255,7 @@ git log "$BASE_HASH..$CURRENT_HASH" --oneline $GIT_COLOR | sed 's/^/    /'
 
 BASE_HASH=$RESOLVED_BASE_HASH
 
-# We'll clone xamarin-macios again into a different directory, and build it
+# We'll clone macios again into a different directory, and build it
 
 function upon_exit ()
 {
@@ -297,9 +297,9 @@ if test -z "$USE_EXISTING_BUILD"; then
 	rm -f "$FILE"
 	cp -cr "$ADR_PATH" .
 
-	echo "    ${BLUE}Cloning xamarin-macios...${CLEAR}"
-	git clone https://github.com/xamarin/xamarin-macios --reference "$ROOT_DIR" 2>&1 | sed 's/^/        /'
-	cd xamarin-macios
+	echo "    ${BLUE}Cloning macios...${CLEAR}"
+	git clone https://github.com/dotnet/macios --reference "$ROOT_DIR" 2>&1 | sed 's/^/        /'
+	cd macios
 	git reset --hard "$BASE_HASH" 2>&1 | sed 's/^/        /'
 	if test -f "$ROOT_DIR/configure.inc"; then
 		cp "$ROOT_DIR/configure.inc" .
@@ -343,8 +343,8 @@ if test -n "$ENABLE_GENERATOR_DIFF"; then
 	mkdir -p "$OUTPUT_TMP_DIR/generator/build"
 	echo "    ${BLUE}Copying ${WHITE}$ROOT_DIR/src/build${BLUE} to ${WHITE}$OUTPUT_TMP_DIR/generator/build/new${BLUE}...${CLEAR}"
 	$CP -R "$ROOT_DIR/src/build" "$OUTPUT_TMP_DIR/generator/build/new"
-	echo "    ${BLUE}Copying ${WHITE}$OUTPUT_SRC_DIR/xamarin-macios/src/build${BLUE} to ${WHITE}$OUTPUT_TMP_DIR/generator/build/old${BLUE}...${CLEAR}"
-	$CP -R "$OUTPUT_SRC_DIR/xamarin-macios/src/build" "$OUTPUT_TMP_DIR/generator/build/old"
+	echo "    ${BLUE}Copying ${WHITE}$OUTPUT_SRC_DIR/macios/src/build${BLUE} to ${WHITE}$OUTPUT_TMP_DIR/generator/build/old${BLUE}...${CLEAR}"
+	$CP -R "$OUTPUT_SRC_DIR/macios/src/build" "$OUTPUT_TMP_DIR/generator/build/old"
 
 	# delete files we don't care are different
 	echo "    ${BLUE}Deleting files from ${WHITE}$OUTPUT_TMP_DIR/generator${BLUE} we don't care about...${CLEAR}"
@@ -411,7 +411,7 @@ if test -n "$ENABLE_API_DIFF"; then
 
 		# Point our apidiff to the dlls of the other commit
 		for platform in "${DOTNET_PLATFORMS[@]}"; do
-			dlls=($OUTPUT_SRC_DIR/xamarin-macios/_build/Microsoft.$platform.Ref.*/ref/net*/Microsoft.$platform.dll)
+			dlls=($OUTPUT_SRC_DIR/macios/_build/Microsoft.$platform.Ref.*/ref/net*/Microsoft.$platform.dll)
 			if [[ ${#dlls[@]} != 1 ]]; then
 				report_error_line "${RED}Unable to find exactly one assembly, found ${#dlls[@]} assemblies:${CLEAR}"
 				report_error_line "${dlls[@]}"

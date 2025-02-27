@@ -29,8 +29,6 @@ using System.Drawing;
 #endif
 using System.Runtime.InteropServices;
 
-using CoreGraphics;
-
 // Disable until we get around to enable + fix any issues.
 #nullable disable
 
@@ -72,30 +70,6 @@ namespace Foundation {
 		}
 #endif
 
-#if MONOMAC
-		// @encode(CGAffineTransform) -> "{CGAffineTransform=dddddd}" but...
-		// using a C string crash on macOS (while it works fine on iOS)
-		[DllImport ("__Internal")]
-		extern static IntPtr xamarin_encode_CGAffineTransform ();
-
-		// The `+valueWithCGAffineTransform:` selector comes from UIKit and is not available on macOS
-		public unsafe static NSValue FromCGAffineTransform (CGAffineTransform tran)
-		{
-			return Create ((IntPtr) (void*) &tran, xamarin_encode_CGAffineTransform ());
-		}
-
-		// The `CGAffineTransformValue` selector comes from UIKit and is not available on macOS
-		public unsafe virtual CGAffineTransform CGAffineTransformValue {
-			get {
-				var result = new CGAffineTransform ();
-				// avoid potential buffer overflow since we use the older `getValue:` API to cover all platforms
-				// and we can cheat here with the actual string comparison (since we are the one doing it)
-				if (ObjCType == "{CGAffineTransform=dddddd}")
-					StoreValueAtAddress ((IntPtr) (void*) &result);
-				return result;
-			}
-		}
-#endif
 #endif
 	}
 }

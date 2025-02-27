@@ -524,8 +524,8 @@ public partial class Generator : IMemberGatherer {
 				} else
 					throw GetBindAsException ("unbox", retType.Name, arrType.Name, "array", minfo.mi);
 			} else if (arrType == TypeCache.NSValue && !arrIsNullable) {
-				if (TypeManager.NSValueReturnMap.TryGetValue (arrRetType, out valueFetcher)) {
-					append = string.Format ("ptr => {{\n\tusing (var val = Runtime.GetNSObject<NSValue> (ptr)!) {{\n\t\treturn val{0};\n\t}}\n}}", valueFetcher);
+				if (TypeManager.NSValueBindAsMap.TryGetValue (arrRetType, out valueFetcher)) {
+					append = string.Format ("NSValue.{0}", valueFetcher);
 				} else {
 					throw GetBindAsException ("unbox", retType.Name, arrType.Name, "array", minfo.mi);
 				}

@@ -12,24 +12,24 @@ namespace Foundation;
 
 public partial class NSValue : NSObject {
 
-    /// <summary>
-    /// Converts a native handle to a UIEdgeInsets.
-    /// </summary>
-    /// <param name="handle">The native handle.</param>
-    public static UIEdgeInsets ToUIEdgeInsets (NativeHandle handle)
-    {
-        using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
-        return nsvalue.UIEdgeInsetsValue;
-    }
+	/// <summary>
+	/// Converts a native handle to a UIEdgeInsets.
+	/// </summary>
+	/// <param name="handle">The native handle.</param>
+	public static UIEdgeInsets ToUIEdgeInsets (NativeHandle handle)
+	{
+		using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
+		return nsvalue.UIEdgeInsetsValue;
+	}
 
-    /// <summary>
-    /// Converts a native handle to a UIOffset.
-    /// </summary>
-    /// <param name="handle">The native handle.</param>
-    public static UIOffset ToUIOffset (NativeHandle handle)
-    {
-        using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
-        return nsvalue.UIOffsetValue;
-    }
+	/// <summary>
+	/// Converts a native handle to a UIOffset.
+	/// </summary>
+	/// <param name="handle">The native handle.</param>
+	public static UIOffset ToUIOffset (NativeHandle handle)
+	{
+		using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
+		return nsvalue.UIOffsetValue;
+	}
 }
 

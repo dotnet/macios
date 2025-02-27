@@ -12,45 +12,45 @@ namespace Foundation;
 
 public partial class NSValue : NSObject {
 
-    /// <summary>
-    /// Converts a native handle to a CGAffineTransform.
-    /// </summary>
-    /// <param name="handle">The native handle.</param>
-    public static CGAffineTransform ToCGAffineTransform (NativeHandle handle)
-    {
-        using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
-        return nsvalue.CGAffineTransformValue;
-    }
+	/// <summary>
+	/// Converts a native handle to a CGAffineTransform.
+	/// </summary>
+	/// <param name="handle">The native handle.</param>
+	public static CGAffineTransform ToCGAffineTransform (NativeHandle handle)
+	{
+		using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
+		return nsvalue.CGAffineTransformValue;
+	}
 
-    /// <summary>
-    /// Converts a native handle to a CGPoint.
-    /// </summary>
-    /// <param name="handle">The native handle.</param>
-    public static CGPoint ToCGPoint (NativeHandle handle)
-    {
-        using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
-        return nsvalue.CGPointValue;
-    }
-    
-    /// <summary>
-    /// Converts a native handle to a CGRect.
-    /// </summary>
-    /// <param name="handle">The native handle.</param>
-    public static CGRect ToCGRect (NativeHandle handle)
-    {
-        using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
-        return nsvalue.CGRectValue;
-    }
+	/// <summary>
+	/// Converts a native handle to a CGPoint.
+	/// </summary>
+	/// <param name="handle">The native handle.</param>
+	public static CGPoint ToCGPoint (NativeHandle handle)
+	{
+		using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
+		return nsvalue.CGPointValue;
+	}
 
-    /// <summary>
-    /// Converts a native handle to a CGSize.
-    /// </summary>
-    /// <param name="handle">The native handle.</param>
-    public static CGSize ToCGSize (NativeHandle handle)
-    {
-        using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
-        return nsvalue.CGSizeValue;
-    }
+	/// <summary>
+	/// Converts a native handle to a CGRect.
+	/// </summary>
+	/// <param name="handle">The native handle.</param>
+	public static CGRect ToCGRect (NativeHandle handle)
+	{
+		using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
+		return nsvalue.CGRectValue;
+	}
+
+	/// <summary>
+	/// Converts a native handle to a CGSize.
+	/// </summary>
+	/// <param name="handle">The native handle.</param>
+	public static CGSize ToCGSize (NativeHandle handle)
+	{
+		using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
+		return nsvalue.CGSizeValue;
+	}
 
 #if MONOMAC
 
@@ -79,15 +79,15 @@ public partial class NSValue : NSObject {
 
 #else
 
-    /// <summary>
-    /// Converts a native handle to a CGVector.
-    /// </summary>
-    /// <param name="handle">The native handle.</param>
-    public static CGVector ToCGVector (NativeHandle handle)
-    {
-        using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
-        return nsvalue.CGVectorValue;
-    }
+	/// <summary>
+	/// Converts a native handle to a CGVector.
+	/// </summary>
+	/// <param name="handle">The native handle.</param>
+	public static CGVector ToCGVector (NativeHandle handle)
+	{
+		using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
+		return nsvalue.CGVectorValue;
+	}
 
 #endif
 }

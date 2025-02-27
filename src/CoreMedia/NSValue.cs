@@ -12,44 +12,44 @@ namespace Foundation;
 
 public partial class NSValue : NSObject {
 
-    /// <summary>
-    /// Converts a native handle to a CMTime.
-    /// </summary>
-    /// <param name="handle">The native handle.</param>
-    public static CMTimeRange ToCMTimeRange (NativeHandle handle)
-    {
-        using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
-        return nsvalue.CMTimeRangeValue;
-    }
+	/// <summary>
+	/// Converts a native handle to a CMTime.
+	/// </summary>
+	/// <param name="handle">The native handle.</param>
+	public static CMTimeRange ToCMTimeRange (NativeHandle handle)
+	{
+		using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
+		return nsvalue.CMTimeRangeValue;
+	}
 
-    /// <summary>
-    /// Converts a native handle to a CMTime.
-    /// </summary>
-    /// <param name="handle">The native handle.</param>
-    public static CMTime ToCMTime (NativeHandle handle)
-    {
-        using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
-        return nsvalue.CMTimeValue;
-    }
+	/// <summary>
+	/// Converts a native handle to a CMTime.
+	/// </summary>
+	/// <param name="handle">The native handle.</param>
+	public static CMTime ToCMTime (NativeHandle handle)
+	{
+		using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
+		return nsvalue.CMTimeValue;
+	}
 
-    /// <summary>
-    /// Converts a native handle to a CMTimeMapping.
-    /// </summary>
-    /// <param name="handle">The native handle.</param>
-    public static CMTimeMapping ToCMTimeMapping (NativeHandle handle)
-    {
-        using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
-        return nsvalue.CMTimeMappingValue;
-    }
+	/// <summary>
+	/// Converts a native handle to a CMTimeMapping.
+	/// </summary>
+	/// <param name="handle">The native handle.</param>
+	public static CMTimeMapping ToCMTimeMapping (NativeHandle handle)
+	{
+		using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
+		return nsvalue.CMTimeMappingValue;
+	}
 
-    /// <summary>
-    /// Converts a native handle to a CMTimeRange.
-    /// </summary>
-    /// <param name="handle">The native handle.</param>
-    public static CMVideoDimensions ToCMVideoDimensions (NativeHandle handle)
-    {
-        using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
-        return nsvalue.CMVideoDimensionsValue;
-    }
+	/// <summary>
+	/// Converts a native handle to a CMTimeRange.
+	/// </summary>
+	/// <param name="handle">The native handle.</param>
+	public static CMVideoDimensions ToCMVideoDimensions (NativeHandle handle)
+	{
+		using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
+		return nsvalue.CMVideoDimensionsValue;
+	}
 
 }

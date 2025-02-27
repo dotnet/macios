@@ -12,13 +12,13 @@ namespace Foundation;
 
 public partial class NSValue : NSObject {
 
-    /// <summary>
-    /// Converts a native handle to a CLLocationCoordinate2D.
-    /// </summary>
-    /// <param name="handle">The native handle.</param>
-    public static CLLocationCoordinate2D ToCLLocationCoordinate2D (NativeHandle handle)
-    {
-        using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
-        return nsvalue.CoordinateValue;
-    }
+	/// <summary>
+	/// Converts a native handle to a CLLocationCoordinate2D.
+	/// </summary>
+	/// <param name="handle">The native handle.</param>
+	public static CLLocationCoordinate2D ToCLLocationCoordinate2D (NativeHandle handle)
+	{
+		using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
+		return nsvalue.CoordinateValue;
+	}
 }

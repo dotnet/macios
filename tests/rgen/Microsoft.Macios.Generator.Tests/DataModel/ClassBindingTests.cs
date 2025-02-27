@@ -640,7 +640,7 @@ public partial class MyClass {
 					]
 				}
 			];
-			
+
 			const string notificationCenterPropertyClass = @"
 using ObjCBindings;
 
@@ -711,7 +711,7 @@ public partial class MyClass {
 					]
 				}
 			];
-			
+
 			const string notificationTypePropertyClass = @"
 using ObjCBindings;
 

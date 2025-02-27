@@ -18,12 +18,12 @@ readonly struct FieldData<T> : IEquatable<FieldData<T>> where T : Enum {
 	}
 	public string SymbolName { get; }
 	public string? LibraryName { get; }
-	
+
 	/// <summary>
 	/// Gets and set the type to be used. This is a property that can be used on notifications.
 	/// </summary>
 	public string? Type { get; init; }
-	
+
 	/// <summary>
 	/// The notification center to be used, if null, the default one will be used.
 	/// </summary>
@@ -56,11 +56,11 @@ readonly struct FieldData<T> : IEquatable<FieldData<T>> where T : Enum {
 		string? symbolName;
 		string? libraryName = null;
 		T? flags = default;
-		
+
 		// notifications customizations
 		string? notificationType = null;
 		string? notificationCenter = null;
-		
+
 		switch (count) {
 		case 1:
 			if (!attributeData.ConstructorArguments [0].TryGetIdentifier (out symbolName)) {
@@ -118,8 +118,8 @@ readonly struct FieldData<T> : IEquatable<FieldData<T>> where T : Enum {
 			}
 		}
 
-		data = new(symbolName, libraryName, flags) {
-			Type = notificationType, 
+		data = new (symbolName, libraryName, flags) {
+			Type = notificationType,
 			NotificationCenter = notificationCenter,
 		};
 		return true;
@@ -169,9 +169,9 @@ readonly struct FieldData<T> : IEquatable<FieldData<T>> where T : Enum {
 	{
 		var sb = new StringBuilder ($"{{ SymbolName: '{SymbolName}', ");
 		sb.Append ($"LibraryName: '{LibraryName ?? "null"}', ");
-		sb.Append ($"Type: '{Type ?? "null" }', ");
+		sb.Append ($"Type: '{Type ?? "null"}', ");
 		sb.Append ($"NotificationCenter: '{NotificationCenter ?? "null"}', ");
-		sb.Append($"Flags: '{Flags}' }}");
+		sb.Append ($"Flags: '{Flags}' }}");
 		return sb.ToString ();
 	}
 }

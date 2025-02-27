@@ -361,7 +361,7 @@ static partial class AVMediaCharacteristicsExtensions
 
 	public static AVMediaCharacteristics GetValueFromHandle (NativeHandle handle)
 	{
-		using var str = Runtime.GetNSObject<NSString> (handle);
+		using var str = Runtime.GetNSObject<NSString> (handle)!;
 		return GetValue (str);
 	}
 

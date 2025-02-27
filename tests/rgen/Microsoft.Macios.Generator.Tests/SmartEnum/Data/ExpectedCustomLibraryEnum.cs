@@ -79,7 +79,7 @@ public static partial class CustomLibraryEnumExtensions
 
 	public static CustomLibraryEnum GetValueFromHandle (NativeHandle handle)
 	{
-		using var str = Runtime.GetNSObject<NSString> (handle);
+		using var str = Runtime.GetNSObject<NSString> (handle)!;
 		return GetValue (str);
 	}
 

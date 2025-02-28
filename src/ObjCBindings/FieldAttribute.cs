@@ -28,6 +28,16 @@ namespace ObjCBindings {
 		public string? LibraryName { get; set; } = default;
 
 		/// <summary>
+		/// Get/Set the notification type.
+		/// </summary >
+		public Type? Type { get; set; } = null;
+
+		/// <summary>
+		/// Get/Set the notification center.
+		/// </summary >
+		public string? NotificationCenter { get; set; } = null;
+
+		/// <summary>
 		/// Create a new FieldAttribute for the given symbol and using the namespace as its containing library.
 		/// <param name="symbolName">The name of the symbol.</param>
 		/// </summary>

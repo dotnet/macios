@@ -1686,8 +1686,6 @@ namespace Xamarin.Tests {
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 
-			DotNet.InstallWorkload ("mobile-librarybuilder-net9");
-
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, netVersion: "net9.0");
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
@@ -2158,8 +2156,6 @@ namespace Xamarin.Tests {
 		public void MultiTargetLibrary (ApplePlatform platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
-
-			DotNet.InstallWorkload ("mobile-librarybuilder-net9");
 
 			// Get all the supported API versions
 			var supportedApiVersion = Configuration.GetVariableArray ($"SUPPORTED_API_VERSIONS_{platform.AsString ().ToUpperInvariant ()}");

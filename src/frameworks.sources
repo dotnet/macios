@@ -552,6 +552,7 @@ COREGRAPHICS_SOURCES = \
 	CoreGraphics/CGSession.cs \
 	CoreGraphics/CGShading.cs \
 	CoreGraphics/NativeDrawingMethods.cs \
+	CoreGraphics/NSValue.cs \
 
 # CoreHaptics
 
@@ -588,6 +589,7 @@ CORELOCATION_SOURCES = \
 	CoreLocation/CLBeaconRegion.cs \
 	CoreLocation/CLCompat.cs \
 	CoreLocation/CLLocationManager.cs \
+	CoreLocation/NSValue.cs \
 
 # CoreMedia
 
@@ -613,6 +615,7 @@ COREMEDIA_SOURCES = \
 	CoreMedia/CMCustomBlockAllocator.cs \
 	CoreMedia/CMBufferQueue.cs \
 	CoreMedia/CMMemoryPool.cs \
+	CoreMedia/NSValue.cs \
 
 # CoreMidi
 
@@ -1130,6 +1133,7 @@ MAPKIT_SOURCES = \
 	MapKit/MKPolygon.cs \
 	MapKit/MKPolyline.cs \
 	MapKit/MKUserLocation.cs \
+	MapKit/NSValue.cs \
 
 # MediaAccessibility
 
@@ -1591,6 +1595,7 @@ SCENEKIT_SOURCES = \
 	SceneKit/SCNSceneSource.cs \
 	SceneKit/SCNSkinner.cs \
 	SceneKit/SCNTechnique.cs \
+	SceneKit/NSValue.cs \
 
 # ScreenCaptureKit
 
@@ -1816,6 +1821,7 @@ UIKIT_SOURCES = \
 	UIKit/UIViewControllerTransitionCoordinatorContext.cs \
 	UIKit/UIWindow.cs \
 	UIKit/UIWindowScene.cs \
+	UIKit/NSValue.cs \
 
 # UserNotifications
 

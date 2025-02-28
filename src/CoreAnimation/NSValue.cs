@@ -16,6 +16,7 @@ public partial class NSValue : NSObject {
 	/// Converts a native handle to a CATransform3D.
 	/// </summary>
 	/// <param name="handle">The native handle.</param>
+	/// <returns>The CATransform3D.</returns>
 	public static CATransform3D ToCATransform3D (NativeHandle handle)
 	{
 		using var nsvalue = Runtime.GetNSObject<NSValue> (handle);

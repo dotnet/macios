@@ -432,6 +432,7 @@ COREANIMATION_SOURCES = \
 	CoreAnimation/CAMediaTimingFunction.cs \
 	CoreAnimation/CAScrollLayer.cs \
 	CoreAnimation/CATextLayer.cs \
+	CoreAnimation/NSValue.cs \
 
 # CoreBluetooth
 

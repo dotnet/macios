@@ -16,6 +16,7 @@ public partial class NSValue : NSObject {
 	/// Converts a native handle to a UIEdgeInsets.
 	/// </summary>
 	/// <param name="handle">The native handle.</param>
+	/// <returns>The UIEdgeInsets.</returns>
 	public static UIEdgeInsets ToUIEdgeInsets (NativeHandle handle)
 	{
 		using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
@@ -26,10 +27,22 @@ public partial class NSValue : NSObject {
 	/// Converts a native handle to a UIOffset.
 	/// </summary>
 	/// <param name="handle">The native handle.</param>
+	/// <returns>The UIOffset.</returns>
 	public static UIOffset ToUIOffset (NativeHandle handle)
 	{
 		using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
 		return nsvalue.UIOffsetValue;
+	}
+
+	/// <summary>
+	/// Converts a native handle to a NSDirectionalEdgeInsets.
+	/// </summary>
+	/// <param name="handle">The native handle.</param>
+	/// <returns>The NSDirectionalEdgeInsets.</returns>
+	public static NSDirectionalEdgeInsets ToNSDirectionalEdgeInsets (NativeHandle handle)
+	{
+		using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
+		return nsvalue.NSDirectionalEdgeInsetsValue;
 	}
 }
 

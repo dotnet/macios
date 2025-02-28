@@ -16,10 +16,6 @@ using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreFoundation {
 
 #if false
@@ -42,18 +38,8 @@ namespace CoreFoundation {
 	public class CFMachPort : NativeObject {
 		delegate void CFMachPortCallBack (IntPtr cfmachport, IntPtr msg, nint len, IntPtr context);
 
-#if !NET
-		public CFMachPort (NativeHandle handle) : base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
-#if NET
 		internal CFMachPort (NativeHandle handle, bool owns)
-#else
-		public CFMachPort (NativeHandle handle, bool owns)
-#endif
 			: base (handle, owns)
 		{
 		}
@@ -61,6 +47,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static IntPtr CFMachPortGetPort (IntPtr handle);
 
+		/// <summary>Gets the pointer to the wrapped Mach port instance.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public IntPtr MachPort {
 			get {
 				return CFMachPortGetPort (Handle);
@@ -77,6 +66,9 @@ namespace CoreFoundation {
 
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static byte CFMachPortIsValid (IntPtr handle);
+		/// <summary>Gets a value that tells whether the port can send and receive messages.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsValid {
 			get {
 				return CFMachPortIsValid (Handle) != 0;

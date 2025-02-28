@@ -137,32 +137,71 @@ namespace AudioUnit {
 		[Async]
 		void FromComponentDescription (AudioComponentDescription componentDescription, AudioComponentInstantiationOptions options, Action<AUAudioUnit, NSError> completionHandler);
 
+		/// <summary>Gets the component from the description with which the audio unit was created.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("componentDescription")]
 		AudioComponentDescription ComponentDescription { get; }
 
+		/// <summary>Gets the render block that is used for rendering audio.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("renderBlock")]
 		AURenderBlock RenderBlock { get; }
 
+		/// <summary>Gets the developer-provided block that performs audio rendering.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("internalRenderBlock")]
 		AUInternalRenderBlock InternalRenderBlock { get; }
 
 		// @property (readonly, nonatomic) AudioComponent __nonnull component;
+		/// <summary>Gets the component from the description with which the audio unit was created.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("component")]
 		unsafe AudioComponent Component { get; }
 
+		/// <summary>Gets the audio units component name.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("componentName")]
 		string ComponentName { get; }
 
+		/// <summary>Gets the name of the audio unit.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("audioUnitName")]
 		string AudioUnitName { get; }
 
+		/// <summary>Gets the manufacturer name for the audio unit.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("manufacturerName")]
 		string ManufacturerName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("audioUnitShortName")]
 		string ShortName { get; }
 
+		/// <summary>Gets the version of the audio unit.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("componentVersion")]
 		uint ComponentVersion { get; }
 
@@ -172,18 +211,30 @@ namespace AudioUnit {
 		[Export ("deallocateRenderResources")]
 		void DeallocateRenderResources ();
 
+		/// <summary>Gets a Boolean value that tells whether rendering resources have been allocated.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("renderResourcesAllocated")]
 		bool RenderResourcesAllocated { get; }
 
 		[Export ("reset")]
 		void Reset ();
 
+		/// <summary>Gets an array that contains the input connections for the audio unit.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("inputBusses")]
 		AUAudioUnitBusArray InputBusses { get; }
 
+		/// <summary>Gets an array that contains the output connections for the audio unit.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("outputBusses")]
 		AUAudioUnitBusArray OutputBusses { get; }
 
+		/// <summary>Block that schedules parameters.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scheduleParameterBlock")]
 		AUScheduleParameterBlock ScheduleParameterBlock { get; }
 
@@ -202,6 +253,9 @@ namespace AudioUnit {
 		// 		[NullAllowed, Export ("musicalContextBlock", ArgumentSemantic.Copy)]
 		// 		AUHostMusicalContextBlock MusicalContextBlock { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("MIDIOutputNames", ArgumentSemantic.Copy)]
 		string [] MidiOutputNames { get; }
@@ -222,23 +276,47 @@ namespace AudioUnit {
 		// [Export ("hostMIDIProtocol", ArgumentSemantic.Assign)]
 		// MIDIProtocolID HostMIDIProtocol { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("providesUserInterface")]
 		bool ProvidesUserInterface { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("MIDIOutputEventBlock", ArgumentSemantic.Copy)]
 		AUMidiOutputEventBlock MidiOutputEventBlock { get; set; }
 
+		/// <summary>A delegate block that provides information about its transport state.</summary>
+		///         <value>
+		///           <para>Developers may optionally assign an instance of the <see cref="P:AudioUnit.AUAudioUnit.TransportStateBlock" /> delegate to thi property so that they can call it at the beginning of render cycles to get the transport state at the cycle start.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("transportStateBlock", ArgumentSemantic.Copy)]
 		AUHostTransportStateBlock TransportStateBlock { get; set; }
 
 		[Export ("removeRenderObserver:")]
 		void RemoveRenderObserver (nint token);
 
+		/// <summary>Gets or sets the maximum number of audio frames to render simultaneously.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("maximumFramesToRender")]
 		uint MaximumFramesToRender { get; set; }
 
+		/// <summary>Gets or sets the entire tree of output parameters.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("parameterTree")]
 
 		AUParameterTree ParameterTree {
@@ -251,57 +329,129 @@ namespace AudioUnit {
 		[Export ("parametersForOverviewWithCount:")]
 		NSNumber [] GetParametersForOverview (nint count);
 
+		/// <summary>Gets a special value that is required for key-value observing notifications</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allParameterValues")]
 		bool AllParameterValues { get; }
 
+		/// <summary>Gets a value that is <see langword="true" /> if the audio unit is either a music device or an effect.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("musicDeviceOrEffect")]
 		bool MusicDeviceOrEffect { [Bind ("isMusicDeviceOrEffect")] get; }
 
+		/// <summary>Gets the number of virtual MIDI cables that are implemented by the device or effect.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("virtualMIDICableCount")]
 		nint VirtualMidiCableCount { get; }
 
 		// @property (copy, nonatomic) NSDictionary<NSString * __nonnull,id __nonnull> * __nullable fullState;
+		/// <summary>Gets or sets the snapshot of the audio unit's entire state, for saving presets.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("fullState", ArgumentSemantic.Copy)]
 		NSDictionary FullState { get; set; }
 
 		// @property (copy, nonatomic) NSDictionary<NSString * __nonnull,id __nonnull> * __nullable fullStateForDocument;
+		/// <summary>Gets or sets the snapshot of the audio unit's entire state, for saving in a document.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("fullStateForDocument", ArgumentSemantic.Copy)]
 		NSDictionary FullStateForDocument { get; set; }
 
+		/// <summary>Gets the factory presets for the audio unit.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("factoryPresets", ArgumentSemantic.Copy)]
 		AUAudioUnitPreset [] FactoryPresets { get; }
 
+		/// <summary>Gets the most recently selected preset.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("currentPreset", ArgumentSemantic.Retain)]
 		AUAudioUnitPreset CurrentPreset { get; set; }
 
+		/// <summary>Gets the latency of the audio unit, in seconds</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("latency")]
 		double Latency { get; }
 
+		/// <summary>Gets the tail time, in seconds, of the audio unit.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("tailTime")]
 		double TailTime { get; }
 
+		/// <summary>Gets or sets the rendering quality, a value in [0,127].</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("renderQuality", ArgumentSemantic.Assign)]
 		nint RenderQuality { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that contols whether an effect should skip processing and go directly to the output.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("shouldBypassEffect")]
 		bool ShouldBypassEffect { get; set; }
 
+		/// <summary>Gets a Boolean value that tells whether the audio unit can transform input to output without allocating a new buffer.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("canProcessInPlace")]
 		bool CanProcessInPlace { get; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the audio unit is currently rendering offline.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("renderingOffline")]
 		bool RenderingOffline { [Bind ("isRenderingOffline")] get; set; }
 
+		/// <summary>Gets an array that describes valid combinations of input and output channels.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("channelCapabilities", ArgumentSemantic.Copy)]
 		NSNumber [] ChannelCapabilities { get; }
 
+		/// <summary>Gets the name of the context to which the audio unit is connected.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("contextName")]
 		string ContextName { get; set; }
 
+		/// <summary>Gets a Boolean values that tells whether MPE audio is supported.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("supportsMPE")]
 		bool SupportsMpe { get; }
 
+		/// <summary>Gets or sets the channel map.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("channelMap"), NullAllowed]
 		NSNumber [] ChannelMap { get; set; }
@@ -319,12 +469,17 @@ namespace AudioUnit {
 		[Export ("shouldChangeToFormat:forBus:")]
 		bool ShouldChangeToFormat (AVAudioFormat format, AUAudioUnitBus bus);
 
+		/// <include file="../docs/api/AudioUnit/AUAudioUnit.xml" path="/Documentation/Docs[@DocId='P:AudioUnit.AUAudioUnit.AudioComponentRegistrationsChangedNotification']/*" />
 		[Notification, Field ("kAudioComponentRegistrationsChangedNotification")]
 		NSString AudioComponentRegistrationsChangedNotification { get; }
 
+		/// <include file="../docs/api/AudioUnit/AUAudioUnit.xml" path="/Documentation/Docs[@DocId='P:AudioUnit.AUAudioUnit.AudioComponentInstanceInvalidationNotification']/*" />
 		[Notification, Field ("kAudioComponentInstanceInvalidationNotification")]
 		NSString AudioComponentInstanceInvalidationNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("MIDIOutputBufferSizeHint")]
 		nint MidiOutputBufferSizeHint { get; set; }
@@ -557,9 +712,15 @@ namespace AudioUnit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AUAudioUnitPreset : NSSecureCoding {
+		/// <summary>Gets or sets a unique identifier for the preset.</summary>
+		///         <value>The unique identifier for the preset.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("number", ArgumentSemantic.Assign)]
 		nint Number { get; set; }
 
+		/// <summary>Gets or sets the name of the preset.</summary>
+		///         <value>The name of the preset.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("name")]
 		string Name { get; set; }
 	}
@@ -570,30 +731,66 @@ namespace AudioUnit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AUParameterNode))]
 	interface AUParameter : NSSecureCoding {
+		/// <summary>Gets the parameter's minimum value.</summary>
+		///         <value>The parameter's minimum value.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("minValue")]
 		float MinValue { get; }
 
+		/// <summary>Gets the parameter's maximum value.</summary>
+		///         <value>The parameter's maximum value.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("maxValue")]
 		float MaxValue { get; }
 
+		/// <summary>Gets the unit of measurement for the value of the parameter.</summary>
+		///         <value>The unit of measurement for the value of the parameter.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("unit")]
 		AudioUnitParameterUnit Unit { get; }
 
+		/// <summary>Gets the localized unit of measurement for the value of the parameter.</summary>
+		///         <value>
+		///           <para>The localized unit of measurement for the value of the parameter.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("unitName")]
 		string UnitName { get; }
 
+		/// <summary>Gets the parameter option flags for this parameter.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("flags")]
 		AudioUnitParameterOptions Flags { get; }
 
+		/// <summary>Gets the address (a non-persistent numerical identifier) for the parameter.</summary>
+		///         <value>A non-persistent numeric identifier for the parameter.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("address")]
 		ulong Address { get; }
 
+		/// <summary>Gets an array that contains allowable localized value names for the parameter.</summary>
+		///         <value>
+		///           <para>An array that contains allowable localized value names for the parameter.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("valueStrings", ArgumentSemantic.Copy)]
 		string [] ValueStrings { get; }
 
+		/// <summary>Gets an array of addresses for parameters that may be changed when the developer changes this parameter.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("dependentParameters", ArgumentSemantic.Copy)]
 		NSNumber [] DependentParameters { get; }
 
+		/// <summary>Gets the current value of the parameter.</summary>
+		///         <value>The current value of the parameter.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("value")]
 		float Value { get; set; }
 
@@ -640,12 +837,21 @@ namespace AudioUnit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AUParameterNode {
+		/// <summary>Gets the permanent unique identifier for the node.</summary>
+		///         <value>The unique identifier for the node.</value>
+		///         <remarks>App developers must not change this property, as doing so will invalidate host documents between releases.</remarks>
 		[Export ("identifier")]
 		string Identifier { get; }
 
+		/// <summary>Gets or sets the key path, the concatenation of the parameter's and its parents' identifiers.</summary>
+		///         <value>The key path, the concatenation of the parameter's and its parents' identifiers.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("keyPath")]
 		string KeyPath { get; }
 
+		/// <summary>Gets the localized display name for the node.</summary>
+		///         <value>The localized display name for the node.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displayName")]
 		string DisplayName { get; }
 
@@ -666,12 +872,21 @@ namespace AudioUnit {
 		[Wrap ("new AUParameterObserverToken { ObserverToken = TokenByAddingParameterRecordingObserver (observer) }")]
 		AUParameterObserverToken CreateTokenByAddingParameterRecordingObserver (AUParameterRecordingObserver observer);
 
+		/// <summary>Gets or sets the <see cref="T:AudioUnit.AUImplementorValueObserver" /> that notifies the audio unit when a parameter value changes.</summary>
+		///         <value>The <see cref="T:AudioUnit.AUImplementorValueObserver" /> that notifies the audio unit when a parameter value changes.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("implementorValueObserver", ArgumentSemantic.Copy)]
 		AUImplementorValueObserver ImplementorValueObserver { get; set; }
 
+		/// <summary>Gets or sets the <see cref="T:AudioUnit.AUImplementorValueObserver" /> that updates stale parameter values.</summary>
+		///         <value>The <see cref="T:AudioUnit.AUImplementorValueObserver" /> that updates stale parameter values.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("implementorValueProvider", ArgumentSemantic.Copy)]
 		AUImplementorValueProvider ImplementorValueProvider { get; set; }
 
+		/// <summary>Gets or sets the callback that provides a parameter value when provided with a string representation of the value of the parameter.</summary>
+		///         <value>The callback that provides a parameter value when provided with a string representation of the value of the parameter.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("implementorValueFromStringCallback", ArgumentSemantic.Copy)]
 		AUImplementorValueFromStringCallback ImplementorValueFromStringCallback { get; set; }
 
@@ -681,9 +896,15 @@ namespace AudioUnit {
 		[Wrap ("RemoveParameterObserver (token.ObserverToken)")]
 		void RemoveParameterObserver (AUParameterObserverToken token);
 
+		/// <summary>Gets or sets the callback that provides a string representation of the value of the parameter.</summary>
+		///         <value>The callback that provides the string representation of the value of the parameter.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("implementorStringFromValueCallback", ArgumentSemantic.Copy),]
 		AUImplementorStringFromValueCallback ImplementorStringFromValueCallback { get; set; }
 
+		/// <summary>Callback for retrieving an abbreviated display name.</summary>
+		///         <value>The possibly abbreviated name.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("implementorDisplayNameWithLengthCallback", ArgumentSemantic.Copy)]
 		AUImplementorDisplayNameWithLengthCallback ImplementorDisplayNameWithLengthCallback { get; set; }
 
@@ -703,9 +924,15 @@ namespace AudioUnit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AUParameterNode))]
 	interface AUParameterGroup : NSSecureCoding {
+		/// <summary>Gets an array of the child nodes in the parameter group.</summary>
+		///         <value>An array of the child nodes in the parameter group.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("children")]
 		AUParameterNode [] Children { get; }
 
+		/// <summary>Gets an array that contains all the parameters in the parameter group, including parameters in parameter group children.</summary>
+		///         <value>An array that contains all the parameters in the parameter group, including parameters in parameter group children.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allParameters")]
 		AUParameter [] AllParameters { get; }
 	}

@@ -19,10 +19,14 @@ namespace MapKit {
 	// it's similar to MKDirectionsTransportType values but it's something only used on the managed side
 	// to replace NSString fields
 	public enum MKDirectionsMode {
+		/// <summary>Driving directions.</summary>
 		Driving,
+		/// <summary>Walking directions.</summary>
 		Walking,
+		/// <summary>Transit directions.</summary>
 		Transit,
 #if NET
+		/// <summary>The user's preferred direction type.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -39,14 +43,40 @@ namespace MapKit {
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class MKLaunchOptions {
+		/// <summary>The kind of directions that you want to show the user (walking, driving)</summary>
+		///         <value>If specified, the map items provided represent a starting and ending point.</value>
+		///         <remarks>
+		///         </remarks>
 		public MKDirectionsMode? DirectionsMode { get; set; }
+		/// <summary>Specifies the desired type of map to render (standard, satellite, hybrid).</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public MKMapType? MapType { get; set; }
+		/// <summary>The location where the map should be centered</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public CLLocationCoordinate2D? MapCenter { get; set; }
+		/// <summary>Coordinate span for the region to be displayed by the maps app.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MKCoordinateSpan? MapSpan { get; set; }
+		/// <summary>Controls whether to display traffic information on the map.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public bool? ShowTraffic { get; set; }
 
 
 #if NET
+		/// <summary>Virtual camera, used to show a 3D perspective of the map.</summary>
+		///         <value>If not set, the Maps app will use the current defaults for the camera.</value>
+		///         <remarks>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]

@@ -30,16 +30,28 @@ namespace GameController {
 	public struct GCMicroGamepadSnapShotDataV100 {
 
 		// Standard information
+		/// <summary>The micro gamepad version.</summary>
+		///         <remarks>To be added.</remarks>
 		public ushort /* uint16_t */ Version; // 0x0100
+		/// <summary>The size of the snapshot, in bytes.</summary>
+		///         <remarks>To be added.</remarks>
 		public ushort /* uint16_t */ Size;    // sizeof(GCMicroGamepadSnapShotDataV100) or larger
 
 		// Standard gamepad data
 		// Axes in the range [-1.0, 1.0]
+		/// <summary>The <c>X</c>v alue of the D-pad input when the snapshot was taken.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ DPadX;
+		/// <summary>The <c>Y</c> value of the D-pad input when the snapshot was taken.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ DPadY;
 
 		// Buttons in the range [0.0, 1.0]
+		/// <summary>The value of ButtonA when the snapshot was taken.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ ButtonA;
+		/// <summary>The value of ButtonX when the snapshot was taken.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ ButtonX;
 
 #if NET
@@ -89,16 +101,28 @@ namespace GameController {
 	public struct GCMicroGamepadSnapshotData {
 
 		// Standard information
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public ushort /* uint16_t */ Version;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public ushort /* uint16_t */ Size;
 
 		// Standard gamepad data
 		// Axes in the range [-1.0, 1.0]
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ DPadX;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ DPadY;
 
 		// Buttons in the range [0.0, 1.0]
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ ButtonA;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ ButtonX;
 
 #if NET

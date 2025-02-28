@@ -52,7 +52,9 @@ namespace CoreText {
 	[Native]
 	// defined as CFOptionFlags (unsigned long [long] = nuint) - /System/Library/Frameworks/CoreText.framework/Headers/CTFont.h
 	public enum CTFontOptions : ulong {
+		/// <summary>Use default options.</summary>
 		Default = 0,
+		/// <summary>Prevents font activation.</summary>
 		PreventAutoActivation = 1 << 0,
 #if NET
 		[SupportedOSPlatform ("tvos16.0")]
@@ -63,6 +65,7 @@ namespace CoreText {
 		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0), Mac (13, 0)]
 #endif
 		PreventAutoDownload = 1 << 1,
+		/// <summary>Give preferences to Apple/System fonts.</summary>
 		PreferSystemFont = 1 << 2,
 #if !NET
 		[Obsolete ("This API is not available on this platform.")]
@@ -72,118 +75,221 @@ namespace CoreText {
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFont.h
 	public enum CTFontUIFontType : uint {
+		/// <summary>To be added.</summary>
 		None = unchecked((uint) (-1)),
+		/// <summary>To be added.</summary>
 		User = 0,
+		/// <summary>To be added.</summary>
 		UserFixedPitch = 1,
+		/// <summary>To be added.</summary>
 		System = 2,
+		/// <summary>To be added.</summary>
 		EmphasizedSystem = 3,
+		/// <summary>To be added.</summary>
 		SmallSystem = 4,
+		/// <summary>To be added.</summary>
 		SmallEmphasizedSystem = 5,
+		/// <summary>To be added.</summary>
 		MiniSystem = 6,
+		/// <summary>To be added.</summary>
 		MiniEmphasizedSystem = 7,
+		/// <summary>To be added.</summary>
 		Views = 8,
+		/// <summary>To be added.</summary>
 		Application = 9,
+		/// <summary>To be added.</summary>
 		Label = 10,
+		/// <summary>To be added.</summary>
 		MenuTitle = 11,
+		/// <summary>To be added.</summary>
 		MenuItem = 12,
+		/// <summary>To be added.</summary>
 		MenuItemMark = 13,
+		/// <summary>To be added.</summary>
 		MenuItemCmdKey = 14,
+		/// <summary>To be added.</summary>
 		WindowTitle = 15,
+		/// <summary>To be added.</summary>
 		PushButton = 16,
+		/// <summary>To be added.</summary>
 		UtilityWindowTitle = 17,
+		/// <summary>To be added.</summary>
 		AlertHeader = 18,
+		/// <summary>To be added.</summary>
 		SystemDetail = 19,
+		/// <summary>To be added.</summary>
 		EmphasizedSystemDetail = 20,
+		/// <summary>To be added.</summary>
 		Toolbar = 21,
+		/// <summary>To be added.</summary>
 		SmallToolbar = 22,
+		/// <summary>To be added.</summary>
 		Message = 23,
+		/// <summary>To be added.</summary>
 		Palette = 24,
+		/// <summary>To be added.</summary>
 		ToolTip = 25,
+		/// <summary>To be added.</summary>
 		ControlContent = 26,
 	}
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFont.h
 	public enum CTFontTable : uint {
+		/// <summary>To be added.</summary>
 		BaselineBASE = 0x42415345,  // 'BASE'
+		/// <summary>To be added.</summary>
 		ColorBitmapData = 0x43424454,  // 'CBDT'
+		/// <summary>To be added.</summary>
 		ColorBitmapLocationData = 0x43424c43,  // 'CBLC'
+		/// <summary>To be added.</summary>
 		PostscriptFontProgram = 0x43464620,  // 'CFF '
+		/// <summary>To be added.</summary>
 		CompactFontFormat2 = 0x43464632,  // 'CFF2'
+		/// <summary>To be added.</summary>
 		ColorTable = 0x434f4c52,  // 'COLR'
+		/// <summary>To be added.</summary>
 		ColorPaletteTable = 0x4350414c,  // 'CPAL'
+		/// <summary>To be added.</summary>
 		DigitalSignature = 0x44534947,  // 'DSIG'
+		/// <summary>To be added.</summary>
 		EmbeddedBitmap = 0x45424454,  // 'EBDT'
+		/// <summary>To be added.</summary>
 		EmbeddedBitmapLocation = 0x45424c43,  // 'EBLC'
+		/// <summary>To be added.</summary>
 		EmbeddedBitmapScaling = 0x45425343,  // 'EBSC'
+		/// <summary>To be added.</summary>
 		GlyphDefinition = 0x47444546,  // 'GDEF'
+		/// <summary>To be added.</summary>
 		GlyphPositioning = 0x47504f53,  // 'GPOS'
+		/// <summary>To be added.</summary>
 		GlyphSubstitution = 0x47535542,  // 'GSUB'
+		/// <summary>To be added.</summary>
 		HorizontalMetricsVariations = 0x48564152,  // 'HVAR'
+		/// <summary>To be added.</summary>
 		JustificationJSTF = 0x4a535446,  // 'JSTF'
+		/// <summary>To be added.</summary>
 		LinearThreshold = 0x4c545348,  // 'LTSH'
+		/// <summary>To be added.</summary>
 		MathLayoutData = 0x4d415448,  // 'MATH'
+		/// <summary>To be added.</summary>
 		Merge = 0x4d455247,  // 'MERG'
+		/// <summary>To be added.</summary>
 		MetricsVariations = 0x4d564152,  // 'MVAR'
+		/// <summary>To be added.</summary>
 		WindowsSpecificMetrics = 0x4f532f32,  // 'OS2 '
+		/// <summary>To be added.</summary>
 		Pcl5Data = 0x50434c54,  // 'PCLT'
+		/// <summary>To be added.</summary>
 		VerticalDeviceMetrics = 0x56444d58,  // 'VDMX'
+		/// <summary>To be added.</summary>
 		StyleAttributes = 0x53544154,  // 'STAT'
+		/// <summary>To be added.</summary>
 		ScalableVectorGraphics = 0x53564720,  // 'SVG '
+		/// <summary>To be added.</summary>
 		VerticalOrigin = 0x564f5247,  // 'VORG'
+		/// <summary>To be added.</summary>
 		VerticalMetricsVariations = 0x56564152,  // 'VVAR'
+		/// <summary>To be added.</summary>
 		GlyphReference = 0x5a617066,  // 'Zapf'
+		/// <summary>To be added.</summary>
 		AccentAttachment = 0x61636e74,  // 'Acnt'
+		/// <summary>To be added.</summary>
 		AnchorPoints = 0x616e6b72,  // 'ankr'
+		/// <summary>To be added.</summary>
 		AxisVariation = 0x61766172,  // 'Avar'
+		/// <summary>To be added.</summary>
 		BitmapData = 0x62646174,  // 'Bdat'
+		/// <summary>To be added.</summary>
 		BitmapFontHeader = 0x62686564,  // 'Bhed'
+		/// <summary>To be added.</summary>
 		BitmapLocation = 0x626c6f63,  // 'Bloc'
+		/// <summary>To be added.</summary>
 		BaselineBsln = 0x62736c6e,  // 'Bsln'
+		/// <summary>To be added.</summary>
 		CharacterToGlyphMapping = 0x636d6170,  // 'Cmap'
+		/// <summary>To be added.</summary>
 		ControlValueTableVariation = 0x63766172,  // 'Cvar'
+		/// <summary>To be added.</summary>
 		ControlValueTable = 0x63767420,  // 'Cvt '
+		/// <summary>To be added.</summary>
 		FontDescriptor = 0x66647363,  // 'Fdsc'
+		/// <summary>To be added.</summary>
 		LayoutFeature = 0x66656174,  // 'Feat'
+		/// <summary>To be added.</summary>
 		FontMetrics = 0x666d7478,  // 'Fmtx'
+		/// <summary>To be added.</summary>
 		FondAndNfntData = 0x666f6e64,  // 'fond'
+		/// <summary>To be added.</summary>
 		FontProgram = 0x6670676d,  // 'Fpgm'
+		/// <summary>To be added.</summary>
 		FontVariation = 0x66766172,  // 'Fvar'
+		/// <summary>To be added.</summary>
 		GridFitting = 0x67617370,  // 'Gasp'
+		/// <summary>To be added.</summary>
 		GlyphData = 0x676c7966,  // 'Glyf'
+		/// <summary>To be added.</summary>
 		GlyphVariation = 0x67766172,  // 'Gvar'
+		/// <summary>To be added.</summary>
 		HorizontalDeviceMetrics = 0x68646d78,  // 'Hdmx'
+		/// <summary>To be added.</summary>
 		FontHeader = 0x68656164,  // 'Head'
+		/// <summary>To be added.</summary>
 		HorizontalHeader = 0x68686561,  // 'Hhea'
+		/// <summary>To be added.</summary>
 		HorizontalMetrics = 0x686d7478,  // 'Hmtx'
+		/// <summary>To be added.</summary>
 		HorizontalStyle = 0x68737479,  // 'Hsty'
+		/// <summary>To be added.</summary>
 		JustificationJust = 0x6a757374,  // 'Just'
+		/// <summary>To be added.</summary>
 		Kerning = 0x6b65726e,  // 'Kern'
+		/// <summary>To be added.</summary>
 		ExtendedKerning = 0x6b657278,  // 'Kerx'
+		/// <summary>To be added.</summary>
 		LigatureCaret = 0x6c636172,  // 'Lcar'
+		/// <summary>To be added.</summary>
 		IndexToLocation = 0x6c6f6361,  // 'Loca'
+		/// <summary>To be added.</summary>
 		LanguageTags = 0x6c746167,  // 'ltag'
+		/// <summary>To be added.</summary>
 		MaximumProfile = 0x6d617870,  // 'Maxp'
+		/// <summary>To be added.</summary>
 		Metadata = 0x6d657461,  // 'meta'
+		/// <summary>To be added.</summary>
 		Morph = 0x6d6f7274,  // 'Mort'
+		/// <summary>To be added.</summary>
 		ExtendedMorph = 0x6d6f7278,  // 'Morx'
+		/// <summary>To be added.</summary>
 		Name = 0x6e616d65,  // 'Name'
+		/// <summary>To be added.</summary>
 		OpticalBounds = 0x6f706264,  // 'Opbd'
+		/// <summary>To be added.</summary>
 		PostScriptInformation = 0x706f7374,  // 'Post'
+		/// <summary>To be added.</summary>
 		ControlValueTableProgram = 0x70726570,  // 'Prep'
+		/// <summary>To be added.</summary>
 		Properties = 0x70726f70,  // 'Prop'
+		/// <summary>To be added.</summary>
 		SBitmapData = 0x73626974,  // 'sbit'
+		/// <summary>To be added.</summary>
 		SExtendedBitmapData = 0x73626978,  // 'sbix'
+		/// <summary>To be added.</summary>
 		Tracking = 0x7472616b,  // 'Trak'
+		/// <summary>To be added.</summary>
 		VerticalHeader = 0x76686561,  // 'Vhea'
+		/// <summary>To be added.</summary>
 		VerticalMetrics = 0x766d7478,  // 'Vmtx'
+		/// <summary>To be added.</summary>
 		CrossReference = 0x78726566,  // 'xref'
 	}
 
 	[Flags]
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFont.h
 	public enum CTFontTableOptions : uint {
+		/// <summary>To be added.</summary>
 		None = 0,
 #if NET
+		/// <summary>To be added.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -199,10 +305,14 @@ namespace CoreText {
 
 	// anonymous and typeless native enum - /System/Library/Frameworks/CoreText.framework/Headers/SFNTLayoutTypes.h
 	public enum FontFeatureGroup {
+		/// <summary>To be added.</summary>
 		AllTypographicFeatures = 0,
+		/// <summary>To be added.</summary>
 		Ligatures = 1,
+		/// <summary>To be added.</summary>
 		CursiveConnection = 2,
 #if NET
+		/// <summary>Developers should not use this deprecated field. </summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -214,39 +324,73 @@ namespace CoreText {
 		[Deprecated (PlatformName.MacOSX, 10, 7)]
 #endif
 		LetterCase = 3,
+		/// <summary>To be added.</summary>
 		VerticalSubstitution = 4,
+		/// <summary>To be added.</summary>
 		LinguisticRearrangement = 5,
+		/// <summary>To be added.</summary>
 		NumberSpacing = 6,
+		/// <summary>To be added.</summary>
 		SmartSwash = 8,
+		/// <summary>To be added.</summary>
 		Diacritics = 9,
+		/// <summary>To be added.</summary>
 		VerticalPosition = 10,
+		/// <summary>To be added.</summary>
 		Fractions = 11,
+		/// <summary>To be added.</summary>
 		OverlappingCharacters = 13,
+		/// <summary>To be added.</summary>
 		TypographicExtras = 14,
+		/// <summary>To be added.</summary>
 		MathematicalExtras = 15,
+		/// <summary>To be added.</summary>
 		OrnamentSets = 16,
+		/// <summary>To be added.</summary>
 		CharacterAlternatives = 17,
+		/// <summary>To be added.</summary>
 		DesignComplexity = 18,
+		/// <summary>To be added.</summary>
 		StyleOptions = 19,
+		/// <summary>To be added.</summary>
 		CharacterShape = 20,
+		/// <summary>To be added.</summary>
 		NumberCase = 21,
+		/// <summary>To be added.</summary>
 		TextSpacing = 22,
+		/// <summary>To be added.</summary>
 		Transliteration = 23,
+		/// <summary>To be added.</summary>
 		Annotation = 24,
+		/// <summary>To be added.</summary>
 		KanaSpacing = 25,
+		/// <summary>To be added.</summary>
 		IdeographicSpacing = 26,
+		/// <summary>To be added.</summary>
 		UnicodeDecomposition = 27,
+		/// <summary>To be added.</summary>
 		RubyKana = 28,
+		/// <summary>To be added.</summary>
 		CJKSymbolAlternatives = 29,
+		/// <summary>To be added.</summary>
 		IdeographicAlternatives = 30,
+		/// <summary>To be added.</summary>
 		CJKVerticalRomanPlacement = 31,
+		/// <summary>To be added.</summary>
 		ItalicCJKRoman = 32,
+		/// <summary>To be added.</summary>
 		CaseSensitiveLayout = 33,
+		/// <summary>To be added.</summary>
 		AlternateKana = 34,
+		/// <summary>To be added.</summary>
 		StylisticAlternatives = 35,
+		/// <summary>To be added.</summary>
 		ContextualAlternates = 36,
+		/// <summary>To be added.</summary>
 		LowerCase = 37,
+		/// <summary>To be added.</summary>
 		UpperCase = 38,
+		/// <summary>To be added.</summary>
 		CJKRomanSpacing = 103
 	}
 
@@ -270,19 +414,33 @@ namespace CoreText {
 			Dictionary = dictionary;
 		}
 
+		/// <summary>The NSDictionary that reflects the current values in the strongly typed CTFontFeatures.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSDictionary Dictionary { get; private set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Name {
 			get { return Adapter.GetStringValue (Dictionary, CTFontFeatureKey.Name); }
 			set { Adapter.SetValue (Dictionary, CTFontFeatureKey.Name, value); }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public FontFeatureGroup FeatureGroup {
 			get {
 				return (FontFeatureGroup) (int) (NSNumber) Dictionary [CTFontFeatureKey.Identifier];
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool Exclusive {
 			get {
 				return CFDictionary.GetBooleanValue (Dictionary.Handle,
@@ -295,6 +453,9 @@ namespace CoreText {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public IEnumerable<CTFontFeatureSelectors>? Selectors {
 			get {
 				return Adapter.GetNativeArray (Dictionary, CTFontFeatureKey.Selectors,
@@ -418,19 +579,31 @@ namespace CoreText {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary Dictionary { get; private set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		protected int FeatureWeak {
 			get {
 				return (int) (NSNumber) Dictionary [CTFontFeatureSelectorKey.Identifier];
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Name {
 			get { return Adapter.GetStringValue (Dictionary, CTFontFeatureSelectorKey.Name); }
 			set { Adapter.SetValue (Dictionary, CTFontFeatureSelectorKey.Name, value); }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool Default {
 			get {
 				return CFDictionary.GetBooleanValue (Dictionary.Handle,
@@ -443,6 +616,9 @@ namespace CoreText {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool Setting {
 			get {
 				return CFDictionary.GetBooleanValue (Dictionary.Handle,
@@ -464,7 +640,9 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureAllTypographicFeatures : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			AllTypeFeaturesOn = 0,
+			/// <summary>To be added.</summary>
 			AllTypeFeaturesOff = 1
 		}
 
@@ -473,6 +651,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -488,27 +669,49 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureLigatures : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			RequiredLigaturesOn = 0,
+			/// <summary>To be added.</summary>
 			RequiredLigaturesOff = 1,
+			/// <summary>To be added.</summary>
 			CommonLigaturesOn = 2,
+			/// <summary>To be added.</summary>
 			CommonLigaturesOff = 3,
+			/// <summary>To be added.</summary>
 			RareLigaturesOn = 4,
+			/// <summary>To be added.</summary>
 			RareLigaturesOff = 5,
+			/// <summary>To be added.</summary>
 			LogosOn = 6,
+			/// <summary>To be added.</summary>
 			LogosOff = 7,
+			/// <summary>To be added.</summary>
 			RebusPicturesOn = 8,
+			/// <summary>To be added.</summary>
 			RebusPicturesOff = 9,
+			/// <summary>To be added.</summary>
 			DiphthongLigaturesOn = 10,
+			/// <summary>To be added.</summary>
 			DiphthongLigaturesOff = 11,
+			/// <summary>To be added.</summary>
 			SquaredLigaturesOn = 12,
+			/// <summary>To be added.</summary>
 			SquaredLigaturesOff = 13,
+			/// <summary>To be added.</summary>
 			AbbrevSquaredLigaturesOn = 14,
+			/// <summary>To be added.</summary>
 			AbbrevSquaredLigaturesOff = 15,
+			/// <summary>To be added.</summary>
 			SymbolLigaturesOn = 16,
+			/// <summary>To be added.</summary>
 			SymbolLigaturesOff = 17,
+			/// <summary>To be added.</summary>
 			ContextualLigaturesOn = 18,
+			/// <summary>To be added.</summary>
 			ContextualLigaturesOff = 19,
+			/// <summary>To be added.</summary>
 			HistoricalLigaturesOn = 20,
+			/// <summary>To be added.</summary>
 			HistoricalLigaturesOff = 21
 		}
 
@@ -517,6 +720,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -537,11 +743,17 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureLetterCase : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			UpperAndLowerCase = 0,
+			/// <summary>To be added.</summary>
 			AllCaps = 1,
+			/// <summary>To be added.</summary>
 			AllLowerCase = 2,
+			/// <summary>To be added.</summary>
 			SmallCaps = 3,
+			/// <summary>To be added.</summary>
 			InitialCaps = 4,
+			/// <summary>To be added.</summary>
 			InitialCapsAndSmallCaps = 5
 		}
 
@@ -550,6 +762,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -565,8 +780,11 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureCursiveConnection : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			Unconnected = 0,
+			/// <summary>To be added.</summary>
 			PartiallyConnected = 1,
+			/// <summary>To be added.</summary>
 			Cursive = 2
 		}
 
@@ -575,6 +793,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -590,7 +811,9 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureVerticalSubstitutionConnection : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			SubstituteVerticalFormsOn = 0,
+			/// <summary>To be added.</summary>
 			SubstituteVerticalFormsOff = 1
 		}
 
@@ -599,6 +822,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -614,7 +840,9 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureLinguisticRearrangementConnection : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			LinguisticRearrangementOn = 0,
+			/// <summary>To be added.</summary>
 			LinguisticRearrangementOff = 1
 		}
 
@@ -623,6 +851,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -638,9 +869,13 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureNumberSpacing : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			MonospacedNumbers = 0,
+			/// <summary>To be added.</summary>
 			ProportionalNumbers = 1,
+			/// <summary>To be added.</summary>
 			ThirdWidthNumbers = 2,
+			/// <summary>To be added.</summary>
 			QuarterWidthNumbers = 3
 		}
 
@@ -649,6 +884,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -664,15 +902,25 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureSmartSwash : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			WordInitialSwashesOn = 0,
+			/// <summary>To be added.</summary>
 			WordInitialSwashesOff = 1,
+			/// <summary>To be added.</summary>
 			WordFinalSwashesOn = 2,
+			/// <summary>To be added.</summary>
 			WordFinalSwashesOff = 3,
+			/// <summary>To be added.</summary>
 			LineInitialSwashesOn = 4,
+			/// <summary>To be added.</summary>
 			LineInitialSwashesOff = 5,
+			/// <summary>To be added.</summary>
 			LineFinalSwashesOn = 6,
+			/// <summary>To be added.</summary>
 			LineFinalSwashesOff = 7,
+			/// <summary>To be added.</summary>
 			NonFinalSwashesOn = 8,
+			/// <summary>To be added.</summary>
 			NonFinalSwashesOff = 9
 		}
 
@@ -681,6 +929,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -696,8 +947,11 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureDiacritics : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			ShowDiacritics = 0,
+			/// <summary>To be added.</summary>
 			HideDiacritics = 1,
+			/// <summary>To be added.</summary>
 			DecomposeDiacritics = 2
 		}
 
@@ -706,6 +960,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -721,10 +978,15 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureVerticalPosition : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			NormalPosition = 0,
+			/// <summary>To be added.</summary>
 			Superiors = 1,
+			/// <summary>To be added.</summary>
 			Inferiors = 2,
+			/// <summary>To be added.</summary>
 			Ordinals = 3,
+			/// <summary>To be added.</summary>
 			ScientificInferiors = 4
 		}
 
@@ -733,6 +995,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -748,8 +1013,11 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureFractions : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			NoFractions = 0,
+			/// <summary>To be added.</summary>
 			VerticalFractions = 1,
+			/// <summary>To be added.</summary>
 			DiagonalFractions = 2
 		}
 
@@ -758,6 +1026,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -773,7 +1044,9 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureOverlappingCharacters : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			PreventOverlapOn = 0,
+			/// <summary>To be added.</summary>
 			PreventOverlapOff = 1
 		}
 
@@ -782,6 +1055,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -797,17 +1073,29 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureTypographicExtras : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			HyphensToEmDashOn = 0,
+			/// <summary>To be added.</summary>
 			HyphensToEmDashOff = 1,
+			/// <summary>To be added.</summary>
 			HyphenToEnDashOn = 2,
+			/// <summary>To be added.</summary>
 			HyphenToEnDashOff = 3,
+			/// <summary>To be added.</summary>
 			SlashedZeroOn = 4,
+			/// <summary>To be added.</summary>
 			SlashedZeroOff = 5,
+			/// <summary>To be added.</summary>
 			FormInterrobangOn = 6,
+			/// <summary>To be added.</summary>
 			FormInterrobangOff = 7,
+			/// <summary>To be added.</summary>
 			SmartQuotesOn = 8,
+			/// <summary>To be added.</summary>
 			SmartQuotesOff = 9,
+			/// <summary>To be added.</summary>
 			PeriodsToEllipsisOn = 10,
+			/// <summary>To be added.</summary>
 			PeriodsToEllipsisOff = 11
 		}
 
@@ -816,6 +1104,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -831,17 +1122,29 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureMathematicalExtras : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			HyphenToMinusOn = 0,
+			/// <summary>To be added.</summary>
 			HyphenToMinusOff = 1,
+			/// <summary>To be added.</summary>
 			AsteriskToMultiplyOn = 2,
+			/// <summary>To be added.</summary>
 			AsteriskToMultiplyOff = 3,
+			/// <summary>To be added.</summary>
 			SlashToDivideOn = 4,
+			/// <summary>To be added.</summary>
 			SlashToDivideOff = 5,
+			/// <summary>To be added.</summary>
 			InequalityLigaturesOn = 6,
+			/// <summary>To be added.</summary>
 			InequalityLigaturesOff = 7,
+			/// <summary>To be added.</summary>
 			ExponentsOn = 8,
+			/// <summary>To be added.</summary>
 			ExponentsOff = 9,
+			/// <summary>To be added.</summary>
 			MathematicalGreekOn = 10,
+			/// <summary>To be added.</summary>
 			MathematicalGreekOff = 11
 		}
 
@@ -850,6 +1153,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -865,12 +1171,19 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureOrnamentSets : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			NoOrnaments = 0,
+			/// <summary>To be added.</summary>
 			Dingbats = 1,
+			/// <summary>To be added.</summary>
 			PiCharacters = 2,
+			/// <summary>To be added.</summary>
 			Fleurons = 3,
+			/// <summary>To be added.</summary>
 			DecorativeBorders = 4,
+			/// <summary>To be added.</summary>
 			InternationalSymbols = 5,
+			/// <summary>To be added.</summary>
 			MathSymbols = 6
 		}
 
@@ -879,6 +1192,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -894,6 +1210,7 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureCharacterAlternatives : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			NoAlternates = 0,
 		}
 
@@ -902,6 +1219,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -917,10 +1237,15 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureDesignComplexity : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			DesignLevel1 = 0,
+			/// <summary>To be added.</summary>
 			DesignLevel2 = 1,
+			/// <summary>To be added.</summary>
 			DesignLevel3 = 2,
+			/// <summary>To be added.</summary>
 			DesignLevel4 = 3,
+			/// <summary>To be added.</summary>
 			DesignLevel5 = 4
 		}
 
@@ -929,6 +1254,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -944,11 +1272,17 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureStyleOptions : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			NoStyleOptions = 0,
+			/// <summary>To be added.</summary>
 			DisplayText = 1,
+			/// <summary>To be added.</summary>
 			EngravedText = 2,
+			/// <summary>To be added.</summary>
 			IlluminatedCaps = 3,
+			/// <summary>To be added.</summary>
 			TitlingCaps = 4,
+			/// <summary>To be added.</summary>
 			TallCaps = 5
 		}
 
@@ -957,6 +1291,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -972,20 +1309,35 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureCharacterShape : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			TraditionalCharacters = 0,
+			/// <summary>To be added.</summary>
 			SimplifiedCharacters = 1,
+			/// <summary>To be added.</summary>
 			JIS1978Characters = 2,
+			/// <summary>To be added.</summary>
 			JIS1983Characters = 3,
+			/// <summary>To be added.</summary>
 			JIS1990Characters = 4,
+			/// <summary>To be added.</summary>
 			TraditionalAltOne = 5,
+			/// <summary>To be added.</summary>
 			TraditionalAltTwo = 6,
+			/// <summary>To be added.</summary>
 			TraditionalAltThree = 7,
+			/// <summary>To be added.</summary>
 			TraditionalAltFour = 8,
+			/// <summary>To be added.</summary>
 			TraditionalAltFive = 9,
+			/// <summary>To be added.</summary>
 			ExpertCharacters = 10,
+			/// <summary>To be added.</summary>
 			JIS2004Characters = 11,
+			/// <summary>To be added.</summary>
 			HojoCharacters = 12,
+			/// <summary>To be added.</summary>
 			NLCCharacters = 13,
+			/// <summary>To be added.</summary>
 			TraditionalNamesCharacters = 14
 		}
 
@@ -994,6 +1346,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -1009,7 +1364,9 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureNumberCase : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			LowerCaseNumbers = 0,
+			/// <summary>To be added.</summary>
 			UpperCaseNumbers = 1
 		}
 
@@ -1018,6 +1375,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -1033,12 +1393,19 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureTextSpacing : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			ProportionalText = 0,
+			/// <summary>To be added.</summary>
 			MonospacedText = 1,
+			/// <summary>To be added.</summary>
 			HalfWidthText = 2,
+			/// <summary>To be added.</summary>
 			ThirdWidthText = 3,
+			/// <summary>To be added.</summary>
 			QuarterWidthText = 4,
+			/// <summary>To be added.</summary>
 			AltProportionalText = 5,
+			/// <summary>To be added.</summary>
 			AltHalfWidthText = 6
 		}
 
@@ -1047,6 +1414,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -1062,15 +1432,25 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureTransliteration : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			NoTransliteration = 0,
+			/// <summary>To be added.</summary>
 			HanjaToHangul = 1,
+			/// <summary>To be added.</summary>
 			HiraganaToKatakana = 2,
+			/// <summary>To be added.</summary>
 			KatakanaToHiragana = 3,
+			/// <summary>To be added.</summary>
 			KanaToRomanization = 4,
+			/// <summary>To be added.</summary>
 			RomanizationToHiragana = 5,
+			/// <summary>To be added.</summary>
 			RomanizationToKatakana = 6,
+			/// <summary>To be added.</summary>
 			HanjaToHangulAltOne = 7,
+			/// <summary>To be added.</summary>
 			HanjaToHangulAltTwo = 8,
+			/// <summary>To be added.</summary>
 			HanjaToHangulAltThree = 9
 		}
 
@@ -1079,6 +1459,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -1094,16 +1477,27 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureAnnotation : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			NoAnnotation = 0,
+			/// <summary>To be added.</summary>
 			BoxAnnotation = 1,
+			/// <summary>To be added.</summary>
 			RoundedBoxAnnotation = 2,
+			/// <summary>To be added.</summary>
 			CircleAnnotation = 3,
+			/// <summary>To be added.</summary>
 			InvertedCircleAnnotation = 4,
+			/// <summary>To be added.</summary>
 			ParenthesisAnnotation = 5,
+			/// <summary>To be added.</summary>
 			PeriodAnnotation = 6,
+			/// <summary>To be added.</summary>
 			RomanNumeralAnnotation = 7,
+			/// <summary>To be added.</summary>
 			DiamondAnnotation = 8,
+			/// <summary>To be added.</summary>
 			InvertedBoxAnnotation = 9,
+			/// <summary>To be added.</summary>
 			InvertedRoundedBoxAnnotation = 10
 		}
 
@@ -1112,6 +1506,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -1127,7 +1524,9 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureKanaSpacing : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			FullWidthKana = 0,
+			/// <summary>To be added.</summary>
 			ProportionalKana = 1
 		}
 
@@ -1136,6 +1535,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -1151,8 +1553,11 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureIdeographicSpacing : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			FullWidthIdeographs = 0,
+			/// <summary>To be added.</summary>
 			ProportionalIdeographs = 1,
+			/// <summary>To be added.</summary>
 			HalfWidthIdeographs = 2
 		}
 
@@ -1161,6 +1566,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -1176,11 +1584,17 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureUnicodeDecomposition : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			CanonicalCompositionOn = 0,
+			/// <summary>To be added.</summary>
 			CanonicalCompositionOff = 1,
+			/// <summary>To be added.</summary>
 			CompatibilityCompositionOn = 2,
+			/// <summary>To be added.</summary>
 			CompatibilityCompositionOff = 3,
+			/// <summary>To be added.</summary>
 			TranscodingCompositionOn = 4,
+			/// <summary>To be added.</summary>
 			TranscodingCompositionOff = 5
 		}
 
@@ -1189,6 +1603,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -1205,6 +1622,7 @@ namespace CoreText {
 	public class CTFontFeatureRubyKana : CTFontFeatureSelectors {
 		public enum Selector {
 #if NET
+			/// <summary>Developers should not use this deprecated field. </summary>
 			[SupportedOSPlatform ("ios")]
 			[SupportedOSPlatform ("macos")]
 			[UnsupportedOSPlatform ("tvos")]
@@ -1217,6 +1635,7 @@ namespace CoreText {
 #endif
 			NoRubyKana = 0,
 #if NET
+			/// <summary>To be added.</summary>
 			[SupportedOSPlatform ("ios")]
 			[SupportedOSPlatform ("macos")]
 			[UnsupportedOSPlatform ("tvos")]
@@ -1228,7 +1647,9 @@ namespace CoreText {
 			[Deprecated (PlatformName.MacOSX, 10, 8)]
 #endif
 			RubyKana = 1,
+			/// <summary>To be added.</summary>
 			RubyKanaOn = 2,
+			/// <summary>To be added.</summary>
 			RubyKanaOff = 3
 		}
 
@@ -1237,6 +1658,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -1252,11 +1676,17 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureCJKSymbolAlternatives : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			NoCJKSymbolAlternatives = 0,
+			/// <summary>To be added.</summary>
 			CJKSymbolAltOne = 1,
+			/// <summary>To be added.</summary>
 			CJKSymbolAltTwo = 2,
+			/// <summary>To be added.</summary>
 			CJKSymbolAltThree = 3,
+			/// <summary>To be added.</summary>
 			CJKSymbolAltFour = 4,
+			/// <summary>To be added.</summary>
 			CJKSymbolAltFive = 5
 		}
 
@@ -1265,6 +1695,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -1280,11 +1713,17 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureIdeographicAlternatives : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			NoIdeographicAlternatives = 0,
+			/// <summary>To be added.</summary>
 			IdeographicAltOne = 1,
+			/// <summary>To be added.</summary>
 			IdeographicAltTwo = 2,
+			/// <summary>To be added.</summary>
 			IdeographicAltThree = 3,
+			/// <summary>To be added.</summary>
 			IdeographicAltFour = 4,
+			/// <summary>To be added.</summary>
 			IdeographicAltFive = 5
 		}
 
@@ -1293,6 +1732,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -1308,7 +1750,9 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureCJKVerticalRomanPlacement : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			CJKVerticalRomanCentered = 0,
+			/// <summary>To be added.</summary>
 			CJKVerticalRomanHBaseline = 1
 		}
 
@@ -1317,6 +1761,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -1333,6 +1780,7 @@ namespace CoreText {
 	public class CTFontFeatureItalicCJKRoman : CTFontFeatureSelectors {
 		public enum Selector {
 #if NET
+			/// <summary>To be added.</summary>
 			[SupportedOSPlatform ("ios")]
 			[SupportedOSPlatform ("macos")]
 			[UnsupportedOSPlatform ("tvos")]
@@ -1345,6 +1793,7 @@ namespace CoreText {
 #endif
 			NoCJKItalicRoman = 0,
 #if NET
+			/// <summary>Developers should not use this deprecated field. </summary>
 			[SupportedOSPlatform ("ios")]
 			[SupportedOSPlatform ("macos")]
 			[UnsupportedOSPlatform ("tvos")]
@@ -1356,7 +1805,9 @@ namespace CoreText {
 			[Deprecated (PlatformName.MacOSX, 10, 8)]
 #endif
 			CJKItalicRoman = 1,
+			/// <summary>To be added.</summary>
 			CJKItalicRomanOn = 2,
+			/// <summary>To be added.</summary>
 			CJKItalicRomanOff = 3
 		}
 
@@ -1365,6 +1816,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -1380,9 +1834,13 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureCaseSensitiveLayout : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			CaseSensitiveLayoutOn = 0,
+			/// <summary>To be added.</summary>
 			CaseSensitiveLayoutOff = 1,
+			/// <summary>To be added.</summary>
 			CaseSensitiveSpacingOn = 2,
+			/// <summary>To be added.</summary>
 			CaseSensitiveSpacingOff = 3
 		}
 
@@ -1391,6 +1849,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -1406,9 +1867,13 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureAlternateKana : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			AlternateHorizKanaOn = 0,
+			/// <summary>To be added.</summary>
 			AlternateHorizKanaOff = 1,
+			/// <summary>To be added.</summary>
 			AlternateVertKanaOn = 2,
+			/// <summary>To be added.</summary>
 			AlternateVertKanaOff = 3
 		}
 
@@ -1417,6 +1882,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -1432,46 +1900,87 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureStylisticAlternatives : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			NoStylisticAlternates = 0,
+			/// <summary>To be added.</summary>
 			StylisticAltOneOn = 2,
+			/// <summary>To be added.</summary>
 			StylisticAltOneOff = 3,
+			/// <summary>To be added.</summary>
 			StylisticAltTwoOn = 4,
+			/// <summary>To be added.</summary>
 			StylisticAltTwoOff = 5,
+			/// <summary>To be added.</summary>
 			StylisticAltThreeOn = 6,
+			/// <summary>To be added.</summary>
 			StylisticAltThreeOff = 7,
+			/// <summary>To be added.</summary>
 			StylisticAltFourOn = 8,
+			/// <summary>To be added.</summary>
 			StylisticAltFourOff = 9,
+			/// <summary>To be added.</summary>
 			StylisticAltFiveOn = 10,
+			/// <summary>To be added.</summary>
 			StylisticAltFiveOff = 11,
+			/// <summary>To be added.</summary>
 			StylisticAltSixOn = 12,
+			/// <summary>To be added.</summary>
 			StylisticAltSixOff = 13,
+			/// <summary>To be added.</summary>
 			StylisticAltSevenOn = 14,
+			/// <summary>To be added.</summary>
 			StylisticAltSevenOff = 15,
+			/// <summary>To be added.</summary>
 			StylisticAltEightOn = 16,
+			/// <summary>To be added.</summary>
 			StylisticAltEightOff = 17,
+			/// <summary>To be added.</summary>
 			StylisticAltNineOn = 18,
+			/// <summary>To be added.</summary>
 			StylisticAltNineOff = 19,
+			/// <summary>To be added.</summary>
 			StylisticAltTenOn = 20,
+			/// <summary>To be added.</summary>
 			StylisticAltTenOff = 21,
+			/// <summary>To be added.</summary>
 			StylisticAltElevenOn = 22,
+			/// <summary>To be added.</summary>
 			StylisticAltElevenOff = 23,
+			/// <summary>To be added.</summary>
 			StylisticAltTwelveOn = 24,
+			/// <summary>To be added.</summary>
 			StylisticAltTwelveOff = 25,
+			/// <summary>To be added.</summary>
 			StylisticAltThirteenOn = 26,
+			/// <summary>To be added.</summary>
 			StylisticAltThirteenOff = 27,
+			/// <summary>To be added.</summary>
 			StylisticAltFourteenOn = 28,
+			/// <summary>To be added.</summary>
 			StylisticAltFourteenOff = 29,
+			/// <summary>To be added.</summary>
 			StylisticAltFifteenOn = 30,
+			/// <summary>To be added.</summary>
 			StylisticAltFifteenOff = 31,
+			/// <summary>To be added.</summary>
 			StylisticAltSixteenOn = 32,
+			/// <summary>To be added.</summary>
 			StylisticAltSixteenOff = 33,
+			/// <summary>To be added.</summary>
 			StylisticAltSeventeenOn = 34,
+			/// <summary>To be added.</summary>
 			StylisticAltSeventeenOff = 35,
+			/// <summary>To be added.</summary>
 			StylisticAltEighteenOn = 36,
+			/// <summary>To be added.</summary>
 			StylisticAltEighteenOff = 37,
+			/// <summary>To be added.</summary>
 			StylisticAltNineteenOn = 38,
+			/// <summary>To be added.</summary>
 			StylisticAltNineteenOff = 39,
+			/// <summary>To be added.</summary>
 			StylisticAltTwentyOn = 40,
+			/// <summary>To be added.</summary>
 			StylisticAltTwentyOff = 41
 		}
 
@@ -1480,6 +1989,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -1495,11 +2007,17 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureContextualAlternates : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			ContextualAlternatesOn = 0,
+			/// <summary>To be added.</summary>
 			ContextualAlternatesOff = 1,
+			/// <summary>To be added.</summary>
 			SwashAlternatesOn = 2,
+			/// <summary>To be added.</summary>
 			SwashAlternatesOff = 3,
+			/// <summary>To be added.</summary>
 			ContextualSwashAlternatesOn = 4,
+			/// <summary>To be added.</summary>
 			ContextualSwashAlternatesOff = 5
 		}
 
@@ -1508,6 +2026,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -1523,8 +2044,11 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureLowerCase : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			DefaultLowerCase = 0,
+			/// <summary>To be added.</summary>
 			LowerCaseSmallCaps = 1,
+			/// <summary>To be added.</summary>
 			LowerCasePetiteCaps = 2
 		}
 
@@ -1533,6 +2057,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -1548,8 +2075,11 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureUpperCase : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			DefaultUpperCase = 0,
+			/// <summary>To be added.</summary>
 			UpperCaseSmallCaps = 1,
+			/// <summary>To be added.</summary>
 			UpperCasePetiteCaps = 2
 		}
 
@@ -1558,6 +2088,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -1573,9 +2106,13 @@ namespace CoreText {
 #endif
 	public class CTFontFeatureCJKRomanSpacing : CTFontFeatureSelectors {
 		public enum Selector {
+			/// <summary>To be added.</summary>
 			HalfWidthCJKRoman = 0,
+			/// <summary>To be added.</summary>
 			ProportionalCJKRoman = 1,
+			/// <summary>To be added.</summary>
 			DefaultCJKRoman = 2,
+			/// <summary>To be added.</summary>
 			FullWidthCJKRoman = 3
 		}
 
@@ -1584,6 +2121,9 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Selector Feature {
 			get {
 				return (Selector) FeatureWeak;
@@ -1606,14 +2146,23 @@ namespace CoreText {
 			Dictionary = dictionary;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary Dictionary { get; private set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public FontFeatureGroup FeatureGroup {
 			get {
 				return (FontFeatureGroup) (int) (NSNumber) Dictionary [CTFontFeatureKey.Identifier];
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int FeatureWeak {
 			get {
 				return (int) (NSNumber) Dictionary [CTFontFeatureSelectorKey.Identifier];
@@ -1641,34 +2190,55 @@ namespace CoreText {
 			Dictionary = dictionary;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary Dictionary { get; private set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSNumber Identifier {
 			get { return (NSNumber) Dictionary [CTFontVariationAxisKey.Identifier]; }
 			set { Adapter.SetValue (Dictionary, CTFontVariationAxisKey.Identifier, value); }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSNumber MinimumValue {
 			get { return (NSNumber) Dictionary [CTFontVariationAxisKey.MinimumValue]; }
 			set { Adapter.SetValue (Dictionary, CTFontVariationAxisKey.MinimumValue, value); }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSNumber MaximumValue {
 			get { return (NSNumber) Dictionary [CTFontVariationAxisKey.MaximumValue]; }
 			set { Adapter.SetValue (Dictionary, CTFontVariationAxisKey.MaximumValue, value); }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSNumber DefaultValue {
 			get { return (NSNumber) Dictionary [CTFontVariationAxisKey.DefaultValue]; }
 			set { Adapter.SetValue (Dictionary, CTFontVariationAxisKey.DefaultValue, value); }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Name {
 			get { return Adapter.GetStringValue (Dictionary, CTFontVariationAxisKey.Name); }
 			set { Adapter.SetValue (Dictionary, CTFontVariationAxisKey.Name, value); }
 		}
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
@@ -1700,6 +2270,9 @@ namespace CoreText {
 			Dictionary = dictionary;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary Dictionary { get; private set; }
 	}
 
@@ -2160,6 +2733,10 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern nfloat CTFontGetSize (IntPtr font);
+		/// <summary>The font size.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>This is the size that was used when the font was constructed.</remarks>
 		public nfloat Size {
 			get { return CTFontGetSize (Handle); }
 		}
@@ -2167,12 +2744,20 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern CGAffineTransform CTFontGetMatrix (/* CTFontRef __nonnull */ IntPtr font);
 
+		/// <summary>The transformation matrix used when this font was created.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public CGAffineTransform Matrix {
 			get { return CTFontGetMatrix (Handle); }
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern CTFontSymbolicTraits CTFontGetSymbolicTraits (IntPtr font);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CTFontSymbolicTraits SymbolicTraits {
 			get { return CTFontGetSymbolicTraits (Handle); }
 		}
@@ -2192,6 +2777,9 @@ namespace CoreText {
 		#region Font Names
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontCopyPostScriptName (IntPtr font);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? PostScriptName {
 			get { return CFString.FromHandle (CTFontCopyPostScriptName (Handle), releaseHandle: true); }
 		}
@@ -2200,6 +2788,9 @@ namespace CoreText {
 		static extern /* CFStringRef __nonnull */ IntPtr CTFontCopyFamilyName (
 			/* CTFontRef __nonnull */ IntPtr font);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? FamilyName {
 			get { return CFString.FromHandle (CTFontCopyFamilyName (Handle), releaseHandle: true); }
 		}
@@ -2208,6 +2799,9 @@ namespace CoreText {
 		static extern /* CFStringRef __nonnull */ IntPtr CTFontCopyFullName (
 			/* CTFontRef __nonnull */ IntPtr font);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? FullName {
 			get { return CFString.FromHandle (CTFontCopyFullName (Handle), releaseHandle: true); }
 		}
@@ -2216,6 +2810,9 @@ namespace CoreText {
 		static extern /* CFStringRef __nonnull */ IntPtr CTFontCopyDisplayName (
 			/* CTFontRef __nonnull */ IntPtr font);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? DisplayName {
 			get { return CFString.FromHandle (CTFontCopyDisplayName (Handle), releaseHandle: true); }
 		}
@@ -2252,6 +2849,9 @@ namespace CoreText {
 		static extern /* CFCharacterSetRef __nonnull */ IntPtr CTFontCopyCharacterSet (
 			/* CTFontRef __nonnull */ IntPtr font);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSCharacterSet? CharacterSet {
 			get {
 				return Runtime.GetNSObject<NSCharacterSet> (CTFontCopyCharacterSet (Handle), true);
@@ -2260,6 +2860,9 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern uint CTFontGetStringEncoding (IntPtr font);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public uint StringEncoding {
 			get { return CTFontGetStringEncoding (Handle); }
 		}
@@ -2349,6 +2952,9 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern nfloat CTFontGetAscent (/* CTFontRef __nonnull */ IntPtr font);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat AscentMetric {
 			get { return CTFontGetAscent (Handle); }
 		}
@@ -2356,6 +2962,9 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern nfloat CTFontGetDescent (/* CTFontRef __nonnull */ IntPtr font);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat DescentMetric {
 			get { return CTFontGetDescent (Handle); }
 		}
@@ -2363,12 +2972,18 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern nfloat CTFontGetLeading (/* CTFontRef __nonnull */ IntPtr font);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat LeadingMetric {
 			get { return CTFontGetLeading (Handle); }
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern uint CTFontGetUnitsPerEm (IntPtr font);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public uint UnitsPerEmMetric {
 			get { return CTFontGetUnitsPerEm (Handle); }
 		}
@@ -2376,6 +2991,9 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern /* CFIndex */ nint CTFontGetGlyphCount (/* CTFontRef __nonnull */ IntPtr font);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint GlyphCount {
 			get { return CTFontGetGlyphCount (Handle); }
 		}
@@ -2383,24 +3001,36 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern CGRect CTFontGetBoundingBox (/* CTFontRef __nonnull */ IntPtr font);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGRect BoundingBox {
 			get { return CTFontGetBoundingBox (Handle); }
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern nfloat CTFontGetUnderlinePosition (IntPtr font);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat UnderlinePosition {
 			get { return CTFontGetUnderlinePosition (Handle); }
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern nfloat CTFontGetUnderlineThickness (IntPtr font);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat UnderlineThickness {
 			get { return CTFontGetUnderlineThickness (Handle); }
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern nfloat CTFontGetSlantAngle (IntPtr font);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat SlantAngle {
 			get { return CTFontGetSlantAngle (Handle); }
 		}
@@ -2408,12 +3038,18 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern nfloat CTFontGetCapHeight (/* CTFontRef __nonnull */ IntPtr font);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat CapHeightMetric {
 			get { return CTFontGetCapHeight (Handle); }
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern nfloat CTFontGetXHeight (IntPtr font);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat XHeightMetric {
 			get { return CTFontGetXHeight (Handle); }
 		}

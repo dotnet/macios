@@ -15,17 +15,11 @@ using System.Runtime.Versioning;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreFoundation {
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CFPropertyList : NativeObject {
 		static nint CFDataTypeID = CFData.GetTypeID ();
 		static nint CFStringTypeID = CFString.GetTypeID ();
@@ -44,20 +38,10 @@ namespace CoreFoundation {
 		static nint CFNumberTypeID = CFNumberGetTypeID ();
 
 		[Preserve (Conditional = true)]
-#if NET
 		internal CFPropertyList (NativeHandle handle, bool owns)
-#else
-		public CFPropertyList (NativeHandle handle, bool owns)
-#endif
 			: base (handle, owns)
 		{
 		}
-
-#if !NET
-		public CFPropertyList (NativeHandle handle) : this (handle, false)
-		{
-		}
-#endif
 
 		[DllImport (Constants.CoreFoundationLibrary)]
 		unsafe static extern IntPtr CFPropertyListCreateWithData (IntPtr allocator, IntPtr dataRef, nuint options, nint* format, /* CFError * */ IntPtr* error);
@@ -112,6 +96,9 @@ namespace CoreFoundation {
 			return CFPropertyListIsValid (Handle, (nint) (long) format) != 0;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public object? Value {
 			get {
 				if (Handle == IntPtr.Zero) {
@@ -143,16 +130,22 @@ namespace CoreFoundation {
 
 	[Native]
 	public enum CFPropertyListFormat : long {
+		/// <summary>To be added.</summary>
 		OpenStep = 1,
+		/// <summary>To be added.</summary>
 		XmlFormat1 = 100,
+		/// <summary>To be added.</summary>
 		BinaryFormat1 = 200,
 	}
 
 	[Flags]
 	[Native]
 	public enum CFPropertyListMutabilityOptions : ulong {
+		/// <summary>To be added.</summary>
 		Immutable = 0,
+		/// <summary>To be added.</summary>
 		MutableContainers = 1 << 0,
+		/// <summary>To be added.</summary>
 		MutableContainersAndLeaves = 1 << 1,
 	}
 }

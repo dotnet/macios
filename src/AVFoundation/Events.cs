@@ -48,6 +48,9 @@ namespace AVFoundation {
 			Error = error;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSError Error { get; private set; }
 	}
 
@@ -63,6 +66,9 @@ namespace AVFoundation {
 			Status = status;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool Status { get; private set; }
 	}
 

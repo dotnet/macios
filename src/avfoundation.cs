@@ -876,6 +876,9 @@ namespace AVFoundation {
 		NativeHandle Constructor (nint /* This is really an IntPtr, but it conflicts with the default (Handle) ctor. */ layout);
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("layoutTag")]
 		uint /* AudioChannelLayoutTag = UInt32 */ LayoutTag { get; }
 
@@ -1266,18 +1269,30 @@ namespace AVFoundation {
 		[Export ("initWithCMAudioFormatDescription:")]
 		NativeHandle Constructor (CMAudioFormatDescription formatDescription);
 
+		/// <summary>Gets a Boolean value that is true if the audio format is non-interleaved native-endian float values.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("standard")]
 		bool Standard { [Bind ("isStandard")] get; }
 
+		/// <summary>Gets the common format description.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("commonFormat")]
 		AVAudioCommonFormat CommonFormat { get; }
 
 		[Export ("channelCount")]
 		uint ChannelCount { get; } /* AVAudioChannelCount = uint32_t */
 
+		/// <summary>Gets the sampling rate in Hz.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sampleRate")]
 		double SampleRate { get; }
 
+		/// <summary>Gets a Boolean value that tells whether the audio format is interleaved.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("interleaved")]
 		bool Interleaved { [Bind ("isInterleaved")] get; }
 
@@ -1285,12 +1300,24 @@ namespace AVFoundation {
 		[Export ("streamDescription")]
 		IntPtr _StreamDescription { get; }
 
+		/// <summary>Gets the channel layout.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("channelLayout"), NullAllowed]
 		AVAudioChannelLayout ChannelLayout { get; }
 
+		/// <summary>Gets a weak reference to a dictionary of audio format settings.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("settings")]
 		NSDictionary WeakSettings { get; }
 
+		/// <summary>Gets the audio format as a settings object.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakSettings")]
 		AudioSettings Settings { get; }
 
@@ -1301,6 +1328,12 @@ namespace AVFoundation {
 		[Export ("isEqual:"), Internal]
 		bool IsEqual (NSObject obj);
 
+		/// <summary>Gets a specialized descripter, if required, that is needed to decompress the audio data.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("magicCookie", ArgumentSemantic.Retain)]
 		NSData MagicCookie { get; set; }

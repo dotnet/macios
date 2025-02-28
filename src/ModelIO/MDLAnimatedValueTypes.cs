@@ -45,6 +45,9 @@ using Quaterniond = global::OpenTK.Quaterniond;
 namespace ModelIO {
 	public partial class MDLAnimatedValue {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double []? KeyTimes {
 			get {
 				var wkt = WeakKeyTimes;

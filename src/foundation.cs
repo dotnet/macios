@@ -641,6 +641,9 @@ namespace Foundation {
 		[Export ("boundingRectWithSize:options:context:")]
 		CGRect GetBoundingRect (CGSize size, NSStringDrawingOptions options, [NullAllowed] NSStringDrawingContext context);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("size")]
 		CGSize Size { get; }
@@ -787,6 +790,9 @@ namespace Foundation {
 #if MONOMAC
 		[Field ("NSTextLayoutSectionOrientation", "AppKit")]
 #else
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextLayoutSectionOrientation", "UIKit")]
 #endif
 		NSString TextLayoutSectionOrientation { get; }
@@ -794,6 +800,9 @@ namespace Foundation {
 #if MONOMAC
 		[Field ("NSTextLayoutSectionRange", "AppKit")]
 #else
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextLayoutSectionRange", "UIKit")]
 #endif
 		NSString TextLayoutSectionRange { get; }
@@ -802,6 +811,9 @@ namespace Foundation {
 #if MONOMAC
 		[Field ("NSTextLayoutSectionsAttribute", "AppKit")]
 #else
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextLayoutSectionsAttribute", "UIKit")]
 #endif
 		NSString TextLayoutSectionsAttribute { get; }
@@ -1335,6 +1347,7 @@ namespace Foundation {
 		[MacCatalyst (13, 1)]
 		NSDate StartOfDayForDate (NSDate date);
 
+		/// <include file="../docs/api/Foundation/NSCalendar.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSCalendar.DayChangedNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSCalendarDayChangedNotification")]
@@ -2064,9 +2077,15 @@ namespace Foundation {
 		[Export ("dayOfYear")]
 		nint DayOfYear { get; set; }
 
+		/// <summary>Whether the month is a leap month.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("leapMonth")]
 		bool IsLeapMonth { [Bind ("isLeapMonth")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isValidDate")]
 		[MacCatalyst (13, 1)]
 		bool IsValidDate { get; }
@@ -10690,6 +10709,9 @@ namespace Foundation {
 		[Static]
 		NSArray _InternalAllBundles { get; }
 
+		/// <summary>An array of all the application's non-framework bundles.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'AllBundles' property instead.")]
 		[Wrap ("_InternalAllBundles")]
 		[Static]
@@ -10710,6 +10732,9 @@ namespace Foundation {
 		[Export ("load")]
 		bool Load ();
 
+		/// <summary>Whether this bundle is currently loaded.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isLoaded")]
 		bool IsLoaded { get; }
 
@@ -10941,10 +10966,14 @@ namespace Foundation {
 		[Export ("endAccessingResources")]
 		void EndAccessingResources ();
 
+		/// <include file="../docs/api/Foundation/NSBundleResourceRequest.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSBundleResourceRequest.LowDiskSpaceNotification']/*" />
 		[Field ("NSBundleResourceRequestLowDiskSpaceNotification")]
 		[Notification]
 		NSString LowDiskSpaceNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSBundleResourceRequestLoadingPriorityUrgent")]
 		double LoadingPriorityUrgent { get; }
 	}
@@ -10993,6 +11022,13 @@ namespace Foundation {
 		[Export ("row")]
 		nint LongRow { get; }
 
+		/// <summary>The index of a section within a <see cref="T:UIKit.UITableView" /> (read-only).</summary>
+		///         <value>
+		///           <para />
+		///         </value>
+		///         <remarks>
+		///           <para />
+		///         </remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("section")]
@@ -11015,6 +11051,11 @@ namespace Foundation {
 		[Export ("indexPathForItem:inSection:")]
 		NSIndexPath FromItemSection (nint item, nint section);
 
+		/// <summary>The item component of this NSIndexPath.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Export ("item")]
 		[MacCatalyst (13, 1)]
 		nint Item { get; }
@@ -18194,15 +18235,30 @@ namespace Foundation {
 
 		NSAttributedStringDocumentAttributes DefaultAttributes { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		CGSize PaperSize { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		UIEdgeInsets PaperMargin { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		CGSize ViewSize { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float ViewZoom { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSDocumentViewMode ViewMode { get; set; }
 
 		// The definition for this boolean is very specific in the header file:
@@ -18214,14 +18270,23 @@ namespace Foundation {
 		// bool ReadOnly { get; set; }
 		// #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSColor BackgroundColor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float HyphenationFactor {
 			get;
 			[PreSnippet ("if (value < 0 || value > 1.0f) throw new ArgumentOutOfRangeException (nameof (value), value, \"Value must be between 0 and 1\");")]
 			set;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float DefaultTabInterval {
 			get;
 			[PreSnippet ("if (value < 0 || value > 1.0f) throw new ArgumentOutOfRangeException (nameof (value), value, \"Value must be between 0 and 1\");")]

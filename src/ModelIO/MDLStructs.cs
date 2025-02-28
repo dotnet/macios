@@ -68,7 +68,11 @@ namespace ModelIO {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MDLAxisAlignedBoundingBox {
+		/// <summary>Gets the maximum bounds.</summary>
+		///         <remarks>To be added.</remarks>
 		public Vector3 MaxBounds;
+		/// <summary>Gets the minimum bounds.</summary>
+		///         <remarks>To be added.</remarks>
 		public Vector3 MinBounds;
 
 		public MDLAxisAlignedBoundingBox (Vector3 maxBounds, Vector3 minBounds)

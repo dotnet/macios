@@ -16,12 +16,12 @@ using ObjCRuntime;
 
 namespace AddressBookUI {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public class ABNewPersonCompleteEventArgs : EventArgs {
 
 		public ABNewPersonCompleteEventArgs (ABPerson? person)
@@ -35,6 +35,12 @@ namespace AddressBookUI {
 		}
 	}
 
+	[SupportedOSPlatform ("ios")]
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	class InternalABNewPersonViewControllerDelegate : ABNewPersonViewControllerDelegate {
 
 		internal EventHandler<ABNewPersonCompleteEventArgs>? newPersonComplete;

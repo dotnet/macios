@@ -133,6 +133,7 @@
 		<!-- Enable HybridGlobalization by default-->
 		<HybridGlobalization Condition="'$(InvariantGlobalization)' != 'true'">true</HybridGlobalization>
 		<StartupHookSupport Condition="'$(StartupHookSupport)' == ''">false</StartupHookSupport>
+		<UseSizeOptimizedLinq Condition="'$(UseSizeOptimizedLinq)' == ''">true</UseSizeOptimizedLinq>
 		<UseSystemResourceKeys Condition="'$(UseSystemResourceKeys)' == '' And '$(_BundlerDebug)' != 'true'">true</UseSystemResourceKeys>
 		<UseSystemResourceKeys Condition="'$(UseSystemResourceKeys)' == '' And '$(_BundlerDebug)' == 'true'">false</UseSystemResourceKeys>
 		<UseNativeHttpHandler Condition="'$(_PlatformName)' != 'macOS' And '$(UseNativeHttpHandler)' == ''">true</UseNativeHttpHandler>
@@ -675,7 +676,7 @@
 			<_AdditionalTaskAssemblyDirectory>$(_XamarinSdkRootDirectoryOnMac)tools/dotnet-linker/</_AdditionalTaskAssemblyDirectory>
 			<_AdditionalTaskAssembly>$(_AdditionalTaskAssemblyDirectory)dotnet-linker.dll</_AdditionalTaskAssembly>
 
-			<MobileAggressiveAttributeTrimming Condition="'$(MobileAggressiveAttributeTrimming)' == ''">true</MobileAggressiveAttributeTrimming>
+			<MobileAggressiveAttributeTrimming Condition="'$(MobileAggressiveAttributeTrimming)' == '' And '$(_UseNativeAot)' != 'true'">true</MobileAggressiveAttributeTrimming>
 			<_TrimAttributesLinkDescriptionPath>$(_XamarinSdkRootDirectory)tools/TrimAttributes.LinkDescription.xml</_TrimAttributesLinkDescriptionPath>
 			<_ExtraTrimmerArgs>$(_ExtraTrimmerArgs) --link-attributes $(_TrimAttributesLinkDescriptionPath)</_ExtraTrimmerArgs>
 		</PropertyGroup>

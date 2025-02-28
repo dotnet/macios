@@ -43,7 +43,7 @@ using UIKit;
 #else
 using AppKit;
 #if !COREBUILD
-using UIImage=AppKit.NSImage;
+using UIImage = AppKit.NSImage;
 #endif
 #endif
 
@@ -79,6 +79,9 @@ namespace AudioUnit {
 
 		public ResourceUsageInfo (NSDictionary dic) : base (dic) { }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string []? IOKitUserClient {
 			get {
 				return GetStringArrayValue (userClientK);
@@ -91,6 +94,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string []? MachLookUpGlobalName {
 			get {
 				return GetStringArrayValue (globalNameK);
@@ -103,6 +109,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? NetworkClient {
 			get {
 				return GetBoolValue (networkClientK);
@@ -112,6 +121,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? TemporaryExceptionReadWrite {
 			get {
 				return GetBoolValue (exceptionK);
@@ -149,6 +161,9 @@ namespace AudioUnit {
 
 		public AudioComponentInfo (NSDictionary dic) : base (dic) { }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Type {
 			get {
 				return GetStringValue (typeK);
@@ -158,6 +173,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Subtype {
 			get {
 				return GetStringValue (subtypeK);
@@ -167,6 +185,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Manufacturer {
 			get {
 				return GetStringValue (manufacturerK);
@@ -176,6 +197,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Name {
 			get {
 				return GetStringValue (nameK);
@@ -185,6 +209,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nuint? Version {
 			get {
 				return GetNUIntValue (versionK);
@@ -194,6 +221,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? FactoryFunction {
 			get {
 				return GetStringValue (factoryFunctionK);
@@ -203,6 +233,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? SandboxSafe {
 			get {
 				return GetBoolValue (sandboxSafeK);
@@ -212,6 +245,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ResourceUsageInfo? ResourceUsage {
 			get {
 				return GetStrongDictionary<ResourceUsageInfo> (resourceUsageK, (dict) => new ResourceUsageInfo (dict));
@@ -221,6 +257,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string []? Tags {
 			get {
 				return GetStringArrayValue (tagsK);
@@ -319,6 +358,9 @@ namespace AudioUnit {
 		[DllImport (Constants.AudioUnitLibrary, EntryPoint = "AudioComponentCopyName")]
 		unsafe static extern int /* OSStatus */ AudioComponentCopyName (IntPtr component, IntPtr* cfstr);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Name {
 			get {
 				IntPtr r;
@@ -333,6 +375,9 @@ namespace AudioUnit {
 		[DllImport (Constants.AudioUnitLibrary)]
 		unsafe static extern int /* OSStatus */ AudioComponentGetDescription (IntPtr component, AudioComponentDescription* desc);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioComponentDescription? Description {
 			get {
 				AudioComponentDescription desc;
@@ -348,6 +393,9 @@ namespace AudioUnit {
 		[DllImport (Constants.AudioUnitLibrary)]
 		unsafe static extern int /* OSStatus */ AudioComponentGetVersion (IntPtr component, int* /* UInt32* */ version);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Version? Version {
 			get {
 				int ret;
@@ -440,6 +488,9 @@ namespace AudioUnit {
 		static extern double AudioComponentGetLastActiveTime (IntPtr comp);
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -512,7 +563,8 @@ namespace AudioUnit {
 		[Mac (13,0)]
 		[iOS (16,0)]
 #endif
-		public NSDictionary? GetConfigurationInfo (out int resultCode) {
+		public NSDictionary? GetConfigurationInfo (out int resultCode)
+		{
 			IntPtr dictPtr;
 			unsafe {
 				resultCode = AudioComponentCopyConfigurationInfo (GetCheckedHandle (), &dictPtr);
@@ -561,7 +613,8 @@ namespace AudioUnit {
 		[iOS (16,0)]
 		[MacCatalyst (16,0)]
 #endif
-		public AudioComponentValidationResult Validate (NSDictionary? validationParameters, out int resultCode) {
+		public AudioComponentValidationResult Validate (NSDictionary? validationParameters, out int resultCode)
+		{
 			AudioComponentValidationResult result;
 			unsafe {
 				resultCode = AudioComponentValidate (GetCheckedHandle (), validationParameters.GetHandle (), &result);
@@ -597,7 +650,7 @@ namespace AudioUnit {
 		{
 			var del = BlockLiteral.GetTarget<Action<AudioComponentValidationResult, NSDictionary?>> (blockPtr);
 			if (del is not null)
-				del (result, Runtime.GetNSObject<NSDictionary>(dictionary));
+				del (result, Runtime.GetNSObject<NSDictionary> (dictionary));
 		}
 
 #if NET
@@ -625,10 +678,11 @@ namespace AudioUnit {
 #endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void ValidateAsync (NSDictionary? validationParameters,
-				Action<AudioComponentValidationResult, NSDictionary?> onCompletion, out int resultCode) {
+				Action<AudioComponentValidationResult, NSDictionary?> onCompletion, out int resultCode)
+		{
 			if (onCompletion is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (onCompletion));
-			
+
 			unsafe {
 #if NET
 				delegate* unmanaged<IntPtr, AudioComponentValidationResult, IntPtr, void> trampoline = &TrampolineAction;
@@ -696,7 +750,7 @@ namespace AudioUnit {
 #else
 		[NoTV]
 #endif
-		public AudioComponentInfo[]? ComponentList {
+		public AudioComponentInfo []? ComponentList {
 			get {
 				var nameHandle = CFString.CreateNative (Name);
 				try {
@@ -707,10 +761,10 @@ namespace AudioUnit {
 						if (nsArray is null)
 							return null;
 						// make things easier for developers since we do not know how to have an implicit conversion from NSObject to AudioComponentInfo
-						var dics = NSArray.FromArray <NSDictionary> (nsArray);
+						var dics = NSArray.FromArray<NSDictionary> (nsArray);
 						var result = new AudioComponentInfo [dics.Length];
 						for (var i = 0; i < result.Length; i++) {
-							result [i] = new AudioComponentInfo (dics[i]);
+							result [i] = new AudioComponentInfo (dics [i]);
 						}
 						return result;
 					}
@@ -783,6 +837,8 @@ namespace AudioUnit {
 #endif
 	public static class AudioComponentConfigurationInfo {
 		//		#define kAudioComponentConfigurationInfo_ValidationResult	"ValidationResult"
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static NSString ValidationResult = new NSString ("ValidationResult");
 	}
 #endif

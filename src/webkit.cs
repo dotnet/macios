@@ -32,7 +32,7 @@ using Security;
 
 #if MONOMAC
 using AppKit;
-using UIColor=AppKit.NSColor;
+using UIColor = AppKit.NSColor;
 using UIScrollView = AppKit.NSScrollView;
 using UIImage = AppKit.NSImage;
 using IUIContextMenuInteractionCommitAnimating = Foundation.NSObject;
@@ -2539,7 +2539,7 @@ namespace WebKit {
 		[Export ("webView:shouldPerformAction:fromSender:"), DelegateName ("WebViewPerformAction"), DefaultValue (null)]
 		bool UIShouldPerformActionfromSender (WebView webView, Selector action, NSObject sender);
 #else
-		[Export ("webView:shouldPerformAction:fromSender:"), DelegateName("WebViewPerformAction"), DefaultValue (null)]
+		[Export ("webView:shouldPerformAction:fromSender:"), DelegateName ("WebViewPerformAction"), DefaultValue (null)]
 		bool UIShouldPerformAction (WebView webView, Selector action, NSObject sender);
 #endif
 
@@ -4994,6 +4994,10 @@ namespace WebKit {
 		bool AllowsDirectories { get; }
 	}
 
+#if XAMCORE_5_0
+	delegate void WKUIDelegateRunJavaScriptTextInputPanelCallback ([NullAllowed] string result);
+#endif
+
 	/// <summary>A delegate object that allows presenting native UI elements on behalf of a Web page.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKUIDelegate_Ref/index.html">Apple documentation for <c>WKUIDelegate</c></related>
@@ -5013,9 +5017,17 @@ namespace WebKit {
 		[Export ("webView:runJavaScriptConfirmPanelWithMessage:initiatedByFrame:completionHandler:")]
 		void RunJavaScriptConfirmPanel (WKWebView webView, string message, WKFrameInfo frame, Action<bool> completionHandler);
 
+#if !XAMCORE_5_0
+		[Obsolete ("It's not possible to call the completion handler with a null value using this method. Please see https://github.com/xamarin/xamarin-macios/issues/15728 for a workaround.")]
 		[Export ("webView:runJavaScriptTextInputPanelWithPrompt:defaultText:initiatedByFrame:completionHandler:")]
 		void RunJavaScriptTextInputPanel (WKWebView webView, string prompt, [NullAllowed] string defaultText,
 			WKFrameInfo frame, Action<string> completionHandler);
+#endif
+
+#if XAMCORE_5_0
+		[Export ("webView:runJavaScriptTextInputPanelWithPrompt:defaultText:initiatedByFrame:completionHandler:")]
+		void RunJavaScriptTextInputPanel (WKWebView webView, string prompt, [NullAllowed] string defaultText, WKFrameInfo frame, WKUIDelegateRunJavaScriptTextInputPanelCallback completionHandler);
+#endif
 
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
@@ -5760,7 +5772,7 @@ namespace WebKit {
 	}
 
 #if MONOMAC
-	interface UIPreviewActionItem {}
+	interface UIPreviewActionItem { }
 #endif
 
 	interface IWKPreviewActionItem { }

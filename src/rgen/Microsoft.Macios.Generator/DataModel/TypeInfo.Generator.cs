@@ -9,19 +9,19 @@ namespace Microsoft.Macios.Generator.DataModel;
 readonly partial struct TypeInfo {
 
 	/// <summary>
-	/// Return if the type represents a wrapped object from the objc world.
-	/// </summary>
-	public bool IsWrapped { get; init; }
-
-	/// <summary>
 	/// True if the type needs to use a stret call.
 	/// </summary>
 	public bool NeedsStret { get; init; }
 
 	/// <summary>
-	/// Returns, if the type is an array, if its elements are a wrapped object from the objc world.
+	/// True if the type represents a delegate.
 	/// </summary>
-	public bool ArrayElementTypeIsWrapped { get; init; }
+	public bool IsDelegate { get; init; }
+
+	/// <summary>
+	/// Get the name of the variable for the type when it is used as a return value.
+	/// </summary>
+	public string ReturnVariableName => "ret"; // nothing fancy for now
 
 	internal TypeInfo (ITypeSymbol symbol, Compilation compilation) :
 		this (
@@ -36,6 +36,7 @@ readonly partial struct TypeInfo {
 		IsReferenceType = symbol.IsReferenceType;
 		IsStruct = symbol.TypeKind == TypeKind.Struct;
 		IsInterface = symbol.TypeKind == TypeKind.Interface;
+		IsDelegate = symbol.TypeKind == TypeKind.Delegate;
 		IsNativeIntegerType = symbol.IsNativeIntegerType;
 		IsNativeEnum = symbol.HasAttribute (AttributesNames.NativeEnumAttribute);
 		NeedsStret = symbol.NeedsStret (compilation);

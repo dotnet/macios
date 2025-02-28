@@ -4,6 +4,9 @@ parameters:
   type: string
   default: "VSEng-VSMac-Xamarin-Shared"
 
+- name: isPR
+  type: boolean
+
 - name: repositoryAlias
   type: string
   default: self
@@ -23,24 +26,17 @@ parameters:
   default: '$(MaciosUploadPrefix)'
 
 steps:
-- template:  sdk-unified/steps/checkout/v1.yml@yaml-templates
-  parameters:
-    resource: ${{ parameters.repositoryAlias }}
-    commit: ${{ parameters.commit }}
-    clean: true
-    path: s/$(BUILD_REPOSITORY_TITLE)
-    fetchTags: false
 
-- checkout: maccore
-  clean: true
-  fetchDepth: 0
-  persistCredentials: true  # hugely important, else there are some scripts that check a single file from maccore that will fail
-  fetchTags: false
+- template: ../common/checkout.yml
+  parameters:
+    isPR: ${{ parameters.isPR }}
+    repositoryAlias: ${{ parameters.repositoryAlias }}
+    commit: ${{ parameters.commit }}
 
 - pwsh: '& "$Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/show_bot_info.ps1"'
   displayName: 'Show Bot Info'
 
-- bash: '$SYSTEM_DEFAULTWORKINGDIRECTORY/$BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/bash/clean-bot.sh'
+- bash: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/clean-bot.sh
   displayName: 'Clean bot'
   continueOnError: true
   timeoutInMinutes: 60
@@ -63,24 +59,22 @@ steps:
   displayName: 'Clean for remote tests'
   continueOnError: true
 
-- bash: ./install-qa-provisioning-profiles.sh -v
-  displayName: 'Add build provisioning profiles'
-  timeoutInMinutes: 30
-  continueOnError: true # should not stop the build
-  workingDirectory: $(Build.SourcesDirectory)/maccore/tools
-  env:
-    AUTH_TOKEN_GITHUB_COM: ${{ parameters.gitHubToken }}
-    AUTH_TOKEN_LA_DEV_APPLE_P12: ${{ parameters.xqaCertPass }}
-    AUTH_TOKEN_LA_DISTR_APPLE_P12: ${{ parameters.xqaCertPass }}
-    AUTH_TOKEN_LA_MAC_INSTALLER_DISTR_P12: ${{ parameters.xqaCertPass }}
-    AUTH_TOKEN_VSENG_XAMARIN_MAC_DEVICES_P12: ${{ parameters.xqaCertPass }}
-    AUTH_TOKEN_VSENG_XAMARIN_MAC_DEVICES_2_P12: ${{ parameters.xqaCertPass }}
+- template: ../common/install-qa-provisioning-profiles.yml
+  parameters:
+    xamarinMaciosPath: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)
+    env:
+      AUTH_TOKEN_GITHUB_COM: ${{ parameters.gitHubToken }}
+      AUTH_TOKEN_LA_DEV_APPLE_P12: ${{ parameters.xqaCertPass }}
+      AUTH_TOKEN_LA_DISTR_APPLE_P12: ${{ parameters.xqaCertPass }}
+      AUTH_TOKEN_LA_MAC_INSTALLER_DISTR_P12: ${{ parameters.xqaCertPass }}
+      AUTH_TOKEN_VSENG_XAMARIN_MAC_DEVICES_P12: ${{ parameters.xqaCertPass }}
+      AUTH_TOKEN_VSENG_XAMARIN_MAC_DEVICES_2_P12: ${{ parameters.xqaCertPass }}
 
 # Sets the AzDO.BearerToken variable used as the auth token to disable/reenable agents
 - template: ./generate-token.yml
 
 - pwsh: |
-    Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY\$Env:BUILD_REPOSITORY_TITLE\tools\devops\automation\scripts\MaciosCI.psd1
+    Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY\$(BUILD_REPOSITORY_TITLE)\tools\devops\automation\scripts\MaciosCI.psd1
 
     New-Item -Path "$($Env:HOME)" -Name "remote_build_testing" -Force -ItemType "directory"
     New-Item -Path "$($Env:HOME)/remote_build_testing" -Name "BuildId.txt" -ItemType "file" -Force -Value "$($Env:BUILD_BUILDID)"
@@ -108,7 +102,7 @@ steps:
     github_token: ${{ parameters.gitHubToken }}
   timeoutInMinutes: 250
 
-- bash: $(Build.SourcesDirectory)/xamarin-macios/system-dependencies.sh --ignore-mono --ignore-visual-studio --ignore-mono --ignore-sharpie --ignore-shellcheck --ignore-yamllint --provision-simulators
+- bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/system-dependencies.sh --ignore-mono --ignore-visual-studio --ignore-mono --ignore-sharpie --ignore-shellcheck --ignore-yamllint --provision-simulators
   displayName: 'Provision simulators'
   timeoutInMinutes: 250
 
@@ -166,7 +160,7 @@ steps:
       path: $(Build.SourcesDirectory)/artifacts
 
 - bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/install-workloads.sh
-  workingDirectory: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)
+  workingDirectory: $(System.DefaultWorkingDirectory)
   displayName: 'Install .NET + workloads'
   timeoutInMinutes: 45
   env:

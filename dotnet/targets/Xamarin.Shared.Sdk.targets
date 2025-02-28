@@ -14,6 +14,7 @@
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.LinkNativeCode" AssemblyFile="$(_XamarinTaskAssembly)" />
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.MergeAppBundles" AssemblyFile="$(_XamarinTaskAssembly)" />
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.MobileILStrip" AssemblyFile="$(_XamarinTaskAssembly)" />
+	<UsingTask TaskName="Xamarin.MacDev.Tasks.MobileMarshalingPInvokeScanner" AssemblyFile="$(_XamarinTaskAssembly)" />
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.MacDevMessage" AssemblyFile="$(_XamarinTaskAssembly)" />
 
 	<!-- Project types and how do we distinguish between them
@@ -453,7 +454,26 @@
 		</Touch>
 	</Target>
 
-	<Target Name="_ComputeMonoComponents" Condition="'$(UseMonoRuntime)' == 'true' And '$(_LibMonoLinkMode)' == 'static'" BeforeTargets="_MonoSelectRuntimeComponents" DependsOnTargets="_ComputeVariables">
+	<Target
+		Name="_MonoDecideMarshalILGenComponent"
+		Condition="'$(_AppleExcludeMarshalIlgenComponent)' != ''"
+		DependsOnTargets="_ComputeManagedAssemblyToLink"
+	>
+
+		<MobileMarshalingPInvokeScanner
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true'"
+			Assemblies="@(ManagedAssemblyToLink)">
+			<Output TaskParameter="IncompatibleAssemblies" ItemName="_AssembliesThatRequireILGen" />
+		</MobileMarshalingPInvokeScanner>
+
+		<PropertyGroup>
+			<_AppleExcludeMarshalIlgenComponent Condition="'@(_AssembliesThatRequireILGen->Count())' == 0">true</_AppleExcludeMarshalIlgenComponent>
+			<_AppleExcludeMarshalIlgenComponent Condition="'@(_AssembliesThatRequireILGen->Count())' > 0">false</_AppleExcludeMarshalIlgenComponent>
+		</PropertyGroup>
+	</Target>
+
+	<Target Name="_ComputeMonoComponents" Condition="'$(UseMonoRuntime)' == 'true' And '$(_LibMonoLinkMode)' == 'static'" BeforeTargets="_MonoSelectRuntimeComponents" DependsOnTargets="_ComputeVariables;_MonoDecideMarshalILGenComponent">
 		<!-- https://github.com/dotnet/runtime/blob/main/docs/design/mono/components.md -->
 		<ItemGroup>
 			<_MonoComponent Include="hot_reload" Condition="'$(MtouchInterpreter)' != ''" />

@@ -221,21 +221,21 @@ $@"if (IsDirectBinding) {{
 	{
 		if (properties.Length == 0)
 			return;
-		
+
 		// default values
 		const string defaultNotificationCenter = "NSNotificationCenter.DefaultCenter";
 		const string defaultEventArgument = "Foundation.NSNotificationEventArgs";
-		
+
 		// add a space just to make it nicer to read
 		classBlock.WriteLine ();
-		
+
 		// create a nested static class with the notification helpers
 		using (var notificationClass = classBlock.CreateBlock ("public static partial class Notifications", true)) {
 			notificationClass.WriteLine ();
 			// generate two methods per notification
 			foreach (var notification in properties) {
 				var count = 12; // == "Notification".Length;
-				var name = $"Observe{notification.Name[..^count]}";
+				var name = $"Observe{notification.Name [..^count]}";
 				var notificationCenter = notification.ExportFieldData?.FieldData.NotificationCenter ?? defaultNotificationCenter;
 				var eventType = notification.ExportFieldData?.FieldData.Type ?? defaultEventArgument;
 				// use the raw writer which makes it easier to read in this case

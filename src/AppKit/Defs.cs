@@ -29,10 +29,8 @@ using System.Runtime.Versioning;
 #nullable enable
 
 namespace AppKit {
-#if NET
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct NSEdgeInsets {
 		public nfloat Top;

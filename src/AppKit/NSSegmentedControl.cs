@@ -23,10 +23,8 @@ namespace AppKit {
 			set { base.Cell = value; }
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
 		public static NSSegmentedControl FromLabels (string [] labels, NSSegmentSwitchTracking trackingMode, Action action)
 		{
 			var dispatcher = new NSActionDispatcher (action);
@@ -35,10 +33,8 @@ namespace AppKit {
 			return control;
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
 		public static NSSegmentedControl FromImages (NSImage [] images, NSSegmentSwitchTracking trackingMode, Action action)
 		{
 			var dispatcher = new NSActionDispatcher (action);

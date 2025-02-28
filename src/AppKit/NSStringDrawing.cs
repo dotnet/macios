@@ -9,12 +9,10 @@ using CoreGraphics;
 
 namespace AppKit {
 
-#if NET
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("tvos")]
-#endif
+	[UnsupportedOSPlatform ("ios")]
+	[UnsupportedOSPlatform ("tvos")]
+	[UnsupportedOSPlatform ("maccatalyst")]
 	// Manual bindings, easier than make the generator support extension methods on non-NSObject-derived types (string in this case).
 	public unsafe static partial class NSStringDrawing {
 		public static void DrawAtPoint (this string This, CGPoint point, NSDictionary? attributes)

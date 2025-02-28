@@ -205,7 +205,7 @@ namespace AppKit {
 		{
 			var value = (int) style | (int) pattern;
 			if (byWord) {
-				value |= (int) NSAttributedString.UnderlineByWordMaskAttributeName;
+				value |= (int) NSUnderlineStyle.ByWord;
 			}
 
 			SetNumberValue (attr, value);

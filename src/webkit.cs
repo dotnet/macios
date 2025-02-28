@@ -2643,14 +2643,15 @@ namespace WebKit {
 			   typeof (WebDownloadDelegate),
 			   typeof (WebResourceLoadDelegate),
 			   typeof (WebUIDelegate),
-			   typeof (WebPolicyDelegate) },
+			   typeof (WebPolicyDelegate),
+		   },
 		   Delegates = new string [] {
 			   "WeakFrameLoadDelegate",
 			   "WeakDownloadDelegate",
 			   "WeakResourceLoadDelegate",
 			   "WeakUIDelegate",
-			   "WeakPolicyDelegate" }
-		   )]
+			   "WeakPolicyDelegate",
+		   })]
 	partial interface WebView : NSUserInterfaceValidations {
 		[Static]
 		[Export ("canShowMIMEType:")]

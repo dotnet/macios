@@ -1226,7 +1226,7 @@ namespace MetalPerformanceShaders {
 	[Native]
 	[Flags]
 	public enum MPSCnnConvolutionFlags : ulong {
-		None = 0
+		None = 0,
 	}
 
 	/// <summary>A <see cref="T:MetalPerformanceShaders.MPSCnnKernel" /> that convolves its inputs, producing a feature map for each of its constituent filters.</summary>
@@ -1807,7 +1807,7 @@ namespace MetalPerformanceShaders {
 		KeepCurrent = MTLPurgeableState.KeepCurrent,
 		NonVolatile = MTLPurgeableState.NonVolatile,
 		Volatile = MTLPurgeableState.Volatile,
-		Empty = MTLPurgeableState.Empty
+		Empty = MTLPurgeableState.Empty,
 	}
 
 	/// <summary>An image that may contain more than 4 channels. (For example, an image in a layer of a convolutional neural network.)</summary>

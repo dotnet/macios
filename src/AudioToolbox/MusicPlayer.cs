@@ -37,7 +37,7 @@ namespace AudioToolbox {
 		InvalidEventType = -10853,
 		InvalidPlayerState = -10852,
 		CannotDoInCurrentContext = -10863,
-		NoTrackDestination = -66720
+		NoTrackDestination = -66720,
 	}
 
 	// typedef UInt32 -> MusicPlayer.h
@@ -51,14 +51,14 @@ namespace AudioToolbox {
 		MidiChannelMessage = 7,
 		MidiRawData = 8,
 		Parameter = 9,
-		AUPreset = 10
+		AUPreset = 10,
 	}
 
 	// typedef UInt32 -> MusicPlayer.h
 	[Flags]
 	public enum MusicSequenceLoadFlags {
 		PreserveTracks = 0,
-		ChannelsToTracks = 1 << 0
+		ChannelsToTracks = 1 << 0,
 	}
 
 	// typedef UInt32 -> MusicPlayer.h
@@ -72,7 +72,7 @@ namespace AudioToolbox {
 	[Flags]
 	public enum MusicSequenceFileFlags {
 		Default = 0,
-		EraseFile = 1
+		EraseFile = 1,
 	}
 
 

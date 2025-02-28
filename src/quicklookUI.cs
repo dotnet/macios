@@ -16,7 +16,7 @@ namespace QuickLookUI {
 	[Native]
 	enum QLPreviewViewStyle : ulong {
 		Normal = 0,
-		Compact = 1
+		Compact = 1,
 	}
 
 	interface IQLPreviewPanelDataSource { }

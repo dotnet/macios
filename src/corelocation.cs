@@ -39,7 +39,7 @@ namespace CoreLocation {
 	public enum CLRegionState : long {
 		Unknown,
 		Inside,
-		Outside
+		Outside,
 	}
 
 	/// <summary>An enumeration whose values specify the physical proximity of an iBeacon.</summary>
@@ -53,7 +53,7 @@ namespace CoreLocation {
 		Unknown,
 		Immediate,
 		Near,
-		Far
+		Far,
 	}
 
 	[ErrorDomain ("CLLocationPushServiceErrorDomain")]

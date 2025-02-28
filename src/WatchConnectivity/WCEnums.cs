@@ -45,6 +45,6 @@ namespace WatchConnectivity {
 	public enum WCSessionActivationState : long {
 		NotActivated = 0,
 		Inactive = 1,
-		Activated = 2
+		Activated = 2,
 	}
 }

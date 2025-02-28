@@ -76,7 +76,7 @@ namespace ObjCRuntime {
 			/// <summary>Search for the symbol starts with the image that called dlsym.  If it is not found, the search continues as if Next was used.</summary>
 			Self = -3,
 			/// <summary>Only searches for symbol in the main executable.</summary>
-			MainOnly = -5
+			MainOnly = -5,
 		}
 
 		[Flags]

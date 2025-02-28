@@ -17,7 +17,7 @@ namespace NotificationCenter {
 	public enum NCUpdateResult : ulong {
 		NewData,
 		NoData,
-		Failed
+		Failed,
 	}
 
 	/// <summary>Enumerates widget display modes.</summary>
@@ -26,6 +26,6 @@ namespace NotificationCenter {
 	[Native]
 	public enum NCWidgetDisplayMode : long {
 		Compact,
-		Expanded
+		Expanded,
 	}
 }

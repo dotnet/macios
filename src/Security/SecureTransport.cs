@@ -85,7 +85,7 @@ namespace Security {
 		EcdheEcdsaWithChacha20Poly1305Sha256 = 52393,
 		Aes128GcmSha256 = 4865,
 		Aes256GcmSha384 = 4866,
-		Chacha20Poly1305Sha256 = 4867
+		Chacha20Poly1305Sha256 = 4867,
 	}
 
 	[TV (13, 0), iOS (13, 0)]

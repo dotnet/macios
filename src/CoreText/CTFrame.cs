@@ -56,7 +56,7 @@ namespace CoreText {
 		/// <summary>To be added.</summary>
 		EvenOdd,
 		/// <summary>To be added.</summary>
-		WindingNumber
+		WindingNumber,
 	}
 
 #if !NET

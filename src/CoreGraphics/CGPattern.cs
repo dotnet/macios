@@ -46,7 +46,7 @@ namespace CoreGraphics {
 	public enum CGPatternTiling {
 		NoDistortion,
 		ConstantSpacingMinimalDistortion,
-		ConstantSpacing
+		ConstantSpacing,
 	}
 
 	// CGPattern.h

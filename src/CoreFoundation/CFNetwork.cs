@@ -193,6 +193,6 @@ namespace CoreFoundation {
 		NetServiceTimeout = -72007,
 		NetServiceMissingRequiredConfiguration = -72008,
 		/// <summary>To be added.</summary>
-		NetServiceDnsServiceFailure = -73000
+		NetServiceDnsServiceFailure = -73000,
 	}
 }

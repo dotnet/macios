@@ -54,7 +54,7 @@ namespace AddressBook {
 	public enum ABAddressBookError : long {
 #endif
 		OperationNotPermittedByStore = 0,
-		OperationNotPermittedByUserError
+		OperationNotPermittedByUserError,
 	}
 
 	/// <summary>An enumeration whose values specify the possible results of the <see cref="M:AddressBook.ABAddressBook.GetAuthorizationStatus" /> method.</summary>
@@ -66,7 +66,7 @@ namespace AddressBook {
 		NotDetermined = 0,
 		Restricted,
 		Denied,
-		Authorized
+		Authorized,
 	}
 
 	/// <summary>How to sort records.</summary>

@@ -350,7 +350,7 @@ namespace CoreServices {
 				NSPathsToWatch = pathsToWatch ?? throw new ArgumentNullException (nameof (pathsToWatch)),
 				SinceWhenId = sinceWhenId,
 				Latency = latency,
-				Flags = flags
+				Flags = flags,
 			})
 		{
 		}
@@ -359,7 +359,7 @@ namespace CoreServices {
 			: this (new () {
 				PathsToWatch = pathsToWatch ?? throw new ArgumentNullException (nameof (pathsToWatch)),
 				Latency = latency,
-				Flags = flags
+				Flags = flags,
 			})
 		{
 		}

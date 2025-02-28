@@ -1019,7 +1019,7 @@ namespace AVFoundation {
 		Off = 1,
 		Active = 2,
 		OutOfRange = 3,
-		Unavailable = 4
+		Unavailable = 4,
 	}
 
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]

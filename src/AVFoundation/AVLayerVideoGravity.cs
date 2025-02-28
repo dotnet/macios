@@ -38,7 +38,7 @@ namespace AVFoundation {
 	public enum AVLayerVideoGravity {
 		ResizeAspect,
 		ResizeAspectFill,
-		Resize
+		Resize,
 	}
 
 	partial class AVPlayerLayer {

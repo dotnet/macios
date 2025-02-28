@@ -18,7 +18,7 @@ namespace Contacts {
 		UrlString,
 		Username,
 		UserIdentifier,
-		Service
+		Service,
 	}
 
 	// Strong typed Keys to enum
@@ -31,7 +31,7 @@ namespace Contacts {
 		TencentWeibo,
 		Twitter,
 		Yelp,
-		GameCenter
+		GameCenter,
 	}
 
 	public partial class CNSocialProfile {

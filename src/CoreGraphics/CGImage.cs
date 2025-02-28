@@ -73,7 +73,7 @@ namespace CoreGraphics {
 		OnScreenAboveWindow = (1 << 1),
 		OnScreenBelowWindow = (1 << 2),
 		IncludingWindow = (1 << 3),
-		ExcludeDesktopElements = (1 << 4)
+		ExcludeDesktopElements = (1 << 4),
 	}
 #endif
 
@@ -86,7 +86,7 @@ namespace CoreGraphics {
 		First,
 		NoneSkipLast,
 		NoneSkipFirst,
-		Only
+		Only,
 	}
 
 	public enum CGImagePixelFormatInfo : uint {
@@ -119,7 +119,7 @@ namespace CoreGraphics {
 		ByteOrder16Little = (1 << 12),
 		ByteOrder32Little = (2 << 12),
 		ByteOrder16Big = (3 << 12),
-		ByteOrder32Big = (4 << 12)
+		ByteOrder32Big = (4 << 12),
 	}
 
 	[Flags]

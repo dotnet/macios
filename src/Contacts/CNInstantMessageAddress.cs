@@ -16,7 +16,7 @@ namespace Contacts {
 	// Strong typed Keys to enum
 	public enum CNInstantMessageAddressOption {
 		Username,
-		Service
+		Service,
 	}
 
 	// Strong typed Keys to enum
@@ -30,7 +30,7 @@ namespace Contacts {
 		Msn,
 		QQ,
 		Skype,
-		Yahoo
+		Yahoo,
 	}
 
 	public partial class CNInstantMessageAddress {

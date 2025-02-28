@@ -28,13 +28,13 @@ namespace MediaLibrary {
 	public enum MLMediaSourceType : ulong {
 		Audio = 1 << 0,
 		Image = 1 << 1,
-		Movie = 1 << 2
+		Movie = 1 << 2,
 	}
 
 	[Native]
 	public enum MLMediaType : ulong {
 		Audio = 1 << 0,
 		Image = 1 << 1,
-		Movie = 1 << 2
+		Movie = 1 << 2,
 	}
 }

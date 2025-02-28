@@ -48,7 +48,7 @@ namespace CoreText {
 		NoStatus = 0,
 		RightToLeft = (1 << 0),
 		NonMonotonic = (1 << 1),
-		HasNonIdentityMatrix = (1 << 2)
+		HasNonIdentityMatrix = (1 << 2),
 	}
 
 #if NET

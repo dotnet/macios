@@ -342,7 +342,7 @@ namespace AudioToolbox {
 			SoloStatus,
 			AutomatedParameters,
 			TrackLength,
-			TimeResolution
+			TimeResolution,
 		}
 
 		public bool MuteStatus {

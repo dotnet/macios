@@ -117,7 +117,7 @@ namespace Foundation {
 		private CookieContainer? cookieContainer;
 		readonly Dictionary<string, string> headerSeparators = new Dictionary<string, string> {
 			["User-Agent"] = " ",
-			["Server"] = " "
+			["Server"] = " ",
 		};
 
 		NSUrlSession session;
@@ -867,7 +867,7 @@ namespace Foundation {
 					// NB: The double cast is because of a Xamarin compiler bug
 					var httpResponse = new HttpResponseMessage ((HttpStatusCode) status) {
 						Content = content,
-						RequestMessage = inflight.Request
+						RequestMessage = inflight.Request,
 					};
 					var wasRedirected = dataTask.CurrentRequest?.Url?.AbsoluteString != dataTask.OriginalRequest?.Url?.AbsoluteString;
 					if (wasRedirected)

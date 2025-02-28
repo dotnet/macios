@@ -11,7 +11,7 @@ namespace NetworkExtension {
 		ConnectionFailed = 3,
 		ConfigurationStale = 4,
 		ConfigurationReadWriteFailed = 5,
-		ConfigurationUnknown = 6
+		ConfigurationUnknown = 6,
 	}
 
 	[MacCatalyst (13, 1)]
@@ -22,7 +22,7 @@ namespace NetworkExtension {
 		Connecting = 2,
 		Connected = 3,
 		Reasserting = 4,
-		Disconnecting = 5
+		Disconnecting = 5,
 	}
 
 	[MacCatalyst (13, 1)]
@@ -30,7 +30,7 @@ namespace NetworkExtension {
 	public enum NEVpnIkeAuthenticationMethod : long {
 		None = 0,
 		Certificate = 1,
-		SharedSecret = 2
+		SharedSecret = 2,
 	}
 
 	[MacCatalyst (13, 1)]
@@ -60,7 +60,7 @@ namespace NetworkExtension {
 		SHA160 = 2,
 		SHA256 = 3,
 		SHA384 = 4,
-		SHA512 = 5
+		SHA512 = 5,
 	}
 
 	[MacCatalyst (13, 1)]
@@ -69,7 +69,7 @@ namespace NetworkExtension {
 		None = 0,
 		Low = 1,
 		Medium = 2,
-		High = 3
+		High = 3,
 	}
 
 	[MacCatalyst (13, 1)]
@@ -104,7 +104,7 @@ namespace NetworkExtension {
 		Connect = 1,
 		Disconnect = 2,
 		EvaluateConnection = 3,
-		Ignore = 4
+		Ignore = 4,
 	}
 
 	[MacCatalyst (13, 1)]
@@ -123,7 +123,7 @@ namespace NetworkExtension {
 	[Native]
 	public enum NEEvaluateConnectionRuleAction : long {
 		ConnectIfNeeded = 1,
-		NeverConnect = 2
+		NeverConnect = 2,
 	}
 
 	[MacCatalyst (13, 1)]
@@ -164,7 +164,7 @@ namespace NetworkExtension {
 		None = 0,
 		Invalid = 1,
 		Canceled = 2,
-		Failed = 3
+		Failed = 3,
 	}
 
 	[MacCatalyst (13, 1)]
@@ -223,7 +223,7 @@ namespace NetworkExtension {
 		Invalid = 0,
 		Satisfied = 1,
 		Unsatisfied = 2,
-		Satisfiable = 3
+		Satisfiable = 3,
 	}
 
 	[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnectionState' instead.")]
@@ -238,7 +238,7 @@ namespace NetworkExtension {
 		Waiting = 2,
 		Connected = 3,
 		Disconnected = 4,
-		Cancelled = 5
+		Cancelled = 5,
 	}
 
 	[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnectionState' instead.")]
@@ -253,7 +253,7 @@ namespace NetworkExtension {
 		Preparing = 2,
 		Ready = 3,
 		Failed = 4,
-		Cancelled = 5
+		Cancelled = 5,
 	}
 
 	/// <summary>Enumerates tunnel routing methods.</summary>
@@ -281,7 +281,7 @@ namespace NetworkExtension {
 		Authenticate = 3,
 		PresentUI = 4,
 		Maintain = 5,
-		Logoff = 6
+		Logoff = 6,
 	}
 
 	/// <summary>Enumerates values that describe how likely a Hotspot Helper will be able to handle a network.</summary>
@@ -292,7 +292,7 @@ namespace NetworkExtension {
 	public enum NEHotspotHelperConfidence : long {
 		None = 0,
 		Low = 1,
-		High = 2
+		High = 2,
 	}
 
 	/// <summary>Enumerates Hotspot Helper command response results.</summary>
@@ -307,7 +307,7 @@ namespace NetworkExtension {
 		CommandNotRecognized = 3,
 		AuthenticationRequired = 4,
 		UnsupportedNetwork = 5,
-		TemporaryFailure = 6
+		TemporaryFailure = 6,
 	}
 #endif
 

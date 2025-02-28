@@ -64,7 +64,7 @@ namespace AudioToolbox {
 		MediaPlayback = 0x6d656469, // 'medi'
 		RecordAudio = 0x72656361, // 'reca'
 		PlayAndRecord = 0x706c6172, // 'plar'
-		AudioProcessing = 0x70726f63  // 'proc'
+		AudioProcessing = 0x70726f63, // 'proc'
 	}
 
 	/// <summary>Possible values to override the audio route</summary>
@@ -82,7 +82,7 @@ namespace AudioToolbox {
 		Override = 4,
 		WakeFromSleep = 6,
 		NoSuitableRouteForCategory = 7,
-		RouteConfigurationChange = 8
+		RouteConfigurationChange = 8,
 	}
 
 	/// <summary>An enumeration whose values indicate whether the application should resume after an interruption. Returned by the <see cref="P:AudioToolbox.AudioSession.InterruptionType" /> property.</summary>
@@ -157,7 +157,7 @@ namespace AudioToolbox {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	public enum AudioSessionActiveFlags : uint // UInt32 in AudioSessionSetActiveWithFlags
 	{
-		NotifyOthersOnDeactivation = (1 << 0)
+		NotifyOthersOnDeactivation = (1 << 0),
 	}
 
 	/// <summary>The available audio input sources on the device.</summary>

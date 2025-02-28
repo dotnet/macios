@@ -35,7 +35,7 @@ namespace Messages {
 	public enum MSStickerSize : long {
 		Small,
 		Regular,
-		Large
+		Large,
 	}
 
 	/// <summary>Enumerates errors associated with Messages.</summary>

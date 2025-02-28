@@ -97,7 +97,7 @@ namespace CoreMedia {
 						NSNumber.FromFloat (v.Alpha),
 						NSNumber.FromFloat (v.Red),
 						NSNumber.FromFloat (v.Green),
-						NSNumber.FromFloat (v.Blue)
+						NSNumber.FromFloat (v.Blue),
 					});
 				} else {
 					RemoveValue (CMTextMarkupAttributesKeys.ForegroundColorARGB);
@@ -120,7 +120,7 @@ namespace CoreMedia {
 						NSNumber.FromFloat (v.Alpha),
 						NSNumber.FromFloat (v.Red),
 						NSNumber.FromFloat (v.Green),
-						NSNumber.FromFloat (v.Blue)
+						NSNumber.FromFloat (v.Blue),
 					});
 				} else {
 					RemoveValue (CMTextMarkupAttributesKeys.BackgroundColorARGB);

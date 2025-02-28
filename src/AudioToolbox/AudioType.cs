@@ -182,7 +182,7 @@ namespace AudioToolbox {
 		AppleLossless32BitSourceData = 4,
 
 		CafIsFloat = (1 << 0),
-		CafIsLittleEndian = (1 << 1)
+		CafIsLittleEndian = (1 << 1),
 	}
 
 	[StructLayout (LayoutKind.Sequential)]
@@ -441,7 +441,7 @@ namespace AudioToolbox {
 		AllOff = 0,
 		RectangularCoordinates = 1 << 0,
 		SphericalCoordinates = 1 << 1,
-		Meters = 1 << 2
+		Meters = 1 << 2,
 	}
 
 	public enum AudioChannelLabel : int { // UInt32 AudioChannelLabel
@@ -1019,7 +1019,7 @@ namespace AudioToolbox {
 #endif
 		MPEG_7_1_D = (219U << 16) | 8,
 
-		Unknown = 0xFFFF0000                           // needs to be ORed with the actual number of channels  
+		Unknown = 0xFFFF0000,                          // needs to be ORed with the actual number of channels  
 	}
 
 #if !COREBUILD
@@ -1360,7 +1360,7 @@ namespace AudioToolbox {
 	public enum SmpteTimeFlags : uint { // UInt32
 		Unknown = 0,
 		TimeValid = 1 << 0,
-		TimeRunning = 1 << 1
+		TimeRunning = 1 << 1,
 	}
 
 	public enum MPEG4ObjectID { // long
@@ -1372,7 +1372,7 @@ namespace AudioToolbox {
 		AacScalable = 6,
 		TwinVq = 7,
 		Celp = 8,
-		Hvxc = 9
+		Hvxc = 9,
 	}
 
 #if NET
@@ -1454,7 +1454,7 @@ namespace AudioToolbox {
 			RateScalarValid = (1 << 2),
 			WordClockTimeValid = (1 << 3),
 			SmpteTimeValid = (1 << 4),
-			SampleHostTimeValid = SampleTimeValid | HostTimeValid
+			SampleHostTimeValid = SampleTimeValid | HostTimeValid,
 		}
 
 		public double SampleTime;

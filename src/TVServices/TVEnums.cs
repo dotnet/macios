@@ -19,13 +19,13 @@ namespace TVServices {
 		Sdtv,
 		Hdtv,
 		Wide,
-		ExtraWide
+		ExtraWide,
 	}
 
 	[Native]
 	public enum TVTopShelfContentStyle : long {
 		Inset = 1,
-		Sectioned = 2
+		Sectioned = 2,
 	}
 
 	[Native]

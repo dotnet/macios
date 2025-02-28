@@ -25,7 +25,7 @@ namespace CloudKit {
 	[Native]
 	[Flags]
 	public enum CKApplicationPermissions : ulong {
-		UserDiscoverability = 1 << 0
+		UserDiscoverability = 1 << 0,
 	}
 
 	// NSInteger -> CKContainer.h
@@ -36,7 +36,7 @@ namespace CloudKit {
 		InitialState = 0,
 		CouldNotComplete = 1,
 		Denied = 2,
-		Granted = 3
+		Granted = 3,
 	}
 
 	// NSInteger -> CKError.h
@@ -91,7 +91,7 @@ namespace CloudKit {
 	public enum CKRecordSavePolicy : long {
 		SaveIfServerRecordUnchanged = 0,
 		SaveChangedKeys = 1,
-		SaveAllKeys = 2
+		SaveAllKeys = 2,
 	}
 
 	// NSInteger -> CKNotification.h
@@ -113,7 +113,7 @@ namespace CloudKit {
 	public enum CKQueryNotificationReason : long {
 		RecordCreated = 1,
 		RecordUpdated,
-		RecordDeleted
+		RecordDeleted,
 	}
 
 	// NSUInteger -> CKRecordZone.h
@@ -138,7 +138,7 @@ namespace CloudKit {
 	[Native]
 	public enum CKReferenceAction : ulong {
 		None = 0,
-		DeleteSelf = 1
+		DeleteSelf = 1,
 	}
 
 	// NSInteger -> CKSubscription.h

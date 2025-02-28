@@ -31,7 +31,7 @@ namespace Foundation {
 	/// <summary>An enumeration that specifies how a document is being viewed. Used with the <see cref="P:Foundation.NSAttributedStringDocumentAttributes.ViewMode" /> property.</summary>
 	public enum NSDocumentViewMode {
 		Normal,
-		PageLayout
+		PageLayout,
 
 	}
 
@@ -61,7 +61,7 @@ namespace Foundation {
 #endif
 		// If it is not part of these enumerations
 		[Field (null)]
-		Other = 1000
+		Other = 1000,
 	}
 
 	/// <summary>Enumerates download status values.</summary>

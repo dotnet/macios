@@ -107,7 +107,7 @@ namespace CoreText {
 		/// <summary>To be added.</summary>
 		Matched,
 		/// <summary>To be added.</summary>
-		FailedWithError
+		FailedWithError,
 	}
 
 #if !NET

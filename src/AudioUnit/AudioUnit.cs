@@ -630,7 +630,7 @@ namespace AudioUnit {
 			var auc = new AudioUnitConnection {
 				SourceAudioUnit = sourceAudioUnit.GetHandle (),
 				SourceOutputNumber = sourceOutputNumber,
-				DestInputNumber = destInputNumber
+				DestInputNumber = destInputNumber,
 			};
 
 			unsafe {

@@ -23,7 +23,7 @@ namespace CoreBluetooth {
 		Unsupported,
 		Unauthorized,
 		PoweredOff,
-		PoweredOn
+		PoweredOn,
 	}
 
 	// NSInteger -> CBCentralManager.h
@@ -38,7 +38,7 @@ namespace CoreBluetooth {
 		Unsupported = CBManagerState.Unsupported,
 		Unauthorized = CBManagerState.Unauthorized,
 		PoweredOff = CBManagerState.PoweredOff,
-		PoweredOn = CBManagerState.PoweredOn
+		PoweredOn = CBManagerState.PoweredOn,
 	}
 
 	// NSInteger -> CBPeripheralManager.h
@@ -53,7 +53,7 @@ namespace CoreBluetooth {
 		Unsupported = CBManagerState.Unsupported,
 		Unauthorized = CBManagerState.Unauthorized,
 		PoweredOff = CBManagerState.PoweredOff,
-		PoweredOn = CBManagerState.PoweredOn
+		PoweredOn = CBManagerState.PoweredOn,
 	}
 
 	// NSInteger -> CBPeripheralManager.h
@@ -100,7 +100,7 @@ namespace CoreBluetooth {
 		[MacCatalyst (13, 1)]
 		NotifyEncryptionRequired = 0x100,
 		[MacCatalyst (13, 1)]
-		IndicateEncryptionRequired = 0x200
+		IndicateEncryptionRequired = 0x200,
 	}
 
 	/// <summary>Errors possible during Bluetooth LE transactions.</summary>
@@ -170,7 +170,7 @@ namespace CoreBluetooth {
 		/// <summary>To be added.</summary>
 		UnsupportedGroupType,
 		/// <summary>To be added.</summary>
-		InsufficientResources
+		InsufficientResources,
 	}
 
 	// NSInteger -> CBPeripheral.h
@@ -179,7 +179,7 @@ namespace CoreBluetooth {
 	[Native]
 	public enum CBCharacteristicWriteType : long {
 		WithResponse,
-		WithoutResponse
+		WithoutResponse,
 	}
 
 	// NSUInteger -> CBCharacteristic.h
@@ -191,7 +191,7 @@ namespace CoreBluetooth {
 		Readable = 1,
 		Writeable = 1 << 1,
 		ReadEncryptionRequired = 1 << 2,
-		WriteEncryptionRequired = 1 << 3
+		WriteEncryptionRequired = 1 << 3,
 	}
 
 	// NSInteger -> CBPeripheralManager.h
@@ -204,7 +204,7 @@ namespace CoreBluetooth {
 		/// <summary>To be added.</summary>
 		Medium,
 		/// <summary>To be added.</summary>
-		High
+		High,
 	}
 
 	[iOS (13, 0), TV (13, 0)]

@@ -12,7 +12,7 @@ namespace AVFoundation {
 
 		enum InitMode {
 			PixelAttributes,
-			OutputSettings
+			OutputSettings,
 		}
 
 		AVPlayerItemVideoOutput (NSDictionary? data, AVPlayerItemVideoOutput.InitMode mode) : base (NSObjectFlag.Empty)

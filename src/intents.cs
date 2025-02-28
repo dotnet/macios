@@ -52,7 +52,7 @@ namespace Intents {
 		Failure,
 		FailureRequiringAppLaunch,
 		FailureRequiringAppLaunchMustVerifyCredentials,
-		FailureRequiringAppLaunchServiceTemporarilyUnavailable
+		FailureRequiringAppLaunchServiceTemporarilyUnavailable,
 	}
 
 	/// <summary>Flagging enumeration of the types of calls supported by the device.</summary>
@@ -62,7 +62,7 @@ namespace Intents {
 	[Flags]
 	public enum INCallCapabilityOptions : ulong {
 		AudioCall = (1 << 0),
-		VideoCall = (1 << 1)
+		VideoCall = (1 << 1),
 	}
 
 	[MacCatalyst (13, 1)]
@@ -119,7 +119,7 @@ namespace Intents {
 	public enum INCarAirCirculationMode : long {
 		Unknown = 0,
 		FreshAir,
-		RecirculateAir
+		RecirculateAir,
 	}
 
 	/// <summary>Enumerates inputs to the car sound system.</summary>
@@ -139,7 +139,7 @@ namespace Intents {
 		Usb,
 		MemoryCard,
 		OpticalDrive,
-		HardDrive
+		HardDrive,
 	}
 
 	/// <summary>Enumerates defroster locations.</summary>
@@ -176,7 +176,7 @@ namespace Intents {
 		ThirdRowLeft,
 		ThirdRowRight,
 		ThirdRow,
-		All
+		All,
 	}
 
 	/// <summary>Enumerates operators to be used with search predicates.</summary>
@@ -187,7 +187,7 @@ namespace Intents {
 	public enum INConditionalOperator : long {
 		All = 0,
 		Any,
-		None
+		None,
 	}
 
 	/// <summary>Enumerates results codes for the <see cref="T:Intents.INEndWorkoutIntent" />.</summary>
@@ -218,7 +218,7 @@ namespace Intents {
 	public enum INGetAvailableRestaurantReservationBookingDefaultsIntentResponseCode : long {
 		Success,
 		Failure,
-		Unspecified
+		Unspecified,
 	}
 
 	[Unavailable (PlatformName.MacOSX)]
@@ -228,7 +228,7 @@ namespace Intents {
 		Success,
 		Failure,
 		FailureRequestUnsatisfiable,
-		FailureRequestUnspecified
+		FailureRequestUnspecified,
 	}
 
 	[Unavailable (PlatformName.MacOSX)]
@@ -236,7 +236,7 @@ namespace Intents {
 	[Native]
 	public enum INGetRestaurantGuestIntentResponseCode : long {
 		Success,
-		Failure
+		Failure,
 	}
 
 	/// <summary>Enumerates results codes for the <see cref="T:Intents.INGetRideStatusIntent" />.</summary>
@@ -254,7 +254,7 @@ namespace Intents {
 		Failure,
 		FailureRequiringAppLaunch,
 		FailureRequiringAppLaunchMustVerifyCredentials,
-		FailureRequiringAppLaunchServiceTemporarilyUnavailable
+		FailureRequiringAppLaunchServiceTemporarilyUnavailable,
 	}
 
 	[Unavailable (PlatformName.MacOSX)]
@@ -264,7 +264,7 @@ namespace Intents {
 		Success,
 		Failure,
 		FailureRequestUnsatisfiable,
-		Unspecified
+		Unspecified,
 	}
 
 	[TV (14, 0)]
@@ -328,7 +328,7 @@ namespace Intents {
 	public enum INInteractionDirection : long {
 		Unspecified = 0,
 		Outgoing,
-		Incoming
+		Incoming,
 	}
 
 	/// <summary>Enumerates results codes for the <see cref="T:Intents.INListRideOptionsIntent" />.</summary>
@@ -420,7 +420,7 @@ namespace Intents {
 		Credit,
 		Prepaid,
 		Store,
-		ApplePay
+		ApplePay,
 	}
 
 	/// <summary>Enumerates the states of a payment.</summary>
@@ -434,7 +434,7 @@ namespace Intents {
 		Completed,
 		Canceled,
 		Failed,
-		Unpaid
+		Unpaid,
 	}
 
 	/// <summary>Enumerates the source of the data for a <see cref="T:Intents.INPerson" /> (see <see cref="P:Intents.INPerson.SuggestionType" />).</summary>
@@ -506,7 +506,7 @@ namespace Intents {
 		FM,
 		HD,
 		Satellite,
-		Dab
+		Dab,
 	}
 
 	/// <summary>Enumerates a qualitative sequential movement.</summary>
@@ -519,7 +519,7 @@ namespace Intents {
 	public enum INRelativeReference : long {
 		Unknown = 0,
 		Next,
-		Previous
+		Previous,
 	}
 
 	/// <summary>Enumerates qualitative increases or decreased quantities.</summary>
@@ -534,7 +534,7 @@ namespace Intents {
 		Lowest,
 		Lower,
 		Higher,
-		Highest
+		Highest,
 	}
 
 	/// <summary>Enumerates results codes for the <see cref="T:Intents.INRequestPaymentIntent" />.</summary>
@@ -591,7 +591,7 @@ namespace Intents {
 	public enum INRestaurantReservationUserBookingStatus : ulong {
 		Pending,
 		Confirmed,
-		Denied
+		Denied,
 	}
 
 	/// <summary>Enumerates results codes for the <see cref="T:Intents.INResumeWorkoutIntent" />.</summary>
@@ -628,7 +628,7 @@ namespace Intents {
 		Ongoing,
 		Completed,
 		ApproachingPickup,
-		Pickup
+		Pickup,
 	}
 
 	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSaveProfileInCarIntent" />.</summary>
@@ -644,7 +644,7 @@ namespace Intents {
 		InProgress,
 		Success,
 		Failure,
-		FailureRequiringAppLaunch
+		FailureRequiringAppLaunch,
 	}
 
 	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSearchCallHistoryIntent" />.</summary>
@@ -756,7 +756,7 @@ namespace Intents {
 		InProgress,
 		Success,
 		Failure,
-		FailureRequiringAppLaunch
+		FailureRequiringAppLaunch,
 	}
 
 	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSetClimateSettingsInCarIntent" />.</summary>
@@ -772,7 +772,7 @@ namespace Intents {
 		InProgress,
 		Success,
 		Failure,
-		FailureRequiringAppLaunch
+		FailureRequiringAppLaunch,
 	}
 
 	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSetDefrosterSettingsInCarIntentResponseCode" />.</summary>
@@ -788,7 +788,7 @@ namespace Intents {
 		InProgress,
 		Success,
 		Failure,
-		FailureRequiringAppLaunch
+		FailureRequiringAppLaunch,
 	}
 
 	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSetMessageAttributeIntent" />.</summary>
@@ -804,7 +804,7 @@ namespace Intents {
 		Failure,
 		FailureRequiringAppLaunch,
 		FailureMessageNotFound,
-		FailureMessageAttributeNotSet
+		FailureMessageAttributeNotSet,
 	}
 
 	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSetProfileInCarIntent" />.</summary>
@@ -820,7 +820,7 @@ namespace Intents {
 		InProgress,
 		Success,
 		Failure,
-		FailureRequiringAppLaunch
+		FailureRequiringAppLaunch,
 	}
 
 	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSetRadioStationIntent" />.</summary>
@@ -837,7 +837,7 @@ namespace Intents {
 		Success,
 		Failure,
 		FailureRequiringAppLaunch,
-		FailureNotSubscribed
+		FailureNotSubscribed,
 	}
 
 	/// <summary>Enumerates results codes for the <see cref="T:Intents.INSetSeatSettingsInCarIntent" />.</summary>
@@ -853,7 +853,7 @@ namespace Intents {
 		InProgress,
 		Success,
 		Failure,
-		FailureRequiringAppLaunch
+		FailureRequiringAppLaunch,
 	}
 
 	[Unavailable (PlatformName.MacOSX)]
@@ -1004,7 +1004,7 @@ namespace Intents {
 		Minute,
 		Hour,
 		Joule,
-		KiloCalorie
+		KiloCalorie,
 	}
 
 	/// <summary>Enumerates where the workout is occurring.</summary>
@@ -1015,7 +1015,7 @@ namespace Intents {
 	public enum INWorkoutLocationType : long {
 		Unknown = 0,
 		Outdoor,
-		Indoor
+		Indoor,
 	}
 
 	/// <summary>Enumerates the types of values that are associated with a <see cref="T:Intents.INPersonHandle" />.</summary>
@@ -1025,7 +1025,7 @@ namespace Intents {
 	public enum INPersonHandleType : long {
 		Unknown = 0,
 		EmailAddress,
-		PhoneNumber
+		PhoneNumber,
 	}
 
 	/// <summary>Enumerates types of payment accounts.</summary>

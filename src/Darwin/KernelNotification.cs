@@ -86,7 +86,7 @@ namespace Darwin {
 		MachPort = -8,
 		FS = -9,
 		User = -10,
-		VM = -11
+		VM = -11,
 	}
 
 	[Flags]

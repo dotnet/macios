@@ -1677,7 +1677,10 @@ xamarin_objc_type_size (const char *type)
 					xamarin_assertion_message ("Unsupported struct type: %s", original_type);
 				unsigned long item_size = xamarin_objc_type_size (type);
 				
-				size += (item_size + (sizeof (void *) - 1)) & ~((sizeof (void *) - 1));
+				// first align the accumulated size to the current item's size (this would be any padding between struct elements)
+				size = align_ulong (size, item_size);
+				// accumulate this item's size
+				size += item_size;
 
 				type = objc_skip_type (type);
 			}

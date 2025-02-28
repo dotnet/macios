@@ -301,6 +301,9 @@ namespace SceneKit {
 		[return: NullAllowed]
 		SCNAudioSource FromFile (string fileName);
 
+		/// <summary>Whether the audio uses positional mixing.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("positional")]
 		bool Positional { [Bind ("isPositional")] get; set; }
 
@@ -3488,6 +3491,9 @@ namespace SceneKit {
 		[NullAllowed]
 		NSFont Font { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("wrapped")]
 		bool Wrapped { [Bind ("isWrapped")] get; set; }
 

@@ -48,6 +48,9 @@ namespace CoreBluetooth {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CBManager {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("state", ArgumentSemantic.Assign)]
 		CBManagerState State { get; }
 
@@ -1082,6 +1085,9 @@ namespace CoreBluetooth {
 		IntPtr _UUID { get; }
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("identifier")]
 		NSUuid Identifier { get; }
 	}

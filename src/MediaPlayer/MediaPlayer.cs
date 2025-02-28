@@ -303,8 +303,11 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPChangeLanguageOptionSetting : long {
+		/// <summary>To be added.</summary>
 		None,
+		/// <summary>To be added.</summary>
 		NowPlayingItemOnly,
+		/// <summary>To be added.</summary>
 		Permanent,
 	}
 

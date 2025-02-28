@@ -1571,7 +1571,16 @@ namespace AudioToolbox {
 		}
 
 		internal IntPtr TapHandle { get; set; }
+		/// <summary>Maximum number of sample frames per tap.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>Apple lists this as being "50 msec of audio, 2048 samples at 44.1Khz".</remarks>
 		public uint MaxFrames { get; internal set; }
+		/// <summary>The format of the data that will be provided to the tap render function.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public AudioStreamBasicDescription ProcessingFormat { get; internal set; }
 
 		public void Dispose ()

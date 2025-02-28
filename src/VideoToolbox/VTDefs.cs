@@ -18,15 +18,24 @@ namespace VideoToolbox {
 	/// <summary>Possible VideoToolbox API errors.</summary>
 	public enum VTStatus {
 		Ok,
+		/// <summary>To be added.</summary>
 		PropertyNotSupported = -12900,
 		PropertyReadOnly = -12901,
+		/// <summary>To be added.</summary>
 		Parameter = -12902,
+		/// <summary>To be added.</summary>
 		InvalidSession = -12903,
+		/// <summary>To be added.</summary>
 		AllocationFailed = -12904,
+		/// <summary>To be added.</summary>
 		PixelTransferNotSupported = -12905,
+		/// <summary>To be added.</summary>
 		CouldNotFindVideoDecoder = -12906,
+		/// <summary>To be added.</summary>
 		CouldNotCreateInstance = -12907,
+		/// <summary>To be added.</summary>
 		CouldNotFindVideoEncoder = -12908,
+		/// <summary>To be added.</summary>
 		VideoDecoderBadData = -12909,
 		VideoDecoderUnsupportedDataFormat = -12910,
 		VideoDecoderMalfunction = -12911,
@@ -87,8 +96,11 @@ namespace VideoToolbox {
 	/// <summary>Flags for status reporting in decoding sessions.</summary>
 	[Flags]
 	public enum VTDecodeInfoFlags : uint {
+		/// <summary>To be added.</summary>
 		Asynchronous = 1 << 0,
+		/// <summary>To be added.</summary>
 		FrameDropped = 1 << 1,
+		/// <summary>To be added.</summary>
 		ImageBufferModifiable = 1 << 2,
 		SkippedLeadingFrameDropped = 1 << 3,
 	}
@@ -141,46 +153,80 @@ namespace VideoToolbox {
 		H264Main30,
 		/// <summary>The H.264 compression format, main profile, level 3.1.</summary>
 		H264Main31,
+		/// <summary>The H.264 compression format, main profile, level 3.2.</summary>
 		H264Main32,
+		/// <summary>The H.264 compression format, main profile, level 4.0.</summary>
 		H264Main40,
 		/// <summary>The H.264 compression format, main profile, level 4.1.</summary>
 		H264Main41,
+		/// <summary>The H.264 compression format, main profile, level 4.2.</summary>
 		H264Main42,
+		/// <summary>The H.264 compression format, main profile, level 5.0.</summary>
 		H264Main50,
 		/// <summary>The H.264 compression format, main profile, level 5.1.</summary>
 		H264Main51,
 		/// <summary>The H.264 compression format, main profile, level 5.2.</summary>
 		H264Main52,
+		/// <summary>The H.264 compression format, main profile. Determine the level automatically.</summary>
 		H264MainAutoLevel,
+		/// <summary>The H.264 compression format, extended profile, level 5.0.</summary>
 		H264Extended50,
+		/// <summary>The H.264 compression format, extended profile. Determine the level automatically.</summary>
 		H264ExtendedAutoLevel,
+		/// <summary>The H.264 compression format, high profile, level 3.0.</summary>
 		H264High30,
+		/// <summary>The H.264 compression format, high profile, level 3.1.</summary>
 		H264High31,
+		/// <summary>The H.264 compression format, high profile, level 3.2.</summary>
 		H264High32,
+		/// <summary>The H.264 compression format, high profile, level 4.0.</summary>
 		H264High40,
+		/// <summary>The H.264 compression format, high profile, level 4.1.</summary>
 		H264High41,
+		/// <summary>The H.264 compression format, high profile, level 4.2.</summary>
 		H264High42,
+		/// <summary>The H.264 compression format, high profile, level 5.0.</summary>
 		H264High50,
+		/// <summary>The H.264 compression format, high profile, level 5.1.</summary>
 		H264High51,
+		/// <summary>The H.264 compression format, high profile, level 5.2.</summary>
 		H264High52,
+		/// <summary>The H.264 compression format, high profile. Determine the level automatically.</summary>
 		H264HighAutoLevel,
+		/// <summary>The MPEG-4 simple profile, level 0.</summary>
 		MP4VSimpleL0,
+		/// <summary>The MPEG-4 simple profile, level 1.</summary>
 		MP4VSimpleL1,
+		/// <summary>The MPEG-4 simple profile, level 2.</summary>
 		MP4VSimpleL2,
+		/// <summary>The MPEG-4 simple profile, level 3.</summary>
 		MP4VSimpleL3,
+		/// <summary>The MPEG-4 main profile, level 2.</summary>
 		MP4VMainL2,
+		/// <summary>The MPEG-4 main profile, level 3.</summary>
 		MP4VMainL3,
+		/// <summary>The MPEG-4 main profile, level 4.</summary>
 		MP4VMainL4,
+		/// <summary>The MPEG-4 advanced simple profile, level 0.</summary>
 		MP4VAdvancedSimpleL0,
+		/// <summary>The MPEG-4 advanced simple profile, level 1.</summary>
 		MP4VAdvancedSimpleL1,
+		/// <summary>The MPEG-4 advanced simple profile, level 2.</summary>
 		MP4VAdvancedSimpleL2,
+		/// <summary>The MPEG-4 advanced simple profile, level 3.</summary>
 		MP4VAdvancedSimpleL3,
+		/// <summary>The MPEG-4 advanced simple profile, level 4.</summary>
 		MP4VAdvancedSimpleL4,
+		/// <summary>The H.263 compression format, profile 0, level 1.0.</summary>
 		H263Profile0Level10,
+		/// <summary>The H.263 compression format, profile 0, level 4.5.</summary>
 		H263Profile0Level45,
+		/// <summary>The H.263 compression format, profile 3, level 4.5.</summary>
 		H263Profile3Level45,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		HevcMainAutoLevel,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		HevcMain10AutoLevel,
 	}
@@ -309,8 +355,11 @@ namespace VideoToolbox {
 	// Strongly Typed kVTPropertyReadWriteStatusKey
 	/// <summary>Strongly typed set of options used by <see cref="P:VideoToolbox.VTPropertyOptions.ReadWriteStatus" />.</summary>
 	public enum VTReadWriteStatus {
+		/// <summary>To be added.</summary>
 		Unset,
+		/// <summary>To be added.</summary>
 		ReadOnly,
+		/// <summary>To be added.</summary>
 		ReadWrite
 	}
 
@@ -328,10 +377,15 @@ namespace VideoToolbox {
 	/// <summary>Image scaling options.</summary>
 	[MacCatalyst (13, 1)]
 	public enum VTScalingMode {
+		/// <summary>To be added.</summary>
 		Unset,
+		/// <summary>To be added.</summary>
 		Normal,
+		/// <summary>To be added.</summary>
 		CropSourceToCleanAperture,
+		/// <summary>To be added.</summary>
 		Letterbox,
+		/// <summary>To be added.</summary>
 		Trim
 	}
 

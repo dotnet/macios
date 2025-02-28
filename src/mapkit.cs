@@ -135,12 +135,21 @@ namespace MapKit {
 		[Export ("calloutOffset")]
 		CGPoint CalloutOffset { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the annotation is enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the annotation view is highlighetd.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("highlighted")]
 		bool Highlighted { [Bind ("isHighlighted")] get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the annotation view is selected.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("selected")]
 		bool Selected { [Bind ("isSelected")] get; set; }
 
@@ -168,6 +177,9 @@ namespace MapKit {
 		[MacCatalyst (13, 1)]
 		MKAnnotationViewDragState DragState { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the user can drag the annotation view.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("draggable")]
@@ -433,6 +445,9 @@ namespace MapKit {
 		[NullAllowed]
 		NSTimeZone TimeZone { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("MKMapItemTypeIdentifier")]
 		NSString TypeIdentifier { get; }
@@ -1321,6 +1336,9 @@ namespace MapKit {
 #else
 	interface MKUserLocation : IMKAnnotation { // This is wrong. It should be MKAnnotation but we can't due to API compat. When you fix this remove hack in generator.cs to enable warning again. In the meantime, we're stating that MKUserLocation implements the IMKAnnotation protocol by using a manual binding.
 #endif
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("updating")]
 		bool Updating { [Bind ("isUpdating")] get; }
 
@@ -1390,6 +1408,12 @@ namespace MapKit {
 		[Export ("cancel")]
 		void Cancel ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("searching")]
 		bool IsSearching { [Bind ("isSearching")] get; }
 	}
@@ -2042,6 +2066,13 @@ namespace MapKit {
 		[Export ("filterType", ArgumentSemantic.Assign)]
 		MKSearchCompletionFilterType FilterType { get; set; }
 
+		/// <summary>An instance of the MapKit.IMKLocalSearchCompleterDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the MapKit.IMKLocalSearchCompleterDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IMKLocalSearchCompleterDelegate Delegate { get; set; }
@@ -2052,6 +2083,9 @@ namespace MapKit {
 		[Export ("results", ArgumentSemantic.Strong)]
 		MKLocalSearchCompletion [] Results { get; }
 
+		/// <summary>Gets a <see langword="bool" /> that tells whether a search is in progress.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("searching")]
 		bool Searching { [Bind ("isSearching")] get; }
 

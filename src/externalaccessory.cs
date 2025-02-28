@@ -23,41 +23,82 @@ namespace ExternalAccessory {
 	// Objective-C exception thrown.  Name: EAAccessoryInitException Reason: -init not supported. EAAccessoryManager is responsible for creating all objects.
 	[DisableDefaultCtor]
 	interface EAAccessory {
+		/// <summary>Gets a Boolean value that tells whether the accessory is connected to the device.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("connected")]
 		bool Connected { [Bind ("isConnected")] get; }
 
+		/// <summary>Gets the unique connection identifier.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("connectionID")]
 		nuint ConnectionID { get; }
 
 		[Export ("name")]
 		string Name { get; }
 
+		/// <summary>Gets the accessory manufacturer.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("manufacturer")]
 		string Manufacturer { get; }
 
+		/// <summary>Gets the model number for the accessory.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("modelNumber")]
 		string ModelNumber { get; }
 
+		/// <summary>Gets the serial number of the accessory.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("serialNumber")]
 		string SerialNumber { get; }
 
+		/// <summary>Gets the firmware revision for the accessory.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("firmwareRevision")]
 		string FirmwareRevision { get; }
 
+		/// <summary>Gets the hardware revision for the accessory.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hardwareRevision")]
 		string HardwareRevision { get; }
 
+		/// <summary>Gets an array of descriptions of supported protocols for the accessory.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("protocolStrings")]
 		string [] ProtocolStrings { get; }
 
+		/// <summary>An object that can respond to the delegate protocol for this type</summary>
+		///         <value>The instance that will respond to events and data requests.</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+		///         </remarks>
 		[Export ("delegate", ArgumentSemantic.Assign)]
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the ExternalAccessory.IEAAccessoryDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the ExternalAccessory.IEAAccessoryDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IEAAccessoryDelegate Delegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 0)]
 		[Deprecated (PlatformName.TvOS, 13, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 14)]
@@ -102,6 +143,9 @@ namespace ExternalAccessory {
 		[Export ("unregisterForLocalNotifications")]
 		void UnregisterForLocalNotifications ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("connectedAccessories")]
 		EAAccessory [] ConnectedAccessories { get; }
 

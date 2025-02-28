@@ -11,9 +11,15 @@ namespace CoreTelephony {
 	[Deprecated (PlatformName.iOS, 10, 0, message: Constants.UseCallKitInstead)]
 	[BaseType (typeof (NSObject))]
 	interface CTCall {
+		/// <summary>Developers should not use this deprecated property. Developers should use 'CallKit' instead.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("callID")]
 		string CallID { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("callState")]
 		string CallState { get; }
 
@@ -167,10 +173,19 @@ namespace CoreTelephony {
 	[Deprecated (PlatformName.iOS, 10, 0, message: Constants.UseCallKitInstead)]
 	[BaseType (typeof (NSObject))]
 	interface CTCallCenter {
+		/// <summary>Developers should not use this deprecated property. Developers should use 'CallKit' instead.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("callEventHandler")]
 		Action<CTCall> CallEventHandler { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("currentCalls")]
 		[NullAllowed]
 		NSSet CurrentCalls { get; }
@@ -185,21 +200,36 @@ namespace CoreTelephony {
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	interface CTCarrier {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("mobileCountryCode")]
 		string MobileCountryCode { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("mobileNetworkCode")]
 		string MobileNetworkCode { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("isoCountryCode")]
 		string IsoCountryCode { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allowsVOIP")]
 		bool AllowsVoip { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("carrierName")]
 		string CarrierName { get; }

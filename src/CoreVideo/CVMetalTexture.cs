@@ -16,22 +16,14 @@ using CoreFoundation;
 using Foundation;
 using Metal;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 namespace CoreVideo {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-#else
-	[MacCatalyst (15, 0)]
-#endif
 	public class CVMetalTexture : NativeObject {
 		[Preserve (Conditional = true)]
 		internal CVMetalTexture (NativeHandle handle, bool owns)
@@ -51,12 +43,18 @@ namespace CoreVideo {
 			/* float[2] */ IntPtr lowerLeft, /* float[2] */ IntPtr lowerRight, /* float[2] */ IntPtr upperRight,
 			/* float[2] */ IntPtr upperLeft);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public IMTLTexture? Texture {
 			get {
 				return Runtime.GetINativeObject<IMTLTexture> (CVMetalTextureGetTexture (Handle), owns: false);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsFlipped {
 			get {
 				return CVMetalTextureIsFlipped (Handle) != 0;

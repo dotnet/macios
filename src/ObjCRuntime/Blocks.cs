@@ -399,6 +399,11 @@ namespace ObjCRuntime {
 			}
 		}
 
+		/// <summary>Returns the target object for the block.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public object Target {
 			get {
 				var target = Context;
@@ -410,7 +415,7 @@ namespace ObjCRuntime {
 		}
 
 #if NET
-		public T GetDelegateForBlock<T> () where T: System.MulticastDelegate
+		public T GetDelegateForBlock<T> () where T : System.MulticastDelegate
 #else
 		public T GetDelegateForBlock<T> () where T : class
 #endif
@@ -419,7 +424,7 @@ namespace ObjCRuntime {
 		}
 
 #if NET
-		public unsafe static T GetTarget<T> (IntPtr block) where T: System.MulticastDelegate
+		public unsafe static T GetTarget<T> (IntPtr block) where T : System.MulticastDelegate
 #else
 		public unsafe static T GetTarget<T> (IntPtr block) where T : class /* /* requires C# 7.3+: System.MulticastDelegate */
 #endif
@@ -443,9 +448,9 @@ namespace ObjCRuntime {
 		// This method doesn't necessarily work with NativeAOT, but this is covered by the exception, because the managed static registrar is required for NativeAOT.
 		//
 		// IL2075: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.Interfaces' in call to 'System.Type.GetInterfaces()'. The return value of method 'System.Reflection.MemberInfo.DeclaringType.get' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
-		[UnconditionalSuppressMessage("", "IL2075", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
+		[UnconditionalSuppressMessage ("", "IL2075", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 		// IL2062: Value passed to parameter 'interfaceType' of method 'System.Type.GetInterfaceMap(Type)' can not be statically determined and may not meet 'DynamicallyAccessedMembersAttribute' requirements.
-		[UnconditionalSuppressMessage("", "IL2062", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
+		[UnconditionalSuppressMessage ("", "IL2062", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 #endif
 		static Type GetDelegateProxyType (MethodInfo minfo, uint token_ref, out MethodInfo baseMethod)
 		{
@@ -499,7 +504,7 @@ namespace ObjCRuntime {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		unsafe static IntPtr GetBlockForFunctionPointer (MethodInfo delegateInvokeMethod, object @delegate, string signature)
 		{
-			void* invokeFunctionPointer = (void *) delegateInvokeMethod.MethodHandle.GetFunctionPointer ();
+			void* invokeFunctionPointer = (void*) delegateInvokeMethod.MethodHandle.GetFunctionPointer ();
 			if (signature is null) {
 				if (!Runtime.DynamicRegistrationSupported)
 					throw ErrorHelper.CreateError (8026, $"BlockLiteral.GetBlockForDelegate with a null signature is not supported when the dynamic registrar has been linked away (delegate type: {@delegate.GetType ().FullName}).");
@@ -547,7 +552,7 @@ namespace ObjCRuntime {
 		//
 		// IL2075: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.NonPublicFields' in call to 'System.Type.GetField(String, BindingFlags)'. The return value of method 'ObjCRuntime.BlockLiteral.GetDelegateProxyType(MethodInfo, UInt32, MethodInfo&)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		// IL2075: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.NonPublicMethods' in call to 'System.Type.GetMethod(String, BindingFlags)'. The return value of method 'ObjCRuntime.BlockLiteral.GetDelegateProxyType(MethodInfo, UInt32, MethodInfo&)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to."
-		[UnconditionalSuppressMessage("", "IL2075", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
+		[UnconditionalSuppressMessage ("", "IL2075", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 #endif
 		internal static IntPtr GetBlockForDelegate (MethodInfo minfo, object @delegate, uint token_ref, string signature)
 		{
@@ -694,14 +699,23 @@ namespace ObjCRuntime {
 
 	[Flags]
 	internal enum BlockFlags : int {
+		/// <summary>Objective-C Block ABI Flags.</summary>
 		BLOCK_REFCOUNT_MASK = (0xffff),
+		/// <summary>Objective-C Block ABI Flags.</summary>
 		BLOCK_NEEDS_FREE = (1 << 24),
+		/// <summary>Objective-C Block ABI Flags</summary>
 		BLOCK_HAS_COPY_DISPOSE = (1 << 25),
+		/// <summary>Objective-C Block ABI Flags</summary>
 		BLOCK_HAS_CTOR = (1 << 26), /* Helpers have C++ code. */
+		/// <summary>Objective-C Block ABI Flags.</summary>
 		BLOCK_IS_GC = (1 << 27),
+		/// <summary>Objective-C Block ABI Flags.</summary>
 		BLOCK_IS_GLOBAL = (1 << 28),
+		/// <summary>Whether the block_descriptor field is filled in.</summary>
 		BLOCK_HAS_DESCRIPTOR = (1 << 29), // This meaning was deprecated 
+		/// <summary>Objective-C Block ABI Flags.</summary>
 		BLOCK_HAS_STRET = (1 << 29),
+		/// <summary>Objective-C Block ABI Flags</summary>
 		BLOCK_HAS_SIGNATURE = (1 << 30),
 	}
 }

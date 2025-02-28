@@ -641,6 +641,9 @@ namespace Foundation {
 		[Export ("boundingRectWithSize:options:context:")]
 		CGRect GetBoundingRect (CGSize size, NSStringDrawingOptions options, [NullAllowed] NSStringDrawingContext context);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("size")]
 		CGSize Size { get; }
@@ -787,6 +790,9 @@ namespace Foundation {
 #if MONOMAC
 		[Field ("NSTextLayoutSectionOrientation", "AppKit")]
 #else
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextLayoutSectionOrientation", "UIKit")]
 #endif
 		NSString TextLayoutSectionOrientation { get; }
@@ -794,6 +800,9 @@ namespace Foundation {
 #if MONOMAC
 		[Field ("NSTextLayoutSectionRange", "AppKit")]
 #else
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextLayoutSectionRange", "UIKit")]
 #endif
 		NSString TextLayoutSectionRange { get; }
@@ -802,6 +811,9 @@ namespace Foundation {
 #if MONOMAC
 		[Field ("NSTextLayoutSectionsAttribute", "AppKit")]
 #else
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextLayoutSectionsAttribute", "UIKit")]
 #endif
 		NSString TextLayoutSectionsAttribute { get; }
@@ -972,8 +984,17 @@ namespace Foundation {
 		[Export ("objectForKey:")]
 		NSObject ObjectForKey (NSObject key);
 
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'SetObjectForKey' instead.")]
 		[Export ("setObject:forKey:")]
 		void SetObjectforKey (NSObject obj, NSObject key);
+#endif
+
+#if !XAMCORE_5_0
+		[Sealed]
+#endif
+		[Export ("setObject:forKey:")]
+		void SetObjectForKey (NSObject obj, NSObject key);
 
 		[Export ("setObject:forKey:cost:")]
 		void SetCost (NSObject obj, NSObject key, nuint cost);
@@ -6015,7 +6036,9 @@ namespace Foundation {
 
 #if HAS_APPCLIP
 		// Inlined from NSUserActivity (AppClip)
-		[iOS (14,0)][NoTV][NoMac]
+		[iOS (14, 0)]
+		[NoTV]
+		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Export ("appClipActivationPayload", ArgumentSemantic.Strong)]
 		[NullAllowed]
@@ -9466,7 +9489,7 @@ namespace Foundation {
 
 		[Wrap ("GetLinguisticTags (This, range, scheme.GetConstant ()!, options, orthography, out tokenRanges)")]
 #if NET
-		NSLinguisticTag[] GetLinguisticTags (NSRange range, NSLinguisticTagScheme scheme, NSLinguisticTaggerOptions options, [NullAllowed] NSOrthography orthography, [NullAllowed] out NSValue[] tokenRanges);
+		NSLinguisticTag [] GetLinguisticTags (NSRange range, NSLinguisticTagScheme scheme, NSLinguisticTaggerOptions options, [NullAllowed] NSOrthography orthography, [NullAllowed] out NSValue [] tokenRanges);
 #else
 		NSLinguisticTagUnit [] GetLinguisticTags (NSRange range, NSLinguisticTagScheme scheme, NSLinguisticTaggerOptions options, [NullAllowed] NSOrthography orthography, [NullAllowed] out NSValue [] tokenRanges);
 #endif
@@ -9666,9 +9689,11 @@ namespace Foundation {
 		[Export ("exposedBindings")]
 		NSString [] ExposedBindings ();
 #else
-		[NoiOS][NoMacCatalyst][NoTV]
+		[NoiOS]
+		[NoMacCatalyst]
+		[NoTV]
 		[Export ("exposedBindings")]
-		NSString[] ExposedBindings { get; }
+		NSString [] ExposedBindings { get; }
 #endif
 
 #if !NET
@@ -10980,6 +11005,13 @@ namespace Foundation {
 		[Export ("row")]
 		nint LongRow { get; }
 
+		/// <summary>The index of a section within a <see cref="T:UIKit.UITableView" /> (read-only).</summary>
+		///         <value>
+		///           <para />
+		///         </value>
+		///         <remarks>
+		///           <para />
+		///         </remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("section")]
@@ -11002,6 +11034,11 @@ namespace Foundation {
 		[Export ("indexPathForItem:inSection:")]
 		NSIndexPath FromItemSection (nint item, nint section);
 
+		/// <summary>The item component of this NSIndexPath.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Export ("item")]
 		[MacCatalyst (13, 1)]
 		nint Item { get; }
@@ -14921,20 +14958,24 @@ namespace Foundation {
 
 #if MONOMAC
 	partial interface NSFilePresenter {
-		[NoiOS][NoMacCatalyst][NoTV]
+		[NoiOS]
+		[NoMacCatalyst]
+		[NoTV]
 		[NullAllowed]
 		[Export ("primaryPresentedItemURL")]
 		NSUrl PrimaryPresentedItemUrl { get; }
 	}
 
-	[NoiOS][NoMacCatalyst][NoTV]
-	[Deprecated (PlatformName.MacOSX, 12, 0, message : "Use the Network.framework instead.")]
+	[NoiOS]
+	[NoMacCatalyst]
+	[NoTV]
+	[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use the Network.framework instead.")]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	partial interface NSHost {
 
 		[Static, Internal, Export ("currentHost")]
-		NSHost _Current { get;}
+		NSHost _Current { get; }
 
 		[Static, Internal, Export ("hostWithName:")]
 		NSHost _FromName ([NullAllowed] string name);
@@ -14961,7 +15002,7 @@ namespace Foundation {
 		string _Address { get; }
 
 		[Internal, Export ("addresses")]
-		string [] _Addresses  { get; }
+		string [] _Addresses { get; }
 
 		[Export ("hash"), Internal]
 		nuint _Hash { get; }
@@ -17659,7 +17700,8 @@ namespace Foundation {
 	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 #if NET
-	[Protocol][Model]
+	[Protocol]
+	[Model]
 #else
 	[Protocol]
 	[Model (AutoGeneratedName = true)]
@@ -18176,15 +18218,30 @@ namespace Foundation {
 
 		NSAttributedStringDocumentAttributes DefaultAttributes { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		CGSize PaperSize { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		UIEdgeInsets PaperMargin { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		CGSize ViewSize { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float ViewZoom { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSDocumentViewMode ViewMode { get; set; }
 
 		// The definition for this boolean is very specific in the header file:
@@ -18196,14 +18253,23 @@ namespace Foundation {
 		// bool ReadOnly { get; set; }
 		// #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSColor BackgroundColor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float HyphenationFactor {
 			get;
 			[PreSnippet ("if (value < 0 || value > 1.0f) throw new ArgumentOutOfRangeException (nameof (value), value, \"Value must be between 0 and 1\");")]
 			set;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float DefaultTabInterval {
 			get;
 			[PreSnippet ("if (value < 0 || value > 1.0f) throw new ArgumentOutOfRangeException (nameof (value), value, \"Value must be between 0 and 1\");")]

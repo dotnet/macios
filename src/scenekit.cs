@@ -2726,6 +2726,10 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNRenderingArguments {
+		/// <summary>Represents the value associated with the constant SCNModelTransform</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNModelTransform")]
 		NSString ModelTransform { get; }
 
@@ -4063,7 +4067,7 @@ namespace SceneKit {
 
 		[NullAllowed, Export ("timingFunction", ArgumentSemantic.Assign)]
 #if NET
-		Func<float,float> TimingFunction { get; set; }
+		Func<float, float> TimingFunction { get; set; }
 #else
 		Func<float, float> TimingFunction2 { get; set; }
 #endif

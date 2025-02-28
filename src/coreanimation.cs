@@ -932,15 +932,19 @@ namespace CoreAnimation {
 	/// <summary>Enumerates scrolling directions.</summary>
 	enum CAScroll {
 
+		/// <summary>Neither vertical nor horizontal scrolling.</summary>
 		[Field ("kCAScrollNone")]
 		None,
 
+		/// <summary>Vertical scrolling.</summary>
 		[Field ("kCAScrollVertically")]
 		Vertically,
 
+		/// <summary>Horizontal scrolling.</summary>
 		[Field ("kCAScrollHorizontally")]
 		Horizontally,
 
+		/// <summary>Both vertical and horizontal scrolling.</summary>
 		[Field ("kCAScrollBoth")]
 		Both,
 	}
@@ -1069,32 +1073,41 @@ namespace CoreAnimation {
 	}
 
 	enum CATextLayerTruncationMode {
+		/// <summary>To be added.</summary>
 		[Field ("kCATruncationNone")]
 		None,
 
+		/// <summary>To be added.</summary>
 		[Field ("kCATruncationStart")]
 		Start,
 
+		/// <summary>To be added.</summary>
 		[Field ("kCATruncationMiddle")]
 		Middle,
 
+		/// <summary>To be added.</summary>
 		[Field ("kCATruncationEnd")]
 		End,
 	}
 
 	enum CATextLayerAlignmentMode {
+		/// <summary>To be added.</summary>
 		[Field ("kCAAlignmentLeft")]
 		Left,
 
+		/// <summary>To be added.</summary>
 		[Field ("kCAAlignmentRight")]
 		Right,
 
+		/// <summary>To be added.</summary>
 		[Field ("kCAAlignmentCenter")]
 		Center,
 
+		/// <summary>To be added.</summary>
 		[Field ("kCAAlignmentJustified")]
 		Justified,
 
+		/// <summary>To be added.</summary>
 		[Field ("kCAAlignmentNatural")]
 		Natural,
 	}
@@ -1272,7 +1285,8 @@ namespace CoreAnimation {
 	///       </example>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/QuartzCore/Reference/CAEAGLLayer_Class/index.html">Apple documentation for <c>CAEAGLLayer</c></related>
-	[NoMac][NoMacCatalyst]
+	[NoMac]
+	[NoMacCatalyst]
 	[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'CAMetalLayer' instead.")]
 	[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'CAMetalLayer' instead.")]
 	[BaseType (typeof (CALayer))]
@@ -1301,7 +1315,7 @@ namespace CoreAnimation {
 	/// <include file="../docs/api/CoreAnimation/CAAnimation.xml" path="/Documentation/Docs[@DocId='T:CoreAnimation.CAAnimation']/*" />
 	[BaseType (typeof (NSObject)
 #if NET
-		, Delegates = new string [] {"WeakDelegate"}, Events = new Type [] { typeof (CAAnimationDelegate) }
+		, Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (CAAnimationDelegate) }
 #endif
 	)]
 	interface CAAnimation : CAAction, CAMediaTiming, NSSecureCoding, NSMutableCopying, SCNAnimationProtocol {

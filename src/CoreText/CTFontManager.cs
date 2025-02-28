@@ -46,7 +46,9 @@ namespace CoreText {
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontManager.h
 	public enum CTFontManagerScope : uint {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Process = 1,
 #if NET
 		[SupportedOSPlatform ("ios13.0")]
@@ -59,6 +61,7 @@ namespace CoreText {
 #endif
 		Persistent = 2,
 #if NET
+		/// <summary>To be added.</summary>
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
@@ -77,10 +80,14 @@ namespace CoreText {
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontManager.h
 	public enum CTFontManagerAutoActivation : uint {
+		/// <summary>To be added.</summary>
 		Default = 0,
+		/// <summary>To be added.</summary>
 		Disabled = 1,
+		/// <summary>To be added.</summary>
 		Enabled = 2,
 #if NET
+		/// <summary>Developers should not use this deprecated field. It's now treated as 'Default'.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -666,7 +673,7 @@ namespace CoreText {
 		[NoTV]
 		[NoMac]
 #endif
-		public static CTFontDescriptor[]? GetRegisteredFontDescriptors (CTFontManagerScope scope, bool enabled)
+		public static CTFontDescriptor []? GetRegisteredFontDescriptors (CTFontManagerScope scope, bool enabled)
 		{
 			var p = CTFontManagerCopyRegisteredFontDescriptors (scope, enabled.AsByte ());
 			// Copy/Create rule - we must release the CFArrayRef
@@ -746,7 +753,7 @@ namespace CoreText {
 		[iOS (13,0)]
 #endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
-		public unsafe static void RegisterFonts (string[] assetNames, CFBundle bundle, CTFontManagerScope scope, bool enabled, CTFontRegistrationHandler registrationHandler)
+		public unsafe static void RegisterFonts (string [] assetNames, CFBundle bundle, CTFontManagerScope scope, bool enabled, CTFontRegistrationHandler registrationHandler)
 		{
 			using (var arr = EnsureNonNullArray (assetNames, nameof (assetNames))) {
 				if (registrationHandler is null) {
@@ -774,7 +781,7 @@ namespace CoreText {
 		[NoMac]
 		[iOS (13,0)]
 #endif
-		public delegate void CTFontManagerRequestFontsHandler (CTFontDescriptor[] unresolvedFontDescriptors);
+		public delegate void CTFontManagerRequestFontsHandler (CTFontDescriptor [] unresolvedFontDescriptors);
 
 #if NET
 		[SupportedOSPlatform ("ios13.0")]
@@ -817,7 +824,7 @@ namespace CoreText {
 		[iOS (13,0)]
 #endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
-		public static void RequestFonts (CTFontDescriptor[] fontDescriptors, CTFontManagerRequestFontsHandler completionHandler)
+		public static void RequestFonts (CTFontDescriptor [] fontDescriptors, CTFontManagerRequestFontsHandler completionHandler)
 		{
 			if (completionHandler is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (completionHandler));

@@ -42,7 +42,7 @@ public partial class NSValue : NSObject {
 	public static NSDirectionalEdgeInsets ToNSDirectionalEdgeInsets (NativeHandle handle)
 	{
 		using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
-		return nsvalue.NSDirectionalEdgeInsetsValue;
+		return nsvalue.DirectionalEdgeInsetsValue;
 	}
 }
 

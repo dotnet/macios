@@ -4,7 +4,7 @@ using System;
 using System.Runtime.InteropServices;
 
 using ObjCRuntime;
-using CoreLocation;
+using CoreAnimation;
 
 #nullable enable
 
@@ -19,7 +19,7 @@ public partial class NSValue : NSObject {
 	/// <returns>The CATransform3D.</returns>
 	public static CATransform3D ToCATransform3D (NativeHandle handle)
 	{
-		using var nsvalue = Runtime.GetNSObject<NSValue> (handle);
+		using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;
 		return nsvalue.CATransform3DValue;
 	}
 }

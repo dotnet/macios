@@ -11,26 +11,23 @@ using ObjCRuntime;
 using CoreFoundation;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreFoundation {
 
 	public partial class CFBundle : NativeObject {
 
 		public enum PackageType {
+			/// <summary>To be added.</summary>
 			Application,
+			/// <summary>To be added.</summary>
 			Framework,
+			/// <summary>To be added.</summary>
 			Bundle
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public struct PackageInfo {
 			public PackageInfo (CFBundle.PackageType type, string creator)
 			{
@@ -38,7 +35,13 @@ namespace CoreFoundation {
 				this.Creator = creator;
 			}
 
+			/// <summary>To be added.</summary>
+			///         <value>To be added.</value>
+			///         <remarks>To be added.</remarks>
 			public PackageType Type { get; private set; }
+			/// <summary>To be added.</summary>
+			///         <value>To be added.</value>
+			///         <remarks>To be added.</remarks>
 			public string Creator { get; private set; }
 		}
 
@@ -138,6 +141,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static byte CFBundleIsExecutableLoaded (IntPtr bundle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool HasLoadedExecutable {
 			get { return CFBundleIsExecutableLoaded (Handle) != 0; }
 		}
@@ -200,6 +206,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFUrlRef */ IntPtr CFBundleCopyBuiltInPlugInsURL (IntPtr bundle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSUrl? BuiltInPlugInsUrl {
 			get {
 				return Runtime.GetNSObject<NSUrl> (CFBundleCopyBuiltInPlugInsURL (Handle), true);
@@ -209,6 +218,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFUrlRef */ IntPtr CFBundleCopyExecutableURL (IntPtr bundle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSUrl? ExecutableUrl {
 			get {
 				return Runtime.GetNSObject<NSUrl> (CFBundleCopyExecutableURL (Handle), true);
@@ -218,6 +230,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFUrlRef */ IntPtr CFBundleCopyPrivateFrameworksURL (IntPtr bundle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSUrl? PrivateFrameworksUrl {
 			get {
 				return Runtime.GetNSObject<NSUrl> (CFBundleCopyPrivateFrameworksURL (Handle), true);
@@ -227,6 +242,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFUrlRef */ IntPtr CFBundleCopyResourcesDirectoryURL (IntPtr bundle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSUrl? ResourcesDirectoryUrl {
 			get {
 				return Runtime.GetNSObject<NSUrl> (CFBundleCopyResourcesDirectoryURL (Handle), true);
@@ -236,6 +254,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFUrlRef */ IntPtr CFBundleCopySharedFrameworksURL (IntPtr bundle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSUrl? SharedFrameworksUrl {
 			get {
 				return Runtime.GetNSObject<NSUrl> (CFBundleCopySharedFrameworksURL (Handle), true);
@@ -245,6 +266,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFUrlRef */ IntPtr CFBundleCopySharedSupportURL (IntPtr bundle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSUrl? SharedSupportUrl {
 			get {
 				return Runtime.GetNSObject<NSUrl> (CFBundleCopySharedSupportURL (Handle), true);
@@ -254,6 +278,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFUrlRef */ IntPtr CFBundleCopySupportFilesDirectoryURL (IntPtr bundle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSUrl? SupportFilesDirectoryUrl {
 			get {
 				return Runtime.GetNSObject<NSUrl> (CFBundleCopySupportFilesDirectoryURL (Handle), true);
@@ -496,6 +523,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFUrlRef */ IntPtr CFBundleCopyBundleURL (IntPtr bundle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSUrl? Url {
 			get {
 				return Runtime.GetNSObject<NSUrl> (CFBundleCopyBundleURL (Handle), true);
@@ -505,6 +535,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFString */ IntPtr CFBundleGetDevelopmentRegion (IntPtr bundle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? DevelopmentRegion {
 			get { return CFString.FromHandle (CFBundleGetDevelopmentRegion (Handle)); }
 		}
@@ -512,6 +545,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFString */ IntPtr CFBundleGetIdentifier (IntPtr bundle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Identifier {
 			get { return CFString.FromHandle (CFBundleGetIdentifier (Handle)); }
 		}
@@ -519,6 +555,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFDictionary */ IntPtr CFBundleGetInfoDictionary (IntPtr bundle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary? InfoDictionary {
 			get {
 				// follows the Get rule, we need to retain
@@ -529,6 +568,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* NSDictionary */ IntPtr CFBundleGetLocalInfoDictionary (IntPtr bundle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary? LocalInfoDictionary {
 			get {
 				// follows the Get rule, we need to retain
@@ -554,6 +596,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		unsafe extern static void CFBundleGetPackageInfo (IntPtr bundle, uint* packageType, uint* packageCreator);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public PackageInfo Info {
 			get {
 				uint type = 0;
@@ -578,6 +623,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFArray */ IntPtr CFBundleCopyExecutableArchitectures (IntPtr bundle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CFBundle.Architecture []? Architectures {
 			get {
 				var rv = CFBundleCopyExecutableArchitectures (Handle);
@@ -596,21 +644,13 @@ namespace CoreFoundation {
 		}
 
 #if MONOMAC
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#else
-		[NoMacCatalyst]
-#endif
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static byte CFBundleIsExecutableLoadable (IntPtr bundle);
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#else
-		[NoMacCatalyst]
-#endif
 		public static bool IsExecutableLoadable (CFBundle bundle)
 		{
 			if (bundle is null)
@@ -619,21 +659,13 @@ namespace CoreFoundation {
 			return CFBundleIsExecutableLoadable (bundle.GetCheckedHandle ()) != 0;
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#else
-		[NoMacCatalyst]
-#endif
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static byte CFBundleIsExecutableLoadableForURL (IntPtr bundle);
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#else
-		[NoMacCatalyst]
-#endif
 		public static bool IsExecutableLoadable (NSUrl url)
 		{
 			if (url is null)
@@ -642,21 +674,13 @@ namespace CoreFoundation {
 			return CFBundleIsExecutableLoadableForURL (url.Handle) != 0;
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#else
-		[NoMacCatalyst]
-#endif
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static byte CFBundleIsArchitectureLoadable (/*cpu_type_t => integer_t => int*/ Architecture architecture);
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#else
-		[NoMacCatalyst]
-#endif
 		public static bool IsArchitectureLoadable (Architecture architecture) => CFBundleIsArchitectureLoadable (architecture) != 0;
 
 #endif

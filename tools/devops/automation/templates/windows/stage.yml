@@ -71,6 +71,7 @@ stages:
       parameters:
         repositoryAlias: ${{ parameters.repositoryAlias }}
         commit: ${{ parameters.commit }}
+        isPR: ${{ parameters.isPR }}
         macPool: ${{ parameters.macPool }}
         gitHubToken: ${{ parameters.gitHubToken }}
         xqaCertPass: ${{ parameters.xqaCertPass }}

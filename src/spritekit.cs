@@ -69,6 +69,9 @@ namespace SpriteKit {
 		[Export ("sceneTime")]
 		double SceneTime { get; set; }
 
+		/// <summary>Gets or sets a value that controls whether the scene plays.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("playing")]
 		bool Playing { [Bind ("isPlaying")] get; set; }
 

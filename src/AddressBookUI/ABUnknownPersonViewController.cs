@@ -15,12 +15,12 @@ using Foundation;
 using ObjCRuntime;
 
 namespace AddressBookUI {
-#if NET
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public class ABUnknownPersonCreatedEventArgs : EventArgs {
 
 		public ABUnknownPersonCreatedEventArgs (ABPerson? person)
@@ -31,6 +31,12 @@ namespace AddressBookUI {
 		public ABPerson? Person { get; private set; }
 	}
 
+	[SupportedOSPlatform ("ios")]
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	class InternalABUnknownPersonViewControllerDelegate : ABUnknownPersonViewControllerDelegate {
 		internal EventHandler<ABPersonViewPerformDefaultActionEventArgs>? performDefaultAction;
 		internal EventHandler<ABUnknownPersonCreatedEventArgs>? personCreated;

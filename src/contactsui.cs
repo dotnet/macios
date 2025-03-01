@@ -130,11 +130,17 @@ namespace ContactsUI {
 #endif
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
+		/// <summary>Describes all the keys that must be fetched for display in a <see cref="T:ContactsUI.CNContactViewController" />. For use with <see cref="P:Contacts.CNContactFetchRequest.KeysToFetch" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("descriptorForRequiredKeys")]
 		ICNKeyDescriptor DescriptorForRequiredKeys { get; }
 
 #if MONOMAC
+		/// <summary>The <see cref="T:Contacts.CNContact" /> that is displayed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("contact", ArgumentSemantic.Copy)]
 #else
@@ -258,9 +264,15 @@ namespace ContactsUI {
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	interface CNContactPicker {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displayedKeys", ArgumentSemantic.Copy)]
 		string [] DisplayedKeys { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		ICNContactPickerDelegate Delegate { get; set; }
 

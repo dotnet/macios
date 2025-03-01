@@ -52,30 +52,45 @@ namespace CoreText {
 	#region CFAttributedStringRef AttributeKey Prototypes
 	// defined as int32_t - System/Library/Frameworks/CoreText.framework/Headers/CTStringAttributes.h
 	public enum CTUnderlineStyle : int {
+		/// <summary>To be added.</summary>
 		None = 0x00,
+		/// <summary>To be added.</summary>
 		Single = 0x01,
+		/// <summary>To be added.</summary>
 		Thick = 0x02,
+		/// <summary>To be added.</summary>
 		Double = 0x09,
 	}
 
 	// defined as int32_t - System/Library/Frameworks/CoreText.framework/Headers/CTStringAttributes.h
 	public enum CTUnderlineStyleModifiers : int {
+		/// <summary>To be added.</summary>
 		PatternSolid = 0x0000,
+		/// <summary>To be added.</summary>
 		PatternDot = 0x0100,
+		/// <summary>To be added.</summary>
 		PatternDash = 0x0200,
+		/// <summary>To be added.</summary>
 		PatternDashDot = 0x0300,
+		/// <summary>To be added.</summary>
 		PatternDashDotDot = 0x0400,
 	}
 
 	public enum CTLigatureFormation {
+		/// <summary>To be added.</summary>
 		Essential = 0,
+		/// <summary>To be added.</summary>
 		Standard = 1,
+		/// <summary>To be added.</summary>
 		All = 2,
 	}
 
 	public enum CTSuperscriptStyle {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Superscript = 1,
+		/// <summary>To be added.</summary>
 		Subscript = -1,
 	}
 
@@ -155,8 +170,14 @@ namespace CoreText {
 			Dictionary = dictionary;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary Dictionary { get; private set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CTFont? Font {
 			get {
 				var h = CFDictionary.GetValue (Dictionary.Handle, CTStringAttributeKey.Font.GetHandle ());
@@ -165,6 +186,9 @@ namespace CoreText {
 			set { Adapter.SetNativeValue (Dictionary, CTStringAttributeKey.Font!, value); }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool ForegroundColorFromContext {
 			get {
 				return CFDictionary.GetBooleanValue (Dictionary.Handle,
@@ -178,12 +202,18 @@ namespace CoreText {
 		}
 
 		// Header says 'Value must be a CFNumberRef float' - System/Library/Frameworks/CoreText.framework/Headers/CTStringAttributes.h
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? KerningAdjustment {
 			get { return Adapter.GetSingleValue (Dictionary, CTStringAttributeKey.KerningAdjustment); }
 			set { Adapter.SetValue (Dictionary, CTStringAttributeKey.KerningAdjustment!, value); }
 		}
 
 		// Documentation says this must be 'CFNumber', doesn't specify exact type (but implies it's an integer value)
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CTLigatureFormation? LigatureFormation {
 			get {
 				var value = Adapter.GetInt32Value (Dictionary, CTStringAttributeKey.LigatureFormation);
@@ -195,6 +225,9 @@ namespace CoreText {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGColor? ForegroundColor {
 			get {
 				var h = CFDictionary.GetValue (Dictionary.Handle, CTStringAttributeKey.ForegroundColor.GetHandle ());
@@ -204,6 +237,9 @@ namespace CoreText {
 		}
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -224,6 +260,9 @@ namespace CoreText {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CTParagraphStyle? ParagraphStyle {
 			get {
 				var h = CFDictionary.GetValue (Dictionary.Handle, CTStringAttributeKey.ParagraphStyle.GetHandle ());
@@ -233,11 +272,17 @@ namespace CoreText {
 		}
 
 		// Documentation says this must be 'CFNumber', doesn't specify exact type (but implies it's a floating point value)
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? StrokeWidth {
 			get { return Adapter.GetSingleValue (Dictionary, CTStringAttributeKey.StrokeWidth); }
 			set { Adapter.SetValue (Dictionary, CTStringAttributeKey.StrokeWidth!, value); }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGColor? StrokeColor {
 			get {
 				var h = CFDictionary.GetValue (Dictionary.Handle, CTStringAttributeKey.StrokeColor.GetHandle ());
@@ -261,6 +306,9 @@ namespace CoreText {
 		}
 
 		// Documentation says this must be 'CFNumber', doesn't specify exact type
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? UnderlineStyleValue {
 			get { return Adapter.GetInt32Value (Dictionary, CTStringAttributeKey.UnderlineStyle); }
 			set { Adapter.SetValue (Dictionary, CTStringAttributeKey.UnderlineStyle!, value); }
@@ -269,6 +317,9 @@ namespace CoreText {
 		const int UnderlineStyleMask = 0x000F;
 		const int UnderlineStyleModifiersMask = 0x0700;
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CTUnderlineStyle? UnderlineStyle {
 			get {
 				var v = UnderlineStyleValue;
@@ -282,6 +333,9 @@ namespace CoreText {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CTUnderlineStyleModifiers? UnderlineStyleModifiers {
 			get {
 				var v = UnderlineStyleValue;
@@ -295,6 +349,9 @@ namespace CoreText {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CTSuperscriptStyle? Superscript {
 			get {
 				var value = Adapter.GetInt32Value (Dictionary, CTStringAttributeKey.Superscript);
@@ -306,6 +363,9 @@ namespace CoreText {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGColor? UnderlineColor {
 			get {
 				var h = CFDictionary.GetValue (Dictionary.Handle, CTStringAttributeKey.UnderlineColor.GetHandle ());
@@ -314,6 +374,9 @@ namespace CoreText {
 			set { Adapter.SetNativeValue (Dictionary, CTStringAttributeKey.UnderlineColor!, value); }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool VerticalForms {
 			get {
 				return CFDictionary.GetBooleanValue (Dictionary.Handle,
@@ -327,6 +390,9 @@ namespace CoreText {
 		}
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
@@ -345,6 +411,9 @@ namespace CoreText {
 		}
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
@@ -355,6 +424,9 @@ namespace CoreText {
 			set { Adapter.SetValue (Dictionary, CTStringAttributeKey.BaselineOffset!, value); }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CTGlyphInfo? GlyphInfo {
 			get {
 				var h = CFDictionary.GetValue (Dictionary.Handle, CTStringAttributeKey.GlyphInfo.GetHandle ());
@@ -363,11 +435,17 @@ namespace CoreText {
 			set { Adapter.SetNativeValue (Dictionary, CTStringAttributeKey.GlyphInfo!, value); }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? CharacterShape {
 			get { return Adapter.GetInt32Value (Dictionary, CTStringAttributeKey.CharacterShape); }
 			set { Adapter.SetValue (Dictionary, CTStringAttributeKey.CharacterShape!, value); }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CTRunDelegate? RunDelegate {
 			get {
 				var h = CFDictionary.GetValue (Dictionary.Handle, CTStringAttributeKey.RunDelegate.GetHandle ());
@@ -376,6 +454,9 @@ namespace CoreText {
 			set { Adapter.SetNativeValue (Dictionary, CTStringAttributeKey.RunDelegate!, value); }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CTBaselineClass? BaselineClass {
 			get {
 				var value = CFDictionary.GetValue (Dictionary.Handle, CTStringAttributeKey.BaselineClass.GetHandle ());

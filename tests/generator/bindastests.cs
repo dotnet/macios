@@ -3,6 +3,7 @@ using System.Drawing;
 using Foundation;
 using CoreMedia;
 using CoreAnimation;
+using CoreGraphics;
 using ObjCRuntime;
 
 namespace BindAsTests {
@@ -12,10 +13,10 @@ namespace BindAsTests {
 
 		[return: BindAs (typeof (bool?))]
 		[Export ("boolMethod:a:b:c:d:")]
-		NSNumber BoolMethod (int arg0, string arg1, [BindAs (typeof (RectangleF))] NSValue arg2, [BindAs (typeof (bool?))] NSNumber arg3, int arg4);
+		NSNumber BoolMethod (int arg0, string arg1, [BindAs (typeof (CGRect))] NSValue arg2, [BindAs (typeof (bool?))] NSNumber arg3, int arg4);
 
 		[Export ("stringMethod:a:b:c:d:")]
-		string stringMethod (int arg0, string arg1, [BindAs (typeof (RectangleF))] NSValue arg2, [BindAs (typeof (bool?))] NSNumber arg3, int arg4);
+		string stringMethod (int arg0, string arg1, [BindAs (typeof (CGRect))] NSValue arg2, [BindAs (typeof (bool?))] NSNumber arg3, int arg4);
 
 		[return: BindAs (typeof (bool?))]
 		[Export ("boolMethod:")]
@@ -45,7 +46,7 @@ namespace BindAsTests {
 		[Export ("cmtimeMethod")]
 		NSValue CMTimeMethod ();
 
-		[return: BindAs (typeof (PointF))]
+		[return: BindAs (typeof (CGPoint))]
 		[Static, Export ("pointMethodS:")]
 		NSValue PointFMethodS (sbyte arg1);
 
@@ -57,11 +58,11 @@ namespace BindAsTests {
 		[Export ("doubleProperty")]
 		NSNumber DoubleProperty { get; set; }
 
-		[BindAs (typeof (RectangleF?))]
+		[BindAs (typeof (CGRect?))]
 		[Static, Export ("rectangleFPropertyS")]
 		NSValue RectangleFPropertyS { get; set; }
 
-		[BindAs (typeof (SizeF))]
+		[BindAs (typeof (CGSize))]
 		[Export ("sizeFFProperty")]
 		NSValue SizeFProperty { get; set; }
 

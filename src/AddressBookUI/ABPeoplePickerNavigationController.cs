@@ -16,12 +16,12 @@ using UIKit;
 using ObjCRuntime;
 
 namespace AddressBookUI {
-#if NET
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public class ABPeoplePickerSelectPersonEventArgs : EventArgs {
 
 		public ABPeoplePickerSelectPersonEventArgs (ABPerson person)
@@ -34,12 +34,12 @@ namespace AddressBookUI {
 		public bool Continue { get; set; }
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public class ABPeoplePickerPerformActionEventArgs : ABPeoplePickerSelectPersonEventArgs {
 
 		public ABPeoplePickerPerformActionEventArgs (ABPerson person, ABPersonProperty property, int? identifier)
@@ -53,12 +53,12 @@ namespace AddressBookUI {
 		public int? Identifier { get; private set; }
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public class ABPeoplePickerSelectPerson2EventArgs : EventArgs {
 
 		public ABPeoplePickerSelectPerson2EventArgs (ABPerson person)
@@ -69,12 +69,12 @@ namespace AddressBookUI {
 		public ABPerson Person { get; private set; }
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public class ABPeoplePickerPerformAction2EventArgs : ABPeoplePickerSelectPerson2EventArgs {
 
 		public ABPeoplePickerPerformAction2EventArgs (ABPerson person, ABPersonProperty property, int? identifier)
@@ -88,6 +88,12 @@ namespace AddressBookUI {
 		public int? Identifier { get; private set; }
 	}
 
+	[SupportedOSPlatform ("ios")]
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	class InternalABPeoplePickerNavigationControllerDelegate : ABPeoplePickerNavigationControllerDelegate {
 		internal EventHandler<ABPeoplePickerSelectPersonEventArgs>? selectPerson;
 		internal EventHandler<ABPeoplePickerPerformActionEventArgs>? performAction;

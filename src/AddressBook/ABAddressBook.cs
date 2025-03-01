@@ -45,16 +45,12 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace AddressBook {
-#if NET
-	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public class ExternalChangeEventArgs : EventArgs {
 		public ExternalChangeEventArgs (ABAddressBook addressBook, NSDictionary? info)
 		{
@@ -78,6 +74,12 @@ namespace AddressBook {
 	// Note that the above comment was removed from iOS 6.0+ documentation (and were not part of OSX docs AFAIK).
 	// It make sense since it's not possible to call those functions, from 6.0+ they will return NULL on devices,
 	// unless the application has been authorized to access the address book.
+	[SupportedOSPlatform ("ios")]
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	static class InitConstants {
 		public static void Init () { }
 
@@ -111,16 +113,12 @@ namespace AddressBook {
 		}
 	}
 
-#if NET
-	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public class ABAddressBook : NativeObject, IEnumerable<ABRecord> {
 
 		public static readonly NSString ErrorDomain;
@@ -130,14 +128,12 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		internal extern static IntPtr ABAddressBookCreate ();
 
-#if NET
-		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("ios")]
-		[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-		[ObsoletedOSPlatform ("ios6.0", "Use the static Create method instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 6, 0, message: "Use the static Create method instead")]
-#endif
+		[ObsoletedOSPlatform ("ios", "Use the static Create method instead")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use the static Create method instead")]
+		[UnsupportedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("tvos")]
 		public ABAddressBook ()
 			: this (ABAddressBookCreate (), true)
 		{

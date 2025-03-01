@@ -18,15 +18,24 @@ namespace VideoToolbox {
 	/// <summary>Possible VideoToolbox API errors.</summary>
 	public enum VTStatus {
 		Ok,
+		/// <summary>To be added.</summary>
 		PropertyNotSupported = -12900,
 		PropertyReadOnly = -12901,
+		/// <summary>To be added.</summary>
 		Parameter = -12902,
+		/// <summary>To be added.</summary>
 		InvalidSession = -12903,
+		/// <summary>To be added.</summary>
 		AllocationFailed = -12904,
+		/// <summary>To be added.</summary>
 		PixelTransferNotSupported = -12905,
+		/// <summary>To be added.</summary>
 		CouldNotFindVideoDecoder = -12906,
+		/// <summary>To be added.</summary>
 		CouldNotCreateInstance = -12907,
+		/// <summary>To be added.</summary>
 		CouldNotFindVideoEncoder = -12908,
+		/// <summary>To be added.</summary>
 		VideoDecoderBadData = -12909,
 		VideoDecoderUnsupportedDataFormat = -12910,
 		VideoDecoderMalfunction = -12911,
@@ -73,9 +82,13 @@ namespace VideoToolbox {
 	/// <summary>Flags to control encoder in a decompression session</summary>
 	[Flags]
 	public enum VTDecodeFrameFlags : uint {
+		/// <summary>To be added.</summary>
 		EnableAsynchronousDecompression = 1 << 0,
+		/// <summary>To be added.</summary>
 		DoNotOutputFrame = 1 << 1,
+		/// <summary>To be added.</summary>
 		OneTimeRealTimePlayback = 1 << 2,
+		/// <summary>To be added.</summary>
 		EnableTemporalProcessing = 1 << 3,
 	}
 
@@ -83,8 +96,11 @@ namespace VideoToolbox {
 	/// <summary>Flags for status reporting in decoding sessions.</summary>
 	[Flags]
 	public enum VTDecodeInfoFlags : uint {
+		/// <summary>To be added.</summary>
 		Asynchronous = 1 << 0,
+		/// <summary>To be added.</summary>
 		FrameDropped = 1 << 1,
+		/// <summary>To be added.</summary>
 		ImageBufferModifiable = 1 << 2,
 		SkippedLeadingFrameDropped = 1 << 3,
 	}
@@ -93,7 +109,9 @@ namespace VideoToolbox {
 	/// <summary>Encoding status flags.</summary>
 	[Flags]
 	public enum VTEncodeInfoFlags : uint {
+		/// <summary>To be added.</summary>
 		Asynchronous = 1 << 0,
+		/// <summary>To be added.</summary>
 		FrameDropped = 1 << 1
 	}
 
@@ -107,57 +125,108 @@ namespace VideoToolbox {
 	// Strongly Typed VTProfileLevelKey
 	/// <summary>Strongly typed set of options used by <see cref="P:VideoToolbox.VTCompressionProperties.ProfileLevel" />.</summary>
 	public enum VTProfileLevel {
+		/// <summary>The protocol, profile, and level have not been set.</summary>
 		Unset,
+		/// <summary>The H.264 compression format, baseline profile, level 1.3.</summary>
 		H264Baseline13,
+		/// <summary>The H.264 compression format, baseline profile, level 3.0.</summary>
 		H264Baseline30,
+		/// <summary>The H.264 compression format, baseline profile, level 3.1.</summary>
 		H264Baseline31,
+		/// <summary>The H.264 compression format, baseline profile, level 3.2.</summary>
 		H264Baseline32,
+		/// <summary>The H.264 compression format, baseline profile, level 4.0.</summary>
 		H264Baseline40,
+		/// <summary>The H.264 compression format, baseline profile, level 4.1.</summary>
 		H264Baseline41,
+		/// <summary>The H.264 compression format, baseline profile, level 4.2.</summary>
 		H264Baseline42,
+		/// <summary>The H.264 compression format, baseline profile, level 5.0.</summary>
 		H264Baseline50,
+		/// <summary>The H.264 compression format, baseline profile, level 5.1.</summary>
 		H264Baseline51,
+		/// <summary>The H.264 compression format, baseline profile, level 5.2.</summary>
 		H264Baseline52,
+		/// <summary>The H.264 compression format, baseline profile. Determine the level automatically.</summary>
 		H264BaselineAutoLevel,
+		/// <summary>The H.264 compression format, main profile, level 3.0.</summary>
 		H264Main30,
+		/// <summary>The H.264 compression format, main profile, level 3.1.</summary>
 		H264Main31,
+		/// <summary>The H.264 compression format, main profile, level 3.2.</summary>
 		H264Main32,
+		/// <summary>The H.264 compression format, main profile, level 4.0.</summary>
 		H264Main40,
+		/// <summary>The H.264 compression format, main profile, level 4.1.</summary>
 		H264Main41,
+		/// <summary>The H.264 compression format, main profile, level 4.2.</summary>
 		H264Main42,
+		/// <summary>The H.264 compression format, main profile, level 5.0.</summary>
 		H264Main50,
+		/// <summary>The H.264 compression format, main profile, level 5.1.</summary>
 		H264Main51,
+		/// <summary>The H.264 compression format, main profile, level 5.2.</summary>
 		H264Main52,
+		/// <summary>The H.264 compression format, main profile. Determine the level automatically.</summary>
 		H264MainAutoLevel,
+		/// <summary>The H.264 compression format, extended profile, level 5.0.</summary>
 		H264Extended50,
+		/// <summary>The H.264 compression format, extended profile. Determine the level automatically.</summary>
 		H264ExtendedAutoLevel,
+		/// <summary>The H.264 compression format, high profile, level 3.0.</summary>
 		H264High30,
+		/// <summary>The H.264 compression format, high profile, level 3.1.</summary>
 		H264High31,
+		/// <summary>The H.264 compression format, high profile, level 3.2.</summary>
 		H264High32,
+		/// <summary>The H.264 compression format, high profile, level 4.0.</summary>
 		H264High40,
+		/// <summary>The H.264 compression format, high profile, level 4.1.</summary>
 		H264High41,
+		/// <summary>The H.264 compression format, high profile, level 4.2.</summary>
 		H264High42,
+		/// <summary>The H.264 compression format, high profile, level 5.0.</summary>
 		H264High50,
+		/// <summary>The H.264 compression format, high profile, level 5.1.</summary>
 		H264High51,
+		/// <summary>The H.264 compression format, high profile, level 5.2.</summary>
 		H264High52,
+		/// <summary>The H.264 compression format, high profile. Determine the level automatically.</summary>
 		H264HighAutoLevel,
+		/// <summary>The MPEG-4 simple profile, level 0.</summary>
 		MP4VSimpleL0,
+		/// <summary>The MPEG-4 simple profile, level 1.</summary>
 		MP4VSimpleL1,
+		/// <summary>The MPEG-4 simple profile, level 2.</summary>
 		MP4VSimpleL2,
+		/// <summary>The MPEG-4 simple profile, level 3.</summary>
 		MP4VSimpleL3,
+		/// <summary>The MPEG-4 main profile, level 2.</summary>
 		MP4VMainL2,
+		/// <summary>The MPEG-4 main profile, level 3.</summary>
 		MP4VMainL3,
+		/// <summary>The MPEG-4 main profile, level 4.</summary>
 		MP4VMainL4,
+		/// <summary>The MPEG-4 advanced simple profile, level 0.</summary>
 		MP4VAdvancedSimpleL0,
+		/// <summary>The MPEG-4 advanced simple profile, level 1.</summary>
 		MP4VAdvancedSimpleL1,
+		/// <summary>The MPEG-4 advanced simple profile, level 2.</summary>
 		MP4VAdvancedSimpleL2,
+		/// <summary>The MPEG-4 advanced simple profile, level 3.</summary>
 		MP4VAdvancedSimpleL3,
+		/// <summary>The MPEG-4 advanced simple profile, level 4.</summary>
 		MP4VAdvancedSimpleL4,
+		/// <summary>The H.263 compression format, profile 0, level 1.0.</summary>
 		H263Profile0Level10,
+		/// <summary>The H.263 compression format, profile 0, level 4.5.</summary>
 		H263Profile0Level45,
+		/// <summary>The H.263 compression format, profile 3, level 4.5.</summary>
 		H263Profile3Level45,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		HevcMainAutoLevel,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		HevcMain10AutoLevel,
 	}
@@ -165,35 +234,50 @@ namespace VideoToolbox {
 	// Strongly Typed VTH264EntropyModeKeys
 	/// <summary>Strongly typed set of options used by <see cref="P:VideoToolbox.VTCompressionProperties.H264EntropyMode" />.</summary>
 	public enum VTH264EntropyMode {
+		/// <summary>To be added.</summary>
 		Unset,
+		/// <summary>To be added.</summary>
 		Cavlc,
+		/// <summary>To be added.</summary>
 		Cabac
 	}
 
 	// Strongly Typed kVTCompressionPropertyKey_FieldCount
 	/// <summary>Frame encoding options.</summary>
 	public enum VTFieldCount {
+		/// <summary>To be added.</summary>
 		Progressive = 1,
+		/// <summary>To be added.</summary>
 		Interlaced = 2
 	}
 
 	// Strongly Typed kVTCompressionPropertyKey_FieldDetail
 	/// <summary>Field ordering options.</summary>
 	public enum VTFieldDetail {
+		/// <summary>To be added.</summary>
 		Unset,
+		/// <summary>To be added.</summary>
 		TemporalTopFirst,
+		/// <summary>To be added.</summary>
 		TemporalBottomFirst,
+		/// <summary>To be added.</summary>
 		SpatialFirstLineEarly,
+		/// <summary>To be added.</summary>
 		SpatialFirstLineLate
 	}
 
 	// Strongly Typed kVTCompressionPropertyKey_ColorPrimaries
 	/// <summary>Represents color primaries in compressed sample buffers</summary>
 	public enum VTColorPrimaries {
+		/// <summary>To be added.</summary>
 		Unset,
+		/// <summary>To be added.</summary>
 		ItuR7092,
+		/// <summary>To be added.</summary>
 		Ebu3213,
+		/// <summary>To be added.</summary>
 		SmpteC,
+		/// <summary>To be added.</summary>
 		P22
 	}
 
@@ -218,11 +302,17 @@ namespace VideoToolbox {
 	// Strongly Typed kVTDecompressionPropertyKey_FieldMode
 	/// <summary>Decoder field mode options.</summary>
 	public enum VTFieldMode {
+		/// <summary>To be added.</summary>
 		Unset,
+		/// <summary>To be added.</summary>
 		BothFields,
+		/// <summary>To be added.</summary>
 		TopFieldOnly,
+		/// <summary>To be added.</summary>
 		BottomFieldOnly,
+		/// <summary>To be added.</summary>
 		SingleField,
+		/// <summary>To be added.</summary>
 		DeinterlaceFields
 	}
 
@@ -237,27 +327,39 @@ namespace VideoToolbox {
 	// Strongly Typed kVTDecompressionPropertyKey_OnlyTheseFrames
 	/// <summary>Strongly typed set of options used by <see cref="P:VideoToolbox.VTDecompressionProperties.OnlyTheseFrames" />.</summary>
 	public enum VTOnlyTheseFrames {
+		/// <summary>To be added.</summary>
 		Unset,
+		/// <summary>To be added.</summary>
 		AllFrames,
+		/// <summary>To be added.</summary>
 		NonDroppableFrames,
+		/// <summary>To be added.</summary>
 		IFrames,
+		/// <summary>To be added.</summary>
 		KeyFrames
 	}
 
 	// Strongly Typed kVTPropertyTypeKey
 	/// <summary>Strongly typed set of options.</summary>
 	public enum VTPropertyType {
+		/// <summary>To be added.</summary>
 		Unset,
+		/// <summary>To be added.</summary>
 		Enumeration,
+		/// <summary>To be added.</summary>
 		Boolean,
+		/// <summary>To be added.</summary>
 		Number
 	}
 
 	// Strongly Typed kVTPropertyReadWriteStatusKey
 	/// <summary>Strongly typed set of options used by <see cref="P:VideoToolbox.VTPropertyOptions.ReadWriteStatus" />.</summary>
 	public enum VTReadWriteStatus {
+		/// <summary>To be added.</summary>
 		Unset,
+		/// <summary>To be added.</summary>
 		ReadOnly,
+		/// <summary>To be added.</summary>
 		ReadWrite
 	}
 
@@ -275,18 +377,26 @@ namespace VideoToolbox {
 	/// <summary>Image scaling options.</summary>
 	[MacCatalyst (13, 1)]
 	public enum VTScalingMode {
+		/// <summary>To be added.</summary>
 		Unset,
+		/// <summary>To be added.</summary>
 		Normal,
+		/// <summary>To be added.</summary>
 		CropSourceToCleanAperture,
+		/// <summary>To be added.</summary>
 		Letterbox,
+		/// <summary>To be added.</summary>
 		Trim
 	}
 
 	/// <summary>Chroma downsampling techniques.</summary>
 	[MacCatalyst (13, 1)]
 	public enum VTDownsamplingMode {
+		/// <summary>To be added.</summary>
 		Unset,
+		/// <summary>To be added.</summary>
 		Decimate,
+		/// <summary>To be added.</summary>
 		Average
 	}
 

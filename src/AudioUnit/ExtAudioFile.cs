@@ -45,27 +45,47 @@ using System.Runtime.Versioning;
 namespace AudioUnit {
 	public enum ExtAudioFileError // Implictly cast to OSType
 	{
+		/// <summary>To be added.</summary>
 		OK = 0,
+		/// <summary>To be added.</summary>
 		CodecUnavailableInputConsumed = -66559,
+		/// <summary>To be added.</summary>
 		CodecUnavailableInputNotConsumed = -66560,
+		/// <summary>To be added.</summary>
 		InvalidProperty = -66561,
+		/// <summary>To be added.</summary>
 		InvalidPropertySize = -66562,
+		/// <summary>To be added.</summary>
 		NonPCMClientFormat = -66563,
+		/// <summary>To be added.</summary>
 		InvalidChannelMap = -66564,
+		/// <summary>To be added.</summary>
 		InvalidOperationOrder = -66565,
+		/// <summary>To be added.</summary>
 		InvalidDataFormat = -66566,
+		/// <summary>To be added.</summary>
 		MaxPacketSizeUnknown = -66567,
+		/// <summary>To be added.</summary>
 		InvalidSeek = -66568,
+		/// <summary>To be added.</summary>
 		AsyncWriteTooLarge = -66569,
+		/// <summary>To be added.</summary>
 		AsyncWriteBufferOverflow = -66570,
 
 		// Shared error codes
+		/// <summary>To be added.</summary>
 		NotOpenError = -38,
+		/// <summary>To be added.</summary>
 		EndOfFileError = -39,
+		/// <summary>To be added.</summary>
 		PositionError = -40,
+		/// <summary>To be added.</summary>
 		FileNotFoundError = -43,
+		/// <summary>To be added.</summary>
 		BadFilePathError = 0x21707468, // '!pth'
+		/// <summary>To be added.</summary>
 		FilePermissionError = -54,
+		/// <summary>To be added.</summary>
 		TooManyFilesOpenError = -42,
 	}
 
@@ -78,6 +98,11 @@ namespace AudioUnit {
 	public class ExtAudioFile : IDisposable {
 		IntPtr _extAudioFile;
 
+		/// <summary>The client data format's maximum packet size in bytes.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public uint? ClientMaxPacketSize {
 			get {
 				uint size = sizeof (uint);
@@ -91,6 +116,11 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>The file data format's maximum packet size in bytes.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public uint? FileMaxPacketSize {
 			get {
 				uint size = sizeof (uint);
@@ -106,6 +136,11 @@ namespace AudioUnit {
 		}
 
 
+		/// <summary>The underlying AudioFile.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public IntPtr? AudioFile {
 			get {
 				uint size = (uint) IntPtr.Size;
@@ -120,6 +155,10 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>Returns underlying <see cref="T:AudioToolbox.AudioConverter" /> instance.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>AudioConverter changes are not propagated automatically. After changing any property <see cref="M:AudioUnit.ExtAudioFile.SynchronizeAudioConverter" /> method has to be called to synchronize the converter output format with the file data format.</remarks>
 		public AudioConverter? AudioConverter {
 			get {
 				uint size = sizeof (uint);
@@ -134,6 +173,11 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>The file's length in sample frames.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public long FileLengthFrames {
 			get {
 				long length;
@@ -150,6 +194,11 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>The file's actual data format.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public AudioStreamBasicDescription FileDataFormat {
 			get {
 				AudioStreamBasicDescription dc = new AudioStreamBasicDescription ();
@@ -165,6 +214,10 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>Specified the format of linear PCM.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property has to be set when encoding or decoding a non-PCM file data format.</remarks>
 		public AudioStreamBasicDescription ClientDataFormat {
 			get {
 				uint size = (uint) Marshal.SizeOf<AudioStreamBasicDescription> ();

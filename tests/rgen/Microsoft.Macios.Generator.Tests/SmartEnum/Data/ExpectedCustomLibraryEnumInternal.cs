@@ -77,7 +77,7 @@ public static partial class CustomLibraryEnumInternalExtensions
 		throw new NotSupportedException ($"The constant {constant} has no associated enum value on this platform.");
 	}
 
-	public static CustomLibraryEnumInternal GetValueFromHandle (NativeHandle handle)
+	public static CustomLibraryEnumInternal GetValue (NativeHandle handle)
 	{
 		using var str = Runtime.GetNSObject<NSString> (handle)!;
 		return GetValue (str);

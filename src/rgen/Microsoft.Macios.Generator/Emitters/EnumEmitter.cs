@@ -54,7 +54,7 @@ class EnumEmitter : ICodeEmitter {
 		return true;
 	}
 
-	void EmitExtensionMethods (TabbedWriter<StringWriter> classBlock, in Binding binding)
+	void EmitExtensionMethods (TabbedWriter<StringWriter> classBlock, string symbolName, in Binding binding)
 	{
 		if (binding.EnumMembers.Length == 0)
 			return;
@@ -62,6 +62,7 @@ class EnumEmitter : ICodeEmitter {
 		// smart enum require 4 diff methods to be able to retrieve the values
 
 		// Get constant
+		classBlock.WriteDocumentation (Documentation.SmartEnum.GetConstant ());
 		using (var getConstantBlock = classBlock.CreateBlock ($"public static NSString? GetConstant (this {binding.Name} self)", true)) {
 			getConstantBlock.WriteLine ("IntPtr ptr = IntPtr.Zero;");
 			using (var switchBlock = getConstantBlock.CreateBlock ("switch ((int) self)", true)) {
@@ -81,6 +82,7 @@ class EnumEmitter : ICodeEmitter {
 
 		classBlock.WriteLine ();
 		// Get value
+		classBlock.WriteDocumentation (Documentation.SmartEnum.GetValueNSString (symbolName));
 		using (var getValueBlock = classBlock.CreateBlock ($"public static {binding.Name} GetValue (NSString constant)", true)) {
 			getValueBlock.WriteLine ("if (constant is null)");
 			getValueBlock.WriteLine ("\tthrow new ArgumentNullException (nameof (constant));");
@@ -98,6 +100,7 @@ class EnumEmitter : ICodeEmitter {
 		classBlock.WriteLine ();
 
 		// get value from a handle, this is a helper method used in the BindAs bindings.
+		classBlock.WriteDocumentation (Documentation.SmartEnum.GetValueHandle (symbolName));
 		using (var getValueFromHandle =
 			   classBlock.CreateBlock ($"public static {binding.Name} GetValue (NativeHandle handle)",
 				   true)) {
@@ -109,6 +112,7 @@ return GetValue (str);
 
 		classBlock.WriteLine ();
 		// To ConstantArray
+		classBlock.WriteDocumentation (Documentation.SmartEnum.ToConstantArray (symbolName));
 		classBlock.WriteRaw (
 @$"internal static NSString?[]? ToConstantArray (this {binding.Name}[]? values)
 {{
@@ -124,6 +128,7 @@ return GetValue (str);
 		classBlock.WriteLine ();
 		classBlock.WriteLine ();
 		// ToEnumArray
+		classBlock.WriteDocumentation (Documentation.SmartEnum.ToEnumArray (symbolName));
 		classBlock.WriteRaw (
 @$"internal static {binding.Name}[]? ToEnumArray (this NSString[]? values)
 {{
@@ -155,10 +160,13 @@ return GetValue (str);
 		bindingContext.Builder.WriteLine ($"namespace {string.Join (".", bindingContext.Changes.Namespace)};");
 		bindingContext.Builder.WriteLine ();
 
+		var symbolName = GetSymbolName (bindingContext.Changes);
+		var extensionClassDeclaration =
+			bindingContext.Changes.ToSmartEnumExtensionDeclaration (symbolName);
+
+		bindingContext.Builder.WriteDocumentation (Documentation.SmartEnum.ClassDocumentation (symbolName));
 		bindingContext.Builder.AppendMemberAvailability (bindingContext.Changes.SymbolAvailability);
 		bindingContext.Builder.AppendGeneratedCodeAttribute ();
-		var extensionClassDeclaration =
-			bindingContext.Changes.ToSmartEnumExtensionDeclaration (GetSymbolName (bindingContext.Changes));
 		using (var classBlock = bindingContext.Builder.CreateBlock (extensionClassDeclaration.ToString (), true)) {
 			classBlock.WriteLine ();
 			classBlock.WriteLine ($"static IntPtr[] values = new IntPtr [{bindingContext.Changes.EnumMembers.Length}];");
@@ -171,7 +179,7 @@ return GetValue (str);
 			classBlock.WriteLine ();
 
 			// emit the extension methods that will be used to get the values from the enum
-			EmitExtensionMethods (classBlock, bindingContext.Changes);
+			EmitExtensionMethods (classBlock, symbolName, bindingContext.Changes);
 			classBlock.WriteLine ();
 		}
 

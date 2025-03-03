@@ -51,6 +51,9 @@ static class AttributesNames {
 		if (type == typeof (ObjCBindings.StrongDictionary)) {
 			return BindingStrongDictionaryAttribute;
 		}
+		if (type == typeof (ObjCBindings.SmartEnum)) {
+			return BindingSmartEnumAttribute;
+		}
 
 		return null;
 	}

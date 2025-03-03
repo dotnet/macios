@@ -219,7 +219,41 @@ $@"if (IsDirectBinding) {{
 
 	void EmitNotifications (in ImmutableArray<Property> properties, TabbedWriter<StringWriter> classBlock)
 	{
-		// to be implemented, do not throw or tests will fail.
+		if (properties.Length == 0)
+			return;
+
+		// default values
+		const string defaultNotificationCenter = "NSNotificationCenter.DefaultCenter";
+		const string defaultEventArgument = "Foundation.NSNotificationEventArgs";
+
+		// add a space just to make it nicer to read
+		classBlock.WriteLine ();
+
+		// create a nested static class with the notification helpers
+		using (var notificationClass = classBlock.CreateBlock ("public static partial class Notifications", true)) {
+			notificationClass.WriteLine ();
+			// generate two methods per notification
+			foreach (var notification in properties) {
+				var count = 12; // == "Notification".Length;
+				var name = $"Observe{notification.Name [..^count]}";
+				var notificationCenter = notification.ExportFieldData?.FieldData.NotificationCenter ?? defaultNotificationCenter;
+				var eventType = notification.ExportFieldData?.FieldData.Type ?? defaultEventArgument;
+				// use the raw writer which makes it easier to read in this case
+				notificationClass.WriteRaw (
+@$"public static NSObject {name} (EventHandler<{eventType}> handler)
+{{
+	return {notificationCenter}.AddObserver ({notification.Name}, notification => handler (null, new {eventType} (notification)));
+}}
+
+public static NSObject {name} (NSObject objectToObserve, EventHandler<{eventType}> handler)
+{{
+	return {notificationCenter}.AddObserver ({notification.Name}, notification => handler (null, new {eventType} (notification)), objectToObserve);
+}}
+
+"
+);
+			}
+		}
 	}
 
 	/// <summary>

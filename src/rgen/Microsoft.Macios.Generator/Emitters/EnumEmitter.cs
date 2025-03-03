@@ -99,7 +99,7 @@ class EnumEmitter : ICodeEmitter {
 
 		// get value from a handle, this is a helper method used in the BindAs bindings.
 		using (var getValueFromHandle =
-			   classBlock.CreateBlock ($"public static {binding.Name} GetValueFromHandle (NativeHandle handle)",
+			   classBlock.CreateBlock ($"public static {binding.Name} GetValue (NativeHandle handle)",
 				   true)) {
 			getValueFromHandle.WriteRaw (
 @"using var str = Runtime.GetNSObject<NSString> (handle)!;

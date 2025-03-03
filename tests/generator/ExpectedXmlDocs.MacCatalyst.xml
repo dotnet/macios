@@ -35,7 +35,7 @@
             <summary>Retrieves the <see cref="T:XmlDocumentation.E2" /> value named by <paramref name="constant" />.</summary>
             <param name="constant">The name of the constant to retrieve.</param>
         </member>
-        <member name="M:XmlDocumentation.E2Extensions.GetValueFromHandle(ObjCRuntime.NativeHandle)">
+        <member name="M:XmlDocumentation.E2Extensions.GetValue(ObjCRuntime.NativeHandle)">
             <summary>Retrieves the <see cref="T:XmlDocumentation.E2" /> value represented by the backing field value in <paramref name="handle" />.</summary>
             <param name="handle">The native handle with the name of the constant to retrieve.</param>
         </member>

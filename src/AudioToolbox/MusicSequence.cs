@@ -9,8 +9,6 @@
 
 #nullable enable
 
-#if !WATCH
-
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -138,6 +136,9 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static /* OSStatus */ MusicPlayerStatus MusicSequenceGetAUGraph (/* MusicSequence */ IntPtr inSequence, /* AUGraph* */ IntPtr* outGraph);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AUGraph? AUGraph {
 			get {
 				IntPtr h;
@@ -162,6 +163,9 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static /* OSStatus */ MusicPlayerStatus MusicSequenceGetSequenceType (/* MusicSequence */ IntPtr inSequence, MusicSequenceType* outType);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MusicSequenceType SequenceType {
 			get {
 				MusicSequenceType type;
@@ -216,6 +220,9 @@ namespace AudioToolbox {
 		unsafe extern static /* OSStatus */ MusicPlayerStatus MusicSequenceGetTrackCount (/* MusicSequence */ IntPtr inSequence, /* UInt32* */ int* outNumberOfTracks);
 
 		// an `uint` but we keep `int` for compatibility (should be enough tracks)
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int TrackCount {
 			get {
 				int count;
@@ -433,10 +440,11 @@ namespace AudioToolbox {
 
 	// typedef UInt32 -> MusicPlayer.h
 	public enum MusicSequenceType : uint {
+		/// <summary>A normal MIDI music sequence. The tempo track defines beats-per-second.</summary>
 		Beats = 0x62656174,     // 'beat'
+		/// <summary>A MIDI sequence saved with SMPTE timecode.</summary>
 		Seconds = 0x73656373,   // 'secs'
+		/// <summary>Indicates an audio sample. The tempo track defines samples-per-second.</summary>
 		Samples = 0x73616d70    // 'samp'
 	}
 }
-
-#endif // IOS || TVOS

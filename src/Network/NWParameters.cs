@@ -32,13 +32,11 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Watch (6, 0)]
 #endif
 	public class NWParameters : NativeObject {
 		[Preserve (Conditional = true)]
 #if NET
-		internal NWParameters (NativeHandle handle, bool owns) : base (handle, owns) {}
+		internal NWParameters (NativeHandle handle, bool owns) : base (handle, owns) { }
 #else
 		public NWParameters (NativeHandle handle, bool owns) : base (handle, owns) { }
 #endif
@@ -53,7 +51,6 @@ namespace Network {
 		[TV (16, 0)]
 		[Mac (13, 0)]
 		[iOS (16, 0)]
-		[Watch (9, 0)]
 #endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_parameters nw_parameters_create_application_service ();
@@ -67,7 +64,6 @@ namespace Network {
 		[TV (16, 0)]
 		[Mac (13, 0)]
 		[iOS (16, 0)]
-		[Watch (9, 0)]
 #endif
 		public static NWParameters CreateApplicationService () => new NWParameters (nw_parameters_create_application_service (), true);
 
@@ -222,12 +218,11 @@ namespace Network {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
 #else
-		[NoWatch]
 		[NoTV]
 		[NoiOS]
 #endif
 		[DllImport (Constants.NetworkLibrary)]
-		unsafe static extern IntPtr nw_parameters_create_custom_ip (byte custom_ip_protocol_number, BlockLiteral *configure_ip);
+		unsafe static extern IntPtr nw_parameters_create_custom_ip (byte custom_ip_protocol_number, BlockLiteral* configure_ip);
 
 #if NET
 		[SupportedOSPlatform ("macos")]
@@ -235,7 +230,6 @@ namespace Network {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
 #else
-		[NoWatch]
 		[NoTV]
 		[NoiOS]
 #endif
@@ -577,7 +571,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
@@ -591,7 +584,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
@@ -605,7 +597,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
@@ -621,7 +612,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
@@ -635,7 +625,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
@@ -649,7 +638,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
@@ -663,7 +651,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
@@ -691,7 +678,6 @@ namespace Network {
 		[TV (16, 0)]
 		[Mac (13, 0)]
 		[iOS (16, 0)]
-		[Watch (9, 0)]
 #endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_parameters_requires_dnssec_validation (OS_nw_parameters parameters);
@@ -705,7 +691,6 @@ namespace Network {
 		[TV (16, 0)]
 		[Mac (13, 0)]
 		[iOS (16, 0)]
-		[Watch (9, 0)]
 #endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_requires_dnssec_validation (OS_nw_parameters parameters, byte requires_dnssec_validation);
@@ -719,7 +704,6 @@ namespace Network {
 		[TV (16, 0)]
 		[Mac (13, 0)]
 		[iOS (16, 0)]
-		[Watch (9, 0)]
 #endif
 		public bool RequiresDnssecValidation {
 			get => nw_parameters_requires_dnssec_validation (GetCheckedHandle ()) != 0;

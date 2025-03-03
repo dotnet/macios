@@ -30,13 +30,11 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Watch (6, 0)]
 #endif
 	public class NWProtocolOptions : NativeObject {
 		[Preserve (Conditional = true)]
 #if NET
-		internal NWProtocolOptions (NativeHandle handle, bool owns) : base (handle, owns) {}
+		internal NWProtocolOptions (NativeHandle handle, bool owns) : base (handle, owns) { }
 #else
 		public NWProtocolOptions (NativeHandle handle, bool owns) : base (handle, owns) { }
 #endif
@@ -87,7 +85,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
@@ -335,7 +332,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]

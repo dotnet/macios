@@ -11,7 +11,7 @@ using System.Runtime.Versioning;
 namespace CustomLibrary;
 
 [BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-static public partial class CustomLibraryEnumInternalExtensions
+public static partial class CustomLibraryEnumInternalExtensions
 {
 
 	static IntPtr[] values = new IntPtr [3];
@@ -75,6 +75,12 @@ static public partial class CustomLibraryEnumInternalExtensions
 		if (constant.IsEqualTo (High))
 			return CustomLibraryEnumInternal.High;
 		throw new NotSupportedException ($"The constant {constant} has no associated enum value on this platform.");
+	}
+
+	public static CustomLibraryEnumInternal GetValueFromHandle (NativeHandle handle)
+	{
+		using var str = Runtime.GetNSObject<NSString> (handle)!;
+		return GetValue (str);
 	}
 
 	internal static NSString?[]? ToConstantArray (this CustomLibraryEnumInternal[]? values)

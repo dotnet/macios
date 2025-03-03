@@ -38,6 +38,9 @@ namespace Metal {
 
 		static IMTLDevice? system_default;
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static IMTLDevice? SystemDefault {
 			get {
 				// Metal could be unavailable on the hardware (and we don't want to return an invalid instance)
@@ -170,7 +173,6 @@ namespace Metal {
 		[UnsupportedOSPlatform ("maccatalyst")]
 #else
 		[NoiOS]
-		[NoWatch]
 		[NoTV]
 #endif
 		public static void RemoveObserver (NSObject observer)

@@ -19,20 +19,12 @@ using Foundation;
 using CoreFoundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreMedia {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#else
-	[Watch (6, 0)]
-#endif
 	public class CMBlockBuffer : NativeObject, ICMAttachmentBearer {
 		CMCustomBlockAllocator? customAllocator;
 

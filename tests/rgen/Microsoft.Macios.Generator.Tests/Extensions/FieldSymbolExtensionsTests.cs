@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 #pragma warning disable APL0003
 using System.Collections;
 using System.Collections.Generic;
@@ -77,7 +79,7 @@ public enum MyEnum {
 		Assert.NotNull (fieldData);
 		Assert.Equal ("First", fieldData.Value.SymbolName);
 		Assert.Null (fieldData.Value.LibraryName);
-		Assert.Equal (EnumValue.None, fieldData.Value.Flags);
+		Assert.Equal (EnumValue.Default, fieldData.Value.Flags);
 	}
 
 	[Theory]
@@ -109,7 +111,7 @@ public enum MyEnum {
 		Assert.NotNull (fieldData);
 		Assert.Equal ("First", fieldData.Value.SymbolName);
 		Assert.Equal ("Lib", fieldData.Value.LibraryName);
-		Assert.Equal (EnumValue.None, fieldData.Value.Flags);
+		Assert.Equal (EnumValue.Default, fieldData.Value.Flags);
 	}
 
 	class TestDataGetFieldDataPresentAttributeNotValid : IEnumerable<object []> {

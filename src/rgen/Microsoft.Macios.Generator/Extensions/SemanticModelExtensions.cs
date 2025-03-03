@@ -1,25 +1,20 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Availability;
 
 namespace Microsoft.Macios.Generator.Extensions;
 
-static class SemanticModelExtensions {
+static partial class SemanticModelExtensions {
 
 	/// <summary>
-	/// Returns the name and namespace of the symbol that has been declared in the passed base type declaration
-	/// syntax node.
+	/// Return an array with the namespaces in for the symbol.
 	/// </summary>
-	/// <param name="self">The current semantic model.</param>
-	/// <param name="declaration">The named type declaration syntaxt.</param>
-	/// <returns>A tuple containing the name and namespace of the type. If they could not be calculated, they will
-	/// be set to be string.Empty.</returns>
-	public static (string Name, ImmutableArray<string> Namespace, SymbolAvailability SymbolAvailability) GetSymbolData (this SemanticModel self,
-		BaseTypeDeclarationSyntax declaration)
+	/// <param name="symbol">The symbol whose namespaces we want to retrieve.</param>
+	/// <returns>An array with the namespaces that contain the symbol from bigger to smaller one.</returns>
+	public static ImmutableArray<string> GetNamespaceArray (this ISymbol? symbol)
 	{
-		var symbol = self.GetDeclaredSymbol (declaration);
-		var name = symbol?.Name ?? string.Empty;
 		var bucket = ImmutableArray.CreateBuilder<string> ();
 		var ns = symbol?.ContainingNamespace;
 		while (ns is not null) {
@@ -28,7 +23,38 @@ static class SemanticModelExtensions {
 				bucket.Insert (0, ns.Name);
 			ns = ns.ContainingNamespace;
 		}
-		var availability = symbol?.GetSupportedPlatforms () ?? new SymbolAvailability ();
-		return (name, bucket.ToImmutableArray (), availability);
+
+		return bucket.ToImmutable ();
 	}
+
+	/// <summary>
+	/// Retrieves all the data from a symbol needed for a binding/transformation.
+	/// </summary>
+	/// <param name="symbol">The symbol being queried.</param>
+	/// <param name="name">Symbol name.</param>
+	/// <param name="baseClass">Symbol base class.</param>
+	/// <param name="interfaces">List of the interfaces implemented by the symbol.</param>
+	/// <param name="namespaces">Collection with the namespaces of the symbol.</param>
+	/// <param name="symbolAvailability">The symbols availability.</param>
+	public static void GetSymbolData (ISymbol? symbol,
+		out string name,
+		out string? baseClass,
+		out ImmutableArray<string> interfaces,
+		out ImmutableArray<string> namespaces,
+		out SymbolAvailability symbolAvailability)
+	{
+		name = symbol?.Name ?? string.Empty;
+		baseClass = null;
+		var interfacesBucket = ImmutableArray.CreateBuilder<string> ();
+		if (symbol is INamedTypeSymbol namedTypeSymbol) {
+			baseClass = namedTypeSymbol.BaseType?.ToDisplayString ().Trim ();
+			foreach (var symbolInterface in namedTypeSymbol.Interfaces) {
+				interfacesBucket.Add (symbolInterface.ToDisplayString ().Trim ());
+			}
+		}
+		symbolAvailability = symbol?.GetSupportedPlatforms () ?? new SymbolAvailability ();
+		interfaces = interfacesBucket.ToImmutable ();
+		namespaces = symbol.GetNamespaceArray ();
+	}
+
 }

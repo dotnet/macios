@@ -1,7 +1,10 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 using System;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Macios.Generator.DataModel;
 using Xunit;
+using static Microsoft.Macios.Generator.Tests.TestDataFactory;
 
 namespace Microsoft.Macios.Generator.Tests.DataModel;
 
@@ -126,7 +129,7 @@ public class ConstructorComparerTests {
 				SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 			],
 			parameters: [
-				new (0, "string", "name"),
+				new (position: 0, type: ReturnTypeForString (), name: "name"),
 			]);
 		var y = new Constructor ("MyClass",
 			symbolAvailability: new (),
@@ -138,8 +141,8 @@ public class ConstructorComparerTests {
 				SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 			],
 			parameters: [
-				new (0, "string", "name"),
-				new (1, "string", "surname"),
+				new (position: 0, type: ReturnTypeForString (), name: "name"),
+				new (position: 1, type: ReturnTypeForString (), name: "surname"),
 			]);
 		Assert.Equal (x.Parameters.Length.CompareTo (y.Parameters.Length), comparer.Compare (x, y));
 	}
@@ -157,7 +160,7 @@ public class ConstructorComparerTests {
 				SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 			],
 			parameters: [
-				new (0, "string", "name"),
+				new (position: 0, type: ReturnTypeForString (), name: "name"),
 			]);
 		var y = new Constructor ("MyClass",
 			symbolAvailability: new (),
@@ -169,7 +172,38 @@ public class ConstructorComparerTests {
 				SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 			],
 			parameters: [
-				new (1, "string", "surname"),
+				new (position: 1, type: ReturnTypeForString (), name: "surname"),
+			]);
+		var parameterCompare = new ParameterComparer ();
+		Assert.Equal (parameterCompare.Compare (x.Parameters [0], y.Parameters [0]), comparer.Compare (x, y));
+	}
+
+	[Fact]
+	public void CompareDiffParametersSmartEnum ()
+	{
+		var x = new Constructor ("MyClass",
+			symbolAvailability: new (),
+			attributes: [
+				new ("FirstAttr"),
+			],
+			modifiers: [
+				SyntaxFactory.Token (SyntaxKind.PartialKeyword),
+				SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+			],
+			parameters: [
+				new (position: 0, type: ReturnTypeForEnum ("MyEnum", isSmartEnum: true), name: "name"),
+			]);
+		var y = new Constructor ("MyClass",
+			symbolAvailability: new (),
+			attributes: [
+				new ("FirstAttr"),
+			],
+			modifiers: [
+				SyntaxFactory.Token (SyntaxKind.PartialKeyword),
+				SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+			],
+			parameters: [
+				new (position: 0, type: ReturnTypeForEnum ("MyEnum"), name: "name"),
 			]);
 		var parameterCompare = new ParameterComparer ();
 		Assert.Equal (parameterCompare.Compare (x.Parameters [0], y.Parameters [0]), comparer.Compare (x, y));

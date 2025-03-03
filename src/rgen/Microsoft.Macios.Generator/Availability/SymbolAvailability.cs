@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +30,19 @@ readonly partial struct SymbolAvailability : IEquatable<SymbolAvailability> {
 		availabilities = new SortedDictionary<ApplePlatform, PlatformAvailability?> ();
 		foreach (var (key, value) in platforms) {
 			availabilities.Add (key, value);
+		}
+	}
+
+	/// <summary>
+	/// Return the symbol trivia if it has any.
+	/// </summary>
+	public AvailabilityTrivia? Trivia {
+		get {
+			// just returns the trivia if it has any, null otherwise
+			var trivia = new AvailabilityTrivia (this);
+			if (trivia.Start is not null || trivia.End is not null)
+				return trivia;
+			return null;
 		}
 	}
 

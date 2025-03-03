@@ -10,9 +10,7 @@ using System;
 using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
-#if !WATCH
 using Metal;
-#endif
 
 namespace CoreVideo {
 
@@ -29,18 +27,33 @@ namespace CoreVideo {
 	[Partial]
 	interface CVBuffer {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCVBufferMovieTimeKey")]
 		NSString MovieTimeKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCVBufferTimeValueKey")]
 		NSString TimeValueKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCVBufferTimeScaleKey")]
 		NSString TimeScaleKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCVBufferPropagatedAttachmentsKey")]
 		NSString PropagatedAttachmentsKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCVBufferNonPropagatedAttachmentsKey")]
 		NSString NonPropagatedAttachmentsKey { get; }
 	}
@@ -264,36 +277,36 @@ namespace CoreVideo {
 		[Field ("kCVImageBufferContentLightLevelInfoKey")]
 		NSString ContentLightLevelInfoKey { get; }
 
-		[TV (13, 0), NoWatch, iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCVImageBufferAlphaChannelModeKey")]
 		NSString AlphaChannelModeKey { get; }
 
-		[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Field ("kCVImageBufferRegionOfInterestKey")]
 		NSString RegionOfInterestKey { get; }
 
-		[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Field ("kCVImageBufferAmbientViewingEnvironmentKey")]
 		NSString AmbientViewingEnvironmentKey { get; }
 
-		[Watch (10, 2), TV (17, 2), Mac (14, 2), iOS (17, 2), MacCatalyst (17, 2)]
+		[TV (17, 2), Mac (14, 2), iOS (17, 2), MacCatalyst (17, 2)]
 		[Field ("kCVImageBufferLogTransferFunctionKey")]
 		NSString LogTransferFunctionKey { get; }
 
-		[Watch (10, 2), TV (17, 2), Mac (14, 2), iOS (17, 2), MacCatalyst (17, 2)]
+		[TV (17, 2), Mac (14, 2), iOS (17, 2), MacCatalyst (17, 2)]
 		[Field ("kCVImageBufferLogTransferFunction_AppleLog")]
 		NSString LogTransferFunctionAppleLogKey { get; }
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("kCVImageBufferSceneIlluminationKey")]
 		NSString SceneIlluminationKey { get; }
 
-		[Mac (15, 0), NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[Mac (15, 0), NoiOS, NoTV, NoMacCatalyst]
 		[Field ("kCVImageBufferPostDecodeProcessingSequenceMetadataKey")]
 		NSString PostDecodeProcessingSequenceMetadataKey { get; }
 
-		[Mac (15, 0), NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		[Mac (15, 0), NoiOS, NoTV, NoMacCatalyst]
 		[Field ("kCVImageBufferPostDecodeProcessingFrameMetadataKey")]
 		NSString PostDecodeProcessingFrameMetadataKey { get; }
 	}
@@ -333,7 +346,6 @@ namespace CoreVideo {
 		[Field ("kCVImageBufferTransferFunction_ITU_R_2100_HLG")]
 		ItuR2100Hlg,
 
-		[Watch (5, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCVImageBufferTransferFunction_Linear")]
 		Linear,
@@ -410,109 +422,155 @@ namespace CoreVideo {
 	[Partial]
 	interface CVPixelBuffer {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCVPixelBufferPixelFormatTypeKey")]
 		NSString PixelFormatTypeKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCVPixelBufferMemoryAllocatorKey")]
 		NSString MemoryAllocatorKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCVPixelBufferWidthKey")]
 		NSString WidthKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCVPixelBufferHeightKey")]
 		NSString HeightKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCVPixelBufferExtendedPixelsLeftKey")]
 		NSString ExtendedPixelsLeftKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCVPixelBufferExtendedPixelsTopKey")]
 		NSString ExtendedPixelsTopKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCVPixelBufferExtendedPixelsRightKey")]
 		NSString ExtendedPixelsRightKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCVPixelBufferExtendedPixelsBottomKey")]
 		NSString ExtendedPixelsBottomKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCVPixelBufferBytesPerRowAlignmentKey")]
 		NSString BytesPerRowAlignmentKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCVPixelBufferCGBitmapContextCompatibilityKey")]
 		NSString CGBitmapContextCompatibilityKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCVPixelBufferCGImageCompatibilityKey")]
 		NSString CGImageCompatibilityKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCVPixelBufferOpenGLCompatibilityKey")]
 		NSString OpenGLCompatibilityKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCVPixelBufferIOSurfacePropertiesKey")]
 		NSString IOSurfacePropertiesKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCVPixelBufferPlaneAlignmentKey")]
 		NSString PlaneAlignmentKey { get; }
 
 		[NoMac]
-		[NoWatch]
 		[NoMacCatalyst]
 		[Field ("kCVPixelBufferOpenGLESCompatibilityKey")]
 		NSString OpenGLESCompatibilityKey { get; }
 
 		[NoMac]
-		[NoWatch]
 		[NoMacCatalyst]
 		[Field ("kCVPixelBufferOpenGLESTextureCacheCompatibilityKey")]
 		NSString OpenGLESTextureCacheCompatibilityKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCVPixelBufferMetalCompatibilityKey")]
 		NSString MetalCompatibilityKey { get; }
 
-		[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("kCVPixelBufferOpenGLTextureCacheCompatibilityKey")]
 		NSString OpenGLTextureCacheCompatibilityKey { get; }
 
-		[NoWatch, NoTV, iOS (14, 0), MacCatalyst (15, 0)]
+		[NoTV, iOS (14, 0), MacCatalyst (15, 0)]
 		[Field ("kCVPixelBufferProResRAWKey_BlackLevel")]
 		NSString ProResRawKey_BlackLevel { get; }
 
-		[NoWatch, NoTV, iOS (14, 0), MacCatalyst (15, 0)]
+		[NoTV, iOS (14, 0), MacCatalyst (15, 0)]
 		[Field ("kCVPixelBufferProResRAWKey_ColorMatrix")]
 		NSString ProResRawKey_ColorMatrix { get; }
 
-		[NoWatch, NoTV, iOS (14, 0), MacCatalyst (15, 0)]
+		[NoTV, iOS (14, 0), MacCatalyst (15, 0)]
 		[Field ("kCVPixelBufferProResRAWKey_GainFactor")]
 		NSString ProResRawKey_GainFactor { get; }
 
-		[NoWatch, NoTV, iOS (14, 0), MacCatalyst (15, 0)]
+		[NoTV, iOS (14, 0), MacCatalyst (15, 0)]
 		[Field ("kCVPixelBufferProResRAWKey_RecommendedCrop")]
 		NSString ProResRawKey_RecommendedCrop { get; }
 
-		[NoWatch, NoTV, iOS (14, 0), MacCatalyst (15, 0)]
+		[NoTV, iOS (14, 0), MacCatalyst (15, 0)]
 		[Field ("kCVPixelBufferProResRAWKey_SenselSitingOffsets")]
 		NSString ProResRawKey_SenselSitingOffsets { get; }
 
-		[NoWatch, NoTV, iOS (14, 0), MacCatalyst (15, 0)]
+		[NoTV, iOS (14, 0), MacCatalyst (15, 0)]
 		[Field ("kCVPixelBufferProResRAWKey_WhiteBalanceBlueFactor")]
 		NSString ProResRawKey_WhiteBalanceBlueFactor { get; }
 
-		[NoWatch, NoTV, iOS (14, 0), MacCatalyst (15, 0)]
+		[NoTV, iOS (14, 0), MacCatalyst (15, 0)]
 		[Field ("kCVPixelBufferProResRAWKey_WhiteBalanceCCT")]
 		NSString ProResRawKey_WhiteBalanceCct { get; }
 
-		[NoWatch, NoTV, iOS (14, 0), MacCatalyst (15, 0)]
+		[NoTV, iOS (14, 0), MacCatalyst (15, 0)]
 		[Field ("kCVPixelBufferProResRAWKey_WhiteBalanceRedFactor")]
 		NSString ProResRawKey_WhiteBalanceRedFactor { get; }
 
-		[NoWatch, NoTV, iOS (14, 0), MacCatalyst (15, 0)]
+		[NoTV, iOS (14, 0), MacCatalyst (15, 0)]
 		[Field ("kCVPixelBufferProResRAWKey_WhiteLevel")]
 		NSString ProResRawKey_WhiteLevel { get; }
 
-		[NoWatch, NoTV, iOS (14, 0), MacCatalyst (15, 0)]
+		[NoTV, iOS (14, 0), MacCatalyst (15, 0)]
 		[Field ("kCVPixelBufferVersatileBayerKey_BayerPattern")]
 		NSString VersatileBayerKey_BayerPattern { get; }
 
-		[NoWatch, NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[Field ("kCVPixelBufferProResRAWKey_MetadataExtension")]
 		NSString MetadataExtension { get; }
 	}
@@ -520,15 +578,20 @@ namespace CoreVideo {
 	/// <summary>A reusable set of <see cref="T:CoreVideo.CVPixelBuffer" />s.</summary>
 	[Partial]
 	interface CVPixelBufferPool {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCVPixelBufferPoolMinimumBufferCountKey")]
 		NSString MinimumBufferCountKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCVPixelBufferPoolMaximumBufferAgeKey")]
 		NSString MaximumBufferAgeKey { get; }
 	}
 
 	/// <summary>Cache to manage CVMetalTexture objects.</summary>
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[Partial]
 	interface CVMetalTextureCache {
@@ -537,7 +600,7 @@ namespace CoreVideo {
 		[Field ("kCVMetalTextureCacheMaximumTextureAgeKey")]
 		IntPtr MaxTextureAge { get; }
 
-		[TV (13, 0), NoWatch, iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCVMetalTextureStorageMode")]
 		NSString StorageMode { get; }
@@ -551,7 +614,6 @@ namespace CoreVideo {
 	// 	IntPtr MaxTextureAge { get; }
 	// }
 
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[Static, Internal]
 	interface CVMetalTextureAttributesKeys {
@@ -560,14 +622,13 @@ namespace CoreVideo {
 		NSString UsageKey { get; }
 	}
 
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("CVMetalTextureAttributesKeys")]
 	interface CVMetalTextureAttributes {
 		// Create stub DictionaryContainer class
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	public enum CVVersatileBayerPattern : uint {
 		Rggb = 0,
@@ -576,14 +637,13 @@ namespace CoreVideo {
 		Bggr = 3,
 	}
 
-	[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[Static, Internal]
 	interface CVMetalBufferCacheAttributeKeys {
 		[Field ("kCVMetalBufferCacheMaximumBufferAgeKey")]
 		NSString MaximumBufferAgeKey { get; }
 	}
 
-	[NoWatch]
 	[StrongDictionary ("CVMetalBufferCacheAttributeKeys")]
 	interface CVMetalBufferCacheAttributes {
 		double MaximumBufferAge { get; }
@@ -615,7 +675,7 @@ namespace CoreVideo {
 		[Field ("kCVPixelFormatContainsGrayscale")]
 		NSString ContainsGrayscale { get; }
 
-		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0), TV (16, 0), Watch (9, 0)]
+		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Field ("kCVPixelFormatContainsSenselArray")]
 		NSString ContainsSenselArray { get; }
 
@@ -673,14 +733,14 @@ namespace CoreVideo {
 		[Field ("kCVPixelFormatOpenGLCompatibility")]
 		NSString OpenGLCompatibility { get; }
 
-		[NoWatch, NoMacCatalyst, NoMac]
+		[NoMacCatalyst, NoMac]
 		[Field ("kCVPixelFormatOpenGLESCompatibility")]
 		NSString OpenGlesCompatibility { get; }
 
 		[Field ("kCVPixelFormatFillExtendedPixelsCallback")]
 		NSString FillExtendedPixelsCallback { get; }
 
-		[iOS (18, 0), Mac (15, 0), MacCatalyst (18, 0), TV (18, 0), Watch (11, 0)]
+		[iOS (18, 0), Mac (15, 0), MacCatalyst (18, 0), TV (18, 0)]
 		[Field ("kCVPixelFormatBitsPerComponent")]
 		NSString BitsPerComponent { get; }
 	}
@@ -740,7 +800,7 @@ namespace CoreVideo {
 
 		bool ContainsGrayscale { get; set; }
 
-		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0), TV (16, 0), Watch (9, 0)]
+		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0), TV (16, 0)]
 #if XAMCORE_5_0
 		bool ContainsSenselArray { get; set; }
 #else
@@ -785,12 +845,12 @@ namespace CoreVideo {
 
 		bool OpenGLCompatibility { get; set; }
 
-		[NoWatch, NoMacCatalyst, NoMac]
+		[NoMacCatalyst, NoMac]
 		bool OpenGlesCompatibility { get; set; }
 
 		NSData FillExtendedPixelsCallback { get; set; }
 
-		[iOS (18, 0), Mac (15, 0), MacCatalyst (18, 0), TV (18, 0), Watch (11, 0)]
+		[iOS (18, 0), Mac (15, 0), MacCatalyst (18, 0), TV (18, 0)]
 		int BitsPerComponent { get; set; }
 	}
 }

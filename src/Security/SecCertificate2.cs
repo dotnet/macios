@@ -32,13 +32,11 @@ namespace Security {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Watch (5, 0)]
 #endif
 	public class SecCertificate2 : NativeObject {
 		[Preserve (Conditional = true)]
 #if NET
-		internal SecCertificate2 (NativeHandle handle, bool owns) : base (handle, owns) {}
+		internal SecCertificate2 (NativeHandle handle, bool owns) : base (handle, owns) { }
 #else
 		public SecCertificate2 (NativeHandle handle, bool owns) : base (handle, owns) { }
 #endif

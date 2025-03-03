@@ -1,28 +1,52 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
+using System.Runtime.InteropServices;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Availability;
-using Microsoft.Macios.Generator.Extensions;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
 /// <summary>
 /// Readonly struct that represent the changes that a user has made in a property.
 /// </summary>
-readonly struct Property : IEquatable<Property> {
+[StructLayout (LayoutKind.Auto)]
+readonly partial struct Property : IEquatable<Property> {
 	/// <summary>
 	/// Name of the property.
 	/// </summary>
 	public string Name { get; } = string.Empty;
 
+	public string BackingField { get; private init; }
+
+	readonly TypeInfo returnType;
+
 	/// <summary>
-	/// String representation of the property type.
+	/// Representation of the property type.
 	/// </summary>
-	public string Type { get; } = string.Empty;
+	public TypeInfo ReturnType {
+		get => returnType;
+		private init {
+			returnType = value;
+			ValueParameter = new Parameter (0, returnType, "value");
+		}
+	}
+
+	/// <summary>
+	/// Returns if the property type is bittable.
+	/// </summary>
+	public bool IsBlittable => ReturnType.IsBlittable;
+
+	/// <summary>
+	/// Returns if the property type is a smart enum.
+	/// </summary>
+	public bool IsSmartEnum => ReturnType.IsSmartEnum;
+
+	/// <summary>
+	/// Returns if the property type is a reference type.
+	/// </summary>
+	public bool IsReferenceType => ReturnType.IsReferenceType;
 
 	/// <summary>
 	/// The platform availability of the property.
@@ -37,35 +61,45 @@ readonly struct Property : IEquatable<Property> {
 	/// <summary>
 	/// Get the modifiers of the property.
 	/// </summary>
-	public ImmutableArray<SyntaxToken> Modifiers { get; } = [];
+	public ImmutableArray<SyntaxToken> Modifiers { get; init; } = [];
 
 	/// <summary>
 	/// Get the list of accessor changes of the property.
 	/// </summary>
 	public ImmutableArray<Accessor> Accessors { get; } = [];
 
-	internal Property (string name, string type,
-		SymbolAvailability symbolAvailability,
-		ImmutableArray<AttributeCodeChange> attributes,
-		ImmutableArray<SyntaxToken> modifiers, ImmutableArray<Accessor> accessors)
+	public Parameter ValueParameter { get; private init; }
+
+	public Accessor? GetAccessor (AccessorKind accessorKind)
 	{
-		Name = name;
-		Type = type;
-		SymbolAvailability = symbolAvailability;
-		Attributes = attributes;
-		Modifiers = modifiers;
-		Accessors = accessors;
+		// careful, do not use FirstOrDefault from LINQ because we are using structs!
+		foreach (var accessor in Accessors) {
+			if (accessor.Kind == accessorKind)
+				return accessor;
+		}
+		return null;
 	}
 
-	/// <inheritdoc />
-	public bool Equals (Property other)
+	bool CoreEquals (Property other)
 	{
 		// this could be a large && but ifs are more readable
 		if (Name != other.Name)
 			return false;
-		if (Type != other.Type)
+		if (ReturnType != other.ReturnType)
+			return false;
+		if (IsBlittable != other.IsBlittable)
+			return false;
+		if (IsSmartEnum != other.IsSmartEnum)
+			return false;
+		if (IsReferenceType != other.IsReferenceType)
 			return false;
 		if (SymbolAvailability != other.SymbolAvailability)
+			return false;
+		if (ExportFieldData != other.ExportFieldData)
+			return false;
+		if (ExportPropertyData != other.ExportPropertyData)
+			return false;
+		if (BindAs != other.BindAs)
 			return false;
 
 		var attrsComparer = new AttributesEqualityComparer ();
@@ -89,7 +123,7 @@ readonly struct Property : IEquatable<Property> {
 	/// <inheritdoc />
 	public override int GetHashCode ()
 	{
-		return HashCode.Combine (Name, Type, Attributes, Modifiers, Accessors);
+		return HashCode.Combine (Name, ReturnType, IsSmartEnum, Attributes, Modifiers, Accessors);
 	}
 
 	public static bool operator == (Property left, Property right)
@@ -102,64 +136,4 @@ readonly struct Property : IEquatable<Property> {
 		return !left.Equals (right);
 	}
 
-	public static bool TryCreate (PropertyDeclarationSyntax declaration, SemanticModel semanticModel,
-		[NotNullWhen (true)] out Property? change)
-	{
-		var memberName = declaration.Identifier.ToFullString ().Trim ();
-		// get the symbol from the property declaration
-		if (semanticModel.GetDeclaredSymbol (declaration) is not IPropertySymbol propertySymbol) {
-			change = null;
-			return false;
-		}
-
-		var propertySupportedPlatforms = propertySymbol.GetSupportedPlatforms ();
-
-		var type = propertySymbol.Type.ToDisplayString ().Trim ();
-		var attributes = declaration.GetAttributeCodeChanges (semanticModel);
-		ImmutableArray<Accessor> accessorCodeChanges = [];
-		if (declaration.AccessorList is not null && declaration.AccessorList.Accessors.Count > 0) {
-			// calculate any possible changes in the accessors of the property
-			var accessorsBucket = ImmutableArray.CreateBuilder<Accessor> ();
-			foreach (var accessorDeclaration in declaration.AccessorList.Accessors) {
-				if (semanticModel.GetDeclaredSymbol (accessorDeclaration) is not ISymbol accessorSymbol)
-					continue;
-				var kind = accessorDeclaration.Kind ().ToAccessorKind ();
-				var accessorAttributeChanges = accessorDeclaration.GetAttributeCodeChanges (semanticModel);
-				accessorsBucket.Add (new (kind, accessorSymbol.GetSupportedPlatforms (), accessorAttributeChanges,
-					[.. accessorDeclaration.Modifiers]));
-			}
-
-			accessorCodeChanges = accessorsBucket.ToImmutable ();
-		}
-
-		if (declaration.ExpressionBody is not null) {
-			// an expression body == a getter with no attrs or modifiers; that means that the accessor does not have
-			// extra availability, but the ones form the property
-			accessorCodeChanges = [
-				new (AccessorKind.Getter, propertySupportedPlatforms, [], [])
-			];
-		}
-
-		change = new (
-			name: memberName,
-			type: type,
-			symbolAvailability: propertySupportedPlatforms,
-			attributes: attributes,
-			modifiers: [.. declaration.Modifiers],
-			accessors: accessorCodeChanges);
-		return true;
-	}
-
-	/// <inheritdoc />
-	public override string ToString ()
-	{
-		var sb = new StringBuilder ($"Name: {Name}, Type: {Type}, Supported Platforms: {SymbolAvailability}, Attributes: [");
-		sb.AppendJoin (",", Attributes);
-		sb.Append ("], Modifiers: [");
-		sb.AppendJoin (",", Modifiers.Select (x => x.Text));
-		sb.Append ("], Accessors: [");
-		sb.AppendJoin (",", Accessors);
-		sb.Append (']');
-		return sb.ToString ();
-	}
 }

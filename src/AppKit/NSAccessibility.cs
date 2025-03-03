@@ -26,14 +26,9 @@ using NativeHandle = System.IntPtr;
 namespace AppKit {
 	public partial interface INSAccessibility { }
 
-#if NET
 	[SupportedOSPlatform ("macos")]
-#endif
 	public partial class NSAccessibility {
 #if !COREBUILD
-#if NET
-		[SupportedOSPlatform ("macos")]
-#endif
 		[DllImport (Constants.AppKitLibrary)]
 		static extern CGRect NSAccessibilityFrameInView (NativeHandle parentView, CGRect frame);
 
@@ -42,9 +37,6 @@ namespace AppKit {
 			return NSAccessibilityFrameInView (parentView.GetHandle (), frame);
 		}
 
-#if NET
-		[SupportedOSPlatform ("macos")]
-#endif
 		[DllImport (Constants.AppKitLibrary)]
 		static extern CGPoint NSAccessibilityPointInView (NativeHandle parentView, CGPoint point);
 

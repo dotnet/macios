@@ -35,6 +35,10 @@
             <summary>Retrieves the <see cref="T:XmlDocumentation.E2" /> value named by <paramref name="constant" />.</summary>
             <param name="constant">The name of the constant to retrieve.</param>
         </member>
+        <member name="M:XmlDocumentation.E2Extensions.GetValueFromHandle(ObjCRuntime.NativeHandle)">
+            <summary>Retrieves the <see cref="T:XmlDocumentation.E2" /> value represented by the backing field value in <paramref name="handle" />.</summary>
+            <param name="handle">The native handle with the name of the constant to retrieve.</param>
+        </member>
         <member name="M:XmlDocumentation.E2Extensions.ToConstantArray(XmlDocumentation.E2[])">
             <summary>Converts an array of <see cref="T:XmlDocumentation.E2" /> enum values into an array of their corresponding constants.</summary>
             <param name="values">The array of enum values to convert.</param>
@@ -155,6 +159,9 @@
                 </para>
             </remarks>
         </member>
+        <member name="P:XmlDocumentation.Notification1.ANotification">
+            <summary>Summary for DocumentedNotification</summary>
+        </member>
         <member name="T:XmlDocumentation.Notification1.Notifications">
             <summary>Notifications posted by the <see cref="T:XmlDocumentation.Notification1" /> class.</summary>
             <remarks>
@@ -201,6 +208,12 @@
               </example>
             </remarks>
         </member>
+        <member name="T:XmlDocumentation.OptionKeys">
+            <summary>Summary for OptionKeys.</summary>
+        </member>
+        <member name="P:XmlDocumentation.OptionKeys.Option1">
+            <summary>Summary for Option1Key.</summary>
+        </member>
         <member name="T:XmlDocumentation.IP1">
             <summary>
             Summary for P1
@@ -226,6 +239,26 @@
             Summary for PA1.PMethod
             </summary>
         </member>
+        <member name="M:XmlDocumentation.IP1.PMethodWithArgs(System.Int32)">
+            <summary>
+            Summary for P1.PMethodWithArgs
+            </summary><param name="arg0">Docs for arg0.</param>
+        </member>
+        <member name="M:XmlDocumentation.IP1._PMethodWithArgs(XmlDocumentation.IP1,System.Int32)">
+            <summary>
+            Summary for P1.PMethodWithArgs
+            </summary><param name="arg0">Docs for arg0.</param>
+        </member>
+        <member name="M:XmlDocumentation.IP1.PMethodWithUndocumentedArgs(System.Int32)">
+            <summary>
+            Summary for P1.PMethodWithArgs
+            </summary>
+        </member>
+        <member name="M:XmlDocumentation.IP1._PMethodWithUndocumentedArgs(XmlDocumentation.IP1,System.Int32)">
+            <summary>
+            Summary for P1.PMethodWithArgs
+            </summary>
+        </member>
         <member name="P:XmlDocumentation.IP1.PProperty">
             <summary>
             Summary for P1.PProperty
@@ -245,6 +278,16 @@
         <member name="M:XmlDocumentation.P1_Extensions.PMethod(XmlDocumentation.IP1)">
             <summary>
             Summary for P1.PMethod
+            </summary>
+        </member>
+        <member name="M:XmlDocumentation.P1_Extensions.PMethodWithArgs(XmlDocumentation.IP1,System.Int32)">
+            <summary>
+            Summary for P1.PMethodWithArgs
+            </summary><param name="arg0">Docs for arg0.</param>
+        </member>
+        <member name="M:XmlDocumentation.P1_Extensions.PMethodWithUndocumentedArgs(XmlDocumentation.IP1,System.Int32)">
+            <summary>
+            Summary for P1.PMethodWithArgs
             </summary>
         </member>
         <member name="M:XmlDocumentation.P1_Extensions.GetPProperty(XmlDocumentation.IP1)">
@@ -354,6 +397,16 @@
         <member name="M:XmlDocumentation.T1.PAMethod">
             <summary>
             Summary for PA1.PMethod
+            </summary>
+        </member>
+        <member name="M:XmlDocumentation.T1.PMethodWithArgs(System.Int32)">
+            <summary>
+            Summary for P1.PMethodWithArgs
+            </summary><param name="arg0">Docs for arg0.</param>
+        </member>
+        <member name="M:XmlDocumentation.T1.PMethodWithUndocumentedArgs(System.Int32)">
+            <summary>
+            Summary for P1.PMethodWithArgs
             </summary>
         </member>
         <member name="P:XmlDocumentation.T1.PAProperty">
@@ -670,6 +723,15 @@
                </example>
                <para>For more information, see the documentation for the <see cref="T:UIKit.UIAppearance" /> class.</para>
              </remarks>
+        </member>
+        <member name="T:XmlDocumentation.OptionsA">
+            <summary>Summary for OptionsA.</summary>
+        </member>
+        <member name="P:XmlDocumentation.OptionsA.Option1">
+            <summary>Summary for Option1.</summary>
+        </member>
+        <member name="P:XmlDocumentation.OptionsB.Option1">
+            <summary>Summary for Option1.</summary>
         </member>
     </members>
 </doc>

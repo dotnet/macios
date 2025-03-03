@@ -10,7 +10,7 @@ using System;
 namespace AVFoundation;
 
 [BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-static public partial class AVCaptureDeviceTypeExtensions
+public static partial class AVCaptureDeviceTypeExtensions
 {
 
 	static IntPtr[] values = new IntPtr [11];
@@ -194,6 +194,12 @@ static public partial class AVCaptureDeviceTypeExtensions
 		if (constant.IsEqualTo (AVCaptureDeviceTypeBuiltInLiDARDepthCamera))
 			return AVCaptureDeviceType.BuiltInLiDarDepthCamera;
 		throw new NotSupportedException ($"The constant {constant} has no associated enum value on this platform.");
+	}
+
+	public static AVCaptureDeviceType GetValueFromHandle (NativeHandle handle)
+	{
+		using var str = Runtime.GetNSObject<NSString> (handle)!;
+		return GetValue (str);
 	}
 
 	internal static NSString?[]? ToConstantArray (this AVCaptureDeviceType[]? values)

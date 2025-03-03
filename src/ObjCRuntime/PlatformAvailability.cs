@@ -239,10 +239,6 @@ namespace ObjCRuntime {
 					(NSString)plist ["ProductName"],
 					(NSString)plist ["ProductVersion"])
 				).Value;
-#elif WATCH
-			hostApiPlatform = null;
-			Console.WriteLine ("PlatformHelper.GetHostApiPlatform () not implemented for WatchOS.");
-			throw new NotImplementedException ();
 #else
 			return (hostApiPlatform = ParseApiPlatform (
 			 	UIDevice.CurrentDevice.SystemName,
@@ -282,7 +278,7 @@ namespace ObjCRuntime {
 			return platform;
 		}
 
-#if !COREBUILD && !WATCH && !NET
+#if !COREBUILD && !NET
 #if MONOMAC
 		const int sys1 = 1937339185;
 		const int sys2 = 1937339186;
@@ -572,7 +568,7 @@ namespace ObjCRuntime {
 
 		public MacAttribute (byte major, byte minor, byte subminor)
 #if NET
-			: base ((Platform)((ulong)major << 48 | (ulong)minor << 40 | (ulong)subminor << 32))
+			: base ((Platform) ((ulong) major << 48 | (ulong) minor << 40 | (ulong) subminor << 32))
 #else
 			: this (major, minor, subminor, false)
 #endif

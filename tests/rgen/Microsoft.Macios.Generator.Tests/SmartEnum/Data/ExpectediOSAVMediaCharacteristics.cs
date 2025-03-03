@@ -15,7 +15,7 @@ namespace AVFoundation;
 [SupportedOSPlatform ("tvos11.0")]
 [SupportedOSPlatform ("maccatalyst13.1")]
 [BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-static public partial class AVMediaCharacteristicsExtensions
+static partial class AVMediaCharacteristicsExtensions
 {
 
 	static IntPtr[] values = new IntPtr [18];
@@ -376,6 +376,12 @@ static public partial class AVMediaCharacteristicsExtensions
 		if (constant.IsEqualTo (AVMediaCharacteristicContainsAlphaChannel))
 			return AVMediaCharacteristics.ContainsAlphaChannel;
 		throw new NotSupportedException ($"The constant {constant} has no associated enum value on this platform.");
+	}
+
+	public static AVMediaCharacteristics GetValueFromHandle (NativeHandle handle)
+	{
+		using var str = Runtime.GetNSObject<NSString> (handle)!;
+		return GetValue (str);
 	}
 
 	internal static NSString?[]? ToConstantArray (this AVMediaCharacteristics[]? values)

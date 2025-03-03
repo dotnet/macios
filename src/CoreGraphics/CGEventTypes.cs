@@ -33,7 +33,7 @@ namespace CoreGraphics {
 	public enum CGEventTapLocation : int {
 		HID,
 		Session,
-		AnnotatedSession
+		AnnotatedSession,
 	}
 
 	// CGEventTypes.h:typedef uint32_t CGEventTapPlacement;
@@ -45,7 +45,7 @@ namespace CoreGraphics {
 #endif
 	public enum CGEventTapPlacement : uint {
 		HeadInsert,
-		TailAppend
+		TailAppend,
 	}
 
 	// CGEventTypes.h:typedef uint32_t CGEventTapOptions;
@@ -56,8 +56,8 @@ namespace CoreGraphics {
 	[MacCatalyst (13,1)]
 #endif
 	public enum CGEventTapOptions : uint {
-		Default, 
-		ListenOnly
+		Default,
+		ListenOnly,
 	}
 
 	// CGEventTypes.h:typedef uint32_t CGMouseButton;
@@ -68,7 +68,9 @@ namespace CoreGraphics {
 	[MacCatalyst (13,1)]
 #endif
 	public enum CGMouseButton : uint {
-		Left, Right, Center
+		Left,
+		Right,
+		Center,
 	}
 
 	// CGEventTypes.h:typedef uint32_t CGScrollEventUnit;
@@ -79,7 +81,8 @@ namespace CoreGraphics {
 	[MacCatalyst (13,1)]
 #endif
 	public enum CGScrollEventUnit : uint {
-		Pixel, Line
+		Pixel,
+		Line,
 	}
 
 	// CGEventTypes.h:typedef uint64_t CGEventMask;
@@ -91,22 +94,22 @@ namespace CoreGraphics {
 #endif
 	[Flags]
 	public enum CGEventMask : ulong {
-		Null              = 0x00000001,
-		LeftMouseDown     = 0x00000002,
-		LeftMouseUp       = 0x00000004,
-		RightMouseDown    = 0x00000008,
-		RightMouseUp      = 0x00000010,
-		MouseMoved        = 0x00000020,
-		LeftMouseDragged  = 0x00000040,
+		Null = 0x00000001,
+		LeftMouseDown = 0x00000002,
+		LeftMouseUp = 0x00000004,
+		RightMouseDown = 0x00000008,
+		RightMouseUp = 0x00000010,
+		MouseMoved = 0x00000020,
+		LeftMouseDragged = 0x00000040,
 		RightMouseDragged = 0x00000080,
-		KeyDown           = 0x00000400,
-		KeyUp             = 0x00000800,
-		FlagsChanged      = 0x00001000,
-		ScrollWheel       = 0x00400000,
-		TabletPointer     = 0x00800000,
-		TabletProximity   = 0x01000000,
-		OtherMouseDown    = 0x02000000,
-		OtherMouseUp      = 0x04000000,
+		KeyDown = 0x00000400,
+		KeyUp = 0x00000800,
+		FlagsChanged = 0x00001000,
+		ScrollWheel = 0x00400000,
+		TabletPointer = 0x00800000,
+		TabletProximity = 0x01000000,
+		OtherMouseDown = 0x02000000,
+		OtherMouseUp = 0x04000000,
 		OtherMouseDragged = 0x08000000,
 	}
 
@@ -120,14 +123,14 @@ namespace CoreGraphics {
 	[Flags]
 	public enum CGEventFlags : ulong {
 		NonCoalesced = 0x00000100,
-		AlphaShift   = 0x00010000,
-		Shift        = 0x00020000,
-		Control      = 0x00040000,
-		Alternate    = 0x00080000,
-		Command      = 0x00100000,
-		NumericPad   = 0x00200000,
-		Help         = 0x00400000,
-		SecondaryFn  = 0x00800000,
+		AlphaShift = 0x00010000,
+		Shift = 0x00020000,
+		Control = 0x00040000,
+		Alternate = 0x00080000,
+		Command = 0x00100000,
+		NumericPad = 0x00200000,
+		Help = 0x00400000,
+		SecondaryFn = 0x00800000,
 	}
 
 	// CGEventTypes.h:typedef uint32_t CGEventField;
@@ -395,7 +398,7 @@ namespace CoreGraphics {
 
 		// no documentation for this value in the header file.
 		/// <summary>A value that represents the raw delta value for axis 2.</summary>
-		ScrollWheelEventRawDeltaAxis2 = 177
+		ScrollWheelEventRawDeltaAxis2 = 177,
 	}
 
 	// CGEventTypes.h:typedef uint32_t CGEventType;
@@ -435,7 +438,9 @@ namespace CoreGraphics {
 	[MacCatalyst (13,1)]
 #endif
 	public enum CGEventMouseSubtype : uint {
-		Default, TabletPoint, TabletProximity
+		Default,
+		TabletPoint,
+		TabletProximity,
 	}
 
 	// CGEventTypes.h:typedef uint32_t CGEventSourceStateID;
@@ -446,7 +451,9 @@ namespace CoreGraphics {
 	[MacCatalyst (13,1)]
 #endif
 	public enum CGEventSourceStateID : int {
-		Private = -1, CombinedSession = 0, HidSystem = 1
+		Private = -1,
+		CombinedSession = 0,
+		HidSystem = 1,
 	}
 
 	// CGRemoteOperation.h:typedef uint32_t CGEventFilterMask;
@@ -460,7 +467,7 @@ namespace CoreGraphics {
 	public enum CGEventFilterMask : uint {
 		PermitLocalMouseEvents = 1,
 		PermitLocalKeyboardEvents = 2,
-		PermitSystemDefinedEvents = 4
+		PermitSystemDefinedEvents = 4,
 	}
 
 	// CGRemoteOperation.h:typedef uint32_t CGEventSuppressionState;
@@ -475,7 +482,7 @@ namespace CoreGraphics {
 		RemoteMouseDrag,
 		NumberOfEventSuppressionStates,
 	}
-	
+
 }
 
 #endif // MONOMAC

@@ -15040,7 +15040,7 @@ namespace AppKit {
 		bool IsAutomaticTextCompletionEnabled { get; }
 
 #if NET
-		[Async (ResultTypeName="NSSpellCheckerCandidates")]
+		[Async (ResultTypeName = "NSSpellCheckerCandidates")]
 #else
 		[Async (ResultTypeName = "NSSpellCheckerCanidates")]
 #endif
@@ -15776,15 +15776,15 @@ namespace AppKit {
 		[Internal, Field ("NSSourceTextScalingDocumentOption")]
 		NSString SourceTextScalingDocumentOption { get; }
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("NSTextHighlightStyleAttributeName")]
 		NSString TextHighlightStyle { get; }
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("NSTextHighlightColorSchemeAttributeName")]
 		NSString TextHighlightColorScheme { get; }
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("NSAdaptiveImageGlyphAttributeName")]
 		NSString AdaptiveImageGlyph { get; }
 
@@ -19847,7 +19847,7 @@ namespace AppKit {
 		// This came from the NSTextFinderClient protocol in legacy Xamarin, but NSTextView doesn't really implement that protocol,
 		// so when it was removed for .NET, we still need to expose the API from NSTextFinderClient that NSTextView actually has.
 		[Export ("selectedRanges", ArgumentSemantic.Copy)]
-		NSArray SelectedRanges { get; set;  }
+		NSArray SelectedRanges { get; set; }
 #endif
 
 		[NoiOS]
@@ -20402,7 +20402,7 @@ namespace AppKit {
 		bool ValidateToolbarItem (NSToolbarItem item);
 	}
 
-	[NoWatch, NoTV, NoiOS]
+	[NoTV, NoiOS]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSToolbarItem : NSCopying, NSMenuItemValidation, NSValidatedUserInterfaceItem

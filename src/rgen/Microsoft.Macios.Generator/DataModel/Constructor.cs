@@ -1,16 +1,17 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Availability;
-using Microsoft.Macios.Generator.Extensions;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
-readonly struct Constructor : IEquatable<Constructor> {
+[StructLayout (LayoutKind.Auto)]
+readonly partial struct Constructor : IEquatable<Constructor> {
 	/// <summary>
 	/// Type name that owns the constructor.
 	/// </summary>
@@ -29,12 +30,12 @@ readonly struct Constructor : IEquatable<Constructor> {
 	/// <summary>
 	/// Modifiers list.
 	/// </summary>
-	public ImmutableArray<SyntaxToken> Modifiers { get; } = [];
+	public ImmutableArray<SyntaxToken> Modifiers { get; init; } = [];
 
 	/// <summary>
 	/// Parameters list.
 	/// </summary>
-	public ImmutableArray<Parameter> Parameters { get; } = [];
+	public ImmutableArray<Parameter> Parameters { get; init; } = [];
 
 	public Constructor (string type,
 		SymbolAvailability symbolAvailability,
@@ -49,44 +50,12 @@ readonly struct Constructor : IEquatable<Constructor> {
 		Parameters = parameters;
 	}
 
-	public static bool TryCreate (ConstructorDeclarationSyntax declaration, SemanticModel semanticModel,
-		[NotNullWhen (true)] out Constructor? change)
-	{
-		if (semanticModel.GetDeclaredSymbol (declaration) is not IMethodSymbol constructor) {
-			change = null;
-			return false;
-		}
-
-		var attributes = declaration.GetAttributeCodeChanges (semanticModel);
-		var parametersBucket = ImmutableArray.CreateBuilder<Parameter> ();
-		// loop over the parameters of the construct since changes on those implies a change in the generated code
-		foreach (var parameter in constructor.Parameters) {
-			var parameterDeclaration = declaration.ParameterList.Parameters [parameter.Ordinal];
-			parametersBucket.Add (new (parameter.Ordinal, parameter.Type.ToDisplayString ().Trim (),
-				parameter.Name) {
-				IsOptional = parameter.IsOptional,
-				IsParams = parameter.IsParams,
-				IsThis = parameter.IsThis,
-				IsNullable = parameter.NullableAnnotation == NullableAnnotation.Annotated,
-				DefaultValue = (parameter.HasExplicitDefaultValue) ? parameter.ExplicitDefaultValue?.ToString () : null,
-				ReferenceKind = parameter.RefKind.ToReferenceKind (),
-				Attributes = parameterDeclaration.GetAttributeCodeChanges (semanticModel),
-			});
-		}
-
-		change = new (
-			type: constructor.ContainingSymbol.ToDisplayString ().Trim (), // we want the full name
-			symbolAvailability: constructor.GetSupportedPlatforms (),
-			attributes: attributes,
-			modifiers: [.. declaration.Modifiers],
-			parameters: parametersBucket.ToImmutable ());
-		return true;
-	}
-
 	/// <inheritdoc/>
 	public bool Equals (Constructor other)
 	{
 		if (Type != other.Type)
+			return false;
+		if (ExportMethodData != other.ExportMethodData)
 			return false;
 		if (SymbolAvailability != other.SymbolAvailability)
 			return false;
@@ -98,7 +67,7 @@ readonly struct Constructor : IEquatable<Constructor> {
 		if (!modifiersComparer.Equals (Modifiers, other.Modifiers))
 			return false;
 
-		var paramComparer = new ParameterEqualityComparer ();
+		var paramComparer = new MethodParameterEqualityComparer ();
 		return paramComparer.Equals (Parameters, other.Parameters);
 	}
 
@@ -143,6 +112,8 @@ readonly struct Constructor : IEquatable<Constructor> {
 	public override string ToString ()
 	{
 		var sb = new StringBuilder ($"{{ Ctr: Type: {Type}, ");
+		sb.Append ($"ExportMethodData: {ExportMethodData}, ");
+		sb.Append ($"SymbolAvailability: {SymbolAvailability}, ");
 		sb.Append ("Attributes: [");
 		sb.AppendJoin (", ", Attributes);
 		sb.Append ("], Modifiers: [");

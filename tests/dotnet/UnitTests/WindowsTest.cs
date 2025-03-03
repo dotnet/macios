@@ -207,17 +207,6 @@ namespace Xamarin.Tests {
 				expectedWarnings.AddRange (expectedWarnings);
 			}
 
-			var zippedFrameworks = platform == ApplePlatform.MacCatalyst || platform == ApplePlatform.MacOSX;
-			foreach (var rid in rids) {
-				if (zippedFrameworks) {
-					expectedWarnings.Add ($"The framework {Path.Combine ("obj", configuration, tfm, rid, "bindings-xcframework-test.resources.zip", "XStaticObjectTest.framework")} is a framework of static libraries, and will not be copied to the app.");
-					expectedWarnings.Add ($"The framework {Path.Combine ("obj", configuration, tfm, rid, "bindings-xcframework-test.resources.zip", "XStaticArTest.framework")} is a framework of static libraries, and will not be copied to the app.");
-				} else {
-					expectedWarnings.Add ($"The framework {Path.Combine (testsDirectory, "bindings-xcframework-test", "dotnet", platformString, "bin", configuration, tfm, "bindings-framework-test.resources", "XStaticObjectTest.xcframework", runtimeIdentifiers, "XStaticObjectTest.framework")} is a framework of static libraries, and will not be copied to the app.");
-					expectedWarnings.Add ($"The framework {Path.Combine (testsDirectory, "bindings-xcframework-test", "dotnet", platformString, "bin", configuration, tfm, "bindings-framework-test.resources", "XStaticArTest.xcframework", runtimeIdentifiers, "XStaticArTest.framework")} is a framework of static libraries, and will not be copied to the app.");
-				}
-			}
-
 			if (signature == BundleStructureTest.CodeSignature.None && (platform == ApplePlatform.MacCatalyst || platform == ApplePlatform.MacOSX)) {
 				expectedWarnings.Add ($"Found files in the root directory of the app bundle. This will likely cause codesign to fail. Files:\n{Path.Combine ("bin", configuration, tfm, runtimeIdentifiers.IndexOf (';') >= 0 ? string.Empty : runtimeIdentifiers, "BundleStructure.app", "UnknownJ.bin")}");
 			}
@@ -360,6 +349,26 @@ namespace Xamarin.Tests {
 			Assert.AreEqual ("MySimpleApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
 			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
 			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleShortVersionString").Value, "CFBundleShortVersionString");
+		}
+
+		[Test]
+		[Category ("Windows")]
+		[TestCase ("NativeFileReferencesApp", ApplePlatform.iOS, "ios-arm64")]
+		public void StaticLibrariesWithHotRestart (string project, ApplePlatform platform, string runtimeIdentifier)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+			Configuration.IgnoreIfNotOnWindows ();
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifier, platform: platform, out var _);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifier, GetHotRestartProperties ());
+			var rv = DotNet.AssertBuildFailure (project_path, properties);
+			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToList ();
+			AssertErrorMessages (errors,
+				$@"The library ..\..\..\test-libraries\.libs\iossimulator\libtest.a is a static library, and static libraries are not supported with Hot Restart. Set 'SkipStaticLibraryValidation=true' in the project file to ignore this error.",
+				$@"The library ..\..\..\test-libraries\.libs\iossimulator\libtest2.a is a static library, and static libraries are not supported with Hot Restart. Set 'SkipStaticLibraryValidation=true' in the project file to ignore this error."
+			);
 		}
 	}
 

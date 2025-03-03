@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
 using Microsoft.Macios.Generator.Attributes;
@@ -19,6 +21,18 @@ readonly partial struct SymbolAvailability {
 		readonly Dictionary<ApplePlatform, PlatformAvailability.Builder> platforms = new ();
 
 		internal Builder () { }
+
+		/// <summary>
+		/// Return the immutable version of the current data in the builder.
+		/// </summary>
+		public IEnumerable<PlatformAvailability> PlatformAvailabilities {
+			get {
+				// return the immutable version of the builder data
+				foreach (var availability in platforms.Values) {
+					yield return availability.ToImmutable ();
+				}
+			}
+		}
 
 		/// <summary>
 		/// Returns the PlatformAvailability for the given platform. If we did not have a builder for the

@@ -1,13 +1,17 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.Availability;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
-readonly struct Accessor : IEquatable<Accessor> {
+[StructLayout (LayoutKind.Auto)]
+readonly partial struct Accessor : IEquatable<Accessor> {
 	/// <summary>
 	/// The kind of accessor.
 	/// </summary>
@@ -21,28 +25,12 @@ readonly struct Accessor : IEquatable<Accessor> {
 	/// <summary>
 	/// List of attribute code changes of the accessor.
 	/// </summary>
-	public ImmutableArray<AttributeCodeChange> Attributes { get; }
+	public ImmutableArray<AttributeCodeChange> Attributes { get; } = [];
 
 	/// <summary>
 	/// List of modifiers of the accessor.
 	/// </summary>
 	public ImmutableArray<SyntaxToken> Modifiers { get; }
-
-	/// <summary>
-	/// Create a new code change in a property accessor.
-	/// </summary>
-	/// <param name="accessorKind">The kind of accessor.</param>
-	/// <param name="symbolAvailability">The os availability of the symbol.</param>
-	/// <param name="attributes">The list of attributes attached to the accessor.</param>
-	/// <param name="modifiers">The list of visibility modifiers of the accessor.</param>
-	public Accessor (AccessorKind accessorKind, SymbolAvailability symbolAvailability, ImmutableArray<AttributeCodeChange> attributes,
-		ImmutableArray<SyntaxToken> modifiers)
-	{
-		Kind = accessorKind;
-		SymbolAvailability = symbolAvailability;
-		Attributes = attributes;
-		Modifiers = modifiers;
-	}
 
 	/// <inheritdoc />
 	public bool Equals (Accessor other)
@@ -50,6 +38,8 @@ readonly struct Accessor : IEquatable<Accessor> {
 		if (Kind != other.Kind)
 			return false;
 		if (SymbolAvailability != other.SymbolAvailability)
+			return false;
+		if (ExportPropertyData != other.ExportPropertyData)
 			return false;
 
 		var attrsComparer = new AttributesEqualityComparer ();
@@ -68,7 +58,7 @@ readonly struct Accessor : IEquatable<Accessor> {
 	/// <inheritdoc />
 	public override int GetHashCode ()
 	{
-		return HashCode.Combine ((int) Kind, Attributes, Modifiers);
+		return HashCode.Combine ((int) Kind, SymbolAvailability, ExportPropertyData, Attributes, Modifiers);
 	}
 
 	public static bool operator == (Accessor left, Accessor right)
@@ -79,16 +69,5 @@ readonly struct Accessor : IEquatable<Accessor> {
 	public static bool operator != (Accessor left, Accessor right)
 	{
 		return !left.Equals (right);
-	}
-
-	/// <inheritdoc />
-	public override string ToString ()
-	{
-		var sb = new StringBuilder ($"{{ Kind: {Kind}, Supported Platforms: {SymbolAvailability} Modifiers: [");
-		sb.AppendJoin (",", Modifiers.Select (x => x.Text));
-		sb.Append ("], Attributes: [");
-		sb.AppendJoin (", ", Attributes);
-		sb.Append ("] }");
-		return sb.ToString ();
 	}
 }

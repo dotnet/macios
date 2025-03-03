@@ -16,7 +16,7 @@ using CoreFoundation;
 #nullable enable
 
 namespace GameKit {
-#if !MONOMAC && !TVOS && !WATCH
+#if !MONOMAC && !TVOS
 	public class GKDataReceivedEventArgs : EventArgs {
 		public GKDataReceivedEventArgs (NSData data, string peer, GKSession session)
 		{
@@ -24,12 +24,21 @@ namespace GameKit {
 			PeerID = peer;
 			Session = session;
 		}
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSData Data { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string PeerID { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public GKSession Session { get; private set; }
 	}
 
-#if !TVOS && !WATCH
+#if !TVOS
 	public partial class GKSession {
 		[Register ("MonoTouch_GKSession_ReceivedObject")]
 		internal class ReceiverObject : NSObject {
@@ -177,8 +186,17 @@ namespace GameKit {
 			State = state;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public GKSession Session { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string PeerID { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public GKPeerConnectionState State { get; private set; }
 	}
 
@@ -189,8 +207,17 @@ namespace GameKit {
 			PeerID = peerID;
 			Error = error;
 		}
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public GKSession Session { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? PeerID { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSError? Error { get; private set; }
 	}
 #endif

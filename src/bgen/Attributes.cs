@@ -143,6 +143,8 @@ public class BaseTypeAttribute : Attribute {
 	// too many objects, but two cases in particular that users keep
 	// trampling on: UIAlertView and UIActionSheet
 	public string KeepRefUntil { get; set; }
+
+	public bool IsStubClass { get; set; }
 }
 
 //
@@ -935,9 +937,6 @@ public abstract class AvailabilityBaseAttribute : Attribute {
 		case PlatformName.TvOS:
 			builder.AppendLine ("#if __TVOS__");
 			break;
-		case PlatformName.WatchOS:
-			builder.AppendLine ("#if __WATCHOS__");
-			break;
 		case PlatformName.MacOSX:
 			builder.AppendLine ("#if __MACOS__");
 			break;
@@ -1102,6 +1101,8 @@ public sealed class TVAttribute : IntroducedAttribute {
 	}
 }
 
+#if !XAMCORE_5_0
+[Obsolete ("Do not use, watchOS is not supported in .NET")]
 [AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
 public sealed class WatchAttribute : IntroducedAttribute {
 	public WatchAttribute (byte major, byte minor)
@@ -1114,6 +1115,7 @@ public sealed class WatchAttribute : IntroducedAttribute {
 	{
 	}
 }
+#endif // XAMCORE_5_0
 
 [AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
 public sealed class MacCatalystAttribute : IntroducedAttribute {
@@ -1144,6 +1146,8 @@ public sealed class NoiOSAttribute : UnavailableAttribute {
 	}
 }
 
+#if !XAMCORE_5_0
+[Obsolete ("Do not use, watchOS is not supported in .NET")]
 [AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
 public sealed class NoWatchAttribute : UnavailableAttribute {
 	public NoWatchAttribute ()
@@ -1151,6 +1155,7 @@ public sealed class NoWatchAttribute : UnavailableAttribute {
 	{
 	}
 }
+#endif // XAMCORE_5_0
 
 [AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
 public sealed class NoTVAttribute : UnavailableAttribute {

@@ -10,7 +10,7 @@ using System;
 namespace AVFoundation;
 
 [BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-static public partial class AVCaptureSystemPressureLevelExtensions
+public static partial class AVCaptureSystemPressureLevelExtensions
 {
 
 	static IntPtr[] values = new IntPtr [5];
@@ -104,6 +104,12 @@ static public partial class AVCaptureSystemPressureLevelExtensions
 		if (constant.IsEqualTo (AVCaptureSystemPressureLevelShutdown))
 			return AVCaptureSystemPressureLevel.Shutdown;
 		throw new NotSupportedException ($"The constant {constant} has no associated enum value on this platform.");
+	}
+
+	public static AVCaptureSystemPressureLevel GetValueFromHandle (NativeHandle handle)
+	{
+		using var str = Runtime.GetNSObject<NSString> (handle)!;
+		return GetValue (str);
 	}
 
 	internal static NSString?[]? ToConstantArray (this AVCaptureSystemPressureLevel[]? values)

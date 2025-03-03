@@ -13,8 +13,6 @@
 
 #nullable enable
 
-#if !WATCH
-
 using System;
 using System.Runtime.InteropServices;
 
@@ -38,10 +36,20 @@ namespace AudioToolbox {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiNoteMessage {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public byte Channel;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public byte Note;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public byte Velocity;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public byte ReleaseVelocity;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public /* Float32 */ float Duration;
 
 		public MidiNoteMessage (byte channel, byte note, byte velocity, byte releaseVelocity, float duration)
@@ -63,9 +71,17 @@ namespace AudioToolbox {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiChannelMessage {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public byte Status;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public byte Data1;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public byte Data2;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public byte Reserved;
 
 		public MidiChannelMessage (byte status, byte data1, byte data2)
@@ -197,6 +213,8 @@ namespace AudioToolbox {
 #else
 	public class MidiMetaEvent : _MidiData {
 #endif
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public byte MetaEventType;
 
 		internal override IntPtr ToUnmanaged ()
@@ -227,8 +245,14 @@ namespace AudioToolbox {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct ExtendedNoteOnEvent {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public /* MusicDeviceInstrumentID */ uint InstrumentID;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public /* MusicDeviceGroupID */ uint DeviceGroupID;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public /* Float32 */ float Duration;
 
 		// MusicDeviceNoteParams extendedParams
@@ -237,7 +261,11 @@ namespace AudioToolbox {
 #pragma warning disable 169
 		int argCount;
 #pragma warning restore 169
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float Pitch;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float Velocity;
 	}
 #endif
@@ -281,6 +309,9 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static /* OSStatus */ MusicPlayerStatus MusicTrackGetSequence (/* MusicTrack */ IntPtr inTrack, /* MusicSequence* */ IntPtr* outSequence);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MusicSequence? Sequence {
 			get {
 				IntPtr seqHandle;
@@ -311,7 +342,7 @@ namespace AudioToolbox {
 			unsafe {
 				result = MusicTrackGetDestMIDIEndpoint (Handle, &midiHandle);
 			}
-			outEndpoint = (result == MusicPlayerStatus.Success)? new MidiEndpoint (midiHandle): null;
+			outEndpoint = (result == MusicPlayerStatus.Success) ? new MidiEndpoint (midiHandle) : null;
 			return result;
 		}
 #endif
@@ -347,6 +378,9 @@ namespace AudioToolbox {
 			TimeResolution
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool MuteStatus {
 			get {
 				byte val;
@@ -364,6 +398,9 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool SoloStatus {
 			get {
 				byte val;
@@ -381,6 +418,9 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double TrackLength {
 			get {
 				double value = 0;
@@ -518,5 +558,3 @@ namespace AudioToolbox {
 #endif // !COREBUILD
 	}
 }
-
-#endif // IOS || TVOS

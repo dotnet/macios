@@ -304,6 +304,7 @@ namespace Xamarin.Tests {
 				AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "MonoTouch.Dialog", runtimeIdentifiers, forceSingleRid: (platform == ApplePlatform.MacCatalyst && !isReleaseBuild), includeDebugFiles: includeDebugFiles);
 			expectedFiles.Add (Path.Combine (assemblyDirectory, "nunit.framework.dll"));
 			expectedFiles.Add (Path.Combine (assemblyDirectory, "nunitlite.dll"));
+			expectedFiles.Add (Path.Combine (assemblyDirectory, "Mono.Options.dll"));
 			bool forceSingleRid = (platform == ApplePlatform.MacCatalyst && !isReleaseBuild) || platform == ApplePlatform.MacOSX;
 			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "Touch.Client", runtimeIdentifiers, forceSingleRid, includeDebugFiles: includeDebugFiles);
 			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, Path.GetFileNameWithoutExtension (Configuration.GetBaseLibraryName (platform)), runtimeIdentifiers, forceSingleRid, includeDebugFiles: includeDebugFiles);
@@ -641,19 +642,6 @@ namespace Xamarin.Tests {
 			if (rids.Length > 1) {
 				// All warnings show up twice if we're building for multiple architectures
 				expectedWarnings.AddRange (expectedWarnings);
-			}
-
-			var xcArch = GetXCFrameworkArchitectures (platform, runtimeIdentifiers);
-			foreach (var rid in rids) {
-				var zip = Path.Combine (testsDirectory, "bindings-xcframework-test", "dotnet", platformString, "bin", configuration, tfm, "bindings-framework-test.resources.zip");
-				var zippedFrameworks = File.Exists (zip);
-				if (zippedFrameworks) {
-					expectedWarnings.Add ($"The framework {Path.Combine ("obj", configuration, tfm, rid, "bindings-framework-test.resources.zip", "XStaticObjectTest.xcframework", xcArch, "XStaticObjectTest.framework")} is a framework of static libraries, and will not be copied to the app.");
-					expectedWarnings.Add ($"The framework {Path.Combine ("obj", configuration, tfm, rid, "bindings-framework-test.resources.zip", "XStaticArTest.xcframework", xcArch, "XStaticArTest.framework")} is a framework of static libraries, and will not be copied to the app.");
-				} else {
-					expectedWarnings.Add ($"The framework {Path.Combine (testsDirectory, "bindings-xcframework-test", "dotnet", platformString, "bin", configuration, tfm, "bindings-framework-test.resources", "XStaticObjectTest.xcframework", xcArch, "XStaticObjectTest.framework")} is a framework of static libraries, and will not be copied to the app.");
-					expectedWarnings.Add ($"The framework {Path.Combine (testsDirectory, "bindings-xcframework-test", "dotnet", platformString, "bin", configuration, tfm, "bindings-framework-test.resources", "XStaticArTest.xcframework", xcArch, "XStaticArTest.framework")} is a framework of static libraries, and will not be copied to the app.");
-				}
 			}
 
 			if (signature == CodeSignature.None && (platform == ApplePlatform.MacCatalyst || platform == ApplePlatform.MacOSX)) {

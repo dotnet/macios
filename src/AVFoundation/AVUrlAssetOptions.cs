@@ -40,8 +40,6 @@ namespace AVFoundation {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#else
-	[Watch (6, 0)]
 #endif
 	public class AVUrlAssetOptions : DictionaryContainer {
 #if !COREBUILD
@@ -54,7 +52,10 @@ namespace AVFoundation {
 			: base (dictionary)
 		{
 		}
-#if !WATCH
+		/// <summary>Indicates whether the asset should be prepared to indicate a precise duration and provide precise random access by time.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant AVURLAssetPreferPreciseDurationAndTimingKey value to access the underlying dictionary.</remarks>
 		public bool? PreferPreciseDurationAndTiming {
 			set {
 				SetBooleanValue (AVUrlAsset.PreferPreciseDurationAndTimingKey, value);
@@ -64,6 +65,10 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>Represents the restrictions used by the asset when resolving references to external media data.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant AVURLAssetReferenceRestrictionsKey value to access the underlying dictionary.</remarks>
 		public AVAssetReferenceRestrictions? ReferenceRestrictions {
 			set {
 				SetNumberValue (AVUrlAsset.ReferenceRestrictionsKey, (nuint?) (ulong?) value);
@@ -72,7 +77,6 @@ namespace AVFoundation {
 				return (AVAssetReferenceRestrictions?) (ulong?) GetNUIntValue (AVUrlAsset.ReferenceRestrictionsKey);
 			}
 		}
-#endif
 #endif
 	}
 }

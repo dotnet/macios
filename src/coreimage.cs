@@ -256,14 +256,16 @@ namespace CoreImage {
 		CIContext Create ();
 
 #if HAS_OPENGLES
-		[NoMac][NoMacCatalyst]
+		[NoMac]
+		[NoMacCatalyst]
 		[Deprecated (PlatformName.iOS, 12, 0)]
 		[Deprecated (PlatformName.TvOS, 12, 0)]
 		[Static]
 		[Export ("contextWithEAGLContext:")]
 		CIContext FromContext (EAGLContext eaglContext);
 
-		[NoMac][NoMacCatalyst]
+		[NoMac]
+		[NoMacCatalyst]
 		[Deprecated (PlatformName.iOS, 12, 0)]
 		[Deprecated (PlatformName.TvOS, 12, 0)]
 		[Static]
@@ -326,7 +328,6 @@ namespace CoreImage {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Internal, Export ("createCGLayerWithSize:info:")]
 		[return: NullAllowed]
@@ -340,7 +341,6 @@ namespace CoreImage {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("reclaimResources")]
 		void ReclaimResources ();
@@ -391,7 +391,6 @@ namespace CoreImage {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("offlineGPUCount")]
 		[Static]
@@ -399,7 +398,6 @@ namespace CoreImage {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Deprecated (PlatformName.MacOSX, 10, 14)]
 		[Export ("contextForOfflineGPUAtIndex:")]
@@ -653,7 +651,6 @@ namespace CoreImage {
 		void RegisterFilterName (string name, NSObject constructorObject, NSDictionary classAttributes);
 #else
 		[MacCatalyst (13, 1)]
-		[NoWatch]
 		[Static]
 		[Export ("registerFilterName:constructor:classAttributes:")]
 #if NET
@@ -666,7 +663,6 @@ namespace CoreImage {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("apply:arguments:options:")]
 		[return: NullAllowed]
@@ -674,7 +670,6 @@ namespace CoreImage {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("viewForUIConfiguration:excludedKeys:")]
 		IKFilterUIView GetFilterUIView (NSDictionary configurationOptions, [NullAllowed] NSArray excludedKeys);
@@ -1507,7 +1502,6 @@ namespace CoreImage {
 
 	[NoiOS]
 	[NoMacCatalyst]
-	[NoWatch]
 	[NoTV]
 	[Static]
 	interface CIFilterApply {
@@ -1535,7 +1529,6 @@ namespace CoreImage {
 	[iOS (17, 0)]
 	[MacCatalyst (17, 0)]
 #endif
-	[NoWatch]
 	[NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -1781,7 +1774,6 @@ namespace CoreImage {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Deprecated (PlatformName.MacOSX, 10, 11)]
 		[Static]
@@ -1790,7 +1782,6 @@ namespace CoreImage {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Deprecated (PlatformName.MacOSX, 10, 11)]
 		[Static]
@@ -1940,7 +1931,6 @@ namespace CoreImage {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'CIImage (CGImage)' instead.")]
 		[Export ("initWithCGLayer:")]
@@ -1948,7 +1938,6 @@ namespace CoreImage {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'CIImage (CGImage)' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
@@ -1957,7 +1946,6 @@ namespace CoreImage {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Wrap ("this (layer, options.GetDictionary ())")]
 		NativeHandle Constructor (CGLayer layer, [NullAllowed] CIImageInitializationOptions options);
@@ -2046,21 +2034,18 @@ namespace CoreImage {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("initWithBitmapImageRep:")]
 		NativeHandle Constructor (NSImageRep imageRep);
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("drawAtPoint:fromRect:operation:fraction:")]
 		void Draw (CGPoint point, CGRect srcRect, NSCompositingOperation op, nfloat delta);
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("drawInRect:fromRect:operation:fraction:")]
 		void Draw (CGRect dstRect, CGRect srcRect, NSCompositingOperation op, nfloat delta);
@@ -2088,7 +2073,6 @@ namespace CoreImage {
 
 		[NoiOS]
 		[NoMacCatalyst]
-		[NoWatch]
 		[NoTV]
 		[Export ("definition")]
 		CIFilterShape Definition { get; }
@@ -2747,7 +2731,6 @@ namespace CoreImage {
 		string Name { get; }
 
 		[NoiOS]
-		[NoWatch]
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("setROISelector:")]
@@ -2866,7 +2849,6 @@ namespace CoreImage {
 
 	[NoiOS]
 	[NoMacCatalyst]
-	[NoWatch]
 	[NoTV]
 	[BaseType (typeof (NSObject))]
 	interface CIPlugIn {
@@ -3483,7 +3465,6 @@ namespace CoreImage {
 
 		[NoiOS]
 		[NoTV]
-		[NoWatch]
 		[NoMacCatalyst]
 		[CoreImageFilterProperty ("outputImageMPS")]
 		CIImage OutputImageMps { get; }

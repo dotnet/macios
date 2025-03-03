@@ -1,5 +1,9 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 using System;
 using System.Collections.Immutable;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Availability;
@@ -11,7 +15,8 @@ namespace Microsoft.Macios.Generator.DataModel;
 /// Structure that represents a change that was made by the user on enum members that has to be
 /// reflected in the generated code.
 /// </summary>
-readonly struct EnumMember : IEquatable<EnumMember> {
+[StructLayout (LayoutKind.Auto)]
+readonly partial struct EnumMember : IEquatable<EnumMember> {
 	/// <summary>
 	/// Get the name of the member.
 	/// </summary>
@@ -22,36 +27,10 @@ readonly struct EnumMember : IEquatable<EnumMember> {
 	/// </summary>
 	public SymbolAvailability SymbolAvailability { get; }
 
-	public FieldData<EnumValue>? FieldData { get; }
-
 	/// <summary>
 	/// Get the attributes added to the member.
 	/// </summary>
-	public ImmutableArray<AttributeCodeChange> Attributes { get; }
-
-	/// <summary>
-	/// Create a new change that happened on a member.
-	/// </summary>
-	/// <param name="name">The name of the changed member.</param>
-	/// <param name="fieldData">The binding data attached to this enum value.</param>
-	/// <param name="symbolAvailability">The symbol availability of the member.</param>
-	/// <param name="attributes">The list of attribute changes in the member.</param>
-	public EnumMember (string name, FieldData<EnumValue>? fieldData, SymbolAvailability symbolAvailability,
-		ImmutableArray<AttributeCodeChange> attributes)
-	{
-		Name = name;
-		FieldData = fieldData;
-		SymbolAvailability = symbolAvailability;
-		Attributes = attributes;
-	}
-
-	/// <summary>
-	/// Create a new change that happened on a member.
-	/// </summary>
-	/// <param name="name">The name of the changed member.</param>
-	public EnumMember (string name) : this (name, null, new SymbolAvailability (), ImmutableArray<AttributeCodeChange>.Empty)
-	{
-	}
+	public ImmutableArray<AttributeCodeChange> Attributes { get; } = [];
 
 	/// <inheritdoc />
 	public bool Equals (EnumMember other)
@@ -60,7 +39,7 @@ readonly struct EnumMember : IEquatable<EnumMember> {
 			return false;
 		if (SymbolAvailability != other.SymbolAvailability)
 			return false;
-		if (FieldData != other.FieldData)
+		if (FieldInfo != other.FieldInfo)
 			return false;
 
 		var attrComparer = new AttributesEqualityComparer ();
@@ -93,7 +72,7 @@ readonly struct EnumMember : IEquatable<EnumMember> {
 	public override string ToString ()
 	{
 		var sb = new StringBuilder (
-			$"{{ Name: '{Name}' SymbolAvailability: {SymbolAvailability} FieldData: {FieldData} Attributes: [");
+			$"{{ Name: '{Name}' SymbolAvailability: {SymbolAvailability} FieldInfo: {FieldInfo} Attributes: [");
 		sb.AppendJoin (", ", Attributes);
 		sb.Append ("] }");
 		return sb.ToString ();

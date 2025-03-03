@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
@@ -7,12 +9,10 @@ using Microsoft.Macios.Generator.DataModel;
 
 namespace Microsoft.Macios.Generator.Emitters;
 
-#pragma warning disable CS9113 // Parameter is unread, this class is work in progress
-class InterfaceEmitter (RootBindingContext context, TabbedStringBuilder builder) : ICodeEmitter {
-#pragma warning restore CS9113 // Parameter is unread.
-	public string GetSymbolName (in CodeChanges codeChanges) => string.Empty;
+class InterfaceEmitter : ICodeEmitter {
+	public string GetSymbolName (in Binding binding) => string.Empty;
 	public IEnumerable<string> UsingStatements => [];
-	public bool TryEmit (in CodeChanges codeChanges, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
+	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
 	{
 		diagnostics = null;
 		return true;

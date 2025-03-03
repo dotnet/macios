@@ -46,12 +46,10 @@ using Vector3 = global::OpenTK.NVector3;
 using Vector4 = global::OpenTK.Vector4;
 #endif
 
-#if !WATCH
 using CoreAnimation;
 using CoreImage;
-#endif
 
-#if WATCH || NET
+#if NET
 using AnimationType = global::SceneKit.ISCNAnimationProtocol;
 #else
 using AnimationType = global::CoreAnimation.CAAnimation;
@@ -59,13 +57,11 @@ using AnimationType = global::CoreAnimation.CAAnimation;
 
 using CoreGraphics;
 using SpriteKit;
-#if !WATCH
 using ModelIO;
 using Metal;
 using GameplayKit;
-#endif
 
-#if MONOMAC || WATCH || __MACCATALYST__
+#if MONOMAC || __MACCATALYST__
 using EAGLContext = System.Object;
 #endif
 
@@ -86,12 +82,7 @@ using GLContext = global::OpenGLES.EAGLContext;
 using GLContext = global::Foundation.NSObject; // won't be used -> but must compile
 #endif
 
-#if WATCH
-using NSView = global::Foundation.NSObject; // won't be used -> [NoWatch] but must compile
-using SCNGeometryTessellator = global::Foundation.NSObject; // won't be used -> [NoWatch] but must compile
-#else
 using NSView = global::UIKit.UIView;
-#endif
 
 using NSColor = global::UIKit.UIColor;
 using NSFont = global::UIKit.UIFont;
@@ -104,30 +95,6 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace SceneKit {
-
-#if WATCH
-	// stubs to limit the number of preprocessor directives in the source file
-	interface CAAnimation {}
-	interface CALayer {}
-	interface CAMediaTimingFunction {}
-	interface MDLAsset {}
-	interface MDLCamera {}
-	interface MDLLight {}
-	interface MDLMaterial {}
-	interface MDLMesh {}
-	interface MDLObject {}
-	interface MDLSubmesh {}
-	enum MTLPixelFormat {}
-	enum MTLVertexFormat {}
-	interface IMTLBuffer {}
-	interface IMTLCommandBuffer {}
-	interface IMTLCommandQueue {}
-	interface IMTLDevice {}
-	interface IMTLLibrary {}
-	interface IMTLRenderCommandEncoder {}
-	interface MTLRenderPassDescriptor {}
-#endif
-
 	/// <summary>Callback used to reflect progress during execution of <see cref="M:SceneKit.SCNSceneSource.SceneFromOptions(SceneKit.SCNSceneLoadingOptions,SceneKit.SCNSceneSourceStatusHandler)" />.</summary>
 	[MacCatalyst (13, 1)]
 	delegate void SCNSceneSourceStatusHandler (float /* float, not CGFloat */ totalProgress, SCNSceneSourceStatus status, NSError error, ref bool stopLoading);
@@ -170,7 +137,6 @@ namespace SceneKit {
 	[BaseType (typeof (NSObject))]
 	interface SCNAnimatable {
 		[Abstract]
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("addAnimation:forKey:")]
 #if !NET
@@ -193,7 +159,7 @@ namespace SceneKit {
 #if NET
 		[Abstract]
 #endif
-		[Watch (8, 0), TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("removeAllAnimationsWithBlendOutDuration:")]
 		void RemoveAllAnimationsWithBlendOutDuration (nfloat duration);
 
@@ -217,7 +183,6 @@ namespace SceneKit {
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'GetAnimationPlayer' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'GetAnimationPlayer' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'GetAnimationPlayer' instead.")]
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GetAnimationPlayer' instead.")]
 		[Export ("animationForKey:")]
@@ -225,7 +190,6 @@ namespace SceneKit {
 		CAAnimation GetAnimation (NSString key);
 
 		[Abstract]
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
@@ -235,7 +199,6 @@ namespace SceneKit {
 		void PauseAnimation (NSString key);
 
 		[Abstract]
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
@@ -245,7 +208,6 @@ namespace SceneKit {
 		void ResumeAnimation (NSString key);
 
 		[Abstract]
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
@@ -255,7 +217,6 @@ namespace SceneKit {
 		bool IsAnimationPaused (NSString key);
 
 		[Abstract]
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'RemoveAnimationUsingBlendOutDuration' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'RemoveAnimationUsingBlendOutDuration' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'RemoveAnimationUsingBlendOutDuration' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'RemoveAnimationUsingBlendOutDuration' instead.")]
@@ -274,7 +235,6 @@ namespace SceneKit {
 #if NET
 		[Abstract]
 #endif
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'SCNAnimationPlayer.Speed' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'SCNAnimationPlayer.Speed' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'SCNAnimationPlayer.Speed' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'SCNAnimationPlayer.Speed' instead.")]
@@ -341,6 +301,9 @@ namespace SceneKit {
 		[return: NullAllowed]
 		SCNAudioSource FromFile (string fileName);
 
+		/// <summary>Whether the audio uses positional mixing.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("positional")]
 		bool Positional { [Bind ("isPositional")] get; set; }
 
@@ -433,7 +396,6 @@ namespace SceneKit {
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'FieldOfView' or 'FocalLength' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'FieldOfView' or 'FocalLength' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'FieldOfView' or 'FocalLength' instead.")]
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'FieldOfView' or 'FocalLength' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FieldOfView' or 'FocalLength' instead.")]
 		[Export ("xFov")]
 		double XFov { get; set; }
@@ -441,7 +403,6 @@ namespace SceneKit {
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'FieldOfView' or 'FocalLength' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'FieldOfView' or 'FocalLength' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'FieldOfView' or 'FocalLength' instead.")]
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'FieldOfView' or 'FocalLength' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FieldOfView' or 'FocalLength' instead.")]
 		[Export ("yFov")]
 		double YFov { get; set; }
@@ -473,7 +434,6 @@ namespace SceneKit {
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'FocusDistance' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'FocusDistance' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'FocusDistance' instead.")]
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'FocusDistance' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FocusDistance' instead.")]
 		[Export ("focalDistance")]
@@ -482,7 +442,6 @@ namespace SceneKit {
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'FocusDistance' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'FocusDistance' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'FocusDistance' instead.")]
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'FocusDistance' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FocusDistance' instead.")]
 		[Export ("focalSize")]
@@ -491,7 +450,6 @@ namespace SceneKit {
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'FStop' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'FStop' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'FStop' instead.")]
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'FStop' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FStop' instead.")]
 		[Export ("focalBlurRadius")]
@@ -500,7 +458,6 @@ namespace SceneKit {
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'FStop' instead with FStop = SensorHeight / Aperture.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'FStop' instead with FStop = SensorHeight / Aperture.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'FStop' instead with FStop = SensorHeight / Aperture.")]
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'FStop' instead with FStop = SensorHeight / Aperture.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FStop' instead with FStop = SensorHeight / Aperture.")]
 		[Export ("aperture")]
@@ -590,7 +547,6 @@ namespace SceneKit {
 		[Export ("categoryBitMask")]
 		nuint CategoryBitMask { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("cameraWithMDLCamera:")]
@@ -652,42 +608,42 @@ namespace SceneKit {
 		[Export ("screenSpaceAmbientOcclusionNormalThreshold")]
 		nfloat ScreenSpaceAmbientOcclusionNormalThreshold { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("projectionTransformWithViewportSize:")]
 		SCNMatrix4 GetProjectionTransform (CGSize viewportSize);
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("bloomIterationCount")]
 		nint BloomIterationCount { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("bloomIterationSpread")]
 		nfloat BloomIterationSpread { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("grainIntensity")]
 		nfloat GrainIntensity { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("grainScale")]
 		nfloat GrainScale { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("grainIsColored")]
 		bool GrainIsColored { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("whiteBalanceTemperature")]
 		nfloat WhiteBalanceTemperature { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("whiteBalanceTint")]
 		nfloat WhiteBalanceTint { get; set; }
@@ -695,7 +651,6 @@ namespace SceneKit {
 
 	interface ISCNCameraControlConfiguration { }
 
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface SCNCameraControlConfiguration {
@@ -975,7 +930,7 @@ namespace SceneKit {
 		[Export ("geometryWithSources:elements:")]
 		SCNGeometry Create (SCNGeometrySource [] sources, [NullAllowed] SCNGeometryElement [] elements);
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Static]
 		[Export ("geometryWithSources:elements:sourceChannels:")]
 		SCNGeometry Create (SCNGeometrySource [] sources, [NullAllowed] SCNGeometryElement [] elements, [NullAllowed][BindAs (typeof (int []))] NSNumber [] sourceChannels);
@@ -1013,18 +968,16 @@ namespace SceneKit {
 		[Export ("wantsAdaptiveSubdivision")]
 		bool WantsAdaptiveSubdivision { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("geometryWithMDLMesh:")]
 		SCNGeometry FromMesh (MDLMesh mesh);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("tessellator", ArgumentSemantic.Retain)]
 		SCNGeometryTessellator Tessellator { get; set; }
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("geometrySourceChannels"), NullAllowed]
 		[BindAs (typeof (int []))]
 		NSNumber [] GeometrySourceChannels { get; }
@@ -1074,7 +1027,6 @@ namespace SceneKit {
 		[Export ("geometrySourceWithTextureCoordinates:count:"), Internal]
 		SCNGeometrySource FromTextureCoordinates (IntPtr texcoords, nint count);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("geometrySourceWithBuffer:vertexFormat:semantic:vertexCount:dataOffset:dataStride:")]
@@ -1140,7 +1092,7 @@ namespace SceneKit {
 		[Export ("geometryElementWithData:primitiveType:primitiveCount:bytesPerIndex:")]
 		SCNGeometryElement FromData ([NullAllowed] NSData data, SCNGeometryPrimitiveType primitiveType, nint primitiveCount, nint bytesPerIndex);
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Static]
 		[Export ("geometryElementWithData:primitiveType:primitiveCount:indicesChannelCount:interleavedIndicesChannels:bytesPerIndex:")]
 		SCNGeometryElement FromData ([NullAllowed] NSData data, SCNGeometryPrimitiveType primitiveType, nint primitiveCount, nint indicesChannelCount, bool interleavedIndicesChannels, nint bytesPerIndex);
@@ -1161,20 +1113,17 @@ namespace SceneKit {
 		[Export ("maximumPointScreenSpaceRadius")]
 		nfloat MaximumPointScreenSpaceRadius { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("geometryElementWithMDLSubmesh:")]
 		SCNGeometryElement FromSubmesh (MDLSubmesh submesh);
 
-		[NoWatch] // marked as 7,0 but there's no Metal support on the platform
 		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("geometryElementWithBuffer:primitiveType:primitiveCount:bytesPerIndex:")]
 		SCNGeometryElement FromBuffer (IMTLBuffer buffer, SCNGeometryPrimitiveType primitiveType, nint primitiveCount, nint bytesPerIndex);
 
-		[NoWatch] // marked as 11.0 but there's no Metal support on the platform
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Static]
 		[Export ("geometryElementWithBuffer:primitiveType:primitiveCount:indicesChannelCount:interleavedIndicesChannels:bytesPerIndex:")]
@@ -1189,8 +1138,6 @@ namespace SceneKit {
 		nint IndicesChannelCount { get; }
 	}
 
-#if !WATCH
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -1219,7 +1166,6 @@ namespace SceneKit {
 		[Export ("smoothingMode", ArgumentSemantic.Assign)]
 		SCNTessellationSmoothingMode SmoothingMode { get; set; }
 	}
-#endif
 
 	/// <summary>Constants for use with the <c>options</c> argument in <see cref="M:SceneKit.SCNNode.HitTest(SceneKit.SCNVector3,SceneKit.SCNVector3,SceneKit.SCNHitTestOptions)" />.</summary>
 	[MacCatalyst (13, 1)]
@@ -1264,7 +1210,7 @@ namespace SceneKit {
 		[Field ("SCNHitTestOptionSearchMode")]
 		NSString SearchModeKey { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("SCNHitTestOptionIgnoreLightArea")]
 		NSString IgnoreLightAreaKey { get; }
@@ -1313,7 +1259,6 @@ namespace SceneKit {
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "Please use Metal instead of OpenGL API.")]
 	[BaseType (typeof (CAOpenGLLayer))]
@@ -1469,23 +1414,22 @@ namespace SceneKit {
 		[Export ("sphericalHarmonicsCoefficients", ArgumentSemantic.Copy)]
 		NSData SphericalHarmonicsCoefficients { get; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("lightWithMDLLight:")]
 		SCNLight FromModelLight (MDLLight mdllight);
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("probeType", ArgumentSemantic.Assign)]
 		SCNLightProbeType ProbeType { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("probeUpdateType", ArgumentSemantic.Assign)]
 		SCNLightProbeUpdateType ProbeUpdateType { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("probeExtents", ArgumentSemantic.Assign)]
 		Vector3 ProbeExtents {
@@ -1495,7 +1439,7 @@ namespace SceneKit {
 			set;
 		}
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("probeOffset", ArgumentSemantic.Assign)]
 		Vector3 ProbeOffset {
@@ -1505,12 +1449,12 @@ namespace SceneKit {
 			set;
 		}
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("parallaxCorrectionEnabled")]
 		bool ParallaxCorrectionEnabled { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("parallaxExtentsFactor", ArgumentSemantic.Assign)]
 		Vector3 ParallaxExtentsFactor {
@@ -1520,7 +1464,7 @@ namespace SceneKit {
 			set;
 		}
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("parallaxCenterOffset", ArgumentSemantic.Assign)]
 		Vector3 ParallaxCenterOffset {
@@ -1530,17 +1474,17 @@ namespace SceneKit {
 			set;
 		}
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("probeEnvironment")]
 		SCNMaterialProperty ProbeEnvironment { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("areaType", ArgumentSemantic.Assign)]
 		SCNLightAreaType AreaType { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("areaExtents", ArgumentSemantic.Assign)]
 		Vector3 AreaExtents {
@@ -1550,17 +1494,17 @@ namespace SceneKit {
 			set;
 		}
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("areaPolygonVertices", ArgumentSemantic.Copy)]
 		NSValue [] AreaPolygonVertices { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("drawsArea")]
 		bool DrawsArea { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("doubleSided")]
 		bool DoubleSided { get; set; }
@@ -1590,7 +1534,7 @@ namespace SceneKit {
 		[Field ("SCNLightTypeProbe")]
 		NSString Probe { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("SCNLightTypeArea")]
 		NSString Area { get; }
@@ -1598,7 +1542,6 @@ namespace SceneKit {
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 10)]
 	[Static]
@@ -1645,7 +1588,7 @@ namespace SceneKit {
 		[Field ("SCNLightingModelPhysicallyBased")]
 		NSString PhysicallyBased { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("SCNLightingModelShadowOnly")]
 		NSString ShadowOnly { get; }
@@ -1743,7 +1686,6 @@ namespace SceneKit {
 		[Export ("roughness")]
 		SCNMaterialProperty Roughness { get; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("materialWithMDLMaterial:")]
@@ -1761,17 +1703,17 @@ namespace SceneKit {
 		[Export ("colorBufferWriteMask", ArgumentSemantic.Assign)]
 		SCNColorMask ColorBufferWriteMask { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("clearCoat")]
 		SCNMaterialProperty ClearCoat { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("clearCoatRoughness")]
 		SCNMaterialProperty ClearCoatRoughness { get; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("clearCoatNormal")]
 		SCNMaterialProperty ClearCoatNormal { get; }
@@ -1805,7 +1747,7 @@ namespace SceneKit {
 		[Deprecated (PlatformName.iOS, 10, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[NoMacCatalyst]
-		[NoWatch, NoTV]
+		[NoTV]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[NullAllowed, Export ("borderColor", ArgumentSemantic.Retain)]
 		NSObject BorderColor { get; set; }
@@ -1822,7 +1764,6 @@ namespace SceneKit {
 		[Wrap ("Contents")]
 		NSImage ContentImage { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Wrap ("Contents")]
 		CALayer ContentLayer { get; set; }
@@ -1859,34 +1800,30 @@ namespace SceneKit {
 		SCNMaterialProperty Create (NSObject contents);
 
 		[Static]
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0), Watch (10, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[return: NullAllowed]
 		[Export ("precomputedLightingEnvironmentContentsWithURL:error:")]
 		NSObject GetPrecomputedLightingEnvironmentContents (NSUrl url, out NSError error);
 
 		[Static]
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0), Watch (10, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[return: NullAllowed]
 		[Export ("precomputedLightingEnvironmentContentsWithData:error:")]
 		NSObject GetPrecomputedLightingEnvironmentContents (NSData url, out NSError error);
 
 		[Static]
-		[NoWatch] // headers claim watchOS 10.0, but watchOS doesn't have Metal
 		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[return: NullAllowed]
 		[Export ("precomputedLightingEnvironmentDataForContents:device:error:")]
 		NSData GetPrecomputedLightingEnvironmentData (NSObject contents, [NullAllowed] IMTLDevice device, out NSError error);
 	}
 
-#if !WATCH
 	/// <summary>Defines the <see cref="P:SceneKit.SCNProgramSemanticOptions.MappingChannel" /> for use with <see cref="M:SceneKit.SCNProgram.SetSemantic(Foundation.NSString,System.String,SceneKit.SCNProgramSemanticOptions)" />.</summary>
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SCNProgram")]
 	interface SCNProgramSemanticOptions {
 		nuint MappingChannel { get; set; }
 	}
-#endif
 
 	/// <summary>Configuration options for hit-testing in SCNNode and SCNSceneRenderer</summary>
 	///     <remarks>
@@ -1909,7 +1846,7 @@ namespace SceneKit {
 		[NullAllowed]
 		SCNNode RootNode { get; set; }
 		SCNHitTestSearchMode SearchMode { get; set; }
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		bool IgnoreLightArea { get; set; }
 	}
@@ -1932,11 +1869,9 @@ namespace SceneKit {
 
 		// note: generator's StrongDictionary does not support No* attributes yet
 		[NoTV]
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		float ConvertUnitsToMeters { get; set; } /* 'floating value encapsulated in a NSNumber' probably a float since it's a graphics framework */
 		[NoTV]
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		bool ConvertToYUp { get; set; }
 
@@ -2020,12 +1955,10 @@ namespace SceneKit {
 		[Export ("name", ArgumentSemantic.Copy)]
 		string Name { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("rendererDelegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakRendererDelegate { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Wrap ("WeakRendererDelegate")]
 		ISCNNodeRendererDelegate RendererDelegate { get; set; }
@@ -2085,7 +2018,6 @@ namespace SceneKit {
 		[NullAllowed]
 		SCNConstraint [] Constraints { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("filters", ArgumentSemantic.Copy)]
@@ -2209,7 +2141,6 @@ namespace SceneKit {
 
 		#endregion
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("nodeWithMDLObject:")]
@@ -2534,7 +2465,6 @@ namespace SceneKit {
 	/// <summary>Interface defining delegate object functions for adding custom OpenGL drawing code.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNNodeRendererDelegate_Protocol/index.html">Apple documentation for <c>SCNNodeRendererDelegate</c></related>
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model, Protocol]
@@ -2585,7 +2515,6 @@ namespace SceneKit {
 	/// <summary>Performs custom rendering using shaders written in OpenGL Shading Language.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNProgram_Class/index.html">Apple documentation for <c>SCNProgram</c></related>
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SCNProgram : NSCopying, NSSecureCoding {
@@ -2634,12 +2563,9 @@ namespace SceneKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		void SetSemantic ([NullAllowed] NSString geometrySourceSemantic, string symbol, [NullAllowed] NSDictionary options);
 
-#if !WATCH
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Wrap ("SetSemantic (geometrySourceSemantic, symbol, options.GetDictionary ())")]
 		void SetSemantic (NSString geometrySourceSemantic, string symbol, SCNProgramSemanticOptions options);
-#endif
 
 		[Export ("semanticForSymbol:")]
 		[return: NullAllowed]
@@ -2649,7 +2575,6 @@ namespace SceneKit {
 		NSString GetSemanticForSymbol (string symbol);
 #endif
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Field ("SCNProgramMappingChannelKey")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
@@ -2659,7 +2584,6 @@ namespace SceneKit {
 		[Export ("opaque")]
 		bool Opaque { [Bind ("isOpaque")] get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("library", ArgumentSemantic.Retain)]
@@ -2677,7 +2601,6 @@ namespace SceneKit {
 	/// <summary>Delegate object for SCNProgram objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNProgramDelegate_Protocol/index.html">Apple documentation for <c>SCNProgramDelegate</c></related>
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model, Protocol]
@@ -2701,7 +2624,7 @@ namespace SceneKit {
 		void HandleError (SCNProgram program, NSError error);
 
 		[NoiOS]
-		[NoTV, NoWatch]
+		[NoTV]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use the SCNProgram's Opaque property instead.")]
 		[NoMacCatalyst]
 		[Export ("programIsOpaque:")]
@@ -2739,7 +2662,6 @@ namespace SceneKit {
 	/// <summary>Renders an SCNScene into an OpenGL context.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNRenderer_Class/index.html">Apple documentation for <c>SCNRenderer</c></related>
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // NSInvalidArgumentException Reason: -[SCNRenderer init]: unrecognized selector sent to instance 0x7ce85a30
@@ -2753,7 +2675,6 @@ namespace SceneKit {
 		[Static, Export ("rendererWithContext:options:")]
 		SCNRenderer FromContext (IntPtr context, [NullAllowed] NSDictionary options);
 
-		[NoWatch]
 		[NoMacCatalyst]
 		[Static]
 		[Wrap ("FromContext (context.GetHandle (), options)")]
@@ -2761,7 +2682,7 @@ namespace SceneKit {
 		// GLContext == CGLContext on macOS and EAGLContext in iOS and tvOS (using on top of file)
 		SCNRenderer FromContext (GLContext context, [NullAllowed] NSDictionary options);
 
-		[NoWatch, NoTV]
+		[NoTV]
 		[Export ("render")]
 		[Deprecated (PlatformName.MacOSX, 10, 11)]
 		[Deprecated (PlatformName.iOS, 9, 0)]
@@ -2781,13 +2702,11 @@ namespace SceneKit {
 		[Export ("nextFrameTime")]
 		double NextFrameTimeInSeconds { get; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("rendererWithDevice:options:")]
 		SCNRenderer FromDevice ([NullAllowed] IMTLDevice device, [NullAllowed] NSDictionary options);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("renderAtTime:viewport:commandBuffer:passDescriptor:")]
 		void Render (double timeInSeconds, CGRect viewport, IMTLCommandBuffer commandBuffer, MTLRenderPassDescriptor renderPassDescriptor);
@@ -2810,6 +2729,10 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNRenderingArguments {
+		/// <summary>Represents the value associated with the constant SCNModelTransform</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNModelTransform")]
 		NSString ModelTransform { get; }
 
@@ -2842,9 +2765,7 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SCNScene :
-#if !WATCH
 		GKSceneRootNodeType,
-#endif
 		NSSecureCoding {
 
 		[Static]
@@ -2926,7 +2847,6 @@ namespace SceneKit {
 
 		// Keeping here the same name WriteToUrl for iOS and friends because it is how it was bound
 		// initialy for macOS and having it named diferently would hurt shared code
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("writeToURL:options:delegate:progressHandler:")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
@@ -2935,7 +2855,6 @@ namespace SceneKit {
 			[NullAllowed] ISCNSceneExportDelegate aDelegate,
 			[NullAllowed] SCNSceneExportProgressHandler exportProgressHandler);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Wrap ("WriteToUrl (url, options.GetDictionary (), handler, exportProgressHandler)")]
 		bool WriteToUrl (NSUrl url, SCNSceneLoadingOptions options, ISCNSceneExportDelegate handler, SCNSceneExportProgressHandler exportProgressHandler);
@@ -2974,28 +2893,27 @@ namespace SceneKit {
 		[Field ("SCNSceneUpAxisAttributeKey")]
 		NSString UpAxisAttributeKey { get; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("sceneWithMDLAsset:")]
 		SCNScene FromAsset (MDLAsset asset);
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("wantsScreenSpaceReflection")]
 		bool WantsScreenSpaceReflection { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("screenSpaceReflectionSampleCount")]
 		nint ScreenSpaceReflectionSampleCount { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("screenSpaceReflectionMaximumDistance")]
 		nfloat ScreenSpaceReflectionMaximumDistance { get; set; }
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("screenSpaceReflectionStride")]
 		nfloat ScreenSpaceReflectionStride { get; set; }
@@ -3012,7 +2930,6 @@ namespace SceneKit {
 	/// <summary>Protocol that defines methods to handle exporting a scene to a file.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/SceneKit/SCNSceneExportDelegate">Apple documentation for <c>SCNSceneExportDelegate</c></related>
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -3130,7 +3047,6 @@ namespace SceneKit {
 		[Field ("SCNSceneSourceStrictConformanceKey")]
 		NSString StrictConformanceKey { get; }
 
-		[Deprecated (PlatformName.WatchOS, 4, 0)]
 		[Deprecated (PlatformName.TvOS, 11, 0)]
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
@@ -3266,11 +3182,6 @@ namespace SceneKit {
 		bool JitteringEnabled { [Bind ("isJitteringEnabled")] get; set; }
 
 		[Abstract]
-#if NET
-		[Unavailable (PlatformName.WatchOS)]
-#else
-		[Obsoleted (PlatformName.WatchOS, 6, 0, message: "API removed, please do not use.")]
-#endif
 		[NoMacCatalyst]
 		[Export ("context")]
 		IntPtr Context { get; }
@@ -3279,7 +3190,6 @@ namespace SceneKit {
 		[Abstract]
 #endif
 		[NoTV]
-		[NoWatch]
 		[NoMacCatalyst]
 		[Deprecated (PlatformName.MacOSX, 10, 10)]
 		[NoiOS]
@@ -3377,7 +3287,6 @@ namespace SceneKit {
 #if NET
 		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
 #endif
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("currentRenderCommandEncoder")]
 		IMTLRenderCommandEncoder CurrentRenderCommandEncoder { get; }
@@ -3385,7 +3294,6 @@ namespace SceneKit {
 #if NET
 		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
 #endif
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("device")]
 		IMTLDevice Device { get; }
@@ -3393,7 +3301,6 @@ namespace SceneKit {
 #if NET
 		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
 #endif
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("colorPixelFormat")]
 		MTLPixelFormat ColorPixelFormat { get; }
@@ -3401,7 +3308,6 @@ namespace SceneKit {
 #if NET
 		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
 #endif
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("depthPixelFormat")]
 		MTLPixelFormat DepthPixelFormat { get; }
@@ -3409,7 +3315,6 @@ namespace SceneKit {
 #if NET
 		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
 #endif
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("stencilPixelFormat")]
 		MTLPixelFormat StencilPixelFormat { get; }
@@ -3417,7 +3322,6 @@ namespace SceneKit {
 #if NET
 		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
 #endif
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("commandQueue")]
 		IMTLCommandQueue CommandQueue { get; }
@@ -3432,7 +3336,6 @@ namespace SceneKit {
 #if NET
 		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
 #endif
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("audioEnvironmentNode")]
 		[DebuggerBrowsable (DebuggerBrowsableState.Never)]
@@ -3449,7 +3352,7 @@ namespace SceneKit {
 #if NET
 		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
 #endif
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("temporalAntialiasingEnabled")]
 		bool TemporalAntialiasingEnabled { [Bind ("isTemporalAntialiasingEnabled")] get; set; }
@@ -3457,7 +3360,7 @@ namespace SceneKit {
 #if NET
 		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
 #endif
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("currentViewport")]
 		CGRect CurrentViewport { get; }
@@ -3465,12 +3368,11 @@ namespace SceneKit {
 #if NET
 		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
 #endif
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("usesReverseZ")]
 		bool UsesReverseZ { get; set; }
 
-		[NoWatch]
 		[TV (14, 0)]
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
@@ -3480,7 +3382,7 @@ namespace SceneKit {
 		[Export ("currentRenderPassDescriptor")]
 		MTLRenderPassDescriptor CurrentRenderPassDescriptor { get; }
 
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 #if XAMCORE_5_0
 		[Abstract]
 #endif
@@ -3569,7 +3471,6 @@ namespace SceneKit {
 		// removed in iOS8 beta 5 - but it was already existing in 10.8 ?
 		[NoiOS]
 		[NoTV]
-		[NoWatch]
 		[NoMacCatalyst]
 		[Export ("textSize")]
 		CGSize TextSize { get; }
@@ -3590,6 +3491,9 @@ namespace SceneKit {
 		[NullAllowed]
 		NSFont Font { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("wrapped")]
 		bool Wrapped { [Bind ("isWrapped")] get; set; }
 
@@ -3669,7 +3573,6 @@ namespace SceneKit {
 		double AnimationDuration { get; set; }
 
 		[Static]
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("animationTimingFunction")]
@@ -3705,7 +3608,6 @@ namespace SceneKit {
 		SCNTube Create (nfloat innerRadius, nfloat outerRadius, nfloat height);
 	}
 
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[Static]
 	[Internal] // we'll make it public if there's a need for them (beside the strong dictionary we provide)
@@ -3722,9 +3624,7 @@ namespace SceneKit {
 		NSString LowPowerDeviceKey { get; }
 	}
 
-#if !WATCH
 	/// <summary>A <see cref="T:Foundation.DictionaryContainer" /> that defines <c>options</c> when instantiating a <see cref="T:SceneKit.SCNView" />.</summary>
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SCNRenderingOptionsKeys")]
 	interface SCNRenderingOptions {
@@ -3732,12 +3632,10 @@ namespace SceneKit {
 
 		bool LowPowerDevice { get; set; }
 	}
-#endif
 
 	/// <summary>A <see cref="T:UIKit.UIView" /> that renders <see cref="T:SceneKit.SCNScene" />s.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNView_Class/index.html">Apple documentation for <c>SCNView</c></related>
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSView))]
 	[DisableDefaultCtor]
@@ -3748,7 +3646,6 @@ namespace SceneKit {
 
 		[NoiOS]
 		[NoTV]
-		[NoWatch]
 		[NoMacCatalyst]
 		[Export ("backgroundColor", ArgumentSemantic.Copy)]
 		NSColor BackgroundColor { get; set; }
@@ -3758,7 +3655,6 @@ namespace SceneKit {
 
 		[NoiOS]
 		[NoTV]
-		[NoWatch]
 		[NoMacCatalyst]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Please use Metal instead of OpenGL API.")]
 		[Export ("openGLContext", ArgumentSemantic.Retain)]
@@ -3767,7 +3663,6 @@ namespace SceneKit {
 
 		[NoiOS]
 		[NoTV]
-		[NoWatch]
 		[NoMacCatalyst]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Please use Metal instead of OpenGL API.")]
 		[Export ("pixelFormat", ArgumentSemantic.Retain)]
@@ -3775,7 +3670,6 @@ namespace SceneKit {
 		NSOpenGLPixelFormat PixelFormat { get; set; }
 
 		[NoMac]
-		[NoWatch]
 		[NoMacCatalyst]
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Please use Metal instead of OpenGL API.")]
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Please use Metal instead of OpenGL API.")]
@@ -3784,11 +3678,9 @@ namespace SceneKit {
 		[NullAllowed]
 		EAGLContext EAGLContext { get; set; }
 
-#if !WATCH
 		[MacCatalyst (13, 1)]
 		[Wrap ("this (frame, options.GetDictionary ())")]
 		NativeHandle Constructor (CGRect frame, [NullAllowed] SCNRenderingOptions options);
-#endif
 
 		[Export ("initWithFrame:options:")]
 		NativeHandle Constructor (CGRect frame, [NullAllowed] NSDictionary options);
@@ -3829,7 +3721,7 @@ namespace SceneKit {
 		[Export ("rendersContinuously")]
 		bool RendersContinuously { get; set; }
 
-		[NoWatch, NoTV, NoiOS]
+		[NoTV, NoiOS]
 		[NoMacCatalyst]
 		[Export ("drawableResizesAsynchronously")]
 		bool DrawableResizesAsynchronously { get; set; }
@@ -4181,7 +4073,7 @@ namespace SceneKit {
 
 		[NullAllowed, Export ("timingFunction", ArgumentSemantic.Assign)]
 #if NET
-		Func<float,float> TimingFunction { get; set; }
+		Func<float, float> TimingFunction { get; set; }
 #else
 		Func<float, float> TimingFunction2 { get; set; }
 #endif
@@ -4320,27 +4212,21 @@ namespace SceneKit {
 		[Wrap ("WeakShaderModifiers")]
 		SCNShaderModifiers ShaderModifiers { get; set; }
 
-#if !NET
-		[Watch (8, 0)]
-#endif
 		[iOS (15, 0), TV (15, 0)]
 		[MacCatalyst (15, 0)]
 		[NullAllowed] // by default this property is null
 		[Export ("minimumLanguageVersion", ArgumentSemantic.Retain)]
 		NSNumber MinimumLanguageVersion { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("program", ArgumentSemantic.Retain)]
 		SCNProgram Program { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("handleBindingOfSymbol:usingBlock:")]
 		void HandleBinding (string symbol, [NullAllowed] SCNBindingHandler handler);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("handleUnbindingOfSymbol:usingBlock:")]
 		void HandleUnbinding (string symbol, [NullAllowed] SCNBindingHandler handler);
@@ -4365,7 +4251,6 @@ namespace SceneKit {
 		[return: NullAllowed]
 		SCNTechnique Create (SCNTechnique [] techniques);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("handleBindingOfSymbol:usingBlock:")]
 		void HandleBinding (string symbol, [NullAllowed] SCNBindingHandler handler);
@@ -4379,7 +4264,6 @@ namespace SceneKit {
 		[Internal, Export ("setObject:forKeyedSubscript:")]
 		void _SetObject ([NullAllowed] NSObject obj, INSCopying key);
 
-		[NoWatch]
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("library", ArgumentSemantic.Strong)]
@@ -4533,27 +4417,22 @@ namespace SceneKit {
 		[Export ("affectedByGravity")]
 		bool AffectedByGravity { [Bind ("isAffectedByGravity")] get; set; }
 
-		[Watch (5, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("setResting:")]
 		void SetResting (bool resting);
 
-		[Watch (5, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("continuousCollisionDetectionThreshold")]
 		nfloat ContinuousCollisionDetectionThreshold { get; set; }
 
-		[Watch (5, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("centerOfMassOffset", ArgumentSemantic.Assign)]
 		SCNVector3 CenterOfMassOffset { get; set; }
 
-		[Watch (5, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("linearRestingThreshold")]
 		nfloat LinearRestingThreshold { get; set; }
 
-		[Watch (5, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("angularRestingThreshold")]
 		nfloat AngularRestingThreshold { get; set; }
@@ -5253,7 +5132,7 @@ namespace SceneKit {
 		nfloat FresnelExponent { get; set; }
 
 		[Introduced (PlatformName.MacCatalyst, 15, 0)]
-		[Watch (8, 0), TV (15, 0), iOS (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("writesToDepthBuffer")]
 		bool WritesToDepthBuffer { get; set; }
 
@@ -5372,12 +5251,10 @@ namespace SceneKit {
 	[DisableDefaultCtor]
 	interface SCNParticlePropertyController : NSSecureCoding, NSCopying {
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static, Export ("controllerWithAnimation:")]
 		SCNParticlePropertyController Create (CAAnimation animation);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("animation", ArgumentSemantic.Retain)]
 		CAAnimation Animation { get; set; }
@@ -5464,7 +5341,7 @@ namespace SceneKit {
 		[Export ("functionWithTimingMode:")]
 		SCNTimingFunction Create (SCNActionTimingMode timingMode);
 
-		[Static, NoWatch]
+		[Static]
 		[MacCatalyst (13, 1)]
 		[Export ("functionWithCAMediaTimingFunction:")]
 		SCNTimingFunction Create (CAMediaTimingFunction caTimingFunction);
@@ -5488,7 +5365,7 @@ namespace SceneKit {
 		[Export ("animationNamed:")]
 		SCNAnimation FromName (string animationName);
 
-		[Static, NoWatch]
+		[Static]
 		[MacCatalyst (13, 1)]
 		[Export ("animationWithCAAnimation:")]
 		SCNAnimation FromCAAnimation (CAAnimation caAnimation);

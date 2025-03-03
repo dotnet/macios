@@ -5,12 +5,7 @@ using Foundation;
 
 namespace UIKit {
 
-#if WATCH
-	internal
-#else
-	public
-#endif
-	partial class UIDevice {
+	public partial class UIDevice {
 
 #if NET
 		[SupportedOSPlatformGuard ("ios")]
@@ -19,10 +14,8 @@ namespace UIKit {
 #endif
 		public bool CheckSystemVersion (int major, int minor)
 		{
-#if WATCH
-			return Runtime.CheckSystemVersion (major, minor, WatchKit.WKInterfaceDevice.CurrentDevice.SystemVersion);
-#elif __MACCATALYST__
-			return Runtime.CheckSystemVersion (major, minor, Runtime.iOSSupportVersion);	
+#if __MACCATALYST__
+			return Runtime.CheckSystemVersion (major, minor, Runtime.iOSSupportVersion);
 #else
 			return Runtime.CheckSystemVersion (major, minor, SystemVersion);
 #endif

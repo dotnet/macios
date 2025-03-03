@@ -2944,8 +2944,9 @@ public partial class Generator : IMemberGatherer {
 					throw new BindingException (1071, true, minfo.mi.DeclaringType.FullName, minfo.mi.Name);
 				}
 				var bindAsT = bindAttrType.GetElementType ();
+				var suffix = string.Empty;
 				cast_a = $"NSArray.ArrayFromHandleFunc <{TypeManager.FormatType (bindAsT.DeclaringType, bindAsT)}> (";
-				cast_b = $", {GetFromBindAsWrapper (minfo, out suffix)}, {owns})!";
+				cast_b = $", {GetFromBindAsWrapper (minfo, out suffix)}, {owns})!" + suffix;
 			} else if (etype == TypeCache.System_String) {
 				cast_a = "CFArray.StringArrayFromHandle (";
 				cast_b = $", {owns})!";

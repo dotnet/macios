@@ -11,7 +11,7 @@ using ObjCBindings;
 
 namespace AVFoundation {
 
-	[BindingType <SmartEnum>]
+	[BindingType<SmartEnum>]
 	[SupportedOSPlatform ("ios17.0")]
 	[SupportedOSPlatform ("tvos17.0")]
 	[SupportedOSPlatform ("maccatalyst17.0")]

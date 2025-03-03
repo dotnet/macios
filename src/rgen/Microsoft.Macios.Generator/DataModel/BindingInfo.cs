@@ -60,13 +60,13 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 		bindingType = BindingType.Category;
 		categoryData = data;
 	}
-	
+
 	public BindingInfo (BindingTypeData<ObjCBindings.CoreImageFilter> data)
 	{
 		bindingType = BindingType.CoreImageFilter;
 		coreImageFilterData = data;
 	}
-	
+
 	public BindingInfo (BindingTypeData<ObjCBindings.SmartEnum> data)
 	{
 		bindingType = BindingType.SmartEnum;
@@ -95,14 +95,14 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 			throw new InvalidCastException ($"Invalid cast to ObjCBindings.Category for binding type {info.BindingType}");
 		return info.categoryData;
 	}
-	
+
 	public static implicit operator BindingTypeData<ObjCBindings.CoreImageFilter> (BindingInfo info)
 	{
 		if (info.BindingType != BindingType.CoreImageFilter)
 			throw new InvalidCastException ($"Invalid cast to ObjCBindings.SmartEnum for binding type {info.BindingType}");
 		return info.coreImageFilterData;
 	}
-	
+
 	public static implicit operator BindingTypeData<ObjCBindings.SmartEnum> (BindingInfo info)
 	{
 		if (info.BindingType != BindingType.SmartEnum)

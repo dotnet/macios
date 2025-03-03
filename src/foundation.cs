@@ -1347,6 +1347,7 @@ namespace Foundation {
 		[MacCatalyst (13, 1)]
 		NSDate StartOfDayForDate (NSDate date);
 
+		/// <include file="../docs/api/Foundation/NSCalendar.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSCalendar.DayChangedNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSCalendarDayChangedNotification")]
@@ -2076,9 +2077,15 @@ namespace Foundation {
 		[Export ("dayOfYear")]
 		nint DayOfYear { get; set; }
 
+		/// <summary>Whether the month is a leap month.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("leapMonth")]
 		bool IsLeapMonth { [Bind ("isLeapMonth")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isValidDate")]
 		[MacCatalyst (13, 1)]
 		bool IsValidDate { get; }
@@ -10702,6 +10709,9 @@ namespace Foundation {
 		[Static]
 		NSArray _InternalAllBundles { get; }
 
+		/// <summary>An array of all the application's non-framework bundles.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'AllBundles' property instead.")]
 		[Wrap ("_InternalAllBundles")]
 		[Static]
@@ -10722,6 +10732,9 @@ namespace Foundation {
 		[Export ("load")]
 		bool Load ();
 
+		/// <summary>Whether this bundle is currently loaded.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isLoaded")]
 		bool IsLoaded { get; }
 
@@ -10953,10 +10966,14 @@ namespace Foundation {
 		[Export ("endAccessingResources")]
 		void EndAccessingResources ();
 
+		/// <include file="../docs/api/Foundation/NSBundleResourceRequest.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSBundleResourceRequest.LowDiskSpaceNotification']/*" />
 		[Field ("NSBundleResourceRequestLowDiskSpaceNotification")]
 		[Notification]
 		NSString LowDiskSpaceNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSBundleResourceRequestLoadingPriorityUrgent")]
 		double LoadingPriorityUrgent { get; }
 	}

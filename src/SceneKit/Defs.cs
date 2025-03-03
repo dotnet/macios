@@ -113,9 +113,13 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNActionTimingMode : long {
+		/// <summary>To be added.</summary>
 		Linear,
+		/// <summary>To be added.</summary>
 		EaseIn,
+		/// <summary>To be added.</summary>
 		EaseOut,
+		/// <summary>To be added.</summary>
 		EaseInEaseOut,
 	}
 
@@ -275,14 +279,19 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNAntialiasingMode : ulong {
+		/// <summary>Do not antialias.</summary>
 		None,
+		/// <summary>Use two samples for each pixel.</summary>
 		Multisampling2X,
+		/// <summary>Use four samples for each pixel..</summary>
 		Multisampling4X,
 #if MONOMAC || __MACCATALYST__
+		/// <summary>To be added.</summary>
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
 		Multisampling8X,
+		/// <summary>To be added.</summary>
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
@@ -304,9 +313,13 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNBillboardAxis : ulong {
+		/// <summary>Allow the billboard to rotate about the X axis.</summary>
 		X = 1 << 0,
+		/// <summary>Allow the billboard to rotate about the Y axis.</summary>
 		Y = 1 << 1,
+		/// <summary>Allow the billboard to rotate about the Z axis.</summary>
 		Z = 1 << 2,
+		/// <summary>Align the billboard with the view.</summary>
 		All = (X | Y | Z),
 	}
 
@@ -322,12 +335,19 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNBlendMode : long {
+		/// <summary>Indicates that colors will be blended by multiplying the source and destination values by their corresponding alpha values</summary>
 		Alpha = 0,
+		/// <summary>Indicates that colors will be blended by adding their values.</summary>
 		Add = 1,
+		/// <summary>Indicates that colors will be blended by subtracting the source from the destination.</summary>
 		Subtract = 2,
+		/// <summary>Indicates that colors will be blended by multiplying their corresponding components.</summary>
 		Multiply = 3,
+		/// <summary>Indicates that colors will be blended by multiplying their corresponding inverses.</summary>
 		Screen = 4,
+		/// <summary>Indicates that colors will be blended by replacing the destination with the source and ignoring the alpha channel.</summary>
 		Replace = 5,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		Max = 6,
 	}

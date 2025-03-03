@@ -18,15 +18,27 @@ namespace CoreText {
 	/// <summary>A class whose static properties can be used as keys for the <see cref="T:Foundation.NSDictionary" /> used by <see cref="T:CoreText.CTFontFeatures" />.</summary>
 	[Static]
 	interface CTFontFeatureKey {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureTypeIdentifierKey")]
 		NSString Identifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureTypeNameKey")]
 		NSString Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureTypeExclusiveKey")]
 		NSString Exclusive { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureTypeSelectorsKey")]
 		NSString Selectors { get; }
 	}
@@ -34,15 +46,27 @@ namespace CoreText {
 	/// <summary>A class whose static properties can be used as keys for the <see cref="T:Foundation.NSDictionary" /> used by <see cref="T:CoreText.CTFontFeatureSelectors" />.</summary>
 	[Static]
 	interface CTFontFeatureSelectorKey {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureSelectorIdentifierKey")]
 		NSString Identifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureSelectorNameKey")]
 		NSString Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureSelectorDefaultKey")]
 		NSString Default { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureSelectorSettingKey")]
 		NSString Setting { get; }
 

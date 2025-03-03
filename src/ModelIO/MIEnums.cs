@@ -113,20 +113,30 @@ namespace ModelIO {
 	/// <summary>Enumerates the geometric primitives to use for rendering.</summary>
 	[Native]
 	public enum MDLGeometryType : long {
+		/// <summary>Indicates that each index describes a point.</summary>
 		Points = 0,
+		/// <summary>Indicates that consecutive index pairs describe lines.</summary>
 		Lines,
+		/// <summary>Indicates that each 3-index stride in the buffer specifies a triangle.</summary>
 		Triangles,
+		/// <summary>Indicates that the first 3-index stride in the buffer specifies a triangle, and that successive points specify another triangle with the preceding two indices </summary>
 		TriangleStrips,
+		/// <summary>Indicates that each 4-index stride in the buffer specifies a quadrilateral.</summary>
 		Quads,
+		/// <summary>Indicates that the geometry is not uniform, and is described by its <see cref="P:ModelIO.MDLSubmesh.Topology" /> property.</summary>
 		VariableTopology,
 	}
 
 	/// <summary>Enumerates bit depths for <see cref="T:ModelIO.MDLSubmesh" /> index buffers.</summary>
 	[Native]
 	public enum MDLIndexBitDepth : ulong {
+		/// <summary>The index buffer has not been initialized.</summary>
 		Invalid,
+		/// <summary>Each index is an unsigned 8-bit integer.</summary>
 		UInt8 = 8,
+		/// <summary>Each index is an unsigned 16-bit integer.</summary>
 		UInt16 = 16,
+		/// <summary>Each index is an unsigned 32-bit integer.</summary>
 		UInt32 = 32,
 	}
 
@@ -215,9 +225,13 @@ namespace ModelIO {
 	/// <summary>Enumerates the types of <see cref="T:ModelIO.MDLLight" />.</summary>
 	[Native]
 	public enum MDLLightType : ulong {
+		/// <summary>An unknown light type, or an uninitialized light.</summary>
 		Unknown = 0,
+		/// <summary>A nondirectional, diffuse light that is not dependent on its location.</summary>
 		Ambient,
+		/// <summary>A directional light that is not dependent on its location.</summary>
 		Directional,
+		/// <summary>A light source that shines in a specific direction from a specific place.</summary>
 		Spot,
 		Point,
 		Linear,
@@ -232,7 +246,9 @@ namespace ModelIO {
 	/// <summary>Enumerates camera projections.</summary>
 	[Native]
 	public enum MDLCameraProjection : ulong {
+		/// <summary>To be added.</summary>
 		Perspective = 0,
+		/// <summary>To be added.</summary>
 		Orthographic = 1,
 	}
 

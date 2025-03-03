@@ -37,12 +37,10 @@ using System.Runtime.Versioning;
 
 namespace CoreFoundation {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public static class CFErrorDomain {
 
 		/// <summary>To be added.</summary>
@@ -68,12 +66,10 @@ namespace CoreFoundation {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public static class CFExceptionDataKey {
 
 		/// <summary>To be added.</summary>
@@ -103,12 +99,10 @@ namespace CoreFoundation {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CFException : Exception {
 
 		public CFException (string? description, NSString? domain, nint code, string? failureReason, string? recoverySuggestion)

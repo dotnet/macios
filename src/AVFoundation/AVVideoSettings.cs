@@ -38,7 +38,9 @@ namespace AVFoundation {
 
 	// Convenience enum for native strings - AVVideoSettings.h
 	public enum AVVideoCodec : int {
+		/// <summary>To be added.</summary>
 		H264 = 1,
+		/// <summary>To be added.</summary>
 		JPEG = 2
 	}
 
@@ -159,7 +161,9 @@ namespace AVFoundation {
 #if !MONOMAC
 	// Convenience enum for native strings - AVVideoSettings.h
 	public enum AVVideoH264EntropyMode {
+		/// <summary>To be added.</summary>
 		AdaptiveVariableLength,
+		/// <summary>To be added.</summary>
 		AdaptiveBinaryArithmetic
 	}
 #endif
@@ -267,6 +271,9 @@ namespace AVFoundation {
 
 #if !MONOMAC
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -282,6 +289,9 @@ namespace AVFoundation {
 		}
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -323,6 +333,9 @@ namespace AVFoundation {
 
 		// frame rate can be floating point (29.97 is common for instance)
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -339,6 +352,9 @@ namespace AVFoundation {
 
 		// frame rate can be floating point (29.97 is common for instance)
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]

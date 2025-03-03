@@ -54,6 +54,7 @@ namespace Xamarin.MacDev.Tasks {
 		public string BundleIdentifier { get; set; } = string.Empty;
 
 		[Required]
+		[Output] // this is required to create an output file on Windows. Note: this is a relative path.
 		public ITaskItem? CompiledEntitlements { get; set; }
 
 		public ITaskItem [] CustomEntitlements { get; set; } = Array.Empty<ITaskItem> ();
@@ -78,6 +79,7 @@ namespace Xamarin.MacDev.Tasks {
 		[Output]
 		public ITaskItem? EntitlementsInSignature { get; set; }
 
+		public string ValidateEntitlements { get; set; } = string.Empty;
 		#endregion
 
 		protected string ApplicationIdentifierKey {
@@ -509,6 +511,9 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			compiled = GetCompiledEntitlements (profile, template);
+
+			ValidateAppEntitlements (profile, compiled);
+
 			archived = GetArchivedExpandedEntitlements (template, compiled);
 
 			try {
@@ -524,16 +529,16 @@ namespace Xamarin.MacDev.Tasks {
 			/* The path to the entitlements must be resolved to the full path, because we might want to reference it from a containing project that just references this project,
 			  * and in that case it becomes a bit complicated to resolve to a full path on disk when building remotely from Windows. Instead just resolve to a full path here,
 			  * and use that from now on. This has to be done from a task, so that we get the full path on the mac when executed remotely from Windows. */
-			CompiledEntitlements = new TaskItem (Path.GetFullPath (CompiledEntitlements!.ItemSpec));
+			var compiledEntitlementsFullPath = new TaskItem (Path.GetFullPath (CompiledEntitlements!.ItemSpec));
 
 			if (Platform == Utils.ApplePlatform.MacCatalyst) {
-				EntitlementsInSignature = CompiledEntitlements;
+				EntitlementsInSignature = compiledEntitlementsFullPath;
 			} else if (SdkIsSimulator) {
 				if (compiled.Count > 0) {
-					EntitlementsInExecutable = CompiledEntitlements;
+					EntitlementsInExecutable = compiledEntitlementsFullPath;
 				}
 			} else {
-				EntitlementsInSignature = CompiledEntitlements;
+				EntitlementsInSignature = compiledEntitlementsFullPath;
 			}
 
 			return !Log.HasLoggedErrors;
@@ -567,9 +572,72 @@ namespace Xamarin.MacDev.Tasks {
 			return true;
 		}
 
+		void ValidateAppEntitlements (MobileProvision? profile, PDictionary requestedEntitlements)
+		{
+			var onlyWarn = false;
+			switch (ValidateEntitlements?.ToLowerInvariant ()) {
+			case "disable":
+				return;
+			case "warn":
+				onlyWarn = true;
+				break;
+			case null: // default to 'error'
+			case "":
+			case "error":
+				onlyWarn = false;
+				break;
+			default:
+				Log.LogError (7138, null, MSBStrings.E7138, ValidateEntitlements); // Invalid value '{0}' for the 'ValidateEntitlements' property. Valid values are: 'disable', 'warn' or 'error'.
+				return;
+			}
+
+			if (requestedEntitlements is null || requestedEntitlements.Count == 0) {
+				// Everything is OK if the app doesn't request any entitlements.
+				return;
+			}
+
+			var provisioningEntitlements = profile?.Entitlements;
+			var provisioningProfileName = profile?.Name;
+			foreach (var kvp in requestedEntitlements) {
+				var key = kvp.Key;
+				switch (key) {
+				case "aps-environment":
+					var requestedApsEnvironment = (kvp.Value as PString)?.Value;
+					if (profile is null) {
+						LogEntitlementValidationFailure (onlyWarn, 7139, MSBStrings.E7139, key); // "The app requests the entitlement '{0}', but no provisioning profile has been specified. Please specify the name of the provisioning profile to use with the 'CodesignProvision' property in the project file.
+					} else if (provisioningEntitlements is null || !provisioningEntitlements.TryGetValue<PString> (key, out var provisioningApsEnvironment)) {
+						LogEntitlementValidationFailure (onlyWarn, 7140, MSBStrings.E7140, key, provisioningProfileName); // The app requests the entitlement '{0}', but the provisioning profile '{1}' does not contain this entitlement.
+					} else if (requestedApsEnvironment != provisioningApsEnvironment.Value) {
+						LogEntitlementValidationFailure (onlyWarn, 7137, MSBStrings.E7137, key, requestedApsEnvironment, provisioningProfileName, provisioningApsEnvironment.Value); // The app requests the entitlement '{0}' with the value '{1}', but the provisioning profile '{2}' grants it for the value '{3}'."
+					} else {
+						Log.LogMessage (MessageImportance.Low, $"The app requests the entitlement '{key}' with the value '{requestedApsEnvironment}', which the provisioning profile '{provisioningProfileName}' grants.");
+					}
+					break;
+				default:
+					Log.LogMessage (MessageImportance.Low, $"The app requests entitlement '{key}', but no validation has been implemented for this entitlement. Assuming everything is OK.");
+					break;
+				}
+			}
+		}
+
+		void LogEntitlementValidationFailure (bool onlyWarn, int code, string message, params object? [] args)
+		{
+			if (onlyWarn) {
+				Log.LogWarning (code, Entitlements, message, args);
+			} else {
+				Log.LogError (code, Entitlements, message, args);
+			}
+		}
+
 		public bool ShouldCopyToBuildServer (ITaskItem item) => true;
 
-		public bool ShouldCreateOutputFile (ITaskItem item) => true;
+		public bool ShouldCreateOutputFile (ITaskItem item)
+		{
+			// EntitlementsInExecutable and EntitlementsInSignature are full paths on macOS,
+			// which doesn't work correctly when trying to create such output files on Windows.
+			var isFullPath = item == EntitlementsInExecutable || item == EntitlementsInSignature;
+			return !isFullPath;
+		}
 
 		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied ()
 		{

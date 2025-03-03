@@ -22,18 +22,14 @@ namespace ObjCRuntime {
 	public static partial class Runtime {
 #if !COREBUILD
 #if NET
-#if WATCH
-		internal const string ProductName = "Microsoft.watchOS";
-#elif TVOS
+#if TVOS
 		internal const string ProductName = "Microsoft.tvOS";
 #elif IOS
 		internal const string ProductName = "Microsoft.iOS";
 #else
 #error Unknown platform
 #endif
-#if WATCH
-		internal const string AssemblyName = "Microsoft.watchOS.dll";
-#elif TVOS
+#if TVOS
 		internal const string AssemblyName = "Microsoft.tvOS.dll";
 #elif IOS
 		internal const string AssemblyName = "Microsoft.iOS.dll";
@@ -41,18 +37,14 @@ namespace ObjCRuntime {
 #error Unknown platform
 #endif
 #else
-#if WATCH
-		internal const string ProductName = "Xamarin.Watch";
-#elif TVOS
+#if TVOS
 		internal const string ProductName = "Xamarin.TVOS";
 #elif IOS
 		internal const string ProductName = "Xamarin.iOS";
 #else
 #error Unknown platform
 #endif
-#if WATCH
-		internal const string AssemblyName = "Xamarin.Watch.dll";
-#elif TVOS
+#if TVOS
 		internal const string AssemblyName = "Xamarin.TVOS.dll";
 #elif IOS
 		internal const string AssemblyName = "Xamarin.iOS.dll";
@@ -63,6 +55,10 @@ namespace ObjCRuntime {
 
 #if !__MACCATALYST__
 #if NET
+		/// <summary>The architecture where the code is currently running.</summary>
+		///         <remarks>
+		///           <para>Use this to determine the architecture on which the program is currently running (device or simulator).</para>
+		///         </remarks>
 		public readonly static Arch Arch = (Arch) GetRuntimeArch ();
 #else
 		public static Arch Arch; // default: = Arch.DEVICE;
@@ -111,7 +107,7 @@ namespace ObjCRuntime {
 		}
 #endif
 
-#if TVOS || WATCH || __MACCATALYST__
+#if TVOS || __MACCATALYST__
 		[Advice ("This method is present only to help porting code.")]
 		public static void StartWWAN (Uri uri, Action<Exception?> callback)
 		{
@@ -160,13 +156,15 @@ namespace ObjCRuntime {
 			using var uriPtr = new TransientString (uri.ToString ());
 			xamarin_start_wwan (uriPtr);
 		}
-#endif // !TVOS && !WATCH
+#endif // !TVOS
 #endif // !COREBUILD
 	}
 
 #if !__MACCATALYST__
 	public enum Arch {
+		/// <summary>Running on a physical device.</summary>
 		DEVICE,
+		/// <summary>Running on the desktop simulator.</summary>
 		SIMULATOR
 	}
 #endif

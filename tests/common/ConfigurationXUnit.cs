@@ -47,11 +47,63 @@ namespace Xamarin.Tests {
 		}
 	}
 
+	[AttributeUsage (AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
+	public sealed class AllSupportedPlatformsAttribute : DataAttribute {
+
+		readonly object [] dataValues;
+
+		public AllSupportedPlatformsAttribute (params object [] parameters)
+		{
+			dataValues = parameters;
+		}
+
+		public override IEnumerable<object []> GetData (MethodInfo testMethod)
+		{
+			return Configuration.
+				GetIncludedPlatforms ().
+				Select (platform => dataValues.Prepend (platform).ToArray ());
+		}
+	}
+
+	[AttributeUsage (AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
+	public sealed class AllSupportedPlatformsClassDataAttribute<T> : DataAttribute where T : IEnumerable<object []> {
+		readonly Type dataAttributeType;
+
+		public AllSupportedPlatformsClassDataAttribute ()
+		{
+			dataAttributeType = typeof (T);
+		}
+
+		public override IEnumerable<object []> GetData (MethodInfo testMethod)
+		{
+			// we are going to get the instance of the IEnumerable, loop through it and yield the parameters
+			// per platform
+			var enumerable = Activator.CreateInstance (dataAttributeType) as IEnumerable<object []>;
+			if (enumerable is null)
+				yield break;
+			foreach (var platform in Configuration.GetIncludedPlatforms ()) {
+				foreach (var parameters in enumerable) {
+					yield return parameters.Prepend (platform).ToArray ();
+				}
+			}
+		}
+	}
+
+
 	public partial class Configuration {
 		static string TestAssemblyDirectory {
 			get {
 				return Assembly.GetExecutingAssembly ().Location;
 			}
 		}
+
+		public static bool IsEnabled (ApplePlatform platform)
+			=> platform switch {
+				ApplePlatform.iOS => include_ios,
+				ApplePlatform.TVOS => include_tvos,
+				ApplePlatform.MacCatalyst => include_maccatalyst,
+				ApplePlatform.MacOSX => include_mac,
+				_ => false
+			};
 	}
 }

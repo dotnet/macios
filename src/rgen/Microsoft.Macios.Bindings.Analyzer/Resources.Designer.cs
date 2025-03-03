@@ -45,30 +45,6 @@ namespace Microsoft.Macios.Bindings.Analyzer {
             }
         }
         
-        internal static string AB0001Description {
-            get {
-                return ResourceManager.GetString("AB0001Description", resourceCulture);
-            }
-        }
-        
-        internal static string AB0001MessageFormat {
-            get {
-                return ResourceManager.GetString("AB0001MessageFormat", resourceCulture);
-            }
-        }
-        
-        internal static string AB0001Title {
-            get {
-                return ResourceManager.GetString("AB0001Title", resourceCulture);
-            }
-        }
-        
-        internal static string RBI0001CodeFixTitle {
-            get {
-                return ResourceManager.GetString("RBI0001CodeFixTitle", resourceCulture);
-            }
-        }
-        
         internal static string RBI0001Description {
             get {
                 return ResourceManager.GetString("RBI0001Description", resourceCulture);
@@ -87,9 +63,219 @@ namespace Microsoft.Macios.Bindings.Analyzer {
             }
         }
         
-        internal static string AB0002Description {
+        internal static string RBI0002Description {
             get {
-                return ResourceManager.GetString("AB0002Description", resourceCulture);
+                return ResourceManager.GetString("RBI0002Description", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0002MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0002MessageFormat", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0002Title {
+            get {
+                return ResourceManager.GetString("RBI0002Title", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0003Description {
+            get {
+                return ResourceManager.GetString("RBI0003Description", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0003MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0003MessageFormat", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0003Title {
+            get {
+                return ResourceManager.GetString("RBI0003Title", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0004Description {
+            get {
+                return ResourceManager.GetString("RBI0004Description", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0004MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0004MessageFormat", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0004Title {
+            get {
+                return ResourceManager.GetString("RBI0004Title", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0005Description {
+            get {
+                return ResourceManager.GetString("RBI0005Description", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0005MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0005MessageFormat", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0005Title {
+            get {
+                return ResourceManager.GetString("RBI0005Title", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0006Description {
+            get {
+                return ResourceManager.GetString("RBI0006Description", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0006MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0006MessageFormat", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0006Title {
+            get {
+                return ResourceManager.GetString("RBI0006Title", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0007Description {
+            get {
+                return ResourceManager.GetString("RBI0007Description", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0007MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0007MessageFormat", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0007Title {
+            get {
+                return ResourceManager.GetString("RBI0007Title", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0008Description {
+            get {
+                return ResourceManager.GetString("RBI0008Description", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0008MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0008MessageFormat", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0008Title {
+            get {
+                return ResourceManager.GetString("RBI0008Title", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0009Description {
+            get {
+                return ResourceManager.GetString("RBI0009Description", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0009MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0009MessageFormat", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0009Title {
+            get {
+                return ResourceManager.GetString("RBI0009Title", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0010Description {
+            get {
+                return ResourceManager.GetString("RBI0010Description", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0010MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0010MessageFormat", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0010Title {
+            get {
+                return ResourceManager.GetString("RBI0010Title", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0011Description {
+            get {
+                return ResourceManager.GetString("RBI0011Description", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0011MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0011MessageFormat", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0011Title {
+            get {
+                return ResourceManager.GetString("RBI0011Title", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0012Description {
+            get {
+                return ResourceManager.GetString("RBI0012Description", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0012MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0012MessageFormat", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0012Title {
+            get {
+                return ResourceManager.GetString("RBI0012Title", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0013Description {
+            get {
+                return ResourceManager.GetString("RBI0013Description", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0013MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0013MessageFormat", resourceCulture);
+            }
+        }
+        
+        internal static string RBI0013Title {
+            get {
+                return ResourceManager.GetString("RBI0013Title", resourceCulture);
             }
         }
     }

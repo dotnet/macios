@@ -71,14 +71,7 @@ namespace MessageUI {
 	///     </remarks>
 	interface IMFMailComposeViewControllerDelegate { }
 
-#if XAMCORE_3_0
 	[BaseType (typeof (NSObject))]
-#else
-	/// <summary>Used to receive notifications from the MFMailComposeViewController class.</summary>
-	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MessageUI/Reference/MFMailComposeViewControllerDelegate_protocol/index.html">Apple documentation for <c>MFMailComposeViewControllerDelegate</c></related>
-	[BaseType (typeof (UINavigationControllerDelegate))]
-#endif
 	[Model]
 	[Protocol]
 	interface MFMailComposeViewControllerDelegate {
@@ -145,7 +138,7 @@ namespace MessageUI {
 		[Export ("addAttachmentData:typeIdentifier:filename:")]
 		bool AddAttachment (NSData attachmentData, string uti, string filename);
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, NoTV]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Export ("insertCollaborationItemProvider:")]
 		bool InsertCollaboration (NSItemProvider itemProvider);
 
@@ -166,7 +159,7 @@ namespace MessageUI {
 		NSString AttachmentURL { get; }
 
 		[Async]
-		[iOS (17, 0), NoMacCatalyst, NoWatch, NoTV]
+		[iOS (17, 0), NoMacCatalyst, NoTV]
 		[Export ("setUPIVerificationCodeSendCompletion:")]
 		void SetUpiVerificationCodeSendCompletion (Action<bool> completion);
 	}

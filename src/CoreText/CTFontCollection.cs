@@ -80,10 +80,20 @@ namespace CoreText {
 			Dictionary = dictionary;
 		}
 
+		/// <summary>The NSDictionary that represents the current values set.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSDictionary Dictionary { get; private set; }
 
 		// The docs (and headers) only imply that this is a numeric value ('set to non-zero to ...')
 		// No mention of the expected type (int? NSNumber?)
+		/// <summary>If set, removes duplicate font descriptors.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public bool RemoveDuplicates {
 			get {
 				if (CTFontCollectionOptionKey.RemoveDuplicates is null)
@@ -170,8 +180,6 @@ namespace CoreText {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-#else
-		[Watch (5, 0)]
 #endif
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontCollectionCreateMatchingFontDescriptorsWithOptions (IntPtr collection, IntPtr options);
@@ -181,8 +189,6 @@ namespace CoreText {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-#else
-		[Watch (5, 0)]
 #endif
 		public CTFontDescriptor [] GetMatchingFontDescriptors (CTFontCollectionOptions? options)
 		{
@@ -195,7 +201,7 @@ namespace CoreText {
 #if NET
 		[DllImport (Constants.CoreTextLibrary)]
 		static unsafe extern IntPtr CTFontCollectionCreateMatchingFontDescriptorsSortedWithCallback (
-				IntPtr collection, delegate* unmanaged<IntPtr, IntPtr, IntPtr, CFIndex> sortCallback, 
+				IntPtr collection, delegate* unmanaged<IntPtr, IntPtr, IntPtr, CFIndex> sortCallback,
 				IntPtr refCon);
 #else
 		[DllImport (Constants.CoreTextLibrary)]

@@ -24,16 +24,17 @@ namespace Network {
 	[SupportedOSPlatform ("ios17.0")]
 	[SupportedOSPlatform ("maccatalyst17.0")]
 #else
-	[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 #endif
 	public class NWProxyConfig : NativeObject {
 		[Preserve (Conditional = true)]
 #if NET
-		internal NWProxyConfig (NativeHandle handle, bool owns) : base (handle, owns) {}
+		internal NWProxyConfig (NativeHandle handle, bool owns) : base (handle, owns) { }
 #else
 		public NWProxyConfig (NativeHandle handle, bool owns) : base (handle, owns) { }
 #endif
 
+#if !COREBUILD
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_proxy_config nw_proxy_config_create_relay (OS_nw_relay_hop first_hop, /* [NullAllowed] */ OS_nw_relay_hop second_hop);
 
@@ -232,6 +233,7 @@ namespace Network {
 				nw_proxy_config_enumerate_excluded_domains (GetCheckedHandle (), &block);
 			}
 		}
+#endif // COREBUILD
 
 	}
 }

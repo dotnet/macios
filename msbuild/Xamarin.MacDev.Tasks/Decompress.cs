@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Compression;
 using System.Reflection;
+using System.Threading;
 
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
@@ -81,9 +82,10 @@ namespace Xamarin.MacDev {
 		/// <param name="zip">The zip to search in</param>
 		/// <param name="resource">The relative path inside the zip to extract (may be a file or a directory).</param>
 		/// <param name="decompressionDir">The location on disk to store the extracted results</param>
+		/// <param name="cancellationToken">The cancellation token (if any=</param>
 		/// <param name="decompressedResource">The location on disk to the extracted resource</param>
 		/// <returns></returns>
-		public static bool TryDecompress (TaskLoggingHelper log, string zip, string resource, string decompressionDir, List<string> createdFiles, [NotNullWhen (true)] out string? decompressedResource)
+		public static bool TryDecompress (TaskLoggingHelper log, string zip, string resource, string decompressionDir, List<string> createdFiles, CancellationToken? cancellationToken, [NotNullWhen (true)] out string? decompressedResource)
 		{
 			decompressedResource = Path.Combine (decompressionDir, resource);
 
@@ -101,11 +103,11 @@ namespace Xamarin.MacDev {
 
 			bool rv;
 			if (Environment.OSVersion.Platform == PlatformID.Win32NT) {
-				rv = TryDecompressUsingSystemIOCompression (log, zip, resource, decompressionDir);
+				rv = TryDecompressUsingSystemIOCompression (log, zip, resource, decompressionDir, cancellationToken);
 			} else if (!string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("XAMARIN_USE_SYSTEM_IO_COMPRESSION"))) {
-				rv = TryDecompressUsingSystemIOCompression (log, zip, resource, decompressionDir);
+				rv = TryDecompressUsingSystemIOCompression (log, zip, resource, decompressionDir, cancellationToken);
 			} else {
-				rv = TryDecompressUsingUnzip (log, zip, resource, decompressionDir);
+				rv = TryDecompressUsingUnzip (log, zip, resource, decompressionDir, cancellationToken);
 			}
 
 			if (rv) {
@@ -128,7 +130,7 @@ namespace Xamarin.MacDev {
 		// The dir separator character in zip files is always "/", even on Windows
 		const char zipDirectorySeparator = '/';
 
-		static bool TryDecompressUsingUnzip (TaskLoggingHelper log, string zip, string resource, string decompressionDir)
+		static bool TryDecompressUsingUnzip (TaskLoggingHelper log, string zip, string resource, string decompressionDir, CancellationToken? cancellationToken)
 		{
 			Directory.CreateDirectory (decompressionDir);
 			var args = new List<string> {
@@ -157,11 +159,11 @@ namespace Xamarin.MacDev {
 				args.Add (zipPattern);
 			}
 
-			var rv = XamarinTask.ExecuteAsync (log, "unzip", args).Result;
+			var rv = XamarinTask.ExecuteAsync (log, "unzip", args, cancellationToken: cancellationToken).Result;
 			return rv.ExitCode == 0;
 		}
 
-		static bool TryDecompressUsingSystemIOCompression (TaskLoggingHelper log, string zip, string resource, string decompressionDir)
+		static bool TryDecompressUsingSystemIOCompression (TaskLoggingHelper log, string zip, string resource, string decompressionDir, CancellationToken? cancellationToken)
 		{
 			var rv = true;
 
@@ -169,9 +171,11 @@ namespace Xamarin.MacDev {
 			resource = resource.TrimEnd ('/', '\\');
 			resource = resource.Replace ('\\', zipDirectorySeparator);
 			var resourceAsDir = resource + zipDirectorySeparator;
+			decompressionDir = Path.GetFullPath (decompressionDir);
 
 			using var archive = ZipFile.OpenRead (zip);
 			foreach (var entry in archive.Entries) {
+				cancellationToken?.ThrowIfCancellationRequested ();
 				var entryPath = entry.FullName;
 				if (entryPath.Length == 0)
 					continue;
@@ -201,13 +205,28 @@ namespace Xamarin.MacDev {
 
 				var isDir = entryPath [entryPath.Length - 1] == zipDirectorySeparator;
 				var targetPath = Path.Combine (decompressionDir, entryPath.Replace (zipDirectorySeparator, Path.DirectorySeparatorChar));
+
+				// canonicalize the path
+				targetPath = Path.GetFullPath (targetPath);
+
+				// validate that the unzipped file is inside the target directory
+				var decompressionDirectoryPath = decompressionDir.Trim (Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
+				if (!targetPath.StartsWith (decompressionDirectoryPath)) {
+					log.LogWarning (7144, null, MSBStrings.W7144 /* Did not extract {0} because it would write outside the target directory. */, entryPath);
+					continue;
+				}
+
 				if (isDir) {
 					Directory.CreateDirectory (targetPath);
 				} else {
 					Directory.CreateDirectory (Path.GetDirectoryName (targetPath));
 					using var streamWrite = File.OpenWrite (targetPath);
 					using var streamRead = entry.Open ();
-					streamRead.CopyTo (streamWrite);
+#if NET
+					streamRead.CopyToAsync (streamWrite, cancellationToken ?? CancellationToken.None).Wait ();
+#else
+					streamRead.CopyToAsync (streamWrite, 81920 /* default buffer size according to docs */, cancellationToken ?? CancellationToken.None).Wait ();
+#endif
 					log.LogMessage (MessageImportance.Low, "Extracted {0} into {1}", entryPath, targetPath);
 				}
 			}

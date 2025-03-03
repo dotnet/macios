@@ -22,7 +22,6 @@ namespace Network {
 	[SupportedOSPlatform ("ios15.0")]
 	[SupportedOSPlatform ("maccatalyst")]
 #else
-	[Watch (8, 0)]
 	[TV (15, 0)]
 	[iOS (15, 0)]
 	[MacCatalyst (15, 0)]
@@ -31,7 +30,7 @@ namespace Network {
 
 		[Preserve (Conditional = true)]
 #if NET
-		internal NWResolverConfig (NativeHandle handle, bool owns) : base (handle, owns) {}
+		internal NWResolverConfig (NativeHandle handle, bool owns) : base (handle, owns) { }
 #else
 		public NWResolverConfig (NativeHandle handle, bool owns) : base (handle, owns) { }
 #endif

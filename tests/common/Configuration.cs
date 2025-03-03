@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
-
 using Xamarin.Utils;
 
 #nullable disable // until we get around to fixing this file
@@ -16,9 +16,6 @@ namespace Xamarin.Tests {
 		public const string XI_ProductName = "MonoTouch";
 		public const string XM_ProductName = "Xamarin.Mac";
 
-		static string mt_root;
-		static string ios_destdir;
-		static string mac_destdir;
 		public static string DotNetBclDir;
 		public static string DotNetCscCommand;
 		public static string DotNetExecutable;
@@ -42,13 +39,12 @@ namespace Xamarin.Tests {
 		public static bool include_tvos;
 		public static bool include_maccatalyst;
 		public static bool include_device;
-		public static bool include_dotnet;
-		public static bool include_legacy_xamarin;
-		public static bool iOSSupports32BitArchitectures;
 		public static bool EnableXamarin;
 		public static bool XcodeIsStable;
+		public static string DOTNET_DIR;
 
 		static Version xcode_version;
+
 		public static Version XcodeVersion {
 			get {
 				if (xcode_version is null)
@@ -58,6 +54,7 @@ namespace Xamarin.Tests {
 		}
 
 		static bool? use_system; // if the system-installed XI/XM should be used instead of the local one.
+
 		public static bool UseSystem {
 			get {
 				if (!use_system.HasValue)
@@ -70,6 +67,7 @@ namespace Xamarin.Tests {
 		}
 
 		static bool? is_vsts; // if the system-installed XI/XM should be used instead of the local one.
+
 		public static bool IsVsts {
 			get {
 				if (!is_vsts.HasValue)
@@ -85,14 +83,6 @@ namespace Xamarin.Tests {
 			get {
 				return xcode_root;
 			}
-		}
-
-		public static string IOS_DESTDIR {
-			get { return ios_destdir; }
-		}
-
-		public static string MAC_DESTDIR {
-			get { return mac_destdir; }
 		}
 
 		// This is the location of an Xcode which is older than the recommended one.
@@ -132,14 +122,6 @@ namespace Xamarin.Tests {
 			return with_versions [0].Item2; // return the most recent Xcode older than the recommended one.
 		}
 
-		// This is /Library/Frameworks/Xamarin.iOS.framework/Versions/Current if running
-		// against a system XI, otherwise it's the <git checkout>/_ios-build/Library/Frameworks/Xamarin.iOS.framework/Versions/Current directory.
-		public static string MonoTouchRootDirectory {
-			get {
-				return mt_root;
-			}
-		}
-
 		static IEnumerable<string> FindConfigFiles (string name)
 		{
 			var dir = TestAssemblyDirectory;
@@ -168,14 +150,18 @@ namespace Xamarin.Tests {
 						tests_dir = file;
 						break;
 					}
+
 					dir = Path.GetDirectoryName (dir);
 				}
+
 				if (tests_dir is null)
-					throw new Exception ($"Could not find the directory 'tests'. Please run 'make' in the tests/ directory.");
+					throw new Exception (
+						$"Could not find the directory 'tests'. Please run 'make' in the tests/ directory.");
 				// Run make
 				ExecutionHelper.Execute ("make", new string [] { "-C", tests_dir, "test.config" });
 				test_config = FindConfigFiles ("test.config");
 			}
+
 			if (test_config.Any ())
 				ParseConfigFiles (test_config);
 			ParseConfigFiles (FindConfigFiles ("configure.inc"));
@@ -228,10 +214,14 @@ namespace Xamarin.Tests {
 				return result;
 
 			var output = new StringBuilder ();
-			var rv = ExecutionHelper.Execute ("/usr/bin/make", new string [] { "-C", Path.Combine (SourceRoot, "tools", "devops"), "print-abspath-variable", $"VARIABLE={variable}" }, environmentVariables: null, stdout: output, stderr: output, timeout: TimeSpan.FromSeconds (5));
+			var rv = ExecutionHelper.Execute ("/usr/bin/make",
+				new string [] {
+					"-C", Path.Combine (SourceRoot, "tools", "devops"), "print-abspath-variable", $"VARIABLE={variable}"
+				}, environmentVariables: null, stdout: output, stderr: output, timeout: TimeSpan.FromSeconds (5));
 			if (rv != 0)
 				throw new Exception ($"Failed to evaluate variable '{variable}'. Exit code: {rv}. Output:\n{output}");
-			result = output.ToString ().Split (new char [] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries).Where (v => v.StartsWith (variable + "=", StringComparison.Ordinal)).SingleOrDefault ();
+			result = output.ToString ().Split (new char [] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
+				.Where (v => v.StartsWith (variable + "=", StringComparison.Ordinal)).SingleOrDefault ();
 			if (result is null)
 				throw new Exception ($"Could not find the variable '{variable}' to evaluate.");
 			return result.Substring (variable.Length + 1);
@@ -254,7 +244,8 @@ namespace Xamarin.Tests {
 			using (var fs = new StringReader (ReadPListAsXml (plist))) {
 				using (var reader = System.Xml.XmlReader.Create (fs, settings)) {
 					doc.Load (reader);
-					return doc.DocumentElement.SelectSingleNode ($"//dict/key[text()='{key}']/following-sibling::string[1]/text()").Value;
+					return doc.DocumentElement
+						.SelectSingleNode ($"//dict/key[text()='{key}']/following-sibling::string[1]/text()").Value;
 				}
 			}
 		}
@@ -282,9 +273,6 @@ namespace Xamarin.Tests {
 		{
 			ParseConfigFiles ();
 
-			mt_root = GetVariable ("MONOTOUCH_PREFIX", "/Library/Frameworks/Xamarin.iOS.framework/Versions/Current");
-			ios_destdir = GetVariable ("IOS_DESTDIR", null);
-			mac_destdir = GetVariable ("MAC_DESTDIR", null);
 			sdk_version = GetVariable ("IOS_SDK_VERSION", "8.0");
 			watchos_sdk_version = GetVariable ("WATCH_SDK_VERSION", "2.0");
 			tvos_sdk_version = GetVariable ("TVOS_SDK_VERSION", "9.0");
@@ -297,28 +285,21 @@ namespace Xamarin.Tests {
 			include_tvos = !string.IsNullOrEmpty (GetVariable ("INCLUDE_TVOS", ""));
 			include_maccatalyst = !string.IsNullOrEmpty (GetVariable ("INCLUDE_MACCATALYST", ""));
 			include_device = !string.IsNullOrEmpty (GetVariable ("INCLUDE_DEVICE", ""));
-			include_dotnet = !string.IsNullOrEmpty (GetVariable ("ENABLE_DOTNET", ""));
-			include_legacy_xamarin = !string.IsNullOrEmpty (GetVariable ("INCLUDE_XAMARIN_LEGACY", ""));
 			DotNetBclDir = GetVariable ("DOTNET_BCL_DIR", null);
 			DotNetCscCommand = GetVariable ("DOTNET_CSC_COMMAND", null)?.Trim ('\'');
 			DotNetExecutable = GetVariable ("DOTNET", null);
 			DotNetTfm = GetVariable ("DOTNET_TFM", null);
-			iOSSupports32BitArchitectures = !string.IsNullOrEmpty (GetVariable ("IOS_SUPPORTS_32BIT_ARCHITECTURES", ""));
 			EnableXamarin = !string.IsNullOrEmpty (GetVariable ("ENABLE_XAMARIN", ""));
-			XcodeIsStable = string.Equals (GetVariable ("XCODE_IS_STABLE", ""), "true", StringComparison.OrdinalIgnoreCase);
+			XcodeIsStable = string.Equals (GetVariable ("XCODE_IS_STABLE", ""), "true",
+				StringComparison.OrdinalIgnoreCase);
+			DOTNET_DIR = GetVariable ("DOTNET_DIR", "");
 
 			XcodeVersionString = GetVariable ("XCODE_VERSION", GetXcodeVersion (xcode_root));
 #if MONOMAC
 			mac_xcode_root = xcode_root;
 #endif
 
-			if (!string.IsNullOrEmpty (ios_destdir))
-				mt_root = Path.Combine (ios_destdir, mt_root.Substring (1));
-
 			Console.WriteLine ("Test configuration:");
-			Console.WriteLine ("  MONOTOUCH_PREFIX={0}", mt_root);
-			Console.WriteLine ("  IOS_DESTDIR={0}", ios_destdir);
-			Console.WriteLine ("  MAC_DESTDIR={0}", mac_destdir);
 			Console.WriteLine ("  SDK_VERSION={0}", sdk_version);
 			Console.WriteLine ("  XCODE_ROOT={0}", xcode_root);
 #if MONOMAC
@@ -328,7 +309,6 @@ namespace Xamarin.Tests {
 			Console.WriteLine ("  INCLUDE_MAC={0}", include_mac);
 			Console.WriteLine ("  INCLUDE_TVOS={0}", include_tvos);
 			Console.WriteLine ("  INCLUDE_MACCATALYST={0}", include_maccatalyst);
-			Console.WriteLine ("  ENABLE_DOTNET={0}", include_dotnet);
 		}
 
 		public static string RootPath {
@@ -349,19 +329,23 @@ namespace Xamarin.Tests {
 							throw new FormatException (".git worktree file is not valid");
 						}
 					}
+
 					if (Directory.Exists (path))
 						found = true;
 
 					if (!found) {
 						dir = Path.GetDirectoryName (dir);
 						if (dir is null)
-							throw new Exception ($"Could not find the xamarin-macios repo given the test assembly directory {TestAssemblyDirectory}");
+							throw new Exception (
+								$"Could not find the xamarin-macios repo given the test assembly directory {TestAssemblyDirectory}");
 						path = Path.Combine (dir, ".git");
 					}
 				}
+
 				path = Path.GetDirectoryName (path);
 				if (!Directory.Exists (path))
-					throw new Exception ($"Could not find the xamarin-macios repo given the test assembly directory {TestAssemblyDirectory}");
+					throw new Exception (
+						$"Could not find the xamarin-macios repo given the test assembly directory {TestAssemblyDirectory}");
 				return path;
 			}
 		}
@@ -385,81 +369,9 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		public static string XamarinIOSDll {
-			get {
-				return Path.Combine (mt_root, "lib", "mono", "Xamarin.iOS", "Xamarin.iOS.dll");
-			}
-		}
-
-		public static string XamarinCatalystDll {
-			get {
-				return Path.Combine (mt_root, "lib", "mono", "Xamarin.MacCatalyst", "Xamarin.MacCatalyst.dll");
-			}
-		}
-
-		public static string XamarinWatchOSDll {
-			get {
-				return Path.Combine (mt_root, "lib", "mono", "Xamarin.WatchOS", "Xamarin.WatchOS.dll");
-			}
-		}
-
-		public static string XamarinTVOSDll {
-			get {
-				return Path.Combine (mt_root, "lib", "mono", "Xamarin.TVOS", "Xamarin.TVOS.dll");
-			}
-		}
-
-		public static string XamarinMacMobileDll {
-			get {
-				return Path.Combine (SdkRootXM, "lib", "mono", "Xamarin.Mac", "Xamarin.Mac.dll");
-			}
-		}
-
-		public static string XamarinMacFullDll {
-			get {
-				return Path.Combine (SdkRootXM, "lib", "mono", "4.5", "Xamarin.Mac.dll");
-			}
-		}
-
-		public static string SdkBinDir {
-			get {
-#if MONOMAC
-				return BinDirXM;
-#else
-				return BinDirXI;
-#endif
-			}
-		}
-
-		public static string TargetDirectoryXI {
-			get {
-				if (UseSystem)
-					return "/";
-				return make_config ["IOS_DESTDIR"];
-			}
-		}
-
-		public static string TargetDirectoryXM {
-			get {
-				if (UseSystem)
-					return "/";
-				return make_config ["MAC_DESTDIR"];
-			}
-		}
-
 		public static string TestProjectsDirectory {
 			get {
 				return Path.Combine (RootPath, "tests", "common", "TestProjects");
-			}
-		}
-
-		public static string SdkRoot {
-			get {
-#if MONOMAC
-				return SdkRootXM;
-#else
-				return SdkRootXI;
-#endif
 			}
 		}
 
@@ -497,7 +409,7 @@ namespace Xamarin.Tests {
 		public static string GetDotNetRoot ()
 		{
 			if (IsVsts) {
-				return Path.Combine (EvaluateVariable ("DOTNET_DIR"), "packs");
+				return Path.Combine (DOTNET_DIR, "packs");
 			} else {
 				return Path.Combine (SourceRoot, "_build");
 			}
@@ -514,11 +426,7 @@ namespace Xamarin.Tests {
 
 		public static string GetRefDirectory (TargetFramework targetFramework)
 		{
-			if (targetFramework.IsDotNet)
-				return GetRefDirectory (targetFramework.Platform);
-
-			// This is only applicable for .NET
-			throw new InvalidOperationException (targetFramework.ToString ());
+			return GetRefDirectory (targetFramework.Platform);
 		}
 
 		public static string GetNuGetVersionNoMetadata (TargetFramework framework)
@@ -528,9 +436,11 @@ namespace Xamarin.Tests {
 
 		public static string GetNuGetVersionNoMetadata (ApplePlatform platform)
 		{
-			var workloadVersion = Environment.GetEnvironmentVariable ($"{platform.AsString ().ToUpper ()}_WORKLOAD_VERSION");
-			return string.IsNullOrEmpty (workloadVersion) ?
-				GetVariable ($"{platform.AsString ().ToUpper ()}_NUGET_VERSION_NO_METADATA", string.Empty) : workloadVersion;
+			var workloadVersion =
+				Environment.GetEnvironmentVariable ($"{platform.AsString ().ToUpper ()}_WORKLOAD_VERSION");
+			return string.IsNullOrEmpty (workloadVersion)
+				? GetVariable ($"{platform.AsString ().ToUpper ()}_NUGET_VERSION_NO_METADATA", string.Empty)
+				: workloadVersion;
 		}
 
 		// This is only applicable for .NET
@@ -542,34 +452,9 @@ namespace Xamarin.Tests {
 			return Path.Combine (rv, "runtimes", runtimeIdentifier);
 		}
 
-		public static string GetTargetDirectory (ApplePlatform platform)
-		{
-			switch (platform) {
-			case ApplePlatform.iOS:
-			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
-				return TargetDirectoryXI;
-			case ApplePlatform.MacOSX:
-				return TargetDirectoryXM;
-			default:
-				throw new InvalidOperationException (platform.ToString ());
-			}
-		}
-
 		public static string GetSdkRoot (TargetFramework targetFramework)
 		{
-			if (targetFramework.IsDotNet)
-				return GetSdkRoot (targetFramework.Platform);
-			switch (targetFramework.Platform) {
-			case ApplePlatform.iOS:
-			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
-				return SdkRootXI;
-			case ApplePlatform.MacOSX:
-				return SdkRootXM;
-			default:
-				throw new InvalidOperationException ();
-			}
+			return GetSdkRoot (targetFramework.Platform);
 		}
 
 		// Only valid for .NET
@@ -581,196 +466,57 @@ namespace Xamarin.Tests {
 			return Path.Combine (rv, "tools");
 		}
 
-		public static string SdkRootXI {
-			get {
-				return Path.Combine (TargetDirectoryXI, "Library", "Frameworks", "Xamarin.iOS.framework", "Versions", "Current");
-			}
-		}
-
-		public static string SdkRootXM {
-			get {
-				return Path.Combine (TargetDirectoryXM, "Library", "Frameworks", "Xamarin.Mac.framework", "Versions", "Current");
-			}
-		}
-
-		public static string BinDirXI {
-			get {
-				return Path.Combine (SdkRootXI, "bin");
-			}
-		}
-
-		public static string BinDirXM {
-			get {
-				return Path.Combine (SdkRootXM, "bin");
-			}
-		}
-
-		public static string BtouchPath {
-			get {
-				return Path.Combine (SdkBinDir, "btouch-native");
-			}
-		}
-
-		public static string BGenPath {
-			get {
-				return Path.Combine (SdkBinDir, "bgen");
-			}
-		}
-
-		public static string BGenClassicPath {
-			get {
-				return Path.Combine (BinDirXM, "bgen-classic");
-			}
-		}
-
 		public static string GetBindingAttributePath (TargetFramework targetFramework)
 		{
-			if (targetFramework.IsDotNet)
-				return Path.Combine (GetSdkRoot (targetFramework), "lib", "Xamarin.Apple.BindingAttributes.dll");
-
-			switch (targetFramework.Platform) {
-			case ApplePlatform.iOS:
-				return Path.Combine (GetSdkRoot (targetFramework), "lib", "bgen", "Xamarin.iOS.BindingAttributes.dll");
-			case ApplePlatform.TVOS:
-				return Path.Combine (GetSdkRoot (targetFramework), "lib", "bgen", "Xamarin.TVOS.BindingAttributes.dll");
-			case ApplePlatform.WatchOS:
-				return Path.Combine (GetSdkRoot (targetFramework), "lib", "bgen", "Xamarin.WatchOS.BindingAttributes.dll");
-			case ApplePlatform.MacOSX:
-				if (targetFramework == TargetFramework.Xamarin_Mac_2_0_Mobile) {
-					return Path.Combine (GetSdkRoot (targetFramework), "lib", "bgen", "Xamarin.Mac-mobile.BindingAttributes.dll");
-				} else if (targetFramework == TargetFramework.Xamarin_Mac_4_5_Full) {
-					return Path.Combine (GetSdkRoot (targetFramework), "lib", "bgen", "Xamarin.Mac-full.BindingAttributes.dll");
-				}
-				goto default;
-			default:
-				throw new InvalidOperationException ();
-			}
-		}
-
-		public static string MmpPath {
-			get {
-				return Path.Combine (BinDirXM, "mmp");
-			}
-		}
-
-		public static string MtouchPath {
-			get {
-				return Path.Combine (BinDirXI, "mtouch");
-			}
-		}
-
-		public static string MlaunchPath {
-			get {
-				var env = Environment.GetEnvironmentVariable ("MLAUNCH_PATH");
-				if (!string.IsNullOrEmpty (env))
-					return env;
-				return Path.Combine (BinDirXI, "mlaunch");
-			}
+			return Path.Combine (GetSdkRoot (targetFramework), "lib", "Xamarin.Apple.BindingAttributes.dll");
 		}
 
 #if !XAMMAC_TESTS
-
-		public static string GetBaseLibrary (Profile profile)
+		public static string GetBaseLibrary (ApplePlatform platform)
 		{
-			switch (profile) {
-			case Profile.iOS:
-				return XamarinIOSDll;
-			case Profile.tvOS:
-				return XamarinTVOSDll;
-			case Profile.watchOS:
-				return XamarinWatchOSDll;
-			case Profile.macOSMobile:
-				return XamarinMacMobileDll;
-			case Profile.macOSFull:
-			case Profile.macOSSystem:
-				return XamarinMacFullDll;
-			default:
-				throw new NotImplementedException ();
-			}
-		}
-
-		public static string GetBaseLibrary (ApplePlatform platform, bool isDotNet)
-		{
-			if (isDotNet)
-				return Path.Combine (GetRefDirectory (platform), GetBaseLibraryName (platform, isDotNet));
-			return GetBaseLibrary (platform.AsProfile ());
+			return Path.Combine (GetRefDirectory (platform), GetBaseLibraryName (platform));
 		}
 
 		static string GetBaseLibraryName (TargetFramework targetFramework)
 		{
-			return GetBaseLibraryName (targetFramework.Platform, targetFramework.IsDotNet);
+			return GetBaseLibraryName (targetFramework.Platform);
 		}
 
-		public static string GetBaseLibraryName (ApplePlatform platform, bool isDotNet)
+		public static string GetBaseLibraryName (ApplePlatform platform)
 		{
 			switch (platform) {
 			case ApplePlatform.iOS:
-				return isDotNet ? "Microsoft.iOS.dll" : "Xamarin.iOS.dll";
+				return "Microsoft.iOS.dll";
 			case ApplePlatform.TVOS:
-				return isDotNet ? "Microsoft.tvOS.dll" : "Xamarin.TVOS.dll";
-			case ApplePlatform.WatchOS:
-				return isDotNet ? "Microsoft.watchOS.dll" : "Xamarin.WatchOS.dll";
+				return "Microsoft.tvOS.dll";
 			case ApplePlatform.MacOSX:
-				return isDotNet ? "Microsoft.macOS.dll" : "Xamarin.Mac.dll";
+				return "Microsoft.macOS.dll";
 			case ApplePlatform.MacCatalyst:
-				return isDotNet ? "Microsoft.MacCatalyst.dll" : "Xamarin.MacCatalyst.dll";
+				return "Microsoft.MacCatalyst.dll";
 			default:
 				throw new InvalidOperationException (platform.ToString ());
 			}
 		}
 
-		public static ApplePlatform GetPlatform (string assemblyName, bool isDotNet)
+		public static ApplePlatform GetPlatform (string assemblyName)
 		{
-			if (isDotNet) {
-				switch (Path.GetFileNameWithoutExtension (assemblyName)) {
-				case "Microsoft.iOS":
-					return ApplePlatform.iOS;
-				case "Microsoft.MacCatalyst":
-					return ApplePlatform.MacCatalyst;
-				case "Microsoft.tvOS":
-					return ApplePlatform.TVOS;
-				case "Microsoft.macOS":
-					return ApplePlatform.MacOSX;
-				default:
-					throw new NotSupportedException ($"Unknown assembly: {assemblyName}");
-				}
-			} else {
-				switch (Path.GetFileNameWithoutExtension (assemblyName)) {
-				case "Xamarin.iOS":
-					return ApplePlatform.iOS;
-				case "Xamarin.WatchOS":
-					return ApplePlatform.WatchOS;
-				case "Xamarin.TVOS":
-					return ApplePlatform.TVOS;
-				case "Xamarin.Mac":
-					return ApplePlatform.MacOSX;
-				default:
-					throw new NotSupportedException ($"Unknown assembly: {assemblyName}");
-				}
+			switch (Path.GetFileNameWithoutExtension (assemblyName)) {
+			case "Microsoft.iOS":
+				return ApplePlatform.iOS;
+			case "Microsoft.MacCatalyst":
+				return ApplePlatform.MacCatalyst;
+			case "Microsoft.tvOS":
+				return ApplePlatform.TVOS;
+			case "Microsoft.macOS":
+				return ApplePlatform.MacOSX;
+			default:
+				throw new NotSupportedException ($"Unknown assembly: {assemblyName}");
 			}
 		}
 
 		public static string GetBaseLibrary (TargetFramework targetFramework)
 		{
-			if (targetFramework.IsDotNet)
-				return Path.Combine (GetRefDirectory (targetFramework), GetBaseLibraryName (targetFramework));
-
-			switch (targetFramework.Platform) {
-			case ApplePlatform.iOS:
-				return XamarinIOSDll;
-			case ApplePlatform.TVOS:
-				return XamarinTVOSDll;
-			case ApplePlatform.WatchOS:
-				return XamarinWatchOSDll;
-			}
-
-			if (targetFramework == TargetFramework.Xamarin_Mac_2_0_Mobile) {
-				return XamarinMacMobileDll;
-			} else if (targetFramework == TargetFramework.Xamarin_Mac_4_5_Full) {
-				return XamarinMacFullDll;
-			}
-
-			throw new InvalidOperationException (targetFramework.ToString ());
+			return Path.Combine (GetRefDirectory (targetFramework), GetBaseLibraryName (targetFramework));
 		}
 
 		public static IList<string> GetRuntimeIdentifiers (ApplePlatform platform)
@@ -793,7 +539,7 @@ namespace Xamarin.Tests {
 
 		public static IEnumerable<string> GetBaseLibraryImplementations ()
 		{
-			foreach (var platform in GetIncludedPlatforms (true))
+			foreach (var platform in GetIncludedPlatforms ())
 				foreach (var lib in GetBaseLibraryImplementations (platform))
 					yield return lib;
 		}
@@ -803,91 +549,25 @@ namespace Xamarin.Tests {
 			var runtimeIdentifiers = GetRuntimeIdentifiers (platform);
 			foreach (var rid in runtimeIdentifiers) {
 				var libdir = Path.Combine (GetRuntimeDirectory (platform, rid), "lib", DotNetTfm);
-				yield return Path.Combine (libdir, GetBaseLibraryName (platform, true));
+				yield return Path.Combine (libdir, GetBaseLibraryName (platform));
 			}
 		}
 
 		public static IEnumerable<string> GetRefLibraries ()
 		{
-			foreach (var platform in GetIncludedPlatforms (true))
-				yield return Path.Combine (GetRefDirectory (platform), GetBaseLibraryName (platform, true));
+			foreach (var platform in GetIncludedPlatforms ())
+				yield return Path.Combine (GetRefDirectory (platform), GetBaseLibraryName (platform));
 		}
 
 
 		public static string GetRefLibrary (ApplePlatform platform)
 		{
-			return GetBaseLibrary (platform, true);
+			return GetBaseLibrary (platform);
 		}
-
-		public static string GetTargetFramework (Profile profile)
-		{
-			switch (profile) {
-			case Profile.iOS:
-				return "Xamarin.iOS,v1.0";
-			case Profile.tvOS:
-				return "Xamarin.TVOS,v1.0";
-			case Profile.watchOS:
-				return "Xamarin.WatchOS,v1.0";
-			case Profile.macOSMobile:
-				return "Xamarin.Mac,Version=v2.0,Profile=Mobile";
-			case Profile.macOSFull:
-				return "Xamarin.Mac,Version=v4.5,Profile=Full";
-			case Profile.macOSSystem:
-				return "Xamarin.Mac,Version=v4.5,Profile=System";
-			default:
-				throw new NotImplementedException ();
-			}
-		}
-
-		public static string GetSdkVersion (Profile profile)
-		{
-			switch (profile) {
-			case Profile.iOS:
-				return Configuration.sdk_version;
-			case Profile.tvOS:
-				return Configuration.tvos_sdk_version;
-			case Profile.watchOS:
-				return Configuration.watchos_sdk_version;
-			case Profile.macOSFull:
-			case Profile.macOSMobile:
-			case Profile.macOSSystem:
-				return Configuration.macos_sdk_version;
-			default:
-				throw new NotImplementedException ();
-			}
-		}
-
-		public static string GetSdkPath (Profile profile, bool is_device)
-		{
-			switch (profile) {
-			case Profile.iOS:
-				return Path.Combine (MonoTouchRootDirectory, "SDKs", "MonoTouch." + (is_device ? "iphoneos" : "iphonesimulator") + ".sdk");
-			case Profile.tvOS:
-				return Path.Combine (MonoTouchRootDirectory, "SDKs", "Xamarin.AppleTV" + (is_device ? "OS" : "Simulator") + ".sdk");
-			case Profile.watchOS:
-				return Path.Combine (MonoTouchRootDirectory, "SDKs", "Xamarin.Watch" + (is_device ? "OS" : "Simulator") + ".sdk");
-			case Profile.macOSFull:
-			case Profile.macOSMobile:
-			case Profile.macOSSystem:
-				return Path.Combine (SdkRootXM, "lib");
-			default:
-				throw new NotImplementedException (profile.ToString ());
-			}
-		}
-
-		public static string GetCompiler (Profile profile, IList<string> args)
-		{
-			args.Add ($"-lib:{Path.GetDirectoryName (GetBaseLibrary (profile))}");
-			return "/Library/Frameworks/Mono.framework/Commands/csc";
-		}
-
 #endif // !XAMMAC_TESTS
 
-		public static IEnumerable<ApplePlatform> GetIncludedPlatforms (bool dotnet)
+		public static IEnumerable<ApplePlatform> GetIncludedPlatforms ()
 		{
-			if (dotnet && !include_dotnet)
-				yield break;
-
 			if (include_ios)
 				yield return ApplePlatform.iOS;
 			if (include_tvos)
@@ -898,25 +578,18 @@ namespace Xamarin.Tests {
 				yield return ApplePlatform.MacCatalyst;
 		}
 
-		public static IEnumerable<ApplePlatform> GetAllPlatforms (bool dotnet)
+		public static IEnumerable<ApplePlatform> GetAllPlatforms ()
 		{
 			yield return ApplePlatform.iOS;
 			yield return ApplePlatform.TVOS;
 			yield return ApplePlatform.MacOSX;
-			if (dotnet)
-				yield return ApplePlatform.MacCatalyst;
-			if (!dotnet)
-				yield return ApplePlatform.WatchOS;
+			yield return ApplePlatform.MacCatalyst;
 		}
 
 		public static string NuGetPackagesDirectory {
 			get {
 				return Path.Combine (RootPath, "packages");
 			}
-		}
-
-		public static string XIBuildPath {
-			get { return Path.GetFullPath (Path.Combine (RootPath, "tools", "xibuild", "xibuild")); }
 		}
 
 		public static string CloneTestDirectory (string directory)
@@ -926,11 +599,14 @@ namespace Xamarin.Tests {
 			var testsTemporaryDirectory = Cache.CreateTemporaryDirectory ($"{Path.GetFileName (directory)}");
 
 			// Only copy files in git, we want a clean copy
-			var rv = ExecutionHelper.Execute ("git", new string [] { "ls-files" }, out var ls_files_output, working_directory: directory, timeout: TimeSpan.FromSeconds (15));
+			var rv = ExecutionHelper.Execute ("git", new string [] { "ls-files" }, out var ls_files_output,
+				working_directory: directory, timeout: TimeSpan.FromSeconds (15));
 			if (rv != 0)
-				throw new Exception ($"Failed to list test files. 'git ls-files' in {directory} failed with exit code {rv}.");
+				throw new Exception (
+					$"Failed to list test files. 'git ls-files' in {directory} failed with exit code {rv}.");
 
-			var files = ls_files_output.ToString ().Split (new char [] { '\n' }, StringSplitOptions.RemoveEmptyEntries).ToArray ();
+			var files = ls_files_output.ToString ().Split (new char [] { '\n' }, StringSplitOptions.RemoveEmptyEntries)
+				.ToArray ();
 			foreach (var file in files) {
 				var src = Path.Combine (directory, file);
 				var tgt = Path.Combine (testsTemporaryDirectory, file);
@@ -939,7 +615,8 @@ namespace Xamarin.Tests {
 				File.Copy (src, tgt);
 				if (tgt.EndsWith (".csproj", StringComparison.OrdinalIgnoreCase)) {
 					var initialContents = File.ReadAllText (tgt);
-					var fixedContents = initialContents.Replace ($"$(MSBuildThisFileDirectory)", Path.GetDirectoryName (src) + Path.DirectorySeparatorChar);
+					var fixedContents = initialContents.Replace ($"$(MSBuildThisFileDirectory)",
+						Path.GetDirectoryName (src) + Path.DirectorySeparatorChar);
 					if (initialContents != fixedContents)
 						File.WriteAllText (tgt, fixedContents);
 				}
@@ -980,14 +657,10 @@ namespace Xamarin.Tests {
 
 		public static void SetBuildVariables (ApplePlatform platform, ref Dictionary<string, string> environment)
 		{
-			var rootDirectory = GetTargetDirectory (platform);
-
 			if (environment is null)
 				environment = new Dictionary<string, string> ();
 
 			environment ["MD_APPLE_SDK_ROOT"] = Path.GetDirectoryName (Path.GetDirectoryName (xcode_root));
-			environment ["TargetFrameworkFallbackSearchPaths"] = Path.Combine (rootDirectory, "Library", "Frameworks", "Mono.framework", "External", "xbuild-frameworks");
-			environment ["MSBuildExtensionsPathFallbackPathsOverride"] = Path.Combine (rootDirectory, "Library", "Frameworks", "Mono.framework", "External", "xbuild");
 
 			// This is set by `dotnet test` and can cause building legacy projects to fail to build with:
 			// Microsoft.NET.Build.Extensions.ConflictResolution.targets(30,5):
@@ -995,20 +668,10 @@ namespace Xamarin.Tests {
 			// Invalid Image Confirm that the <UsingTask> declaration is correct, that the assembly and all its dependencies are available,
 			// and that the task contains a public class that implements Microsoft.Build.Framework.ITask.
 			environment ["MSBuildExtensionsPath"] = null;
+		}
 
-			switch (platform) {
-			case ApplePlatform.iOS:
-			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
-				environment ["MD_MTOUCH_SDK_ROOT"] = Path.Combine (rootDirectory, "Library", "Frameworks", "Xamarin.iOS.framework", "Versions", "Current");
-				break;
-			case ApplePlatform.MacOSX:
-				environment ["XAMMAC_FRAMEWORK_PATH"] = Path.Combine (rootDirectory, "Library", "Frameworks", "Xamarin.Mac.framework", "Versions", "Current");
-				environment ["XamarinMacFrameworkRoot"] = Path.Combine (rootDirectory, "Library", "Frameworks", "Xamarin.Mac.framework", "Versions", "Current");
-				break;
-			default:
-				throw new NotImplementedException (platform.ToString ());
-			}
+		public static bool IsBuildingRemotely {
+			get => !string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("MAC_AGENT_IP"));
 		}
 
 		public static string GetTestLibraryDirectory (ApplePlatform platform, bool? simulator = null)
@@ -1049,16 +712,19 @@ namespace Xamarin.Tests {
 		}
 
 		static bool? is_apfs;
+
 		static bool IsAPFS {
 			get {
 				if (!is_apfs.HasValue) {
 					if (Environment.OSVersion.Platform == PlatformID.Win32NT) {
 						is_apfs = false;
 					} else {
-						var exit_code = ExecutionHelper.Execute ("/bin/df", new string [] { "-t", "apfs", "/" }, out var output, TimeSpan.FromSeconds (10));
+						var exit_code = ExecutionHelper.Execute ("/bin/df", new string [] { "-t", "apfs", "/" },
+							out var output, TimeSpan.FromSeconds (10));
 						is_apfs = exit_code == 0 && output.Trim ().Split ('\n').Length >= 2;
 					}
 				}
+
 				return is_apfs.Value;
 			}
 		}
@@ -1074,6 +740,7 @@ namespace Xamarin.Tests {
 
 		// Return true if the current machine can run ARM64 binaries.
 		static bool? canRunArm64;
+
 		public static bool CanRunArm64 {
 			get {
 				if (!canRunArm64.HasValue) {
@@ -1085,6 +752,7 @@ namespace Xamarin.Tests {
 						canRunArm64 = false;
 					}
 				}
+
 				return canRunArm64.Value;
 			}
 		}
@@ -1099,6 +767,7 @@ namespace Xamarin.Tests {
 				arguments.Add ("-arch");
 				arguments.Add (arch);
 			}
+
 			var symbols = ExecutionHelper.Execute ("nm", arguments, hide_output: true).Split ('\n');
 			return symbols.Where ((v) => {
 				return !v.EndsWith (": no symbols", StringComparison.Ordinal);
@@ -1119,6 +788,39 @@ namespace Xamarin.Tests {
 		{
 			return CallNM (file, "-gujA", arch);
 		}
+
+		public static bool TryGetApiDefinitionRsp (TargetFramework framework,
+			[NotNullWhen (true)] out string rspPath)
+		{
+			rspPath = null;
+			var platform = framework.Platform switch {
+				ApplePlatform.iOS => "ios",
+				ApplePlatform.TVOS => "tvos",
+				ApplePlatform.MacOSX => "macos",
+				ApplePlatform.MacCatalyst => "maccatalyst",
+				_ => null,
+			};
+			if (platform is null)
+				return false;
+			rspPath = Path.Combine (SourceRoot, "src", "build", "dotnet", platform, $"apidefinition-{platform}.rsp");
+			return true;
+		}
+
+		public static bool TryGetPlatformPreprocessorSymbolsRsp (TargetFramework framework,
+			[NotNullWhen (true)] out string rspPath)
+		{
+			rspPath = null;
+			var platform = framework.Platform switch {
+				ApplePlatform.iOS => "ios",
+				ApplePlatform.TVOS => "tvos",
+				ApplePlatform.MacOSX => "macos",
+				ApplePlatform.MacCatalyst => "maccatalyst",
+				_ => null,
+			};
+			if (platform is null)
+				return false;
+			rspPath = Path.Combine (SourceRoot, "src", "rsp", "dotnet", $"{platform}-defines-dotnet.rsp");
+			return true;
+		}
 	}
 }
-

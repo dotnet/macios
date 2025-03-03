@@ -2715,9 +2715,6 @@ public class TestApp {
 		[TestCase (Target.Dev, Profile.iOS, "linker/ios", "link all", "Release")]
 		[TestCase (Target.Dev, Profile.iOS, "linker/ios", "link sdk", "Release")]
 		[TestCase (Target.Dev, Profile.iOS, "", "monotouch-test", "Release")]
-		[TestCase (Target.Dev, Profile.iOS, "bcl-test/generated/iOS", "mscorlib Part 1", "Release")]
-		[TestCase (Target.Dev, Profile.iOS, "bcl-test/generated/iOS", "mscorlib Part 2", "Release")]
-		[TestCase (Target.Dev, Profile.iOS, "bcl-test/generated/iOS", "BCL tests group 1", "Release")]
 		public void BuildTestProject (Target target, Profile profile, string subdir, string testname, string configuration)
 		{
 			if (target == Target.Dev)
@@ -2727,14 +2724,6 @@ public class TestApp {
 			var platform = target == Target.Dev ? "iPhone" : "iPhoneSimulator";
 			var csproj = Path.Combine (testDir, testname + GetProjectSuffix (profile) + ".csproj");
 			XBuild.BuildXI (csproj, configuration, platform, timeout: TimeSpan.FromMinutes (15));
-		}
-
-		[Test]
-		public void ScriptedTests ()
-		{
-			AssertDeviceAvailable ();
-
-			ExecutionHelper.Execute ("make", new [] { "-C", Path.Combine (Configuration.SourceRoot, "tests", "scripted") }, timeout: TimeSpan.FromMinutes (10));
 		}
 
 		[Test]

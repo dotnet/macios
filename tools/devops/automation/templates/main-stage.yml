@@ -6,11 +6,6 @@ parameters:
 
   - name: pool
     type: string
-    default: automatic
-    values:
-      - pr
-      - ci
-      - automatic
 
   - name: runGovernanceTests
     type: boolean
@@ -155,23 +150,6 @@ parameters:
   - name: macTestsConfigurations
     type: object
 
-  - name: legacyPackageJobs
-    type: object
-    default: [
-      {
-        job: 'xamarin_ios_sign_notarize',
-        name: 'Xamarin.iOS',
-        pattern: 'xamarin.ios-*',
-        conditionVariable: "INCLUDE_LEGACY_IOS",
-      },
-      {
-        job: 'xamarin_mac_sing_notarie',
-        name: 'Xamarin.Mac',
-        pattern: 'xamarin.mac-*',
-        conditionVariable: "INCLUDE_LEGACY_MAC",
-      }
-    ]
-
   - name: stageDisplayNamePrefix
     type: string
     default: ''
@@ -192,29 +170,13 @@ stages:
     ${{ if and(ne(parameters.dependsOn, ''), ne(parameters.dependsOnResult, '')) }}:
       condition: eq(dependencies.${{ parameters.dependsOn }}.result, '${{ parameters.dependsOnResult }}')
     jobs:
-      - ${{ if eq(parameters.pool, 'automatic') }}:
-          - job: AgentPoolSelector       # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=azure-devops&tabs=yaml
-            pool:  # Consider using an agentless (server) job here, but would need to host selection logic as an Azure function: https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema#server
-              name: AzurePipelines-EO
-              demands:
-                - ImageOverride -equals 1ESPT-Windows2022
-            steps:
-              - checkout: none  # https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema#checkout
-
-              # Selects appropriate agent pool based on trigger type (PR or CI); manually triggered builds target the PR pool
-              - template: azure-devops-pools/agent-pool-selector.yml@yaml-templates
-                parameters:
-                  agentPoolPR: $(PRBuildPool)
-                  agentPoolPRUrl: $(PRBuildPoolUrl)
-                  agentPoolCI: $(CIBuildPool)
-                  agentPoolCIUrl: $(CIBuildPoolUrl)
 
       - job: configure
         displayName: 'Configure build'
         pool:
           name: AzurePipelines-EO
-          demands:
-            - ImageOverride -equals 1ESPT-Windows2022
+          os: linux
+          image: 1ESPT-Ubuntu22.04
 
         variables:
           isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
@@ -228,7 +190,7 @@ stages:
               commit: ${{ parameters.commit }}
               testConfigurations: ${{ parameters.testConfigurations }}
               supportedPlatforms: ${{ parameters.supportedPlatforms }}
-              testsLabels: '--label=skip-all-tests,run-ios-tests,run-ios-simulator-tests,run-tvos-tests,run-mac-tests,run-maccatalyst-tests,run-dotnet-tests,run-system-permission-tests'
+              testsLabels: '--label=skip-all-tests,run-ios-tests,run-ios-simulator-tests,run-tvos-tests,run-mac-tests,run-maccatalyst-tests,run-system-permission-tests'
               statusContext: 'VSTS: simulator tests'
               uploadArtifacts: true
               use1ES: true

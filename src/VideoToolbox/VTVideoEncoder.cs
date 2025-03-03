@@ -47,10 +47,25 @@ namespace VideoToolbox {
 			return ret;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int CodecType { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string CodecName { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string DisplayName { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string EncoderId { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string EncoderName { get; private set; }
 
 #if NET
@@ -132,7 +147,7 @@ namespace VideoToolbox {
 		public bool SupportsFrameReordering { get; private set; }
 
 #if !NET
-		[NoiOS, NoTV, NoMacCatalyst, NoMac, NoWatch]
+		[NoiOS, NoTV, NoMacCatalyst, NoMac]
 		public bool SupportsMultiPass { get; private set; }
 #endif // !NET
 
@@ -145,7 +160,6 @@ namespace VideoToolbox {
 		[iOS (15, 0)]
 		[TV (15, 0)]
 		[MacCatalyst (15, 0)]
-		[Watch (8, 0)]
 #endif
 		public bool IncludeStandardDefinitionDVEncoders { get; private set; }
 
@@ -269,7 +283,13 @@ namespace VideoToolbox {
 	[SupportedOSPlatform ("maccatalyst")]
 #endif
 	public class VTSupportedEncoderProperties {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? EncoderId { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary? SupportedProperties { get; set; }
 	}
 }

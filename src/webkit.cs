@@ -27,11 +27,12 @@ using Foundation;
 using CoreGraphics;
 using ObjCRuntime;
 using JavaScriptCore;
+using Network;
 using Security;
 
 #if MONOMAC
 using AppKit;
-using UIColor=AppKit.NSColor;
+using UIColor = AppKit.NSColor;
 using UIScrollView = AppKit.NSScrollView;
 using UIImage = AppKit.NSImage;
 using IUIContextMenuInteractionCommitAnimating = Foundation.NSObject;
@@ -67,7 +68,7 @@ using NativeHandle = System.IntPtr;
 
 namespace WebKit {
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (WebScriptObject), Name = "DOMObject")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMObject init]: should never be used
@@ -77,7 +78,7 @@ namespace WebKit {
 	/////////////////////////
 	// DomObject subclasses
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomObject), Name = "DOMAbstractView")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMAbstractView init]: should never be used
@@ -86,7 +87,7 @@ namespace WebKit {
 		DomDocument Document { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomObject), Name = "DOMCSSRule")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMCSSRule init]: should never be used
@@ -104,7 +105,7 @@ namespace WebKit {
 		DomCssRule ParentRule { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomCssRule), Name = "DOMCSSCharsetRule")]
 	[DisableDefaultCtor]
@@ -113,7 +114,7 @@ namespace WebKit {
 		string Encoding { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomCssRule), Name = "DOMCSSFontFaceRule")]
 	[DisableDefaultCtor]
@@ -122,7 +123,7 @@ namespace WebKit {
 		DomCssStyleDeclaration Style { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomCssRule), Name = "DOMCSSImportRule")]
 	[DisableDefaultCtor]
@@ -137,7 +138,7 @@ namespace WebKit {
 		DomCssStyleSheet StyleSheet { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomCssRule), Name = "DOMCSSMediaRule")]
 	[DisableDefaultCtor]
@@ -155,7 +156,7 @@ namespace WebKit {
 		void DeleteRule (uint index);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomCssRule), Name = "DOMCSSPageRule")]
 	[DisableDefaultCtor]
@@ -167,7 +168,7 @@ namespace WebKit {
 		DomCssStyleDeclaration Style { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomCssRule), Name = "DOMCSSStyleRule")]
 	[DisableDefaultCtor]
@@ -179,14 +180,14 @@ namespace WebKit {
 		DomCssStyleDeclaration Style { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomCssRule), Name = "DOMCSSUnknownRule")]
 	[DisableDefaultCtor]
 	partial interface DomCssUnknownRule {
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomObject), Name = "DOMCSSRuleList")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMCSSRuleList init]: should never be used
@@ -198,7 +199,7 @@ namespace WebKit {
 		DomCssRule GetItem (int /* unsigned int */ index);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomObject), Name = "DOMCSSStyleDeclaration")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMCSSStyleDeclaration init]: should never be used
@@ -237,7 +238,7 @@ namespace WebKit {
 		bool IsPropertyImplicit (string propertyName);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomStyleSheet), Name = "DOMCSSStyleSheet")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMCSSStyleSheet init]: should never be used
@@ -264,7 +265,7 @@ namespace WebKit {
 		void RemoveRule (uint /* unsigned int */ index);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomObject), Name = "DOMCSSValue")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMCSSValue init]: should never be used
@@ -276,7 +277,7 @@ namespace WebKit {
 		DomCssValueType Type { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomObject), Name = "DOMHTMLCollection")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMHTMLCollection init]: should never be used
@@ -294,7 +295,7 @@ namespace WebKit {
 		DomNodeList GetTags (string name);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomObject), Name = "DOMImplementation")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMImplementation init]: should never be used
@@ -315,7 +316,7 @@ namespace WebKit {
 		DomHtmlDocument CreateHtmlDocument (string title);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomObject), Name = "DOMMediaList")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMMediaList init]: should never be used
@@ -336,7 +337,7 @@ namespace WebKit {
 		void AppendMedium (string newMedium);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomObject), Name = "DOMNamedNodeMap")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMNamedNodeMap init]: should never be used
@@ -366,7 +367,7 @@ namespace WebKit {
 		DomNode RemoveNamedItemNS (string namespaceURI, string localName);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomObject), Name = "DOMNode")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMNode init]: should never be used
@@ -471,10 +472,10 @@ namespace WebKit {
 		DomDocumentPosition CompareDocumentPosition (DomNode other);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	interface IDomNodeFilter { }
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 #if NET
 	[Protocol, Model]
@@ -488,7 +489,7 @@ namespace WebKit {
 		short AcceptNode (DomNode n);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomObject), Name = "DOMNodeIterator")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -521,7 +522,7 @@ namespace WebKit {
 		void Detach ();
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomObject), Name = "DOMNodeList")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMNodeList init]: should never be used
@@ -533,7 +534,7 @@ namespace WebKit {
 		DomNode GetItem (int /* unsigned int */ index);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomObject), Name = "DOMRange")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMRange init]: should never be used
@@ -629,7 +630,7 @@ namespace WebKit {
 		bool IsPointInRange (DomNode refNode, int /* int, not NSInteger */ offset);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomObject), Name = "DOMStyleSheet")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMStyleSheet init]: should never be used
@@ -656,7 +657,7 @@ namespace WebKit {
 		DomMediaList Media { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomObject), Name = "DOMStyleSheetList")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMStyleSheetList init]: should never be used
@@ -671,7 +672,7 @@ namespace WebKit {
 	///////////////////////
 	// DomNode subclasses
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomNode), Name = "DOMAttr")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMAttr init]: should never be used
@@ -692,7 +693,7 @@ namespace WebKit {
 		DomCssStyleDeclaration Style { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomNode), Name = "DOMCharacterData")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMCharacterData init]: should never be used
@@ -719,7 +720,7 @@ namespace WebKit {
 		void ReplaceData (uint /* unsigned int */ offset, uint /* unsigned int */ length, string data);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomNode), Name = "DOMDocument")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMDocument init]: should never be used
@@ -965,14 +966,14 @@ namespace WebKit {
 		DomNodeList QuerySelectorAll (string selectors);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomNode), Name = "DOMDocumentFragment")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMDocumentFragment init]: should never be used
 	partial interface DomDocumentFragment {
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomNode), Name = "DOMDocumentType")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMDocumentType init]: should never be used
@@ -997,7 +998,7 @@ namespace WebKit {
 
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomNode), Name = "DOMElement")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMElement init]: should never be used
@@ -1147,7 +1148,7 @@ namespace WebKit {
 		void WebKitRequestFullScreen (ushort flags);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomNode), Name = "DOMEntityReference")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMEntityReference init]: should never be used
@@ -1156,7 +1157,7 @@ namespace WebKit {
 
 	interface IDomEventTarget { }
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (NSObject), Name = "DOMEventTarget")]
 	[Protocol]
@@ -1175,7 +1176,7 @@ namespace WebKit {
 		bool DispatchEvent (DomEvent evt);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomObject), Name = "DOMEvent")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMEvent init]: should never be used
@@ -1216,15 +1217,6 @@ namespace WebKit {
 		[Export ("preventDefault")]
 		void PreventDefault ();
 
-#if !XAMCORE_3_0
-		[Obsolete ("Use the constructor instead.")]
-		[Export ("initEvent:canBubbleArg:cancelableArg:")]
-		void InitEvent (string eventTypeArg, bool canBubbleArg, bool cancelableArg);
-#endif
-
-#if !XAMCORE_3_0
-		[Sealed] // Just to avoid the duplicate selector error
-#endif
 		[Export ("initEvent:canBubbleArg:cancelableArg:")]
 		NativeHandle Constructor (string eventTypeArg, bool canBubbleArg, bool cancelableArg);
 	}
@@ -1232,19 +1224,11 @@ namespace WebKit {
 	// Note: DOMMutationEvent is not bound since it is deprecated
 	// by the W3C to be replaced with Mutation Observers
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomEvent), Name = "DOMOverflowEvent")]
 	[DisableDefaultCtor]
 	partial interface DomOverflowEvent {
-#if !XAMCORE_3_0
-		[Obsolete ("Use the constructor instead.")]
-		[Export ("initOverflowEvent:horizontalOverflow:verticalOverflow:")]
-		void InitEvent (ushort orient, bool hasHorizontalOverflow, bool hasVerticalOverflow);
-#endif
-#if !XAMCORE_3_0
-		[Sealed] // Just to avoid the duplicate selector error
-#endif
 		[Export ("initOverflowEvent:horizontalOverflow:verticalOverflow:")]
 		NativeHandle Constructor (ushort orient, bool hasHorizontalOverflow, bool hasVerticalOverflow);
 
@@ -1258,7 +1242,7 @@ namespace WebKit {
 		bool HasVerticalOverflow { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomEvent), Name = "DOMProgressEvent")]
 	[DisableDefaultCtor]
@@ -1273,19 +1257,11 @@ namespace WebKit {
 		ulong Total { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomEvent), Name = "DOMUIEvent")]
 	[DisableDefaultCtor]
 	partial interface DomUIEvent {
-#if !XAMCORE_3_0
-		[Obsolete ("Use the constructor instead.")]
-		[Export ("initUIEvent:canBubble:cancelable:view:detail:")]
-		void InitEvent (string eventType, bool canBubble, bool cancelable, DomAbstractView view, int /* int, not NSInteger */ detail);
-#endif
-#if !XAMCORE_3_0
-		[Sealed] // Just to avoid the duplicate selector error
-#endif
 		[Export ("initUIEvent:canBubble:cancelable:view:detail:")]
 		NativeHandle Constructor (string eventType, bool canBubble, bool cancelable, DomAbstractView view, int /* int, not NSInteger */ detail);
 
@@ -1314,30 +1290,14 @@ namespace WebKit {
 		int Which { get; } /* int, not NSInteger */
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomUIEvent), Name = "DOMKeyboardEvent")]
 	[DisableDefaultCtor]
 	partial interface DomKeyboardEvent {
-#if !XAMCORE_3_0
-		[Obsolete ("Use the constructor instead.")]
-		[Export ("initKeyboardEvent:canBubble:cancelable:view:keyIdentifier:keyLocation:ctrlKey:altKey:shiftKey:metaKey:altGraphKey:")]
-		void InitEvent (string eventType, bool canBubble, bool cancelable, DomAbstractView view, string keyIdentifier, DomKeyLocation keyLocation, bool ctrlKey, bool altKey, bool shiftKey, bool metaKey, bool altGraphKey);
-
-		[Obsolete ("Use the constructor instead.")]
-		[Export ("initKeyboardEvent:canBubble:cancelable:view:keyIdentifier:keyLocation:ctrlKey:altKey:shiftKey:metaKey:")]
-		void InitEvent (string eventType, bool canBubble, bool cancelable, DomAbstractView view, string keyIdentifier, DomKeyLocation keyLocation, bool ctrlKey, bool altKey, bool shiftKey, bool metaKey);
-#endif
-
-#if !XAMCORE_3_0
-		[Sealed] // Just to avoid the duplicate selector error
-#endif
 		[Export ("initKeyboardEvent:canBubble:cancelable:view:keyIdentifier:keyLocation:ctrlKey:altKey:shiftKey:metaKey:altGraphKey:")]
 		NativeHandle Constructor (string eventType, bool canBubble, bool cancelable, DomAbstractView view, string keyIdentifier, DomKeyLocation keyLocation, bool ctrlKey, bool altKey, bool shiftKey, bool metaKey, bool altGraphKey);
 
-#if !XAMCORE_3_0
-		[Sealed] // Just to avoid the duplicate selector error
-#endif
 		[Export ("initKeyboardEvent:canBubble:cancelable:view:keyIdentifier:keyLocation:ctrlKey:altKey:shiftKey:metaKey:")]
 		NativeHandle Constructor (string eventType, bool canBubble, bool cancelable, DomAbstractView view, string keyIdentifier, DomKeyLocation keyLocation, bool ctrlKey, bool altKey, bool shiftKey, bool metaKey);
 
@@ -1372,19 +1332,11 @@ namespace WebKit {
 		int CharCode { get; } /* int, not NSInteger */
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomUIEvent), Name = "DOMMouseEvent")]
 	[DisableDefaultCtor]
 	partial interface DomMouseEvent {
-#if !XAMCORE_3_0
-		[Obsolete ("Use the constructor instead.")]
-		[Export ("initMouseEvent:canBubble:cancelable:view:detail:screenX:screenY:clientX:clientY:ctrlKey:altKey:shiftKey:metaKey:button:relatedTarget:")]
-		void InitEvent (string eventType, bool canBubble, bool cancelable, DomAbstractView view, int /* int, not NSInteger */ detail, int /* int, not NSInteger */ screenX, int /* int, not NSInteger */ screenY, int /* int, not NSInteger */ clientX, int /* int, not NSInteger */ clientY, bool ctrlKey, bool altKey, bool shiftKey, bool metaKey, ushort button, IDomEventTarget relatedTarget);
-#endif
-#if !XAMCORE_3_0
-		[Sealed] // Just to avoid the duplicate selector error
-#endif
 		[Export ("initMouseEvent:canBubble:cancelable:view:detail:screenX:screenY:clientX:clientY:ctrlKey:altKey:shiftKey:metaKey:button:relatedTarget:")]
 		NativeHandle Constructor (string eventType, bool canBubble, bool cancelable, DomAbstractView view, int /* int, not NSInteger */ detail, int /* int, not NSInteger */ screenX, int /* int, not NSInteger */ screenY, int /* int, not NSInteger */ clientX, int /* int, not NSInteger */ clientY, bool ctrlKey, bool altKey, bool shiftKey, bool metaKey, ushort button, IDomEventTarget relatedTarget);
 
@@ -1437,19 +1389,11 @@ namespace WebKit {
 		DomNode ToElement { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomMouseEvent), Name = "DOMWheelEvent")]
 	[DisableDefaultCtor]
 	partial interface DomWheelEvent {
-#if !XAMCORE_3_0
-		[Obsolete ("Use the constructor instead.")]
-		[Export ("initWheelEvent:wheelDeltaY:view:screenX:screenY:clientX:clientY:ctrlKey:altKey:shiftKey:metaKey:")]
-		void InitEvent (int /* int, not NSInteger */ wheelDeltaX, int /* int, not NSInteger */ wheelDeltaY, DomAbstractView view, int /* int, not NSInteger */ screenX, int /* int, not NSInteger */ screnY, int /* int, not NSInteger */ clientX, int /* int, not NSInteger */ clientY, bool ctrlKey, bool altKey, bool shiftKey, bool metaKey);
-#endif
-#if !XAMCORE_3_0
-		[Sealed] // Just to avoid the duplicate selector error
-#endif
 		[Export ("initWheelEvent:wheelDeltaY:view:screenX:screenY:clientX:clientY:ctrlKey:altKey:shiftKey:metaKey:")]
 		NativeHandle Constructor (int /* int, not NSInteger */ wheelDeltaX, int /* int, not NSInteger */ wheelDeltaY, DomAbstractView view, int /* int, not NSInteger */ screenX, int /* int, not NSInteger */ screnY, int /* int, not NSInteger */ clientX, int /* int, not NSInteger */ clientY, bool ctrlKey, bool altKey, bool shiftKey, bool metaKey);
 
@@ -1466,7 +1410,7 @@ namespace WebKit {
 		bool IsHorizontal { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (NSObject), Name = "DOMEventListener")]
 	[Model]
@@ -1479,7 +1423,7 @@ namespace WebKit {
 
 	interface IDomEventListener { }
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomCharacterData), Name = "DOMProcessingInstruction")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMProcessingInstruction init]: should never be used
@@ -1497,7 +1441,7 @@ namespace WebKit {
 	////////////////////////////////
 	// DomCharacterData subclasses
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomCharacterData), Name = "DOMText")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMText init]: should never be used
@@ -1512,7 +1456,7 @@ namespace WebKit {
 		DomText ReplaceWholeText (string content);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomCharacterData), Name = "DOMComment")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMComment init]: should never be used
@@ -1522,7 +1466,7 @@ namespace WebKit {
 	///////////////////////////
 	// DomText subclasses
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomText), Name = "DOMCDATASection")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMCDATASection init]: should never be used
@@ -1532,7 +1476,7 @@ namespace WebKit {
 	///////////////////////////
 	// DomDocument subclasses
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomDocument), Name = "DOMHTMLDocument")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMHTMLDocument init]: should never be used
@@ -1607,7 +1551,7 @@ namespace WebKit {
 	//////////////////////////
 	// DomElement subclasses
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLInputElement")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMHTMLElement init]: should never be used
@@ -1712,7 +1656,7 @@ namespace WebKit {
 		DomFileList Files { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLTextAreaElement")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMHTMLElement init]: should never be used
@@ -1764,7 +1708,7 @@ namespace WebKit {
 		DomHtmlFormElement Form { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomElement), Name = "DOMHTMLElement")]
 	[DisableDefaultCtor] // An uncaught exception was raised: +[DOMHTMLElement init]: should never be used
@@ -1811,7 +1755,7 @@ namespace WebKit {
 
 	//////////////////////////////////////////////////////////////////
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (NSObject))]
 	partial interface WebArchive : NSCoding, NSCopying {
@@ -1834,7 +1778,7 @@ namespace WebKit {
 		NSData Data { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (NSObject))]
 	partial interface WebBackForwardList {
@@ -1882,7 +1826,7 @@ namespace WebKit {
 		int Capacity { get; set; } /* int, not NSInteger */
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (NSObject))]
 	partial interface WebDataSource {
@@ -1937,7 +1881,7 @@ namespace WebKit {
 
 	interface IWebDocumentRepresentation { }
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -2006,7 +1950,7 @@ namespace WebKit {
 	//	}
 
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (NSUrlDownload))]
 	partial interface WebDownload {
@@ -2014,7 +1958,7 @@ namespace WebKit {
 
 	interface IWebDownloadDelegate { }
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -2024,7 +1968,7 @@ namespace WebKit {
 		NSWindow OnDownloadWindowForSheet (WebDownload download);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // invalid handle returned
@@ -2099,7 +2043,7 @@ namespace WebKit {
 
 	interface IWebFrameLoadDelegate { }
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[Model]
 	[Protocol (FormalSince = "10.11")]
@@ -2151,7 +2095,7 @@ namespace WebKit {
 		void DidCreateJavaScriptContext (WebView webView, JSContext context, WebFrame frame);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (NSView))]
 	partial interface WebFrameView {
@@ -2182,7 +2126,7 @@ namespace WebKit {
 		bool AllowsScrolling { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (NSObject))]
 	interface WebHistory {
@@ -2223,7 +2167,7 @@ namespace WebKit {
 		WebHistoryItem GetHistoryItemForUrl (NSUrl url);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (NSObject))]
 	partial interface WebHistoryItem : NSCopying {
@@ -2254,7 +2198,7 @@ namespace WebKit {
 		NSString ChangedNotification { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (NSObject))]
 #if NET
@@ -2287,7 +2231,7 @@ namespace WebKit {
 
 	interface IWebPolicyDelegate { }
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -2321,7 +2265,7 @@ namespace WebKit {
 		NSString WebActionOriginalUrlKey { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (NSObject))]
 #if NET
@@ -2350,7 +2294,7 @@ namespace WebKit {
 		void Ignore ();
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (NSObject))]
 	partial interface WebPreferences : NSCoding {
@@ -2444,7 +2388,7 @@ namespace WebKit {
 		WebCacheModel CacheModel { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	partial interface WebResource : NSCoding, NSCopying {
 		[Export ("initWithData:URL:MIMEType:textEncodingName:frameName:")]
@@ -2468,7 +2412,7 @@ namespace WebKit {
 
 	interface IWebResourceLoadDelegate { }
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -2504,7 +2448,7 @@ namespace WebKit {
 
 	interface IWebUIDelegate { }
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -2595,7 +2539,7 @@ namespace WebKit {
 		[Export ("webView:shouldPerformAction:fromSender:"), DelegateName ("WebViewPerformAction"), DefaultValue (null)]
 		bool UIShouldPerformActionfromSender (WebView webView, Selector action, NSObject sender);
 #else
-		[Export ("webView:shouldPerformAction:fromSender:"), DelegateName("WebViewPerformAction"), DefaultValue (null)]
+		[Export ("webView:shouldPerformAction:fromSender:"), DelegateName ("WebViewPerformAction"), DefaultValue (null)]
 		bool UIShouldPerformAction (WebView webView, Selector action, NSObject sender);
 #endif
 
@@ -2654,7 +2598,7 @@ namespace WebKit {
 		CGRect UIGetContentRect (WebView sender);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // crash on dispose, documented as "You can not create a WebScriptObject object directly."
@@ -2691,7 +2635,7 @@ namespace WebKit {
 		JSValue JSValue { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (NSView),
 		   Events = new Type [] {
@@ -3056,7 +3000,7 @@ namespace WebKit {
 		void SelectSentence (NSObject sender);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomObject), Name = "DOMBlob")]
 	[DisableDefaultCtor]
@@ -3065,7 +3009,7 @@ namespace WebKit {
 		ulong Size { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomBlob), Name = "DOMFile")]
 	[DisableDefaultCtor]
@@ -3074,7 +3018,7 @@ namespace WebKit {
 		string Name { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomObject), Name = "DOMFileList")]
 	[DisableDefaultCtor]
@@ -3086,7 +3030,7 @@ namespace WebKit {
 		DomFile GetItem (int /* unsigned int */ index);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLFormElement")]
 	[DisableDefaultCtor]
@@ -3125,7 +3069,7 @@ namespace WebKit {
 		void Reset ();
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLAnchorElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3193,7 +3137,7 @@ namespace WebKit {
 		NSUrl AbsoluteImageUrl { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLAppletElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3233,7 +3177,7 @@ namespace WebKit {
 		string Width { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLAreaElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3286,7 +3230,7 @@ namespace WebKit {
 		NSUrl AbsoluteImageUrl { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLBRElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3296,7 +3240,7 @@ namespace WebKit {
 		string Clear { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLBaseElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3309,7 +3253,7 @@ namespace WebKit {
 		string Target { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLBaseFontElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3325,7 +3269,7 @@ namespace WebKit {
 		string Size { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLBodyElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3350,7 +3294,7 @@ namespace WebKit {
 		string VLink { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLButtonElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3385,7 +3329,7 @@ namespace WebKit {
 		void Click ();
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLDListElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3395,7 +3339,7 @@ namespace WebKit {
 		bool Compact { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLDirectoryElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3405,7 +3349,7 @@ namespace WebKit {
 		bool Compact { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLDivElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3415,7 +3359,7 @@ namespace WebKit {
 		string Align { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLEmbedElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3440,7 +3384,7 @@ namespace WebKit {
 		int Width { get; set; } /* int, not NSInteger */
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLFieldSetElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3450,7 +3394,7 @@ namespace WebKit {
 		DomHtmlFormElement Form { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLFontElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3466,7 +3410,7 @@ namespace WebKit {
 		string Size { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLFrameElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3512,7 +3456,7 @@ namespace WebKit {
 		int Height { get; } /* int, not NSInteger */
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLFrameSetElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3525,7 +3469,7 @@ namespace WebKit {
 		string Rows { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLHRElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3544,7 +3488,7 @@ namespace WebKit {
 		string Width { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLHeadElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3554,7 +3498,7 @@ namespace WebKit {
 		string Profile { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLHeadingElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3564,7 +3508,7 @@ namespace WebKit {
 		string Align { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLHtmlElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3574,7 +3518,7 @@ namespace WebKit {
 		string Version { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLIFrameElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3617,7 +3561,7 @@ namespace WebKit {
 		DomAbstractView ContentWindow { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLImageElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3684,7 +3628,7 @@ namespace WebKit {
 		NSUrl AbsoluteImageUrl { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLLIElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3697,7 +3641,7 @@ namespace WebKit {
 		int Value { get; set; } /* int, not NSInteger */
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLLabelElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3714,7 +3658,7 @@ namespace WebKit {
 		string AccessKey { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLLegendElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3731,7 +3675,7 @@ namespace WebKit {
 		string AccessKey { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLLinkElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3771,7 +3715,7 @@ namespace WebKit {
 		NSUrl AbsoluteImageUrl { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLMapElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3784,7 +3728,7 @@ namespace WebKit {
 		string Name { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLMarqueeElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3797,7 +3741,7 @@ namespace WebKit {
 		void Stop ();
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLMenuElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3807,7 +3751,7 @@ namespace WebKit {
 		bool Compact { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLMetaElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3826,7 +3770,7 @@ namespace WebKit {
 		string Scheme { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLModElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3839,7 +3783,7 @@ namespace WebKit {
 		string DateTime { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLOListElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3855,7 +3799,7 @@ namespace WebKit {
 		string Type { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLObjectElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3919,7 +3863,7 @@ namespace WebKit {
 		NSUrl AbsoluteImageUrl { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLOptGroupElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3932,7 +3876,7 @@ namespace WebKit {
 		string Label { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLOptionElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3963,7 +3907,7 @@ namespace WebKit {
 		int Index { get; } /* int, not NSInteger */
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomObject), Name = "DOMHTMLOptionsCollection")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3988,7 +3932,7 @@ namespace WebKit {
 		DomNode GetItem (uint /* unsigned int */ index);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLParagraphElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -3998,7 +3942,7 @@ namespace WebKit {
 		string Align { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLParamElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -4017,7 +3961,7 @@ namespace WebKit {
 		string ValueType { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLPreElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -4030,7 +3974,7 @@ namespace WebKit {
 		bool Wrap { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLQuoteElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -4040,7 +3984,7 @@ namespace WebKit {
 		string Cite { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLScriptElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -4068,7 +4012,7 @@ namespace WebKit {
 		string Type { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLSelectElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -4123,7 +4067,7 @@ namespace WebKit {
 		void Remove (int /* int, not NSInteger */ index);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLStyleElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -4142,7 +4086,7 @@ namespace WebKit {
 		DomStyleSheet Sheet { get; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLTableCaptionElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -4152,7 +4096,7 @@ namespace WebKit {
 		string Align { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLTableCellElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -4204,7 +4148,7 @@ namespace WebKit {
 		string Width { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLTableColElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -4229,7 +4173,7 @@ namespace WebKit {
 		string Width { get; set; }
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLTableElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -4302,7 +4246,7 @@ namespace WebKit {
 		void DeleteRow (int /* int, not NSInteger */ index);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLTableRowElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
@@ -4339,7 +4283,7 @@ namespace WebKit {
 		void DeleteCell (int /* int, not NSInteger */ index);
 	}
 
-	[NoiOS, NoTV, NoWatch, NoMacCatalyst]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[BaseType (typeof (DomHtmlElement), Name = "DOMHTMLTableSectionElement")]
 	[DisableDefaultCtor] // ObjCException: +[<TYPE> init]: should never be used
 	[Deprecated (PlatformName.MacOSX, 10, 14)]
@@ -4932,7 +4876,7 @@ namespace WebKit {
 		[Field ("WKWebsiteDataTypeServiceWorkerRegistrations")]
 		NSString ServiceWorkerRegistrations { get; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, NoTV]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Field ("WKWebsiteDataTypeFileSystem")]
 		NSString FileSystem { get; }
 
@@ -5032,9 +4976,13 @@ namespace WebKit {
 		[Async]
 		[Export ("fetchAllDataStoreIdentifiers:")]
 		void FetchAllDataStoreIdentifiers (Action<NSArray<NSUuid>> completionHandler);
+
+		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[Export ("proxyConfigurations", ArgumentSemantic.Copy), NullAllowed]
+		NWProxyConfig [] ProxyConfigurations { get; set; }
 	}
 
-	[NoiOS, NoWatch, NoTV]
+	[NoiOS, NoTV]
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	interface WKOpenPanelParameters {
@@ -5045,6 +4993,10 @@ namespace WebKit {
 		[Export ("allowsDirectories")]
 		bool AllowsDirectories { get; }
 	}
+
+#if XAMCORE_5_0
+	delegate void WKUIDelegateRunJavaScriptTextInputPanelCallback ([NullAllowed] string result);
+#endif
 
 	/// <summary>A delegate object that allows presenting native UI elements on behalf of a Web page.</summary>
 	///     
@@ -5065,11 +5017,19 @@ namespace WebKit {
 		[Export ("webView:runJavaScriptConfirmPanelWithMessage:initiatedByFrame:completionHandler:")]
 		void RunJavaScriptConfirmPanel (WKWebView webView, string message, WKFrameInfo frame, Action<bool> completionHandler);
 
+#if !XAMCORE_5_0
+		[Obsolete ("It's not possible to call the completion handler with a null value using this method. Please see https://github.com/xamarin/xamarin-macios/issues/15728 for a workaround.")]
 		[Export ("webView:runJavaScriptTextInputPanelWithPrompt:defaultText:initiatedByFrame:completionHandler:")]
 		void RunJavaScriptTextInputPanel (WKWebView webView, string prompt, [NullAllowed] string defaultText,
 			WKFrameInfo frame, Action<string> completionHandler);
+#endif
 
-		[NoiOS, NoWatch, NoTV]
+#if XAMCORE_5_0
+		[Export ("webView:runJavaScriptTextInputPanelWithPrompt:defaultText:initiatedByFrame:completionHandler:")]
+		void RunJavaScriptTextInputPanel (WKWebView webView, string prompt, [NullAllowed] string defaultText, WKFrameInfo frame, WKUIDelegateRunJavaScriptTextInputPanelCallback completionHandler);
+#endif
+
+		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Export ("webView:runOpenPanelWithParameters:initiatedByFrame:completionHandler:")]
 		void RunOpenPanel (WKWebView webView, WKOpenPanelParameters parameters, WKFrameInfo frame, Action<NSUrl []> completionHandler);
@@ -5575,28 +5535,28 @@ namespace WebKit {
 		[Export ("fullscreenState")]
 		WKFullscreenState FullscreenState { get; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, NoTV]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Export ("minimumViewportInset")]
 		UIEdgeInsets MinimumViewportInset { get; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, NoTV]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Export ("maximumViewportInset")]
 		UIEdgeInsets MaximumViewportInset { get; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, NoTV]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Export ("setMinimumViewportInset:maximumViewportInset:")]
 		void SetViewportInsets (UIEdgeInsets minimumViewportInset, UIEdgeInsets maximumViewportInset);
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoMac, NoWatch, NoTV]
+		[iOS (16, 0), MacCatalyst (16, 0), NoMac, NoTV]
 		[Export ("findInteractionEnabled")]
 		bool FindInteractionEnabled { [Bind ("isFindInteractionEnabled")] get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoMac, NoWatch, NoTV]
+		[iOS (16, 0), MacCatalyst (16, 0), NoMac, NoTV]
 		[Export ("findInteraction")]
 		[NullAllowed]
 		UIFindInteraction FindInteraction { get; }
 
-		[Mac (13, 3), MacCatalyst (16, 4), iOS (16, 4), NoWatch, NoTV]
+		[Mac (13, 3), MacCatalyst (16, 4), iOS (16, 4), NoTV]
 		[Export ("inspectable")]
 		bool Inspectable { [Bind ("isInspectable")] get; set; }
 
@@ -5620,7 +5580,7 @@ namespace WebKit {
 		[Export ("stopLoading:")]
 		void StopLoading ([NullAllowed] NSObject sender);
 
-		[Mac (15, 0), NoiOS, MacCatalyst (18, 0)]
+		[Mac (15, 0), iOS (18, 2), MacCatalyst (18, 0)]
 		[Export ("writingToolsActive")]
 		bool WritingToolsActive { [Bind ("isWritingToolsActive")] get; }
 	}
@@ -5747,11 +5707,11 @@ namespace WebKit {
 		[Export ("userInterfaceDirectionPolicy", ArgumentSemantic.Assign)]
 		WKUserInterfaceDirectionPolicy UserInterfaceDirectionPolicy { get; set; }
 
-		[Mac (15, 0), NoiOS, MacCatalyst (18, 0)]
+		[Mac (15, 0), iOS (18, 2), MacCatalyst (18, 0)]
 		[Export ("supportsAdaptiveImageGlyph")]
 		bool SupportsAdaptiveImageGlyph { get; set; }
 
-		[Mac (15, 0), NoiOS, MacCatalyst (18, 0)]
+		[Mac (15, 0), iOS (18, 2), MacCatalyst (18, 0)]
 		[Export ("writingToolsBehavior")]
 #if MONOMAC
 		NSWritingToolsBehavior WritingToolsBehavior { get; set; }
@@ -5812,7 +5772,7 @@ namespace WebKit {
 	}
 
 #if MONOMAC
-	interface UIPreviewActionItem {}
+	interface UIPreviewActionItem { }
 #endif
 
 	interface IWKPreviewActionItem { }
@@ -5884,9 +5844,13 @@ namespace WebKit {
 		[Export ("allowsContentJavaScript")]
 		bool AllowsContentJavaScript { get; set; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, NoTV]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Export ("lockdownModeEnabled")]
 		bool LockdownModeEnabled { [Bind ("isLockdownModeEnabled")] get; set; }
+
+		[Mac (15, 2), iOS (18, 2), MacCatalyst (18, 2)]
+		[Export ("preferredHTTPSNavigationPolicy", ArgumentSemantic.Assign)]
+		WKWebpagePreferencesUpgradeToHttpsPolicy PreferredHttpsNavigationPolicy { get; set; }
 	}
 
 	[NoMac]
@@ -5991,6 +5955,8 @@ namespace WebKit {
 
 	interface IWKDownloadDelegate { }
 
+	delegate void WKDownloadDelegateDecidePlaceholderPolicyCallback (WKDownloadPlaceholderPolicy policy, [NullAllowed] NSUrl url);
+
 	[iOS (14, 5)]
 	[MacCatalyst (14, 5)]
 #if NET
@@ -6016,6 +5982,18 @@ namespace WebKit {
 
 		[Export ("download:didFailWithError:resumeData:")]
 		void DidFail (WKDownload download, NSError error, [NullAllowed] NSData resumeData);
+
+		[iOS (18, 2), MacCatalyst (18, 2), Mac (15, 2)]
+		[Export ("download:decidePlaceholderPolicy:")]
+		void DecidePlaceholderPolicy (WKDownload download, WKDownloadDelegateDecidePlaceholderPolicyCallback completionHandler);
+
+		[iOS (18, 2), MacCatalyst (18, 2), Mac (15, 2)]
+		[Export ("download:didReceivePlaceholderURL:completionHandler:")]
+		void DidReceivePlaceholderUrl (WKDownload download, NSUrl url, Action completionHandler);
+
+		[iOS (18, 2), MacCatalyst (18, 2), Mac (15, 2)]
+		[Export ("download:didReceiveFinalURL:")]
+		void DidReceiveFinalUrl (WKDownload download, NSUrl url);
 	}
 
 	[iOS (14, 5)]
@@ -6040,5 +6018,30 @@ namespace WebKit {
 		[Async]
 		[Export ("cancel:")]
 		void Cancel ([NullAllowed] Action<NSData> completionHandler);
+
+		[Mac (15, 2), iOS (18, 2), MacCatalyst (18, 2)]
+		[Export ("userInitiated")]
+		bool UserInitiated { [Bind ("isUserInitiated")] get; }
+
+		[Mac (15, 2), iOS (18, 2), MacCatalyst (18, 2)]
+		[Export ("originatingFrame")]
+		WKFrameInfo OriginatingFrame { get; }
+
+	}
+
+	[iOS (18, 2), MacCatalyst (18, 2), Mac (15, 2)]
+	[Native]
+	public enum WKDownloadPlaceholderPolicy : long {
+		Disable,
+		Enable,
+	}
+
+	[Mac (15, 2), iOS (18, 2), MacCatalyst (18, 2)]
+	[Native ("WKWebpagePreferencesUpgradeToHTTPSPolicy")]
+	public enum WKWebpagePreferencesUpgradeToHttpsPolicy : long {
+		KeepAsRequested,
+		AutomaticFallbackToHttp,
+		UserMediatedFallbackToHttp,
+		ErrorOnFailure,
 	}
 }

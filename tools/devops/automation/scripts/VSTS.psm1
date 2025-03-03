@@ -255,7 +255,8 @@ class BuildConfiguration {
         "BUILD_REPOSITORY_PROVIDER",
         "BUILD_REPOSITORY_URI",
         "BUILD_SOURCEBRANCH",
-        "BUILD_SOURCEBRANCHNAME"
+        "BUILD_SOURCEBRANCHNAME",
+        "BUILD_SOURCEVERSION"
     )
 
     <#
@@ -312,7 +313,7 @@ class BuildConfiguration {
 
     [void] SetLabelsFromPR ([PSCustomObject] $prInfo, [bool]$isPR) {
         if ($prInfo) {
-            Write-Deubg "Setting VSTS labels from $($prInfo.labels)"
+            Write-Debug "Setting VSTS labels from $($prInfo.labels)"
             foreach ($l in [BuildConfiguration]::labelsOfInterest) {
                 $labelPresent = 1 -eq ($prInfo.labels | Where-Object { $_.name -eq "$l"}).Count
                 # We need to replace dashes with underscores, because bash can't access an environment variable with a dash in the name.
@@ -335,29 +336,42 @@ class BuildConfiguration {
         .SYNOPSIS
             Retrieve the change id and export it as an enviroment variable.
     #>
-    [string] ExportChangeId ([object] $configuration) {
+    [string] ExportPRId ([object] $configuration) {
         # This is an interesting step, we do know we are dealing with a PR, but we need the PR id to
         # be able to get the labels, the buildSourceBranch follows the pattern: refs/pull/{ChangeId}/merge
         # we could use a regexp but then we would have two problems instead of one
-        $changeId = $null
+        $prId = $null
         if ($configuration.PARENT_BUILD_BUILD_SOURCEBRANCH) {
-            # use the source branch information from the configuration object
-            $changeId = $configuration.PARENT_BUILD_BUILD_SOURCEBRANCH.Replace("refs/pull/", "").Replace("/merge", "")
-        } else {
-            Write-Debug "Retrieving change id from the environment since it could not be found in the config."
-            # retrieve the change ide form the BUILD_SOURCEBRANCH enviroment variable. 
-            $changeId = "$Env:BUILD_SOURCEBRANCH".Replace("refs/pull/", "").Replace("/merge", "")
+            # there are two possible situations, the build is a PR manually triggered or a PR triggered by a commit to a
+            # dev/* branch. In the first case we can get the PR id from the source branch, in the second case we need to
+            # get the PR id associated to the current commit. 
+            if ($configuration.PARENT_BUILD_BUILD_SOURCEBRANCH.StartsWith("refs/pull")) {
+                Write-Host "Getting the change id from the parent build source branch"
+                $prId = $configuration.PARENT_BUILD_BUILD_SOURCEBRANCH.Replace("refs/pull/", "").Replace("/merge", "")
+            } elseif ($Env:BUILD_SOURCEBRANCH.StartsWith("refs/pull")) {
+                Write-Host "Getting the change id from the current build source branch"
+                $prId = "$Env:BUILD_SOURCEBRANCH".Replace("refs/pull/", "").Replace("/merge", "")
+            } else {
+                Write-Host "Getting the change id from the current build source version with the Github API"
+                # use the github command to retrieve the associate PR id
+                $prIDs = Get-GitHubPRsForHash -Hash $configuration.PARENT_BUILD_BUILD_SOURCEVERSION
+                Write-Host "PR IDs: $prIDs"
+                if ($prIDs.Length -gt 0) {
+                    $prId = $prIDs[0]
+                }
+            }
         }
 
         # we can always fail (regexp error or not env varaible)
-        if ($changeId) {
+        if ($prId) {
             # add a var with the change id, which can be later consumed by some of the old scripts from
             # jenkins
-            Write-Host "##vso[task.setvariable variable=pr_number;isOutput=true]$changeId"
+            Write-Host "##vso[task.setvariable variable=pr_number;isOutput=true]$prId"
         } else {
             Write-Debug "Not setting the change id because it could not be calculated."
         }
-        return $changeId
+        Write-Host "Change id: $prId"
+        return $prId
     }
 
     [PSCustomObject] Import([string] $configFile) {
@@ -447,11 +461,6 @@ class BuildConfiguration {
 
         $this.StoreParentBuildVariables($configuration)
 
-        # store if dotnet has been enabled
-        $variableName = "ENABLE_DOTNET"
-        $variableValue = [Environment]::GetEnvironmentVariable($variableName)
-        $configuration | Add-Member -NotePropertyName $variableName -NotePropertyValue $variableValue
-
         # For each .NET platform we support, add a INCLUDE_DOTNET_<platform> variable specifying whether that platform is enabled or not.
         $dotnetPlatforms = $configuration.DOTNET_PLATFORMS.Split(' ', [StringSplitOptions]::RemoveEmptyEntries)
         foreach ($platform in $dotnetPlatforms) {
@@ -483,24 +492,7 @@ class BuildConfiguration {
             }
         }
 
-        # store all the variables needed when classic xamarin has been enabled
-        $configuration | Add-Member -NotePropertyName "INCLUDE_XAMARIN_LEGACY" -NotePropertyValue $Env:INCLUDE_XAMARIN_LEGACY
-
-        # if xamarin legacy has been included, check if we need to include the xamarin sdk for each of the platforms, otherewise it will be
-        # false for all
         $xamarinPlatforms = @("ios", "macos", "tvos", "maccatalyst")
-        if ($configuration.INCLUDE_XAMARIN_LEGACY -eq "true") {
-            foreach ($platform in $xamarinPlatforms) {
-                $variableName = "INCLUDE_LEGACY_$($platform.ToUpper())"
-                $variableValue = [Environment]::GetEnvironmentVariable("$variableName")
-                $configuration | Add-Member -NotePropertyName $variableName -NotePropertyValue $variableValue
-            }
-        } else {
-            foreach ($platform in $xamarinPlatforms) {
-                $variableName = "INCLUDE_LEGACY_$($platform.ToUpper())"
-                $configuration | Add-Member -NotePropertyName $variableName -NotePropertyValue "false"
-            }
-        }
 
         # add all the include platforms as well as the nuget os version
         foreach ($platform in $xamarinPlatforms) {
@@ -529,12 +521,12 @@ class BuildConfiguration {
             $tags.Add("cronjob")
         }
 
-        if ($configuration.BuildReason -eq "PullRequest" -or (($configuration.BuildReason -eq "Manual") -and ($configuration.PARENT_BUILD_BUILD_SOURCEBRANCH -eq "merge")) ) {
+        if ($configuration.PARENT_BUILD_BUILD_SOURCEBRANCH.StartsWith("refs/heads/dev/") -or $configuration.BuildReason -eq "PullRequest" -or (($configuration.BuildReason -eq "Manual") -and ($configuration.PARENT_BUILD_BUILD_SOURCEBRANCH -eq "merge")) ) {
           Write-Host "Configuring build from PR."
 
           # retrieve the PR data to be able to fwd the labels from github
-          $changeId = $this.ExportChangeId($configuration)
-          $prInfo = Get-GitHubPRInfo -ChangeId $changeId
+          $prId = $this.ExportPRId($configuration)
+          $prInfo = Get-GitHubPRInfo -ChangeId $prId
           Write-Host $prInfo
 
           # make peoples life better, loop over the labels and add them as tags in the vsts build
@@ -886,7 +878,155 @@ function Edit-BuildConfiguration {
     return $buildConfiguration.Update($ConfigKey, $ConfigValue, $ConfigFile)
 }
 
+function Find-AzureDevOpsWorkItemWithTitle {
+    param
+    (
+        [Parameter(Mandatory)]
+        [string]
+        $Title,
 
+        [string]
+        $WorkItemType = 'Bug',
+
+        [string]
+        $AreaPath = 'DevDiv\VS Client - Runtime SDKs\iOS and Mac'
+    )
+
+    $headers = Get-AuthHeader -AccessToken $Env:ACCESSTOKEN
+
+    $url = "$Env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI$Env:SYSTEM_TEAMPROJECT/_apis/wit/wiql?api-version=7.1"
+    $escapedTitle = $Title.Replace("'", "''")
+    $payload = @{
+        "query" = "Select [System.Id] FROM WorkItems WHERE [System.State] = 'Active' AND [System.Title] = '$escapedTitle' AND [System.WorkItemType] = '$WorkItemType' AND [System.AreaPath] UNDER '$AreaPath'"
+    }
+    $body = ConvertTo-Json $payload -Depth 100
+
+    try {
+        Write-Host "Uri: $url"
+        Write-Host "Body:"
+        $body | Out-String | Write-Host
+
+        $response = Invoke-RestMethod -Uri $url -Headers $headers -Method "POST" -ContentType 'application/json' -Body $body
+
+        Write-Host "Response:"
+        $response | Out-String | Write-Host
+
+        $itemCount = $response.workItems.count
+        if ($itemCount -eq 0) {
+            Write-Host "No work items found with the given criteria"
+            return 0
+        }
+
+        $workItemId = $response.workItems[0].id
+        Write-Host "Found $itemCount work items with the given criteria, returning id: $workItemId"
+        return $workItemId
+    } catch {
+        Write-Host "Failed to find work item: $_"
+    }
+    return 0
+}
+
+function New-AzureDevOpsWorkItem {
+    param
+    (
+        [Parameter(Mandatory)]
+        [string]
+        $Message,
+
+        [Parameter(Mandatory)]
+        [string]
+        $Title,
+
+        [string]
+        $WorkItemType = 'Bug',
+
+        [string]
+        $AreaPath = 'DevDiv\VS Client - Runtime SDKs\iOS and Mac'
+    )
+
+    $headers = Get-AuthHeader -AccessToken $Env:ACCESSTOKEN
+
+    $payload = @(
+        @{
+            "op" = "add"
+            "path" = "/fields/System.Title"
+            "from" = $null
+            "value" = $Title
+        }
+        @{
+            "op" = "add"
+            "path" = "/fields/System.AreaPath"
+            "from" = $null
+            "value" = $AreaPath
+        }
+        @{
+            "op" = "add"
+            "path" = "/fields/Microsoft.VSTS.TCM.ReproSteps"
+            "from" = $null
+            "value" = $Message
+        }
+    )
+
+    $body = ConvertTo-Json $payload -Depth 100
+
+    $url = "$Env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI$Env:SYSTEM_TEAMPROJECT/_apis/wit/workitems/`$$($WorkItemType)?api-version=7.1"
+    try {
+        Write-Host "Creating DevOps $WorkItemType with Title=$Title and AreaPath=$AreaPath"
+        Write-Host "Uri: $url"
+        Write-Host "Body:"
+        $body | Out-String | Write-Host
+        $response = Invoke-RestMethod -Uri $url -Headers $headers -Method "POST" -ContentType 'application/json-patch+json' -Body $body
+        Write-Host "Response = $response"
+        $workItemId = $response.id
+        $workItemUrl = "$Env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI$Env:SYSTEM_TEAMPROJECT/_workitems/edit/$workItemId"
+        Write-Host "Work Item Url: $workItemUrl"
+        return $workItemUrl
+    } catch {
+        Write-Host "Failed to create work item:"
+        $_ | Out-String | Write-Host
+        return ""
+    }
+}
+
+function New-AzureDevOpsWorkItemComment {
+    param
+    (
+        [Parameter(Mandatory)]
+        [int]
+        $WorkItemId,
+
+        [Parameter(Mandatory)]
+        [string]
+        $Comment
+    )
+
+    $headers = Get-AuthHeader -AccessToken $Env:ACCESSTOKEN
+
+    $payload =
+        @{
+            "text" = $Comment
+        }
+
+    $body = ConvertTo-Json $payload -Depth 100
+
+    $url = "$Env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI$Env:SYSTEM_TEAMPROJECT/_apis/wit/workItems/$WorkItemId/comments?api-version=7.1-preview.4"
+    try {
+        Write-Host "Uri: $url"
+        Write-Host "Headers:"
+        $headers
+        Write-Host "Body:"
+        $body
+        $response = Invoke-RestMethod -Uri $url -Headers $headers -Method "POST" -ContentType 'application/json' -Body $body
+        Write-Host "Response:"
+        $response
+        $workItemUrl = "$Env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI$Env:SYSTEM_TEAMPROJECT/_workitems/edit/$workItemId"
+        return $workItemUrl
+    } catch {
+        Write-Host "Failed to add comment to work item:"
+        $_ | Out-String | Write-Host
+        return ""
+    }
+}
 # export public functions, other functions are private and should not be used ouside the module.
 Export-ModuleMember -Function Stop-Pipeline
 Export-ModuleMember -Function Set-PipelineResult
@@ -896,3 +1036,7 @@ Export-ModuleMember -Function New-BuildConfiguration
 Export-ModuleMember -Function Import-BuildConfiguration
 Export-ModuleMember -Function Edit-BuildConfiguration
 Export-ModuleMember -Function Get-YamlPreview
+Export-ModuleMember -Function New-AzureDevOpsWorkItem
+Export-ModuleMember -Function New-AzureDevOpsWorkItemComment
+Export-ModuleMember -Function Find-AzureDevOpsWorkItemWithTitle
+

@@ -193,10 +193,6 @@ namespace Cecil.Tests {
 							continue;
 						}
 						foreach (var member in GetAllTypeMembers (type)) {
-							// If a member is hidden, it's probably because it's broken in some way, so don't consider it.
-							if (ObsoleteTest.HasEditorBrowseableNeverAttribute (member))
-								continue;
-
 							var mentionedPlatforms = GetAvailabilityAttributes (member).ToList ();
 							if (mentionedPlatforms.Any ()) {
 								var claimedPlatforms = GetSupportedAvailabilityAttributes (member).ToList ();
@@ -328,6 +324,15 @@ namespace Cecil.Tests {
 					// Same method, but different arguments due to platform differences. We should treat this as the same method, so ignore this failure.
 					"StoreKit.AppStore.RequestReview (XKit.XWindowScene)", // iOS, MacCatalyst
 					"StoreKit.AppStore.RequestReview (XKit.XViewController)", // macOS
+
+					// This is from the UIGestureRecognizerDelegate protocol: PdfView does not implement UIGestureRecognizerDelegate on tvOS.
+					"PdfKit.PdfView.ShouldBeRequiredToFailBy (XKit.XGestureRecognizer, XKit.XGestureRecognizer)",
+					"PdfKit.PdfView.ShouldBegin (XKit.XGestureRecognizer)",
+					"PdfKit.PdfView.ShouldReceiveEvent (XKit.XGestureRecognizer, XKit.XEvent)",
+					"PdfKit.PdfView.ShouldReceivePress (XKit.XGestureRecognizer, XKit.XPress)",
+					"PdfKit.PdfView.ShouldReceiveTouch (XKit.XGestureRecognizer, XKit.XTouch)",
+					"PdfKit.PdfView.ShouldRecognizeSimultaneously (XKit.XGestureRecognizer, XKit.XGestureRecognizer)",
+					"PdfKit.PdfView.ShouldRequireFailureOf (XKit.XGestureRecognizer, XKit.XGestureRecognizer)",
 				};
 			}
 		}
@@ -511,13 +516,13 @@ namespace Cecil.Tests {
 		string AssemblyToAttributeName (AssemblyDefinition assembly)
 		{
 			var baseName = assembly.Name.Name + ".dll";
-			if (Configuration.GetBaseLibraryName (TargetFramework.DotNet_iOS.Platform, true) == baseName)
+			if (Configuration.GetBaseLibraryName (TargetFramework.DotNet_iOS.Platform) == baseName)
 				return "ios";
-			if (Configuration.GetBaseLibraryName (TargetFramework.DotNet_tvOS.Platform, true) == baseName)
+			if (Configuration.GetBaseLibraryName (TargetFramework.DotNet_tvOS.Platform) == baseName)
 				return "tvos";
-			if (Configuration.GetBaseLibraryName (TargetFramework.DotNet_macOS.Platform, true) == baseName)
+			if (Configuration.GetBaseLibraryName (TargetFramework.DotNet_macOS.Platform) == baseName)
 				return "macos";
-			if (Configuration.GetBaseLibraryName (TargetFramework.DotNet_MacCatalyst.Platform, true) == baseName)
+			if (Configuration.GetBaseLibraryName (TargetFramework.DotNet_MacCatalyst.Platform) == baseName)
 				return "maccatalyst";
 			throw new NotImplementedException ();
 		}

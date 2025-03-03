@@ -60,9 +60,17 @@ namespace CoreFoundation {
 	[Partial]
 	interface CFRunLoop {
 
+		/// <summary>Represents the value associated with the constant kCFRunLoopDefaultMode</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCFRunLoopDefaultMode")]
 		NSString ModeDefault { get; }
 
+		/// <summary>Represents the value associated with the constant kCFRunLoopCommonModes</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCFRunLoopCommonModes")]
 		NSString ModeCommon { get; }
 	}
@@ -74,7 +82,6 @@ namespace CoreFoundation {
 		IntPtr free { get; }
 	}
 
-#if !WATCH
 	/// <summary>Provides the necessary methods needed for accessing the system's global proxy configuration settings and resolving a list of proxies to use for connecting to a URL.</summary>
 	[Partial]
 	interface CFNetwork {
@@ -82,7 +89,6 @@ namespace CoreFoundation {
 		[Field ("kCFErrorDomainCFNetwork", "CFNetwork")]
 		NSString ErrorDomain { get; }
 	}
-#endif
 
 	enum CFStringTransform {
 		[Field ("kCFStringTransformStripCombiningMarks")]

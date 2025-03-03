@@ -31,15 +31,7 @@ namespace Accounts {
 		CoreDataSaveFailed,
 		FailedSerializingAccountInfo,
 		InvalidCommand,
-#if XAMCORE_3_0
 		MissingTransportMessageId,
-#else
-		[Obsolete ("Use 'MissingTransportMessageId'.")]
-		MissingMessageID,
-#pragma warning disable 618 // MissingMessageID is obsolete
-		MissingTransportMessageId = MissingMessageID,
-#pragma warning restore 618
-#endif
 		CredentialItemNotFound,
 		CredentialItemNotExpired,
 	}
@@ -48,6 +40,8 @@ namespace Accounts {
 	/// <summary>An enumeration whose values indicate the result of a credential renewal request (see <see cref="M:Accounts.ACAccountStore.RenewCredentials(Accounts.ACAccount,System.Action{Accounts.ACAccountCredentialRenewResult,Foundation.NSError})" />).</summary>
 	[Native]
 	public enum ACAccountCredentialRenewResult : long {
-		Renewed, Rejected, Failed
+		Renewed,
+		Rejected,
+		Failed,
 	}
 }

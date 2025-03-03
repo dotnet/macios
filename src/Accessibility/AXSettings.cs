@@ -19,6 +19,12 @@ namespace Accessibility {
 	public enum AXSettingsFeature : long {
 		/// <summary>Jump to the "Allow Apps to Request to Use" setting in Personal Voice.</summary>
 		PersonalVoiceAllowAppsToRequestToUse = 1,
+		/// <summary>Jump to the "Allow Apps to Add Audio to Calls." setting in Personal Voice.</summary>
+		[SupportedOSPlatform ("ios18.2")]
+		[SupportedOSPlatform ("maccatalyst18.2")]
+		[SupportedOSPlatform ("macos15.2")]
+		[SupportedOSPlatform ("tvos18.2")]
+		AllowAppsToAddAudioToCalls,
 	}
 
 	public static class AXSettings {
@@ -45,7 +51,7 @@ namespace Accessibility {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 		[DllImport (Constants.AccessibilityLibrary)]
-		unsafe static extern void AXOpenSettingsFeature (nint /* AXSettingsFeature */ feature, BlockLiteral *block);
+		unsafe static extern void AXOpenSettingsFeature (nint /* AXSettingsFeature */ feature, BlockLiteral* block);
 
 		/// <summary>Open the Settings app to the specified section.</summary>
 		/// <param name="feature">The section to open.</param>

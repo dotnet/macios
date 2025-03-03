@@ -41,12 +41,6 @@ namespace Accounts {
 		[Export ("initWithAccountType:")]
 		NativeHandle Constructor (ACAccountType type);
 
-#if !XAMCORE_3_0
-		// now exposed with the corresponding EABluetoothAccessoryPickerError enum
-		[Field ("ACErrorDomain")]
-		NSString ErrorDomain { get; }
-#endif
-
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("userFullName")]
@@ -192,7 +186,6 @@ namespace Accounts {
 
 		[NoiOS]
 		[NoTV]
-		[NoWatch]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use LinkedIn SDK instead.")]
 		[NoMacCatalyst]
 		[Field ("ACAccountTypeIdentifierLinkedIn")]
@@ -245,7 +238,6 @@ namespace Accounts {
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use LinkedIn SDK instead.")]
 	[NoMacCatalyst]
 	[Static]

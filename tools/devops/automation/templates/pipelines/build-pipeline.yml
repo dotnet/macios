@@ -11,7 +11,7 @@ parameters:
 - name: macOSName # comes from the build agent demand named macOS.Name
   displayName: Name of the version of macOS to use
   type: string
-  default: 'Sonoma'
+  default: 'Sequoia'
 
 - name: pool
   type: string
@@ -143,17 +143,10 @@ resources:
     ref: refs/heads/main
     endpoint: xamarin
 
-  - repository: sdk-insertions
-    type: github
-    name: xamarin/sdk-insertions
+  - repository: macios-adr
+    type: git
+    name: macios-adr
     ref: refs/heads/main
-    endpoint: xamarin
-
-  - repository: maccore
-    type: github
-    name: xamarin/maccore
-    ref: refs/heads/main
-    endpoint: xamarin
 
 variables:
 - ${{ if eq(parameters.isPR, false) }}:

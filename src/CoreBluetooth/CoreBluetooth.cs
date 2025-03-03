@@ -21,16 +21,7 @@ namespace CoreBluetooth {
 		}
 	}
 
-#if !MONOMAC && !XAMCORE_3_0 && !NET
-	public partial class CBPeer {
-
-		[Obsolete ("This type is not meant to be created by user code.", true)]
-		public CBPeer ()
-		{
-		}
-	}
-#endif
-#if !WATCH && !NET
+#if !NET
 	public partial class CBCentralManager {
 
 		public new virtual CBCentralManagerState State {

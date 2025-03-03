@@ -96,6 +96,8 @@ namespace CoreAnimation {
 		public nfloat M44 { get => m44; set => m44 = value; }
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		static public readonly CATransform3D Identity;
 
 		static CATransform3D ()
@@ -111,6 +113,9 @@ namespace CoreAnimation {
 		[DllImport (Constants.QuartzLibrary)]
 		extern static byte CATransform3DIsIdentity (CATransform3D t);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsIdentity {
 			get {
 				return CATransform3DIsIdentity (this) != 0;
@@ -254,6 +259,9 @@ namespace CoreAnimation {
 		[DllImport (Constants.QuartzLibrary)]
 		extern static byte CATransform3DIsAffine (CATransform3D t);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsAffine {
 			get {
 				return CATransform3DIsAffine (this) != 0;
@@ -267,10 +275,10 @@ namespace CoreAnimation {
 		{
 			return String.Format ("[{0} {1} {2} {3}; {4} {5} {6} {7}; {8} {9} {10} {11}; {12} {13} {14} {15}]",
 #if NET
-					      M11, M12, M13, M14,
-					      M21, M22, M23, M24,
-					      M31, M32, M33, M34,
-					      M41, M42, M43, M44);
+						  M11, M12, M13, M14,
+						  M21, M22, M23, M24,
+						  M31, M32, M33, M34,
+						  M41, M42, M43, M44);
 #else
 						  m11, m12, m13, m14,
 						  m21, m22, m23, m24,

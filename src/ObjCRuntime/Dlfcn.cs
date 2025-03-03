@@ -38,9 +38,7 @@ using System.Runtime.InteropServices;
 using Foundation;
 using CoreFoundation;
 using CoreGraphics;
-#if !WATCH
 using CoreMedia;
-#endif
 #endif
 #if !NO_SYSTEM_DRAWING
 using System.Drawing;
@@ -58,25 +56,26 @@ namespace ObjCRuntime {
 			static public readonly IntPtr Handle = Dlfcn._dlopen (Constants.libcLibrary, 0);
 		}
 #if HAS_OPENGLES
-		static public class OpenGLES
-		{
+		static public class OpenGLES {
 			static public readonly IntPtr Handle = Dlfcn._dlopen (Constants.OpenGLESLibrary, 0);
 		}
 #endif
-#if !WATCH
 		static public class AudioToolbox {
 			static public readonly IntPtr Handle = Dlfcn._dlopen (Constants.AudioToolboxLibrary, 0);
 		}
-#endif
 #endif
 	}
 
 	public static class Dlfcn {
 #if !COREBUILD
 		public enum RTLD {
+			/// <summary>The dynamic linker searches for the symbol in the dylibs the calling image linked against when built. It is usually used when you intentionally have multiply defined symbol across images and want to find the "next" definition. </summary>
 			Next = -1,
+			/// <summary>Searches all Mach-O images in the process (except those loaded with dlopen(xxx, RTLD_LOCAL)) in the order they were loaded.  This can be a costly search and should be avoided.</summary>
 			Default = -2,
+			/// <summary>Search for the symbol starts with the image that called dlsym.  If it is not found, the search continues as if Next was used.</summary>
 			Self = -3,
+			/// <summary>Only searches for symbol in the main executable.</summary>
 			MainOnly = -5
 		}
 
@@ -190,6 +189,20 @@ namespace ObjCRuntime {
 		public static IntPtr GetIndirect (IntPtr handle, string symbol)
 		{
 			return dlsym (handle, symbol);
+		}
+
+		/// <summary>Gets the struct value exposed with the given symbol from the dynamic library.</summary>
+		/// <param name="handle">Handle to the dynamic library previously opened with <see cref="dlopen(string,int)" />.</param>
+		/// <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
+		/// <returns>The struct from the library, or an empty struct (<c>default(T)</c>) if the symbol couldn't be found.</returns>
+		public static T GetStruct<T> (IntPtr handle, string symbol) where T : unmanaged
+		{
+			var ptr = GetIndirect (handle, symbol);
+			if (ptr == IntPtr.Zero)
+				return default (T);
+			unsafe {
+				return *(T*) ptr;
+			}
 		}
 
 		public static NSNumber? GetNSNumber (IntPtr handle, string symbol)

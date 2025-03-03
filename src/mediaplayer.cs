@@ -33,9 +33,6 @@ using UIViewController = AppKit.NSViewController;
 #else
 using NSImage = UIKit.UIImage;
 #endif
-#if WATCH
-using UIViewController = Foundation.NSObject;
-#endif
 
 #if !NET
 using NativeHandle = System.IntPtr;
@@ -45,10 +42,6 @@ namespace MediaPlayer {
 	[BaseType (typeof (NSObject))]
 #if !MONOMAC
 #if NET
-	[NoWatch] // marked as unavailable in xcode 12 beta 1
-#else
-	[Watch (5, 0)]
-	[Obsoleted (PlatformName.WatchOS, 7, 0, message: "Removed in Xcode 12.")]
 #endif // NET
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
@@ -73,10 +66,7 @@ namespace MediaPlayer {
 		NSObject GetObject (NSObject key);
 
 #if NET
-		[NoWatch] // marked as unavailable in xcode 12 beta 1
 		[MacCatalyst (13, 1)]
-#else
-		[Obsoleted (PlatformName.WatchOS, 7, 0, message: "Removed in Xcode 12.")]
 #endif
 		[Field ("MPMediaEntityPropertyPersistentID")]
 		NSString PropertyPersistentID { get; }
@@ -86,10 +76,9 @@ namespace MediaPlayer {
 		[Export ("persistentID")]
 		ulong PersistentID { get; }
 
-#if IOS || WATCH || TVOS
+#if IOS || TVOS
 	}
-#if MONOMAC || WATCH
-	[Watch (5,0)]
+#if MONOMAC
 	[Static]
 #else
 	[BaseType (typeof (MPMediaEntity))]
@@ -98,7 +87,6 @@ namespace MediaPlayer {
 #endif
 		[NoMac]
 		[NoTV]
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("persistentIDPropertyForGroupingType:")]
 		[Static]
@@ -106,7 +94,6 @@ namespace MediaPlayer {
 
 		[NoMac]
 		[NoTV]
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("titlePropertyForGroupingType:")]
 		[Static]
@@ -116,22 +103,53 @@ namespace MediaPlayer {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString PersistentIDProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyAlbumPersistentID</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		/// 	  Persistent IDs can be used as unique identifiers across
+		/// 	  application launches and as long as the media item has not
+		/// 	  been changed or synchronized again with the host computer.
+		/// 	</remarks>
 		[Field ("MPMediaItemPropertyAlbumPersistentID")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString AlbumPersistentIDProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyArtistPersistentID</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyArtistPersistentID")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString ArtistPersistentIDProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyAlbumArtistPersistentID</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		/// 	  Persistent IDs can be used as unique identifiers across
+		/// 	  application launches and as long as the media item has not
+		/// 	  been changed or synchronized again with the host computer.
+		/// 	</remarks>
 		[Field ("MPMediaItemPropertyAlbumArtistPersistentID")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString AlbumArtistPersistentIDProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyGenrePersistentID</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyGenrePersistentID")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString GenrePersistentIDProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyComposerPersistentID</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyComposerPersistentID")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString ComposerPersistentIDProperty { get; }
@@ -148,22 +166,47 @@ namespace MediaPlayer {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString TitleProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyAlbumTitle</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyAlbumTitle")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString AlbumTitleProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyArtist</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyArtist")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString ArtistProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyAlbumArtist</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyAlbumArtist")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString AlbumArtistProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyGenre</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyGenre")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString GenreProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyComposer</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyComposer")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString ComposerProperty { get; }
@@ -172,22 +215,47 @@ namespace MediaPlayer {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString PlaybackDurationProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyAlbumTrackNumber</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyAlbumTrackNumber")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString AlbumTrackNumberProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyAlbumTrackCount</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyAlbumTrackCount")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString AlbumTrackCountProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyDiscNumber</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyDiscNumber")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString DiscNumberProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyDiscCount</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyDiscCount")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString DiscCountProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyArtwork</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("MPMediaItemPropertyArtwork")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
@@ -201,6 +269,11 @@ namespace MediaPlayer {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString LyricsProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyIsCompilation</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyIsCompilation")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString IsCompilationProperty { get; }
@@ -209,14 +282,29 @@ namespace MediaPlayer {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString ReleaseDateProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyBeatsPerMinute</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyBeatsPerMinute")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString BeatsPerMinuteProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyComments</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyComments")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString CommentsProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyAssetURL</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyAssetURL")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString AssetURLProperty { get; }
@@ -245,19 +333,35 @@ namespace MediaPlayer {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString PodcastTitleProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyBookmarkTime</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyBookmarkTime")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString BookmarkTimeProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyIsCloudItem</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyIsCloudItem")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString IsCloudItemProperty { get; }
 
+		/// <summary>The value that is associated with the MPMediaItemPropertyHasProtectedAsset constant.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("MPMediaItemPropertyHasProtectedAsset")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString HasProtectedAssetProperty { get; }
 
+		/// <summary>The value that is associated with the MPMediaItemPropertyDateAdded constant.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("MPMediaItemPropertyDateAdded")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
@@ -268,14 +372,13 @@ namespace MediaPlayer {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString PlaybackStoreIDProperty { get; }
 
-		[Watch (7, 4), TV (14, 5), iOS (14, 5)]
+		[TV (14, 5), iOS (14, 5)]
 		[MacCatalyst (14, 5)]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Field ("MPMediaItemPropertyIsPreorder")]
 		NSString IsPreorderProperty { get; }
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -314,7 +417,6 @@ namespace MediaPlayer {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMediaItemCollection_ClassReference/index.html">Apple documentation for <c>MPMediaItemCollection</c></related>
 	[NoMac]
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	// Objective-C exception thrown.  Name: MPMediaItemCollectionInitException Reason: -init is not supported, use -initWithItems:
 	[DisableDefaultCtor]
@@ -324,12 +426,7 @@ namespace MediaPlayer {
 #else
 	[BaseType (typeof (NSObject))]
 #endif
-#if XAMCORE_3_0 || !IOS || NET
 	interface MPMediaItemCollection : NSSecureCoding {
-#else
-	// part of the bug is that we inlined MPMediaEntity needlessly
-	interface MPMediaItemCollection : MPMediaEntity, NSSecureCoding {
-#endif
 		[Static]
 		[Export ("collectionWithItems:")]
 		MPMediaItemCollection FromItems (MPMediaItem [] items);
@@ -357,7 +454,6 @@ namespace MediaPlayer {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMediaLibrary_ClassReference/index.html">Apple documentation for <c>MPMediaLibrary</c></related>
 	[NoMac]
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MPMediaLibrary : NSSecureCoding {
@@ -392,7 +488,7 @@ namespace MediaPlayer {
 		[Export ("addItemWithProductID:completionHandler:")]
 		[Async]
 #if IOS
-		void AddItem (string productID, [NullAllowed] Action<MPMediaEntity[], NSError> completionHandler);
+		void AddItem (string productID, [NullAllowed] Action<MPMediaEntity [], NSError> completionHandler);
 #else
 		void AddItem (string productID, [NullAllowed] Action<MPMediaItem [], NSError> completionHandler);
 #endif
@@ -408,7 +504,6 @@ namespace MediaPlayer {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMediaPickerController_ClassReference/index.html">Apple documentation for <c>MPMediaPickerController</c></related>
 	[NoTV]
 	[NoMac]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIViewController), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (MPMediaPickerControllerDelegate) })]
 	interface MPMediaPickerController {
@@ -453,7 +548,6 @@ namespace MediaPlayer {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMediaPickerControllerDelegate_ProtocolReference/index.html">Apple documentation for <c>MPMediaPickerControllerDelegate</c></related>
 	[NoTV]
 	[NoMac]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -471,7 +565,6 @@ namespace MediaPlayer {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMediaPlaylist_ClassReference/index.html">Apple documentation for <c>MPMediaPlaylist</c></related>
 	[NoMac]
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPMediaItemCollection))]
 	// Objective-C exception thrown.  Name: MPMediaItemCollectionInitException Reason: -init is not supported, use -initWithItems:
@@ -526,7 +619,6 @@ namespace MediaPlayer {
 	}
 
 	[Mac (10, 16)]
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface MPMediaPlaylistProperty {
@@ -554,7 +646,6 @@ namespace MediaPlayer {
 
 		[iOS (14, 0)]
 		[TV (14, 0)]
-		[Watch (7, 0)]
 		[MacCatalyst (14, 0)]
 		[Field ("MPMediaPlaylistPropertyCloudGlobalID")]
 		NSString CloudGlobalId { get; }
@@ -565,7 +656,6 @@ namespace MediaPlayer {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMediaQuery_ClassReference/index.html">Apple documentation for <c>MPMediaQuery</c></related>
 	[NoMac]
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MPMediaQuery : NSSecureCoding, NSCopying {
@@ -644,7 +734,6 @@ namespace MediaPlayer {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMediaPredicate_ClassReference/index.html">Apple documentation for <c>MPMediaPredicate</c></related>
 	[NoMac]
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MPMediaPredicate : NSSecureCoding {
@@ -655,7 +744,6 @@ namespace MediaPlayer {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMediaPropertyPredicate_ClassReference/index.html">Apple documentation for <c>MPMediaPropertyPredicate</c></related>
 	[NoMac]
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPMediaPredicate))]
 	interface MPMediaPropertyPredicate {
@@ -681,7 +769,6 @@ namespace MediaPlayer {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMovieAccessLog_Class/index.html">Apple documentation for <c>MPMovieAccessLog</c></related>
 	[NoMac]
 	[NoTV]
-	[NoWatch]
 	[Deprecated (PlatformName.iOS, 9, 0)]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
@@ -702,7 +789,6 @@ namespace MediaPlayer {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMovieErrorLog_Class/index.html">Apple documentation for <c>MPMovieErrorLog</c></related>
 	[NoMac]
 	[NoTV]
-	[NoWatch]
 	[Deprecated (PlatformName.iOS, 9, 0)]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
@@ -724,7 +810,6 @@ namespace MediaPlayer {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMovieAccessLogEvent_Class/index.html">Apple documentation for <c>MPMovieAccessLogEvent</c></related>
 	[NoMac]
 	[NoTV]
-	[NoWatch]
 	[Deprecated (PlatformName.iOS, 9, 0)]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
@@ -778,7 +863,6 @@ namespace MediaPlayer {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMovieErrorLogEvent_Class/index.html">Apple documentation for <c>MPMovieErrorLogEvent</c></related>
 	[NoMac]
 	[NoTV]
-	[NoWatch]
 	[Deprecated (PlatformName.iOS, 9, 0)]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
@@ -808,7 +892,6 @@ namespace MediaPlayer {
 
 	/// <summary>Provides data for the  event.</summary>
 	[NoMac]
-	[NoWatch]
 	[Deprecated (PlatformName.iOS, 9, 0)]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
@@ -819,7 +902,6 @@ namespace MediaPlayer {
 
 	/// <summary>Provides data for the  event.</summary>
 	[NoMac]
-	[NoWatch]
 	[Deprecated (PlatformName.iOS, 9, 0)]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
@@ -833,7 +915,6 @@ namespace MediaPlayer {
 
 	/// <summary>Provides data for the  event.</summary>
 	[NoMac]
-	[NoWatch]
 	[Deprecated (PlatformName.iOS, 9, 0)]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
@@ -850,7 +931,6 @@ namespace MediaPlayer {
 
 	/// <summary>Provides data for the  event.</summary>
 	[NoMac]
-	[NoWatch]
 	[Deprecated (PlatformName.iOS, 9, 0)]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
@@ -861,13 +941,10 @@ namespace MediaPlayer {
 
 	[NoMac]
 #if NET
-	[NoWatch] // marked as unavailable in xcode 12 beta 1
-	[TV (16,0)]
+	[TV (16, 0)]
 	[MacCatalyst (13, 1)]
 #else
-	[Watch (5, 0)]
 	[Obsoleted (PlatformName.TvOS, 14, 0, message: "Removed in Xcode 12.")]
-	[Obsoleted (PlatformName.WatchOS, 5, 0, message: "Removed in Xcode 12.")]
 #endif
 	[Protocol]
 	interface MPMediaPlayback {
@@ -922,21 +999,14 @@ namespace MediaPlayer {
 	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 	[MacCatalyst (14, 0)] // docs says 13.0 but this throws: NSInvalidArgumentException Reason: MPMoviePlayerController is no longer available. Use AVPlayerViewController in AVKit.
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
-#if WATCH
-	[Static]
-	interface MPMoviePlayerController {
-#else
 	[BaseType (typeof (NSObject))]
 	interface MPMoviePlayerController : MPMediaPlayback {
-#endif
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[DesignatedInitializer]
 		[Export ("initWithContentURL:")]
 		NativeHandle Constructor (NSUrl url);
 
 #if !NET
-		[NoWatch]
 		[Export ("backgroundColor", ArgumentSemantic.Retain)]
 		// <quote>You should avoid using this property. It is available only when you use the initWithContentURL: method to initialize the movie player controller object.</quote>
 		[Deprecated (PlatformName.iOS, 3, 2, message: "Do not use; this API was removed and is not always available.")]
@@ -944,100 +1014,82 @@ namespace MediaPlayer {
 		UIColor BackgroundColor { get; set; }
 #endif
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("scalingMode")]
 		MPMovieScalingMode ScalingMode { get; set; }
 
 #if !NET
-		[NoWatch]
 		[Export ("movieControlMode")]
 		[Deprecated (PlatformName.iOS, 3, 2, message: "Do not use; this API was removed.")]
 		[Obsoleted (PlatformName.iOS, 8, 0, message: "Do not use; this API was removed.")]
 		MPMovieControlMode MovieControlMode { get; set; }
 #endif
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("initialPlaybackTime")]
 		double InitialPlaybackTime { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("contentURL", ArgumentSemantic.Copy)]
 		NSUrl ContentUrl { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("view")]
 		UIView View { get; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("backgroundView")]
 		UIView BackgroundView { get; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("playbackState")]
 		MPMoviePlaybackState PlaybackState { get; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("loadState")]
 		MPMovieLoadState LoadState { get; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("controlStyle")]
 		MPMovieControlStyle ControlStyle { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("repeatMode")]
 		MPMovieRepeatMode RepeatMode { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("shouldAutoplay")]
 		bool ShouldAutoplay { get; set; }
 
-		[NoWatch]
 		[Export ("useApplicationAudioSession")]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		bool UseApplicationAudioSession { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("fullscreen")]
 		bool Fullscreen { [Bind ("isFullscreen")] get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("setFullscreen:animated:")]
 		void SetFullscreen (bool fullscreen, bool animated);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("allowsAirPlay")]
 		bool AllowsAirPlay { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("airPlayVideoActive")]
 		bool AirPlayVideoActive { [Bind ("isAirPlayVideoActive")] get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0)]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Export ("accessLog")]
 		MPMovieAccessLog AccessLog { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0)]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
@@ -1046,19 +1098,16 @@ namespace MediaPlayer {
 
 		// Brought it from the MPMediaPlayback.h
 
-		[NoWatch]
 		[Export ("thumbnailImageAtTime:timeOption:")]
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'RequestThumbnails' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'RequestThumbnails' instead.")]
 		UIImage ThumbnailImageAt (double time, MPMovieTimeOption timeOption);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("requestThumbnailImagesAtTimes:timeOption:")]
 		void RequestThumbnails (NSNumber [] doubleNumbers, MPMovieTimeOption timeOption);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("cancelAllThumbnailImageRequests")]
 		void CancelAllThumbnailImageRequests ();
@@ -1066,42 +1115,34 @@ namespace MediaPlayer {
 		//
 		// From interface MPMovieProperties
 		//
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("movieMediaTypes")]
 		MPMovieMediaType MovieMediaTypes { get; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("movieSourceType")]
 		MPMovieSourceType SourceType { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("duration")]
 		double Duration { get; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("playableDuration")]
 		double PlayableDuration { get; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("naturalSize")]
 		CGSize NaturalSize { get; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("endPlaybackTime")]
 		double EndPlaybackTime { get; set; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("timedMetadata")]
 		MPTimedMetadata [] TimedMetadata { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1109,7 +1150,6 @@ namespace MediaPlayer {
 		[Notification]
 		NSString ScalingModeDidChangeNotification { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1117,14 +1157,12 @@ namespace MediaPlayer {
 		[Notification (typeof (MPMoviePlayerFinishedEventArgs))]
 		NSString PlaybackDidFinishNotification { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[Field ("MPMoviePlayerPlaybackDidFinishReasonUserInfoKey")] // NSNumber (MPMovieFinishReason)
 		NSString PlaybackDidFinishReasonUserInfoKey { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1132,7 +1170,6 @@ namespace MediaPlayer {
 		[Notification]
 		NSString PlaybackStateDidChangeNotification { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1140,7 +1177,6 @@ namespace MediaPlayer {
 		[Notification]
 		NSString LoadStateDidChangeNotification { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1148,7 +1184,6 @@ namespace MediaPlayer {
 		[Notification]
 		NSString NowPlayingMovieDidChangeNotification { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1157,7 +1192,6 @@ namespace MediaPlayer {
 		[Notification]
 		NSString WillEnterFullscreenNotification { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1165,7 +1199,6 @@ namespace MediaPlayer {
 		[Notification]
 		NSString DidEnterFullscreenNotification { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1173,7 +1206,6 @@ namespace MediaPlayer {
 		[Notification (typeof (MPMoviePlayerFullScreenEventArgs))]
 		NSString WillExitFullscreenNotification { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1181,21 +1213,18 @@ namespace MediaPlayer {
 		[Notification]
 		NSString DidExitFullscreenNotification { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[Field ("MPMoviePlayerFullscreenAnimationDurationUserInfoKey")]
 		NSString FullscreenAnimationDurationUserInfoKey { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[Field ("MPMoviePlayerFullscreenAnimationCurveUserInfoKey")]
 		NSString FullscreenAnimationCurveUserInfoKey { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1203,7 +1232,6 @@ namespace MediaPlayer {
 		[Notification]
 		NSString TypesAvailableNotification { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1211,7 +1239,6 @@ namespace MediaPlayer {
 		[Notification]
 		NSString SourceTypeAvailableNotification { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1219,7 +1246,6 @@ namespace MediaPlayer {
 		[Notification]
 		NSString DurationAvailableNotification { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1227,7 +1253,6 @@ namespace MediaPlayer {
 		[Notification]
 		NSString NaturalSizeAvailableNotification { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1235,28 +1260,24 @@ namespace MediaPlayer {
 		[Notification (typeof (MPMoviePlayerThumbnailEventArgs))]
 		NSString ThumbnailImageRequestDidFinishNotification { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[Field ("MPMoviePlayerThumbnailImageKey")]
 		NSString ThumbnailImageKey { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[Field ("MPMoviePlayerThumbnailTimeKey")]
 		NSString ThumbnailTimeKey { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[Field ("MPMoviePlayerThumbnailErrorKey")]
 		NSString ThumbnailErrorKey { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1264,49 +1285,42 @@ namespace MediaPlayer {
 		[Notification (typeof (MPMoviePlayerTimedMetadataEventArgs))]
 		NSString TimedMetadataUpdatedNotification { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[Field ("MPMoviePlayerTimedMetadataUserInfoKey")]
 		NSString TimedMetadataUserInfoKey { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[Field ("MPMoviePlayerTimedMetadataKeyName")]
 		NSString TimedMetadataKeyName { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[Field ("MPMoviePlayerTimedMetadataKeyInfo")]
 		NSString TimedMetadataKeyInfo { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[Field ("MPMoviePlayerTimedMetadataKeyMIMEType")]
 		NSString TimedMetadataKeyMIMEType { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[Field ("MPMoviePlayerTimedMetadataKeyDataType")]
 		NSString TimedMetadataKeyDataType { get; }
 
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[Field ("MPMoviePlayerTimedMetadataKeyLanguageCode")]
 		NSString TimedMetadataKeyLanguageCode { get; }
 
-		[Watch (5, 0)]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -1314,13 +1328,11 @@ namespace MediaPlayer {
 		[Notification]
 		NSString MediaPlaybackIsPreparedToPlayDidChangeNotification { get; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("readyForDisplay")]
 		bool ReadyForDisplay { get; }
 
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[Field ("MPMoviePlayerReadyForDisplayDidChangeNotification")]
@@ -1328,7 +1340,6 @@ namespace MediaPlayer {
 		NSString MoviePlayerReadyForDisplayDidChangeNotification { get; }
 
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 		[Field ("MPMoviePlayerIsAirPlayVideoActiveDidChangeNotification")]
@@ -1341,7 +1352,6 @@ namespace MediaPlayer {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPTimedMetadata_Class/index.html">Apple documentation for <c>MPTimedMetadata</c></related>
 	[NoMac]
 	[NoTV]
-	[NoWatch]
 	[Deprecated (PlatformName.iOS, 9, 0)]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
@@ -1357,7 +1367,7 @@ namespace MediaPlayer {
 
 		[Export ("value")]
 #if NET
-		NSObject Value { get;  }
+		NSObject Value { get; }
 #else
 		NSObject value { get; }
 #endif
@@ -1375,7 +1385,6 @@ namespace MediaPlayer {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPMoviePlayerViewController_class/index.html">Apple documentation for <c>MPMoviePlayerViewController</c></related>
 	[NoTV]
 	[NoMac]
-	[NoWatch]
 	[BaseType (typeof (UIViewController))]
 	[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
 	[MacCatalyst (14, 0)] // docs says 13.0 but this throws: NSInvalidArgumentException Reason: MPMoviePlayerViewController is no longer available. Use AVPlayerViewController in AVKit.
@@ -1399,7 +1408,6 @@ namespace MediaPlayer {
 
 	[NoMac]
 	[TV (14, 0)]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -1515,7 +1523,6 @@ namespace MediaPlayer {
 	}
 
 	[NoMac]
-	[NoWatch]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIView))]
@@ -1621,7 +1628,6 @@ namespace MediaPlayer {
 	/// <include file="../docs/api/MediaPlayer/MPMediaQuerySection.xml" path="/Documentation/Docs[@DocId='T:MediaPlayer.MPMediaQuerySection']/*" />
 	[NoMac]
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	// Objective-C exception thrown.  Name: NSInvalidArgumentException Reason: MPMediaQuerySection is a read-only object
@@ -1634,7 +1640,6 @@ namespace MediaPlayer {
 		string Title { get; }
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	// Objective-C exception thrown.  Name: NSInvalidArgumentException Reason: -init is not supported, use +defaultCenter
@@ -1729,24 +1734,23 @@ namespace MediaPlayer {
 		[Field ("MPNowPlayingInfoPropertyCurrentPlaybackDate")]
 		NSString PropertyCurrentPlaybackDate { get; }
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), Watch (9, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Field ("MPNowPlayingInfoPropertyAdTimeRanges")]
 		NSString PropertyAdTimeRanges { get; }
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), Watch (9, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Field ("MPNowPlayingInfoPropertyCreditsStartTime")]
 		NSString PropertyCreditsStartTime { get; }
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MPNowPlayingInfoPropertyInternationalStandardRecordingCode")]
 		NSString PropertyInternationalStandardRecordingCode { get; }
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MPNowPlayingInfoPropertyExcludeFromSuggestions")]
 		NSString PropertyExcludeFromSuggestions { get; }
 	}
 
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // crash if used
@@ -1794,7 +1798,6 @@ namespace MediaPlayer {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPPlayableContentDataSource_Ref/index.html">Apple documentation for <c>MPPlayableContentDataSource</c></related>
 	[NoMac]
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -1851,7 +1854,6 @@ namespace MediaPlayer {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPPlayableContentDelegate_Ref/index.html">Apple documentation for <c>MPPlayableContentDelegate</c></related>
 	[NoMac]
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -1887,7 +1889,6 @@ namespace MediaPlayer {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPPlayableContentManager_Ref/index.html">Apple documentation for <c>MPPlayableContentManager</c></related>
 	[NoMac]
 	[NoTV]
-	[NoWatch]
 	[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'CarPlay' API instead.")]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'CarPlay' API instead.")]
@@ -1934,7 +1935,6 @@ namespace MediaPlayer {
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPPlayableContentManagerContext">Apple documentation for <c>MPPlayableContentManagerContext</c></related>
 	[NoMac]
 	[NoTV]
-	[NoWatch]
 	[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'CarPlay' API instead.")]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'CarPlay' API instead.")]
@@ -1960,7 +1960,6 @@ namespace MediaPlayer {
 		bool EndpointAvailable { get; }
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPRemoteCommands cannot be initialized externally.
@@ -1982,7 +1981,6 @@ namespace MediaPlayer {
 		void RemoveTarget ([NullAllowed] NSObject target, [NullAllowed] Selector action);
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommand))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangePlaybackRateCommands cannot be initialized externally.
@@ -1992,7 +1990,6 @@ namespace MediaPlayer {
 		NSNumber [] SupportedPlaybackRates { get; set; }
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommand))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangeShuffleModeCommand cannot be initialized externally.
@@ -2001,7 +1998,6 @@ namespace MediaPlayer {
 		MPShuffleType CurrentShuffleType { get; set; }
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommand))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangeRepeatModeCommand cannot be initialized externally.
@@ -2010,7 +2006,6 @@ namespace MediaPlayer {
 		MPRepeatType CurrentRepeatType { get; set; }
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommand))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPFeedbackCommands cannot be initialized externally.
@@ -2027,7 +2022,6 @@ namespace MediaPlayer {
 		string LocalizedShortTitle { get; set; }
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommand))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPRatingCommands cannot be initialized externally.
@@ -2040,7 +2034,6 @@ namespace MediaPlayer {
 		float MinimumRating { get; set; } /* float, not CGFloat */
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommand))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPSkipIntervalCommands cannot be initialized externally.
@@ -2051,7 +2044,6 @@ namespace MediaPlayer {
 		NSArray _PreferredIntervals { get; set; }
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -2127,7 +2119,6 @@ namespace MediaPlayer {
 		MPChangePlaybackPositionCommand ChangePlaybackPositionCommand { get; }
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPRemoteCommandEvents cannot be initialized externally.
@@ -2140,7 +2131,6 @@ namespace MediaPlayer {
 		double /* NSTimeInterval */ Timestamp { get; }
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangePlaybackRateCommandEvents cannot be initialized externally.
@@ -2150,7 +2140,6 @@ namespace MediaPlayer {
 		float PlaybackRate { get; } // float, not CGFloat
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPRatingCommandEvents cannot be initialized externally.
@@ -2160,7 +2149,6 @@ namespace MediaPlayer {
 		float Rating { get; } // float, not CGFloat
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // Name: NSGenericException Reason: MPSeekCommandEvents cannot be initialized externally.
@@ -2170,7 +2158,6 @@ namespace MediaPlayer {
 		MPSeekCommandEventType Type { get; }
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPSkipIntervalCommandEvents cannot be initialized externally.
@@ -2180,7 +2167,6 @@ namespace MediaPlayer {
 		double /* NSTimeInterval */ Interval { get; }
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor]
@@ -2190,20 +2176,24 @@ namespace MediaPlayer {
 		bool Negative { [Bind ("isNegative")] get; }
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangeLanguageOptionCommandEvents cannot be initialized externally.
 	interface MPChangeLanguageOptionCommandEvent {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("languageOption")]
 		MPNowPlayingInfoLanguageOption LanguageOption { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("setting")]
 		MPChangeLanguageOptionSetting Setting { get; }
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangeShuffleModeCommandEvent cannot be initialized externally.
@@ -2216,7 +2206,6 @@ namespace MediaPlayer {
 		bool PreservesShuffleMode { get; }
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangeRepeatModeCommandEvent cannot be initialized externally.
@@ -2229,7 +2218,6 @@ namespace MediaPlayer {
 		bool PreservesRepeatMode { get; }
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // pre-emptive
@@ -2262,7 +2250,6 @@ namespace MediaPlayer {
 		bool IsAutomaticAudibleLanguageOption { get; }
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // pre-emptive
@@ -2280,7 +2267,6 @@ namespace MediaPlayer {
 		bool AllowEmptySelection { get; }
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[Static]
 	// not [Internal] since they are exposed as an NSString[] property in MPNowPlayingInfoLanguageOption
@@ -2316,18 +2302,19 @@ namespace MediaPlayer {
 		NSString VoiceOverTranslation { get; }
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommand))]
 	[DisableDefaultCtor] // Objective-C exception thrown.  Name: NSGenericException Reason: MPChangePlaybackPositionCommands cannot be initialized externally.
 	interface MPChangePlaybackPositionCommand {
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // Objective-C exception thrown.  Name: NSGenericException Reason: MPChangePlaybackPositionCommandEvents cannot be initialized externally.
 	interface MPChangePlaybackPositionCommandEvent {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("positionTime")]
 		double PositionTime { get; }
 	}
@@ -2335,7 +2322,6 @@ namespace MediaPlayer {
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/MediaPlayer/MPMediaPlaylistCreationMetadata">Apple documentation for <c>MPMediaPlaylistCreationMetadata</c></related>
 	[NoMac]
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -2356,7 +2342,6 @@ namespace MediaPlayer {
 	}
 
 	[NoMac]
-	[NoWatch]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
@@ -2373,7 +2358,6 @@ namespace MediaPlayer {
 	/// <summary>Operates on media player queues.</summary>
 	[NoMac]
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPMusicPlayerQueueDescriptor))]
 	interface MPMusicPlayerMediaItemQueueDescriptor {
@@ -2400,7 +2384,6 @@ namespace MediaPlayer {
 	}
 
 	[NoMac]
-	[NoWatch]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPMusicPlayerQueueDescriptor))]
@@ -2422,7 +2405,6 @@ namespace MediaPlayer {
 	}
 
 	[NoMac]
-	[NoWatch]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -2437,7 +2419,6 @@ namespace MediaPlayer {
 	}
 
 	[NoMac]
-	[NoWatch]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPMusicPlayerControllerQueue))]
@@ -2450,7 +2431,6 @@ namespace MediaPlayer {
 	}
 
 	[NoMac]
-	[NoWatch]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPMusicPlayerController))]
@@ -2462,7 +2442,6 @@ namespace MediaPlayer {
 
 	[NoMac]
 	[TV (14, 0)]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -2475,7 +2454,6 @@ namespace MediaPlayer {
 	}
 
 	[NoMac]
-	[NoWatch]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPMusicPlayerQueueDescriptor))]
@@ -2502,11 +2480,9 @@ namespace MediaPlayer {
 	/// <summary>Protocol for playing videos with the Music app.</summary>
 	[NoTV]
 	[NoMac] // headers have no availability macros on the protocol itself but the only member is not available on macOS
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MPSystemMusicPlayerController {
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("openToPlayQueueDescriptor:")]
@@ -2515,7 +2491,6 @@ namespace MediaPlayer {
 
 	[Category]
 	[BaseType (typeof (NSUserActivity))]
-	[NoWatch]
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	interface NSUserActivity_MediaPlayerAdditions {
@@ -2527,7 +2502,6 @@ namespace MediaPlayer {
 		void SetExternalMediaContentIdentifier ([NullAllowed] NSString identifier);
 	}
 
-	[Watch (6, 0)]
 	[MacCatalyst (13, 1)]
 	[Category]
 	[BaseType (typeof (AVMediaSelectionOption))]
@@ -2537,7 +2511,6 @@ namespace MediaPlayer {
 		MPNowPlayingInfoLanguageOption CreateNowPlayingInfoLanguageOption ();
 	}
 
-	[Watch (6, 0)]
 	[MacCatalyst (13, 1)]
 	[Category]
 	[BaseType (typeof (AVMediaSelectionGroup))]
@@ -2549,7 +2522,7 @@ namespace MediaPlayer {
 	interface IMPNowPlayingSessionDelegate { }
 
 	[TV (14, 0), iOS (16, 0)]
-	[NoWatch, NoMac, NoMacCatalyst]
+	[NoMac, NoMacCatalyst]
 #if NET
 	[Protocol, Model]
 #else
@@ -2566,7 +2539,7 @@ namespace MediaPlayer {
 	}
 
 	[TV (14, 0), iOS (16, 0)]
-	[NoWatch, NoMac, NoMacCatalyst]
+	[NoMac, NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPNowPlayingSession {
@@ -2606,12 +2579,12 @@ namespace MediaPlayer {
 		[Export ("removePlayer:")]
 		void RemovePlayer (AVPlayer player);
 
-		[TV (16, 0), NoWatch, NoMacCatalyst, NoMac]
+		[TV (16, 0), NoMacCatalyst, NoMac]
 		[Export ("automaticallyPublishesNowPlayingInfo")]
 		bool AutomaticallyPublishesNowPlayingInfo { get; set; }
 	}
 
-	[TV (16, 0), NoWatch, NoMacCatalyst, NoMac, iOS (16, 0)]
+	[TV (16, 0), NoMacCatalyst, NoMac, iOS (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPAdTimeRange : NSCopying {

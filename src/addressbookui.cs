@@ -26,6 +26,7 @@ namespace AddressBookUI {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AddressBookUI/Reference/ABNewPersonViewController_Class/index.html">Apple documentation for <c>ABNewPersonViewController</c></related>
 	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'Contacts' API instead.")]
 	[BaseType (typeof (UIViewController))]
 	interface ABNewPersonViewController {
 		[Export ("initWithNibName:bundle:")]
@@ -52,6 +53,7 @@ namespace AddressBookUI {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AddressBookUI/Reference/ABNewPersonViewControllerDelegate_Protocol/index.html">Apple documentation for <c>ABNewPersonViewControllerDelegate</c></related>
 	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'Contacts' API instead.")]
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -67,6 +69,7 @@ namespace AddressBookUI {
 
 	/// <include file="../docs/api/AddressBookUI/ABPeoplePickerNavigationController.xml" path="/Documentation/Docs[@DocId='T:AddressBookUI.ABPeoplePickerNavigationController']/*" />
 	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'Contacts' API instead.")]
 	[BaseType (typeof (UINavigationController))]
 	interface ABPeoplePickerNavigationController : UIAppearance {
 		[Export ("initWithNibName:bundle:")]
@@ -108,11 +111,8 @@ namespace AddressBookUI {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AddressBookUI/Reference/ABPeoplePickerNavigationControllerDelegate_Protocol/index.html">Apple documentation for <c>ABPeoplePickerNavigationControllerDelegate</c></related>
 	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-#if XAMCORE_3_0
+	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'Contacts' API instead.")]
 	[BaseType (typeof (NSObject))]
-#else
-	[BaseType (typeof (UINavigationControllerDelegate))]
-#endif
 	[Model]
 	[Protocol]
 	interface ABPeoplePickerNavigationControllerDelegate {
@@ -146,6 +146,7 @@ namespace AddressBookUI {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AddressBookUI/Reference/ABPersonViewController_Class/index.html">Apple documentation for <c>ABPersonViewController</c></related>
 	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'Contacts' API instead.")]
 	[BaseType (typeof (UIViewController))]
 	interface ABPersonViewController : UIViewControllerRestoration {
 		[Export ("initWithNibName:bundle:")]
@@ -189,6 +190,7 @@ namespace AddressBookUI {
 	/// 	<see cref="P:AddressBookUI.ABPeoplePickerNavigationController.PredicateForSelectionOfPerson" />
 	/// 	and <see cref="P:AddressBookUI.ABPeoplePickerNavigationController.PredicateForSelectionOfProperty" />).</summary>
 	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'Contacts' API instead.")]
 	[Static]
 	interface ABPersonPredicateKey {
 		[Field ("ABPersonBirthdayProperty")]
@@ -265,6 +267,7 @@ namespace AddressBookUI {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AddressBookUI/Reference/ABPersonViewControllerDelegate_Protocol/index.html">Apple documentation for <c>ABPersonViewControllerDelegate</c></related>
 	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'Contacts' API instead.")]
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -283,6 +286,7 @@ namespace AddressBookUI {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AddressBookUI/Reference/ABUnknownPersonViewController_Class/index.html">Apple documentation for <c>ABUnknownPersonViewController</c></related>
 	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'Contacts' API instead.")]
 	[BaseType (typeof (UIViewController))]
 	interface ABUnknownPersonViewController {
 		[Export ("initWithNibName:bundle:")]
@@ -321,6 +325,7 @@ namespace AddressBookUI {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AddressBookUI/Reference/ABUnknownPersonViewControllerDelegate_Protocol/index.html">Apple documentation for <c>ABUnknownPersonViewControllerDelegate</c></related>
 	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'Contacts' API instead.")]
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]

@@ -1362,14 +1362,14 @@ namespace Mono.ApiTools {
 							writer.WriteStartElement ("argument");
 							writer.WriteAttributeString ("type", arg.Type.FullName);
 							if (arg.Value is null) {
-								
+
 							} else {
 								writer.WriteAttributeString ("value", arg.Value.ToString ());
 							}
 							writer.WriteEndElement (); // argument
 						}
 						writer.WriteEndElement (); // arguments
-}
+					}
 
 					if (att.HasProperties) {
 						writer.WriteStartElement ("properties");

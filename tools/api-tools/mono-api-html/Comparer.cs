@@ -115,7 +115,7 @@ namespace Mono.ApiTools {
 			if (added.Any ()) {
 				foreach (var a in added) {
 					var breaking = a.StartsWith ("[System.Diagnostics.CodeAnalysis.ExperimentalAttribute");
-					diff.AppendAdded (a  + "\n", breaking);
+					diff.AppendAdded (a + "\n", breaking);
 				}
 			}
 			if (modified.Any ()) {
@@ -125,7 +125,7 @@ namespace Mono.ApiTools {
 			}
 			if (removed.Any ()) {
 				foreach (var a in removed) {
-					diff.AppendRemoved (a  + "\n", false);
+					diff.AppendRemoved (a + "\n", false);
 				}
 			}
 		}

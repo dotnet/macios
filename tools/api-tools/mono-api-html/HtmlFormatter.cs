@@ -369,7 +369,7 @@ namespace Mono.ApiTools {
 
 		void AppendEncoded (string value)
 		{
-			System.Web.HttpUtility.HtmlEncode (value, output);	
+			System.Web.HttpUtility.HtmlEncode (value, output);
 		}
 	}
 }

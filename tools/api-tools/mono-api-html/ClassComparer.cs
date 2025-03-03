@@ -63,7 +63,7 @@ namespace Mono.ApiTools {
 		public override string ElementName {
 			get { return "class"; }
 		}
-		
+
 		public override void SetContext (XElement current)
 		{
 			State.Type = current.GetAttribute ("name");

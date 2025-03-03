@@ -20,7 +20,7 @@ namespace ObjCBindings {
 		/// </summary >
 		public T? Flags { get; set; } = default (T);
 
-		
+
 		/// <summary>
 		/// Get/set the error domain for an error enumerator. This has to be used with the SmartEnum flag.
 		/// </summary >

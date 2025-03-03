@@ -106,11 +106,11 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 	/// The domain of an error enumerator. This has to be used with the SmartEnum flag.
 	/// </summary>
 	public string? ErrorDomain { get; init; }
-	
+
 	/// <summary>
 	/// The library name of an error/smart enum.
 	/// </summary>
-	public string? LibraryName { get; init;  }
+	public string? LibraryName { get; init; }
 
 	/// <summary>
 	/// The configuration flags used on the exported class/interface.

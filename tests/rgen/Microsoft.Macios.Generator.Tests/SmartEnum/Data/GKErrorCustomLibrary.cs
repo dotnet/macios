@@ -32,7 +32,7 @@ public enum GKCustomError : long {
 	TurnBasedInvalidParticipant,
 	TurnBasedInvalidTurn,
 	TurnBasedInvalidState,
-	InvitationsDisabled = 25, 
+	InvitationsDisabled = 25,
 	PlayerPhotoFailure = 26,
 	UbiquityContainerUnavailable = 27,
 	MatchNotConnected = 28,

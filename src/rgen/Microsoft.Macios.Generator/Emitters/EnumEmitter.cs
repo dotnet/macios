@@ -209,12 +209,12 @@ return GetValue (str);
 					bindingContext.Changes.FullyQualifiedSymbol)];
 			return false;
 		}
-		
+
 		const string backingFieldName = "_domain";
 		// compute the library name via the root context
 		if (!bindingContext.RootContext.TryComputeLibraryName (bindingTypeData.LibraryName,
-			    bindingContext.Changes.Namespace [^1],
-			    out string? libraryName, out string? libraryPath)) {
+				bindingContext.Changes.Namespace [^1],
+				out string? libraryName, out string? libraryPath)) {
 			// could not calculate the library name, this is a user error
 			diagnostics = [Diagnostic.Create (
 					Diagnostics
@@ -225,7 +225,7 @@ return GetValue (str);
 		}
 
 		var library = libraryPath ?? libraryName;
-		
+
 		bindingContext.Builder.WriteLine ();
 		bindingContext.Builder.WriteLine ($"namespace {string.Join (".", bindingContext.Changes.Namespace)};");
 		bindingContext.Builder.WriteLine ();
@@ -239,9 +239,9 @@ return GetValue (str);
 			classBlock.WriteLine ();
 			// emit the field that holds the error domain
 			classBlock.WriteLine ($"[Field (\"{bindingTypeData.ErrorDomain}\", \"{library}\")]");
-			classBlock.WriteLine(StaticVariable (backingFieldName, "Foundation.NSString", true).ToString ());
+			classBlock.WriteLine (StaticVariable (backingFieldName, "Foundation.NSString", true).ToString ());
 			classBlock.WriteLine ();
-			
+
 			// emit the extension method to return the error domain
 			classBlock.WriteRaw (
 $@"public static NSString? GetDomain (this {bindingContext.Changes.Name} self)
@@ -262,9 +262,9 @@ $@"public static NSString? GetDomain (this {bindingContext.Changes.Name} self)
 		// - SmartEnums: Those that are enums with native backing fields.
 		// - ErrorEnums: Those that identify errors and have an error domain. 
 		var bindingData = (BindingTypeData<SmartEnum>) bindingContext.Changes.BindingInfo;
-		
-		return bindingData.Flags.HasFlag (SmartEnum.ErrorCode) 
-			? TryEmitErrorCode (bindingData, bindingContext, out diagnostics) 
+
+		return bindingData.Flags.HasFlag (SmartEnum.ErrorCode)
+			? TryEmitErrorCode (bindingData, bindingContext, out diagnostics)
 			: TryEmitSmartEnum (bindingData, bindingContext, out diagnostics);
 	}
 }

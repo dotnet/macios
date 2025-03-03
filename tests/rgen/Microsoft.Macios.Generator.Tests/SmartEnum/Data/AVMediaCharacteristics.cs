@@ -6,7 +6,7 @@ using ObjCBindings;
 
 namespace AVFoundation;
 
-[BindingType]
+[BindingType<SmartEnum>]
 [SupportedOSPlatform ("macos")]
 [SupportedOSPlatform ("ios11.0")]
 [SupportedOSPlatform ("tvos11.0")]

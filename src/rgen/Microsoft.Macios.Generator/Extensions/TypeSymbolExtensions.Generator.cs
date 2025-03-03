@@ -71,17 +71,8 @@ static partial class TypeSymbolExtensions {
 		// a type is a smart enum if its type is a enum one AND it was decorated with the
 		// binding type attribute
 		return symbol.TypeKind == TypeKind.Enum
-			   && symbol.HasAttribute (AttributesNames.BindingAttribute);
+			   && symbol.HasAttribute (AttributesNames.BindingSmartEnumAttribute);
 	}
-
-	/// <summary>
-	/// Retrieves the binding type data from a symbol that represents a smart enum. For any other binding types use
-	/// the generic method.
-	/// </summary>
-	/// <param name="symbol">The symbol under query.</param>
-	/// <returns>The binding type data for a smart enum binding.</returns>
-	public static BindingTypeData GetBindingData (this ISymbol symbol)
-		=> GetAttribute<BindingTypeData> (symbol, AttributesNames.BindingAttribute, BindingTypeData.TryParse) ?? default;
 
 	/// <summary>
 	/// Retrieves the binding type data from a symbol that represents a binding type.

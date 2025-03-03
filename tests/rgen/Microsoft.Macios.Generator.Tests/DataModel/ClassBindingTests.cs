@@ -436,7 +436,7 @@ using ObjCBindings;
 
 namespace NS;
 
-[BindingType]
+[BindingType<SmartEnum>]
 public enum MyEnum {
 	None = 0,
 }
@@ -577,7 +577,7 @@ using ObjCBindings;
 
 namespace NS;
 
-[BindingType]
+[BindingType<Class>]
 public partial class MyClass {
 	[Field<Property> (""name"", Property.Notification)]
 	public partial string Name { get; set; } = string.Empty;
@@ -596,7 +596,7 @@ public partial class MyClass {
 					Base = "object",
 					Interfaces = ImmutableArray<string>.Empty,
 					Attributes = [
-						new ("ObjCBindings.BindingTypeAttribute")
+						new ("ObjCBindings.BindingTypeAttribute<ObjCBindings.Class>")
 					],
 					UsingDirectives = new HashSet<string> { "ObjCBindings" },
 					Modifiers = [
@@ -646,7 +646,7 @@ using ObjCBindings;
 
 namespace NS;
 
-[BindingType]
+[BindingType<Class>]
 public partial class MyClass {
 	[Field<Property> (""name"", Flags = Property.Notification, NotificationCenter=""SharedWorkspace.NotificationCenter"")]
 	public partial string Name { get; set; } = string.Empty;
@@ -665,7 +665,7 @@ public partial class MyClass {
 					Base = "object",
 					Interfaces = ImmutableArray<string>.Empty,
 					Attributes = [
-						new ("ObjCBindings.BindingTypeAttribute")
+						new ("ObjCBindings.BindingTypeAttribute<ObjCBindings.Class>")
 					],
 					UsingDirectives = new HashSet<string> { "ObjCBindings" },
 					Modifiers = [
@@ -717,7 +717,7 @@ using ObjCBindings;
 
 namespace NS;
 
-[BindingType]
+[BindingType<Class>]
 public partial class MyClass {
 	[Field<Property> (""name"", Flags = Property.Notification, Type=typeof (UIApplicationLaunchEventArgs))]
 	public partial string Name { get; set; } = string.Empty;
@@ -738,7 +738,7 @@ public class UIApplicationLaunchEventArgs {}
 					Base = "object",
 					Interfaces = ImmutableArray<string>.Empty,
 					Attributes = [
-						new ("ObjCBindings.BindingTypeAttribute")
+						new ("ObjCBindings.BindingTypeAttribute<ObjCBindings.Class>")
 					],
 					UsingDirectives = new HashSet<string> { "ObjCBindings" },
 					Modifiers = [
@@ -790,7 +790,7 @@ using ObjCBindings;
 
 namespace NS;
 
-[BindingType]
+[BindingType<Class>]
 public partial class MyClass {
 	[Field<Property> (""CONSTANT"")]
 	public static partial string Name { get; set; } = string.Empty;
@@ -809,7 +809,7 @@ public partial class MyClass {
 					Base = "object",
 					Interfaces = ImmutableArray<string>.Empty,
 					Attributes = [
-						new ("ObjCBindings.BindingTypeAttribute")
+						new ("ObjCBindings.BindingTypeAttribute<ObjCBindings.Class>")
 					],
 					UsingDirectives = new HashSet<string> { "ObjCBindings" },
 					Modifiers = [

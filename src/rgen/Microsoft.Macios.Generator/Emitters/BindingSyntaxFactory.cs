@@ -95,7 +95,7 @@ static partial class BindingSyntaxFactory {
 	{
 		return FieldDeclaration (
 				VariableDeclaration (
-						nullable 
+						nullable
 							? NullableType (IdentifierName (variableType))
 							: IdentifierName (variableType)
 					)

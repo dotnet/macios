@@ -47,32 +47,48 @@ namespace CoreText {
 
 	// defined as uint8_t - /System/Library/Frameworks/CoreText.framework/Headers/CTParagraphStyle.h
 	public enum CTTextAlignment : byte {
+		/// <summary>To be added.</summary>
 		Left = 0,
+		/// <summary>To be added.</summary>
 		Right = 1,
+		/// <summary>To be added.</summary>
 		Center = 2,
+		/// <summary>To be added.</summary>
 		Justified = 3,
+		/// <summary>To be added.</summary>
 		Natural = 4,
 	}
 
 	// defined as uint8_t - /System/Library/Frameworks/CoreText.framework/Headers/CTParagraphStyle.h
 	public enum CTLineBreakMode : byte {
+		/// <summary>To be added.</summary>
 		WordWrapping = 0,
+		/// <summary>To be added.</summary>
 		CharWrapping = 1,
+		/// <summary>To be added.</summary>
 		Clipping = 2,
+		/// <summary>To be added.</summary>
 		TruncatingHead = 3,
+		/// <summary>To be added.</summary>
 		TruncatingTail = 4,
+		/// <summary>To be added.</summary>
 		TruncatingMiddle = 5,
 	}
 
 	[Flags]
 	// defined as int8_t - /System/Library/Frameworks/CoreText.framework/Headers/CTParagraphStyle.h
 	public enum CTWritingDirection : sbyte {
+		/// <summary>To be added.</summary>
 		Natural = -1,
+		/// <summary>To be added.</summary>
 		LeftToRight = 0,
+		/// <summary>To be added.</summary>
 		RightToLeft = 1,
 
 		// part of an unnamed enum inside CTStringAttributes.h
+		/// <summary>To be added.</summary>
 		Embedding = (0 << 1),
+		/// <summary>To be added.</summary>
 		Override = (1 << 1)
 	}
 
@@ -240,23 +256,77 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public IEnumerable<CTTextTab>? TabStops { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CTTextAlignment? Alignment { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CTLineBreakMode? LineBreakMode { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CTWritingDirection? BaseWritingDirection { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CTLineBoundsOptions? LineBoundsOptions { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat? FirstLineHeadIndent { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat? HeadIndent { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat? TailIndent { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat? DefaultTabInterval { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat? LineHeightMultiple { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat? MaximumLineHeight { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat? MinimumLineHeight { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat? LineSpacing { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat? ParagraphSpacing { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat? ParagraphSpacingBefore { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat? MaximumLineSpacing { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat? MinimumLineSpacing { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat? LineSpacingAdjustment { get; set; }
 
 		internal List<CTParagraphStyleSpecifierValue> GetSpecifiers ()
@@ -410,6 +480,9 @@ namespace CoreText {
 			return NSArray.ArrayFromHandle (cfArrayRef, p => new CTTextTab (p, false));
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CTTextAlignment Alignment {
 			get { return (CTTextAlignment) GetByteValue (CTParagraphStyleSpecifier.Alignment); }
 		}
@@ -422,15 +495,24 @@ namespace CoreText {
 			return value;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CTLineBreakMode LineBreakMode {
 			get { return (CTLineBreakMode) GetByteValue (CTParagraphStyleSpecifier.LineBreakMode); }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CTWritingDirection BaseWritingDirection {
 			get { return (CTWritingDirection) GetByteValue (CTParagraphStyleSpecifier.BaseWritingDirection); }
 		}
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat FirstLineHeadIndent {
 #else
 		public float FirstLineHeadIndent {
@@ -455,6 +537,9 @@ namespace CoreText {
 		}
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat HeadIndent {
 #else
 		public float HeadIndent {
@@ -463,6 +548,9 @@ namespace CoreText {
 		}
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat TailIndent {
 #else
 		public float TailIndent {
@@ -471,6 +559,9 @@ namespace CoreText {
 		}
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat DefaultTabInterval {
 #else
 		public float DefaultTabInterval {
@@ -479,6 +570,9 @@ namespace CoreText {
 		}
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat LineHeightMultiple {
 #else
 		public float LineHeightMultiple {
@@ -487,6 +581,9 @@ namespace CoreText {
 		}
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat MaximumLineHeight {
 #else
 		public float MaximumLineHeight {
@@ -495,6 +592,9 @@ namespace CoreText {
 		}
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat MinimumLineHeight {
 #else
 		public float MinimumLineHeight {
@@ -503,6 +603,9 @@ namespace CoreText {
 		}
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat LineSpacing {
 #else
 		public float LineSpacing {
@@ -511,6 +614,9 @@ namespace CoreText {
 		}
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat ParagraphSpacing {
 #else
 		public float ParagraphSpacing {
@@ -519,6 +625,9 @@ namespace CoreText {
 		}
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat ParagraphSpacingBefore {
 #else
 		public float ParagraphSpacingBefore {

@@ -113,7 +113,7 @@ resources:
   - repository: self
     checkoutOptions:
       submodules: true
-
+      
   - repository: yaml-templates
     type: git
     name: xamarin.yaml-templates
@@ -192,7 +192,6 @@ extends:
         runInSingleJob: true # run both maccore and macios in the same job
         include:
         - repository: self
-          path: xamarin-macios        
         exclude:
         - repository: yaml-templates
         - repository: macios-adr # macios-adr has it's own build pipeline and should not be included in the source analysis

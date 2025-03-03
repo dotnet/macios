@@ -144,6 +144,9 @@ namespace GameKit {
 	[Unavailable (PlatformName.TvOS)]
 #endif
 	public class GKPeerPickerController : NSObject {
+		/// <summary>The handle for this class.</summary>
+		///         <value>The pointer to the Objective-C class.</value>
+		///         <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
 		public override NativeHandle ClassHandle { get { throw new PlatformNotSupportedException (Constants.TypeUnavailable); } }
 
 		public GKPeerPickerController () : base (NSObjectFlag.Empty)
@@ -171,6 +174,9 @@ namespace GameKit {
 			throw new PlatformNotSupportedException (Constants.TypeUnavailable);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual GKPeerPickerConnectionType ConnectionTypesMask {
 			get {
 				throw new PlatformNotSupportedException (Constants.TypeUnavailable);
@@ -180,6 +186,13 @@ namespace GameKit {
 			}
 		}
 
+		/// <summary>An instance of the GameKit.IGKPeerPickerControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the GameKit.IGKPeerPickerControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		public IGKPeerPickerControllerDelegate Delegate {
 			get {
 				throw new PlatformNotSupportedException (Constants.TypeUnavailable);
@@ -189,12 +202,22 @@ namespace GameKit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual bool Visible {
 			get {
 				throw new PlatformNotSupportedException (Constants.TypeUnavailable);
 			}
 		}
 
+		/// <summary>An object that can respond to the delegate protocol for this type</summary>
+		///         <value>The instance that will respond to events and data requests.</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+		///         </remarks>
 		public virtual NSObject? WeakDelegate {
 			get {
 				throw new PlatformNotSupportedException (Constants.TypeUnavailable);

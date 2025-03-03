@@ -20,16 +20,16 @@ using Foundation;
 using System.Runtime.Versioning;
 
 namespace CoreFoundation {
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public static class CFPreferences {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		static extern IntPtr CFPreferencesCopyAppValue (IntPtr key, IntPtr applicationId);
 
+		/// <summary>The current application.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly NSString? CurrentApplication;
 
 		/*public static readonly NSString AnyApplication;

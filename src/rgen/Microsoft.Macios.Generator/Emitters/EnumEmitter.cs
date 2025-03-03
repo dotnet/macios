@@ -95,6 +95,17 @@ class EnumEmitter : ICodeEmitter {
 			getValueBlock.WriteLine (
 				"throw new NotSupportedException ($\"The constant {constant} has no associated enum value on this platform.\");");
 		}
+		classBlock.WriteLine ();
+
+		// get value from a handle, this is a helper method used in the BindAs bindings.
+		using (var getValueFromHandle =
+			   classBlock.CreateBlock ($"public static {binding.Name} GetValue (NativeHandle handle)",
+				   true)) {
+			getValueFromHandle.WriteRaw (
+@"using var str = Runtime.GetNSObject<NSString> (handle)!;
+return GetValue (str);
+");
+		}
 
 		classBlock.WriteLine ();
 		// To ConstantArray

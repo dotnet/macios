@@ -174,6 +174,10 @@ while ! test -z $1; do
 			IGNORE_SIMULATORS=1
 			shift
 			;;
+		--ignore-old-simulators)
+			IGNORE_OLD_SIMULATORS=1
+			shift
+			;;
 		--enforce-simulators)
 			unset IGNORE_SIMULATORS
 			unset OPTIONAL_SIMULATORS

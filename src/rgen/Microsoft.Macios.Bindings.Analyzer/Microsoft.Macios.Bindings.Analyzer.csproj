@@ -36,6 +36,9 @@
         <Compile Include="../Microsoft.Macios.Generator/AttributesNames.cs" >
             <Link>Generator/AttributesNames.cs</Link>
         </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/CollectionComparer.cs" >
+            <Link>Generator/CollectionComparer.cs</Link>
+        </Compile>
         <Compile Include="../Microsoft.Macios.Generator/DictionaryComparer.cs" >
             <Link>Generator/DictionaryComparer.cs</Link>
         </Compile>
@@ -63,6 +66,9 @@
         <Compile Include="../Microsoft.Macios.Generator/Attributes/UnsupportedOSPlatformData.cs" >
             <Link>Generator/Attributes/UnsupportedOSPlatformData.cs</Link>
         </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/DataModel/TypeInfo.cs" >
+            <Link>DataModel/TypeInfo.cs</Link>
+        </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Extensions/ApplePlatformExtensions.cs" >
             <Link>Generator/Extensions/ApplePlatformExtensions.cs</Link>
         </Compile>
@@ -71,6 +77,9 @@
         </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Extensions/Delegates.cs" >
             <Link>Generator/Extensions/Delegates.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Extensions/SpecialTypeExtensions.cs" >
+            <Link>Generator/Extensions/SpecialTypeExtensions.cs</Link>
         </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Extensions/TypeSymbolExtensions.Core.cs">
             <Link>Generator/Extensions/TypeSymbolExtensions.Core.cs</Link>

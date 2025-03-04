@@ -122,7 +122,6 @@
 
 # Initial result from new rule extra-null-allowed
 !extra-null-allowed! 'Foundation.NSIndexPath UIKit.UICollectionViewDataSource::GetIndexPath(UIKit.UICollectionView,System.String,System.IntPtr)' has a extraneous [NullAllowed] on return type
-!extra-null-allowed! 'System.Boolean UIKit.UIApplication::CanOpenUrl(Foundation.NSUrl)' has a extraneous [NullAllowed] on parameter #0
 !extra-null-allowed! 'System.Void UIKit.UIAccessibilityCustomAction::.ctor(Foundation.NSAttributedString,UIKit.UIAccessibilityCustomActionHandler)' has a extraneous [NullAllowed] on parameter #1
 !extra-null-allowed! 'System.Void UIKit.UIAccessibilityCustomAction::.ctor(System.String,UIKit.UIAccessibilityCustomActionHandler)' has a extraneous [NullAllowed] on parameter #1
 !extra-null-allowed! 'System.Void UIKit.UIAccessibilityCustomAction::set_Name(System.String)' has a extraneous [NullAllowed] on parameter #0
@@ -150,8 +149,6 @@
 !missing-null-allowed! 'Foundation.NSArray Foundation.NSBundle::LoadNib(System.String,Foundation.NSObject,Foundation.NSDictionary)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSAttributedString UIKit.UIPickerViewDelegate::GetAttributedTitle(UIKit.UIPickerView,System.IntPtr,System.IntPtr)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSProgress UIKit.UIDocument::get_Progress()' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'System.Boolean UIKit.UIApplicationDelegate::FinishedLaunching(UIKit.UIApplication,Foundation.NSDictionary)' is missing an [NullAllowed] on parameter #1
-!missing-null-allowed! 'System.Boolean UIKit.UIApplicationDelegate::WillFinishLaunching(UIKit.UIApplication,Foundation.NSDictionary)' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'System.Boolean UIKit.UIManagedDocument::ConfigurePersistentStoreCoordinator(Foundation.NSUrl,System.String,System.String,Foundation.NSDictionary,Foundation.NSError)' is missing an [NullAllowed] on parameter #2
 !missing-null-allowed! 'System.Boolean UIKit.UIManagedDocument::ConfigurePersistentStoreCoordinator(Foundation.NSUrl,System.String,System.String,Foundation.NSDictionary,Foundation.NSError)' is missing an [NullAllowed] on parameter #3
 !missing-null-allowed! 'System.Boolean UIKit.UIManagedDocument::ConfigurePersistentStoreCoordinator(Foundation.NSUrl,System.String,System.String,Foundation.NSDictionary,Foundation.NSError)' is missing an [NullAllowed] on parameter #4
@@ -161,13 +158,10 @@
 !missing-null-allowed! 'System.Boolean UIKit.UISplitViewControllerDelegate::EventShowDetailViewController(UIKit.UISplitViewController,UIKit.UIViewController,Foundation.NSObject)' is missing an [NullAllowed] on parameter #2
 !missing-null-allowed! 'System.Boolean UIKit.UISplitViewControllerDelegate::EventShowViewController(UIKit.UISplitViewController,UIKit.UIViewController,Foundation.NSObject)' is missing an [NullAllowed] on parameter #2
 !missing-null-allowed! 'System.Double UIKit.UIViewControllerAnimatedTransitioning::TransitionDuration(UIKit.IUIViewControllerContextTransitioning)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.IntPtr UIKit.UIApplication::BeginBackgroundTask(System.String,System.Action)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.IntPtr UIKit.UIApplication::BeginBackgroundTask(System.String,System.Action)' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'System.Void Foundation.NSObject::set_AccessibilityAttributedUserInputLabels(Foundation.NSAttributedString[])' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void Foundation.NSObject::set_AccessibilityUserInputLabels(System.String[])' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void UIKit.UIAccessibilityCustomAction::.ctor(System.String,Foundation.NSObject,ObjCRuntime.Selector)' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'System.Void UIKit.UIAlertController::AddTextField(System.Action`1<UIKit.UITextField>)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void UIKit.UIApplicationDelegate::HandleWatchKitExtensionRequest(UIKit.UIApplication,Foundation.NSDictionary,System.Action`1<Foundation.NSDictionary>)' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'System.Void UIKit.UICollectionViewController::set_CollectionView(UIKit.UICollectionView)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void UIKit.UIControl::EndTracking(UIKit.UITouch,UIKit.UIEvent)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void UIKit.UIDocument::set_FileModificationDate(Foundation.NSDate)' is missing an [NullAllowed] on parameter #0
@@ -286,8 +280,6 @@
 !missing-null-allowed! 'UIKit.UIImageView UIKit.UIButton::get_ImageView()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'UIKit.UIInputViewController UIKit.UIResponder::get_InputAccessoryViewController()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'UIKit.UIInputViewController UIKit.UIResponder::get_InputViewController()' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'UIKit.UIInterfaceOrientationMask UIKit.UIApplication::SupportedInterfaceOrientationsForWindow(UIKit.UIWindow)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'UIKit.UIInterfaceOrientationMask UIKit.UIApplicationDelegate::GetSupportedInterfaceOrientations(UIKit.UIApplication,UIKit.UIWindow)' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'UIKit.UIKeyCommand[] UIKit.UIResponder::get_KeyCommands()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'UIKit.UILabel UIKit.UIButton::get_TitleLabel()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'UIKit.UINavigationItem UIKit.UINavigationBar::get_BackItem()' is missing an [NullAllowed] on return type
@@ -323,7 +315,6 @@
 !missing-null-allowed! 'UIKit.UIView UIKit.UIViewControllerContextTransitioning::GetViewFor(Foundation.NSString)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'UIKit.UIViewController UIKit.UIActivity::get_ViewController()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'UIKit.UIViewController UIKit.UIAdaptivePresentationControllerDelegate::GetViewControllerForAdaptivePresentation(UIKit.UIPresentationController,UIKit.UIModalPresentationStyle)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'UIKit.UIViewController UIKit.UIApplicationDelegate::GetViewController(UIKit.UIApplication,System.String[],Foundation.NSCoder)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'UIKit.UIViewController UIKit.UINavigationController::get_TopViewController()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'UIKit.UIViewController UIKit.UINavigationController::get_VisibleViewController()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'UIKit.UIViewController UIKit.UINavigationController::PopViewController(System.Boolean)' is missing an [NullAllowed] on return type

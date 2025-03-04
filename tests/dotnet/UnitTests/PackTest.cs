@@ -21,7 +21,12 @@ namespace Xamarin.Tests {
 			var project_path = GetProjectPath (project, platform: platform);
 			Clean (project_path);
 
-			var tmpdir = Cache.CreateTemporaryDirectory ();
+			string tmpdir;
+			if (Configuration.IsBuildingRemotely) {
+				tmpdir = Path.Combine ("bin", "tmp-dir");
+			} else {
+				tmpdir = Cache.CreateTemporaryDirectory ();
+			}
 			var outputPath = Path.Combine (tmpdir, "OutputPath");
 			var intermediateOutputPath = Path.Combine (tmpdir, "IntermediateOutputPath");
 			var properties = GetDefaultProperties ();
@@ -117,7 +122,15 @@ namespace Xamarin.Tests {
 			var project_path = Path.Combine (Configuration.RootPath, "tests", project, "dotnet", platform.AsString (), $"{project}.csproj");
 			Clean (project_path);
 
-			var tmpdir = Cache.CreateTemporaryDirectory ();
+			string tmpdir;
+			string nupkg;
+			if (Configuration.IsBuildingRemotely) {
+				tmpdir = Path.Combine ("bin", "tmp-dir");
+				nupkg = Path.Combine (Path.GetDirectoryName (project_path), outputPath, assemblyName + ".1.0.0.nupkg");
+			} else {
+				tmpdir = Cache.CreateTemporaryDirectory ();
+				nupkg = Path.Combine (outputPath, assemblyName + ".1.0.0.nupkg");
+			}
 			var outputPath = Path.Combine (tmpdir, "OutputPath");
 			var intermediateOutputPath = Path.Combine (tmpdir, "IntermediateOutputPath");
 			var properties = GetDefaultProperties ();
@@ -127,7 +140,6 @@ namespace Xamarin.Tests {
 
 			DotNet.AssertPack (project_path, properties, msbuildParallelism: false);
 
-			var nupkg = Path.Combine (outputPath, assemblyName + ".1.0.0.nupkg");
 			Assert.That (nupkg, Does.Exist, "nupkg existence");
 
 			var archive = ZipFile.OpenRead (nupkg);
@@ -260,7 +272,7 @@ namespace Xamarin.Tests {
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.IgnoreIfBuildingRemotelyAndPlatformDoesNotSupportRemoteBuilds (platform);
 
-			var project_path = GetProjectPath (project, runtimeIdentifiers: string.Empty, platform: platform, out var appPath, configuration: configuration);
+			var project_path = GetProjectPath (project, platform: platform);
 			Clean (project_path);
 			var properties = GetDefaultProperties ();
 

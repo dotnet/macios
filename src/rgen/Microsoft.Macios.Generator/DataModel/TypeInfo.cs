@@ -140,7 +140,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		get => isDictionaryContainer;
 		init => isDictionaryContainer = value;
 	}
-	
+
 	/// <summary>
 	/// True if the type represents a delegate.
 	/// </summary>
@@ -181,7 +181,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		IsReferenceType = isReferenceType;
 		IsStruct = isStruct;
 	}
-	
+
 	internal TypeInfo (ITypeSymbol symbol) :
 		this (
 			symbol is IArrayTypeSymbol arrayTypeSymbol

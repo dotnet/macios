@@ -476,7 +476,7 @@ static partial class TypeSymbolExtensions {
 
 		return availability;
 	}
-	
+
 	/// <summary>
 	/// A type is considered wrapped if it is an Interface or is an child of the NSObject class or the NSObject
 	/// itself.

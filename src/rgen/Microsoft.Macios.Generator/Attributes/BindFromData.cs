@@ -67,8 +67,8 @@ readonly struct BindFromData : IEquatable<BindFromData> {
 	/// <inheritdoc />
 	public bool Equals (BindFromData other)
 	{
-		return Type.FullyQualifiedName == other.Type.FullyQualifiedName 
-		       && OriginalType?.FullyQualifiedName == other.OriginalType?.FullyQualifiedName;
+		return Type.FullyQualifiedName == other.Type.FullyQualifiedName
+			   && OriginalType?.FullyQualifiedName == other.OriginalType?.FullyQualifiedName;
 	}
 
 	/// <inheritdoc />

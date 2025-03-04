@@ -541,8 +541,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 				new Parameter (
 					position: 0,
 					type: ReturnTypeForArray ("nint"),
-					name: "myParam")
-				{
+					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSNumber")),
 				},
 				"var nsb_myParam = NSArray.FromNSObjects (obj => new NSNumber (obj), myParam);"
@@ -553,8 +552,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 				new Parameter (
 					position: 0,
 					type: ReturnTypeForArray ("CoreGraphics.CGAffineTransform", isStruct: true),
-					name: "myParam")
-				{
+					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSValue")),
 				},
 				"var nsb_myParam = NSArray.FromNSObjects (obj => new NSValue (obj), myParam);"
@@ -565,8 +563,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 				new Parameter (
 					position: 0,
 					type: ReturnTypeForArray ("MySmartEnum", isEnum: true, isSmartEnum: true),
-					name: "myParam")
-				{
+					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSString")),
 				},
 				"var nsb_myParam = NSArray.FromNSObjects (obj => obj.GetConstant(), myParam);"
@@ -597,8 +594,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 				new Parameter (
 					position: 0,
 					type: ReturnTypeForEnum ("MyEnum", underlyingType: SpecialType.System_UInt64),
-					name: "myParam")
-				{
+					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSNumber")),
 				},
 				"var nsb_myParam = NSNumber.FromUInt64 ((ulong) myParam);",
@@ -608,8 +604,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 				new Parameter (
 					position: 0,
 					type: ReturnTypeForArray ("nint"),
-					name: "myParam")
-				{
+					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSNumber")),
 				},
 				"var nsb_myParam = NSArray.FromNSObjects (obj => new NSNumber (obj), myParam);"
@@ -620,8 +615,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 				new Parameter (
 					position: 0,
 					type: ReturnTypeForStruct ("CoreAnimation.CATransform3D"),
-					name: "myParam") 
-				{
+					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSValue")),
 				},
 				"var nsb_myParam = NSValue.FromCATransform3D (myParam);",
@@ -631,8 +625,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 				new Parameter (
 					position: 0,
 					type: ReturnTypeForArray ("CoreGraphics.CGAffineTransform", isStruct: true),
-					name: "myParam")
-				{
+					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSValue")),
 				},
 				"var nsb_myParam = NSArray.FromNSObjects (obj => new NSValue (obj), myParam);"
@@ -643,8 +636,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 				new Parameter (
 					position: 0,
 					type: ReturnTypeForEnum ("CoreAnimation.CATransform3D", isSmartEnum: true),
-					name: "myParam")
-				{
+					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSString")),
 				},
 				"var nsb_myParam = myParam.GetConstant ();",
@@ -654,8 +646,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 				new Parameter (
 					position: 0,
 					type: ReturnTypeForArray ("MySmartEnum", isEnum: true, isSmartEnum: true),
-					name: "myParam")
-				{
+					name: "myParam") {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSString")),
 				},
 				"var nsb_myParam = NSArray.FromNSObjects (obj => obj.GetConstant(), myParam);"
@@ -733,8 +724,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 			Parameter parameter = new (
 				position: 0,
 				type: ReturnTypeForEnum ("MyEnum", underlyingType: SpecialType.System_UInt64),
-				name: "myParam")
-			{ 
+				name: "myParam") {
 				BindAs = new (ReturnTypeForNSObject ("Foundation.NSNumber")),
 			};
 
@@ -746,8 +736,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 			parameter = new (
 				position: 0,
 				type: ReturnTypeForArray ("nint"),
-				name: "myParam")
-			{
+				name: "myParam") {
 				BindAs = new (ReturnTypeForNSObject ("Foundation.NSNumber")),
 			};
 
@@ -759,8 +748,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 			parameter = new (
 				position: 0,
 				type: ReturnTypeForStruct ("CoreAnimation.CATransform3D"),
-				name: "myParam")
-			{
+				name: "myParam") {
 				BindAs = new (ReturnTypeForNSObject ("Foundation.NSValue")),
 			};
 
@@ -772,8 +760,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 			parameter = new (
 				position: 0,
 				type: ReturnTypeForArray ("CoreGraphics.CGAffineTransform", isStruct: true),
-				name: "myParam")
-			{
+				name: "myParam") {
 				BindAs = new (ReturnTypeForNSObject ("Foundation.NSValue")),
 			};
 
@@ -785,8 +772,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 			parameter = new (
 				position: 0,
 				type: ReturnTypeForEnum ("CoreAnimation.CATransform3D", isSmartEnum: true),
-				name: "myParam")
-			{
+				name: "myParam") {
 				BindAs = new (ReturnTypeForNSObject ("Foundation.NSString")),
 			};
 
@@ -798,8 +784,7 @@ public class BindingSyntaxFactoryObjCRuntimeTests {
 			parameter = new Parameter (
 				position: 0,
 				type: ReturnTypeForArray ("MySmartEnum", isEnum: true, isSmartEnum: true),
-				name: "myParam")
-			{
+				name: "myParam") {
 				BindAs = new (ReturnTypeForNSObject ("Foundation.NSString")),
 			};
 

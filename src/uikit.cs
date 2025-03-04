@@ -2734,7 +2734,7 @@ namespace UIKit {
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("supportedInterfaceOrientationsForWindow:")]
-		UIInterfaceOrientationMask SupportedInterfaceOrientationsForWindow ([NullAllowed] [Transient] UIWindow window);
+		UIInterfaceOrientationMask SupportedInterfaceOrientationsForWindow ([NullAllowed][Transient] UIWindow window);
 
 		[MacCatalyst (13, 1)]
 		[Field ("UITrackingRunLoopMode")]
@@ -3597,7 +3597,7 @@ namespace UIKit {
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("application:supportedInterfaceOrientationsForWindow:")]
-		UIInterfaceOrientationMask GetSupportedInterfaceOrientations (UIApplication application, [NullAllowed] [Transient] UIWindow forWindow);
+		UIInterfaceOrientationMask GetSupportedInterfaceOrientations (UIApplication application, [NullAllowed][Transient] UIWindow forWindow);
 
 		[return: NullAllowed]
 		[Export ("application:viewControllerWithRestorationIdentifierPath:coder:")]

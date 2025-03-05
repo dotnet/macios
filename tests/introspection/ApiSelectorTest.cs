@@ -51,6 +51,13 @@ namespace Introspection {
 					return true;
 			}
 
+			switch (type.Namespace) {
+			case "SafetyKit":
+				if (TestRuntime.IsSimulator)
+					return !TestRuntime.CheckXcodeVersion (15, 0); // doesn't seem to be available in the iOS simulator until iOS 17+
+				break;
+			}
+
 			switch (type.FullName) {
 			case "MetalPerformanceShaders.MPSCommandBuffer":
 				// The reflectable type metadata contains no selectors.
@@ -663,12 +670,20 @@ namespace Introspection {
 				case "functionCount":
 				case "setFunctionCount:":
 					return true;
+#if __TVOS__
+				case "intersectionFunctionTableDescriptor":
+					return !TestRuntime.CheckXcodeVersion (14, 1);
+#endif
 				}
 				break;
 			case "MTLResourceStatePassDescriptor":
 				switch (selectorName) {
 				case "sampleBufferAttachments":
 					return true;
+#if __TVOS__
+				case "resourceStatePassDescriptor":
+					return !TestRuntime.CheckXcodeVersion (14, 1);
+#endif
 				}
 				break;
 			case "MTLResourceStatePassSampleBufferAttachmentDescriptor":
@@ -687,8 +702,44 @@ namespace Introspection {
 				case "functionCount":
 				case "setFunctionCount:":
 					return true;
+#if __TVOS__
+				case "visibleFunctionTableDescriptor":
+					return !TestRuntime.CheckXcodeVersion (14, 1);
+#endif
 				}
 				break;
+#if __TVOS__
+			case "MTLRenderPipelineReflection":
+				switch (selectorName) {
+				case "meshBindings":
+				case "objectBindings":
+					return !TestRuntime.CheckXcodeVersion (14, 1);
+				}
+				break;
+			case "MTLAccelerationStructureBoundingBoxGeometryDescriptor":
+			case "MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor":
+			case "MTLAccelerationStructureMotionTriangleGeometryDescriptor":
+			case "MTLAccelerationStructureTriangleGeometryDescriptor":
+			case "MTLInstanceAccelerationStructureDescriptor":
+			case "MTLPrimitiveAccelerationStructureDescriptor":
+				switch (selectorName) {
+				case "descriptor":
+					return !TestRuntime.CheckXcodeVersion (14, 1);
+				}
+				break;
+			case "MTLAccelerationStructurePassDescriptor":
+				switch (selectorName) {
+				case "accelerationStructurePassDescriptor":
+					return !TestRuntime.CheckXcodeVersion (14, 1);
+				}
+				break;
+			case "MTLMotionKeyframeData":
+				switch (selectorName) {
+				case "data":
+					return !TestRuntime.CheckXcodeVersion (14, 1);
+				}
+				break;
+#endif
 			case "AVPlayerLooper": // This API got introduced in Xcode 8.0 binding but is not currently present nor in Xcode 8.3 or Xcode 9.0 needs research
 				switch (selectorName) {
 				case "isLoopingEnabled":
@@ -1068,6 +1119,12 @@ namespace Introspection {
 				}
 				break;
 #endif
+			case "CMWaterSubmersionManager":
+				switch (selectorName) {
+				case "maximumDepth":
+					return !TestRuntime.CheckXcodeVersion (15, 0); // it's not in iOS 16, but maybe iOS 17?
+				}
+				break;
 			}
 
 			// old binding mistake

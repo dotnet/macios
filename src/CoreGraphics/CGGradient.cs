@@ -47,7 +47,7 @@ namespace CoreGraphics {
 	public enum CGGradientDrawingOptions : uint {
 		None = 0,
 		DrawsBeforeStartLocation = (1 << 0),
-		DrawsAfterEndLocation = (1 << 1)
+		DrawsAfterEndLocation = (1 << 1),
 	}
 
 #if NET

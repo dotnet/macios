@@ -208,7 +208,7 @@ namespace AudioToolbox {
 		/// <summary>To be added.</summary>
 		CafIsFloat = (1 << 0),
 		/// <summary>To be added.</summary>
-		CafIsLittleEndian = (1 << 1)
+		CafIsLittleEndian = (1 << 1),
 	}
 
 	[StructLayout (LayoutKind.Sequential)]
@@ -526,7 +526,7 @@ namespace AudioToolbox {
 		/// <summary>To be added.</summary>
 		SphericalCoordinates = 1 << 1,
 		/// <summary>To be added.</summary>
-		Meters = 1 << 2
+		Meters = 1 << 2,
 	}
 
 	public enum AudioChannelLabel : int { // UInt32 AudioChannelLabel
@@ -1333,7 +1333,7 @@ namespace AudioToolbox {
 		MPEG_7_1_D = (219U << 16) | 8,
 
 		/// <summary>To be added.</summary>
-		Unknown = 0xFFFF0000                           // needs to be ORed with the actual number of channels  
+		Unknown = 0xFFFF0000,                          // needs to be ORed with the actual number of channels
 	}
 
 #if !COREBUILD
@@ -1695,7 +1695,7 @@ namespace AudioToolbox {
 		/// <summary>The full time is valid.</summary>
 		TimeValid = 1 << 0,
 		/// <summary>Time is running.</summary>
-		TimeRunning = 1 << 1
+		TimeRunning = 1 << 1,
 	}
 
 	public enum MPEG4ObjectID { // long
@@ -1716,7 +1716,7 @@ namespace AudioToolbox {
 		/// <summary>MPEG-4 speech audio profile CELP.</summary>
 		Celp = 8,
 		/// <summary>MPEG-4 main audio profile HVXC.</summary>
-		Hvxc = 9
+		Hvxc = 9,
 	}
 
 #if NET
@@ -1841,7 +1841,7 @@ namespace AudioToolbox {
 			/// <summary>The SmpteTime is valid.</summary>
 			SmpteTimeValid = (1 << 4),
 			/// <summary>The SampleHostTime is valid.</summary>
-			SampleHostTimeValid = SampleTimeValid | HostTimeValid
+			SampleHostTimeValid = SampleTimeValid | HostTimeValid,
 		}
 
 		/// <summary>To be added.</summary>

@@ -127,5 +127,20 @@ public partial class CIImage
 			return Dlfcn.GetInt32 (Libraries.TestNamespace.Handle, "FormatRGBA16Int");
 		}
 	}
+
+	public static partial class Notifications
+	{
+
+		public static NSObject ObserveDidProcessEditing (EventHandler<Foundation.NSNotificationEventArgs> handler)
+		{
+			return NSNotificationCenter.DefaultCenter.AddObserver (DidProcessEditingNotification, notification => handler (null, new Foundation.NSNotificationEventArgs (notification)));
+		}
+
+		public static NSObject ObserveDidProcessEditing (NSObject objectToObserve, EventHandler<Foundation.NSNotificationEventArgs> handler)
+		{
+			return NSNotificationCenter.DefaultCenter.AddObserver (DidProcessEditingNotification, notification => handler (null, new Foundation.NSNotificationEventArgs (notification)), objectToObserve);
+		}
+
+	}
 	// TODO: add binding code here
 }

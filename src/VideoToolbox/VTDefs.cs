@@ -112,14 +112,14 @@ namespace VideoToolbox {
 		/// <summary>To be added.</summary>
 		Asynchronous = 1 << 0,
 		/// <summary>To be added.</summary>
-		FrameDropped = 1 << 1
+		FrameDropped = 1 << 1,
 	}
 
 	// uint32_t -> VTCompressionSession.h
 	/// <summary>Flags to control encoder in multi pass compression sessions</summary>
 	[Flags]
 	public enum VTCompressionSessionOptionFlags : uint {
-		BeginFinalPass = 1 << 0
+		BeginFinalPass = 1 << 0,
 	}
 
 	// Strongly Typed VTProfileLevelKey
@@ -239,7 +239,7 @@ namespace VideoToolbox {
 		/// <summary>To be added.</summary>
 		Cavlc,
 		/// <summary>To be added.</summary>
-		Cabac
+		Cabac,
 	}
 
 	// Strongly Typed kVTCompressionPropertyKey_FieldCount
@@ -248,7 +248,7 @@ namespace VideoToolbox {
 		/// <summary>To be added.</summary>
 		Progressive = 1,
 		/// <summary>To be added.</summary>
-		Interlaced = 2
+		Interlaced = 2,
 	}
 
 	// Strongly Typed kVTCompressionPropertyKey_FieldDetail
@@ -263,7 +263,7 @@ namespace VideoToolbox {
 		/// <summary>To be added.</summary>
 		SpatialFirstLineEarly,
 		/// <summary>To be added.</summary>
-		SpatialFirstLineLate
+		SpatialFirstLineLate,
 	}
 
 	// Strongly Typed kVTCompressionPropertyKey_ColorPrimaries
@@ -278,7 +278,7 @@ namespace VideoToolbox {
 		/// <summary>To be added.</summary>
 		SmpteC,
 		/// <summary>To be added.</summary>
-		P22
+		P22,
 	}
 
 	// Strongly Typed kVTCompressionPropertyKey_TransferFunction
@@ -287,7 +287,7 @@ namespace VideoToolbox {
 		Unset,
 		ItuR7092,
 		Smpte240M1955,
-		UseGamma
+		UseGamma,
 	}
 
 	// Strongly Typed kVTCompressionPropertyKey_YCbCrMatrix
@@ -296,7 +296,7 @@ namespace VideoToolbox {
 		Unset,
 		ItuR7092,
 		ItuR6014,
-		Smpte240M1955
+		Smpte240M1955,
 	}
 
 	// Strongly Typed kVTDecompressionPropertyKey_FieldMode
@@ -313,7 +313,7 @@ namespace VideoToolbox {
 		/// <summary>To be added.</summary>
 		SingleField,
 		/// <summary>To be added.</summary>
-		DeinterlaceFields
+		DeinterlaceFields,
 	}
 
 	// Strongly Typed kVTDecompressionPropertyKey_DeinterlaceMode
@@ -321,7 +321,7 @@ namespace VideoToolbox {
 	public enum VTDeinterlaceMode {
 		Unset,
 		VerticalFilter,
-		Temporal
+		Temporal,
 	}
 
 	// Strongly Typed kVTDecompressionPropertyKey_OnlyTheseFrames
@@ -336,7 +336,7 @@ namespace VideoToolbox {
 		/// <summary>To be added.</summary>
 		IFrames,
 		/// <summary>To be added.</summary>
-		KeyFrames
+		KeyFrames,
 	}
 
 	// Strongly Typed kVTPropertyTypeKey
@@ -349,7 +349,7 @@ namespace VideoToolbox {
 		/// <summary>To be added.</summary>
 		Boolean,
 		/// <summary>To be added.</summary>
-		Number
+		Number,
 	}
 
 	// Strongly Typed kVTPropertyReadWriteStatusKey
@@ -360,7 +360,7 @@ namespace VideoToolbox {
 		/// <summary>To be added.</summary>
 		ReadOnly,
 		/// <summary>To be added.</summary>
-		ReadWrite
+		ReadWrite,
 	}
 
 	public struct VTDataRateLimit {
@@ -386,7 +386,7 @@ namespace VideoToolbox {
 		/// <summary>To be added.</summary>
 		Letterbox,
 		/// <summary>To be added.</summary>
-		Trim
+		Trim,
 	}
 
 	/// <summary>Chroma downsampling techniques.</summary>
@@ -397,7 +397,7 @@ namespace VideoToolbox {
 		/// <summary>To be added.</summary>
 		Decimate,
 		/// <summary>To be added.</summary>
-		Average
+		Average,
 	}
 
 	[TV (14, 0), iOS (14, 0)]

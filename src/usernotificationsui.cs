@@ -28,7 +28,7 @@ namespace UserNotificationsUI {
 	public enum UNNotificationContentExtensionMediaPlayPauseButtonType : ulong {
 		None,
 		Default,
-		Overlay
+		Overlay,
 	}
 
 	/// <summary>Enumerates preferred notification responses.</summary>
@@ -38,7 +38,7 @@ namespace UserNotificationsUI {
 	public enum UNNotificationContentExtensionResponseOption : ulong {
 		DoNotDismiss,
 		Dismiss,
-		DismissAndForwardAction
+		DismissAndForwardAction,
 	}
 
 	interface IUNNotificationContentExtension { }

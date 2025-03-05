@@ -46,7 +46,7 @@ namespace VideoSubscriberAccount {
 		NotDetermined = 0,
 		Restricted = 1,
 		Denied = 2,
-		Granted = 3
+		Granted = 3,
 	}
 
 #if !XAMCORE_5_0

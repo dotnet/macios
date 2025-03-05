@@ -18,7 +18,7 @@ namespace SpriteKit {
 	public enum SKInterpolationMode : long {
 		Linear = 1,
 		Spline = 2,
-		Step = 3
+		Step = 3,
 	}
 
 	// NSInteger -> SKKeyframeSequence.h
@@ -26,7 +26,7 @@ namespace SpriteKit {
 	[Native]
 	public enum SKRepeatMode : long {
 		Clamp = 1,
-		Loop = 2
+		Loop = 2,
 	}
 
 	// NSInteger -> SKAction.h
@@ -40,7 +40,7 @@ namespace SpriteKit {
 		/// <summary>Ease the animation out.</summary>
 		EaseOut = 2,
 		/// <summary>Ease the animation in and out.</summary>
-		EaseInEaseOut = 3
+		EaseInEaseOut = 3,
 	}
 
 	// NSInteger -> SKLabelNode.h
@@ -51,7 +51,7 @@ namespace SpriteKit {
 		Baseline = 0,
 		Center = 1,
 		Top = 2,
-		Bottom = 3
+		Bottom = 3,
 	}
 
 	// NSInteger -> SKLabelNode.h
@@ -60,7 +60,7 @@ namespace SpriteKit {
 	public enum SKLabelHorizontalAlignmentMode : long {
 		Center = 0,
 		Left = 1,
-		Right = 2
+		Right = 2,
 	}
 
 	// NSInteger -> SKNode.h
@@ -84,7 +84,7 @@ namespace SpriteKit {
 		Fill = 0,
 		AspectFill = 1,
 		AspectFit = 2,
-		ResizeFill = 3
+		ResizeFill = 3,
 	}
 
 	// NSInteger -> SKTexture.h
@@ -92,7 +92,7 @@ namespace SpriteKit {
 	[Native]
 	public enum SKTextureFilteringMode : long {
 		Nearest = 0,
-		Linear = 1
+		Linear = 1,
 	}
 
 	// NSInteger -> SKTransition.h
@@ -102,7 +102,7 @@ namespace SpriteKit {
 		Up = 0,
 		Down = 1,
 		Right = 2,
-		Left = 3
+		Left = 3,
 	}
 
 	/// <summary>Contains values that describe the data with which an <see cref="T:SpriteKit.SKUniform" /> was initialized.</summary>

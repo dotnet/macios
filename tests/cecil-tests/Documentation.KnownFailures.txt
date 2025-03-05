@@ -23150,7 +23150,7 @@ M:AVFoundation.AVCapturePhotoSettingsThumbnailFormat.#ctor
 M:AVFoundation.AVCapturePhotoSettingsThumbnailFormat.#ctor(Foundation.NSDictionary)
 M:AVFoundation.AVCaptureReactionTypeExtensions.GetConstant(AVFoundation.AVCaptureReactionType)
 M:AVFoundation.AVCaptureReactionTypeExtensions.GetValue(Foundation.NSString)
-M:AVFoundation.AVCaptureReactionTypeExtensions.GetValueFromHandle(ObjCRuntime.NativeHandle)
+M:AVFoundation.AVCaptureReactionTypeExtensions.GetValue(ObjCRuntime.NativeHandle)
 M:AVFoundation.AVCaptureSessionRuntimeErrorEventArgs.#ctor(Foundation.NSNotification)
 M:AVFoundation.AVCaptureStillImageOutput.CaptureStillImageTaskAsync(AVFoundation.AVCaptureConnection)
 M:AVFoundation.AVCaptureVideoDataOutput.GetRecommendedVideoSettings(AVFoundation.AVVideoCodecType,AVFoundation.AVFileTypes,Foundation.NSUrl)
@@ -38229,7 +38229,6 @@ M:NotificationCenter.NSExtensionContext_NCWidgetAdditions.GetWidgetMaximumSize(F
 M:NotificationCenter.NSExtensionContext_NCWidgetAdditions.SetWidgetLargestAvailableDisplayMode(Foundation.NSExtensionContext,NotificationCenter.NCWidgetDisplayMode)
 M:NotificationCenter.NSWidgetSearchForTermEventArgs.#ctor(System.String,System.UIntPtr)
 M:NotificationCenter.NSWidgetSearchResultSelectedEventArgs.#ctor(Foundation.NSObject)
-M:ObjCBindings.BindingTypeAttribute.#ctor
 M:ObjCBindings.ExportAttribute`1.#ctor
 M:ObjCRuntime.AdoptsAttribute.#ctor(System.String)
 M:ObjCRuntime.AssemblyRegistrationEventArgs.#ctor

@@ -196,7 +196,7 @@ public static partial class AVCaptureDeviceTypeExtensions
 		throw new NotSupportedException ($"The constant {constant} has no associated enum value on this platform.");
 	}
 
-	public static AVCaptureDeviceType GetValueFromHandle (NativeHandle handle)
+	public static AVCaptureDeviceType GetValue (NativeHandle handle)
 	{
 		using var str = Runtime.GetNSObject<NSString> (handle)!;
 		return GetValue (str);

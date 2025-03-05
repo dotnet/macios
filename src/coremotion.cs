@@ -636,7 +636,7 @@ namespace CoreMotion {
 	[Native]
 	public enum CMPedometerEventType : long {
 		Pause,
-		Resume
+		Resume,
 	}
 
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreMotion/CMPedometerEvent">Apple documentation for <c>CMPedometerEvent</c></related>

@@ -135,7 +135,7 @@
 		<Rule Id="SA1410"  Action="None" />          <!-- Remove delegate parenthesis when possible -->
 		<Rule Id="SA1411"  Action="None" />          <!-- Attribute constructor should not use unnecessary parenthesis -->
 		<Rule Id="SA1412"  Action="None" />          <!-- Store files as UTF-8 with byte order mark -->
-		<Rule Id="SA1413"  Action="None" />          <!-- Use trailing comma in multi-line initializers -->
+		<Rule Id="SA1413"  Action="Warning" />       <!-- Use trailing comma in multi-line initializers -->
 	</Rules>
 
 	<Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers.LayoutRules">

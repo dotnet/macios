@@ -106,7 +106,7 @@ public static partial class AVCaptureSystemPressureLevelExtensions
 		throw new NotSupportedException ($"The constant {constant} has no associated enum value on this platform.");
 	}
 
-	public static AVCaptureSystemPressureLevel GetValueFromHandle (NativeHandle handle)
+	public static AVCaptureSystemPressureLevel GetValue (NativeHandle handle)
 	{
 		using var str = Runtime.GetNSObject<NSString> (handle)!;
 		return GetValue (str);

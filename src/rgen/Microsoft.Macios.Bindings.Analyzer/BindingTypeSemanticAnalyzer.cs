@@ -266,7 +266,7 @@ public class BindingTypeSemanticAnalyzer : DiagnosticAnalyzer, IBindingTypeAnaly
 			AttributesNames.BindingClassAttribute => ValidateClass (declarationNode, symbol),
 			AttributesNames.BindingCategoryAttribute => ValidateCategory (declarationNode, symbol),
 			AttributesNames.BindingProtocolAttribute => ValidateProtocol (declarationNode, symbol),
-			AttributesNames.BindingAttribute => ValidateSmartEnum (declarationNode, symbol),
+			AttributesNames.BindingSmartEnumAttribute => ValidateSmartEnum (declarationNode, symbol),
 			AttributesNames.BindingStrongDictionaryAttribute => ValidateStrongDictionary (declarationNode, symbol),
 			_ => throw new InvalidOperationException ($"Not recognized attribute {matchedAttribute}.")
 		};

@@ -5,10 +5,13 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Microsoft.CodeAnalysis;
+using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Generator.Formatters;
 using Microsoft.Macios.Generator.IO;
+using ObjCBindings;
+using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
 
 namespace Microsoft.Macios.Generator.Emitters;
 
@@ -99,7 +102,7 @@ class EnumEmitter : ICodeEmitter {
 
 		// get value from a handle, this is a helper method used in the BindAs bindings.
 		using (var getValueFromHandle =
-			   classBlock.CreateBlock ($"public static {binding.Name} GetValueFromHandle (NativeHandle handle)",
+			   classBlock.CreateBlock ($"public static {binding.Name} GetValue (NativeHandle handle)",
 				   true)) {
 			getValueFromHandle.WriteRaw (
 @"using var str = Runtime.GetNSObject<NSString> (handle)!;
@@ -138,7 +141,14 @@ return GetValue (str);
 }}");
 	}
 
-	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
+
+	/// <summary>
+	/// Emit the binding for a smart enumerator.
+	/// </summary>
+	/// <param name="bindingContext">The current binding context.</param>
+	/// <param name="diagnostics">Out parameter with the error diagnostics.</param>
+	/// <returns>True if the binding was generated, false otherwise.</returns>
+	bool TryEmitSmartEnum (in BindingTypeData<SmartEnum> _, in BindingContext bindingContext, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
 	{
 		diagnostics = null;
 		if (bindingContext.Changes.BindingType != BindingType.SmartEnum) {
@@ -176,5 +186,85 @@ return GetValue (str);
 		}
 
 		return true;
+	}
+
+	bool TryEmitErrorCode (in BindingTypeData<SmartEnum> bindingTypeData, in BindingContext bindingContext, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
+	{
+		diagnostics = null;
+		if (bindingContext.Changes.BindingType != BindingType.SmartEnum) {
+			diagnostics = [Diagnostic.Create (
+					Diagnostics
+						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new.
+					null,
+					bindingContext.Changes.FullyQualifiedSymbol)];
+			return false;
+		}
+
+		// having ar error domain is a must, else we have a binding error
+		if (bindingTypeData.ErrorDomain is null) {
+			diagnostics = [Diagnostic.Create (
+					Diagnostics
+						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new.
+					null,
+					bindingContext.Changes.FullyQualifiedSymbol)];
+			return false;
+		}
+
+		const string backingFieldName = "_domain";
+		// compute the library name via the root context
+		if (!bindingContext.RootContext.TryComputeLibraryName (bindingTypeData.LibraryName,
+				bindingContext.Changes.Namespace [^1],
+				out string? libraryName, out string? libraryPath)) {
+			// could not calculate the library name, this is a user error
+			diagnostics = [Diagnostic.Create (
+					Diagnostics
+						.RBI0000, // An unexpected error occurred while processing '{0}'. Please fill a bug report at https://github.com/xamarin/xamarin-macios/issues/new.
+					null,
+					bindingContext.Changes.FullyQualifiedSymbol)];
+			return false;
+		}
+
+		var library = libraryPath ?? libraryName;
+
+		bindingContext.Builder.WriteLine ();
+		bindingContext.Builder.WriteLine ($"namespace {string.Join (".", bindingContext.Changes.Namespace)};");
+		bindingContext.Builder.WriteLine ();
+
+		bindingContext.Builder.AppendMemberAvailability (bindingContext.Changes.SymbolAvailability);
+		bindingContext.Builder.AppendGeneratedCodeAttribute ();
+		var extensionClassDeclaration =
+			bindingContext.Changes.ToSmartEnumExtensionDeclaration (GetSymbolName (bindingContext.Changes));
+
+		using (var classBlock = bindingContext.Builder.CreateBlock (extensionClassDeclaration.ToString (), true)) {
+			classBlock.WriteLine ();
+			// emit the field that holds the error domain
+			classBlock.WriteLine ($"[Field (\"{bindingTypeData.ErrorDomain}\", \"{library}\")]");
+			classBlock.WriteLine (StaticVariable (backingFieldName, "Foundation.NSString", true).ToString ());
+			classBlock.WriteLine ();
+
+			// emit the extension method to return the error domain
+			classBlock.WriteRaw (
+$@"public static NSString? GetDomain (this {bindingContext.Changes.Name} self)
+{{
+	if ({backingFieldName} is null)
+		{backingFieldName} = Dlfcn.GetStringConstant (Libraries.{libraryName}.Handle, ""{bindingTypeData.ErrorDomain}"");
+	return {backingFieldName};
+}}
+");
+		}
+
+		return true;
+	}
+
+	public bool TryEmit (in BindingContext bindingContext, [NotNullWhen (false)] out ImmutableArray<Diagnostic>? diagnostics)
+	{
+		// there are two types of enums that we are interested in and that we generate:
+		// - SmartEnums: Those that are enums with native backing fields.
+		// - ErrorEnums: Those that identify errors and have an error domain. 
+		var bindingData = (BindingTypeData<SmartEnum>) bindingContext.Changes.BindingInfo;
+
+		return bindingData.Flags.HasFlag (SmartEnum.ErrorCode)
+			? TryEmitErrorCode (bindingData, bindingContext, out diagnostics)
+			: TryEmitSmartEnum (bindingData, bindingContext, out diagnostics);
 	}
 }

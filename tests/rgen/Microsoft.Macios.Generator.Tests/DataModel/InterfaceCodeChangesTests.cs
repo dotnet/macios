@@ -202,7 +202,7 @@ using ObjCBindings;
 
 namespace NS;
 
-[BindingType]
+[BindingType<SmartEnum>]
 public enum MyEnum {
 	First,
 }
@@ -339,7 +339,7 @@ using ObjCBindings;
 
 namespace NS;
 
-[BindingType]
+[BindingType<Protocol>]
 public partial interface IProtocol {
 	[Field<Property> (""name"", Property.Notification)]
 	public partial string Name { get; set; } = string.Empty;
@@ -356,7 +356,7 @@ public partial interface IProtocol {
 					symbolAvailability: new ()
 				) {
 					Attributes = [
-						new ("ObjCBindings.BindingTypeAttribute")
+						new ("ObjCBindings.BindingTypeAttribute<ObjCBindings.Protocol>")
 					],
 					UsingDirectives = new HashSet<string> { "ObjCBindings" },
 					Modifiers = [

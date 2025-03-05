@@ -7,7 +7,7 @@ namespace Foundation {
 
 	public enum NSUserDefaultsType {
 		UserName,
-		SuiteName
+		SuiteName,
 	}
 
 	public partial class NSUserDefaults {

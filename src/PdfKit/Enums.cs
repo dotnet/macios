@@ -62,7 +62,7 @@ namespace PdfKit {
 		/// <summary>Indicates an action that zooms in.</summary>
 		ZoomIn = 10,
 		/// <summary>Indicates an action that zooms out.</summary>
-		ZoomOut = 11
+		ZoomOut = 11,
 	}
 
 	[Native]
@@ -71,7 +71,7 @@ namespace PdfKit {
 		Unknown = -1,
 		PushButton = 0,
 		RadioButton = 1,
-		CheckBox = 2
+		CheckBox = 2,
 	}
 
 	[Native]
@@ -88,7 +88,7 @@ namespace PdfKit {
 		/// <summary>Indicates an open arrow line ending glyph.</summary>
 		OpenArrow = 4,
 		/// <summary>Indicates a solid triangular line ending glyph.</summary>
-		ClosedArrow = 5
+		ClosedArrow = 5,
 	}
 
 	[Native]
@@ -112,7 +112,7 @@ namespace PdfKit {
 		Help = 3,
 		NewParagraph = 4,
 		Paragraph = 5,
-		Insert = 6
+		Insert = 6,
 	}
 
 	[Native]
@@ -127,7 +127,7 @@ namespace PdfKit {
 		/// <summary>Indicates an inset effect.</summary>
 		Inset = 3,
 		/// <summary>Indicates the annotation will be underlined.</summary>
-		Underline = 4
+		Underline = 4,
 	}
 
 	/// <summary>Enumerates print scaling behaviors.</summary>
@@ -138,7 +138,7 @@ namespace PdfKit {
 	public enum PdfPrintScalingMode : long {
 		None = 0,
 		ToFit = 1,
-		DownToFit = 2
+		DownToFit = 2,
 	}
 
 	[Native]
@@ -149,7 +149,7 @@ namespace PdfKit {
 		/// <summary>To be added.</summary>
 		User = 1,
 		/// <summary>To be added.</summary>
-		Owner = 2
+		Owner = 2,
 	}
 
 	[Native]
@@ -164,7 +164,7 @@ namespace PdfKit {
 		/// <summary>Indicates a box around intended finish boundaries.</summary>
 		Trim = 3,
 		/// <summary>Indicates a rectangle around the boundaries of a page's content for display.</summary>
-		Art = 4
+		Art = 4,
 	}
 
 	[Native]
@@ -177,7 +177,7 @@ namespace PdfKit {
 		/// <summary>Indicates that two pages are displayed side by side.</summary>
 		TwoUp = 2,
 		/// <summary>Indicates that pages are displayed in a continuously scrolling double column.</summary>
-		TwoUpContinuous = 3
+		TwoUpContinuous = 3,
 	}
 
 	[Flags]

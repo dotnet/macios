@@ -329,7 +329,7 @@ namespace MediaPlayer {
 	[Native]
 	public enum MPSeekCommandEventType : ulong {
 		BeginSeeking,
-		EndSeeking
+		EndSeeking,
 	}
 
 	[MacCatalyst (13, 1)]

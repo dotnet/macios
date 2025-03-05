@@ -21,7 +21,7 @@ namespace Contacts {
 	[Native]
 	public enum CNContactType : long {
 		Person,
-		Organization
+		Organization,
 	}
 
 	// NSInteger -> CNContact.h
@@ -32,7 +32,7 @@ namespace Contacts {
 		None,
 		UserDefault,
 		GivenName,
-		FamilyName
+		FamilyName,
 	}
 
 	// NSInteger -> CNContactFormatter.h
@@ -41,7 +41,7 @@ namespace Contacts {
 	[Native]
 	public enum CNContactFormatterStyle : long {
 		FullName,
-		PhoneticFullName
+		PhoneticFullName,
 	}
 
 	// NSInteger -> CNContactFormatter.h
@@ -51,7 +51,7 @@ namespace Contacts {
 	public enum CNContactDisplayNameOrder : long {
 		UserDefault,
 		GivenNameFirst,
-		FamilyNameFirst
+		FamilyNameFirst,
 	}
 
 	// NSInteger -> CNContactStore.h
@@ -59,7 +59,7 @@ namespace Contacts {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CNEntityType : long {
-		Contacts
+		Contacts,
 	}
 
 	// NSInteger -> CNContactStore.h
@@ -83,7 +83,7 @@ namespace Contacts {
 		Unassigned = 0,
 		Local,
 		Exchange,
-		CardDav
+		CardDav,
 	}
 
 	// NSInteger -> CNError.h

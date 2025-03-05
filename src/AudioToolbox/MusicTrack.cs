@@ -375,7 +375,7 @@ namespace AudioToolbox {
 			SoloStatus,
 			AutomatedParameters,
 			TrackLength,
-			TimeResolution
+			TimeResolution,
 		}
 
 		/// <summary>To be added.</summary>

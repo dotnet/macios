@@ -10,7 +10,7 @@ namespace Photos {
 	public enum PHImageContentMode : long {
 		AspectFit = 0,
 		AspectFill = 1,
-		Default = AspectFit
+		Default = AspectFit,
 	}
 
 	// NSInteger -> PHImageManager.h
@@ -20,7 +20,7 @@ namespace Photos {
 	public enum PHImageRequestOptionsVersion : long {
 		Current = 0,
 		Unadjusted,
-		Original
+		Original,
 	}
 
 	// NSInteger -> PHImageManager.h
@@ -30,7 +30,7 @@ namespace Photos {
 	public enum PHImageRequestOptionsDeliveryMode : long {
 		Opportunistic = 0,
 		HighQualityFormat = 1,
-		FastFormat = 2
+		FastFormat = 2,
 	}
 
 	// NSInteger -> PHImageManager.h
@@ -40,7 +40,7 @@ namespace Photos {
 	public enum PHImageRequestOptionsResizeMode : long {
 		None = 0,
 		Fast,
-		Exact
+		Exact,
 	}
 
 	// NSInteger -> PHImageManager.h
@@ -49,7 +49,7 @@ namespace Photos {
 	[Native]
 	public enum PHVideoRequestOptionsVersion : long {
 		Current = 0,
-		Original
+		Original,
 	}
 
 	// NSInteger -> PHImageManager.h
@@ -60,7 +60,7 @@ namespace Photos {
 		Automatic = 0,
 		HighQualityFormat = 1,
 		MediumQualityFormat = 2,
-		FastFormat = 3
+		FastFormat = 3,
 	}
 
 	// NSInteger -> PhotosTypes.h
@@ -74,7 +74,7 @@ namespace Photos {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		MomentList = 1,
 		Folder = 2,
-		SmartFolder = 3
+		SmartFolder = 3,
 	}
 
 	/// <summary>Enumerates values that indicate the subtype of the collection.</summary>
@@ -113,7 +113,7 @@ namespace Photos {
 		CreateContent = 4,
 		RearrangeContent = 5,
 		Delete = 6,
-		Rename = 7
+		Rename = 7,
 	}
 
 	// NSInteger -> PhotosTypes.h
@@ -128,7 +128,7 @@ namespace Photos {
 		[Deprecated (PlatformName.TvOS, 13, 0)]
 		[Unavailable (PlatformName.MacOSX)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
-		Moment = 3
+		Moment = 3,
 	}
 
 	// NSInteger -> PhotosTypes.h
@@ -176,7 +176,7 @@ namespace Photos {
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		SmartAlbumSpatial = 219,
 
-		Any = Int64.MaxValue
+		Any = Int64.MaxValue,
 	}
 
 	// NSUInteger -> PhotosTypes.h
@@ -187,7 +187,7 @@ namespace Photos {
 		None = 0,
 		Delete = 1,
 		Content = 2,
-		Properties = 3
+		Properties = 3,
 	}
 
 	// NSInteger -> PhotosTypes.h
@@ -198,7 +198,7 @@ namespace Photos {
 		Unknown = 0,
 		Image = 1,
 		Video = 2,
-		Audio = 3
+		Audio = 3,
 	}
 
 	// NSUInteger -> PhotosTypes.h
@@ -232,7 +232,7 @@ namespace Photos {
 	public enum PHAssetBurstSelectionType : ulong {
 		None = 0,
 		AutoPick = (1 << 0),
-		UserPick = (1 << 1)
+		UserPick = (1 << 1),
 	}
 
 	/// <summary>Enumerates the current authorization allowed by the application user.</summary>
@@ -285,7 +285,7 @@ namespace Photos {
 		None = 0,
 		UserLibrary = (1 << 0),
 		CloudShared = (1 << 1),
-		iTunesSynced = (1 << 2)
+		iTunesSynced = (1 << 2),
 	}
 
 	/// <summary>Enumerates Live Photo frame types.</summary>
@@ -293,7 +293,7 @@ namespace Photos {
 	[Native]
 	public enum PHLivePhotoFrameType : long {
 		Photo,
-		Video
+		Video,
 	}
 
 	[MacCatalyst (13, 1)]

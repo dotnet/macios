@@ -445,6 +445,6 @@ namespace AudioToolbox {
 		/// <summary>A MIDI sequence saved with SMPTE timecode.</summary>
 		Seconds = 0x73656373,   // 'secs'
 		/// <summary>Indicates an audio sample. The tempo track defines samples-per-second.</summary>
-		Samples = 0x73616d70    // 'samp'
+		Samples = 0x73616d70,   // 'samp'
 	}
 }

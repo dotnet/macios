@@ -54,7 +54,7 @@ namespace CoreFoundation {
 		/// <summary>An HTTPS proxy.</summary>
 		HTTPS,
 		/// <summary>A SOCKS proxy.</summary>
-		SOCKS
+		SOCKS,
 	}
 
 	[SupportedOSPlatform ("ios")]

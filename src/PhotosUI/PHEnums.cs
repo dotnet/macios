@@ -10,7 +10,7 @@ namespace PhotosUI {
 	public enum PHLivePhotoViewPlaybackStyle : long {
 		Undefined = 0,
 		Full,
-		Hint
+		Hint,
 	}
 
 #if MONOMAC

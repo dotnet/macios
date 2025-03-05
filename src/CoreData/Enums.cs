@@ -285,7 +285,7 @@ namespace CoreData {
 		Count = 2,
 		TransactionsOnly = 3,
 		ChangesOnly = 4,
-		TransactionsAndChanges = 5
+		TransactionsAndChanges = 5,
 	}
 
 	[TV (13, 0), iOS (13, 0)]

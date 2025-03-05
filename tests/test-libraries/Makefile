@@ -35,6 +35,8 @@ GENERATED_FILES = \
 	TrampolineTest.generated.cs \
 
 GENERATED_FILES_PATTERN = \
+	libtest.methods%h \
+	libtest.methods%m \
 	libtest.structs%h \
 	libtest.decompile%m \
 	libtest.properties%h \

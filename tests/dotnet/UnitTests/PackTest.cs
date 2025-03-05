@@ -145,10 +145,10 @@ namespace Xamarin.Tests {
 			}
 			Assert.That (nupkg, Does.Exist, "nupkg existence");
 
-			var archive = ZipFile.OpenRead (nupkg);
+			using var archive = ZipFile.OpenRead (nupkg);
 			var files = archive.Entries.Select (v => v.FullName).ToHashSet ();
 			var tfm = platform.ToFrameworkWithPlatformVersion (isExecutable: false);
-			Assert.That (archive.Entries.Count, Is.EqualTo (noBindingEmbedding ? 6 : 5), $"nupkg file count - {nupkg}");
+			Assert.That (archive.Entries.Count, Is.EqualTo (noBindingEmbedding ? 6 : 5), $"nupkg file count - {nupkg}:\n\t{string.Join ("\n\t", archive.Entries.Select (v => v.FullName))}");
 			Assert.That (files, Does.Contain (assemblyName + ".nuspec"), "nuspec");
 			Assert.That (files, Does.Contain ("_rels/.rels"), ".rels");
 			Assert.That (files, Does.Contain ("[Content_Types].xml"), "[Content_Types].xml");

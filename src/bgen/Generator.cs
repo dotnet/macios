@@ -2921,7 +2921,7 @@ public partial class Generator : IMemberGatherer {
 					var enumCast = (bindAsType.IsEnum && !minfo.type.IsArray) ? $"({formattedBindAsType}) " : string.Empty;
 					cast_a = $"{enumCast}Runtime.GetNSObject<{formattedReturnType}> (";
 					if (isNullable)
-						cast_b = $", {owns}){wrapper} ?? default ({formattedBindAsType})";
+						cast_b = $", {owns}){wrapper}";
 					else
 						cast_b = $", {owns})!{wrapper}";
 				}

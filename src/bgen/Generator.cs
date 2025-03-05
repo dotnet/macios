@@ -2922,7 +2922,7 @@ public partial class Generator : IMemberGatherer {
 					cast_a = $"{enumCast}Runtime.GetNSObject<{formattedReturnType}> (";
 					if (isNullable)
 						cast_b = $", {owns}){wrapper} ?? default ({formattedBindAsType})";
-					else 
+					else
 						cast_b = $", {owns})!{wrapper}";
 				}
 			} else {

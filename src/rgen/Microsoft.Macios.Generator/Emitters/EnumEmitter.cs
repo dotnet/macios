@@ -251,6 +251,7 @@ return GetValue (str);
 			classBlock.WriteLine ();
 
 			// emit the extension method to return the error domain
+			classBlock.WriteDocumentation (Documentation.SmartEnum.GetDomain (bindingContext.Changes.FullyQualifiedSymbol));
 			classBlock.WriteRaw (
 $@"public static NSString? GetDomain (this {bindingContext.Changes.Name} self)
 {{

@@ -16,6 +16,11 @@ public static partial class GKCustomErrorExtensions
 	[Field ("GKErrorDomain", "/path/to/customlibrary.framework")]
 	static Foundation.NSString? _domain;
 
+	/// <summary>Returns the error domain associated with the GameKit.GKCustomError value</summary>
+	/// <param name="self">The enumeration value</param>
+	/// <remarks>
+	///   <para>See the <see cref="global::Foundation.NSError" /> for information on how to use the error domains when reporting errors.</para>
+	/// </remarks>
 	public static NSString? GetDomain (this GKCustomError self)
 	{
 		if (_domain is null)

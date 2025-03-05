@@ -123,13 +123,10 @@ namespace Xamarin.Tests {
 			Clean (project_path);
 
 			string tmpdir;
-			string nupkg;
 			if (Configuration.IsBuildingRemotely) {
 				tmpdir = Path.Combine ("bin", "tmp-dir");
-				nupkg = Path.Combine (Path.GetDirectoryName (project_path), outputPath, assemblyName + ".1.0.0.nupkg");
 			} else {
 				tmpdir = Cache.CreateTemporaryDirectory ();
-				nupkg = Path.Combine (outputPath, assemblyName + ".1.0.0.nupkg");
 			}
 			var outputPath = Path.Combine (tmpdir, "OutputPath");
 			var intermediateOutputPath = Path.Combine (tmpdir, "IntermediateOutputPath");
@@ -140,6 +137,12 @@ namespace Xamarin.Tests {
 
 			DotNet.AssertPack (project_path, properties, msbuildParallelism: false);
 
+			string nupkg;
+			if (Configuration.IsBuildingRemotely) {
+				nupkg = Path.Combine (Path.GetDirectoryName (project_path)!, outputPath, assemblyName + ".1.0.0.nupkg");
+			} else {
+				nupkg = Path.Combine (outputPath, assemblyName + ".1.0.0.nupkg");
+			}
 			Assert.That (nupkg, Does.Exist, "nupkg existence");
 
 			var archive = ZipFile.OpenRead (nupkg);

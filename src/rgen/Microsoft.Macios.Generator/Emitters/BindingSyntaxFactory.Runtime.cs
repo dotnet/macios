@@ -182,6 +182,7 @@ static partial class BindingSyntaxFactory {
 	/// <returns>The member access to the correct NSNumber method.</returns>
 	internal static MemberAccessExpressionSyntax? NSNumerFromHandle (TypeInfo returnType)
 	{
+#pragma warning disable format
 		var memberName = returnType switch {
 			// name must be before SpecialType or you'll get them wrong values because
 			// the type we want by name also have a valid special type, the tests should catch
@@ -202,6 +203,7 @@ static partial class BindingSyntaxFactory {
 			{ SpecialType: SpecialType.System_UInt64 } => "ToUInt64",
 			_ => null,
 		};
+#pragma warning restore format
 		if (memberName is null) 
 			return null;
 		return MemberAccessExpression (

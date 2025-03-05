@@ -454,9 +454,6 @@ namespace Xamarin.Bundler {
 
 			List<Application> candidates = new List<Application> ();
 			foreach (var appex in AppExtensions) {
-				if (appex.IsWatchExtension)
-					continue;
-
 				if (appex.NoDevCodeShare) {
 					// This is not a warning because then there would be no way to get a warning-less build if you for some reason wanted
 					// a configuration that ends up disabling code sharing. In other words: if you want a configuration that causes mtouch
@@ -642,16 +639,6 @@ namespace Xamarin.Bundler {
 				// needs to be set after the argument validations
 				// interpreter can use some extra code (e.g. SRE) that is not shipped in the default (AOT) profile
 				EnableRepl = true;
-			} else {
-				if (Platform == ApplePlatform.WatchOS && IsArchEnabled (Abi.ARM64_32) && BitCodeMode != BitCodeMode.LLVMOnly) {
-					if (IsArchEnabled (Abi.ARMv7k)) {
-						throw ErrorHelper.CreateError (145, Errors.MT0145);
-					} else {
-						ErrorHelper.Warning (146, Errors.MT0146);
-						UseInterpreter = true;
-						InterpretedAssemblies.Clear ();
-					}
-				}
 			}
 
 			if (EnableDebug && IsLLVM)
@@ -659,11 +646,6 @@ namespace Xamarin.Bundler {
 
 			if (!IsLLVM && (EnableAsmOnlyBitCode || EnableLLVMOnlyBitCode))
 				throw ErrorHelper.CreateError (3008, Errors.MT3008);
-
-			if (IsLLVM && Platform == ApplePlatform.WatchOS && BitCodeMode != BitCodeMode.LLVMOnly) {
-				ErrorHelper.Warning (111, Errors.MT0111);
-				BitCodeMode = BitCodeMode.LLVMOnly;
-			}
 
 			if (EnableAsmOnlyBitCode)
 				LLVMAsmWriter = true;
@@ -698,7 +680,6 @@ namespace Xamarin.Bundler {
 					switch (name) {
 					case "Xamarin.iOS":
 					case "Xamarin.TVOS":
-					case "Xamarin.WatchOS":
 						throw ErrorHelper.CreateError (41, Errors.MT0041, Path.GetFileName (reference), Driver.TargetFramework.Identifier);
 					}
 				}
@@ -786,11 +767,8 @@ namespace Xamarin.Bundler {
 			if (IsExtension && Platform == ApplePlatform.iOS && SdkVersion < new Version (8, 0))
 				throw new ProductException (45, true, Errors.MT0045);
 
-			if (IsExtension && Platform != ApplePlatform.iOS && Platform != ApplePlatform.WatchOS && Platform != ApplePlatform.TVOS)
+			if (IsExtension && Platform != ApplePlatform.iOS && Platform != ApplePlatform.TVOS)
 				throw new ProductException (72, true, Errors.MT0072, Platform);
-
-			if (!IsExtension && Platform == ApplePlatform.WatchOS)
-				throw new ProductException (77, true, Errors.MT0077);
 
 			if (!enable_msym.HasValue)
 				enable_msym = !EnableDebug && IsDeviceBuild;
@@ -808,15 +786,6 @@ namespace Xamarin.Bundler {
 							UseMonoFramework = true;
 							Driver.Log (2, "Automatically linking with Mono.framework because this is an app with extensions");
 						}
-					}
-					break;
-				case ApplePlatform.WatchOS:
-					if (IsWatchExtension && Extensions.Count > 0) {
-						UseMonoFramework = true;
-						Driver.Log (2, "Automatically linking with Mono.framework because this is a watch app with extensions");
-					} else if (!IsWatchExtension) {
-						UseMonoFramework = true;
-						Driver.Log (2, $"The extension {Name} will automatically link with Mono.framework.");
 					}
 					break;
 				default:
@@ -844,9 +813,6 @@ namespace Xamarin.Bundler {
 			if (IsDeviceBuild) {
 				switch (BitCodeMode) {
 				case BitCodeMode.ASMOnly:
-					if (Platform == ApplePlatform.WatchOS)
-						throw ErrorHelper.CreateError (83, Errors.MT0083);
-					break;
 				case BitCodeMode.LLVMOnly:
 				case BitCodeMode.MarkerOnly:
 					break;
@@ -854,7 +820,7 @@ namespace Xamarin.Bundler {
 					// If neither llvmonly nor asmonly is enabled, enable markeronly.
 					if (Driver.XcodeVersion.Major >= 14)
 						break;
-					if (Platform == ApplePlatform.TVOS || Platform == ApplePlatform.WatchOS)
+					if (Platform == ApplePlatform.TVOS)
 						BitCodeMode = BitCodeMode.MarkerOnly;
 					break;
 				}
@@ -875,10 +841,6 @@ namespace Xamarin.Bundler {
 				case ApplePlatform.iOS:
 					if (DeploymentTarget < new Version (8, 0))
 						throw ErrorHelper.CreateError (65, Errors.MT0065, DeploymentTarget, string.Join (", ", Frameworks.ToArray ()));
-					break;
-				case ApplePlatform.WatchOS:
-					if (DeploymentTarget < new Version (2, 0))
-						throw ErrorHelper.CreateError (65, Errors.MT0065_A, DeploymentTarget, string.Join (", ", Frameworks.ToArray ()));
 					break;
 				case ApplePlatform.TVOS:
 				case ApplePlatform.MacCatalyst:
@@ -996,7 +958,7 @@ namespace Xamarin.Bundler {
 				link_tasks.AddRange (target.NativeLink (build_tasks));
 			}
 
-			if (IsDeviceBuild || Platform == ApplePlatform.MacCatalyst || !ArchSpecificExecutable) {
+			if (IsDeviceBuild || Platform == ApplePlatform.MacCatalyst) {
 				// If building for the simulator, the executable is written directly into the expected location within the .app, and no lipo/file copying is needed.
 				if (link_tasks.Count > 1) {
 					// If we have more than one executable, we must lipo them together.
@@ -1140,7 +1102,7 @@ namespace Xamarin.Bundler {
 				var isFramework = Directory.Exists (files.First ());
 
 				if (!HasFrameworksDirectory && (isFramework || info.DylibToFramework))
-					continue; // Don't copy frameworks to app extensions (except watch extensions), they go into the container app.
+					continue; // Don't copy frameworks to app extensions, they go into the container app.
 
 				if (!files.All ((v) => Directory.Exists (v) == isFramework))
 					throw ErrorHelper.CreateError (99, Errors.MX0099, $"'can't process a mix of dylibs and frameworks: {string.Join (", ", files)}'");
@@ -1357,11 +1319,6 @@ namespace Xamarin.Bundler {
 					continue;
 				} else if (line.Contains ("was built for newer iOS version (7.0) than being linked (6.0)") &&
 					line.Contains (Driver.GetProductSdkDirectory (target.App))) {
-					continue;
-				} else if (line.Contains ("was built for newer watchOS version (5.1) than being linked (2.0)") &&
-					line.Contains (Driver.GetProductSdkDirectory (target.App))) {
-					// We build the arm64_32 slice for watchOS for watchOS 5.1, and the armv7k slice for watchOS 2.0.
-					// Building for anything less than watchOS 5.1 will trigger this warning for the arm64_32 slice.
 					continue;
 				} else if (line.Contains ("ignoring duplicate library")) {
 					continue;
@@ -1675,7 +1632,7 @@ namespace Xamarin.Bundler {
 				var build_target = assemblies [0].BuildTarget;
 				var size_specific = assemblies.Length > 1 && !Cache.CompareAssemblies (assemblies [0].FullPath, assemblies [1].FullPath, true, true);
 
-				if (IsExtension && !IsWatchExtension) {
+				if (IsExtension) {
 					var codeShared = assemblies.Count ((v) => v.IsCodeShared || v.BundleInContainerApp);
 					if (codeShared > 0) {
 						if (codeShared != assemblies.Length)
@@ -1796,9 +1753,6 @@ namespace Xamarin.Bundler {
 				break;
 			case ApplePlatform.TVOS:
 				sb.AppendLine ("                <integer>3</integer>");
-				break;
-			case ApplePlatform.WatchOS:
-				sb.AppendLine ("                <integer>4</integer>");
 				break;
 			default:
 				throw ErrorHelper.CreateError (71, Errors.MX0071, Platform, ProductName);

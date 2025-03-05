@@ -2,7 +2,7 @@
 // Unit tests for Midi2DeviceRevisionLevel
 //
 
-#if !__TVOS__ && !__WATCHOS__
+#if !__TVOS__
 using System;
 using Foundation;
 using CoreMidi;

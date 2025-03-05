@@ -192,12 +192,6 @@ namespace Xamarin.Bundler {
 				Environment = new Dictionary<string, string> { { "MONO_PATH", Path.GetDirectoryName (assembly_path) } },
 				AotInfo = aotInfo,
 			};
-			if (App.Platform == ApplePlatform.WatchOS) {
-				// Visual Studio for Mac sets this environment variable, and it confuses the AOT compiler.
-				// So unset it.
-				// See https://github.com/mono/mono/issues/11765
-				task.Environment ["MONO_THREADS_SUSPEND"] = null;
-			}
 
 			aotInfo.Task = task;
 		}

@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
-#if !__WATCHOS__
 using ModelIO;
 using MetalPerformanceShaders;
-#endif
 #if HAS_SCENEKIT
 using SceneKit;
 #endif
@@ -229,13 +227,11 @@ public static class Asserts {
 		Assert.AreEqual (expected.W, actual.W, $"{message} (W) expected: {expected} actual: {actual}");
 	}
 
-#if !__WATCHOS__
 	public static void AreEqual (MDLAxisAlignedBoundingBox expected, MDLAxisAlignedBoundingBox actual, string message)
 	{
 		AreEqual (expected.MaxBounds, actual.MaxBounds, $"{message} (MaxBounds) expected: {expected} actual: {actual}");
 		AreEqual (expected.MinBounds, actual.MinBounds, $"{message} (MinBounds) expected: {expected} actual: {actual}");
 	}
-#endif // !__WATCHOS__
 
 	public static void AreEqual (Quaternion expected, Quaternion actual, string message)
 	{
@@ -285,7 +281,6 @@ public static class Asserts {
 		}
 	}
 
-#if !__WATCHOS__
 	public static void AreEqual (MPSImageHistogramInfo expected, MPSImageHistogramInfo actual, string message)
 	{
 		Assert.AreEqual (expected.HistogramForAlpha, actual.HistogramForAlpha, $"{message} HistogramForAlpha expected: {expected} actual: {actual}");
@@ -293,7 +288,6 @@ public static class Asserts {
 		Asserts.AreEqual (expected.MinPixelValue, actual.MinPixelValue, $"{message} MinPixelValue expected: {expected} actual: {actual}");
 		Assert.AreEqual (expected.NumberOfHistogramEntries, actual.NumberOfHistogramEntries, $"{message} NumberOfHistogramEntries expected: {expected} actual: {actual}");
 	}
-#endif // !__WATCHOS__
 
 	public static void AreEqual (MatrixFloat2x2 expected, MatrixFloat2x2 actual, string message)
 	{

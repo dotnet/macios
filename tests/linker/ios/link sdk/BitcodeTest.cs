@@ -14,10 +14,6 @@ namespace LinkSdk {
 		public void FilterClauseTest ()
 		{
 			var supported = true;
-#if __WATCHOS__
-			if (Runtime.Arch == Arch.DEVICE)
-				supported = false;
-#endif
 			if (supported) {
 				Assert.AreEqual (0, FilterClause (), "Filter me");
 				Assert.AreEqual (10, FilterClauseProperty, "Filter me getter");
@@ -30,7 +26,6 @@ namespace LinkSdk {
 		}
 
 		// A method with a filter clause
-		// mtouch will show a warning for this method (MT2105) when building for watchOS device. This is expected.
 		static int FilterClause ()
 		{
 			try {
@@ -43,7 +38,6 @@ namespace LinkSdk {
 		}
 
 		// A property with a filter clause
-		// mtouch will show a warning for this property (MT2105) when building for watchOS device. This is expected.
 		static int FilterClauseProperty {
 			get {
 				try {

@@ -2,9 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Drawing;
 
-#if !__WATCHOS__
 using CoreAnimation;
-#endif
 #if !__TVOS__
 using MapKit;
 #endif
@@ -179,7 +177,6 @@ namespace ObjCRuntime {
 		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
 		public extern static CGRect CGRect_objc_msgSend_CGRect_CGRect_CGRect (IntPtr receiver, IntPtr selector, CGRect p1, CGRect p2, CGRect p3);
 
-#if !__WATCHOS__
 #if !NET
 		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
 		public extern static Matrix3 Matrix3_objc_msgSend (IntPtr receiver, IntPtr selector);
@@ -187,7 +184,6 @@ namespace ObjCRuntime {
 
 		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
 		public extern static CATransform3D CATransform3D_objc_msgSend (IntPtr receiver, IntPtr selector);
-#endif // !__WATCHOS__
 
 #if !__TVOS__
 		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend_stret")]
@@ -202,11 +198,6 @@ namespace ObjCRuntime {
 
 		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend_stret")]
 		public extern static void CGSize_objc_msgSend_stret (out CGSize buf, IntPtr receiver, IntPtr selector);
-
-#if !__WATCHOS__ && !NET
-		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend_stret")]
-		public extern static void Matrix3_objc_msgSend_stret (out Matrix3 buf, IntPtr receiver, IntPtr selector);
-#endif // !__WATCHOS__ && !NET
 
 		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend_stret")]
 		public extern static void CGRect_objc_msgSend_stret_int (out CGRect buf, IntPtr receiver, IntPtr selector, int p1);
@@ -234,10 +225,8 @@ namespace ObjCRuntime {
 		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend_stret")]
 		public extern static void CGRect_objc_msgSend_stret_CGRect_CGRect_CGRect (out CGRect buf, IntPtr receiver, IntPtr selector, CGRect p1, CGRect p2, CGRect p3);
 
-#if !__WATCHOS__
 		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend_stret")]
 		public extern static void CATransform3D_objc_msgSend_stret (out CATransform3D buf, IntPtr receiver, IntPtr selector);
-#endif // !__WATCHOS__
 
 		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
 		public extern static void void_objc_msgSend_int_IntPtr_IntPtr (IntPtr receiver, IntPtr selector, int p1, ref IntPtr p2, out IntPtr p3);

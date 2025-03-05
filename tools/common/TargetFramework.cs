@@ -17,7 +17,6 @@ namespace Xamarin.Utils {
 		const string TFMVersion = Xamarin.DotNetVersions.Version;
 		public const string DotNet_iOS_String = ".NETCoreApp,Version=" + TFMVersion + ",Profile=ios"; // Short form: netX.Y-ios
 		public const string DotNet_tvOS_String = ".NETCoreApp,Version=" + TFMVersion + ",Profile=tvos"; // Short form: netX.Y-tvos
-		public const string DotNet_watchOS_String = ".NETCoreApp,Version=" + TFMVersion + ",Profile=watchos"; // Short form: netX.Y-watchos
 		public const string DotNet_macOS_String = ".NETCoreApp,Version=" + TFMVersion + ",Profile=macos"; // Short form: netX.Y-macos
 		public const string DotNet_MacCatalyst_String = ".NETCoreApp,Version=" + TFMVersion + ",Profile=maccatalyst"; // Short form: netX.Y-maccatalyst
 
@@ -30,8 +29,6 @@ namespace Xamarin.Utils {
 		public static readonly TargetFramework Xamarin_Mac_2_0 = Parse ("Xamarin.Mac,v2.0");
 
 		public static readonly TargetFramework Xamarin_iOS_1_0 = Parse ("Xamarin.iOS,v1.0");
-		public const string Xamarin_WatchOS_1_0_String = "Xamarin.WatchOS,v1.0";
-		public static readonly TargetFramework Xamarin_WatchOS_1_0 = Parse (Xamarin_WatchOS_1_0_String);
 		public static readonly TargetFramework Xamarin_TVOS_1_0 = Parse ("Xamarin.TVOS,v1.0");
 		public static readonly TargetFramework Xamarin_MacCatalyst_1_0 = Parse ("Xamarin.MacCatalyst,v1.0");
 
@@ -41,7 +38,6 @@ namespace Xamarin.Utils {
 
 		public static readonly TargetFramework DotNet_iOS = Parse (DotNet_iOS_String);
 		public static readonly TargetFramework DotNet_tvOS = Parse (DotNet_tvOS_String);
-		public static readonly TargetFramework DotNet_watchOS = Parse (DotNet_watchOS_String);
 		public static readonly TargetFramework DotNet_macOS = Parse (DotNet_macOS_String);
 		public static readonly TargetFramework DotNet_MacCatalyst = Parse (DotNet_MacCatalyst_String);
 
@@ -51,9 +47,9 @@ namespace Xamarin.Utils {
 		};
 
 		public static readonly TargetFramework [] ValidFrameworksiOS = new [] {
-			Xamarin_iOS_1_0, Xamarin_WatchOS_1_0, Xamarin_TVOS_1_0,
+			Xamarin_iOS_1_0, Xamarin_TVOS_1_0,
 			Xamarin_MacCatalyst_1_0,
-			DotNet_iOS, DotNet_tvOS, DotNet_watchOS, DotNet_MacCatalyst,
+			DotNet_iOS, DotNet_tvOS, DotNet_MacCatalyst,
 		};
 
 		public static IEnumerable<TargetFramework> AllValidFrameworks {
@@ -222,8 +218,6 @@ namespace Xamarin.Utils {
 				case "MonoTouch":
 				case "Xamarin.iOS":
 					return ApplePlatform.iOS;
-				case "Xamarin.WatchOS":
-					return ApplePlatform.WatchOS;
 				case "Xamarin.TVOS":
 					return ApplePlatform.TVOS;
 				case "Xamarin.MacCatalyst":
@@ -234,8 +228,6 @@ namespace Xamarin.Utils {
 						return ApplePlatform.iOS;
 					case "tvos":
 						return ApplePlatform.TVOS;
-					case "watchos":
-						return ApplePlatform.WatchOS;
 					case "macos":
 						return ApplePlatform.MacOSX;
 					case "maccatalyst":
@@ -258,8 +250,6 @@ namespace Xamarin.Utils {
 				return isDotNet ? DotNet_tvOS : Xamarin_TVOS_1_0;
 			case ApplePlatform.MacCatalyst:
 				return DotNet_MacCatalyst;
-			case ApplePlatform.WatchOS:
-				return Xamarin_WatchOS_1_0;
 			case ApplePlatform.MacOSX:
 				return isDotNet ? DotNet_macOS : Xamarin_Mac_2_0;
 			default:

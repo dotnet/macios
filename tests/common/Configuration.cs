@@ -685,9 +685,6 @@ namespace Xamarin.Tests {
 			case ApplePlatform.MacOSX:
 				dir = "macos";
 				break;
-			case ApplePlatform.WatchOS:
-				dir = simulator.Value ? "watchsimulator" : "watchos";
-				break;
 			case ApplePlatform.TVOS:
 				dir = simulator.Value ? "tvsimulator" : "tvos";
 				break;

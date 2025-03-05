@@ -176,7 +176,7 @@ namespace Xamarin.Bundler {
 
 		public bool DisableAutomaticLinkerSelection { get; set; }
 
-		// assembly_build_targets describes what kind of native code each assembly should be compiled into for mobile targets (iOS, tvOS, watchOS).
+		// assembly_build_targets describes what kind of native code each assembly should be compiled into for mobile targets (iOS, tvOS).
 		// An assembly can be compiled into: static object (.o), dynamic library (.dylib) or a framework (.framework).
 		// In the case of a framework, each framework may contain the native code for multiple assemblies.
 		// This variable does not apply to macOS (if assemblies are AOT-compiled, the AOT compiler will output a .dylib next to the assembly and there's nothing extra for us)
@@ -187,7 +187,6 @@ namespace Xamarin.Bundler {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return AppDirectory;
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -209,7 +208,6 @@ namespace Xamarin.Bundler {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return "Frameworks";
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -225,7 +223,6 @@ namespace Xamarin.Bundler {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return string.Empty;
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -343,9 +340,6 @@ namespace Xamarin.Bundler {
 				if (!IsExtension)
 					return true;
 
-				if (IsWatchExtension && Platform == ApplePlatform.WatchOS)
-					return true;
-
 				return false;
 			}
 		}
@@ -355,7 +349,6 @@ namespace Xamarin.Bundler {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 				case ApplePlatform.MacCatalyst:
 					return !AreAnyAssembliesTrimmed;
 				case ApplePlatform.MacOSX:
@@ -371,7 +364,6 @@ namespace Xamarin.Bundler {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 				case ApplePlatform.MacCatalyst:
 					return "_ios-build";
 				case ApplePlatform.MacOSX:
@@ -387,7 +379,6 @@ namespace Xamarin.Bundler {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 				case ApplePlatform.MacCatalyst:
 					return "MD_MTOUCH_SDK_ROOT";
 				case ApplePlatform.MacOSX:
@@ -406,7 +397,6 @@ namespace Xamarin.Bundler {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return BuildTarget == BuildTarget.Device;
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -425,7 +415,6 @@ namespace Xamarin.Bundler {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return BuildTarget == BuildTarget.Simulator;
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -433,14 +422,6 @@ namespace Xamarin.Bundler {
 				default:
 					throw ErrorHelper.CreateError (71, Errors.MX0071, Platform, ProductName);
 				}
-			}
-		}
-
-		// It seems the watch simulator is able to correctly select which architecture to use
-		// for a fat executable, so limit ourselves to arch-specific executables anymore.
-		public bool ArchSpecificExecutable {
-			get {
-				return !IsWatchExtension;
 			}
 		}
 
@@ -579,12 +560,6 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		public bool IsWatchExtension {
-			get {
-				return ExtensionIdentifier == "com.apple.watchkit";
-			}
-		}
-
 		public bool IsTVExtension {
 			get {
 				return ExtensionIdentifier == "com.apple.tv-services";
@@ -613,7 +588,6 @@ namespace Xamarin.Bundler {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return Path.Combine (AppDirectory, "Info.plist");
 				case ApplePlatform.MacCatalyst:
 				case ApplePlatform.MacOSX:
@@ -671,8 +645,6 @@ namespace Xamarin.Bundler {
 					return "iOS";
 				case ApplePlatform.TVOS:
 					return "tvOS";
-				case ApplePlatform.WatchOS:
-					return "watchOS";
 				case ApplePlatform.MacOSX:
 					return "macOS";
 				case ApplePlatform.MacCatalyst:
@@ -853,7 +825,6 @@ namespace Xamarin.Bundler {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 				case ApplePlatform.MacCatalyst:
 					throw ErrorHelper.CreateError (180, Errors.MX0180, ProductName, PlatformName, SdkVersions.GetVersion (this), SdkVersions.Xcode);
 				case ApplePlatform.MacOSX:
@@ -863,12 +834,6 @@ namespace Xamarin.Bundler {
 					goto case ApplePlatform.iOS;
 				}
 			}
-
-			if (Platform == ApplePlatform.WatchOS && EnableCoopGC.HasValue && !EnableCoopGC.Value)
-				throw ErrorHelper.CreateError (88, Errors.MT0088);
-
-			if (!EnableCoopGC.HasValue)
-				EnableCoopGC = Platform == ApplePlatform.WatchOS;
 
 			SetObjectiveCExceptionMode ();
 			SetManagedExceptionMode ();
@@ -904,7 +869,6 @@ namespace Xamarin.Bundler {
 			}
 
 			if (Driver.XcodeVersion.Major >= 14 && BitCodeMode != BitCodeMode.None && Platform == ApplePlatform.TVOS) {
-				// We currently have to leave watchOS alone, because the process is to first build bitcode, then compile bitcode into native code, and finally remove the bitcode from the executable (this is likely fixable, but looks like it's a larger effort involving the runtime team).
 				ErrorHelper.Warning (186, Errors.MX0186 /* Bitcode is enabled, but bitcode is not supported in Xcode 14+ and has been disabled. Please disable bitcode by removing the 'MtouchEnableBitcode' property from the project file. */);
 				BitCodeMode = BitCodeMode.None;
 			}
@@ -938,7 +902,6 @@ namespace Xamarin.Bundler {
 			switch (Platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 			case ApplePlatform.MacOSX:
 			case ApplePlatform.MacCatalyst:
 				MonoNativeMode = MonoNativeMode.Unified;
@@ -1080,10 +1043,6 @@ namespace Xamarin.Bundler {
 					}
 				}
 				break;
-			case ApplePlatform.WatchOS:
-				if (abis.Count == 0)
-					throw ErrorHelper.CreateError (76, Errors.MT0076, "Xamarin.WatchOS");
-				break;
 			case ApplePlatform.TVOS:
 				if (abis.Count == 0)
 					throw ErrorHelper.CreateError (76, Errors.MT0076, "Xamarin.TVOS");
@@ -1122,17 +1081,6 @@ namespace Xamarin.Bundler {
 					validAbis.Add (Abi.ARM64);
 					validAbis.Add (Abi.ARM64 | Abi.LLVM);
 				} else {
-					validAbis.Add (Abi.x86_64);
-				}
-				break;
-			case ApplePlatform.WatchOS:
-				if (IsDeviceBuild) {
-					validAbis.Add (Abi.ARMv7k);
-					validAbis.Add (Abi.ARMv7k | Abi.LLVM);
-					validAbis.Add (Abi.ARM64_32);
-					validAbis.Add (Abi.ARM64_32 | Abi.LLVM);
-				} else {
-					validAbis.Add (Abi.i386);
 					validAbis.Add (Abi.x86_64);
 				}
 				break;
@@ -1304,10 +1252,9 @@ namespace Xamarin.Bundler {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					// Configure sgen to use a small nursery
 					string ret = "nursery-size=512k";
-					if (IsTodayExtension || Platform == ApplePlatform.WatchOS) {
+					if (IsTodayExtension) {
 						// A bit test shows different behavior
 						// Sometimes apps are killed with ~100mb allocated,
 						// but I've seen apps allocate up to 240+mb as well
@@ -1411,7 +1358,6 @@ namespace Xamarin.Bundler {
 					switch (Platform) {
 					case ApplePlatform.iOS:
 					case ApplePlatform.TVOS:
-					case ApplePlatform.WatchOS:
 						MarshalManagedExceptions = EnableDebug && IsSimulatorBuild ? MarshalManagedExceptionMode.UnwindNativeCode : MarshalManagedExceptionMode.Disable;
 						break;
 					case ApplePlatform.MacOSX:
@@ -1446,7 +1392,6 @@ namespace Xamarin.Bundler {
 					switch (Platform) {
 					case ApplePlatform.iOS:
 					case ApplePlatform.TVOS:
-					case ApplePlatform.WatchOS:
 						MarshalObjectiveCExceptions = EnableDebug && IsSimulatorBuild ? MarshalObjectiveCExceptionMode.UnwindManagedCode : MarshalObjectiveCExceptionMode.Disable;
 						break;
 					case ApplePlatform.MacOSX:
@@ -1777,7 +1722,6 @@ namespace Xamarin.Bundler {
 			case ApplePlatform.iOS:
 				return !Profile.IsSdkAssembly (Path.GetFileNameWithoutExtension (assembly));
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 				return false;
 			case ApplePlatform.MacCatalyst:
 				// https://github.com/xamarin/xamarin-macios/issues/14437

@@ -8,13 +8,9 @@ using ObjCRuntime;
 #if !__TVOS__
 using MapKit;
 #endif
-#if !__WATCHOS__
 using CoreAnimation;
-#endif
 using CoreLocation;
-#if !__WATCHOS__
 using CoreMedia;
-#endif
 using NUnit.Framework;
 
 #if NET
@@ -39,7 +35,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		public static bool IsArm64 { get { return IntPtr.Size == 8 && IsArm64CallingConvention; } }
 		public static bool IsArm32 {
 			get {
-#if __WATCHOS__ || __MACOS__ || __MACCATALYST__
+#if __MACOS__ || __MACCATALYST__
 				return false;
 #else
 				return IntPtr.Size == 4 && Runtime.Arch == Arch.DEVICE;
@@ -55,15 +51,10 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 		public static bool IsArmv7k {
 			get {
-#if __WATCHOS__
-				return Runtime.Arch == Arch.DEVICE && !IsArm64CallingConvention;
-#else
 				return false;
-#endif
 			}
 		}
 
-#if !__WATCHOS__
 		[Test]
 		public void StretTrampolineTest ()
 		{
@@ -80,7 +71,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			Assert.AreEqual (1, tr.Start.Value);
 			Assert.AreEqual (1, tr.Start.TimeScale);
 		}
-#endif // !__WATCHOS__
 
 		[Test]
 		public void DoubleReturnTest ()
@@ -131,14 +121,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 		const string LIBOBJC_DYLIB = "/usr/lib/libobjc.dylib";
 
-#if !__WATCHOS__ && !NET
-		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
-		extern static OpenTK.Matrix4 Matrix4_objc_msgSend (IntPtr receiver, IntPtr selector);
-
-		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend_stret")]
-		extern static void Matrix4_objc_msgSend_stret (out OpenTK.Matrix4 retval, IntPtr receiver, IntPtr selector);
-#endif // !__WATCHOS__ && !NET
-
 		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend_stret")]
 		extern static void double_objc_msgSend_stret_out_double (out double retval, IntPtr receiver, IntPtr selector, out double arg1);
 
@@ -176,13 +158,11 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		extern static bool bool_objc_msgSend_out_CGPoint (IntPtr receiver, IntPtr selector, out CGPoint point);
 
 
-#if !__WATCHOS__
 		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
 		extern static CMTimeRange CMTimeRange_objc_msgSend (IntPtr receiver, IntPtr selector);
 
 		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend_stret")]
 		extern static void CMTimeRange_objc_msgSend (out CMTimeRange retval, IntPtr receiver, IntPtr selector);
-#endif // !__WATCHOS__
 
 		void AreAlmostEqual (CGRect left, CGRect right, string message)
 		{
@@ -204,11 +184,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			FloatingPointStretTrampolines obj = new FloatingPointStretTrampolines ();
 			IntPtr class_ptr = Class.GetHandle ("FloatingPointStretTrampolines");
 			NSString tmp_obj = obj.StringObj;
-#if !__WATCHOS__ && !NET
-			Matrix3 matrix3;
-			Matrix4 matrix4;
-			CATransform3D catransform3d;
-#endif // !__WATCHOS__ && !NET
 			int i;
 
 			rect2 = new CGRect (1.2f, 2.3f, 3.4f, 4.5f);
@@ -309,33 +284,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				Messaging.CGRect_objc_msgSend_stret_CGRect_CGRect_CGRect (out rect, obj.Handle, new Selector ("testCGRect_CGRect_CGRect_CGRect:b:c:").Handle, rect2, rect3, rect4);
 			}
 			Assert.That (rect == new CGRect (20, 30, 40, 50), "#testCGRect_CGRect_CGRect_CGRect:b:c:");
-
-#if !__WATCHOS__ && !NET
-			if (IsArm64CallingConvention) {
-				matrix3 = Messaging.Matrix3_objc_msgSend (obj.Handle, new Selector ("testMatrix3").Handle);
-			} else {
-				Messaging.Matrix3_objc_msgSend_stret (out matrix3, obj.Handle, new Selector ("testMatrix3").Handle);
-			}
-			Assert.That (matrix3.Equals (new Matrix3 (1, 2, 3, 4, 5, 6, 7, 8, 9)), "#testMatrix3");
-			if (IsArm64CallingConvention) {
-				matrix4 = Matrix4_objc_msgSend (obj.Handle, new Selector ("testMatrix4").Handle);
-			} else {
-				Matrix4_objc_msgSend_stret (out matrix4, obj.Handle, new Selector ("testMatrix4").Handle);
-			}
-			Assert.That (matrix4.Equals (new Matrix4 (9, 8, 7, 6, 5, 4, 3, 2, 1, 9, 8, 7, 6, 5, 4, 3)), "#testMatrix4");
-
-			if (IsArm64CallingConvention) {
-				catransform3d = Messaging.CATransform3D_objc_msgSend (obj.Handle, new Selector ("testCATransform3D").Handle);
-			} else {
-				Messaging.CATransform3D_objc_msgSend_stret (out catransform3d, obj.Handle, new Selector ("testCATransform3D").Handle);
-			}
-			CATransform3D res = new CATransform3D ();
-			res.M11 = 11.1f;
-			res.M22 = 22.2f;
-			res.M33 = 33.3f;
-			res.M44 = 44.4f;
-			Assert.That (catransform3d.Equals (res), "#testCATransform3D");
-#endif // !__WATCHOS__
 
 			CGPoint point;
 			CGSize size;
@@ -531,7 +479,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 	[Register ("StretTrampolines")]
 	[Preserve (AllMembers = true)]
 	public class StretTrampolines : NSObject {
-#if !__WATCHOS__
 		[Export ("myTimeRange")]
 		CMTimeRange TimeRange {
 			get {
@@ -539,7 +486,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				return rv;
 			}
 		}
-#endif // !__WATCHOS__
 	}
 
 
@@ -721,21 +667,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			return new CGRect (c.X * pi, c.Y * pi, c.Width * pi, c.Height * pi);
 		}
 
-#if !__WATCHOS__
-#if !NET
-		[Export ("testMatrix3")]
-		public Matrix3 Test_Matrix3 ()
-		{
-			return new Matrix3 (1, 2, 3, 4, 5, 6, 7, 8, 9);
-		}
-
-		[Export ("testMatrix4")]
-		public Matrix4 Test_Matrix4 ()
-		{
-			return new Matrix4 (9, 8, 7, 6, 5, 4, 3, 2, 1, 9, 8, 7, 6, 5, 4, 3);
-		}
-#endif // !NET
-
 		[Export ("testCATransform3D")]
 		public CATransform3D Test_CATransform3D ()
 		{
@@ -746,7 +677,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			res.M44 = 44.4f;
 			return res;
 		}
-#endif // !__WATCHOS__
 
 		[Export ("testCGPoint")]
 		public CGPoint Test_CGPoint ()

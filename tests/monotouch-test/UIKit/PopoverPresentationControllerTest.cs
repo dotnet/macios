@@ -1,6 +1,6 @@
 // Copyright 2014 Xamarin Inc. All rights reserved
 
-#if !__TVOS__ && !__WATCHOS__ && !MONOMAC
+#if !__TVOS__ && !MONOMAC
 
 using System;
 using Foundation;
@@ -34,4 +34,4 @@ namespace MonoTouchFixtures.UIKit {
 	}
 }
 
-#endif // !__TVOS__ && !__WATCHOS__
+#endif // !__TVOS__ && !MONOMAC

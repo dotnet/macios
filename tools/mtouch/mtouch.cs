@@ -101,8 +101,6 @@ namespace Xamarin.Bundler {
 			RunRegistrar,
 			ListCrashReports,
 			DownloadCrashReport,
-			KillWatchApp,
-			LaunchWatchApp,
 			Embeddinator,
 		}
 
@@ -133,7 +131,6 @@ namespace Xamarin.Bundler {
 		{
 			switch (app.Platform) {
 			case ApplePlatform.iOS:
-			case ApplePlatform.WatchOS:
 				return Path.Combine (GetPlatformFrameworkDirectory (app), "..", "..", "32bits", app.PlatformName);
 			default:
 				throw ErrorHelper.CreateError (71, Errors.MX0071, app.Platform, app.ProductName);
@@ -145,7 +142,6 @@ namespace Xamarin.Bundler {
 			switch (app.Platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 			case ApplePlatform.MacCatalyst:
 				return Path.Combine (GetPlatformFrameworkDirectory (app), "..", "..", "64bits", app.PlatformName);
 			default:
@@ -159,8 +155,6 @@ namespace Xamarin.Bundler {
 			switch (app.Platform) {
 			case ApplePlatform.iOS:
 				return app.IsDeviceBuild ? "iphoneos" : "ios-simulator";
-			case ApplePlatform.WatchOS:
-				return app.IsDeviceBuild ? "watchos" : "watchos-simulator";
 			case ApplePlatform.TVOS:
 				return app.IsDeviceBuild ? "tvos" : "tvos-simulator";
 			default:
@@ -176,7 +170,6 @@ namespace Xamarin.Bundler {
 			case ApplePlatform.iOS:
 				return false;
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 				return true;
 			default:
 				throw ErrorHelper.CreateError (71, Errors.MX0071, app.Platform, app.ProductName);
@@ -196,13 +189,6 @@ namespace Xamarin.Bundler {
 					return Path.Combine (cross_prefix, "bin", "arm64-darwin-mono-sgen");
 				} else {
 					return Path.Combine (cross_prefix, "bin", "arm-darwin-mono-sgen");
-				}
-			case ApplePlatform.WatchOS:
-				/* Use arm64_32 cross only for Debug mode */
-				if (abi == Abi.ARM64_32 && !app.EnableLLVMOnlyBitCode) {
-					return Path.Combine (cross_prefix, "bin", "arm64_32-darwin-mono-sgen");
-				} else {
-					return Path.Combine (cross_prefix, "bin", "armv7k-unknown-darwin-mono-sgen");
 				}
 			case ApplePlatform.TVOS:
 				return Path.Combine (cross_prefix, "bin", "arm64-darwin-mono-sgen");
@@ -466,10 +452,6 @@ namespace Xamarin.Bundler {
 			{ "launchsim=", "Launch the specified MonoTouch.app in the simulator [DEPRECATED]", v => { SetAction (Action.LaunchSim); }, true },
 			{ "enable-native-debugging:", "Don't do anything that may interfere with native debugging (such as avoiding the iOS simulator launch timeout). [DEPRECATED]", v => { }, true },
 			{ "installsim=", "Install the specified MonoTouch.app in the simulator [DEPRECATED]", v => { SetAction (Action.InstallSim); }, true},
-			{ "launchsimwatch=", "Specify the watch app to launch [DEPRECATED]", v => { SetAction (Action.LaunchWatchApp); }, true },
-			{ "killsimwatch=", "Specify the watch app to kill [DEPRECATED]", v => { SetAction (Action.KillWatchApp); }, true },
-			{ "watchnotificationpayload=", "Specify the jSON notification payload file [DEPRECATED]", v => { }, true },
-			{ "watchlaunchmode=", "Specify the watch launch mode (Default|Glance|Notification) [DEPRECATED]", v => { }, true },
 			{ "enable-background-fetch", "Enable mode to send background fetch requests [Deprecated]", v => { }, true},
 			{ "launch-for-background-fetch", "Launch due to a background fetch [DEPRECATED]", v => { }, true},
 			{ "debugsim=", "Debug the specified MonoTouch.app in the simulator [DEPRECATED]", v => { SetAction (Action.DebugSim); }, true },
@@ -654,7 +636,7 @@ namespace Xamarin.Bundler {
 			if (action == Action.RunRegistrar) {
 				app.RunRegistrar ();
 			} else if (action == Action.Build) {
-				if (app.IsExtension && !app.IsWatchExtension) {
+				if (app.IsExtension) {
 					var sb = new StringBuilder ();
 					foreach (var arg in args)
 						sb.AppendLine (arg);
@@ -700,8 +682,6 @@ namespace Xamarin.Bundler {
 			case Action.DebugSim:
 			case Action.LaunchSim:
 			case Action.InstallSim:
-			case Action.LaunchWatchApp:
-			case Action.KillWatchApp:
 			case Action.ListSimulators:
 				return true;
 			}
@@ -785,7 +765,6 @@ namespace Xamarin.Bundler {
 
 			switch (app.Platform) {
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 				if (Driver.XcodeVersion.Major >= 14)
 					app.EnableCxx = true;
 				break;

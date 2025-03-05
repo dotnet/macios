@@ -178,7 +178,7 @@ namespace Xamarin.Bundler {
 			get {
 				if (executables is null) {
 					executables = new Dictionary<Abi, string> ();
-					if (App.IsSimulatorBuild && App.ArchSpecificExecutable) {
+					if (App.IsSimulatorBuild) {
 						// When using simlauncher, we copy the executable directly to the target directory.
 						// When not using the simlauncher, but still building for the simulator, we write the executable to a arch-specific app directory (if building for both 32-bit and 64-bit), or just the app directory (if building for a single architecture)
 						if (Abis.Count != 1)
@@ -372,7 +372,6 @@ namespace Xamarin.Bundler {
 				switch (reference.Name) {
 				case "Xamarin.iOS":
 				case "Xamarin.TVOS":
-				case "Xamarin.WatchOS":
 				case "Xamarin.MacCatalyst":
 					if (reference.Name != Driver.GetProductAssembly (App)) {
 						if (App.Platform == ApplePlatform.MacCatalyst && reference.Name == "Xamarin.iOS") {
@@ -1310,9 +1309,6 @@ namespace Xamarin.Bundler {
 				case ApplePlatform.iOS:
 					libraryName = "Xamarin.iOS";
 					break;
-				case ApplePlatform.WatchOS:
-					libraryName = "Xamarin.WatchOS";
-					break;
 				case ApplePlatform.TVOS:
 					libraryName = "Xamarin.TVOS";
 					break;
@@ -1469,15 +1465,7 @@ namespace Xamarin.Bundler {
 				linker_flags.AddOtherFlag ("-install_name", $"@rpath/{App.ExecutableName}.framework/{App.ExecutableName}");
 			} else {
 				string mainlib = null;
-				if (App.IsWatchExtension) {
-					linker_flags.AddOtherFlag ("-e", "_xamarin_watchextension_main");
-					if (App.SdkVersion.Major >= 6 && App.DeploymentTarget.Major < 6) {
-						// watchOS 6.0's WatchKit contains a WKExtensionMain function, and that's the entry point for Xcode-compiled watch extensions.
-						// To make watch extensions work on earlier watchOS versions, there's a libWKExtensionMainLegacy.a library with a
-						// a WKExtensionMain function that does what's needed (Xcode links with this library when deployment target < 6.0).
-						linker_flags.AddOtherInitialFlag ("-lWKExtensionMainLegacy");
-					}
-				} else if (App.IsTVExtension) {
+				if (App.IsTVExtension) {
 					mainlib = "libtvextension.a";
 				} else if (App.IsExtension) {
 					mainlib = "libextension.a";

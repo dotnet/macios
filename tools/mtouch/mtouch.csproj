@@ -449,9 +449,6 @@
     <Compile Include="..\..\builds\mono-ios-sdk-destdir\ios-sources\external\linker\src\linker\Linker\TypeNameParser.cs">
       <Link>mono-archive\Linker\TypeNameParser.cs</Link>
     </Compile>
-    <Compile Include="..\linker\MonoTouch.Tuner\RemoveBitcodeIncompatibleCodeStep.cs">
-      <Link>tools\linker\MonoTouch.Tuner\RemoveBitcodeIncompatibleCodeStep.cs</Link>
-    </Compile>
     <Compile Include="..\linker\CustomSymbolWriter.cs">
       <Link>tools\linker\CustomSymbolWriter.cs</Link>
     </Compile>

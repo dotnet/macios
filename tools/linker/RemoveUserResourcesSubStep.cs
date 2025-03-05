@@ -34,7 +34,6 @@ namespace Xamarin.Linker {
 			switch (LinkContext.App.Platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 			case ApplePlatform.MacCatalyst:
 				prefixes = new string [] {
 					"__monotouch_content_",

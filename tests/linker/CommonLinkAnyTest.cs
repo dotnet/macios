@@ -56,7 +56,6 @@ namespace LinkAnyTest {
 		}
 #endif
 
-#if !__WATCHOS__
 		[Test]
 		public void BackingFieldInGenericType ()
 		{
@@ -68,7 +67,6 @@ namespace LinkAnyTest {
 #endif
 			GC.KeepAlive (view.HeightAnchor);
 		}
-#endif // !__WATCHOS__
 
 #if NET
 		[Test]

@@ -138,14 +138,14 @@ namespace Xamarin.Bundler {
 			});
 			options.Add ("coop:", "If the GC should run in cooperative mode.", v => { app.EnableCoopGC = ParseBool (v, "coop"); }, hidden: true);
 			options.Add ("sgen-conc", "Enable the *experimental* concurrent garbage collector.", v => { app.EnableSGenConc = true; });
-			options.Add ("marshal-objectivec-exceptions:", "Specify how Objective-C exceptions should be marshalled. Valid values: default, unwindmanagedcode, throwmanagedexception, abort and disable. The default depends on the target platform (on watchOS the default is 'throwmanagedexception', while on all other platforms it's 'disable').", v => {
+			options.Add ("marshal-objectivec-exceptions:", "Specify how Objective-C exceptions should be marshalled. Valid values: default, unwindmanagedcode, throwmanagedexception, abort and disable.", v => {
 				if (Application.TryParseObjectiveCExceptionMode (v, out var value)) {
 					app.MarshalObjectiveCExceptions = value;
 				} else {
 					throw ErrorHelper.CreateError (26, Errors.MX0026, "--marshal-objective-exceptions", $"Invalid value: {v}. Valid values are: default, unwindmanagedcode, throwmanagedexception, abort and disable.");
 				}
 			});
-			options.Add ("marshal-managed-exceptions:", "Specify how managed exceptions should be marshalled. Valid values: default, unwindnativecode, throwobjectivecexception, abort and disable. The default depends on the target platform (on watchOS the default is 'throwobjectivecexception', while on all other platform it's 'disable').", v => {
+			options.Add ("marshal-managed-exceptions:", "Specify how managed exceptions should be marshalled. Valid values: default, unwindnativecode, throwobjectivecexception, abort and disable.", v => {
 				if (Application.TryParseManagedExceptionMode (v, out var value)) {
 					app.MarshalManagedExceptions = value;
 				} else {
@@ -803,8 +803,6 @@ namespace Xamarin.Bundler {
 			switch (app.Platform) {
 			case ApplePlatform.iOS:
 				return Path.Combine (GetFrameworkLibDirectory (app), "mono", "Xamarin.iOS");
-			case ApplePlatform.WatchOS:
-				return Path.Combine (GetFrameworkLibDirectory (app), "mono", "Xamarin.WatchOS");
 			case ApplePlatform.TVOS:
 				return Path.Combine (GetFrameworkLibDirectory (app), "mono", "Xamarin.TVOS");
 			case ApplePlatform.MacCatalyst:
@@ -880,9 +878,6 @@ namespace Xamarin.Bundler {
 			case ApplePlatform.iOS:
 				sdkName = app.IsDeviceBuild ? "MonoTouch.iphoneos.sdk" : "MonoTouch.iphonesimulator.sdk";
 				break;
-			case ApplePlatform.WatchOS:
-				sdkName = app.IsDeviceBuild ? "Xamarin.WatchOS.sdk" : "Xamarin.WatchSimulator.sdk";
-				break;
 			case ApplePlatform.TVOS:
 				sdkName = app.IsDeviceBuild ? "Xamarin.AppleTVOS.sdk" : "Xamarin.AppleTVSimulator.sdk";
 				break;
@@ -904,8 +899,6 @@ namespace Xamarin.Bundler {
 			switch (app.Platform) {
 			case ApplePlatform.iOS:
 				return app.IsDeviceBuild ? "iPhoneOS" : "iPhoneSimulator";
-			case ApplePlatform.WatchOS:
-				return app.IsDeviceBuild ? "WatchOS" : "WatchSimulator";
 			case ApplePlatform.TVOS:
 				return app.IsDeviceBuild ? "AppleTVOS" : "AppleTVSimulator";
 			case ApplePlatform.MacOSX:
@@ -929,8 +922,6 @@ namespace Xamarin.Bundler {
 			switch (app.Platform) {
 			case ApplePlatform.iOS:
 				return IsDotNet ? "Microsoft.iOS" : "Xamarin.iOS";
-			case ApplePlatform.WatchOS:
-				return IsDotNet ? "Microsoft.watchOS" : "Xamarin.WatchOS";
 			case ApplePlatform.TVOS:
 				return IsDotNet ? "Microsoft.tvOS" : "Xamarin.TVOS";
 			case ApplePlatform.MacOSX:
@@ -1114,9 +1105,6 @@ namespace Xamarin.Bundler {
 					break;
 				case ApplePlatform.TVOS:
 					args.Add (is_simulator ? "appletvsimulator" : "appletvos");
-					break;
-				case ApplePlatform.WatchOS:
-					args.Add (is_simulator ? "watchsimulator" : "watchos");
 					break;
 				default:
 					throw ErrorHelper.CreateError (71, Errors.MX0071 /* Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new with a test case. */, platform.ToString (), app.ProductName);

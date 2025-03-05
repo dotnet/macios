@@ -816,7 +816,9 @@ namespace AudioToolbox {
 		/// <summary>Determines how the coordinates should be interpreted.</summary>
 		///         <remarks>To be added.</remarks>
 		public AudioChannelFlags Flags;
-		float Coord0, Coord1, Coord2;
+		float Coord0;
+		float Coord1;
+		float Coord2;
 #if !COREBUILD
 
 		/// <summary>To be added.</summary>

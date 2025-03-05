@@ -177,7 +177,8 @@ namespace CoreFoundation {
 		GCHandle gch;
 		CFRunLoop? loop;
 		NSString? loopMode;
-		bool open, closed;
+		bool open;
+		bool closed;
 
 		#region Stream Constructors
 

@@ -168,7 +168,8 @@ namespace PrintCore {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct PMResolution {
-		double hRes, vRes;
+		double hRes;
+		double vRes;
 		public double HorizontalResolution => hRes;
 		public double VerticalResolution => vRes;
 
@@ -188,7 +189,10 @@ namespace PrintCore {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct PMRect {
-		internal double top, left, bottom, right;
+		internal double top;
+		internal double left;
+		internal double bottom;
+		internal double right;
 
 		public double Top => top;
 		public double Left => left;

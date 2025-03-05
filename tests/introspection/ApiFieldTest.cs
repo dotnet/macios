@@ -78,10 +78,10 @@ namespace Introspection {
 				}
 			case "CMSampleAttachmentKey": // kCMSampleAttachmentKey_HDR10PlusPerFrameData":
 				switch (property.Name) {
-					case "Hdr10PlusPerFrameDataKey":
-						if (TestRuntime.IsSimulator)
-							return !TestRuntime.CheckXcodeVersion (14, 1); // not available in the iOS 16.0 simulator, but it is in the iOS 16.1 simulator
-						break;
+				case "Hdr10PlusPerFrameDataKey":
+					if (TestRuntime.IsSimulator)
+						return !TestRuntime.CheckXcodeVersion (14, 1); // not available in the iOS 16.0 simulator, but it is in the iOS 16.1 simulator
+					break;
 				}
 				break;
 			}

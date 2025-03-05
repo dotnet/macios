@@ -85,8 +85,6 @@ namespace ObjCRuntime {
 
 #if __TVOS__
 		internal const string PlatformName = "tvOS";
-#elif __WATCHOS__
-		internal const string PlatformName = "watchOS";
 #elif __MACCATALYST__
 		internal const string PlatformName = "Mac Catalyst";
 #elif __IOS__
@@ -179,8 +177,8 @@ namespace ObjCRuntime {
 			/* unused				= 0x08,*/
 			IsSimulator = 0x10,
 #if NET
-			IsCoreCLR				= 0x20,
-			IsNativeAOT				= 0x40,
+			IsCoreCLR = 0x20,
+			IsNativeAOT = 0x40,
 #endif
 		}
 
@@ -228,8 +226,7 @@ namespace ObjCRuntime {
 		internal static unsafe InitializationOptions* options;
 
 #if NET
-		public static class ClassHandles
-		{
+		public static class ClassHandles {
 			static NativeHandle unused;
 			internal static unsafe void InitializeClassHandles (IntPtr* map)
 			{
@@ -240,7 +237,7 @@ namespace ObjCRuntime {
 				// Rewriter uses those.
 				// In the case of NO class handle rewriting,
 				// this is a no-op
-				fixed (NativeHandle *ptr = &unused) {
+				fixed (NativeHandle* ptr = &unused) {
 					SetHandle (-1, ptr, map);
 				}
 			}
@@ -250,9 +247,9 @@ namespace ObjCRuntime {
 			{
 				if (index < 0)
 					return;
-				
+
 				var nativeHandle = map [index];
-				*handle = (NativeHandle)nativeHandle;
+				*handle = (NativeHandle) nativeHandle;
 			}
 		}
 #endif
@@ -283,6 +280,12 @@ namespace ObjCRuntime {
 			}
 		}
 
+		/// <summary>If dynamic registration is supported.</summary>
+		///         <value>If dynamic registration is supported.</value>
+		///         <remarks>
+		///           <para>At build time the managed linker can in some cases determine whether dynamic registration is required or not, and if not, it can optimize away the code to support dynamic registration (to minimize app size). If support for dynamic registration has been removed by the linker, this property will return false.</para>
+		///         </remarks>
+		///         <related type="article" href="https://docs.microsoft.com/en-us/xamarin/cross-platform/macios/optimizations#remove-the-dynamic-registrar">Build optimizations (removal of the dynamic registrar)</related>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static bool DynamicRegistrationSupported {
 			get {
@@ -299,10 +302,10 @@ namespace ObjCRuntime {
 		[DllImport (Constants.libcLibrary)]
 		unsafe static extern int _NSGetExecutablePath (byte* buf, int* bufsize);
 
-		unsafe static int _NSGetExecutablePath (byte[] buf, ref int bufsize)
+		unsafe static int _NSGetExecutablePath (byte [] buf, ref int bufsize)
 		{
 			fixed (byte* bufptr = buf)
-				return _NSGetExecutablePath (bufptr, (int *) Unsafe.AsPointer<int> (ref bufsize));
+				return _NSGetExecutablePath (bufptr, (int*) Unsafe.AsPointer<int> (ref bufsize));
 		}
 #endif
 
@@ -462,10 +465,9 @@ namespace ObjCRuntime {
 		static bool OnAssemblyRegistration (AssemblyName assembly_name)
 		{
 			if (AssemblyRegistration is not null) {
-				var args = new AssemblyRegistrationEventArgs
-				{
+				var args = new AssemblyRegistrationEventArgs {
 					Register = true,
-					AssemblyName = assembly_name
+					AssemblyName = assembly_name,
 				};
 				AssemblyRegistration (null, args);
 				return args.Register;
@@ -486,10 +488,10 @@ namespace ObjCRuntime {
 
 			if (MarshalObjectiveCException is not null) {
 				var exception = GetNSObject<NSException> (exception_handle);
-				var args = new MarshalObjectiveCExceptionEventArgs () {
-					Exception = exception,
-					ExceptionMode = (throwManagedAsDefault != 0) ? MarshalObjectiveCExceptionMode.ThrowManagedException : objc_exception_mode,
-				};
+				var args = new MarshalObjectiveCExceptionEventArgs (
+					exception,
+					(throwManagedAsDefault != 0) ? MarshalObjectiveCExceptionMode.ThrowManagedException : objc_exception_mode
+				);
 
 				MarshalObjectiveCException (null, args);
 				return args.ExceptionMode;
@@ -501,10 +503,7 @@ namespace ObjCRuntime {
 		{
 			if (MarshalManagedException is not null) {
 				var exception = GCHandle.FromIntPtr (exception_handle).Target as Exception;
-				var args = new MarshalManagedExceptionEventArgs () {
-					Exception = exception,
-					ExceptionMode = managed_exception_mode,
-				};
+				var args = new MarshalManagedExceptionEventArgs (exception, managed_exception_mode);
 				MarshalManagedException (null, args);
 				return args.ExceptionMode;
 			}
@@ -791,14 +790,13 @@ namespace ObjCRuntime {
 			var attributes = a.GetCustomAttributes (typeof (RequiredFrameworkAttribute), false);
 
 			foreach (var attribute in attributes) {
-				var requiredFramework = (RequiredFrameworkAttribute)attribute;
+				var requiredFramework = (RequiredFrameworkAttribute) attribute;
 				string libPath;
 				string libName = requiredFramework.Name;
 
 				if (libName.Contains (".dylib")) {
 					libPath = ResourcesPath!;
-				}
-				else {
+				} else {
 					libPath = FrameworksPath!;
 					libPath = Path.Combine (libPath, libName);
 					libName = libName.Replace (".frameworks", "");
@@ -807,7 +805,7 @@ namespace ObjCRuntime {
 
 				if (Dlfcn.dlopen (libPath, 0) == IntPtr.Zero)
 					throw new Exception ($"Unable to load required framework: '{requiredFramework.Name}'",
-						new Exception (Dlfcn.dlerror()));
+						new Exception (Dlfcn.dlerror ()));
 			}
 
 			attributes = a.GetCustomAttributes (typeof (DelayedRegistrationAttribute), false);
@@ -1612,7 +1610,7 @@ namespace ObjCRuntime {
 
 				// If type is an NSObject, we prefer the NSObject lookup table
 				if (instance is null && type != typeof (NSObject) && type.IsSubclassOf (typeof (NSObject))) {
-					instance = (T?)(INativeObject?) RegistrarHelper.ConstructNSObject<T> (type, nativeHandle);
+					instance = (T?) (INativeObject?) RegistrarHelper.ConstructNSObject<T> (type, nativeHandle);
 					if (instance is not null && owns) {
 						Runtime.TryReleaseINativeObject (instance);
 					}
@@ -1830,6 +1828,18 @@ namespace ObjCRuntime {
 		{
 			return GetNSObject ((IntPtr) ptr, MissingCtorResolution.ThrowConstructor1NotFound);
 		}
+
+		/// <summary>Wraps an unmanaged <see cref="NativeHandle" /> into a fully typed <see cref="NSObject" />, or returns an existing wrapper object if one already exists.</summary>
+		/// <param name="ptr">A pointer to an unmanaged <see cref="NSObject" /> or any class that derives from the Objective-C NSObject class.</param>
+		/// <param name="owns">Pass true if the caller has a reference to the native object, and wants to give it to the managed wrapper instance. Otherwise pass false (and the native object will be retained if needed).</param>
+		/// <returns>An instance of a class that derives <see cref="NSObject" />.</returns>
+		/// <remarks>
+		///   <para>The runtime create an instance of the most derived managed class.</para>
+		/// </remarks>
+		public static NSObject? GetNSObject (NativeHandle ptr, bool owns)
+		{
+			return GetNSObject ((IntPtr) ptr, owns, MissingCtorResolution.ThrowConstructor1NotFound);
+		}
 #endif
 
 		public static NSObject? GetNSObject (IntPtr ptr)
@@ -1839,15 +1849,26 @@ namespace ObjCRuntime {
 
 		internal static NSObject? GetNSObject (IntPtr ptr, MissingCtorResolution missingCtorResolution, bool evenInFinalizerQueue = false)
 		{
+			return GetNSObject (ptr, false, missingCtorResolution, evenInFinalizerQueue);
+		}
+
+		internal static NSObject? GetNSObject (IntPtr ptr, bool owns, MissingCtorResolution missingCtorResolution, bool evenInFinalizerQueue = false)
+		{
 			if (ptr == IntPtr.Zero)
 				return null;
 
 			var o = TryGetNSObject (ptr, evenInFinalizerQueue);
 
-			if (o is not null)
+			if (o is not null) {
+				if (owns)
+					o.DangerousRelease ();
 				return o;
+			}
 
-			return ConstructNSObject (ptr, Class.GetClassForObject (ptr), missingCtorResolution);
+			o = ConstructNSObject (ptr, Class.GetClassForObject (ptr), missingCtorResolution);
+			if (owns)
+				NSObject.DangerousRelease (ptr);
+			return o;
 		}
 
 		static public T? GetNSObject<T> (IntPtr ptr) where T : NSObject
@@ -2128,7 +2149,7 @@ namespace ObjCRuntime {
 					// For other registrars other than managed-static the generic parameter of ConstructNSObject is used
 					// only to cast the return value so we can safely pass NSObject here to satisfy the constraints of the
 					// generic parameter.
-					var rv = (T?)(INativeObject?) ConstructNSObject<NSObject> (ptr, implementation, MissingCtorResolution.ThrowConstructor1NotFound, sel, method_handle);
+					var rv = (T?) (INativeObject?) ConstructNSObject<NSObject> (ptr, implementation, MissingCtorResolution.ThrowConstructor1NotFound, sel, method_handle);
 					if (owns)
 						TryReleaseINativeObject (rv);
 					return rv;
@@ -2364,7 +2385,8 @@ namespace ObjCRuntime {
 				(char) (byte) (value >> 24),
 				(char) (byte) (value >> 16),
 				(char) (byte) (value >> 8),
-				(char) (byte) value });
+				(char) (byte) value,
+			});
 		}
 
 		// Retain the input if it's either an NSObject or a NativeObject.
@@ -2652,6 +2674,8 @@ namespace ObjCRuntime {
 		[DllImport (Constants.libSystemLibrary)]
 		static unsafe extern NXArchInfo* NXGetLocalArchInfo ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static bool IsARM64CallingConvention;
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
@@ -2722,22 +2746,12 @@ namespace ObjCRuntime {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		public static ulong ConvertNativeEnumValueToManaged (nuint value, bool targetTypeHasMaxValue)
 		{
-#if ARCH_32
-			// Check if we got UInt32.MaxValue, which should probably be UInt64.MaxValue
-			if (targetTypeHasMaxValue && value == nuint.MaxValue)
-				return ulong.MaxValue;
-#endif
 			return (ulong) value;
 		}
 
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		public static long ConvertNativeEnumValueToManaged (nint value, bool targetTypeHasMaxValue)
 		{
-#if ARCH_32
-			// Check if we got Int32.MaxValue, which should probably be Int64.MaxValue
-			if (targetTypeHasMaxValue && value == nint.MaxValue)
-				return long.MaxValue;
-#endif
 			return (long) value;
 		}
 
@@ -2754,6 +2768,9 @@ namespace ObjCRuntime {
 		}
 
 #if NET || !MONOMAC // legacy Xamarin.Mac has a different implementation in Runtime.mac.cs
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static string? OriginalWorkingDirectory {
 			get {
 				return Marshal.PtrToStringUTF8 (xamarin_get_original_working_directory_path ());

@@ -35,10 +35,6 @@ using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreFoundation {
 
 	// CFURLPathStyle -> CFIndex -> CFURL.h
@@ -46,16 +42,14 @@ namespace CoreFoundation {
 	public enum CFUrlPathStyle : long {
 		POSIX = 0,
 		HFS = 1,
-		Windows = 2
+		Windows = 2,
 	};
 
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CFURL.h
 	public class CFUrl : NativeObject {
 #if !COREBUILD
@@ -134,21 +128,17 @@ namespace CoreFoundation {
 			return CFString.FromHandle (CFURLCopyFileSystemPath (hcfurl, 0), true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* Boolean */ byte CFURLIsFileReferenceURL (/* CFURLRef */IntPtr url);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public bool IsFileReference {
 			get {
 				return CFURLIsFileReferenceURL (Handle) != 0;

@@ -16,37 +16,7 @@ using Foundation;
 using ObjCRuntime;
 
 namespace UIKit {
-
-#if !XAMCORE_3_0
-	public partial class UIAdaptivePresentationControllerDelegate {
-
-		[Obsolete ("Incorrect signature. Use the overload with a UITraitCollection parameter.")]
-		public virtual UIViewController GetAdaptivePresentationStyle (UIPresentationController controller, UIModalPresentationStyle style)
-		{
-			return null;
-		}
-	}
-
-	public partial class UIAdaptivePresentationControllerDelegate_Extensions {
-
-		[Obsolete ("Incorrect signature. Use the overload with a UITraitCollection parameter.")]
-		public static UIViewController GetAdaptivePresentationStyle (IUIAdaptivePresentationControllerDelegate This, UIPresentationController controller, UIModalPresentationStyle style)
-		{
-			return null;
-		}
-	}
-
-	public static partial class NSIdentifier {
-
-		[Obsolete ("Use 'GetIdentifier' method.")]
-		public static string Identifier (this NSLayoutConstraint This)
-		{
-			return This.GetIdentifier ();
-		}
-	}
-#endif
-
-#if !NET && !WATCH
+#if !NET
 	public partial class UIPresentationController {
 
 		[Obsolete ("Removed in iOS10. Use '.ctor (UIViewController,UIViewController)'.")]
@@ -75,7 +45,7 @@ namespace UIKit {
 
 #endif
 
-#if !NET && !WATCH
+#if !NET
 	public partial class UICollectionViewFocusUpdateContext {
 		[Obsolete ("This cannot be directly created.")]
 		public UICollectionViewFocusUpdateContext () { }

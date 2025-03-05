@@ -32,36 +32,57 @@ namespace CoreData {
 	/// <summary>Enumerates specific types of entity mapping.</summary>
 	[Native]
 	public enum NSEntityMappingType : ulong {
+		/// <summary>To be added.</summary>
 		Undefined = 0x00,
+		/// <summary>To be added.</summary>
 		Custom = 0x01,
+		/// <summary>To be added.</summary>
 		Add = 0x02,
+		/// <summary>To be added.</summary>
 		Remove = 0x03,
+		/// <summary>To be added.</summary>
 		Copy = 0x04,
-		Transform = 0x05
+		/// <summary>To be added.</summary>
+		Transform = 0x05,
 	}
 
 	// NUInteger -> NSAttributeDescription.h
 	/// <summary>An enumeration whose values define the valid types for <see cref="T:CoreData.NSAttributeType" /> objects.</summary>
 	[Native]
 	public enum NSAttributeType : ulong {
+		/// <summary>Indicates an undefined type.</summary>
 		Undefined = 0,
+		/// <summary>Indicates a signed 16-bit integer.</summary>
 		Integer16 = 100,
+		/// <summary>Indicates a signed 32-bit integer..</summary>
 		Integer32 = 200,
+		/// <summary>Indicates a signed 64-bit integer.</summary>
 		Integer64 = 300,
+		/// <summary>Indicates an NSDecimalNumber.</summary>
 		Decimal = 400,
+		/// <summary>Indicates a double.</summary>
 		Double = 500,
+		/// <summary>Indicates a float.</summary>
 		Float = 600,
+		/// <summary>Indicates an NSString.</summary>
 		String = 700,
+		/// <summary>Indicates a Boolean value</summary>
 		Boolean = 800,
+		/// <summary>Indicates an NSDate.</summary>
 		Date = 900,
+		/// <summary>Indicates NSData.</summary>
 		Binary = 1000,
+		/// <summary>Indicates a UUID.</summary>
 		[MacCatalyst (13, 1)]
 		Uuid = 1100,
+		/// <summary>Indicates a URI.</summary>
 		[MacCatalyst (13, 1)]
 		Uri = 1200,
+		/// <summary>Indicates a type with an available transformer.</summary>
 		Transformable = 1800,
+		/// <summary>Indicates an Object ID.</summary>
 		ObjectID = 2000,
-		[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		CompositeAttributeType = 2100,
 	}
 
@@ -70,10 +91,14 @@ namespace CoreData {
 	[Flags]
 	[Native]
 	public enum NSFetchRequestResultType : ulong {
+		/// <summary>To be added.</summary>
 		ManagedObject = 0x00,
+		/// <summary>To be added.</summary>
 		ManagedObjectID = 0x01,
+		/// <summary>To be added.</summary>
 		DictionaryResultType = 0x02,
-		NSCountResultType = 0x04
+		/// <summary>To be added.</summary>
+		NSCountResultType = 0x04,
 	}
 
 	// NUInteger -> NSRelationshipDescription.h
@@ -83,7 +108,7 @@ namespace CoreData {
 		NoAction,
 		Nullify,
 		Cascade,
-		Deny
+		Deny,
 	}
 
 	// NUInteger -> NSPersistentStoreRequest.h
@@ -94,52 +119,72 @@ namespace CoreData {
 		Save,
 		[iOS (13, 0)]
 		[TV (13, 0)]
-		[Watch (6, 0)]
 		[MacCatalyst (13, 1)]
 		BatchInsert = 5,
 		BatchUpdate = 6,
-		BatchDelete = 7
+		BatchDelete = 7,
 	}
 
 	// NUInteger -> NSManagedObjectContext.h
 	/// <summary>Enumerates types of concurrenty patterns that can be used by a <see cref="T:CoreData.NSManagedObjectContext" />.</summary>
 	[Native]
 	public enum NSManagedObjectContextConcurrencyType : ulong {
-		Confinement, PrivateQueue, MainQueue
+		Confinement,
+		PrivateQueue,
+		MainQueue,
 	}
 
 	// NUInteger -> NSManagedObjectContext.h
 	/// <summary>Enumerates policies for merging.</summary>
 	[Native]
 	public enum NSMergePolicyType : ulong {
-		Error, PropertyStoreTrump, PropertyObjectTrump, Overwrite, RollbackMerge
+		/// <summary>To be added.</summary>
+		Error,
+		/// <summary>To be added.</summary>
+		PropertyStoreTrump,
+		/// <summary>To be added.</summary>
+		PropertyObjectTrump,
+		/// <summary>To be added.</summary>
+		Overwrite,
+		/// <summary>To be added.</summary>
+		RollbackMerge,
 	}
 
 	// NUInteger -> NSFetchedResultsController.h
 	/// <summary>Enumerates kinds of batch requests.</summary>
 	[Native]
 	public enum NSFetchedResultsChangeType : ulong {
+		/// <summary>To be added.</summary>
 		Insert = 1,
+		/// <summary>To be added.</summary>
 		Delete = 2,
+		/// <summary>To be added.</summary>
 		Move = 3,
-		Update = 4
+		/// <summary>To be added.</summary>
+		Update = 4,
 	}
 
 	/// <summary>Enumerates the kind of results that can be returned from a batched update request.</summary>
 	[Native]
 	public enum NSBatchUpdateRequestResultType : ulong {
+		/// <summary>To be added.</summary>
 		StatusOnly = 0,
+		/// <summary>To be added.</summary>
 		UpdatedObjectIDs = 1,
-		UpdatedObjectsCount = 2
+		/// <summary>To be added.</summary>
+		UpdatedObjectsCount = 2,
 	}
 
 	/// <summary>Enumerates the form of the result of a <see cref="T:CoreData.NSBatchDeleteRequest" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSBatchDeleteRequestResultType : ulong {
+		/// <summary>To be added.</summary>
 		StatusOnly = 0,
+		/// <summary>To be added.</summary>
 		ObjectIDs = 1,
-		Count = 2
+		/// <summary>To be added.</summary>
+		Count = 2,
 	}
 
 	/// <summary>Enumerates errors that can be encountered during validation.</summary>
@@ -170,7 +215,7 @@ namespace CoreData {
 		PersistentStoreCoordinatorLocking = 132010,
 		ManagedObjectReferentialIntegrity = 133000,
 		ManagedObjectExternalRelationship = 133010,
-		ManagedObjectMerge = 133020
+		ManagedObjectMerge = 133020,
 	}
 
 	/// <summary>Enumerates error codes that can be encountered while working with persistent stores.</summary>
@@ -185,21 +230,31 @@ namespace CoreData {
 		Operation = 134070,
 		Open = 134080,
 		Timeout = 134090,
-		IncompatibleVersionHash = 134100
+		IncompatibleVersionHash = 134100,
 	}
 
 	/// <summary>Enumerates error codes that can be encountered while migrating stores.</summary>
 	[Native]
 	public enum MigrationErrorType {
+		/// <summary>An unspecified error occurred.</summary>
 		Migration = 134110,
+		/// <summary>The migration was canceled.</summary>
 		MigrationCancelled = 134120,
+		/// <summary>The source data model was missing.</summary>
 		MigrationMissingSourceModel = 134130,
+		/// <summary>The mapping model was missing.</summary>
 		MigrationMissingMappingModel = 134140,
+		/// <summary>There was a problem with the source store.</summary>
 		MigrationManagerSourceStore = 134150,
+		/// <summary>There was a problem with the destination store.</summary>
 		MigrationManagerDestinationStore = 134160,
+		/// <summary>An error occurred while processing an entity migration policy.</summary>
 		EntityMigrationPolicy = 134170,
+		/// <summary>An error occurred while creating an inferred mapping model.</summary>
 		InferredMappingModel = 134190,
+		/// <summary>An error occurred while importing an external record.</summary>
 		ExternalRecordImport = 134200,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		HistoryTokenExpired = 134301,
 	}
@@ -208,8 +263,10 @@ namespace CoreData {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSFetchIndexElementType : ulong {
+		/// <summary>Indicates indices into a binary tree.</summary>
 		Binary,
-		RTree
+		/// <summary>Indicates indices into an R-tree.</summary>
+		RTree,
 	}
 
 	[MacCatalyst (13, 1)]
@@ -217,7 +274,7 @@ namespace CoreData {
 	public enum NSPersistentHistoryChangeType : long {
 		Insert,
 		Update,
-		Delete
+		Delete,
 	}
 
 	[MacCatalyst (13, 1)]
@@ -228,10 +285,10 @@ namespace CoreData {
 		Count = 2,
 		TransactionsOnly = 3,
 		ChangesOnly = 4,
-		TransactionsAndChanges = 5
+		TransactionsAndChanges = 5,
 	}
 
-	[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSBatchInsertRequestResultType : ulong {
@@ -240,7 +297,7 @@ namespace CoreData {
 		Count = 2,
 	}
 
-	[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Flags]
 	[Native]
@@ -250,7 +307,7 @@ namespace CoreData {
 		PrintSchema = 1 << 2,
 	}
 
-	[Watch (7, 0), TV (14, 0), iOS (14, 0)]
+	[TV (14, 0), iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum NSPersistentCloudKitContainerEventResultType : long {
@@ -258,7 +315,7 @@ namespace CoreData {
 		CountEvents,
 	}
 
-	[Watch (7, 0), TV (14, 0), iOS (14, 0)]
+	[TV (14, 0), iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum NSPersistentCloudKitContainerEventType : long {

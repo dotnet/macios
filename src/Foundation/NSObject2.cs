@@ -33,24 +33,16 @@ using System.Drawing;
 using System.Runtime.Versioning;
 using System.Diagnostics;
 
-#if NET
 using System.Runtime.InteropServices.ObjectiveC;
-#endif
 
 using ObjCRuntime;
 #if !COREBUILD
 using Xamarin.Bundler;
 #if MONOTOUCH
 using UIKit;
-#if !WATCH
 using CoreAnimation;
 #endif
-#endif
 using CoreGraphics;
-#endif
-
-#if !NET
-using NativeHandle = System.IntPtr;
 #endif
 
 // Disable until we get around to enable + fix any issues.
@@ -58,7 +50,6 @@ using NativeHandle = System.IntPtr;
 
 namespace Foundation {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -66,25 +57,16 @@ namespace Foundation {
 	public enum NSObjectFlag {
 		Empty,
 	}
-#else
-	public class NSObjectFlag {
-		public static readonly NSObjectFlag Empty;
 
-		NSObjectFlag () { }
-	}
-#endif
-
-#if NET
 	// This interface will be made public when the managed static registrar is used.
 	internal interface INSObjectFactory {
 		// The method will be implemented via custom linker step if the managed static registrar is used
 		// for NSObject subclasses which have an (NativeHandle) or (IntPtr) constructor.
-		[MethodImpl(MethodImplOptions.NoInlining)]
+		[MethodImpl (MethodImplOptions.NoInlining)]
 		virtual static NSObject _Xamarin_ConstructNSObject (NativeHandle handle) => null;
 	}
-#endif
 
-#if NET && !COREBUILD
+#if !COREBUILD
 	[ObjectiveCTrackedType]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -97,10 +79,7 @@ namespace Foundation {
 		, IEquatable<NSObject>
 		, IDisposable
 #endif
-#if NET
-		, INSObjectFactory
-#endif
-	{
+		, INSObjectFactory {
 #if !COREBUILD
 		const string selConformsToProtocol = "conformsToProtocol:";
 		const string selEncodeWithCoder = "encodeWithCoder:";
@@ -116,9 +95,6 @@ namespace Foundation {
 		NativeHandle handle;
 		IntPtr super; /* objc_super* */
 
-#if !NET
-		Flags flags;
-#else
 		// See  "Toggle-ref support for CoreCLR" in coreclr-bridge.m for more information.
 		Flags actual_flags;
 		internal unsafe Runtime.TrackedObjectInfo* tracked_object_info;
@@ -139,7 +115,6 @@ namespace Foundation {
 					tracked_object_info->Flags = value;
 			}
 		}
-#endif // NET
 
 		// This enum has a native counterpart in runtime.h
 		[Flags]
@@ -222,21 +197,13 @@ namespace Foundation {
 		}
 
 		[EditorBrowsable (EditorBrowsableState.Never)]
-#if NET
 		protected internal NSObject (NativeHandle handle)
-#else
-		public NSObject (NativeHandle handle)
-#endif
 			: this (handle, false)
 		{
 		}
 
 		[EditorBrowsable (EditorBrowsableState.Never)]
-#if NET
 		protected NSObject (NativeHandle handle, bool alloced)
-#else
-		public NSObject (NativeHandle handle, bool alloced)
-#endif
 		{
 			this.handle = handle;
 			InitializeObject (alloced);
@@ -253,21 +220,17 @@ namespace Foundation {
 			GC.SuppressFinalize (this);
 		}
 
-#if NET
 		// This method should never be called when using the managed static registrar, so assert that never happens by throwing an exception in that case.
 		// This method doesn't necessarily work with NativeAOT, but this is covered by the exception, because the managed static registrar is required for NativeAOT.
 		//
 		// IL2072: 'type' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicConstructors', 'DynamicallyAccessedMemberTypes.NonPublicConstructors' in call to 'System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(Type)'. The return value of method 'ObjCRuntime.Runtime.GetGCHandleTarget(IntPtr)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
-		[UnconditionalSuppressMessage("", "IL2072", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
-#endif
+		[UnconditionalSuppressMessage ("", "IL2072", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 		internal static IntPtr CreateNSObject (IntPtr type_gchandle, IntPtr handle, Flags flags)
 		{
-#if NET
 			// Note that the code in this method doesn't necessarily work with NativeAOT, so assert that never happens by throwing an exception if using the managed static registrar (which is required for NativeAOT)
 			if (Runtime.IsManagedStaticRegistrar) {
 				throw new System.Diagnostics.UnreachableException ();
 			}
-#endif
 
 			// This function is called from native code before any constructors have executed.
 			var type = (Type) Runtime.GetGCHandleTarget (type_gchandle);
@@ -314,43 +277,31 @@ namespace Foundation {
 			return class_ptr;
 		}
 
-#if NET
 		internal Flags FlagsInternal {
 			get { return flags; }
 			set { flags = value; }
 		}
-#endif
 
-#if !NET || !__MACOS__
+#if !__MACOS__
 		[MethodImplAttribute (MethodImplOptions.InternalCall)]
 		extern static void RegisterToggleRef (NSObject obj, IntPtr handle, bool isCustomType);
-#endif // !NET || !__MACOS__
+#endif // !__MACOS__
 
 		[DllImport ("__Internal")]
 		static extern void xamarin_release_managed_ref (IntPtr handle, byte user_type);
 
 		static void RegisterToggleReference (NSObject obj, IntPtr handle, bool isCustomType)
 		{
-#if NET && __MACOS__
+#if __MACOS__
 			Runtime.RegisterToggleReferenceCoreCLR (obj, handle, isCustomType);
-#elif NET
+#else
 			if (Runtime.IsCoreCLR) {
 				Runtime.RegisterToggleReferenceCoreCLR (obj, handle, isCustomType);
 			} else {
 				RegisterToggleRef (obj, handle, isCustomType);
 			}
-#else
-			RegisterToggleRef (obj, handle, isCustomType);
 #endif
 		}
-
-#if !XAMCORE_3_0
-		[EditorBrowsable (EditorBrowsableState.Never)]
-		public static bool IsNewRefcountEnabled ()
-		{
-			return true;
-		}
-#endif
 
 		/*
 		Register the current object with the toggleref machinery if the following conditions are met:
@@ -520,41 +471,24 @@ namespace Foundation {
 			// the linker/trimmer will remove the following code if the dynamic registrar is removed from the app
 			var classHandle = ClassHandle;
 			lock (Runtime.protocol_cache) {
-#if NET
 				ref var map = ref CollectionsMarshal.GetValueRefOrAddDefault (Runtime.protocol_cache, classHandle, out var exists);
 				if (!exists)
 					map = new ();
 				ref var result = ref CollectionsMarshal.GetValueRefOrAddDefault (map, protocol, out exists);
 				if (!exists)
 					result = DynamicConformsToProtocol (protocol);
-#else
-				bool new_map = false;
-				if (!Runtime.protocol_cache.TryGetValue (classHandle, out var map)) {
-					map = new ();
-					new_map = true;
-					Runtime.protocol_cache.Add (classHandle, map);
-				}
-				if (new_map || !map.TryGetValue (protocol, out var result)) {
-					result = DynamicConformsToProtocol (protocol);
-					map.Add (protocol, result);
-				}
-#endif
 				return result;
 			}
 		}
 
-#if NET
 		// Note that this method does not work with NativeAOT, so throw an exception in that case.
 		// IL2075: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.Interfaces' in call to 'System.Type.GetInterfaces()'. The return value of method 'System.Object.GetType()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2075", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
-#endif
 		bool DynamicConformsToProtocol (NativeHandle protocol)
 		{
-#if NET
 			// Note that this method does not work with NativeAOT, so throw an exception in that case.
 			if (Runtime.IsNativeAOT)
 				throw Runtime.CreateNativeAOTNotSupportedException ();
-#endif
 
 			object [] adoptedProtocols = GetType ().GetCustomAttributes (typeof (AdoptsAttribute), true);
 			foreach (AdoptsAttribute adopts in adoptedProtocols) {
@@ -577,12 +511,17 @@ namespace Foundation {
 			return false;
 		}
 
+		/// <summary>Calls the 'release' selector on this object.</summary>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		public void DangerousRelease ()
 		{
 			DangerousRelease (handle);
 		}
 
+		/// <summary>Calls the 'release' selector on an Objective-C object.</summary>
+		/// <param name="handle">The Objective-C object to release.</param>
+		/// <remarks>It's safe to call this function with <see cref="NativeHandle.Zero" />.</remarks>
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		internal static void DangerousRelease (NativeHandle handle)
 		{
 			if (handle == IntPtr.Zero)
@@ -594,6 +533,10 @@ namespace Foundation {
 #endif
 		}
 
+		/// <summary>Calls the 'retain' selector on an Objective-C object.</summary>
+		/// <param name="handle">The Objective-C object to retain.</param>
+		/// <remarks>It's safe to call this function with <see cref="NativeHandle.Zero" />.</remarks>
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		internal static void DangerousRetain (NativeHandle handle)
 		{
 			if (handle == IntPtr.Zero)
@@ -605,6 +548,9 @@ namespace Foundation {
 #endif
 		}
 
+		/// <summary>Calls the 'autorelease' selector on an Objective-C object.</summary>
+		/// <param name="handle">The Objective-C object to autorelease.</param>
+		/// <remarks>It's safe to call this function with <see cref="NativeHandle.Zero" />.</remarks>
 		internal static void DangerousAutorelease (NativeHandle handle)
 		{
 #if MONOMAC
@@ -614,25 +560,21 @@ namespace Foundation {
 #endif
 		}
 
+		/// <summary>Calls the 'retain' selector on this object.</summary>
+		/// <returns>This object.</returns>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		public NSObject DangerousRetain ()
 		{
-#if MONOMAC
-			Messaging.void_objc_msgSend (handle, Selector.RetainHandle);
-#else
-			Messaging.void_objc_msgSend (handle, Selector.GetHandle (Selector.Retain));
-#endif
+			DangerousRetain (handle);
 			return this;
 		}
 
+		/// <summary>Calls the 'autorelease' selector on this object.</summary>
+		/// <returns>This object.</returns>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		public NSObject DangerousAutorelease ()
 		{
-#if MONOMAC
-			Messaging.void_objc_msgSend (handle, Selector.AutoreleaseHandle);
-#else
-			Messaging.void_objc_msgSend (handle, Selector.GetHandle (Selector.Autorelease));
-#endif
+			DangerousAutorelease (handle);
 			return this;
 		}
 
@@ -658,12 +600,10 @@ namespace Foundation {
 
 				handle = value;
 
-#if NET
 				unsafe {
 					if (tracked_object_info is not null)
 						tracked_object_info->Handle = value;
 				}
-#endif
 
 				if (handle != IntPtr.Zero)
 					Runtime.RegisterNSObject (this, handle);
@@ -673,19 +613,25 @@ namespace Foundation {
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		protected void InitializeHandle (NativeHandle handle)
 		{
-			InitializeHandle (handle, "init*");
+			InitializeHandle (handle, "init*", Class.ThrowOnInitFailure);
 		}
 
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		protected void InitializeHandle (NativeHandle handle, string initSelector)
 		{
-			if (this.handle == NativeHandle.Zero && Class.ThrowOnInitFailure) {
+			InitializeHandle (handle, initSelector, Class.ThrowOnInitFailure);
+		}
+
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		internal void InitializeHandle (NativeHandle handle, string initSelector, bool throwOnInitFailure)
+		{
+			if (this.handle == NativeHandle.Zero && throwOnInitFailure) {
 				if (ClassHandle == NativeHandle.Zero)
 					throw new Exception ($"Could not create an native instance of the type '{GetType ().FullName}': the native class hasn't been loaded.\n{Constants.SetThrowOnInitFailureToFalse}.");
 				throw new Exception ($"Could not create an native instance of the type '{new Class (ClassHandle).Name}'.\n{Constants.SetThrowOnInitFailureToFalse}.");
 			}
 
-			if (handle == NativeHandle.Zero && Class.ThrowOnInitFailure) {
+			if (handle == NativeHandle.Zero && throwOnInitFailure) {
 				Handle = NativeHandle.Zero; // We'll crash if we don't do this.
 				throw new Exception ($"Could not initialize an instance of the type '{GetType ().FullName}': the native '{initSelector}' method returned nil.\n{Constants.SetThrowOnInitFailureToFalse}.");
 			}
@@ -706,58 +652,9 @@ namespace Foundation {
 			return false;
 		}
 
-#if !XAMCORE_3_0
-		private IntPtr GetObjCIvar (string name)
-		{
-			IntPtr native;
-
-			object_getInstanceVariable (handle, name, out native);
-
-			return native;
-		}
-
-		[Obsolete ("Do not use; this API does not properly retain/release existing/new values, so leaks and/or crashes may occur.")]
-		public NSObject GetNativeField (string name)
-		{
-			IntPtr field = GetObjCIvar (name);
-
-			if (field == IntPtr.Zero)
-				return null;
-			return Runtime.GetNSObject (field);
-		}
-
-		private void SetObjCIvar (string name, IntPtr value)
-		{
-			object_setInstanceVariable (handle, name, value);
-		}
-
-		[Obsolete ("Do not use; this API does not properly retain/release existing/new values, so leaks and/or crashes may occur.")]
-		public void SetNativeField (string name, NSObject value)
-		{
-			if (value is null)
-				SetObjCIvar (name, IntPtr.Zero);
-			else
-				SetObjCIvar (name, value.Handle);
-		}
-
-		[DllImport (Messaging.LIBOBJC_DYLIB)]
-		extern static void object_getInstanceVariable (IntPtr obj, string name, out IntPtr val);
-
-		[DllImport (Messaging.LIBOBJC_DYLIB)]
-		extern static void object_setInstanceVariable (IntPtr obj, string name, IntPtr val);
-#endif // !XAMCORE_3_0
-
 		private void InvokeOnMainThread (Selector sel, NSObject obj, bool wait)
 		{
-#if NET
 			Messaging.void_objc_msgSend_NativeHandle_NativeHandle_bool (this.Handle, Selector.GetHandle (Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDone), sel.Handle, obj.GetHandle (), wait ? (byte) 1 : (byte) 0);
-#else
-#if MONOMAC
-			Messaging.void_objc_msgSend_IntPtr_IntPtr_bool (this.Handle, Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDoneHandle, sel.Handle, obj.GetHandle (), wait ? (byte) 1 : (byte) 0);
-#else
-			Messaging.void_objc_msgSend_IntPtr_IntPtr_bool (this.Handle, Selector.GetHandle (Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDone), sel.Handle, obj.GetHandle (), wait ? (byte) 1 : (byte) 0);
-#endif
-#endif
 		}
 
 		public void BeginInvokeOnMainThread (Selector sel, NSObject obj)
@@ -773,70 +670,30 @@ namespace Foundation {
 		public void BeginInvokeOnMainThread (Action action)
 		{
 			var d = new NSAsyncActionDispatcher (action);
-#if NET
 			Messaging.void_objc_msgSend_NativeHandle_NativeHandle_bool (d.Handle, Selector.GetHandle (Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDone),
-		                                                        NSDispatcher.Selector.Handle, d.Handle, 0);
-#else
-#if MONOMAC
-			Messaging.void_objc_msgSend_IntPtr_IntPtr_bool (d.Handle, Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDoneHandle, 
-		                                                        NSDispatcher.Selector.Handle, d.Handle, 0);
-#else
-			Messaging.void_objc_msgSend_IntPtr_IntPtr_bool (d.Handle, Selector.GetHandle (Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDone),
-															Selector.GetHandle (NSDispatcher.SelectorName), d.Handle, 0);
-#endif
-#endif
+																NSDispatcher.Selector.Handle, d.Handle, 0);
 		}
 
 		internal void BeginInvokeOnMainThread (System.Threading.SendOrPostCallback cb, object state)
 		{
 			var d = new NSAsyncSynchronizationContextDispatcher (cb, state);
-#if NET
 			Messaging.void_objc_msgSend_NativeHandle_NativeHandle_bool (d.Handle, Selector.GetHandle (Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDone),
-			                                                Selector.GetHandle (NSDispatcher.SelectorName), d.Handle, 0);
-#else
-#if MONOMAC
-			Messaging.void_objc_msgSend_IntPtr_IntPtr_bool (d.Handle, Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDoneHandle,
-		                                                        NSDispatcher.Selector.Handle, d.Handle, 0);
-#else
-			Messaging.void_objc_msgSend_IntPtr_IntPtr_bool (d.Handle, Selector.GetHandle (Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDone),
 															Selector.GetHandle (NSDispatcher.SelectorName), d.Handle, 0);
-#endif
-#endif
 		}
 
 		public void InvokeOnMainThread (Action action)
 		{
 			using (var d = new NSActionDispatcher (action)) {
-#if NET
-				Messaging.void_objc_msgSend_NativeHandle_NativeHandle_bool (d.Handle, Selector.GetHandle (Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDone), 
-				                                                Selector.GetHandle (NSDispatcher.SelectorName), d.Handle, 1);
-#else
-#if MONOMAC
-				Messaging.void_objc_msgSend_IntPtr_IntPtr_bool (d.Handle, Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDoneHandle, 
-		                                                                NSDispatcher.Selector.Handle, d.Handle, 1);
-#else
-				Messaging.void_objc_msgSend_IntPtr_IntPtr_bool (d.Handle, Selector.GetHandle (Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDone),
+				Messaging.void_objc_msgSend_NativeHandle_NativeHandle_bool (d.Handle, Selector.GetHandle (Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDone),
 																Selector.GetHandle (NSDispatcher.SelectorName), d.Handle, 1);
-#endif
-#endif
 			}
 		}
 
 		internal void InvokeOnMainThread (System.Threading.SendOrPostCallback cb, object state)
 		{
 			using (var d = new NSSynchronizationContextDispatcher (cb, state)) {
-#if NET
 				Messaging.void_objc_msgSend_NativeHandle_NativeHandle_bool (d.Handle, Selector.GetHandle (Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDone),
-				                                                Selector.GetHandle (NSDispatcher.SelectorName), d.Handle, 1);
-#else
-#if MONOMAC
-				Messaging.void_objc_msgSend_IntPtr_IntPtr_bool (d.Handle, Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDoneHandle,
-			                                                        NSDispatcher.Selector.Handle, d.Handle, 1);
-#else
-				Messaging.void_objc_msgSend_IntPtr_IntPtr_bool (d.Handle, Selector.GetHandle (Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDone),
 																Selector.GetHandle (NSDispatcher.SelectorName), d.Handle, 1);
-#endif
-#endif
 			}
 		}
 
@@ -904,10 +761,8 @@ namespace Foundation {
 					return NSValue.FromCGAffineTransform ((CGAffineTransform) obj);
 				else if (t == typeof (UIEdgeInsets))
 					return NSValue.FromUIEdgeInsets ((UIEdgeInsets) obj);
-#if !WATCH
 				else if (t == typeof (CATransform3D))
 					return NSValue.FromCATransform3D ((CATransform3D) obj);
-#endif
 #endif
 				// last chance for types like CGPath, CGColor... that are not NSObject but are CFObject
 				// see https://bugzilla.xamarin.com/show_bug.cgi?id=8458
@@ -922,27 +777,11 @@ namespace Foundation {
 		{
 			if (keyPath is null)
 				throw new ArgumentNullException ("keyPath");
-#if NET
 			if (IsDirectBinding) {
 				ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_NativeHandle (this.Handle, Selector.GetHandle ("setValue:forKeyPath:"), handle, keyPath.Handle);
 			} else {
 				ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle_NativeHandle (this.SuperHandle, Selector.GetHandle ("setValue:forKeyPath:"), handle, keyPath.Handle);
 			}
-#else
-#if MONOMAC
-			if (IsDirectBinding) {
-				ObjCRuntime.Messaging.void_objc_msgSend_IntPtr_IntPtr (this.Handle, selSetValue_ForKeyPath_XHandle, handle, keyPath.Handle);
-			} else {
-				ObjCRuntime.Messaging.void_objc_msgSendSuper_IntPtr_IntPtr (this.SuperHandle, selSetValue_ForKeyPath_XHandle, handle, keyPath.Handle);
-			}
-#else
-			if (IsDirectBinding) {
-				ObjCRuntime.Messaging.void_objc_msgSend_IntPtr_IntPtr (this.Handle, Selector.GetHandle ("setValue:forKeyPath:"), handle, keyPath.Handle);
-			} else {
-				ObjCRuntime.Messaging.void_objc_msgSendSuper_IntPtr_IntPtr (this.SuperHandle, Selector.GetHandle ("setValue:forKeyPath:"), handle, keyPath.Handle);
-			}
-#endif
-#endif
 		}
 
 		// if IsDirectBinding is false then we _likely_ have managed state and it's up to the subclass to provide
@@ -1056,15 +895,7 @@ namespace Foundation {
 
 			static void ScheduleDrain ()
 			{
-#if NET
 				Messaging.void_objc_msgSend_NativeHandle_NativeHandle_bool (class_ptr, Selector.GetHandle (Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDone), Selector.GetHandle ("drain:"), NativeHandle.Zero, 0);
-#else
-#if MONOMAC
-				Messaging.void_objc_msgSend_IntPtr_IntPtr_bool (class_ptr, Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDoneHandle, drainHandle, IntPtr.Zero, 0);
-#else
-				Messaging.void_objc_msgSend_IntPtr_IntPtr_bool (class_ptr, Selector.GetHandle (Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDone), Selector.GetHandle ("drain:"), IntPtr.Zero, 0);
-#endif
-#endif
 			}
 
 			static bool draining;
@@ -1189,12 +1020,10 @@ namespace Foundation {
 	}
 
 #if !COREBUILD
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class NSObservedChange {
 		NSDictionary dict;
 		public NSObservedChange (NSDictionary source)

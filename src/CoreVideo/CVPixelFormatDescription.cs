@@ -156,26 +156,18 @@ namespace CoreVideo {
 
 		[Obsolete ("Use 'CVPixelFormatKeys.ContainsGrayscale' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[Watch (5, 0)]
-#endif
 		public static readonly NSString ContainsGrayscaleKey;
 
 		[Obsolete ("Use 'CVPixelFormatKeys.ContainsSenselArray' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
-#if NET
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("tvos16.0")]
-#else
-		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#endif
 		public static readonly NSString ContainsSenselArray;
 #endif // !XAMCORE_5_0
 
@@ -250,13 +242,6 @@ namespace CoreVideo {
 		extern static /* CFDictionaryRef __nullable */ IntPtr CVPixelFormatDescriptionCreateWithPixelFormatType (
 			/* CFAllocatorRef __nullable */ IntPtr allocator, int /* OSType = int32_t */ pixelFormat);
 
-#if !XAMCORE_3_0
-		public static NSDictionary? Create (int pixelFormat)
-		{
-			return Runtime.GetNSObject<NSDictionary> (CVPixelFormatDescriptionCreateWithPixelFormatType (IntPtr.Zero, pixelFormat));
-		}
-#endif
-
 		/// <summary>Create a description of the specified pixel format.</summary>
 		/// <param name="pixelFormat">The pixel format to create a description of.</param>
 		public static NSDictionary? Create (CVPixelFormatType pixelFormat)
@@ -278,16 +263,6 @@ namespace CoreVideo {
 		extern static void CVPixelFormatDescriptionRegisterDescriptionWithPixelFormatType (
 			/* CFDictionaryRef __nonnull */ IntPtr description, int /* OSType = int32_t */ pixelFormat);
 
-#if !XAMCORE_3_0
-		public static void Register (NSDictionary description, int pixelFormat)
-		{
-			if (description is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (description));
-
-			CVPixelFormatDescriptionRegisterDescriptionWithPixelFormatType (description.Handle, pixelFormat);
-		}
-#endif
-
 		/// <summary>Register a new pixel format with CoreVideo.</summary>
 		/// <param name="description">The pixel format description for the pixel format to register.</param>
 		/// <param name="pixelFormat">The pixel format to register.</param>
@@ -307,34 +282,25 @@ namespace CoreVideo {
 			Register (description?.Dictionary!, pixelFormat);
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0), Mac (12, 0), Watch (8, 0)]
-#endif
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static byte CVIsCompressedPixelFormatAvailable (int /* OSType = int32_t */ pixelFormat);
 
 		/// <summary>Check if the specified pixel format is supported on this platform.</summary>
 		/// <param name="pixelFormat">The pixel format to check.</param>
 		/// <returns>Whether the specified pixel format is supported or not.</returns>
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0), Mac (12, 0), Watch (8, 0)]
-#endif
 		public static bool IsPixelFormatAvailable (CVPixelFormatType pixelFormat)
 		{
 			return CVIsCompressedPixelFormatAvailable ((int) pixelFormat) != 0;
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -348,7 +314,7 @@ namespace CoreVideo {
 				unsafe {
 					if (bytes.Length < sizeof (CVFillExtendedPixelsCallBackDataStruct))
 						throw new InvalidOperationException ($"The size of the callback data structure is smaller than expected (got {bytes.Length} bytes, expected at least {sizeof (CVFillExtendedPixelsCallBackDataStruct)} bytes)");
-					fixed (byte *ptr = bytes)
+					fixed (byte* ptr = bytes)
 						return Marshal.PtrToStructure<CVFillExtendedPixelsCallBackDataStruct> ((IntPtr) ptr);
 				}
 			}
@@ -365,8 +331,6 @@ namespace CoreVideo {
 				FillExtendedPixelsCallback = data;
 			}
 		}
-#endif
-
 #endif // !COREBUILD
 	}
 }

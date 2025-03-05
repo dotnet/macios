@@ -18,24 +18,37 @@ namespace ImageIO {
 	/// <summary>Enumeration of errors relating to metadata manipulation.</summary>
 	[ErrorDomain ("kCFErrorDomainCGImageMetadata")]
 	public enum CGImageMetadataErrors {
+		/// <summary>To be added.</summary>
 		Unknown = 0,
+		/// <summary>To be added.</summary>
 		UnsupportedFormat = 1,
+		/// <summary>To be added.</summary>
 		BadArgument = 2,
+		/// <summary>To be added.</summary>
 		ConflictingArguments = 3,
+		/// <summary>To be added.</summary>
 		PrefixConflict = 4,
 	}
 
 	// untyped enum -> CGImageMetadata.h
 	/// <summary>Enumerates the type-forms of image metadata.</summary>
 	public enum CGImageMetadataType {
+		/// <summary>To be added.</summary>
 		Invalid = -1,
+		/// <summary>To be added.</summary>
 		Default = 0,
+		/// <summary>To be added.</summary>
 		String = 1,
+		/// <summary>To be added.</summary>
 		ArrayUnordered = 2,
+		/// <summary>To be added.</summary>
 		ArrayOrdered = 3,
+		/// <summary>To be added.</summary>
 		AlternateArray = 4,
+		/// <summary>To be added.</summary>
 		AlternateText = 5,
-		Structure = 6
+		/// <summary>To be added.</summary>
+		Structure = 6,
 	}
 
 	/// <summary>Enumerates orientation values.</summary>
@@ -47,7 +60,7 @@ namespace ImageIO {
 		LeftMirrored,
 		Right,
 		RightMirrored,
-		Left
+		Left,
 	}
 
 	// untyped enum / #defines
@@ -61,10 +74,10 @@ namespace ImageIO {
 		Sub = 0x10,
 		Up = 0x20,
 		Average = 0x40,
-		Paeth = 0x80
+		Paeth = 0x80,
 	}
 
-	[iOS (13, 0), TV (13, 0), Watch (6, 0)]
+	[iOS (13, 0), TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	public enum CGImageAnimationStatus {
 		Ok = 0,
@@ -76,7 +89,7 @@ namespace ImageIO {
 	}
 
 	// Yes, no [Native] here
-	[iOS (14, 1), TV (14, 2), Watch (7, 1)]
+	[iOS (14, 1), TV (14, 2)]
 	[MacCatalyst (14, 1)]
 	public enum CGImagePropertyTgaCompression : uint {
 		None = 0,

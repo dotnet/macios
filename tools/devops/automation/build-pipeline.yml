@@ -14,16 +14,7 @@ parameters:
   - name: macOSName  # comes from the build agent demand named macOS.Name
     displayName: Name of the version of macOS to use
     type: string
-    default: 'Sonoma'
-
-  - name: pool
-    type: string
-    displayName: Bot pool to use
-    default: automatic
-    values:
-      - pr
-      - ci
-      - automatic
+    default: 'Sequoia'
 
   - name: runGovernanceTests
     displayName: Run Governance Checks
@@ -133,22 +124,14 @@ resources:
         submodules: true
 
     - repository: yaml-templates
-      type: github
-      name: xamarin/yaml-templates
+      type: git
+      name: xamarin.yaml-templates
       ref: refs/heads/main
-      endpoint: xamarin
 
-    - repository: sdk-insertions
-      type: github
-      name: xamarin/sdk-insertions
+    - repository: macios-adr
+      type: git
+      name: macios-adr
       ref: refs/heads/main
-      endpoint: xamarin
-
-    - repository: maccore
-      type: github
-      name: xamarin/maccore
-      ref: refs/heads/main
-      endpoint: xamarin
 
     - repository: CustomPipelineTemplates
       type: git
@@ -157,7 +140,6 @@ resources:
 variables:
   - ${{ if contains(variables['Build.DefinitionName'], 'private') }}:
       - template: templates/vsts-variables.yml
-  - template: templates/common/vs-release-vars.yml@sdk-insertions
   - template: templates/variables/common.yml
   - template: templates/variables/api-scan.yml
   - template: templates/variables/signing.yml
@@ -198,28 +180,28 @@ extends:
       os: windows
     sdl:
       baseline:
-        baselineFile: '$(System.DefaultWorkingDirectory)\\xamarin-macios\\tools\\devops\\governance\\baselines.gdnbaselines'
+        baselineFile: '$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/governance/baselines.gdnbaselines'
       suppression:
-        suppressionFile: '$(System.DefaultWorkingDirectory)\\xamarin-macios\\tools\\devops\\governance\\suppress.gdnsuppress'
+        suppressionFile: '$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/governance/suppress.gdnsuppress'
       sourceAnalysisPool:
         name: AzurePipelines-EO
         image: 1ESPT-Windows2022
         os: windows
       tsa:
-        configFile: '$(System.DefaultWorkingDirectory)\\xamarin-macios\\tools\\devops\\governance\\tsa_config.gdntsa'
+        configFile: '$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/governance/tsa_config.gdntsa'
       sbom:
         enabled: false  # we run our on sbom generation
       credscan:
-        suppressionsFile: '$(System.DefaultWorkingDirectory)\\xamarin-macios\\tools\\devops\\governance\\CredScanSuppressions.json'
+        suppressionsFile: '$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/governance/CredScanSuppressions.json'
       policheck:
-        exclusionsFile: '$(System.DefaultWorkingDirectory)\\xamarin-macios\\tools\\devops\\governance\\PoliCheckExclusions.xml'
+        exclusionsFile: '$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/governance/PoliCheckExclusions.xml'
       sourceRepositoriesToScan:
         runInSingleJob: true  # run both maccore and macios in the same job
         include:
-          - repository: maccore
+          - repository: self
         exclude:
           - repository: yaml-templates
-          - repository: sdk-insertions
+          - repository: macios-adr  # macios-adr has it's own build pipeline and should not be included in the source analysis
     stages:
       - template: templates/main-stage.yml
         parameters:
@@ -227,7 +209,7 @@ extends:
           macOSName: ${{ parameters.macOSName }}
           isPR: false
           provisionatorChannel: ${{ parameters.provisionatorChannel }}
-          pool: ${{ parameters.pool }}
+          pool: $(CIBuildPool)
           runGovernanceTests: ${{ parameters.runGovernanceTests }}
           forceInsertion: ${{ parameters.forceInsertion }}
           pushNugets: ${{ parameters.pushNugets }}

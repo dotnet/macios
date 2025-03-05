@@ -23,24 +23,23 @@ using Vector3 = global::OpenTK.Vector3;
 using MatrixFloat4x4 = global::OpenTK.NMatrix4;
 #endif
 
-#if __IOS__ || WATCH
+#if __IOS__
 namespace NearbyInteraction {
-	partial class NINearbyObject
-	{
+	partial class NINearbyObject {
 		static Vector3? _DirectionNotAvailable;
 
 		// TODO: https://github.com/xamarin/maccore/issues/2274
 		// We do not have generator support to trampoline Vector3 -> vector_float3 for Fields
-		[Field ("NINearbyObjectDirectionNotAvailable",  "NearbyInteraction")]
+		[Field ("NINearbyObjectDirectionNotAvailable", "NearbyInteraction")]
 		public static Vector3 DirectionNotAvailable {
 			get {
 				if (_DirectionNotAvailable is null) {
 					unsafe {
-						Vector3 *pointer = (Vector3 *) Dlfcn.GetIndirect (Libraries.NearbyInteraction.Handle, "NINearbyObjectDirectionNotAvailable");
+						Vector3* pointer = (Vector3*) Dlfcn.GetIndirect (Libraries.NearbyInteraction.Handle, "NINearbyObjectDirectionNotAvailable");
 						_DirectionNotAvailable = *pointer;
 					}
 				}
-				return (Vector3)_DirectionNotAvailable;
+				return (Vector3) _DirectionNotAvailable;
 			}
 		}
 
@@ -52,21 +51,21 @@ namespace NearbyInteraction {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
 #else
-		[iOS (16,0), Watch (9,0), MacCatalyst (16,0)]
+		[iOS (16,0), MacCatalyst (16,0)]
 #endif // NET
 		// Following similar strategy found here: https://github.com/xamarin/maccore/issues/2274
-		[Field ("NINearbyObjectWorldTransformNotAvailable",  "NearbyInteraction")]
+		[Field ("NINearbyObjectWorldTransformNotAvailable", "NearbyInteraction")]
 		public static MatrixFloat4x4 WorldTransformNotAvailable {
 			get {
 				if (_WorldTransformNotAvailable is null) {
 					unsafe {
-						MatrixFloat4x4 *pointer = (MatrixFloat4x4 *) Dlfcn.GetIndirect (Libraries.NearbyInteraction.Handle, "NINearbyObjectWorldTransformNotAvailable");
+						MatrixFloat4x4* pointer = (MatrixFloat4x4*) Dlfcn.GetIndirect (Libraries.NearbyInteraction.Handle, "NINearbyObjectWorldTransformNotAvailable");
 						if (pointer is null)
 							throw new PlatformNotSupportedException ("This property is not supported on this version of the OS");
 						_WorldTransformNotAvailable = *pointer;
 					}
 				}
-				return (MatrixFloat4x4)_WorldTransformNotAvailable;
+				return (MatrixFloat4x4) _WorldTransformNotAvailable;
 			}
 		}
 	}

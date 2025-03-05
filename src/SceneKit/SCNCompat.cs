@@ -5,12 +5,8 @@ using System.Threading.Tasks;
 using Foundation;
 using ObjCRuntime;
 
-#if WATCH
-using AnimationType = global::SceneKit.ISCNAnimationProtocol;
-#else
 using CoreAnimation;
 using AnimationType = global::CoreAnimation.CAAnimation;
-#endif
 
 #nullable enable
 
@@ -42,13 +38,6 @@ namespace SceneKit {
 		}
 #endif // !NET
 
-#if !XAMCORE_3_0
-		[Obsolete ("Use 'TimingFunction2' property.")]
-		public virtual void SetTimingFunction (Action<float> timingFunction)
-		{
-			TimingFunction = timingFunction;
-		}
-#endif // !XAMCORE_3_0
 	}
 #if TVOS && !NET
 	partial class SCNMaterialProperty {
@@ -117,7 +106,7 @@ namespace SceneKit {
 	}
 #endif // !NET
 
-#if !WATCH && !NET
+#if !NET
 	static public partial class SCNAnimatableExtensions {
 		static public void AddAnimation (this ISCNAnimatable self, SCNAnimation animation, string key)
 		{
@@ -126,7 +115,7 @@ namespace SceneKit {
 				self.AddAnimation (ca, st);
 		}
 	}
-#endif // !WATCH && !NET
+#endif // !NET
 
 #if !NET
 	public partial class SCNHitTestOptions {
@@ -138,12 +127,12 @@ namespace SceneKit {
 		}
 	}
 
-#if !MONOMAC && !WATCH && !__MACCATALYST__
+#if !MONOMAC && !__MACCATALYST__
 	public partial class SCNView {
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[Obsolete ("Empty stub. (not a public API).")]
 		public virtual bool DrawableResizesAsynchronously { get; set; }
 	}
-#endif // !MONOMAC && !WATCH && !__MACCATALYST__
+#endif // !MONOMAC && !__MACCATALYST__
 #endif // !NET
 }

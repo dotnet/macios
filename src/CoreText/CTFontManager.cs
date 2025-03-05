@@ -46,7 +46,9 @@ namespace CoreText {
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontManager.h
 	public enum CTFontManagerScope : uint {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Process = 1,
 #if NET
 		[SupportedOSPlatform ("ios13.0")]
@@ -56,10 +58,10 @@ namespace CoreText {
 #else
 		[iOS (13, 0)]
 		[TV (13, 0)]
-		[Watch (6, 0)]
 #endif
 		Persistent = 2,
 #if NET
+		/// <summary>To be added.</summary>
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
@@ -67,21 +69,25 @@ namespace CoreText {
 #else
 		[NoiOS]
 		[NoTV]
-		[NoWatch]
 #endif
 		Session = 3,
 #if !NET
 		[NoiOS]
 		[NoTV]
-		[NoWatch] // historically not available under the old name
 		User = Persistent,
 #endif
 	}
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontManager.h
 	public enum CTFontManagerAutoActivation : uint {
-		Default = 0, Disabled = 1, Enabled = 2,
+		/// <summary>To be added.</summary>
+		Default = 0,
+		/// <summary>To be added.</summary>
+		Disabled = 1,
+		/// <summary>To be added.</summary>
+		Enabled = 2,
 #if NET
+		/// <summary>Developers should not use this deprecated field. It's now treated as 'Default'.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -114,21 +120,6 @@ namespace CoreText {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 			return CTFontManagerIsSupportedFont (url.Handle) != 0;
-		}
-#elif !XAMCORE_3_0
-#if NET
-		[ObsoletedOSPlatform ("macos10.6")]
-		[UnsupportedOSPlatform ("ios")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 6)]
-		[Unavailable (PlatformName.iOS)]
-#endif
-		[Obsolete ("API not available on iOS, it will always return false.")]
-		public static bool IsFontSupported (NSUrl url)
-		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
-			return false;
 		}
 #endif
 
@@ -191,7 +182,6 @@ namespace CoreText {
 #else
 		[Deprecated (PlatformName.MacOSX, 10, 15)]
 		[Deprecated (PlatformName.iOS, 13, 0)]
-		[Deprecated (PlatformName.WatchOS, 6, 0)]
 		[Deprecated (PlatformName.TvOS, 13, 0)]
 #endif
 		[DllImport (Constants.CoreTextLibrary)]
@@ -208,7 +198,6 @@ namespace CoreText {
 #else
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'RegisterFonts' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'RegisterFonts' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'RegisterFonts' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'RegisterFonts' instead.")]
 #endif
 		public static NSError []? RegisterFontsForUrl (NSUrl [] fontUrls, CTFontManagerScope scope)
@@ -229,7 +218,6 @@ namespace CoreText {
 		// [SupportedOSPlatform ("ios13.0")]
 		// [SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -259,7 +247,6 @@ namespace CoreText {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -272,7 +259,6 @@ namespace CoreText {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -335,7 +321,6 @@ namespace CoreText {
 #else
 		[Deprecated (PlatformName.MacOSX, 10, 15)]
 		[Deprecated (PlatformName.iOS, 13, 0)]
-		[Deprecated (PlatformName.WatchOS, 6, 0)]
 		[Deprecated (PlatformName.TvOS, 13, 0)]
 #endif
 		[DllImport (Constants.CoreTextLibrary)]
@@ -352,7 +337,6 @@ namespace CoreText {
 #else
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'UnregisterFonts' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'UnregisterFonts' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'UnregisterFonts' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'UnregisterFonts' instead.")]
 #endif
 		public static NSError []? UnregisterFontsForUrl (NSUrl [] fontUrls, CTFontManagerScope scope)
@@ -373,7 +357,6 @@ namespace CoreText {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -386,7 +369,6 @@ namespace CoreText {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -456,7 +438,6 @@ namespace CoreText {
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'CreateFontDescriptors' or 'RegisterFontsForUrl' instead.")]
 		[Deprecated (PlatformName.TvOS, 18, 0, message: "Use 'CreateFontDescriptors' or 'RegisterFontsForUrl' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'CreateFontDescriptors' or 'RegisterFontsForUrl' instead.")]
-		[Deprecated (PlatformName.WatchOS, 11, 0, message: "Use 'CreateFontDescriptors' or 'RegisterFontsForUrl' instead.")]
 #endif
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern byte CTFontManagerRegisterGraphicsFont (IntPtr cgfont, IntPtr* error);
@@ -475,7 +456,6 @@ namespace CoreText {
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'CreateFontDescriptors' or 'RegisterFontsForUrl' instead.")]
 		[Deprecated (PlatformName.TvOS, 18, 0, message: "Use 'CreateFontDescriptors' or 'RegisterFontsForUrl' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'CreateFontDescriptors' or 'RegisterFontsForUrl' instead.")]
-		[Deprecated (PlatformName.WatchOS, 11, 0, message: "Use 'CreateFontDescriptors' or 'RegisterFontsForUrl' instead.")]
 #endif
 		public static bool RegisterGraphicsFont (CGFont font, [NotNullWhen (true)] out NSError? error)
 		{
@@ -512,7 +492,6 @@ namespace CoreText {
 		[Deprecated (PlatformName.MacCatalyst, 18, 0)]
 		[Deprecated (PlatformName.TvOS, 18, 0)]
 		[Deprecated (PlatformName.MacOSX, 15, 0)]
-		[Deprecated (PlatformName.WatchOS, 11, 0)]
 #endif
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern byte CTFontManagerUnregisterGraphicsFont (IntPtr cgfont, IntPtr* error);
@@ -531,7 +510,6 @@ namespace CoreText {
 		[Deprecated (PlatformName.MacCatalyst, 18, 0)]
 		[Deprecated (PlatformName.TvOS, 18, 0)]
 		[Deprecated (PlatformName.MacOSX, 15, 0)]
-		[Deprecated (PlatformName.WatchOS, 11, 0)]
 #endif
 		public static bool UnregisterGraphicsFont (CGFont font, out NSError? error)
 		{
@@ -558,9 +536,6 @@ namespace CoreText {
 		static CTFontManager ()
 		{
 			var handle = Libraries.CoreText.Handle;
-#if !XAMCORE_3_0
-			ErrorDomain = Dlfcn.GetStringConstant (handle, "kCTFontManagerErrorDomain");
-#endif
 #pragma warning disable CS0618 // Type or member is obsolete
 			ErrorFontUrlsKey = Dlfcn.GetStringConstant (handle, "kCTFontManagerErrorFontURLsKey");
 #pragma warning restore CS0618 // Type or member is obsolete
@@ -583,9 +558,6 @@ namespace CoreText {
 			}
 		}
 
-#if !XAMCORE_3_0
-		public readonly static NSString? ErrorDomain;
-#endif
 #if !NET
 		[Obsolete ("Use the 'CTFontManagerErrorKeys.FontUrlsKey' property instead.")]
 		public readonly static NSString? ErrorFontUrlsKey;
@@ -605,7 +577,6 @@ namespace CoreText {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -618,7 +589,6 @@ namespace CoreText {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -647,7 +617,6 @@ namespace CoreText {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -660,7 +629,6 @@ namespace CoreText {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -702,11 +670,10 @@ namespace CoreText {
 		[UnsupportedOSPlatform ("macos")]
 #else
 		[iOS (13,0)]
-		[NoWatch]
 		[NoTV]
 		[NoMac]
 #endif
-		public static CTFontDescriptor[]? GetRegisteredFontDescriptors (CTFontManagerScope scope, bool enabled)
+		public static CTFontDescriptor []? GetRegisteredFontDescriptors (CTFontManagerScope scope, bool enabled)
 		{
 			var p = CTFontManagerCopyRegisteredFontDescriptors (scope, enabled.AsByte ());
 			// Copy/Create rule - we must release the CFArrayRef
@@ -735,7 +702,6 @@ namespace CoreText {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -748,7 +714,6 @@ namespace CoreText {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -769,7 +734,6 @@ namespace CoreText {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
 #else
-		[NoWatch]
 		[NoTV]
 		[NoMac]
 		[iOS (13,0)]
@@ -784,13 +748,12 @@ namespace CoreText {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
 #else
-		[NoWatch]
 		[NoTV]
 		[NoMac]
 		[iOS (13,0)]
 #endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
-		public unsafe static void RegisterFonts (string[] assetNames, CFBundle bundle, CTFontManagerScope scope, bool enabled, CTFontRegistrationHandler registrationHandler)
+		public unsafe static void RegisterFonts (string [] assetNames, CFBundle bundle, CTFontManagerScope scope, bool enabled, CTFontRegistrationHandler registrationHandler)
 		{
 			using (var arr = EnsureNonNullArray (assetNames, nameof (assetNames))) {
 				if (registrationHandler is null) {
@@ -814,12 +777,11 @@ namespace CoreText {
 		// [UnsupportedOSPlatform ("tvos")]
 		// [UnsupportedOSPlatform ("macos")]
 #else
-		[NoWatch]
 		[NoTV]
 		[NoMac]
 		[iOS (13,0)]
 #endif
-		public delegate void CTFontManagerRequestFontsHandler (CTFontDescriptor[] unresolvedFontDescriptors);
+		public delegate void CTFontManagerRequestFontsHandler (CTFontDescriptor [] unresolvedFontDescriptors);
 
 #if NET
 		[SupportedOSPlatform ("ios13.0")]
@@ -827,7 +789,6 @@ namespace CoreText {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
 #else
-		[NoWatch]
 		[NoTV]
 		[NoMac]
 		[iOS (13,0)]
@@ -858,13 +819,12 @@ namespace CoreText {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
 #else
-		[NoWatch]
 		[NoTV]
 		[NoMac]
 		[iOS (13,0)]
 #endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
-		public static void RequestFonts (CTFontDescriptor[] fontDescriptors, CTFontManagerRequestFontsHandler completionHandler)
+		public static void RequestFonts (CTFontDescriptor [] fontDescriptors, CTFontManagerRequestFontsHandler completionHandler)
 		{
 			if (completionHandler is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (completionHandler));

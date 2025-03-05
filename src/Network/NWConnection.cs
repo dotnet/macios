@@ -51,13 +51,11 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Watch (6, 0)]
 #endif
 	public class NWConnection : NativeObject {
 		[Preserve (Conditional = true)]
 #if NET
-		internal NWConnection (NativeHandle handle, bool owns) : base (handle, owns) {}
+		internal NWConnection (NativeHandle handle, bool owns) : base (handle, owns) { }
 #else
 		public NWConnection (NativeHandle handle, bool owns) : base (handle, owns) { }
 #endif

@@ -38,7 +38,7 @@ namespace ScriptingBridge {
 		CanSwitchLayer = 0x00000040,
 		DontRecord = 0x00001000,
 		DontExecute = 0x00002000,
-		ProcessNonReplyEvents = 0x00008000
+		ProcessNonReplyEvents = 0x00008000,
 	}
 
 	// LaunchServices.framework/Headers/LSOpen.h:typedef OptionBits LSLaunchFlags;
@@ -62,7 +62,7 @@ namespace ScriptingBridge {
 		LaunchNewInstance = 0x00080000,
 		LaunchAndHide = 0x00100000,
 		LaunchAndHideOthers = 0x00200000,
-		LaunchHasUntrustedContents = 0x00400000
+		LaunchHasUntrustedContents = 0x00400000,
 	}
 
 }

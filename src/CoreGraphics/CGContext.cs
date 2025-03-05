@@ -988,8 +988,10 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-		[ObsoletedOSPlatform ("macos10.9")]
-		[ObsoletedOSPlatform ("ios7.0")]
+		[ObsoletedOSPlatform ("macos10.9", "Use the 'CoreText' API instead.")]
+		[ObsoletedOSPlatform ("tvos9.0", "Use the 'CoreText' API instead.")]
+		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
+		[ObsoletedOSPlatform ("maccatalyst13.1", "Use the 'CoreText' API instead.")]
 #else
 		[Deprecated (PlatformName.iOS, 7, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 9)]
@@ -1005,6 +1007,8 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("macos10.9", "Use the 'CoreText' API instead.")]
 		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
+		[ObsoletedOSPlatform ("tvos9.0", "Use the 'CoreText' API instead.")]
+		[ObsoletedOSPlatform ("maccatalyst13.1", "Use the 'CoreText' API instead.")]
 #else
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use the 'CoreText' API instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 9, message: "Use the 'CoreText' API instead.")]
@@ -1021,7 +1025,9 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("macos10.9", "Use the 'CoreText' API instead.")]
+		[ObsoletedOSPlatform ("tvos9.0", "Use the 'CoreText' API instead.")]
 		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
+		[ObsoletedOSPlatform ("maccatalyst13.1", "Use the 'CoreText' API instead.")]
 #else
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use the 'CoreText' API instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 9, message: "Use the 'CoreText' API instead.")]
@@ -1037,8 +1043,10 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-		[ObsoletedOSPlatform ("macos10.9")]
-		[ObsoletedOSPlatform ("ios7.0")]
+		[ObsoletedOSPlatform ("macos10.9", "Use the 'CoreText' API instead.")]
+		[ObsoletedOSPlatform ("tvos9.0", "Use the 'CoreText' API instead.")]
+		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
+		[ObsoletedOSPlatform ("maccatalyst13.1", "Use the 'CoreText' API instead.")]
 #else
 		[Deprecated (PlatformName.iOS, 7, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 9)]
@@ -1046,11 +1054,27 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextShowTextAtPoint (/* CGContextRef */ IntPtr c, /* CGFloat */ nfloat x, /* CGFloat */ nfloat y, /* const char* */ byte []? bytes, /* size_t */ nint length);
 
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("macos10.9", "Use the 'CoreText' API instead.")]
+		[ObsoletedOSPlatform ("tvos9.0", "Use the 'CoreText' API instead.")]
+		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
+		[ObsoletedOSPlatform ("maccatalyst13.1", "Use the 'CoreText' API instead.")]
 		public void ShowTextAtPoint (nfloat x, nfloat y, byte []? bytes, int length)
 		{
 			CGContextShowTextAtPoint (Handle, x, y, bytes, length);
 		}
 
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("macos10.9", "Use the 'CoreText' API instead.")]
+		[ObsoletedOSPlatform ("tvos9.0", "Use the 'CoreText' API instead.")]
+		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
+		[ObsoletedOSPlatform ("maccatalyst13.1", "Use the 'CoreText' API instead.")]
 		public void ShowTextAtPoint (nfloat x, nfloat y, byte []? bytes)
 		{
 			CGContextShowTextAtPoint (Handle, x, y, bytes, bytes is null ? 0 : bytes.Length);
@@ -1425,11 +1449,15 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 #else
-		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Watch (10, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 #endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern void CGContextDrawConicGradient (/* CGContext */ IntPtr context, /*[NullAllowed] CGGradient*/ IntPtr gradient, CGPoint center, nfloat angle);
 
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("tvos17.0")]
 		public void DrawConicGradient (CGGradient? gradient, CGPoint point, nfloat angle) =>
 			CGContextDrawConicGradient (Handle, gradient.GetHandle (), point, angle);
 
@@ -1439,7 +1467,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 #else
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 #endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern byte CGContextSetEDRTargetHeadroom (/* CGContextRef __nonnull */ IntPtr context, /* float */ float headroom);
@@ -1450,7 +1478,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 #else
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 #endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern float CGContextGetEDRTargetHeadroom (/* CGContextRef __nonnull */ IntPtr context);
@@ -1463,7 +1491,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 #else
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 #endif
 		public float GetEdrTargetHeadroom ()
 		{
@@ -1479,7 +1507,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 #else
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 #endif
 		public bool SetEdrTargetHeadroom (float value)
 		{
@@ -1492,7 +1520,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 #else
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 #endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern /* bool */ byte CGContextDrawImageApplyingToneMapping (/* CGContextRef __nonnull */ IntPtr context, CGRect r, /* CGImageRef */ IntPtr image, CGToneMapping method, /* CFDictionaryRef  __nullable */ IntPtr options);
@@ -1509,7 +1537,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 #else
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 #endif
 		public bool DrawImageApplyingToneMapping (CGRect rect, CGImage image, CGToneMapping method, NSDictionary? options)
 		{
@@ -1529,7 +1557,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 #else
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 #endif
 		public bool DrawImageApplyingToneMapping (CGRect rect, CGImage image, CGToneMapping method, CGToneMappingOptions? options)
 		{

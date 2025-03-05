@@ -18,6 +18,7 @@ ifeq ($(OUTPUT_DIR),)
 OUTPUT_DIR=output
 endif
 
+API_TOOLS_PATH=$(TOP)/tools/api-tools
 MONO_API_INFO = $(API_TOOLS_PATH)/mono-api-info/bin/Debug/$(DOTNET_TFM)/mono-api-info.dll
 MONO_API_HTML = $(API_TOOLS_PATH)/mono-api-html/bin/Debug/$(DOTNET_TFM)/mono-api-html.dll
 
@@ -121,9 +122,9 @@ $(OUTPUT_DIR)/api-diff.md: $(API_DIFF_DEPENDENCIES)
 	$(Q) if $(foreach html,$(wildcard $(OUTPUT_DIR)/diff/Microsoft.*.html),! test -s "$(html)" &&) true; then \
 		echo "<details><summary>NET (empty diffs)</summary>" >> "$@"; \
 	elif grep BreakingChangesDetected "$(OUTPUT_DIR)"/diff/Microsoft.*.html &> /dev/null; then \
-		echo "<details><summary>.NET ($(MARKDOWN_BREAKING_CHANGES_MESSAGE))</summary>" >> "$@"; \
+		echo "<details><summary>.NET ( $(MARKDOWN_BREAKING_CHANGES_MESSAGE) )</summary>" >> "$@"; \
 	else \
-		echo "<details><summary>.NET ($(MARKDOWN_NO_BREAKING_CHANGES_MESSAGE))</summary>" >> "$@"; \
+		echo "<details><summary>.NET ( $(MARKDOWN_NO_BREAKING_CHANGES_MESSAGE) )</summary>" >> "$@"; \
 	fi
 	$(Q) echo "" >> $@
 
@@ -208,6 +209,3 @@ $(APIDIFF_DIR)/references/current/Microsoft.$(1).xml: $(DOTNET_DESTDIR)/$($(1)_N
 update-current-refs:: $(APIDIFF_DIR)/references/current/Microsoft.$(1).xml
 endef
 $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call GenerateCurrentReferenceXml,$(platform))))
-
-merger.exe: merger.cs
-	$(Q) $(SYSTEM_CSC) -debug $< -out:$@ /nologo

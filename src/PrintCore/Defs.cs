@@ -17,7 +17,6 @@ using ObjCRuntime;
 using Foundation;
 
 using PMObject = System.IntPtr;
-using OSStatus = System.Int32;
 using System.Runtime.Versioning;
 
 namespace PrintCore {
@@ -147,21 +146,21 @@ namespace PrintCore {
 	public enum PMPrinterState : System.UInt16 {
 		Idle = 3,
 		Processing = 4,
-		Stopped = 5
+		Stopped = 5,
 	}
 
 	public enum PMDuplexMode : System.UInt32 {
 		None = 1,
 		NoTumble = 2,
 		Tumble = 3,
-		SimplexTumble = 4
+		SimplexTumble = 4,
 	}
 
 	public enum PMOrientation : System.UInt16 {
 		Portrait = 1,
 		Landscape = 2,
 		ReversePortrait = 3,
-		ReverseLandscape = 4
+		ReverseLandscape = 4,
 	}
 
 #if NET

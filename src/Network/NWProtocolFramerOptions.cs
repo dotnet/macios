@@ -22,7 +22,7 @@ using IntPtr = System.IntPtr;
 using OS_nw_protocol_options = System.IntPtr;
 using NativeHandle = System.IntPtr;
 #else
-using OS_nw_protocol_options=ObjCRuntime.NativeHandle;
+using OS_nw_protocol_options = ObjCRuntime.NativeHandle;
 #endif
 
 namespace Network {
@@ -36,7 +36,6 @@ namespace Network {
 	[TV (16, 0)]
 	[Mac (13, 0)]
 	[iOS (16, 0)]
-	[Watch (9, 0)]
 	[MacCatalyst (16, 0)]
 #endif
 	public class NSProtocolFramerOptions : NWProtocolOptions {

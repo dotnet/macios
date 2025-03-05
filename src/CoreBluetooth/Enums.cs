@@ -23,13 +23,12 @@ namespace CoreBluetooth {
 		Unsupported,
 		Unauthorized,
 		PoweredOff,
-		PoweredOn
+		PoweredOn,
 	}
 
 	// NSInteger -> CBCentralManager.h
 	/// <summary>Enumerates possible states of a <see cref="T:CoreBluetooth.CBCentralManager" />.</summary>
 	[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'CBManagerState' instead.")]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'CBManagerState' instead.")]
 	[Native]
@@ -39,13 +38,12 @@ namespace CoreBluetooth {
 		Unsupported = CBManagerState.Unsupported,
 		Unauthorized = CBManagerState.Unauthorized,
 		PoweredOff = CBManagerState.PoweredOff,
-		PoweredOn = CBManagerState.PoweredOn
+		PoweredOn = CBManagerState.PoweredOn,
 	}
 
 	// NSInteger -> CBPeripheralManager.h
 	/// <summary>Enumerates the possible states of the <see cref="T:CoreBluetooth.CBPeripheralManager" />.</summary>
 	[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'CBManagerState' instead.")]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'CBManagerState' instead.")]
 	[Native]
@@ -55,7 +53,7 @@ namespace CoreBluetooth {
 		Unsupported = CBManagerState.Unsupported,
 		Unauthorized = CBManagerState.Unauthorized,
 		PoweredOff = CBManagerState.PoweredOff,
-		PoweredOn = CBManagerState.PoweredOn
+		PoweredOn = CBManagerState.PoweredOn,
 	}
 
 	// NSInteger -> CBPeripheralManager.h
@@ -63,9 +61,13 @@ namespace CoreBluetooth {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBPeripheralState : long {
+		/// <summary>Indicates that the peripheral is not connected.</summary>
 		Disconnected,
+		/// <summary>Indicates that the peripheral is connecting.</summary>
 		Connecting,
+		/// <summary>Indicates that the peripheral is connected.</summary>
 		Connected,
+		/// <summary>Indicates that the peripheral is disconnecting.</summary>
 		[MacCatalyst (13, 1)]
 		Disconnecting,
 	}
@@ -98,7 +100,7 @@ namespace CoreBluetooth {
 		[MacCatalyst (13, 1)]
 		NotifyEncryptionRequired = 0x100,
 		[MacCatalyst (13, 1)]
-		IndicateEncryptionRequired = 0x200
+		IndicateEncryptionRequired = 0x200,
 	}
 
 	/// <summary>Errors possible during Bluetooth LE transactions.</summary>
@@ -133,24 +135,42 @@ namespace CoreBluetooth {
 	[ErrorDomain ("CBATTErrorDomain")]
 	[Native] // NSInteger -> CBError.h
 	public enum CBATTError : long {
+		/// <summary>To be added.</summary>
 		Success = 0,
+		/// <summary>To be added.</summary>
 		InvalidHandle,
+		/// <summary>To be added.</summary>
 		ReadNotPermitted,
+		/// <summary>To be added.</summary>
 		WriteNotPermitted,
+		/// <summary>To be added.</summary>
 		InvalidPdu,
+		/// <summary>To be added.</summary>
 		InsufficientAuthentication,
+		/// <summary>To be added.</summary>
 		RequestNotSupported,
+		/// <summary>To be added.</summary>
 		InvalidOffset,
+		/// <summary>To be added.</summary>
 		InsufficientAuthorization,
+		/// <summary>To be added.</summary>
 		PrepareQueueFull,
+		/// <summary>To be added.</summary>
 		AttributeNotFound,
+		/// <summary>To be added.</summary>
 		AttributeNotLong,
+		/// <summary>To be added.</summary>
 		InsufficientEncryptionKeySize,
+		/// <summary>To be added.</summary>
 		InvalidAttributeValueLength,
+		/// <summary>To be added.</summary>
 		UnlikelyError,
+		/// <summary>To be added.</summary>
 		InsufficientEncryption,
+		/// <summary>To be added.</summary>
 		UnsupportedGroupType,
-		InsufficientResources
+		/// <summary>To be added.</summary>
+		InsufficientResources,
 	}
 
 	// NSInteger -> CBPeripheral.h
@@ -159,7 +179,7 @@ namespace CoreBluetooth {
 	[Native]
 	public enum CBCharacteristicWriteType : long {
 		WithResponse,
-		WithoutResponse
+		WithoutResponse,
 	}
 
 	// NSUInteger -> CBCharacteristic.h
@@ -171,7 +191,7 @@ namespace CoreBluetooth {
 		Readable = 1,
 		Writeable = 1 << 1,
 		ReadEncryptionRequired = 1 << 2,
-		WriteEncryptionRequired = 1 << 3
+		WriteEncryptionRequired = 1 << 3,
 	}
 
 	// NSInteger -> CBPeripheralManager.h
@@ -179,12 +199,15 @@ namespace CoreBluetooth {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBPeripheralManagerConnectionLatency : long {
+		/// <summary>To be added.</summary>
 		Low = 0,
+		/// <summary>To be added.</summary>
 		Medium,
-		High
+		/// <summary>To be added.</summary>
+		High,
 	}
 
-	[iOS (13, 0), TV (13, 0), Watch (6, 0)]
+	[iOS (13, 0), TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBConnectionEvent : long {
@@ -192,14 +215,14 @@ namespace CoreBluetooth {
 		Connected = 1,
 	}
 
-	[Flags, iOS (13, 0), TV (13, 0), Watch (6, 0), NoMac]
+	[Flags, iOS (13, 0), TV (13, 0), NoMac]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBCentralManagerFeature : ulong {
 		ExtendedScanAndConnect = 1uL << 0,
 	}
 
-	[iOS (13, 0), TV (13, 0), Watch (6, 0)]
+	[iOS (13, 0), TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBManagerAuthorization : long {

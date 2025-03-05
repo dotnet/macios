@@ -49,16 +49,20 @@ namespace GameplayKit {
 	public enum GKMeshGraphTriangulationMode : ulong {
 		Vertices = 1 << 0,
 		Centers = 1 << 1,
-		EdgeMidpoints = 1 << 2
+		EdgeMidpoints = 1 << 2,
 	}
 
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum GKRTreeSplitStrategy : long {
+		/// <summary>To be added.</summary>
 		Halve = 0,
+		/// <summary>To be added.</summary>
 		Linear = 1,
+		/// <summary>To be added.</summary>
 		Quadratic = 2,
-		ReduceOverlap = 3
+		/// <summary>To be added.</summary>
+		ReduceOverlap = 3,
 	}
 
 	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:GameplayKit.GKAgentDelegate" />.</summary>

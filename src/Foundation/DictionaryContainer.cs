@@ -36,29 +36,21 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 using CoreGraphics;
-#if !WATCH
 using CoreMedia;
-#endif // !WATCH
 #endif
 
 #if HAS_UIKIT
 using UIKit;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 namespace Foundation {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public abstract class DictionaryContainer {
 #if !COREBUILD
 		protected DictionaryContainer ()
@@ -71,6 +63,9 @@ namespace Foundation {
 			Dictionary = dictionary ?? new NSMutableDictionary ();
 		}
 
+		/// <summary>Gets the wrapped <see cref="T:Foundation.NSDictionary" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary Dictionary { get; private set; }
 
 		protected T []? GetArray<T> (NSString key) where T : NSObject
@@ -249,11 +244,7 @@ namespace Foundation {
 			return value as NSDictionary<TKey, TValue>;
 		}
 
-#if NET
 		protected T? GetStrongDictionary<[DynamicallyAccessedMembers (DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] T> (NSString key)
-#else
-		protected T? GetStrongDictionary<T> (NSString key)
-#endif
 			where T : DictionaryContainer
 		{
 			return GetStrongDictionary (key, dict =>
@@ -338,7 +329,6 @@ namespace Foundation {
 			return value;
 		}
 
-#if !WATCH
 		protected CMTime? GetCMTimeValue (NSString key)
 		{
 			var dictValue = GetNSDictionary (key);
@@ -350,7 +340,6 @@ namespace Foundation {
 
 			return value;
 		}
-#endif // !WATCH
 
 #if HAS_UIKIT
 		protected UIEdgeInsets? GetUIEdgeInsets (NSString key)
@@ -516,13 +505,11 @@ namespace Foundation {
 				Dictionary [key] = value!.Value.ToDictionary ();
 		}
 
-#if !WATCH
 		protected void SetCMTimeValue (NSString key, CMTime? value)
 		{
 			if (NullCheckAndRemoveKey (key, !value.HasValue))
 				Dictionary [key] = value!.Value.ToDictionary ();
 		}
-#endif //!WATCH
 
 #if HAS_UIKIT
 		protected void SetUIEdgeInsets (NSString key, UIEdgeInsets? value)

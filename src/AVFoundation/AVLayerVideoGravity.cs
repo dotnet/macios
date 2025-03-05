@@ -25,8 +25,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#if !WATCH
-
 using System;
 
 using Foundation;
@@ -40,7 +38,7 @@ namespace AVFoundation {
 	public enum AVLayerVideoGravity {
 		ResizeAspect,
 		ResizeAspectFill,
-		Resize
+		Resize,
 	}
 
 	partial class AVPlayerLayer {
@@ -111,5 +109,3 @@ namespace AVFoundation {
 		}
 	}
 }
-
-#endif

@@ -19,57 +19,51 @@ using ObjCRuntime;
 namespace ImageIO {
 
 #if NET
-    [SupportedOSPlatform ("ios")]
-    [SupportedOSPlatform ("maccatalyst")]
-    [SupportedOSPlatform ("macos")]
-    [SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("tvos")]
 #endif
 	public static class CGImageAnimation {
 
 		public delegate void CGImageSourceAnimationHandler (nint index, CGImage image, out bool stop);
 
 #if NET
-        [SupportedOSPlatform ("macos")]
-        [SupportedOSPlatform ("ios13.0")]
-        [SupportedOSPlatform ("tvos13.0")]
-        [SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 #else
 		[Introduced (PlatformName.iOS, 13, 0, PlatformArchitecture.All)]
 		[Introduced (PlatformName.TvOS, 13, 0, PlatformArchitecture.All)]
-		[Introduced (PlatformName.WatchOS, 6, 0, PlatformArchitecture.All)]
 #endif
 		[DllImport (Constants.ImageIOLibrary)]
 		unsafe static extern /* OSStatus */ CGImageAnimationStatus CGAnimateImageAtURLWithBlock ( /* CFURLRef */ IntPtr url, /* CFDictionaryRef _iio_Nullable */ IntPtr options, /* CGImageSourceAnimationHandler */ BlockLiteral* block);
 
 #if NET
-        [SupportedOSPlatform ("macos")]
-        [SupportedOSPlatform ("ios13.0")]
-        [SupportedOSPlatform ("tvos13.0")]
-        [SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 #else
 		[Introduced (PlatformName.iOS, 13, 0, PlatformArchitecture.All)]
 		[Introduced (PlatformName.TvOS, 13, 0, PlatformArchitecture.All)]
-		[Introduced (PlatformName.WatchOS, 6, 0, PlatformArchitecture.All)]
 #endif
 		[DllImport (Constants.ImageIOLibrary)]
 		unsafe static extern /* OSStatus */ CGImageAnimationStatus CGAnimateImageDataWithBlock ( /* CFDataRef _Nonnull */ IntPtr data, /* CFDictionaryRef _Nullable */ IntPtr options, /* CGImageSourceAnimationHandler _Nonnull */ BlockLiteral* block);
 
 #if NET
-        [SupportedOSPlatform ("macos")]
-        [SupportedOSPlatform ("ios13.0")]
-        [SupportedOSPlatform ("tvos13.0")]
-        [SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 #else
 		[Introduced (PlatformName.iOS, 13, 0, PlatformArchitecture.All)]
 		[Introduced (PlatformName.TvOS, 13, 0, PlatformArchitecture.All)]
-		[Introduced (PlatformName.WatchOS, 6, 0, PlatformArchitecture.All)]
 #endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static CGImageAnimationStatus AnimateImage (NSUrl url, CGImageAnimationOptions options, CGImageSourceAnimationHandler handler)
 		{
-#if IOS && ARCH_32
-            throw new PlatformNotSupportedException ("This API is not supported on this version of iOS");
-#else
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 			if (handler is null)
@@ -85,25 +79,20 @@ namespace ImageIO {
 #endif
 				return CGAnimateImageAtURLWithBlock (url.Handle, options.GetHandle (), &block);
 			}
-#endif
 		}
 
 #if NET
-        [SupportedOSPlatform ("macos")]
-        [SupportedOSPlatform ("ios13.0")]
-        [SupportedOSPlatform ("tvos13.0")]
-        [SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 #else
 		[Introduced (PlatformName.iOS, 13, 0, PlatformArchitecture.All)]
 		[Introduced (PlatformName.TvOS, 13, 0, PlatformArchitecture.All)]
-		[Introduced (PlatformName.WatchOS, 6, 0, PlatformArchitecture.All)]
 #endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static CGImageAnimationStatus AnimateImage (NSData data, CGImageAnimationOptions options, CGImageSourceAnimationHandler handler)
 		{
-#if IOS && ARCH_32
-            throw new PlatformNotSupportedException ("This API is not supported on this version of iOS");
-#else
 			if (data is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
 			if (handler is null)
@@ -119,7 +108,6 @@ namespace ImageIO {
 #endif
 				return CGAnimateImageDataWithBlock (data.Handle, options.GetHandle (), &block);
 			}
-#endif
 		}
 
 		//

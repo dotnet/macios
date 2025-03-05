@@ -60,7 +60,7 @@ namespace ReplayKit {
 	[Native]
 	public enum RPPreviewViewControllerMode : long {
 		Preview,
-		Share
+		Share,
 	}
 
 	[Native]
@@ -68,7 +68,7 @@ namespace ReplayKit {
 	public enum RPSampleBufferType : long {
 		Video = 1,
 		AudioApp,
-		AudioMic
+		AudioMic,
 	}
 
 	/// <summary>Enumerates camera locations on the device.</summary>

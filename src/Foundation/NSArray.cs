@@ -32,10 +32,6 @@ using System.Runtime.Versioning;
 using CoreFoundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 // Disable until we get around to enable + fix any issues.
 #nullable disable
 
@@ -232,7 +228,6 @@ namespace Foundation {
 			}
 		}
 
-#if NET
 		/// <summary>Create an <see cref="NSArray" /> from the specified pointers.</summary>
 		/// <param name="items">Array of pointers (to <see cref="NSObject" /> instances).</param>
 		/// <remarks>If the <paramref name="items" /> array is null, an <see cref="ArgumentNullException" /> is thrown.</remarks>
@@ -242,11 +237,10 @@ namespace Foundation {
 				throw new ArgumentNullException (nameof (items));
 
 			unsafe {
-				fixed (IntPtr *valuesPtr = items)
+				fixed (IntPtr* valuesPtr = items)
 					return Runtime.GetNSObject<NSArray> (NSArray.FromObjects ((IntPtr) valuesPtr, items.Length))!;
 			}
 		}
-#endif
 
 		static public NSArray FromIntPtrs (NativeHandle [] vals)
 		{
@@ -274,15 +268,7 @@ namespace Foundation {
 
 		internal static NativeHandle GetAtIndex (NativeHandle handle, nuint i)
 		{
-#if NET
 			return Messaging.NativeHandle_objc_msgSend_UIntPtr (handle, Selector.GetHandle ("objectAtIndex:"), (UIntPtr) i);
-#else
-#if MONOMAC
-			return Messaging.IntPtr_objc_msgSend_UIntPtr (handle, selObjectAtIndex_XHandle, (UIntPtr) i);
-#else
-			return Messaging.IntPtr_objc_msgSend_UIntPtr (handle, Selector.GetHandle ("objectAtIndex:"), (UIntPtr) i);
-#endif
-#endif
 		}
 
 		[Obsolete ("Use of 'CFArray.StringArrayFromHandle' offers better performance.")]
@@ -390,6 +376,18 @@ namespace Foundation {
 			return ret;
 		}
 
+		/// <summary>Create a managed array from a pointer to a native NSArray instance.</summary>
+		/// <param name="handle">The pointer to the native NSArray instance.</param>
+		/// <param name="createObject">A callback that returns an instance of the type T for a given pointer (for an element in the NSArray).</param>
+		/// <param name="releaseHandle">Whether the native NSArray instance should be released before returning or not.</param>
+		public static T [] ArrayFromHandleFunc<T> (NativeHandle handle, Func<NativeHandle, T> createObject, bool releaseHandle)
+		{
+			var rv = ArrayFromHandleFunc<T> (handle, createObject);
+			if (releaseHandle && handle != NativeHandle.Zero)
+				NSObject.DangerousRelease (handle);
+			return rv;
+		}
+
 		static public T [] ArrayFromHandle<T> (NativeHandle handle, Converter<NativeHandle, T> creator)
 		{
 			if (handle == NativeHandle.Zero)
@@ -407,7 +405,7 @@ namespace Foundation {
 		static public T [] ArrayFromHandle<T> (NativeHandle handle, Converter<NativeHandle, T> creator, bool releaseHandle)
 		{
 			var rv = ArrayFromHandle<T> (handle, creator);
-			if (releaseHandle && handle == NativeHandle.Zero)
+			if (releaseHandle && handle != NativeHandle.Zero)
 				NSObject.DangerousRelease (handle);
 			return rv;
 		}
@@ -521,7 +519,7 @@ namespace Foundation {
 		}
 
 #if !NET
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+		[TV (13,0), iOS (13,0)]
 #else
 		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
 #endif

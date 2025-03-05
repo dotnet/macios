@@ -5,7 +5,7 @@ using Foundation;
 
 namespace AVKit {
 
-#if !XAMCORE_3_0 || MONOMAC
+#if MONOMAC
 	// this enum only exists for OSX (not iOS)
 	/// <summary>Determines which user interface elements are visible in the AVPlayerView</summary>
 	[Native]
@@ -14,7 +14,7 @@ namespace AVKit {
 		Inline,
 		Floating,
 		Minimal,
-		Default = Inline
+		Default = Inline,
 	}
 #endif
 
@@ -23,7 +23,6 @@ namespace AVKit {
 	[TV (13, 0)]
 #if NET
 	[NoMac]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 #endif
 	[Native]
@@ -38,7 +37,6 @@ namespace AVKit {
 		RecordingFailed = -1200,
 	}
 
-	[NoWatch]
 	[NoTV]
 	[NoMac]
 	[iOS (13, 0)]
@@ -51,7 +49,6 @@ namespace AVKit {
 	}
 
 	[NoiOS]
-	[NoWatch]
 	[NoTV]
 	[NoMacCatalyst]
 	[Native]

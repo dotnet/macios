@@ -131,6 +131,8 @@
 
     <ItemGroup>
       <ItemsToPush Include="$(NupkgPath)\*.nupkg" />
+      <WorkloadArtifacts Include="$(NupkgPath)\*.zip" />
+      <ItemsToPush Include="@(WorkloadArtifacts)" PublishFlatContainer="true" RelativeBlobPath="macios/$(_PackageVersion)/%(Filename)%(Extension)" />
     </ItemGroup>
 
     <Error Condition="'@(ItemsToPush)' == ''" Text="No packages to push." />

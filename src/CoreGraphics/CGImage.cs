@@ -51,12 +51,12 @@ namespace CoreGraphics {
 #endif
 	[Flags]
 	public enum CGWindowImageOption : uint {
-		Default             = 0,
+		Default = 0,
 		BoundsIgnoreFraming = (1 << 0),
-		ShouldBeOpaque      = (1 << 1),
-		OnlyShadows         = (1 << 2),
-		BestResolution      = (1 << 3),
-		NominalResolution   = (1 << 4),
+		ShouldBeOpaque = (1 << 1),
+		OnlyShadows = (1 << 2),
+		BestResolution = (1 << 3),
+		NominalResolution = (1 << 4),
 	}
 
 	// uint32_t -> CGWindow.h (OSX SDK only)
@@ -68,12 +68,12 @@ namespace CoreGraphics {
 #endif
 	[Flags]
 	public enum CGWindowListOption : uint {
-		All                 = 0,
-		OnScreenOnly        = (1 << 0),
+		All = 0,
+		OnScreenOnly = (1 << 0),
 		OnScreenAboveWindow = (1 << 1),
 		OnScreenBelowWindow = (1 << 2),
-		IncludingWindow     = (1 << 3),
-		ExcludeDesktopElements    = (1 << 4)
+		IncludingWindow = (1 << 3),
+		ExcludeDesktopElements = (1 << 4),
 	}
 #endif
 
@@ -86,7 +86,7 @@ namespace CoreGraphics {
 		First,
 		NoneSkipLast,
 		NoneSkipFirst,
-		Only
+		Only,
 	}
 
 	public enum CGImagePixelFormatInfo : uint {
@@ -119,7 +119,7 @@ namespace CoreGraphics {
 		ByteOrder16Little = (1 << 12),
 		ByteOrder32Little = (2 << 12),
 		ByteOrder16Big = (3 << 12),
-		ByteOrder32Big = (4 << 12)
+		ByteOrder32Big = (4 << 12),
 	}
 
 	[Flags]
@@ -264,8 +264,8 @@ namespace CoreGraphics {
 		[Deprecated (PlatformName.MacOSX, 14, 0, message: "Use ScreenCaptureKit instead.")]
 #endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		static extern IntPtr CGWindowListCreateImage(CGRect screenBounds, CGWindowListOption windowOption, uint windowID, CGWindowImageOption imageOption);
-        
+		static extern IntPtr CGWindowListCreateImage (CGRect screenBounds, CGWindowListOption windowOption, uint windowID, CGWindowImageOption imageOption);
+
 #if NET
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("maccatalyst18.0", "Use ScreenCaptureKit instead.")]
@@ -300,14 +300,17 @@ namespace CoreGraphics {
 								  imageOption);
 			return FromHandle (imageRef, true);
 		}
-#elif !WATCH
+#else
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("macos")]
 		public static CGImage? ScreenImage {
 			get {
 				return UIKit.UIScreen.MainScreen.Capture ().CGImage;
 			}
 		}
 #endif
-
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static unsafe /* CGImageRef */ IntPtr CGImageCreateWithJPEGDataProvider (/* CGDataProviderRef */ IntPtr source,
@@ -561,8 +564,6 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[Watch (5, 0)]
 #endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern CGImagePixelFormatInfo CGImageGetPixelFormatInfo (/* __nullable CGImageRef */ IntPtr handle);
@@ -572,8 +573,6 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[Watch (5, 0)]
 #endif
 		public CGImagePixelFormatInfo PixelFormatInfo => CGImageGetPixelFormatInfo (Handle);
 
@@ -582,8 +581,6 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[Watch (5, 0)]
 #endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern CGImageByteOrderInfo CGImageGetByteOrderInfo (/* __nullable CGImageRef */ IntPtr handle);
@@ -593,8 +590,6 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[Watch (5, 0)]
 #endif
 		public CGImageByteOrderInfo ByteOrderInfo => CGImageGetByteOrderInfo (Handle);
 
@@ -604,7 +599,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 #else
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 #endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe static extern /* CGImageRef __nullable */ IntPtr CGImageCreateWithContentHeadroom (
@@ -641,7 +636,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 #else
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 #endif
 		public CGImage (float headroom, int width, int height, int bitsPerComponent, int bitsPerPixel, int bytesPerRow,
 				CGColorSpace? colorSpace, CGBitmapFlags bitmapFlags, CGDataProvider? provider,
@@ -656,7 +651,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 #else
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 #endif
 		static IntPtr Create (float headroom, int width, int height, int bitsPerComponent, int bitsPerPixel, int bytesPerRow,
 				CGColorSpace? colorSpace, CGBitmapFlags bitmapFlags, CGDataProvider? provider,
@@ -690,7 +685,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 #else
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 #endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe static extern /* CGImageRef __nullable */ IntPtr CGImageCreateCopyWithContentHeadroom (
@@ -705,7 +700,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 #else
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 #endif
 		public CGImage? Copy (float headroom)
 		{
@@ -723,7 +718,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 #else
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 #endif
 		public static float DefaultHdrImageContentHeadroom {
 			get => CoreGraphicsFields.DefaultHdrImageContentHeadroom;
@@ -735,7 +730,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 #else
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 #endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern float CGImageGetContentHeadroom (/* __nullable CGImageRef */ IntPtr handle);
@@ -747,7 +742,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 #else
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 #endif
 		public float ContentHeadroom => CGImageGetContentHeadroom (Handle);
 
@@ -757,7 +752,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 #else
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 #endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern /* bool */ byte CGImageShouldToneMap (/* __nullable CGImageRef */ IntPtr handle);
@@ -769,7 +764,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 #else
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 #endif
 		public bool ShouldToneMap => CGImageShouldToneMap (Handle) != 0;
 
@@ -779,7 +774,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 #else
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 #endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern /* bool */ byte CGImageContainsImageSpecificToneMappingMetadata (/* __nullable CGImageRef */ IntPtr handle);
@@ -791,7 +786,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 #else
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 #endif
 		public bool ContainsImageSpecificToneMappingMetadata => CGImageContainsImageSpecificToneMappingMetadata (Handle) != 0;
 #endif // !COREBUILD

@@ -55,7 +55,7 @@ namespace Security {
 		GenericPassword,
 		Certificate,
 		Key,
-		Identity
+		Identity,
 	}
 
 	// manually mapped to KeysAccessible
@@ -89,14 +89,42 @@ namespace Security {
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.")]
 #endif
 		AlwaysThisDeviceOnly,
-		WhenPasscodeSetThisDeviceOnly
+		WhenPasscodeSetThisDeviceOnly,
 	}
 
 	public enum SecProtocol {
 		Invalid = -1,
-		Ftp, FtpAccount, Http, Irc, Nntp, Pop3, Smtp, Socks, Imap, Ldap, AppleTalk, Afp, Telnet, Ssh,
-		Ftps, Https, HttpProxy, HttpsProxy, FtpProxy, Smb, Rtsp, RtspProxy, Daap, Eppc, Ipp,
-		Nntps, Ldaps, Telnets, Imaps, Ircs, Pop3s,
+		Ftp,
+		FtpAccount,
+		Http,
+		Irc,
+		Nntp,
+		Pop3,
+		Smtp,
+		Socks,
+		Imap,
+		Ldap,
+		AppleTalk,
+		Afp,
+		Telnet,
+		Ssh,
+		Ftps,
+		Https,
+		HttpProxy,
+		HttpsProxy,
+		FtpProxy,
+		Smb,
+		Rtsp,
+		RtspProxy,
+		Daap,
+		Eppc,
+		Ipp,
+		Nntps,
+		Ldaps,
+		Telnets,
+		Imaps,
+		Ircs,
+		Pop3s,
 	}
 
 	public enum SecAuthenticationType {
@@ -310,11 +338,11 @@ namespace Security {
 		extern static SecStatusCode SecKeychainAddGenericPassword (
 			IntPtr keychain,
 			int serviceNameLength,
-			byte[]? serviceName,
+			byte []? serviceName,
 			int accountNameLength,
-			byte[]? accountName,
+			byte []? accountName,
 			int passwordLength,
-			byte[] passwordData,
+			byte [] passwordData,
 			IntPtr itemRef);
 
 #if NET
@@ -342,18 +370,18 @@ namespace Security {
 		extern static SecStatusCode SecKeychainAddInternetPassword (
 			IntPtr keychain,
 			int serverNameLength,
-			byte[]? serverName,
+			byte []? serverName,
 			int securityDomainLength,
-			byte[]? securityDomain,
+			byte []? securityDomain,
 			int accountNameLength,
-			byte[]? accountName,
+			byte []? accountName,
 			int pathLength,
-			byte[]? path,
+			byte []? path,
 			short port,
 			IntPtr protocol,
 			IntPtr authenticationType,
 			int passwordLength,
-			byte[] passwordData,
+			byte [] passwordData,
 			IntPtr itemRef);
 
 #if NET
@@ -390,30 +418,30 @@ namespace Security {
 		public static SecStatusCode AddInternetPassword (
 			string serverName,
 			string accountName,
-			byte[] password,
+			byte [] password,
 			SecProtocol protocolType = SecProtocol.Http,
 			short port = 0,
 			string? path = null,
 			SecAuthenticationType authenticationType = SecAuthenticationType.Default,
 			string? securityDomain = null)
 		{
-			byte[]? serverNameBytes = null;
-			byte[]? securityDomainBytes = null;
-			byte[]? accountNameBytes = null;
-			byte[]? pathBytes = null;
-			
+			byte []? serverNameBytes = null;
+			byte []? securityDomainBytes = null;
+			byte []? accountNameBytes = null;
+			byte []? pathBytes = null;
+
 			if (!String.IsNullOrEmpty (serverName))
 				serverNameBytes = System.Text.Encoding.UTF8.GetBytes (serverName);
-			
+
 			if (!String.IsNullOrEmpty (securityDomain))
 				securityDomainBytes = System.Text.Encoding.UTF8.GetBytes (securityDomain);
-			
+
 			if (!String.IsNullOrEmpty (accountName))
 				accountNameBytes = System.Text.Encoding.UTF8.GetBytes (accountName);
-			
+
 			if (!String.IsNullOrEmpty (path))
 				pathBytes = System.Text.Encoding.UTF8.GetBytes (path);
-			
+
 			return SecKeychainAddInternetPassword (
 				IntPtr.Zero,
 				serverNameBytes?.Length ?? 0,
@@ -431,12 +459,12 @@ namespace Security {
 				password!,
 				IntPtr.Zero);
 		}
-		
-		
-		public static SecStatusCode FindInternetPassword(
+
+
+		public static SecStatusCode FindInternetPassword (
 			string serverName,
 			string accountName,
-			out byte[]? password,
+			out byte []? password,
 			SecProtocol protocolType = SecProtocol.Http,
 			short port = 0,
 			string? path = null,
@@ -444,36 +472,36 @@ namespace Security {
 			string? securityDomain = null)
 		{
 			password = null;
-			
-			byte[]? serverBytes = null;
-			byte[]? securityDomainBytes = null;
-			byte[]? accountNameBytes = null;
-			byte[]? pathBytes = null;
+
+			byte []? serverBytes = null;
+			byte []? securityDomainBytes = null;
+			byte []? accountNameBytes = null;
+			byte []? pathBytes = null;
 
 			IntPtr passwordPtr = IntPtr.Zero;
-			
+
 			try {
 				if (!String.IsNullOrEmpty (serverName))
 					serverBytes = System.Text.Encoding.UTF8.GetBytes (serverName);
-				
+
 				if (!String.IsNullOrEmpty (securityDomain))
 					securityDomainBytes = System.Text.Encoding.UTF8.GetBytes (securityDomain);
-				
+
 				if (!String.IsNullOrEmpty (accountName))
 					accountNameBytes = System.Text.Encoding.UTF8.GetBytes (accountName);
-				
-				if (!String.IsNullOrEmpty(path))
+
+				if (!String.IsNullOrEmpty (path))
 					pathBytes = System.Text.Encoding.UTF8.GetBytes (path);
-				
+
 				int passwordLength = 0;
-				
+
 				SecStatusCode code;
 				unsafe {
 					fixed (byte* serverBytesPtr = serverBytes) {
 						fixed (byte* securityDomainBytesPtr = securityDomainBytes) {
 							fixed (byte* accountNameBytesPtr = accountNameBytes) {
 								fixed (byte* pathBytesPtr = pathBytes) {
-									code = SecKeychainFindInternetPassword(
+									code = SecKeychainFindInternetPassword (
 										IntPtr.Zero,
 										serverBytes?.Length ?? 0,
 										serverBytesPtr,
@@ -484,8 +512,8 @@ namespace Security {
 										pathBytes?.Length ?? 0,
 										pathBytesPtr,
 										port,
-										SecProtocolKeys.FromSecProtocol(protocolType),
-										KeysAuthenticationType.FromSecAuthenticationType(authenticationType),
+										SecProtocolKeys.FromSecProtocol (protocolType),
+										KeysAuthenticationType.FromSecAuthenticationType (authenticationType),
 										&passwordLength,
 										&passwordPtr,
 										IntPtr.Zero);
@@ -494,32 +522,32 @@ namespace Security {
 						}
 					}
 				}
-				
+
 				if (code == SecStatusCode.Success && passwordLength > 0) {
-					password = new byte[passwordLength];
-					Marshal.Copy(passwordPtr, password, 0, passwordLength);
+					password = new byte [passwordLength];
+					Marshal.Copy (passwordPtr, password, 0, passwordLength);
 				}
-				
+
 				return code;
-				
+
 			} finally {
 				if (passwordPtr != IntPtr.Zero)
-					SecKeychainItemFreeContent(IntPtr.Zero, passwordPtr);
+					SecKeychainItemFreeContent (IntPtr.Zero, passwordPtr);
 			}
 		}
 
-		public static SecStatusCode AddGenericPassword (string serviceName, string accountName, byte[] password)
+		public static SecStatusCode AddGenericPassword (string serviceName, string accountName, byte [] password)
 		{
-			byte[]? serviceNameBytes = null;
-			byte[]? accountNameBytes = null;
-			
+			byte []? serviceNameBytes = null;
+			byte []? accountNameBytes = null;
+
 			if (!String.IsNullOrEmpty (serviceName))
 				serviceNameBytes = System.Text.Encoding.UTF8.GetBytes (serviceName);
 
 			if (!String.IsNullOrEmpty (accountName))
 				accountNameBytes = System.Text.Encoding.UTF8.GetBytes (accountName);
 
-			return SecKeychainAddGenericPassword(
+			return SecKeychainAddGenericPassword (
 				IntPtr.Zero,
 				serviceNameBytes?.Length ?? 0,
 				serviceNameBytes,
@@ -531,30 +559,30 @@ namespace Security {
 				);
 		}
 
-		public static SecStatusCode FindGenericPassword (string serviceName, string accountName, out byte[]? password)
+		public static SecStatusCode FindGenericPassword (string serviceName, string accountName, out byte []? password)
 		{
 			password = null;
 
-			byte[]? serviceNameBytes = null;
-			byte[]? accountNameBytes = null;
-			
+			byte []? serviceNameBytes = null;
+			byte []? accountNameBytes = null;
+
 			IntPtr passwordPtr = IntPtr.Zero;
-			
+
 			try {
-				
+
 				if (!String.IsNullOrEmpty (serviceName))
 					serviceNameBytes = System.Text.Encoding.UTF8.GetBytes (serviceName);
-				
+
 				if (!String.IsNullOrEmpty (accountName))
 					accountNameBytes = System.Text.Encoding.UTF8.GetBytes (accountName);
-				
+
 				int passwordLength = 0;
-				
+
 				SecStatusCode code;
 				unsafe {
 					fixed (byte* serviceNameBytesPtr = serviceNameBytes) {
 						fixed (byte* accountNameBytesPtr = accountNameBytes) {
-							code = SecKeychainFindGenericPassword(
+							code = SecKeychainFindGenericPassword (
 								IntPtr.Zero,
 								serviceNameBytes?.Length ?? 0,
 								serviceNameBytesPtr,
@@ -567,17 +595,17 @@ namespace Security {
 						}
 					}
 				}
-				
-				if (code == SecStatusCode.Success && passwordLength > 0){
-					password = new byte[passwordLength];
-					Marshal.Copy(passwordPtr, password, 0, passwordLength);
+
+				if (code == SecStatusCode.Success && passwordLength > 0) {
+					password = new byte [passwordLength];
+					Marshal.Copy (passwordPtr, password, 0, passwordLength);
 				}
-				
+
 				return code;
-				
+
 			} finally {
 				if (passwordPtr != IntPtr.Zero)
-					SecKeychainItemFreeContent(IntPtr.Zero, passwordPtr);
+					SecKeychainItemFreeContent (IntPtr.Zero, passwordPtr);
 			}
 		}
 #else
@@ -711,8 +739,6 @@ namespace Security {
 		{
 			var kind = SecClass.FromSecKind (secKind);
 #if MONOMAC
-			queryDict = NSMutableDictionary.LowlevelFromObjectAndKey (kind, SecClass.SecClassKey);
-#elif WATCH
 			queryDict = NSMutableDictionary.LowlevelFromObjectAndKey (kind, SecClass.SecClassKey);
 #else
 			// Apple changed/fixed this in iOS7 (not the only change, see comments above)
@@ -1071,7 +1097,7 @@ namespace Security {
 			}
 		}
 
-#if !WATCH && !TVOS
+#if !TVOS
 #if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
@@ -1438,7 +1464,6 @@ namespace Security {
 #else
 		[iOS (13, 0)]
 		[TV (13, 0)]
-		[Watch (6, 0)]
 #endif
 		public bool UseDataProtectionKeychain {
 			get {

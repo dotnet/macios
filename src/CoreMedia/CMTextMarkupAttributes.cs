@@ -38,14 +38,10 @@ using ObjCRuntime;
 namespace CoreMedia {
 
 	// Convenience structure
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#else
-	[Watch (6, 0)]
-#endif
 	public struct TextMarkupColor {
 		public TextMarkupColor (float red, float green, float blue, float alpha)
 			: this ()
@@ -71,14 +67,10 @@ namespace CoreMedia {
 		public float Alpha { get; private set; }
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#else
-	[Watch (6, 0)]
-#endif
 	public class CMTextMarkupAttributes : DictionaryContainer {
 		public CMTextMarkupAttributes ()
 		{
@@ -105,7 +97,7 @@ namespace CoreMedia {
 						NSNumber.FromFloat (v.Alpha),
 						NSNumber.FromFloat (v.Red),
 						NSNumber.FromFloat (v.Green),
-						NSNumber.FromFloat (v.Blue)
+						NSNumber.FromFloat (v.Blue),
 					});
 				} else {
 					RemoveValue (CMTextMarkupAttributesKeys.ForegroundColorARGB);
@@ -128,7 +120,7 @@ namespace CoreMedia {
 						NSNumber.FromFloat (v.Alpha),
 						NSNumber.FromFloat (v.Red),
 						NSNumber.FromFloat (v.Green),
-						NSNumber.FromFloat (v.Blue)
+						NSNumber.FromFloat (v.Blue),
 					});
 				} else {
 					RemoveValue (CMTextMarkupAttributesKeys.BackgroundColorARGB);

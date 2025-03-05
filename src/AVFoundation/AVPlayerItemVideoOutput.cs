@@ -1,5 +1,3 @@
-#if !WATCH
-
 using System;
 
 using Foundation;
@@ -14,7 +12,7 @@ namespace AVFoundation {
 
 		enum InitMode {
 			PixelAttributes,
-			OutputSettings
+			OutputSettings,
 		}
 
 		AVPlayerItemVideoOutput (NSDictionary? data, AVPlayerItemVideoOutput.InitMode mode) : base (NSObjectFlag.Empty)
@@ -36,5 +34,3 @@ namespace AVFoundation {
 		protected AVPlayerItemVideoOutput (NSDictionary pixelBufferAttributes) : this (pixelBufferAttributes, InitMode.PixelAttributes) { }
 	}
 }
-
-#endif

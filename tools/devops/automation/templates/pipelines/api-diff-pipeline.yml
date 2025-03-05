@@ -11,16 +11,11 @@ parameters:
 - name: macOSName # comes from the build agent demand named macOS.Name
   displayName: Name of the version of macOS to use
   type: string
-  default: 'Sonoma'
+  default: 'Sequoia'
 
 - name: pool
   type: string
   displayName: Bot pool to use
-  default: automatic
-  values:
-  - pr
-  - ci
-  - automatic
 
 - name: isPR
   displayName: Is PR build
@@ -39,16 +34,19 @@ resources:
       submodules: true
 
   - repository: yaml-templates
-    type: github
-    name: xamarin/yaml-templates
+    type: git
+    name: xamarin.yaml-templates
     ref: refs/heads/main
-    endpoint: xamarin
 
-  - repository: maccore
-    type: github
-    name: xamarin/maccore
+  - repository: macios-adr
+    type: git
+    name: macios-adr
     ref: refs/heads/main
-    endpoint: xamarin
+
+  - repository: macios-adr-tmp
+    type: git
+    name: macios-adr
+    ref: refs/heads/main
 
 variables:
 - template: ../variables/common.yml

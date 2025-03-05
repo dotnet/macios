@@ -28,7 +28,7 @@ namespace FileProviderUI {
 	[Native]
 	enum FPUIExtensionErrorCode : ulong {
 		UserCancelled,
-		Failed
+		Failed,
 	}
 
 	/// <summary>File Provider UI extension context.</summary>

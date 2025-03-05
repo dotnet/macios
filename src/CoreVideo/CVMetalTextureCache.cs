@@ -8,18 +8,12 @@
 //
 //
 
-#if !__WATCHOS__
-
 using System;
 using System.Runtime.InteropServices;
 using ObjCRuntime;
 using CoreFoundation;
 using Foundation;
 using Metal;
-
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
 
 #nullable enable
 
@@ -156,5 +150,3 @@ namespace CoreVideo {
 			/* CVMetalTextureRef __nullable * __nonnull */ IntPtr* textureOut);
 	}
 }
-
-#endif // __WATCHOS__

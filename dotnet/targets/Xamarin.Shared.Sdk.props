@@ -29,8 +29,7 @@
 		<_XamarinRelativeSdkRootDirectory Condition="'$(_XamarinRelativeSdkRootDirectory)' == ''">$(XamarinRelativeSdkRootDirectory)</_XamarinRelativeSdkRootDirectory>
 		<!-- This is the location of the Microsoft.<platform>.Sdk NuGet on macOS, this value will be overriden from Windows  -->
 		<_XamarinSdkRootDirectoryOnMac>$(_XamarinSdkRootDirectory)</_XamarinSdkRootDirectoryOnMac>
-		<_XamarinTaskAssembly Condition="'$(_PlatformName)' != 'macOS'">$(_XamarinSdkRootDirectory)\tools\msbuild\iOS\Xamarin.iOS.Tasks.dll</_XamarinTaskAssembly>
-		<_XamarinTaskAssembly Condition="'$(_PlatformName)' == 'macOS'">$(_XamarinSdkRootDirectory)\tools\msbuild\macOS\Xamarin.Mac.Tasks.dll</_XamarinTaskAssembly>
+		<_XamarinTaskAssembly>$(_XamarinSdkRootDirectory)\tools\msbuild\Xamarin.MacDev.Tasks.dll</_XamarinTaskAssembly>
 
 		<!--
 			PublishAot should only take effect when doing 'dotnet publish', not when doing 'dotnet build'. We distinguish these cases using the '_IsPublishing' property,
@@ -94,10 +93,6 @@
 		<!-- Tell .NET to skip sanity checks that trigger too eagerly for builds with multiple RuntimeIdentifiers -->
 		<AllowPublishAotWithoutRuntimeIdentifier Condition="'$(AllowPublishAotWithoutRuntimeIdentifier)' == '' And '$(_UseNativeAot)' == 'true'">true</AllowPublishAotWithoutRuntimeIdentifier>
 		<AllowSelfContainedWithoutRuntimeIdentifier Condition="'$(AllowSelfContainedWithoutRuntimeIdentifier)' == ''">true</AllowSelfContainedWithoutRuntimeIdentifier>
-
-		<!-- Prevent .NET from resolving runtime identifier for NativeAOT builds when building universal apps. -->
-		<UseCurrentRuntimeIdentifier Condition="'$(_UseNativeAot)' == 'true' And '$(RuntimeIdentifiers)' != '' And '$(RuntimeIdentifier)' == ''">false</UseCurrentRuntimeIdentifier>
-
 	</PropertyGroup>
 
 	<!-- Set the default RuntimeIdentifier if not already specified. -->
@@ -142,6 +137,9 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
+		<!-- Prevent .NET from resolving runtime identifier for NativeAOT builds when building universal apps. -->
+		<UseCurrentRuntimeIdentifier Condition="'$(_UseNativeAot)' == 'true' And '$(RuntimeIdentifiers)' != '' And '$(RuntimeIdentifier)' == ''">false</UseCurrentRuntimeIdentifier>
+
 		<!-- See Xamarin.Shared.Sdk.Trimming.props for an explanation why we use CustomAfterDirectoryBuildTargets to compute trimming options -->
 		<CustomAfterDirectoryBuildTargets>$(CustomAfterDirectoryBuildTargets);$(MSBuildThisFileDirectory)Xamarin.Shared.Sdk.Trimming.props</CustomAfterDirectoryBuildTargets>
 	</PropertyGroup>

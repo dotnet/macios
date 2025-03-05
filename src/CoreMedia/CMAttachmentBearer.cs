@@ -10,14 +10,10 @@ using ObjCRuntime;
 
 namespace CoreMedia {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#else
-	[Watch (6, 0)]
-#endif
 	public static class CMAttachmentBearer {
 
 		[DllImport (Constants.CoreMediaLibrary)]
@@ -69,12 +65,10 @@ namespace CoreMedia {
 				return Runtime.GetINativeObject<T> (attchm, false);
 			return default (T);
 		}
-#if !WATCH
 		public static T? GetAttachment<T> (this ICMAttachmentBearer target, CMSampleBufferAttachmentKey key, out CMAttachmentMode attachmentModeOut) where T : class, INativeObject
 		{
 			return GetAttachment<T> (target, key.GetConstant (), out attachmentModeOut);
 		}
-#endif
 
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static void CMPropagateAttachments (/* CMAttachmentBearerRef */ IntPtr source, /* CMAttachmentBearerRef */ IntPtr destination);

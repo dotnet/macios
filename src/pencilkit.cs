@@ -120,6 +120,10 @@ namespace PencilKit {
 
 		[Export ("canvasViewDidEndUsingTool:")]
 		void EndUsingTool (PKCanvasView canvasView);
+
+		[iOS (18, 1), NoMacCatalyst]
+		[Export ("canvasView:didRefineStrokes:withNewStrokes:")]
+		void DidRefineStrokes (PKCanvasView canvasView, PKStroke [] strokes, PKStroke [] newStrokes);
 	}
 
 	interface IPKCanvasViewDelegate { }
@@ -750,6 +754,6 @@ namespace PencilKit {
 	enum PKToolPickerCustomItemControlOptions : ulong {
 		None = 0,
 		Width = 1 << 0,
-		Opacity = 1 << 1
+		Opacity = 1 << 1,
 	}
 }

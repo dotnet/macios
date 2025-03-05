@@ -130,32 +130,159 @@ namespace Foundation {
 			return source.BoolValue;
 		}
 
+		/// <summary>
+		/// Convert a NativeHandle to a NSNumber and return its value as a boolean.
+		/// </summary>
+		/// <param name="handle">The NativeHandle to convert.</param>
+		public static bool ToBool (NativeHandle handle)
+		{
+			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
+			return num.BoolValue;
+		}
+
+		/// <summary>
+		/// Convert a NativeHandle to a NSNumber and return its value as a byte.
+		/// </summary>
+		/// <param name="handle">The NativeHandle to convert.</param>
+		public static byte ToByte (NativeHandle handle)
+		{
+			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
+			return num.ByteValue;
+		}
+
+		/// <summary>
+		/// Convert a NativeHandle to a NSNumber and return its value as a sbyte.
+		/// </summary>
+		/// <param name="handle">The NativeHandle to convert.</param>
+		public static sbyte ToSByte (NativeHandle handle)
+		{
+			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
+			return num.SByteValue;
+		}
+
+		/// <summary>
+		/// Convert a NativeHandle to a NSNumber and return its value as a short.
+		/// </summary>
+		/// <param name="handle">The NativeHandle to convert.</param>
+		public static short ToInt16 (NativeHandle handle)
+		{
+			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
+			return num.Int16Value;
+		}
+
+		/// <summary>
+		/// Convert a NativeHandle to a NSNumber and return its value as a ushort.
+		/// </summary>
+		/// <param name="handle">The NativeHandle to convert.</param>
+		public static ushort ToUInt16 (NativeHandle handle)
+		{
+			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
+			return num.UInt16Value;
+		}
+
+		/// <summary>
+		/// Convert a NativeHandle to a NSNumber and return its value as an int.
+		/// </summary>
+		/// <param name="handle">The NativeHandle to convert.</param>
+		public static int ToInt32 (NativeHandle handle)
+		{
+			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
+			return num.Int32Value;
+		}
+
+		/// <summary>
+		/// Convert a NativeHandle to a NSNumber and return its value as a uint.
+		/// </summary>
+		/// <param name="handle">The NativeHandle to convert.</param>
+		public static uint ToUInt32 (NativeHandle handle)
+		{
+			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
+			return num.UInt32Value;
+		}
+
+		/// <summary>
+		/// Convert a NativeHandle to a NSNumber and return its value as a long.
+		/// </summary>
+		/// <param name="handle">The NativeHandle to convert.</param>
+		public static long ToInt64 (NativeHandle handle)
+		{
+			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
+			return num.Int64Value;
+		}
+
+		/// <summary>
+		/// Convert a NativeHandle to a NSNumber and return its value as a ulong.
+		/// </summary>
+		/// <param name="handle">The NativeHandle to convert.</param>
+		public static ulong ToUInt64 (NativeHandle handle)
+		{
+			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
+			return num.UInt64Value;
+		}
+
+		/// <summary>
+		/// Convert a NativeHandle to a NSNumber and return its value as a float.
+		/// </summary>
+		/// <param name="handle">The NativeHandle to convert.</param>
+		public static float ToFloat (NativeHandle handle)
+		{
+			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
+			return num.FloatValue;
+		}
+
+		/// <summary>
+		/// Convert a NativeHandle to a NSNumber and return its value as a nfloat.
+		/// </summary>
+		/// <param name="handle">The NativeHandle to convert.</param>
+		public static nfloat ToNFloat (NativeHandle handle)
+		{
+			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
+			return num.NFloatValue;
+		}
+
+		/// <summary>
+		/// Convert a NativeHandle to a NSNumber and return its value as a double.
+		/// </summary>
+		/// <param name="handle">The NativeHandle to convert.</param>
+		public static double ToDouble (NativeHandle handle)
+		{
+			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
+			return num.DoubleValue;
+		}
+
+		/// <summary>
+		/// Convert a NativeHandle to a NSNumber and return its value as a nint.
+		/// </summary>
+		/// <param name="handle">The NativeHandle to convert.</param>
+		public static nint ToNInt (NativeHandle handle)
+		{
+			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
+			return num.NIntValue;
+		}
+
+		/// <summary>
+		/// Convert a NativeHandle to a NSNumber and return its value as a nuint.
+		/// </summary>
+		public static nuint ToNUInt (NativeHandle handle)
+		{
+			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
+			return num.NUIntValue;
+		}
+
 		public NSNumber (nfloat value) :
-#if ARCH_64
-			this ((double)value)
-#else
-			this ((float) value)
-#endif
+			this ((double) value)
 		{
 		}
 
 		public nfloat NFloatValue {
 			get {
-#if ARCH_64
-				return (nfloat)DoubleValue;
-#else
-				return (nfloat) FloatValue;
-#endif
+				return (nfloat) DoubleValue;
 			}
 		}
 
 		public static NSNumber FromNFloat (nfloat value)
 		{
-#if ARCH_64
-			return (FromDouble ((double)value));
-#else
-			return (FromFloat ((float) value));
-#endif
+			return (FromDouble ((double) value));
 		}
 
 		public override string ToString ()

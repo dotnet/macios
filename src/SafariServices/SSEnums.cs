@@ -22,7 +22,7 @@ namespace SafariServices {
 	[Native ("SSReadingListErrorCode")]
 	[ErrorDomain ("SSReadingListErrorDomain")]
 	public enum SSReadingListError : long {
-		UrlSchemeNotAllowed = 1
+		UrlSchemeNotAllowed = 1,
 	}
 
 	[NoMac]
@@ -35,7 +35,7 @@ namespace SafariServices {
 		Ok = 0,
 		NoExtensionFound = 1,
 		NoAttachmentFound = 2,
-		LoadingInterrupted = 3
+		LoadingInterrupted = 3,
 	}
 
 	/// <summary>Enumerates errors that that Safari can encounter when working with content blockers or app extensions.</summary>
@@ -46,7 +46,7 @@ namespace SafariServices {
 		Ok = 0,
 		NoExtensionFound = 1,
 		NoAttachmentFound = 2,
-		LoadingInterrupted = 3
+		LoadingInterrupted = 3,
 	}
 
 	[NoMac]

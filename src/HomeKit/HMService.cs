@@ -10,7 +10,7 @@ namespace HomeKit {
 
 	public partial class HMService {
 
-#if !WATCH && !TVOS
+#if !TVOS
 		public void UpdateAssociatedServiceType (HMServiceType serviceType, Action<NSError> completion)
 		{
 			UpdateAssociatedServiceType (serviceType.GetConstant (), completion);
@@ -20,14 +20,6 @@ namespace HomeKit {
 		{
 			return UpdateAssociatedServiceTypeAsync (serviceType.GetConstant ());
 		}
-
-#if !XAMCORE_3_0
-		[Obsolete]
-		public Task UpdateNameAsync (HMServiceType serviceType)
-		{
-			return UpdateNameAsync (serviceType.GetConstant ());
-		}
-#endif
 #endif
 	}
 }

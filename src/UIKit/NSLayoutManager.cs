@@ -7,8 +7,6 @@
 // Copyright 2013, Xamarin Inc
 //
 
-#if !WATCH
-
 using System;
 #if IOS
 using System.Drawing;
@@ -21,7 +19,7 @@ using Foundation;
 using ObjCRuntime;
 
 #if MONOMAC
-using UIFont=AppKit.NSFont;
+using UIFont = AppKit.NSFont;
 #endif
 
 #if MONOMAC
@@ -51,15 +49,8 @@ namespace UIKit {
 
 			fixed (short* glyphs = glyphBuffer) {
 				nuint rv;
-#if ARCH_32
-				// Unified/32: the output array is not the correct size, it needs to be int[], and it's an array of NSGlyphProperty (which is long)
-				nint[] tmpArray = null;
-				if (props is not null)
-					tmpArray = new nint [props.Length];
-#else
 				// Unified/64 + Classic: the input array is the correct size
 				var tmpArray = props;
-#endif
 				fixed (void* properties = tmpArray) {
 					fixed (nuint* charIBuffer = charIndexBuffer) {
 						fixed (byte* bidi = bidiLevelBuffer) {
@@ -67,13 +58,6 @@ namespace UIKit {
 						}
 					}
 				}
-#if ARCH_32
-				// Marshal back from the tmpArray.
-				if (tmpArray is not null) {
-					for (int i = 0; i < props.Length; i++)
-						props [i] = (NSGlyphProperty) (long) tmpArray [i];
-				}
-#endif
 
 				return rv;
 			}
@@ -83,13 +67,11 @@ namespace UIKit {
 #if MONOMAC
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use the overload that takes 'nint glyphCount' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use the overload that takes 'nint glyphCount' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use the overload that takes 'nint glyphCount' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use the overload that takes 'nint glyphCount' instead.")]
 		public unsafe void ShowGlyphs (
 #else
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use the 'ShowGlyphs' overload that takes 'nint glyphCount' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use the 'ShowGlyphs' overload that takes 'nint glyphCount' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use the 'ShowGlyphs' overload that takes 'nint glyphCount' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use the 'ShowGlyphs' overload that takes 'nint glyphCount' instead.")]
 		public unsafe void ShowCGGlyphs (
 #endif // MONOMAC
@@ -115,7 +97,6 @@ namespace UIKit {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -227,5 +208,3 @@ namespace UIKit {
 		}
 	}
 }
-
-#endif // !WATCH

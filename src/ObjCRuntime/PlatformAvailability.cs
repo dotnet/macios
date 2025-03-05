@@ -12,7 +12,7 @@
 //
 // Copyright 2013-2014 Xamarin Inc.
 
-#if COREBUILD || (!XAMCORE_3_0 && !NET)
+#if COREBUILD
 
 using System;
 using System.Globalization;
@@ -101,7 +101,7 @@ namespace ObjCRuntime {
 
 		iOS_Arch32 = 0x0000000001000000,
 		iOS_Arch64 = 0x0000000002000000,
-		iOS_Arch = 0x00000000ff000000
+		iOS_Arch = 0x00000000ff000000,
 	}
 
 	[Obsolete ("Use [Introduced|Deprecated|Obsoleted|Unavailable] attributes with PlatformName.")]
@@ -239,10 +239,6 @@ namespace ObjCRuntime {
 					(NSString)plist ["ProductName"],
 					(NSString)plist ["ProductVersion"])
 				).Value;
-#elif WATCH
-			hostApiPlatform = null;
-			Console.WriteLine ("PlatformHelper.GetHostApiPlatform () not implemented for WatchOS.");
-			throw new NotImplementedException ();
 #else
 			return (hostApiPlatform = ParseApiPlatform (
 			 	UIDevice.CurrentDevice.SystemName,
@@ -282,7 +278,7 @@ namespace ObjCRuntime {
 			return platform;
 		}
 
-#if !COREBUILD && !WATCH && !NET
+#if !COREBUILD && !NET
 #if MONOMAC
 		const int sys1 = 1937339185;
 		const int sys2 = 1937339186;
@@ -511,6 +507,7 @@ namespace ObjCRuntime {
 		}
 	}
 
+	[AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
 #if !COREBUILD
 	[Obsolete ("Use [Introduced|Deprecated|Obsoleted|Unavailable] attributes with PlatformName.")]
 #endif
@@ -541,6 +538,7 @@ namespace ObjCRuntime {
 
 	}
 
+	[AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
 #if !COREBUILD
 	[Obsolete ("Use [Introduced|Deprecated|Obsoleted|Unavailable] attributes with PlatformName.")]
 #endif
@@ -570,7 +568,7 @@ namespace ObjCRuntime {
 
 		public MacAttribute (byte major, byte minor, byte subminor)
 #if NET
-			: base ((Platform)((ulong)major << 48 | (ulong)minor << 40 | (ulong)subminor << 32))
+			: base ((Platform) ((ulong) major << 48 | (ulong) minor << 40 | (ulong) subminor << 32))
 #else
 			: this (major, minor, subminor, false)
 #endif

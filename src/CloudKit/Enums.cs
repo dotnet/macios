@@ -25,7 +25,7 @@ namespace CloudKit {
 	[Native]
 	[Flags]
 	public enum CKApplicationPermissions : ulong {
-		UserDiscoverability = 1 << 0
+		UserDiscoverability = 1 << 0,
 	}
 
 	// NSInteger -> CKContainer.h
@@ -36,7 +36,7 @@ namespace CloudKit {
 		InitialState = 0,
 		CouldNotComplete = 1,
 		Denied = 2,
-		Granted = 3
+		Granted = 3,
 	}
 
 	// NSInteger -> CKError.h
@@ -91,7 +91,7 @@ namespace CloudKit {
 	public enum CKRecordSavePolicy : long {
 		SaveIfServerRecordUnchanged = 0,
 		SaveChangedKeys = 1,
-		SaveAllKeys = 2
+		SaveAllKeys = 2,
 	}
 
 	// NSInteger -> CKNotification.h
@@ -113,7 +113,7 @@ namespace CloudKit {
 	public enum CKQueryNotificationReason : long {
 		RecordCreated = 1,
 		RecordUpdated,
-		RecordDeleted
+		RecordDeleted,
 	}
 
 	// NSUInteger -> CKRecordZone.h
@@ -138,12 +138,11 @@ namespace CloudKit {
 	[Native]
 	public enum CKReferenceAction : ulong {
 		None = 0,
-		DeleteSelf = 1
+		DeleteSelf = 1,
 	}
 
 	// NSInteger -> CKSubscription.h
 	/// <summary>Enumerates subscription types.</summary>
-	[Watch (6, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKSubscriptionType : long {
@@ -156,7 +155,6 @@ namespace CloudKit {
 	// NSInteger -> CKSubscription.h
 
 #if !NET
-	[NoWatch]
 	[Obsoleted (PlatformName.iOS, 14, 0, message: "Use 'CKQuerySubscriptionOptions' instead.")]
 	[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'CKQuerySubscriptionOptions' instead.")]
 	[Obsoleted (PlatformName.MacOSX, 10, 16, message: "Use 'CKQuerySubscriptionOptions' instead.")]
@@ -203,7 +201,6 @@ namespace CloudKit {
 	/// <summary>Enumerates share participant types.</summary>
 	[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'CKShareParticipantRole' instead.")]
 	[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'CKShareParticipantRole' instead.")]
-	[Deprecated (PlatformName.WatchOS, 5, 0, message: "Use 'CKShareParticipantRole' instead.")]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'CKShareParticipantRole' instead.")]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'CKShareParticipantRole' instead.")]
@@ -216,7 +213,6 @@ namespace CloudKit {
 	}
 
 	/// <summary>Enumerates the time or times when a <see cref="T:CloudKit.CKSubscription" /> fires a notification.</summary>
-	[Watch (6, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKQuerySubscriptionOptions : ulong {
@@ -239,7 +235,6 @@ namespace CloudKit {
 		HundredsOfGigabytes,
 	}
 
-	[Watch (5, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKShareParticipantRole : long {
@@ -249,7 +244,7 @@ namespace CloudKit {
 		PublicUser = 4,
 	}
 
-	[NoTV, NoWatch, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[Native, Flags]
 	public enum CKSharingParticipantAccessOption : ulong {
 		AnyoneWithLink = 1uL << 0,
@@ -257,7 +252,7 @@ namespace CloudKit {
 		Any = AnyoneWithLink | SpecifiedRecipientsOnly,
 	}
 
-	[NoTV, NoWatch, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[Native, Flags]
 	public enum CKSharingParticipantPermissionOption : ulong {
 		ReadOnly = 1uL << 0,
@@ -266,7 +261,7 @@ namespace CloudKit {
 	}
 
 
-	[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEngineAccountChangeType : long {
 		SignIn,
@@ -274,14 +269,14 @@ namespace CloudKit {
 		SwitchAccounts,
 	}
 
-	[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEngineSyncReason : long {
 		Scheduled,
 		Manual,
 	}
 
-	[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEngineEventType : long {
 		StateUpdate,
@@ -298,14 +293,14 @@ namespace CloudKit {
 		DidSendChanges,
 	}
 
-	[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEnginePendingRecordZoneChangeType : long {
 		SaveRecord,
 		DeleteRecord,
 	}
 
-	[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEngineZoneDeletionReason : long {
 		Deleted,
@@ -313,7 +308,7 @@ namespace CloudKit {
 		EncryptedDataReset,
 	}
 
-	[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEnginePendingDatabaseChangeType : long {
 		SaveZone,

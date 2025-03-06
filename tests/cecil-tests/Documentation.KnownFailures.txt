@@ -12131,6 +12131,7 @@ F:ObjCRuntime.Constants.CoreTextLibrary
 F:ObjCRuntime.Constants.CoreVideoLibrary
 F:ObjCRuntime.Constants.CoreWlanLibrary
 F:ObjCRuntime.Constants.CryptoTokenKitLibrary
+F:ObjCRuntime.Constants.DataDetectionLibrary
 F:ObjCRuntime.Constants.DeviceCheckLibrary
 F:ObjCRuntime.Constants.DeviceDiscoveryExtensionLibrary
 F:ObjCRuntime.Constants.DeviceDiscoveryUILibrary
@@ -50839,6 +50840,7 @@ P:CryptoTokenKit.TKTokenKeychainKey.SuitableForLogin
 P:CryptoTokenKit.TKTokenSession.Delegate
 P:Darwin.Message.Item(System.Int32)
 P:Darwin.Message.Item(System.String)
+P:DataDetection.DDMatchCalendarEvent.AllDay
 P:DeviceCheck.DCAppAttestService.Supported
 P:DeviceDiscoveryExtension.DDDevice.NetworkEndpoint
 P:DeviceDiscoveryExtension.DDDeviceProtocolStrings.Dial
@@ -61825,7 +61827,6 @@ T:CoreImage.CIDither
 T:CoreImage.CIDocumentEnhancer
 T:CoreImage.CIEdgePreserveUpsampleFilter
 T:CoreImage.CIFilterApply
-T:CoreImage.CIFilterGenerator
 T:CoreImage.CIFilterMode
 T:CoreImage.CIGaborGradients
 T:CoreImage.CIGuidedFilter

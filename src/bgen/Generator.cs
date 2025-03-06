@@ -2919,9 +2919,11 @@ public partial class Generator : IMemberGatherer {
 					}
 				} else {
 					var enumCast = (bindAsType.IsEnum && !minfo.type.IsArray) ? $"({formattedBindAsType}) " : string.Empty;
-					print ("{0} retvaltmp;", NativeHandleType);
-					cast_a = "((retvaltmp = ";
-					cast_b = $") == IntPtr.Zero ? default ({formattedBindAsType}) : ({enumCast}Runtime.GetNSObject<{formattedReturnType}> (retvaltmp, {owns})!{wrapper})){suffix}";
+					cast_a = $"{enumCast}Runtime.GetNSObject<{formattedReturnType}> (";
+					if (isNullable)
+						cast_b = $", {owns}){wrapper}";
+					else
+						cast_b = $", {owns})!{wrapper}";
 				}
 			} else {
 				cast_a = " Runtime.GetNSObject<" + TypeManager.FormatType (minfo?.type ?? declaringType, mi.ReturnType) + "> (";

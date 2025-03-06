@@ -46,6 +46,12 @@ public static class Documentation {
 /// </summary>
 /// <param name=""values"">The array if <see cref=""NSString"" /> values to convert.</param>";
 
+		public static string GetDomain (string name) =>
+@$"/// <summary>Returns the error domain associated with the {name} value</summary>
+/// <param name=""self"">The enumeration value</param>
+/// <remarks>
+///   <para>See the <see cref=""global::Foundation.NSError"" /> for information on how to use the error domains when reporting errors.</para>
+/// </remarks>";
 	}
 
 	/// <summary>

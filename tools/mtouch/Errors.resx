@@ -453,11 +453,7 @@
 	</data>
 
 	<!-- MT0088 is not in use anymore -->
-
-	<data name="MT0089" xml:space="preserve">
-		<value>The option '{0}' cannot take the value '{1}' when cooperative mode is enabled for the GC.
-		</value>
-	</data>
+	<!-- MT0089 is not in use anymore -->
 
 	<data name="MX0090" xml:space="preserve">
 		<value>The target framework '{0}' is deprecated. Use '{1}' instead.

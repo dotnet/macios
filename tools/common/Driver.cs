@@ -136,7 +136,6 @@ namespace Xamarin.Bundler {
 					throw ErrorHelper.CreateError (26, ex, Errors.MX0026, "--warn", ex.Message);
 				}
 			});
-			options.Add ("coop:", "If the GC should run in cooperative mode.", v => { app.EnableCoopGC = ParseBool (v, "coop"); }, hidden: true);
 			options.Add ("sgen-conc", "Enable the *experimental* concurrent garbage collector.", v => { app.EnableSGenConc = true; });
 			options.Add ("marshal-objectivec-exceptions:", "Specify how Objective-C exceptions should be marshalled. Valid values: default, unwindmanagedcode, throwmanagedexception, abort and disable.", v => {
 				if (Application.TryParseObjectiveCExceptionMode (v, out var value)) {

@@ -43,13 +43,15 @@ namespace Xamarin.Tests {
 			return rv;
 		}
 
-		protected static void AddRemoteProperties (Dictionary<string, string> properties)
+		protected static Dictionary<string, string> AddRemoteProperties (Dictionary<string, string>? properties = null)
 		{
+			properties ??= new Dictionary<string, string> ();
 			properties ["ServerAddress"] = Environment.GetEnvironmentVariable ("MAC_AGENT_IP") ?? string.Empty;
 			properties ["ServerUser"] = Environment.GetEnvironmentVariable ("MAC_AGENT_USER") ?? string.Empty;
 			properties ["ServerPassword"] = Environment.GetEnvironmentVariable ("XMA_PASSWORD") ?? string.Empty;
 			if (!string.IsNullOrEmpty (properties ["ServerUser"]))
 				properties ["ContinueOnDisconnected"] = "false";
+			return properties;
 		}
 
 		protected static void SetRuntimeIdentifiers (Dictionary<string, string> properties, string runtimeIdentifiers)

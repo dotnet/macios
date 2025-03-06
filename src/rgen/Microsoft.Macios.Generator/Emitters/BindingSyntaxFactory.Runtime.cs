@@ -173,4 +173,31 @@ static partial class BindingSyntaxFactory {
 					IdentifierName ("FromHandle").WithTrailingTrivia (Space)))
 			.WithArgumentList (argumentList);
 	}
+	
+	/// <summary>
+	/// Generates a call to the NSArray.ArrayFromHandleFunc with the given arguments.
+	/// </summary>
+	/// <param name="returnType">The generic return type of the call.</param>
+	/// <param name="arguments">An immutable array of arguments.</param>
+	/// <returns>The invocation syntax for the method.</returns>
+	internal static InvocationExpressionSyntax NSArrayFromHandleFunc (string returnType,
+		ImmutableArray<ArgumentSyntax> arguments)
+	{
+		// generate: (arg1, arg2, arg3)
+		var argumentList = ArgumentList (
+			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
+		// generate <returnType>
+		var genericsList = TypeArgumentList (
+			SingletonSeparatedList<TypeSyntax> (IdentifierName (returnType)));
+		
+		// generate NSArray.ArrayFromHandleFunc<returnType> (arg1, arg2, arg3)
+		return InvocationExpression (
+				MemberAccessExpression (
+					SyntaxKind.SimpleMemberAccessExpression,
+					IdentifierName ("NSArray"),
+					GenericName ("ArrayFromHandleFunc")
+						.WithTypeArgumentList(genericsList)
+						.WithTrailingTrivia (Space)))
+			.WithArgumentList (argumentList);
+	}
 }

@@ -4150,8 +4150,7 @@ namespace Registrar {
 			if (App.Embeddinator)
 				body.WriteLine ("xamarin_embeddinator_initialize ();");
 
-			body.WriteLine ("MONO_ASSERT_GC_SAFE_OR_DETACHED;");
-			body.WriteLine ("MONO_THREAD_ATTACH;"); // COOP: this will switch to GC_UNSAFE
+			body.WriteLine ("MONO_THREAD_ATTACH;");
 			body.WriteLine ();
 
 			// Write out everything
@@ -4239,7 +4238,7 @@ namespace Registrar {
 
 			body.AppendLine (cleanup);
 
-			body.WriteLine ("MONO_THREAD_DETACH;"); // COOP: this will switch to GC_SAFE
+			body.WriteLine ("MONO_THREAD_DETACH;");
 
 			body.AppendLine ("if (exception_gchandle != INVALID_GCHANDLE)");
 			body.Indent ().WriteLine ("xamarin_process_managed_exception_gchandle (exception_gchandle);").Unindent ();

@@ -290,7 +290,7 @@ readonly partial struct Binding {
 	/// <param name="symbol">The symbol related to the current declaration.</param>
 	/// <param name="context">The root binding context of the current compilation.</param>
 	/// <returns>A code change or null if it could not be calculated.</returns>
-	public static Binding? FromDeclaration (BaseTypeDeclarationSyntax baseTypeDeclarationSyntax,  INamedTypeSymbol symbol,
+	public static Binding? FromDeclaration (BaseTypeDeclarationSyntax baseTypeDeclarationSyntax, INamedTypeSymbol symbol,
 		in RootContext context)
 		=> baseTypeDeclarationSyntax switch {
 			EnumDeclarationSyntax enumDeclarationSyntax => new Binding (enumDeclarationSyntax, symbol, context),

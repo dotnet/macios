@@ -73,11 +73,11 @@ class Transformer {
 		logger.Debug ("Selecting topic for binding '{BindingName}' of type {BindingType}", binding.FullyQualifiedSymbol, binding.BindingType);
 		switch (binding.BindingType) {
 		case BindingType.Category:
-			return nameof(CategoryTransformer);
+			return nameof (CategoryTransformer);
 		case BindingType.Class:
-			return nameof(ClassTransformer);
+			return nameof (ClassTransformer);
 		case BindingType.Protocol:
-			return nameof(ProtocolTransformer);
+			return nameof (ProtocolTransformer);
 		case BindingType.SmartEnum:
 			// we need to decide if the smart enum represents and error domain or not, we do that by checking
 			// its attributes.
@@ -94,7 +94,7 @@ class Transformer {
 			// check if we are dealing with a normal enum, this happens when the we decided to add the enum in the
 			// framework cs file, which happens
 			if (declarationSyntax is EnumDeclarationSyntax)
-				return nameof(CopyTransformer);
+				return nameof (CopyTransformer);
 			logger.Warning ("Binding '{BindingName}' could not be matched to a transformer", binding.FullyQualifiedSymbol);
 			return null;
 		}

@@ -117,7 +117,7 @@ namespace AudioToolbox {
 
 		// From kAudio_
 		/// <summary>To be added.</summary>
-		GeneralParamError = -50
+		GeneralParamError = -50,
 	}
 
 #if NET
@@ -269,7 +269,7 @@ namespace AudioToolbox {
 		LowQualityZeroLatency = 0x6c717a6c,     // lqzl
 #endif
 		/// <summary>To be added.</summary>
-		Varispeed = 0x76737064                  // vspd
+		Varispeed = 0x76737064,                 // vspd
 	}
 
 	public enum AudioQueueHardwareCodecPolicy { // A AudioQueuePropertyID (UInt32)
@@ -282,7 +282,7 @@ namespace AudioToolbox {
 		/// <summary>To be added.</summary>
 		PreferSoftware = 3,
 		/// <summary>To be added.</summary>
-		PreferHardware = 4
+		PreferHardware = 4,
 	}
 
 	public enum AudioQueueParameter : uint // UInt32 AudioQueueParameterID
@@ -303,7 +303,7 @@ namespace AudioToolbox {
 		/// <summary>To be added.</summary>
 		SampleRate = 0x61717372,
 		/// <summary>To be added.</summary>
-		NumberChannels = 0x61716463
+		NumberChannels = 0x61716463,
 	}
 
 	[Flags]
@@ -1779,7 +1779,7 @@ namespace AudioToolbox {
 
 			var stamp = new AudioTimeStamp () {
 				SampleTime = timeStamp,
-				Flags = AudioTimeStamp.AtsFlags.SampleTimeValid
+				Flags = AudioTimeStamp.AtsFlags.SampleTimeValid,
 			};
 			return AudioQueueOfflineRender (handle, &stamp, audioQueueBuffer, frameCount);
 		}

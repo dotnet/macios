@@ -57,7 +57,7 @@ namespace CoreFoundation {
 		/// <summary>To be added.</summary>
 		ConnectCallBack = 4,
 		/// <summary>To be added.</summary>
-		WriteCallBack = 8
+		WriteCallBack = 8,
 	}
 
 	// defined as CFIndex (long [long] = nint) - System/Library/Frameworks/CoreFoundation.framework/Headers/CFSocket.h
@@ -68,7 +68,7 @@ namespace CoreFoundation {
 		/// <summary>To be added.</summary>
 		Error = -1,
 		/// <summary>To be added.</summary>
-		Timeout = -2
+		Timeout = -2,
 	}
 
 	[Flags]
@@ -85,7 +85,7 @@ namespace CoreFoundation {
 		/// <summary>To be added.</summary>
 		LeaveErrors = 64,
 		/// <summary>To be added.</summary>
-		CloseOnInvalidate = 128
+		CloseOnInvalidate = 128,
 	}
 
 	[SupportedOSPlatform ("ios")]

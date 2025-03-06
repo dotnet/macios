@@ -34,7 +34,7 @@ namespace Foundation {
 		RTF,
 		RTFD,
 		HTML,
-		DocFormat
+		DocFormat,
 	}
 
 	// NSTask.h:typedef NS_ENUM(NSInteger, NSTaskTerminationReason)
@@ -42,7 +42,7 @@ namespace Foundation {
 	[NoiOS, NoTV, NoMacCatalyst]
 	public enum NSTaskTerminationReason : long {
 		Exit = 1,
-		UncaughtSignal = 2
+		UncaughtSignal = 2,
 	}
 
 	// The following constants where taken from MonoDevelop Carbon.cs MacInterop file
@@ -93,7 +93,7 @@ namespace Foundation {
 		ContentsClicked = 1,
 		ActionButtonClicked = 2,
 		Replied = 3,
-		AdditionalActionClicked = 4
+		AdditionalActionClicked = 4,
 	}
 
 	[NoiOS, NoTV, NoMacCatalyst]
@@ -110,6 +110,6 @@ namespace Foundation {
 		DontRecord = 0x00001000, // kAEDontRecord,
 		DontExecute = 0x00002000, // kAEDontExecute,
 		DontAnnotate = 0x00010000, // kAEDoNotAutomaticallyAddAnnotationsToEvent,
-		DefaultOptions = WaitForReply | CanInteract
+		DefaultOptions = WaitForReply | CanInteract,
 	}
 }

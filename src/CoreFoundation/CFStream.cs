@@ -58,7 +58,7 @@ namespace CoreFoundation {
 		/// <summary>An error occurred on the steeam.</summary>
 		ErrorOccurred = 8,
 		/// <summary>The end of the stream has been reached.</summary>
-		EndEncountered = 16
+		EndEncountered = 16,
 	}
 
 	// NSStream.h
@@ -166,7 +166,7 @@ namespace CoreFoundation {
 		/// <summary>To be added.</summary>
 		Closed,
 		/// <summary>To be added.</summary>
-		Error
+		Error,
 	}
 
 	[SupportedOSPlatform ("ios")]
@@ -177,7 +177,8 @@ namespace CoreFoundation {
 		GCHandle gch;
 		CFRunLoop? loop;
 		NSString? loopMode;
-		bool open, closed;
+		bool open;
+		bool closed;
 
 		#region Stream Constructors
 

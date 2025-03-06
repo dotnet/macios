@@ -120,7 +120,7 @@ using ObjCBindings;
 
 namespace NS;
 
-[BindingType]
+[BindingType<SmartEnum>]
 public enum AREnvironmentTexturing : ulong {
 	[Field<EnumValue> (""AVCaptureDeviceTypeBuiltInMicrophone"")]
 	None,

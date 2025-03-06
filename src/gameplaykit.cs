@@ -49,7 +49,7 @@ namespace GameplayKit {
 	public enum GKMeshGraphTriangulationMode : ulong {
 		Vertices = 1 << 0,
 		Centers = 1 << 1,
-		EdgeMidpoints = 1 << 2
+		EdgeMidpoints = 1 << 2,
 	}
 
 	[Native]
@@ -62,7 +62,7 @@ namespace GameplayKit {
 		/// <summary>To be added.</summary>
 		Quadratic = 2,
 		/// <summary>To be added.</summary>
-		ReduceOverlap = 3
+		ReduceOverlap = 3,
 	}
 
 	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:GameplayKit.GKAgentDelegate" />.</summary>

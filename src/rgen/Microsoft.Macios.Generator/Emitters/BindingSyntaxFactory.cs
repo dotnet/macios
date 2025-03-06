@@ -85,32 +85,42 @@ static partial class BindingSyntaxFactory {
 		=> ThrowException (type: "NotImplementedException");
 
 	/// <summary>
+	/// Generate a field declaration.
+	/// </summary>
+	/// <param name="variableName">The variable name to be used with the field.</param>
+	/// <param name="variableType">The variable type.</param>
+	/// <param name="nullable">If the variable type should be made nullable.. </param>
+	/// <returns>The syntax for the field declaration.</returns>
+	internal static MemberDeclarationSyntax StaticVariable (string variableName, string variableType, bool nullable)
+	{
+		return FieldDeclaration (
+				VariableDeclaration (
+						nullable
+							? NullableType (IdentifierName (variableType))
+							: IdentifierName (variableType)
+					)
+					.WithVariables (
+						SingletonSeparatedList (
+							VariableDeclarator (
+								Identifier (variableName)))))
+			.WithModifiers (TokenList (Token (SyntaxKind.StaticKeyword)))
+			.NormalizeWhitespace ();
+	}
+
+	/// <summary>
 	/// Generates the syntax to declare the variable used by a field property.  
 	/// </summary>
 	/// <param name="property">The field property whose backing variable we want to generate.</param>
 	/// <returns>The variable declaration syntax.</returns>
-	internal static CompilationUnitSyntax FieldPropertyBackingVariable (in Property property)
+	internal static MemberDeclarationSyntax FieldPropertyBackingVariable (in Property property)
 	{
 		var variableType = property.ReturnType.FullyQualifiedName;
 		if (property.ReturnType.SpecialType is SpecialType.System_IntPtr or SpecialType.System_UIntPtr
 			&& property.ReturnType.MetadataName is not null) {
 			variableType = property.ReturnType.MetadataName;
 		}
-		var compilationUnit = CompilationUnit ().WithMembers (
-			SingletonList<MemberDeclarationSyntax> (
-				FieldDeclaration (
-						VariableDeclaration (
-								property.IsReferenceType  // nullable only for reference types
-									? NullableType (IdentifierName (variableType))
-									: IdentifierName (variableType)
-							)
-							.WithVariables (
-								SingletonSeparatedList (
-									VariableDeclarator (
-										Identifier (property.BackingField)))))
-					.WithModifiers (TokenList (Token (SyntaxKind.StaticKeyword))))) // fields are static variables
-			.NormalizeWhitespace ();
-		return compilationUnit;
+
+		return StaticVariable (property.BackingField, variableType, property.IsReferenceType);
 	}
 
 	/// <summary>

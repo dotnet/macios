@@ -51,7 +51,7 @@ namespace CoreGraphics {
 		AddLineToPoint,
 		AddQuadCurveToPoint,
 		AddCurveToPoint,
-		CloseSubpath
+		CloseSubpath,
 	}
 
 

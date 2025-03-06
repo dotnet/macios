@@ -45,7 +45,7 @@ install-hook::
 		exit 1; \
 	fi
 
-install-hook::
+all-hook install-hook::
 	$(Q) $(MAKE) -C dotnet shutdown-build-server
 
 .PHONY: package release

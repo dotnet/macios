@@ -259,10 +259,15 @@ namespace SceneKit {
 	// Utility enum
 	/// <summary>Enumerates animation import policies.</summary>
 	public enum SCNAnimationImportPolicy {
+		/// <summary>To be added.</summary>
 		Unknown,
+		/// <summary>To be added.</summary>
 		Play,
+		/// <summary>To be added.</summary>
 		PlayRepeatedly,
+		/// <summary>To be added.</summary>
 		DoNotPlay,
+		/// <summary>To be added.</summary>
 		PlayUsingSceneTimeBase,
 	}
 

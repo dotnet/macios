@@ -140,7 +140,9 @@ namespace GameKit {
 
 	class Mono_GKSessionDelegate : GKSessionDelegate {
 		internal EventHandler<GKPeerChangedStateEventArgs>? cbPeerChanged;
-		internal EventHandler<GKPeerConnectionEventArgs>? cbConnectionRequest, cbConnectionFailed, cbFailedWithError;
+		internal EventHandler<GKPeerConnectionEventArgs>? cbConnectionRequest;
+		internal EventHandler<GKPeerConnectionEventArgs>? cbConnectionFailed;
+		internal EventHandler<GKPeerConnectionEventArgs>? cbFailedWithError;
 
 		public Mono_GKSessionDelegate ()
 		{

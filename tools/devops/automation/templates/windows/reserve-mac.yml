@@ -102,6 +102,10 @@ steps:
     github_token: ${{ parameters.gitHubToken }}
   timeoutInMinutes: 250
 
+- task: UseDotNet@2
+  inputs:
+    version: 9.x
+
 - bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/system-dependencies.sh --ignore-mono --ignore-visual-studio --ignore-mono --ignore-sharpie --ignore-shellcheck --ignore-yamllint --provision-simulators
   displayName: 'Provision simulators'
   timeoutInMinutes: 250

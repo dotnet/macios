@@ -35,7 +35,7 @@ namespace CoreFoundation {
 		/// <summary>An error occurred.</summary>
 		TransportError = -4,
 		/// <summary>The port became invalid after the message was sent, but before a response was received.</summary>
-		BecameInvalidError = -5
+		BecameInvalidError = -5,
 	}
 
 	internal class CFMessagePortContext {

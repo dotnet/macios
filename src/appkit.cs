@@ -20767,7 +20767,7 @@ namespace AppKit {
 
 		[NoMacCatalyst]
 		[Field ("NSTouchBarItemIdentifierCandidateList")]
-		CandidateList
+		CandidateList,
 	}
 
 	[MacCatalyst (13, 1)]

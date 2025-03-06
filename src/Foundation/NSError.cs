@@ -46,6 +46,9 @@ namespace Foundation {
 			Error = error;
 		}
 
+		/// <summary>Retrieves the NSError value.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public NSError Error { get; private set; }
 	}
 

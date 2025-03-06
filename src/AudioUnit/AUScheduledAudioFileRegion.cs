@@ -120,7 +120,7 @@ namespace AudioUnit {
 				AudioFile = AudioFile.Handle,
 				LoopCount = LoopCount,
 				StartFrame = StartFrame,
-				FramesToPlay = FramesToPlay
+				FramesToPlay = FramesToPlay,
 			};
 
 			if (ptr != IntPtr.Zero) {

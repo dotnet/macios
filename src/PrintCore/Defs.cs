@@ -146,21 +146,21 @@ namespace PrintCore {
 	public enum PMPrinterState : System.UInt16 {
 		Idle = 3,
 		Processing = 4,
-		Stopped = 5
+		Stopped = 5,
 	}
 
 	public enum PMDuplexMode : System.UInt32 {
 		None = 1,
 		NoTumble = 2,
 		Tumble = 3,
-		SimplexTumble = 4
+		SimplexTumble = 4,
 	}
 
 	public enum PMOrientation : System.UInt16 {
 		Portrait = 1,
 		Landscape = 2,
 		ReversePortrait = 3,
-		ReverseLandscape = 4
+		ReverseLandscape = 4,
 	}
 
 #if NET
@@ -168,7 +168,8 @@ namespace PrintCore {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct PMResolution {
-		double hRes, vRes;
+		double hRes;
+		double vRes;
 		public double HorizontalResolution => hRes;
 		public double VerticalResolution => vRes;
 
@@ -188,7 +189,10 @@ namespace PrintCore {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct PMRect {
-		internal double top, left, bottom, right;
+		internal double top;
+		internal double left;
+		internal double bottom;
+		internal double right;
 
 		public double Top => top;
 		public double Left => left;

@@ -18,6 +18,8 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 	[FieldOffset (8)] readonly BindingTypeData<ObjCBindings.Class> classData;
 	[FieldOffset (8)] readonly BindingTypeData<ObjCBindings.Protocol> protocolData;
 	[FieldOffset (8)] readonly BindingTypeData<ObjCBindings.Category> categoryData;
+	[FieldOffset (8)] readonly BindingTypeData<ObjCBindings.CoreImageFilter> coreImageFilterData;
+	[FieldOffset (8)] readonly BindingTypeData<ObjCBindings.SmartEnum> smartEnumData;
 
 	public BindingType BindingType => bindingType;
 
@@ -59,6 +61,18 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 		categoryData = data;
 	}
 
+	public BindingInfo (BindingTypeData<ObjCBindings.CoreImageFilter> data)
+	{
+		bindingType = BindingType.CoreImageFilter;
+		coreImageFilterData = data;
+	}
+
+	public BindingInfo (BindingTypeData<ObjCBindings.SmartEnum> data)
+	{
+		bindingType = BindingType.SmartEnum;
+		smartEnumData = data;
+	}
+
 	public static implicit operator BindingTypeData (BindingInfo info) => info.bindingTypeData;
 
 	public static implicit operator BindingTypeData<ObjCBindings.Class> (BindingInfo info)
@@ -82,10 +96,26 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 		return info.categoryData;
 	}
 
+	public static implicit operator BindingTypeData<ObjCBindings.CoreImageFilter> (BindingInfo info)
+	{
+		if (info.BindingType != BindingType.CoreImageFilter)
+			throw new InvalidCastException ($"Invalid cast to ObjCBindings.SmartEnum for binding type {info.BindingType}");
+		return info.coreImageFilterData;
+	}
+
+	public static implicit operator BindingTypeData<ObjCBindings.SmartEnum> (BindingInfo info)
+	{
+		if (info.BindingType != BindingType.SmartEnum)
+			throw new InvalidCastException ($"Invalid cast to ObjCBindings.SmartEnum for binding type {info.BindingType}");
+		return info.smartEnumData;
+	}
+
 	public static implicit operator BindingInfo (BindingTypeData data) => new (BindingType.Unknown, data);
 	public static implicit operator BindingInfo (BindingTypeData<ObjCBindings.Class> data) => new (data);
 	public static implicit operator BindingInfo (BindingTypeData<ObjCBindings.Protocol> data) => new (data);
 	public static implicit operator BindingInfo (BindingTypeData<ObjCBindings.Category> data) => new (data);
+	public static implicit operator BindingInfo (BindingTypeData<ObjCBindings.CoreImageFilter> data) => new (data);
+	public static implicit operator BindingInfo (BindingTypeData<ObjCBindings.SmartEnum> data) => new (data);
 
 	/// <inheritdoc />
 	public bool Equals (BindingInfo other)
@@ -134,10 +164,11 @@ readonly struct BindingInfo : IEquatable<BindingInfo> {
 
 	/// <inheritdoc />
 	public override string ToString () => bindingType switch {
-		BindingType.SmartEnum => $"{{ BindingType: {bindingType}, BindingData: {bindingTypeData} }}",
 		BindingType.Class => $"{{ BindingType: {bindingType}, BindingData: {classData} }}",
 		BindingType.Protocol => $"{{ BindingType: {bindingType}, BindingData: {protocolData} }}",
 		BindingType.Category => $"{{ BindingType: {bindingType}, BindingData: {categoryData} }}",
+		BindingType.CoreImageFilter => $"{{ BindingType: {bindingType}, BindingData: {coreImageFilterData} }}",
+		BindingType.SmartEnum => $"{{ BindingType: {bindingType}, BindingData: {smartEnumData} }}",
 		_ => throw new NotImplementedException ()
 	};
 }

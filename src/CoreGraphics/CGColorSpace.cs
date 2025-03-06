@@ -48,7 +48,7 @@ namespace CoreGraphics {
 		AbsoluteColorimetric,
 		RelativeColorimetric,
 		Perceptual,
-		Saturation
+		Saturation,
 	};
 
 	// untyped enum -> CGColorSpace.h

@@ -19,15 +19,23 @@ public class SmartEnumDiagnosticsTests : BaseGeneratorTestClass {
 			(ApplePlatform.iOS, "AVCaptureDeviceTypeExtensions", "AVCaptureDeviceTypeEnum.cs", "ExpectedAVCaptureDeviceTypeEnum.cs", null),
 			(ApplePlatform.iOS, "AVCaptureSystemPressureLevelExtensions", "AVCaptureSystemPressureLevel.cs", "ExpectedAVCaptureSystemPressureLevel.cs", null),
 			(ApplePlatform.iOS, "AVMediaCharacteristicsExtensions", "AVMediaCharacteristics.cs", "ExpectediOSAVMediaCharacteristics.cs", null),
+			(ApplePlatform.iOS, "GKErrorExtensions", "GKError.cs", "ExpectedGKError.cs", null),
+			(ApplePlatform.iOS, "GKCustomErrorExtensions", "GKErrorCustomLibrary.cs", "ExpectedGKErrorCustomLibrary.cs", null),
 			(ApplePlatform.TVOS, "AVCaptureDeviceTypeExtensions", "AVCaptureDeviceTypeEnum.cs", "ExpectedAVCaptureDeviceTypeEnum.cs", null),
 			(ApplePlatform.TVOS, "AVCaptureSystemPressureLevelExtensions", "AVCaptureSystemPressureLevel.cs", "ExpectedAVCaptureSystemPressureLevel.cs", null),
 			(ApplePlatform.TVOS, "AVMediaCharacteristicsExtensions", "AVMediaCharacteristics.cs", "ExpectediOSAVMediaCharacteristics.cs", null),
+			(ApplePlatform.TVOS, "GKErrorExtensions", "GKError.cs", "ExpectedGKError.cs", null),
+			(ApplePlatform.TVOS, "GKCustomErrorExtensions", "GKErrorCustomLibrary.cs", "ExpectedGKErrorCustomLibrary.cs", null),
 			(ApplePlatform.MacCatalyst, "AVCaptureDeviceTypeExtensions", "AVCaptureDeviceTypeEnum.cs", "ExpectedAVCaptureDeviceTypeEnum.cs", null),
 			(ApplePlatform.MacCatalyst, "AVCaptureSystemPressureLevelExtensions", "AVCaptureSystemPressureLevel.cs", "ExpectedAVCaptureSystemPressureLevel.cs", null),
 			(ApplePlatform.MacCatalyst, "AVMediaCharacteristicsExtensions", "AVMediaCharacteristics.cs", "ExpectediOSAVMediaCharacteristics.cs", null),
+			(ApplePlatform.MacCatalyst, "GKErrorExtensions", "GKError.cs", "ExpectedGKError.cs", null),
+			(ApplePlatform.MacCatalyst, "GKCustomErrorExtensions", "GKErrorCustomLibrary.cs", "ExpectedGKErrorCustomLibrary.cs", null),
 			(ApplePlatform.MacOSX, "AVMediaCharacteristicsExtensions", "AVMediaCharacteristics.cs", "ExpectedMacOSAVMediaCharacteristics.cs", null),
 			(ApplePlatform.MacOSX, "CustomLibraryEnumExtensions", "CustomLibraryEnum.cs", "ExpectedCustomLibraryEnum.cs", "ExpectedCustomLibraryEnumLibrariesClass.cs"),
 			(ApplePlatform.MacOSX, "CustomLibraryEnumInternalExtensions", "CustomLibraryEnumInternal.cs", "ExpectedCustomLibraryEnumInternal.cs", "ExpectedCustomLibraryEnumInternalLibrariesClass.cs"),
+			(ApplePlatform.MacOSX, "GKErrorExtensions", "GKError.cs", "ExpectedGKError.cs", null),
+			(ApplePlatform.MacOSX, "GKCustomErrorExtensions", "GKErrorCustomLibrary.cs", "ExpectedGKErrorCustomLibrary.cs", null),
 		};
 
 		public IEnumerator<object []> GetEnumerator ()

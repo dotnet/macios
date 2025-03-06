@@ -964,8 +964,12 @@ check_7z
 check_objective_sharpie
 check_old_simulators
 if test -z "$IGNORE_DOTNET"; then
-	ok "Installed .NET SDKs:"
-	(IFS=$'\n'; for i in $(/usr/local/share/dotnet/dotnet --list-sdks); do log "$i"; done)
+	if test -f /usr/local/share/dotnet/dotnet; then
+		ok "Installed .NET SDKs:"
+		(IFS=$'\n'; for i in $(/usr/local/share/dotnet/dotnet --list-sdks); do log "$i"; done)
+	else
+		warn ".NET is not installed"
+	fi
 fi
 
 if test -z $FAIL; then

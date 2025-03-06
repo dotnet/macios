@@ -148,7 +148,23 @@ namespace Xamarin.Tests {
 			using var archive = ZipFile.OpenRead (nupkg);
 			var files = archive.Entries.Select (v => v.FullName).ToHashSet ();
 			var tfm = platform.ToFrameworkWithPlatformVersion (isExecutable: false);
-			Assert.That (archive.Entries.Count, Is.EqualTo (noBindingEmbedding ? 6 : 5), $"nupkg file count - {nupkg}:\n\t{string.Join ("\n\t", archive.Entries.Select (v => v.FullName))}");
+			int archiveCount;
+			if (noBindingEmbedding) {
+				if (Configuration.IsBuildingRemotely) {
+					// When building remotely, the xcframework is originally on Windows. This means any symlinks won't be symlinks anymore,
+					// and the xcframework isn't compressed into a zip file before storing in the nupkg. This also means the nupkg won't
+					// work on macOS/Mac Catalyst (because those are the frameworks with symlinks), but this doesn't seem like a big issue
+					// at the moment (never heard of a customer running into this), so for now we can probably just ignore this scenario.
+					// A possibility for the future, would be to detect this and show warning/error telling people to build from macOS
+					// instead of remotely.
+					archiveCount = 39;
+				} else {
+					archiveCount = 6;
+				}
+			} else {
+				archiveCount = 5;
+			}
+			Assert.That (archive.Entries.Count, Is.EqualTo (archiveCount), $"nupkg file count - {nupkg}:\n\t{string.Join ("\n\t", archive.Entries.Select (v => v.FullName))}");
 			Assert.That (files, Does.Contain (assemblyName + ".nuspec"), "nuspec");
 			Assert.That (files, Does.Contain ("_rels/.rels"), ".rels");
 			Assert.That (files, Does.Contain ("[Content_Types].xml"), "[Content_Types].xml");

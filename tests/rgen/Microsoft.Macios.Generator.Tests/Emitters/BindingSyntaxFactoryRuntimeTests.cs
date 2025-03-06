@@ -147,17 +147,17 @@ public class BindingSyntaxFactoryRuntimeTests {
 		var declaration = StringFromHandle (arguments);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
-	
+
 <<<<<<< HEAD
 	class TestDataNSNumberFromHandleTests : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
-			
+
 			yield return [
 				ReturnTypeForBool (),
 				"NSNumber.ToBool"
 			];
-			
+
 			yield return [
 				ReturnTypeForInt (),
 				"NSNumber.ToInt32"
@@ -167,7 +167,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ReturnTypeForInt (isUnsigned: true),
 				"NSNumber.ToUInt32"
 			];
-			
+
 			yield return [
 				ReturnTypeForShort (),
 				"NSNumber.ToInt16"
@@ -177,7 +177,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ReturnTypeForShort (isUnsigned: true),
 				"NSNumber.ToUInt16"
 			];
-			
+
 			yield return [
 				ReturnTypeForLong (),
 				"NSNumber.ToInt64"
@@ -187,7 +187,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ReturnTypeForLong (isUnsigned: true),
 				"NSNumber.ToUInt64"
 			];
-			
+
 			yield return [
 				ReturnTypeForNInt (),
 				"NSNumber.ToNInt"
@@ -197,12 +197,12 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ReturnTypeForNInt (isUnsigned: true),
 				"NSNumber.ToNUInt"
 			];
-			
+
 			yield return [
 				ReturnTypeForDouble (),
 				"NSNumber.ToDouble"
 			];
-			
+
 			yield return [
 				ReturnTypeForFloat (),
 				"NSNumber.ToFloat"
@@ -211,7 +211,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[ClassData (typeof (TestDataNSNumberFromHandleTests))]
 	void NSNumberFromHandleTests (TypeInfo returnType, string expectedDeclaration)
@@ -220,7 +220,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 		Assert.Equal (expectedDeclaration, declaration?.ToFullString ());
 	}
 
-	class TestDataNSArrayFromHandleFunc: IEnumerable<object []> {
+	class TestDataNSArrayFromHandleFunc : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
 			yield return [

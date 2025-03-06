@@ -87,7 +87,7 @@ static class TestDataFactory {
 		};
 		return type;
 	}
-	
+
 	public static TypeInfo ReturnTypeForShort (bool isNullable = false, bool keepInterfaces = false,
 		bool isUnsigned = false)
 	{
@@ -140,7 +140,7 @@ static class TestDataFactory {
 		};
 		return type;
 	}
-	
+
 	public static TypeInfo ReturnTypeForLong (bool isNullable = false, bool keepInterfaces = false,
 		bool isUnsigned = false)
 	{
@@ -193,7 +193,7 @@ static class TestDataFactory {
 		};
 		return type;
 	}
-	
+
 	public static TypeInfo ReturnTypeForDouble (bool isNullable = false, bool keepInterfaces = false)
 	{
 		var typeName = "double";
@@ -244,7 +244,7 @@ static class TestDataFactory {
 		};
 		return type;
 	}
-	
+
 	public static TypeInfo ReturnTypeForFloat (bool isNullable = false, bool keepInterfaces = false)
 	{
 		var typeName = "float";
@@ -295,7 +295,7 @@ static class TestDataFactory {
 		};
 		return type;
 	}
-	
+
 	public static TypeInfo ReturnTypeForNInt (bool isNullable = false, bool keepInterfaces = false,
 		bool isUnsigned = false)
 	{

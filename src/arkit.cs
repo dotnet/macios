@@ -1764,6 +1764,11 @@ namespace ARKit {
 		[Export ("initWithBlendShapes:")]
 		NativeHandle Constructor (NSDictionary blendShapes);
 
+		/// <param name="blendShapes">To be added.</param>
+		/// <summary>Constructor that instantiates facial geometry with the expression specified in s<paramref name="blendShapes" />. Requires hardware support for face-tracking.</summary>
+		/// <remarks>
+		///           <para>This constructor will throw an <see cref="F:ObjCRuntime.Class.ThrowOnInitFailure" /> exception if run on a device that does not support face-tracking.</para>
+		///         </remarks>
 		[Wrap ("this (blendShapes.GetDictionary ()!)")]
 		NativeHandle Constructor (ARBlendShapeLocationOptions blendShapes);
 

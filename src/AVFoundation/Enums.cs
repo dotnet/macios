@@ -596,6 +596,7 @@ namespace AVFoundation {
 		BadParam = -50,
 		/// <summary>Indicates that another app with higher priority preempted the operation.</summary>
 		InsufficientPriority = 0x21707269, // '!pri'
+		/// <summary>Indicates that a required resource, such as an audio input, is not available on the device.</summary>
 		ResourceNotAvailable = 0x21726573, // '!res'
 		/// <summary>Indicates that an unspecified error occurred.</summary>
 		Unspecified = 0x77686174, // 'what'

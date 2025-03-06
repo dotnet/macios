@@ -599,6 +599,9 @@ namespace StoreKit {
 		[Export ("initWithReceiptProperties:")]
 		NativeHandle Constructor ([NullAllowed] NSDictionary properties);
 
+		/// <param name="receiptProperties">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (receiptProperties.GetDictionary ())")]
 		NativeHandle Constructor ([NullAllowed] SKReceiptProperties receiptProperties);
 

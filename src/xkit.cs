@@ -3110,6 +3110,16 @@ namespace UIKit {
 		[Export ("initWithFileWrapper:")]
 		NativeHandle Constructor (NSFileWrapper fileWrapper);
 
+		/// <param name="contentData">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="uti">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new <see cref="T:UIKit.NSTextAttachment" /> with the specified <paramref name="contentData" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[DesignatedInitializer]
 		[Export ("initWithData:ofType:")]
@@ -3648,9 +3658,26 @@ namespace UIKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // - (instancetype)init NS_UNAVAILABLE;
 	interface NSDataAsset : NSCopying {
+		/// <param name="name">The name of the dataset folder within the asset catalog, without the ".dataset" extension.</param>
+		/// <summary>Returns the data specified in the <paramref name="name" /> folder's "Contents.json" file.</summary>
+		/// <remarks>
+		///           <para>For instance, call <c>new NSDataAsset("FolderName")</c> for:</para>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.NSDataAsset_FolderStructure.png" alt="Image showing the folder structure." />
+		///           </para>
+		///         </remarks>
 		[Export ("initWithName:")]
 		NativeHandle Constructor (string name);
 
+		/// <param name="name">The name of the dataset folder within the asset catalog, without the ".dataset" extension.</param>
+		/// <param name="bundle">The bundle containing the asset catalog.</param>
+		/// <summary>Returns the data specified in the <paramref name="name" /> folder's "Contents.json" file.</summary>
+		/// <remarks>
+		///           <para>For instance, call <c>new NSDataAsset("FolderName", NSBundle.MainBundle)</c> for:</para>
+		///           <para>
+		///             <img href="~/UIKit/_images/UIKit.NSDataAsset_FolderStructure.png" alt="Image showing the folder structure." />
+		///           </para>
+		///         </remarks>
 		[Export ("initWithName:bundle:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string name, NSBundle bundle);

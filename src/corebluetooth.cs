@@ -172,16 +172,45 @@ namespace CoreBluetooth {
 		[Wrap ("WeakDelegate")]
 		ICBCentralManagerDelegate Delegate { get; set; }
 
+		/// <param name="centralDelegate">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="queue">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new <see cref="T:CoreBluetooth.CBCentralManager" /> with the specified central delegate and dispatch queue.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithDelegate:queue:")]
 		[PostGet ("WeakDelegate")]
 		NativeHandle Constructor ([NullAllowed] ICBCentralManagerDelegate centralDelegate, [NullAllowed] DispatchQueue queue);
 
+		/// <param name="centralDelegate">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="queue">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>Creates a new <see cref="T:CoreBluetooth.CBCentralManager" /> with the specified central delegate, dispatch queue, and options.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithDelegate:queue:options:")]
 		[PostGet ("WeakDelegate")]
 		NativeHandle Constructor ([NullAllowed] ICBCentralManagerDelegate centralDelegate, [NullAllowed] DispatchQueue queue, [NullAllowed] NSDictionary options);
 
+		/// <param name="centralDelegate">To be added.</param>
+		/// <param name="queue">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>Creates a new <see cref="T:CoreBluetooth.CBCentralManager" /> with the specified central delegate, dispatch queue, and options.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("this (centralDelegate, queue, options.GetDictionary ())")]
 		NativeHandle Constructor ([NullAllowed] ICBCentralManagerDelegate centralDelegate, [NullAllowed] DispatchQueue queue, CBCentralInitOptions options);
@@ -634,6 +663,15 @@ namespace CoreBluetooth {
 	[DisableDefaultCtor]
 	interface CBMutableCharacteristic {
 
+		/// <param name="uuid">To be added.</param>
+		/// <param name="properties">To be added.</param>
+		/// <param name="value">
+		///           <para>Characteristic value to cache, if null, the value will be loaded on demand.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="permissions">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[DesignatedInitializer]
@@ -715,6 +753,10 @@ namespace CoreBluetooth {
 	[BaseType (typeof (CBDescriptor))]
 	[DisableDefaultCtor]
 	interface CBMutableDescriptor {
+		/// <param name="uuid">To be added.</param>
+		/// <param name="descriptorValue">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[DesignatedInitializer]
@@ -1069,6 +1111,10 @@ namespace CoreBluetooth {
 	[BaseType (typeof (CBService))]
 	[DisableDefaultCtor]
 	interface CBMutableService {
+		/// <param name="uuid">To be added.</param>
+		/// <param name="primary">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[DesignatedInitializer]
@@ -1288,15 +1334,35 @@ namespace CoreBluetooth {
 	[BaseType (typeof (CBManager), Delegates = new [] { "WeakDelegate" }, Events = new [] { typeof (CBPeripheralManagerDelegate) })]
 	interface CBPeripheralManager {
 
+		/// <summary>Default constructor, initializes a new instance of this class.</summary>
+		/// <remarks />
 		[Export ("init")]
 		NativeHandle Constructor ();
 
+		/// <param name="peripheralDelegate">To be added.</param>
+		/// <param name="queue">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithDelegate:queue:")]
 		[PostGet ("WeakDelegate")]
 		NativeHandle Constructor ([NullAllowed] ICBPeripheralManagerDelegate peripheralDelegate, [NullAllowed] DispatchQueue queue);
 
+		/// <param name="peripheralDelegate">To be added.</param>
+		/// <param name="queue">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[DesignatedInitializer]

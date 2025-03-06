@@ -22287,6 +22287,9 @@ namespace AppKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (string identifier);
 
+		/// <param name="identifier">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("this (identifier.GetConstant ())")]
 		NativeHandle Constructor (NSTouchBarItemIdentifier identifier);
 

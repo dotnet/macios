@@ -366,6 +366,11 @@ namespace FileProvider {
 	[BaseType (typeof (NSObject))]
 	interface NSFileProviderDomain {
 
+		/// <param name="identifier">To be added.</param>
+		/// <param name="displayName">To be added.</param>
+		/// <param name="pathRelativeToDocumentStorage">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[Export ("initWithIdentifier:displayName:pathRelativeToDocumentStorage:")]
 		NativeHandle Constructor (string identifier, string displayName, string pathRelativeToDocumentStorage);

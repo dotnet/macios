@@ -122,6 +122,13 @@ namespace CoreNFC {
 		[Field ("NFCISO15693TagResponseErrorKey")]
 		NSString TagResponseErrorKey { get; }
 
+		/// <param name="delegate">To be added.</param>
+		/// <param name="queue">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithDelegate:queue:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (INFCReaderSessionDelegate @delegate, [NullAllowed] DispatchQueue queue);
@@ -616,6 +623,14 @@ namespace CoreNFC {
 	[DisableDefaultCtor]
 	interface NFCNdefReaderSession {
 
+		/// <param name="delegate">To be added.</param>
+		/// <param name="queue">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="invalidateAfterFirstRead">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithDelegate:queue:invalidateAfterFirstRead:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (INFCNdefReaderSessionDelegate @delegate, [NullAllowed] DispatchQueue queue, bool invalidateAfterFirstRead);

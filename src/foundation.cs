@@ -345,6 +345,15 @@ namespace Foundation {
 		void EnumerateAttribute (NSString attributeName, NSRange inRange, NSAttributedStringEnumeration options, NSAttributedStringCallback callback);
 
 #if !XAMCORE_5_0
+		/// <param name="url">To be added.</param>
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="resultDocumentAttributes">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'Create' method instead, because there's no way to return an error from a constructor.")]
 		[Export ("initWithURL:options:documentAttributes:error:")]
 #if !__MACOS__
@@ -360,6 +369,27 @@ namespace Foundation {
 		NativeHandle _InitWithUrl (NSUrl url, NSDictionary options, out NSDictionary resultDocumentAttributes, out NSError error);
 
 #if !XAMCORE_5_0
+#if __MACOS__
+		/// <param name="data">To be added.</param>
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="docAttributes">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+#else
+		/// <param name="data">To be added.</param>
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="resultDocumentAttributes">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+#endif
 		[Obsolete ("Use the 'Create' method instead, because there's no way to return an error from a constructor.")]
 		[Export ("initWithData:options:documentAttributes:error:")]
 #if __MACOS__
@@ -375,6 +405,12 @@ namespace Foundation {
 		NativeHandle _InitWithData (NSData data, NSDictionary options, out NSDictionary resultDocumentAttributes, out NSError error);
 
 #if !XAMCORE_5_0
+		/// <param name="url">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="resultDocumentAttributes">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'Create' method instead, because there's no way to return an error from a constructor.")]
 #if __MACOS__
 		[Wrap ("this (url, options.GetDictionary ()!, out resultDocumentAttributes, out error)")]
@@ -385,6 +421,12 @@ namespace Foundation {
 #endif
 #endif // !XAMCORE_5_0
 
+		/// <param name="data">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="resultDocumentAttributes">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'Create' method instead, because there's no way to return an error from a constructor.")]
 #if !XAMCORE_5_0
 #if __MACOS__

@@ -148,7 +148,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 	
-	class TestDataNSNumerFromHandleTests : IEnumerable<object []> {
+	class TestDataNSNumberFromHandleTests : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
 			
@@ -212,10 +212,10 @@ public class BindingSyntaxFactoryRuntimeTests {
 	}
 	
 	[Theory]
-	[ClassData (typeof (TestDataNSNumerFromHandleTests))]
-	void NSNumerFromHandleTests (TypeInfo returnType, string expectedDeclaration)
+	[ClassData (typeof (TestDataNSNumberFromHandleTests))]
+	void NSNumberFromHandleTests (TypeInfo returnType, string expectedDeclaration)
 	{
-		var declaration = NSNumerFromHandle (returnType);
+		var declaration = NSNumberFromHandle (returnType);
 		Assert.Equal (expectedDeclaration, declaration?.ToFullString ());
 	}
 }

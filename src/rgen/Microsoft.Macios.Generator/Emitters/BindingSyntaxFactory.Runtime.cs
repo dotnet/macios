@@ -175,7 +175,7 @@ static partial class BindingSyntaxFactory {
 	}
 	
 	/// <summary>
-	/// Generates a call to the NSArray.ArrayFromHandleFunc with the given arugments
+	/// Generates a call to the NSArray.ArrayFromHandleFunc with the given arguments.
 	/// </summary>
 	/// <param name="returnType">The generic return type of the call.</param>
 	/// <param name="arguments">An immutable array of arguments.</param>

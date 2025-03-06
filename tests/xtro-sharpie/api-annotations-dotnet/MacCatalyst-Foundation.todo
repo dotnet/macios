@@ -1,3 +1,9 @@
 !missing-selector! NSBundle::localizedStringForKey:value:table:localizations: not bound
 !missing-selector! NSCoder::decodeBytesForKey:minimumLength: not bound
 !missing-selector! NSCoder::decodeBytesWithMinimumLength: not bound
+!deprecated-attribute-missing! NSURLSessionConfiguration::HTTPShouldUsePipelining missing a [Deprecated] attribute
+!deprecated-attribute-missing! NSURLSessionConfiguration::setHTTPShouldUsePipelining: missing a [Deprecated] attribute
+!deprecated-attribute-missing! NSURLSessionConfiguration::setShouldUseExtendedBackgroundIdleMode: missing a [Deprecated] attribute
+!deprecated-attribute-missing! NSURLSessionConfiguration::shouldUseExtendedBackgroundIdleMode missing a [Deprecated] attribute
+!missing-selector! NSURLSessionConfiguration::setUsesClassicLoadingMode: not bound
+!missing-selector! NSURLSessionConfiguration::usesClassicLoadingMode not bound

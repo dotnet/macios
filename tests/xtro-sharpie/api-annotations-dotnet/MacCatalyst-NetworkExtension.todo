@@ -2,3 +2,5 @@
 !missing-selector! NERelayManager::matchFQDNs not bound
 !missing-selector! NERelayManager::setExcludedFQDNs: not bound
 !missing-selector! NERelayManager::setMatchFQDNs: not bound
+!missing-selector! NERelayManager::isUIToggleEnabled not bound
+!missing-selector! NERelayManager::setUIToggleEnabled: not bound

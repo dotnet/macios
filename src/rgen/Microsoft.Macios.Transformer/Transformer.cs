@@ -10,7 +10,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Context;
 using Microsoft.Macios.Generator.DataModel;
-using Microsoft.Macios.Generator.Extensions;
 using Microsoft.Macios.Transformer.Extensions;
 using Microsoft.Macios.Transformer.Workers;
 using Serilog;
@@ -27,7 +26,7 @@ class Transformer {
 	readonly string destinationDirectory;
 	readonly ImmutableArray<(ApplePlatform Platform, Compilation Compilation)> compilations;
 	readonly HashSet<string>? namespaceFilter;
-	readonly Dictionary<string, ITransformer<(string Path, string SymbolName)>> transformers = new ();
+	readonly Dictionary<string, ITransformer<(string Path, Binding Binding)>> transformers = new ();
 
 	internal Transformer (string destination,
 		ImmutableArray<(ApplePlatform Platform, Compilation Compilation)> compilationsResult,
@@ -38,7 +37,7 @@ class Transformer {
 		if (namespaces is not null)
 			namespaceFilter = new HashSet<string> (namespaces);
 
-		ITransformer<(string Path, string SymbolName)> [] defaultTransformers = [
+		ITransformer<(string Path, Binding Binding)> [] defaultTransformers = [
 			new CategoryTransformer (destinationDirectory),
 			new ClassTransformer (destinationDirectory),
 			new ProtocolTransformer (destinationDirectory),
@@ -173,7 +172,7 @@ class Transformer {
 
 					var topicName = SelectTopic (declaration, binding.Value);
 					if (topicName is not null && transformers.TryGetValue (topicName, out var transformer)) {
-						await hub.PublishAsync (topicName, transformer.CreateMessage (tree, symbol));
+						await hub.PublishAsync<(string Path, Binding Binding)> (topicName, new (tree.FilePath, binding.Value));
 						logger.Information ("Published '{SymbolName}' to '{TopicName}'", symbol.Name, topicName);
 					}
 				}

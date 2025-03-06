@@ -1734,6 +1734,7 @@ namespace Xamarin.Tests {
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-x64;iossimulator-arm64")]
 		public void PluralRuntimeIdentifiers (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			PluralRuntimeIdentifiersImpl (platform, runtimeIdentifiers);

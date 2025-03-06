@@ -116,20 +116,20 @@ namespace Mono.ApiTools {
 				if (srcGetter is not null) {
 					change.Append (" ").Append ("get;");
 				} else {
-					change.Append (" ").AppendAdded ("get;");
+					change.Append (" ").AppendAdded ("get;", false);
 				}
 			} else if (srcGetter is not null) {
-				change.Append (" ").AppendRemoved ("get;");
+				change.Append (" ").AppendRemoved ("get;", !tgtGetter.IsExperimental ());
 			}
 
 			if (tgtSetter is not null) {
 				if (srcSetter is not null) {
 					change.Append (" ").Append ("set;");
 				} else {
-					change.Append (" ").AppendAdded ("set;");
+					change.Append (" ").AppendAdded ("set;", false);
 				}
 			} else if (srcSetter is not null) {
-				change.Append (" ").AppendRemoved ("set;");
+				change.Append (" ").AppendRemoved ("set;", !tgtSetter.IsExperimental ());
 			}
 
 			change.Append (" }");
@@ -192,7 +192,8 @@ namespace Mono.ApiTools {
 
 			var change = new ApiChange (GetDescription (source), State);
 			change.Header = "Modified " + GroupName;
-			RenderMethodAttributes (GetMethodAttributes (srcGetter, srcSetter), GetMethodAttributes (tgtGetter, tgtSetter), change);
+			RenderAttributes (source, target, change);
+			RenderMethodAttributes (source, target, GetMethodAttributes (srcGetter, srcSetter), GetMethodAttributes (tgtGetter, tgtSetter), change);
 			RenderPropertyType (source, target, change);
 			if (isIndexer) {
 				RenderIndexers (srcIndexers, tgtIndexers, change);

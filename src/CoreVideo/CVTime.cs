@@ -41,19 +41,47 @@ namespace CoreVideo {
 	[SupportedOSPlatform ("tvos")]
 	public struct CVTime {
 
+		/// <summary>Determines how many TimeValues are represented by this CVTime.</summary>
+		///         <remarks>
+		///         </remarks>
 		public /* int64_t */ long TimeValue;
+		/// <summary>Determines how many TimeValues make up one second.</summary>
+		///         <remarks>
+		///           <para>
+		/// 	    If the value of TimeScale is 600, that means that there are 600 TimeValues per second.   
+		/// 	  </para>
+		///           <para>
+		/// 	    If the TimeScale is 600 and TimeValue is 2,400 that means that the CVTime represents four seconds. 
+		/// 	  </para>
+		///         </remarks>
 		public /* int64_t */ long TimeScale;
+		/// <summary>Flags for CVTime, if set to 1, the CVTime is indefinite and neither the TimeValue and TimeScale are valid.</summary>
+		///         <remarks>Currently only the value 1 is supported, the CVTime is indefinite.   </remarks>
 		public /* int32_t */ CVTimeFlags TimeFlags;
 
+		/// <summary>Flags for CVTime, if set to IsIndefinite, the CVTime is indefinite and neither the TimeValue and TimeScale are valid.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>Currently only the value IsIndefinited is supported, the CVTime is indefinite.   </remarks>
 		public int Flags { get { return (int) TimeFlags; } set { TimeFlags = (CVTimeFlags) value; } }
 
 #if !COREBUILD
+		/// <summary>Represents a zero duration..</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static CVTime ZeroTime {
 			get {
 				return Marshal.PtrToStructure<CVTime> (Dlfcn.GetIndirect (Libraries.CoreVideo.Handle, "kCVZeroTime"))!;
 			}
 		}
 
+		/// <summary>Unknown or indefinite time.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static CVTime IndefiniteTime {
 			get {
 				return Marshal.PtrToStructure<CVTime> (Dlfcn.GetIndirect (Libraries.CoreVideo.Handle, "kCVIndefiniteTime"))!;

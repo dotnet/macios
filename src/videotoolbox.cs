@@ -20,20 +20,35 @@ namespace VideoToolbox {
 	interface VTCompressionPropertyKey {
 		// Buffers
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTCompressionPropertyKey_NumberOfPendingFrames")]
 		NSString NumberOfPendingFrames { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTCompressionPropertyKey_PixelBufferPoolIsShared")]
 		NSString PixelBufferPoolIsShared { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTCompressionPropertyKey_VideoEncoderPixelBufferAttributes")]
 		NSString VideoEncoderPixelBufferAttributes { get; }
 
 		// Frame dependency
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTCompressionPropertyKey_MaxKeyFrameInterval")]
 		NSString MaxKeyFrameInterval { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTCompressionPropertyKey_MaxKeyFrameIntervalDuration")]
 		NSString MaxKeyFrameIntervalDuration { get; }
 
@@ -70,6 +85,9 @@ namespace VideoToolbox {
 		[Field ("kVTCompressionPropertyKey_DataRateLimits")]
 		NSString DataRateLimits { get; } // NSArray of an even number of CFNumbers alternating [int, double](bytes, seconds] Read/write
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTCompressionPropertyKey_Quality")]
 		NSString Quality { get; }
 
@@ -78,14 +96,23 @@ namespace VideoToolbox {
 		[Field ("kVTCompressionPropertyKey_TargetQualityForAlpha")]
 		NSString TargetQualityForAlpha { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTCompressionPropertyKey_MoreFramesBeforeStart")]
 		NSString MoreFramesBeforeStart { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTCompressionPropertyKey_MoreFramesAfterEnd")]
 		NSString MoreFramesAfterEnd { get; }
 
 		// Bitstream configuration
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTCompressionPropertyKey_ProfileLevel")]
 		NSString ProfileLevel { get; }
 
@@ -108,22 +135,37 @@ namespace VideoToolbox {
 
 		// Runtime restrictions
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTCompressionPropertyKey_MaxFrameDelayCount")]
 		NSString MaxFrameDelayCount { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTCompressionPropertyKey_MaxH264SliceBytes")]
 		NSString MaxH264SliceBytes { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTCompressionPropertyKey_RealTime")]
 		[MacCatalyst (13, 1)]
 		NSString RealTime { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTCompressionPropertyKey_MaximizePowerEfficiency")]
 		[MacCatalyst (13, 1)]
 		NSString MaximizePowerEfficiency { get; }
 
 		// Hints
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTCompressionPropertyKey_SourceFrameCount")]
 		NSString SourceFrameCount { get; }
 
@@ -167,6 +209,9 @@ namespace VideoToolbox {
 		// Hardware acceleration
 		// Hardware acceleration is default behavior on iOS. No opt-in required.
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTCompressionPropertyKey_UsingHardwareAcceleratedVideoEncoder")]
 		NSString UsingHardwareAcceleratedVideoEncoder { get; } // CFBoolean Read
 
@@ -178,6 +223,9 @@ namespace VideoToolbox {
 		[Field ("kVTCompressionPropertyKey_CleanAperture")]
 		NSString CleanAperture { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTCompressionPropertyKey_PixelAspectRatio")]
 		NSString PixelAspectRatio { get; }
 
@@ -199,6 +247,9 @@ namespace VideoToolbox {
 		[Field ("kVTCompressionPropertyKey_AspectRatio16x9")]
 		NSString AspectRatio16x9 { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTCompressionPropertyKey_ProgressiveScan")]
 		NSString ProgressiveScan { get; }
 
@@ -210,9 +261,15 @@ namespace VideoToolbox {
 		[Field ("kVTCompressionPropertyKey_ColorPrimaries")]
 		NSString ColorPrimaries { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTCompressionPropertyKey_TransferFunction")]
 		NSString TransferFunction { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTCompressionPropertyKey_YCbCrMatrix")]
 		NSString YCbCrMatrix { get; }
 
@@ -234,6 +291,9 @@ namespace VideoToolbox {
 		[Field ("kVTCompressionPropertyKey_GammaLevel")]
 		NSString GammaLevel { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kVTCompressionPropertyKey_MasteringDisplayColorVolume")]
 		NSString MasteringDisplayColorVolume { get; }
@@ -247,11 +307,17 @@ namespace VideoToolbox {
 
 		// Pre-compression processing
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTCompressionPropertyKey_PixelTransferProperties")]
 		NSString PixelTransferProperties { get; }
 
 		// Multi-pass
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTCompressionPropertyKey_MultiPassStorage")]
 		[MacCatalyst (13, 1)]
 		NSString MultiPassStorage { get; }
@@ -756,10 +822,16 @@ namespace VideoToolbox {
 	interface VTProfileLevelKeys {
 		// HEVC
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kVTProfileLevel_HEVC_Main_AutoLevel")]
 		NSString Hevc_Main_AutoLevel { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kVTProfileLevel_HEVC_Main10_AutoLevel")]
 		NSString Hevc_Main10_AutoLevel { get; }
@@ -777,121 +849,220 @@ namespace VideoToolbox {
 
 		// H264
 
+		/// <summary>The key for H.264, baseline profile, level 1.3.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_Baseline_1_3")]
 		NSString H264_Baseline_1_3 { get; }
 
+		/// <summary>The key for H.264, baseline profile, level 3.0.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_Baseline_3_0")]
 		NSString H264_Baseline_3_0 { get; }
 
+		/// <summary>The key for H.264, baseline profile, level 3.1.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_Baseline_3_1")]
 		NSString H264_Baseline_3_1 { get; }
 
+		/// <summary>The key for H.264, baseline profile, level 3.2.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_Baseline_3_2")]
 		NSString H264_Baseline_3_2 { get; }
 
+		/// <summary>The key for H.264, baseline profile, level 4.0.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_Baseline_4_0")]
 		[MacCatalyst (13, 1)]
 		NSString H264_Baseline_4_0 { get; }
 
+		/// <summary>The key for H.264, baseline profile, level 4.1.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_Baseline_4_1")]
 		NSString H264_Baseline_4_1 { get; }
 
+		/// <summary>The key for H.264, baseline profile, level 4.2.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_Baseline_4_2")]
 		[MacCatalyst (13, 1)]
 		NSString H264_Baseline_4_2 { get; }
 
+		/// <summary>The key for H.264, baseline profile, level 5.0.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_Baseline_5_0")]
 		[MacCatalyst (13, 1)]
 		NSString H264_Baseline_5_0 { get; }
 
+		/// <summary>The key for H.264, baseline profile, level 5.1.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_Baseline_5_1")]
 		[MacCatalyst (13, 1)]
 		NSString H264_Baseline_5_1 { get; }
 
+		/// <summary>The key for H.264, baseline profile, level 5.2.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_Baseline_5_2")]
 		[MacCatalyst (13, 1)]
 		NSString H264_Baseline_5_2 { get; }
 
+		/// <summary>The key for H.264, baseline profile, with automatically determined level.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_Baseline_AutoLevel")]
 		[MacCatalyst (13, 1)]
 		NSString H264_Baseline_AutoLevel { get; }
 
+		/// <summary>The key for H.264, main profile, level 3.0.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_Main_3_0")]
 		NSString H264_Main_3_0 { get; }
 
+		/// <summary>The key for H.264, main profile, level 3.1.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_Main_3_1")]
 		NSString H264_Main_3_1 { get; }
 
+		/// <summary>The key for H.264, main profile, level 3.2.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_Main_3_2")]
 		NSString H264_Main_3_2 { get; }
 
+		/// <summary>The key for H.264, main profile, level 4.0.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_Main_4_0")]
 		NSString H264_Main_4_0 { get; }
 
+		/// <summary>The key for H.264, main profile, level 4.1.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_Main_4_1")]
 		NSString H264_Main_4_1 { get; }
 
+		/// <summary>The key for H.264, main profile, level 4.2.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_Main_4_2")]
 		[MacCatalyst (13, 1)]
 		NSString H264_Main_4_2 { get; }
 
+		/// <summary>The key for H.264, main profile, level 5.0.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_Main_5_0")]
 		NSString H264_Main_5_0 { get; }
 
+		/// <summary>The key for H.264, main profile, level 5.1.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_Main_5_1")]
 		[MacCatalyst (13, 1)]
 		NSString H264_Main_5_1 { get; }
 
+		/// <summary>The key for H.264, main profile, level 5.2.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_Main_5_2")]
 		[MacCatalyst (13, 1)]
 		NSString H264_Main_5_2 { get; }
 
+		/// <summary>The key for H.264, main profile, with automatically determined level.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_Main_AutoLevel")]
 		[MacCatalyst (13, 1)]
 		NSString H264_Main_AutoLevel { get; }
 
+		/// <summary>The key for H.264, extended profile, level 5.0.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_Extended_5_0")]
 		NSString H264_Extended_5_0 { get; }
 
+		/// <summary>The key for H.264, extended profile, with automatically determined level.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_Extended_AutoLevel")]
 		[MacCatalyst (13, 1)]
 		NSString H264_Extended_AutoLevel { get; }
 
+		/// <summary>The key for H.264, high profile, level 3.0.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_High_3_0")]
 		[MacCatalyst (13, 1)]
 		NSString H264_High_3_0 { get; }
 
+		/// <summary>The key for H.264, high profile, level 3.1.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_High_3_1")]
 		[MacCatalyst (13, 1)]
 		NSString H264_High_3_1 { get; }
 
+		/// <summary>The key for H.264, high profile, level 3.2.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_High_3_2")]
 		[MacCatalyst (13, 1)]
 		NSString H264_High_3_2 { get; }
 
+		/// <summary>The key for H.264, high profile, level 4.0.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_High_4_0")]
 		[MacCatalyst (13, 1)]
 		NSString H264_High_4_0 { get; }
 
+		/// <summary>The key for H.264, high profile, level 4.1.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_High_4_1")]
 		[MacCatalyst (13, 1)]
 		NSString H264_High_4_1 { get; }
 
+		/// <summary>The key for H.264, high profile, level 4.2.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_High_4_2")]
 		[MacCatalyst (13, 1)]
 		NSString H264_High_4_2 { get; }
 
+		/// <summary>The key for H.264, high profile, level 5.0.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_High_5_0")]
 		NSString H264_High_5_0 { get; }
 
+		/// <summary>The key for H.264, high profile, level 5.1.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_High_5_1")]
 		[MacCatalyst (13, 1)]
 		NSString H264_High_5_1 { get; }
 
+		/// <summary>The key for H.264, high profile, level 5.2.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_High_5_2")]
 		[MacCatalyst (13, 1)]
 		NSString H264_High_5_2 { get; }
 
+		/// <summary>The key for H.264, high profile, with automatically determined level.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H264_High_AutoLevel")]
 		[MacCatalyst (13, 1)]
 		NSString H264_High_AutoLevel { get; }
@@ -906,50 +1077,95 @@ namespace VideoToolbox {
 
 		// MP4V
 
+		/// <summary>The key for MPEG-4 video, simple profile, level 0.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_MP4V_Simple_L0")]
 		NSString MP4V_Simple_L0 { get; }
 
+		/// <summary>The key for MPEG-4 video, simple profile, level 1.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_MP4V_Simple_L1")]
 		NSString MP4V_Simple_L1 { get; }
 
+		/// <summary>The key for MPEG-4 video, simple profile, level 2.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_MP4V_Simple_L2")]
 		NSString MP4V_Simple_L2 { get; }
 
+		/// <summary>The key for MPEG-4 video, simple profile, level 3.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_MP4V_Simple_L3")]
 		NSString MP4V_Simple_L3 { get; }
 
+		/// <summary>The key for MPEG-4 video, main profile, level 2.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_MP4V_Main_L2")]
 		NSString MP4V_Main_L2 { get; }
 
+		/// <summary>The key for MPEG-4 video, main profile, level 3.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_MP4V_Main_L3")]
 		NSString MP4V_Main_L3 { get; }
 
+		/// <summary>The key for MPEG-4 video, main profile, level 4.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_MP4V_Main_L4")]
 		NSString MP4V_Main_L4 { get; }
 
+		/// <summary>The key for MPEG-4 video, advanced simple profile, level 0.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_MP4V_AdvancedSimple_L0")]
 		NSString MP4V_AdvancedSimple_L0 { get; }
 
+		/// <summary>The key for MPEG-4 video, advanced simple profile, level 1.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_MP4V_AdvancedSimple_L1")]
 		NSString MP4V_AdvancedSimple_L1 { get; }
 
+		/// <summary>The key for MPEG-4 video, advanced simple profile, level 2.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_MP4V_AdvancedSimple_L2")]
 		NSString MP4V_AdvancedSimple_L2 { get; }
 
+		/// <summary>The key for MPEG-4 video, advanced simple profile, level 3.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_MP4V_AdvancedSimple_L3")]
 		NSString MP4V_AdvancedSimple_L3 { get; }
 
+		/// <summary>The key for MPEG-4 video, advanced simple profile, level 4.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_MP4V_AdvancedSimple_L4")]
 		NSString MP4V_AdvancedSimple_L4 { get; }
 
 		// H263
 
+		/// <summary>The key for H.263, profile 0, level 1.0.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H263_Profile0_Level10")]
 		NSString H263_Profile0_Level10 { get; }
 
+		/// <summary>The key for H.263, profile 0, level 4.5.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H263_Profile0_Level45")]
 		NSString H263_Profile0_Level45 { get; }
 
+		/// <summary>The key for H.263, profile 3, level 4.5.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTProfileLevel_H263_Profile3_Level45")]
 		NSString H263_Profile3_Level45 { get; }
 	}
@@ -976,14 +1192,23 @@ namespace VideoToolbox {
 	[StrongDictionary ("VTVideoEncoderSpecificationKeys")]
 	interface VTVideoEncoderSpecification {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[iOS (17, 4), TV (17, 4), MacCatalyst (17, 4)]
 		[Export ("EnableHardwareAcceleratedVideoEncoder")]
 		bool EnableHardwareAcceleratedVideoEncoder { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[iOS (17, 4), TV (17, 4), MacCatalyst (17, 4)]
 		[Export ("RequireHardwareAcceleratedVideoEncoder")]
 		bool RequireHardwareAcceleratedVideoEncoder { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("EncoderID")]
 		string EncoderID { get; set; }
 
@@ -1003,14 +1228,23 @@ namespace VideoToolbox {
 	[Static]
 	interface VTVideoEncoderSpecificationKeys {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTVideoEncoderSpecification_EnableHardwareAcceleratedVideoEncoder")]
 		[iOS (17, 4), TV (17, 4), MacCatalyst (17, 4)]
 		NSString EnableHardwareAcceleratedVideoEncoder { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTVideoEncoderSpecification_RequireHardwareAcceleratedVideoEncoder")]
 		[iOS (17, 4), TV (17, 4), MacCatalyst (17, 4)]
 		NSString RequireHardwareAcceleratedVideoEncoder { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTVideoEncoderSpecification_EncoderID")]
 		NSString EncoderID { get; }
 
@@ -1521,9 +1755,15 @@ namespace VideoToolbox {
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("VTVideoDecoderSpecificationKeys")]
 	interface VTVideoDecoderSpecification {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("EnableHardwareAcceleratedVideoDecoder")]
 		bool EnableHardwareAcceleratedVideoDecoder { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("RequireHardwareAcceleratedVideoDecoder")]
 		bool RequireHardwareAcceleratedVideoDecoder { get; set; }
 
@@ -1544,9 +1784,15 @@ namespace VideoToolbox {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface VTVideoDecoderSpecificationKeys {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTVideoDecoderSpecification_EnableHardwareAcceleratedVideoDecoder")]
 		NSString EnableHardwareAcceleratedVideoDecoder { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTVideoDecoderSpecification_RequireHardwareAcceleratedVideoDecoder")]
 		NSString RequireHardwareAcceleratedVideoDecoder { get; }
 
@@ -1567,9 +1813,15 @@ namespace VideoToolbox {
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("VTDecompressionResolutionKeys")]
 	interface VTDecompressionResolutionOptions {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("Width")]
 		float Width { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("Height")]
 		float Height { get; set; }
 	}
@@ -1578,9 +1830,15 @@ namespace VideoToolbox {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface VTDecompressionResolutionKeys {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTDecompressionResolutionKey_Width")]
 		NSString Width { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kVTDecompressionResolutionKey_Height")]
 		NSString Height { get; }
 	}

@@ -61,6 +61,7 @@ $(XIOS_PCH): .stamp-check-sharpie
 	-exclude FactoryOTALogger \
 	-exclude FactoryOTANetworkUtils \
 	-exclude AssetsLibrary \
+	-exclude Matter \
 	-exclude _CoreNFC_UIKit \
 	-i ThreadNetwork/THClient.h \
 	$(CORETELEPHONY_HEADERS) \
@@ -72,6 +73,7 @@ XTVOS_RID = tvos-arm64
 $(XTVOS_PCH): .stamp-check-sharpie
 	$(SHARPIE) sdk-db --xcode $(XCODE) -s appletvos$(TVOS_SDK_VERSION) -a $(XTVOS_ARCH) \
 		-modules false \
+		-exclude Matter \
 
 XMACOS_ARCH = x86_64
 XMACOS_PCH = macosx$(MACOS_SDK_VERSION)-$(XMACOS_ARCH).pch
@@ -82,6 +84,7 @@ $(XMACOS_PCH): .stamp-check-sharpie
 		-modules false \
 		-exclude AccessorySetupKit \
 		-exclude JavaNativeFoundation \
+		-exclude Matter \
 		-exclude ParavirtualizedGraphics \
 		$(CORETELEPHONY_HEADERS) \
 
@@ -110,6 +113,7 @@ $(XMACCATALYST_PCH): .stamp-check-sharpie
 	-exclude IOBluetoothUI \
 	-exclude JavaNativeFoundation \
 	-exclude LDAP \
+	-exclude Matter \
 	-exclude Python \
 	-exclude Quartz \
 	-exclude QuickLookUI \

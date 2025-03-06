@@ -171,12 +171,22 @@ namespace SpriteKit {
 		[Export ("alpha")]
 		nfloat Alpha { get; set; }
 
+		/// <summary>Gets or sets a value that causes this node and its descendants to be skipped when actions are processed for the scene. <see langword="true" /> causes them to be skipped.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("paused")]
 		bool Paused { [Bind ("isPaused")] get; set; }
 
+		/// <summary>Gets a value that tells whether the node and its descendants are rendered to the screen.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///         </remarks>
 		[Export ("hidden")]
 		bool Hidden { [Bind ("isHidden")] get; set; }
 
+		/// <summary>Gets or sets a value that controls whether the node responds to touch.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("userInteractionEnabled")]
 		bool UserInteractionEnabled { [Bind ("isUserInteractionEnabled")] get; set; }
 
@@ -1049,6 +1059,9 @@ namespace SpriteKit {
 		[Export ("blendMode")]
 		SKBlendMode BlendMode { get; set; }
 
+		/// <summary>Gets or sets a value that controls whether to antialias the shape.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("antialiased")]
 		bool Antialiased { [Bind ("isAntialiased")] get; set; }
 

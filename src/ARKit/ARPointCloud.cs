@@ -20,6 +20,9 @@ using Vector3 = global::OpenTK.NVector3;
 namespace ARKit {
 	public partial class ARPointCloud {
 
+		/// <summary>A set of positions in the world coordinate system. Image-processing tentatively believes that the position is a point on a real-world surface.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public unsafe Vector3 [] Points {
 			get {
 				var count = (int) Count;
@@ -31,6 +34,9 @@ namespace ARKit {
 			}
 		}
 
+		/// <summary>Gets an array of identifiers that correspond, index by index, to each point in <see cref="P:ARKit.ARPointCloud.Points" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public unsafe ulong [] Identifiers {
 			get {
 				var count = (int) Count;

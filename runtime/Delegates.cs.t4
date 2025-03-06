@@ -24,41 +24,14 @@ using Registrar;
 
 namespace ObjCRuntime {
 	public unsafe partial class Runtime {
-		
-#if !NET
-<# foreach (var d in delegates) { #>
-<#
-		if (d.OnlyCoreCLR)
-			continue;
-#>
-		internal delegate <#= d.ReturnType.MType #> <#= d.SimpleEntryPoint #>_delegate (<#= d.MArgumentSignature #>);
-<# } #>
-#endif // !NET
-
 		internal struct Delegates {
 <# foreach (var d in delegates) { #>
-<#
-		if (d.OnlyCoreCLR)
-			Write ("#if NET\n");
-#>
 			public IntPtr <#= d.SimpleEntryPoint #>;
-<#
-		if (d.OnlyCoreCLR)
-			Write ("#endif // NET\n");
-#>
 <# } #>
 		}
 
 <# 		foreach (var d in delegates) { #>
-<#
-		if (d.OnlyCoreCLR)
-			Write ("#if NET\n");
-#>
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (<#= d.SimpleEntryPoint #>_delegate))]
-#endif
 		static unsafe <#= d.ReturnType.MType #> <#= d.SimpleEntryPoint #> (<#= d.MArgumentSignature #>)
 <# if (d.ExceptionHandling) { #>
 		{	
@@ -87,17 +60,12 @@ namespace ObjCRuntime {
 <# } #>
 		}
 <# } #>
-<#
-		if (d.OnlyCoreCLR)
-			Write ("#endif // NET\n");
-#>
 
 <# } #>
 
 		[BindingImpl (BindingImplOptions.Optimizable)] // To inline the Runtime.DynamicRegistrationSupported code if possible.
 		unsafe static void RegisterDelegates (InitializationOptions* options)
 		{
-#if NET
 <# foreach (var d in delegates.NotOnlyDynamic) { #>
 <#
 	if (d.OnlyCoreCLR) {
@@ -117,14 +85,6 @@ namespace ObjCRuntime {
 	}
 #>
 <# } #>
-#else
-<# foreach (var d in delegates.NotOnlyDynamic) {
-	if (d.OnlyCoreCLR)
-		continue;
-#>
-			options->Delegates-><#= d.SimpleEntryPoint #> = GetFunctionPointer (new <#= d.SimpleEntryPoint #>_delegate (<#= d.SimpleEntryPoint #>));
-<# } #>
-#endif
 
 			// The linker will remove this condition (and the subsequent method call) if possible
 			if (DynamicRegistrationSupported)
@@ -136,19 +96,10 @@ namespace ObjCRuntime {
 <# foreach (var d in delegates.OnlyDynamic) { #>
 <#
 	if (d.OnlyCoreCLR) {
-		Write ("#if NET\n");
 		Write ("\t\t\tif (IsCoreCLR)\n\t");
 	}
 #>
-#if NET
 			options->Delegates-><#= d.SimpleEntryPoint #> = (IntPtr) (void *) <#= d.UnmanagedDelegateCast #> &<#= d.SimpleEntryPoint #>;
-#else
-			options->Delegates-><#= d.SimpleEntryPoint #> = GetFunctionPointer (new <#= d.SimpleEntryPoint #>_delegate (<#= d.SimpleEntryPoint #>));
-#endif
-<#
-		if (d.OnlyCoreCLR)
-			Write ("#endif // NET\n");
-#>
 <# } #>
 		}
 	}

@@ -270,6 +270,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern NWMultiPathService nw_parameters_get_multipath_service (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWMultiPathService MultipathService {
 			get => nw_parameters_get_multipath_service (GetCheckedHandle ());
 			set => nw_parameters_set_multipath_service (GetCheckedHandle (), value);
@@ -278,6 +281,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern IntPtr nw_parameters_copy_default_protocol_stack (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWProtocolStack ProtocolStack => new NWProtocolStack (nw_parameters_copy_default_protocol_stack (GetCheckedHandle ()), owns: true);
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -286,6 +292,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_parameters_get_local_only (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool LocalOnly {
 			get => nw_parameters_get_local_only (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_local_only (GetCheckedHandle (), value.AsByte ());
@@ -297,6 +306,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_parameters_get_prefer_no_proxy (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool PreferNoProxy {
 			get => nw_parameters_get_prefer_no_proxy (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_prefer_no_proxy (GetCheckedHandle (), value.AsByte ());
@@ -308,6 +320,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern NWParametersExpiredDnsBehavior nw_parameters_get_expired_dns_behavior (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWParametersExpiredDnsBehavior ExpiredDnsBehavior {
 			get => nw_parameters_get_expired_dns_behavior (GetCheckedHandle ());
 			set => nw_parameters_set_expired_dns_behavior (GetCheckedHandle (), value);
@@ -358,6 +373,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern NWInterfaceType nw_parameters_get_required_interface_type (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWInterfaceType RequiredInterfaceType {
 			get => nw_parameters_get_required_interface_type (GetCheckedHandle ());
 			set => nw_parameters_set_required_interface_type (GetCheckedHandle (), value);
@@ -457,6 +475,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_prohibit_expensive (IntPtr handle, byte prohibit_expensive);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool ProhibitExpensive {
 			get => nw_parameters_get_prohibit_expensive (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_prohibit_expensive (GetCheckedHandle (), value.AsByte ());

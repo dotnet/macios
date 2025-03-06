@@ -4557,22 +4557,46 @@ namespace Foundation {
 		[Export ("underlyingErrors", ArgumentSemantic.Copy)]
 		NSError [] UnderlyingErrors { get; }
 
+		/// <summary>The Cocoa error domain.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSCocoaErrorDomain")]
 		NSString CocoaErrorDomain { get; }
 
+		/// <summary>Represents the value associated with the constant NSPOSIXErrorDomain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPOSIXErrorDomain")]
 		NSString PosixErrorDomain { get; }
 
+		/// <summary>Represents the value associated with the constant NSOSStatusErrorDomain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSOSStatusErrorDomain")]
 		NSString OsStatusErrorDomain { get; }
 
+		/// <summary>Represents the value associated with the constant NSMachErrorDomain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSMachErrorDomain")]
 		NSString MachErrorDomain { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLErrorDomain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLErrorDomain")]
 		NSString NSUrlErrorDomain { get; }
 
 #if NET
+		/// <summary>Represents the value associated with the constant NSNetServicesErrorDomain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 #endif
 		[Field ("NSNetServicesErrorDomain")]
@@ -4581,15 +4605,30 @@ namespace Foundation {
 		[Field ("NSNetServicesErrorCode")]
 		NSString NSNetServicesErrorCode { get; }
 
+		/// <summary>Represents the value associated with the constant NSStreamSocketSSLErrorDomain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSStreamSocketSSLErrorDomain")]
 		NSString NSStreamSocketSSLErrorDomain { get; }
 
+		/// <summary>Represents the value associated with the constant NSStreamSOCKSErrorDomain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSStreamSOCKSErrorDomain")]
 		NSString NSStreamSOCKSErrorDomain { get; }
 
+		/// <summary>The CoreLocation error domain.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCLErrorDomain", "CoreLocation")]
 		NSString CoreLocationErrorDomain { get; }
 
+		/// <summary>The CFNetwork error domain.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCFErrorDomainCFNetwork", "CFNetwork")]
 		NSString CFNetworkErrorDomain { get; }
 
@@ -4604,6 +4643,10 @@ namespace Foundation {
 		[Field ("CarPlayErrorDomain", "CarPlay")]
 		NSString CarPlayErrorDomain { get; }
 
+		/// <summary>Represents the value associated with the constant NSUnderlyingErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSUnderlyingErrorKey")]
 		NSString UnderlyingErrorKey { get; }
 
@@ -4612,37 +4655,76 @@ namespace Foundation {
 		[Field ("NSMultipleUnderlyingErrorsKey")]
 		NSString MultipleUnderlyingErrorsKey { get; }
 
+		/// <summary>Standard key to use in the userInfo payload for associating a localized description of the problem to provide to the user.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		[Field ("NSLocalizedDescriptionKey")]
 		NSString LocalizedDescriptionKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSLocalizedFailureReasonErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSLocalizedFailureReasonErrorKey")]
 		NSString LocalizedFailureReasonErrorKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSLocalizedRecoverySuggestionErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSLocalizedRecoverySuggestionErrorKey")]
 		NSString LocalizedRecoverySuggestionErrorKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSLocalizedRecoveryOptionsErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSLocalizedRecoveryOptionsErrorKey")]
 		NSString LocalizedRecoveryOptionsErrorKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSRecoveryAttempterErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSRecoveryAttempterErrorKey")]
 		NSString RecoveryAttempterErrorKey { get; }
 
+		/// <summary>Standard key to use in the userInfo payload for associating a hint to provide to the user.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHelpAnchorErrorKey")]
 		NSString HelpAnchorErrorKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSStringEncodingErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSStringEncodingErrorKey")]
 		NSString StringEncodingErrorKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSURLErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLErrorKey")]
 		NSString UrlErrorKey { get; }
 
+		/// <summary>Standard key to use in the userInfo payload for associating a file path with the error.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFilePathErrorKey")]
 		NSString FilePathErrorKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSDebugDescriptionErrorKey")]
 		NSString DebugDescriptionErrorKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSLocalizedFailureErrorKey")]
 		NSString LocalizedFailureErrorKey { get; }
@@ -10508,6 +10590,9 @@ namespace Foundation {
 		[Export ("expiresDate")]
 		NSDate ExpiresDate { get; }
 
+		/// <summary>Whether this cookie should be discarded at the end of the session, ignoring the expiration date.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isSessionOnly")]
 		bool IsSessionOnly { get; }
 
@@ -10520,9 +10605,15 @@ namespace Foundation {
 		[Export ("path")]
 		string Path { get; }
 
+		/// <summary>Whether this cookie should only be sent over secure channels.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isSecure")]
 		bool IsSecure { get; }
 
+		/// <summary>Whether this cookie should only be sent to HTTP servers per RFC 2965.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isHTTPOnly")]
 		bool IsHttpOnly { get; }
 
@@ -13491,117 +13582,257 @@ namespace Foundation {
 
 	[BaseType (typeof (NSObject))]
 	partial interface NSFileManager {
+		/// <summary>Represents the value associated with the constant NSFileType</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileType")]
 		NSString NSFileType { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileTypeDirectory</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileTypeDirectory")]
 		NSString TypeDirectory { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileTypeRegular</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileTypeRegular")]
 		NSString TypeRegular { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileTypeSymbolicLink</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileTypeSymbolicLink")]
 		NSString TypeSymbolicLink { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileTypeSocket</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileTypeSocket")]
 		NSString TypeSocket { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileTypeCharacterSpecial</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileTypeCharacterSpecial")]
 		NSString TypeCharacterSpecial { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileTypeBlockSpecial</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileTypeBlockSpecial")]
 		NSString TypeBlockSpecial { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileTypeUnknown</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileTypeUnknown")]
 		NSString TypeUnknown { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileSize</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileSize")]
 		NSString Size { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileModificationDate</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileModificationDate")]
 		NSString ModificationDate { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileReferenceCount</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileReferenceCount")]
 		NSString ReferenceCount { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileDeviceIdentifier</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileDeviceIdentifier")]
 		NSString DeviceIdentifier { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileOwnerAccountName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileOwnerAccountName")]
 		NSString OwnerAccountName { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileGroupOwnerAccountName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileGroupOwnerAccountName")]
 		NSString GroupOwnerAccountName { get; }
 
+		/// <summary>Represents the value associated with the constant NSFilePosixPermissions</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFilePosixPermissions")]
 		NSString PosixPermissions { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileSystemNumber</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileSystemNumber")]
 		NSString SystemNumber { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileSystemFileNumber</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileSystemFileNumber")]
 		NSString SystemFileNumber { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileExtensionHidden</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileExtensionHidden")]
 		NSString ExtensionHidden { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileHFSCreatorCode</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileHFSCreatorCode")]
 		NSString HfsCreatorCode { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileHFSTypeCode</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileHFSTypeCode")]
 		NSString HfsTypeCode { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileImmutable</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileImmutable")]
 		NSString Immutable { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileAppendOnly</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileAppendOnly")]
 		NSString AppendOnly { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileCreationDate</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileCreationDate")]
 		NSString CreationDate { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileOwnerAccountID</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileOwnerAccountID")]
 		NSString OwnerAccountID { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileGroupOwnerAccountID</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileGroupOwnerAccountID")]
 		NSString GroupOwnerAccountID { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileBusy</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileBusy")]
 		NSString Busy { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileProtectionKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSFileProtectionKey")]
 		NSString FileProtectionKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileProtectionNone</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSFileProtectionType' instead.")]
 		[MacCatalyst (13, 1)]
 		[Field ("NSFileProtectionNone")]
 		NSString FileProtectionNone { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileProtectionComplete</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSFileProtectionType' instead.")]
 		[MacCatalyst (13, 1)]
 		[Field ("NSFileProtectionComplete")]
 		NSString FileProtectionComplete { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileProtectionCompleteUnlessOpen</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSFileProtectionType' instead.")]
 		[MacCatalyst (13, 1)]
 		[Field ("NSFileProtectionCompleteUnlessOpen")]
 		NSString FileProtectionCompleteUnlessOpen { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileProtectionCompleteUntilFirstUserAuthentication</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSFileProtectionType' instead.")]
 		[MacCatalyst (13, 1)]
 		[Field ("NSFileProtectionCompleteUntilFirstUserAuthentication")]
 		NSString FileProtectionCompleteUntilFirstUserAuthentication { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileSystemSize</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileSystemSize")]
 		NSString SystemSize { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileSystemFreeSize</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileSystemFreeSize")]
 		NSString SystemFreeSize { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileSystemNodes</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileSystemNodes")]
 		NSString SystemNodes { get; }
 
+		/// <summary>Represents the value associated with the constant NSFileSystemFreeNodes</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileSystemFreeNodes")]
 		NSString SystemFreeNodes { get; }
 
@@ -13612,6 +13843,13 @@ namespace Foundation {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the Foundation.INSFileManagerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the Foundation.INSFileManagerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		INSFileManagerDelegate Delegate { get; set; }
@@ -13779,6 +14017,7 @@ namespace Foundation {
 		[Export ("ubiquityIdentityToken")]
 		NSObject UbiquityIdentityToken { get; }
 
+		/// <include file="../docs/api/Foundation/NSFileManager.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSFileManager.UbiquityIdentityDidChangeNotification']/*" />
 		[Field ("NSUbiquityIdentityDidChangeNotification")]
 		[Notification]
 		NSString UbiquityIdentityDidChangeNotification { get; }

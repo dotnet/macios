@@ -24,8 +24,11 @@ namespace Messages {
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum MSMessagesAppPresentationStyle : ulong {
+		/// <summary>To be added.</summary>
 		Compact,
+		/// <summary>To be added.</summary>
 		Expanded,
+		/// <summary>To be added.</summary>
 		Transcript,
 	}
 
@@ -33,8 +36,11 @@ namespace Messages {
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum MSStickerSize : long {
+		/// <summary>100 x 100 points.</summary>
 		Small,
+		/// <summary>136 x 136 points.</summary>
 		Regular,
+		/// <summary>206 x 206 points.</summary>
 		Large,
 	}
 
@@ -43,17 +49,29 @@ namespace Messages {
 	[Native]
 	[ErrorDomain ("MSMessagesErrorDomain")]
 	public enum MSMessageErrorCode : long {
+		/// <summary>To be added.</summary>
 		Unknown = -1,
+		/// <summary>A resource file was not found.</summary>
 		FileNotFound = 1,
+		/// <summary>A resource file could not be interpreted.</summary>
 		FileUnreadable,
+		/// <summary>A resource file was for a different type of resource.</summary>
 		ImproperFileType,
+		/// <summary>An error in the format of the File URL for a resource file.</summary>
 		ImproperFileUrl,
+		/// <summary>To be added.</summary>
 		StickerFileImproperFileAttributes,
+		/// <summary>A sticker file was not properly sized.</summary>
 		StickerFileImproperFileSize,
+		/// <summary>A sticker file had an improper format.</summary>
 		StickerFileImproperFileFormat,
+		/// <summary>To be added.</summary>
 		UrlExceedsMaxSize,
+		/// <summary>To be added.</summary>
 		SendWithoutRecentInteraction,
+		/// <summary>To be added.</summary>
 		SendWhileNotVisible,
+		/// <summary>Indicates that an attempt was made to use an API that cannot be used in the current presentation context.</summary>
 		APIUnavailableInPresentationContext,
 	}
 
@@ -61,7 +79,9 @@ namespace Messages {
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum MSMessagesAppPresentationContext : long {
+		/// <summary>Indicates that iMessage appears in Messages only.</summary>
 		Messages,
+		/// <summary>Indicates that iMessage appears in Messages and FaceTime.</summary>
 		Media,
 	}
 
@@ -203,6 +223,9 @@ namespace Messages {
 		[NullAllowed, Export ("session")]
 		MSSession Session { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Export ("pending")]
 		bool Pending { [Bind ("isPending")] get; }

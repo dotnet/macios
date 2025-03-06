@@ -13,7 +13,7 @@
 #include "bindings.h"
 #include <dlfcn.h>
 
-#if !TARGET_OS_OSX && !TARGET_OS_WATCH
+#if !TARGET_OS_OSX
 #include <UIKit/UIKit.h>
 #endif
 
@@ -118,7 +118,7 @@ xamarin_CGPoint__VNImagePointForFaceLandmarkPoint_Vector2_CGRect_nuint_nuint_str
 }
 
 /* UIKit bindings */
-#if !TARGET_OS_OSX && !TARGET_OS_WATCH
+#if !TARGET_OS_OSX
 int xamarin_UIApplicationMain (int argc, char * _Nullable argv[_Nonnull], NSString * _Nullable principalClassName, NSString * _Nullable delegateClassName, GCHandle *exception_gchandle)
 {
 	@try {

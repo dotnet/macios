@@ -5385,9 +5385,15 @@ namespace SceneKit {
 		[Export ("blendOutDuration")]
 		double BlendOutDuration { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("removedOnCompletion")]
 		bool RemovedOnCompletion { [Bind ("isRemovedOnCompletion")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("appliedOnCompletion")]
 		bool AppliedOnCompletion { [Bind ("isAppliedOnCompletion")] get; set; }
 
@@ -5435,9 +5441,15 @@ namespace SceneKit {
 		[NullAllowed, Export ("animationEvents", ArgumentSemantic.Copy)]
 		SCNAnimationEvent [] AnimationEvents { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("additive")]
 		bool Additive { [Bind ("isAdditive")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("cumulative")]
 		bool Cumulative { [Bind ("isCumulative")] get; set; }
 	}

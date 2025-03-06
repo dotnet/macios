@@ -39,20 +39,31 @@ namespace Foundation {
 
 	// This is a convenience enum around a set of native strings.
 	public enum NSFileType {
+		/// <summary>A directory</summary>
 		Directory,
+		/// <summary>A regular file.</summary>
 		Regular,
+		/// <summary>A symbolic link.</summary>
 		SymbolicLink,
+		/// <summary>A Unix file system socket.</summary>
 		Socket,
+		/// <summary>A special system character device.</summary>
 		CharacterSpecial,
+		/// <summary>To be added.</summary>
 		BlockSpecial,
+		/// <summary>Unknown file type.</summary>
 		Unknown,
 	}
 
 #if !MONOMAC
 	public enum NSFileProtection {
+		/// <summary>To be added.</summary>
 		None,
+		/// <summary>To be added.</summary>
 		Complete,
+		/// <summary>To be added.</summary>
 		CompleteUnlessOpen,
+		/// <summary>To be added.</summary>
 		CompleteUntilFirstUserAuthentication,
 	}
 #endif
@@ -64,29 +75,89 @@ namespace Foundation {
 	[SupportedOSPlatform ("tvos")]
 #endif
 	public class NSFileAttributes {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? AppendOnly { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? Busy { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? ExtensionHidden { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDate? CreationDate { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? OwnerAccountName { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? GroupOwnerAccountName { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint? SystemNumber { get; set; } // NSInteger
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nuint? DeviceIdentifier { get; set; } // unsigned long
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nuint? GroupOwnerAccountID { get; set; } // unsigned long
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? Immutable { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDate? ModificationDate { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nuint? OwnerAccountID { get; set; } // unsigned long
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nuint? HfsCreatorCode { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nuint? HfsTypeCode { get; set; } // unsigned long
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public short? PosixPermissions { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nuint? ReferenceCount { get; set; } // unsigned long
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nuint? SystemFileNumber { get; set; } // unsigned long
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ulong? Size { get; set; } // unsigned long long
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSFileType? Type { get; set; }
 
 #if !MONOMAC
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSFileProtection? ProtectionKey { get; set; }
 #endif
 
@@ -316,11 +387,26 @@ namespace Foundation {
 		}
 
 		// The documentation only says these are NSNumbers, it doesn't say which type of number.
+		/// <summary>The volume size in bytes.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ulong Size { get; internal set; }
+		/// <summary>The number of free bytes in the volume.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ulong FreeSize { get; internal set; }
+		/// <summary>The total number of nodes in the volume (maximum number of files).</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public long Nodes { get; internal set; }
+		/// <summary>The number of free nodes in the volume.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public long FreeNodes { get; internal set; }
 		// "The value corresponds to the value of st_dev, as returned by stat(2)" => st_dev is defined to be int32_t in all architectures.
+		/// <summary>The device number (corresponds to st_dev on the Unix stat structure).</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public uint Number { get; internal set; }
 
 		internal static NSFileSystemAttributes? FromDictionary (NSDictionary dict)
@@ -453,6 +539,9 @@ namespace Foundation {
 			return GetMountedVolumes (array, options);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string CurrentDirectory {
 			get { return GetCurrentDirectory (); }
 			// ignore boolean return value

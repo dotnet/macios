@@ -26,9 +26,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Linq;
+using Microsoft.VisualBasic;
 
 namespace Mono.ApiTools {
 
@@ -51,6 +54,14 @@ namespace Mono.ApiTools {
 			pcomparer = new PropertyComparer (state);
 			ecomparer = new EventComparer (state);
 			mcomparer = new MethodComparer (state);
+		}
+
+		public override string GroupName {
+			get { return "classes"; }
+		}
+
+		public override string ElementName {
+			get { return "class"; }
 		}
 
 		public override void SetContext (XElement current)
@@ -88,18 +99,7 @@ namespace Mono.ApiTools {
 
 			var type = target.Attribute ("type").Value;
 
-			if (type == "enum") {
-				// check if [Flags] is present
-				var cattrs = target.Element ("attributes");
-				if (cattrs is not null) {
-					foreach (var ca in cattrs.Elements ("attribute")) {
-						if (ca.GetAttribute ("name") == "System.FlagsAttribute") {
-							Indent ().WriteLine ("[Flags]");
-							break;
-						}
-					}
-				}
-			}
+			WriteAttributes (target);
 
 			Indent ().Write ("public");
 
@@ -276,6 +276,14 @@ namespace Mono.ApiTools {
 			// hack - there could be changes that we're not monitoring (e.g. attributes properties)
 			Formatter.PushOutput ();
 
+			var attributeDiff = new ApiChange ("", State);
+			RenderAttributes (source, target, attributeDiff);
+			if (attributeDiff.AnyChange) {
+				Formatter.BeginAttributeModification ();
+				Formatter.Diff (attributeDiff);
+				Formatter.EndAttributeModification ();
+			}
+
 			var sb = source.GetAttribute ("base");
 			var tb = target.GetAttribute ("base");
 			var rm = $"{State.Namespace}.{State.Type}: Modified base type: '{sb}' to '{tb}'";
@@ -319,9 +327,6 @@ namespace Mono.ApiTools {
 
 		public override void Removed (XElement source)
 		{
-			if (source.Elements ("attributes").SelectMany (a => a.Elements ("attribute")).Any (c => c.Attribute ("name")?.Value == "System.ObsoleteAttribute"))
-				return;
-
 			string name = State.Namespace + "." + State.Type;
 
 			var memberDescription = $"{name}: Removed type";
@@ -329,7 +334,7 @@ namespace Mono.ApiTools {
 			if (State.IgnoreRemoved.Any (re => re.IsMatch (name)))
 				return;
 
-			Formatter.BeginTypeRemoval ();
+			Formatter.BeginTypeRemoval (!source.IsExperimental ());
 			Formatter.EndTypeRemoval ();
 		}
 

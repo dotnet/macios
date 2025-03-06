@@ -297,9 +297,18 @@ namespace CoreData {
 		[Export ("defaultValue", ArgumentSemantic.Retain)]
 		NSObject DefaultValue { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("versionHash")]
 		NSData VersionHash { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("valueTransformerName")]
 		string ValueTransformerName { get; set; }
@@ -1103,30 +1112,60 @@ namespace CoreData {
 		[Export ("fetchRequest")]
 		NSFetchRequest CreateFetchRequest ();
 
+		/// <summary>Gets the managed object context where this managed object is registered.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("managedObjectContext")]
 		NSManagedObjectContext ManagedObjectContext { get; }
 
+		/// <summary>Gets the receiver's entity description.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("entity", ArgumentSemantic.Strong)]
 		NSEntityDescription Entity { get; }
 
+		/// <summary>Gets the object identifer.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>This value changes when an unsaved object is saved.</remarks>
 		[Export ("objectID", ArgumentSemantic.Strong)]
 		NSManagedObjectID ObjectID { get; }
 
+		/// <summary>Gets a Boolean value that tells whether the managed object should ignore changes to unmodeled properties.</summary>
+		///         <value>A Boolean value that tells whether the managed object should ignore changes to unmodeled properties.</value>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("contextShouldIgnoreUnmodeledPropertyChanges")]
 		bool ContextShouldIgnoreUnModeledPropertyChanges { get; }
 
+		/// <summary>Gets a Boolean value that tells whether the receiver was inserted into a managed object context.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("inserted")]
 		bool IsInserted { [Bind ("isInserted")] get; }
 
+		/// <summary>Gets a Boolean value that tells whether the receiver has changes that are not yet saved.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("updated")]
 		bool IsUpdated { [Bind ("isUpdated")] get; }
 
+		/// <summary>Gets a Boolean value that tells whether the receiver will be deleted in the next save.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("deleted")]
 		bool IsDeleted { [Bind ("isDeleted")] get; }
 
+		/// <summary>Gets a Boolean value that tells whether the receiver has been converted to a fault.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fault")]
 		bool IsFault { [Bind ("isFault")] get; }
 
+		/// <summary>Gets the receiver's faulting state.</summary>
+		///         <value>The receiver's faulting state.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("faultingState")]
 		nuint FaultingState { get; }
 
@@ -1151,6 +1190,9 @@ namespace CoreData {
 		[Export ("didChangeValueForKey:withSetMutation:usingObjects:")]
 		void DidChangeValueForKey (string inKey, NSKeyValueSetMutationKind inMutationKind, NSSet inObjects);
 
+		/// <summary>Gets the KVO information for the object.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("observationInfo")]
@@ -1216,6 +1258,9 @@ namespace CoreData {
 		NSDictionary CommittedValuesForKeys ([NullAllowed] string [] keys);
 #endif
 
+		/// <summary>Gets a dictionary of the old values of persistent values that were recently changed since the receiver was last fetched.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("changedValues")]
 #if XAMCORE_5_0
 		NSDictionary<NSString, NSObject> ChangedValues { get; }
@@ -1235,9 +1280,15 @@ namespace CoreData {
 		[Export ("validateForUpdate:")]
 		bool ValidateForUpdate (out NSError error);
 
+		/// <summary>Gets a Boolean value that tells whether the receiver has changes due to having been inserted or deleted, or due to having other unsaved changes.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hasChanges")]
 		bool HasChanges { get; }
 
+		/// <summary>Returns a dictionary of the old values of persistent values that were recently changed since the context objects last changed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("changedValuesForCurrentEvent")]
 		NSDictionary ChangedValuesForCurrentEvent { get; }
 
@@ -1246,6 +1297,9 @@ namespace CoreData {
 
 		// headers say this is introduced in 7.0,10.9 but Xcode 7 API diff
 		// indicates it's new in 9.0,10.11... going by the header value...
+		/// <summary>Gets a Boolean value that tells whether the receiver has unsaved changes to persistent values.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("hasPersistentChangedValues")]
 		bool HasPersistentChangedValues { get; }
@@ -1279,14 +1333,29 @@ namespace CoreData {
 		[Export ("init")]
 		NativeHandle Constructor ();
 
+		/// <summary>Gets the receiver's store coordinator.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("persistentStoreCoordinator", ArgumentSemantic.Retain)]
 		NSPersistentStoreCoordinator PersistentStoreCoordinator { get; set; }
 
+		/// <summary>Gets the receiver's undo manager.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("undoManager", ArgumentSemantic.Retain)]
 		[NullAllowed]
 		NSUndoManager UndoManager { get; set; }
 
+		/// <summary>Gets a Boolean value that tells whether the receiver has any unsaved changes.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hasChanges")]
 		bool HasChanges { get; }
 
@@ -1335,6 +1404,9 @@ namespace CoreData {
 		void AssignObject (IntPtr object1, NSPersistentStore store);
 #endif
 
+		/// <summary>Gets the inserted, but unsaved, objects in the context.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("insertedObjects", ArgumentSemantic.Strong)]
 #if XAMCORE_5_0
 		NSSet<NSManagedObject> InsertedObjects { get; }
@@ -1342,6 +1414,9 @@ namespace CoreData {
 		NSSet InsertedObjects { get; }
 #endif
 
+		/// <summary>Gets a set that contains all of the receiver's objects which have uncommitted changes.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("updatedObjects", ArgumentSemantic.Strong)]
 #if XAMCORE_5_0
 		NSSet<NSManagedObject> UpdatedObjects { get; }
@@ -1349,6 +1424,9 @@ namespace CoreData {
 		NSSet UpdatedObjects { get; }
 #endif
 
+		/// <summary>Gets a set that contains the objects that will be deleted by the next save operation.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("deletedObjects", ArgumentSemantic.Strong)]
 #if XAMCORE_5_0
 		NSSet<NSManagedObject> DeletedObjects { get; }
@@ -1356,6 +1434,9 @@ namespace CoreData {
 		NSSet DeletedObjects { get; }
 #endif
 
+		/// <summary>Gets a set that contains all of the receiver's registered objects.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("registeredObjects", ArgumentSemantic.Strong)]
 #if XAMCORE_5_0
 		NSSet<NSManagedObject> RegisteredObjects { get; }
@@ -1398,6 +1479,9 @@ namespace CoreData {
 		new void Unlock ();
 #pragma warning restore
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use a queue style context and 'Perform' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use a queue style context and 'Perform' instead.")]
@@ -1406,15 +1490,27 @@ namespace CoreData {
 		[Export ("tryLock")]
 		bool TryLock { get; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the receiver propagates deletes after change events.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("propagatesDeletesAtEndOfEvent")]
 		bool PropagatesDeletesAtEndOfEvent { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the receiver retains hard references to its registered managed objects.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("retainsRegisteredObjects")]
 		bool RetainsRegisteredObjects { get; set; }
 
+		/// <summary>Gets or sets the maximum elapsed time after fetching which causes fault fulfillment to fetch new data.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("stalenessInterval")]
 		double StalenessInterval { get; set; }
 
+		/// <summary>Gets or sets the receiver's merge policy.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("mergePolicy", ArgumentSemantic.Retain)]
 		IntPtr MergePolicy { get; set; }
 
@@ -1434,29 +1530,50 @@ namespace CoreData {
 		[Export ("performBlockAndWait:")]
 		void PerformAndWait (/* non null */ Action action);
 
+		/// <summary>Gets the receiver's user information.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("userInfo", ArgumentSemantic.Strong)]
 		NSMutableDictionary UserInfo { get; }
 
+		/// <summary>Gets the receiver's concurrency type.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("concurrencyType")]
 		NSManagedObjectContextConcurrencyType ConcurrencyType { get; }
 
 		//Detected properties
 		// default is null, but setting it to null again would crash the app
+		/// <summary>Gets the receiver's parent context.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("parentContext", ArgumentSemantic.Retain)]
 		NSManagedObjectContext ParentContext { get; set; }
 
+		/// <include file="../docs/api/CoreData/NSManagedObjectContext.xml" path="/Documentation/Docs[@DocId='P:CoreData.NSManagedObjectContext.ObjectsDidChangeNotification']/*" />
 		[Field ("NSManagedObjectContextObjectsDidChangeNotification")]
 		[Notification (typeof (NSManagedObjectChangeEventArgs))]
 		NSString ObjectsDidChangeNotification { get; }
 
+		/// <include file="../docs/api/CoreData/NSManagedObjectContext.xml" path="/Documentation/Docs[@DocId='P:CoreData.NSManagedObjectContext.DidSaveNotification']/*" />
 		[Field ("NSManagedObjectContextDidSaveNotification")]
 		[Notification (typeof (NSManagedObjectChangeEventArgs))]
 		NSString DidSaveNotification { get; }
 
+		/// <include file="../docs/api/CoreData/NSManagedObjectContext.xml" path="/Documentation/Docs[@DocId='P:CoreData.NSManagedObjectContext.WillSaveNotification']/*" />
 		[Field ("NSManagedObjectContextWillSaveNotification")]
 		[Notification ()]
 		NSString WillSaveNotification { get; }
 
+		/// <summary>Gets or sets a name for the object.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("name")]
@@ -1471,6 +1588,9 @@ namespace CoreData {
 		[return: NullAllowed]
 		NSManagedObject GetExistingObject (NSManagedObjectID objectID, out NSError error);
 
+		/// <summary>Gets or sets a Boolean value that controls whether inaccessible faults wil be deleted.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("shouldDeleteInaccessibleFaults")]
 		bool ShouldDeleteInaccessibleFaults { get; set; }
@@ -1484,6 +1604,12 @@ namespace CoreData {
 		[Export ("mergeChangesFromRemoteContextSave:intoContexts:")]
 		void MergeChangesFromRemoteContextSave (NSDictionary changeNotificationData, NSManagedObjectContext [] contexts);
 
+		/// <summary>Gets the token that identifes the current query generation behavior.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("queryGenerationToken", ArgumentSemantic.Strong)]
 		NSQueryGenerationToken QueryGenerationToken { get; }
@@ -1492,6 +1618,9 @@ namespace CoreData {
 		[Export ("setQueryGenerationFromToken:error:")]
 		bool SetQueryGenerationFromToken ([NullAllowed] NSQueryGenerationToken generation, out NSError error);
 
+		/// <summary>Gets or sets a Boolean that tells whether changes in the parent are automatically merged.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("automaticallyMergesChangesFromParent")]
 		bool AutomaticallyMergesChangesFromParent { get; set; }
@@ -1500,6 +1629,12 @@ namespace CoreData {
 		[Export ("refreshAllObjects")]
 		void RefreshAllObjects ();
 
+		/// <summary>Gets or sets the author of the persistent history context.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("transactionAuthor")]
 		string TransactionAuthor { get; set; }
@@ -1562,15 +1697,30 @@ namespace CoreData {
 	[DisableDefaultCtor]
 	interface NSManagedObjectID : NSCopying, NSFetchRequestResult {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("entity", ArgumentSemantic.Strong)]
 		NSEntityDescription Entity { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("persistentStore", ArgumentSemantic.Weak)]
 		NSPersistentStore PersistentStore { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("temporaryID")]
 		bool IsTemporaryID { [Bind ("isTemporaryID")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("URIRepresentation")]
 		NSUrl URIRepresentation { get; }
 
@@ -1599,6 +1749,9 @@ namespace CoreData {
 		[Export ("initWithContentsOfURL:")]
 		NativeHandle Constructor (NSUrl url);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("entitiesByName", ArgumentSemantic.Copy)]
 #if XAMCORE_5_0
 		NSDictionary<NSString, NSEntityDescription> EntitiesByName { get; }
@@ -1606,9 +1759,15 @@ namespace CoreData {
 		NSDictionary EntitiesByName { get; }
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("entities", ArgumentSemantic.Retain)]
 		NSEntityDescription [] Entities { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("configurations", ArgumentSemantic.Strong)]
 		string [] Configurations { get; }
 
@@ -1640,6 +1799,12 @@ namespace CoreData {
 		NSFetchRequest FetchRequestFromTemplateWithName (string name, NSDictionary variables);
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("localizationDictionary", ArgumentSemantic.Retain)]
 #if XAMCORE_5_0
@@ -1668,6 +1833,9 @@ namespace CoreData {
 		NSManagedObjectModel ModelByMergingModels (NSManagedObjectModel [] models, NSDictionary metadata);
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fetchRequestTemplatesByName", ArgumentSemantic.Copy)]
 #if XAMCORE_5_0
 		NSDictionary<NSString, NSFetchRequest> FetchRequestTemplatesByName { get; }
@@ -1687,6 +1855,9 @@ namespace CoreData {
 		bool IsConfiguration ([NullAllowed] string configuration, NSDictionary metadata);
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("entityVersionHashesByName", ArgumentSemantic.Copy)]
 #if XAMCORE_5_0
 		NSDictionary<NSString, NSData> EntityVersionHashesByName { get; }
@@ -2060,9 +2231,18 @@ namespace CoreData {
 		[Export ("deleteHistoryBeforeTransaction:")]
 		NSPersistentHistoryChangeRequest DeleteHistoryBefore ([NullAllowed] NSPersistentHistoryTransaction transaction);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("resultType", ArgumentSemantic.Assign)]
 		NSPersistentHistoryResultType ResultType { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("token", ArgumentSemantic.Strong)]
 		NSPersistentHistoryToken Token { get; }
 
@@ -2081,10 +2261,19 @@ namespace CoreData {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreResult))]
 	interface NSPersistentHistoryResult {
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("result", ArgumentSemantic.Strong)]
 		NSObject Result { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("resultType")]
 		NSPersistentHistoryResultType ResultType { get; }
 	}
@@ -2256,6 +2445,9 @@ namespace CoreData {
 	[DisableDefaultCtor]
 	interface NSPersistentStore {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("migrationManagerClass")]
 		Class MigrationManagerClass { get; }
@@ -2285,29 +2477,62 @@ namespace CoreData {
 		[Export ("loadMetadata:")]
 		bool LoadMetadata (out NSError error);
 
+		/// <summary>Gets the coordinator to which this store belongs, if present.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("persistentStoreCoordinator", ArgumentSemantic.Weak)]
 		NSPersistentStoreCoordinator PersistentStoreCoordinator { get; }
 
+		/// <summary>Gets the managed object model configuration name for the configuration that was used to create the store.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("configurationName")]
 		string ConfigurationName { get; }
 
+		/// <summary>Gets the options with which the store was initialized.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("options", ArgumentSemantic.Strong)]
 		NSDictionary Options { get; }
 
+		/// <summary>Gets or sets the URL of the store.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("URL", ArgumentSemantic.Retain)]
 		NSUrl Url { get; set; }
 
+		/// <summary>Gets the unique identifier for this store.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("identifier")]
 		[NullAllowed]
 		string Identifier { get; set; }
 
+		/// <summary>Application developers override this method to provide a unique store type to use when adding the store to the store coordinator.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("type")]
 		string Type { get; }
 
+		/// <summary>Gets or sets the read-only status of the store</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("readOnly")]
 		bool ReadOnly { [Bind ("isReadOnly")] get; set; }
 
+		/// <summary>Gets or sets the store metadata.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("metadata", ArgumentSemantic.Retain)]
 		[NullAllowed]
 #if XAMCORE_5_0
@@ -2322,9 +2547,16 @@ namespace CoreData {
 		[Export ("willRemoveFromPersistentStoreCoordinator:")]
 		void WillRemoveFromPersistentStoreCoordinator ([NullAllowed] NSPersistentStoreCoordinator coordinator);
 
+		/// <summary>Represents the value associated with the constant NSPersistentStoreSaveConflictsErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPersistentStoreSaveConflictsErrorKey")]
 		NSString SaveConflictsErrorKey { get; }
 
+		/// <summary>Gets the spotlight exporter for the store.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("coreSpotlightExporter")]
@@ -2362,39 +2594,85 @@ namespace CoreData {
 		[Export ("persistentStoreDescriptionWithURL:")]
 		NSPersistentStoreDescription GetPersistentStoreDescription (NSUrl Url);
 
+		/// <summary>Gets or sets the store type.</summary>
+		///         <value>The store type.</value>
+		///         <remarks>
+		///           <para>
+		///             <see cref="T:CoreData.NSPersistentStoreCoordinator" /> contains static properties that represent valid store types.</para>
+		///         </remarks>
 		[Export ("type")]
 		string Type { get; set; }
 
+		/// <summary>Gets or sets the configuration that is used by the store.</summary>
+		///         <value>
+		///           <para>The configuration that is used by the store.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("configuration")]
 		string Configuration { get; set; }
 
+		/// <summary>Gets or sets the URL for the store.</summary>
+		///         <value>
+		///           <para>The URL for the store.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("URL", ArgumentSemantic.Copy)]
 		NSUrl Url { get; set; }
 
+		/// <summary>Gets the dictionary of options for the store.</summary>
+		///         <value>The dictionary of options for the store.</value>
+		///         <remarks>
+		///           <para>
+		///             <see cref="T:CoreData.NSPersistentStoreCoordinator" /> contains static properties that represent the option keys that are valid for this dictionary.</para>
+		///         </remarks>
 		[Export ("options", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSObject> Options { get; }
 
 		[Export ("setOption:forKey:")]
 		void SetOption ([NullAllowed] NSObject option, string key);
 
+		/// <summary>Gets or sets a value that tells whether the store is read-only.</summary>
+		///         <value>
+		///           <see langword="true" /> if the store is read-only. Otherwise, <see langword="false" />.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("readOnly")]
 		bool IsReadOnly { [Bind ("isReadOnly")] get; set; }
 
+		/// <summary>Gets or sets the connection timeout interval.</summary>
+		///         <value>The connection timeout interval.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("timeout")]
 		double Timeout { get; set; }
 
+		/// <summary>Gets the SQLite pragmas for the store.</summary>
+		///         <value>The SQLite pragmas for the store.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sqlitePragmas", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSObject> SqlitePragmas { get; }
 
 		[Export ("setValue:forPragmaNamed:")]
 		void SetValue ([NullAllowed] NSObject value, string name);
 
+		/// <summary>Gets or sets a value that controls whether the store is added on the calling thread or on a background thread.</summary>
+		///         <value>
+		///           <see langword="false" />, the default value, to load the store on the main thread. <see langword="true" /> to load the store on a background thread.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("shouldAddStoreAsynchronously")]
 		bool ShouldAddStoreAsynchronously { get; set; }
 
+		/// <summary>Gets or sets a value that controls whether the persistent store should be automatically migrated.</summary>
+		///         <value>
+		///           <see langword="true" /> to indicate that the store should be migrated. Otherwise, <see langword="false" />.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("shouldMigrateStoreAutomatically")]
 		bool ShouldMigrateStoreAutomatically { get; set; }
 
+		/// <summary>Gets or sets a value that controls whether the coordinator will attempt to create a mapping model by inspecting the schemas to be mapped.</summary>
+		///         <value>
+		///           <see langword="true" /> to indicate that the coordinator should attempt to create a mapping model. Otherwise, <see langword="false" />.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("shouldInferMappingModelAutomatically")]
 		bool ShouldInferMappingModelAutomatically { get; set; }
 
@@ -2985,10 +3263,19 @@ namespace CoreData {
 
 	[BaseType (typeof (NSObject))]
 	interface NSPersistentStoreRequest : NSCopying {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("requestType")]
 		NSPersistentStoreRequestType RequestType { get; }
 
 		//Detected properties
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("affectedStores", ArgumentSemantic.Retain)]
 		NSPersistentStore [] AffectedStores { get; set; }
@@ -3041,13 +3328,22 @@ namespace CoreData {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreResult))]
 	interface NSPersistentStoreAsynchronousResult {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("managedObjectContext", ArgumentSemantic.Retain)]
 		NSManagedObjectContext ManagedObjectContext { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("operationError", ArgumentSemantic.Retain)]
 		[NullAllowed]
 		NSError OperationError { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("progress", ArgumentSemantic.Retain)]
 		[NullAllowed]
 		NSProgress Progress { get; }
@@ -3230,22 +3526,46 @@ namespace CoreData {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSEntityDescription entity);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("entityName")]
 		string EntityName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("entity", ArgumentSemantic.Retain)]
 		NSEntityDescription Entity { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("predicate", ArgumentSemantic.Retain)]
 		NSPredicate Predicate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("includesSubentities")]
 		bool IncludesSubentities { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("resultType", ArgumentSemantic.Assign)]
 		NSBatchUpdateRequestResultType ResultType { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("propertiesToUpdate", ArgumentSemantic.Copy)]
 		NSDictionary PropertiesToUpdate { get; set; }

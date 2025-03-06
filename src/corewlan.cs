@@ -128,15 +128,27 @@ namespace CoreWlan {
 		[Internal]
 		NSOrderedSet _NetworkProfiles { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("requireAdministratorForAssociation", ArgumentSemantic.Assign)]
 		bool RequireAdministratorForAssociation { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("requireAdministratorForPower", ArgumentSemantic.Assign)]
 		bool RequireAdministratorForPower { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("requireAdministratorForIBSSMode", ArgumentSemantic.Assign)]
 		bool RequireAdministratorForIbssMode { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rememberJoinedNetworks", ArgumentSemantic.Assign)]
 		bool RememberJoinedNetworks { get; }
 
@@ -336,9 +348,15 @@ namespace CoreWlan {
 		bool CommitConfiguration (CWConfiguration config, out NSError error);
 #endif // !NET
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("powerOn", ArgumentSemantic.Assign)]
 		bool PowerOn { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("interfaceName", ArgumentSemantic.Copy)]
 		string InterfaceName { get; }
@@ -348,54 +366,99 @@ namespace CoreWlan {
 		[Internal]
 		NSSet _SupportedWlanChannels { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("wlanChannel")]
 		CWChannel WlanChannel { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("activePHYMode")]
 		CWPhyMode ActivePHYMode { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("ssid")]
 		string Ssid { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("ssidData")]
 		NSData SsidData { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("bssid")]
 		string Bssid { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rssiValue")]
 		nint RssiValue { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("noiseMeasurement")]
 		nint NoiseMeasurement { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("security")]
 		CWSecurity Security { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("transmitRate")]
 		double TransmitRate { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("countryCode")]
 		string CountryCode { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("interfaceMode")]
 		CWInterfaceMode InterfaceMode { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("transmitPower")]
 		nint TransmitPower { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("hardwareAddress")]
 		string HardwareAddress { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("deviceAttached", ArgumentSemantic.Assign)]
 		bool DeviceAttached { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("serviceActive")]
 		bool ServiceActive { get; }
 
@@ -404,6 +467,9 @@ namespace CoreWlan {
 		[Internal]
 		NSSet _CachedScanResults { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("configuration")]
 		CWConfiguration Configuration { get; }

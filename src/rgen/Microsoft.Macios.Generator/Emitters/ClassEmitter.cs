@@ -40,6 +40,7 @@ class ClassEmitter : ICodeEmitter {
 	{
 
 		if (!disableDefaultCtor) {
+			classBlock.WriteDocumentation (Documentation.Class.DefaultInit (bindingContext.Changes.Name));
 			classBlock.AppendGeneratedCodeAttribute ();
 			classBlock.AppendDesignatedInitializer ();
 			classBlock.WriteRaw (
@@ -55,11 +56,13 @@ public {bindingContext.Changes.Name} () : base (NSObjectFlag.Empty)
 			classBlock.WriteLine ();
 		}
 
+		classBlock.WriteDocumentation (Documentation.Class.DefaultInitWithFlag (bindingContext.Changes.Name));
 		classBlock.AppendGeneratedCodeAttribute ();
 		classBlock.AppendEditorBrowsableAttribute (EditorBrowsableState.Advanced);
 		classBlock.WriteLine ($"protected {bindingContext.Changes.Name} (NSObjectFlag t) : base (t) {{}}");
 
 		classBlock.WriteLine ();
+		classBlock.WriteDocumentation (Documentation.Class.DefaultInitWithHandle (bindingContext.Changes.Name));
 		classBlock.AppendGeneratedCodeAttribute ();
 		classBlock.AppendEditorBrowsableAttribute (EditorBrowsableState.Advanced);
 		classBlock.WriteLine ($"protected internal {bindingContext.Changes.Name} (NativeHandle handle) : base (handle) {{}}");
@@ -348,6 +351,7 @@ public static NSObject {name} (NSObject objectToObserve, EventHandler<{eventType
 				classBlock.AppendGeneratedCodeAttribute (optimizable: true);
 				classBlock.WriteLine ($"static readonly NativeHandle {ClassPtr} = Class.GetHandle (\"{registrationName}\");");
 				classBlock.WriteLine ();
+				classBlock.WriteDocumentation (Documentation.Class.ClassHandle (bindingContext.Changes.Name));
 				classBlock.WriteLine ($"public override NativeHandle ClassHandle => {ClassPtr};");
 				classBlock.WriteLine ();
 

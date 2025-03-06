@@ -29,11 +29,17 @@ namespace VideoSubscriberAccount {
 	[NoMacCatalyst]
 	[ErrorDomain ("VSErrorDomain")]
 	public enum VSErrorCode : long {
+		/// <summary>The user has not affirmatively provided access.</summary>
 		AccessNotGranted = 0,
+		/// <summary>The requested provider is not supported.</summary>
 		UnsupportedProvider = 1,
+		/// <summary>The application cancelled the request.</summary>
 		UserCancelled = 2,
+		/// <summary>A transient error has occurred.</summary>
 		ServiceTemporarilyUnavailable = 3,
+		/// <summary>To be added.</summary>
 		ProviderRejected = 4,
+		/// <summary>The provider does not recognize the verification token provided by the app.</summary>
 		InvalidVerificationToken = 5,
 		Rejected = 6,
 		Unsupported = 7,
@@ -43,9 +49,13 @@ namespace VideoSubscriberAccount {
 	[Native]
 	[NoMacCatalyst]
 	public enum VSAccountAccessStatus : long {
+		/// <summary>The user has not interacted with the permissions dialog.</summary>
 		NotDetermined = 0,
+		/// <summary>The user is denied access and may not change permission.</summary>
 		Restricted = 1,
+		/// <summary>The user has denied the app access.</summary>
 		Denied = 2,
+		/// <summary>The user has granted the app access.</summary>
 		Granted = 3,
 	}
 
@@ -105,12 +115,24 @@ namespace VideoSubscriberAccount {
 	[StrongDictionary ("VSErrorInfoKeys")]
 	interface VSErrorInfo {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string SamlResponse { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string SamlResponseStatus { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string UnsupportedProviderIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string AccountProviderResponse { get; }
 	}
 
@@ -157,6 +179,13 @@ namespace VideoSubscriberAccount {
 	[BaseType (typeof (NSObject))]
 	interface VSAccountManager {
 
+		/// <summary>An instance of the VideoSubscriberAccount.IVSAccountManagerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the VideoSubscriberAccount.IVSAccountManagerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		IVSAccountManagerDelegate Delegate { get; set; }
 
@@ -191,6 +220,9 @@ namespace VideoSubscriberAccount {
 	[StrongDictionary ("VSCheckAccessOptionKeys")]
 	interface VSAccountManagerAccessOptions {
 
+		/// <summary>If not <see langword="null" />, specifies whether the user should be asked for access permission.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("CheckAccessOptionPrompt")]
 		bool CheckAccessOptionPrompt { get; set; }
 	}
@@ -214,18 +246,48 @@ namespace VideoSubscriberAccount {
 	[BaseType (typeof (NSObject))]
 	interface VSAccountMetadata {
 
+		/// <summary>A unique identifier for the account provider.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("accountProviderIdentifier")]
 		string AccountProviderIdentifier { get; }
 
+		/// <summary>When the user will be asked to re-authenticate.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("authenticationExpirationDate", ArgumentSemantic.Copy)]
 		NSDate AuthenticationExpirationDate { get; }
 
+		/// <summary>Arbitrary data, for instance to hold cryptographic verify the <see cref="P:VideoSubscriberAccount.VSAccountMetadata.SamlAttributeQueryResponse" />.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("verificationData", ArgumentSemantic.Copy)]
 		NSData VerificationData { get; }
 
+		/// <summary>If not <see langword="null" />, the SAML AttributeQuery response from the provider.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("SAMLAttributeQueryResponse")]
 		string SamlAttributeQueryResponse { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("accountProviderResponse", ArgumentSemantic.Strong)]
 		VSAccountProviderResponse AccountProviderResponse { get; }
 	}
@@ -237,36 +299,78 @@ namespace VideoSubscriberAccount {
 	[BaseType (typeof (NSObject))]
 	interface VSAccountMetadataRequest {
 
+		/// <summary>If not <see langword="null" />, identifies the source of the request.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("channelIdentifier")]
 		string ChannelIdentifier { get; set; }
 
+		/// <summary>If not empty, a list of provider identifiers that are allowed to respond to the request.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("supportedAccountProviderIdentifiers", ArgumentSemantic.Copy)]
 		string [] SupportedAccountProviderIdentifiers { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("featuredAccountProviderIdentifiers", ArgumentSemantic.Copy)]
 		string [] FeaturedAccountProviderIdentifiers { get; set; }
 
+		/// <summary>If not <see langword="null" />, a value that the provider requires to verify the identity of the requesting app.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("verificationToken")]
 		string VerificationToken { get; set; }
 
+		/// <summary>Whether to ask for the provider's unique identification string.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("includeAccountProviderIdentifier")]
 		bool IncludeAccountProviderIdentifier { get; set; }
 
+		/// <summary>Whether to ask when the authentication expires.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("includeAuthenticationExpirationDate")]
 		bool IncludeAuthenticationExpirationDate { get; set; }
 
+		/// <summary>If not <see langword="null" />, a user-readable title of the video that the app will play on successful authentication.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("localizedVideoTitle")]
 		string LocalizedVideoTitle { get; set; }
 
+		/// <summary>If <see langword="true" />, the user may be prompted to authenticate.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("interruptionAllowed")]
 		bool InterruptionAllowed { [Bind ("isInterruptionAllowed")] get; set; }
 
+		/// <summary>If <see langword="true" />, cached credentials will not be used.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("forceAuthentication")]
 		bool ForceAuthentication { get; set; }
 
+		/// <summary>Values to be added to the SAML <c>attributeQuery</c> sent to the provider.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("attributeNames", ArgumentSemantic.Copy)]
 		string [] AttributeNames { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Protected]
 		[Export ("supportedAuthenticationSchemes", ArgumentSemantic.Copy)]
 		NSString [] SupportedAuthenticationSchemesString { get; set; }
@@ -285,22 +389,41 @@ namespace VideoSubscriberAccount {
 	[BaseType (typeof (NSObject))]
 	interface VSAccountProviderResponse {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Protected]
 		[Export ("authenticationScheme")]
 		NSString AuthenticationSchemeString { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("VSAccountProviderAuthenticationSchemeExtensions.GetValue (AuthenticationSchemeString)")]
 		VSAccountProviderAuthenticationScheme AuthenticationScheme { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("status")]
 		string Status { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("body")]
 		string Body { get; }
 	}
 
 	[NoMacCatalyst]
 	enum VSAccountProviderAuthenticationScheme {
+		/// <summary>To be added.</summary>
 		[Field ("VSAccountProviderAuthenticationSchemeSAML")]
 		Saml,
 
@@ -316,8 +439,11 @@ namespace VideoSubscriberAccount {
 	[NoMacCatalyst]
 	[Native]
 	public enum VSSubscriptionAccessLevel : long {
+		/// <summary>To be added.</summary>
 		Unknown,
+		/// <summary>To be added.</summary>
 		FreeWithAccount,
+		/// <summary>To be added.</summary>
 		Paid,
 	}
 
@@ -327,17 +453,29 @@ namespace VideoSubscriberAccount {
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	interface VSSubscription {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // null_resettable
 		[Export ("expirationDate", ArgumentSemantic.Copy)]
 		NSDate ExpirationDate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("accessLevel", ArgumentSemantic.Assign)]
 		VSSubscriptionAccessLevel AccessLevel { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // null_resettable
 		[Export ("tierIdentifiers", ArgumentSemantic.Copy)]
 		string [] TierIdentifiers { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("billingIdentifier")]
 		string BillingIdentifier { get; set; }
 	}
@@ -349,6 +487,9 @@ namespace VideoSubscriberAccount {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface VSSubscriptionRegistrationCenter {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("defaultSubscriptionRegistrationCenter")]
 		VSSubscriptionRegistrationCenter Default { get; }

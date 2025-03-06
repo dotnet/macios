@@ -72,34 +72,58 @@ namespace CoreAnimation {
 	[Model]
 	[Protocol]
 	interface CAMediaTiming {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("beginTime")]
 		double BeginTime { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("duration")]
 		double Duration { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("speed")]
 		float Speed { get; set; } /* float, not CGFloat */
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("timeOffset")]
 		double TimeOffset { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("repeatCount")]
 		float RepeatCount { get; set; } /* float, not CGFloat */
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("repeatDuration")]
 		double RepeatDuration { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("autoreverses")]
 		bool AutoReverses { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("fillMode", ArgumentSemantic.Copy)]
 		string FillMode { get; set; }
@@ -285,10 +309,16 @@ namespace CoreAnimation {
 		[Static]
 		CALayer Create ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("presentationLayer")]
 		[NullAllowed]
 		CALayer PresentationLayer { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("modelLayer")]
 		CALayer ModelLayer { get; }
 
@@ -301,42 +331,81 @@ namespace CoreAnimation {
 		[Export ("needsDisplayForKey:")]
 		bool NeedsDisplayForKey (string key);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bounds")]
 		CGRect Bounds { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("zPosition")]
 		nfloat ZPosition { get; set; }
 
+		/// <summary>The anchor point for the <see cref="P:CoreAnimation.CALayer.Bounds" /> rectangle.</summary>
+		///         <value>The developer specifies the value for this property using the unit coordinate space. The default value for this property is (0.5, 0.5), representing the center of the bounds rectangle for this layer.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("anchorPoint")]
 		CGPoint AnchorPoint { get; set; }
 
+		/// <summary>The anchor point for the <see cref="P:CoreAnimation.CALayer.Bounds" />, defined along the Z axis.</summary>
+		///         <value>The default value is 0.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("anchorPointZ")]
 		nfloat AnchorPointZ { get; set; }
 
+		/// <summary>The layer's position in the coordinate space of its <see cref="P:CoreAnimation.CALayer.SuperLayer" />.</summary>
+		///         <value>The default is (0,0). This value is specified in points relative to the layer's <see cref="P:CoreAnimation.CALayer.AnchorPoint" />.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("position")]
 		CGPoint Position { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("transform")]
 		CATransform3D Transform { get; set; }
 
+		/// <summary>The affine version of the layer's <see cref="P:CoreAnimation.CALayer.Transform" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("affineTransform")]
 		CGAffineTransform AffineTransform { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("frame")]
 		CGRect Frame { get; set; }
 
+		/// <summary>Whether the layer is not displayed.</summary>
+		///         <value>The default value is <see langword="false" />.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hidden")] // Setter needs setHidden instead
 		bool Hidden { [Bind ("isHidden")] get; set; }
 
+		/// <summary>Whether the layer draws its content when facing away from the viewer.</summary>
+		///         <value>The default value is <see langword="true" />.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("doubleSided")]  // Setter needs setDoubleSided
 		bool DoubleSided { [Bind ("isDoubleSided")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("geometryFlipped")]
 		bool GeometryFlipped { [Bind ("isGeometryFlipped")] get; set; }
 
+		/// <summary>Whether the layer's contents are implicitly flipped when the layer is rendered.</summary>
+		///         <value>The default value is <see langword="false" />.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("contentsAreFlipped")]
 		bool ContentsAreFlipped { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("superlayer")]
 		[NullAllowed]
 		CALayer SuperLayer { get; }
@@ -344,6 +413,12 @@ namespace CoreAnimation {
 		[Export ("removeFromSuperlayer")]
 		void RemoveFromSuperLayer ();
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("sublayers", ArgumentSemantic.Copy)]
 		CALayer [] Sublayers { get; set; }
@@ -368,13 +443,25 @@ namespace CoreAnimation {
 		[PostGet ("Sublayers")]
 		void ReplaceSublayer (CALayer layer, CALayer with);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sublayerTransform")]
 		CATransform3D SublayerTransform { get; set; }
 
+		/// <summary>An optional layer, the alpha channel of which is used to mask the contents of this layer.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("mask", ArgumentSemantic.Strong)]
 		[NullAllowed]
 		CALayer Mask { get; set; }
 
+		/// <summary>Whether sublayers are clipped to the <see cref="P:CoreAnimation.CALayer.Bounds" /> of this layer.</summary>
+		///         <value>The default value is <see langword="false" />.</value>
+		///         <remarks>If <see langword="true" />, the clipping mask matches the bounds of <c>this</c><see cref="T:CoreAnimation.CALayer" />, including rounded corners.</remarks>
 		[Export ("masksToBounds")]
 		bool MasksToBounds { get; set; }
 
@@ -403,6 +490,11 @@ namespace CoreAnimation {
 		[Export ("containsPoint:")]
 		bool Contains (CGPoint p);
 
+		/// <summary>The contents of this layer, as a <see cref="T:CoreGraphics.CGImage" />.</summary>
+		///         <value>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[DebuggerBrowsable (DebuggerBrowsableState.Never)]
 		[Export ("contents", ArgumentSemantic.Strong), NullAllowed]
 		CGImage Contents { get; set; }
@@ -412,6 +504,9 @@ namespace CoreAnimation {
 		[Sealed]
 		IntPtr _Contents { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoTV]
 		[MacCatalyst (13, 1)]
@@ -419,30 +514,55 @@ namespace CoreAnimation {
 		[NullAllowed]
 		NSObject LayoutManager { get; set; }
 
+		/// <summary>The scale factor applied to the layer.</summary>
+		///         <value>The default value is 1.0.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("contentsScale")]
 		nfloat ContentsScale { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("contentsRect")]
 		CGRect ContentsRect { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("contentsGravity", ArgumentSemantic.Copy)]
 		string ContentsGravity { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("contentsCenter")]
 		CGRect ContentsCenter { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("minificationFilter", ArgumentSemantic.Copy)]
 		string MinificationFilter { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("magnificationFilter", ArgumentSemantic.Copy)]
 		string MagnificationFilter { get; set; }
 
+		/// <summary>Whether the layer and its contents are completely opaque.</summary>
+		///         <value>The default value is <see langword="false" />. If <see langword="true" />, the system can render the layer more quickly.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("opaque")]
 		bool Opaque { [Bind ("isOpaque")] get; set; }
 
 		[Export ("display")]
 		void Display ();
 
+		/// <summary>Whether the layer has been marked as requiring an update.</summary>
+		///         <value>
+		///           <see langword="true" /> if the layer has been marked as requiring an update.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("needsDisplay")]
 		bool NeedsDisplay { get; }
 
@@ -455,6 +575,9 @@ namespace CoreAnimation {
 		[Export ("displayIfNeeded")]
 		void DisplayIfNeeded ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("needsDisplayOnBoundsChange")]
 		bool NeedsDisplayOnBoundsChange { get; set; }
 
@@ -464,23 +587,44 @@ namespace CoreAnimation {
 		[Export ("renderInContext:")]
 		void RenderInContext (CGContext ctx);
 
+		/// <summary>The background color of the layer.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("backgroundColor")]
 		CGColor BackgroundColor { get; set; }
 
+		/// <summary>The radius used when drawing rounded corners.</summary>
+		///         <value>The default value is 0.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("cornerRadius")]
 		nfloat CornerRadius { get; set; }
 
+		/// <summary>The width of the border of the layer.</summary>
+		///         <value>The default value is 0.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("borderWidth")]
 		nfloat BorderWidth { get; set; }
 
+		/// <summary>The color of the border of the layer.</summary>
+		///         <value>The default value is black.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("borderColor")]
 		[NullAllowed]
 		CGColor BorderColor { get; set; }
 
+		/// <summary>The transparency of the layer, in the range 0 (transparent) to 1.0 (opaque).</summary>
+		///         <value>The default value is 1.0.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("opacity")]
 		float Opacity { get; set; } /* float, not CGFloat */
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("edgeAntialiasingMask")]
 		CAEdgeAntialiasingMask EdgeAntialiasingMask { get; set; }
 
@@ -510,6 +654,13 @@ namespace CoreAnimation {
 		[return: NullAllowed]
 		NSObject ActionForKey (string eventKey);
 
+		/// <summary>
+		///           <see cref="T:Foundation.NSDictionary" /> containing the layer's actions.</summary>
+		///         <value>
+		///           <para>The default value is <see langword="null" />.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("actions", ArgumentSemantic.Copy)]
 		NSDictionary Actions { get; set; }
@@ -523,6 +674,12 @@ namespace CoreAnimation {
 		[Export ("removeAnimationForKey:")]
 		void RemoveAnimation (string key);
 
+		/// <summary>Identifiers for the animations associated with this layer.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("animationKeys"), NullAllowed]
 		string [] AnimationKeys { get; }
 
@@ -530,81 +687,185 @@ namespace CoreAnimation {
 		[return: NullAllowed]
 		CAAnimation AnimationForKey (string key);
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("name", ArgumentSemantic.Copy)]
 		string Name { get; set; }
 
+		/// <summary>An object that can respond to the delegate protocol for this type</summary>
+		///         <value>The instance that will respond to events and data requests.</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+		///         </remarks>
 		[Export ("delegate", ArgumentSemantic.Weak)]
 		[NullAllowed]
 		NSObject WeakDelegate { get; [PostSnippet (@"SetCALayerDelegate (value as CALayerDelegate);", Optimizable = true)] set; }
 
+		/// <summary>An instance of the CoreAnimation.ICALayerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the CoreAnimation.ICALayerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		ICALayerDelegate Delegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("shadowColor")]
 		[NullAllowed]
 		CGColor ShadowColor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("shadowOffset")]
 		CGSize ShadowOffset { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("shadowOpacity")]
 		float ShadowOpacity { get; set; } /* float, not CGFloat */
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("shadowRadius")]
 		nfloat ShadowRadius { get; set; }
 
+		/// <summary>Represents the value associated with the constant kCATransition</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCATransition")]
 		NSString Transition { get; }
 
+		/// <summary>Represents the value associated with the constant kCAGravityCenter</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAGravityCenter")]
 		NSString GravityCenter { get; }
 
+		/// <summary>Represents the value associated with the constant kCAGravityTop</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAGravityTop")]
 		NSString GravityTop { get; }
 
+		/// <summary>Represents the value associated with the constant kCAGravityBottom</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAGravityBottom")]
 		NSString GravityBottom { get; }
 
+		/// <summary>Represents the value associated with the constant kCAGravityLeft</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAGravityLeft")]
 		NSString GravityLeft { get; }
 
+		/// <summary>Represents the value associated with the constant kCAGravityRight</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAGravityRight")]
 		NSString GravityRight { get; }
 
+		/// <summary>Represents the value associated with the constant kCAGravityTopLeft</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAGravityTopLeft")]
 		NSString GravityTopLeft { get; }
 
+		/// <summary>Represents the value associated with the constant kCAGravityTopRight</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAGravityTopRight")]
 		NSString GravityTopRight { get; }
 
+		/// <summary>Represents the value associated with the constant kCAGravityBottomLeft</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAGravityBottomLeft")]
 		NSString GravityBottomLeft { get; }
 
+		/// <summary>Represents the value associated with the constant kCAGravityBottomRight</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAGravityBottomRight")]
 		NSString GravityBottomRight { get; }
 
+		/// <summary>Represents the value associated with the constant kCAGravityResize</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAGravityResize")]
 		NSString GravityResize { get; }
 
+		/// <summary>Represents the value associated with the constant kCAGravityResizeAspect</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAGravityResizeAspect")]
 		NSString GravityResizeAspect { get; }
 
+		/// <summary>Represents the value associated with the constant kCAGravityResizeAspectFill</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAGravityResizeAspectFill")]
 		NSString GravityResizeAspectFill { get; }
 
+		/// <summary>Represents the value associated with the constant kCAFilterNearest</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAFilterNearest")]
 		NSString FilterNearest { get; }
 
+		/// <summary>Represents the value associated with the constant kCAFilterLinear</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAFilterLinear")]
 		NSString FilterLinear { get; }
 
+		/// <summary>Represents the value associated with the constant kCAFilterTrilinear</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAFilterTrilinear")]
 		NSString FilterTrilinear { get; }
 
+		/// <summary>Represents the value associated with the constant kCAOnOrderIn</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAOnOrderIn")]
 		NSString OnOrderIn { get; }
 
+		/// <summary>Represents the value associated with the constant kCAOnOrderOut</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAOnOrderOut")]
 		NSString OnOrderOut { get; }
 
@@ -613,6 +874,9 @@ namespace CoreAnimation {
 		[Export ("contentsFormat")]
 		NSString _ContentsFormat { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("visibleRect")]
 		CGRect VisibleRect { get; }
 
@@ -622,20 +886,44 @@ namespace CoreAnimation {
 		[Export ("scrollRectToVisible:")]
 		void ScrollRectToVisible (CGRect r);
 
+		/// <summary>An array of Core Image filters applied to the content of this layer and its sublayers.</summary>
+		///         <value>
+		///           <para>The default value is <see langword="null" />.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("filters", ArgumentSemantic.Copy)]
 		CIFilter [] Filters { get; set; }
 
+		/// <summary>An array of Core Image filters that are applied to the content behind this layer.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("backgroundFilters", ArgumentSemantic.Copy)]
 		CIFilter [] BackgroundFilters { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("style", ArgumentSemantic.Copy), NullAllowed]
 		NSDictionary Style { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("minificationFilterBias")]
 		float MinificationFilterBias { get; set; } /* float, not CGFloat */
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoTV]
 		[MacCatalyst (13, 1)]
@@ -654,6 +942,9 @@ namespace CoreAnimation {
 		[Export ("resizeWithOldSuperlayerSize:")]
 		void Resize (CGSize oldSuperlayerSize);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoTV]
 		[MacCatalyst (13, 1)]
@@ -667,31 +958,64 @@ namespace CoreAnimation {
 		[Export ("addConstraint:")]
 		void AddConstraint (CAConstraint c);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("shouldRasterize")]
 		bool ShouldRasterize { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("shadowPath")]
 		CGPath ShadowPath { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rasterizationScale")]
 		nfloat RasterizationScale { get; set; }
 
+		/// <summary>Whether drawing commands are deferred and processed asynchronously on a background thread.</summary>
+		///         <value>The default value is <see langword="false" />.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("drawsAsynchronously")]
 		bool DrawsAsynchronously { get; set; }
 
+		/// <summary>Whether edge antialiasing is allowed.</summary>
+		///         <value>
+		///           <see langword="true" /> if edge antialisting is allowed. By default, antialiasing is allowed for all edges.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("allowsEdgeAntialiasing")]
 		bool AllowsEdgeAntialiasing { get; set; }
 
+		/// <summary>Whether group opacity is allowed.</summary>
+		///         <value>
+		///           <see langword="true" /> if group opacity is allowed. By default, opacity is allowed for all groups.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("allowsGroupOpacity")]
 		bool AllowsGroupOpacity { get; set; }
 
+		/// <summary>A Core Image filter that is used for compositing the layer and the content behind it.</summary>
+		///         <value>
+		///           <para>The default value is <see langword="null" />, causing
+		/// 	  the layer to use source-over compositing.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("compositingFilter", ArgumentSemantic.Strong)]
 		NSObject CompositingFilter { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("maskedCorners", ArgumentSemantic.Assign)]
 		CACornerMask MaskedCorners { get; set; }
@@ -766,16 +1090,31 @@ namespace CoreAnimation {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CALayer))]
 	interface CAMetalLayer {
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("device")]
 		IMTLDevice Device { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("pixelFormat")]
 		MTLPixelFormat PixelFormat { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("framebufferOnly")]
 		bool FramebufferOnly { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("drawableSize")]
 		CGSize DrawableSize { get; set; }
 
@@ -783,19 +1122,31 @@ namespace CoreAnimation {
 		[return: NullAllowed]
 		ICAMetalDrawable NextDrawable ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("presentsWithTransaction")]
 		bool PresentsWithTransaction { [Bind ("presentsWithTransaction")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[NoiOS]
 		[MacCatalyst (13, 1)]
 		[Export ("displaySyncEnabled")]
 		bool DisplaySyncEnabled { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("allowsNextDrawableTimeout")]
 		bool AllowsNextDrawableTimeout { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("maximumDrawableCount")]
 		nuint MaximumDrawableCount { get; set; }
@@ -861,16 +1212,28 @@ namespace CoreAnimation {
 		[Export ("layer"), New, Static]
 		CALayer Create ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("fadeDuration")]
 		double FadeDuration { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("levelsOfDetail")]
 		nint LevelsOfDetail { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("levelsOfDetailBias")]
 		nint LevelsOfDetailBias { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("tileSize")]
 		CGSize TileSize { get; set; }
 	}
@@ -902,31 +1265,58 @@ namespace CoreAnimation {
 		[Export ("layer"), New, Static]
 		CALayer Create ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("instanceCount")]
 		nint InstanceCount { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("instanceDelay")]
 		double InstanceDelay { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("instanceTransform")]
 		CATransform3D InstanceTransform { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("preservesDepth")]
 		bool PreservesDepth { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("instanceColor")]
 		[NullAllowed]
 		CGColor InstanceColor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("instanceRedOffset")]
 		float InstanceRedOffset { get; set; } /* float, not CGFloat */
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("instanceGreenOffset")]
 		float InstanceGreenOffset { get; set; } /* float, not CGFloat */
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("instanceBlueOffset")]
 		float InstanceBlueOffset { get; set; } /* float, not CGFloat */
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("instanceAlphaOffset")]
 		float InstanceAlphaOffset { get; set; } /* float, not CGFloat */
 	}
@@ -964,6 +1354,9 @@ namespace CoreAnimation {
 		[Export ("scrollMode", ArgumentSemantic.Copy)]
 		NSString WeakScrollMode { get; set; }
 
+		/// <summary>Gets or sets a string that describes the scroll mode.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		CAScroll ScrollMode {
 			[Wrap ("CAScrollExtensions.GetValue (WeakScrollMode)")]
 			get;
@@ -1029,67 +1422,147 @@ namespace CoreAnimation {
 		[Export ("layer"), New, Static]
 		CALayer Create ();
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("path")]
 		[NullAllowed]
 		CGPath Path { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fillColor")]
 		[NullAllowed]
 		CGColor FillColor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fillRule", ArgumentSemantic.Copy)]
 		NSString FillRule { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lineCap", ArgumentSemantic.Copy)]
 		NSString LineCap { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lineDashPattern", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		NSNumber [] LineDashPattern { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lineDashPhase")]
 		nfloat LineDashPhase { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lineJoin", ArgumentSemantic.Copy)]
 		NSString LineJoin { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lineWidth")]
 		nfloat LineWidth { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("miterLimit")]
 		nfloat MiterLimit { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("strokeColor")]
 		[NullAllowed]
 		CGColor StrokeColor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("strokeStart")]
 		nfloat StrokeStart { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("strokeEnd")]
 		nfloat StrokeEnd { get; set; }
 
+		/// <summary>Represents the value associated with the constant kCALineJoinMiter</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCALineJoinMiter")]
 		NSString JoinMiter { get; }
 
+		/// <summary>Represents the value associated with the constant kCALineJoinRound</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCALineJoinRound")]
 		NSString JoinRound { get; }
 
+		/// <summary>Represents the value associated with the constant kCALineJoinBevel</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCALineJoinBevel")]
 		NSString JoinBevel { get; }
 
+		/// <summary>Represents the value associated with the constant kCALineCapButt</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCALineCapButt")]
 		NSString CapButt { get; }
 
+		/// <summary>Represents the value associated with the constant kCALineCapRound</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCALineCapRound")]
 		NSString CapRound { get; }
 
+		/// <summary>Represents the value associated with the constant kCALineCapSquare</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCALineCapSquare")]
 		NSString CapSquare { get; }
 
+		/// <summary>Represents the value associated with the constant kCAFillRuleNonZero</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAFillRuleNonZero")]
 		NSString FillRuleNonZero { get; }
 
+		/// <summary>Represents the value associated with the constant kCAFillRuleEvenOdd</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAFillRuleEvenOdd")]
 		NSString FillRuleEvenOdd { get; }
 	}
@@ -1640,16 +2113,34 @@ namespace CoreAnimation {
 		[Export ("animationWithKeyPath:")]
 		CAPropertyAnimation FromKeyPath ([NullAllowed] string path);
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("keyPath", ArgumentSemantic.Copy)]
 		string KeyPath { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("additive")]
 		bool Additive { [Bind ("isAdditive")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("cumulative")]
 		bool Cumulative { [Bind ("isCumulative")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("valueFunction", ArgumentSemantic.Strong)]
 		CAValueFunction ValueFunction { get; set; }
@@ -1717,18 +2208,33 @@ namespace CoreAnimation {
 		[Static, New, Export ("animationWithKeyPath:")]
 		CABasicAnimation FromKeyPath ([NullAllowed] string path);
 
+		/// <summary>Gets or sets the mass for the animation.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("mass")]
 		nfloat Mass { get; set; }
 
+		/// <summary>Gets or sets the stiffness of the spring for the animation.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("stiffness")]
 		nfloat Stiffness { get; set; }
 
+		/// <summary>Gets or sets the damping for the spring animation.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("damping")]
 		nfloat Damping { get; set; }
 
+		/// <summary>Gets or sets the initial velocity of the animation.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("initialVelocity")]
 		nfloat InitialVelocity { get; set; }
 
+		/// <summary>Gets the settling time for the animation.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
 		[Export ("settlingDuration")]
 		double /* CFTimeInterval */ SettlingDuration { get; }
@@ -1868,19 +2374,40 @@ namespace CoreAnimation {
 		[Export ("animation"), Static, New]
 		CATransition CreateAnimation ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("type", ArgumentSemantic.Copy)]
 		string Type { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("subtype", ArgumentSemantic.Copy)]
 		string Subtype { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("startProgress")]
 		float StartProgress { get; set; } /* float, not CGFloat */
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("endProgress")]
 		float EndProgress { get; set; } /* float, not CGFloat */
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("filter", ArgumentSemantic.Strong)]
 		[NullAllowed]
 		NSObject Filter { get; set; }
@@ -1890,15 +2417,31 @@ namespace CoreAnimation {
 	///     <remarks>These are used in the FillMode property of CAAnimation and CALayer.</remarks>
 	[Static]
 	interface CAFillMode {
+		/// <summary>Represents the value associated with the constant kCAFillModeForwards</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAFillModeForwards")]
 		NSString Forwards { get; }
 
+		/// <summary>Represents the value associated with the constant kCAFillModeBackwards</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAFillModeBackwards")]
 		NSString Backwards { get; }
 
+		/// <summary>Represents the value associated with the constant kCAFillModeBoth</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAFillModeBoth")]
 		NSString Both { get; }
 
+		/// <summary>Represents the value associated with the constant kCAFillModeRemoved</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAFillModeRemoved")]
 		NSString Removed { get; }
 	}
@@ -1928,14 +2471,26 @@ namespace CoreAnimation {
 		[Export ("unlock")]
 		void Unlock ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("animationDuration")]
 		double AnimationDuration { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Static, NullAllowed]
 		[Export ("animationTimingFunction")]
 		CAMediaTimingFunction AnimationTimingFunction { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("disableActions")]
 		bool DisableActions { get; set; }
@@ -1949,18 +2504,40 @@ namespace CoreAnimation {
 		[Export ("setValue:forKey:")]
 		void SetValueForKey ([NullAllowed] NSObject anObject, NSString key);
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("completionBlock"), NullAllowed]
 		Action CompletionBlock { get; set; }
 
+		/// <summary>Represents the value associated with the constant kCATransactionAnimationDuration</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCATransactionAnimationDuration")]
 		NSString AnimationDurationKey { get; }
 
+		/// <summary>Represents the value associated with the constant kCATransactionDisableActions</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCATransactionDisableActions")]
 		NSString DisableActionsKey { get; }
 
+		/// <summary>Represents the value associated with the constant kCATransactionAnimationTimingFunction</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCATransactionAnimationTimingFunction")]
 		NSString TimingFunctionKey { get; }
 
+		/// <summary>Represents the value associated with the constant kCATransactionCompletionBlock</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCATransactionCompletionBlock")]
 		NSString CompletionBlockKey { get; }
 	}
@@ -2070,13 +2647,16 @@ namespace CoreAnimation {
 	}
 
 	enum CAGradientLayerType {
+		/// <summary>To be added.</summary>
 		[Field ("kCAGradientLayerAxial")]
 		Axial,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kCAGradientLayerRadial")]
 		Radial,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kCAGradientLayerConic")]
 		Conic,
@@ -2147,39 +2727,86 @@ namespace CoreAnimation {
 		[return: NullAllowed]
 		CAValueFunction FromName (string name);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("name")]
 		string Name { get; }
 
+		/// <summary>Represents the value associated with the constant kCAValueFunctionRotateX</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAValueFunctionRotateX")]
 		NSString RotateX { get; }
 
+		/// <summary>Represents the value associated with the constant kCAValueFunctionRotateY</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAValueFunctionRotateY")]
 		NSString RotateY { get; }
 
+		/// <summary>Represents the value associated with the constant kCAValueFunctionRotateZ</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAValueFunctionRotateZ")]
 		NSString RotateZ { get; }
 
+		/// <summary>Represents the value associated with the constant kCAValueFunctionScale</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAValueFunctionScale")]
 		NSString Scale { get; }
 
+		/// <summary>Represents the value associated with the constant kCAValueFunctionScaleX</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAValueFunctionScaleX")]
 		NSString ScaleX { get; }
 
+		/// <summary>Represents the value associated with the constant kCAValueFunctionScaleY</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAValueFunctionScaleY")]
 		NSString ScaleY { get; }
 
+		/// <summary>Represents the value associated with the constant kCAValueFunctionScaleZ</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAValueFunctionScaleZ")]
 		NSString ScaleZ { get; }
 
+		/// <summary>Represents the value associated with the constant kCAValueFunctionTranslate</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAValueFunctionTranslate")]
 		NSString Translate { get; }
 
+		/// <summary>Represents the value associated with the constant kCAValueFunctionTranslateX</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAValueFunctionTranslateX")]
 		NSString TranslateX { get; }
 
+		/// <summary>Represents the value associated with the constant kCAValueFunctionTranslateY</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAValueFunctionTranslateY")]
 		NSString TranslateY { get; }
 
+		/// <summary>Represents the value associated with the constant kCAValueFunctionTranslateZ</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAValueFunctionTranslateZ")]
 		NSString TranslateZ { get; }
 
@@ -2221,10 +2848,19 @@ namespace CoreAnimation {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CAEmitterCell_class/index.html">Apple documentation for <c>CAEmitterCell</c></related>
 	[BaseType (typeof (NSObject))]
 	interface CAEmitterCell : CAMediaTiming, NSSecureCoding {
+		/// <summary>Gets or sets a name for the cell that can be used in animation keypaths.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("name", ArgumentSemantic.Copy)]
 		string Name { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether emitted cells are rendered.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
@@ -2234,24 +2870,45 @@ namespace CoreAnimation {
 		[Export ("birthRate")]
 		float BirthRate { get; set; } /* float, not CGFloat */
 
+		/// <summary>Gets or sets the average particle lifetime.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lifetime")]
 		float LifeTime { get; set; } /* float, not CGFloat */
 
+		/// <summary>Gets or sets the average amount of variation in the particle lifetime.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lifetimeRange")]
 		float LifetimeRange { get; set; } /* float, not CGFloat */
 
+		/// <summary>Gets the angle from the Z axis at which particles are emitted.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("emissionLatitude")]
 		nfloat EmissionLatitude { get; set; }
 
+		/// <summary>Gets or sets the azimuth angle of the emitted particles.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("emissionLongitude")]
 		nfloat EmissionLongitude { get; set; }
 
+		/// <summary>Gets or sets the average amount of variation in the particle emission rate.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("emissionRange")]
 		nfloat EmissionRange { get; set; }
 
+		/// <summary>Gets or sets the initial velocity of the emitter cell.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("velocity")]
 		nfloat Velocity { get; set; }
 
+		/// <summary>Gets or sets the average value by which the velocity can differ from its nominal value.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("velocityRange")]
 		nfloat VelocityRange { get; set; }
 
@@ -2273,31 +2930,58 @@ namespace CoreAnimation {
 		[Export ("zAcceleration")]
 		nfloat AccelerationZ { get; set; }
 
+		/// <summary>Gets or sets the scale factor to apply to the emitter cell.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scale")]
 		nfloat Scale { get; set; }
 
+		/// <summary>Gets or sets the average value by which the scale factor can differ from its nominal value.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleRange")]
 		nfloat ScaleRange { get; set; }
 
+		/// <summary>Gets or sets the speed at which the scale factor changes.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleSpeed")]
 		nfloat ScaleSpeed { get; set; }
 
+		/// <summary>Gets or sets the rotational speed in radians per second.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("spin")]
 		nfloat Spin { get; set; }
 
+		/// <summary>Gets or sets the average value by which the spin can differ from its nominal value.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("spinRange")]
 		nfloat SpinRange { get; set; }
 
+		/// <summary>Gets or sets the color or average color of the emitted objects.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("color")]
 		[NullAllowed]
 		CGColor Color { get; set; }
 
+		/// <summary>Gets or sets the speed at which the red value changes.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("redSpeed")]
 		float RedSpeed { get; set; } /* float, not CGFloat */
 
+		/// <summary>Gets or sets the speed at which the green value changes.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("greenSpeed")]
 		float GreenSpeed { get; set; } /* float, not CGFloat */
 
+		/// <summary>Gets or sets the speed at which the blue value changes.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("blueSpeed")]
 		float BlueSpeed { get; set; } /* float, not CGFloat */
 
@@ -2307,31 +2991,67 @@ namespace CoreAnimation {
 		[Export ("alphaSpeed")]
 		float AlphaSpeed { get; set; } /* float, not CGFloat */
 
+		/// <summary>Gets or sets a weak reference to the image contents for the layer.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("contents", ArgumentSemantic.Strong)]
 		NSObject WeakContents { get; set; }
 
+		/// <summary>Gets or sets the image content of the layer.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // just like it's weak property
 		[Sealed]
 		[Export ("contents", ArgumentSemantic.Strong)]
 		CGImage Contents { get; set; }
 
+		/// <summary>Gets or sets the rectangular portion of the image contents to draw.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("contentsRect")]
 		CGRect ContentsRect { get; set; }
 
+		/// <summary>TGets or sets the filter to use when shrinking content.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("minificationFilter", ArgumentSemantic.Copy)]
 		string MinificationFilter { get; set; }
 
+		/// <summary>Gets or sets the filter to use when enlarging content.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("magnificationFilter", ArgumentSemantic.Copy)]
 		string MagnificationFilter { get; set; }
 
+		/// <summary>Gets or sets a numerical value that controls detail presentation for a trilinear minification filter.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("minificationFilterBias")]
 		float MinificationFilterBias { get; set; } /* float, not CGFloat */
 
+		/// <summary>Gets or sets an optional array of subcells.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("emitterCells", ArgumentSemantic.Copy)]
 		CAEmitterCell [] Cells { get; set; }
 
+		/// <summary>Gets or sets an optional dictionary of style values.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("style", ArgumentSemantic.Copy)]
 		NSDictionary Style { get; set; }
@@ -2348,9 +3068,15 @@ namespace CoreAnimation {
 		[Export ("shouldArchiveValueForKey:")]
 		bool ShouldArchiveValueForKey (string key);
 
+		/// <summary>Gets or sets the average deviation of the blue color component.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("redRange")]
 		float RedRange { get; set; } /* float, not CGFloat */
 
+		/// <summary>Gets or sets the average deviation of the green color component.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("greenRange")]
 		float GreenRange { get; set; } /* float, not CGFloat */
 
@@ -2366,6 +3092,9 @@ namespace CoreAnimation {
 		[Export ("alphaRange")]
 		float AlphaRange { get; set; } /* float, not CGFloat */
 
+		/// <summary>Gets or sets the scale at which to draw the image contents.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("contentsScale")]
 		nfloat ContentsScale { get; set; }
@@ -2379,97 +3108,205 @@ namespace CoreAnimation {
 		[Export ("layer"), New, Static]
 		CALayer Create ();
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("emitterCells", ArgumentSemantic.Copy)]
 		CAEmitterCell [] Cells { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("birthRate")]
 		float BirthRate { get; set; } /* float, not CGFloat */
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lifetime")]
 		float LifeTime { get; set; } /* float, not CGFloat */
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("emitterPosition")]
 		CGPoint Position { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("emitterZPosition")]
 		nfloat ZPosition { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("emitterSize")]
 		CGSize Size { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("emitterDepth")]
 		nfloat Depth { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("emitterShape", ArgumentSemantic.Copy)]
 		string Shape { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("emitterMode", ArgumentSemantic.Copy)]
 		string Mode { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("renderMode", ArgumentSemantic.Copy)]
 		string RenderMode { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("preservesDepth")]
 		bool PreservesDepth { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("velocity")]
 		float Velocity { get; set; } /* float, not CGFloat */
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scale")]
 		float Scale { get; set; } /* float, not CGFloat */
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("spin")]
 		float Spin { get; set; } /* float, not CGFloat */
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("seed")]
 		int Seed { get; set; } // unsigned int
 
 		/* `emitterShape' values. */
+		/// <summary>Represents the value associated with the constant kCAEmitterLayerPoint</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAEmitterLayerPoint")]
 		NSString ShapePoint { get; }
 
+		/// <summary>Represents the value associated with the constant kCAEmitterLayerLine</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAEmitterLayerLine")]
 		NSString ShapeLine { get; }
 
+		/// <summary>Represents the value associated with the constant kCAEmitterLayerRectangle</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAEmitterLayerRectangle")]
 		NSString ShapeRectangle { get; }
 
+		/// <summary>Represents the value associated with the constant kCAEmitterLayerCuboid</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAEmitterLayerCuboid")]
 		NSString ShapeCuboid { get; }
 
+		/// <summary>Represents the value associated with the constant kCAEmitterLayerCircle</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAEmitterLayerCircle")]
 		NSString ShapeCircle { get; }
 
+		/// <summary>Represents the value associated with the constant kCAEmitterLayerSphere</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAEmitterLayerSphere")]
 		NSString ShapeSphere { get; }
 
 		/* `emitterMode' values. */
+		/// <summary>Represents the value associated with the constant kCAEmitterLayerPoints</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAEmitterLayerPoints")]
 		NSString ModePoints { get; }
 
+		/// <summary>Represents the value associated with the constant kCAEmitterLayerOutline</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAEmitterLayerOutline")]
 		NSString ModeOutline { get; }
 
+		/// <summary>Represents the value associated with the constant kCAEmitterLayerSurface</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAEmitterLayerSurface")]
 		NSString ModeSurface { get; }
 
+		/// <summary>Represents the value associated with the constant kCAEmitterLayerVolume</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAEmitterLayerVolume")]
 		NSString ModeVolume { get; }
 
 		/*  `renderOrder' values. */
+		/// <summary>Represents the value associated with the constant kCAEmitterLayerUnordered</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAEmitterLayerUnordered")]
 		NSString RenderUnordered { get; }
 
+		/// <summary>Represents the value associated with the constant kCAEmitterLayerOldestFirst</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAEmitterLayerOldestFirst")]
 		NSString RenderOldestFirst { get; }
 
+		/// <summary>Represents the value associated with the constant kCAEmitterLayerOldestLast</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAEmitterLayerOldestLast")]
 		NSString RenderOldestLast { get; }
 
+		/// <summary>Represents the value associated with the constant kCAEmitterLayerBackToFront</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAEmitterLayerBackToFront")]
 		NSString RenderBackToFront { get; }
 
+		/// <summary>Represents the value associated with the constant kCAEmitterLayerAdditive</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCAEmitterLayerAdditive")]
 		NSString RenderAdditive { get; }
 	}
@@ -2537,6 +3374,9 @@ namespace CoreAnimation {
 	[StrongDictionary ("CARendererOptionKeys")]
 	interface CARendererOptions {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("ColorSpace")]
 		CGColorSpace ColorSpace { get; set; }
 
@@ -2555,9 +3395,15 @@ namespace CoreAnimation {
 		[Wrap ("Create (tex, options.GetDictionary ())")]
 		CARenderer Create (IMTLTexture tex, [NullAllowed] CARendererOptions options);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("layer", ArgumentSemantic.Strong)]
 		CALayer Layer { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bounds", ArgumentSemantic.Assign)]
 		CGRect Bounds { get; set; }
 

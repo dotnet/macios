@@ -194,8 +194,6 @@ namespace Xamarin.Tests {
 			Assert.That (files, Has.Some.Matches<string> (v => v.StartsWith ("package/services/metadata/core-properties/", StringComparison.Ordinal) && v.EndsWith (".psmdcp", StringComparison.Ordinal)), "psmdcp");
 			if (noBindingEmbedding) {
 				if (Configuration.IsBuildingRemotely) {
-					Assert.That (files, Does.Contain ($"lib/{tfm}/{assemblyName}.resources.zip"), $"{assemblyName}.resources.zip");
-				} else {
 					Assert.That (files, Does.Not.Contain ($"lib/{tfm}/{assemblyName}.resources.zip"), $"{assemblyName}.resources.zip");
 					Assert.That (files, Does.Contain ($"lib/{tfm}/{assemblyName}.resources/manifest"), $"{assemblyName}.resources/manifest");
 					Assert.That (files, Does.Contain ($"lib/{tfm}/{assemblyName}.resources/XStaticArTest.xcframework/Info.plist"), $"{assemblyName}.resources/XStaticArTest.xcframework/Info.plist");
@@ -231,6 +229,8 @@ namespace Xamarin.Tests {
 					Assert.That (files, Does.Contain ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/tvos-arm64/XTest.framework/XTest"), $"{assemblyName}.resources/XTest.xcframework/tvos-arm64/XTest.framework/XTest");
 					Assert.That (files, Does.Contain ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/tvos-arm64_x86_64-simulator/XTest.framework/Info.plist"), $"{assemblyName}.resources/XTest.xcframework/tvos-arm64_x86_64-simulator/XTest.framework/Info.plist");
 					Assert.That (files, Does.Contain ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/tvos-arm64_x86_64-simulator/XTest.framework/XTest"), $"{assemblyName}.resources/XTest.xcframework/tvos-arm64_x86_64-simulator/XTest.framework/XTest");
+				} else {
+					Assert.That (files, Does.Contain ($"lib/{tfm}/{assemblyName}.resources.zip"), $"{assemblyName}.resources.zip");
 				}
 			}
 		}

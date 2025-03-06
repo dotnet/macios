@@ -9,6 +9,7 @@ namespace Mono.Tuner {
 
 	public static partial class Extensions {
 
+#if !LEGACY_TOOLS
 		public static bool TryGetLinkedAssembly (this LinkContext context, string name, out AssemblyDefinition assembly)
 		{
 			assembly = GetAssembly (context, name);
@@ -17,6 +18,7 @@ namespace Mono.Tuner {
 
 			return context.Annotations.GetAction (assembly) == AssemblyAction.Link;
 		}
+#endif
 
 		public static AssemblyDefinition GetAssembly (this LinkContext context, string assembly_name)
 		{

@@ -35,7 +35,9 @@ using ObjCRuntime;
 using Mono.Cecil;
 using Mono.Linker;
 using Mono.Tuner;
+#if !LEGACY_TOOLS
 using ClassRedirector;
+#endif
 
 // Disable warnings about nullability attributes in code until we've reviewed this file for nullability (and enabled it).
 // This way we can add nullability attributes to new code in this file without getting warnings about these attributes.
@@ -631,6 +633,7 @@ namespace Registrar {
 		// Look for linked away attributes as well as attributes on the attribute provider.
 		IEnumerable<ICustomAttribute> GetCustomAttributes (ICustomAttributeProvider provider, string @namespace, string name, bool inherits = false)
 		{
+#if !LEGACY_TOOLS
 			var dict = LinkContext?.Annotations?.GetCustomAnnotations (name);
 			object annotations = null;
 
@@ -641,6 +644,7 @@ namespace Registrar {
 						yield return attrib;
 				}
 			}
+#endif
 
 			if (provider.HasCustomAttributes) {
 				foreach (var attrib in provider.CustomAttributes) {
@@ -2881,6 +2885,7 @@ namespace Registrar {
 			return all_types;
 		}
 
+#if NET && !LEGACY_TOOLS
 		CSToObjCMap type_map_dictionary;
 		public CSToObjCMap GetTypeMapDictionary (List<Exception> exceptions)
 		{
@@ -2901,6 +2906,7 @@ namespace Registrar {
 			type_map_dictionary = map_dict;
 			return type_map_dictionary;
 		}
+#endif // !LEGACY_TOOLS
 
 		public void Rewrite ()
 		{
@@ -2925,7 +2931,9 @@ namespace Registrar {
 
 			var map = new AutoIndentStringBuilder (1);
 			var map_init = new AutoIndentStringBuilder ();
+#if NET && !LEGACY_TOOLS
 			var map_dict = new CSToObjCMap (); // maps CS type to ObjC type name and index
+#endif
 			var protocol_wrapper_map = new Dictionary<uint, Tuple<ObjCType, uint>> ();
 			var protocols = new List<ProtocolInfo> ();
 
@@ -2955,8 +2963,10 @@ namespace Registrar {
 				registered_assemblies.Add (new (GetAssemblies ().Single (v => GetAssemblyName (v) == single_assembly), single_assembly));
 			}
 
+#if NET && !LEGACY_TOOLS
 			// Don't need this dictionary, but do need ClassMapIndex
 			GetTypeMapDictionary (exceptions);
+#endif
 
 			foreach (var @class in allTypes) {
 				var isPlatformType = IsPlatformType (@class.Type);
@@ -4152,9 +4162,6 @@ namespace Registrar {
 
 			SpecializePrepareReturnValue (sb, method, descriptiveMethodName, rettype, exceptions);
 
-			if (App.Embeddinator)
-				body.WriteLine ("xamarin_embeddinator_initialize ();");
-
 			body.WriteLine ("MONO_THREAD_ATTACH;");
 			body.WriteLine ();
 
@@ -5346,6 +5353,7 @@ namespace Registrar {
 			return "__p__" + i.ToString ();
 		}
 
+#if !MMP && !MTOUCH
 		string TryGeneratePInvokeWrapper (PInvokeWrapperGenerator state, MethodDefinition method)
 		{
 			var signatures = state.signatures;
@@ -5476,6 +5484,7 @@ namespace Registrar {
 			pinfo.Module = mr;
 			pinfo.EntryPoint = wrapperName;
 		}
+#endif // MMP
 
 		public void Register (IEnumerable<AssemblyDefinition> assemblies)
 		{
@@ -5497,6 +5506,7 @@ namespace Registrar {
 			}
 		}
 
+#if !MMP && !MTOUCH
 		static bool IsPropertyTrimmed (PropertyDefinition pd, AnnotationStore annotations)
 		{
 			if (pd is null)
@@ -5585,6 +5595,7 @@ namespace Registrar {
 				}
 			}
 		}
+#endif // !MMP && !MTOUCH
 
 		public void GenerateSingleAssembly (PlatformResolver resolver, IEnumerable<AssemblyDefinition> assemblies, string header_path, string source_path, string assembly, out string initialization_method)
 		{
@@ -5634,9 +5645,6 @@ namespace Registrar {
 
 			methods.WriteLine ($"#include \"{Path.GetFileName (header_path)}\"");
 			methods.StringBuilder.AppendLine ("extern \"C\" {");
-
-			if (App.Embeddinator)
-				methods.WriteLine ("void xamarin_embeddinator_initialize ();");
 
 			Specialize (sb, out initialization_method);
 
@@ -5708,6 +5716,7 @@ namespace Registrar {
 			return null;
 		}
 
+#if !MMP && !MTOUCH
 		public MethodReference GetDelegateInvoke (TypeReference delegateType)
 		{
 			var td = delegateType.Resolve ();
@@ -5771,7 +5780,7 @@ namespace Registrar {
 				return false;
 			}
 		}
-
+#endif // !MMP && !MTOUCH
 	}
 
 	// Replicate a few attribute types here, with TypeDefinition instead of Type

@@ -11,12 +11,23 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst)]
 		[TestCase (ApplePlatform.TVOS)]
 		[TestCase (ApplePlatform.MacOSX)]
-		[Category ("RemoteWindows")]
 		public void BindingOldStyle (ApplePlatform platform)
+		{
+			BindingOldStyleImpl (platform);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS)]
+		[Category ("RemoteWindows")]
+		public void BindingOldStyleOnRemoteWindows (ApplePlatform platform)
+		{
+			BindingOldStyleImpl (platform, AddRemoteProperties ());
+		}
+
+		void BindingOldStyleImpl (ApplePlatform platform, Dictionary<string, string>? properties = null)
 		{
 			var project = "BindingOldStyle";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
-			Configuration.IgnoreIfBuildingRemotelyAndPlatformDoesNotSupportRemoteBuilds (platform);
 
 			var project_path = GetProjectPath (project, platform: platform);
 			Clean (project_path);
@@ -29,7 +40,7 @@ namespace Xamarin.Tests {
 			}
 			var outputPath = Path.Combine (tmpdir, "OutputPath");
 			var intermediateOutputPath = Path.Combine (tmpdir, "IntermediateOutputPath");
-			var properties = GetDefaultProperties ();
+			properties = GetDefaultProperties (extraProperties: properties);
 			properties ["OutputPath"] = outputPath + Path.DirectorySeparatorChar;
 			properties ["IntermediateOutputPath"] = intermediateOutputPath + Path.DirectorySeparatorChar;
 
@@ -104,8 +115,20 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.TVOS, false)]
 		[TestCase (ApplePlatform.MacOSX, true)]
 		[TestCase (ApplePlatform.MacOSX, false)]
-		[Category ("RemoteWindows")]
 		public void BindingXcFrameworksProject (ApplePlatform platform, bool noBindingEmbedding)
+		{
+			BindingXcFrameworksProjectImpl (platform, noBindingEmbedding);
+		}
+
+		[Category ("RemoteWindows")]
+		[TestCase (ApplePlatform.iOS, true)]
+		[TestCase (ApplePlatform.iOS, false)]
+		public void BindingXcFrameworksProjectOnRemoteWindows (ApplePlatform platform, bool noBindingEmbedding)
+		{
+			BindingXcFrameworksProjectImpl (platform, noBindingEmbedding, AddRemoteProperties ());
+		}
+
+		void BindingXcFrameworksProjectImpl (ApplePlatform platform, bool noBindingEmbedding, Dictionary<string, string>? properties = null)
 		{
 			var project = "bindings-xcframework-test";
 			var assemblyName = "bindings-framework-test";
@@ -117,7 +140,6 @@ namespace Xamarin.Tests {
 			// parts of the .xcframework will be zipped differently (due to symlinks
 			// in the xcframework).
 			Configuration.IgnoreIfAnyIgnoredPlatforms ();
-			Configuration.IgnoreIfBuildingRemotelyAndPlatformDoesNotSupportRemoteBuilds (platform);
 
 			var project_path = Path.Combine (Configuration.RootPath, "tests", project, "dotnet", platform.AsString (), $"{project}.csproj");
 			Clean (project_path);
@@ -130,7 +152,7 @@ namespace Xamarin.Tests {
 			}
 			var outputPath = Path.Combine (tmpdir, "OutputPath");
 			var intermediateOutputPath = Path.Combine (tmpdir, "IntermediateOutputPath");
-			var properties = GetDefaultProperties ();
+			properties = GetDefaultProperties (extraProperties: properties);
 			properties ["OutputPath"] = outputPath + Path.DirectorySeparatorChar;
 			properties ["IntermediateOutputPath"] = intermediateOutputPath + Path.DirectorySeparatorChar;
 			properties ["NoBindingEmbedding"] = noBindingEmbedding ? "true" : "false";
@@ -283,17 +305,27 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst)]
 		[TestCase (ApplePlatform.TVOS)]
 		[TestCase (ApplePlatform.MacOSX)]
-		[Category ("RemoteWindows")]
 		public void LibraryProject (ApplePlatform platform)
+		{
+			LibraryProjectImpl (platform);
+		}
+
+		[TestCase (ApplePlatform.iOS)]
+		[Category ("RemoteWindows")]
+		public void LibraryProjectOnRemoteWindows (ApplePlatform platform)
+		{
+			LibraryProjectImpl (platform, AddRemoteProperties ());
+		}
+
+		void LibraryProjectImpl (ApplePlatform platform, Dictionary<string, string>? properties = null)
 		{
 			var project = "MyClassLibrary";
 			var configuration = "Release";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
-			Configuration.IgnoreIfBuildingRemotelyAndPlatformDoesNotSupportRemoteBuilds (platform);
 
 			var project_path = GetProjectPath (project, platform: platform);
 			Clean (project_path);
-			var properties = GetDefaultProperties ();
+			properties = GetDefaultProperties (extraProperties: properties);
 
 			DotNet.AssertPack (project_path, properties);
 

@@ -152,14 +152,5 @@ namespace Xamarin.Tests {
 			Assert.Ignore ($"This test is only applicable if Xamarin-specific bits are enabled.");
 		}
 
-		public static void IgnoreIfBuildingRemotelyAndPlatformDoesNotSupportRemoteBuilds (ApplePlatform platform)
-		{
-			if (!IsBuildingRemotely)
-				return;
-			if (platform == ApplePlatform.iOS)
-				return;
-			Assert.Ignore ("This platform does not support building remotely");
-		}
-
 	}
 }

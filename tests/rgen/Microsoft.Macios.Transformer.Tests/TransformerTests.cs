@@ -255,7 +255,7 @@ interface UITextFormattingViewControllerDelegate {
 		var symbol = semanticModel.GetDeclaredSymbol (declaration);
 		Assert.NotNull (symbol);
 		var binding = Binding.FromDeclaration (declaration, symbol, new (semanticModel));
-		Assert.NotNull(binding);
+		Assert.NotNull (binding);
 
 		// there is not need for a transformer, we are just testing the topic selection
 		Assert.Equal (expectedTopic, Transformer.SelectTopic (declaration, binding.Value));

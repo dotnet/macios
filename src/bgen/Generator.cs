@@ -2910,9 +2910,8 @@ public partial class Generator : IMemberGatherer {
 				var formattedReturnType = TypeManager.FormatType (minfo.type, mi.ReturnType);
 				if (mi.ReturnType == TypeCache.NSString) {
 					if (isNullable) {
-						print ("{0} retvaltmp;", NativeHandleType);
-						cast_a = "((retvaltmp = ";
-						cast_b = $") == IntPtr.Zero ? default ({formattedBindAsType}) : ({wrapper}Runtime.GetNSObject<{formattedReturnType}> (retvaltmp, {owns})!){suffix})";
+						cast_a = $"{wrapper}";
+						cast_b = $"{suffix}";
 					} else {
 						cast_a = $"{wrapper}Runtime.GetNSObject<{formattedReturnType}> (";
 						cast_b = $", {owns})!{suffix}";

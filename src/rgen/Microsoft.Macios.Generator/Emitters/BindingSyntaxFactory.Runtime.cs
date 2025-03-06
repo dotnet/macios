@@ -180,7 +180,7 @@ static partial class BindingSyntaxFactory {
 	/// </summary>
 	/// <param name="returnType">The type info of the return type.</param>
 	/// <returns>The member access to the correct NSNumber method.</returns>
-	internal static MemberAccessExpressionSyntax? NSNumerFromHandle (TypeInfo returnType)
+	internal static MemberAccessExpressionSyntax? NSNumberFromHandle (TypeInfo returnType)
 	{
 #pragma warning disable format
 		var memberName = returnType switch {

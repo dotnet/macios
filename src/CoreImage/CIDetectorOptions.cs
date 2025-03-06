@@ -16,10 +16,19 @@ namespace CoreImage {
 
 	public partial class CIDetectorOptions {
 
+		/// <summary>Gets or sets a value that indicates whether to use high or low detection accuracy.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public FaceDetectorAccuracy? Accuracy { get; set; }
+		/// <summary>Gets or sets the smallest feature size to detect.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? MinFeatureSize { get; set; }
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -27,16 +36,40 @@ namespace CoreImage {
 #endif
 		public int? MaxFeatureCount { get; set; }
 
+		/// <summary>Gets or sets whether faces are tracked between frames.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? TrackingEnabled { get; set; }
+		/// <summary>Gets whether to detect closed eyes.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? EyeBlink { get; set; }
+		/// <summary>Gets or sets whether to detect smiles.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? Smile { get; set; }
+		/// <summary>Gets or sets the aspect ratio of features to detect. Values greater than one are wider than they are tall.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? AspectRatio { get; set; }
+		/// <summary>Gets or sets a value that indicates the focal length of the device that was used to capture the image that the detector will process.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? FocalLength { get; set; }
 
+		/// <summary>Gets or sets the number of angles from which to sample video  when detecting faces. Can be 1, 3, 5, 7, 9, or 11.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? NumberOfAngles { get; set; }
 
+		/// <summary>Gets or sets a value that controls whether to return subfeature information in addition to feature information.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? ReturnSubFeatures { get; set; }
 
+		/// <summary>The orientation of the source image, or <see langword="null" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CIImageOrientation? ImageOrientation { get; set; }
 
 		internal NSDictionary ToDictionary ()

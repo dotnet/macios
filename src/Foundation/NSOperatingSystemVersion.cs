@@ -38,8 +38,14 @@ namespace Foundation {
 #endif
 
 	public struct NSOperatingSystemVersion : IEquatable<NSOperatingSystemVersion>, IComparable {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nint Major;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nint Minor;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nint PatchVersion;
 
 		public NSOperatingSystemVersion (nint major, nint minor, nint patchVersion)

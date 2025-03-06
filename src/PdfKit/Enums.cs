@@ -246,7 +246,9 @@ namespace PdfKit {
 	[Native]
 	[TV (18, 2)]
 	public enum PdfThumbnailLayoutMode : long {
+		/// <summary>To be added.</summary>
 		Vertical = 0,
+		/// <summary>To be added.</summary>
 		Horizontal = 1,
 	}
 

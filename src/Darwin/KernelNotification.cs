@@ -43,110 +43,190 @@ using NativeHandle = System.IntPtr;
 namespace Darwin {
 	[StructLayout (LayoutKind.Sequential)]
 	public struct KernelEvent {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public IntPtr /* uintptr_tr */ Ident;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public EventFilter /* int16_t */ Filter;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public EventFlags /* uint16_t */ Flags;
 #if NET
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public FilterFlags /* uint32_t */ FilterFlags;
 #else
 		public uint /* uint32_t */ FilterFlags;
 #endif
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public IntPtr /* uintptr_t */ Data;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public IntPtr /* void */ UserData;
 	}
 
 	[Flags]
 	public enum EventFlags : ushort {
+		/// <summary>To be added.</summary>
 		Add = 0x0001,
+		/// <summary>To be added.</summary>
 		Delete = 0x0002,
+		/// <summary>To be added.</summary>
 		Enable = 0x0004,
+		/// <summary>To be added.</summary>
 		Disable = 0x0008,
+		/// <summary>To be added.</summary>
 		OneShot = 0x0010,
+		/// <summary>To be added.</summary>
 		Clear = 0x0020,
+		/// <summary>To be added.</summary>
 		Receipt = 0x0040,
+		/// <summary>To be added.</summary>
 		Dispatch = 0x0080,
 
+		/// <summary>To be added.</summary>
 		Flag0 = 0x1000,
+		/// <summary>To be added.</summary>
 		Flag1 = 0x2000,
+		/// <summary>To be added.</summary>
 		SystemFlags = unchecked(0xf000),
 
 		// Return values.
+		/// <summary>To be added.</summary>
 		EOF = 0x8000,
+		/// <summary>To be added.</summary>
 		Error = 0x4000,
 	}
 
 	public enum EventFilter : short {
+		/// <summary>To be added.</summary>
 		Read = -1,
+		/// <summary>To be added.</summary>
 		Write = -2,
+		/// <summary>To be added.</summary>
 		Aio = -3,
+		/// <summary>To be added.</summary>
 		Vnode = -4,
+		/// <summary>To be added.</summary>
 		Proc = -5,
+		/// <summary>To be added.</summary>
 		Signal = -6,
+		/// <summary>To be added.</summary>
 		Timer = -7,
+		/// <summary>To be added.</summary>
 		MachPort = -8,
+		/// <summary>To be added.</summary>
 		FS = -9,
+		/// <summary>To be added.</summary>
 		User = -10,
+		/// <summary>To be added.</summary>
 		VM = -11,
 	}
 
 	[Flags]
 	public enum FilterFlags : uint {
+		/// <summary>To be added.</summary>
 		ReadPoll = EventFlags.Flag0,
+		/// <summary>To be added.</summary>
 		ReadOutOfBand = EventFlags.Flag1,
+		/// <summary>To be added.</summary>
 		ReadLowWaterMark = 0x00000001,
 
+		/// <summary>To be added.</summary>
 		WriteLowWaterMark = ReadLowWaterMark,
 
+		/// <summary>To be added.</summary>
 		NoteTrigger = 0x01000000,
+		/// <summary>To be added.</summary>
 		NoteFFNop = 0x00000000,
+		/// <summary>To be added.</summary>
 		NoteFFAnd = 0x40000000,
+		/// <summary>To be added.</summary>
 		NoteFFOr = 0x80000000,
+		/// <summary>To be added.</summary>
 		NoteFFCopy = 0xc0000000,
+		/// <summary>To be added.</summary>
 		NoteFFCtrlMask = 0xc0000000,
+		/// <summary>To be added.</summary>
 		NoteFFlagsMask = 0x00ffffff,
 
+		/// <summary>To be added.</summary>
 		VNodeDelete = 0x00000001,
+		/// <summary>To be added.</summary>
 		VNodeWrite = 0x00000002,
+		/// <summary>To be added.</summary>
 		VNodeExtend = 0x00000004,
+		/// <summary>To be added.</summary>
 		VNodeAttrib = 0x00000008,
+		/// <summary>To be added.</summary>
 		VNodeLink = 0x00000010,
+		/// <summary>To be added.</summary>
 		VNodeRename = 0x00000020,
+		/// <summary>To be added.</summary>
 		VNodeRevoke = 0x00000040,
+		/// <summary>To be added.</summary>
 		VNodeNone = 0x00000080,
 
+		/// <summary>To be added.</summary>
 		ProcExit = 0x80000000,
+		/// <summary>To be added.</summary>
 		ProcFork = 0x40000000,
+		/// <summary>To be added.</summary>
 		ProcExec = 0x20000000,
+		/// <summary>To be added.</summary>
 		ProcReap = 0x10000000,
+		/// <summary>To be added.</summary>
 		ProcSignal = 0x08000000,
+		/// <summary>To be added.</summary>
 		ProcExitStatus = 0x04000000,
+		/// <summary>To be added.</summary>
 		ProcResourceEnd = 0x02000000,
 
 		// iOS only
+		/// <summary>To be added.</summary>
 		ProcAppactive = 0x00800000,
+		/// <summary>To be added.</summary>
 		ProcAppBackground = 0x00400000,
+		/// <summary>To be added.</summary>
 		ProcAppNonUI = 0x00200000,
+		/// <summary>To be added.</summary>
 		ProcAppInactive = 0x00100000,
+		/// <summary>To be added.</summary>
 		ProcAppAllStates = 0x00f00000,
 
 		// Masks
+		/// <summary>To be added.</summary>
 		ProcPDataMask = 0x000fffff,
+		/// <summary>To be added.</summary>
 		ProcControlMask = 0xfff00000,
 
+		/// <summary>To be added.</summary>
 		VMPressure = 0x80000000,
+		/// <summary>To be added.</summary>
 		VMPressureTerminate = 0x40000000,
+		/// <summary>To be added.</summary>
 		VMPressureSuddenTerminate = 0x20000000,
+		/// <summary>To be added.</summary>
 		VMError = 0x10000000,
 
+		/// <summary>To be added.</summary>
 		TimerSeconds = 0x00000001,
+		/// <summary>To be added.</summary>
 		TimerMicroSeconds = 0x00000002,
+		/// <summary>To be added.</summary>
 		TimerNanoSeconds = 0x00000004,
+		/// <summary>To be added.</summary>
 		TimerAbsolute = 0x00000008,
 	}
 
 	public class KernelQueue : IDisposable, INativeObject {
 		int handle;
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NativeHandle Handle { get { return (NativeHandle) (IntPtr) handle; } }
 
 		[DllImport (Constants.SystemLibrary)]

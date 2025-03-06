@@ -44,23 +44,37 @@ namespace CoreGraphics {
 
 	// untyped enum -> CGColorSpace.h
 	public enum CGColorRenderingIntent {
+		/// <summary>The default rendering intent.</summary>
 		Default,
+		/// <summary>Clamps colors outside of the gamut of the device into the space supported by the device.</summary>
 		AbsoluteColorimetric,
+		/// <summary>Shifts all colors to adjust for the requirements of the context.</summary>
 		RelativeColorimetric,
+		/// <summary>Preserves the color relationship by compressing the gamut of the graphics context to fit the output device.</summary>
 		Perceptual,
+		/// <summary>Preserves the relative saturation.</summary>
 		Saturation,
 	};
 
 	// untyped enum -> CGColorSpace.h
 	public enum CGColorSpaceModel {
+		/// <summary>Unknown color space model.</summary>
 		Unknown = -1,
+		/// <summary>Monochrome color space model.</summary>
 		Monochrome,
+		/// <summary>Red, Green and Blue model.</summary>
 		RGB,
+		/// <summary>Cyan, Magenta, Yellow and Key Black.</summary>
 		CMYK,
+		/// <summary>CIELAB color space (L* a* b*).</summary>
 		Lab,
+		/// <summary>DeviceN color space.</summary>
 		DeviceN,
+		/// <summary>Indexed color model, up to 256 values that are looked up.</summary>
 		Indexed,
+		/// <summary>Pattern color space, used when stroking or filling with a pattern.</summary>
 		Pattern,
+		/// <summary>To be added.</summary>
 		Xyz,
 	}
 
@@ -397,6 +411,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGColorSpaceModel CGColorSpaceGetModel (/* CGColorSpaceRef */ IntPtr space);
 
+		/// <summary>The colorspace model.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGColorSpaceModel Model {
 			get {
 				return CGColorSpaceGetModel (Handle);
@@ -406,6 +423,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* size_t */ nint CGColorSpaceGetNumberOfComponents (/* CGColorSpaceRef */ IntPtr space);
 
+		/// <summary>Number of components on this colorspace.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public nint Components {
 			get {
 				return CGColorSpaceGetNumberOfComponents (Handle);
@@ -596,6 +616,9 @@ namespace CoreGraphics {
 		static extern unsafe /* CFStringRef* */ IntPtr CGColorSpaceCopyName (/* CGColorSpaceRef */ IntPtr space);
 
 #if NET
+		/// <summary>Gets the color space name.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -617,6 +640,9 @@ namespace CoreGraphics {
 		static extern byte CGColorSpaceIsWideGamutRGB (/* CGColorSpaceRef */ IntPtr space);
 
 #if NET
+		/// <summary>Gets a value that tells whether the color space supports wide gamut colors.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
@@ -638,6 +664,9 @@ namespace CoreGraphics {
 		static extern byte CGColorSpaceSupportsOutput (/* CGColorSpaceRef */ IntPtr space);
 
 #if NET
+		/// <summary>Gets a Boolean value that tells whether the color space supports output.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]

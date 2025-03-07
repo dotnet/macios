@@ -223,7 +223,7 @@ static partial class BindingSyntaxFactory {
 		};
 #pragma warning restore format
 		
-		if (memberName is null) 
+		if (memberName is null)
 			return null;
 		return MemberAccessExpression (
 			SyntaxKind.SimpleMemberAccessExpression,

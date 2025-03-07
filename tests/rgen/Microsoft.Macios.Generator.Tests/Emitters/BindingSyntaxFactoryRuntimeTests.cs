@@ -147,7 +147,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 		var declaration = StringFromHandle (arguments);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
-	
+
 	class TestDataNSValueFromHandleTests : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -249,7 +249,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[ClassData (typeof (TestDataNSValueFromHandleTests))]
 	void NSValueFromHandleTests (TypeInfo returnType, string expectedDeclaration)

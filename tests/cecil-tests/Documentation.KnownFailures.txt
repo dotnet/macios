@@ -762,6 +762,7 @@ F:AccessorySetupKit.ASAccessoryRenameOptions.Ssid
 F:AccessorySetupKit.ASAccessoryState.Authorized
 F:AccessorySetupKit.ASAccessoryState.AwaitingAuthorization
 F:AccessorySetupKit.ASAccessoryState.Unauthorized
+F:AccessorySetupKit.ASAccessorySupportOptions.BluetoothHid
 F:AccessorySetupKit.ASAccessorySupportOptions.BluetoothPairingLE
 F:AccessorySetupKit.ASAccessorySupportOptions.BluetoothTransportBridging
 F:AccessorySetupKit.ASDiscoveryDescriptorRange.Default

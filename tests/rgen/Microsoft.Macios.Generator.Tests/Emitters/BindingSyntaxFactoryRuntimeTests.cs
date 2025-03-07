@@ -145,8 +145,8 @@ public class BindingSyntaxFactoryRuntimeTests {
 		var declaration = StringFromHandle (arguments);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
-	
-	class TestDataNSArrayFromHandleFunc: IEnumerable<object []> {
+
+	class TestDataNSArrayFromHandleFunc : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
 			yield return [
@@ -168,7 +168,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[ClassData (typeof (TestDataNSArrayFromHandleFunc))]
 	void NSArrayFromHandleFuncTests (string returnType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)

@@ -292,7 +292,10 @@ namespace GameKit {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	[Native]
 	public enum GKMatchSendDataMode : long {
+		/// <summary>Slower, but rebroadcast until received. Reliable data is guaranteed to arrive in order of transmission.</summary>
+		///         <altmember cref="T:GameKit.GKSendDataMode" />
 		Reliable,
+		/// <summary>Fast, but not guaranteed to arrive and may arrive out of order.</summary>
 		Unreliable,
 	}
 
@@ -338,36 +341,57 @@ namespace GameKit {
 	// NSInteger -> GKTurnBasedMatch.h
 	[Native]
 	public enum GKTurnBasedMatchStatus : long {
+		/// <summary>To be added.</summary>
 		Unknown,
+		/// <summary>To be added.</summary>
 		Open,
+		/// <summary>To be added.</summary>
 		Ended,
+		/// <summary>To be added.</summary>
 		Matching,
 	}
 
 	// NSInteger -> GKTurnBasedMatch.h
 	[Native]
 	public enum GKTurnBasedParticipantStatus : long {
+		/// <summary>To be added.</summary>
 		Unknown,
+		/// <summary>To be added.</summary>
 		Invited,
+		/// <summary>To be added.</summary>
 		Declined,
+		/// <summary>To be added.</summary>
 		Matching,
+		/// <summary>To be added.</summary>
 		Active,
+		/// <summary>To be added.</summary>
 		Done,
 	}
 
 	// NSInteger -> GKTurnBasedMatch.h
 	[Native]
 	public enum GKTurnBasedMatchOutcome : long {
+		/// <summary>To be added.</summary>
 		None,
+		/// <summary>To be added.</summary>
 		Quit,
+		/// <summary>To be added.</summary>
 		Won,
+		/// <summary>To be added.</summary>
 		Lost,
+		/// <summary>To be added.</summary>
 		Tied,
+		/// <summary>To be added.</summary>
 		TimeExpired,
+		/// <summary>To be added.</summary>
 		First,
+		/// <summary>To be added.</summary>
 		Second,
+		/// <summary>To be added.</summary>
 		Third,
+		/// <summary>To be added.</summary>
 		Fourth,
+		/// <summary>To be added.</summary>
 		CustomRange = 0xff0000,
 	}
 

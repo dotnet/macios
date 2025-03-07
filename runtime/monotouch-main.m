@@ -27,10 +27,6 @@
 #include "runtime-internal.h"
 #include "delegates.h"
 
-#if defined(__x86_64__) && !DOTNET
-#include "../tools/mtouch/monotouch-fixes.c"
-#endif
-
 static char original_working_directory_path [MAXPATHLEN];
 
 const char * const
@@ -43,7 +39,6 @@ xamarin_get_original_working_directory_path ()
 unsigned char *
 xamarin_load_aot_data (MonoAssembly *assembly, int size, gpointer user_data, void **out_handle)
 {
-	// COOP: This is a callback called by the AOT runtime, I believe we don't have to change the GC mode here (even though it accesses managed memory).
 	*out_handle = NULL;
 
 	char path [1024];
@@ -88,7 +83,6 @@ xamarin_load_aot_data (MonoAssembly *assembly, int size, gpointer user_data, voi
 void
 xamarin_free_aot_data (MonoAssembly *assembly, int size, gpointer user_data, void *handle)
 {
-	// COOP: This is a callback called by the AOT runtime, I belive we don't have to change the GC mode here.
 	munmap (handle, (size_t) size);
 }
 
@@ -98,7 +92,6 @@ This hook avoids the gazillion of filesystem probes we do as part of assembly lo
 MonoAssembly*
 xamarin_assembly_preload_hook (MonoAssemblyName *aname, char **assemblies_path, void* user_data)
 {
-	// COOP: This is a callback called by the AOT runtime, I belive we don't have to change the GC mode here.
 	char filename [1024];
 	char path [1024];
 	const char *name = mono_assembly_name_get_name (aname);
@@ -211,10 +204,7 @@ extern void mono_gc_init_finalizer_thread (void);
 #if defined (__arm__) || defined(__aarch64__)
 		[self start];
 #endif
-#if TARGET_OS_WATCH
-		// I haven't found a way to listen for memory warnings on watchOS.
-		// fprintf (stderr, "Need to listen for memory warnings on the watch\n");
-#elif !TARGET_OS_OSX
+#if !TARGET_OS_OSX
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(memoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
 #endif
 	}
@@ -224,19 +214,15 @@ extern void mono_gc_init_finalizer_thread (void);
 
 - (void) start
 {
-	// COOP: ?
 #if defined (__arm__) || defined(__aarch64__)
 #if !defined (CORECLR_RUNTIME)
-	MONO_ENTER_GC_UNSAFE;
 	mono_gc_init_finalizer_thread ();
-	MONO_EXIT_GC_UNSAFE;
 #endif
 #endif
 }
 
 - (void) memoryWarning: (NSNotification *) sender
 {
-	// COOP: ?
 	GCHandle exception_gchandle = INVALID_GCHANDLE;
 	xamarin_gc_collect (&exception_gchandle);
 	xamarin_process_managed_exception_gchandle (exception_gchandle);
@@ -251,17 +237,12 @@ extern void mono_gc_init_finalizer_thread (void);
 int
 xamarin_main (int argc, char *argv[], enum XamarinLaunchMode launch_mode)
 {
-	// COOP: ?
 	// + 1 for the initial "monotouch" +1 for the final NULL = +2.
 	// This is not an exact number (it will most likely be lower, since there
 	// are other arguments besides --app-arg), but it's a guaranteed and bound
 	// upper limit.
 	const char *managed_argv [argc + 2];
 	int managed_argc = 0;
-
-#if defined(__x86_64__) && !DOTNET
-	patch_sigaction ();
-#endif
 
 	xamarin_launch_mode = launch_mode;
 
@@ -291,19 +272,13 @@ xamarin_main (int argc, char *argv[], enum XamarinLaunchMode launch_mode)
 
 	setenv ("DYLD_BIND_AT_LAUNCH", "1", 1);
 
-#if TARGET_OS_WATCH
-	// watchOS can raise signals just fine...
-	// we might want to move this inside mono at some point.
-	signal (SIGPIPE, SIG_IGN);
-#endif
-
 	xamarin_bridge_setup ();
 
 	DEBUG_LAUNCH_TIME_PRINT ("Spin-up time");
 
 	{
 		/*
-		 * Command line arguments for mobile targets (iOS / tvOS / watchOS):
+		 * Command line arguments for mobile targets (iOS / tvOS / macOS / Mac Catalyst):
 		 * -debugtrack: [Simulator only]
 		 *         If we should track zombie NSObjects and aggressively poke the GC to collect
 		 *         every second.
@@ -430,9 +405,7 @@ xamarin_main (int argc, char *argv[], enum XamarinLaunchMode launch_mode)
 	xamarin_initialize_cocoa_threads (NULL);
 #endif
 
-#if DOTNET
 	xamarin_vm_initialize ();
-#endif
 	xamarin_bridge_initialize ();
 
 	xamarin_initialize ();
@@ -477,18 +450,6 @@ xamarin_main (int argc, char *argv[], enum XamarinLaunchMode launch_mode)
 	int rv = 0;
 	switch (launch_mode) {
 	case XamarinLaunchModeExtension:
-#if !DOTNET
-		// It doesn't look like calling mono_domain_set_config is needed in .NET,
-		// it's covered by the call to xamarin_bridge_vm_initialize.
-		char base_dir [1024];
-		char config_file_name [1024];
-
-		snprintf (base_dir, sizeof (base_dir), "%s/" ARCH_SUBDIR, xamarin_get_bundle_path ());
-		snprintf (config_file_name, sizeof (config_file_name), "%s/%s.config", base_dir, xamarin_executable_name); // xamarin_executable_name should never be NULL for extensions.
-
-		mono_domain_set_config (mono_domain_get (), base_dir, config_file_name);
-#endif
-
 		rv = xamarin_extension_main (argc, argv);
 		break;
 	case XamarinLaunchModeApp:

@@ -262,6 +262,7 @@ public class Frameworks : Dictionary<string, Framework> {
 
 					{ "AdServices", "AdServices", 11,1 },
 
+					{ "DataDetection", "DataDetection", 12, 0 },
 					{ "LocalAuthenticationEmbeddedUI", "LocalAuthenticationEmbeddedUI", 12, 0 },
 					{ "MailKit", "MailKit", 12, 0 },
 					{ "MetricKit", 12, 0 },
@@ -447,6 +448,7 @@ public class Frameworks : Dictionary<string, Framework> {
 
 				{ "CoreLocationUI", "CoreLocationUI", 15,0 },
 
+				{ "DataDetection", "DataDetection", 15, 0 },
 				{ "Phase", "PHASE", new Version (15,0), NotAvailableInSimulator /* no headers in beta 2 */ },
 				{ "OSLog", "OSLog", 15,0 },
 				{ "ShazamKit", "ShazamKit", new Version (15,0), NotAvailableInSimulator},
@@ -639,6 +641,7 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "UniformTypeIdentifiers", "UniformTypeIdentifiers", 14,0 },
 					{ "Intents", "Intents", 14,0 },
 
+					{ "DataDetection", "DataDetection", 15, 0 },
 					{ "DeviceDiscoveryUI", "DeviceDiscoveryUI", 16,0 },
 					{ "OSLog", "OSLog", 15,0 },
 					{ "CoreMidi", "CoreMIDI", 15,0 },

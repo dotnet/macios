@@ -23,6 +23,10 @@ include $(TOP)/mk/colors.mk
 #         usually the best option for desktop platforms, since it will
 #         print stdout/stderr from the test app to the terminal.
 #
+# ➡️ run-old
+#
+#         Runs in the oldest simulator we can (only applicable for iOS and tvOS).
+#
 # ➡️ reload
 #
 #         Rebuilds all of xamarin-macios, and cleans up some stuff, so that
@@ -76,6 +80,7 @@ endif
 ifeq ($(PLATFORM),)
 PLATFORM=$(shell basename "$(CURDIR)")
 endif
+PLATFORM_UPPERCASE:=$(shell echo $(PLATFORM) | tr 'a-z' 'A-Z')
 
 ifneq ($(RUNTIMEIDENTIFIERS)$(RUNTIMEIDENTIFIER),)
 $(error "Don't set RUNTIMEIDENTIFIER or RUNTIMEIDENTIFIERS, set RID instead")
@@ -163,11 +168,20 @@ reload-and-run:
 build: prepare
 	$(Q) $(DOTNET) build "/bl:$(abspath $@-$(BINLOG_TIMESTAMP).binlog)" *.?sproj $(DOTNET_BUILD_VERBOSITY) $(BUILD_ARGUMENTS) $(CONFIG_ARGUMENT) $(UNIVERSAL_ARGUMENT) $(NATIVEAOT_ARGUMENTS) $(TEST_VARIATION_ARGUMENT)
 
+run: export SIMCTL_CHILD_NUNIT_AUTOSTART=true
+run: export SIMCTL_CHILD_NUNIT_AUTOEXIT=true
 run: prepare
-	$(Q) $(DOTNET) build "/bl:$(abspath $@-$(BINLOG_TIMESTAMP).binlog)" *.?sproj $(DOTNET_BUILD_VERBOSITY) $(BUILD_ARGUMENTS) $(CONFIG_ARGUMENT) $(UNIVERSAL_ARGUMENT) $(NATIVEAOT_ARGUMENTS) $(TEST_VARIATION_ARGUMENT) -t:Run
+	$(Q) $(DOTNET) build "/bl:$(abspath $@-$(BINLOG_TIMESTAMP).binlog)" *.?sproj $(DOTNET_BUILD_VERBOSITY) $(BUILD_ARGUMENTS) $(CONFIG_ARGUMENT) $(UNIVERSAL_ARGUMENT) $(NATIVEAOT_ARGUMENTS) $(TEST_VARIATION_ARGUMENT) -t:Run $(RUN_ARGUMENTS) -tl:off
 
 run-bare:
 	$(Q) $(EXECUTABLE) --autostart --autoexit $(RUN_ARGUMENTS)
+
+# Get the list of applicable simulators, and pick the first in the list.
+# Make sure to have a matching simulator runtime installed, otherwise this won't work.
+run-old: RUN_ARGUMENTS=-p:_DeviceName=$(shell xcrun simctl list devices "$(PLATFORM) $(MIN_$(PLATFORM_UPPERCASE)_SIMULATOR_VERSION)" -j | jq -c '.[][][].udid' | head -1 | sed 's/"//g')
+run-old: export RUNTIMEIDENTIFIER=
+run-old:
+	$(MAKE) run
 
 print-executable:
 	@echo $(EXECUTABLE)

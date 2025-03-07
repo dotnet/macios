@@ -29,19 +29,45 @@ namespace EventKitUI {
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
+		/// <summary>Gets or sets the calendar event to display.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("event")]
 		EKEvent Event { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the user can edit the event.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allowsEditing")]
 		bool AllowsEditing { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the event can be viewed in the day preview.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allowsCalendarPreview")]
 		bool AllowsCalendarPreview { get; set; }
 
+		/// <summary>An object that can respond to the delegate protocol for this type</summary>
+		///         <value>The instance that will respond to events and data requests.</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+		///         </remarks>
 		[Export ("delegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the EventKitUI.IEKEventViewDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the EventKitUI.IEKEventViewDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IEKEventViewDelegate Delegate { get; set; }
 	}
@@ -79,15 +105,33 @@ namespace EventKitUI {
 		[PostGet ("ViewControllers")] // that will PostGet TopViewController and VisibleViewController too
 		NativeHandle Constructor (UIViewController rootViewController);
 
+		/// <summary>Gets or sets a weak reference to the view delegate.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("editViewDelegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakEditViewDelegate { get; set; }
 
+		/// <summary>Gets or sets the delegate object to notify when editing is complete.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakEditViewDelegate")]
 		IEKEventEditViewDelegate EditViewDelegate { get; set; }
 
+		/// <summary>Gets or sets the event store in which the event is saved.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("eventStore")]
 		EKEventStore EventStore { get; set; }
 
+		/// <summary>Gets or sets the event to edit.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("event")]
 		EKEvent Event { get; set; }
@@ -136,23 +180,52 @@ namespace EventKitUI {
 		[Export ("initWithSelectionStyle:displayStyle:entityType:eventStore:")]
 		NativeHandle Constructor (EKCalendarChooserSelectionStyle selectionStyle, EKCalendarChooserDisplayStyle displayStyle, EKEntityType entityType, EKEventStore eventStore);
 
+		/// <summary>Gets or sets a value that controls whether multiple selections may be made.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("selectionStyle")]
 		EKCalendarChooserSelectionStyle SelectionStyle {
 			get;
 		}
 
+		/// <summary>An object that can respond to the delegate protocol for this type</summary>
+		///         <value>The instance that will respond to events and data requests.</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+		///         </remarks>
 		[Export ("delegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the EventKitUI.IEKCalendarChooserDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the EventKitUI.IEKCalendarChooserDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IEKCalendarChooserDelegate Delegate { get; set; }
 
+		/// <summary>Get or sets a Boolean value that controls whether to display a "Done" button when the picker is displayed modally.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("showsDoneButton")]
 		bool ShowsDoneButton { get; set; }
 
+		/// <summary>Get or sets a Boolean value that controls whether to display a cancellation button when the picker is displayed modally.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("showsCancelButton")]
 		bool ShowsCancelButton { get; set; }
 
+		/// <summary>Gets or sets a set that contains the calendars that the user has currently selected.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("selectedCalendars", ArgumentSemantic.Copy)]
 		NSSet SelectedCalendars { get; set; }

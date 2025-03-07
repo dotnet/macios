@@ -18,7 +18,9 @@ namespace DeviceCheck {
 	[ErrorDomain ("DCErrorDomain")]
 	[Native]
 	public enum DCError : long {
+		/// <summary>To be added.</summary>
 		UnknownSystemFailure,
+		/// <summary>To be added.</summary>
 		FeatureUnsupported,
 		InvalidInput,
 		InvalidKey,
@@ -41,6 +43,9 @@ namespace DeviceCheck {
 		[Export ("currentDevice")]
 		DCDevice CurrentDevice { get; }
 
+		/// <summary>Gets a Boolean value that tells whether the <see cref="P:DeviceCheck.DCDevice.CurrentDevice" /> supports the DeviceCheck API.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("supported")]
 		bool Supported { [Bind ("isSupported")] get; }
 

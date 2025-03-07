@@ -24,8 +24,11 @@ namespace CallKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CXCallDirectoryEnabledStatus : long {
+		/// <summary>The enabled status of the call directory is unknown.</summary>
 		Unknown = 0,
+		/// <summary>The call directory is disabled.</summary>
 		Disabled = 1,
+		/// <summary>The call directory is enabled.</summary>
 		Enabled = 2,
 	}
 
@@ -34,6 +37,7 @@ namespace CallKit {
 	[ErrorDomain ("CXErrorDomain")]
 	[Native]
 	public enum CXErrorCode : long {
+		/// <summary>An unknown error occurred.</summary>
 		Unknown = 0,
 		Unentitled = 1,
 		InvalidArgument = 2,
@@ -46,10 +50,15 @@ namespace CallKit {
 	[ErrorDomain ("CXErrorDomainIncomingCall")]
 	[Native]
 	public enum CXErrorCodeIncomingCallError : long {
+		/// <summary>An unknown error occurred.</summary>
 		Unknown = 0,
+		/// <summary>To be added.</summary>
 		Unentitled = 1,
+		/// <summary>The UUID for the call already exists.</summary>
 		CallUuidAlreadyExists = 2,
+		/// <summary>The device is in Do Not Disturb mode.</summary>
 		FilteredByDoNotDisturb = 3,
+		/// <summary>The caller is blocked.</summary>
 		FilteredByBlockList = 4,
 		FilteredDuringRestrictedSharingMode = 5,
 		CallIsProtected = 6,
@@ -61,13 +70,21 @@ namespace CallKit {
 	[ErrorDomain ("CXErrorDomainRequestTransaction")]
 	[Native]
 	public enum CXErrorCodeRequestTransactionError : long {
+		/// <summary>An unknown error occured.</summary>
 		Unknown = 0,
+		/// <summary>To be added.</summary>
 		Unentitled = 1,
+		/// <summary>The call provider was unknown.</summary>
 		UnknownCallProvider = 2,
+		/// <summary>The transaction was empty.</summary>
 		EmptyTransaction = 3,
+		/// <summary>The call UUID was unknown.</summary>
 		UnknownCallUuid = 4,
+		/// <summary>To be added.</summary>
 		CallUuidAlreadyExists = 5,
+		/// <summary>The action was invalid.</summary>
 		InvalidAction = 6,
+		/// <summary>The maximum number of call groups was reached.</summary>
 		MaximumCallGroupsReached = 7,
 		CallIsProtected = 8,
 	}
@@ -78,14 +95,23 @@ namespace CallKit {
 	[ErrorDomain ("CXErrorDomainCallDirectoryManager")]
 	[Native]
 	public enum CXErrorCodeCallDirectoryManagerError : long {
+		/// <summary>An unknown error occured.</summary>
 		Unknown = 0,
+		/// <summary>The extension could not be found.</summary>
 		NoExtensionFound = 1,
+		/// <summary>The loading of the directory extension was interrupted.</summary>
 		LoadingInterrupted = 2,
+		/// <summary>To be added.</summary>
 		EntriesOutOfOrder = 3,
+		/// <summary>To be added.</summary>
 		DuplicateEntries = 4,
+		/// <summary>The maximum number of directory entries was exceeded.</summary>
 		MaximumEntriesExceeded = 5,
+		/// <summary>The directory extension was disabled.</summary>
 		ExtensionDisabled = 6,
+		/// <summary>To be added.</summary>
 		CurrentlyLoading = 7,
+		/// <summary>To be added.</summary>
 		UnexpectedIncrementalRemoval = 8,
 	}
 
@@ -108,8 +134,11 @@ namespace CallKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CXPlayDtmfCallActionType : long {
+		/// <summary>Indicates that a single tone, rather than dual tone, signal will be sent.</summary>
 		SingleTone = 1,
+		/// <summary>Indicates that the system will prompt the user to approve the sending of the digit tones.</summary>
 		SoftPause = 2,
+		/// <summary>Indicates that there will be a delay of 2 to 3 seconds before the digit tones are sent.</summary>
 		HardPause = 3,
 	}
 
@@ -122,10 +151,15 @@ namespace CallKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CXCallEndedReason : long {
+		/// <summary>The call failed.</summary>
 		Failed = 1,
+		/// <summary>The remote participant ended the call.</summary>
 		RemoteEnded = 2,
+		/// <summary>The call went unanswered.</summary>
 		Unanswered = 3,
+		/// <summary>To be added.</summary>
 		AnsweredElsewhere = 4,
+		/// <summary>To be added.</summary>
 		DeclinedElsewhere = 5,
 	}
 
@@ -183,6 +217,9 @@ namespace CallKit {
 		[Export ("UUID", ArgumentSemantic.Copy)]
 		NSUuid Uuid { get; }
 
+		/// <summary>Gets or sets a value that tells whether the action has already completed.</summary>
+		///         <value>A value that tells whether the action has already completed.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("complete", ArgumentSemantic.Assign)]
 		bool Complete { [Bind ("isComplete")] get; }
 
@@ -226,9 +263,15 @@ namespace CallKit {
 		[Export ("UUID", ArgumentSemantic.Copy)]
 		NSUuid Uuid { get; }
 
+		/// <summary>Gets a <see langword="bool" /> that tells whether the call is an outgoing call.</summary>
+		///         <value>A <see langword="bool" /> that tells whether the call is an outgoing call.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("outgoing")]
 		bool Outgoing { [Bind ("isOutgoing")] get; }
 
+		/// <summary>Gets a <see langword="bool" /> that tells whether the call is on hold.</summary>
+		///         <value>A <see langword="bool" /> that tells whether the call is on hold.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("onHold")]
 		bool OnHold { [Bind ("isOnHold")] get; }
 
@@ -311,6 +354,9 @@ namespace CallKit {
 		[MacCatalyst (13, 1)]
 		ICXCallDirectoryExtensionContextDelegate Delegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("incremental")]
 		bool Incremental { [Bind ("isIncremental")] get; }

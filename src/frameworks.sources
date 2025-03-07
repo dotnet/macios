@@ -1908,6 +1908,7 @@ WEBKIT_SOURCES = \
 
 SHARED_API_SOURCES = \
 	ObjCRuntime/ObsoleteConstants.cs \
+	MinimumVersions.cs \
 
 SHARED_CORE_SOURCES = \
 	DotNetGlobals.cs \
@@ -2025,6 +2026,7 @@ COMMON_FRAMEWORKS =         \
 	CoreVideo               \
 	CryptoTokenKit          \
 	Compression             \
+	DataDetection           \
 	DeviceCheck             \
 	Foundation              \
 	GameKit                 \

@@ -15,21 +15,33 @@ using Foundation;
 namespace Contacts {
 	// Strong typed Keys to enum
 	public enum CNInstantMessageAddressOption {
+		/// <summary>Associated with the <see cref="P:Contacts.CNInstantMessageAddress.Username" /> property..</summary>
 		Username,
+		/// <summary>Associated with the <see cref="P:Contacts.CNInstantMessageAddress.Service" /> property..</summary>
 		Service,
 	}
 
 	// Strong typed Keys to enum
 	public enum CNInstantMessageServiceOption {
+		/// <summary>AOL Instant Messenger.</summary>
 		Aim,
+		/// <summary>Facebook Messenger.</summary>
 		Facebook,
+		/// <summary>Gadu-Gadu (Polish).</summary>
 		GaduGadu,
+		/// <summary>Google Talk.</summary>
 		GoogleTalk,
+		/// <summary>ICQ.</summary>
 		Icq,
+		/// <summary>Jabber.</summary>
 		Jabber,
+		/// <summary>MSN Messenger.</summary>
 		Msn,
+		/// <summary>Tencent QQ.</summary>
 		QQ,
+		/// <summary>Microsoft Skype.</summary>
 		Skype,
+		/// <summary>Yahoo Messenger.</summary>
 		Yahoo,
 	}
 

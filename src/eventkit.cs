@@ -50,6 +50,9 @@ namespace EventKit {
 		[Export ("hasChanges")]
 		bool HasChanges { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isNew")]
 		bool IsNew { get; }
 
@@ -295,9 +298,15 @@ namespace EventKit {
 		[Export ("calendarIdentifier")]
 		string CalendarIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("subscribed")]
 		bool Subscribed { [Bind ("isSubscribed")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("immutable")]
 		bool Immutable { [Bind ("isImmutable")] get; }
 
@@ -329,6 +338,9 @@ namespace EventKit {
 		[Static, Export ("eventWithEventStore:")]
 		EKEvent FromStore (EKEventStore eventStore);
 
+		/// <summary>Specifies whether or not this is an all-day event.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allDay")]
 		bool AllDay { [Bind ("isAllDay")] get; set; }
 
@@ -418,6 +430,9 @@ namespace EventKit {
 		[Export ("ABRecordWithAddressBook:")]
 		ABRecord GetRecord (ABAddressBook addressBook);
 
+		/// <summary>Gets a Boolean value that tells whether the participant is the account owner.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("isCurrentUser")]
 		bool IsCurrentUser { get; }
@@ -593,6 +608,7 @@ namespace EventKit {
 		[Export ("predicateForEventsWithStartDate:endDate:calendars:")]
 		NSPredicate PredicateForEvents (NSDate startDate, NSDate endDate, [NullAllowed] EKCalendar [] calendars);
 
+		/// <include file="../docs/api/EventKit/EKEventStore.xml" path="/Documentation/Docs[@DocId='P:EventKit.EKEventStore.ChangedNotification']/*" />
 		[Field ("EKEventStoreChangedNotification")]
 		[Notification]
 		NSString ChangedNotification { get; }
@@ -734,6 +750,9 @@ namespace EventKit {
 		[NullAllowed]
 		NSDateComponents DueDateComponents { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("completed")]
 		bool Completed { [Bind ("isCompleted")] get; set; }
 

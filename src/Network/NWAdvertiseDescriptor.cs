@@ -137,6 +137,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_advertise_descriptor_get_no_auto_rename (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool NoAutoRename {
 			set => nw_advertise_descriptor_set_no_auto_rename (GetCheckedHandle (), value.AsByte ());
 			get => nw_advertise_descriptor_get_no_auto_rename (GetCheckedHandle ()) != 0;

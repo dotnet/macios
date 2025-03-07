@@ -77,6 +77,13 @@ namespace PhotosUI {
 		[Export ("livePhotoBadgeImageWithOptions:")]
 		UIImage GetLivePhotoBadgeImage (PHLivePhotoBadgeOptions badgeOptions);
 
+		/// <summary>An instance of the PhotosUI.IPHLivePhotoViewDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the PhotosUI.IPHLivePhotoViewDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IPHLivePhotoViewDelegate Delegate { get; set; }
@@ -92,6 +99,9 @@ namespace PhotosUI {
 		[Export ("playbackGestureRecognizer", ArgumentSemantic.Strong)]
 		UIGestureRecognizer PlaybackGestureRecognizer { get; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether sound is muted for the Live Photo. Default is <see langword="false" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("muted")]
 		bool Muted { [Bind ("isMuted")] get; set; }
 

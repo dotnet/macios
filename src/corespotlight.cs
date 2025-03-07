@@ -1477,12 +1477,12 @@ namespace CoreSpotlight {
 		[Field ("CSActionIdentifier")]
 		NSString ActionIdentifier { get; }
 
-		[NoTV, NoMac, iOS (15, 0)]
+		[NoTV, NoMac, iOS (15, 0), MacCatalyst (18, 0)]
 		[Export ("actionIdentifiers", ArgumentSemantic.Copy)]
 		string [] ActionIdentifiers { get; set; }
 
 		[NullAllowed]
-		[NoTV, NoMac, iOS (15, 0)]
+		[NoTV, NoMac, iOS (15, 0), MacCatalyst (18, 0)]
 		[Export ("sharedItemContentType", ArgumentSemantic.Copy)]
 		UTType SharedItemContentType { get; set; }
 

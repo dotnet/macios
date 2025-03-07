@@ -1,0 +1,194 @@
+<Documentation>
+  <Docs DocId="P:MediaPlayer.MPMusicPlayerController.PlaybackStateDidChangeNotification">
+        <summary>Notification constant for PlaybackStateDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:MediaPlayer.MPMusicPlayerControllerQueue.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:MPMusicPlayerController.Notifications.ObservePlaybackStateDidChange*&amp;scope=Xamarin" title="M:MPMusicPlayerController.Notifications.ObservePlaybackStateDidChange*">M:MPMusicPlayerController.Notifications.ObservePlaybackStateDidChange*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = MPMusicPlayerController.Notifications.ObservePlaybackStateDidChange ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = MPMusicPlayerController.Notifications.ObservePlaybackStateDidChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MPMusicPlayerController.PlaybackStateDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification MPMusicPlayerController", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MPMusicPlayerController", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MPMusicPlayerController.PlaybackStateDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:MediaPlayer.MPMusicPlayerController.NowPlayingItemDidChangeNotification">
+        <summary>Notification constant for NowPlayingItemDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:MediaPlayer.MPMusicPlayerControllerQueue.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:MPMusicPlayerController.Notifications.ObserveNowPlayingItemDidChange*&amp;scope=Xamarin" title="M:MPMusicPlayerController.Notifications.ObserveNowPlayingItemDidChange*">M:MPMusicPlayerController.Notifications.ObserveNowPlayingItemDidChange*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = MPMusicPlayerController.Notifications.ObserveNowPlayingItemDidChange ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = MPMusicPlayerController.Notifications.ObserveNowPlayingItemDidChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MPMusicPlayerController.NowPlayingItemDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification MPMusicPlayerController", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MPMusicPlayerController", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MPMusicPlayerController.NowPlayingItemDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:MediaPlayer.MPMusicPlayerController.VolumeDidChangeNotification">
+        <summary>Notification constant for VolumeDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:MediaPlayer.MPMusicPlayerControllerQueue.Notifications" />.<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:MPMusicPlayerController.Notifications.ObserveVolumeDidChange*&amp;scope=Xamarin" title="M:MPMusicPlayerController.Notifications.ObserveVolumeDidChange*">M:MPMusicPlayerController.Notifications.ObserveVolumeDidChange*</a></format> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = MPMusicPlayerController.Notifications.ObserveVolumeDidChange ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = MPMusicPlayerController.Notifications.ObserveVolumeDidChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MPMusicPlayerController.VolumeDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification MPMusicPlayerController", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MPMusicPlayerController", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MPMusicPlayerController.VolumeDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+</Documentation>

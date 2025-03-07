@@ -21,20 +21,35 @@ namespace Metal {
 	/// <summary>Argument values for use with <see cref="T:Metal.MTLBlendOperation" />.</summary>
 	[Native]
 	public enum MTLBlendFactor : ulong {
+		/// <summary>To be added.</summary>
 		Zero = 0,
+		/// <summary>To be added.</summary>
 		One = 1,
+		/// <summary>To be added.</summary>
 		SourceColor = 2,
+		/// <summary>To be added.</summary>
 		OneMinusSourceColor = 3,
+		/// <summary>To be added.</summary>
 		SourceAlpha = 4,
+		/// <summary>To be added.</summary>
 		OneMinusSourceAlpha = 5,
+		/// <summary>To be added.</summary>
 		DestinationColor = 6,
+		/// <summary>To be added.</summary>
 		OneMinusDestinationColor = 7,
+		/// <summary>To be added.</summary>
 		DestinationAlpha = 8,
+		/// <summary>To be added.</summary>
 		OneMinusDestinationAlpha = 9,
+		/// <summary>To be added.</summary>
 		SourceAlphaSaturated = 10,
+		/// <summary>To be added.</summary>
 		BlendColor = 11,
+		/// <summary>To be added.</summary>
 		OneMinusBlendColor = 12,
+		/// <summary>To be added.</summary>
 		BlendAlpha = 13,
+		/// <summary>To be added.</summary>
 		OneMinusBlendAlpha = 14,
 		[MacCatalyst (13, 1)]
 		Source1Color = 15,
@@ -49,10 +64,15 @@ namespace Metal {
 	/// <summary>How the source and destination values are combined.</summary>
 	[Native]
 	public enum MTLBlendOperation : ulong {
+		/// <summary>To be added.</summary>
 		Add = 0,
+		/// <summary>To be added.</summary>
 		Subtract = 1,
+		/// <summary>To be added.</summary>
 		ReverseSubtract = 2,
+		/// <summary>To be added.</summary>
 		Min = 3,
+		/// <summary>To be added.</summary>
 		Max = 4,
 	}
 
@@ -1231,66 +1251,118 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MTLAttributeFormat : ulong {
+		/// <summary>Indicates an invalid format.</summary>
 		Invalid = 0,
+		/// <summary>Indicates two unsigned 8-bit characters.</summary>
 		UChar2 = 1,
+		/// <summary>Indicates three unsigned 8-bit characters.</summary>
 		UChar3 = 2,
+		/// <summary>Indicates four unsigned 8-bit characters..</summary>
 		UChar4 = 3,
+		/// <summary>Indicates two signed 8-bit characters.</summary>
 		Char2 = 4,
+		/// <summary>Indicates three signed 8-bit characters.</summary>
 		Char3 = 5,
+		/// <summary>Indicates four signed 8-bit characters.</summary>
 		Char4 = 6,
+		/// <summary>Indicates two normalized unsigned 8-bit characters.</summary>
 		UChar2Normalized = 7,
+		/// <summary>Indicates three normalized unsigned 8-bit characters.</summary>
 		UChar3Normalized = 8,
+		/// <summary>Indicates four normalized unsigned 8-bit characters.</summary>
 		UChar4Normalized = 9,
+		/// <summary>Indicates two normalized signed 8-bit characters.</summary>
 		Char2Normalized = 10,
+		/// <summary>Indicates three normalized signed 8-bit characters.</summary>
 		Char3Normalized = 11,
+		/// <summary>Indicates four normalized signed 8-bit characters.</summary>
 		Char4Normalized = 12,
+		/// <summary>Indicates two unsigned 16-bit two's complement values.</summary>
 		UShort2 = 13,
+		/// <summary>Indicates three unsigned 16-bit two's complement values.</summary>
 		UShort3 = 14,
+		/// <summary>Indicates four unsigned 16-bit two's complement values.</summary>
 		UShort4 = 15,
+		/// <summary>Indicates two signed 16-bit two's complement value.</summary>
 		Short2 = 16,
+		/// <summary>Indicates three signed 16-bit two's complement values.</summary>
 		Short3 = 17,
+		/// <summary>Indicates four signed 16-bit two's complement values.</summary>
 		Short4 = 18,
+		/// <summary>Indicates two normalized unsigned 16-bit two's complement values.</summary>
 		UShort2Normalized = 19,
+		/// <summary>Indicates three normalized unsigned 16-bit two's complement values.</summary>
 		UShort3Normalized = 20,
+		/// <summary>Indicates four normalized unsigned 16-bit two's complement values.</summary>
 		UShort4Normalized = 21,
+		/// <summary>Indicates two normalized signed 16-bit two's complement values.</summary>
 		Short2Normalized = 22,
+		/// <summary>Indicates three normalized signed 16-bit two's complement values.</summary>
 		Short3Normalized = 23,
+		/// <summary>Indicates four normalized signed 16-bit two's complement values.</summary>
 		Short4Normalized = 24,
+		/// <summary>Indicates two half-precision floating point values.</summary>
 		Half2 = 25,
+		/// <summary>Indicates three half-precision floating point values.</summary>
 		Half3 = 26,
+		/// <summary>Indicates four half-precision floating point values.</summary>
 		Half4 = 27,
+		/// <summary>Indicates one single-precision floating point value.</summary>
 		Float = 28,
+		/// <summary>Indicates two single-precision floating point values.</summary>
 		Float2 = 29,
+		/// <summary>Indicates three single-precision floating point values.</summary>
 		Float3 = 30,
+		/// <summary>Indicates four single-precision floating point values.</summary>
 		Float4 = 31,
+		/// <summary>Indicates a single signed 32-bit two's complement value.</summary>
 		Int = 32,
+		/// <summary>Indicates two signed 32-bit two's complement values.</summary>
 		Int2 = 33,
+		/// <summary>Indicates three signed 32-bit two's complement values.</summary>
 		Int3 = 34,
+		/// <summary>Indicates four signed 32-bit two's complement values.</summary>
 		Int4 = 35,
+		/// <summary>Indicates a single unsigned 32-bit two's complement value.</summary>
 		UInt = 36,
+		/// <summary>Indicates two unsigned 32-bit two's complement values.</summary>
 		UInt2 = 37,
+		/// <summary>Indicates three unsigned 32-bit two's complement values.</summary>
 		UInt3 = 38,
+		/// <summary>Indicates four unsigned 32-bit two's complement values.</summary>
 		UInt4 = 39,
+		/// <summary>Indicates a 10-10-10-2 scheme of packed normalized signed integers.</summary>
 		Int1010102Normalized = 40,
+		/// <summary>To be added.</summary>
 		UInt1010102Normalized = 41,
+		/// <summary>Indicates four unsigned 8-bit characters that describe BGRA channels.</summary>
 		[MacCatalyst (13, 1)]
 		UChar4Normalized_Bgra = 42,
+		/// <summary>Indicates a single unsigned 8-bit character.</summary>
 		[MacCatalyst (13, 1)]
 		UChar = 45,
+		/// <summary>Indicates a single signed 8-bit character.</summary>
 		[MacCatalyst (13, 1)]
 		Char = 46,
+		/// <summary>Indicates a single unsigned 8-bit character.</summary>
 		[MacCatalyst (13, 1)]
 		UCharNormalized = 47,
+		/// <summary>Indicates a single normalized signed 8-bit character.</summary>
 		[MacCatalyst (13, 1)]
 		CharNormalized = 48,
+		/// <summary>Indicates a single unsigned 16-bit two's complement value.</summary>
 		[MacCatalyst (13, 1)]
 		UShort = 49,
+		/// <summary>Indicates a single signed 16-bit two's complement value.</summary>
 		[MacCatalyst (13, 1)]
 		Short = 50,
+		/// <summary>Indicates a single normalized unsigned 16-bit two's complement value.</summary>
 		[MacCatalyst (13, 1)]
 		UShortNormalized = 51,
+		/// <summary>Indicates a single normalized signed 16-bit two's complement value.</summary>
 		[MacCatalyst (13, 1)]
 		ShortNormalized = 52,
+		/// <summary>Indicates a single half-precision floating point value.</summary>
 		[MacCatalyst (13, 1)]
 		Half = 53,
 		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
@@ -1382,8 +1454,11 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MTLBarrierScope : ulong {
+		/// <summary>To be added.</summary>
 		Buffers = 1 << 0,
+		/// <summary>To be added.</summary>
 		Textures = 1 << 1,
+		/// <summary>To be added.</summary>
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		RenderTargets = 1 << 2,

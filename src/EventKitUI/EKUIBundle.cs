@@ -24,6 +24,9 @@ namespace EventKitUI {
 		[DllImport (Constants.EventKitUILibrary)]
 		static extern IntPtr EventKitUIBundle ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NSBundle? UIBundle {
 			get {
 				return Runtime.GetNSObject<NSBundle> (EventKitUIBundle ());

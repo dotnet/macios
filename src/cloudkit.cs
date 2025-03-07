@@ -1370,13 +1370,23 @@ namespace CloudKit {
 	[BaseType (typeof (NSObject))]
 	interface CKRecord : NSSecureCoding, NSCopying {
 
+		/// <summary>Represents the value associated with the constant CKRecordTypeUserRecord</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CKRecordTypeUserRecord")]
 		NSString TypeUserRecord { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("CKRecordParentKey")]
 		NSString ParentKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("CKRecordShareKey")]
 		NSString ShareKey { get; }
@@ -1401,6 +1411,9 @@ namespace CloudKit {
 		[Field ("CKRecordCreationDateKey")]
 		NSString CreationDateKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("CKRecordTypeShare")]
 		NSString TypeShare { get; }

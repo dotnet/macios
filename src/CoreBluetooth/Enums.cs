@@ -18,11 +18,17 @@ namespace CoreBluetooth {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBManagerState : long {
+		/// <summary>To be added.</summary>
 		Unknown = 0,
+		/// <summary>To be added.</summary>
 		Resetting,
+		/// <summary>To be added.</summary>
 		Unsupported,
+		/// <summary>To be added.</summary>
 		Unauthorized,
+		/// <summary>To be added.</summary>
 		PoweredOff,
+		/// <summary>To be added.</summary>
 		PoweredOn,
 	}
 
@@ -33,11 +39,17 @@ namespace CoreBluetooth {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'CBManagerState' instead.")]
 	[Native]
 	public enum CBCentralManagerState : long {
+		/// <summary>To be added.</summary>
 		Unknown = CBManagerState.Unknown,
+		/// <summary>To be added.</summary>
 		Resetting = CBManagerState.Resetting,
+		/// <summary>To be added.</summary>
 		Unsupported = CBManagerState.Unsupported,
+		/// <summary>To be added.</summary>
 		Unauthorized = CBManagerState.Unauthorized,
+		/// <summary>To be added.</summary>
 		PoweredOff = CBManagerState.PoweredOff,
+		/// <summary>To be added.</summary>
 		PoweredOn = CBManagerState.PoweredOn,
 	}
 
@@ -48,11 +60,17 @@ namespace CoreBluetooth {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'CBManagerState' instead.")]
 	[Native]
 	public enum CBPeripheralManagerState : long {
+		/// <summary>To be added.</summary>
 		Unknown = CBManagerState.Unknown,
+		/// <summary>To be added.</summary>
 		Resetting = CBManagerState.Resetting,
+		/// <summary>To be added.</summary>
 		Unsupported = CBManagerState.Unsupported,
+		/// <summary>To be added.</summary>
 		Unauthorized = CBManagerState.Unauthorized,
+		/// <summary>To be added.</summary>
 		PoweredOff = CBManagerState.PoweredOff,
+		/// <summary>To be added.</summary>
 		PoweredOn = CBManagerState.PoweredOn,
 	}
 
@@ -89,16 +107,26 @@ namespace CoreBluetooth {
 	[Flags]
 	[Native]
 	public enum CBCharacteristicProperties : ulong {
+		/// <summary>To be added.</summary>
 		Broadcast = 1,
+		/// <summary>To be added.</summary>
 		Read = 2,
+		/// <summary>To be added.</summary>
 		WriteWithoutResponse = 4,
+		/// <summary>To be added.</summary>
 		Write = 8,
+		/// <summary>To be added.</summary>
 		Notify = 16,
+		/// <summary>To be added.</summary>
 		Indicate = 32,
+		/// <summary>To be added.</summary>
 		AuthenticatedSignedWrites = 64,
+		/// <summary>To be added.</summary>
 		ExtendedProperties = 128,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		NotifyEncryptionRequired = 0x100,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		IndicateEncryptionRequired = 0x200,
 	}
@@ -108,20 +136,35 @@ namespace CoreBluetooth {
 	[ErrorDomain ("CBErrorDomain")]
 	[Native] // NSInteger -> CBError.h
 	public enum CBError : long {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Unknown = 0,
+		/// <summary>To be added.</summary>
 		InvalidParameters,
+		/// <summary>To be added.</summary>
 		InvalidHandle,
+		/// <summary>To be added.</summary>
 		NotConnected,
+		/// <summary>To be added.</summary>
 		OutOfSpace,
+		/// <summary>To be added.</summary>
 		OperationCancelled,
+		/// <summary>To be added.</summary>
 		ConnectionTimeout,
+		/// <summary>To be added.</summary>
 		PeripheralDisconnected,
+		/// <summary>To be added.</summary>
 		UUIDNotAllowed,
+		/// <summary>To be added.</summary>
 		AlreadyAdvertising,
+		/// <summary>To be added.</summary>
 		ConnectionFailed,
+		/// <summary>To be added.</summary>
 		ConnectionLimitReached,
+		/// <summary>To be added.</summary>
 		UnknownDevice,
+		/// <summary>To be added.</summary>
 		OperationNotSupported,
 		PeerRemovedPairingInformation,
 		EncryptionTimedOut,
@@ -178,7 +221,9 @@ namespace CoreBluetooth {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBCharacteristicWriteType : long {
+		/// <summary>To be added.</summary>
 		WithResponse,
+		/// <summary>To be added.</summary>
 		WithoutResponse,
 	}
 
@@ -188,9 +233,13 @@ namespace CoreBluetooth {
 	[Flags]
 	[Native]
 	public enum CBAttributePermissions : ulong {
+		/// <summary>To be added.</summary>
 		Readable = 1,
+		/// <summary>To be added.</summary>
 		Writeable = 1 << 1,
+		/// <summary>To be added.</summary>
 		ReadEncryptionRequired = 1 << 2,
+		/// <summary>To be added.</summary>
 		WriteEncryptionRequired = 1 << 3,
 	}
 

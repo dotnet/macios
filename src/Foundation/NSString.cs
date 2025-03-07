@@ -65,6 +65,8 @@ namespace Foundation {
 		static IntPtr selInitWithCharactersLengthHandle = Selector.GetHandle (selInitWithCharactersLength);
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly NSString Empty = new NSString (String.Empty);
 
 		internal NSString (NativeHandle handle, bool owns) : base (handle, owns)

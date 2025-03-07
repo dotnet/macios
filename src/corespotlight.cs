@@ -20,8 +20,7 @@ using NativeHandle = System.IntPtr;
 namespace CoreSpotlight {
 
 	[Partial]
-	interface CoreSpotlightConstants
-	{
+	interface CoreSpotlightConstants {
 		[Field ("CoreSpotlightVersionNumber")]
 		double CoreSpotlightVersionNumber { get; }
 
@@ -241,15 +240,15 @@ namespace CoreSpotlight {
 		[NoTV]
 		[iOS (18, 4), Mac (15, 4), MacCatalyst (18, 4)]
 		[Export ("searchableItemsForIdentifiers:searchableItemsHandler:")]
-		void GetSearchableItems (string[] identifiers, CSSearchableIndexDelegateGetSearchableItemsHandler searchableItemsHandler);
+		void GetSearchableItems (string [] identifiers, CSSearchableIndexDelegateGetSearchableItemsHandler searchableItemsHandler);
 
 		[NoTV]
 		[iOS (18, 4), Mac (15, 4), MacCatalyst (18, 4)]
 		[Export ("searchableItemsDidUpdate:")]
-		void DidUpdate (CSSearchableItem[] items);
+		void DidUpdate (CSSearchableItem [] items);
 	}
 
-	delegate void CSSearchableIndexDelegateGetSearchableItemsHandler (CSSearchableItem[] items);
+	delegate void CSSearchableIndexDelegateGetSearchableItemsHandler (CSSearchableItem [] items);
 
 	/// <summary>A uniquely identifiable, searchable object in a <see cref="T:CoreSpotlight.CSSearchableIndex" />.</summary>
 	///     

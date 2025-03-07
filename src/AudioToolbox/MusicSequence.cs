@@ -27,10 +27,6 @@ using AudioUnit;
 
 using MidiEndpointRef = System.Int32;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace AudioToolbox {
 
 #if !COREBUILD
@@ -39,12 +35,10 @@ namespace AudioToolbox {
 	delegate void MusicSequenceUserCallbackProxy (/* void * */ IntPtr inClientData, /* MusicSequence* */ IntPtr inSequence, /* MusicTrack* */ IntPtr inTrack, /* MusicTimeStamp */ double inEventTime, /* MusicEventUserData* */ IntPtr inEventData, /* MusicTimeStamp */ double inStartSliceBeat, /* MusicTimeStamp */ double inEndSliceBeat);
 #endif
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// MusicPlayer.h
 	public class MusicSequence : DisposableObject {
 #if !COREBUILD
@@ -55,10 +49,6 @@ namespace AudioToolbox {
 		}
 
 		static Dictionary<IntPtr, MusicSequenceUserCallback> userCallbackHandles = new Dictionary<IntPtr, MusicSequenceUserCallback> (Runtime.IntPtrEqualityComparer);
-
-#if !NET
-		static MusicSequenceUserCallbackProxy userCallbackProxy = new MusicSequenceUserCallbackProxy (UserCallbackProxy);
-#endif
 
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static /* OSStatus */ MusicPlayerStatus NewMusicSequence (/* MusicSequence* */ IntPtr* outSequence);
@@ -90,13 +80,9 @@ namespace AudioToolbox {
 					userCallbackHandles.Remove (Handle);
 
 				// Remove native user callback
-#if NET
 				unsafe {
 					MusicSequenceSetUserCallback (Handle, null, IntPtr.Zero);
 				}
-#else
-				MusicSequenceSetUserCallback (Handle, null, IntPtr.Zero);
-#endif
 
 				DisposeMusicSequence (Handle);
 				lock (sequenceMap) {
@@ -139,6 +125,15 @@ namespace AudioToolbox {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("tvos14.0", "Use 'AVAudioEngine' instead.")]
+		[ObsoletedOSPlatform ("macos11.0", "Use 'AVAudioEngine' instead.")]
+		[ObsoletedOSPlatform ("ios14.0", "Use 'AVAudioEngine' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst14.0", "Use 'AVAudioEngine' instead.")]
+		// This API isn't obsoleted, but AUGraph is, so copy the obsolete attributes from AUGraph
 		public AUGraph? AUGraph {
 			get {
 				IntPtr h;
@@ -314,35 +309,20 @@ namespace AudioToolbox {
 			return 0;
 		}
 
-#if NET
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern static unsafe /* OSStatus */ MusicPlayerStatus MusicSequenceSetUserCallback (/* MusicSequence */ IntPtr inSequence, delegate* unmanaged<IntPtr, IntPtr, IntPtr, double, IntPtr, double, double, void> inCallback, /* void * */ IntPtr inClientData);
-#else
-		[DllImport (Constants.AudioToolboxLibrary)]
-		extern static /* OSStatus */ MusicPlayerStatus MusicSequenceSetUserCallback (/* MusicSequence */ IntPtr inSequence, MusicSequenceUserCallbackProxy? inCallback, /* void * */ IntPtr inClientData);
-#endif
 
 		public void SetUserCallback (MusicSequenceUserCallback callback)
 		{
 			lock (userCallbackHandles)
 				userCallbackHandles [Handle] = callback;
 
-#if NET
 			unsafe {
 				MusicSequenceSetUserCallback (Handle, &UserCallbackProxy, IntPtr.Zero);
 			}
-#else
-			MusicSequenceSetUserCallback (Handle, userCallbackProxy, IntPtr.Zero);
-#endif
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (MusicSequenceUserCallbackProxy))]
-#endif
-#endif
 		static void UserCallbackProxy (IntPtr inClientData, IntPtr inSequence, IntPtr inTrack, double inEventTime, IntPtr inEventData, double inStartSliceBeat, double inEndSliceBeat)
 		{
 			MusicSequenceUserCallback? userCallback;

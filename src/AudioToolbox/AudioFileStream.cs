@@ -123,12 +123,10 @@ namespace AudioToolbox {
 		InfoDictionary = 0x696e666f,
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class PropertyFoundEventArgs : EventArgs {
 		public PropertyFoundEventArgs (AudioFileStreamProperty propertyID, AudioFileStreamPropertyFlag ioFlags)
 		{
@@ -151,12 +149,10 @@ namespace AudioToolbox {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class PacketReceivedEventArgs : EventArgs {
 		public PacketReceivedEventArgs (int numberOfBytes, IntPtr inputData, AudioStreamPacketDescription []? packetDescriptions)
 		{
@@ -183,12 +179,10 @@ namespace AudioToolbox {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AudioFileStream : IDisposable {
 		IntPtr handle;
 		GCHandle gch;
@@ -232,7 +226,6 @@ namespace AudioToolbox {
 							   IntPtr inputData,
 							   IntPtr packetDescriptions);
 
-#if NET
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern static unsafe OSStatus AudioFileStreamOpen (
 			IntPtr clientData,
@@ -240,24 +233,8 @@ namespace AudioToolbox {
 			delegate* unmanaged<IntPtr, int, int, IntPtr, IntPtr, void> packetsProc,
 			AudioFileType fileTypeHint,
 			IntPtr* file_id);
-#else
-		[DllImport (Constants.AudioToolboxLibrary)]
-		extern static OSStatus AudioFileStreamOpen (
-			IntPtr clientData,
-			AudioFileStream_PropertyListenerProc propertyListenerProc,
-			AudioFileStream_PacketsProc packetsProc,
-			AudioFileType fileTypeHint,
-			out IntPtr file_id);
 
-		static readonly AudioFileStream_PacketsProc dInPackets = InPackets;
-		static readonly AudioFileStream_PropertyListenerProc dPropertyListener = PropertyListener;
-#endif
-
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (AudioFileStream_PacketsProc))]
-#endif
 		static void InPackets (IntPtr clientData, int numberBytes, int numberPackets, IntPtr inputData, IntPtr packetDescriptions)
 		{
 			GCHandle handle = GCHandle.FromIntPtr (clientData);
@@ -290,38 +267,25 @@ namespace AudioToolbox {
 			}
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
 		static unsafe void PropertyListener (IntPtr clientData, AudioFileStreamID audioFileStream, AudioFileStreamProperty propertyID, AudioFileStreamPropertyFlag* ioFlags)
-#else
-		[MonoPInvokeCallback (typeof (AudioFileStream_PropertyListenerProc))]
-		static void PropertyListener (IntPtr clientData, AudioFileStreamID audioFileStream, AudioFileStreamProperty propertyID, ref AudioFileStreamPropertyFlag ioFlags)
-#endif
 		{
 			GCHandle handle = GCHandle.FromIntPtr (clientData);
 			var afs = handle.Target as AudioFileStream;
 
-#if NET
 			var localFlags = *ioFlags;
 			afs!.OnPropertyFound (propertyID, ref localFlags);
 			*ioFlags = localFlags;
-#else
-			afs!.OnPropertyFound (propertyID, ref ioFlags);
-#endif
 		}
 
 		public AudioFileStream (AudioFileType fileTypeHint)
 		{
 			IntPtr h;
 			gch = GCHandle.Alloc (this);
-#if NET
 			var code = 0;
 			unsafe {
 				code = AudioFileStreamOpen (GCHandle.ToIntPtr (gch), &PropertyListener, &InPackets, fileTypeHint, &h);
 			}
-#else
-			var code = AudioFileStreamOpen (GCHandle.ToIntPtr (gch), dPropertyListener, dInPackets, fileTypeHint, out h);
-#endif
 			if (code == 0) {
 				handle = h;
 				return;
@@ -490,11 +454,7 @@ namespace AudioToolbox {
 			}
 		}
 
-#if NET
 		unsafe T? GetProperty<[DynamicallyAccessedMembers (DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] T> (AudioFileStreamProperty property) where T : unmanaged
-#else
-		unsafe T? GetProperty<T> (AudioFileStreamProperty property) where T : unmanaged
-#endif
 		{
 			int size;
 			bool writable;

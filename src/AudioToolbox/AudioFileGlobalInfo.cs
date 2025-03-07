@@ -42,12 +42,10 @@ using System.Runtime.Versioning;
 
 namespace AudioToolbox {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public unsafe static class AudioFileGlobalInfo {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

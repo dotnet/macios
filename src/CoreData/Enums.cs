@@ -201,20 +201,35 @@ namespace CoreData {
 	/// <summary>Enumerates errors that can be encountered during validation.</summary>
 	[Native]
 	public enum ValidationErrorType : ulong {
+		/// <summary>Indicates an error with a managed object.</summary>
 		ManagedObjectValidation = 1550,
+		/// <summary>Indicates that multiple errors occurred.</summary>
 		MultipleErrors = 1560,
+		/// <summary>Indicates that a mandatory property was missing.</summary>
 		MissingMandatoryProperty = 1570,
+		/// <summary>Indicates that a to-many relationship was bound to too few objects.</summary>
 		RelationshipLacksMinimumCount = 1580,
+		/// <summary>Indicates that a to-many relationship was bound to too many objects.</summary>
 		RelationshipExceedsMaximumCount = 1590,
+		/// <summary>Indicates that an attempt was made to delete a relationship that has a delete rule that denies deletion.</summary>
 		RelationshipDeniedDelete = 1600,
+		/// <summary>Indicates that a number was too large.</summary>
 		NumberTooLarge = 1610,
+		/// <summary>Indicates that a number was too small.</summary>
 		NumberTooSmall = 1620,
+		/// <summary>Indicates that a date was too late.</summary>
 		DateTooLate = 1630,
+		/// <summary>Indicates that a date was too soon.</summary>
 		DateTooSoon = 1640,
+		/// <summary>Indicates that a date was invalid.</summary>
 		InvalidDate = 1650,
+		/// <summary>Indicates that a string was too long.</summary>
 		StringTooLong = 1660,
+		/// <summary>Indicates that a string was too short.</summary>
 		StringTooShort = 1670,
+		/// <summary>Indicates that a pattern failed to match a string.</summary>
 		StringPatternMatching = 1680,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		InvalidUri = 1690,
 	}
@@ -222,25 +237,40 @@ namespace CoreData {
 	/// <summary>Enumerates error codes that can be encountered while working with object graphs.</summary>
 	[Native]
 	public enum ObjectGraphManagementErrorType : ulong {
+		/// <summary>Indicates that a lock could not be obtained on a managed object context.</summary>
 		ManagedObjectContextLocking = 132000,
+		/// <summary>Indicates that a lock could not be obtained on a persistent store.</summary>
 		PersistentStoreCoordinatorLocking = 132010,
+		/// <summary>Indicates that an attempt was made to fire a fault at an object that does not exist.</summary>
 		ManagedObjectReferentialIntegrity = 133000,
+		/// <summary>Indicates that an object being saved contains a relationship to an object in another store.</summary>
 		ManagedObjectExternalRelationship = 133010,
+		/// <summary>Indicates that a merge failed due to a merge policy.</summary>
 		ManagedObjectMerge = 133020,
 	}
 
 	/// <summary>Enumerates error codes that can be encountered while working with persistent stores.</summary>
 	[Native]
 	public enum PersistentStoreErrorType : ulong {
+		/// <summary>Indicates that an invalid type was encountered.</summary>
 		InvalidType = 134000,
+		/// <summary>Indicates that a store was encountered that did not match the specified type.</summary>
 		TypeMismatch = 134010,
+		/// <summary>Indicates that an incompatible schema was encountered, for example, one that specifies a table that is not present.</summary>
 		IncompatibleSchema = 134020,
+		/// <summary>Indicates that an error, such as a permissions error, was encountered while saving a persistent store.</summary>
 		Save = 134030,
+		/// <summary>Indicates that an error occurred while saving one or more stores in a container.</summary>
 		IncompleteSave = 134040,
+		/// <summary>Indicates that an unresolved merge conflict was encountered while saving.</summary>
 		SaveConflicts = 134050,
+		/// <summary>Indicates that an error occurred while performing an operation on persistent store.</summary>
 		Operation = 134070,
+		/// <summary>Indicates that an error occurred while trying to open a persistent store.</summary>
 		Open = 134080,
+		/// <summary>Indicates that connecting to a persistent store took too long.</summary>
 		Timeout = 134090,
+		/// <summary>Indicates that the entity version hashes in the persistent store are not compatible with the managed object model.</summary>
 		IncompatibleVersionHash = 134100,
 	}
 

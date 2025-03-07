@@ -21,6 +21,9 @@ namespace GameplayKit {
 		{
 		}
 
+		/// <summary>Gets the System.Type that represents the component class of the components that can be contained in this component system.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Type? ComponentType {
 			get { return Class.Lookup (ComponentClass); }
 		}

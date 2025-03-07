@@ -727,6 +727,9 @@ namespace SceneKit {
 		[Export ("inertiaFriction")]
 		float InertiaFriction { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("inertiaRunning")]
 		bool InertiaRunning { [Bind ("isInertiaRunning")] get; }
 
@@ -1037,34 +1040,69 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNGeometrySourceSemantic {
+		/// <summary>Represents the value associated with the constant SCNGeometrySourceSemanticVertex</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNGeometrySourceSemanticVertex")]
 		NSString Vertex { get; }
 
+		/// <summary>Represents the value associated with the constant SCNGeometrySourceSemanticNormal</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNGeometrySourceSemanticNormal")]
 		NSString Normal { get; }
 
+		/// <summary>Represents the value associated with the constant SCNGeometrySourceSemanticColor</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNGeometrySourceSemanticColor")]
 		NSString Color { get; }
 
+		/// <summary>Represents the value associated with the constant SCNGeometrySourceSemanticTexcoord</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNGeometrySourceSemanticTexcoord")]
 		NSString Texcoord { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNGeometrySourceSemanticTangent")]
 		NSString Tangent { get; }
 
+		/// <summary>Represents the value associated with the constant SCNGeometrySourceSemanticVertexCrease</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNGeometrySourceSemanticVertexCrease")]
 		NSString VertexCrease { get; }
 
+		/// <summary>Represents the value associated with the constant SCNGeometrySourceSemanticEdgeCrease</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNGeometrySourceSemanticEdgeCrease")]
 		NSString EdgeCrease { get; }
 
+		/// <summary>Represents the value associated with the constant SCNGeometrySourceSemanticBoneWeights</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNGeometrySourceSemanticBoneWeights")]
 		NSString BoneWeights { get; }
 
+		/// <summary>Represents the value associated with the constant SCNGeometrySourceSemanticBoneIndices</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNGeometrySourceSemanticBoneIndices")]
 		NSString BoneIndices { get; }
@@ -1148,9 +1186,15 @@ namespace SceneKit {
 		[Export ("tessellationPartitionMode", ArgumentSemantic.Assign)]
 		MTLTessellationPartitionMode TessellationPartitionMode { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("adaptive")]
 		bool Adaptive { [Bind ("isAdaptive")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("screenSpace")]
 		bool ScreenSpace { [Bind ("isScreenSpace")] get; set; }
 
@@ -1171,31 +1215,66 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNHitTest {
+		/// <summary>Represents the value associated with the constant SCNHitTestFirstFoundOnlyKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNHitTestFirstFoundOnlyKey")]
 		NSString FirstFoundOnlyKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNHitTestSortResultsKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNHitTestSortResultsKey")]
 		NSString SortResultsKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNHitTestClipToZRangeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNHitTestClipToZRangeKey")]
 		NSString ClipToZRangeKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNHitTestBackFaceCullingKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNHitTestBackFaceCullingKey")]
 		NSString BackFaceCullingKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNHitTestBoundingBoxOnlyKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNHitTestBoundingBoxOnlyKey")]
 		NSString BoundingBoxOnlyKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNHitTestIgnoreChildNodesKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNHitTestIgnoreChildNodesKey")]
 		NSString IgnoreChildNodesKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNHitTestRootNodeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNHitTestRootNodeKey")]
 		NSString RootNodeKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNHitTestIgnoreHiddenNodesKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNHitTestIgnoreHiddenNodesKey")]
 		NSString IgnoreHiddenNodesKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNHitTestOptionCategoryBitMask")]
 		NSString OptionCategoryBitMaskKey { get; }
@@ -1206,6 +1285,9 @@ namespace SceneKit {
 		NSString OptionSearchModeKey { get; }
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNHitTestOptionSearchMode")]
 		NSString SearchModeKey { get; }
@@ -1280,6 +1362,9 @@ namespace SceneKit {
 		[Export ("color", ArgumentSemantic.Retain)]
 		NSObject WeakColor { get; set; }
 
+		/// <summary>Gets or sets the color of the light.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakColor")]
 		NSColor Color { get; set; }
 
@@ -1301,6 +1386,9 @@ namespace SceneKit {
 		[Export ("shadowColor", ArgumentSemantic.Retain)]
 		NSObject WeakShadowColor { get; set; }
 
+		/// <summary>Gets or sets the color of shadows that are cast by the light.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakShadowColor")]
 		NSColor ShadowColor { get; set; }
 
@@ -1514,22 +1602,44 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNLightType {
+		/// <summary>Represents the value associated with the constant SCNLightTypeAmbient</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightTypeAmbient")]
 		NSString Ambient { get; }
 
+		/// <summary>Represents the value associated with the constant SCNLightTypeOmni</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightTypeOmni")]
 		NSString Omni { get; }
 
+		/// <summary>Represents the value associated with the constant SCNLightTypeDirectional</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightTypeDirectional")]
 		NSString Directional { get; }
 
+		/// <summary>Represents the value associated with the constant SCNLightTypeSpot</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightTypeSpot")]
 		NSString Spot { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNLightTypeIES")]
 		NSString Ies { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNLightTypeProbe")]
 		NSString Probe { get; }
@@ -1572,18 +1682,37 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNLightingModel {
+		/// <summary>Represents the value associated with the constant SCNLightingModelPhong</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightingModelPhong")]
 		NSString Phong { get; }
 
+		/// <summary>Represents the value associated with the constant SCNLightingModelBlinn</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightingModelBlinn")]
 		NSString Blinn { get; }
 
+		/// <summary>Represents the value associated with the constant SCNLightingModelLambert</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightingModelLambert")]
 		NSString Lambert { get; }
 
+		/// <summary>Represents the value associated with the constant SCNLightingModelConstant</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightingModelConstant")]
 		NSString Constant { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNLightingModelPhysicallyBased")]
 		NSString PhysicallyBased { get; }
@@ -1637,9 +1766,15 @@ namespace SceneKit {
 		[Export ("lightingModelName", ArgumentSemantic.Copy)]
 		NSString LightingModelName { get; set; }
 
+		/// <summary>Gets or sets a value that controls whether lighting is performed on a per-pixel or per-vertex basis.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("litPerPixel")]
 		bool LitPerPixel { [Bind ("isLitPerPixel")] get; set; }
 
+		/// <summary>Gets or sets a value that controls whether both faces of a surface should be rendered. Default is <see langword="false" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("doubleSided")]
 		bool DoubleSided { [Bind ("isDoubleSided")] get; set; }
 
@@ -1758,28 +1893,52 @@ namespace SceneKit {
 		[Export ("contents", ArgumentSemantic.Retain), NullAllowed]
 		NSObject Contents { get; set; }
 
+		/// <summary>Gets or sets the material property's color.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
 		NSColor ContentColor { get; set; }
 
+		/// <summary>Gets or sets the material property's image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
 		NSImage ContentImage { get; set; }
 
+		/// <summary>Gets or sets the material property's animation layer.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("Contents")]
 		CALayer ContentLayer { get; set; }
 
+		/// <summary>Gets or sets the path to the image that is used for the material property's contents.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
 		NSString ContentPath { get; set; }
 
+		/// <summary>Gets or sets the URL that specifies the material property's image content.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
 		NSUrl ContentUrl { get; set; }
 
+		/// <summary>Gets or sets the material property's scene.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
 		SKScene ContentScene { get; set; }
 
+		/// <summary>Gets or sets the material property's texture.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
 		SKTexture ContentTexture { get; set; }
 
+		/// <summary>Gets or sets the material property's image cube.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
 		NSImage [] ContentImageCube { get; set; }
 
@@ -1822,6 +1981,9 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SCNProgram")]
 	interface SCNProgramSemanticOptions {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		nuint MappingChannel { get; set; }
 	}
 
@@ -1837,14 +1999,69 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SCNHitTest")]
 	interface SCNHitTestOptions {
+		/// <summary>Controls whether only the first hit match is returned.   Caveat: the first match returned might not be the nearest object.</summary>
+		///         <value>If not specified, the value assumed is false.</value>
+		///         <remarks>
+		///         </remarks>
 		bool FirstFoundOnly { get; set; }
+		/// <summary>If set, sorts the returned hit-test results from nearest to farthest.</summary>
+		///         <value>If not specified, the value is assumed to be true, so the results are sorted.</value>
+		///         <remarks>
+		///         </remarks>
 		bool SortResults { get; set; }
+		/// <summary>Determines whether to ignore polygons that are not facing the camera for hit-testing.</summary>
+		///         <value>If not specified, the default is to assume that you want back-face culling.</value>
+		///         <remarks>
+		///         </remarks>
 		bool BackFaceCulling { get; set; }
+		/// <summary>Control whether hit-testing uses the node's geometry, or if a bounding-box is used to optmize the hit-testing process speed.</summary>
+		///         <value>If this value is not specified, the value assumed is false.</value>
+		///         <remarks>
+		/// 	  By default, the hit-testing will use the node's geometry
+		/// 	  information to determine whether there was a hit.  This
+		/// 	  process can be slow, so you can set this property to true to
+		/// 	  constraint the search space to the bounxing box of the
+		/// 	  target.
+		/// 	</remarks>
 		bool BoundingBoxOnly { get; set; }
+		/// <summary>Controls whether hit-testing will consider all nodes of the hierarchy, or only the node specified in the RootNode property.</summary>
+		///         <value>If not specified, the value is assumed to be false.</value>
+		///         <remarks>
+		/// 	  By default this will search all the nodes in the hierarchy.
+		/// 	  If you set this value to true, you can limit the search to
+		/// 	  the node specified in <see cref="P:SceneKit.SCNHitTestOptions.RootNode" />
+		/// 	  property.
+		/// 	</remarks>
 		bool IgnoreChildNodes { get; set; }
+		/// <summary>Controls whether hit-testing will return hidden nodes or not.</summary>
+		///         <value>If not specified, the value is assumed to be true.</value>
+		///         <remarks>
+		/// 	  The default is to skip hidden nodes.   Set this value to false if you want to perform hit-testing including nodes that have set their <see cref="P:SceneKit.SCNNode.Hidden" /> property to true.
+		/// 	</remarks>
 		bool IgnoreHiddenNodes { get; set; }
+		/// <summary>Limits the hit-testing to this node as well as its children (you must also set IgnoreChildNodes).</summary>
+		///         <value>
+		///           <para>
+		/// 	    The node that will be used as the root node to search for hits.
+		/// 	  </para>
+		///           <para>
+		/// 	    If not specified, when used with a <see cref="T:SceneKit.SCNSceneRenderer" /> the default
+		/// 	    value would be the presented scene's root node.
+		/// 	  </para>
+		///           <para>
+		/// 	    If not specified, when used with a <see cref="T:SceneKit.SCNNode" /> the default
+		/// 	    value is the node itself.
+		/// 	  </para>
+		///         </value>
+		///         <remarks>
+		///           <para>
+		///           </para>
+		///         </remarks>
 		[NullAllowed]
 		SCNNode RootNode { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		SCNHitTestSearchMode SearchMode { get; set; }
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -2553,6 +2770,13 @@ namespace SceneKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the SceneKit.ISCNProgramDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the SceneKit.ISCNProgramDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		ISCNProgramDelegate Delegate { get; set; }
 
@@ -2575,11 +2799,18 @@ namespace SceneKit {
 		NSString GetSemanticForSymbol (string symbol);
 #endif
 
+		/// <summary>Represents the value associated with the constant SCNProgramMappingChannelKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNProgramMappingChannelKey")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString MappingChannelKey { get; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the program produces opaque renderings.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("opaque")]
 		bool Opaque { [Bind ("isOpaque")] get; set; }
@@ -2736,18 +2967,38 @@ namespace SceneKit {
 		[Field ("SCNModelTransform")]
 		NSString ModelTransform { get; }
 
+		/// <summary>Represents the value associated with the constant SCNViewTransform</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNViewTransform")]
 		NSString ViewTransform { get; }
 
+		/// <summary>Represents the value associated with the constant SCNProjectionTransform</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNProjectionTransform")]
 		NSString ProjectionTransform { get; }
 
+		/// <summary>Represents the value associated with the constant SCNNormalTransform</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNNormalTransform")]
 		NSString NormalTransform { get; }
 
+		/// <summary>Represents the value associated with the constant SCNModelViewTransform</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNModelViewTransform")]
 		NSString ModelViewTransform { get; }
 
+		/// <summary>Represents the value associated with the constant SCNModelViewProjectionTransform</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNModelViewProjectionTransform")]
 		NSString ModelViewProjectionTransform { get; }
 	}
@@ -3029,24 +3280,52 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNSceneSourceLoading {
+		/// <summary>Represents the value associated with the constant SCNSceneSourceAssetDirectoryURLsKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceAssetDirectoryURLsKey")]
 		NSString AssetDirectoryUrlsKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceCreateNormalsIfAbsentKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceCreateNormalsIfAbsentKey")]
 		NSString CreateNormalsIfAbsentKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceFlattenSceneKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceFlattenSceneKey")]
 		NSString FlattenSceneKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceCheckConsistencyKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceCheckConsistencyKey")]
 		NSString CheckConsistencyKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceOverrideAssetURLsKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceOverrideAssetURLsKey")]
 		NSString OverrideAssetUrlsKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceStrictConformanceKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceStrictConformanceKey")]
 		NSString StrictConformanceKey { get; }
 
+		/// <summary>Developers should not use this deprecated property. </summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.TvOS, 11, 0)]
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
@@ -3055,35 +3334,66 @@ namespace SceneKit {
 		NSString UseSafeModeKey { get; }
 
 		// header said NA and docs says "Available in iOS 8.0 through iOS 8.2." but it's back on iOS11
+		/// <summary>Represents the value associated with the constant SCNSceneSourceConvertUnitsToMetersKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceConvertUnitsToMetersKey")]
 		NSString ConvertUnitsToMetersKey { get; }
 
 		// header said NA and docs says "Available in iOS 8.0 through iOS 8.2." but it's back on iOS11
+		/// <summary>Represents the value associated with the constant SCNSceneSourceConvertToYUpKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceConvertToYUpKey")]
 		NSString ConvertToYUpKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceAnimationImportPolicyKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceAnimationImportPolicyKey")]
 		NSString AnimationImportPolicyKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceAnimationImportPolicyPlay</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceAnimationImportPolicyPlay")]
 		NSString AnimationImportPolicyPlay { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceAnimationImportPolicyPlayRepeatedly</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceAnimationImportPolicyPlayRepeatedly")]
 		NSString AnimationImportPolicyPlayRepeatedly { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceAnimationImportPolicyDoNotPlay</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceAnimationImportPolicyDoNotPlay")]
 		NSString AnimationImportPolicyDoNotPlay { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceAnimationImportPolicyPlayUsingSceneTimeBase</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceAnimationImportPolicyPlayUsingSceneTimeBase")]
 		NSString AnimationImportPolicyPlayUsingSceneTimeBase { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceLoadingOptionPreserveOriginalTopology")]
 		NSString OptionPreserveOriginalTopology { get; }
@@ -3093,15 +3403,31 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNSceneSourceLoadErrors {
+		/// <summary>Represents the value associated with the constant SCNConsistencyElementIDErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNConsistencyElementIDErrorKey")]
 		NSString ConsistencyElementIDErrorKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNConsistencyElementTypeErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNConsistencyElementTypeErrorKey")]
 		NSString ConsistencyElementTypeErrorKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNConsistencyLineNumberErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNConsistencyLineNumberErrorKey")]
 		NSString ConsistencyLineNumberErrorKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNDetailedErrorsKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNDetailedErrorsKey")]
 		NSString DetailedErrorsKey { get; }
 	}
@@ -3110,30 +3436,62 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNSceneSourceProperties {
+		/// <summary>Represents the value associated with the constant SCNSceneSourceAssetContributorsKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceAssetContributorsKey")]
 		NSString AssetContributorsKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceAssetCreatedDateKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceAssetCreatedDateKey")]
 		NSString AssetCreatedDateKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceAssetModifiedDateKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceAssetModifiedDateKey")]
 		NSString AssetModifiedDateKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceAssetUpAxisKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceAssetUpAxisKey")]
 		NSString AssetUpAxisKey { get; }
 
+		/// <summary>Represents the value associated with the constant SCNSceneSourceAssetUnitKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceAssetUnitKey")]
 		NSString AssetUnitKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceAssetAuthoringToolKey")]
 		NSString AssetAuthoringToolKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceAssetAuthorKey")]
 		NSString AssetAuthorKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceAssetUnitNameKey")]
 		NSString AssetUnitNameKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNSceneSourceAssetUnitMeterKey")]
 		NSString AssetUnitMeterKey { get; }
 	}
@@ -3440,6 +3798,9 @@ namespace SceneKit {
 		[Export ("radius")]
 		nfloat Radius { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("geodesic")]
 		bool Geodesic { [Bind ("isGeodesic")] get; set; }
 
@@ -3628,8 +3989,14 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SCNRenderingOptionsKeys")]
 	interface SCNRenderingOptions {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		IMTLDevice Device { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool LowPowerDevice { get; set; }
 	}
 
@@ -3868,10 +4235,16 @@ namespace SceneKit {
 		[Export ("influenceFactor")]
 		nfloat InfluenceFactor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("incremental")]
 		bool Incremental { [Bind ("isIncremental")] get; set; }
@@ -4180,9 +4553,25 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("_SCNShaderModifiers")]
 	interface SCNShaderModifiers {
+		/// <summary>Represents the value associated with the constant SCNShaderModifierEntryPointGeometry</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		string EntryPointGeometry { get; set; }
+		/// <summary>Represents the value associated with the constant SCNShaderModifierEntryPointSurface</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		string EntryPointSurface { get; set; }
+		/// <summary>Represents the value associated with the constant SCNShaderModifierEntryPointLightingModel</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		string EntryPointLightingModel { get; set; }
+		/// <summary>Represents the value associated with the constant SCNShaderModifierEntryPointFragment</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		string EntryPointFragment { get; set; }
 	}
 
@@ -4207,6 +4596,12 @@ namespace SceneKit {
 		[Export ("shaderModifiers", ArgumentSemantic.Copy)]
 		NSDictionary WeakShaderModifiers { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Wrap ("WeakShaderModifiers")]
@@ -4304,12 +4699,24 @@ namespace SceneKit {
 	[Static]
 	interface SCNPhysicsTestSearchModeKeys {
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsTestSearchModeAny</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsTestSearchModeAny")]
 		NSString Any { get; }
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsTestSearchModeClosest</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsTestSearchModeClosest")]
 		NSString Closest { get; }
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsTestSearchModeAll</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsTestSearchModeAll")]
 		NSString All { get; }
 	}
@@ -4413,6 +4820,9 @@ namespace SceneKit {
 		[Export ("contactTestBitMask", ArgumentSemantic.Assign)]
 		nuint ContactTestBitMask { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the physics body responds to gravitational fields.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("affectedByGravity")]
 		bool AffectedByGravity { [Bind ("isAffectedByGravity")] get; set; }
@@ -4489,9 +4899,15 @@ namespace SceneKit {
 		[Export ("minimumDistance")]
 		nfloat MinimumDistance { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("active")]
 		bool Active { [Bind ("isActive")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("exclusive")]
 		bool Exclusive { [Bind ("isExclusive")] get; set; }
 
@@ -4518,8 +4934,14 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SCNPhysicsTestKeys")]
 	interface SCNPhysicsTest {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		nuint CollisionBitMask { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool BackfaceCulling { get; set; }
 
 		[Internal, Export ("SCNPhysicsTestKeys.SearchModeKey")]
@@ -4550,6 +4972,12 @@ namespace SceneKit {
 		[NullAllowed]
 		NSObject WeakContactDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakContactDelegate")]
 		ISCNPhysicsContactDelegate ContactDelegate { get; set; }
 
@@ -4635,16 +5063,31 @@ namespace SceneKit {
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
 	interface SCNPhysicsShapeOptionsKeys {
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsShapeScaleKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsShapeScaleKey")]
 		NSString Scale { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNPhysicsShapeOptionCollisionMargin")]
 		NSString CollisionMargin { get; }
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsShapeKeepAsCompoundKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsShapeKeepAsCompoundKey")]
 		NSString KeepAsCompound { get; }
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsShapeTypeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsShapeTypeKey")]
 		NSString Type { get; }
 	}
@@ -4655,12 +5098,24 @@ namespace SceneKit {
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
 	interface SCNPhysicsShapeOptionsTypes {
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsShapeTypeBoundingBox</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsShapeTypeBoundingBox")]
 		NSString BoundingBox { get; }
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsShapeTypeConvexHull</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsShapeTypeConvexHull")]
 		NSString ConvexHull { get; }
 
+		/// <summary>Represents the value associated with the constant SCNPhysicsShapeTypeConcavePolyhedron</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNPhysicsShapeTypeConcavePolyhedron")]
 		NSString ConcavePolyhedron { get; }
 	}
@@ -4991,6 +5446,9 @@ namespace SceneKit {
 		[Export ("acceleration")]
 		SCNVector3 Acceleration { get; set; }
 
+		/// <summary>Gets or sets a value that controls whether the particle system uses the parent node's coordinate system frame of reference.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("local")]
 		bool Local { [Bind ("isLocal")] get; set; }
 
@@ -5070,6 +5528,9 @@ namespace SceneKit {
 		[Export ("blendMode")]
 		SCNParticleBlendMode BlendMode { get; set; }
 
+		/// <summary>Gets or sets a value that controls whether to increase contrast by rendering particles first in black, and then in their specified color.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("blackPassEnabled")]
 		bool BlackPassEnabled { [Bind ("isBlackPassEnabled")] get; set; }
 
@@ -5079,6 +5540,9 @@ namespace SceneKit {
 		[Export ("sortingMode")]
 		SCNParticleSortingMode SortingMode { get; set; }
 
+		/// <summary>Gets or sets a value that controls whether or not lighting is applied to the scene when rendering.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lightingEnabled")]
 		bool LightingEnabled { [Bind ("isLightingEnabled")] get; set; }
 
@@ -5170,66 +5634,114 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNParticleProperty {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyPosition")]
 		NSString Position { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyAngle")]
 		NSString Angle { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyRotationAxis")]
 		NSString RotationAxis { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyVelocity")]
 		NSString Velocity { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyAngularVelocity")]
 		NSString AngularVelocity { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyLife")]
 		NSString Life { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyColor")]
 		NSString Color { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyOpacity")]
 		NSString Opacity { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertySize")]
 		NSString Size { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyFrame")]
 		NSString Frame { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyFrameRate")]
 		NSString FrameRate { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyBounce")]
 		NSString Bounce { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyCharge")]
 		NSString Charge { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyFriction")]
 		NSString Friction { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyContactPoint")]
 		NSString ContactPoint { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyContactNormal")]
 		NSString ContactNormal { get; }

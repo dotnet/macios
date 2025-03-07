@@ -11,9 +11,13 @@ namespace CloudKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKAccountStatus : long {
+		/// <summary>An error occured when the application tried to determine if the user's account is available.</summary>
 		CouldNotDetermine = 0,
+		/// <summary>The user's account is available.</summary>
 		Available = 1,
+		/// <summary>The user has an account, but a parental control or mobile restriction prevents its use.</summary>
 		Restricted = 2,
+		/// <summary>The user has no iCloud account.</summary>
 		NoAccount = 3,
 		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 		TemporarilyUnavailable = 4,
@@ -25,6 +29,7 @@ namespace CloudKit {
 	[Native]
 	[Flags]
 	public enum CKApplicationPermissions : ulong {
+		/// <summary>Other app users can discover the current user by email address.</summary>
 		UserDiscoverability = 1 << 0,
 	}
 
@@ -33,9 +38,13 @@ namespace CloudKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKApplicationPermissionStatus : long {
+		/// <summary>The application has not yet requested the permission.</summary>
 		InitialState = 0,
+		/// <summary>An error occured while attempting to obtain the permission.</summary>
 		CouldNotComplete = 1,
+		/// <summary>The user denied the permission request.</summary>
 		Denied = 2,
+		/// <summary>The user granted the permission request.</summary>
 		Granted = 3,
 	}
 

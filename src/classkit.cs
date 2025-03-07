@@ -195,15 +195,27 @@ namespace ClassKit {
 		[Field ("CLSPredicateKeyPathIdentifier")]
 		NSString Identifier { get; }
 
+		/// <summary>Gets the key path for retrieving contexts by their title.</summary>
+		///         <value>The key path for retrieving contexts by their title.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CLSPredicateKeyPathTitle")]
 		NSString Title { get; }
 
+		/// <summary>Gets the key path for retrieving contexts by universal link URL.</summary>
+		///         <value>The key path for retrieving contexts by universal link URL.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CLSPredicateKeyPathUniversalLinkURL")]
 		NSString UniversalLinkUrl { get; }
 
+		/// <summary>Gets the key path for retrieving contexts by topic.</summary>
+		///         <value>The key path for retrieving contexts by topic.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CLSPredicateKeyPathTopic")]
 		NSString Topic { get; }
 
+		/// <summary>Gets the key path for retrieving contexts by their parent.</summary>
+		///         <value>The key path for retrieving contexts by their parent.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CLSPredicateKeyPathParent")]
 		NSString Parent { get; }
 	}

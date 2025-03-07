@@ -2666,12 +2666,21 @@ namespace Metal {
 		[Export ("attributeType")]
 		MTLDataType AttributeType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("active")]
 		bool Active { [Bind ("isActive")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("patchData")]
 		bool IsPatchData { [Bind ("isPatchData")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("patchControlPointData")]
 		bool IsPatchControlPointData { [Bind ("isPatchControlPointData")] get; }
 	}

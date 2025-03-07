@@ -48,16 +48,36 @@ namespace CoreImage {
 	public class CIAutoAdjustmentFilterOptions {
 
 		// The default value is true.
+		/// <summary>Set to false if you want to prevent filters that perform enhancements to be returned.</summary>
+		///         <remarks>
+		///
+		/// 	  By default an invocation to <see cref="M:CoreImage.CIImage.GetAutoAdjustmentFilters(CoreImage.CIAutoAdjustmentFilterOptions)" /> will return filters that include enhancement filters.  To
+		/// 	  prevent this, set this property to false.
+		///
+		/// 	</remarks>
 		public bool? Enhance;
 
 		// The default value is true
+		/// <summary>Set to false if you want to prevent the filter that performs red-eye removal from being returned.</summary>
+		///         <remarks>
+		/// 	  By default an invocation to <see cref="M:CoreImage.CIImage.GetAutoAdjustmentFilters(CoreImage.CIAutoAdjustmentFilterOptions)" /> will return filters that include red-eye removal.  To
+		/// 	  prevent this, set this property to false.
+		/// 	</remarks>
 		public bool? RedEye;
 
+		/// <summary>Provides a set of features to use during Red-Eye filters.</summary>
+		///         <remarks>
+		/// 	  If this array is empty, CoreImage will use the CIDetector class to detect where the face is on the image and use the result.
+		/// 	</remarks>
 		public CIFeature []? Features;
 
+		/// <summary>Provides image orientation information to the auto-enhance system.</summary>
+		///         <remarks>Some adjustments depend on image orientation to work, providing this hint helps the auto correction software pick the best results.</remarks>
 		public CIImageOrientation? ImageOrientation;
 
 #if NET
+		/// <summary>Whether or not to automatically crop the image.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -65,6 +85,8 @@ namespace CoreImage {
 #endif
 		public bool? AutoAdjustCrop;
 #if NET
+		/// <summary>Gets or sets the automatic adjustment level.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]

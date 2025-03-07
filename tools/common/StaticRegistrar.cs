@@ -35,9 +35,7 @@ using ObjCRuntime;
 using Mono.Cecil;
 using Mono.Linker;
 using Mono.Tuner;
-#if !LEGACY_TOOLS
 using ClassRedirector;
-#endif
 
 // Disable warnings about nullability attributes in code until we've reviewed this file for nullability (and enabled it).
 // This way we can add nullability attributes to new code in this file without getting warnings about these attributes.
@@ -2885,7 +2883,7 @@ namespace Registrar {
 			return all_types;
 		}
 
-#if NET && !LEGACY_TOOLS
+#if NET || LEGACY_TOOLS
 		CSToObjCMap type_map_dictionary;
 		public CSToObjCMap GetTypeMapDictionary (List<Exception> exceptions)
 		{
@@ -2906,7 +2904,7 @@ namespace Registrar {
 			type_map_dictionary = map_dict;
 			return type_map_dictionary;
 		}
-#endif // !LEGACY_TOOLS
+#endif // NET || LEGACY_TOOLS
 
 		public void Rewrite ()
 		{
@@ -2963,10 +2961,8 @@ namespace Registrar {
 				registered_assemblies.Add (new (GetAssemblies ().Single (v => GetAssemblyName (v) == single_assembly), single_assembly));
 			}
 
-#if NET && !LEGACY_TOOLS
 			// Don't need this dictionary, but do need ClassMapIndex
 			GetTypeMapDictionary (exceptions);
-#endif
 
 			foreach (var @class in allTypes) {
 				var isPlatformType = IsPlatformType (@class.Type);

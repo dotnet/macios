@@ -143,11 +143,7 @@ namespace Registrar {
 			public IntPtr Handle;
 #else
 			public TType ProtocolWrapperType;
-#if LEGACY_TOOLS
-			public readonly int ClassMapIndex = 0;
-#else
 			public int ClassMapIndex;
-#endif
 #endif
 
 			public Dictionary<string, ObjCField> Fields;

@@ -17,7 +17,9 @@ namespace EventKitUI {
 	// iOS 9 promoted this to an NSInteger - which breaks compatibility
 	[Native]
 	public enum EKCalendarChooserSelectionStyle : long {
+		/// <summary>To be added.</summary>
 		Single,
+		/// <summary>To be added.</summary>
 		Multiple,
 	}
 
@@ -25,7 +27,9 @@ namespace EventKitUI {
 	// iOS 9 promoted this to an NSInteger - which breaks compatibility
 	[Native]
 	public enum EKCalendarChooserDisplayStyle : long {
+		/// <summary>To be added.</summary>
 		AllCalendars,
+		/// <summary>To be added.</summary>
 		WritableCalendarsOnly,
 	}
 
@@ -33,8 +37,11 @@ namespace EventKitUI {
 	// iOS 9 promoted this to an NSInteger - which breaks compatibility
 	[Native]
 	public enum EKEventViewAction : long {
+		/// <summary>The user tapped "Done".</summary>
 		Done,
+		/// <summary>The user responded to the event, saving it.</summary>
 		Responded,
+		/// <summary>The user deleted the event.</summary>
 		Deleted,
 	}
 
@@ -42,8 +49,11 @@ namespace EventKitUI {
 	// iOS 9 promoted this to an NSInteger - which breaks compatibility
 	[Native]
 	public enum EKEventEditViewAction : long {
+		/// <summary>The user canceled the change to the event.</summary>
 		Canceled,
+		/// <summary>The user saved the change to the event.</summary>
 		Saved,
+		/// <summary>The user deleted the event.</summary>
 		Deleted,
 	}
 }

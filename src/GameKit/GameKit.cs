@@ -292,7 +292,10 @@ namespace GameKit {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	[Native]
 	public enum GKMatchSendDataMode : long {
+		/// <summary>Slower, but rebroadcast until received. Reliable data is guaranteed to arrive in order of transmission.</summary>
+		///         <altmember cref="T:GameKit.GKSendDataMode" />
 		Reliable,
+		/// <summary>Fast, but not guaranteed to arrive and may arrive out of order.</summary>
 		Unreliable,
 	}
 

@@ -118,24 +118,42 @@ namespace CoreImage {
 		[Export ("initWithRed:green:blue:alpha:colorSpace:")]
 		NativeHandle Constructor (nfloat red, nfloat green, nfloat blue, nfloat alpha, CGColorSpace colorSpace);
 
+		/// <summary>Gets the number of components. This is also the number of components that are returned in the <see cref="P:CoreImage.CIColor.Components" /> property.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("numberOfComponents")]
 		nint NumberOfComponents { get; }
 
 		[Internal, Export ("components")]
 		IntPtr GetComponents ();
 
+		/// <summary>Gets the alpha channel value.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("alpha")]
 		nfloat Alpha { get; }
 
+		/// <summary>Gets the color space for the color.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("colorSpace")]
 		CGColorSpace ColorSpace { get; }
 
+		/// <summary>Gets the red channel value.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("red")]
 		nfloat Red { get; }
 
+		/// <summary>Gets the green channel value.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("green")]
 		nfloat Green { get; }
 
+		/// <summary>Gets the blue channel value.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("blue")]
 		nfloat Blue { get; }
 
@@ -143,51 +161,81 @@ namespace CoreImage {
 		// while the one below are CIColor convenience helpers
 		// conflicting names means we have to keep the *Color suffix on them
 
+		/// <summary>A <see cref="T:CoreImage.CIColor" /> with RGBA values of [0.0, 0.0, 0.0, 1.0].</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("blackColor", ArgumentSemantic.Strong)]
 		CIColor BlackColor { get; }
 
+		/// <summary>A <see cref="T:CoreImage.CIColor" /> object whose RGBA values are [1, 1, 1, 1].</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("whiteColor", ArgumentSemantic.Strong)]
 		CIColor WhiteColor { get; }
 
+		/// <summary>A <see cref="T:CoreImage.CIColor" /> whose RGBA values are (0.5, 0.5, 0.5, 1.0).</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("grayColor", ArgumentSemantic.Strong)]
 		CIColor GrayColor { get; }
 
+		/// <summary>A <see cref="T:CoreImage.CIColor" /> object whose RGBA values are [1, 0, 0, 1].</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("redColor", ArgumentSemantic.Strong)]
 		CIColor RedColor { get; }
 
+		/// <summary>A <see cref="T:CoreImage.CIColor" /> whose RGBA values are [0, 1, 0, 1].</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("greenColor", ArgumentSemantic.Strong)]
 		CIColor GreenColor { get; }
 
+		/// <summary>A <see cref="T:CoreImage.CIColor" /> whose RGBA values are [0, 0, 1, 1].</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("blueColor", ArgumentSemantic.Strong)]
 		CIColor BlueColor { get; }
 
+		/// <summary>A <see cref="T:CoreImage.CIColor" /> whose RGBA values are [0, 1, 1, 1].</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("cyanColor", ArgumentSemantic.Strong)]
 		CIColor CyanColor { get; }
 
+		/// <summary>A <see cref="T:CoreImage.CIColor" /> whose RGBA values are [1, 0, 1, 1].</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("magentaColor", ArgumentSemantic.Strong)]
 		CIColor MagentaColor { get; }
 
+		/// <summary>A <see cref="T:CoreImage.CIColor" /> objects whose RGBA values are [1, 1, 0, 1].</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("yellowColor", ArgumentSemantic.Strong)]
 		CIColor YellowColor { get; }
 
+		/// <summary>A <see cref="T:CoreImage.CIColor" /> whose values are [0, 0, 0, 0].</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("clearColor", ArgumentSemantic.Strong)]
@@ -389,6 +437,9 @@ namespace CoreImage {
 		[Field ("kCIContextMemoryLimit")]
 		NSString MemoryLimit { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -405,11 +456,17 @@ namespace CoreImage {
 		[return: NullAllowed]
 		CIContext FromOfflineGpu (int gpuIndex);
 
+		/// <summary>The working <see cref="T:CoreGraphics.CGColorSpace" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("workingColorSpace")]
 		[NullAllowed]
 		CGColorSpace WorkingColorSpace { get; }
 
+		/// <summary>The working pixel format.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("workingFormat")]
 		CIFormat WorkingFormat { get; }
@@ -584,18 +641,41 @@ namespace CoreImage {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] //  In iOS8 they expose custom filters, we expose a protected one in CIFilter.cs
 	interface CIFilter : NSSecureCoding, NSCopying {
+		/// <summary>Gets an array that contains the names of the input keys for the filter.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("inputKeys")]
 		string [] InputKeys { get; }
 
+		/// <summary>Gets an array that contains the names of the output keys for the filter.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("outputKeys")]
 		string [] OutputKeys { get; }
 
 		[Export ("setDefaults")]
 		void SetDefaults ();
 
+		/// <summary>Configurable attributes of the filter.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>
+		///             Each filter has a set of attributes that control it.  You can
+		///             get this list by requesting the Attributes dictionary from the
+		///             filter.  Each fitler, in addition to having a series of
+		///             configurable properties always includes its name
+		///             ("CIAttributeFilterName" key), a user friendly name
+		///             ("CIAttributeFilterDisplayName" key) and a list of categories
+		///             that this filter belongs to ("CIAttributeFilterCategories").   
+		///
+		///           </para>
+		///         </remarks>
 		[Export ("attributes")]
 		NSDictionary Attributes { get; }
 
+		/// <summary>Gets the filter name.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("name")]
 		string Name {
 			get;
@@ -3081,30 +3161,55 @@ namespace CoreImage {
 		[Field ("CIDetectorSmile"), Internal]
 		NSString Smile { get; }
 
+		/// <summary>Represents the value associated with the constant CIDetectorAspectRatio</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("CIDetectorAspectRatio")]
 		NSString AspectRatio { get; }
 
+		/// <summary>Represents the value associated with the constant CIDetectorFocalLength</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("CIDetectorFocalLength")]
 		NSString FocalLength { get; }
 
+		/// <summary>Represents the value associated with the constant CIDetectorTypeQRCode</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("CIDetectorTypeQRCode")]
 		NSString TypeQRCode { get; }
 
+		/// <summary>Represents the value associated with the constant CIDetectorTypeRectangle</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("CIDetectorTypeRectangle")]
 		NSString TypeRectangle { get; }
 
+		/// <summary>Gets the number of angles from which to sample when detecting features.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("CIDetectorNumberOfAngles")]
 		NSString NumberOfAngles { get; }
 
+		/// <summary>Gets a value that tells whether subfeatures are detected.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("CIDetectorReturnSubFeatures")]
 		NSString ReturnSubFeatures { get; }
 
+		/// <summary>Gets a value that tells whether the detector detects text.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("CIDetectorTypeText")]
 		NSString TypeText { get; }
@@ -3586,12 +3691,21 @@ namespace CoreImage {
 	[BaseType (typeof (CITransitionFilter))]
 	interface CIBarsSwipeTransition {
 
+		/// <summary>Gets or sets the width of the bars.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputWidth")]
 		float Width { get; set; }
 
+		/// <summary>Gets or sets the angle, in radians, of the bar swipe transition.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputAngle")]
 		float Angle { get; set; }
 
+		/// <summary>Gets or sets the offset from one bar to the next.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputBarOffset")]
 		float BarOffset { get; set; }
 	}
@@ -6000,15 +6114,27 @@ namespace CoreImage {
 	[BaseType (typeof (CIBarcodeDescriptor))]
 	interface CIAztecCodeDescriptor {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("errorCorrectedPayload")]
 		NSData ErrorCorrectedPayload { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isCompact")]
 		bool IsCompact { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("layerCount")]
 		nint LayerCount { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("dataCodewordCount")]
 		nint DataCodewordCount { get; }
 

@@ -2614,14 +2614,24 @@ namespace PdfKit {
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
+		/// <include file="../docs/api/PdfKit/PdfThumbnailView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfThumbnailView.DocumentEditedNotification']/*" />
 		[Field ("PDFThumbnailViewDocumentEditedNotification", "+PDFKit")]
 		[Notification]
 		NSString DocumentEditedNotification { get; }
 
+		/// <summary>Returns the PDFView that displays the thumbnail view.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("PDFView", ArgumentSemantic.Weak)]
 		[NullAllowed]
 		PdfView PdfView { get; set; }
 
+		/// <summary>Gets or sets the maximum thumbnail size.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("thumbnailSize")]
 		CGSize ThumbnailSize { get; set; }
 
@@ -2635,12 +2645,18 @@ namespace PdfKit {
 		[Export ("contentInset")]
 		NSEdgeInsets ContentInset { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("maximumNumberOfColumns")]
 		nint MaximumNumberOfColumns { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -2648,22 +2664,37 @@ namespace PdfKit {
 		[NullAllowed]
 		NSFont LabelFont { get; set; }
 
+		/// <summary>Gets or sets the background color against which page thumbnails are displayed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("backgroundColor", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		NSColor BackgroundColor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("allowsDragging")]
 		bool AllowsDragging { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("allowsMultipleSelection")]
 		bool AllowsMultipleSelection { get; set; }
 
+		/// <summary>Gets an array of the selected pages.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("selectedPages", ArgumentSemantic.Strong), NullAllowed]
 		PdfPage [] SelectedPages { get; }
 	}

@@ -562,16 +562,27 @@ namespace AVFoundation {
 
 	[Native]
 	public enum AVAudioUnitEQFilterType : long {
+		/// <summary>Parametric filter based on Butterworth analog prototype. Must have <c>frequency</c> for center, <c>bandwidth</c>, and <c>gain</c></summary>
 		Parametric = 0,
+		/// <summary>To be added.</summary>
 		LowPass = 1,
+		/// <summary>To be added.</summary>
 		HighPass = 2,
+		/// <summary>Low pass filter with resonance. Must have <c>frequency</c> (-3dB cutoff) and <c>bandwidth</c>.</summary>
 		ResonantLowPass = 3,
+		/// <summary>High pass filter with resonance. Must have <c>frequency</c> (-3dB cutoff) and <c>bandwidth</c>.</summary>
 		ResonantHighPass = 4,
+		/// <summary>Band pass filter. Must specify <c>frequency</c> and <c>bandwidth</c>.</summary>
 		BandPass = 5,
+		/// <summary>Band stop / notch filter. Must specify <c>frequency</c> and <c>bandwidth</c>.</summary>
 		BandStop = 6,
+		/// <summary>To be added.</summary>
 		LowShelf = 7,
+		/// <summary>To be added.</summary>
 		HighShelf = 8,
+		/// <summary>Low shelf filter with resonance. Must have <c>frequency</c>, <c>bandwidth</c>, and <c>gain</c>.</summary>
 		ResonantLowShelf = 9,
+		/// <summary>High shelf filter with resonance. Must have <c>frequency</c>, <c>bandwidth</c>, and <c>gain</c>.</summary>
 		ResonantHighShelf = 10,
 	}
 
@@ -594,34 +605,59 @@ namespace AVFoundation {
 
 	[Native]
 	public enum AVAudioUnitDistortionPreset : long {
+		/// <summary>To be added.</summary>
 		DrumsBitBrush = 0,
+		/// <summary>To be added.</summary>
 		DrumsBufferBeats = 1,
+		/// <summary>To be added.</summary>
 		DrumsLoFi = 2,
+		/// <summary>To be added.</summary>
 		MultiBrokenSpeaker = 3,
+		/// <summary>To be added.</summary>
 		MultiCellphoneConcert = 4,
+		/// <summary>To be added.</summary>
 		MultiDecimated1 = 5,
+		/// <summary>To be added.</summary>
 		MultiDecimated2 = 6,
+		/// <summary>To be added.</summary>
 		MultiDecimated3 = 7,
+		/// <summary>To be added.</summary>
 		MultiDecimated4 = 8,
+		/// <summary>To be added.</summary>
 		MultiDistortedFunk = 9,
+		/// <summary>To be added.</summary>
 		MultiDistortedCubed = 10,
+		/// <summary>To be added.</summary>
 		MultiDistortedSquared = 11,
+		/// <summary>To be added.</summary>
 		MultiEcho1 = 12,
+		/// <summary>To be added.</summary>
 		MultiEcho2 = 13,
+		/// <summary>To be added.</summary>
 		MultiEchoTight1 = 14,
+		/// <summary>To be added.</summary>
 		MultiEchoTight2 = 15,
+		/// <summary>To be added.</summary>
 		MultiEverythingIsBroken = 16,
+		/// <summary>To be added.</summary>
 		SpeechAlienChatter = 17,
+		/// <summary>To be added.</summary>
 		SpeechCosmicInterference = 18,
+		/// <summary>To be added.</summary>
 		SpeechGoldenPi = 19,
+		/// <summary>To be added.</summary>
 		SpeechRadioTower = 20,
+		/// <summary>To be added.</summary>
 		SpeechWaves = 21,
 	}
 
 	[Native]
 	public enum AVAudioEnvironmentDistanceAttenuationModel : long {
+		/// <summary>Gain = (Distance / ReferenceDistance)^(-RolloffFactor)</summary>
 		Exponential = 1,
+		/// <summary>Gain = ReferenceDistance / (ReferenceDistance + RolloffFactor * (Distance - ReferenceDistance))</summary>
 		Inverse = 2,
+		/// <summary>Gain = (1 - RolloffFactor * (Distance - ReferenceDistance) / (MaximumDistance - ReferenceDistance))</summary>
 		Linear = 3,
 	}
 
@@ -763,7 +799,9 @@ namespace AVFoundation {
 	[TV (17, 0)]
 	[Native]
 	public enum AVCaptureColorSpace : long {
+		/// <summary>Indicates an RGB color space.</summary>
 		Srgb = 0,
+		/// <summary>Indicates the DCI-P3 color space with a CIE D65 white point.</summary>
 		P3D65 = 1,
 		[Introduced (PlatformName.MacCatalyst, 14, 1)]
 		[iOS (14, 1)]

@@ -711,11 +711,17 @@ namespace CoreVideo {
 		[Field ("kCVPixelBufferPlaneAlignmentKey")]
 		NSString PlaneAlignmentKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[NoMacCatalyst]
 		[Field ("kCVPixelBufferOpenGLESCompatibilityKey")]
 		NSString OpenGLESCompatibilityKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[NoMacCatalyst]
 		[Field ("kCVPixelBufferOpenGLESTextureCacheCompatibilityKey")]

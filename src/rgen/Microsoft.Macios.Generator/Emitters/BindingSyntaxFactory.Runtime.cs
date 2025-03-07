@@ -173,7 +173,7 @@ static partial class BindingSyntaxFactory {
 					IdentifierName ("FromHandle").WithTrailingTrivia (Space)))
 			.WithArgumentList (argumentList);
 	}
-	
+
 	/// <summary>
 	/// Generates a call to the NSArray.ArrayFromHandleFunc with the given arguments.
 	/// </summary>
@@ -189,14 +189,14 @@ static partial class BindingSyntaxFactory {
 		// generate <returnType>
 		var genericsList = TypeArgumentList (
 			SingletonSeparatedList<TypeSyntax> (IdentifierName (returnType)));
-		
+
 		// generate NSArray.ArrayFromHandleFunc<returnType> (arg1, arg2, arg3)
 		return InvocationExpression (
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
 					IdentifierName ("NSArray"),
 					GenericName ("ArrayFromHandleFunc")
-						.WithTypeArgumentList(genericsList)
+						.WithTypeArgumentList (genericsList)
 						.WithTrailingTrivia (Space)))
 			.WithArgumentList (argumentList);
 	}

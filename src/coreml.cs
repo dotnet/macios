@@ -55,10 +55,15 @@ namespace CoreML {
 	[ErrorDomain ("MLModelErrorDomain")]
 	[Native]
 	public enum MLModelError : long {
+		/// <summary>A non-specific generic error.</summary>
 		Generic = 0,
+		/// <summary>Indicates an error relating to some incompatibility of an <see cref="T:CoreML.MLFeatureType" />.</summary>
 		FeatureType = 1,
+		/// <summary>Indicates an I/O error.</summary>
 		IO = 3,
+		/// <summary>Indicates an error relating to a custom layer.</summary>
 		CustomLayer = 4,
+		/// <summary>To be added.</summary>
 		CustomModel = 5,
 		Update = 6,
 		Parameters = 7,
@@ -72,14 +77,17 @@ namespace CoreML {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MLMultiArrayDataType : long {
+		/// <summary>The array stores double-precision (64-bit) floating-point values.</summary>
 		Double = 0x10000 | 64,
 		// added in xcode12 but it's the same a `Double` and can be used in earlier versions
 		Float64 = 0x10000 | 64,
+		/// <summary>The array stores single-precision (32-bit) floating point values.</summary>
 		Float32 = 0x10000 | 32,
 		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		Float16 = 0x10000 | 16,
 		// added in xcode12 but it's the same a `Float32` and can be used in earlier versions
 		Float = 0x10000 | 32,
+		/// <summary>The array stores 32-bit integer values.</summary>
 		Int32 = 0x20000 | 32,
 	}
 
@@ -99,8 +107,11 @@ namespace CoreML {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MLMultiArrayShapeConstraintType : long {
+		/// <summary>The shape of the allowed inputs are not known.</summary>
 		Unspecified = 1,
+		/// <summary>Only a specific set of shapes are allowed.</summary>
 		Enumerated = 2,
+		/// <summary>The shapes are described using ranges.</summary>
 		Range = 3,
 	}
 
@@ -595,15 +606,27 @@ namespace CoreML {
 	[BaseType (typeof (NSObject))]
 	interface MLModelDescription : NSSecureCoding {
 
+		/// <summary>An <see cref="T:Foundation.NSDictionary" /> of input feature names and their descriptions.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("inputDescriptionsByName")]
 		NSDictionary<NSString, MLFeatureDescription> InputDescriptionsByName { get; }
 
+		/// <summary>An <see cref="T:Foundation.NSDictionary" /> of output feature names and their descriptions.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("outputDescriptionsByName")]
 		NSDictionary<NSString, MLFeatureDescription> OutputDescriptionsByName { get; }
 
+		/// <summary>Gets the name of the predicted feature.</summary>
+		///         <value>The returned value should be a valid key in <see cref="P:CoreML.MLModelDescription.OutputDescriptionsByName" />.<para tool="nullallowed">This value can be <see langword="null" />.</para></value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("predictedFeatureName")]
 		string PredictedFeatureName { get; }
 
+		/// <summary>Gets the name of the probabilities of the <see cref="P:CoreML.MLModelDescription.PredictedFeatureName" /> feature.</summary>
+		///         <value>The returned value should be a valid key in <see cref="P:CoreML.MLModelDescription.OutputDescriptionsByName" />.<para tool="nullallowed">This value can be <see langword="null" />.</para></value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("predictedProbabilitiesName")]
 		string PredictedProbabilitiesName { get; }
 
@@ -611,6 +634,9 @@ namespace CoreML {
 		[Internal]
 		NSDictionary _Metadata { get; }
 
+		/// <summary>Gets the <see cref="T:CoreML.MLModelMetadata" /> containing additional information about the <see cref="T:CoreML.MLModel" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("_Metadata")]
 		MLModelMetadata Metadata { get; }
 
@@ -668,10 +694,27 @@ namespace CoreML {
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("MLModelMetadataKeys")]
 	interface MLModelMetadata {
+		/// <summary>A developer-meaningful description of the <see cref="T:CoreML.MLModel" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string Description { get; }
+		/// <summary>A developer-meaningful identifier of the version of the <see cref="T:CoreML.MLModel" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string VersionString { get; }
+		/// <summary>The author of the <see cref="T:CoreML.MLModel" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string Author { get; }
+		/// <summary>A name or short description of the license and link to a complete definition.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>This value should identify the license and provide a resource for the license's complete definition. For instance, "Creative Common License. More information available at http://places.csail.mit.edu"	.</para>
+		///         </remarks>
 		string License { get; }
+		/// <summary>Additional metadata defined by the model's creator.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string CreatorDefined { get; }
 	}
 
@@ -856,6 +899,9 @@ namespace CoreML {
 	[BaseType (typeof (NSObject))]
 	interface MLPredictionOptions {
 
+		/// <summary>Gets or sets a Boolean value that indicates whether to restrict prediction computations to the CPU.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'MLModelConfiguration.ComputeUnits' instead.")]
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'MLModelConfiguration.ComputeUnits' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use 'MLModelConfiguration.ComputeUnits' instead.")]
@@ -1011,12 +1057,21 @@ namespace CoreML {
 	[DisableDefaultCtor]
 	interface MLMultiArrayShapeConstraint : NSSecureCoding {
 
+		/// <summary>Gets the form of the constraintß∑.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("type")]
 		MLMultiArrayShapeConstraintType Type { get; }
 
+		/// <summary>Gets an array whose values are acceptable ranges for the dimension of the corresponding index.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sizeRangeForDimension")]
 		NSValue [] SizeRangeForDimension { get; }
 
+		/// <summary>Gets the array of shapes accepted by the model, each shape described in an array.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enumeratedShapes")]
 		NSArray<NSNumber> [] EnumeratedShapes { get; }
 	}
@@ -1027,6 +1082,9 @@ namespace CoreML {
 	[DisableDefaultCtor]
 	interface MLSequence : NSSecureCoding {
 
+		/// <summary>Describes the form of the sequence.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("type")]
 		MLFeatureType Type { get; }
 
@@ -1038,6 +1096,9 @@ namespace CoreML {
 		[Export ("sequenceWithStringArray:")]
 		MLSequence Create (string [] stringValues);
 
+		/// <summary>Gets the sequence of words.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("stringValues")]
 		string [] StringValues { get; }
 
@@ -1045,6 +1106,9 @@ namespace CoreML {
 		[Export ("sequenceWithInt64Array:")]
 		MLSequence Create (NSNumber [] int64Values);
 
+		/// <summary>Gets the sequence of long values.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("int64Values")]
 		NSNumber [] Int64Values { get; }
 	}
@@ -1055,9 +1119,15 @@ namespace CoreML {
 	[DisableDefaultCtor]
 	interface MLSequenceConstraint : NSCopying, NSSecureCoding {
 
+		/// <summary>Gets the feature description that the features must match.</summary>
+		///         <value>The feature description that the features must match.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("valueDescription")]
 		MLFeatureDescription ValueDescription { get; }
 
+		/// <summary>Gets the range that constrains the number of sequences that may be present.</summary>
+		///         <value>The range that constrains the number of sequences that may be present.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("countRange")]
 		NSRange CountRange { get; }
 	}
@@ -1066,6 +1136,9 @@ namespace CoreML {
 	[BaseType (typeof (NSObject))]
 	interface MLModelConfiguration : NSCopying, NSSecureCoding {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("computeUnits", ArgumentSemantic.Assign)]
 		MLComputeUnits ComputeUnits { get; set; }
 

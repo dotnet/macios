@@ -1072,6 +1072,9 @@ namespace GameplayKit {
 		[Export ("numPoints")]
 		nuint NumPoints { get; }
 
+		/// <summary>Whether the <see cref="T:GameplayKit.GKPath" />'s last point connects to the first point.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("cyclical")]
 		bool Cyclical { [Bind ("isCyclical")] get; set; }
 

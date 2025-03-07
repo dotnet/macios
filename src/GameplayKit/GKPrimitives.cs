@@ -31,7 +31,11 @@ namespace GameplayKit {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct GKBox {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Vector3 Min;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Vector3 Max;
 	}
 
@@ -43,7 +47,11 @@ namespace GameplayKit {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct GKQuad {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Vector2 Min;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Vector2 Max;
 	}
 
@@ -58,6 +66,9 @@ namespace GameplayKit {
 		Vector3 point1;
 		Vector3 point2;
 		Vector3 point3;
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Vector3 [] Points {
 			get {
 				return new Vector3 [] { point1, point2, point3 };

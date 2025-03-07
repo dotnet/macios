@@ -42,6 +42,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		internal static extern OS_nw_protocol_definition nw_protocol_options_copy_definition (IntPtr options);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWProtocolDefinition ProtocolDefinition => new NWProtocolDefinition (nw_protocol_options_copy_definition (GetCheckedHandle ()), owns: true);
 
 		[DllImport (Constants.NetworkLibrary)]

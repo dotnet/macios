@@ -21,16 +21,22 @@ namespace CoreTelephony {
 	[NoMacCatalyst]
 	[Native]
 	public enum CTCellularDataRestrictedState : ulong {
+		/// <summary>To be added.</summary>
 		Unknown,
+		/// <summary>To be added.</summary>
 		Restricted,
+		/// <summary>To be added.</summary>
 		NotRestricted,
 	}
 
 	[NoMacCatalyst]
 	[Native]
 	public enum CTCellularPlanProvisioningAddPlanResult : long {
+		/// <summary>To be added.</summary>
 		Unknown,
+		/// <summary>To be added.</summary>
 		Fail,
+		/// <summary>To be added.</summary>
 		Success,
 		[iOS (17, 0)]
 		Cancel,

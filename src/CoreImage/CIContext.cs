@@ -57,6 +57,10 @@ namespace CoreImage {
 		{
 		}
 
+		/// <summary>The desired CIColorSpace to be used for the CIContext rendering operation.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>This color space is used before the image is rendered into the output.</remarks>
 		public CGColorSpace? OutputColorSpace {
 			get {
 				return GetNativeValue<CGColorSpace> (CIContext.OutputColorSpace);
@@ -66,6 +70,9 @@ namespace CoreImage {
 			}
 		}
 
+		/// <summary>The colorspace used by image processing operations, this is different than the colorspace used for the final rendering.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGColorSpace? WorkingColorSpace {
 			get {
 				return GetNativeValue<CGColorSpace> (CIContext._WorkingColorSpace);
@@ -75,6 +82,7 @@ namespace CoreImage {
 			}
 		}
 
+		/// <include file="../../docs/api/CoreImage/CIContextOptions.xml" path="/Documentation/Docs[@DocId='P:CoreImage.CIContextOptions.UseSoftwareRenderer']/*" />
 		public bool UseSoftwareRenderer {
 			get {
 				var b = GetBoolValue (CIContext.UseSoftwareRenderer);
@@ -85,6 +93,9 @@ namespace CoreImage {
 			}
 		}
 
+		/// <summary>Gets or sets the image format to use for storing intermediate rendering results.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? CIImageFormat {
 			get {
 				return GetInt32Value (CIContext.WorkingFormatField);
@@ -95,6 +106,9 @@ namespace CoreImage {
 		}
 
 #if NET
+		/// <summary>Gets or sets whether to request low priority from the GPU.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -109,6 +123,10 @@ namespace CoreImage {
 			}
 		}
 
+		/// <summary>
+		///           <see langword="true" /> if downsampling should be higher quality at the expense of performance.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? HighQualityDownsample {
 			get {
 				return GetBoolValue (CIContext.HighQualityDownsample);
@@ -119,6 +137,9 @@ namespace CoreImage {
 		}
 
 #if NET
+		/// <summary>If <see langword="true" />, the output should premultiply pixel values by their alpha values.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -134,6 +155,9 @@ namespace CoreImage {
 		}
 
 #if NET
+		/// <summary>If not <see langword="null" />, <see langword="true" /> indicates that intermediate images should be cached.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]

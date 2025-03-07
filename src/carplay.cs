@@ -28,8 +28,11 @@ namespace CarPlay {
 	[NoTV, NoMac]
 	[Native]
 	enum CPAlertActionStyle : ulong {
+		/// <summary>The default style.</summary>
 		Default = 0,
+		/// <summary>The style used when providing a cancel action for the alert.</summary>
 		Cancel,
+		/// <summary>The style used when the action is destructive, such as deleting data.</summary>
 		Destructive,
 	}
 

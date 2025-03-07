@@ -8,8 +8,11 @@ namespace PhotosUI {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHLivePhotoViewPlaybackStyle : long {
+		/// <summary>This is an invalid value. Do not use.</summary>
 		Undefined = 0,
+		/// <summary>Indicates that the full Live Photo, with sound, will be played.</summary>
 		Full,
+		/// <summary>Indicates that a short teaser, without sound, will be played.</summary>
 		Hint,
 	}
 
@@ -19,7 +22,9 @@ namespace PhotosUI {
 	[NoMacCatalyst]
 	[Native]
 	public enum PHLivePhotoViewContentMode : long {
+		/// <summary>To be added.</summary>
 		AspectFit,
+		/// <summary>To be added.</summary>
 		AspectFill,
 	}
 #else

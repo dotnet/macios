@@ -4,6 +4,9 @@ using System;
 
 namespace SceneKit {
 	public partial class SCNSceneLoadingOptions {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SCNAnimationImportPolicy AnimationImportPolicy {
 			get {
 				var k = _AnimationImportPolicyKey;

@@ -54,6 +54,8 @@ namespace CoreGraphics {
 			info = userInfo;
 			gch = GCHandle.Alloc (this);
 			InitializeHandle (CGPDFScannerCreate (cs.Handle, table.Handle, GCHandle.ToIntPtr (gch)));
+			GC.KeepAlive (cs);
+			GC.KeepAlive (table);
 		}
 
 #if !NET

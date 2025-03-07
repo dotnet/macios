@@ -357,6 +357,7 @@ namespace Foundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (obj));
 
 			LowlevelSetObject (obj.Handle, key);
+			GC.KeepAlive (obj);
 		}
 
 		public void LowlevelSetObject (string str, IntPtr key)

@@ -181,6 +181,7 @@ namespace Metal {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (observer));
 
 			MTLRemoveDeviceObserver (observer.Handle);
+			GC.KeepAlive (observer);
 		}
 #endif
 	}

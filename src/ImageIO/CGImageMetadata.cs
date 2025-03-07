@@ -93,6 +93,8 @@ namespace ImageIO {
 			if (path is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
 			var result = CGImageMetadataCopyStringValueWithPath (Handle, parent.GetHandle (), path.Handle);
+			GC.KeepAlive (parent);
+			GC.KeepAlive (path);
 			return Runtime.GetNSObject<NSString> (result, true);
 		}
 
@@ -117,6 +119,8 @@ namespace ImageIO {
 			if (path is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
 			IntPtr result = CGImageMetadataCopyTagWithPath (Handle, parent.GetHandle (), path.Handle);
+			GC.KeepAlive (parent);
+			GC.KeepAlive (path);
 			return (result == IntPtr.Zero) ? null : new CGImageMetadataTag (result, true);
 		}
 
@@ -156,6 +160,8 @@ namespace ImageIO {
 				block_handler.SetupBlockUnsafe (static_action, block);
 #endif
 				CGImageMetadataEnumerateTagsUsingBlock (Handle, rootPath.GetHandle (), o.GetHandle (), &block_handler);
+				GC.KeepAlive (rootPath);
+				GC.KeepAlive (o);
 			}
 		}
 
@@ -183,6 +189,8 @@ namespace ImageIO {
 			if (propertyName is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (propertyName));
 			IntPtr result = CGImageMetadataCopyTagMatchingImageProperty (Handle, dictionaryName.Handle, propertyName.Handle);
+			GC.KeepAlive (dictionaryName);
+			GC.KeepAlive (propertyName);
 			return result == IntPtr.Zero ? null : new CGImageMetadataTag (result, true);
 		}
 	}

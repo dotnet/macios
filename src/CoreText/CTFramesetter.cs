@@ -72,6 +72,8 @@ namespace CoreText {
 			if (path is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
 			var frame = CTFramesetterCreateFrame (Handle, stringRange, path.Handle, frameAttributes.GetHandle ());
+			GC.KeepAlive (path);
+			GC.KeepAlive (frameAttributes);
 			if (frame == IntPtr.Zero)
 				return null;
 			return new CTFrame (frame, true);
@@ -125,6 +127,7 @@ namespace CoreText {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (typesetter));
 
 			var ret = CTFramesetterCreateWithTypesetter (typesetter.Handle);
+			GC.KeepAlive (typesetter);
 			if (ret == IntPtr.Zero)
 				return null;
 

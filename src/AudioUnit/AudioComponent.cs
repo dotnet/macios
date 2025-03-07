@@ -301,8 +301,10 @@ namespace AudioUnit {
 			var handle = cmp.GetHandle ();
 			unsafe {
 				handle = AudioComponentFindNext (handle, (AudioComponentDescription*) Unsafe.AsPointer<AudioComponentDescription> (ref cd));
-			}
-			return (handle != IntPtr.Zero) ? new AudioComponent (handle, false) : null;
+			}			
+			AudioComponent? result = (handle != IntPtr.Zero) ? new AudioComponent (handle, false) : null;
+			GC.KeepAlive (cmp);
+			return result;
 		}
 
 		public static AudioComponent? FindComponent (ref AudioComponentDescription cd)
@@ -618,6 +620,7 @@ namespace AudioUnit {
 			AudioComponentValidationResult result;
 			unsafe {
 				resultCode = AudioComponentValidate (GetCheckedHandle (), validationParameters.GetHandle (), &result);
+				GC.KeepAlive (validationParameters);
 			}
 			if (resultCode == 0)
 				return result;
@@ -692,6 +695,7 @@ namespace AudioUnit {
 				block.SetupBlockUnsafe (static_action, onCompletion);
 #endif
 				resultCode = AudioComponentValidateWithResults (GetCheckedHandle (), validationParameters.GetHandle (), &block);
+				GC.KeepAlive (validationParameters);
 			}
 		}
 
@@ -791,7 +795,6 @@ namespace AudioUnit {
 							return;
 						default:
 							throw new InvalidOperationException ($"ComponentList could not be set, error {result.ToString ()}");
-
 						}
 					}
 				} finally {

@@ -158,7 +158,9 @@ namespace Darwin {
 			var txt = text is null ? string.Empty : String.Format (text, args);
 			if (txt.IndexOf ('%') != -1)
 				txt = txt.Replace ("%", "%%");
-			return asl_log (Handle, msg.GetHandle (), txt);
+			int result = asl_log (Handle, msg.GetHandle (), txt);
+			GC.KeepAlive (msg);
+			return result;
 		}
 
 		public int Log (string text)
@@ -177,7 +179,9 @@ namespace Darwin {
 			if (msg is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (msg));
 
-			return asl_send (Handle, msg.Handle);
+			int result = asl_send (Handle, msg.Handle);
+			GC.KeepAlive (msg);
+			return result;
 		}
 
 		[DllImport (Constants.SystemLibrary)]
@@ -202,6 +206,7 @@ namespace Darwin {
 			if (msg is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (msg));
 			var search = asl_search (Handle, msg.Handle);
+			GC.KeepAlive (msg);
 			IntPtr mh;
 
 			while ((mh = aslresponse_next (search)) != IntPtr.Zero)

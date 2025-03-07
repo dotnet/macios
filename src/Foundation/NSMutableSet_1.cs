@@ -120,7 +120,9 @@ namespace Foundation {
 				return new NSMutableSet<TKey> (second);
 			if (second is null || second.Count == 0)
 				return new NSMutableSet<TKey> (first);
-			return new NSMutableSet<TKey> (first._SetByAddingObjectsFromSet (second.Handle));
+			var result = new NSMutableSet<TKey> (first._SetByAddingObjectsFromSet (second.Handle));
+			GC.KeepAlive (second);
+			return result;
 		}
 
 		public static NSMutableSet<TKey> operator - (NSMutableSet<TKey> first, NSMutableSet<TKey> second)

@@ -86,6 +86,7 @@ namespace CoreVideo {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
 
 			CVBufferRemoveAttachment (Handle, key.Handle);
+			GC.KeepAlive (key);
 		}
 
 		[SupportedOSPlatform ("ios")]
@@ -126,10 +127,15 @@ namespace CoreVideo {
 			if (key is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
 #if IOS || __MACCATALYST__ || TVOS
-			if (!SystemVersion.CheckiOS (15, 0))
-				return Runtime.GetINativeObject<T> (CVBufferGetAttachment (Handle, key.Handle, out attachmentMode), false);
+			if (!SystemVersion.CheckiOS (15, 0)) {
+				T? result = Runtime.GetINativeObject<T> (CVBufferGetAttachment (Handle, key.Handle, out attachmentMode), false);
+				GC.KeepAlive (key);
+				return result;
+			}
 #endif
-			return Runtime.GetINativeObject<T> (CVBufferCopyAttachment (Handle, key.Handle, out attachmentMode), true);
+			T? result2 = Runtime.GetINativeObject<T> (CVBufferCopyAttachment (Handle, key.Handle, out attachmentMode), true);
+			GC.KeepAlive (key);
+			return result2;
 		}
 
 #if MONOMAC && !XAMCORE_5_0
@@ -139,7 +145,9 @@ namespace CoreVideo {
 		{
 			if (key is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
-			return Runtime.GetNSObject<NSObject> (CVBufferCopyAttachment (Handle, key.Handle, out attachmentMode), true);
+			NSObject? result = Runtime.GetNSObject<NSObject> (CVBufferCopyAttachment (Handle, key.Handle, out attachmentMode), true);
+			GC.KeepAlive (key);
+			return result;
 		}
 #endif
 
@@ -188,6 +196,7 @@ namespace CoreVideo {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (destinationBuffer));
 
 			CVBufferPropagateAttachments (Handle, destinationBuffer.Handle);
+			GC.KeepAlive (destinationBuffer);
 		}
 
 		[DllImport (Constants.CoreVideoLibrary)]
@@ -200,6 +209,8 @@ namespace CoreVideo {
 			if (@value is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
 			CVBufferSetAttachment (Handle, key.Handle, @value.Handle, attachmentMode);
+			GC.KeepAlive (key);
+			GC.KeepAlive (@value);
 		}
 
 		[DllImport (Constants.CoreVideoLibrary)]
@@ -210,6 +221,7 @@ namespace CoreVideo {
 			if (theAttachments is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (theAttachments));
 			CVBufferSetAttachments (Handle, theAttachments.Handle, attachmentMode);
+			GC.KeepAlive (theAttachments);
 		}
 
 		[SupportedOSPlatform ("ios15.0")]
@@ -227,7 +239,9 @@ namespace CoreVideo {
 		{
 			if (key is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
-			return CVBufferHasAttachment (Handle, key.Handle) != 0;
+			bool result = CVBufferHasAttachment (Handle, key.Handle) != 0;
+			GC.KeepAlive (key);
+			return result;
 		}
 
 #endif // !COREBUILD

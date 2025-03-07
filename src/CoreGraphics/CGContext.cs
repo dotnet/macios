@@ -328,6 +328,7 @@ namespace CoreGraphics {
 			if (path is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
 			CGContextAddPath (Handle, path.Handle);
+			GC.KeepAlive (path);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -514,6 +515,7 @@ namespace CoreGraphics {
 		public void ClipToMask (CGRect rect, CGImage? mask)
 		{
 			CGContextClipToMask (Handle, rect, mask.GetHandle ());
+			GC.KeepAlive (mask);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -549,6 +551,7 @@ namespace CoreGraphics {
 		public void SetFillColor (CGColor? color)
 		{
 			CGContextSetFillColorWithColor (Handle, color.GetHandle ());
+			GC.KeepAlive (color);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -558,6 +561,7 @@ namespace CoreGraphics {
 		public void SetStrokeColor (CGColor? color)
 		{
 			CGContextSetStrokeColorWithColor (Handle, color.GetHandle ());
+			GC.KeepAlive (color);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -567,6 +571,7 @@ namespace CoreGraphics {
 		public void SetFillColorSpace (CGColorSpace? space)
 		{
 			CGContextSetFillColorSpace (Handle, space.GetHandle ());
+			GC.KeepAlive (space);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -576,6 +581,7 @@ namespace CoreGraphics {
 		public void SetStrokeColorSpace (CGColorSpace? space)
 		{
 			CGContextSetStrokeColorSpace (Handle, space.GetHandle ());
+			GC.KeepAlive (space);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -613,6 +619,7 @@ namespace CoreGraphics {
 			unsafe {
 				fixed (nfloat* componentsPtr = components) {
 					CGContextSetFillPattern (Handle, pattern.GetHandle (), componentsPtr);
+					GC.KeepAlive (pattern);
 				}
 			}
 		}
@@ -626,6 +633,7 @@ namespace CoreGraphics {
 			unsafe {
 				fixed (nfloat* componentsPtr = components) {
 					CGContextSetStrokePattern (Handle, pattern.GetHandle (), componentsPtr);
+					GC.KeepAlive (pattern);
 				}
 			}
 		}
@@ -701,6 +709,7 @@ namespace CoreGraphics {
 		public void DrawImage (CGRect rect, CGImage? image)
 		{
 			CGContextDrawImage (Handle, rect, image.GetHandle ());
+			GC.KeepAlive (image);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -710,6 +719,7 @@ namespace CoreGraphics {
 		public void DrawTiledImage (CGRect rect, CGImage? image)
 		{
 			CGContextDrawTiledImage (Handle, rect, image.GetHandle ());
+			GC.KeepAlive (image);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -739,8 +749,10 @@ namespace CoreGraphics {
 		{
 			if (color is null)
 				CGContextSetShadow (Handle, offset, blur);
-			else
+			else {
 				CGContextSetShadowWithColor (Handle, offset, blur, color.Handle);
+				GC.KeepAlive (color);
+			}
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -751,6 +763,7 @@ namespace CoreGraphics {
 		public void DrawLinearGradient (CGGradient? gradient, CGPoint startPoint, CGPoint endPoint, CGGradientDrawingOptions options)
 		{
 			CGContextDrawLinearGradient (Handle, gradient.GetHandle (), startPoint, endPoint, options);
+			GC.KeepAlive (gradient);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -762,6 +775,7 @@ namespace CoreGraphics {
 		public void DrawRadialGradient (CGGradient? gradient, CGPoint startCenter, nfloat startRadius, CGPoint endCenter, nfloat endRadius, CGGradientDrawingOptions options)
 		{
 			CGContextDrawRadialGradient (Handle, gradient.GetHandle (), startCenter, startRadius, endCenter, endRadius, options);
+			GC.KeepAlive (gradient);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -771,6 +785,7 @@ namespace CoreGraphics {
 		public void DrawShading (CGShading? shading)
 		{
 			CGContextDrawShading (Handle, shading.GetHandle ());
+			GC.KeepAlive (shading);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -825,6 +840,7 @@ namespace CoreGraphics {
 		public void SetFont (CGFont? font)
 		{
 			CGContextSetFont (Handle, font.GetHandle ());
+			GC.KeepAlive (font);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -1225,6 +1241,7 @@ namespace CoreGraphics {
 		public void DrawPDFPage (CGPDFPage? page)
 		{
 			CGContextDrawPDFPage (Handle, page.GetHandle ());
+			GC.KeepAlive (page);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -1353,6 +1370,7 @@ namespace CoreGraphics {
 			if (layer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (layer));
 			CGContextDrawLayerInRect (Handle, rect, layer.Handle);
+			GC.KeepAlive (layer);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -1363,6 +1381,7 @@ namespace CoreGraphics {
 			if (layer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (layer));
 			CGContextDrawLayerAtPoint (Handle, point, layer.Handle);
+			GC.KeepAlive (layer);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -1420,6 +1439,7 @@ namespace CoreGraphics {
 		public void BeginTransparencyLayer (NSDictionary? auxiliaryInfo = null)
 		{
 			CGContextBeginTransparencyLayer (Handle, auxiliaryInfo.GetHandle ());
+			GC.KeepAlive (auxiliaryInfo);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -1428,6 +1448,7 @@ namespace CoreGraphics {
 		public void BeginTransparencyLayer (CGRect rectangle, NSDictionary? auxiliaryInfo = null)
 		{
 			CGContextBeginTransparencyLayerWithRect (Handle, rectangle, auxiliaryInfo.GetHandle ());
+			GC.KeepAlive (auxiliaryInfo);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -1458,8 +1479,11 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		public void DrawConicGradient (CGGradient? gradient, CGPoint point, nfloat angle) =>
+		public void DrawConicGradient (CGGradient? gradient, CGPoint point, nfloat angle)
+		{
 			CGContextDrawConicGradient (Handle, gradient.GetHandle (), point, angle);
+			GC.KeepAlive (gradient);
+		}
 
 #if NET
 		[SupportedOSPlatform ("ios18.0")]
@@ -1542,6 +1566,8 @@ namespace CoreGraphics {
 		public bool DrawImageApplyingToneMapping (CGRect rect, CGImage image, CGToneMapping method, NSDictionary? options)
 		{
 			var rv = CGContextDrawImageApplyingToneMapping (Handle, rect, image.Handle, method, options.GetHandle ());
+			GC.KeepAlive (image);
+			GC.KeepAlive (options);
 			return rv != 0;
 		}
 
@@ -1561,7 +1587,10 @@ namespace CoreGraphics {
 #endif
 		public bool DrawImageApplyingToneMapping (CGRect rect, CGImage image, CGToneMapping method, CGToneMappingOptions? options)
 		{
-			var rv = CGContextDrawImageApplyingToneMapping (Handle, rect, image.Handle, method, options?.Dictionary?.GetHandle () ?? IntPtr.Zero);
+			var optionsDictionary = options?.Dictionary;
+			var rv = CGContextDrawImageApplyingToneMapping (Handle, rect, image.Handle, method, optionsDictionary?.GetHandle () ?? IntPtr.Zero);
+			GC.KeepAlive (image);
+			GC.KeepAlive (optionsDictionary);
 			return rv != 0;
 		}
 #endif // !COREBUILD

@@ -71,6 +71,8 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (parameters));
 
 			InitializeHandle (nw_connection_group_create (groupDescriptor.GetCheckedHandle (), parameters.GetCheckedHandle ()));
+			GC.KeepAlive (groupDescriptor);
+			GC.KeepAlive (parameters);
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -116,6 +118,7 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (queue));
 
 			nw_connection_group_set_queue (GetCheckedHandle (), queue.GetCheckedHandle ());
+			GC.KeepAlive (queue);
 		}
 
 		// can return null
@@ -127,6 +130,7 @@ namespace Network {
 			if (context is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
 			var ptr = nw_connection_group_copy_local_endpoint_for_message (GetCheckedHandle (), context.GetCheckedHandle ());
+			GC.KeepAlive (context);
 			return ptr == IntPtr.Zero ? null : new NWEndpoint (ptr, owns: true);
 		}
 
@@ -139,6 +143,7 @@ namespace Network {
 			if (context is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
 			var ptr = nw_connection_group_copy_path_for_message (GetCheckedHandle (), context.GetCheckedHandle ());
+			GC.KeepAlive (context);
 			return ptr == IntPtr.Zero ? null : new NWPath (ptr, owns: true);
 		}
 
@@ -151,6 +156,7 @@ namespace Network {
 			if (context is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
 			var ptr = nw_connection_group_copy_remote_endpoint_for_message (GetCheckedHandle (), context.GetCheckedHandle ());
+			GC.KeepAlive (context);
 			return ptr == IntPtr.Zero ? null : new NWEndpoint (ptr, owns: true);
 		}
 
@@ -163,6 +169,7 @@ namespace Network {
 			if (context is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
 			var ptr = nw_connection_group_extract_connection_for_message (GetCheckedHandle (), context.GetCheckedHandle ());
+			GC.KeepAlive (context);
 			return ptr == IntPtr.Zero ? null : new NWConnection (ptr, owns: true);
 		}
 
@@ -177,6 +184,9 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (outboundMessage));
 
 			nw_connection_group_reply (GetCheckedHandle (), inboundMessage.GetCheckedHandle (), outboundMessage.GetCheckedHandle (), content.GetHandle ());
+			GC.KeepAlive (inboundMessage);
+			GC.KeepAlive (outboundMessage);
+			GC.KeepAlive (content);
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -209,6 +219,9 @@ namespace Network {
 						endpoint.GetHandle (),
 						context.GetCheckedHandle (),
 						null);
+					GC.KeepAlive (content);
+					GC.KeepAlive (endpoint);
+					GC.KeepAlive (context);
 					return;
 				}
 
@@ -224,6 +237,9 @@ namespace Network {
 					endpoint.GetHandle (),
 					context.GetCheckedHandle (),
 					&block);
+				GC.KeepAlive (content);
+				GC.KeepAlive (endpoint);
+				GC.KeepAlive (context);
 			}
 		}
 
@@ -336,6 +352,7 @@ namespace Network {
 			if (context is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
 			var ptr = nw_connection_group_copy_protocol_metadata (GetCheckedHandle (), context.Handle);
+			GC.KeepAlive (context);
 			return ptr == IntPtr.Zero ? null : new NWProtocolMetadata (ptr, true);
 		}
 
@@ -369,6 +386,8 @@ namespace Network {
 			if (definition is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
 			var ptr = nw_connection_group_copy_protocol_metadata_for_message (GetCheckedHandle (), context.Handle, definition.Handle);
+			GC.KeepAlive (context);
+			GC.KeepAlive (definition);
 			return ptr == IntPtr.Zero ? null : new NWProtocolMetadata (ptr, true);
 		}
 
@@ -398,6 +417,8 @@ namespace Network {
 		public NWConnection? ExtractConnection (NWEndpoint endpoint, NWProtocolOptions protocolOptions)
 		{
 			var ptr = nw_connection_group_extract_connection (GetCheckedHandle (), endpoint.GetCheckedHandle (), protocolOptions.GetCheckedHandle ());
+			GC.KeepAlive (endpoint);
+			GC.KeepAlive (protocolOptions);
 			return ptr == IntPtr.Zero ? null : new NWConnection (ptr, true);
 		}
 
@@ -428,7 +449,9 @@ namespace Network {
 		{
 			if (connection is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (connection));
-			return nw_connection_group_reinsert_extracted_connection (GetCheckedHandle (), connection.Handle) != 0;
+			bool result = nw_connection_group_reinsert_extracted_connection (GetCheckedHandle (), connection.Handle) != 0;
+			GC.KeepAlive (connection);
+			return result;
 		}
 
 #if NET

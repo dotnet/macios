@@ -156,7 +156,9 @@ namespace ObjCRuntime {
 			if (right is null)
 				return false;
 
-			return Handle == right.Handle;
+			bool result = Handle == right.Handle;
+			GC.KeepAlive (right);
+			return result;
 		}
 
 		public override int GetHashCode ()
@@ -231,7 +233,9 @@ namespace ObjCRuntime {
 			if (@class is null)
 				return null;
 
-			return Lookup (@class.Handle, true)!;
+			var result = Lookup (@class.Handle, true)!;
+			GC.KeepAlive (@class);
+			return result;
 		}
 
 		internal static Type Lookup (IntPtr klass)

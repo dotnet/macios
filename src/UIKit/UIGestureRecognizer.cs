@@ -57,6 +57,7 @@ namespace UIKit {
 		public UIGestureRecognizer (Selector sel, Token token) : this (token, sel)
 		{
 			recognizers [token] = sel.Handle;
+			GC.KeepAlive (sel);
 			MarkDirty ();
 		}
 

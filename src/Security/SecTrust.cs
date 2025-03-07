@@ -33,6 +33,7 @@ namespace Security {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (certificate));
 
 			Initialize (certificate.Handle, policy);
+			GC.KeepAlive (certificate);
 		}
 
 #if NET
@@ -79,6 +80,7 @@ namespace Security {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (policy));
 
 			SetPolicies (policy.Handle);
+			GC.KeepAlive (policy);
 		}
 
 		public void SetPolicies (IEnumerable<SecPolicy> policies)
@@ -96,6 +98,7 @@ namespace Security {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (policies));
 
 			SetPolicies (policies.Handle);
+			GC.KeepAlive (policies);
 		}
 
 #if NET
@@ -230,7 +233,9 @@ namespace Security {
 				using var block = new BlockLiteral ();
 				block.SetupBlockUnsafe (evaluate, handler);
 #endif
-				return SecTrustEvaluateAsync (Handle, queue.Handle, &block);
+				SecStatusCode status = SecTrustEvaluateAsync (Handle, queue.Handle, &block);
+				GC.KeepAlive (queue);
+				return status;
 			}
 		}
 
@@ -289,7 +294,9 @@ namespace Security {
 				using var block = new BlockLiteral ();
 				block.SetupBlockUnsafe (evaluate_error, handler);
 #endif
-				return SecTrustEvaluateAsyncWithError (Handle, queue.Handle, &block);
+				SecStatusCode status = SecTrustEvaluateAsyncWithError (Handle, queue.Handle, &block);
+				GC.KeepAlive (queue);
+				return status;
 			}
 		}
 
@@ -401,6 +408,7 @@ namespace Security {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (ocspResponse));
 
 			SetOCSPResponse (ocspResponse.Handle);
+			GC.KeepAlive (ocspResponse);
 		}
 
 #if NET
@@ -430,6 +438,7 @@ namespace Security {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (ocspResponses));
 
 			SetOCSPResponse (ocspResponses.Handle);
+			GC.KeepAlive (ocspResponses);
 		}
 
 #if NET
@@ -464,7 +473,9 @@ namespace Security {
 #endif
 		public SecStatusCode SetSignedCertificateTimestamps (NSArray<NSData> sct)
 		{
-			return SecTrustSetSignedCertificateTimestamps (Handle, sct.GetHandle ());
+			SecStatusCode status = SecTrustSetSignedCertificateTimestamps (Handle, sct.GetHandle ());
+			GC.KeepAlive (sct);
+			return status;
 		}
 	}
 }

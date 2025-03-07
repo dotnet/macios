@@ -526,6 +526,7 @@ namespace Security {
 		{
 			using (var array = Bundle (identify, certificates)) {
 				result = SSLSetCertificate (Handle, array.Handle);
+				GC.KeepAlive (array);
 				return result;
 			}
 		}
@@ -574,6 +575,7 @@ namespace Security {
 		{
 			using (var array = Bundle (identify, certificates)) {
 				result = SSLSetEncryptionCertificate (Handle, array.Handle);
+				GC.KeepAlive (array);
 				return result;
 			}
 		}
@@ -649,7 +651,9 @@ namespace Security {
 			if (config is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (config));
 
-			return SSLSetSessionConfig (Handle, config.Handle);
+			int result = SSLSetSessionConfig (Handle, config.Handle);
+			GC.KeepAlive (config);
+			return result;
 		}
 
 #if NET
@@ -818,7 +822,9 @@ namespace Security {
 		{
 			if (response is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (response));
-			return SSLSetOCSPResponse (Handle, response.Handle);
+			int result = SSLSetOCSPResponse (Handle, response.Handle);
+			GC.KeepAlive (response);
+			return result;
 		}
 
 #if NET

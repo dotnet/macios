@@ -75,6 +75,7 @@ namespace VideoToolbox {
 			IntPtr ret;
 			unsafe {
 				result = VTPixelTransferSessionCreate (allocator.GetHandle (), &ret);
+				GC.KeepAlive (allocator);
 			}
 
 			if (result == VTStatus.Ok && ret != IntPtr.Zero)
@@ -97,7 +98,10 @@ namespace VideoToolbox {
 			if (destinationBuffer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (destinationBuffer));
 
-			return VTPixelTransferSessionTransferImage (GetCheckedHandle (), sourceBuffer.Handle, destinationBuffer.Handle);
+			VTStatus status = VTPixelTransferSessionTransferImage (GetCheckedHandle (), sourceBuffer.Handle, destinationBuffer.Handle);
+			GC.KeepAlive (sourceBuffer);
+			GC.KeepAlive (destinationBuffer);
+			return status;
 		}
 
 		public VTStatus SetTransferProperties (VTPixelTransferProperties options)

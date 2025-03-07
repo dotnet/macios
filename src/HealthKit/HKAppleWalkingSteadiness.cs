@@ -34,6 +34,7 @@ namespace HealthKit {
 			byte rv;
 			unsafe {
 				rv = HKAppleWalkingSteadinessClassificationForQuantity (value.GetHandle (), &classificationOut, &errorPtr);
+				GC.KeepAlive (value);
 			}
 
 			error = Runtime.GetNSObject<NSError> (errorPtr, false);

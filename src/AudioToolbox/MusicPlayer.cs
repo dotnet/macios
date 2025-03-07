@@ -304,6 +304,7 @@ namespace AudioToolbox {
 			set {
 				currentSequence = value;
 				MusicPlayerSetSequence (Handle, value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 #endif

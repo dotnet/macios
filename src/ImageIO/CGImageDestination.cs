@@ -51,6 +51,7 @@ namespace ImageIO {
 			set {
 				destinationBackgroundColor = value;
 				(Dictionary as NSMutableDictionary)?.LowlevelSetObject (destinationBackgroundColor.GetHandle (), CGImageDestinationOptionsKeys.BackgroundColor.Handle);
+				GC.KeepAlive (destinationBackgroundColor);
 			}
 		}
 
@@ -225,6 +226,8 @@ namespace ImageIO {
 			var typeId = CFString.CreateNative (typeIdentifier);
 			try {
 				IntPtr p = CGImageDestinationCreateWithDataConsumer (consumer.Handle, typeId, imageCount, dict.GetHandle ());
+				GC.KeepAlive (consumer);
+				GC.KeepAlive (dict);
 				return p == IntPtr.Zero ? null : new CGImageDestination (p, true);
 			} finally {
 				CFString.ReleaseNative (typeId);
@@ -247,6 +250,8 @@ namespace ImageIO {
 			var typeId = CFString.CreateNative (typeIdentifier);
 			try {
 				IntPtr p = CGImageDestinationCreateWithData (data.Handle, typeId, imageCount, dict.GetHandle ());
+				GC.KeepAlive (data);
+				GC.KeepAlive (dict);
 				return p == IntPtr.Zero ? null : new CGImageDestination (p, true);
 			} finally {
 				CFString.ReleaseNative (typeId);
@@ -268,6 +273,7 @@ namespace ImageIO {
 			var typeId = CFString.CreateNative (typeIdentifier);
 			try {
 				IntPtr p = CGImageDestinationCreateWithURL (url.Handle, typeId, imageCount, IntPtr.Zero);
+				GC.KeepAlive (url);
 				return p == IntPtr.Zero ? null : new CGImageDestination (p, true);
 			} finally {
 				CFString.ReleaseNative (typeId);
@@ -281,6 +287,7 @@ namespace ImageIO {
 		public void SetProperties (NSDictionary? properties)
 		{
 			CGImageDestinationSetProperties (Handle, properties.GetHandle ());
+			GC.KeepAlive (properties);
 		}
 
 		[DllImport (Constants.ImageIOLibrary)]
@@ -293,8 +300,10 @@ namespace ImageIO {
 			if (image is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (image));
 
-			using var dict = options?.ToDictionary ();
-			CGImageDestinationAddImage (Handle, image.Handle, dict.GetHandle ());
+			using (var dict = options?.ToDictionary ()) {
+				CGImageDestinationAddImage (Handle, image.Handle, dict.GetHandle ());
+				GC.KeepAlive (image);
+			}
 		}
 
 		public void AddImage (CGImage image, NSDictionary? properties)
@@ -303,6 +312,8 @@ namespace ImageIO {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (image));
 
 			CGImageDestinationAddImage (Handle, image.Handle, properties.GetHandle ());
+			GC.KeepAlive (image);
+			GC.KeepAlive (properties);
 		}
 
 		[DllImport (Constants.ImageIOLibrary)]
@@ -317,6 +328,8 @@ namespace ImageIO {
 
 			using var dict = options?.ToDictionary ();
 			CGImageDestinationAddImageFromSource (Handle, source.Handle, index, dict.GetHandle ());
+			GC.KeepAlive (source);
+			GC.KeepAlive (dict);
 		}
 
 		public void AddImage (CGImageSource source, int index, NSDictionary? properties)
@@ -325,6 +338,8 @@ namespace ImageIO {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 
 			CGImageDestinationAddImageFromSource (Handle, source.Handle, index, properties.GetHandle ());
+			GC.KeepAlive (source);
+			GC.KeepAlive (properties);
 		}
 
 		[DllImport (Constants.ImageIOLibrary)]
@@ -360,6 +375,9 @@ namespace ImageIO {
 			if (image is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (image));
 			CGImageDestinationAddImageAndMetadata (Handle, image.Handle, meta.GetHandle (), options.GetHandle ());
+			GC.KeepAlive (image);
+			GC.KeepAlive (meta);
+			GC.KeepAlive (options);
 		}
 
 #if NET
@@ -400,6 +418,8 @@ namespace ImageIO {
 			IntPtr err;
 			unsafe {
 				result = CGImageDestinationCopyImageSource (Handle, image.Handle, options.GetHandle (), &err);
+				GC.KeepAlive (image);
+				GC.KeepAlive (options);
 			}
 			error = Runtime.GetNSObject<NSError> (err);
 			return result != 0;

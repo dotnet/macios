@@ -89,6 +89,8 @@ namespace CoreText {
 			if (key is null)
 				return null;
 			var cfArrayRef = CFDictionary.GetValue (dictionary.Handle, key.Handle);
+			GC.KeepAlive (dictionary);
+			GC.KeepAlive (key);
 			if (cfArrayRef == NativeHandle.Zero || CFArray.GetCount (cfArrayRef) == 0)
 				return new T [0];
 			return NSArray.ArrayFromHandle (cfArrayRef, converter);
@@ -111,7 +113,9 @@ namespace CoreText {
 			var value = dictionary [key];
 			if (value is null)
 				return Array.Empty<string> ();
-			return CFArray.StringArrayFromHandle (value.Handle)!;
+			string []? result = CFArray.StringArrayFromHandle (value.Handle)!;
+			GC.KeepAlive (value);
+			return result;
 		}
 
 		public static string? GetStringValue (IDictionary<NSObject, NSObject> dictionary, NSObject? key)
@@ -254,6 +258,9 @@ namespace CoreText {
 			if (value is not null) {
 				AssertWritable (dictionary);
 				CFMutableDictionary.SetValue (dictionary.Handle, key.Handle, value.Handle);
+				GC.KeepAlive (dictionary);
+				GC.KeepAlive (key);
+				GC.KeepAlive (value);
 			} else {
 				IDictionary<NSObject, NSObject> d = dictionary;
 				d.Remove (key);

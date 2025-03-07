@@ -330,6 +330,7 @@ namespace CoreVideo {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (description));
 
 			CVPixelFormatDescriptionRegisterDescriptionWithPixelFormatType (description.Handle, (int) pixelFormat);
+			GC.KeepAlive (description);
 		}
 
 		/// <summary>Register a new pixel format with CoreVideo.</summary>

@@ -43,7 +43,9 @@ namespace Foundation {
 		{
 			if (klass is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (klass));
-			return SupportsSecureCoding (klass.Handle);
+			bool result = SupportsSecureCoding (klass.Handle);
+			GC.KeepAlive (klass);
+			return result;
 		}
 
 		internal static bool SupportsSecureCoding (IntPtr ptr)

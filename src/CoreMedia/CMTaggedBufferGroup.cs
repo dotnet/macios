@@ -93,6 +93,8 @@ namespace CoreMedia {
 			using var buffersArray = CFArray.FromNullableNativeObjects (buffers);
 			unsafe {
 				status = CMTaggedBufferGroupCreate (IntPtr.Zero, tagCollectionsArray.GetHandle (), buffersArray.GetHandle (), &handle);
+				GC.KeepAlive (tagCollectionsArray);
+				GC.KeepAlive (buffersArray);
 			}
 			return Create (handle, true);
 		}
@@ -111,9 +113,10 @@ namespace CoreMedia {
 		{
 			IntPtr handle;
 
-			using var groupsArray = CFArray.FromNativeObjects (groups);
-			unsafe {
-				status = CMTaggedBufferGroupCreateCombined (IntPtr.Zero, groupsArray.GetHandle (), &handle);
+			using (var groupsArray = CFArray.FromNativeObjects (groups)) {
+				unsafe {
+					status = CMTaggedBufferGroupCreateCombined (IntPtr.Zero, groupsArray.GetHandle (), &handle);
+				}
 			}
 			return Create (handle, true);
 		}
@@ -205,6 +208,7 @@ namespace CoreMedia {
 		{
 			index = 0;
 			var rv = CMTaggedBufferGroupGetCVPixelBufferForTagCollection (GetCheckedHandle (), tagCollection.GetCheckedHandle (), (nint*) Unsafe.AsPointer<nint> (ref index));
+			GC.KeepAlive (tagCollection);
 			return CVPixelBuffer.Create (rv, false);
 		}
 
@@ -257,6 +261,7 @@ namespace CoreMedia {
 		{
 			index = 0;
 			var rv = CMTaggedBufferGroupGetCMSampleBufferForTagCollection (GetCheckedHandle (), tagCollection.GetCheckedHandle (), (nint*) Unsafe.AsPointer<nint> (ref index));
+			GC.KeepAlive (tagCollection);
 			return CMSampleBuffer.Create (rv, false);
 		}
 
@@ -271,7 +276,9 @@ namespace CoreMedia {
 		/// <remarks>Buffer lookups using a tag collection will fail unless there's exactly one match for the tag collection.</remarks>
 		public nint GetNumberOfMatches (CMTagCollection tagCollection)
 		{
-			return CMTaggedBufferGroupGetNumberOfMatchesForTagCollection (GetCheckedHandle (), tagCollection.GetCheckedHandle ());
+			nint result = CMTaggedBufferGroupGetNumberOfMatchesForTagCollection (GetCheckedHandle (), tagCollection.GetCheckedHandle ());
+			GC.KeepAlive (tagCollection);
+			return result;
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]
@@ -302,7 +309,9 @@ namespace CoreMedia {
 		/// <returns>True if the format description matches, false otherwise.</returns>
 		public bool Matches (CMFormatDescription formatDescription)
 		{
-			return CMTaggedBufferGroupFormatDescriptionMatchesTaggedBufferGroup (formatDescription.GetCheckedHandle (), GetCheckedHandle ()) != 0;
+			bool result = CMTaggedBufferGroupFormatDescriptionMatchesTaggedBufferGroup (formatDescription.GetCheckedHandle (), GetCheckedHandle ()) != 0;
+			GC.KeepAlive (formatDescription);
+			return result;
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]
@@ -325,6 +334,7 @@ namespace CoreMedia {
 			IntPtr handle;
 			unsafe {
 				status = CMSampleBufferCreateForTaggedBufferGroup (IntPtr.Zero, GetCheckedHandle (), sampleBufferPts, sampleBufferDuration, formatDescription.GetCheckedHandle (), &handle);
+				GC.KeepAlive (formatDescription);
 			}
 			return CMSampleBuffer.Create (handle, true);
 		}
@@ -339,6 +349,7 @@ namespace CoreMedia {
 		public static CMTaggedBufferGroup? GetTaggedBufferGroup (CMSampleBuffer sampleBuffer)
 		{
 			var handle = CMSampleBufferGetTaggedBufferGroup (sampleBuffer.GetNonNullHandle (nameof (sampleBuffer)));
+			GC.KeepAlive (sampleBuffer);
 			return Create (handle, false);
 		}
 #endif // COREBUILD

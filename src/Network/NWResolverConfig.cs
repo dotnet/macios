@@ -61,6 +61,9 @@ namespace Network {
 		static extern void nw_resolver_config_add_server_address (OS_nw_resolver_config config, OS_nw_endpoint serverAddress);
 
 		public void AddServerAddress (NWEndpoint serverAddress)
-			=> nw_resolver_config_add_server_address (GetCheckedHandle (), serverAddress.Handle);
+		{
+			nw_resolver_config_add_server_address (GetCheckedHandle (), serverAddress.Handle);
+			GC.KeepAlive (serverAddress);
+		}
 	}
 }

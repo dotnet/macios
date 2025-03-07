@@ -543,7 +543,9 @@ namespace AudioToolbox {
 		{
 			if (targetTrack is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (targetTrack));
-			return MusicTrackCopyInsert (Handle, sourceStartTime, sourceEndTime, targetTrack.Handle, targetInsertTime);
+			MusicPlayerStatus status = MusicTrackCopyInsert (Handle, sourceStartTime, sourceEndTime, targetTrack.Handle, targetInsertTime);
+			GC.KeepAlive (targetTrack);
+			return status;
 		}
 
 		[DllImport (Constants.AudioToolboxLibrary)]
@@ -553,7 +555,9 @@ namespace AudioToolbox {
 		{
 			if (targetTrack is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (targetTrack));
-			return MusicTrackMerge (Handle, sourceStartTime, sourceEndTime, targetTrack.Handle, targetInsertTime);
+			MusicPlayerStatus status = MusicTrackMerge (Handle, sourceStartTime, sourceEndTime, targetTrack.Handle, targetInsertTime);
+			GC.KeepAlive (targetTrack);
+			return status;
 		}
 #endif // !COREBUILD
 	}

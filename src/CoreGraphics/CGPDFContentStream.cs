@@ -67,7 +67,11 @@ namespace CoreGraphics {
 			if (stream is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (stream));
 
-			return CGPDFContentStreamCreateWithStream (stream.Handle, streamResources.GetHandle (), parent.GetHandle ());
+			IntPtr result = CGPDFContentStreamCreateWithStream (stream.Handle, streamResources.GetHandle (), parent.GetHandle ());
+			GC.KeepAlive (stream);
+			GC.KeepAlive (streamResources);
+			GC.KeepAlive (parent);
+			return result;
 		}
 
 		public CGPDFContentStream (CGPDFStream stream, NSDictionary? streamResources = null, CGPDFContentStream? parent = null)

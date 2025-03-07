@@ -254,8 +254,9 @@ namespace AddressBook {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (record));
 
 			IntPtr error;
+			NativeHandle recordHandle = record.Handle;
 			unsafe {
-				if (ABAddressBookAddRecord (GetCheckedHandle (), record.Handle, &error) == 0)
+				if (ABAddressBookAddRecord (GetCheckedHandle (), recordHandle, &error) == 0)
 					throw CFException.FromCFError (error);
 			}
 			record.AddressBook = this;
@@ -269,8 +270,9 @@ namespace AddressBook {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (record));
 
 			IntPtr error;
+			NativeHandle recordHandle = record.Handle;
 			unsafe {
-				if (ABAddressBookRemoveRecord (GetCheckedHandle (), record.Handle, &error) == 0)
+				if (ABAddressBookRemoveRecord (GetCheckedHandle (), recordHandle, &error) == 0)
 					throw CFException.FromCFError (error);
 			}
 			record.AddressBook = null;
@@ -300,6 +302,7 @@ namespace AddressBook {
 			if (source is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 			var cfArrayRef = ABAddressBookCopyArrayOfAllPeopleInSource (GetCheckedHandle (), source.Handle);
+			GC.KeepAlive (source);
 			return NSArray.ArrayFromHandle (cfArrayRef, l => new ABPerson (l, this));
 		}
 
@@ -311,6 +314,7 @@ namespace AddressBook {
 			if (source is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 			var cfArrayRef = ABAddressBookCopyArrayOfAllPeopleInSourceWithSortOrdering (GetCheckedHandle (), source.Handle, sortOrdering);
+			GC.KeepAlive (source);
 			return NSArray.ArrayFromHandle (cfArrayRef, l => new ABPerson (l, this));
 		}
 
@@ -339,6 +343,7 @@ namespace AddressBook {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 
 			var cfArrayRef = ABAddressBookCopyArrayOfAllGroupsInSource (GetCheckedHandle (), source.Handle);
+			GC.KeepAlive (source);
 			return NSArray.ArrayFromHandle (cfArrayRef, l => new ABGroup (l, this));
 		}
 
@@ -349,7 +354,9 @@ namespace AddressBook {
 			if (label is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (label));
 
-			return CFString.FromHandle (ABAddressBookCopyLocalizedLabel (label.Handle));
+			string? result = CFString.FromHandle (ABAddressBookCopyLocalizedLabel (label.Handle));
+			GC.KeepAlive (label);
+			return result;
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]

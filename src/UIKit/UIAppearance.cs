@@ -27,7 +27,9 @@ namespace UIKit {
 			UIAppearance ao = other as UIAppearance;
 			if (ao is null)
 				return false;
-			return ao.Handle == Handle;
+			bool result = ao.Handle == Handle;
+			GC.KeepAlive(ao);
+			return result;
 		}
 
 		public override int GetHashCode ()
@@ -42,7 +44,10 @@ namespace UIKit {
 			else if (ReferenceEquals (b, null))
 				return false;
 
-			return a.Handle == b.Handle;
+			bool result = a.Handle == b.Handle;
+			GC.KeepAlive (a);
+			GC.KeepAlive (b);
+			return result;
 		}
 
 		public static bool operator != (UIAppearance a, UIAppearance b)
@@ -90,9 +95,11 @@ namespace UIKit {
 				throw new ArgumentNullException ("traits");
 
 			using (var array = NSArray.FromIntPtrs (TypesToPointers (whenFoundIn))) {
-				return Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (class_ptr,
+				IntPtr result = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (class_ptr,
 					Selector.GetHandle (UIAppearance.selAppearanceForTraitCollectionWhenContainedInInstancesOfClasses),
 					traits.Handle, array.Handle);
+				GC.KeepAlive (traits);
+				return result;
 			}
 		}
 #else
@@ -127,12 +134,14 @@ namespace UIKit {
 			var firstPtr = ptrs [0];
 			Array.Copy (ptrs, 1, ptrs, 0, ptrs.Length - 1);
 			Array.Resize (ref ptrs, ptrs.Length - 1);
-			return Messaging.objc_msgSend_4_vargs (
+			IntPtr result = Messaging.objc_msgSend_4_vargs (
 				class_ptr,
 				Selector.GetHandle (UIAppearance.selAppearanceForTraitCollectionWhenContainedIn),
 				traits.Handle,
 				firstPtr,
 				ptrs);
+			GC.KeepAlive (traits);
+			return result;
 		}
 
 		[DllImport (Messaging.LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
@@ -146,7 +155,9 @@ namespace UIKit {
 			if (traits is null)
 				throw new ArgumentNullException ("traits");
 
-			return Messaging.IntPtr_objc_msgSend_IntPtr (class_ptr, Selector.GetHandle (UIAppearance.selAppearanceForTraitCollection), traits.Handle);
+			IntPtr result = Messaging.IntPtr_objc_msgSend_IntPtr (class_ptr, Selector.GetHandle (UIAppearance.selAppearanceForTraitCollection), traits.Handle);
+			GC.KeepAlive (traits);
+			return result;
 		}
 	}
 }

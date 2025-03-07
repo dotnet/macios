@@ -115,7 +115,9 @@ namespace Foundation {
 				return new NSSet<TKey> (second);
 			if (second is null || second.Count == 0)
 				return new NSSet<TKey> (first);
-			return new NSSet<TKey> (first._SetByAddingObjectsFromSet (second.Handle));
+			var result = new NSSet<TKey> (first._SetByAddingObjectsFromSet (second.Handle));
+			GC.KeepAlive (second);
+			return result;
 		}
 
 		public static NSSet<TKey> operator - (NSSet<TKey> first, NSSet<TKey> second)

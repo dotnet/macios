@@ -142,6 +142,8 @@ namespace CoreFoundation {
 			if (notification is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (notification));
 			dispatch_block_notify (GetCheckedHandle (), queue.GetCheckedHandle (), notification.GetCheckedHandle ());
+			GC.KeepAlive (queue);
+			GC.KeepAlive (notification);
 		}
 
 		[DllImport (Constants.libcLibrary)]
@@ -183,7 +185,9 @@ namespace CoreFoundation {
 			unsafe {
 				var handle = (BlockLiteral*) (IntPtr) block.GetCheckedHandle ();
 				var del = handle->GetDelegateForBlock<DispatchBlockCallback> ();
-				return new Action (() => del ((IntPtr) block.GetCheckedHandle ()));
+				var result = new Action (() => del ((IntPtr) block.GetCheckedHandle ()));
+				GC.KeepAlive (block);
+				return result;
 			}
 		}
 

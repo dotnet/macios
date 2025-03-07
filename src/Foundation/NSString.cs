@@ -214,7 +214,9 @@ namespace Foundation {
 
 			if (a.Handle == b.Handle)
 				return true;
-			return a.IsEqualTo (b.Handle);
+			bool result = a.IsEqualTo (b.Handle);
+			GC.KeepAlive (b);
+			return result;
 		}
 
 		public static bool operator == (NSString a, NSString b)

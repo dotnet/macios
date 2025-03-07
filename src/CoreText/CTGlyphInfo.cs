@@ -89,7 +89,9 @@ namespace CoreText {
 			var gnHandle = CFString.CreateNative (glyphName);
 			var bsHandle = CFString.CreateNative (baseString);
 			try {
-				return CTGlyphInfoCreateWithGlyphName (gnHandle, font.Handle, bsHandle);
+				IntPtr result = CTGlyphInfoCreateWithGlyphName (gnHandle, font.Handle, bsHandle);
+				GC.KeepAlive (font);
+				return result;
 			} finally {
 				CFString.ReleaseNative (gnHandle);
 				CFString.ReleaseNative (bsHandle);
@@ -113,7 +115,9 @@ namespace CoreText {
 
 			var bsHandle = CFString.CreateNative (baseString);
 			try {
-				return CTGlyphInfoCreateWithGlyph (glyph, font.Handle, bsHandle);
+				IntPtr result = CTGlyphInfoCreateWithGlyph (glyph, font.Handle, bsHandle);
+				GC.KeepAlive (font);
+				return result;
 			} finally {
 				CFString.ReleaseNative (bsHandle);
 			}

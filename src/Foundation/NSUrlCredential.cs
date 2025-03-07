@@ -14,10 +14,14 @@ using Security;
 namespace Foundation {
 
 	public partial class NSUrlCredential {
+#pragma warning disable RBI0014
 		public NSUrlCredential (SecIdentity identity, SecCertificate [] certificates, NSUrlCredentialPersistence persistence)
 			: this (identity.Handle, NSArray.FromNativeObjects (certificates).Handle, persistence)
 		{
+			GC.KeepAlive (identity);
+			// FIXME: what about NSArray.FromNativeObjects (certificates)?
 		}
+#pragma warning restore RBI0014
 
 		public static NSUrlCredential FromIdentityCertificatesPersistance (SecIdentity identity, SecCertificate [] certificates, NSUrlCredentialPersistence persistence)
 		{
@@ -27,8 +31,11 @@ namespace Foundation {
 			if (certificates is null)
 				throw new ArgumentNullException ("certificates");
 
-			using (var certs = NSArray.FromNativeObjects (certificates))
-				return FromIdentityCertificatesPersistanceInternal (identity.Handle, certs.Handle, persistence);
+			using (var certs = NSArray.FromNativeObjects (certificates)) {
+				NSUrlCredential result = FromIdentityCertificatesPersistanceInternal (identity.Handle, certs.Handle, persistence);
+				GC.KeepAlive (identity);
+				return result;
+			}
 		}
 
 		public SecIdentity SecIdentity {
@@ -43,7 +50,9 @@ namespace Foundation {
 			if (trust is null)
 				throw new ArgumentNullException ("trust");
 
-			return FromTrust (trust.Handle);
+			NSUrlCredential result = FromTrust (trust.Handle);
+			GC.KeepAlive (trust);
+			return result;
 		}
 	}
 }

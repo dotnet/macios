@@ -110,9 +110,11 @@ namespace CoreServices {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			return Runtime.GetNSObject<NSUrl> (
+			var result = Runtime.GetNSObject<NSUrl> (
 				LSCopyDefaultApplicationURLForURL (url.Handle, roles, IntPtr.Zero)
 			);
+			GC.KeepAlive (url);
+			return result;
 		}
 
 #if NET
@@ -160,9 +162,11 @@ namespace CoreServices {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			return NSArray.ArrayFromHandle<NSUrl> (
+			var result = NSArray.ArrayFromHandle<NSUrl> (
 				LSCopyApplicationURLsForURL (url.Handle, roles)
 			);
+			GC.KeepAlive (url);
+			return result;
 		}
 
 		[DllImport (Constants.CoreServicesLibrary)]
@@ -182,6 +186,8 @@ namespace CoreServices {
 			byte acceptsItem;
 			unsafe {
 				result = LSCanURLAcceptURL (itemUrl.Handle, targetUrl.Handle, roles, acceptanceFlags, &acceptsItem);
+				GC.KeepAlive (itemUrl);
+				GC.KeepAlive (targetUrl);
 			}
 			return acceptsItem != 0;
 		}
@@ -230,7 +236,9 @@ namespace CoreServices {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			return LSOpenCFURLRef (url.Handle, (void**) 0);
+			LSResult result = LSOpenCFURLRef (url.Handle, (void**) 0);
+			GC.KeepAlive (url);
+			return result;
 		}
 
 		public unsafe static LSResult Open (NSUrl url, out NSUrl? launchedUrl)
@@ -240,6 +248,7 @@ namespace CoreServices {
 
 			void* launchedUrlHandle;
 			var result = LSOpenCFURLRef (url.Handle, &launchedUrlHandle);
+			GC.KeepAlive (url);
 			launchedUrl = Runtime.GetNSObject<NSUrl> (new IntPtr (launchedUrlHandle));
 			return result;
 		}
@@ -256,7 +265,9 @@ namespace CoreServices {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			return LSRegisterURL (url.Handle, (byte) (update ? 1 : 0));
+			LSResult result = LSRegisterURL (url.Handle, (byte) (update ? 1 : 0));
+			GC.KeepAlive (url);
+			return result;
 		}
 
 		#endregion

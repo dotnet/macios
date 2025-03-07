@@ -60,6 +60,8 @@ namespace ImageIO {
 			IntPtr err;
 			unsafe {
 				result = CGImageMetadataRegisterNamespaceForPrefix (Handle, xmlns.Handle, prefix.Handle, &err);
+				GC.KeepAlive (xmlns);
+				GC.KeepAlive (prefix);
 			}
 			error = Runtime.GetNSObject<NSError> (err);
 			return result != 0;
@@ -76,7 +78,11 @@ namespace ImageIO {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
 			if (tag is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (tag));
-			return CGImageMetadataSetTagWithPath (Handle, parent.GetHandle (), path.Handle, tag.Handle) != 0;
+			bool result = CGImageMetadataSetTagWithPath (Handle, parent.GetHandle (), path.Handle, tag.Handle) != 0;
+			GC.KeepAlive (parent);
+			GC.KeepAlive (path);
+			GC.KeepAlive (tag);
+			return result;
 		}
 
 		[DllImport (Constants.ImageIOLibrary)]
@@ -88,7 +94,9 @@ namespace ImageIO {
 		{
 			if (value is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
-			return SetValue (parent, path, value.Handle);
+			bool result = SetValue (parent, path, value.Handle);
+			GC.KeepAlive (value);
+			return result;
 		}
 
 		public bool SetValue (CGImageMetadataTag? parent, NSString path, bool value)
@@ -100,7 +108,10 @@ namespace ImageIO {
 		{
 			if (path is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
-			return CGImageMetadataSetValueWithPath (Handle, parent.GetHandle (), path.Handle, value) != 0;
+			bool result = CGImageMetadataSetValueWithPath (Handle, parent.GetHandle (), path.Handle, value) != 0;
+			GC.KeepAlive (parent);
+			GC.KeepAlive (path);
+			return result;
 		}
 
 		[DllImport (Constants.ImageIOLibrary)]
@@ -111,7 +122,10 @@ namespace ImageIO {
 		{
 			if (path is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
-			return CGImageMetadataRemoveTagWithPath (Handle, parent.GetHandle (), path.Handle) != 0;
+			bool result = CGImageMetadataRemoveTagWithPath (Handle, parent.GetHandle (), path.Handle) != 0;
+			GC.KeepAlive (parent);
+			GC.KeepAlive (path);
+			return result;
 		}
 
 		[DllImport (Constants.ImageIOLibrary)]
@@ -124,7 +138,9 @@ namespace ImageIO {
 		{
 			if (value is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
-			return SetValueMatchingImageProperty (dictionaryName, propertyName, value.Handle);
+			bool result = SetValueMatchingImageProperty (dictionaryName, propertyName, value.Handle);
+			GC.KeepAlive (value);
+			return result;
 		}
 
 		public bool SetValueMatchingImageProperty (NSString dictionaryName, NSString propertyName, bool value)
@@ -138,7 +154,10 @@ namespace ImageIO {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (dictionaryName));
 			if (propertyName is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (propertyName));
-			return CGImageMetadataSetValueMatchingImageProperty (Handle, dictionaryName.Handle, propertyName.Handle, value) != 0;
+			bool result = CGImageMetadataSetValueMatchingImageProperty (Handle, dictionaryName.Handle, propertyName.Handle, value) != 0;
+			GC.KeepAlive (dictionaryName);
+			GC.KeepAlive (propertyName);
+			return result;
 		}
 	}
 }

@@ -75,6 +75,8 @@ namespace UIKit
 						if (views is null)
 							views = new NSMutableDictionary ();
 						views.LowlevelSetObject (((INativeObject) value).Handle, nskey.Handle);
+						GC.KeepAlive (value);
+						GC.KeepAlive (nskey);
 						continue;
 					}
 #if !MONOMAC
@@ -82,7 +84,9 @@ namespace UIKit
 					else if (value is INativeObject && Messaging.bool_objc_msgSend_IntPtr (((INativeObject) value).Handle, Selector.GetHandle ("conformsToProtocol:"), Protocol.GetHandle (typeof (UILayoutSupport).Name)) != 0) {
 						if (views is null)
 							views = new NSMutableDictionary ();
-						views.LowlevelSetObject (((INativeObject) value).Handle, nskey.Handle);
+						views.LowlevelSetObject (((INativeObject) value).Handle, nskey.Handle);						
+						GC.KeepAlive (value);
+						GC.KeepAlive (nskey);
 						continue;
 					}
 #endif // !MONOMAC

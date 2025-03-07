@@ -141,7 +141,9 @@ namespace CoreMedia {
 		[SupportedOSPlatform ("tvos")]
 		public static CMTimeMapping CreateFromDictionary (NSDictionary dict)
 		{
-			return CMTimeMappingMakeFromDictionary (dict.Handle);
+			CMTimeMapping result = CMTimeMappingMakeFromDictionary (dict.Handle);
+			GC.KeepAlive (dict);
+			return result;
 		}
 
 		[SupportedOSPlatform ("ios")]

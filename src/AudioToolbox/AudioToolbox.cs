@@ -109,6 +109,7 @@ namespace AudioToolbox {
 			OSStatus error;
 			unsafe {
 				error = CopyNameFromSoundBank (url.Handle, &name);
+				GC.KeepAlive (url);
 			}
 			var result = CFString.FromHandle (name);
 			return (error != 0) ? null : result;
@@ -139,6 +140,7 @@ namespace AudioToolbox {
 			OSStatus error;
 			unsafe {
 				error = CopyInstrumentInfoFromSoundBank (url.Handle, &array);
+				GC.KeepAlive (url);
 			}
 			if (array != IntPtr.Zero) {
 				var dicts = NSArray.ArrayFromHandle<NSDictionary> (array);

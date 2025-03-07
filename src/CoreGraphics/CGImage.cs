@@ -198,9 +198,12 @@ namespace CoreGraphics {
 
 			unsafe {
 				fixed (nfloat* decodePtr = decode) {
-					return CGImageCreate (width, height, bitsPerComponent, bitsPerPixel, bytesPerRow,
+					IntPtr result = CGImageCreate (width, height, bitsPerComponent, bitsPerPixel, bytesPerRow,
 						colorSpace.GetHandle (), bitmapFlags, provider.GetHandle (),
 						decodePtr, shouldInterpolate.AsByte (), intent);
+					GC.KeepAlive (colorSpace);
+					GC.KeepAlive (provider);
+					return result;
 				}
 			}
 		}
@@ -229,9 +232,12 @@ namespace CoreGraphics {
 
 			unsafe {
 				fixed (nfloat* decodePtr = decode) {
-					return CGImageCreate (width, height, bitsPerComponent, bitsPerPixel, bytesPerRow,
+					IntPtr result = CGImageCreate (width, height, bitsPerComponent, bitsPerPixel, bytesPerRow,
 						colorSpace.GetHandle (), (CGBitmapFlags) alphaInfo, provider.GetHandle (),
 						decodePtr, shouldInterpolate.AsByte (), intent);
+					GC.KeepAlive (colorSpace);
+					GC.KeepAlive (provider);
+					return result;
 				}
 			}
 		}
@@ -321,6 +327,7 @@ namespace CoreGraphics {
 			unsafe {
 				fixed (nfloat* decodePtr = decode) {
 					var handle = CGImageCreateWithJPEGDataProvider (provider.GetHandle (), decodePtr, shouldInterpolate.AsByte (), intent);
+					GC.KeepAlive (provider);
 					return FromHandle (handle, true);
 				}
 			}
@@ -335,6 +342,7 @@ namespace CoreGraphics {
 			unsafe {
 				fixed (nfloat* decodePtr = decode) {
 					var handle = CGImageCreateWithPNGDataProvider (provider.GetHandle (), decodePtr, shouldInterpolate.AsByte (), intent);
+					GC.KeepAlive (provider);
 					return FromHandle (handle, true);
 				}
 			}
@@ -359,6 +367,7 @@ namespace CoreGraphics {
 				fixed (nfloat* decodePtr = decode) {
 
 					var handle = CGImageMaskCreate (width, height, bitsPerComponent, bitsPerPixel, bytesPerRow, provider.GetHandle (), decodePtr, shouldInterpolate.AsByte ());
+					GC.KeepAlive (provider);
 					return FromHandle (handle, true);
 				}
 			}
@@ -395,6 +404,7 @@ namespace CoreGraphics {
 		public CGImage? WithColorSpace (CGColorSpace? cs)
 		{
 			var h = CGImageCreateCopyWithColorSpace (Handle, cs.GetHandle ());
+			GC.KeepAlive (cs);
 			return FromHandle (h, true);
 		}
 
@@ -414,7 +424,9 @@ namespace CoreGraphics {
 		{
 			if (mask is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mask));
-			return FromHandle (CGImageCreateWithMask (Handle, mask.Handle), true);
+			CGImage? result = FromHandle (CGImageCreateWithMask (Handle, mask.Handle), true);
+			GC.KeepAlive (mask);
+			return result;
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -672,9 +684,12 @@ namespace CoreGraphics {
 
 			unsafe {
 				fixed (nfloat* decodePtr = decode) {
-					return CGImageCreateWithContentHeadroom (headroom, width, height, bitsPerComponent, bitsPerPixel, bytesPerRow,
+					IntPtr result = CGImageCreateWithContentHeadroom (headroom, width, height, bitsPerComponent, bitsPerPixel, bytesPerRow,
 						colorSpace.GetHandle (), bitmapFlags, provider.GetHandle (),
 						decodePtr, shouldInterpolate.AsByte (), intent);
+					GC.KeepAlive (colorSpace);
+					GC.KeepAlive (provider);
+					return result;
 				}
 			}
 		}

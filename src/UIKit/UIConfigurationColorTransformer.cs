@@ -57,7 +57,10 @@ namespace UIKit {
 			var descriptor = (BlockLiteral*) block;
 			var del = (UIConfigurationColorTransformerHandler) (descriptor->Target);
 			var retval = del is null ? null : del (Runtime.GetNSObject<UIColor> (color)!);
+			// FIXME: Should this run DangerousRetain + DangerousAutorelease?
+#pragma warning disable RBI0014
 			return retval.GetHandle ();
+#pragma warning restore RBI0014			
 		}
 	} /* class SDUIConfigurationColorTransformerHandler */
 
@@ -83,7 +86,9 @@ namespace UIKit {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		UIColor Invoke (UIColor color)
 		{
-			return Runtime.GetNSObject<UIColor> (invoker (BlockPointer, color.GetHandle ()))!;
+			var result = Runtime.GetNSObject<UIColor> (invoker (BlockPointer, color.GetHandle ()))!;
+			GC.KeepAlive (color);
+			return result;
 		}
 	} /* class NIDUIConfigurationColorTransformerHandler */
 }

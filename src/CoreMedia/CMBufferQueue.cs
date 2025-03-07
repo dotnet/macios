@@ -119,6 +119,7 @@ namespace CoreMedia {
 					cfStringPtr_dataBecameReadyNotification = dataBecameReadyNotification is null ? IntPtr.Zero : dataBecameReadyNotification.Handle,
 					XgetSize = getTotalSize is not null ? &GetTotalSize : null,
 				};
+				GC.KeepAlive (dataBecameReadyNotification);
 			}
 
 			bq.getDecodeTimeStamp = getDecodeTimeStamp;

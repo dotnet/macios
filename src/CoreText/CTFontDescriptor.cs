@@ -607,7 +607,9 @@ namespace CoreText {
 		{
 			if (attributes is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (attributes));
-			return CreateDescriptor (CTFontDescriptorCreateCopyWithAttributes (Handle, attributes.Handle));
+			CTFontDescriptor? descriptor = CreateDescriptor (CTFontDescriptorCreateCopyWithAttributes (Handle, attributes.Handle));
+			GC.KeepAlive (attributes);
+			return descriptor;
 		}
 
 		static CTFontDescriptor? CreateDescriptor (IntPtr h)
@@ -621,7 +623,10 @@ namespace CoreText {
 		{
 			if (attributes is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (attributes));
-			return CreateDescriptor (CTFontDescriptorCreateCopyWithAttributes (Handle, attributes.Dictionary.Handle));
+			var attributesDictionary = attributes.Dictionary;
+			CTFontDescriptor? descriptor = CreateDescriptor (CTFontDescriptorCreateCopyWithAttributes (Handle, attributesDictionary.Handle));
+			GC.KeepAlive (attributesDictionary);
+			return descriptor;
 		}
 
 		// TODO: is there a better type to use for variationIdentifier?  
@@ -826,7 +831,8 @@ namespace CoreText {
 		CTFontDescriptor? WithFeature (FontFeatureGroup featureGroup, int featureSelector)
 		{
 			using (NSNumber t = new NSNumber ((int) featureGroup), f = new NSNumber (featureSelector)) {
-				return CreateDescriptor (CTFontDescriptorCreateCopyWithFeature (Handle, t.Handle, f.Handle));
+				CTFontDescriptor? result = CreateDescriptor (CTFontDescriptorCreateCopyWithFeature (Handle, t.Handle, f.Handle));
+				return result;
 			}
 		}
 
@@ -835,6 +841,7 @@ namespace CoreText {
 		public CTFontDescriptor [] GetMatchingFontDescriptors (NSSet? mandatoryAttributes)
 		{
 			var cfArrayRef = CTFontDescriptorCreateMatchingFontDescriptors (Handle, mandatoryAttributes.GetHandle ());
+			GC.KeepAlive (mandatoryAttributes);
 			if (cfArrayRef == IntPtr.Zero)
 				return Array.Empty<CTFontDescriptor> ();
 			return CFArray.ArrayFromHandleFunc (cfArrayRef, fd => new CTFontDescriptor (cfArrayRef, false), true)!;
@@ -856,7 +863,9 @@ namespace CoreText {
 		static extern IntPtr CTFontDescriptorCreateMatchingFontDescriptor (IntPtr descriptor, IntPtr mandatoryAttributes);
 		public CTFontDescriptor? GetMatchingFontDescriptor (NSSet? mandatoryAttributes)
 		{
-			return CreateDescriptor (CTFontDescriptorCreateMatchingFontDescriptors (Handle, mandatoryAttributes.GetHandle ()));
+			CTFontDescriptor? result = CreateDescriptor (CTFontDescriptorCreateMatchingFontDescriptors (Handle, mandatoryAttributes.GetHandle ()));
+			GC.KeepAlive (mandatoryAttributes);
+			return result;
 		}
 
 		public CTFontDescriptor? GetMatchingFontDescriptor (params NSString [] mandatoryAttributes)
@@ -890,13 +899,17 @@ namespace CoreText {
 		{
 			if (attribute is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (attribute));
-			return Runtime.GetNSObject<NSObject> (CTFontDescriptorCopyAttribute (Handle, attribute.Handle), true);
+			NSObject? result = Runtime.GetNSObject<NSObject> (CTFontDescriptorCopyAttribute (Handle, attribute.Handle), true);
+			GC.KeepAlive (attribute);
+			return result;
 		}
 
 		public NSObject? GetLocalizedAttribute (NSString attribute)
 		{
 			unsafe {
-				return Runtime.GetNSObject<NSObject> (CTFontDescriptorCopyLocalizedAttribute (Handle, attribute.Handle, null), true);
+				NSObject? result = Runtime.GetNSObject<NSObject> (CTFontDescriptorCopyLocalizedAttribute (Handle, attribute.Handle, null), true);
+				GC.KeepAlive (attribute);
+				return result;
 			}
 		}
 
@@ -908,6 +921,7 @@ namespace CoreText {
 			IntPtr lang;
 			unsafe {
 				handle = CTFontDescriptorCopyLocalizedAttribute (Handle, attribute.Handle, &lang);
+				GC.KeepAlive (attribute);
 			}
 			language = Runtime.GetNSObject<NSString> (lang, true);
 			return Runtime.GetNSObject<NSObject> (handle, true);
@@ -969,6 +983,8 @@ namespace CoreText {
 #endif
 				using var descriptorsArray = NSArray.FromNSObjects (descriptors);
 				var rv = CTFontDescriptorMatchFontDescriptorsWithProgressHandler (descriptorsArray.GetHandle (), mandatoryAttributes.GetHandle (), &block);
+				GC.KeepAlive (descriptorsArray);
+				GC.KeepAlive (mandatoryAttributes);
 				return rv != 0;
 			}
 		}

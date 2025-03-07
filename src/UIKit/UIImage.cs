@@ -38,6 +38,7 @@ namespace UIKit {
 				dis = new UIImageStatusDispatcher (status);
 
 			UIImageWriteToSavedPhotosAlbum (Handle, dis is not null ? dis.Handle : IntPtr.Zero, dis is not null ? Selector.GetHandle (UIImageStatusDispatcher.callbackSelector) : IntPtr.Zero, IntPtr.Zero);
+			GC.KeepAlive (dis);
 		}
 #endif
 

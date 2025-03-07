@@ -529,7 +529,9 @@ namespace ObjCRuntime {
 			if (rv is null)
 				return IntPtr.Zero;
 			rv.DangerousRetain ().DangerousAutorelease ();
+#pragma warning disable RBI0014
 			return rv.Handle;
+#pragma warning restore RBI0014
 		}
 
 
@@ -1314,7 +1316,9 @@ namespace ObjCRuntime {
 				if (object_map.Remove (ptr, out var existing))
 					existing.Free ();
 				object_map [ptr] = handle;
+#pragma warning disable RBI0014
 				obj.Handle = ptr;
+#pragma warning restore RBI0014
 			}
 		}
 
@@ -2413,7 +2417,9 @@ namespace ObjCRuntime {
 			if (obj is null)
 				return NativeHandle.Zero;
 			obj.DangerousRetain ();
+#pragma warning disable RBI0014
 			return obj.GetHandle ();
+#pragma warning restore RBI0014
 		}
 
 		internal static NativeHandle RetainAndAutoreleaseNSObject (NSObject? obj)
@@ -2422,7 +2428,9 @@ namespace ObjCRuntime {
 				return NativeHandle.Zero;
 			obj.DangerousRetain ();
 			obj.DangerousAutorelease ();
+#pragma warning disable RBI0014
 			return obj.GetHandle ();
+#pragma warning restore RBI0014
 		}
 
 		internal static NativeHandle RetainAndAutoreleaseNativeObject (INativeObject? obj)

@@ -53,6 +53,7 @@ namespace Security {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (identity));
 
 			InitializeHandle (sec_identity_create (identity.Handle));
+			GC.KeepAlive (identity);
 		}
 
 		[DllImport (Constants.SecurityLibrary)]

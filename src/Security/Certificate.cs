@@ -143,6 +143,7 @@ namespace Security {
 		void Initialize (NSData data)
 		{
 			var handle = SecCertificateCreateWithData (IntPtr.Zero, data.Handle);
+			GC.KeepAlive (data);
 			if (handle == IntPtr.Zero)
 				throw new ArgumentException ("Not a valid DER-encoded X.509 certificate");
 			InitializeHandle (handle);
@@ -762,6 +763,7 @@ namespace Security {
 			SecStatusCode res;
 			unsafe {
 				res = SecKeyGeneratePair (parameters.Handle, &pub, &priv);
+				GC.KeepAlive (parameters);
 			}
 			if (res == SecStatusCode.Success) {
 				publicKey = new SecKey (pub, true);
@@ -1071,6 +1073,7 @@ namespace Security {
 			IntPtr key;
 			unsafe {
 				key = SecKeyCreateRandomKey (parameters.Handle, &err);
+				GC.KeepAlive (parameters);
 			}
 			error = Runtime.GetNSObject<NSError> (err);
 			return key == IntPtr.Zero ? null : new SecKey (key, true);
@@ -1136,6 +1139,8 @@ namespace Security {
 			IntPtr key;
 			unsafe {
 				key = SecKeyCreateWithData (keyData.Handle, parameters.Handle, &err);
+				GC.KeepAlive (keyData);
+				GC.KeepAlive (parameters);
 			}
 			error = Runtime.GetNSObject<NSError> (err);
 			return key == IntPtr.Zero ? null : new SecKey (key, true);
@@ -1286,6 +1291,7 @@ namespace Security {
 			IntPtr err;
 			unsafe {
 				data = SecKeyCreateSignature (Handle, algorithm.GetConstant ().GetHandle (), dataToSign.Handle, &err);
+				GC.KeepAlive (dataToSign);
 			}
 			error = Runtime.GetNSObject<NSError> (err);
 			return Runtime.GetNSObject<NSData> (data, true);
@@ -1317,6 +1323,8 @@ namespace Security {
 			IntPtr err;
 			unsafe {
 				result = SecKeyVerifySignature (Handle, algorithm.GetConstant ().GetHandle (), signedData.Handle, signature.Handle, &err) != 0;
+				GC.KeepAlive (signedData);
+				GC.KeepAlive (signature);
 			}
 			error = Runtime.GetNSObject<NSError> (err);
 			return result;
@@ -1346,6 +1354,7 @@ namespace Security {
 			IntPtr err;
 			unsafe {
 				data = SecKeyCreateEncryptedData (Handle, algorithm.GetConstant ().GetHandle (), plaintext.Handle, &err);
+				GC.KeepAlive (plaintext);
 			}
 			error = Runtime.GetNSObject<NSError> (err);
 			return Runtime.GetNSObject<NSData> (data, true);
@@ -1375,6 +1384,7 @@ namespace Security {
 			IntPtr err;
 			unsafe {
 				data = SecKeyCreateDecryptedData (Handle, algorithm.GetConstant ().GetHandle (), ciphertext.Handle, &err);
+				GC.KeepAlive (ciphertext);
 			}
 			error = Runtime.GetNSObject<NSError> (err);
 			return Runtime.GetNSObject<NSData> (data, true);
@@ -1406,6 +1416,8 @@ namespace Security {
 			IntPtr err;
 			unsafe {
 				data = SecKeyCopyKeyExchangeResult (Handle, algorithm.GetConstant ().GetHandle (), publicKey.Handle, parameters.Handle, &err);
+				GC.KeepAlive (publicKey);
+				GC.KeepAlive (parameters);
 			}
 			error = Runtime.GetNSObject<NSError> (err);
 			return Runtime.GetNSObject<NSData> (data, true);

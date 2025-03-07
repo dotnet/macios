@@ -125,6 +125,7 @@ namespace PrintCore {
 			if (settings is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (settings));
 			PMSessionDefaultPrintSettings (Handle, settings.Handle);
+			GC.KeepAlive (settings);
 		}
 
 		[DllImport (Constants.PrintCoreLibrary)]
@@ -135,6 +136,7 @@ namespace PrintCore {
 			if (pageFormat is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (pageFormat));
 			PMSessionDefaultPageFormat (Handle, pageFormat.Handle);
+			GC.KeepAlive (pageFormat);
 		}
 
 		[DllImport (Constants.PrintCoreLibrary)]
@@ -177,6 +179,7 @@ namespace PrintCore {
 			byte c;
 			unsafe {
 				code = PMSessionValidatePrintSettings (Handle, settings.Handle, &c);
+				GC.KeepAlive (settings);
 			}
 			if (code != PMStatusCode.Ok) {
 				changed = false;
@@ -292,7 +295,9 @@ namespace PrintCore {
 		{
 			if (destination is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (destination));
-			return PMCopyPrintSettings (Handle, destination.Handle);
+			PMStatusCode status = PMCopyPrintSettings (Handle, destination.Handle);
+			GC.KeepAlive (destination);
+			return status;
 		}
 
 		[DllImport (Constants.PrintCoreLibrary)]
@@ -408,6 +413,7 @@ namespace PrintCore {
 			} else {
 				unsafe {
 					code = PMCreatePageFormatWithPMPaper (&value, paper.Handle);
+					GC.KeepAlive (paper);
 				}
 			}
 			if (code == PMStatusCode.Ok)
@@ -433,6 +439,7 @@ namespace PrintCore {
 			} else {
 				unsafe {
 					code = PMCreatePageFormatWithPMPaper (&value, paper.Handle);
+					GC.KeepAlive (paper);
 				}
 			}
 
@@ -571,6 +578,7 @@ namespace PrintCore {
 			IntPtr name;
 			unsafe {
 				code = PMPaperCreateLocalizedName (Handle, printer.Handle, &name);
+				GC.KeepAlive (printer);
 			}
 			if (code != PMStatusCode.Ok)
 				return null;
@@ -729,6 +737,7 @@ namespace PrintCore {
 			IntPtr m;
 			unsafe {
 				code = PMPrinterGetMimeTypes (Handle, settings.GetHandle (), &m);
+				GC.KeepAlive (settings);
 			}
 			if (code != PMStatusCode.Ok) {
 				mimeTypes = null;
@@ -775,7 +784,11 @@ namespace PrintCore {
 
 			IntPtr mime = CFString.CreateNative (mimeType);
 			try {
-				return PMPrinterPrintWithFile (Handle, settings.Handle, pageFormat.GetHandle (), mime, fileUrl.Handle);
+				PMStatusCode status = PMPrinterPrintWithFile (Handle, settings.Handle, pageFormat.GetHandle (), mime, fileUrl.Handle);
+				GC.KeepAlive (settings);
+				GC.KeepAlive (pageFormat);
+				GC.KeepAlive (fileUrl);
+				return status;
 			} finally {
 				CFString.ReleaseNative (mime);
 			}
@@ -793,7 +806,11 @@ namespace PrintCore {
 
 			IntPtr mime = CFString.CreateNative (mimeType);
 			try {
-				return PMPrinterPrintWithProvider (Handle, settings.Handle, pageFormat.GetHandle (), mime, provider.Handle);
+				PMStatusCode status = PMPrinterPrintWithProvider (Handle, settings.Handle, pageFormat.GetHandle (), mime, provider.Handle);
+				GC.KeepAlive (settings);
+				GC.KeepAlive (pageFormat);
+				GC.KeepAlive (provider);
+				return status;
 			} finally {
 				CFString.ReleaseNative (mime);
 			}
@@ -811,7 +828,9 @@ namespace PrintCore {
 
 			PMResolution res;
 			unsafe {
-				if (PMPrinterGetOutputResolution (Handle, settings.Handle, &res) == PMStatusCode.Ok)
+				PMStatusCode status = PMPrinterGetOutputResolution (Handle, settings.Handle, &res);
+				GC.KeepAlive (settings);
+				if (status == PMStatusCode.Ok)
 					return res;
 			}
 			return new PMResolution (0, 0);
@@ -823,6 +842,7 @@ namespace PrintCore {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (settings));
 			unsafe {
 				PMPrinterSetOutputResolution (Handle, settings.Handle, &res);
+				GC.KeepAlive (settings);
 			}
 		}
 

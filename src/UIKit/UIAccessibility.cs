@@ -140,6 +140,7 @@ namespace UIKit {
 		public static void PostNotification (int notification, NSObject argument)
 		{
 			UIAccessibilityPostNotification (notification, argument is null ? IntPtr.Zero : argument.Handle);
+			GC.KeepAlive (argument);
 		}
 
 		static int NotificationEnumToInt (UIAccessibilityPostNotification notification)
@@ -165,6 +166,7 @@ namespace UIKit {
 		public static void ZoomFocusChanged (UIAccessibilityZoomType type, CGRect frame, UIView view)
 		{
 			UIAccessibilityZoomFocusChanged ((IntPtr) type, frame, view is not null ? view.Handle : IntPtr.Zero);
+			GC.KeepAlive (view);
 		}
 
 		// UIAccessibilityZoom.h
@@ -192,7 +194,10 @@ namespace UIKit {
 			if (view is null)
 				throw new ArgumentNullException ("view");
 
-			return new UIBezierPath (UIAccessibilityConvertPathToScreenCoordinates (path.Handle, view.Handle));
+			UIBezierPath result = new UIBezierPath (UIAccessibilityConvertPathToScreenCoordinates (path.Handle, view.Handle));
+			GC.KeepAlive (path);
+			GC.KeepAlive (view);
+			return result;
 		}
 
 		// UIAccessibility.h
@@ -214,7 +219,9 @@ namespace UIKit {
 			if (view is null)
 				throw new ArgumentNullException ("view");
 
-			return UIAccessibilityConvertFrameToScreenCoordinates (rect, view.Handle);
+			var result = UIAccessibilityConvertFrameToScreenCoordinates (rect, view.Handle);
+			GC.KeepAlive (view);
+			return result;
 		}
 
 		// UIAccessibility.h

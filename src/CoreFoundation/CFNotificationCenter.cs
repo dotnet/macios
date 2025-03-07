@@ -224,6 +224,8 @@ namespace CoreFoundation {
 				obj: objectToObserve.GetHandle (),
 				userInfo: userInfo.GetHandle (),
 				options: (deliverImmediately ? 1 : 0) | (postOnAllSessions ? 2 : 0));
+			GC.KeepAlive (objectToObserve);
+			GC.KeepAlive (userInfo);
 			CFString.ReleaseNative (strHandle);
 		}
 

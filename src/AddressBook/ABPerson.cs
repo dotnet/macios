@@ -559,7 +559,9 @@ namespace AddressBook {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (other));
 			if (ordering != ABPersonSortBy.FirstName && ordering != ABPersonSortBy.LastName)
 				throw new ArgumentException ("Invalid ordering value: " + ordering, "ordering");
-			return ABPersonComparePeopleByName (Handle, other.Handle, ordering);
+			int result = ABPersonComparePeopleByName (Handle, other.Handle, ordering);
+			GC.KeepAlive (other);
+			return result;
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
@@ -598,6 +600,7 @@ namespace AddressBook {
 				unsafe {
 					if (ABPersonSetImageData (Handle, value.GetHandle (), &error) == 0)
 						throw CFException.FromCFError (error);
+					GC.KeepAlive (value);
 				}
 			}
 		}
@@ -637,7 +640,9 @@ namespace AddressBook {
 
 		public static ABPersonCompositeNameFormat GetCompositeNameFormat (ABRecord? record)
 		{
-			return ABPersonGetCompositeNameFormatForRecord (record.GetHandle ());
+			var result = ABPersonGetCompositeNameFormatForRecord (record.GetHandle ());
+			GC.KeepAlive (record);
+			return result;
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
@@ -646,6 +651,7 @@ namespace AddressBook {
 		public static string? GetCompositeNameDelimiter (ABRecord? record)
 		{
 			var handle = ABPersonCopyCompositeNameDelimiterForRecord (record.GetHandle ());
+			GC.KeepAlive (record);
 			return CFString.FromHandle (handle, true);
 		}
 
@@ -748,6 +754,7 @@ namespace AddressBook {
 		public void SetEmails (ABMultiValue<string>? value)
 		{
 			SetValue (ABPersonPropertyId.Email, value.GetHandle ());
+			GC.KeepAlive (value);
 		}
 
 		public NSDate? Birthday {
@@ -779,11 +786,13 @@ namespace AddressBook {
 		public void SetAddresses (ABMultiValue<NSDictionary>? value)
 		{
 			SetValue (ABPersonPropertyId.Address, value.GetHandle ());
+			GC.KeepAlive (value);
 		}
 
 		public void SetAddresses (ABMultiValue<PersonAddress>? addresses)
 		{
 			SetValue (ABPersonPropertyId.Address, addresses.GetHandle ());
+			GC.KeepAlive (addresses);
 		}
 
 		// Obsolete
@@ -820,6 +829,7 @@ namespace AddressBook {
 		public void SetDates (ABMultiValue<NSDate>? value)
 		{
 			SetValue (ABPersonPropertyId.Date, value.GetHandle ());
+			GC.KeepAlive (value);
 		}
 
 		public ABPersonKind PersonKind {
@@ -835,6 +845,7 @@ namespace AddressBook {
 		public void SetPhones (ABMultiValue<string>? value)
 		{
 			SetValue (ABPersonPropertyId.Phone, value.GetHandle ());
+			GC.KeepAlive (value);
 		}
 
 		[Advice ("Use GetInstantMessageServices.")]
@@ -852,11 +863,13 @@ namespace AddressBook {
 		public void SetInstantMessages (ABMultiValue<NSDictionary>? value)
 		{
 			SetValue (ABPersonPropertyId.InstantMessage, value.GetHandle ());
+			GC.KeepAlive (value);
 		}
 
 		public void SetInstantMessages (ABMultiValue<InstantMessageService>? services)
 		{
 			SetValue (ABPersonPropertyId.InstantMessage, services.GetHandle ());
+			GC.KeepAlive (services);
 		}
 
 		[Advice ("Use GetSocialProfiles.")]
@@ -874,11 +887,13 @@ namespace AddressBook {
 		public void SetSocialProfile (ABMultiValue<NSDictionary>? value)
 		{
 			SetValue (ABPersonPropertyId.SocialProfile, value.GetHandle ());
+			GC.KeepAlive (value);
 		}
 
 		public void SetSocialProfile (ABMultiValue<SocialProfile>? profiles)
 		{
 			SetValue (ABPersonPropertyId.SocialProfile, profiles.GetHandle ());
+			GC.KeepAlive (profiles);
 		}
 
 		public ABMultiValue<string>? GetUrls ()
@@ -889,6 +904,7 @@ namespace AddressBook {
 		public void SetUrls (ABMultiValue<string>? value)
 		{
 			SetValue (ABPersonPropertyId.Url, value.GetHandle ());
+			GC.KeepAlive (value);
 		}
 
 		public ABMultiValue<string>? GetRelatedNames ()
@@ -899,6 +915,7 @@ namespace AddressBook {
 		public void SetRelatedNames (ABMultiValue<string>? value)
 		{
 			SetValue (ABPersonPropertyId.RelatedNames, value.GetHandle ());
+			GC.KeepAlive (value);
 		}
 
 		public object? GetProperty (ABPersonProperty property)
@@ -977,6 +994,9 @@ namespace AddressBook {
 
 			// TODO: SIGSEGV when source is not null
 			var res = ABPersonCreatePeopleInSourceWithVCardRepresentation (source.GetHandle (), vCardData.Handle);
+
+			GC.KeepAlive (source);
+			GC.KeepAlive (vCardData);
 
 			return NSArray.ArrayFromHandle (res, l => new ABPerson (l, null));
 		}

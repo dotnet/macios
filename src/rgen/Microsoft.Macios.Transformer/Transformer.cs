@@ -8,6 +8,8 @@ using Marille;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Macios.Generator.Context;
+using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Generator.Extensions;
 using Microsoft.Macios.Transformer.Extensions;
 using Microsoft.Macios.Transformer.Workers;
@@ -66,61 +68,36 @@ class Transformer {
 		return hub;
 	}
 
-	internal static string? SelectTopic (INamedTypeSymbol symbol)
+	internal static string? SelectTopic (BaseTypeDeclarationSyntax declarationSyntax, Binding binding)
 	{
-		// get the attrs, based on those return the correct topic to use
-		var attrs = symbol.GetAttributeData ();
-		logger.Debug ("Symbol '{SymbolName}' has [{Attributes}] attributes", symbol.Name,
-			string.Join (", ", attrs.Keys));
-		logger.Debug ("Symbol '{SymbolName}' kind is '{SymbolKind}'", symbol.Name, symbol.TypeKind);
-
-		if (symbol.TypeKind == TypeKind.Enum) {
-			// simplest case, an error domain	
-			if (attrs.ContainsKey (AttributesNames.ErrorDomainAttribute)) {
-				logger.Debug ("Symbol '{SymbolName}' is an error domain", symbol.Name);
-				return nameof (ErrorDomainTransformer);
-			}
-
-			// in this case, we need to check if the enum is a smart enum. 
-			// Smart enum: One of the enum members contains a FieldAttribute. Does NOT have to be ALL
-			var enumMembers = symbol.GetMembers ().OfType<IFieldSymbol> ().ToArray ();
-			foreach (var enumField in enumMembers) {
-				var fieldAttrs = enumField.GetAttributeData ();
-				if (fieldAttrs.ContainsKey (AttributesNames.FieldAttribute)) {
-					logger.Debug ("Symbol '{SymbolName}' is a smart enum", symbol.Name);
-					return nameof (SmartEnumTransformer);
-				}
-			}
-
-			// we have either a native enum of a regular enum, we will use the copy worker
-			logger.Debug ("Symbol '{SymbolName}' is a regular enum", symbol.Name);
-			return nameof (CopyTransformer);
-		}
-
-		if (attrs.ContainsKey (AttributesNames.BaseTypeAttribute)) {
-			// if can be a class or a protocol, check if the protocol attribute is present
-			if (attrs.ContainsKey (AttributesNames.ProtocolAttribute) ||
-				attrs.ContainsKey (AttributesNames.ModelAttribute)) {
-				logger.Debug ("Symbol '{SymbolName}' is a protocol", symbol.Name);
-				return nameof (ProtocolTransformer);
-			}
-
-			if (attrs.ContainsKey (AttributesNames.CategoryAttribute)) {
-				logger.Debug ("Symbol '{SymbolName}' is a category", symbol.Name);
-				return nameof (CategoryTransformer);
-			}
-
-			logger.Debug ("Symbol '{SymbolName}' is a class", symbol.Name);
+		logger.Debug ("Selecting topic for binding '{BindingName}' of type {BindingType}", binding.FullyQualifiedSymbol, binding.BindingType);
+		switch (binding.BindingType) {
+		case BindingType.Category:
+			return nameof (CategoryTransformer);
+		case BindingType.Class:
 			return nameof (ClassTransformer);
-		}
-
-		if (attrs.ContainsKey (AttributesNames.StrongDictionaryAttribute)) {
-			logger.Debug ("Symbol '{SymbolName}' is a strong dictionary", symbol.Name);
+		case BindingType.Protocol:
+			return nameof (ProtocolTransformer);
+		case BindingType.SmartEnum:
+			// we need to decide if the smart enum represents and error domain or not, we do that by checking
+			// its attributes.
+			if (binding.HasErrorDomainAttribute)
+				logger.Debug ("Binding '{BindingName}' is has an error domain", binding.FullyQualifiedSymbol);
+			return binding.HasErrorDomainAttribute
+				? nameof (ErrorDomainTransformer)
+				: nameof (SmartEnumTransformer);
+		case BindingType.StrongDictionary:
 			return nameof (StrongDictionaryTransformer);
+		case BindingType.CoreImageFilter:
+			return nameof (CoreImageFilterTransformer);
+		default:
+			// check if we are dealing with a normal enum, this happens when the we decided to add the enum in the
+			// framework cs file, which happens
+			if (declarationSyntax is EnumDeclarationSyntax)
+				return nameof (CopyTransformer);
+			logger.Warning ("Binding '{BindingName}' could not be matched to a transformer", binding.FullyQualifiedSymbol);
+			return null;
 		}
-
-		logger.Warning ("Symbol '{SymbolName}' could not be matched to a transformer", symbol.Name);
-		return null;
 	}
 
 	internal bool Skip (SyntaxTree syntaxTree, ISymbol symbol, [NotNullWhen (false)] out string? outputDirectory)
@@ -163,6 +140,7 @@ class Transformer {
 		foreach (var (platform, compilation) in compilations) {
 			foreach (var tree in compilation.SyntaxTrees) {
 				var model = compilation.GetSemanticModel (tree);
+				var rootContext = new RootContext (model);
 				// the bindings have A LOT of interfaces, we cannot get a symbol for the entire tree
 				var declarations = (await tree.GetRootAsync ())
 					.DescendantNodes ()
@@ -187,8 +165,13 @@ class Transformer {
 
 					// create the destination directory if needed, this is the only location we should be creating directories
 					Directory.CreateDirectory (outputDirectory);
+					var binding = Binding.FromDeclaration (declaration, symbol, model);
+					if (binding is null) {
+						logger.Warning ("Could not create binding for '{SymbolName}'", symbol.Name);
+						continue;
+					}
 
-					var topicName = SelectTopic (symbol);
+					var topicName = SelectTopic (declaration, binding.Value);
 					if (topicName is not null && transformers.TryGetValue (topicName, out var transformer)) {
 						await hub.PublishAsync (topicName, transformer.CreateMessage (tree, symbol));
 						logger.Information ("Published '{SymbolName}' to '{TopicName}'", symbol.Name, topicName);

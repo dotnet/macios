@@ -458,16 +458,6 @@
 		</value>
 	</data>
 
-	<data name="MT0088" xml:space="preserve">
-		<value>The GC must be in cooperative mode for watchOS apps. Please remove the --coop:false argument to mtouch.
-		</value>
-	</data>
-
-	<data name="MT0089" xml:space="preserve">
-		<value>The option '{0}' cannot take the value '{1}' when cooperative mode is enabled for the GC.
-		</value>
-	</data>
-
 	<data name="MX0090" xml:space="preserve">
 		<value>The target framework '{0}' is deprecated. Use '{1}' instead.
 		</value>

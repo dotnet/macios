@@ -40,6 +40,9 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>Gets the current element.</summary>
+		///         <value>The current element.</value>
+		///         <remarks>To be added.</remarks>
 		object IEnumerator.Current {
 			get {
 				return current;

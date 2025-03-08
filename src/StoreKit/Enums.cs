@@ -102,7 +102,7 @@ namespace StoreKit {
 		MusicCatalogPlayback = 1 << 0,
 		[MacCatalyst (13, 1)]
 		MusicCatalogSubscriptionEligible = 1 << 1,
-		AddToCloudMusicLibrary = 1 << 8
+		AddToCloudMusicLibrary = 1 << 8,
 	}
 
 	/// <summary>Enumerates visiblity settings for a promoted product.</summary>

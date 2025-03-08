@@ -25,27 +25,41 @@ namespace CoreFoundation {
 
 	[Flags]
 	public enum MemoryPressureFlags {
+		/// <summary>The system memory pressure condition has returned to normal.</summary>
 		Normal = 1,
+		/// <summary>The system memory pressure condition has changed to warning.</summary>
 		Warn = 2,
+		/// <summary>The system memory pressure condition has changed to critical.</summary>
 		Critical = 4,
 	}
 
 	[Flags]
 	public enum ProcessMonitorFlags : uint {
+		/// <summary>To be added.</summary>
 		Exit = 0x80000000,
+		/// <summary>To be added.</summary>
 		Fork = 0x40000000,
+		/// <summary>To be added.</summary>
 		Exec = 0x20000000,
+		/// <summary>To be added.</summary>
 		Signal = 0x08000000,
 	}
 
 	[Flags]
 	public enum VnodeMonitorKind : uint {
+		/// <summary>The file was removed from the file system due to the unlink(2) system call.</summary>
 		Delete = 1,
+		/// <summary>A write to the referenced file occurred</summary>
 		Write = 2,
+		/// <summary>The file was extended.</summary>
 		Extend = 4,
+		/// <summary>The attributes on the file have changed</summary>
 		Attrib = 8,
+		/// <summary>The link count on the file has changed.</summary>
 		Link = 0x10,
+		/// <summary>The referenced node was renamed</summary>
 		Rename = 0x20,
+		/// <summary>Access to the referenced node was revoked via revoke(2) or the underlying fileystem was unmounted.</summary>
 		Revoke = 0x40,
 	}
 
@@ -206,6 +220,12 @@ namespace CoreFoundation {
 			base.Dispose (disposing);
 		}
 
+		/// <summary>Determine whether the specified source has been canceled.</summary>
+		///         <value>True if the source has been canceled.</value>
+		///         <remarks>
+		///           <para>
+		///           </para>
+		///         </remarks>
 		public bool IsCanceled {
 			get {
 				return dispatch_source_testcancel (GetCheckedHandle ()) != IntPtr.Zero;
@@ -225,6 +245,13 @@ namespace CoreFoundation {
 				dispatch_source_merge_data (Handle, value);
 			}
 
+			/// <summary>Retrieves the data that has been posted for this event source.</summary>
+			///         <value>The result of the data posted to the data dispatch source.</value>
+			///         <remarks>
+			///           <para>If multiple calls to MergeData are done, the result surfaced by PendingData will depend on whether you created a <see cref="T:CoreFoundation.DispatchSource.DataAdd" /> which will add the values together or a <see cref="T:CoreFoundation.DispatchSource.DataOr" /> which will or the values together.</para>
+			///           <para>
+			///           </para>
+			///         </remarks>
 			public IntPtr PendingData {
 				get {
 					return dispatch_source_get_data (Handle);
@@ -291,6 +318,9 @@ namespace CoreFoundation {
 			internal Mach ()
 			{ }
 
+			/// <summary>The MachPort that this DispatchSource is monitoring.</summary>
+			///         <value>To be added.</value>
+			///         <remarks>To be added.</remarks>
 			public int MachPort {
 				get {
 					return (int) dispatch_source_get_handle (GetCheckedHandle ());
@@ -321,6 +351,11 @@ namespace CoreFoundation {
 					InitializeHandle (handle);
 			}
 
+			/// <summary>Determines if the handler was invoked due to a send right being destroyed.</summary>
+			///         <value>True if the send right was destroyed.</value>
+			///         <remarks>
+			///           <para />
+			///         </remarks>
 			public bool SendRightsDestroyed {
 				get {
 					return dispatch_source_get_data (GetCheckedHandle ()) != IntPtr.Zero;
@@ -375,6 +410,9 @@ namespace CoreFoundation {
 					InitializeHandle (handle);
 			}
 
+			/// <summary>Reports the condition that was observed.</summary>
+			///         <value>The condition observed.</value>
+			///         <remarks>The event handler can probe this property to determine why it was invoked.</remarks>
 			public MemoryPressureFlags PressureFlags {
 				get {
 					return (MemoryPressureFlags) dispatch_source_get_data (GetCheckedHandle ());
@@ -405,12 +443,18 @@ namespace CoreFoundation {
 					InitializeHandle (handle);
 			}
 
+			/// <summary>The process ID that is being monitored</summary>
+			///         <value>To be added.</value>
+			///         <remarks>To be added.</remarks>
 			public int ProcessId {
 				get {
 					return (int) dispatch_source_get_handle (GetCheckedHandle ());
 				}
 			}
 
+			/// <summary>Determines which events were observed.</summary>
+			///         <value>Returns the observed events.</value>
+			///         <remarks>Method that can be invoked by the dispath source event handler.</remarks>
 			public ProcessMonitorFlags MonitorFlags {
 				get {
 					return (ProcessMonitorFlags) dispatch_source_get_data (GetCheckedHandle ());
@@ -440,12 +484,27 @@ namespace CoreFoundation {
 					InitializeHandle (handle);
 			}
 
+			/// <summary>The file descriptor being monitored.</summary>
+			///         <value>
+			///           <para>
+			///           </para>
+			///         </value>
+			///         <remarks>
+			///           <para />
+			///         </remarks>
 			public int FileDescriptor {
 				get {
 					return (int) dispatch_source_get_handle (GetCheckedHandle ());
 				}
 			}
 
+			/// <summary>Estimated number of bytes available to read from the file descriptor.</summary>
+			///         <value>
+			///           <para />
+			///         </value>
+			///         <remarks>
+			///           <para />
+			///         </remarks>
 			public int BytesAvailable {
 				get {
 					return (int) dispatch_source_get_data (GetCheckedHandle ());
@@ -474,12 +533,18 @@ namespace CoreFoundation {
 					InitializeHandle (handle);
 			}
 
+			/// <summary>To be added.</summary>
+			///         <value>To be added.</value>
+			///         <remarks>To be added.</remarks>
 			public int SignalNumber {
 				get {
 					return (int) dispatch_source_get_handle (GetCheckedHandle ());
 				}
 			}
 
+			/// <summary>The number of signals received since the last invocation of the event handler.</summary>
+			///         <value>count</value>
+			///         <remarks>The number of signals received since the last invocation of the event handler.</remarks>
 			public int SignalsDelivered {
 				get {
 					return (int) dispatch_source_get_data (GetCheckedHandle ());
@@ -510,6 +575,11 @@ namespace CoreFoundation {
 					InitializeHandle (handle);
 			}
 
+			/// <summary>Number of times the timer has fired since the last invocation of the event handler</summary>
+			///         <value>Number of times the timer has fired since the last invocation of the event handler</value>
+			///         <remarks>
+			///           <para />
+			///         </remarks>
 			public int TimerFiredCount {
 				get {
 					return (int) dispatch_source_get_data (GetCheckedHandle ());
@@ -588,12 +658,18 @@ namespace CoreFoundation {
 				base.Dispose (disposing);
 			}
 
+			/// <summary>File descriptor that is being monitored</summary>
+			///         <value>To be added.</value>
+			///         <remarks>To be added.</remarks>
 			public int FileDescriptor {
 				get {
 					return (int) dispatch_source_get_handle (GetCheckedHandle ());
 				}
 			}
 
+			/// <summary>Events that were observed on the file.</summary>
+			///         <value>The events that were observed on the file.</value>
+			///         <remarks>This property can be invoked from the event handler to check on which changes took place on the file being monitored.</remarks>
 			public VnodeMonitorKind ObservedEvents {
 				get {
 					return (VnodeMonitorKind) (int) dispatch_source_get_data (GetCheckedHandle ());
@@ -623,12 +699,26 @@ namespace CoreFoundation {
 				if (handle != IntPtr.Zero)
 					InitializeHandle (handle);
 			}
+			/// <summary>The file descriptor being monitored.</summary>
+			///         <value>
+			///           <para />
+			///         </value>
+			///         <remarks>
+			///           <para />
+			///         </remarks>
 			public int FileDescriptor {
 				get {
 					return (int) dispatch_source_get_handle (GetCheckedHandle ());
 				}
 			}
 
+			/// <summary>Buffer space available to write on the file descriptor being monitored.</summary>
+			///         <value>
+			///           <para />
+			///         </value>
+			///         <remarks>
+			///           <para />
+			///         </remarks>
 			public int BufferSpaceAvailable {
 				get {
 					return (int) dispatch_source_get_data (GetCheckedHandle ());

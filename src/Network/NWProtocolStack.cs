@@ -117,6 +117,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static void nw_protocol_stack_set_transport_protocol (nw_protocol_stack_t stack, IntPtr value);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWProtocolOptions? TransportProtocol {
 			get {
 				var pHandle = nw_protocol_stack_copy_transport_protocol (GetCheckedHandle ());
@@ -147,6 +150,9 @@ namespace Network {
 		extern static IntPtr nw_protocol_stack_copy_internet_protocol (nw_protocol_stack_t stack);
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWProtocolIPOptions? InternetProtocol {
 #else
 		public NWProtocolOptions? InternetProtocol {

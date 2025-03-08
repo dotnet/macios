@@ -66,48 +66,78 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* FourCharCode */ uint CMFormatDescriptionGetMediaSubType (/* CMFormatDescriptionRef */ IntPtr desc);
 
+		/// <summary>Returns the media subtype, ideally you should use the strongly typed versions instead.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		/// 	  Instead of using this uint value, you can use the specific
+		/// 	  strongly-typed version: AudioFormatType, SubtitleFormatType,
+		/// 	  ClosedCaptionFormatType, MuxedStreamType, VideoCodecType,
+		/// 	  MetadataFormatType or TimeCodeFormatType.
+		/// 	</remarks>
 		public uint MediaSubType {
 			get {
 				return CMFormatDescriptionGetMediaSubType (Handle);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioFormatType AudioFormatType {
 			get {
 				return MediaType == CMMediaType.Audio ? (AudioFormatType) MediaSubType : 0;
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CMSubtitleFormatType SubtitleFormatType {
 			get {
 				return MediaType == CMMediaType.Subtitle ? (CMSubtitleFormatType) MediaSubType : 0;
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CMClosedCaptionFormatType ClosedCaptionFormatType {
 			get {
 				return MediaType == CMMediaType.ClosedCaption ? (CMClosedCaptionFormatType) MediaSubType : 0;
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CMMuxedStreamType MuxedStreamType {
 			get {
 				return MediaType == CMMediaType.Muxed ? (CMMuxedStreamType) MediaSubType : 0;
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CMVideoCodecType VideoCodecType {
 			get {
 				return MediaType == CMMediaType.Video ? (CMVideoCodecType) MediaSubType : 0;
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CMMetadataFormatType MetadataFormatType {
 			get {
 				return MediaType == CMMediaType.Metadata ? (CMMetadataFormatType) MediaSubType : 0;
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CMTimeCodeFormatType TimeCodeFormatType {
 			get {
 				return MediaType == CMMediaType.TimeCode ? (CMTimeCodeFormatType) MediaSubType : 0;
@@ -126,6 +156,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static CMMediaType CMFormatDescriptionGetMediaType (/* CMFormatDescriptionRef */ IntPtr desc);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CMMediaType MediaType {
 			get {
 				return CMFormatDescriptionGetMediaType (Handle);
@@ -183,6 +216,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* AudioStreamBasicDescription */ IntPtr CMAudioFormatDescriptionGetStreamBasicDescription (/* CMAudioFormatDescriptionRef */ IntPtr desc);
 
+		/// <summary>Audio-media only: Returns the AudioStreamBasicDescritpion object for the audio.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioStreamBasicDescription? AudioStreamBasicDescription {
 			get {
 				var ret = CMAudioFormatDescriptionGetStreamBasicDescription (Handle);
@@ -198,6 +234,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		unsafe extern static /* AudioChannelLayout* */ IntPtr CMAudioFormatDescriptionGetChannelLayout (/* CMAudioFormatDescriptionRef */ IntPtr desc, /* size_t* */ nint* size);
 
+		/// <summary>Audio-media only: describe the channel layout.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioChannelLayout? AudioChannelLayout {
 			get {
 				nint size;
@@ -214,6 +253,11 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		unsafe extern static /* AudioFormatListItem* */ IntPtr CMAudioFormatDescriptionGetFormatList (/* CMAudioFormatDescriptionRef */ IntPtr desc, /* size_t* */ nint* size);
 
+		/// <summary>Audio-media only: the supported audio formats, sorted from most rich to less.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public AudioFormat []? AudioFormats {
 			get {
 				unsafe {
@@ -237,6 +281,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		unsafe extern static /* const void* */ IntPtr CMAudioFormatDescriptionGetMagicCookie (/* CMAudioFormatDescriptionRef */ IntPtr desc, /* size_t* */ nint* size);
 
+		/// <summary>Audio-media only: magic cookie that might need to be passed to some backends.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public byte []? AudioMagicCookie {
 			get {
 				nint size;
@@ -256,6 +303,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* AudioFormatListItem* */ IntPtr CMAudioFormatDescriptionGetMostCompatibleFormat (/* CMAudioFormatDescriptionRef */ IntPtr desc);
 
+		/// <summary>Audio-media only: returns the most compaible audio format.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioFormat AudioMostCompatibleFormat {
 			get {
 				unsafe {
@@ -270,6 +320,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* AudioFormatListItem* */ IntPtr CMAudioFormatDescriptionGetRichestDecodableFormat (/* CMAudioFormatDescriptionRef */ IntPtr desc);
 
+		/// <summary>Audio-media only: Returns the richest decodable format.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioFormat AudioRichestDecodableFormat {
 			get {
 				unsafe {
@@ -353,6 +406,9 @@ namespace CoreMedia {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CMVideoDimensions Dimensions {
 			get {
 				return CMVideoFormatDescriptionGetDimensions (Handle);

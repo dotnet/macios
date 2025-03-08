@@ -27,7 +27,7 @@ namespace Mono.ApiTools {
 			return this;
 		}
 
-		public ApiChange AppendAdded (string text, bool breaking = false)
+		public ApiChange AppendAdded (string text, bool breaking)
 		{
 			State.Formatter.DiffAddition (Member, text, breaking);
 			Breaking |= breaking;
@@ -35,7 +35,7 @@ namespace Mono.ApiTools {
 			return this;
 		}
 
-		public ApiChange AppendRemoved (string text, bool breaking = true)
+		public ApiChange AppendRemoved (string text, bool breaking)
 		{
 			State.Formatter.DiffRemoval (Member, text, breaking);
 			Breaking |= breaking;
@@ -43,7 +43,7 @@ namespace Mono.ApiTools {
 			return this;
 		}
 
-		public ApiChange AppendModified (string old, string @new, bool breaking = true)
+		public ApiChange AppendModified (string old, string @new, bool breaking)
 		{
 			State.Formatter.DiffModification (Member, old, @new, breaking);
 			Breaking |= breaking;

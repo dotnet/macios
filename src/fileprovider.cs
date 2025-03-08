@@ -167,12 +167,19 @@ namespace FileProvider {
 	[ErrorDomain ("NSFileProviderErrorDomain")]
 	[Native ("NSFileProviderErrorCode")]
 	enum NSFileProviderError : long {
+		/// <summary>To be added.</summary>
 		NotAuthenticated = -1000,
+		/// <summary>To be added.</summary>
 		FilenameCollision = -1001,
+		/// <summary>To be added.</summary>
 		SyncAnchorExpired = -1002,
+		/// <summary>To be added.</summary>
 		PageExpired = SyncAnchorExpired,
+		/// <summary>To be added.</summary>
 		InsufficientQuota = -1003,
+		/// <summary>To be added.</summary>
 		ServerUnreachable = -1004,
+		/// <summary>To be added.</summary>
 		NoSuchItem = -1005,
 		VersionOutOfDate = -1006,
 		DirectoryNotEmpty = -1007,
@@ -214,6 +221,9 @@ namespace FileProvider {
 		[Field ("NSFileProviderErrorCollidingItemKey")]
 		NSString CollidingItemKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileProviderErrorNonExistentItemIdentifierKey")]
 		NSString NonExistentItemIdentifierKey { get; }
 
@@ -227,6 +237,9 @@ namespace FileProvider {
 	[Static]
 	interface NSFileProviderFavoriteRank {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileProviderFavoriteRankUnranked")]
 		ulong Unranked { get; }
 	}
@@ -342,9 +355,15 @@ namespace FileProvider {
 		[Export ("initWithDisplayName:userInfo:volumeURL:")]
 		NativeHandle Constructor (string displayName, NSDictionary userInfo, [NullAllowed] NSUrl volumeUrl);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("identifier")]
 		string Identifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displayName")]
 		string DisplayName { get; }
 

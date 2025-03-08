@@ -62,16 +62,20 @@ namespace PdfKit {
 		/// <summary>Indicates an action that zooms in.</summary>
 		ZoomIn = 10,
 		/// <summary>Indicates an action that zooms out.</summary>
-		ZoomOut = 11
+		ZoomOut = 11,
 	}
 
 	[Native]
 	[TV (18, 2)]
 	public enum PdfWidgetControlType : long {
+		/// <summary>Indicates that the control type is not known.</summary>
 		Unknown = -1,
+		/// <summary>Indicates a push button.</summary>
 		PushButton = 0,
+		/// <summary>Indicates a radio button.</summary>
 		RadioButton = 1,
-		CheckBox = 2
+		/// <summary>Indicates a checkbox.</summary>
+		CheckBox = 2,
 	}
 
 	[Native]
@@ -88,7 +92,7 @@ namespace PdfKit {
 		/// <summary>Indicates an open arrow line ending glyph.</summary>
 		OpenArrow = 4,
 		/// <summary>Indicates a solid triangular line ending glyph.</summary>
-		ClosedArrow = 5
+		ClosedArrow = 5,
 	}
 
 	[Native]
@@ -106,13 +110,20 @@ namespace PdfKit {
 	[Native]
 	[TV (18, 2)]
 	public enum PdfTextAnnotationIconType : long {
+		/// <summary>Indicates a comment icon.</summary>
 		Comment = 0,
+		/// <summary>Indicates a key icon.</summary>
 		Key = 1,
+		/// <summary>Indicates a note icon.</summary>
 		Note = 2,
+		/// <summary>Indicates a help icon.</summary>
 		Help = 3,
+		/// <summary>Indicates a new paragraph icon.</summary>
 		NewParagraph = 4,
+		/// <summary>Indicates a paragraph icon.</summary>
 		Paragraph = 5,
-		Insert = 6
+		/// <summary>Indicates an insert icon.</summary>
+		Insert = 6,
 	}
 
 	[Native]
@@ -127,7 +138,7 @@ namespace PdfKit {
 		/// <summary>Indicates an inset effect.</summary>
 		Inset = 3,
 		/// <summary>Indicates the annotation will be underlined.</summary>
-		Underline = 4
+		Underline = 4,
 	}
 
 	/// <summary>Enumerates print scaling behaviors.</summary>
@@ -136,9 +147,12 @@ namespace PdfKit {
 	[Unavailable (PlatformName.MacCatalyst)]
 	[Native]
 	public enum PdfPrintScalingMode : long {
+		/// <summary>Indicates that no scaling will be applied.</summary>
 		None = 0,
+		/// <summary>Indicates that pages will be enlarged or shrunk, as needed, to fit the physical page.</summary>
 		ToFit = 1,
-		DownToFit = 2
+		/// <summary>Indicates that pages that are larger than the physical page are shrunk to fit the physical page.</summary>
+		DownToFit = 2,
 	}
 
 	[Native]
@@ -149,7 +163,7 @@ namespace PdfKit {
 		/// <summary>To be added.</summary>
 		User = 1,
 		/// <summary>To be added.</summary>
-		Owner = 2
+		Owner = 2,
 	}
 
 	[Native]
@@ -164,7 +178,7 @@ namespace PdfKit {
 		/// <summary>Indicates a box around intended finish boundaries.</summary>
 		Trim = 3,
 		/// <summary>Indicates a rectangle around the boundaries of a page's content for display.</summary>
-		Art = 4
+		Art = 4,
 	}
 
 	[Native]
@@ -177,7 +191,7 @@ namespace PdfKit {
 		/// <summary>Indicates that two pages are displayed side by side.</summary>
 		TwoUp = 2,
 		/// <summary>Indicates that pages are displayed in a continuously scrolling double column.</summary>
-		TwoUpContinuous = 3
+		TwoUpContinuous = 3,
 	}
 
 	[Flags]
@@ -232,15 +246,20 @@ namespace PdfKit {
 	[Native]
 	[TV (18, 2)]
 	public enum PdfThumbnailLayoutMode : long {
+		/// <summary>To be added.</summary>
 		Vertical = 0,
+		/// <summary>To be added.</summary>
 		Horizontal = 1,
 	}
 
 	[Native]
 	[TV (18, 2)]
 	public enum PdfWidgetCellState : long {
+		/// <summary>To be added.</summary>
 		Mixed = -1,
+		/// <summary>To be added.</summary>
 		Off = 0,
+		/// <summary>To be added.</summary>
 		On = 1,
 	}
 }

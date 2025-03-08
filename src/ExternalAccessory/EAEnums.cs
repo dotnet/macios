@@ -64,6 +64,6 @@ namespace ExternalAccessory {
 		/// <summary>To be added.</summary>
 		Cancelled,
 		/// <summary>To be added.</summary>
-		Failed
+		Failed,
 	}
 }

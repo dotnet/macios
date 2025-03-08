@@ -148,6 +148,9 @@ namespace SpriteKit {
 		// Apple deprecated floatVector2Value in macOS10.12/iOS10.0
 		// and made available vectorFloat2Value so we invoke
 		// the right one at runtime depending on which OS version we are running
+		/// <summary>Gets or sets the uniform data as a vector of 2 floating point values.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual Vector2 FloatVector2Value {
 			get {
 				if (CheckSystemVersion ())
@@ -166,6 +169,9 @@ namespace SpriteKit {
 		// Apple deprecated floatVector3Value in macOS10.12/iOS10.0
 		// and made available vectorFloat3Value so we invoke
 		// the right one at runtime depending on which OS version we are running
+		/// <summary>Gets or sets the uniform data as a vector of 3 floating point values.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual Vector3 FloatVector3Value {
 			get {
 				if (CheckSystemVersion ())
@@ -184,6 +190,9 @@ namespace SpriteKit {
 		// Apple deprecated floatVector4Value in macOS10.12/iOS10.0
 		// and made available vectorFloat4Value so we invoke
 		// the right one at runtime depending on which OS version we are running
+		/// <summary>Gets or sets the uniform data as a vector of 4 floating point values.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual Vector4 FloatVector4Value {
 			get {
 				if (CheckSystemVersion ())

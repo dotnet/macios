@@ -195,10 +195,16 @@ namespace Foundation {
 			_RemoveObjectForKey (nskey.Handle);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool IDictionary.IsFixedSize {
 			get { return false; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool IDictionary.IsReadOnly {
 			get { return false; }
 		}
@@ -221,10 +227,16 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		ICollection IDictionary.Keys {
 			get { return Keys; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		ICollection IDictionary.Values {
 			get { return Values; }
 		}

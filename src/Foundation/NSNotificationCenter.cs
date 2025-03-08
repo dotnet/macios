@@ -135,6 +135,11 @@ namespace Foundation {
 	[SupportedOSPlatform ("tvos")]
 #endif
 	public class NSNotificationEventArgs : EventArgs {
+		/// <summary>The underlying NSNotification object from the posted notification.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSNotification Notification { get; private set; }
 		public NSNotificationEventArgs (NSNotification notification)
 		{

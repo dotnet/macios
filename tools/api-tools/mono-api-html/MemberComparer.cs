@@ -43,14 +43,6 @@ namespace Mono.ApiTools {
 		{
 		}
 
-		public abstract string GroupName { get; }
-		public abstract string ElementName { get; }
-
-		protected virtual bool IsBreakingRemoval (XElement e)
-		{
-			return !e.Elements ("attributes").SelectMany (a => a.Elements ("attribute")).Any (c => c.Attribute ("name")?.Value == "System.ObsoleteAttribute");
-		}
-
 		public void Compare (XElement source, XElement target)
 		{
 			var s = source.Element (GroupName);
@@ -160,6 +152,7 @@ namespace Mono.ApiTools {
 		void Remove (IEnumerable<XElement> elements)
 		{
 			bool r = false;
+			bool? isBreaking = null;
 			foreach (var item in elements) {
 				var memberDescription = $"{State.Namespace}.{State.Type}: Removed {GroupName}: {GetDescription (item)}";
 				State.LogDebugMessage ($"Possible -r value: {memberDescription}");
@@ -169,7 +162,9 @@ namespace Mono.ApiTools {
 				if (State.IgnoreNonbreaking && !IsBreakingRemoval (item))
 					continue;
 				if (!r) {
-					Formatter.BeginMemberRemoval (elements, this);
+					if (isBreaking is null)
+						isBreaking = elements.Any (v => !v.IsExperimental ());
+					Formatter.BeginMemberRemoval (elements, this, isBreaking.Value);
 					first = true;
 					r = true;
 				}
@@ -196,12 +191,6 @@ namespace Mono.ApiTools {
 
 		public override bool Equals (XElement source, XElement target, ApiChanges changes)
 		{
-			RenderAttributes (source, target, changes);
-
-			// We don't want to compare attributes.
-			RemoveAttributes (source);
-			RemoveAttributes (target);
-
 			// Change 'protected internal' into 'protected'
 			RemoveInternalFromProtectedInternal (source);
 			RemoveInternalFromProtectedInternal (target);
@@ -372,11 +361,11 @@ namespace Mono.ApiTools {
 								change.Append (tgtValue);
 							}
 						} else {
-							change.AppendRemoved (" = " + srcValue);
+							change.AppendRemoved (" = " + srcValue, !source.IsExperimental ());
 						}
 					} else {
 						if (optTarget is not null)
-							change.AppendAdded (" = " + tgtValue);
+							change.AppendAdded (" = " + tgtValue, false);
 					}
 				}
 			}
@@ -384,7 +373,7 @@ namespace Mono.ApiTools {
 			change.Append (")");
 		}
 
-		void RenderVTable (MethodAttributes source, MethodAttributes target, ApiChange change)
+		void RenderVTable (XElement sourceElement, XElement targetElement, MethodAttributes source, MethodAttributes target, ApiChange change)
 		{
 			var srcAbstract = (source & MethodAttributes.Abstract) == MethodAttributes.Abstract;
 			var tgtAbstract = (target & MethodAttributes.Abstract) == MethodAttributes.Abstract;
@@ -405,7 +394,7 @@ namespace Mono.ApiTools {
 				} else if (tgtVirtual) {
 					change.AppendModified ("abstract", tgtWord, false).Append (" ");
 				} else {
-					change.AppendRemoved ("abstract").Append (" ");
+					change.AppendRemoved ("abstract", !sourceElement.IsExperimental ()).Append (" ");
 				}
 			} else {
 				if (tgtAbstract) {
@@ -542,27 +531,18 @@ namespace Mono.ApiTools {
 			}
 		}
 
-		protected void RenderMethodAttributes (MethodAttributes src, MethodAttributes tgt, ApiChange diff)
+		protected void RenderMethodAttributes (XElement source, XElement target, MethodAttributes src, MethodAttributes tgt, ApiChange diff)
 		{
 			RenderStatic (src, tgt, diff);
 			RenderVisibility (src & MethodAttributes.MemberAccessMask, tgt & MethodAttributes.MemberAccessMask, diff);
-			RenderVTable (src, tgt, diff);
+			RenderVTable (source, target, src, tgt, diff);
 		}
 
 		protected void RenderMethodAttributes (XElement source, XElement target, ApiChange diff)
 		{
-			RenderMethodAttributes (source.GetMethodAttributes (), target.GetMethodAttributes (), diff);
+			RenderMethodAttributes (source, target, source.GetMethodAttributes (), target.GetMethodAttributes (), diff);
 		}
 
-		protected void RemoveAttributes (XElement element)
-		{
-			var srcAttributes = element.Element ("attributes");
-			if (srcAttributes is not null)
-				srcAttributes.Remove ();
-
-			foreach (var el in element.Elements ())
-				RemoveAttributes (el);
-		}
 		protected void RemoveInternalFromProtectedInternal (XElement element)
 		{
 			var attrib = element.GetMethodAttributes ();
@@ -571,29 +551,6 @@ namespace Mono.ApiTools {
 			if ((attrib & MethodAttributes.FamORAssem) == MethodAttributes.FamORAssem) {
 				attrib = (attrib & ~MethodAttributes.MemberAccessMask) | MethodAttributes.Family;
 				element.Attribute ("attrib").Value = ((int) attrib).ToString ();
-			}
-		}
-
-		protected void RenderAttributes (XElement source, XElement target, ApiChanges changes)
-		{
-			var srcObsolete = source.GetObsoleteMessage ();
-			var tgtObsolete = target.GetObsoleteMessage ();
-
-			if (srcObsolete == tgtObsolete)
-				return; // nothing changed
-
-			if (srcObsolete is null) {
-				if (tgtObsolete is null)
-					return; // neither is obsolete
-				var change = new ApiChange (GetDescription (source), State);
-				change.Header = "Obsoleted " + GroupName;
-				Formatter.RenderObsoleteMessage (change.Member, this, GetDescription (target), tgtObsolete);
-				change.AnyChange = true;
-				changes.Add (source, target, change);
-			} else if (tgtObsolete is null) {
-				// Made non-obsolete. Do we care to report this?
-			} else {
-				// Obsolete message changed. Do we care to report this?
 			}
 		}
 

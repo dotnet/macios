@@ -467,7 +467,7 @@ namespace ObjCRuntime {
 			if (AssemblyRegistration is not null) {
 				var args = new AssemblyRegistrationEventArgs {
 					Register = true,
-					AssemblyName = assembly_name
+					AssemblyName = assembly_name,
 				};
 				AssemblyRegistration (null, args);
 				return args.Register;
@@ -2385,7 +2385,8 @@ namespace ObjCRuntime {
 				(char) (byte) (value >> 24),
 				(char) (byte) (value >> 16),
 				(char) (byte) (value >> 8),
-				(char) (byte) value });
+				(char) (byte) value,
+			});
 		}
 
 		// Retain the input if it's either an NSObject or a NativeObject.

@@ -83,7 +83,268 @@ static class TestDataFactory {
 					$"System.Numerics.IMinMaxValue<{typeName}>",
 					$"System.Numerics.ISignedNumber<{typeName}>"
 				],
-			MetadataName = "Int32",
+			MetadataName = metadataName,
+		};
+		return type;
+	}
+
+	public static TypeInfo ReturnTypeForShort (bool isNullable = false, bool keepInterfaces = false,
+		bool isUnsigned = false)
+	{
+		var typeName = isUnsigned ? "ushort" : "short";
+		var metadataName = isUnsigned ? "UInt16" : "Int16";
+		var type = new TypeInfo (
+			name: typeName,
+			specialType: isUnsigned ? SpecialType.System_UInt16 : SpecialType.System_Int16,
+			isBlittable: !isNullable,
+			isNullable: isNullable,
+			isStruct: true
+		) {
+			Parents = ["System.ValueType", "object"],
+			Interfaces = isNullable && !keepInterfaces
+				? []
+				: [
+					"System.IComparable",
+					$"System.IComparable<{typeName}>",
+					"System.IConvertible",
+					$"System.IEquatable<{typeName}>",
+					"System.IFormattable",
+					$"System.IParsable<{typeName}>",
+					"System.ISpanFormattable",
+					$"System.ISpanParsable<{typeName}>",
+					"System.IUtf8SpanFormattable",
+					$"System.IUtf8SpanParsable<{typeName}>",
+					$"System.Numerics.IAdditionOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IAdditiveIdentity<{typeName}, {typeName}>",
+					$"System.Numerics.IBinaryInteger<{typeName}>",
+					$"System.Numerics.IBinaryNumber<{typeName}>",
+					$"System.Numerics.IBitwiseOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IComparisonOperators<{typeName}, {typeName}, bool>",
+					$"System.Numerics.IEqualityOperators<{typeName}, {typeName}, bool>",
+					$"System.Numerics.IDecrementOperators<{typeName}>",
+					$"System.Numerics.IDivisionOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IIncrementOperators<{typeName}>",
+					$"System.Numerics.IModulusOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IMultiplicativeIdentity<{typeName}, {typeName}>",
+					$"System.Numerics.IMultiplyOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.INumber<{typeName}>",
+					$"System.Numerics.INumberBase<{typeName}>",
+					$"System.Numerics.ISubtractionOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IUnaryNegationOperators<{typeName}, {typeName}>",
+					$"System.Numerics.IUnaryPlusOperators<{typeName}, {typeName}>",
+					$"System.Numerics.IShiftOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IMinMaxValue<{typeName}>",
+					$"System.Numerics.ISignedNumber<{typeName}>"
+				],
+			MetadataName = metadataName,
+		};
+		return type;
+	}
+
+	public static TypeInfo ReturnTypeForLong (bool isNullable = false, bool keepInterfaces = false,
+		bool isUnsigned = false)
+	{
+		var typeName = isUnsigned ? "ulong" : "long";
+		var metadataName = isUnsigned ? "UInt64" : "Int64";
+		var type = new TypeInfo (
+			name: typeName,
+			specialType: isUnsigned ? SpecialType.System_UInt64 : SpecialType.System_Int64,
+			isBlittable: !isNullable,
+			isNullable: isNullable,
+			isStruct: true
+		) {
+			Parents = ["System.ValueType", "object"],
+			Interfaces = isNullable && !keepInterfaces
+				? []
+				: [
+					"System.IComparable",
+					$"System.IComparable<{typeName}>",
+					"System.IConvertible",
+					$"System.IEquatable<{typeName}>",
+					"System.IFormattable",
+					$"System.IParsable<{typeName}>",
+					"System.ISpanFormattable",
+					$"System.ISpanParsable<{typeName}>",
+					"System.IUtf8SpanFormattable",
+					$"System.IUtf8SpanParsable<{typeName}>",
+					$"System.Numerics.IAdditionOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IAdditiveIdentity<{typeName}, {typeName}>",
+					$"System.Numerics.IBinaryInteger<{typeName}>",
+					$"System.Numerics.IBinaryNumber<{typeName}>",
+					$"System.Numerics.IBitwiseOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IComparisonOperators<{typeName}, {typeName}, bool>",
+					$"System.Numerics.IEqualityOperators<{typeName}, {typeName}, bool>",
+					$"System.Numerics.IDecrementOperators<{typeName}>",
+					$"System.Numerics.IDivisionOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IIncrementOperators<{typeName}>",
+					$"System.Numerics.IModulusOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IMultiplicativeIdentity<{typeName}, {typeName}>",
+					$"System.Numerics.IMultiplyOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.INumber<{typeName}>",
+					$"System.Numerics.INumberBase<{typeName}>",
+					$"System.Numerics.ISubtractionOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IUnaryNegationOperators<{typeName}, {typeName}>",
+					$"System.Numerics.IUnaryPlusOperators<{typeName}, {typeName}>",
+					$"System.Numerics.IShiftOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IMinMaxValue<{typeName}>",
+					$"System.Numerics.ISignedNumber<{typeName}>"
+				],
+			MetadataName = metadataName,
+		};
+		return type;
+	}
+
+	public static TypeInfo ReturnTypeForDouble (bool isNullable = false, bool keepInterfaces = false)
+	{
+		var typeName = "double";
+		var type = new TypeInfo (
+			name: typeName,
+			specialType: SpecialType.System_Double,
+			isBlittable: !isNullable,
+			isNullable: isNullable,
+			isStruct: true
+		) {
+			Parents = ["System.ValueType", "object"],
+			Interfaces = isNullable && !keepInterfaces
+				? []
+				: [
+					"System.IComparable",
+					$"System.IComparable<{typeName}>",
+					"System.IConvertible",
+					$"System.IEquatable<{typeName}>",
+					"System.IFormattable",
+					$"System.IParsable<{typeName}>",
+					"System.ISpanFormattable",
+					$"System.ISpanParsable<{typeName}>",
+					"System.IUtf8SpanFormattable",
+					$"System.IUtf8SpanParsable<{typeName}>",
+					$"System.Numerics.IAdditionOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IAdditiveIdentity<{typeName}, {typeName}>",
+					$"System.Numerics.IBinaryInteger<{typeName}>",
+					$"System.Numerics.IBinaryNumber<{typeName}>",
+					$"System.Numerics.IBitwiseOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IComparisonOperators<{typeName}, {typeName}, bool>",
+					$"System.Numerics.IEqualityOperators<{typeName}, {typeName}, bool>",
+					$"System.Numerics.IDecrementOperators<{typeName}>",
+					$"System.Numerics.IDivisionOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IIncrementOperators<{typeName}>",
+					$"System.Numerics.IModulusOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IMultiplicativeIdentity<{typeName}, {typeName}>",
+					$"System.Numerics.IMultiplyOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.INumber<{typeName}>",
+					$"System.Numerics.INumberBase<{typeName}>",
+					$"System.Numerics.ISubtractionOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IUnaryNegationOperators<{typeName}, {typeName}>",
+					$"System.Numerics.IUnaryPlusOperators<{typeName}, {typeName}>",
+					$"System.Numerics.IShiftOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IMinMaxValue<{typeName}>",
+					$"System.Numerics.ISignedNumber<{typeName}>"
+				],
+			MetadataName = "Double",
+		};
+		return type;
+	}
+
+	public static TypeInfo ReturnTypeForFloat (bool isNullable = false, bool keepInterfaces = false)
+	{
+		var typeName = "float";
+		var type = new TypeInfo (
+			name: typeName,
+			specialType: SpecialType.System_Single,
+			isBlittable: !isNullable,
+			isNullable: isNullable,
+			isStruct: true
+		) {
+			Parents = ["System.ValueType", "object"],
+			Interfaces = isNullable && !keepInterfaces
+				? []
+				: [
+					"System.IComparable",
+					$"System.IComparable<{typeName}>",
+					"System.IConvertible",
+					$"System.IEquatable<{typeName}>",
+					"System.IFormattable",
+					$"System.IParsable<{typeName}>",
+					"System.ISpanFormattable",
+					$"System.ISpanParsable<{typeName}>",
+					"System.IUtf8SpanFormattable",
+					$"System.IUtf8SpanParsable<{typeName}>",
+					$"System.Numerics.IAdditionOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IAdditiveIdentity<{typeName}, {typeName}>",
+					$"System.Numerics.IBinaryInteger<{typeName}>",
+					$"System.Numerics.IBinaryNumber<{typeName}>",
+					$"System.Numerics.IBitwiseOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IComparisonOperators<{typeName}, {typeName}, bool>",
+					$"System.Numerics.IEqualityOperators<{typeName}, {typeName}, bool>",
+					$"System.Numerics.IDecrementOperators<{typeName}>",
+					$"System.Numerics.IDivisionOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IIncrementOperators<{typeName}>",
+					$"System.Numerics.IModulusOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IMultiplicativeIdentity<{typeName}, {typeName}>",
+					$"System.Numerics.IMultiplyOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.INumber<{typeName}>",
+					$"System.Numerics.INumberBase<{typeName}>",
+					$"System.Numerics.ISubtractionOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IUnaryNegationOperators<{typeName}, {typeName}>",
+					$"System.Numerics.IUnaryPlusOperators<{typeName}, {typeName}>",
+					$"System.Numerics.IShiftOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IMinMaxValue<{typeName}>",
+					$"System.Numerics.ISignedNumber<{typeName}>"
+				],
+			MetadataName = "Float",
+		};
+		return type;
+	}
+
+	public static TypeInfo ReturnTypeForNInt (bool isNullable = false, bool keepInterfaces = false,
+		bool isUnsigned = false)
+	{
+		var typeName = isUnsigned ? "nuint" : "nint";
+		var metadataName = isUnsigned ? "UIntPtr" : "IntPtr";
+		var type = new TypeInfo (
+			name: typeName,
+			specialType: isUnsigned ? SpecialType.System_UInt32 : SpecialType.System_Int32,
+			isBlittable: !isNullable,
+			isNullable: isNullable,
+			isStruct: true
+		) {
+			Parents = ["System.ValueType", "object"],
+			Interfaces = isNullable && !keepInterfaces
+				? []
+				: [
+					"System.IComparable",
+					$"System.IComparable<{typeName}>",
+					"System.IConvertible",
+					$"System.IEquatable<{typeName}>",
+					"System.IFormattable",
+					$"System.IParsable<{typeName}>",
+					"System.ISpanFormattable",
+					$"System.ISpanParsable<{typeName}>",
+					"System.IUtf8SpanFormattable",
+					$"System.IUtf8SpanParsable<{typeName}>",
+					$"System.Numerics.IAdditionOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IAdditiveIdentity<{typeName}, {typeName}>",
+					$"System.Numerics.IBinaryInteger<{typeName}>",
+					$"System.Numerics.IBinaryNumber<{typeName}>",
+					$"System.Numerics.IBitwiseOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IComparisonOperators<{typeName}, {typeName}, bool>",
+					$"System.Numerics.IEqualityOperators<{typeName}, {typeName}, bool>",
+					$"System.Numerics.IDecrementOperators<{typeName}>",
+					$"System.Numerics.IDivisionOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IIncrementOperators<{typeName}>",
+					$"System.Numerics.IModulusOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IMultiplicativeIdentity<{typeName}, {typeName}>",
+					$"System.Numerics.IMultiplyOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.INumber<{typeName}>",
+					$"System.Numerics.INumberBase<{typeName}>",
+					$"System.Numerics.ISubtractionOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IUnaryNegationOperators<{typeName}, {typeName}>",
+					$"System.Numerics.IUnaryPlusOperators<{typeName}, {typeName}>",
+					$"System.Numerics.IShiftOperators<{typeName}, {typeName}, {typeName}>",
+					$"System.Numerics.IMinMaxValue<{typeName}>",
+					$"System.Numerics.ISignedNumber<{typeName}>"
+				],
+			MetadataName = metadataName,
 		};
 		return type;
 	}

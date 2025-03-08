@@ -112,7 +112,7 @@ namespace CoreLocation {
 		/// <summary>The device is parallel to the ground and the face is pointing towards the sky.</summary>
 		FaceUp,
 		/// <summary>The device is parallel to the ground and the face is pointing towards the ground.</summary>
-		FaceDown
+		FaceDown,
 	}
 
 	// untyped enum -> CLLocationManager.h

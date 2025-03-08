@@ -25,7 +25,6 @@ xamarin_os_log (os_log_t logger, os_log_type_t type, const char *message)
 const char *
 xamarin_get_locale_country_code ()
 {
-	// COOP: no managed memory access: any mode.
 	NSLocale *locale = [NSLocale currentLocale];
 	NSString *cc = [locale objectForKey: NSLocaleCountryCode];
 	if (cc == NULL) {
@@ -38,21 +37,12 @@ xamarin_get_locale_country_code ()
 void
 xamarin_log (const unsigned short *unicodeMessage)
 {
-	// COOP: no managed memory access: any mode.
 	unsigned int length = 0;
 	const unsigned short *ptr = unicodeMessage;
 	while (*ptr++)
 		length += sizeof (unsigned short);
 	NSString *msg = [[NSString alloc] initWithBytes: unicodeMessage length: length encoding: NSUTF16LittleEndianStringEncoding];
 
-#if TARGET_OS_WATCH && defined (__arm__) // maybe make this configurable somehow?
-	const char *utf8 = [msg UTF8String];
-	NSUInteger len = [msg lengthOfBytesUsingEncoding:NSUTF8StringEncoding] + 1; // does not include NULL
-	fwrite (utf8, 1, len, stdout);
-	if (len == 0 || utf8 [len - 1] != '\n')
-		fwrite ("\n", 1, 1, stdout);
-	fflush (stdout);
-#else
 	if (length > 4096) {
 		// Write in chunks of max 4096 characters; older versions of iOS seems to have a bug where NSLog may hang with long strings (!).
 		// https://github.com/xamarin/maccore/issues/1014
@@ -77,7 +67,6 @@ xamarin_log (const unsigned short *unicodeMessage)
 	} else {
 		NSLog (@"%@", msg);
 	}
-#endif
 	objc_release (msg);
 }
 
@@ -89,7 +78,6 @@ xamarin_log (const unsigned short *unicodeMessage)
 void*
 xamarin_timezone_get_data (const char *name, uint32_t *size)
 {
-	// COOP: no managed memory access: any mode.
 	NSTimeZone *tz = nil;
 	if (name) {
 		NSString *n = [[NSString alloc] initWithUTF8String: name];
@@ -108,7 +96,6 @@ xamarin_timezone_get_data (const char *name, uint32_t *size)
 char**
 xamarin_timezone_get_names (uint32_t *count)
 {
-	// COOP: no managed memory access: any mode.
 	NSArray *array = [NSTimeZone knownTimeZoneNames];
 	*count = (uint32_t) array.count;
 	char** result = (char**) calloc (sizeof (char*), *count);
@@ -131,11 +118,10 @@ xamarin_timezone_get_local_name ()
 	return (name != nil) ? strdup ([name UTF8String]) : strdup ("Local");
 }
 
-#if !TARGET_OS_WATCH && !TARGET_OS_TV && !(TARGET_OS_MACCATALYST && defined (DOTNET)) && !TARGET_OS_OSX
+#if !TARGET_OS_TV && !TARGET_OS_MACCATALYST && !TARGET_OS_OSX
 void
 xamarin_start_wwan (const char *uri)
 {
-	// COOP: no managed memory access: any mode.
 #if defined(__i386__) || defined (__x86_64__)
 	return;
 #else
@@ -169,14 +155,13 @@ xamarin_start_wwan (const char *uri)
 	CFRelease (message);
 #endif
 }
-#endif /* !TARGET_OS_WATCH && !TARGET_OS_TV && !TARGET_OS_MACCATALYST */
+#endif /* !TARGET_OS_TV && !TARGET_OS_MACCATALYST */
 
 #if defined (MONOTOUCH)
 // called from mono-extensions/mcs/class/corlib/System/Environment.iOS.cs
 const char *
 xamarin_GetFolderPath (int folder)
 {
-	// COOP: no managed memory access: any mode.
 	// NSUInteger-based enum (and we do not want corlib exposed to 32/64 bits differences)
 	NSSearchPathDirectory dd = (NSSearchPathDirectory) folder;
 	NSURL *url = [[[NSFileManager defaultManager] URLsForDirectory:dd inDomains:NSUserDomainMask] lastObject];
@@ -212,7 +197,6 @@ void objc_msgSendSuper_stret (void)
 const char *
 xamarin_encode_CGAffineTransform ()
 {
-    // COOP: no managed memory access: any mode.
     return @encode (CGAffineTransform);
 }
 #endif

@@ -165,7 +165,7 @@ namespace ObjCRuntime {
 		/// <summary>Running on a physical device.</summary>
 		DEVICE,
 		/// <summary>Running on the desktop simulator.</summary>
-		SIMULATOR
+		SIMULATOR,
 	}
 #endif
 }

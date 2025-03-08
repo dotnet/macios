@@ -52,6 +52,9 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static CGRect CVImageBufferGetCleanRect (/* CVImageBufferRef __nonnull */ IntPtr imageBuffer);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGRect CleanRect {
 			get {
 				return CVImageBufferGetCleanRect (Handle);
@@ -61,6 +64,9 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static CGSize CVImageBufferGetDisplaySize (/* CVImageBufferRef __nonnull */ IntPtr imageBuffer);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGSize DisplaySize {
 			get {
 				return CVImageBufferGetDisplaySize (Handle);
@@ -70,6 +76,9 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static CGSize CVImageBufferGetEncodedSize (/* CVImageBufferRef __nonnull */ IntPtr imageBuffer);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGSize EncodedSize {
 			get {
 				return CVImageBufferGetDisplaySize (Handle);
@@ -79,6 +88,9 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static /* Boolean */ byte CVImageBufferIsFlipped (/* CVImageBufferRef __nonnull */ IntPtr imageBuffer);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsFlipped {
 			get {
 				return CVImageBufferIsFlipped (Handle) != 0;
@@ -90,6 +102,9 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static /* CGColorSpaceRef */ IntPtr CVImageBufferGetColorSpace (/* CVImageBufferRef */ IntPtr imageBuffer);
 
+		/// <summary>Developers should not use this deprecated property. </summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]

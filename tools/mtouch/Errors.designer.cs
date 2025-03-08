@@ -1067,26 +1067,6 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The GC must be in cooperative mode for watchOS apps. Please remove the --coop:false argument to mtouch.
-        ///		.
-        /// </summary>
-        public static string MT0088 {
-            get {
-                return ResourceManager.GetString("MT0088", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The option &apos;{0}&apos; cannot take the value &apos;{1}&apos; when cooperative mode is enabled for the GC.
-        ///		.
-        /// </summary>
-        public static string MT0089 {
-            get {
-                return ResourceManager.GetString("MT0089", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Could not find &apos;mlaunch&apos;.
         ///		.
         /// </summary>

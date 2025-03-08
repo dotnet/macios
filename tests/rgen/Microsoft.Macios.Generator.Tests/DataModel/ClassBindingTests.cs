@@ -436,7 +436,7 @@ using ObjCBindings;
 
 namespace NS;
 
-[BindingType]
+[BindingType<SmartEnum>]
 public enum MyEnum {
 	None = 0,
 }
@@ -577,7 +577,7 @@ using ObjCBindings;
 
 namespace NS;
 
-[BindingType]
+[BindingType<Class>]
 public partial class MyClass {
 	[Field<Property> (""name"", Property.Notification)]
 	public partial string Name { get; set; } = string.Empty;
@@ -596,7 +596,7 @@ public partial class MyClass {
 					Base = "object",
 					Interfaces = ImmutableArray<string>.Empty,
 					Attributes = [
-						new ("ObjCBindings.BindingTypeAttribute")
+						new ("ObjCBindings.BindingTypeAttribute<ObjCBindings.Class>")
 					],
 					UsingDirectives = new HashSet<string> { "ObjCBindings" },
 					Modifiers = [
@@ -641,12 +641,156 @@ public partial class MyClass {
 				}
 			];
 
+			const string notificationCenterPropertyClass = @"
+using ObjCBindings;
+
+namespace NS;
+
+[BindingType<Class>]
+public partial class MyClass {
+	[Field<Property> (""name"", Flags = Property.Notification, NotificationCenter=""SharedWorkspace.NotificationCenter"")]
+	public partial string Name { get; set; } = string.Empty;
+}
+";
+
+			yield return [
+				notificationCenterPropertyClass,
+				new Binding (
+					bindingInfo: new (new BindingTypeData<Class> ()),
+					name: "MyClass",
+					@namespace: ["NS"],
+					fullyQualifiedSymbol: "NS.MyClass",
+					symbolAvailability: new ()
+				) {
+					Base = "object",
+					Interfaces = ImmutableArray<string>.Empty,
+					Attributes = [
+						new ("ObjCBindings.BindingTypeAttribute<ObjCBindings.Class>")
+					],
+					UsingDirectives = new HashSet<string> { "ObjCBindings" },
+					Modifiers = [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+						SyntaxFactory.Token (SyntaxKind.PartialKeyword)
+					],
+					Properties = [
+						new (
+							name: "Name",
+							returnType: ReturnTypeForString (),
+							symbolAvailability: new (),
+							attributes: [
+								new ("ObjCBindings.FieldAttribute<ObjCBindings.Property>", ["name", "ObjCBindings.Property.Notification", "SharedWorkspace.NotificationCenter"])
+							],
+							modifiers: [
+								SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+								SyntaxFactory.Token (SyntaxKind.PartialKeyword),
+							],
+							accessors: [
+								new (
+									accessorKind: AccessorKind.Getter,
+									symbolAvailability: new (),
+									exportPropertyData: null,
+									attributes: [],
+									modifiers: []
+								),
+								new (
+									accessorKind: AccessorKind.Setter,
+									symbolAvailability: new (),
+									exportPropertyData: null,
+									attributes: [],
+									modifiers: []
+								),
+							]
+						) {
+
+							ExportFieldData = new (
+								fieldData: new (symbolName: "name", flags: Property.Notification) {
+									NotificationCenter = "SharedWorkspace.NotificationCenter",
+								},
+								libraryName: "NS"),
+						}
+					]
+				}
+			];
+
+			const string notificationTypePropertyClass = @"
+using ObjCBindings;
+
+namespace NS;
+
+[BindingType<Class>]
+public partial class MyClass {
+	[Field<Property> (""name"", Flags = Property.Notification, Type=typeof (UIApplicationLaunchEventArgs))]
+	public partial string Name { get; set; } = string.Empty;
+}
+
+public class UIApplicationLaunchEventArgs {}
+";
+
+			yield return [
+				notificationTypePropertyClass,
+				new Binding (
+					bindingInfo: new (new BindingTypeData<Class> ()),
+					name: "MyClass",
+					@namespace: ["NS"],
+					fullyQualifiedSymbol: "NS.MyClass",
+					symbolAvailability: new ()
+				) {
+					Base = "object",
+					Interfaces = ImmutableArray<string>.Empty,
+					Attributes = [
+						new ("ObjCBindings.BindingTypeAttribute<ObjCBindings.Class>")
+					],
+					UsingDirectives = new HashSet<string> { "ObjCBindings" },
+					Modifiers = [
+						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+						SyntaxFactory.Token (SyntaxKind.PartialKeyword)
+					],
+					Properties = [
+						new (
+							name: "Name",
+							returnType: ReturnTypeForString (),
+							symbolAvailability: new (),
+							attributes: [
+								new ("ObjCBindings.FieldAttribute<ObjCBindings.Property>", ["name", "ObjCBindings.Property.Notification", "NS.UIApplicationLaunchEventArgs"])
+							],
+							modifiers: [
+								SyntaxFactory.Token (SyntaxKind.PublicKeyword),
+								SyntaxFactory.Token (SyntaxKind.PartialKeyword),
+							],
+							accessors: [
+								new (
+									accessorKind: AccessorKind.Getter,
+									symbolAvailability: new (),
+									exportPropertyData: null,
+									attributes: [],
+									modifiers: []
+								),
+								new (
+									accessorKind: AccessorKind.Setter,
+									symbolAvailability: new (),
+									exportPropertyData: null,
+									attributes: [],
+									modifiers: []
+								),
+							]
+						) {
+
+							ExportFieldData = new (
+								fieldData: new (symbolName: "name", flags: Property.Notification) {
+									Type = "NS.UIApplicationLaunchEventArgs",
+								},
+								libraryName: "NS"),
+						}
+					]
+				}
+			];
+
 			const string fieldPropertyClass = @"
 using ObjCBindings;
 
 namespace NS;
 
-[BindingType]
+[BindingType<Class>]
 public partial class MyClass {
 	[Field<Property> (""CONSTANT"")]
 	public static partial string Name { get; set; } = string.Empty;
@@ -665,7 +809,7 @@ public partial class MyClass {
 					Base = "object",
 					Interfaces = ImmutableArray<string>.Empty,
 					Attributes = [
-						new ("ObjCBindings.BindingTypeAttribute")
+						new ("ObjCBindings.BindingTypeAttribute<ObjCBindings.Class>")
 					],
 					UsingDirectives = new HashSet<string> { "ObjCBindings" },
 					Modifiers = [

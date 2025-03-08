@@ -260,7 +260,7 @@ namespace CoreFoundation {
 					return CFProxyType.SOCKS;
 			}
 
-			GC.KeepAlive (type); // FIXME
+			GC.KeepAlive (type);
 
 			return CFProxyType.None;
 		}

@@ -41,7 +41,7 @@ namespace CoreAnimation {
 		internal void SetCALayer (CALayer? layer)
 		{
 			calayer = layer.GetHandle ();
-			GC.KeepAlive (layer); // FIXME
+			GC.KeepAlive (layer); // FIXME: There's no guarantee of the object staying alive
 		}
 
 		protected override void Dispose (bool disposing)

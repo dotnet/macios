@@ -399,7 +399,7 @@ namespace CoreServices {
 					ok = CFHTTPMessageApplyCredentialDictionary (
 						Handle, auth.Handle, dict.Handle, &error);
 					GC.KeepAlive (auth);
-					GC.KeepAlive (dict); // FIXME
+					GC.KeepAlive (dict);
 				}
 				if (ok != 0)
 					return;

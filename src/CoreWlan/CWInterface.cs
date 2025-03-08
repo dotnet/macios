@@ -10,6 +10,9 @@ using System;
 
 namespace CoreWlan {
 	public unsafe partial class CWInterface {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CWChannel []? SupportedWlanChannels {
 			get {
 				NSSet? channels = _SupportedWlanChannels;
@@ -17,6 +20,9 @@ namespace CoreWlan {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CWNetwork []? CachedScanResults {
 			get {
 				NSSet? results = _CachedScanResults;
@@ -24,6 +30,9 @@ namespace CoreWlan {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static string []? InterfaceNames {
 			get {
 				NSSet? interfaceNames = _InterfaceNames;

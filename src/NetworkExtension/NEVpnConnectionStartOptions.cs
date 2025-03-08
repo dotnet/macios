@@ -18,6 +18,9 @@ namespace NetworkExtension {
 		public NEVpnConnectionStartOptions () : base (new NSMutableDictionary ()) { }
 		public NEVpnConnectionStartOptions (NSDictionary dictionary) : base (dictionary) { }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSString? Username {
 			get {
 				return GetNSStringValue (NEVpnConnectionStartOptionInternal.Username);
@@ -27,6 +30,9 @@ namespace NetworkExtension {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSString? Password {
 			get {
 				return GetNSStringValue (NEVpnConnectionStartOptionInternal.Password);

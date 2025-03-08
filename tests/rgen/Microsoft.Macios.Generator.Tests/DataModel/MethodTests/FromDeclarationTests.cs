@@ -571,7 +571,7 @@ namespace NS {
 					],
 					parameters: []
 				) {
-					BindAs = new ("Foundation.NSNumber"),
+					BindAs = new (ReturnTypeForNSObject ("Foundation.NSNumber")),
 				}
 			];
 
@@ -605,7 +605,7 @@ namespace NS {
 							Attributes = [
 								new ("ObjCBindings.BindFromAttribute", ["Foundation.NSNumber"]),
 							],
-							BindAs = new BindFromData ("Foundation.NSNumber"),
+							BindAs = new (ReturnTypeForNSObject ("Foundation.NSNumber")),
 						}
 					]
 				)

@@ -12,6 +12,9 @@ namespace NetworkExtension {
 		public NEHotspotHelperOptions () : base (new NSMutableDictionary ()) { }
 		public NEHotspotHelperOptions (NSDictionary dictionary) : base (dictionary) { }
 
+		/// <summary>Gets or sets the display name for the helper.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSString? DisplayName {
 			get {
 				return GetNSStringValue (NEHotspotHelperOptionInternal.DisplayName);

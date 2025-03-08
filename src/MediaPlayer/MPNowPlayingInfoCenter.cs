@@ -27,19 +27,45 @@ namespace MediaPlayer {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public double? ElapsedPlaybackTime;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public double? PlaybackRate;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public int? PlaybackQueueIndex;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public int? PlaybackQueueCount;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public int? ChapterNumber;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public int? ChapterCount;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public int? AlbumTrackCount;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public int? AlbumTrackNumber;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public int? DiscCount;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public int? DiscNumber;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public ulong? PersistentID;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public double? PlaybackDuration;
 #if NET
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -48,6 +74,9 @@ namespace MediaPlayer {
 		public double? DefaultPlaybackRate;
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -55,6 +84,9 @@ namespace MediaPlayer {
 #endif
 		public MPNowPlayingInfoLanguageOptionGroup []? AvailableLanguageOptions { get; set; }
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -62,6 +94,9 @@ namespace MediaPlayer {
 #endif
 		public MPNowPlayingInfoLanguageOption []? CurrentLanguageOptions { get; set; }
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -69,6 +104,9 @@ namespace MediaPlayer {
 #endif
 		public string? CollectionIdentifier { get; set; }
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -76,6 +114,9 @@ namespace MediaPlayer {
 #endif
 		public string? ExternalContentIdentifier { get; set; }
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -83,6 +124,9 @@ namespace MediaPlayer {
 #endif
 		public string? ExternalUserProfileIdentifier { get; set; }
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -90,6 +134,9 @@ namespace MediaPlayer {
 #endif
 		public float? PlaybackProgress { get; set; }
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -97,6 +144,9 @@ namespace MediaPlayer {
 #endif
 		public MPNowPlayingInfoMediaType? MediaType { get; set; }
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -104,6 +154,9 @@ namespace MediaPlayer {
 #endif
 		public bool? IsLiveStream { get; set; }
 #if NET
+		/// <summary>Gets or sets the URL for the currently playing item.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -111,6 +164,9 @@ namespace MediaPlayer {
 #endif
 		public NSUrl? AssetUrl { get; set; }
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
@@ -118,11 +174,23 @@ namespace MediaPlayer {
 #endif
 		public NSDate? CurrentPlaybackDate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public string? AlbumTitle;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public string? Artist;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MPMediaItemArtwork? Artwork;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public string? Composer;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public string? Genre;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public string? Title;
 
 		internal NSDictionary ToDictionary ()
@@ -281,6 +349,9 @@ namespace MediaPlayer {
 
 	public partial class MPNowPlayingInfoCenter {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MPNowPlayingInfo NowPlaying {
 			get {
 				return new MPNowPlayingInfo (_NowPlayingInfo);

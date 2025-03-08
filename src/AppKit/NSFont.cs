@@ -21,10 +21,6 @@ namespace AppKit {
 			return new NSFont (font.Handle);
 		}
 
-#if NET
-		[SupportedOSPlatform ("macos")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
 		public unsafe CGRect [] GetBoundingRects (CGGlyph [] glyphs)
 		{
 			if (glyphs is null)
@@ -41,10 +37,6 @@ namespace AppKit {
 			return bounds;
 		}
 
-#if NET
-		[SupportedOSPlatform ("macos")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
 		public unsafe CGSize [] GetAdvancements (CGGlyph [] glyphs)
 		{
 			if (glyphs is null)
@@ -151,13 +143,9 @@ namespace AppKit {
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.13")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 13)]
-#endif
 		public virtual NSFont? PrinterFont {
 			get {
 				var ptr = _PrinterFont;
@@ -165,13 +153,9 @@ namespace AppKit {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.13")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 13)]
-#endif
 		public virtual NSFont? ScreenFont {
 			get {
 				var ptr = _ScreenFont;
@@ -179,13 +163,9 @@ namespace AppKit {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.13")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 13)]
-#endif
 		public virtual NSFont? ScreenFontWithRenderingMode (NSFontRenderingMode renderingMode)
 		{
 			var ptr = _ScreenFontWithRenderingMode (renderingMode);
@@ -198,42 +178,24 @@ namespace AppKit {
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
-#if NET
-		[SupportedOSPlatform ("macos")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
 		public static NSFont? SystemFontOfSize (nfloat fontSize, nfloat weight)
 		{
 			var ptr = _SystemFontOfSize (fontSize, weight);
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
-#if NET
-		[SupportedOSPlatform ("macos13.0")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-#else
-		[Mac (13, 0)]
-#endif
 		public static NSFont? SystemFontOfSize (nfloat fontSize, nfloat weight, nfloat width)
 		{
 			var ptr = _SystemFontOfSize (fontSize, weight, width);
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
-#if NET
-		[SupportedOSPlatform ("macos")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
 		public static NSFont? MonospacedDigitSystemFontOfSize (nfloat fontSize, nfloat weight)
 		{
 			var ptr = _MonospacedDigitSystemFontOfSize (fontSize, weight);
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
-#if NET
-		[SupportedOSPlatform ("macos")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
 		public static NSFont? MonospacedSystemFont (nfloat fontSize, nfloat weight)
 		{
 			var ptr = _MonospacedSystemFont (fontSize, weight);

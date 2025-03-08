@@ -25,8 +25,14 @@ namespace CoreMedia {
 	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct CMSampleTimingInfo {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMTime Duration;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMTime PresentationTimeStamp;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMTime DecodeTimeStamp;
 	}
 
@@ -37,24 +43,40 @@ namespace CoreMedia {
 	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct CMTimeRange {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMTime Start;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMTime Duration;
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly CMTimeRange Zero;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly CMTimeRange InvalidRange;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		public static readonly CMTimeRange InvalidMapping;
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		public static NSString? TimeMappingSourceKey { get; private set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -87,7 +109,11 @@ namespace CoreMedia {
 	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct CMTimeMapping {
+		/// <summary>The source time range.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMTimeRange Source;
+		/// <summary>The target time range.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMTimeRange Target;
 
 #if !COREBUILD
@@ -127,6 +153,9 @@ namespace CoreMedia {
 			return new NSDictionary (CMTimeMappingCopyAsDictionary (this, IntPtr.Zero), true);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -181,9 +210,13 @@ namespace CoreMedia {
 	[StructLayout (LayoutKind.Sequential)]
 	public struct CMTimeScale {
 		// CMTime.h
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly CMTimeScale MaxValue = new CMTimeScale (0x7fffffff);
 
 		// int32_t -> CMTime.h
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public int Value;
 
 		public CMTimeScale (int value)
@@ -201,7 +234,11 @@ namespace CoreMedia {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public struct CMVideoDimensions {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public int Width;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public int Height;
 
 		public CMVideoDimensions (int width, int height)

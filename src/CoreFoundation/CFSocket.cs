@@ -57,7 +57,7 @@ namespace CoreFoundation {
 		/// <summary>To be added.</summary>
 		ConnectCallBack = 4,
 		/// <summary>To be added.</summary>
-		WriteCallBack = 8
+		WriteCallBack = 8,
 	}
 
 	// defined as CFIndex (long [long] = nint) - System/Library/Frameworks/CoreFoundation.framework/Headers/CFSocket.h
@@ -68,7 +68,7 @@ namespace CoreFoundation {
 		/// <summary>To be added.</summary>
 		Error = -1,
 		/// <summary>To be added.</summary>
-		Timeout = -2
+		Timeout = -2,
 	}
 
 	[Flags]
@@ -85,7 +85,7 @@ namespace CoreFoundation {
 		/// <summary>To be added.</summary>
 		LeaveErrors = 64,
 		/// <summary>To be added.</summary>
-		CloseOnInvalidate = 128
+		CloseOnInvalidate = 128,
 	}
 
 	[SupportedOSPlatform ("ios")]
@@ -554,6 +554,9 @@ namespace CoreFoundation {
 				private set;
 			}
 
+			/// <summary>The remote end points that connected</summary>
+			///         <value>To be added.</value>
+			///         <remarks>To be added.</remarks>
 			public IPEndPoint RemoteEndPoint {
 				get;
 				private set;
@@ -581,6 +584,9 @@ namespace CoreFoundation {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		public class CFSocketConnectEventArgs : EventArgs {
+			/// <summary>To be added.</summary>
+			///         <value>To be added.</value>
+			///         <remarks>To be added.</remarks>
 			public CFSocketError Result {
 				get;
 				private set;
@@ -602,11 +608,17 @@ namespace CoreFoundation {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		public class CFSocketDataEventArgs : EventArgs {
+			/// <summary>The remote end points that connected</summary>
+			///         <value>To be added.</value>
+			///         <remarks>To be added.</remarks>
 			public IPEndPoint RemoteEndPoint {
 				get;
 				private set;
 			}
 
+			/// <summary>The data that was received on the socket.</summary>
+			///         <value>To be added.</value>
+			///         <remarks>To be added.</remarks>
 			public byte [] Data {
 				get;
 				private set;

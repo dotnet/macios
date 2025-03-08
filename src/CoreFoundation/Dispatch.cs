@@ -48,7 +48,7 @@ namespace CoreFoundation {
 		High = 2,
 		Default = 0,
 		Low = -2,
-		Background = Int16.MinValue
+		Background = Int16.MinValue,
 	}
 
 	// dispatch_qos_class_t is defined in usr/include/dispatch/queue.h, but redirects to qos_class_t
@@ -647,6 +647,9 @@ namespace CoreFoundation {
 	[SupportedOSPlatform ("tvos")]
 	public struct DispatchTime {
 #if !COREBUILD
+		/// <summary>Represents no timeout.</summary>
+		///         <remarks>
+		///         </remarks>
 		public static readonly DispatchTime Now = new DispatchTime ();
 		public static readonly DispatchTime Forever = new DispatchTime (ulong.MaxValue);
 

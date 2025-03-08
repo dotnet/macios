@@ -15,9 +15,12 @@ namespace NotificationCenter {
 	[Deprecated (PlatformName.MacOSX, 11, 0)]
 	[Native]
 	public enum NCUpdateResult : ulong {
+		/// <summary>The widget has new data and may need to update its displayed values, if any.</summary>
 		NewData,
+		/// <summary>The update succeeded, but no new data resulted.</summary>
 		NoData,
-		Failed
+		/// <summary>The update failed.</summary>
+		Failed,
 	}
 
 	/// <summary>Enumerates widget display modes.</summary>
@@ -25,7 +28,9 @@ namespace NotificationCenter {
 	[Deprecated (PlatformName.iOS, 14, 0)]
 	[Native]
 	public enum NCWidgetDisplayMode : long {
+		/// <summary>Indicates that a widget is displayed with compact height.</summary>
 		Compact,
-		Expanded
+		/// <summary>Indicates that a widget is displayed at its full height.</summary>
+		Expanded,
 	}
 }

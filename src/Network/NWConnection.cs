@@ -75,6 +75,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern nw_endpoint_t nw_connection_copy_endpoint (nw_connection_t connection);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWEndpoint? Endpoint {
 			get {
 				var x = nw_connection_copy_endpoint (GetCheckedHandle ());
@@ -87,6 +90,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern nw_parameters_t nw_connection_copy_parameters (nw_connection_t connection);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWParameters? Parameters {
 			get {
 				var x = nw_connection_copy_parameters (GetCheckedHandle ());
@@ -588,11 +594,17 @@ namespace Network {
 			return TransientString.ToStringAndFree (ptr)!;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string Description => nw_connection_copy_description (GetCheckedHandle ());
 
 		[DllImport (Constants.NetworkLibrary)]
 		extern static IntPtr nw_connection_copy_current_path (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWPath? CurrentPath {
 			get {
 				var x = nw_connection_copy_current_path (GetCheckedHandle ());
@@ -628,6 +640,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static /* uint32_t */ uint nw_connection_get_maximum_datagram_size (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public uint MaximumDatagramSize => nw_connection_get_maximum_datagram_size (GetCheckedHandle ());
 
 		[DllImport (Constants.NetworkLibrary)]

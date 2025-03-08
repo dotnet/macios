@@ -52,7 +52,7 @@ namespace CoreText {
 		/// <summary>To be added.</summary>
 		NonMonotonic = (1 << 1),
 		/// <summary>To be added.</summary>
-		HasNonIdentityMatrix = (1 << 2)
+		HasNonIdentityMatrix = (1 << 2),
 	}
 
 #if NET

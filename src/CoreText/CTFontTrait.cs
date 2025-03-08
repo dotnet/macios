@@ -87,7 +87,7 @@ namespace CoreText {
 		Composite = (1 << 14),
 
 		/// <summary>Mask used to extract trait values.</summary>
-		Mask = ((uint) 15 << CTFontTraits.ClassMaskShift)
+		Mask = ((uint) 15 << CTFontTraits.ClassMaskShift),
 	}
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontTraits.h

@@ -295,6 +295,9 @@ namespace CoreImage {
 		}
 
 #if MONOMAC
+		/// <summary>Gets the image that results from applying the filter to <see cref="P:CoreImage.CIFilter.Image" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual CIImage? OutputImage {
 			get { return ValueForKey (CIFilterOutputKey.Image) as CIImage; }
 		}

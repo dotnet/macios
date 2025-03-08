@@ -1185,7 +1185,7 @@ namespace AudioUnit {
 		/// <summary>Indicates an input bus.</summary>
 		Input = 1,
 		/// <summary>Indicates an output bus.</summary>
-		Output = 2
+		Output = 2,
 	}
 
 	public enum AudioUnitParameterOptions : uint {

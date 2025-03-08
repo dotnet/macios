@@ -46,7 +46,7 @@ namespace CoreGraphics {
 		Crop = 1,
 		Bleed = 2,
 		Trim = 3,
-		Art = 4
+		Art = 4,
 	}
 
 	// CGPDFPage.h

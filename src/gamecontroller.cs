@@ -281,34 +281,64 @@ namespace GameController {
 	[DisableDefaultCtor] // return nil handle -> only exposed as getter
 	partial interface GCGamepad {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("controller", ArgumentSemantic.Assign)]
 		GCController Controller { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("valueChangedHandler", ArgumentSemantic.Copy)]
 		GCGamepadValueChangedHandler ValueChangedHandler { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("saveSnapshot")]
 		GCGamepadSnapshot SaveSnapshot { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("dpad")]
 		GCControllerDirectionPad DPad { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("buttonA")]
 		GCControllerButtonInput ButtonA { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("buttonB")]
 		GCControllerButtonInput ButtonB { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("buttonX")]
 		GCControllerButtonInput ButtonX { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("buttonY")]
 		GCControllerButtonInput ButtonY { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>A gamepad with two shoulder buttons, a D-Pad, and a directional button array.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("leftShoulder")]
 		GCControllerButtonInput LeftShoulder { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rightShoulder")]
 		GCControllerButtonInput RightShoulder { get; }
 	}

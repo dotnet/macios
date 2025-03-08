@@ -644,7 +644,7 @@ namespace AudioUnit {
 			var auc = new AudioUnitConnection {
 				SourceAudioUnit = sourceAudioUnit.GetHandle (),
 				SourceOutputNumber = sourceOutputNumber,
-				DestInputNumber = destInputNumber
+				DestInputNumber = destInputNumber,
 			};
 
 			unsafe {
@@ -1464,7 +1464,9 @@ namespace AudioUnit {
 		///         <remarks>To be added.</remarks>
 		public AURenderEventType EventType;
 
-		internal byte reserved1, reserved2, reserved3;
+		internal byte reserved1;
+		internal byte reserved2;
+		internal byte reserved3;
 
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>

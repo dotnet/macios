@@ -156,7 +156,7 @@ namespace AudioToolbox {
 		/// <summary>To be added.</summary>
 		Write = 0x02,
 		/// <summary>To be added.</summary>
-		ReadWrite = 0x03
+		ReadWrite = 0x03,
 	}
 
 	[Flags]
@@ -164,7 +164,7 @@ namespace AudioToolbox {
 		/// <summary>To be added.</summary>
 		EraseFlags = 1,
 		/// <summary>If this flag is set, audio data will be written without page alignment. This will make the data more compact but possibly slow readout.</summary>
-		DontPageAlignAudioData = 2
+		DontPageAlignAudioData = 2,
 	}
 
 	public enum AudioFileProperty { // typedef UInt32 AudioFilePropertyID
@@ -242,7 +242,7 @@ namespace AudioToolbox {
 		/// <summary>To be added.</summary>
 		ForwardAndBackward = 2,
 		/// <summary>To be added.</summary>
-		Backward = 3
+		Backward = 3,
 	}
 
 	public enum AudioFileChunkType : uint // CoreAudio.framework - CoreAudioTypes.h - "four char code IDs"
@@ -305,7 +305,7 @@ namespace AudioToolbox {
 	[Flags]
 	enum BytePacketTranslationFlags : uint  // Stored in UInt32 in AudioBytePacketTranslation - AudioFile.h
 	{
-		IsEstimate = 1
+		IsEstimate = 1,
 	}
 
 #if NET
@@ -683,7 +683,7 @@ namespace AudioToolbox {
 		/// <summary>The region is played normally.</summary>
 		PlayForward = 2,
 		/// <summary>The region is played in reverse.</summary>
-		PlayBackward = 4
+		PlayBackward = 4,
 	}
 
 #if NET

@@ -45,7 +45,7 @@ namespace CoreGraphics {
 		RGB,
 		Gray,
 		CMYK,
-		Lab
+		Lab,
 	}
 
 #if NET

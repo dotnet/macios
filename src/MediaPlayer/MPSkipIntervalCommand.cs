@@ -15,6 +15,9 @@ using ObjCRuntime;
 
 namespace MediaPlayer {
 	public partial class MPSkipIntervalCommand {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double []? PreferredIntervals {
 			get {
 				NSArray a = _PreferredIntervals;

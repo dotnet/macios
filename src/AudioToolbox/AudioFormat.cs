@@ -97,7 +97,7 @@ namespace AudioToolbox {
 		/// <summary>To be added.</summary>
 		UnsupportedDataFormat = 0x666d743f, // 'fmt?'
 		/// <summary>To be added.</summary>
-		UnknownFormat = 0x21666d74  // '!fmt'
+		UnknownFormat = 0x21666d74, // '!fmt'
 
 		// TODO: Not documented
 		// '!dat'
@@ -124,7 +124,7 @@ namespace AudioToolbox {
 		/// <summary>Overall gain is not allowed to exceed 1.0.</summary>
 		MaxUnityGain = 0,
 		/// <summary>Overall loudness remains constant, but gain may be as high as 1.414 (+3dB).</summary>
-		EqualPower = 1
+		EqualPower = 1,
 	}
 
 #if NET
@@ -215,7 +215,7 @@ namespace AudioToolbox {
 		/// <summary>To be added.</summary>
 		SoundField = 3,
 		/// <summary>To be added.</summary>
-		VectorBasedPanning = 4
+		VectorBasedPanning = 4,
 	}
 
 #if NET
@@ -298,7 +298,7 @@ namespace AudioToolbox {
 				Coord0 = Coordinates [0],
 				Coord1 = Coordinates [1],
 				Coord2 = Coordinates [2],
-				GainScale = GainScale
+				GainScale = GainScale,
 			};
 
 			if (OutputChannelMap is not null) {

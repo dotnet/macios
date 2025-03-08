@@ -58,9 +58,9 @@ namespace Mono.ApiTools {
 				if (srcNotSerialized != tgtNotSerialized) {
 					// this is not a breaking change, so only render it if it changed.
 					if (srcNotSerialized) {
-						change.AppendRemoved ($"[NonSerialized]{Environment.NewLine}");
+						change.AppendRemoved ($"[NonSerialized]{Environment.NewLine}", false);
 					} else {
-						change.AppendAdded ($"[NonSerialized]{Environment.NewLine}");
+						change.AppendAdded ($"[NonSerialized]{Environment.NewLine}", false);
 					}
 				}
 
@@ -134,6 +134,8 @@ namespace Mono.ApiTools {
 			var change = new ApiChange (GetDescription (source), State);
 			change.Header = "Modified " + GroupName;
 
+			RenderAttributes (source, target, change);
+
 			if (State.BaseType == "System.Enum") {
 				change.Append (name).Append (" = ");
 				if (srcValue != tgtValue) {
@@ -170,7 +172,7 @@ namespace Mono.ApiTools {
 
 					// Hardcode that changes to ObjCRuntime.Constants.[Sdk]Version aren't breaking.
 					var fullname = GetFullName (source);
-					var breaking = true;
+					var breaking = !source.IsExperimental ();
 					switch (fullname) {
 					case "ObjCRuntime.Constants.Version":
 					case "ObjCRuntime.Constants.SdkVersion":

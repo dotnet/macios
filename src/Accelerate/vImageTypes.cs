@@ -141,7 +141,7 @@ namespace Accelerate {
 		InvalidRowBytes = -21777,
 		InvalidImageFormat = -21778,
 		ColorSyncIsAbsent = -21779,
-		OutOfPlaceOperationRequired = -21780
+		OutOfPlaceOperationRequired = -21780,
 	}
 
 	// anonymous enum - Transform.h
@@ -157,7 +157,7 @@ namespace Accelerate {
 		k11over9_HalfPrecision = 8,
 		k9over11_HalfPrecision = 9,
 		kBT709_ForwardHalfPrecision = 10,
-		kBT709_ReverseHalfPrecision = 11
+		kBT709_ReverseHalfPrecision = 11,
 	};
 
 	// vImageMDTableUsageHint (untyped) - Transform.h
@@ -170,7 +170,7 @@ namespace Accelerate {
 	public enum vImageInterpolationMethod : int {
 		None = 0,
 		Full = 1,
-		Half = 2
+		Half = 2,
 	}
 
 	[Flags]
@@ -186,7 +186,7 @@ namespace Accelerate {
 		TruncateKernel = 64,
 		GetTempBufferSize = 128,
 		PrintDiagnosticsToConsole = 256,
-		NoAllocate = 512
+		NoAllocate = 512,
 	}
 
 #if NET

@@ -956,7 +956,7 @@ public class TestClass {
 					]
 				) {
 					ExportPropertyData = new (selector: "name"),
-					BindAs = new ("Foundation.NSNumber"),
+					BindAs = new (ReturnTypeForNSObject ("Foundation.NSNumber")),
 				}
 			];
 		}

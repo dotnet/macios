@@ -52,7 +52,7 @@ namespace CoreFoundation {
 		/// <summary>The number of seconds specified in the call to <see cref="M:CoreFoundation.CFRunLoop.RunInMode(Foundation.NSString,System.Double,System.Boolean)" /> elapsed.</summary>
 		TimedOut = 3,
 		/// <summary>An event from a source was handled, and the developer specified that a single source should be processed on the call to <see cref="M:CoreFoundation.CFRunLoop.RunInMode(Foundation.NSString,System.Double,System.Boolean)" /></summary>
-		HandledSource = 4
+		HandledSource = 4,
 	}
 
 	// CFRunLoop.h

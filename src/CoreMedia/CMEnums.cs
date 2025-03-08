@@ -20,14 +20,22 @@ namespace CoreMedia {
 	/// <summary>An enumeration whose values specify valid types of media.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMMediaType : uint {
+		/// <summary>To be added.</summary>
 		Video = 1986618469, // 'vide'
+		/// <summary>To be added.</summary>
 		Audio = 1936684398, // 'soun'
+		/// <summary>To be added.</summary>
 		Muxed = 1836415096, // 'muxx'
+		/// <summary>To be added.</summary>
 		Text = 1952807028, // 'text'
+		/// <summary>To be added.</summary>
 		ClosedCaption = 1668047728, // 'clcp'
+		/// <summary>To be added.</summary>
 		Subtitle = 1935832172, // 'sbtl'
+		/// <summary>To be added.</summary>
 		TimeCode = 1953325924, // 'tmcd'
 							   // note: the 4CC was obsoleted, i.e. Metadata is a new 4CC
+		/// <summary>To be added.</summary>
 		Metadata = 0x6D657461, // 'meta'
 		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		TaggedBufferGroup = ('t' << 24) + ('b' << 16) + ('g' << 8) + 'r', // 'tbgr',
@@ -37,8 +45,11 @@ namespace CoreMedia {
 	/// <summary>An enumeration whose values specify a closed-captioning standard.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMClosedCaptionFormatType : uint {
+		/// <summary>To be added.</summary>
 		CEA608 = 0x63363038, // 'c608',
+		/// <summary>To be added.</summary>
 		CEA708 = 0x63373038, // 'c708',
+		/// <summary>To be added.</summary>
 		ATSC = 0x61746363, // 'atcc'
 	}
 
@@ -46,9 +57,13 @@ namespace CoreMedia {
 	/// <summary>An enumeration whose values specify valid types of multiplexed media.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMMuxedStreamType : uint {
+		/// <summary>To be added.</summary>
 		MPEG1System = 0x6D703173, // 'mp1s',
+		/// <summary>To be added.</summary>
 		MPEG2Transport = 0x6D703274, // 'mp2t',
+		/// <summary>To be added.</summary>
 		MPEG2Program = 0x6D703270, // 'mp2p',
+		/// <summary>To be added.</summary>
 		DV = 0x64762020, // 'dv  '
 	}
 
@@ -64,9 +79,13 @@ namespace CoreMedia {
 	/// <summary>An enumeration whose values specify types of timed metadata.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMMetadataFormatType : uint {
+		/// <summary>To be added.</summary>
 		ICY = 0x69637920, // 'icy '
+		/// <summary>To be added.</summary>
 		ID3 = 0x69643320, // 'id3 '
+		/// <summary>To be added.</summary>
 		Boxed = 0x6d656278, // 'mebx'
+		/// <summary>To be added.</summary>
 		Emsg = 0x656d7367, // 'emsg'
 	}
 
@@ -142,21 +161,37 @@ namespace CoreMedia {
 	/// <summary>Enumerates pixel formats.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMPixelFormat : uint {
+		/// <summary>To be added.</summary>
 		AlphaRedGreenBlue32bits = 32,
+		/// <summary>To be added.</summary>
 		BlueGreenRedAlpha32bits = 1111970369,
+		/// <summary>To be added.</summary>
 		RedGreenBlue24bits = 24,
+		/// <summary>To be added.</summary>
 		BigEndian555_16bits = 16,
+		/// <summary>To be added.</summary>
 		BigEndian565_16bits = 1110783541,
+		/// <summary>To be added.</summary>
 		LittleEndian555_16bits = 1278555445,
+		/// <summary>To be added.</summary>
 		LittleEndian565_16bits = 1278555701,
+		/// <summary>To be added.</summary>
 		LittleEndian5551_16bits = 892679473,
+		/// <summary>To be added.</summary>
 		YpCbCr422_8bits = 846624121,
+		/// <summary>To be added.</summary>
 		YpCbCr422yuvs_8bits = 2037741171,
+		/// <summary>To be added.</summary>
 		YpCbCr444_8bits = 1983066168,
+		/// <summary>To be added.</summary>
 		YpCbCrA4444_8bits = 1983131704,
+		/// <summary>To be added.</summary>
 		YpCbCr422_16bits = 1983000886,
+		/// <summary>To be added.</summary>
 		YpCbCr422_10bits = 1983000880,
+		/// <summary>To be added.</summary>
 		YpCbCr444_10bits = 1983131952,
+		/// <summary>To be added.</summary>
 		IndexedGrayWhiteIsZero_8bits = 40,
 	}
 
@@ -164,7 +199,9 @@ namespace CoreMedia {
 	///     <remarks>This setting controls whether <see cref="M:CoreMedia.CMAttachmentBearer.PropagateAttachments(CoreMedia.ICMAttachmentBearer,CoreMedia.ICMAttachmentBearer)" /> will propagate a given attachment.</remarks>
 	[MacCatalyst (13, 1)]
 	public enum CMAttachmentMode : uint {
+		/// <summary>Indicates that the attachment does not propagate.</summary>
 		ShouldNotPropagate = 0,
+		/// <summary>Indicates that the attachment will propagate.</summary>
 		ShouldPropagate = 1,
 	};
 
@@ -172,15 +209,25 @@ namespace CoreMedia {
 	/// <summary>An enumeration whose values specify errors relating to <see cref="T:CoreMedia.CMBlockBuffer" />s.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMBlockBufferError : int {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		StructureAllocationFailed = -12700,
+		/// <summary>To be added.</summary>
 		BlockAllocationFailed = -12701,
+		/// <summary>To be added.</summary>
 		BadCustomBlockSource = -12702,
+		/// <summary>To be added.</summary>
 		BadOffsetParameter = -12703,
+		/// <summary>To be added.</summary>
 		BadLengthParameter = -12704,
+		/// <summary>To be added.</summary>
 		BadPointerParameter = -12705,
+		/// <summary>To be added.</summary>
 		EmptyBlockBuffer = -12706,
+		/// <summary>To be added.</summary>
 		UnallocatedBlock = -12707,
+		/// <summary>To be added.</summary>
 		InsufficientSpace = -12708,
 	}
 
@@ -189,9 +236,13 @@ namespace CoreMedia {
 	[Flags]
 	[MacCatalyst (13, 1)]
 	public enum CMBlockBufferFlags : uint {
+		/// <summary>To be added.</summary>
 		AssureMemoryNow = (1 << 0),
+		/// <summary>To be added.</summary>
 		AlwaysCopyData = (1 << 1),
+		/// <summary>To be added.</summary>
 		DontOptimizeDepth = (1 << 2),
+		/// <summary>To be added.</summary>
 		PermitEmptyReference = (1 << 3),
 	}
 
@@ -199,9 +250,13 @@ namespace CoreMedia {
 	/// <summary>An enumeration whose values specify errors relating to <see cref="T:CoreMedia.CMFormatDescription" />s.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMFormatDescriptionError : int {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		InvalidParameter = -12710,
+		/// <summary>To be added.</summary>
 		AllocationFailed = -12711,
+		/// <summary>To be added.</summary>
 		ValueNotAvailable = -12718,
 	}
 
@@ -239,10 +294,15 @@ namespace CoreMedia {
 	/// <summary>An enumeration whose values specify errors relating to <see cref="T:CoreMedia.CMClock" />s.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMClockError : int {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		MissingRequiredParameter = -12745,
+		/// <summary>To be added.</summary>
 		InvalidParameter = -12746,
+		/// <summary>To be added.</summary>
 		AllocationFailed = -12747,
+		/// <summary>To be added.</summary>
 		UnsupportedOperation = -12756,
 	}
 

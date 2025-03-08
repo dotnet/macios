@@ -55,7 +55,7 @@ namespace CoreAnimation {
 		/// <summary>Left and right sides of the layer are antialiased.</summary>
 		LeftRightEdges = LeftEdge | RightEdge,
 		/// <summary>Top and bottom side of the layer are antialiased.</summary>
-		TopBottomEdges = TopEdge | BottomEdge
+		TopBottomEdges = TopEdge | BottomEdge,
 	}
 
 	[MacCatalyst (13, 1)]
@@ -92,7 +92,7 @@ namespace CoreAnimation {
 		/// <summary>To be added.</summary>
 		HeightSizable = 1 << 4,
 		/// <summary>To be added.</summary>
-		MaxYMargin = 1 << 5
+		MaxYMargin = 1 << 5,
 	}
 
 	// typedef int -> CAConstraintLayoutManager.h

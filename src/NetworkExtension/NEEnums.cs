@@ -11,7 +11,7 @@ namespace NetworkExtension {
 		ConnectionFailed = 3,
 		ConfigurationStale = 4,
 		ConfigurationReadWriteFailed = 5,
-		ConfigurationUnknown = 6
+		ConfigurationUnknown = 6,
 	}
 
 	[MacCatalyst (13, 1)]
@@ -22,7 +22,7 @@ namespace NetworkExtension {
 		Connecting = 2,
 		Connected = 3,
 		Reasserting = 4,
-		Disconnecting = 5
+		Disconnecting = 5,
 	}
 
 	[MacCatalyst (13, 1)]
@@ -30,7 +30,7 @@ namespace NetworkExtension {
 	public enum NEVpnIkeAuthenticationMethod : long {
 		None = 0,
 		Certificate = 1,
-		SharedSecret = 2
+		SharedSecret = 2,
 	}
 
 	[MacCatalyst (13, 1)]
@@ -60,7 +60,7 @@ namespace NetworkExtension {
 		SHA160 = 2,
 		SHA256 = 3,
 		SHA384 = 4,
-		SHA512 = 5
+		SHA512 = 5,
 	}
 
 	[MacCatalyst (13, 1)]
@@ -69,7 +69,7 @@ namespace NetworkExtension {
 		None = 0,
 		Low = 1,
 		Medium = 2,
-		High = 3
+		High = 3,
 	}
 
 	[MacCatalyst (13, 1)]
@@ -104,7 +104,7 @@ namespace NetworkExtension {
 		Connect = 1,
 		Disconnect = 2,
 		EvaluateConnection = 3,
-		Ignore = 4
+		Ignore = 4,
 	}
 
 	[MacCatalyst (13, 1)]
@@ -122,8 +122,10 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NEEvaluateConnectionRuleAction : long {
+		/// <summary>Attempts to start the VPN connection if the host name cannot be resolved.</summary>
 		ConnectIfNeeded = 1,
-		NeverConnect = 2
+		/// <summary>Does not attempt to start the VPN connection.</summary>
+		NeverConnect = 2,
 	}
 
 	[MacCatalyst (13, 1)]
@@ -148,10 +150,15 @@ namespace NetworkExtension {
 	[ErrorDomain ("NEFilterErrorDomain")]
 	[Native]
 	public enum NEFilterManagerError : long {
+		/// <summary>No error occurred.</summary>
 		None = 0,
+		/// <summary>The configuration is invalid.</summary>
 		Invalid = 1,
+		/// <summary>The configuration is disabled.</summary>
 		Disabled = 2,
+		/// <summary>Another app or process modified the configuration since it was last loaded.</summary>
 		Stale = 3,
+		/// <summary>The configuration could not be removed.</summary>
 		CannotBeRemoved = 4,
 		ConfigurationPermissionDenied = 5,
 		ConfigurationInternalError = 6,
@@ -164,24 +171,35 @@ namespace NetworkExtension {
 		None = 0,
 		Invalid = 1,
 		Canceled = 2,
-		Failed = 3
+		Failed = 3,
 	}
 
 	[MacCatalyst (13, 1)]
 	[ErrorDomain ("NEAppProxyErrorDomain")]
 	[Native]
 	public enum NEAppProxyFlowError : long {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		NotConnected = 1,
+		/// <summary>To be added.</summary>
 		PeerReset = 2,
+		/// <summary>To be added.</summary>
 		HostUnreachable = 3,
+		/// <summary>To be added.</summary>
 		InvalidArgument = 4,
+		/// <summary>To be added.</summary>
 		Aborted = 5,
+		/// <summary>To be added.</summary>
 		Refused = 6,
+		/// <summary>To be added.</summary>
 		TimedOut = 7,
+		/// <summary>To be added.</summary>
 		Internal = 8,
 		// iOS 9.3
+		/// <summary>The datagram was too large.</summary>
 		DatagramTooLarge = 9,
+		/// <summary>A read operation was already pending.</summary>
 		ReadAlreadyPending = 10,
 	}
 
@@ -223,7 +241,7 @@ namespace NetworkExtension {
 		Invalid = 0,
 		Satisfied = 1,
 		Unsatisfied = 2,
-		Satisfiable = 3
+		Satisfiable = 3,
 	}
 
 	[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnectionState' instead.")]
@@ -238,7 +256,7 @@ namespace NetworkExtension {
 		Waiting = 2,
 		Connected = 3,
 		Disconnected = 4,
-		Cancelled = 5
+		Cancelled = 5,
 	}
 
 	[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnectionState' instead.")]
@@ -253,7 +271,7 @@ namespace NetworkExtension {
 		Preparing = 2,
 		Ready = 3,
 		Failed = 4,
-		Cancelled = 5
+		Cancelled = 5,
 	}
 
 	/// <summary>Enumerates tunnel routing methods.</summary>
@@ -275,13 +293,20 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NEHotspotHelperCommandType : long {
+		/// <summary>No command.</summary>
 		None = 0,
+		/// <summary>Command to filter scan list.</summary>
 		FilterScanList = 1,
+		/// <summary>Command to evaluate the network.</summary>
 		Evaluate = 2,
+		/// <summary>Command to authenticate on the network.</summary>
 		Authenticate = 3,
+		/// <summary>Command to present a user interface.</summary>
 		PresentUI = 4,
+		/// <summary>Command to maintain the network connection.</summary>
 		Maintain = 5,
-		Logoff = 6
+		/// <summary>Command to log off.</summary>
+		Logoff = 6,
 	}
 
 	/// <summary>Enumerates values that describe how likely a Hotspot Helper will be able to handle a network.</summary>
@@ -290,9 +315,12 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NEHotspotHelperConfidence : long {
+		/// <summary>Indicates the inability to cope.</summary>
 		None = 0,
+		/// <summary>Indicates low confidence.</summary>
 		Low = 1,
-		High = 2
+		/// <summary>Indicates high confidence.</summary>
+		High = 2,
 	}
 
 	/// <summary>Enumerates Hotspot Helper command response results.</summary>
@@ -301,13 +329,17 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NEHotspotHelperResult : long {
+		/// <summary>The command succeeded.</summary>
 		Success = 0,
+		/// <summary>The command failed.</summary>
 		Failure = 1,
+		/// <summary>In response to an "authenticate" command, user interaction is needed.</summary>
 		UIRequired = 2,
 		CommandNotRecognized = 3,
 		AuthenticationRequired = 4,
+		/// <summary>The network is not supported.</summary>
 		UnsupportedNetwork = 5,
-		TemporaryFailure = 6
+		TemporaryFailure = 6,
 	}
 #endif
 

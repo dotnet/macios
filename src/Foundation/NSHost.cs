@@ -110,7 +110,7 @@ namespace Foundation {
 			return new IPHostEntry {
 				HostName = Name!,
 				AddressList = Addresses,
-				Aliases = Names
+				Aliases = Names,
 			};
 		}
 

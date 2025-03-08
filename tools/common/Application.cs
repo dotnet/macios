@@ -133,7 +133,6 @@ namespace Xamarin.Bundler {
 #endif
 		public List<string> WarnOnTypeRef = new List<string> ();
 
-		public bool? EnableCoopGC;
 		public bool EnableSGenConc;
 		public bool EnableProfiling;
 		public bool? DebugTrack;
@@ -864,12 +863,6 @@ namespace Xamarin.Bundler {
 				}
 			}
 
-			if (Platform == ApplePlatform.WatchOS && EnableCoopGC.HasValue && !EnableCoopGC.Value)
-				throw ErrorHelper.CreateError (88, Errors.MT0088);
-
-			if (!EnableCoopGC.HasValue)
-				EnableCoopGC = Platform == ApplePlatform.WatchOS;
-
 			SetObjectiveCExceptionMode ();
 			SetManagedExceptionMode ();
 
@@ -1405,8 +1398,6 @@ namespace Xamarin.Bundler {
 			case MarshalManagedExceptionMode.Default:
 				if (Driver.IsDotNet) {
 					MarshalManagedExceptions = MarshalManagedExceptionMode.ThrowObjectiveCException;
-				} else if (EnableCoopGC.Value) {
-					MarshalManagedExceptions = MarshalManagedExceptionMode.ThrowObjectiveCException;
 				} else {
 					switch (Platform) {
 					case ApplePlatform.iOS:
@@ -1426,8 +1417,6 @@ namespace Xamarin.Bundler {
 				break;
 			case MarshalManagedExceptionMode.UnwindNativeCode:
 			case MarshalManagedExceptionMode.Disable:
-				if (EnableCoopGC.Value)
-					throw ErrorHelper.CreateError (89, Errors.MT0089, "--marshal-managed-exceptions", MarshalManagedExceptions.ToString ().ToLowerInvariant ());
 				if (XamarinRuntime == XamarinRuntime.CoreCLR)
 					throw ErrorHelper.CreateError (185, Errors.MX0185 /* The option '{0}' cannot take the value '{1}' when using CoreCLR. */, "--marshal-managed-exceptions", MarshalManagedExceptions.ToString ().ToLowerInvariant ());
 				break;
@@ -1439,8 +1428,6 @@ namespace Xamarin.Bundler {
 			switch (MarshalObjectiveCExceptions) {
 			case MarshalObjectiveCExceptionMode.Default:
 				if (Driver.IsDotNet) {
-					MarshalObjectiveCExceptions = MarshalObjectiveCExceptionMode.ThrowManagedException;
-				} else if (EnableCoopGC.Value) {
 					MarshalObjectiveCExceptions = MarshalObjectiveCExceptionMode.ThrowManagedException;
 				} else {
 					switch (Platform) {
@@ -1460,8 +1447,6 @@ namespace Xamarin.Bundler {
 				break;
 			case MarshalObjectiveCExceptionMode.UnwindManagedCode:
 			case MarshalObjectiveCExceptionMode.Disable:
-				if (EnableCoopGC.Value)
-					throw ErrorHelper.CreateError (89, Errors.MT0089, "--marshal-objectivec-exceptions", MarshalObjectiveCExceptions.ToString ().ToLowerInvariant ());
 				if (XamarinRuntime == XamarinRuntime.CoreCLR)
 					throw ErrorHelper.CreateError (185, Errors.MX0185 /* The option '{0}' cannot take the value '{1}' when using CoreCLR. */, "--marshal-objectivec-exceptions", MarshalObjectiveCExceptions.ToString ().ToLowerInvariant ());
 				break;

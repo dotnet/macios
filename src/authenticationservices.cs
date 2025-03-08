@@ -83,6 +83,7 @@ namespace AuthenticationServices {
 	[Native]
 	[ErrorDomain ("ASWebAuthenticationSessionErrorDomain")]
 	public enum ASWebAuthenticationSessionErrorCode : long {
+		/// <summary>The login was cancelled.</summary>
 		CanceledLogin = 1,
 		PresentationContextNotProvided = 2,
 		PresentationContextInvalid = 3,
@@ -258,9 +259,15 @@ namespace AuthenticationServices {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASCredentialIdentityStoreState {
+		/// <summary>Gets whether the credential identity store is enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; }
 
+		/// <summary>Gets whether the credential identity store can be incrementally updated.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("supportsIncrementalUpdates")]
 		bool SupportsIncrementalUpdates { get; }
 	}
@@ -414,9 +421,15 @@ namespace AuthenticationServices {
 		[Export ("credentialWithUser:password:")]
 		ASPasswordCredential Create (string user, string password);
 
+		/// <summary>The identifier associated with the password.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("user")]
 		string User { get; }
 
+		/// <summary>The password associated with the user.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("password")]
 		string Password { get; }
 	}

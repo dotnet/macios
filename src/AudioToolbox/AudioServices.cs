@@ -56,7 +56,7 @@ namespace AudioToolbox {
 	enum AudioServicesPropertyKey : uint // UInt32 AudioServicesPropertyID
 	{
 		IsUISound = 0x69737569, // 'isui'
-		CompletePlaybackIfAppDies = 0x69666469  // 'ifdi'
+		CompletePlaybackIfAppDies = 0x69666469, // 'ifdi'
 	}
 
 	static class AudioServices {

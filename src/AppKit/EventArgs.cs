@@ -38,7 +38,7 @@ namespace AppKit {
 		Unknown,
 		Shown,
 		Hidden,
-		Renamed
+		Renamed,
 	}
 
 	public partial class NSFontCollectionChangedEventArgs {
@@ -64,7 +64,7 @@ namespace AppKit {
 	public enum NSPopoverCloseReason {
 		Unknown,
 		Standard,
-		DetachToWindow
+		DetachToWindow,
 	}
 
 	public partial class NSPopoverCloseEventArgs {

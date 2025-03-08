@@ -51,6 +51,7 @@ stages:
         statusContext: 'VSTS: simulator tests' 
         uploadArtifacts: true
         use1ES: false
+        isPR: ${{ parameters.isPR }}
 
 - stage: generate_api_diff
   displayName: 'API diff'

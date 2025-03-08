@@ -52,7 +52,7 @@ namespace SystemConfiguration {
 #endif
 		IsWWAN = 1 << 18,
 		/// <summary>The connection will happen automatically (alias for ConnectionOnTraffic).</summary>
-		ConnectionAutomatic = ConnectionOnTraffic
+		ConnectionAutomatic = ConnectionOnTraffic,
 	}
 
 	// http://developer.apple.com/library/ios/#documentation/SystemConfiguration/Reference/SCNetworkReachabilityRef/Reference/reference.html

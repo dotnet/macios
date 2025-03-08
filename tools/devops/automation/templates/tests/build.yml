@@ -230,6 +230,10 @@ steps:
     github_token: ${{ parameters.gitHubToken }}
   timeoutInMinutes: 250
 
+- task: UseDotNet@2
+  inputs:
+    version: 9.x
+
 - bash: |
     set -x
     set -e

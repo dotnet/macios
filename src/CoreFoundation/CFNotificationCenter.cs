@@ -32,7 +32,7 @@ namespace CoreFoundation {
 		/// <summary>Notifications are kept around in a queue, and they are all delivered serially when the application returns to the foreground.   Some notifications might be dropped if the queue overflows.</summary>
 		Hold = 3,
 		/// <summary>The notifications are delivered immediately.  Any pending notifications that might be queued are delivered first.</summary>
-		DeliverImmediately = 4
+		DeliverImmediately = 4,
 	}
 
 	//
@@ -140,7 +140,7 @@ namespace CoreFoundation {
 				centerHandle = Handle,
 				nameHandle = strHandle,
 				observedObject = objectToObserve.GetHandle (),
-				listener = notificationHandler
+				listener = notificationHandler,
 			};
 
 			//

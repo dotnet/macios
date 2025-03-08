@@ -165,10 +165,10 @@ namespace Security {
 				val = SecMatchLimit.MatchLimitOne;
 			else {
 				n = NSNumber.FromInt32 (max);
-#pragma warning disable RBI0014				
+#pragma warning disable RBI0014
 				val = n.Handle;
-#pragma warning restore RBI0014				
-			}			
+#pragma warning restore RBI0014
+			}
 
 			dict.LowlevelSetObject (val, SecItem.MatchLimit);
 			GC.KeepAlive (n);

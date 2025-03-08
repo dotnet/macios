@@ -35,7 +35,7 @@ namespace Network {
 		public NWMultiplexGroup (NWEndpoint endpoint)
 			: base (nw_group_descriptor_create_multiplex (endpoint.GetCheckedHandle ()), true)
 		{
-			GC.KeepAlive(endpoint);
+			GC.KeepAlive (endpoint);
 		}
 	}
 }

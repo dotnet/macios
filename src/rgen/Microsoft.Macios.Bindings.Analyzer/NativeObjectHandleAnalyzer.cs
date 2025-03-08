@@ -7,9 +7,8 @@ using System.Linq;
 
 namespace Microsoft.Macios.Bindings.Analyzer;
 
-[DiagnosticAnalyzer(LanguageNames.CSharp)]
-public class NativeObjectHandleAnalyzer : DiagnosticAnalyzer
-{
+[DiagnosticAnalyzer (LanguageNames.CSharp)]
+public class NativeObjectHandleAnalyzer : DiagnosticAnalyzer {
 	internal static readonly DiagnosticDescriptor RBI0014 = new (
 		"RBI0014",
 		new LocalizableResourceString (nameof (Resources.RBI0014Title), Resources.ResourceManager, typeof (Resources)),
@@ -22,128 +21,114 @@ public class NativeObjectHandleAnalyzer : DiagnosticAnalyzer
 			typeof (Resources))
 	);
 
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(RBI0014);
+	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create (RBI0014);
 
-    public override void Initialize(AnalysisContext context)
-    {
-        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-        context.EnableConcurrentExecution();
-        context.RegisterSyntaxNodeAction(AnalyzeNode, SyntaxKind.SimpleMemberAccessExpression);
-    }
+	public override void Initialize (AnalysisContext context)
+	{
+		context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+		context.EnableConcurrentExecution ();
+		context.RegisterSyntaxNodeAction (AnalyzeNode, SyntaxKind.SimpleMemberAccessExpression);
+	}
 
-    private bool IsINativeObject(ITypeSymbol typeSymbol)
-    {
-        return typeSymbol.AllInterfaces.Any(i => i.ToDisplayString() == "ObjCRuntime.INativeObject");
-    }
+	private bool IsINativeObject (ITypeSymbol typeSymbol)
+	{
+		return typeSymbol.AllInterfaces.Any (i => i.ToDisplayString () == "ObjCRuntime.INativeObject");
+	}
 
-    private bool IsSafeMethod(IMethodSymbol methodSymbol)
-    {
-        var name = methodSymbol.Name;
-        // White-list couple of methods that return one of the input parameters or a static
-        // object.
-        return name == "ThrowOnNull" || name == "DangerousAutorelease" || name == "GetConstant";
-    }
+	private bool IsSafeMethod (IMethodSymbol methodSymbol)
+	{
+		var name = methodSymbol.Name;
+		// White-list couple of methods that return one of the input parameters or a static
+		// object.
+		return name == "ThrowOnNull" || name == "DangerousAutorelease" || name == "GetConstant";
+	}
 
-	private void AnalyzeNode(SyntaxNodeAnalysisContext context)
-    {
-        if (context.Node is not MemberAccessExpressionSyntax memberAccess)
-            return;
+	private void AnalyzeNode (SyntaxNodeAnalysisContext context)
+	{
+		if (context.Node is not MemberAccessExpressionSyntax memberAccess)
+			return;
 
-        if (memberAccess.Name.Identifier.Text != "Handle" &&
-            memberAccess.Name.Identifier.Text != "GetHandle" &&
-            memberAccess.Name.Identifier.Text != "GetNonNullHandle" &&
-            memberAccess.Name.Identifier.Text != "GetCheckedHandle")
-            return;
+		if (memberAccess.Name.Identifier.Text != "Handle" &&
+			memberAccess.Name.Identifier.Text != "GetHandle" &&
+			memberAccess.Name.Identifier.Text != "GetNonNullHandle" &&
+			memberAccess.Name.Identifier.Text != "GetCheckedHandle")
+			return;
 
-        var symbol = context.SemanticModel.GetSymbolInfo(memberAccess.Expression).Symbol;
-        if (symbol == null)
-            return;
+		var symbol = context.SemanticModel.GetSymbolInfo (memberAccess.Expression).Symbol;
+		if (symbol is null)
+			return;
 
-        if ((symbol as IParameterSymbol)?.IsThis == true)
-            return;
+		if ((symbol as IParameterSymbol)?.IsThis == true)
+			return;
 
-        if (symbol is IMethodSymbol methodSymbol)
-        {
-            if (IsINativeObject(methodSymbol.ReturnType) &&
-                !IsSafeMethod(methodSymbol))
-            {
-                // Calling Handle directly on a value returned from method is wrong because
-                // the object is immediately collectible.                
-                var diagnostic = Diagnostic.Create(RBI0014, memberAccess.GetLocation(), symbol.Name);
-                context.ReportDiagnostic(diagnostic);
-            }
-            return;
-        }
+		if (symbol is IMethodSymbol methodSymbol) {
+			if (IsINativeObject (methodSymbol.ReturnType) &&
+				!IsSafeMethod (methodSymbol)) {
+				// Calling Handle directly on a value returned from method is wrong because
+				// the object is immediately collectible.                
+				var diagnostic = Diagnostic.Create (RBI0014, memberAccess.GetLocation (), symbol.Name);
+				context.ReportDiagnostic (diagnostic);
+			}
+			return;
+		}
 
-        var type = (symbol as ILocalSymbol)?.Type ?? (symbol as IParameterSymbol)?.Type;
-        if (type is null || !IsINativeObject(type))
-            return;
+		var type = (symbol as ILocalSymbol)?.Type ?? (symbol as IParameterSymbol)?.Type;
+		if (type is null || !IsINativeObject (type))
+			return;
 
-        // Ignore variables that are wrapped in using block
-        var usingStatement = memberAccess.Parent?.FirstAncestorOrSelf<UsingStatementSyntax>();
-        while (usingStatement is not null)
-        {
-            if (usingStatement.Expression is not null)
-            {
-                var resourceSymbol = context.SemanticModel.GetSymbolInfo(usingStatement.Expression).Symbol;
-                if (resourceSymbol is not null && SymbolEqualityComparer.Default.Equals(resourceSymbol, symbol))
-                    return;
-            }
-            if (usingStatement.Declaration is not null)
-            {
-                foreach (var variable in usingStatement.Declaration.Variables)
-                {
-                    var declaredSymbol = context.SemanticModel.GetDeclaredSymbol(variable);
-                    if (declaredSymbol is not null && SymbolEqualityComparer.Default.Equals(declaredSymbol, symbol))
-                        return;
-                }
-            }
-            usingStatement = usingStatement.Parent?.FirstAncestorOrSelf<UsingStatementSyntax>();
-        }
+		// Ignore variables that are wrapped in using block
+		var usingStatement = memberAccess.Parent?.FirstAncestorOrSelf<UsingStatementSyntax> ();
+		while (usingStatement is not null) {
+			if (usingStatement.Expression is not null) {
+				var resourceSymbol = context.SemanticModel.GetSymbolInfo (usingStatement.Expression).Symbol;
+				if (resourceSymbol is not null && SymbolEqualityComparer.Default.Equals (resourceSymbol, symbol))
+					return;
+			}
+			if (usingStatement.Declaration is not null) {
+				foreach (var variable in usingStatement.Declaration.Variables) {
+					var declaredSymbol = context.SemanticModel.GetDeclaredSymbol (variable);
+					if (declaredSymbol is not null && SymbolEqualityComparer.Default.Equals (declaredSymbol, symbol))
+						return;
+				}
+			}
+			usingStatement = usingStatement.Parent?.FirstAncestorOrSelf<UsingStatementSyntax> ();
+		}
 
-        bool accessedAfter = false;
-        var block = memberAccess.FirstAncestorOrSelf<BlockSyntax>();
-        if (block is null)
-        {
-            // We are not in a block. This can happen when handles are accessed in calls in constructor
-            // parameters, or if we are in an expression body. For constructors we have to check the
-            // method body for GC.KeepAlive or other references.
-            var constructor = memberAccess.FirstAncestorOrSelf<ConstructorDeclarationSyntax>();
-            if (constructor is not null &&
-                constructor.Body?.Statements is {} statements &&
-                statements.Count > 0)
-            {
-                var df = context.SemanticModel.AnalyzeDataFlow(statements.First(), statements.Last());
-                if (df is null)
-                    return;
-                accessedAfter = df.ReadInside.Contains(symbol);
-            }
-            else
-            {
-                // Assume expressions don't access the variable
-            }
-        }
-        else
-        {
-            // Search just the immediate containing block for variable access
-            var statement = memberAccess.FirstAncestorOrSelf<StatementSyntax>();
-            if (statement == null)
-                return;
+		bool accessedAfter = false;
+		var block = memberAccess.FirstAncestorOrSelf<BlockSyntax> ();
+		if (block is null) {
+			// We are not in a block. This can happen when handles are accessed in calls in constructor
+			// parameters, or if we are in an expression body. For constructors we have to check the
+			// method body for GC.KeepAlive or other references.
+			var constructor = memberAccess.FirstAncestorOrSelf<ConstructorDeclarationSyntax> ();
+			if (constructor is not null &&
+				constructor.Body?.Statements is { } statements &&
+				statements.Count > 0) {
+				var df = context.SemanticModel.AnalyzeDataFlow (statements.First (), statements.Last ());
+				if (df is null)
+					return;
+				accessedAfter = df.ReadInside.Contains (symbol);
+			} else {
+				// Assume expressions don't access the variable
+			}
+		} else {
+			// Search just the immediate containing block for variable access
+			var statement = memberAccess.FirstAncestorOrSelf<StatementSyntax> ();
+			if (statement is null)
+				return;
 
-            int index = block.Statements.IndexOf(statement);
-            if (index + 1 < block.Statements.Count)
-            {
-                var df = context.SemanticModel.AnalyzeDataFlow(block.Statements[index + 1], block.Statements.Last());
-                if (df is null)
-                    return;
-                accessedAfter = df.ReadInside.Contains(symbol);
-            }
-        }
+			int index = block.Statements.IndexOf (statement);
+			if (index + 1 < block.Statements.Count) {
+				var df = context.SemanticModel.AnalyzeDataFlow (block.Statements [index + 1], block.Statements.Last ());
+				if (df is null)
+					return;
+				accessedAfter = df.ReadInside.Contains (symbol);
+			}
+		}
 
-        if (!accessedAfter)
-        {
-            var diagnostic = Diagnostic.Create(RBI0014, memberAccess.GetLocation(), symbol.Name);
-            context.ReportDiagnostic(diagnostic);
-        }
-    }
+		if (!accessedAfter) {
+			var diagnostic = Diagnostic.Create (RBI0014, memberAccess.GetLocation (), symbol.Name);
+			context.ReportDiagnostic (diagnostic);
+		}
+	}
 }

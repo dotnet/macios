@@ -409,7 +409,7 @@ namespace AudioToolbox {
 			completionRoutine = routine;
 
 			unsafe {
-				AudioServicesError result =  AudioServicesAddSystemSoundCompletion (
+				AudioServicesError result = AudioServicesAddSystemSoundCompletion (
 														  soundId,
 														  runLoop.GetHandle (),
 														  IntPtr.Zero, // runLoopMode should be enum runLoopMode.GetHandle (),

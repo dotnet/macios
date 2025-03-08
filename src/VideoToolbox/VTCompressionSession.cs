@@ -196,8 +196,8 @@ namespace VideoToolbox {
 				callbackHandle.IsAllocated ? (staticCback) : null,
 				GCHandle.ToIntPtr (callbackHandle),
 				&ret);
-			GC.KeepAlive (encoderSpecification);			
-			GC.KeepAlive (sourceImageBufferAttributes);			
+			GC.KeepAlive (encoderSpecification);
+			GC.KeepAlive (sourceImageBufferAttributes);
 
 			if (result == VTStatus.Ok && ret != IntPtr.Zero)
 				return new VTCompressionSession (ret, true) {

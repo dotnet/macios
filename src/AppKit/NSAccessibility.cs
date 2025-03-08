@@ -60,7 +60,7 @@ namespace AppKit {
 			if (notification is null)
 				throw new ArgumentNullException ("notification");
 
-			NSAccessibilityPostNotificationWithUserInfo (element.Handle, notification.Handle, userInfo.GetHandle ());			
+			NSAccessibilityPostNotificationWithUserInfo (element.Handle, notification.Handle, userInfo.GetHandle ());
 			GC.KeepAlive (element);
 			GC.KeepAlive (notification);
 			GC.KeepAlive (userInfo);

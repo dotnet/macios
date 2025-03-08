@@ -60,7 +60,7 @@ namespace UIKit {
 			// FIXME: Should this run DangerousRetain + DangerousAutorelease?
 #pragma warning disable RBI0014
 			return retval.GetHandle ();
-#pragma warning restore RBI0014			
+#pragma warning restore RBI0014
 		}
 	} /* class SDUIConfigurationColorTransformerHandler */
 

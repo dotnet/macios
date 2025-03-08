@@ -632,7 +632,7 @@ namespace Network {
 			if (x == IntPtr.Zero)
 				return null;
 			GC.KeepAlive (definition);
-		return new NWProtocolMetadata (x, owns: true);
+			return new NWProtocolMetadata (x, owns: true);
 		}
 
 		public T? GetProtocolMetadata<T> (NWProtocolDefinition definition) where T : NWProtocolMetadata

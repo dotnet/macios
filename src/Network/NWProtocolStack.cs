@@ -144,8 +144,7 @@ namespace Network {
 					}
 				}
 			}
-			set
-			{
+			set {
 				nw_protocol_stack_set_transport_protocol (GetCheckedHandle (), value.GetHandle ());
 				GC.KeepAlive (value);
 			}

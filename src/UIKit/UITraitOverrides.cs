@@ -72,7 +72,7 @@ namespace UIKit {
 #if NET
 			var ret = global::ObjCRuntime.Messaging.bool_objc_msgSend_NativeHandle (this.Handle, Selector.GetHandle ("containsTrait:"), trait__handle__);
 #else
-			var ret = global::ObjCRuntime.Messaging.bool_objc_msgSend_IntPtr (this.Handle, Selector.GetHandle ("containsTrait:"), trait__handle__);			
+			var ret = global::ObjCRuntime.Messaging.bool_objc_msgSend_IntPtr (this.Handle, Selector.GetHandle ("containsTrait:"), trait__handle__);
 #endif
 			GC.KeepAlive (trait);
 			return ret != 0;

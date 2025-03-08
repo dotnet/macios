@@ -28,7 +28,7 @@ namespace UIKit {
 			if (ao is null)
 				return false;
 			bool result = ao.Handle == Handle;
-			GC.KeepAlive(ao);
+			GC.KeepAlive (ao);
 			return result;
 		}
 

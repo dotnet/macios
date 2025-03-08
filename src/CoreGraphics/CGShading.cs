@@ -109,7 +109,7 @@ namespace CoreGraphics {
 									 function.GetCheckedHandle (), extendStart.AsByte (), extendEnd.AsByte ()), true);
 			GC.KeepAlive (colorspace);
 			GC.KeepAlive (function);
-			return result;	
+			return result;
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]

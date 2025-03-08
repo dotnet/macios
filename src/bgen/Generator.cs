@@ -3465,7 +3465,7 @@ public partial class Generator : IMemberGatherer {
 		foreach (var pi in mi.GetParameters ()) {
 			var cap = propInfo?.SetMethod == mi ? (ICustomAttributeProvider) propInfo : (ICustomAttributeProvider) pi;
 			var bind_as = GetBindAsAttribute (cap);
-			var pit = bind_as == null ? pi.ParameterType : bind_as.Type;
+			var pit = bind_as is null ? pi.ParameterType : bind_as.Type;
 			if (TypeManager.IsWrappedType (pit) || TypeCache.INativeObject.IsAssignableFrom (pit)) {
 				print ($"GC.KeepAlive ({pi.Name.GetSafeParamName ()});");
 			}

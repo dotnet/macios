@@ -134,7 +134,7 @@ namespace Foundation {
 				throw new ArgumentNullException (nameof (obj));
 
 			using (var pool = new NSAutoreleasePool ()) {
-				TKey[] ret = NSArray.ArrayFromHandle<TKey> (_AllKeysForObject (obj.Handle));
+				TKey [] ret = NSArray.ArrayFromHandle<TKey> (_AllKeysForObject (obj.Handle));
 				GC.KeepAlive (obj);
 				return ret;
 			}

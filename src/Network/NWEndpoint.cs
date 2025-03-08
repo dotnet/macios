@@ -303,7 +303,7 @@ namespace Network {
 			rv.DangerousRetain ();
 			rv.DangerousAutorelease ();
 			return rv.Handle;
-#pragma warning restore RBI0014			
+#pragma warning restore RBI0014
 		}
 #endif // !COREBUILD
 

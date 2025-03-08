@@ -21,8 +21,7 @@ namespace DeviceDiscoveryExtension {
 	public partial class DDDevice {
 		public NWEndpoint? NetworkEndpoint {
 			get => _NetworkEndpoint != nw_endpoint_t.Zero ? new NWEndpoint (_NetworkEndpoint, false) : null;
-			set
-			{
+			set {
 				_NetworkEndpoint = value.GetHandle ();
 				GC.KeepAlive (value);
 			}

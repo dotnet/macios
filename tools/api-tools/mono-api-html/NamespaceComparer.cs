@@ -42,6 +42,14 @@ namespace Mono.ApiTools {
 			comparer = new ClassComparer (state);
 		}
 
+		public override string GroupName {
+			get { return "namespaces"; }
+		}
+
+		public override string ElementName {
+			get { return "namespace"; }
+		}
+
 		public void Compare (XElement source, XElement target)
 		{
 			var s = source.Element ("namespaces");

@@ -17,7 +17,7 @@ namespace AppKit {
 	[Native]
 	public enum NSPrintRenderingQuality : long {
 		Best,
-		Responsive
+		Responsive,
 	}
 
 	[NoMacCatalyst]
@@ -25,7 +25,7 @@ namespace AppKit {
 	public enum NSCorrectionIndicatorType : long {
 		Default = 0,
 		Reversion,
-		Guesses
+		Guesses,
 	}
 
 	[NoMacCatalyst]
@@ -36,7 +36,7 @@ namespace AppKit {
 		Rejected,
 		Ignored,
 		Edited,
-		Reverted
+		Reverted,
 	}
 
 	[NoMacCatalyst]
@@ -45,7 +45,7 @@ namespace AppKit {
 		Contains = 0,
 		StartsWith = 1,
 		FullWord = 2,
-		EndsWith = 3
+		EndsWith = 3,
 	}
 
 	[NoMacCatalyst]
@@ -67,7 +67,7 @@ namespace AppKit {
 		AdobeJapan2 = 4,
 
 		/// <summary>Adobe-Korea1</summary>
-		AdobeKorea1 = 5
+		AdobeKorea1 = 5,
 	}
 
 	[NoMacCatalyst]
@@ -81,6 +81,6 @@ namespace AppKit {
 	{
 		None = 0x0,
 		Spelling = 0x1,
-		Grammar = 0x2
+		Grammar = 0x2,
 	}
 }

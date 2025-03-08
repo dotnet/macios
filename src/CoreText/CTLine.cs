@@ -50,7 +50,7 @@ namespace CoreText {
 		/// <summary>To be added.</summary>
 		End = 1,
 		/// <summary>To be added.</summary>
-		Middle = 2
+		Middle = 2,
 	}
 
 	// defined as CFOptionFlags (unsigned long [long] = nuint) - /System/Library/Frameworks/CoreText.framework/Headers/CTLine.h

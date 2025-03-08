@@ -30,6 +30,9 @@
     <Compile Include="..\ObjCBindings\BindingTypeAttribute.cs">
       <Link>BindingTypeAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\ObjCBindings\BindingTypeTag.cs">
+      <Link>BindingTypeTag.cs</Link>
+    </Compile>
     <None Include="$(RepositoryPath)\docs\website\generator-errors.md">
       <Link>generator-errors.md</Link>
     </None>

@@ -10,7 +10,7 @@ namespace Photos {
 	public enum PHImageContentMode : long {
 		AspectFit = 0,
 		AspectFill = 1,
-		Default = AspectFit
+		Default = AspectFit,
 	}
 
 	// NSInteger -> PHImageManager.h
@@ -20,7 +20,7 @@ namespace Photos {
 	public enum PHImageRequestOptionsVersion : long {
 		Current = 0,
 		Unadjusted,
-		Original
+		Original,
 	}
 
 	// NSInteger -> PHImageManager.h
@@ -30,7 +30,7 @@ namespace Photos {
 	public enum PHImageRequestOptionsDeliveryMode : long {
 		Opportunistic = 0,
 		HighQualityFormat = 1,
-		FastFormat = 2
+		FastFormat = 2,
 	}
 
 	// NSInteger -> PHImageManager.h
@@ -40,7 +40,7 @@ namespace Photos {
 	public enum PHImageRequestOptionsResizeMode : long {
 		None = 0,
 		Fast,
-		Exact
+		Exact,
 	}
 
 	// NSInteger -> PHImageManager.h
@@ -49,7 +49,7 @@ namespace Photos {
 	[Native]
 	public enum PHVideoRequestOptionsVersion : long {
 		Current = 0,
-		Original
+		Original,
 	}
 
 	// NSInteger -> PHImageManager.h
@@ -60,7 +60,7 @@ namespace Photos {
 		Automatic = 0,
 		HighQualityFormat = 1,
 		MediumQualityFormat = 2,
-		FastFormat = 3
+		FastFormat = 3,
 	}
 
 	// NSInteger -> PhotosTypes.h
@@ -74,7 +74,7 @@ namespace Photos {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		MomentList = 1,
 		Folder = 2,
-		SmartFolder = 3
+		SmartFolder = 3,
 	}
 
 	/// <summary>Enumerates values that indicate the subtype of the collection.</summary>
@@ -113,7 +113,7 @@ namespace Photos {
 		CreateContent = 4,
 		RearrangeContent = 5,
 		Delete = 6,
-		Rename = 7
+		Rename = 7,
 	}
 
 	// NSInteger -> PhotosTypes.h
@@ -121,14 +121,17 @@ namespace Photos {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHAssetCollectionType : long {
+		/// <summary>A collection of related songs.</summary>
 		Album = 1,
+		/// <summary>A collection of songs whose relatedness was algorithmically determined.</summary>
 		SmartAlbum = 2,
 
+		/// <summary>A collection of photos taken at a particular time.</summary>
 		[Deprecated (PlatformName.iOS, 13, 0)]
 		[Deprecated (PlatformName.TvOS, 13, 0)]
 		[Unavailable (PlatformName.MacOSX)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
-		Moment = 3
+		Moment = 3,
 	}
 
 	// NSInteger -> PhotosTypes.h
@@ -136,33 +139,56 @@ namespace Photos {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHAssetCollectionSubtype : long {
+		/// <summary>Album created in Photos app.</summary>
 		AlbumRegular = 2,
+		/// <summary>An event synced to the device from iPhoto.</summary>
 		AlbumSyncedEvent = 3,
+		/// <summary>A faces group synced from iPhoto.</summary>
 		AlbumSyncedFaces = 4,
+		/// <summary>An album synced to the device from iPhoto.</summary>
 		AlbumSyncedAlbum = 5,
+		/// <summary>Album imported from a camera or other external device.</summary>
 		AlbumImported = 6,
+		/// <summary>The user's iCloud Photo Stream.</summary>
 		AlbumMyPhotoStream = 100,
+		/// <summary>A shared iCloud album.</summary>
 		AlbumCloudShared = 101,
+		/// <summary>A smart album of no particular subtype.</summary>
 		SmartAlbumGeneric = 200,
+		/// <summary>A smart album that holds all the panoramas in the library.</summary>
 		SmartAlbumPanoramas = 201,
+		/// <summary>A smart album that holds all the videos in the library.</summary>
 		SmartAlbumVideos = 202,
+		/// <summary>A smart album that holds all assets marked as a favorite.</summary>
 		SmartAlbumFavorites = 203,
+		/// <summary>A smart album that contains all the timelapse videos in the library.</summary>
 		SmartAlbumTimelapses = 204,
+		/// <summary>A smart album that holds all assets hidden from Moments view.</summary>
 		SmartAlbumAllHidden = 205,
+		/// <summary>A smart album that holds recently added assets.</summary>
 		SmartAlbumRecentlyAdded = 206,
+		/// <summary>A smart album that holds all the burst sequences in the library.</summary>
 		SmartAlbumBursts = 207,
+		/// <summary>A smart album that contains all the slow-motion videos in the library.</summary>
 		SmartAlbumSlomoVideos = 208,
+		/// <summary>A smart album that holds all the assets created by the user (as opposed to, for instance, iCloud Shared Albums).</summary>
 		SmartAlbumUserLibrary = 209,
+		/// <summary>A smart album that holds self portraits.</summary>
 		[MacCatalyst (13, 1)]
 		SmartAlbumSelfPortraits = 210,
+		/// <summary>A smart album that holds screenshots.</summary>
 		[MacCatalyst (13, 1)]
 		SmartAlbumScreenshots = 211,
+		/// <summary>A smart album that groups Depth Effect images.</summary>
 		[MacCatalyst (13, 1)]
 		SmartAlbumDepthEffect = 212,
+		/// <summary>A smart album that groups Live Photo images.</summary>
 		[MacCatalyst (13, 1)]
 		SmartAlbumLivePhotos = 213,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		SmartAlbumAnimated = 214,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		SmartAlbumLongExposures = 215,
 		[iOS (13, 0)]
@@ -176,7 +202,8 @@ namespace Photos {
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		SmartAlbumSpatial = 219,
 
-		Any = Int64.MaxValue
+		/// <summary>A bitmask of all possible subtypes.</summary>
+		Any = Int64.MaxValue,
 	}
 
 	// NSUInteger -> PhotosTypes.h
@@ -184,10 +211,13 @@ namespace Photos {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHAssetEditOperation : long {
+		/// <summary>The edit performs no operation on the asset.</summary>
 		None = 0,
+		/// <summary>The edit deletes the asset.</summary>
 		Delete = 1,
+		/// <summary>The edit changes the content of the asset.</summary>
 		Content = 2,
-		Properties = 3
+		Properties = 3,
 	}
 
 	// NSInteger -> PhotosTypes.h
@@ -198,7 +228,7 @@ namespace Photos {
 		Unknown = 0,
 		Image = 1,
 		Video = 2,
-		Audio = 3
+		Audio = 3,
 	}
 
 	// NSUInteger -> PhotosTypes.h
@@ -208,6 +238,7 @@ namespace Photos {
 	[Flags]
 	public enum PHAssetMediaSubtype : ulong {
 		None = 0,
+		/// <summary>A panoramic photo.</summary>
 		PhotoPanorama = (1 << 0),
 		PhotoHDR = (1 << 1),
 		[MacCatalyst (13, 1)]
@@ -230,9 +261,12 @@ namespace Photos {
 	[Native]
 	[Flags]
 	public enum PHAssetBurstSelectionType : ulong {
+		/// <summary>The asset was not picked as a favorite.</summary>
 		None = 0,
+		/// <summary>The Photos app picked the asset as a favorite.</summary>
 		AutoPick = (1 << 0),
-		UserPick = (1 << 1)
+		/// <summary>The user picked the asset as a favorite.</summary>
+		UserPick = (1 << 1),
 	}
 
 	/// <summary>Enumerates the current authorization allowed by the application user.</summary>
@@ -285,7 +319,7 @@ namespace Photos {
 		None = 0,
 		UserLibrary = (1 << 0),
 		CloudShared = (1 << 1),
-		iTunesSynced = (1 << 2)
+		iTunesSynced = (1 << 2),
 	}
 
 	/// <summary>Enumerates Live Photo frame types.</summary>
@@ -293,7 +327,7 @@ namespace Photos {
 	[Native]
 	public enum PHLivePhotoFrameType : long {
 		Photo,
-		Video
+		Video,
 	}
 
 	[MacCatalyst (13, 1)]

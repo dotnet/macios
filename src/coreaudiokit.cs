@@ -38,8 +38,11 @@ namespace CoreAudioKit {
 	[NoMacCatalyst]
 	[Flags]
 	public enum AUGenericViewDisplayFlags : uint {
+		/// <summary>To be added.</summary>
 		TitleDisplay = 1u << 0,
+		/// <summary>To be added.</summary>
 		PropertiesDisplay = 1u << 1,
+		/// <summary>To be added.</summary>
 		ParametersDisplay = 1u << 2,
 	}
 
@@ -199,6 +202,9 @@ namespace CoreAudioKit {
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect bounds);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("showingAppNames")]
 		bool ShowingAppNames { [Bind ("isShowingAppNames")] get; set; }
 
@@ -221,15 +227,27 @@ namespace CoreAudioKit {
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect bounds);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("playing")]
 		bool Playing { [Bind ("isPlaying")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("recording")]
 		bool Recording { [Bind ("isRecording")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("connected")]
 		bool Connected { [Bind ("isConnected")] get; }
 

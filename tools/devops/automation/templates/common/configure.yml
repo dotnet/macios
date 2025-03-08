@@ -39,6 +39,11 @@ parameters:
   type: string
   default: ''
 
+- name: isPR
+  displayName: Is PR build
+  type: boolean
+  default: false
+
 steps:
 - template: checkout.yml
   parameters:
@@ -58,6 +63,7 @@ steps:
   env:
     GITHUB_TOKEN: $(GitHub.Token)
     ACCESSTOKEN: $(AzDoBuildAccess.Token)
+    IS_PR: ${{ parameters.isPR }}
   name: labels
   displayName: 'Configure build'
 

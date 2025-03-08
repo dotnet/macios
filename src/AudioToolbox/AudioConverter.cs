@@ -94,7 +94,7 @@ namespace AudioToolbox {
 		/// <summary>Represents low quality.</summary>
 		Low = 0x20,
 		/// <summary>Represents minimum quality.</summary>
-		Min = 0
+		Min = 0,
 	}
 
 	public enum AudioConverterPrimeMethod // typedef UInt32 AudioConverterPropertyID
@@ -104,7 +104,7 @@ namespace AudioToolbox {
 		/// <summary>Represents primes with trailing input frames only.</summary>
 		Normal = 1,
 		/// <summary>Represents primes with both leading and trailing input frames to be silence.</summary>
-		None = 2
+		None = 2,
 	}
 
 	[Flags]

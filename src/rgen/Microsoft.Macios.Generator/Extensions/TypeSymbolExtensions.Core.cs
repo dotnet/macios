@@ -476,4 +476,32 @@ static partial class TypeSymbolExtensions {
 
 		return availability;
 	}
+
+	/// <summary>
+	/// A type is considered wrapped if it is an Interface or is an child of the NSObject class or the NSObject
+	/// itself.
+	/// </summary>
+	/// <param name="symbol">The symbol to check if it is wrapped.</param>
+	/// <param name="isNSObject">If the symbol is a NSObject of inherits from an NSObject.</param>
+	/// <returns>True if the ymbol is considered to be wrapped.</returns>
+	public static bool IsWrapped (this ITypeSymbol symbol, bool isNSObject)
+		=> symbol.TypeKind == TypeKind.Interface || isNSObject;
+
+	/// <summary>
+	/// A type is considered wrapped if it is an Interface or is an child of the NSObject class or the NSObject
+	/// itself.
+	/// </summary>
+	/// <param name="symbol">The symbol to check if it is wrapped.</param>
+	/// <returns>True if the symbol is considered to be wrapped.</returns>
+	public static bool IsWrapped (this ITypeSymbol symbol)
+	{
+		symbol.GetInheritance (
+			isNSObject: out bool isNSObject,
+			isNativeObject: out bool _,
+			isDictionaryContainer: out bool _,
+			parents: out ImmutableArray<string> _,
+			interfaces: out ImmutableArray<string> _);
+		// either we are a NSObject or we are a subclass of it
+		return IsWrapped (symbol, isNSObject);
+	}
 }

@@ -92,6 +92,9 @@ namespace Foundation {
 			return Runtime.GetINativeObject<TKey> (_LookupMember (probe.Handle), false);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public TKey AnyObject {
 			get {
 				return Runtime.GetINativeObject<TKey> (_AnyObject, false);

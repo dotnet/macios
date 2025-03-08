@@ -38,14 +38,14 @@ namespace CoreServices {
 		Viewer = 2,
 		Editor = 4,
 		Shell = 8,
-		All = 0xffffffff
+		All = 0xffffffff,
 	}
 
 	[Flags]
 	public enum LSAcceptanceFlags : uint /* always 32-bit uint */
 	{
 		Default = 1,
-		AllowLoginUI = 2
+		AllowLoginUI = 2,
 	}
 
 	public enum LSResult {
@@ -81,7 +81,7 @@ namespace CoreServices {
 		NoLaunchPermission = -10826,
 		NoExecutable = -10827,
 		NoClassicEnvironment = -10828,
-		MultipleSessionsNotSupported = -10829
+		MultipleSessionsNotSupported = -10829,
 	}
 
 #if NET

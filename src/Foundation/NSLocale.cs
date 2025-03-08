@@ -36,6 +36,9 @@ using ObjCRuntime;
 namespace Foundation {
 
 	public partial class NSLocale {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string Identifier {
 			get {
 				return (string) (NSString) ObjectForKey (_Identifier);
@@ -47,6 +50,9 @@ namespace Foundation {
 			return DisplayNameForKey (_Identifier, value);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string LanguageCode {
 			get {
 				return (string) (NSString) ObjectForKey (_LanguageCode);
@@ -58,6 +64,9 @@ namespace Foundation {
 			return DisplayNameForKey (_LanguageCode, value);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string CountryCode {
 			get {
 				return (string) (NSString) ObjectForKey (_CountryCode);
@@ -69,66 +78,99 @@ namespace Foundation {
 			return DisplayNameForKey (_CountryCode, value);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string ScriptCode {
 			get {
 				return (string) (NSString) ObjectForKey (_ScriptCode);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string VariantCode {
 			get {
 				return (string) (NSString) ObjectForKey (_VariantCode);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSCharacterSet ExemplarCharacterSet {
 			get {
 				return ObjectForKey (_ExemplarCharacterSet) as NSCharacterSet;
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSCalendar Calendar {
 			get {
 				return ObjectForKey (_Calendar) as NSCalendar;
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string CollationIdentifier {
 			get {
 				return (string) (NSString) ObjectForKey (_CollationIdentifier);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool UsesMetricSystem {
 			get {
 				return ((NSNumber) ObjectForKey (_UsesMetricSystem)).Int32Value != 0;
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string MeasurementSystem {
 			get {
 				return (string) (NSString) ObjectForKey (_MeasurementSystem);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string DecimalSeparator {
 			get {
 				return (string) (NSString) ObjectForKey (_DecimalSeparator);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string GroupingSeparator {
 			get {
 				return (string) (NSString) ObjectForKey (_GroupingSeparator);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string CurrencySymbol {
 			get {
 				return (string) (NSString) ObjectForKey (_CurrencySymbol);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string CurrencyCode {
 			get {
 				return (string) (NSString) ObjectForKey (_CurrencyCode);
@@ -140,30 +182,45 @@ namespace Foundation {
 			return DisplayNameForKey (_CurrencyCode, value);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string CollatorIdentifier {
 			get {
 				return (string) (NSString) ObjectForKey (_CollatorIdentifier);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string QuotationBeginDelimiterKey {
 			get {
 				return (string) (NSString) ObjectForKey (_QuotationBeginDelimiterKey);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string QuotationEndDelimiterKey {
 			get {
 				return (string) (NSString) ObjectForKey (_QuotationEndDelimiterKey);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string AlternateQuotationBeginDelimiterKey {
 			get {
 				return (string) (NSString) ObjectForKey (_AlternateQuotationBeginDelimiterKey);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string AlternateQuotationEndDelimiterKey {
 			get {
 				return (string) (NSString) ObjectForKey (_AlternateQuotationEndDelimiterKey);

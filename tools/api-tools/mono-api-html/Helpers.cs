@@ -47,25 +47,64 @@ namespace Mono.ApiTools {
 			return n.Value;
 		}
 
+		// if this member/type or potentially any of its parents is marked as experimental
+		public static bool IsExperimental (this XElement self, bool recursive, out string diagnosticId)
+		{
+			return TryGetAttributeProperty (self, "System.Diagnostics.CodeAnalysis.ExperimentalAttribute", recursive, out diagnosticId);
+		}
+
+		// if this member/type or any of its parents is marked as experimental
+		public static bool IsExperimental (this XElement self)
+		{
+			return IsExperimental (self, true, out var _);
+		}
+
+		public static IEnumerable<XElement> EnumerateAttributes (this XElement self, string attributeName = null)
+		{
+			if (self is null)
+				yield break;
+
+			var attribs = self.Element ("attributes");
+			if (attribs is null)
+				yield break;
+
+			foreach (var attrib in attribs.Elements ("attribute")) {
+				if (!string.IsNullOrEmpty (attributeName) && attrib.GetAttribute ("name") != attributeName)
+					continue;
+				yield return attrib;
+			}
+		}
+
+		static bool TryGetAttributeProperty (this XElement self, string attributeName, bool recursive, out string firstArgument)
+		{
+			firstArgument = null;
+
+			if (self is null)
+				return false;
+
+			foreach (var ca in self.EnumerateAttributes (attributeName)) {
+				var args = ca.Element ("arguments");
+				if (args is not null) {
+					var firstCtorArgument = args.Elements ("argument")?.FirstOrDefault ();
+					if (firstCtorArgument is not null && firstCtorArgument.GetAttribute ("type") == "System.String") {
+						firstArgument = firstCtorArgument.GetAttribute ("value");
+					}
+				}
+
+				return true;
+			}
+
+			if (recursive)
+				return TryGetAttributeProperty (self.Parent, attributeName, recursive, out firstArgument);
+
+			return false;
+		}
+
 		// null == no obsolete, String.Empty == no description
 		public static string GetObsoleteMessage (this XElement self)
 		{
-			var cattrs = self.Element ("attributes");
-			if (cattrs is null)
-				return null;
-
-			foreach (var ca in cattrs.Elements ("attribute")) {
-				if (ca.GetAttribute ("name") != "System.ObsoleteAttribute")
-					continue;
-				var props = ca.Element ("properties");
-				if (props is null)
-					return String.Empty; // no description
-				foreach (var p in props.Elements ("property")) {
-					if (p.GetAttribute ("name") != "Message")
-						continue;
-					return p.GetAttribute ("value");
-				}
-			}
+			if (TryGetAttributeProperty (self, "System.ObsoleteAttribute", false, out string message))
+				return message ?? String.Empty;
 			return null;
 		}
 

@@ -36,10 +36,8 @@ namespace AppKit {
 			MarkDirty ();
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
 		[Register ("__NSGestureRecognizerToken")]
 		[Preserve (Conditional = true)]
 		public class Token : NSObject {
@@ -49,10 +47,8 @@ namespace AppKit {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
 		[Register ("__NSGestureRecognizerParameterlessToken")]
 		[Preserve (Conditional = true)]
 		public class ParameterlessDispatch : Token {
@@ -71,10 +67,8 @@ namespace AppKit {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
 		[Register ("__NSGestureRecognizerParametrizedToken")]
 		[Preserve (Conditional = true)]
 		public class ParametrizedDispatch : Token {

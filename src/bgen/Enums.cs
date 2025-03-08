@@ -314,7 +314,7 @@ public partial class Generator {
 					print ($"/// <param name=\"handle\">The native handle with the name of the constant to retrieve.</param>");
 				}
 
-				print ("public static {0} GetValueFromHandle ({1} handle)", type.Name, NativeHandleType);
+				print ("public static {0} GetValue ({1} handle)", type.Name, NativeHandleType);
 				print ("{");
 				indent++;
 				print ("using var str = Runtime.GetNSObject<{0}> (handle){1};", backingFieldTypeName, !nullable ? "!" : "");

@@ -45,19 +45,30 @@ using CoreServices;
 
 namespace Foundation {
 	public enum NSStreamSocketSecurityLevel {
+		/// <summary>Do not use any security protocol.</summary>
 		None,
+		/// <summary>Require the use of SSLv2.</summary>
 		SslV2,
+		/// <summary>Require the use of SSLv3.</summary>
 		SslV3,
+		/// <summary>Require the use of TLSv1.</summary>
 		TlsV1,
+		/// <summary>Indicates that the two parties should negotiate a protocol, and it should use the most secure socket protocol available between the client and the server.</summary>
 		NegotiatedSsl,
+		/// <summary>The protocol is not known (can only happen if you build using an old SDK and run on a new device, and you have set the setting to "negotiated" and then you read the value back).</summary>
 		Unknown,
 	}
 
 	public enum NSStreamServiceType {
+		/// <summary>Default: the stream does not support a background, video or voice operation.</summary>
 		Default,
+		/// <summary>This stream is used to provide VoIP traffic.</summary>
 		VoIP,
+		/// <summary>This stream is used to provide video..</summary>
 		Video,
+		/// <summary>This stream is providing a background service</summary>
 		Background,
+		/// <summary>This stream is used to provide voice audio.</summary>
 		Voice,
 	}
 
@@ -68,10 +79,25 @@ namespace Foundation {
 	[SupportedOSPlatform ("tvos")]
 #endif
 	public class NSStreamSocksOptions {
+		/// <summary>SOCKS proxy hostname.</summary>
+		///         <remarks>
+		///         </remarks>
 		public string HostName;
+		/// <summary>SOCKS proxy port.</summary>
+		///         <remarks>
+		///         </remarks>
 		public int HostPort;
+		/// <summary>SOCKS proxy version (4 or 5).</summary>
+		///         <remarks>
+		/// 	  Currently only the values 4 (for SOCKS4) and five (for SOCKS5) are supported.
+		/// 	</remarks>
 		public int Version;
+		/// <summary>Username for the SOCKS proxy user</summary>
+		///         <remarks>
+		///         </remarks>
 		public string Username;
+		/// <summary>Password for the SOCKS proxy user.</summary>
+		///         <remarks>To be added.</remarks>
 		public string Password;
 	}
 
@@ -85,6 +111,21 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>Settings for using a SOCKS proxy server.</summary>
+		///         <value>.</value>
+		///         <remarks>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// myStream.SocksOptions = new NSStreamSocksOptions () {
+		///     HostName = "socks.xamarin.com",
+		///     HostPort = 12765,
+		///     Username = settings.User,
+		///     Passowrd = settings.Password,
+		///     Version  = 5 /* SOCKS5 */
+		/// };
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		public NSStreamSocksOptions SocksOptions {
 			get {
 				var d = this [SocksProxyConfigurationKey] as NSDictionary;
@@ -130,6 +171,23 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>Controls the security protocol is used for the connection (none, SSL, TLS, negotiated).</summary>
+		///         <value>The default does not use any security protocols.</value>
+		///         <remarks>
+		///           <para>
+		/// 	    This setting allows developers to configure which security
+		/// 	    protocol is used to transfer the data on the stream, from
+		/// 	    nothing, to a specific version of Transport Layer Security
+		/// 	    (TLS) to its predecessor Secure Socket Layer (SSL) or the
+		/// 	    best possible.
+		/// 	  </para>
+		///           <para>
+		/// 	    The recommended value is
+		/// 	    NSStreamSocketSecurityLevel.NegotiatedSsl which will pick
+		/// 	    the best available protocol between the client and the
+		/// 	    server.
+		/// 	  </para>
+		///         </remarks>
 		public NSStreamSocketSecurityLevel SocketSecurityLevel {
 			get {
 				var k = this [SocketSecurityLevelKey] as NSString;
@@ -169,18 +227,38 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>NSData containing the stream data that you have written so far.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSData DataWrittenToMemoryStream {
 			get {
 				return this [DataWrittenToMemoryStreamKey] as NSData;
 			}
 		}
 
+		/// <summary>Absolute offset of the stream.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSNumber FileCurrentOffset {
 			get {
 				return this [FileCurrentOffsetKey] as NSNumber;
 			}
 		}
 
+		/// <summary>The service type that the stream is providing.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para>
+		/// 	    The service type of an NSStream determine which kind of
+		/// 	    service a stream is providing.  The Background and Video and
+		/// 	    VoIP affect the audio routing and can control whether an application is suspended or not.
+		/// 	  </para>
+		///         </remarks>
 		public NSStreamServiceType ServiceType {
 			get {
 				var v = this [NetworkServiceType] as NSString;

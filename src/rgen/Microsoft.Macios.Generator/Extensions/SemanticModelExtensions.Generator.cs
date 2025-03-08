@@ -29,7 +29,7 @@ static partial class SemanticModelExtensions {
 				BindingType.Category => new BindingInfo (symbol.GetBindingData<ObjCBindings.Category> ()),
 				BindingType.Class => new BindingInfo (symbol.GetBindingData<ObjCBindings.Class> ()),
 				BindingType.Protocol => new BindingInfo (symbol.GetBindingData<ObjCBindings.Protocol> ()),
-				BindingType.SmartEnum => new BindingInfo (BindingType.SmartEnum, symbol.GetBindingData ()),
+				BindingType.SmartEnum => new BindingInfo (symbol.GetBindingData<ObjCBindings.SmartEnum> ()),
 				_ => default,
 			};
 		}

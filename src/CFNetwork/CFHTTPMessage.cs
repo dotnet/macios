@@ -242,7 +242,7 @@ namespace CoreServices {
 		enum CFStreamErrorHTTPAuthentication {
 			TypeUnsupported = -1000,
 			BadUserName = -1001,
-			BadPassword = -1002
+			BadPassword = -1002,
 		}
 
 		AuthenticationException GetException (CFStreamErrorHTTPAuthentication code)

@@ -6,9 +6,11 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Macios.Generator.DataModel;
 using Xunit;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
+using static Microsoft.Macios.Generator.Tests.TestDataFactory;
 
 namespace Microsoft.Macios.Generator.Tests.Emitters;
 
@@ -143,6 +145,108 @@ public class BindingSyntaxFactoryRuntimeTests {
 	void StringFromHandleTests (ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
 	{
 		var declaration = StringFromHandle (arguments);
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+
+	class TestDataNSNumberFromHandleTests : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+
+			yield return [
+				ReturnTypeForBool (),
+				"NSNumber.ToBool"
+			];
+
+			yield return [
+				ReturnTypeForInt (),
+				"NSNumber.ToInt32"
+			];
+
+			yield return [
+				ReturnTypeForInt (isUnsigned: true),
+				"NSNumber.ToUInt32"
+			];
+
+			yield return [
+				ReturnTypeForShort (),
+				"NSNumber.ToInt16"
+			];
+
+			yield return [
+				ReturnTypeForShort (isUnsigned: true),
+				"NSNumber.ToUInt16"
+			];
+
+			yield return [
+				ReturnTypeForLong (),
+				"NSNumber.ToInt64"
+			];
+
+			yield return [
+				ReturnTypeForLong (isUnsigned: true),
+				"NSNumber.ToUInt64"
+			];
+
+			yield return [
+				ReturnTypeForNInt (),
+				"NSNumber.ToNInt"
+			];
+
+			yield return [
+				ReturnTypeForNInt (isUnsigned: true),
+				"NSNumber.ToNUInt"
+			];
+
+			yield return [
+				ReturnTypeForDouble (),
+				"NSNumber.ToDouble"
+			];
+
+			yield return [
+				ReturnTypeForFloat (),
+				"NSNumber.ToFloat"
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataNSNumberFromHandleTests))]
+	void NSNumberFromHandleTests (TypeInfo returnType, string expectedDeclaration)
+	{
+		var declaration = NSNumberFromHandle (returnType);
+		Assert.Equal (expectedDeclaration, declaration?.ToFullString ());
+	}
+
+	class TestDataNSArrayFromHandleFunc : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return [
+				"int",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))),
+				"NSArray.ArrayFromHandleFunc<int> (arg1)"
+			];
+
+			yield return [
+				"string",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2")),
+					Argument (IdentifierName ("arg3"))),
+				"NSArray.ArrayFromHandleFunc<string> (arg1, arg2, arg3)"
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataNSArrayFromHandleFunc))]
+	void NSArrayFromHandleFuncTests (string returnType, ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
+	{
+		var declaration = NSArrayFromHandleFunc (returnType, arguments);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 }

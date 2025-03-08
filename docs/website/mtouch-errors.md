@@ -533,9 +533,13 @@ This indicates a bug in Xamarin.iOS. Please file a new issue on [GitHub](https:/
 
 ### MT0088: The GC must be in cooperative mode for watchOS apps. Please remove the --coop:false argument to mtouch.
 
+Note: this error is not applicable in .NET.
+
 <a name="MT0089"></a>
 
 ### MT0089: The option '\*' cannot take the value '\*' when cooperative mode is enabled for the GC.
+
+Note: this error is not applicable in .NET.
 
 <a name="MT0091"></a>
 

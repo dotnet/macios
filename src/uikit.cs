@@ -2361,8 +2361,8 @@ namespace UIKit {
 		void OpenUrl (NSUrl url, UIApplicationOpenUrlOptions options, [NullAllowed] Action<bool> completion);
 
 		[Export ("canOpenURL:")]
-		[PreSnippet ("if (url is null) return false;", Optimizable = true)] // null not really allowed (but it's a behaviour change with known bug reports)
-		bool CanOpenUrl ([NullAllowed] NSUrl url);
+		[PrologueSnippet ("if (url is null) return false;", Optimizable = true)] // null not really allowed (but it's a behaviour change with known bug reports)
+		bool CanOpenUrl (NSUrl url);
 
 		[Export ("sendEvent:")]
 		void SendEvent (UIEvent uievent);
@@ -2734,7 +2734,7 @@ namespace UIKit {
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("supportedInterfaceOrientationsForWindow:")]
-		UIInterfaceOrientationMask SupportedInterfaceOrientationsForWindow ([Transient] UIWindow window);
+		UIInterfaceOrientationMask SupportedInterfaceOrientationsForWindow ([NullAllowed][Transient] UIWindow window);
 
 		[MacCatalyst (13, 1)]
 		[Field ("UITrackingRunLoopMode")]
@@ -2756,7 +2756,7 @@ namespace UIKit {
 		[ThreadSafe]
 		[RequiresSuper]
 		[Export ("beginBackgroundTaskWithName:expirationHandler:")]
-		nint BeginBackgroundTask (string taskName, Action expirationHandler);
+		nint BeginBackgroundTask ([NullAllowed] string taskName, [NullAllowed] Action expirationHandler);
 
 		[MacCatalyst (13, 1)]
 		[Field ("UIApplicationBackgroundFetchIntervalMinimum")]
@@ -3483,7 +3483,7 @@ namespace UIKit {
 		void FinishedLaunching (UIApplication application);
 
 		[Export ("application:didFinishLaunchingWithOptions:")]
-		bool FinishedLaunching (UIApplication application, NSDictionary launchOptions);
+		bool FinishedLaunching (UIApplication application, [NullAllowed] NSDictionary launchOptions);
 
 		[Export ("applicationDidBecomeActive:")]
 		void OnActivated (UIApplication application);
@@ -3592,13 +3592,14 @@ namespace UIKit {
 		// 6.0
 		//
 		[Export ("application:willFinishLaunchingWithOptions:")]
-		bool WillFinishLaunching (UIApplication application, NSDictionary launchOptions);
+		bool WillFinishLaunching (UIApplication application, [NullAllowed] NSDictionary launchOptions);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("application:supportedInterfaceOrientationsForWindow:")]
-		UIInterfaceOrientationMask GetSupportedInterfaceOrientations (UIApplication application, [Transient] UIWindow forWindow);
+		UIInterfaceOrientationMask GetSupportedInterfaceOrientations (UIApplication application, [NullAllowed][Transient] UIWindow forWindow);
 
+		[return: NullAllowed]
 		[Export ("application:viewControllerWithRestorationIdentifierPath:coder:")]
 		UIViewController GetViewController (UIApplication application, string [] restorationIdentifierComponents, NSCoder coder);
 
@@ -3724,7 +3725,7 @@ namespace UIKit {
 
 		[MacCatalyst (13, 1)]
 		[Export ("application:handleWatchKitExtensionRequest:reply:")]
-		void HandleWatchKitExtensionRequest (UIApplication application, NSDictionary userInfo, Action<NSDictionary> reply);
+		void HandleWatchKitExtensionRequest (UIApplication application, [NullAllowed] NSDictionary userInfo, Action<NSDictionary> reply);
 
 		[MacCatalyst (13, 1)]
 		[Export ("applicationShouldRequestHealthAuthorization:")]

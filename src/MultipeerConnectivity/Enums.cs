@@ -19,7 +19,7 @@ namespace MultipeerConnectivity {
 		/// <summary>Indicates guaranteed delivery.</summary>
 		Reliable,
 		/// <summary>Indicates non-guaranteed delivery.</summary>
-		Unreliable
+		Unreliable,
 	}
 
 	// NSInteger -> MCSession.h
@@ -32,7 +32,7 @@ namespace MultipeerConnectivity {
 		/// <summary>Indicates that the <see cref="T:MultipeerConnectivity.MCSession" /> is in the process of connecting.</summary>
 		Connecting,
 		/// <summary>Indicates that the <see cref="T:MultipeerConnectivity.MCSession" /> is connected.</summary>
-		Connected
+		Connected,
 	}
 
 	// NSInteger -> MCSession.h
@@ -45,7 +45,7 @@ namespace MultipeerConnectivity {
 		/// <summary>Connections should be encrypted.</summary>
 		Required = 1,
 		/// <summary>A preference for unencrypted connections.</summary>
-		None = 2
+		None = 2,
 	}
 
 	// NSInteger -> MCError.h
@@ -67,6 +67,6 @@ namespace MultipeerConnectivity {
 		/// <summary>The relevant operation was cancelled.</summary>
 		Cancelled,
 		/// <summary>Indicates that Multipeer Connectivity is not available.</summary>
-		Unavailable
+		Unavailable,
 	}
 }

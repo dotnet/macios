@@ -75,6 +75,7 @@ namespace Mono.ApiTools {
 
 			var change = new ApiChange (GetDescription (source), State);
 			change.Header = "Modified " + GroupName;
+			RenderAttributes (source, target, change);
 			RenderMethodAttributes (source, target, change);
 			RenderReturnType (source, target, change);
 			RenderName (source, target, change);

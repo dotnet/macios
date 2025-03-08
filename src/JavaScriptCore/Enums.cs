@@ -34,7 +34,7 @@ namespace JavaScriptCore {
 		None = 0,
 		ReadOnly = 1 << 1,
 		DontEnum = 1 << 2,
-		DontDelete = 1 << 3
+		DontDelete = 1 << 3,
 	}
 
 	// typedef unsigned -> JSObjectRef.h
@@ -42,7 +42,7 @@ namespace JavaScriptCore {
 	[Flags]
 	public enum JSClassAttributes : uint {
 		None = 0,
-		NoAutomaticPrototype = 1 << 1
+		NoAutomaticPrototype = 1 << 1,
 	}
 
 	[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), Mac (15, 0)]

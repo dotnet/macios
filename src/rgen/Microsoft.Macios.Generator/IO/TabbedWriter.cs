@@ -228,6 +228,20 @@ abstract class TabbedWriter<T> : IDisposable, IAsyncDisposable where T : TextWri
 #endif
 
 	/// <summary>
+	/// Writes a multi-line documentation comment. Ensure that the raw string used for the docs
+	/// does not have a new line at the end, this method will add it for you.
+	/// </summary>
+	/// <param name="docsRawString">The documentation raw string.</param>
+	/// <returns>The current writer.</returns>
+	public TabbedWriter<T> WriteDocumentation (string docsRawString)
+	{
+		// user the raw string to write the documentation and add a new line
+		WriteRaw (docsRawString);
+		WriteLine ();
+		return this;
+	}
+
+	/// <summary>
 	/// Append a new raw literal by prepending the correct indentation.
 	/// </summary>
 	/// <param name="rawString">The raw string to append.</param>

@@ -51,14 +51,16 @@ namespace CoreFoundation {
 	public enum CFStreamEventType : ulong {
 		/// <summary>No event occurred.</summary>
 		None = 0,
+		/// <summary>The stream was successfully opened.</summary>
 		OpenCompleted = 1,
 		/// <summary>The stream can now be read.</summary>
 		HasBytesAvailable = 2,
+		/// <summary>The stream now be written to.</summary>
 		CanAcceptBytes = 4,
 		/// <summary>An error occurred on the steeam.</summary>
 		ErrorOccurred = 8,
 		/// <summary>The end of the stream has been reached.</summary>
-		EndEncountered = 16
+		EndEncountered = 16,
 	}
 
 	// NSStream.h
@@ -154,6 +156,7 @@ namespace CoreFoundation {
 	public enum CFStreamStatus : long {
 		/// <summary>To be added.</summary>
 		NotOpen = 0,
+		/// <summary>To be added.</summary>
 		Opening,
 		/// <summary>To be added.</summary>
 		Open,
@@ -166,7 +169,7 @@ namespace CoreFoundation {
 		/// <summary>To be added.</summary>
 		Closed,
 		/// <summary>To be added.</summary>
-		Error
+		Error,
 	}
 
 	[SupportedOSPlatform ("ios")]
@@ -177,7 +180,8 @@ namespace CoreFoundation {
 		GCHandle gch;
 		CFRunLoop? loop;
 		NSString? loopMode;
-		bool open, closed;
+		bool open;
+		bool closed;
 
 		#region Stream Constructors
 

@@ -125,7 +125,7 @@ namespace AudioUnit {
 #endif
 		Remote = 0x72696f63, // 'rioc'
 		/// <summary>To be added.</summary>
-		VoiceProcessingIO = 0x7670696f // 'vpio'
+		VoiceProcessingIO = 0x7670696f, // 'vpio'
 	}
 
 	public enum AudioTypeMusicDevice { // OSType in AudioComponentDescription
@@ -320,7 +320,7 @@ namespace AudioUnit {
 	public enum AudioComponentManufacturerType : uint // OSType in AudioComponentDescription
 	{
 		/// <summary>To be added.</summary>
-		Apple = 0x6170706c // little endian 0x6c707061 //'appl'
+		Apple = 0x6170706c, // little endian 0x6c707061 //'appl'
 	}
 
 	[Flags]
@@ -335,7 +335,7 @@ namespace AudioUnit {
 		/// <summary>To be added.</summary>
 		RequiresAsyncInstantiation = 8,
 		/// <summary>To be added.</summary>
-		CanLoadInProcess = 0x10
+		CanLoadInProcess = 0x10,
 	}
 
 #if NET

@@ -600,9 +600,9 @@ static partial class BindingSyntaxFactory {
 		// based on the bindas type call one of the helper factory methods
 		return (Type: parameter.BindAs.Value.Type, IsArray: parameter.Type.IsArray) switch {
 			{ IsArray: true } => GetNSArrayBindFromAuxVariable (parameter),
-			{ Type: "Foundation.NSNumber" } => GetNSNumberAuxVariable (parameter),
-			{ Type: "Foundation.NSValue" } => GetNSValueAuxVariable (parameter),
-			{ Type: "Foundation.NSString" } => GetNSStringSmartEnumAuxVariable(parameter),
+			{ Type.FullyQualifiedName: "Foundation.NSNumber" } => GetNSNumberAuxVariable (parameter),
+			{ Type.FullyQualifiedName: "Foundation.NSValue" } => GetNSValueAuxVariable (parameter),
+			{ Type.FullyQualifiedName: "Foundation.NSString" } => GetNSStringSmartEnumAuxVariable(parameter),
 			_ => null,
 		};
 #pragma warning restore format

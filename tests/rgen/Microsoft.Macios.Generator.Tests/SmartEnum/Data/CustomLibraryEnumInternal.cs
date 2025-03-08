@@ -6,7 +6,7 @@ using ObjCBindings;
 
 namespace CustomLibrary;
 
-[BindingType]
+[BindingType<SmartEnum>]
 public enum CustomLibraryEnumInternal {
 	[Field<EnumValue> ("None", "__Internal")]
 	None,

@@ -79,6 +79,9 @@ namespace Photos {
 		[Export ("duration", ArgumentSemantic.Assign)]
 		double Duration { get; }
 
+		/// <summary>Whether the user has marked the <see cref="T:Photos.PHAsset" /> as hidden.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hidden")]
 		bool Hidden { [Bind ("isHidden")] get; }
 
@@ -89,6 +92,9 @@ namespace Photos {
 		[Export ("syncFailureHidden")]
 		bool SyncFailureHidden { [Bind ("isSyncFailureHidden")] get; }
 
+		/// <summary>Whether the user has marked this <see cref="T:Photos.PHAsset" /> as a favorite.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("favorite")]
 		bool Favorite { [Bind ("isFavorite")] get; }
 
@@ -213,9 +219,15 @@ namespace Photos {
 		[NullAllowed]
 		CLLocation Location { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("favorite", ArgumentSemantic.Assign)]
 		bool Favorite { [Bind ("isFavorite")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hidden", ArgumentSemantic.Assign)]
 		bool Hidden { [Bind ("isHidden")] get; set; }
 
@@ -937,6 +949,9 @@ namespace Photos {
 		nint IndexOf (NSObject id, NSRange range);
 
 #if !XAMCORE_5_0
+		/// <summary>Returns the first asset in the <see cref="T:Photos.PHFetchResult" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'FirstObject' property instead.")]
 		[Wrap ("FirstObject", IsVirtual = true)]
 		[NullAllowed]

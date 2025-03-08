@@ -411,7 +411,7 @@ public enum MyEnum {
 using ObjCBindings;
 namespace Test;
 
-[BindingType]
+[BindingType<SmartEnum>]
 public enum MyEnum {
 	None,
 }";
@@ -447,7 +447,7 @@ using ObjCBindings;
 
 namespace NS;
 
-[BindingType]
+[BindingType<Class>]
 public partial class MyClass {
 	public static partial string Name { get; set; } = string.Empty;
 }
@@ -459,7 +459,7 @@ using ObjCBindings;
 
 namespace NS;
 
-[BindingType]
+[BindingType<Class>]
 public partial class MyClass {
 	[Export<Property> (""name"")]
 	public partial string Name { get; set; } = string.Empty;
@@ -472,7 +472,7 @@ using ObjCBindings;
 
 namespace NS;
 
-[BindingType]
+[BindingType<Class>]
 public partial class MyClass {
 	[Export<Property> (""name"", Property.Notification)]
 	public partial string Name { get; set; } = string.Empty;
@@ -517,7 +517,7 @@ using ObjCBindings;
 
 namespace NS;
 
-[BindingType]
+[BindingType<Class>]
 public partial class MyClass {
 	[Field<Property> (""CONSTANT"")]
 	public static partial string Name { get; set; } = string.Empty;

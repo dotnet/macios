@@ -31,11 +31,17 @@ namespace NaturalLanguage {
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum NLTaggerOptions : ulong {
+		/// <summary>Indicates that <see cref="F:NaturalLanguage.NLTag.OtherWord" /> will be omitted from the tag stream.</summary>
 		OmitWords = 1uL << 0,
+		/// <summary>Indicates that <see cref="F:NaturalLanguage.NLTag.OtherPunctuation" /> will be omitted from the tag stream.</summary>
 		OmitPunctuation = 1uL << 1,
+		/// <summary>Indicates that <see cref="F:NaturalLanguage.NLTag.OtherWhitespace" /> will be omitted from the tag stream.</summary>
 		OmitWhitespace = 1uL << 2,
+		/// <summary>Indicates that <see cref="F:NaturalLanguage.NLTag.Other" /> will be omitted from the tag stream.</summary>
 		OmitOther = 1uL << 3,
+		/// <summary>Indicates that tags for the parts of names should be joined into one tag for the underlying name.</summary>
 		JoinNames = 1uL << 4,
+		/// <summary>Indicates that tags for parts of a contraction should be joined into one tag for the contraction.</summary>
 		JoinContractions = 1uL << 5,
 	}
 
@@ -53,9 +59,13 @@ namespace NaturalLanguage {
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum NLTokenUnit : long {
+		/// <summary>Indicates a word.</summary>
 		Word,
+		/// <summary>Indicates a sentence.</summary>
 		Sentence,
+		/// <summary>Indicates a paragraph.</summary>
 		Paragraph,
+		/// <summary>Indicates an entire document.</summary>
 		Document,
 	}
 
@@ -65,8 +75,11 @@ namespace NaturalLanguage {
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum NLTokenizerAttributes : ulong {
+		/// <summary>Indicates that the string contains numbers.</summary>
 		Numeric = 1uL << 0,
+		/// <summary>Indicates that the string contains symbols.</summary>
 		Symbolic = 1uL << 1,
+		/// <summary>Indicates that the text contains emojis.</summary>
 		Emoji = 1uL << 2,
 	}
 
@@ -257,18 +270,25 @@ namespace NaturalLanguage {
 	/// <summary>Enumerates classes of tags that are returned from a text classifier.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NLTagScheme {
+		/// <summary>Indicates that tokens will be tagged with information about whether they are words, whitespace, or punctuation.</summary>
 		[Field ("NLTagSchemeTokenType")]
 		TokenType,
+		/// <summary>Indicates that tokens will be returned for whether they are part of speech or whitespace, or their punctuation type if they are punctuation.</summary>
 		[Field ("NLTagSchemeLexicalClass")]
 		LexicalClass,
+		/// <summary>Indicates that tokens will be tagged with the type of name of which they are a part. (For example, part of a personal name.)</summary>
 		[Field ("NLTagSchemeNameType")]
 		NameType,
+		/// <summary>Indicates that tokens will be tagged those tags indicated by <see cref="F:NaturalLanguage.NLTagScheme.LexicalClass" /> and <see cref="F:NaturalLanguage.NLTagScheme.NameType" />.</summary>
 		[Field ("NLTagSchemeNameTypeOrLexicalClass")]
 		NameTypeOrLexicalClass,
+		/// <summary>Indicates that tokens will be tagged with their stem, if known.</summary>
 		[Field ("NLTagSchemeLemma")]
 		Lemma,
+		/// <summary>Indicates that tokens will be tagged with their language, if known.</summary>
 		[Field ("NLTagSchemeLanguage")]
 		Language,
+		/// <summary>Indicates that tokens will be tagged with the script in which they were written.</summary>
 		[Field ("NLTagSchemeScript")]
 		Script,
 		[iOS (13, 0), TV (13, 0)]

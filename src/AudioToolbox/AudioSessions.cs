@@ -98,7 +98,7 @@ namespace AudioToolbox {
 		/// <summary>
 		/// 	    Use this category when you want to use the hardware accelerated audio support to perform audio conversions.   
 		/// 	  </summary>
-		AudioProcessing = 0x70726f63  // 'proc'
+		AudioProcessing = 0x70726f63, // 'proc'
 	}
 
 	/// <summary>Possible values to override the audio route</summary>
@@ -126,7 +126,7 @@ namespace AudioToolbox {
 		/// <summary>There is no audio device for the current set category in the audio session.  For example, recording when there is no microphone available.</summary>
 		NoSuitableRouteForCategory = 7,
 		/// <summary>To be added.</summary>
-		RouteConfigurationChange = 8
+		RouteConfigurationChange = 8,
 	}
 
 	/// <summary>An enumeration whose values indicate whether the application should resume after an interruption. Returned by the <see cref="P:AudioToolbox.AudioSession.InterruptionType" /> property.</summary>
@@ -248,7 +248,7 @@ namespace AudioToolbox {
 	public enum AudioSessionActiveFlags : uint // UInt32 in AudioSessionSetActiveWithFlags
 	{
 		/// <summary>If this value is set, the operating system might notify and resume background applications that were playing audio back.</summary>
-		NotifyOthersOnDeactivation = (1 << 0)
+		NotifyOthersOnDeactivation = (1 << 0),
 	}
 
 	/// <summary>The available audio input sources on the device.</summary>

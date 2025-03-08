@@ -30,26 +30,37 @@ namespace CoreNFC {
 	[ErrorDomain ("NFCErrorDomain")]
 	[Native]
 	public enum NFCReaderError : long {
+		/// <summary>The session does not support the requested feature.</summary>
 		UnsupportedFeature = 1,
+		/// <summary>The session violated a security protocol.</summary>
 		SecurityViolation,
 		InvalidParameter,
 		InvalidParameterLength,
 		ParameterOutOfBound,
 		RadioDisabled = 6,
 
+		/// <summary>The connection to the tag was lost.</summary>
 		ReaderTransceiveErrorTagConnectionLost = 100,
+		/// <summary>The number of configured retries was exceeded.</summary>
 		ReaderTransceiveErrorRetryExceeded,
+		/// <summary>The tag responded with an error message.</summary>
 		ReaderTransceiveErrorTagResponseError,
 		ReaderTransceiveErrorSessionInvalidated,
 		ReaderTransceiveErrorTagNotConnected,
 		ReaderTransceiveErrorPacketTooLong = 105,
 
+		/// <summary>The session was canceled by the user.</summary>
 		ReaderSessionInvalidationErrorUserCanceled = 200,
+		/// <summary>The session timed out.</summary>
 		ReaderSessionInvalidationErrorSessionTimeout,
+		/// <summary>The session terminated unexpectedly.</summary>
 		ReaderSessionInvalidationErrorSessionTerminatedUnexpectedly,
+		/// <summary>The session was invalidated because the system was busy (only one session can run at a time).</summary>
 		ReaderSessionInvalidationErrorSystemIsBusy,
+		/// <summary>The initial NDEF tag was invalid.</summary>
 		ReaderSessionInvalidationErrorFirstNDEFTagRead,
 
+		/// <summary>The command configuration for the tag included invalid values.</summary>
 		TagCommandConfigurationErrorInvalidParameters = 300,
 
 		NdefReaderSessionErrorTagNotWritable = 400,
@@ -97,6 +108,9 @@ namespace CoreNFC {
 	[DisableDefaultCtor]
 	interface NFCIso15693ReaderSession {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NFCISO15693TagResponseErrorKey")]
 		NSString TagResponseErrorKey { get; }
 
@@ -104,6 +118,9 @@ namespace CoreNFC {
 		[DesignatedInitializer]
 		NativeHandle Constructor (INFCReaderSessionDelegate @delegate, [NullAllowed] DispatchQueue queue);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("readingAvailable")]
 		bool ReadingAvailable { get; }
@@ -118,12 +135,21 @@ namespace CoreNFC {
 	[BaseType (typeof (NFCTagCommandConfiguration), Name = "NFCISO15693CustomCommandConfiguration")]
 	interface NFCIso15693CustomCommandConfiguration {
 
+		/// <summary>Gets or sets the ISO-7816-6 manufacturer code.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("manufacturerCode")]
 		nuint ManufacturerCode { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("customCommandCode")]
 		nuint CustomCommandCode { get; set; }
 
+		/// <summary>Gets or sets the command-specific parameters, as <see cref="T:Foundation.NSData" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("requestParameters", ArgumentSemantic.Copy)]
 		NSData RequestParameters { get; set; }
 
@@ -139,9 +165,15 @@ namespace CoreNFC {
 	[BaseType (typeof (NFCTagCommandConfiguration), Name = "NFCISO15693ReadMultipleBlocksConfiguration")]
 	interface NFCIso15693ReadMultipleBlocksConfiguration {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("range", ArgumentSemantic.Assign)]
 		NSRange Range { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("chunkSize")]
 		nuint ChunkSize { get; set; }
 
@@ -435,15 +467,27 @@ namespace CoreNFC {
 	[DisableDefaultCtor]
 	interface NFCNdefPayload : NSSecureCoding {
 
+		/// <summary>Gets or sets the <see cref="T:CoreNFC.NFCTypeNameFormat" /> that defines the content type of the payload.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("typeNameFormat", ArgumentSemantic.Assign)]
 		NFCTypeNameFormat TypeNameFormat { get; set; }
 
+		/// <summary>Gets or sets the NDEF-specified kind of the payload.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("type", ArgumentSemantic.Copy)]
 		NSData Type { get; set; }
 
+		/// <summary>Gets or sets the NDEF-specified identifier of the payload.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("identifier", ArgumentSemantic.Copy)]
 		NSData Identifier { get; set; }
 
+		/// <summary>Gets or sets the payload data, as <see cref="T:Foundation.NSData" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("payload", ArgumentSemantic.Copy)]
 		NSData Payload { get; set; }
 
@@ -496,6 +540,9 @@ namespace CoreNFC {
 	[DisableDefaultCtor]
 	interface NFCNdefMessage : NSSecureCoding {
 
+		/// <summary>Gets or sets the array of <see cref="T:CoreNFC.NFCNdefPayload" /> objects that constitute the message.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("records", ArgumentSemantic.Copy)]
 		NFCNdefPayload [] Records { get; set; }
 
@@ -555,6 +602,11 @@ namespace CoreNFC {
 		[DesignatedInitializer]
 		NativeHandle Constructor (INFCNdefReaderSessionDelegate @delegate, [NullAllowed] DispatchQueue queue, bool invalidateAfterFirstRead);
 
+		/// <summary>Gets whether the device supports NFC tag reading.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>NFC tag reading is only available on iPhone 7 and later models.</para>
+		///         </remarks>
 		[Static]
 		[Export ("readingAvailable")]
 		bool ReadingAvailable { get; }
@@ -577,9 +629,19 @@ namespace CoreNFC {
 	[DisableDefaultCtor]
 	interface NFCReaderSession : NFCReaderSessionContract {
 
+		/// <summary>An instance of the CoreNFC.INFCReaderSessionDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the CoreNFC.INFCReaderSessionDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Export ("delegate", ArgumentSemantic.Weak), NullAllowed]
 		INFCReaderSessionDelegate Delegate { get; }
 
+		/// <summary>Gets the <see cref="T:CoreFoundation.DispatchQueue" /> on which the NFC detection and reading is performed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sessionQueue")]
 		DispatchQueue SessionQueue { get; }
 

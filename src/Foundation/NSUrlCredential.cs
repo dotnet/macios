@@ -14,20 +14,22 @@ using Security;
 namespace Foundation {
 
 	public partial class NSUrlCredential {
-#pragma warning disable RBI0014
 		public NSUrlCredential (SecIdentity identity, SecCertificate [] certificates, NSUrlCredentialPersistence persistence)
-			: this (identity.Handle, NSArray.FromNativeObjects (certificates).Handle, persistence)
+			: base (NSObjectFlag.Empty)
 		{
-			GC.KeepAlive (identity);
-			// FIXME: what about NSArray.FromNativeObjects (certificates)?
+			if (identity is null)
+				throw new ArgumentNullException ("identity");
+
+			using (var certs = NSArray.FromNativeObjects (certificates)) {
+				InitializeHandle (_InitWithIdentity (identity.Handle, certs.Handle, persistence));
+				GC.KeepAlive (identity);
+			}
 		}
-#pragma warning restore RBI0014
 
 		public static NSUrlCredential FromIdentityCertificatesPersistance (SecIdentity identity, SecCertificate [] certificates, NSUrlCredentialPersistence persistence)
 		{
 			if (identity is null)
 				throw new ArgumentNullException ("identity");
-
 			if (certificates is null)
 				throw new ArgumentNullException ("certificates");
 

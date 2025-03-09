@@ -250,6 +250,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* size_t */ nint CGColorGetNumberOfComponents (/* CGColorRef */ IntPtr color);
 
+		/// <summary>The number of components in this color.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public nint NumberOfComponents {
 			get {
 				return CGColorGetNumberOfComponents (Handle);
@@ -259,6 +262,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static unsafe /* CGFloat* */ nfloat* CGColorGetComponents (/* CGColorRef */ IntPtr color);
 
+		/// <summary>The components for this color.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public nfloat [] Components {
 			get {
 				int n = (int) NumberOfComponents;
@@ -277,6 +283,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGFloat */ nfloat CGColorGetAlpha (/* CGColorRef */ IntPtr color);
 
+		/// <summary>The alpha channel value.</summary>
+		///         <value>A value in the 0.0 to 1.0f range.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat Alpha {
 			get {
 				return CGColorGetAlpha (Handle);
@@ -286,6 +295,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGColorSpaceRef */ IntPtr CGColorGetColorSpace (/* CGColorRef */ IntPtr color);
 
+		/// <summary>The color's colorspace.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public CGColorSpace? ColorSpace {
 			get {
 				var ptr = CGColorGetColorSpace (Handle);
@@ -295,6 +307,9 @@ namespace CoreGraphics {
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGPatternRef */ IntPtr CGColorGetPattern (/* CGColorRef */ IntPtr color);
+		/// <summary>If present, the pattern for this color.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGPattern? Pattern {
 			get {
 				var h = CGColorGetPattern (Handle);

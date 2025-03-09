@@ -44,6 +44,9 @@ namespace Darwin {
 	public class SystemLog : DisposableObject {
 		static SystemLog? _default;
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static SystemLog Default {
 			get {
 				if (_default is null)
@@ -54,8 +57,11 @@ namespace Darwin {
 
 		[Flags]
 		public enum Option {
+			/// <summary>To be added.</summary>
 			Stderr,
+			/// <summary>To be added.</summary>
 			NoDelay,
+			/// <summary>To be added.</summary>
 			NoRemote,
 		}
 
@@ -207,24 +213,39 @@ namespace Darwin {
 
 	public class Message : DisposableObject {
 		public enum Kind {
+			/// <summary>To be added.</summary>
 			Message,
+			/// <summary>To be added.</summary>
 			Query,
 		}
 
 		[Flags]
 		public enum Op {
+			/// <summary>To be added.</summary>
 			CaseFold = 0x10,
+			/// <summary>To be added.</summary>
 			Prefix = 0x20,
+			/// <summary>To be added.</summary>
 			Suffix = 0x40,
+			/// <summary>To be added.</summary>
 			Substring = 0x60,
+			/// <summary>To be added.</summary>
 			Numeric = 0x80,
+			/// <summary>To be added.</summary>
 			Regex = 0x100,
+			/// <summary>To be added.</summary>
 			Equal = 1,
+			/// <summary>To be added.</summary>
 			Greater = 2,
+			/// <summary>To be added.</summary>
 			GreaterEqual = 3,
+			/// <summary>To be added.</summary>
 			Less = 4,
+			/// <summary>To be added.</summary>
 			LessEqual = 5,
+			/// <summary>To be added.</summary>
 			NotEqual = 6,
+			/// <summary>To be added.</summary>
 			True = 7,
 		}
 
@@ -303,46 +324,73 @@ namespace Darwin {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string Time {
 			get { return this ["Time"]; }
 			set { this ["Time"] = value; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string Host {
 			get { return this ["Host"]; }
 			set { this ["Host"] = value; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string Sender {
 			get { return this ["Sender"]; }
 			set { this ["Sender"] = value; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string Facility {
 			get { return this ["Facility"]; }
 			set { this ["Facility"] = value; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string PID {
 			get { return this ["PID"]; }
 			set { this ["PID"] = value; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string UID {
 			get { return this ["UID"]; }
 			set { this ["UID"] = value; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string GID {
 			get { return this ["GID"]; }
 			set { this ["GID"] = value; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string Level {
 			get { return this ["Level"]; }
 			set { this ["Level"] = value; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string Msg {
 			get { return this ["Message"]; }
 			set { this ["Message"] = value; }

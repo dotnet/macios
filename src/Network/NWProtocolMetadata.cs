@@ -66,26 +66,41 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		internal static extern OS_nw_protocol_definition nw_protocol_metadata_copy_definition (OS_nw_protocol_metadata metadata);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWProtocolDefinition ProtocolDefinition => new NWProtocolDefinition (nw_protocol_metadata_copy_definition (GetCheckedHandle ()), owns: true);
 
 		[DllImport (Constants.NetworkLibrary)]
 		internal static extern byte nw_protocol_metadata_is_ip (OS_nw_protocol_metadata metadata);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsIP => nw_protocol_metadata_is_ip (GetCheckedHandle ()) != 0;
 
 		[DllImport (Constants.NetworkLibrary)]
 		internal static extern byte nw_protocol_metadata_is_udp (OS_nw_protocol_metadata metadata);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsUdp => nw_protocol_metadata_is_udp (GetCheckedHandle ()) != 0;
 
 		[DllImport (Constants.NetworkLibrary)]
 		internal static extern byte nw_protocol_metadata_is_tls (OS_nw_protocol_metadata metadata);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsTls => nw_protocol_metadata_is_tls (GetCheckedHandle ()) != 0;
 
 		[DllImport (Constants.NetworkLibrary)]
 		internal static extern byte nw_protocol_metadata_is_tcp (OS_nw_protocol_metadata metadata);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsTcp => nw_protocol_metadata_is_tcp (GetCheckedHandle ()) != 0;
 
 #if NET

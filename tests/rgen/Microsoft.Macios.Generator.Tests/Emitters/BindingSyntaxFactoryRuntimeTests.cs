@@ -4,13 +4,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.Macios.Generator.DataModel;
 using Xunit;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
 using static Microsoft.Macios.Generator.Tests.TestDataFactory;
+using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Tests.Emitters;
 
@@ -315,6 +316,21 @@ public class BindingSyntaxFactoryRuntimeTests {
 			yield return [
 				ReturnTypeForFloat (),
 				"NSNumber.ToFloat"
+			];
+
+			yield return [
+				ReturnTypeForArray ("int", underlyingType: SpecialType.System_Int32),
+				"NSNumber.ToInt32"
+			];
+			
+			yield return [
+				ReturnTypeForArray ("uint", underlyingType: SpecialType.System_UInt32),
+				"NSNumber.ToUInt32"
+			];
+			
+			yield return [
+				ReturnTypeForArray ("nint", underlyingType: SpecialType.System_IntPtr),
+				"NSNumber.ToNInt"
 			];
 		}
 

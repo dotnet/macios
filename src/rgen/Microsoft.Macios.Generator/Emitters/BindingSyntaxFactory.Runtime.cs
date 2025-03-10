@@ -238,8 +238,14 @@ static partial class BindingSyntaxFactory {
 	/// <returns>The member access to the correct NSNumber method.</returns>
 	internal static MemberAccessExpressionSyntax? NSNumberFromHandle (TypeInfo returnType)
 	{
+		// create a tuple to store the name and special type depending if it is an array 
+		// or a non array type
+		var info = returnType.IsArray 
+			? (Name: returnType.Name, SpecialType: returnType.ArrayElementType) 
+			: (Name: returnType.Name, SpecialType: returnType.SpecialType);
+
 #pragma warning disable format
-		var memberName = returnType switch {
+		var memberName = info switch {
 			// name must be before SpecialType or you'll get them wrong values because
 			// the type we want by name also have a valid special type, the tests should catch
 			// mistakes here

@@ -22,18 +22,6 @@ using Xamarin.Bundler;
 namespace MonoTouch.Tuner {
 
 	public partial class MonoTouchManifestResolver : MonoTouchResolver {
-
-		internal List<Exception> list = new List<Exception> ();
-
-		public override AssemblyDefinition Load (string file)
-		{
-			if (EnableRepl && Profile.IsSdkAssembly (Path.GetFileNameWithoutExtension (file))) {
-				var fn = Path.Combine (Path.GetDirectoryName (file), "repl", Path.GetFileName (file));
-				if (File.Exists (fn))
-					file = fn;
-			}
-			return base.Load (file);
-		}
 	}
 
 	// recent cecil removed some overloads - https://github.com/mono/cecil/commit/42db79cc16f1cbe8dbab558904e188352dba2b41
@@ -52,8 +40,6 @@ namespace MonoTouch.Tuner {
 
 	public class MonoTouchResolver : CoreResolver {
 
-		public bool EnableRepl { get; set; }
-
 		public IEnumerable<AssemblyDefinition> GetAssemblies ()
 		{
 			return cache.Values.Cast<AssemblyDefinition> ();
@@ -71,15 +57,6 @@ namespace MonoTouch.Tuner {
 			AssemblyDefinition assembly;
 			if (cache.TryGetValue (aname, out assembly))
 				return assembly;
-
-			if (EnableRepl && FrameworkDirectory is not null) {
-				var replDir = Path.Combine (FrameworkDirectory, "repl");
-				if (Directory.Exists (replDir)) {
-					assembly = SearchDirectory (aname, replDir);
-					if (assembly is not null)
-						return assembly;
-				}
-			}
 
 			if (FrameworkDirectory is not null) {
 				var facadeDir = Path.Combine (FrameworkDirectory, "Facades");

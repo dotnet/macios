@@ -106,6 +106,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.libcLibrary)]
 		extern static nuint dispatch_data_get_size (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nuint Size => dispatch_data_get_size (Handle);
 
 		[DllImport (Constants.libcLibrary)]

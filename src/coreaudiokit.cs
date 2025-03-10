@@ -38,8 +38,11 @@ namespace CoreAudioKit {
 	[NoMacCatalyst]
 	[Flags]
 	public enum AUGenericViewDisplayFlags : uint {
+		/// <summary>To be added.</summary>
 		TitleDisplay = 1u << 0,
+		/// <summary>To be added.</summary>
 		PropertiesDisplay = 1u << 1,
+		/// <summary>To be added.</summary>
 		ParametersDisplay = 1u << 2,
 	}
 

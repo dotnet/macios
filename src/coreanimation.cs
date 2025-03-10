@@ -1844,6 +1844,9 @@ namespace CoreAnimation {
 		[Export ("layer"), New, Static]
 		CALayer Create ();
 
+		/// <summary>Gets or sets a Boolean value that controls whether the layer is presented synchronously or asynchronously. <see langword="true" /> indicates synchronous presentation. Default is <see langword="false" /></summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("presentsWithTransaction")]
 		bool PresentsWithTransaction { get; set; }
 	}
@@ -3380,6 +3383,9 @@ namespace CoreAnimation {
 		[Export ("ColorSpace")]
 		CGColorSpace ColorSpace { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMacCatalyst]
 		[Export ("MetalCommandQueue")]
 		IMTLCommandQueue MetalCommandQueue { get; set; }

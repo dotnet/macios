@@ -1,0 +1,54 @@
+<Documentation>
+  <Docs DocId="P:MediaPlayer.MPVolumeView.WirelessRoutesAvailableDidChangeNotification">
+        <summary>Notification constant for WirelessRoutesAvailableDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MPVolumeView.WirelessRoutesAvailableDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification MPVolumeView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MPVolumeView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MPVolumeView.WirelessRoutesAvailableDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:MediaPlayer.MPVolumeView.WirelessRouteActiveDidChangeNotification">
+        <summary>Notification constant for WirelessRouteActiveDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MPVolumeView.WirelessRouteActiveDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification MPVolumeView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MPVolumeView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MPVolumeView.WirelessRouteActiveDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+</Documentation>

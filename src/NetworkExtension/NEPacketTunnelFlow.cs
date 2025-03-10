@@ -24,8 +24,14 @@ namespace NetworkExtension {
 			Protocols = protocols;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSData [] Packets { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSNumber [] Protocols { get; set; }
 #endif
 	}

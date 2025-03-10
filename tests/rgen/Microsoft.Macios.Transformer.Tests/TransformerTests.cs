@@ -4,6 +4,7 @@
 using System.Collections;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Macios.Generator.DataModel;
 using Microsoft.Macios.Transformer.Workers;
 using Xamarin.Tests;
 using Xamarin.Utils;
@@ -253,9 +254,11 @@ interface UITextFormattingViewControllerDelegate {
 
 		var symbol = semanticModel.GetDeclaredSymbol (declaration);
 		Assert.NotNull (symbol);
+		var binding = Binding.FromDeclaration (declaration, symbol, new (semanticModel));
+		Assert.NotNull (binding);
 
 		// there is not need for a transformer, we are just testing the topic selection
-		Assert.Equal (expectedTopic, Transformer.SelectTopic (symbol));
+		Assert.Equal (expectedTopic, Transformer.SelectTopic (declaration, binding.Value));
 	}
 
 	public void Dispose ()

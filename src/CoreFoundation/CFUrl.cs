@@ -40,8 +40,11 @@ namespace CoreFoundation {
 	// CFURLPathStyle -> CFIndex -> CFURL.h
 	[Native]
 	public enum CFUrlPathStyle : long {
+		/// <summary>As a POSIX filename.   Path elements are separated with a slash character.</summary>
 		POSIX = 0,
+		/// <summary>As an Apple HFS filename.   Path elements are separated with a colon.</summary>
 		HFS = 1,
+		/// <summary>Window style filename.</summary>
 		Windows = 2,
 	};
 
@@ -117,6 +120,9 @@ namespace CoreFoundation {
 		extern static /* CFStringRef */ IntPtr CFURLCopyFileSystemPath (/* CFURLRef */ IntPtr anURL,
 			/* CFURLPathStyle */ nint style);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? FileSystemPath {
 			get {
 				return GetFileSystemPath (Handle);
@@ -135,6 +141,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* Boolean */ byte CFURLIsFileReferenceURL (/* CFURLRef */IntPtr url);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]

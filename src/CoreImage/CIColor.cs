@@ -20,6 +20,9 @@ using UIKit;
 namespace CoreImage {
 	public partial class CIColor {
 
+		/// <summary>Gets the color components, including the alpha channel if it is present, as an array of floating point numbers that are each in the range [0,1].</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat [] Components {
 			get {
 				var n = NumberOfComponents;

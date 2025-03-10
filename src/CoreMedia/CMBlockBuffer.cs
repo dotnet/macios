@@ -199,6 +199,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* size_t */ nuint CMBlockBufferGetDataLength (/* CMBlockBufferRef */ IntPtr theBuffer);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nuint DataLength {
 			get {
 				return CMBlockBufferGetDataLength (Handle);
@@ -219,6 +222,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* Boolean */ byte CMBlockBufferIsEmpty (/* CMBlockBufferRef */ IntPtr theBuffer);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsEmpty {
 			get {
 				return CMBlockBufferIsEmpty (GetCheckedHandle ()) != 0;

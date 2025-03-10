@@ -55,6 +55,8 @@ namespace Foundation {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public enum NSObjectFlag {
+		/// <summary>Sentinel instance.</summary>
+		///         <remarks>To be added.</remarks>
 		Empty,
 	}
 
@@ -90,6 +92,8 @@ namespace Foundation {
 #endif
 
 		// replace older Mono[Touch|Mac]Assembly field (ease code sharing across platforms)
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly Assembly PlatformAssembly = typeof (NSObject).Assembly;
 
 		NativeHandle handle;
@@ -158,6 +162,9 @@ namespace Foundation {
 			set { flags = value ? (flags | Flags.RegisteredToggleRef) : (flags & ~Flags.RegisteredToggleRef); }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[DebuggerBrowsable (DebuggerBrowsableState.Never)]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		protected internal bool IsDirectBinding {
@@ -578,6 +585,15 @@ namespace Foundation {
 			return this;
 		}
 
+		/// <summary>Handle used to represent the methods in the base class for this NSObject.</summary>
+		///         <value>An opaque pointer, represents an Objective-C objc_super object pointing to our base class.</value>
+		///         <remarks>
+		/// 	  This property is used to access members of a base class.
+		/// 	  This is typically used when you call any of the Messaging
+		/// 	  methods to invoke methods that were implemented in your base
+		/// 	  class, instead of invoking the implementation in the current
+		/// 	  class.
+		/// 	</remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public NativeHandle SuperHandle {
 			get {
@@ -588,6 +604,9 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>Handle (pointer) to the unmanaged object representation.</summary>
+		///         <value>A pointer</value>
+		///         <remarks>This IntPtr is a handle to the underlying unmanaged representation for this object.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public NativeHandle Handle {
 			get { return handle; }
@@ -1031,6 +1050,9 @@ namespace Foundation {
 			dict = source;
 		}
 
+		/// <summary>Records the kind of change that was done to the property.</summary>
+		///         <value>The current state of the changes being reported.</value>
+		///         <remarks>You can use the value of this property to determine which information is available on the other properties of this class.</remarks>
 		public NSKeyValueChange Change {
 			get {
 				var n = (NSNumber) dict [NSObject.ChangeKindKey];
@@ -1038,24 +1060,45 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>The new value being set on the observed property.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>For this property to have a value, the options passed to <see cref="M:Foundation.NSObject.AddObserver(Foundation.NSObject,System.String,Foundation.NSKeyValueObservingOptions,System.IntPtr)" /> method should contain the value <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=E:Foundation.NSKeyValueObseringOptions.&amp;scope=Xamarin" title="E:Foundation.NSKeyValueObseringOptions.">E:Foundation.NSKeyValueObseringOptions.</a></format>New.</remarks>
 		public NSObject NewValue {
 			get {
 				return dict [NSObject.ChangeNewKey];
 			}
 		}
 
+		/// <summary>The previous value on the observed property.</summary>
+		///         <value>
+		///
+		/// The old value.
+		///
+		///      </value>
+		///         <remarks>For this property to have a value, the options passed to <see cref="M:Foundation.NSObject.AddObserver(Foundation.NSObject,System.String,Foundation.NSKeyValueObservingOptions,System.IntPtr)" /> method should contain the value <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSKey%20Value%20Obsering%20Options%20Old&amp;scope=Xamarin" title="E:Foundation.NSKeyValueObseringOptions.Old">E:Foundation.NSKeyValueObseringOptions.Old</a></format>.</remarks>
 		public NSObject OldValue {
 			get {
 				return dict [NSObject.ChangeOldKey];
 			}
 		}
 
+		/// <summary>The indexes of the objects that were added, removed or changed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>This value is set if the Change property is one of </remarks>
 		public NSIndexSet Indexes {
 			get {
 				return (NSIndexSet) dict [NSObject.ChangeIndexesKey];
 			}
 		}
 
+		/// <summary>If this flag is true, this indicates that the observed method is being called before the change takes place.</summary>
+		///         <value>
+		///           <para>
+		///           </para>
+		///           <para>
+		///           </para>
+		///         </value>
+		///         <remarks>For this property to have a value, the options passed to <see cref="M:Foundation.NSObject.AddObserver(Foundation.NSObject,System.String,Foundation.NSKeyValueObservingOptions,System.IntPtr)" /> method should contain the value <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSKey%20Value%20Obsering%20Options%20Prior&amp;scope=Xamarin" title="E:Foundation.NSKeyValueObseringOptions.Prior">E:Foundation.NSKeyValueObseringOptions.Prior</a></format>.</remarks>
 		public bool IsPrior {
 			get {
 				var n = dict [NSObject.ChangeNotificationIsPriorKey] as NSNumber;

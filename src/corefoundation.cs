@@ -86,6 +86,9 @@ namespace CoreFoundation {
 	[Partial]
 	interface CFNetwork {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCFErrorDomainCFNetwork", "CFNetwork")]
 		NSString ErrorDomain { get; }
 	}

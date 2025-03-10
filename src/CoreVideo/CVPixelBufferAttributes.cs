@@ -229,6 +229,9 @@ namespace CoreVideo {
 		// TODO: kCVPixelBufferIOSurfacePropertiesKey
 #if !MONOMAC
 		// The presence of the IOSurfacePropertiesKey mandates the allocation via IOSurfaceProperty
+		/// <summary>If this key is set, this instructs CoreVideo to allocate the video buffers using the IOSurface.    This is required for some uses of pixel buffers.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? AllocateWithIOSurface {
 			set {
 				if (value.HasValue && value.Value)
@@ -242,6 +245,10 @@ namespace CoreVideo {
 		}
 
 #if !__MACCATALYST__
+		/// <summary>Indicates whether the pixel buffer is compatible with OpenGL for Embedded Systems contexts.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant kCVPixelBufferOpenGLESCompatibilityKey value to access the underlying dictionary.</remarks>
 		public bool? OpenGLESCompatibility {
 			set {
 				SetBooleanValue (CVPixelBuffer.OpenGLESCompatibilityKey, value);
@@ -252,6 +259,9 @@ namespace CoreVideo {
 		}
 #endif
 
+		/// <summary>Indicates whether the pixel buffer is compatible with Metal.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]

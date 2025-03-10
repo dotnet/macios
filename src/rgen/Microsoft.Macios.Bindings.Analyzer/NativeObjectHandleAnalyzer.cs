@@ -33,7 +33,7 @@ public class NativeObjectHandleAnalyzer : DiagnosticAnalyzer {
 	private bool IsINativeObject (ITypeSymbol typeSymbol)
 	{
 		if (typeSymbol.TypeKind == TypeKind.TypeParameter)
-			return ((ITypeParameterSymbol)typeSymbol).ConstraintTypes.Any (t => IsINativeObject (t));
+			return ((ITypeParameterSymbol) typeSymbol).ConstraintTypes.Any (t => IsINativeObject (t));
 		if (typeSymbol.TypeKind == TypeKind.Interface && typeSymbol.ToDisplayString () == "ObjCRuntime.INativeObject")
 			return true;
 		return typeSymbol.AllInterfaces.Any (i => i.ToDisplayString () == "ObjCRuntime.INativeObject");

@@ -191,7 +191,7 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 
 	[Theory]
 	[AllSupportedPlatformsClassData<ErrorTestCases>]
-	public async Task GCHoleTests(ApplePlatform platform, string inputText)
+	public async Task GCHoleTests (ApplePlatform platform, string inputText)
 	{
 		var (compilation, _) = CreateCompilation (platform, sources: inputText);
 		var diagnostics = await RunAnalyzer (new NativeObjectHandleAnalyzer (), compilation);
@@ -201,7 +201,7 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 
 	[Theory]
 	[AllSupportedPlatformsClassData<NoErrorTestCases>]
-	public async Task NoGCHoleTests(ApplePlatform platform, string inputText)
+	public async Task NoGCHoleTests (ApplePlatform platform, string inputText)
 	{
 		var (compilation, _) = CreateCompilation (platform, sources: inputText);
 		var diagnostics = await RunAnalyzer (new NativeObjectHandleAnalyzer (), compilation);

@@ -906,13 +906,19 @@ namespace Metal {
 	/// <summary>The resource type of an argument of a function.</summary>
 	[Native]
 	public enum MTLArgumentType : ulong {
+		/// <summary>To be added.</summary>
 		Buffer = 0,
+		/// <summary>To be added.</summary>
 		ThreadgroupMemory = 1,
+		/// <summary>To be added.</summary>
 		Texture = 2,
+		/// <summary>To be added.</summary>
 		Sampler = 3,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 
 		[NoMac, TV (14, 5)] ImageblockData = 16,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Imageblock = 17,
 
@@ -942,8 +948,11 @@ namespace Metal {
 	[Deprecated (PlatformName.MacCatalyst, 17, 0)]
 	[Native]
 	public enum MTLArgumentAccess : ulong {
+		/// <summary>To be added.</summary>
 		ReadOnly,
+		/// <summary>To be added.</summary>
 		ReadWrite,
+		/// <summary>To be added.</summary>
 		WriteOnly,
 	}
 #endif
@@ -1348,7 +1357,9 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MTLArgumentBuffersTier : ulong {
+		/// <summary>Indicates tier one.</summary>
 		One = 0,
+		/// <summary>Indicates tier two.</summary>
 		Two = 1,
 	}
 

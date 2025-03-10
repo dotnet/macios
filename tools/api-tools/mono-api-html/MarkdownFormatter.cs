@@ -62,6 +62,26 @@ namespace Mono.ApiTools {
 			output.WriteLine ();
 		}
 
+		public override void BeginAttributeModification ()
+		{
+			output.WriteLine ("<div>");
+			output.WriteLine ("<p>Modified attributes:</p>");
+			output.WriteLine ("<pre>");
+			IndentLevel++;
+		}
+
+		public override void AddAttributeModification (string source, string target, bool breaking)
+		{
+			output.WriteLine ($"-{source}");
+			output.WriteLine ($"+{target}");
+		}
+
+		public override void EndAttributeModification ()
+		{
+			output.WriteLine ("```");
+			output.WriteLine ();
+		}
+
 		public override void BeginTypeAddition ()
 		{
 			output.WriteLine ($"#### New Type: {@State.Namespace}.{State.Type}");
@@ -81,7 +101,7 @@ namespace Mono.ApiTools {
 			output.WriteLine ();
 		}
 
-		public override void BeginTypeRemoval ()
+		public override void BeginTypeRemoval (bool breaking)
 		{
 			output.WriteLine ($"#### Removed Type {State.Namespace}.{State.Type}");
 		}
@@ -122,7 +142,7 @@ namespace Mono.ApiTools {
 			output.WriteLine ();
 		}
 
-		public override void BeginMemberRemoval (IEnumerable<XElement> list, MemberComparer member)
+		public override void BeginMemberRemoval (IEnumerable<XElement> list, MemberComparer member, bool breaking)
 		{
 			if (State.BaseType == "System.Enum") {
 				output.WriteLine ("Removed value{0}:", list.Count () > 1 ? "s" : String.Empty);
@@ -147,10 +167,18 @@ namespace Mono.ApiTools {
 
 		public override void RenderObsoleteMessage (TextChunk chunk, MemberComparer member, string description, string optionalObsoleteMessage)
 		{
+			RenderAttribute (chunk, member, "Obsolete", false, description, optionalObsoleteMessage);
+		}
+
+		public override void RenderAttribute (TextChunk chunk, Comparer member, string attributeName, bool breaking, string description, params string [] attributeArguments)
+		{
 			var output = chunk.GetStringBuilder (this);
-			output.Append ("[Obsolete (");
-			if (!String.IsNullOrEmpty (optionalObsoleteMessage))
-				output.Append ('"').Append (optionalObsoleteMessage).Append ('"');
+			output.Append ($"[{attributeName} (");
+			foreach (var arg in attributeArguments) {
+				output.Append (arg);
+				if (arg != attributeArguments.Last ())
+					output.Append (", ");
+			}
 			output.AppendLine (")]");
 			output.Append (description);
 		}

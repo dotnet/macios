@@ -85,21 +85,39 @@ namespace CoreText {
 	[Static]
 	interface CTFontVariationAxisKey {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontVariationAxisIdentifierKey")]
 		NSString Identifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontVariationAxisMinimumValueKey")]
 		NSString MinimumValue { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontVariationAxisMaximumValueKey")]
 		NSString MaximumValue { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontVariationAxisDefaultValueKey")]
 		NSString DefaultValue { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontVariationAxisNameKey")]
 		NSString Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCTFontVariationAxisHiddenKey")]
 		NSString Hidden { get; }
@@ -127,6 +145,9 @@ namespace CoreText {
 		NSString ForceEmbeddingLevel { get; }
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCTTypesetterOptionAllowUnboundedLayout")]
 		NSString AllowUnboundedLayout { get; }

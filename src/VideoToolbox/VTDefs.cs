@@ -17,9 +17,11 @@ namespace VideoToolbox {
 	// untyped enum -> VTErrors.h
 	/// <summary>Possible VideoToolbox API errors.</summary>
 	public enum VTStatus {
+		/// <summary>To be added.</summary>
 		Ok,
 		/// <summary>To be added.</summary>
 		PropertyNotSupported = -12900,
+		/// <summary>To be added.</summary>
 		PropertyReadOnly = -12901,
 		/// <summary>To be added.</summary>
 		Parameter = -12902,
@@ -37,28 +39,49 @@ namespace VideoToolbox {
 		CouldNotFindVideoEncoder = -12908,
 		/// <summary>To be added.</summary>
 		VideoDecoderBadData = -12909,
+		/// <summary>To be added.</summary>
 		VideoDecoderUnsupportedDataFormat = -12910,
+		/// <summary>To be added.</summary>
 		VideoDecoderMalfunction = -12911,
+		/// <summary>To be added.</summary>
 		VideoEncoderMalfunction = -12912,
+		/// <summary>To be added.</summary>
 		VideoDecoderNotAvailableNow = -12913,
+		/// <summary>To be added.</summary>
 		[Obsolete ("Use PixelRotationNotSupported enum value instead.")]
 		ImageRotationNotSupported = -12914,
 		PixelRotationNotSupported = -12914,
+		/// <summary>To be added.</summary>
 		VideoEncoderNotAvailableNow = -12915,
+		/// <summary>To be added.</summary>
 		FormatDescriptionChangeNotSupported = -12916,
+		/// <summary>To be added.</summary>
 		InsufficientSourceColorData = -12917,
+		/// <summary>To be added.</summary>
 		CouldNotCreateColorCorrectionData = -12918,
+		/// <summary>To be added.</summary>
 		ColorSyncTransformConvertFailed = -12919,
+		/// <summary>To be added.</summary>
 		VideoDecoderAuthorization = -12210,
+		/// <summary>To be added.</summary>
 		VideoEncoderAuthorization = -12211,
+		/// <summary>To be added.</summary>
 		ColorCorrectionPixelTransferFailed = -12212,
+		/// <summary>To be added.</summary>
 		MultiPassStorageIdentifierMismatch = -12913,
+		/// <summary>To be added.</summary>
 		MultiPassStorageInvalid = -12214,
+		/// <summary>To be added.</summary>
 		FrameSiloInvalidTimeStamp = -12215,
+		/// <summary>To be added.</summary>
 		FrameSiloInvalidTimeRange = -12216,
+		/// <summary>To be added.</summary>
 		CouldNotFindTemporalFilter = -12217,
+		/// <summary>To be added.</summary>
 		PixelTransferNotPermitted = -12218,
+		/// <summary>To be added.</summary>
 		ColorCorrectionImageRotationFailed = -12219,
+		/// <summary>To be added.</summary>
 		VideoDecoderRemoved = -17690,
 		SessionMalfunction = -17691,
 		[MacCatalyst (13, 1)]
@@ -119,6 +142,7 @@ namespace VideoToolbox {
 	/// <summary>Flags to control encoder in multi pass compression sessions</summary>
 	[Flags]
 	public enum VTCompressionSessionOptionFlags : uint {
+		/// <summary>To be added.</summary>
 		BeginFinalPass = 1 << 0,
 	}
 
@@ -284,18 +308,26 @@ namespace VideoToolbox {
 	// Strongly Typed kVTCompressionPropertyKey_TransferFunction
 	/// <summary>Strongly typed set of options used by <see cref="P:VideoToolbox.VTCompressionProperties.TransferFunction" />.</summary>
 	public enum VTTransferFunction {
+		/// <summary>To be added.</summary>
 		Unset,
+		/// <summary>To be added.</summary>
 		ItuR7092,
+		/// <summary>To be added.</summary>
 		Smpte240M1955,
+		/// <summary>To be added.</summary>
 		UseGamma,
 	}
 
 	// Strongly Typed kVTCompressionPropertyKey_YCbCrMatrix
 	/// <summary>Colorimetry for compressed content.</summary>
 	public enum VTYCbCrMatrix {
+		/// <summary>To be added.</summary>
 		Unset,
+		/// <summary>To be added.</summary>
 		ItuR7092,
+		/// <summary>To be added.</summary>
 		ItuR6014,
+		/// <summary>To be added.</summary>
 		Smpte240M1955,
 	}
 
@@ -319,8 +351,11 @@ namespace VideoToolbox {
 	// Strongly Typed kVTDecompressionPropertyKey_DeinterlaceMode
 	/// <summary>Deinterlacing techniques.</summary>
 	public enum VTDeinterlaceMode {
+		/// <summary>To be added.</summary>
 		Unset,
+		/// <summary>To be added.</summary>
 		VerticalFilter,
+		/// <summary>To be added.</summary>
 		Temporal,
 	}
 

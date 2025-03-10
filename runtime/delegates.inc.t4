@@ -16,28 +16,12 @@
 #include "delegates.h"
 
 <# foreach (var d in delegates) { #>
-<#
-		if (d.OnlyCoreCLR)
-			Write ("#if DOTNET\n");
-#>
 typedef <#= d.ReturnType.InterfaceCType #><#= d.AlignCReturnType #> (*func_<#= d.EntryPoint #>)<#= d.AlignEntryPoint #> (<#= d.CArgumentSignature #>);
-<#
-		if (d.OnlyCoreCLR)
-			Write ("#endif // DOTNET\n");
-#>
 <# } #>
 
 struct Delegates {
 <# foreach (var d in delegates) { #>
-<#
-		if (d.OnlyCoreCLR)
-			Write ("#if DOTNET\n");
-#>
 	func_<#= d.EntryPoint #><#= d.AlignEntryPoint #> <#= d.SimpleEntryPoint #>;
-<#
-		if (d.OnlyCoreCLR)
-			Write ("#endif // DOTNET\n");
-#>
 <# } #>
 };
 

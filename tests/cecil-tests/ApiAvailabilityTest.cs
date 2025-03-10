@@ -69,7 +69,7 @@ namespace Cecil.Tests {
 			} finally {
 				Console.WriteLine ($"There's a total of {totalWarnings} warnings.");
 			}
-			Assert.AreEqual (3666, totalWarnings, "Total warnings"); // this is just to see how the warning count changes as issues are fixed.
+			Assert.AreEqual (1241, totalWarnings, "Total warnings"); // this is just to see how the warning count changes as issues are fixed.
 		}
 
 		public record ObsoletedFailure : IComparable {
@@ -203,7 +203,6 @@ namespace Cecil.Tests {
 			"Foundation.NSString CoreData.NSPersistentStoreCoordinator::PersistentStoreUbiquitousContentUrlKey()",
 			"Foundation.NSString CoreText.CTTypesetterOptionKey::DisableBidiProcessing()",
 			"Foundation.NSString Foundation.NSUrl::UbiquitousItemIsDownloadingKey()",
-			"Foundation.NSTask.LaunchFromPath(System.String, System.String[])",
 			"Foundation.NSUrl.get_UbiquitousItemIsDownloadingKey()",
 			"Foundation.NSUrlSessionConfiguration.BackgroundSessionConfiguration(System.String)",
 			"Foundation.NSUserDefaults..ctor(System.String)",

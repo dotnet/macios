@@ -53,8 +53,7 @@ be notified, and then the app can choose what to do:
 
 2. Abort.
 
-3. Rethrow the original exception (this is not available when
-   using the Coop GC, which is the only option on watchOS).
+3. Rethrow the original exception.
 
 Managed exception marshaling
 ----------------------------
@@ -100,15 +99,7 @@ We have two approaches for this:
    redirects any P/invoke to the objc_msgSend functions to
    these custom wrappers.
 
-   Since we can't write assembly code for bitcode targets
-   (watchOS), another approach is still required though.
-
-   This is the used for iOS/tvOS/watchOS simulator builds
-   (both 32-bit and 64-bit) and Mac/64 bits. It does not
-   work on Mac/32 bits because that platform does not use
-   0-cost exceptions like the other platforms (it uses
-   setjmp/longjmp instead, and would require a very
-   different implementation in assembly code).
+   This is used for iOS/tvOS simulator builds and macOS/Mac Catalyst bits.
 
    The assembly code for these wrappers is in the 
    trampolines-[arch]-objc_msgSend* files.
@@ -133,5 +124,4 @@ We have two approaches for this:
    to the objc_msgSend functions, and modify the P/Invoke to
    call these generated wrappers.
 
-   This is used for iOS/tvOS/watchOS device builds, and
-   Mac/32 bits.
+   This is used for iOS/tvOS device builds.

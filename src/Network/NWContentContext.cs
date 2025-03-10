@@ -76,6 +76,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static IntPtr nw_content_context_get_identifier (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Identifier => Marshal.PtrToStringAnsi (nw_content_context_get_identifier (GetCheckedHandle ()));
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -84,6 +87,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static void nw_content_context_set_is_final (IntPtr handle, byte is_final);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsFinal {
 			get => nw_content_context_get_is_final (GetCheckedHandle ()) != 0;
 			set => nw_content_context_set_is_final (GetCheckedHandle (), value.AsByte ());
@@ -95,6 +101,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static void nw_content_context_set_expiration_milliseconds (IntPtr handle, /* uint64_t */ ulong value);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ulong ExpirationMilliseconds {
 			get => nw_content_context_get_expiration_milliseconds (GetCheckedHandle ());
 			set => nw_content_context_set_expiration_milliseconds (GetCheckedHandle (), value);
@@ -106,6 +115,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static void nw_content_context_set_relative_priority (IntPtr handle, double value);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double RelativePriority {
 			get => nw_content_context_get_relative_priority (GetCheckedHandle ());
 			set => nw_content_context_set_relative_priority (GetCheckedHandle (), value);
@@ -117,6 +129,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static void nw_content_context_set_antecedent (IntPtr handle, IntPtr value);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWContentContext? Antecedent {
 			get {
 				var h = nw_content_context_copy_antecedent (GetCheckedHandle ());
@@ -201,6 +216,9 @@ namespace Network {
 		// Use this as a parameter to NWConnection.Send's with all the default properties
 		// ie: NW_CONNECTION_DEFAULT_MESSAGE_CONTEXT, use this for datagrams
 		static NWContentContext? defaultMessage;
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NWContentContext DefaultMessage {
 			get {
 				if (defaultMessage is null)
@@ -213,6 +231,9 @@ namespace Network {
 		// Use this as a parameter to NWConnection.Send's to indicate that no more sends are expected
 		// (ie: NW_CONNECTION_FINAL_MESSAGE_CONTEXT)
 		static NWContentContext? finalMessage;
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NWContentContext FinalMessage {
 			get {
 				if (finalMessage is null)
@@ -224,6 +245,9 @@ namespace Network {
 		// This sending context represents the entire connection
 		// ie: NW_CONNECTION_DEFAULT_STREAM_CONTEXT
 		static NWContentContext? defaultStream;
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NWContentContext DefaultStream {
 			get {
 				if (defaultStream is null)

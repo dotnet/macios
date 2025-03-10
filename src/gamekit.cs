@@ -827,6 +827,16 @@ namespace GameKit {
 		: GKSavedGameListener
 #endif
 	{
+		/// <summary>Current authentication state for the local player.</summary>
+		///         <value>True if the user has been authenticated, false otherwise.</value>
+		///         <remarks>
+		///
+		/// 	  This property changes as the application transitions from
+		/// 	  background to foreground, so you should check the value of
+		/// 	  this property on your handler and enable or disable features
+		/// 	  that depend on it in your game.
+		///
+		/// 	</remarks>
 		[Export ("authenticated")]
 		bool Authenticated { [Bind ("isAuthenticated")] get; }
 
@@ -842,6 +852,9 @@ namespace GameKit {
 		[Static, Export ("localPlayer")]
 		GKLocalPlayer LocalPlayer { get; }
 
+		/// <summary>Gets a value that tells whether the player is undreaged.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isUnderage")]
 		bool IsUnderage { get; }
 
@@ -868,6 +881,7 @@ namespace GameKit {
 		[Async]
 		void LoadFriends ([NullAllowed] GKFriendsHandler handler);
 
+		/// <include file="../docs/api/GameKit/GKLocalPlayer.xml" path="/Documentation/Docs[@DocId='P:GameKit.GKLocalPlayer.AuthenticationDidChangeNotificationName']/*" />
 		[Field ("GKPlayerAuthenticationDidChangeNotificationName")]
 		[Notification]
 		NSString AuthenticationDidChangeNotificationName { get; }
@@ -1080,6 +1094,13 @@ namespace GameKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the GameKit.IGKMatchDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the GameKit.IGKMatchDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IGKMatchDelegate Delegate { get; set; }
 
@@ -1216,6 +1237,9 @@ namespace GameKit {
 		[Export ("name", ArgumentSemantic.Copy)]
 		string Name { get; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the microphone is being sampled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("active", ArgumentSemantic.Assign)]
 		bool Active { [Bind ("isActive")] get; set; }
 
@@ -1637,6 +1661,9 @@ namespace GameKit {
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	interface GKAchievement : NSSecureCoding {
+		/// <summary>Deprecated.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 6, 0, message: "Use 'IsHidden' on the 'GKAchievementDescription' class instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'IsHidden' on the 'GKAchievementDescription' class instead.")]
@@ -1653,6 +1680,9 @@ namespace GameKit {
 		[Export ("percentComplete", ArgumentSemantic.Assign)]
 		double PercentComplete { get; set; }
 
+		/// <summary>Gets a value that tells whether the player completed the achievement.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("completed")]
 		bool Completed { [Bind ("isCompleted")] get; }
 
@@ -2685,9 +2715,17 @@ namespace GameKit {
 		[Async]
 		void Reply (string localizableMessage, NSObject [] arguments, NSData data, [NullAllowed] Action<NSError> completionHandler);
 
+		/// <summary>Represents the value associated with the constant GKExchangeTimeoutDefault</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("GKExchangeTimeoutDefault")]
 		double TimeoutDefault { get; }
 
+		/// <summary>Represents the value associated with the constant GKExchangeTimeoutNone</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("GKExchangeTimeoutNone")]
 		double TimeoutNone { get; }
 	}

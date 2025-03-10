@@ -268,7 +268,7 @@ public class BindingSyntaxFactoryPropertyTests {
 				"ret = CFArray.ArrayFromHandle<Foundation.NSObject> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle (\"myProperty\")))!;",
 				"ret = CFArray.ArrayFromHandle<Foundation.NSObject> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle (\"myProperty\")))!;"
 			];
-			
+
 			property = new Property (
 				name: "MyProperty",
 				returnType: ReturnTypeForInt (),
@@ -288,13 +288,13 @@ public class BindingSyntaxFactoryPropertyTests {
 				ExportPropertyData = new ("myProperty", ArgumentSemantic.None, ObjCBindings.Property.IsThreadSafe),
 				BindAs = new (ReturnTypeForNSObject ("Foundation.NSNumber")),
 			};
-			
+
 			yield return [
 				property,
 				"NSNumber.ToInt32 (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle (\"myProperty\")));",
 				"NSNumber.ToInt32 (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle (\"myProperty\")));",
 			];
-			
+
 			property = new Property (
 				name: "MyProperty",
 				returnType: ReturnTypeForLong (),
@@ -314,13 +314,13 @@ public class BindingSyntaxFactoryPropertyTests {
 				ExportPropertyData = new ("myProperty", ArgumentSemantic.None, ObjCBindings.Property.IsThreadSafe),
 				BindAs = new (ReturnTypeForNSObject ("Foundation.NSNumber")),
 			};
-			
+
 			yield return [
 				property,
 				"NSNumber.ToInt64 (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle (\"myProperty\")));",
 				"NSNumber.ToInt64 (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle (\"myProperty\")));",
 			];
-			
+
 			property = new Property (
 				name: "MyProperty",
 				returnType: ReturnTypeForArray ("int", underlyingType: SpecialType.System_Int32),
@@ -340,13 +340,13 @@ public class BindingSyntaxFactoryPropertyTests {
 				ExportPropertyData = new ("myProperty", ArgumentSemantic.None, ObjCBindings.Property.IsThreadSafe),
 				BindAs = new (ReturnTypeForNSObject ("Foundation.NSNumber")),
 			};
-			
+
 			yield return [
 				property,
 				"NSArray.ArrayFromHandleFunc<int> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle (\"myProperty\")), NSNumber.ToInt32, false);",
 				"NSArray.ArrayFromHandleFunc<int> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle (\"myProperty\")), NSNumber.ToInt32, false);",
 			];
-			
+
 			property = new Property (
 				name: "MyProperty",
 				returnType: ReturnTypeForArray ("uint", underlyingType: SpecialType.System_UInt32),
@@ -366,7 +366,7 @@ public class BindingSyntaxFactoryPropertyTests {
 				ExportPropertyData = new ("myProperty", ArgumentSemantic.None, ObjCBindings.Property.IsThreadSafe),
 				BindAs = new (ReturnTypeForNSObject ("Foundation.NSNumber")),
 			};
-			
+
 			yield return [
 				property,
 				"NSArray.ArrayFromHandleFunc<uint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle (\"myProperty\")), NSNumber.ToUInt32, false);",

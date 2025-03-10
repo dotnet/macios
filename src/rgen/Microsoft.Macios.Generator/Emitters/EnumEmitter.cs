@@ -17,7 +17,7 @@ namespace Microsoft.Macios.Generator.Emitters;
 
 class EnumEmitter : ICodeEmitter {
 
-	public string GetSymbolName (in Binding binding) 
+	public string GetSymbolName (in Binding binding)
 		=> Nomenclator.GetSmartEnumExtensionClassName (binding.Name);
 	public IEnumerable<string> UsingStatements => ["Foundation", "ObjCRuntime", "System"];
 

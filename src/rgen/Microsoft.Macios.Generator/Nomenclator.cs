@@ -15,5 +15,5 @@ static class Nomenclator {
 	/// </summary>
 	/// <param name="enumName">The name of the smart enum.</param>
 	/// <returns>The name of the extension class to be generated for the given smart enum.</returns>
-	public static string GetSmartEnumExtensionClassName (string enumName) => $"{enumName}Extensions";	
+	public static string GetSmartEnumExtensionClassName (string enumName) => $"{enumName}Extensions";
 }

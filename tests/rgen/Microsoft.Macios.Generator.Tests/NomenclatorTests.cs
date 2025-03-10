@@ -6,7 +6,7 @@ using Xunit;
 namespace Microsoft.Macios.Generator.Tests;
 
 public class NomenclatorTests {
-	
+
 	[Theory]
 	[InlineData ("AVCaptureDeviceType", "AVCaptureDeviceTypeExtensions")]
 	[InlineData ("GKError", "GKErrorExtensions")]

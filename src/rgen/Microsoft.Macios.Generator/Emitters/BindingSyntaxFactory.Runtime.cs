@@ -232,6 +232,29 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
+	/// Generates the correct call to the To* methods in the NSValue class that converts a NativeHandle
+	/// to the return type of the method/property.
+	/// </summary>
+	/// <param name="returnType">The return method of the method/property.</param>
+	/// <param name="arguments">The arguments to pass to the NSValue method.</param>
+	/// <returns>The expression needed to call the NSNumber method with the given args.</returns>
+	internal static InvocationExpressionSyntax? NSValueFromHandle (TypeInfo returnType,
+		ImmutableArray<ArgumentSyntax> arguments)
+	{
+		// generate: (arg1, arg2, arg3)
+		var argumentList = ArgumentList (
+			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
+
+		// generate: NSNumber.ToInt (arg1, arg2, arg3)
+		var nsValueFromHandle = NSValueFromHandle (returnType);
+		if (nsValueFromHandle is null)
+			return null;
+		return InvocationExpression (
+				nsValueFromHandle.WithTrailingTrivia (Space))
+			.WithArgumentList (argumentList);
+	}
+
+	/// <summary>
 	/// Returns the method group needed to get a NSNumber from a handle.
 	/// </summary>
 	/// <param name="returnType">The type info of the return type.</param>

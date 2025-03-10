@@ -113,6 +113,14 @@ public partial class PropertyTests
 	static readonly NativeHandle selSetCanDraw_XHandle = Selector.GetHandle ("setCanDraw:");
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selCenterX = "Center";
+	static readonly NativeHandle selCenterXHandle = Selector.GetHandle ("Center");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	const string selSetCenter_X = "setCenter:";
+	static readonly NativeHandle selSetCenter_XHandle = Selector.GetHandle ("setCenter:");
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	static readonly NativeHandle class_ptr = Class.GetHandle ("PropertyTests");
 
 	/// <summary>The Objective-C class handle for this class.</summary>
@@ -278,6 +286,38 @@ public partial class PropertyTests
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual partial CoreGraphics.CGPoint Center
+	{
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		get
+		{
+			CoreGraphics.CGPoint ret;
+			if (IsDirectBinding) {
+				ret = NSValue.ToCGPoint (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_stret (this.Handle, Selector.GetHandle ("Center")));
+			} else {
+				ret = NSValue.ToCGPoint (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_stret (this.Handle, Selector.GetHandle ("Center")));
+			}
+			return ret;
+		}
+
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		set
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	public virtual partial bool ContainsAttachments
 	{
 		[SupportedOSPlatform ("macos")]
@@ -425,6 +465,36 @@ public partial class PropertyTests
 				ret = Runtime.GetNSObject<Foundation.NSLocale> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("locale")))!;
 			}
 			return ret;
+		}
+
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		set
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual partial CoreGraphics.CGPoint[] Location
+	{
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		get
+		{
+			if (IsDirectBinding) {
+				return NSArray.ArrayFromHandleFunc<CoreGraphics.CGPoint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("Center")), NSValue.ToCGPoint, false);
+			} else {
+				return NSArray.ArrayFromHandleFunc<CoreGraphics.CGPoint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("Center")), NSValue.ToCGPoint, false);
+			}
 		}
 
 		[SupportedOSPlatform ("macos")]

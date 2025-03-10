@@ -322,12 +322,12 @@ public class BindingSyntaxFactoryRuntimeTests {
 				ReturnTypeForArray ("int", underlyingType: SpecialType.System_Int32),
 				"NSNumber.ToInt32"
 			];
-			
+
 			yield return [
 				ReturnTypeForArray ("uint", underlyingType: SpecialType.System_UInt32),
 				"NSNumber.ToUInt32"
 			];
-			
+
 			yield return [
 				ReturnTypeForArray ("nint", underlyingType: SpecialType.System_IntPtr),
 				"NSNumber.ToNInt"

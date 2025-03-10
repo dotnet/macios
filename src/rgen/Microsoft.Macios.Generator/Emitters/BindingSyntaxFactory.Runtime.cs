@@ -240,8 +240,8 @@ static partial class BindingSyntaxFactory {
 	{
 		// create a tuple to store the name and special type depending if it is an array 
 		// or a non array type
-		var info = returnType.IsArray 
-			? (Name: returnType.Name, SpecialType: returnType.ArrayElementType) 
+		var info = returnType.IsArray
+			? (Name: returnType.Name, SpecialType: returnType.ArrayElementType)
 			: (Name: returnType.Name, SpecialType: returnType.SpecialType);
 
 #pragma warning disable format

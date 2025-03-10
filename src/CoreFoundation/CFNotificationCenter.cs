@@ -142,6 +142,7 @@ namespace CoreFoundation {
 				observedObject = objectToObserve.GetHandle (),
 				listener = notificationHandler,
 			};
+			GC.KeepAlive (objectToObserve);
 
 			//
 			// To allow callbacks to add observers, we duplicate the list of listeners on AddObserver

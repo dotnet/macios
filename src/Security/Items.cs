@@ -1595,6 +1595,7 @@ namespace Security {
 		public void SetValueRef (INativeObject value)
 		{
 			SetValue (value.GetHandle (), SecItem.ValueRef);
+			GC.KeepAlive (value);
 		}
 
 		public void SetCertificate (SecCertificate cert) => SetValueRef (cert);

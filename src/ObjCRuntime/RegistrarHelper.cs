@@ -427,6 +427,7 @@ namespace ObjCRuntime {
 				return;
 			}
 			IntPtr rv = value.GetHandle ();
+			GC.KeepAlive (value);
 #if TRACE
 			Runtime.NSLog ($"INativeObject_managed_to_native (0x{(*ptr).ToString ("x")}, ? != ?): 0x{rv.ToString ("x")} => {value?.GetType ()}");
 #endif

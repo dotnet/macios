@@ -34,6 +34,7 @@ namespace ObjCRuntime {
 #if !COREBUILD
 	public static class NativeObjectExtensions {
 
+#pragma warning disable RBI0014
 		// help to avoid the (too common pattern)
 		// 	var p = x is null ? IntPtr.Zero : x.Handle;
 		static public NativeHandle GetHandle (this INativeObject? self)
@@ -60,6 +61,7 @@ namespace ObjCRuntime {
 			return h;
 		}
 #endif
+#pragma warning restore RBI0014
 
 		internal static void CallWithPointerToFirstElementAndCount<T> (T [] array, string arrayVariableName, Action<IntPtr, nuint> callback)
 			where T : INativeObject

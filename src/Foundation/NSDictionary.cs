@@ -350,6 +350,7 @@ namespace Foundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
 
 			var ptr = _ObjectForKey (key.Handle);
+			GC.KeepAlive (key);
 			if (ptr == IntPtr.Zero)
 				return false;
 

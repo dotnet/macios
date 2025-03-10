@@ -647,6 +647,9 @@ namespace CoreFoundation {
 	[SupportedOSPlatform ("tvos")]
 	public struct DispatchTime {
 #if !COREBUILD
+		/// <summary>Represents no timeout.</summary>
+		///         <remarks>
+		///         </remarks>
 		public static readonly DispatchTime Now = new DispatchTime ();
 		public static readonly DispatchTime Forever = new DispatchTime (ulong.MaxValue);
 

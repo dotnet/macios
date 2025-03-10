@@ -220,21 +220,39 @@ namespace ExternalAccessory {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface EAWiFiUnconfiguredAccessory {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("name")]
 		string Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("manufacturer")]
 		string Manufacturer { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("model")]
 		string Model { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("ssid")]
 		string Ssid { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("macAddress")]
 		string MacAddress { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("properties")]
 		EAWiFiUnconfiguredAccessoryProperties Properties { get; }
 	}

@@ -439,9 +439,15 @@ namespace SpriteKit {
 
 		float MinimumRadius { get; set; } /* float, not CGFloat */
 
+		/// <summary>Gets or sets a value that controls whether the field is active.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
+		/// <summary>Gets or sets a value that controls whether the field should override all other fields whose regions intersect with its own region.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("exclusive")]
 		bool Exclusive { [Bind ("isExclusive")] get; set; }
 
@@ -581,6 +587,13 @@ namespace SpriteKit {
 		[Export ("delegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the SpriteKit.ISKSceneDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the SpriteKit.ISKSceneDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("WeakDelegate")]
 		ISKSceneDelegate Delegate { get; set; }
@@ -1303,6 +1316,9 @@ namespace SpriteKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SKNode))]
 	interface SKLightNode {
+		/// <summary>Gets or sets of value that determines whether the node is casting light.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
@@ -2443,6 +2459,9 @@ namespace SpriteKit {
 		[Static, Export ("bodyWithEdgeLoopFromRect:")]
 		SKPhysicsBody CreateEdgeLoop (CGRect rect);
 
+		/// <summary>Gets or sets a value the tells whether the physics body is affected by forces and impulses in the simulation.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("dynamic")]
 		bool Dynamic { [Bind ("isDynamic")] get; set; }
 
@@ -2452,6 +2471,9 @@ namespace SpriteKit {
 		[Export ("allowsRotation")]
 		bool AllowsRotation { get; set; }
 
+		/// <summary>Gets or sets a value that tells whether the body is resting on another body in the simulation, and thus does not participate in the simulation.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("resting")]
 		bool Resting { [Bind ("isResting")] get; set; }
 
@@ -2617,6 +2639,12 @@ namespace SpriteKit {
 		[Export ("contactDelegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakContactDelegate { get; set; }
 
+		/// <summary>A delegate object that can handle events relating to collisions between the physics bodies in the simulation.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakContactDelegate")]
 		ISKPhysicsContactDelegate ContactDelegate { get; set; }
 
@@ -2834,6 +2862,9 @@ namespace SpriteKit {
 		[Export ("autoplayLooped")]
 		bool AutoplayLooped { get; set; }
 
+		/// <summary>Whether the audio is altered by the node's position in the scene.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("positional")]
 		bool Positional { [Bind ("isPositional")] get; set; }
 	}

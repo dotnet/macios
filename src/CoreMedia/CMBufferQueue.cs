@@ -229,6 +229,9 @@ namespace CoreMedia {
 
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static byte CMBufferQueueIsEmpty (/* CMBufferQueueRef */ IntPtr queue);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsEmpty {
 			get {
 				return CMBufferQueueIsEmpty (Handle) != 0;
@@ -245,6 +248,9 @@ namespace CoreMedia {
 
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static byte CMBufferQueueContainsEndOfData (/* CMBufferQueueRef */ IntPtr queue);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool ContainsEndOfData {
 			get {
 				return CMBufferQueueContainsEndOfData (Handle) != 0;
@@ -253,6 +259,9 @@ namespace CoreMedia {
 
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static byte CMBufferQueueIsAtEndOfData (/* CMBufferQueueRef */ IntPtr queue);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsAtEndOfData {
 			get {
 				return CMBufferQueueIsAtEndOfData (Handle) != 0;
@@ -268,6 +277,9 @@ namespace CoreMedia {
 
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static nint CMBufferQueueGetBufferCount (/* CMBufferQueueRef */ IntPtr queue);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint BufferCount {
 			get {
 				return CMBufferQueueGetBufferCount (Handle);
@@ -276,6 +288,9 @@ namespace CoreMedia {
 
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static CMTime CMBufferQueueGetDuration (/* CMBufferQueueRef */ IntPtr queue);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CMTime Duration {
 			get {
 				return CMBufferQueueGetDuration (Handle);
@@ -361,17 +376,29 @@ namespace CoreMedia {
 #endif // !COREBUILD
 
 		public enum TriggerCondition {
+			/// <summary>The trigger is raised when the elapsed time becomes less than the specified value.</summary>
 			WhenDurationBecomesLessThan = 1,
+			/// <summary>The trigger is raised when the elapsed time becomes less than or equal to the specified value.</summary>
 			WhenDurationBecomesLessThanOrEqualTo = 2,
+			/// <summary>The trigger is raised when the elapsed time is greater than the specified value.</summary>
 			WhenDurationBecomesGreaterThan = 3,
+			/// <summary>The trigger is raised when the elapsed time is greater than or equal to the specified value.</summary>
 			WhenDurationBecomesGreaterThanOrEqualTo = 4,
+			/// <summary>The trigger is raised when the minimum presentation time stamp changes.</summary>
 			WhenMinPresentationTimeStampChanges = 5,
+			/// <summary>The trigger is raised when the maximum presentation time stamp changes.</summary>
 			WhenMaxPresentationTimeStampChanges = 6,
+			/// <summary>The trigger is raised when the data is ready.</summary>
 			WhenDataBecomesReady = 7,
+			/// <summary>The trigger is raised when the end of the data is reached.</summary>
 			WhenEndOfDataReached = 8,
+			/// <summary>The trigger is raised when the buffer queue is reset.</summary>
 			WhenReset = 9,
+			/// <summary>The trigger is raised when the buffer count is less than the specified value.</summary>
 			WhenBufferCountBecomesLessThan = 10,
+			/// <summary>The trigger is raised when the buffer count is greater than the specified value.</summary>
 			WhenBufferCountBecomesGreaterThan = 11,
+			/// <summary>The trigger is raised when the elapsed time is greater than or equal to its specified value and the elapsed time is greater than its specified value.</summary>
 			WhenDurationBecomesGreaterThanOrEqualToAndBufferCountBecomesGreaterThan = 12,
 		}
 	}

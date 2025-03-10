@@ -329,7 +329,7 @@ static class AttributesNames {
 	/// <summary>
 	/// Flags the object as being thread safe.
 	/// </summary>
-	[BindingAttribute(typeof(BackingFieldTypeData), AttributeTargets.All)]
+	[BindingAttribute(typeof(ThreadSafeData), AttributeTargets.All)]
 	public const string ThreadSafeAttribute = "ThreadSafeAttribute";
 
 	/// <summary>

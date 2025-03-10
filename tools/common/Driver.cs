@@ -67,30 +67,10 @@ namespace Xamarin.Bundler {
 
 			options.Add ("h|?|help", "Displays the help.", v => a = Action.Help);
 			options.Add ("f|force", "Forces the recompilation of code, regardless of timestamps.", v => Force = true);
-			options.Add ("cache=", "Specify the directory where temporary build files will be cached.", v => app.Cache.Location = v);
 			options.Add ("version", "Output version information and exit.", v => a = Action.Version);
 			options.Add ("v|verbose", "Specify how verbose the output should be. This can be passed multiple times to increase the verbosity.", v => Verbosity++);
 			options.Add ("q|quiet", "Specify how quiet the output should be. This can be passed multiple times to increase the silence.", v => Verbosity--);
-			options.Add ("debug:", "Build a debug app. If AOT-compiling, will also generate native debug code for the specified assembly (set to 'all' to generate debug code for all assemblies, the default is to generate debug code for user assemblies only).", v => {
-				app.EnableDebug = true;
-				if (v is not null) {
-					if (v == "all") {
-						app.DebugAll = true;
-						return;
-					}
-					app.DebugAssemblies.Add (Path.GetFileName (v));
-				}
-			});
 			options.Add ("reference=", "Add an assembly to be processed.", v => app.References.Add (v));
-			// Unfortunately -r is used in mmp for something else (--resource), which means we can't use the same arguments for both mtouch and mmp.
-			// So add --reference, which is now used by both (and accepted by bgen as well), and deprecate -r|--ref for mtouch and -a|--assembly for mmp.
-			options.Add ("targetver=", "Minimum supported version of the target OS. For Mac Catalyst, this is the corresponding iOS version", v => {
-				try {
-					app.DeploymentTarget = StringUtils.ParseVersion (v);
-				} catch (Exception ex) {
-					throw ErrorHelper.CreateError (26, ex, Errors.MX0026, "targetver:" + v, ex.Message);
-				}
-			});
 			options.Add ("sdkroot=", "Specify the location of Apple SDKs, default to 'xcode-select' value.", v => sdk_root = v);
 			options.Add ("sdk=", "Specifies the SDK version to compile against (version, for example \"10.9\"). For Mac Catalyst, this is the macOS version of the SDK.", v => {
 				try {
@@ -101,130 +81,10 @@ namespace Xamarin.Bundler {
 				}
 			});
 			options.Add ("target-framework=", "Specify target framework to use. Currently supported: '" + string.Join ("', '", TargetFramework.ValidFrameworks.Select ((v) => v.ToString ())) + "'.", v => SetTargetFramework (v));
-#if MMP
-			options.Add ("abi=", "Comma-separated list of ABIs to target. x86_64, arm64", v => app.ParseAbi (v));
-#else
-			options.Add ("abi=", "Comma-separated list of ABIs to target. Currently supported: armv7, armv7+llvm, armv7+llvm+thumb2, armv7s, armv7s+llvm, armv7s+llvm+thumb2, arm64, arm64+llvm, arm64_32, arm64_32+llvm, i386, x86_64.", v => app.ParseAbi (v));
-#endif
-			options.Add ("no-xcode-version-check", "Ignores the Xcode version check.", v => { min_xcode_version = null; }, true /* This is a non-documented option. Please discuss any customers running into the xcode version check on the maciosdev@ list before giving this option out to customers. */);
-			options.Add ("nolink", "Do not link the assemblies.", v => app.LinkMode = LinkMode.None);
-#if MMP
-			options.Add ("linkplatform", "Link only the Xamarin.Mac.dll platform assembly.", v => app.LinkMode = LinkMode.Platform);
-#endif
-			options.Add ("linksdkonly", "Link only the SDK assemblies.", v => app.LinkMode = LinkMode.SDKOnly);
-			options.Add ("linkskip=", "Skip linking of the specified assembly.", v => app.LinkSkipped.Add (v));
-			options.Add ("i18n=", "List of i18n assemblies to copy to the output directory, separated by commas (none, all, cjk, mideast, other, rare and/or west).", v => app.ParseI18nAssemblies (v));
-			options.Add ("xml=", "Provide an extra XML definition file to the linker.", v => app.Definitions.Add (v));
-			options.Add ("warnaserror:", "An optional comma-separated list of warning codes that should be reported as errors (if no warnings are specified all warnings are reported as errors).", v => {
-				try {
-					ErrorHelper.ParseWarningLevel (ErrorHelper.WarningLevel.Error, v);
-				} catch (Exception ex) {
-					throw ErrorHelper.CreateError (26, ex, Errors.MX0026, "--warnaserror", ex.Message);
-				}
-			});
-			options.Add ("nowarn:", "An optional comma-separated list of warning codes to ignore (if no warnings are specified all warnings are ignored).", v => {
-				try {
-					ErrorHelper.ParseWarningLevel (ErrorHelper.WarningLevel.Disable, v);
-				} catch (Exception ex) {
-					throw ErrorHelper.CreateError (26, ex, Errors.MX0026, "--nowarn", ex.Message);
-				}
-			});
-			options.Add ("warn:", "An optional comma-separated list of warning codes to report as warnings (if no warnings are specified all warnings reported).", v => {
-				try {
-					ErrorHelper.ParseWarningLevel (ErrorHelper.WarningLevel.Warning, v);
-				} catch (Exception ex) {
-					throw ErrorHelper.CreateError (26, ex, Errors.MX0026, "--warn", ex.Message);
-				}
-			});
-			options.Add ("sgen-conc", "Enable the *experimental* concurrent garbage collector.", v => { app.EnableSGenConc = true; });
-			options.Add ("marshal-objectivec-exceptions:", "Specify how Objective-C exceptions should be marshalled. Valid values: default, unwindmanagedcode, throwmanagedexception, abort and disable. The default depends on the target platform (on watchOS the default is 'throwmanagedexception', while on all other platforms it's 'disable').", v => {
-				if (Application.TryParseObjectiveCExceptionMode (v, out var value)) {
-					app.MarshalObjectiveCExceptions = value;
-				} else {
-					throw ErrorHelper.CreateError (26, Errors.MX0026, "--marshal-objective-exceptions", $"Invalid value: {v}. Valid values are: default, unwindmanagedcode, throwmanagedexception, abort and disable.");
-				}
-			});
-			options.Add ("marshal-managed-exceptions:", "Specify how managed exceptions should be marshalled. Valid values: default, unwindnativecode, throwobjectivecexception, abort and disable. The default depends on the target platform (on watchOS the default is 'throwobjectivecexception', while on all other platform it's 'disable').", v => {
-				if (Application.TryParseManagedExceptionMode (v, out var value)) {
-					app.MarshalManagedExceptions = value;
-				} else {
-					throw ErrorHelper.CreateError (26, Errors.MX0026, "--marshal-managed-exceptions", $"Invalid value: {v}. Valid values are: default, unwindnativecode, throwobjectivecexception, abort and disable.");
-				}
-			});
-			options.Add ("j|jobs=", "The level of concurrency. Default is the number of processors.", v => {
-				Jobs = int.Parse (v);
-			});
-			options.Add ("embeddinator", "Enables Embeddinator targetting mode.", v => {
-				app.Embeddinator = true;
-			}, true);
-			options.Add ("dynamic-symbol-mode:", "Specify how dynamic symbols are treated so that they're not linked away by the native linker. Valid values: linker (pass \"-u symbol\" to the native linker), code (generate native code that uses the dynamic symbol), ignore (do nothing and hope for the best). The default is 'code' when using bitcode, and 'linker' otherwise.", (v) => {
-				switch (v.ToLowerInvariant ()) {
-				case "default":
-					app.SymbolMode = SymbolMode.Default;
-					break;
-				case "linker":
-					app.SymbolMode = SymbolMode.Linker;
-					break;
-				case "code":
-					app.SymbolMode = SymbolMode.Code;
-					break;
-				case "ignore":
-					app.SymbolMode = SymbolMode.Ignore;
-					break;
-				default:
-					throw ErrorHelper.CreateError (26, Errors.MX0026, "--dynamic-symbol-mode", $"Invalid value: {v}. Valid values are: default, linker, code and ignore.");
-				}
-			});
-			options.Add ("ignore-dynamic-symbol:", "Specify that Xamarin.iOS/Xamarin.Mac should not try to prevent the linker from removing the specified symbol.", (v) => {
-				app.IgnoredSymbols.Add (v);
-			});
+			options.Add ("abi=", "Comma-separated list of ABIs to target.", v => app.ParseAbi (v));
 			options.Add ("root-assembly=", "Specifies any root assemblies. There must be at least one root assembly, usually the main executable.", (v) => {
 				app.RootAssemblies.Add (v);
 			});
-			options.Add ("optimize=", "A comma-delimited list of optimizations to enable/disable. To enable an optimization, use --optimize=[+]remove-uithread-checks. To disable an optimizations: --optimize=-remove-uithread-checks. Use '+all' to enable or '-all' disable all optimizations. Only compiler-generated code or code otherwise marked as safe to optimize will be optimized.\n" +
-					"Available optimizations:\n" +
-					"    dead-code-elimination: By default always enabled (requires the linker). Removes IL instructions the linker can determine will never be executed. This is most useful in combination with the inline-* optimizations, since inlined conditions almost always also results in blocks of code that will never be executed.\n" +
-					"    remove-uithread-checks: By default enabled for release builds (requires the linker). Remove all UI Thread checks (makes the app smaller, and slightly faster at runtime).\n" +
-#if MONOTOUCH
-					"    inline-isdirectbinding: By default enabled unless the interpreter is enabled (requires the linker). Tries to inline calls to NSObject.IsDirectBinding to load a constant value. Makes the app smaller, and slightly faster at runtime.\n" +
-#else
-					"    inline-isdirectbinding: By default disabled, because it may require the linker. Tries to inline calls to NSObject.IsDirectBinding to load a constant value. Makes the app smaller, and slightly faster at runtime.\n" +
-#endif
-#if MONOTOUCH
-					"    remove-dynamic-registrar: By default enabled when the static registrar is enabled and the interpreter is not used. Removes the dynamic registrar (makes the app smaller).\n" +
-					"    inline-runtime-arch: By default always enabled (requires the linker). Inlines calls to ObjCRuntime.Runtime.Arch to load a constant value. Makes the app smaller, and slightly faster at runtime.\n" +
-#endif
-					"    blockliteral-setupblock: By default enabled when using the static registrar. Optimizes calls to BlockLiteral.SetupBlock and certain BlockLiteral constructors to avoid having to calculate the block signature at runtime.\n" +
-					"    inline-intptr-size: By default enabled for builds that target a single architecture (requires the linker). Inlines calls to IntPtr.Size to load a constant value. Makes the app smaller, and slightly faster at runtime.\n" +
-					"    inline-dynamic-registration-supported: By default always enabled (requires the linker). Optimizes calls to Runtime.DynamicRegistrationSupported to be a constant value. Makes the app smaller, and slightly faster at runtime.\n" +
-#if !MONOTOUCH
-					"    register-protocols: Remove unneeded metadata for protocol support. Makes the app smaller and reduces memory requirements. Disabled when the interpreter is used or when the static registrar is not enabled.\n" +
-					"    trim-architectures: Remove unneeded architectures from bundled native libraries. Makes the app smaller and is required for macOS App Store submissions.\n" +
-#else
-					"    register-protocols: Remove unneeded metadata for protocol support. Makes the app smaller and reduces memory requirements. Disabled, by default, to allow dynamic code loading.\n" +
-					"    remove-unsupported-il-for-bitcode: Remove IL that is not supported when compiling to bitcode, and replace with a NotSupportedException.\n" +
-					"    force-rejected-types-removal: Forcefully remove types that are known to cause rejections when applications are submitted to Apple. This includes: `UIWebView` and related types.\n" +
-#endif
-					"",
-					(v) => {
-						if (optimize is null)
-							optimize = new List<string> ();
-						optimize.Add (v);
-					});
-			options.Add ("package-debug-symbols:", "Specify whether debug info files (*.mdb / *.pdb) should be packaged in the app. Default is 'true' for debug builds and 'false' for release builds.", v => app.PackageManagedDebugSymbols = ParseBool (v, "package-debug-symbols"));
-			options.Add ("profiling:", "Enable profiling.", v => app.EnableProfiling = ParseBool (v, "profiling"));
-			options.Add ("debugtrack:", "Enable debug tracking of object resurrection bugs.", v => { app.DebugTrack = ParseBool (v, "--debugtrack"); });
-			options.Add ("http-message-handler=", "Specify the default HTTP message handler for HttpClient.", v => { app.HttpMessageHandler = v; });
-			options.Add ("tls-provider=", "Specify the default TLS provider.", v => { app.TlsProvider = v; });
-			options.Add ("setenv=", "Set the environment variable in the application on startup.", v => {
-				int eq = v.IndexOf ('=');
-				if (eq <= 0)
-					throw ErrorHelper.CreateError (2, Errors.MT0002, v);
-				var name = v.Substring (0, eq);
-				var value = v.Substring (eq + 1);
-				app.EnvironmentVariables.Add (name, value);
-			}
-			);
 			options.Add ("registrar:", "Specify the registrar to use (dynamic, static or default (dynamic in the simulator, static on device)).", v => {
 				app.ParseRegistrar (v);
 			});
@@ -235,29 +95,14 @@ namespace Xamarin.Bundler {
 				},
 				true /* this is an internal option */
 			);
-			options.Add ("warn-on-type-ref=", "Warn if any of the comma-separated types is referenced by assemblies - both before and after linking.", v => {
-				app.WarnOnTypeRef.AddRange (v.Split (new char [] { ',' }, StringSplitOptions.RemoveEmptyEntries));
-			});
 			options.Add ("xamarin-runtime=", "Which runtime to use (MonoVM or CoreCLR).", v => {
 				if (!Enum.TryParse<XamarinRuntime> (v, out var rv))
 					throw new InvalidOperationException ($"Invalid XamarinRuntime '{v}'");
 				app.XamarinRuntime = rv;
 			}, true /* hidden - this is only for build-time --runregistrar support */);
-
 			options.Add ("rid=", "The runtime identifier we're building for", v => {
 				app.RuntimeIdentifier = v;
 			}, true /* hidden - this is only for build-time --runregistrar support */);
-			options.Add ("require-pinvoke-wrappers:", v => {
-				app.RequiresPInvokeWrappers = ParseBool (v, "--require-pinvoke-wrappers");
-			});
-			options.Add ("skip-marking-nsobjects-in-user-assemblies:", "Don't mark NSObject (and any subclass of NSObject) in user assemblies in the linker. This may break your app, use at own risk.", v => {
-				app.SkipMarkingNSObjectsInUserAssemblies = ParseBool (v, "--skip-marking-nsobjects-in-user-assemblies");
-			});
-
-			// check if needs to be removed: https://github.com/xamarin/xamarin-macios/issues/18693
-			options.Add ("disable-automatic-linker-selection:", "Don't force the classic linker (ld64).", v => {
-				app.DisableAutomaticLinkerSelection = ParseBool (v, "--disable-automatic-linker-selection");
-			});
 
 			// Keep the ResponseFileSource option at the end.
 			options.Add (new Mono.Options.ResponseFileSource ());
@@ -284,9 +129,6 @@ namespace Xamarin.Bundler {
 			LogArguments (args);
 
 			var validateFramework = true;
-#if MTOUCH
-			validateFramework = !IsMlaunchAction (action);
-#endif
 			if (validateFramework)
 				ValidateTargetFramework ();
 
@@ -302,7 +144,7 @@ namespace Xamarin.Bundler {
 		}
 #endif // !NET
 
-#if !NET || LEGACY_TOOLS
+#if !NET && !LEGACY_TOOLS
 		static int Jobs;
 		public static int Concurrency {
 			get {
@@ -452,11 +294,6 @@ namespace Xamarin.Bundler {
 							break;
 						}
 					}
-				}
-
-				if (force45From40UnifiedSystemFull) {
-					// Xamarin.Mac Unified Full System profile requires .NET 4.5, not .NET 4.0.
-					FixReferences (x => x.Contains ("lib/mono/4.0"), x => x.Replace ("lib/mono/4.0", "lib/mono/4.5"));
 				}
 
 				show_0090 = true;
@@ -830,11 +667,7 @@ namespace Xamarin.Bundler {
 		{
 			if (mono_lib_directory is null) {
 #if MMP
-				if (IsUnifiedFullSystemFramework) {
-					mono_lib_directory = RunPkgConfig ("--variable=libdir");
-				} else {
-					mono_lib_directory = GetProductSdkLibDirectory (app);
-				}
+				mono_lib_directory = GetProductSdkLibDirectory (app);
 #else
 				mono_lib_directory = GetProductSdkLibDirectory (app);
 #endif

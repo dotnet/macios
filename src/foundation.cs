@@ -2937,6 +2937,13 @@ namespace Foundation {
 		[Export ("outputFormat")]
 		NSPropertyListFormat PropertyListFormat { get; set; }
 
+		/// <summary>An instance of the Foundation.INSKeyedArchiverDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the Foundation.INSKeyedArchiverDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		INSKeyedArchiverDelegate Delegate { get; set; }
 
@@ -2950,6 +2957,10 @@ namespace Foundation {
 		[Export ("classNameForClass:")]
 		string GetClassName (Class kls);
 
+		/// <summary>Represents the value associated with the constant NSKeyedArchiveRootObjectKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSKeyedArchiveRootObjectKey")]
 		NSString RootObjectKey { get; }
@@ -3040,6 +3051,13 @@ namespace Foundation {
 		[Export ("finishDecoding")]
 		void FinishDecoding ();
 
+		/// <summary>An instance of the Foundation.INSKeyedUnarchiverDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the Foundation.INSKeyedUnarchiverDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		INSKeyedUnarchiverDelegate Delegate { get; set; }
 
@@ -5341,6 +5359,7 @@ namespace Foundation {
 		[Export ("localeWithLocaleIdentifier:")]
 		NSLocale FromLocaleIdentifier (string ident);
 
+		/// <include file="../docs/api/Foundation/NSLocale.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSLocale.CurrentLocaleDidChangeNotification']/*" />
 		[Field ("NSCurrentLocaleDidChangeNotification")]
 		[Notification]
 		NSString CurrentLocaleDidChangeNotification { get; }
@@ -5517,6 +5536,9 @@ namespace Foundation {
 		[Export ("currentMode")]
 		NSString CurrentMode { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("NSRunLoopModeExtensions.GetValue (CurrentMode)")]
 		NSRunLoopMode CurrentRunLoopMode { get; }
 
@@ -9041,6 +9063,13 @@ namespace Foundation {
 		[Export ("delegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the Foundation.INSStreamDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the Foundation.INSStreamDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		INSStreamDelegate Delegate { get; set; }
 
@@ -9084,75 +9113,171 @@ namespace Foundation {
 		[Export ("streamError")]
 		NSError Error { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSocketSecurityLevelKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSocketSecurityLevelKey")]
 		NSString SocketSecurityLevelKey { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSocketSecurityLevelNone</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSocketSecurityLevelNone")]
 		NSString SocketSecurityLevelNone { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSocketSecurityLevelSSLv2</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSocketSecurityLevelSSLv2")]
 		NSString SocketSecurityLevelSslV2 { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSocketSecurityLevelSSLv3</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSocketSecurityLevelSSLv3")]
 		NSString SocketSecurityLevelSslV3 { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSocketSecurityLevelTLSv1</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSocketSecurityLevelTLSv1")]
 		NSString SocketSecurityLevelTlsV1 { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSocketSecurityLevelNegotiatedSSL</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSocketSecurityLevelNegotiatedSSL")]
 		NSString SocketSecurityLevelNegotiatedSsl { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSOCKSProxyConfigurationKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSOCKSProxyConfigurationKey")]
 		NSString SocksProxyConfigurationKey { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSOCKSProxyHostKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSOCKSProxyHostKey")]
 		NSString SocksProxyHostKey { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSOCKSProxyPortKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSOCKSProxyPortKey")]
 		NSString SocksProxyPortKey { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSOCKSProxyVersionKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSOCKSProxyVersionKey")]
 		NSString SocksProxyVersionKey { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSOCKSProxyUserKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSOCKSProxyUserKey")]
 		NSString SocksProxyUserKey { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSOCKSProxyPasswordKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSOCKSProxyPasswordKey")]
 		NSString SocksProxyPasswordKey { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSOCKSProxyVersion4</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSOCKSProxyVersion4")]
 		NSString SocksProxyVersion4 { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSOCKSProxyVersion5</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSOCKSProxyVersion5")]
 		NSString SocksProxyVersion5 { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamDataWrittenToMemoryStreamKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamDataWrittenToMemoryStreamKey")]
 		NSString DataWrittenToMemoryStreamKey { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamFileCurrentOffsetKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamFileCurrentOffsetKey")]
 		NSString FileCurrentOffsetKey { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSocketSSLErrorDomain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSocketSSLErrorDomain")]
 		NSString SocketSslErrorDomain { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamSOCKSErrorDomain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamSOCKSErrorDomain")]
 		NSString SocksErrorDomain { get; }
 
+		/// <summary>The low-level service type that this stream is providing.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>This is the low-level token-based setting for the service type, in general, you can use the strongly typed ServiceType instead.</remarks>
 		[Advanced, Field ("NSStreamNetworkServiceType")]
 		NSString NetworkServiceType { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamNetworkServiceTypeVoIP</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamNetworkServiceTypeVoIP")]
 		NSString NetworkServiceTypeVoIP { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamNetworkServiceTypeVideo</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamNetworkServiceTypeVideo")]
 		NSString NetworkServiceTypeVideo { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamNetworkServiceTypeBackground</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Advanced, Field ("NSStreamNetworkServiceTypeBackground")]
 		NSString NetworkServiceTypeBackground { get; }
 
+		/// <summary>Low-level key: Represents the value associated with the constant NSStreamNetworkServiceTypeVoice</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Advanced, Field ("NSStreamNetworkServiceTypeVoice")]
 		NSString NetworkServiceTypeVoice { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Advanced]
 		[MacCatalyst (13, 1)]
 		[Field ("NSStreamNetworkServiceTypeCallSignaling")]
@@ -10626,42 +10751,81 @@ namespace Foundation {
 		[Export ("portList")]
 		NSNumber [] PortList { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookieName")]
 		NSString KeyName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookieValue")]
 		NSString KeyValue { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookieOriginURL")]
 		NSString KeyOriginUrl { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookieVersion")]
 		NSString KeyVersion { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookieDomain")]
 		NSString KeyDomain { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookiePath")]
 		NSString KeyPath { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookieSecure")]
 		NSString KeySecure { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookieExpires")]
 		NSString KeyExpires { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookieComment")]
 		NSString KeyComment { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookieCommentURL")]
 		NSString KeyCommentUrl { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookieDiscard")]
 		NSString KeyDiscard { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookieMaximumAge")]
 		NSString KeyMaximumAge { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTTPCookiePort")]
 		NSString KeyPort { get; }
 
@@ -11276,6 +11440,10 @@ namespace Foundation {
 		[Export ("loadItemForTypeIdentifier:options:completionHandler:")]
 		void LoadItem (string typeIdentifier, [NullAllowed] NSDictionary options, [NullAllowed] Action<NSObject, NSError> completionHandler);
 
+		/// <summary>Represents the value associated with the constant NSItemProviderPreferredImageSizeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSItemProviderPreferredImageSizeKey")]
 		NSString PreferredImageSizeKey { get; }
 
@@ -11286,6 +11454,10 @@ namespace Foundation {
 		[Export ("loadPreviewImageWithOptions:completionHandler:")]
 		void LoadPreviewImage (NSDictionary options, Action<NSObject, NSError> completionHandler);
 
+		/// <summary>Represents the value associated with the constant NSItemProviderErrorDomain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSItemProviderErrorDomain")]
 		NSString ErrorDomain { get; }
 
@@ -11638,6 +11810,13 @@ namespace Foundation {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the Foundation.INSNetServiceDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the Foundation.INSNetServiceDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		INSNetServiceDelegate Delegate { get; set; }
 
@@ -13269,15 +13448,27 @@ namespace Foundation {
 		[Export ("localizedAdditionalDescription", ArgumentSemantic.Copy), NullAllowed]
 		string LocalizedAdditionalDescription { get; set; }
 
+		/// <summary>Whether this is tracking work that can be cancelled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancellable")]
 		bool Cancellable { [Bind ("isCancellable")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("pausable")]
 		bool Pausable { [Bind ("isPausable")] get; set; }
 
+		/// <summary>Whether this is tracking work that was cancelled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancelled")]
 		bool Cancelled { [Bind ("isCancelled")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("paused")]
 		bool Paused { [Bind ("isPaused")] get; }
 
@@ -13294,6 +13485,9 @@ namespace Foundation {
 		[Export ("setUserInfoObject:forKey:")]
 		void SetUserInfo ([NullAllowed] NSObject obj, NSString key);
 
+		/// <summary>Whether the tracked progress is indeterminate. Read-only.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("indeterminate")]
 		bool Indeterminate { [Bind ("isIndeterminate")] get; }
 
@@ -13359,27 +13553,59 @@ namespace Foundation {
 		[Export ("old")]
 		bool Old { [Bind ("isOld")] get; }
 
+		/// <summary>Represents the value associated with the constant NSProgressKindFile</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSProgressKindFile")]
 		NSString KindFile { get; }
 
+		/// <summary>Represents the value associated with the constant NSProgressEstimatedTimeRemainingKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSProgressEstimatedTimeRemainingKey")]
 		NSString EstimatedTimeRemainingKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSProgressThroughputKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSProgressThroughputKey")]
 		NSString ThroughputKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSProgressFileOperationKindKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSProgressFileOperationKindKey")]
 		NSString FileOperationKindKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSProgressFileOperationKindDownloading</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSProgressFileOperationKindDownloading")]
 		NSString FileOperationKindDownloading { get; }
 
+		/// <summary>Represents the value associated with the constant NSProgressFileOperationKindDecompressingAfterDownloading</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSProgressFileOperationKindDecompressingAfterDownloading")]
 		NSString FileOperationKindDecompressingAfterDownloading { get; }
 
+		/// <summary>Represents the value associated with the constant NSProgressFileOperationKindReceiving</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSProgressFileOperationKindReceiving")]
 		NSString FileOperationKindReceiving { get; }
 
+		/// <summary>Represents the value associated with the constant NSProgressFileOperationKindCopying</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSProgressFileOperationKindCopying")]
 		NSString FileOperationKindCopying { get; }
 
@@ -13388,12 +13614,24 @@ namespace Foundation {
 		[Field ("NSProgressFileOperationKindUploading")]
 		NSString FileOperationKindUploading { get; }
 
+		/// <summary>Represents the value associated with the constant NSProgressFileURLKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSProgressFileURLKey")]
 		NSString FileURLKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSProgressFileTotalCountKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSProgressFileTotalCountKey")]
 		NSString FileTotalCountKey { get; }
 
+		/// <summary>Represents the value associated with the constant NSProgressFileCompletedCountKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSProgressFileCompletedCountKey")]
 		NSString FileCompletedCountKey { get; }
 
@@ -13423,6 +13661,9 @@ namespace Foundation {
 		[Async, Export ("performAsCurrentWithPendingUnitCount:usingBlock:")]
 		void PerformAsCurrent (long unitCount, Action work);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("finished")]
 		bool Finished { [Bind ("isFinished")] get; }
 

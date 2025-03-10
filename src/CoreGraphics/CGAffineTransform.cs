@@ -336,6 +336,9 @@ namespace CoreGraphics {
 #endif
 		}
 
+		/// <summary>Determines if the affine corresponds to the identity affine.</summary>
+		///         <value>Whether the affine is the identity.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsIdentity {
 			get {
 #if NET

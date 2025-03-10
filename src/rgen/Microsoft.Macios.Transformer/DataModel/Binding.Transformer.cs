@@ -64,7 +64,7 @@ readonly partial struct Binding {
 		FullyQualifiedSymbol = fullyQualifiedSymbol;
 	}
 
-	internal Binding (EnumDeclarationSyntax enumDeclaration, INamedTypeSymbol symbol, RootContext context)
+	internal Binding (EnumDeclarationSyntax enumDeclaration, INamedTypeSymbol symbol, in RootContext context)
 	{
 		SemanticModelExtensions.GetSymbolData (
 			symbol: symbol,
@@ -76,8 +76,13 @@ readonly partial struct Binding {
 		BindingInfo = new BindingInfo (null, BindingType.SmartEnum);
 		FullyQualifiedSymbol = enumDeclaration.GetFullyQualifiedIdentifier ();
 		UsingDirectives = enumDeclaration.SyntaxTree.CollectUsingStatements ();
+		AttributesDictionary = symbol.GetAttributeData ();
 		// smart enums are expected to be public, we might need to change this in the future
 		Modifiers = [Token (SyntaxKind.PublicKeyword)];
+
+		// if we are an error domain, we do know we are a smart enum, else we are unknown until we find at least one
+		// enum value with a backing field
+		var bindingType = HasErrorDomainAttribute ? BindingType.SmartEnum : BindingType.Unknown;
 		var bucket = ImmutableArray.CreateBuilder<EnumMember> ();
 		var enumValueDeclarations = enumDeclaration.Members.OfType<EnumMemberDeclarationSyntax> ();
 		foreach (var enumValueDeclaration in enumValueDeclarations) {
@@ -90,6 +95,8 @@ readonly partial struct Binding {
 					out string? libraryName, out string? libraryPath))
 				// could not calculate the library for the enum, do not add it
 				continue;
+			// we do know we have a backing field, so we can set the binding type to smart enum
+			bindingType = BindingType.SmartEnum;
 			var enumMember = new EnumMember (
 				name: enumValueDeclaration.Identifier.ToFullString ().Trim (),
 				libraryName: libraryName,
@@ -100,6 +107,7 @@ readonly partial struct Binding {
 			bucket.Add (enumMember);
 		}
 
+		BindingInfo = new (null, bindingType);
 		EnumMembers = bucket.ToImmutable ();
 	}
 
@@ -225,7 +233,7 @@ readonly partial struct Binding {
 	/// <param name="interfaceDeclarationSyntax">An interface that declares a binding.</param>
 	/// <param name="symbol"></param>
 	/// <param name="context">The current compilation context.</param>
-	internal Binding (InterfaceDeclarationSyntax interfaceDeclarationSyntax, INamedTypeSymbol symbol, RootContext context)
+	internal Binding (InterfaceDeclarationSyntax interfaceDeclarationSyntax, INamedTypeSymbol symbol, in RootContext context)
 	{
 		// basic properties of the binding
 		FullyQualifiedSymbol = interfaceDeclarationSyntax.GetFullyQualifiedIdentifier ();
@@ -273,6 +281,22 @@ readonly partial struct Binding {
 			.ToImmutableArray ();
 
 	}
+
+	/// <summary>
+	/// Create a Binding from the provide base type declaration syntax. If the syntax is not supported,
+	/// it will return null.
+	/// </summary>
+	/// <param name="baseTypeDeclarationSyntax">The declaration syntax whose change we want to calculate.</param>
+	/// <param name="symbol">The symbol related to the current declaration.</param>
+	/// <param name="context">The root binding context of the current compilation.</param>
+	/// <returns>A code change or null if it could not be calculated.</returns>
+	public static Binding? FromDeclaration (BaseTypeDeclarationSyntax baseTypeDeclarationSyntax, INamedTypeSymbol symbol,
+		in RootContext context)
+		=> baseTypeDeclarationSyntax switch {
+			EnumDeclarationSyntax enumDeclarationSyntax => new Binding (enumDeclarationSyntax, symbol, context),
+			InterfaceDeclarationSyntax interfaceDeclarationSyntax => new Binding (interfaceDeclarationSyntax, symbol, context),
+			_ => null
+		};
 
 	/// <inheritdoc/>
 	public override string ToString ()

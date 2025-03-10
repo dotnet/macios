@@ -100,8 +100,11 @@ namespace MediaPlayer {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	[Native]
 	public enum MPMovieFinishReason : long {
+		/// <summary>To be added.</summary>
 		PlaybackEnded,
+		/// <summary>To be added.</summary>
 		PlaybackError,
+		/// <summary>To be added.</summary>
 		UserExited,
 	}
 
@@ -309,9 +312,13 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPMusicRepeatMode : long {
+		/// <summary>To be added.</summary>
 		Default,
+		/// <summary>To be added.</summary>
 		None,
+		/// <summary>To be added.</summary>
 		One,
+		/// <summary>To be added.</summary>
 		All,
 	}
 
@@ -321,9 +328,13 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPMusicShuffleMode : long {
+		/// <summary>To be added.</summary>
 		Default,
+		/// <summary>To be added.</summary>
 		Off,
+		/// <summary>To be added.</summary>
 		Songs,
+		/// <summary>To be added.</summary>
 		Albums,
 	}
 
@@ -332,16 +343,22 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPShuffleType : long {
+		/// <summary>To be added.</summary>
 		Off,
+		/// <summary>To be added.</summary>
 		Items,
+		/// <summary>To be added.</summary>
 		Collections,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPRepeatType : long {
+		/// <summary>To be added.</summary>
 		Off,
+		/// <summary>To be added.</summary>
 		One,
+		/// <summary>To be added.</summary>
 		All,
 	}
 
@@ -360,12 +377,17 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPRemoteCommandHandlerStatus : long {
+		/// <summary>Indicates that the command succeeded.</summary>
 		Success = 0,
+		/// <summary>Indicates that there was no such content to play.</summary>
 		NoSuchContent = 100,
+		/// <summary>Indicates that no item was playing, so the command could not be meaningfuly received.</summary>
 		[MacCatalyst (13, 1)]
 		NoActionableNowPlayingItem = 110,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		DeviceNotFound = 120,
+		/// <summary>Indicates that the command failed.</summary>
 		CommandFailed = 200,
 	}
 
@@ -373,14 +395,18 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPSeekCommandEventType : ulong {
+		/// <summary>To be added.</summary>
 		BeginSeeking,
+		/// <summary>To be added.</summary>
 		EndSeeking,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPNowPlayingInfoLanguageOptionType : ulong {
+		/// <summary>To be added.</summary>
 		Audible,
+		/// <summary>To be added.</summary>
 		Legible,
 	}
 
@@ -425,18 +451,26 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPNowPlayingInfoMediaType : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Audio,
+		/// <summary>To be added.</summary>
 		Video,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPNowPlayingPlaybackState : ulong {
+		/// <summary>To be added.</summary>
 		Unknown = 0,
+		/// <summary>To be added.</summary>
 		Playing,
+		/// <summary>To be added.</summary>
 		Paused,
+		/// <summary>To be added.</summary>
 		Stopped,
+		/// <summary>To be added.</summary>
 		Interrupted,
 	}
 }

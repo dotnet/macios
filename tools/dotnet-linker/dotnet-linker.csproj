@@ -45,9 +45,6 @@
     <Compile Include="..\common\Frameworks.cs">
       <Link>tools\common\Frameworks.cs</Link>
     </Compile>
-    <Compile Include="..\mtouch\Stripper.cs">
-      <Link>external\tools\mtouch\Stripper.cs</Link>
-    </Compile>
     <Compile Include="..\common\Application.cs">
       <Link>external\tools\common\Application.cs</Link>
     </Compile>

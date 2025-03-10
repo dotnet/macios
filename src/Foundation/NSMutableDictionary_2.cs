@@ -138,6 +138,9 @@ namespace Foundation {
 			return Runtime.GetINativeObject<TValue> (_ObjectForKey (key.Handle), false);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public TKey [] Keys {
 			get {
 				using (var pool = new NSAutoreleasePool ())
@@ -154,6 +157,9 @@ namespace Foundation {
 				return NSArray.ArrayFromHandle<TKey> (_AllKeysForObject (obj.Handle));
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public TValue [] Values {
 			get {
 				using (var pool = new NSAutoreleasePool ())

@@ -1108,21 +1108,39 @@ namespace AVFoundation {
 		[Export ("init")]
 		NativeHandle Constructor ();
 
+		/// <summary>Gets the next available input bus.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("nextAvailableInputBus")]
 		nuint NextAvailableInputBus { get; }
 
+		/// <summary>Gets or sets the position of the listener.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("listenerPosition", ArgumentSemantic.Assign)]
 		Vector3 ListenerPosition { get; set; }
 
+		/// <summary>Gets or sets a vector that represents direction in which the listener is facing.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("listenerVectorOrientation", ArgumentSemantic.Assign)]
 		AVAudio3DVectorOrientation ListenerVectorOrientation { get; set; }
 
+		/// <summary>Gets or sets the direction in which the listener is facing.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("listenerAngularOrientation", ArgumentSemantic.Assign)]
 		AVAudio3DAngularOrientation ListenerAngularOrientation { get; set; }
 
+		/// <summary>Gets the parameters that control the attenuation of sound over distance in the environment.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("distanceAttenuationParameters")]
 		AVAudioEnvironmentDistanceAttenuationParameters DistanceAttenuationParameters { get; }
 
+		/// <summary>Gets the reverb parameters for the environment.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("reverbParameters")]
 		AVAudioEnvironmentReverbParameters ReverbParameters { get; }
 
@@ -1133,6 +1151,9 @@ namespace AVFoundation {
 		NSObject [] ApplicableRenderingAlgorithms ();
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("outputVolume")]
 		float OutputVolume { get; set; } /* float, not CGFloat */
 
@@ -1154,15 +1175,27 @@ namespace AVFoundation {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // returns a nil handle
 	interface AVAudioEnvironmentDistanceAttenuationParameters {
+		/// <summary>Gets or sets the <see cref="T:AVFoundation.AVAudioEnvironmentDistanceAttenuationModel" /> that describes the gain drop-off as the source moves away from the listener.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("distanceAttenuationModel", ArgumentSemantic.Assign)]
 		AVAudioEnvironmentDistanceAttenuationModel DistanceAttenuationModel { get; set; }
 
+		/// <summary>The distance, in meters, at which attenuation is applied.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("referenceDistance")]
 		float ReferenceDistance { get; set; } /* float, not CGFloat */
 
+		/// <summary>The distance, in meters, beyond which no further attenuation is applied.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("maximumDistance")]
 		float MaximumDistance { get; set; } /* float, not CGFloat */
 
+		/// <summary>The rolloff factor to create the attenuation curve.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rolloffFactor")]
 		float RolloffFactor { get; set; } /* float, not CGFloat */
 	}
@@ -1171,12 +1204,18 @@ namespace AVFoundation {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // returns a nil handle
 	interface AVAudioEnvironmentReverbParameters {
+		/// <summary>Gets or sets whether reverb is enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enable")]
 		bool Enable { get; set; }
 
 		[Export ("level")]
 		float Level { get; set; } /* float, not CGFloat */
 
+		/// <summary>The <see cref="T:AVFoundation.AVAudioUnitEQFilterParameters" /> that are applied to the output of the reverb.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("filterParameters")]
 		AVAudioUnitEQFilterParameters FilterParameters { get; }
 
@@ -1208,15 +1247,24 @@ namespace AVFoundation {
 		[Export ("url")]
 		NSUrl Url { get; }
 
+		/// <summary>The <see cref="T:AVFoundation.AVAudioFormat" /> of the file.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fileFormat")]
 		AVAudioFormat FileFormat { get; }
 
+		/// <summary>The processing <see cref="T:AVFoundation.AVAudioFormat" /> of the file.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("processingFormat")]
 		AVAudioFormat ProcessingFormat { get; }
 
 		[Export ("length")]
 		long Length { get; }
 
+		/// <summary>The offset within the file of the next read or write operation.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("framePosition")]
 		long FramePosition { get; set; }
 
@@ -2131,6 +2179,13 @@ namespace AVFoundation {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AVAudioSession.Notification.Observe*' methods instead.")]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the AVFoundation.IAVAudioSessionDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the AVFoundation.IAVAudioSessionDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[NoMac]
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
@@ -2187,6 +2242,17 @@ namespace AVFoundation {
 		[Export ("setPreferredIOBufferDuration:error:")]
 		bool SetPreferredIOBufferDuration (double duration, out NSError outError);
 
+		/// <summary>Weakly-typed audio classification of the app, used to balance its demands with other apps on the device.</summary>
+		///         <value>Values should be one of 
+		/// 	<see cref="P:AVFoundation.AVAudioSession.CategoryAmbient" />, 
+		/// 	<see cref="P:AVFoundation.AVAudioSession.CategorySoloAmbient" />, 
+		/// 	<see cref="P:AVFoundation.AVAudioSession.CategoryPlayback" />, 
+		/// 	<see cref="P:AVFoundation.AVAudioSession.CategoryRecord" />, 
+		/// 	<see cref="P:AVFoundation.AVAudioSession.CategoryPlayAndRecord" />, 
+		/// 	<see cref="P:AVFoundation.AVAudioSession.CategoryAudioProcessing" />, 
+		/// 	<see cref="P:AVFoundation.AVAudioSession.CategoryMultiRoute" /> properties.</value>
+		///         <remarks>
+		///         </remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("category")]
@@ -2219,6 +2285,9 @@ namespace AVFoundation {
 		[Export ("preferredIOBufferDuration")]
 		double PreferredIOBufferDuration { get; }
 
+		/// <summary>Application developers should not use this deprecated. Use <see cref="P:AVFoundation.AVAudioSession.InputAvailable" /> instead.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV, NoMac]
 		[Export ("inputIsAvailable")]
 		[Deprecated (PlatformName.iOS, 6, 0)]
@@ -2226,6 +2295,9 @@ namespace AVFoundation {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		bool InputIsAvailable { get; }
 
+		/// <summary>Application developers should not use this deprecated property. Use <see cref="P:AVFoundation.AVAudioSession.SampleRate" /> instead.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV, NoMac]
 		[Export ("currentHardwareSampleRate")]
 		[Deprecated (PlatformName.iOS, 6, 0, message: "Use 'SampleRate' instead.")]
@@ -2233,6 +2305,9 @@ namespace AVFoundation {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'SampleRate' instead.")]
 		double CurrentHardwareSampleRate { get; }
 
+		/// <summary>Application developers should not use this deprecated property. Use <see cref="P:AVFoundation.AVAudioSession.InputNumberOfChannels" /> instead.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV, NoMac]
 		[Export ("currentHardwareInputNumberOfChannels")]
 		[Deprecated (PlatformName.iOS, 6, 0, message: "Use 'InputNumberOfChannels' instead.")]
@@ -2240,6 +2315,9 @@ namespace AVFoundation {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'InputNumberOfChannels' instead.")]
 		nint CurrentHardwareInputNumberOfChannels { get; }
 
+		/// <summary>Application developers should not use this deprecated property. Use <see cref="P:AVFoundation.AVAudioSession.OutputNumberOfChannels" /> instead.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV, NoMac]
 		[Export ("currentHardwareOutputNumberOfChannels")]
 		[Deprecated (PlatformName.iOS, 6, 0, message: "Use 'OutputNumberOfChannels' instead.")]
@@ -2335,6 +2413,9 @@ namespace AVFoundation {
 		[Wrap ("SetActive (active, options, out var outError) ? null : outError")]
 		NSError SetActive (bool active, AVAudioSessionSetActiveOptions options);
 
+		/// <summary>Gets an array that contains descriptions of the session categories that the device can provide.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("availableCategories")]
@@ -2383,11 +2464,17 @@ namespace AVFoundation {
 		[Wrap ("SetCategory (category.GetConstant ()!, mode.GetConstant ()!, options, out var outError) ? null : outError")]
 		NSError SetCategory (AVAudioSessionCategory category, AVAudioSessionMode mode, AVAudioSessionCategoryOptions options);
 
+		/// <summary>Options for the <see cref="P:AVFoundation.AVAudioSession.Category" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("categoryOptions")]
 		AVAudioSessionCategoryOptions CategoryOptions { get; }
 
+		/// <summary>Gets an array that contains the available audio session modes.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("availableModes")]
@@ -2403,6 +2490,9 @@ namespace AVFoundation {
 		[Export ("otherAudioPlaying")]
 		bool OtherAudioPlaying { [Bind ("isOtherAudioPlaying")] get; }
 
+		/// <summary>The active input-output route.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("currentRoute")]
@@ -2418,16 +2508,25 @@ namespace AVFoundation {
 		[Export ("preferredSampleRate")]
 		double PreferredSampleRate { get; }
 
+		/// <summary>Input gain as a floating point value from 0 to 1.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("inputGain")]
 		float InputGain { get; } // defined as 'float'
 
+		/// <summary>Determines whether input gain is available.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("inputGainSettable")]
 		bool InputGainSettable { [Bind ("isInputGainSettable")] get; }
 
+		/// <summary>Whether any input route supports audio.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("inputAvailable")]
@@ -2463,6 +2562,9 @@ namespace AVFoundation {
 		[Export ("outputLatency")]
 		double OutputLatency { get; }
 
+		/// <summary>The duration of the current buffer, in seconds.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("IOBufferDuration")]
@@ -2639,11 +2741,20 @@ namespace AVFoundation {
 		[Field ("AVAudioSessionPortContinuityMicrophone")]
 		NSString PortContinuityMicrophone { get; }
 
+		/// <summary>The data sources available for the current input port.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("inputDataSources"), NullAllowed]
 		AVAudioSessionDataSourceDescription [] InputDataSources { get; }
 
+		/// <summary>The currently selected input <see cref="T:AVFoundation.AVAudioSessionDataSourceDescription" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("inputDataSource"), NullAllowed]
@@ -2688,6 +2799,9 @@ namespace AVFoundation {
 		[Export ("preferredInput", ArgumentSemantic.Copy), NullAllowed]
 		AVAudioSessionPortDescription PreferredInput { get; }
 
+		/// <summary>Gets an array that contains <see cref="T:AVFoundation.AVAudioSessionPortDescription" />s that list the available audio sources on the device.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("availableInputs")]
@@ -3192,15 +3306,24 @@ namespace AVFoundation {
 		[Export ("audioComponentDescription"), Internal]
 		AudioComponentDescription AudioComponentDescription { get; }
 
+		/// <summary>Gets the audio unit as a Core Audio unit.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("audioUnit")]
 		global::AudioUnit.AudioUnit AudioUnit { get; }
 
 		[Export ("name")]
 		string Name { get; }
 
+		/// <summary>Gets the name of the manufacturer of the underlying hardware unit.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("manufacturerName")]
 		string ManufacturerName { get; }
 
+		/// <summary>Gets the audio unit version number.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("version")]
 		nuint Version { get; }
 
@@ -3213,6 +3336,9 @@ namespace AVFoundation {
 		[Async]
 		void FromComponentDescription (AudioComponentDescription audioComponentDescription, AudioComponentInstantiationOptions options, Action<AVAudioUnit, NSError> completionHandler);
 
+		/// <summary>Gets the audio unit as an Audio Toolbox audio unit.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("AUAudioUnit")]
 		AUAudioUnit AUAudioUnit { get; }
@@ -3221,15 +3347,27 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVAudioUnitEffect))]
 	interface AVAudioUnitDelay {
+		/// <summary>Gets or sets the time, in seconds, the input signal is delayed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("delayTime")]
 		double DelayTime { get; set; }
 
+		/// <summary>The percentage of the output signal fed back into the delay line.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("feedback")]
 		float Feedback { get; set; } /* float, not CGFloat */
 
+		/// <summary>The frequency, in Hz, above which content is rolled off.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lowPassCutoff")]
 		float LowPassCutoff { get; set; } /* float, not CGFloat */
 
+		/// <summary>Gets or sets the blend of the wet and dry signals.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("wetDryMix")]
 		float WetDryMix { get; set; } /* float, not CGFloat */
 	}
@@ -3237,9 +3375,15 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVAudioUnitEffect))]
 	interface AVAudioUnitDistortion {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("preGain")]
 		float PreGain { get; set; } /* float, not CGFloat */
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("wetDryMix")]
 		float WetDryMix { get; set; } /* float, not CGFloat */
 
@@ -3254,6 +3398,9 @@ namespace AVFoundation {
 		[Export ("initWithAudioComponentDescription:")]
 		NativeHandle Constructor (AudioComponentDescription audioComponentDescription);
 
+		/// <summary>Gets or sets the bypass state of the <see cref="T:AVFoundation.AVAudioUnit" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bypass")]
 		bool Bypass { get; set; }
 	}
@@ -3264,9 +3411,15 @@ namespace AVFoundation {
 		[Export ("initWithNumberOfBands:")]
 		NativeHandle Constructor (nuint numberOfBands);
 
+		/// <summary>Gets an array of <see cref="T:AVFoundation.AVAudioUnitEQFilterParameters" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bands")]
 		AVAudioUnitEQFilterParameters [] Bands { get; }
 
+		/// <summary>The overall gain adjustment, in decibels.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("globalGain")]
 		float GlobalGain { get; set; } /* float, not CGFloat */
 	}
@@ -3275,18 +3428,33 @@ namespace AVFoundation {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // returns a nil handle
 	interface AVAudioUnitEQFilterParameters {
+		/// <summary>Gets or sets the <see cref="T:AVFoundation.AVAudioUnitEQFilterType" /> of the filter.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("filterType", ArgumentSemantic.Assign)]
 		AVAudioUnitEQFilterType FilterType { get; set; }
 
+		/// <summary>The frequency, in Hz, of the EQ filter.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("frequency")]
 		float Frequency { get; set; } /* float, not CGFloat */
 
+		/// <summary>Gets or sets the bandwidth of the EQ filter, in decibels.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bandwidth")]
 		float Bandwidth { get; set; } /* float, not CGFloat */
 
+		/// <summary>The gain, in decibels, of the EQ filter.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("gain")]
 		float Gain { get; set; } /* float, not CGFloat */
 
+		/// <summary>Gets or sets the bypass state of the EQ filter.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bypass")]
 		bool Bypass { get; set; }
 	}
@@ -4033,6 +4201,13 @@ namespace AVFoundation {
 		[Export ("setDelegate:queue:")]
 		void SetDelegate ([NullAllowed] IAVCaptureDataOutputSynchronizerDelegate del, [NullAllowed] DispatchQueue delegateCallbackQueue);
 
+		/// <summary>An instance of the AVFoundation.IAVCaptureDataOutputSynchronizerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the AVFoundation.IAVCaptureDataOutputSynchronizerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IAVCaptureDataOutputSynchronizerDelegate Delegate { get; }
@@ -4708,6 +4883,9 @@ namespace AVFoundation {
 
 		// note: we cannot use [Bind] here as it would break compatibility with iOS 6.x
 		// `isFinished` was only added in iOS 7.0 SDK and cannot be called in earlier versions
+		/// <summary>Gets a Boolean value that tells whether the request has completed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isFinished")]
 		bool Finished { get; }
 
@@ -4738,10 +4916,16 @@ namespace AVFoundation {
 		[return: NullAllowed]
 		NSData GetPersistentContentKey (NSData keyVendorResponse, [NullAllowed] NSDictionary<NSString, NSObject> options, out NSError error);
 
+		/// <summary>Gets a Boolean value that tells whether a persistent key is required for streaming content requests.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetResourceLoadingRequestStreamingContentKeyRequestRequiresPersistentKey")]
 		NSString StreamingContentKeyRequestRequiresPersistentKey { get; }
 
+		/// <summary>Gets a Boolean value that tells whether the request is cancelled..</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isCancelled")]
 		bool IsCancelled { get; }
 
@@ -4782,6 +4966,9 @@ namespace AVFoundation {
 		[Export ("contentLength")]
 		long ContentLength { get; set; }
 
+		/// <summary>Gets or sets whether the resource supports random access.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("byteRangeAccessSupported")]
 		bool ByteRangeAccessSupported { [Bind ("isByteRangeAccessSupported")] get; set; }
 
@@ -9197,19 +9384,35 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface AVAudioTimePitchAlgorithm {
+		/// <summary>Represents the value associated with the constant AVAudioTimePitchAlgorithmLowQualityZeroLatency</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("AVAudioTimePitchAlgorithmLowQualityZeroLatency")]
 		NSString LowQualityZeroLatency { get; }
 
+		/// <summary>Represents the value associated with the constant AVAudioTimePitchAlgorithmTimeDomain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAudioTimePitchAlgorithmTimeDomain")]
 		NSString TimeDomain { get; }
 
+		/// <summary>Represents the value associated with the constant AVAudioTimePitchAlgorithmSpectral</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAudioTimePitchAlgorithmSpectral")]
 		NSString Spectral { get; }
 
+		/// <summary>Represents the value associated with the constant AVAudioTimePitchAlgorithmVarispeed</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAudioTimePitchAlgorithmVarispeed")]
 		NSString Varispeed { get; }
@@ -9781,9 +9984,15 @@ namespace AVFoundation {
 		[Export ("outputs")]
 		AVCaptureOutput [] Outputs { get; }
 
+		/// <summary>Whether the capture session is currently running.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("running")]
 		bool Running { [Bind ("isRunning")] get; }
 
+		/// <summary>Whether the session has been interrupted.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("interrupted")]
@@ -9825,25 +10034,49 @@ namespace AVFoundation {
 		[Field ("AVCaptureSessionPresetPhoto")]
 		NSString PresetPhoto { get; }
 
+		/// <summary>Represents the value associated with the constant AVCaptureSessionPresetHigh</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVCaptureSessionPresetHigh")]
 		NSString PresetHigh { get; }
 
 		[Field ("AVCaptureSessionPresetMedium")]
 		NSString PresetMedium { get; }
 
+		/// <summary>Represents the value associated with the constant AVCaptureSessionPresetLow</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVCaptureSessionPresetLow")]
 		NSString PresetLow { get; }
 
+		/// <summary>Represents the value associated with the constant AVCaptureSessionPreset640x480</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVCaptureSessionPreset640x480")]
 		NSString Preset640x480 { get; }
 
+		/// <summary>Represents the value associated with the constant AVCaptureSessionPreset1280x720</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVCaptureSessionPreset1280x720")]
 		NSString Preset1280x720 { get; }
 
+		/// <summary>Represents the value associated with the constant AVCaptureSessionPreset1920x1080</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVCaptureSessionPreset1920x1080")]
 		NSString Preset1920x1080 { get; }
 
+		/// <summary>Represents the value associated with the constant AVCaptureSessionPreset3840x2160.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Field ("AVCaptureSessionPreset3840x2160")]
 		NSString Preset3840x2160 { get; }
@@ -9855,9 +10088,17 @@ namespace AVFoundation {
 		[Field ("AVCaptureSessionPresetiFrame1280x720")]
 		NSString PresetiFrame1280x720 { get; }
 
+		/// <summary>Represents the value associated with the constant AVCaptureSessionPreset352x288</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVCaptureSessionPreset352x288")]
 		NSString Preset352x288 { get; }
 
+		/// <summary>Represents the value associated with the constant AVCaptureSessionPresetInputPriority</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("AVCaptureSessionPresetInputPriority")]
@@ -9875,17 +10116,24 @@ namespace AVFoundation {
 		[Notification (typeof (AVCaptureSessionRuntimeErrorEventArgs))]
 		NSString RuntimeErrorNotification { get; }
 
+		/// <summary>Represents the value associated with the constant AVCaptureSessionErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVCaptureSessionErrorKey")]
 		NSString ErrorKey { get; }
 
+		/// <include file="../docs/api/AVFoundation/AVCaptureSession.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVCaptureSession.DidStartRunningNotification']/*" />
 		[Field ("AVCaptureSessionDidStartRunningNotification")]
 		[Notification]
 		NSString DidStartRunningNotification { get; }
 
+		/// <include file="../docs/api/AVFoundation/AVCaptureSession.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVCaptureSession.DidStopRunningNotification']/*" />
 		[Field ("AVCaptureSessionDidStopRunningNotification")]
 		[Notification]
 		NSString DidStopRunningNotification { get; }
 
+		/// <include file="../docs/api/AVFoundation/AVCaptureSession.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVCaptureSession.InterruptionEndedNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("AVCaptureSessionInterruptionEndedNotification")]
 		[Notification]
@@ -9896,6 +10144,9 @@ namespace AVFoundation {
 		[Notification]
 		NSString WasInterruptedNotification { get; }
 
+		/// <summary>Gets a key that accesses the reason that a capture session was interrupted.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Field ("AVCaptureSessionInterruptionReasonKey")]
@@ -9916,6 +10167,9 @@ namespace AVFoundation {
 		[Export ("automaticallyConfiguresCaptureDeviceForWideColor")]
 		bool AutomaticallyConfiguresCaptureDeviceForWideColor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Field ("AVCaptureSessionInterruptionSystemPressureStateKey")]
@@ -10049,12 +10303,18 @@ namespace AVFoundation {
 		[Export ("output")]
 		AVCaptureOutput Output { get; }
 
+		/// <summary>Whether the connection is enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
 		[Export ("audioChannels")]
 		AVCaptureAudioChannel [] AvailableAudioChannels { get; }
 
+		/// <summary>Whether the captured video is being mirrored around its vertical axis.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("videoMirrored")]
 		bool VideoMirrored { [Bind ("isVideoMirrored")] get; set; }
 
@@ -10068,12 +10328,21 @@ namespace AVFoundation {
 		[Export ("inputPorts")]
 		AVCaptureInputPort [] InputPorts { get; }
 
+		/// <summary>Whether the connection is active.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isActive")]
 		bool Active { get; }
 
+		/// <summary>Whether the video being captured can be automatically mirrored about its vertical axis.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isVideoMirroringSupported")]
 		bool SupportsVideoMirroring { get; }
 
+		/// <summary>Whether the video capture buffers can be rotated.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 14, 0, message: "Use 'IsVideoRotationAngleSupported' instead.")]
 		[Deprecated (PlatformName.iOS, 17, 0, message: "Use 'IsVideoRotationAngleSupported' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 17, 0, message: "Use 'IsVideoRotationAngleSupported' instead.")]
@@ -10081,6 +10350,9 @@ namespace AVFoundation {
 		[Export ("isVideoOrientationSupported")]
 		bool SupportsVideoOrientation { get; }
 
+		/// <summary>This method is deprecated in iOS 7. Whether the minimum interval allowed between frames can be set.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 7, 0 /* Only deprecated on iOS */)]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0)]
@@ -10093,6 +10365,9 @@ namespace AVFoundation {
 		[Export ("videoMinFrameDuration")]
 		CMTime VideoMinFrameDuration { get; set; }
 
+		/// <summary>This method is deprecated in iOS 7. Whether the maximum interval allowed between frames can be set.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 7, 0 /* Only deprecated on iOS */)]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0)]
@@ -10122,11 +10397,22 @@ namespace AVFoundation {
 		[Export ("automaticallyAdjustsVideoMirroring")]
 		bool AutomaticallyAdjustsVideoMirroring { get; set; }
 
+		/// <summary>Whether the video can be automatically stabilized.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>Application developers should consider the overhead of video stabilization, which may be significant.</para>
+		///         </remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("supportsVideoStabilization")]
 		bool SupportsVideoStabilization { [Bind ("isVideoStabilizationSupported")] get; }
 
+		/// <summary>Whether the video being captured is being automatically stabilized.</summary>
+		///         <value>The default value is <see langword="false" />.</value>
+		///         <remarks>
+		///           <para>Not every iOS device supports video stabilization and stabilization is not available for all capture settings.</para>
+		///           <para>Video stabilization is an expensive operation and may increase capture latency and increase power and CPU consumption. Application developers should consider the overhead when deciding whether or not to use stabilization.</para>
+		///         </remarks>
 		[NoMac]
 		[NoTV]
 		[Export ("videoStabilizationEnabled")]
@@ -10165,11 +10451,17 @@ namespace AVFoundation {
 		[Export ("videoFieldMode")]
 		AVVideoFieldMode VideoFieldMode { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the connection can deliver camera intrinsics data.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Export ("cameraIntrinsicMatrixDeliverySupported")]
 		bool CameraIntrinsicMatrixDeliverySupported { [Bind ("isCameraIntrinsicMatrixDeliverySupported")] get; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the connection will deliver camera intrinsics data.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Export ("cameraIntrinsicMatrixDeliveryEnabled")]
@@ -10288,6 +10580,13 @@ namespace AVFoundation {
 		[Export ("setDelegate:callbackQueue:")]
 		void SetDelegate ([NullAllowed] IAVCaptureDepthDataOutputDelegate del, [NullAllowed] DispatchQueue callbackQueue);
 
+		/// <summary>An instance of the AVFoundation.IAVCaptureDepthDataOutputDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the AVFoundation.IAVCaptureDepthDataOutputDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IAVCaptureDepthDataOutputDelegate Delegate { get; }
@@ -10301,6 +10600,9 @@ namespace AVFoundation {
 		[Export ("alwaysDiscardsLateDepthData")]
 		bool AlwaysDiscardsLateDepthData { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether depth data will be smoothed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("filteringEnabled")]
 		bool FilteringEnabled { [Bind ("isFilteringEnabled")] get; set; }
 	}
@@ -11308,9 +11610,15 @@ namespace AVFoundation {
 		[Export ("livePhotoMovieDimensions")]
 		CMVideoDimensions LivePhotoMovieDimensions { get; }
 
+		/// <summary>Gets a Boolean value that tells whether flash was used or will be used to capture the image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("flashEnabled")]
 		bool IsFlashEnabled { [Bind ("isFlashEnabled")] get; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether automatic image stabilization will be used when capturing images.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'AVCaptureResolvedPhotoSettings.PhotoProcessingTimeRange' instead.")]
@@ -11319,6 +11627,9 @@ namespace AVFoundation {
 		[Export ("stillImageStabilizationEnabled")]
 		bool IsStillImageStabilizationEnabled { [Bind ("isStillImageStabilizationEnabled")] get; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether images from two built-in cameras were be combined into one high quality image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'VirtualDeviceFusionEnabled' instead.")]
 		[MacCatalyst (14, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'VirtualDeviceFusionEnabled' instead.")]
@@ -11343,6 +11654,9 @@ namespace AVFoundation {
 		[Export ("rawEmbeddedThumbnailDimensions")]
 		CMVideoDimensions RawEmbeddedThumbnailDimensions { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Export ("redEyeReductionEnabled")]
@@ -16209,57 +16523,105 @@ namespace AVFoundation {
 		[Export ("name")]
 		string Name { get; }
 
+		/// <summary>Gets the audio unit component type.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("typeName")]
 		string TypeName { get; }
 
+		/// <summary>Gets the localized component type name.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("localizedTypeName")]
 		string LocalizedTypeName { get; }
 
+		/// <summary>Gets the name of the component manufacturer.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("manufacturerName")]
 		string ManufacturerName { get; }
 
+		/// <summary>Gets the audio unit component version.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("version")]
 		nuint Version { get; }
 
+		/// <summary>Gets the version string for the audio unit component.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("versionString")]
 		string VersionString { get; }
 
+		/// <summary>Gets a Boolean value that tells whether the underlying component can be safely sandboxed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sandboxSafe")]
 		bool SandboxSafe { [Bind ("isSandboxSafe")] get; }
 
+		/// <summary>Gets a Boolean value that tells whether the audio unit has MIDI input.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hasMIDIInput")]
 		bool HasMidiInput { get; }
 
+		/// <summary>Gets a Boolean value that tells whether the audio unit has MIDI output.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hasMIDIOutput")]
 		bool HasMidiOutput { get; }
 
+		/// <summary>Gets the underlying component.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("audioComponent")]
 		AudioComponent AudioComponent { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (15, 0), NoiOS, NoTV]
 		[Export ("availableArchitectures")]
 		NSNumber [] AvailableArchitectures { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (15, 0), NoiOS, NoTV]
 		[Export ("userTagNames", ArgumentSemantic.Copy)]
 		string [] UserTagNames { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (15, 0), NoiOS, NoTV]
 		[NullAllowed, Export ("iconURL")]
 		NSUrl IconUrl { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[TV (16, 0), iOS (16, 0), MacCatalyst (15, 0)]
 		[NullAllowed, Export ("icon")]
 		UIImage Icon { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[TV (16, 0), iOS (16, 0), MacCatalyst (15, 0)]
 		[Export ("passesAUVal")]
 		bool PassesAUVal { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (15, 0), NoiOS, NoTV]
 		[Export ("hasCustomView")]
 		bool HasCustomView { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV, Mac (10, 10), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("configurationDictionary")]
 		NSDictionary WeakConfigurationDictionary { get; }
@@ -16268,12 +16630,19 @@ namespace AVFoundation {
 		[Export ("supportsNumberInputChannels:outputChannels:")]
 		bool SupportsNumberInputChannels (nint numInputChannels, nint numOutputChannels);
 
+		/// <summary>Gets an array that contains all of the tag names that are either associated with the current user or defined by the audio units that are registered with the system.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allTagNames")]
 		string [] AllTagNames { get; }
 
+		/// <summary>Gets the description of the underlying component.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("audioComponentDescription")]
 		AudioComponentDescription AudioComponentDescription { get; }
 
+		/// <include file="../docs/api/AVFoundation/AVAudioUnitComponent.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVAudioUnitComponent.TagsDidChangeNotification']/*" />
 		[Field ("AVAudioUnitComponentTagsDidChangeNotification")]
 		[Notification]
 		NSString TagsDidChangeNotification { get; }
@@ -16286,12 +16655,21 @@ namespace AVFoundation {
 	[DisableDefaultCtor] // for binary compatibility this is added in AVCompat.cs w/[Obsolete]
 	interface AVAudioUnitComponentManager {
 
+		/// <summary>Gets an array that contains all of the tags that are defined by the current user, as well as all of the tags that are defined by audio units that are registered on the device.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("tagNames")]
 		string [] TagNames { get; }
 
+		/// <summary>Gets an array that contains all of the localized standard system tags that are defined by audio units that are registered on the device.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("standardLocalizedTagNames")]
 		string [] StandardLocalizedTagNames { get; }
 
+		/// <summary>Returns the audio manager singleton object.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("sharedAudioUnitComponentManager")]
 		AVAudioUnitComponentManager SharedInstance { get; }

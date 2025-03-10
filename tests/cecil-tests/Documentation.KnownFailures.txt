@@ -29373,6 +29373,7 @@ M:Foundation.NSAttributedStringDocumentAttributes.#ctor(Foundation.NSDictionary)
 M:Foundation.NSBindingSelectionMarker.GetDefaultPlaceholder(Foundation.NSBindingSelectionMarker,ObjCRuntime.Class,System.String)
 M:Foundation.NSBindingSelectionMarker.SetDefaultPlaceholder(Foundation.NSObject,Foundation.NSBindingSelectionMarker,ObjCRuntime.Class,System.String)
 M:Foundation.NSBundle.GetContextHelp(System.String)
+M:Foundation.NSBundle.GetLocalizedString(Foundation.NSString,Foundation.NSString,Foundation.NSString,Foundation.NSString[])
 M:Foundation.NSBundle.GetLocalizedString(System.String,System.String,System.String)
 M:Foundation.NSBundle.GetUrlForImageResource(System.String)
 M:Foundation.NSBundle.ImageForResource(System.String)
@@ -29395,7 +29396,9 @@ M:Foundation.NSCache.SetObjectForKey(Foundation.NSObject,Foundation.NSObject)
 M:Foundation.NSCacheDelegate_Extensions.WillEvictObject(Foundation.INSCacheDelegate,Foundation.NSCache,Foundation.NSObject)
 M:Foundation.NSCalendar.#ctor(Foundation.NSCalendarType)
 M:Foundation.NSCoder.DecodeBytes
+M:Foundation.NSCoder.DecodeBytes(System.String,System.UIntPtr)
 M:Foundation.NSCoder.DecodeBytes(System.String)
+M:Foundation.NSCoder.DecodeBytes(System.UIntPtr)
 M:Foundation.NSCoder.DecodeTopLevelObject(System.Type,System.String,Foundation.NSError@)
 M:Foundation.NSCoder.DecodeTopLevelObject(System.Type[],System.String,Foundation.NSError@)
 M:Foundation.NSCoder.Encode(System.Byte[],System.Int32,System.Int32,System.String)
@@ -54363,6 +54366,7 @@ P:Foundation.NSUrlSessionConfiguration.EphemeralSessionConfiguration
 P:Foundation.NSUrlSessionConfiguration.ProxyConfigurations
 P:Foundation.NSUrlSessionConfiguration.SessionType
 P:Foundation.NSUrlSessionConfiguration.StrongConnectionProxyDictionary
+P:Foundation.NSUrlSessionConfiguration.UsesClassicLoadingMode
 P:Foundation.NSUrlSessionDataTaskRequest.Data
 P:Foundation.NSUrlSessionDataTaskRequest.Response
 P:Foundation.NSUrlSessionDownloadDelegate.TaskResumeDataKey

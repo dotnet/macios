@@ -74,6 +74,7 @@ namespace CoreNFC {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NFCTagType : ulong {
+		/// <summary>An ISO-15693 vicinity card.</summary>
 		Iso15693 = 1,
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -90,12 +91,19 @@ namespace CoreNFC {
 	/// <summary>Enumerates the kinds of content-type available to <see cref="T:CoreNFC.NFCNdefPayload" /> objects.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NFCTypeNameFormat : byte { // uint8_t
+		/// <summary>The payload contains no data.</summary>
 		Empty = 0x00,
+		/// <summary>The data follows the NFC record-type definition specification.</summary>
 		NFCWellKnown = 0x01,
+		/// <summary>The data is a media type, as defined in RFC-2046.</summary>
 		Media = 0x02,
+		/// <summary>The data is a URI.</summary>
 		AbsoluteUri = 0x03,
+		/// <summary>The data is defined using the NFC record-type definition for external types.</summary>
 		NFCExternal = 0x04,
+		/// <summary>The data format is unknown.</summary>
 		Unknown = 0x05,
+		/// <summary>The data is part of a chunked-data record series and is not the initial record (which defines the overall format).</summary>
 		Unchanged = 0x06,
 	}
 
@@ -783,9 +791,15 @@ namespace CoreNFC {
 	[BaseType (typeof (NSObject))]
 	interface NFCTagCommandConfiguration : NSCopying {
 
+		/// <summary>Gets or sets the number of tries a command may be resent, if necessary.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("maximumRetries")]
 		nuint MaximumRetries { get; set; }
 
+		/// <summary>Gets or sets the time, in seconds, between retry attempts.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("retryInterval")]
 		double RetryInterval { get; set; }
 	}

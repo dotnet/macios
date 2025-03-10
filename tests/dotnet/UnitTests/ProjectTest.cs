@@ -10,11 +10,9 @@ namespace Xamarin.Tests {
 	public class DotNetProjectTest : TestBaseClass {
 		[Test]
 		[TestCase (null)]
-		[TestCase ("iossimulator-x86")]
 		[TestCase ("iossimulator-x64")]
 		[TestCase ("iossimulator-arm64")]
 		[TestCase ("ios-arm64")]
-		[TestCase ("ios-arm")]
 		public void BuildMySingleView (string runtimeIdentifier)
 		{
 			var platform = ApplePlatform.iOS;
@@ -334,9 +332,7 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
-		[TestCase (ApplePlatform.iOS, "iossimulator-x86;iossimulator-x64")]
-		[TestCase (ApplePlatform.iOS, "iossimulator-x86;iossimulator-x64;iossimulator-arm64")]
-		[TestCase (ApplePlatform.iOS, "ios-arm;ios-arm64")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-x64;iossimulator-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64;tvossimulator-arm64")]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
@@ -361,8 +357,7 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
-		[TestCase (ApplePlatform.iOS, "iossimulator-x86;iossimulator-x64")]
-		[TestCase (ApplePlatform.iOS, "ios-arm;ios-arm64", "MtouchLink=SdkOnly")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-x64;iossimulator-arm64")]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
 		public void BuildFatMonoTouchTest (ApplePlatform platform, string runtimeIdentifiers, params string [] additionalProperties)
@@ -727,7 +722,7 @@ namespace Xamarin.Tests {
 		}
 
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64;ios-arm")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
@@ -1099,7 +1094,7 @@ namespace Xamarin.Tests {
 		}
 
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64;ios-arm")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]

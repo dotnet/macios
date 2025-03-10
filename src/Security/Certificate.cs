@@ -151,6 +151,11 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr SecCertificateCopySubjectSummary (IntPtr cert);
 
+		/// <summary>Human readable summary of the certificate.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string? SubjectSummary {
 			get {
 				return CFString.FromHandle (SecCertificateCopySubjectSummary (GetCheckedHandle ()), releaseHandle: true);
@@ -160,6 +165,10 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static /* CFDataRef */ IntPtr SecCertificateCopyData (/* SecCertificateRef */ IntPtr cert);
 
+		/// <summary>Returns a Distinguished Encoding Rules (DER) representation of the certificate.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>Throws an exception if the original certificate was invalid.</remarks>
 		public NSData DerData {
 			get {
 				IntPtr data = SecCertificateCopyData (GetCheckedHandle ());
@@ -566,6 +575,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe extern static /* OSStatus */ SecStatusCode SecIdentityCopyCertificate (/* SecIdentityRef */ IntPtr identityRef,  /* SecCertificateRef* */ IntPtr* certificateRef);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SecCertificate Certificate {
 			get {
 				SecStatusCode result;
@@ -815,6 +827,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static /* size_t */ nint SecKeyGetBlockSize (IntPtr handle);
 
+		/// <summary>Gets the block size of the key.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int BlockSize {
 			get {
 				return (int) SecKeyGetBlockSize (GetCheckedHandle ());

@@ -500,7 +500,11 @@ public partial class Generator : IMemberGatherer {
 				throw GetBindAsException ("unbox", retType.Name, originalReturnType.Name, "container", minfo.mi);
 			}
 		} else if (originalReturnType == TypeCache.NSString && IsSmartEnum (retType)) {
-			append = $"{TypeManager.FormatType (retType.DeclaringType, retType)}Extensions.GetValue (";
+			if (isNullable) {
+				append = $"{TypeManager.FormatType (retType.DeclaringType, retType)}Extensions.GetNullableValue (";
+			} else {
+				append = $"{TypeManager.FormatType (retType.DeclaringType, retType)}Extensions.GetValue (";
+			}
 			suffix = ")";
 		} else if (originalReturnType.IsArray && originalReturnType.GetArrayRank () == 1) {
 			var arrType = originalReturnType.GetElementType ();
@@ -2909,14 +2913,8 @@ public partial class Generator : IMemberGatherer {
 				var wrapper = GetFromBindAsWrapper (minfo, out suffix);
 				var formattedReturnType = TypeManager.FormatType (minfo.type, mi.ReturnType);
 				if (mi.ReturnType == TypeCache.NSString) {
-					if (isNullable) {
-						print ("{0} retvaltmp;", NativeHandleType);
-						cast_a = "((retvaltmp = ";
-						cast_b = $") == IntPtr.Zero ? default ({formattedBindAsType}) : ({wrapper}Runtime.GetNSObject<{formattedReturnType}> (retvaltmp, {owns})!){suffix})";
-					} else {
-						cast_a = $"{wrapper}Runtime.GetNSObject<{formattedReturnType}> (";
-						cast_b = $", {owns})!{suffix}";
-					}
+					cast_a = $"{wrapper}";
+					cast_b = $"{suffix}";
 				} else {
 					var enumCast = (bindAsType.IsEnum && !minfo.type.IsArray) ? $"({formattedBindAsType}) " : string.Empty;
 					cast_a = $"{enumCast}Runtime.GetNSObject<{formattedReturnType}> (";

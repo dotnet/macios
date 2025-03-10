@@ -15,7 +15,9 @@ namespace CoreGraphics {
 	[MacCatalyst (13,1)]
 #endif
 	public enum CGCaptureOptions : uint {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		NoFill = 1 << 0,
 	}
 
@@ -30,6 +32,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern uint CGMainDisplayID ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static int MainDisplayID {
 			get {
 				return (int) CGMainDisplayID ();
@@ -187,6 +192,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern int CGShieldingWindowLevel ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static int ShieldingWindowLevel {
 			get { return CGShieldingWindowLevel (); }
 		}

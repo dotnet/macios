@@ -36,10 +36,6 @@ using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace AudioToolbox {
 	public enum AudioConverterError // Impliclty cast to OSStatus in AudioConverter.h
 	{
@@ -108,25 +104,19 @@ namespace AudioToolbox {
 	}
 
 	[Flags]
-#if NET
 	[SupportedOSPlatform ("ios18.0")]
 	[SupportedOSPlatform ("maccatalyst18.0")]
 	[SupportedOSPlatform ("macos15.0")]
 	[SupportedOSPlatform ("tvos18.0")]
-#else
-	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 	public enum AudioConverterOptions : uint {
 		None = 0,
 		Unbuffered = 1 << 16,
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioConverterPrimeInfo {
 		/// <summary>The number of leading input frames.</summary>
@@ -142,19 +132,11 @@ namespace AudioToolbox {
 	public delegate AudioConverterError AudioConverterComplexInputData (ref int numberDataPackets, AudioBuffers data,
 		ref AudioStreamPacketDescription []? dataPacketDescription);
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AudioConverter : DisposableObject {
-#if !NET
-		delegate AudioConverterError AudioConverterComplexInputDataShared (IntPtr inAudioConverter, ref int ioNumberDataPackets, IntPtr ioData,
-			IntPtr outDataPacketDescription, IntPtr inUserData);
-		static readonly AudioConverterComplexInputDataShared ComplexInputDataShared = FillComplexBufferShared;
-#endif
-
 		IntPtr packetDescriptions;
 		int packetDescriptionSize;
 
@@ -634,14 +616,10 @@ namespace AudioToolbox {
 		/// <param name="options">Any <see cref="AudioConverterOptions" /> to use.</param>
 		/// <param name="error">In case of failure, will contain the error code for the failure. Otherwise the value <see cref="AudioConverterError.None" /> will be returned.</param>
 		/// <returns>A new AudioConverter instance, or null in case of failure.</returns>
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		public static AudioConverter? Create (AudioStreamBasicDescription sourceFormat, AudioStreamBasicDescription destinationFormat, AudioConverterOptions options, out AudioConverterError error)
 		{
 			IntPtr ptr = default (IntPtr);
@@ -658,14 +636,10 @@ namespace AudioToolbox {
 		/// <param name="destinationFormat">The format to convert the source audio to.</param>
 		/// <param name="options">Any <see cref="AudioConverterOptions" /> to use.</param>
 		/// <returns>A new AudioConverter instance, or null in case of failure.</returns>
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		public static AudioConverter? Create (AudioStreamBasicDescription sourceFormat, AudioStreamBasicDescription destinationFormat, AudioConverterOptions options)
 		{
 			return Create (sourceFormat, destinationFormat, options, out var _);
@@ -761,7 +735,6 @@ namespace AudioToolbox {
 
 			try {
 				var this_ptr = GCHandle.ToIntPtr (this_handle);
-#if NET
 				unsafe {
 					var packetSize = outputDataPacketSize;
 					int* packetSizePtr = &packetSize;
@@ -777,16 +750,6 @@ namespace AudioToolbox {
 						return returnTwo;
 					}
 				}
-#else
-				if (packetDescription is null)
-					return AudioConverterFillComplexBuffer (Handle, ComplexInputDataShared, this_ptr, ref outputDataPacketSize, (IntPtr) outputData, IntPtr.Zero);
-
-				unsafe {
-					fixed (AudioStreamPacketDescription* pdesc = packetDescription) {
-						return AudioConverterFillComplexBuffer (Handle, ComplexInputDataShared, this_ptr, ref outputDataPacketSize, (IntPtr) outputData, (IntPtr) pdesc);
-					}
-				}
-#endif
 			} finally {
 				this_handle.Free ();
 			}
@@ -795,15 +758,9 @@ namespace AudioToolbox {
 		//
 		// outDataPacketDescription should be `ref IntPtr' but using IntPtr we get easier access to pointer address
 		//
-#if NET
 		[UnmanagedCallersOnly]
 		static AudioConverterError FillComplexBufferShared (IntPtr inAudioConverter, IntPtr ioNumberDataPacketsPtr, IntPtr ioData,
 															IntPtr outDataPacketDescription, IntPtr inUserData)
-#else
-		[MonoPInvokeCallback (typeof (AudioConverterComplexInputDataShared))]
-		static AudioConverterError FillComplexBufferShared (IntPtr inAudioConverter, ref int ioNumberDataPackets, IntPtr ioData,
-															IntPtr outDataPacketDescription, IntPtr inUserData)
-#endif
 		{
 			var handler = GCHandle.FromIntPtr (inUserData);
 			var instanceData = handler.Target as Tuple<AudioConverter, AudioConverterComplexInputData?>;
@@ -828,7 +785,6 @@ namespace AudioToolbox {
 				// Using 0-size array as marker because the size of pre-allocated memory is not known
 				//
 				var data = outDataPacketDescription == IntPtr.Zero ? null : new AudioStreamPacketDescription [0];
-#if NET
 				// tricky - this in !NET this is an argument
 				// in NET it's a local so all the other code
 				// flows
@@ -837,11 +793,6 @@ namespace AudioToolbox {
 					inst.InputData (ref ioNumberDataPackets, buffers, ref data) :
 					callback! (ref ioNumberDataPackets, buffers, ref data);
 				Marshal.WriteInt32 (ioNumberDataPacketsPtr, ioNumberDataPackets);
-#else
-				var res = inst.InputData is not null ?
-					inst.InputData (ref ioNumberDataPackets, buffers, ref data) :
-					callback! (ref ioNumberDataPackets, buffers, ref data);
-#endif
 
 				if (outDataPacketDescription != IntPtr.Zero) {
 					if (ioNumberDataPackets > 0) {
@@ -881,7 +832,6 @@ namespace AudioToolbox {
 			}
 		}
 
-#if NET
 		public delegate void PrepareCompletionCallback (AudioConverterError status);
 
 		[UnmanagedCallersOnly]
@@ -922,7 +872,6 @@ namespace AudioToolbox {
 		{
 			Prepare (0, IntPtr.Zero, completionCallback);
 		}
-#endif // NET
 
 		public AudioConverterError Reset ()
 		{
@@ -1026,25 +975,17 @@ namespace AudioToolbox {
 		unsafe static extern AudioConverterError AudioConverterNewSpecific (AudioStreamBasicDescription* inSourceFormat, AudioStreamBasicDescription* inDestinationFormat,
 			int inNumberClassDescriptions, AudioClassDescription* inClassDescriptions, IntPtr* outAudioConverter);
 
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe static extern void AudioConverterPrepare (uint inFlags, IntPtr ioReserved, BlockLiteral* block);
 
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe static extern /* OSStatus */ AudioConverterError AudioConverterNewWithOptions (
 				/* const AudioStreamBasicDescription * */ AudioStreamBasicDescription* inSourceFormat,
@@ -1180,17 +1121,10 @@ namespace AudioToolbox {
 			int* ioOutputDataSize, byte* outOutputData);
 
 		[DllImport (Constants.AudioToolboxLibrary)]
-#if NET
 		static unsafe extern AudioConverterError AudioConverterFillComplexBuffer (IntPtr inAudioConverter,
 			delegate* unmanaged<IntPtr, IntPtr, IntPtr, IntPtr, IntPtr, AudioConverterError> inInputDataProc, IntPtr inInputDataProcUserData,
 			IntPtr ioOutputDataPacketSize, IntPtr outOutputData,
 			IntPtr outPacketDescription);
-#else
-		static extern AudioConverterError AudioConverterFillComplexBuffer (IntPtr inAudioConverter,
-			AudioConverterComplexInputDataShared inInputDataProc, IntPtr inInputDataProcUserData,
-			ref int ioOutputDataPacketSize, IntPtr outOutputData,
-			IntPtr outPacketDescription);
-#endif
 	}
 
 	enum AudioConverterPropertyID // typedef UInt32 AudioConverterPropertyID

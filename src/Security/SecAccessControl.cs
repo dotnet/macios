@@ -36,9 +36,11 @@ namespace Security {
 	// CFOptionFlags -> SecAccessControl.h
 	public enum SecAccessControlCreateFlags : long {
 #endif
+		/// <summary>Requires the user to validate, either biometrically or via the device passcode.</summary>
 		UserPresence = 1 << 0,
 
 #if NET
+		/// <summary>Developers should use <see cref="F:Security.SecAccessControlCreateFlags.BiometryAny" /> instead.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -48,6 +50,7 @@ namespace Security {
 		TouchIDAny = BiometryAny,
 
 #if NET
+		/// <summary>Developers should use <see cref="F:Security.SecAccessControlCreateFlags.BiometryCurrentSet" /> instead.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -59,6 +62,7 @@ namespace Security {
 		// Added in iOS 11.3 and macOS 10.13.4 but keeping initial availability attribute because it's using the value
 		// of 'TouchIDAny' which iOS 9 / macOS 10.12.1 will accept.
 #if NET
+		/// <summary>Require any biometric for access.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -69,6 +73,7 @@ namespace Security {
 		// Added in iOS 11.3 and macOS 10.13.4 but keeping initial availability attribute because it's using the value
 		// of 'TouchIDCurrentSet' which iOS 9 / macOS 10.12.1 will accept.
 #if NET
+		/// <summary>Require the currently set biometric for access.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -77,6 +82,7 @@ namespace Security {
 		BiometryCurrentSet = 1 << 3,
 
 #if NET
+		/// <summary>Validation via the device passcode.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -109,6 +115,7 @@ namespace Security {
 		Companion = 1 << 5,
 
 #if NET
+		/// <summary>An "OR" operation applied to other flags.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -117,6 +124,7 @@ namespace Security {
 		Or = 1 << 14,
 
 #if NET
+		/// <summary>An "And" operation applied to other flags.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -125,6 +133,7 @@ namespace Security {
 		And = 1 << 15,
 
 #if NET
+		/// <summary>Require a private key for access.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -133,6 +142,7 @@ namespace Security {
 		PrivateKeyUsage = 1 << 30,
 
 #if NET
+		/// <summary>Require an application password for access.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -166,7 +176,13 @@ namespace Security {
 			Flags = flags;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SecAccessible Accessible { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SecAccessControlCreateFlags Flags { get; private set; }
 
 		[DllImport (Constants.SecurityLibrary)]

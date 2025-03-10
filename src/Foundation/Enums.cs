@@ -7,21 +7,32 @@ namespace Foundation {
 	// Utility enum, ObjC uses NSString
 	/// <summary>An enumeration of known document types. Used with the <see cref="P:Foundation.NSAttributedStringDocumentAttributes.DocumentType" /> property.</summary>
 	public enum NSDocumentType {
+		/// <summary>To be added.</summary>
 		Unknown = -1,
+		/// <summary>To be added.</summary>
 		PlainText,
+		/// <summary>To be added.</summary>
 		RTF,
+		/// <summary>To be added.</summary>
 		RTFD,
+		/// <summary>To be added.</summary>
 		HTML,
+		/// <summary>To be added.</summary>
 		[NoiOS, NoTV, NoMacCatalyst]
 		MacSimpleText,
+		/// <summary>To be added.</summary>
 		[NoiOS, NoTV, NoMacCatalyst]
 		DocFormat,
+		/// <summary>To be added.</summary>
 		[NoiOS, NoTV, NoMacCatalyst]
 		WordML,
+		/// <summary>To be added.</summary>
 		[NoiOS, NoTV, NoMacCatalyst]
 		OfficeOpenXml,
+		/// <summary>To be added.</summary>
 		[NoiOS, NoTV, NoMacCatalyst]
 		WebArchive,
+		/// <summary>To be added.</summary>
 		[NoiOS, NoTV, NoMacCatalyst]
 		OpenDocument,
 	}
@@ -30,7 +41,9 @@ namespace Foundation {
 	// Utility enum, ObjC uses NSString
 	/// <summary>An enumeration that specifies how a document is being viewed. Used with the <see cref="P:Foundation.NSAttributedStringDocumentAttributes.ViewMode" /> property.</summary>
 	public enum NSDocumentViewMode {
+		/// <summary>To be added.</summary>
 		Normal,
+		/// <summary>To be added.</summary>
 		PageLayout,
 
 	}

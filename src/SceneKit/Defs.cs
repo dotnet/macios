@@ -90,10 +90,14 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNWrapMode : long {
+		/// <summary>Clamps texture coordinates to the range [0,1].</summary>
 		Clamp = 1,
+		/// <summary>Uses the fractional part of the texture coordinate, so effectively 0.0 to less than 1.0.</summary>
 		Repeat,
 		// added in iOS 8, removed in 8.3 (mistake?) but added back in 9.0 betas
+		/// <summary>Uses texture colors in the range [0,1] and the material's border color otherwise.</summary>
 		ClampToBorder,
+		/// <summary>Texture coordinates outside the range [0,1] are treated as if the range reverses before repeating.</summary>
 		Mirror,
 	}
 
@@ -129,7 +133,9 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNMorpherCalculationMode : long {
+		/// <summary>To be added.</summary>
 		Normalized,
+		/// <summary>To be added.</summary>
 		Additive,
 	}
 
@@ -484,8 +490,10 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNRenderingApi : ulong {
+		/// <summary>Indicates that the Metal framework is used for rendering.</summary>
 		Metal,
 #if !MONOMAC
+		/// <summary>Indicates that the OpenGL ES 2.0 API is used for rendering.</summary>
 		[Unavailable (PlatformName.MacCatalyst)]
 		[NoMac]
 		OpenGLES2,
@@ -521,7 +529,9 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNMovabilityHint : long {
+		/// <summary>Indicates that the node is not expected to move over time.</summary>
 		Fixed,
+		/// <summary>Indicates that the node is expected to move over time.</summary>
 		Movable,
 	}
 
@@ -605,8 +615,11 @@ namespace SceneKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNNodeFocusBehavior : long {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Occluding,
+		/// <summary>To be added.</summary>
 		Focusable,
 	}
 

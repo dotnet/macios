@@ -227,6 +227,10 @@ namespace CloudKit {
 	[BaseType (typeof (NSObject))]
 	interface CKContainer {
 
+		/// <summary>Developers should not use this deprecated property. Developers should use 'CurrentUserDefaultName' instead.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'CurrentUserDefaultName' instead.")]
 		[Deprecated (PlatformName.TvOS, 10, 0, message: "Use 'CurrentUserDefaultName' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Use 'CurrentUserDefaultName' instead.")]
@@ -235,6 +239,9 @@ namespace CloudKit {
 		[Field ("CKOwnerDefaultName")]
 		NSString OwnerDefaultName { get; }
 
+		/// <summary>The current user of the database.</summary>
+		///         <value>The default value is "defaultOwner".</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("CKCurrentUserDefaultName")]
 		NSString CurrentUserDefaultName { get; }
@@ -327,6 +334,7 @@ namespace CloudKit {
 		[Async]
 		void DiscoverUserIdentity (CKRecordID userRecordID, Action<CKUserIdentity, NSError> completionHandler);
 
+		/// <include file="../docs/api/CloudKit/CKContainer.xml" path="/Documentation/Docs[@DocId='P:CloudKit.CKContainer.AccountChangedNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("CKAccountChangedNotification")]
 		[Notification]
@@ -489,18 +497,38 @@ namespace CloudKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface CKErrorFields {
+		/// <summary>Represents the value associated with the constant CKPartialErrorsByItemIDKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CKPartialErrorsByItemIDKey")]
 		NSString PartialErrorsByItemIdKey { get; }
 
+		/// <summary>Represents the value associated with the constant CKRecordChangedErrorAncestorRecordKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CKRecordChangedErrorAncestorRecordKey")]
 		NSString RecordChangedErrorAncestorRecordKey { get; }
 
+		/// <summary>Represents the value associated with the constant CKRecordChangedErrorServerRecordKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CKRecordChangedErrorServerRecordKey")]
 		NSString RecordChangedErrorServerRecordKey { get; }
 
+		/// <summary>Represents the value associated with the constant CKRecordChangedErrorClientRecordKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CKRecordChangedErrorClientRecordKey")]
 		NSString RecordChangedErrorClientRecordKey { get; }
 
+		/// <summary>Represents the value associated with the constant CKErrorRetryAfterKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CKErrorRetryAfterKey")]
 		NSString ErrorRetryAfterKey { get; }
 

@@ -42,9 +42,23 @@ namespace AddressBookUI {
 		[Export ("parentGroup"), Internal]
 		IntPtr _ParentGroup { get; set; }
 
+		/// <summary>An instance of the AddressBookUI.IABNewPersonViewControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the AddressBookUI.IABNewPersonViewControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IABNewPersonViewControllerDelegate Delegate { get; set; }
 
+		/// <summary>An object that can respond to the delegate protocol for this type</summary>
+		///         <value>The instance that will respond to events and data requests.</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+		///         </remarks>
 		[Export ("newPersonViewDelegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 	}
@@ -87,21 +101,56 @@ namespace AddressBookUI {
 		[Export ("addressBook"), Internal]
 		IntPtr _AddressBook { get; set; }
 
+		/// <summary>An instance of the AddressBookUI.IABPeoplePickerNavigationControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the AddressBookUI.IABPeoplePickerNavigationControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IABPeoplePickerNavigationControllerDelegate Delegate { get; set; }
 
+		/// <summary>An object that can respond to the delegate protocol for this type</summary>
+		///         <value>The instance that will respond to events and data requests.</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+		///         </remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("peoplePickerDelegate", ArgumentSemantic.Assign)]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>Use this property to set a predicate that determines whether the person can be selected or not.</summary>
+		///         <value>
+		///           <para>If the value is null, all persons are selectable;  Otherwise only those persons that match the predicate will be.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Export ("predicateForEnablingPerson", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		NSPredicate PredicateForEnablingPerson { get; set; }
 
+		/// <summary>Use this property to set a predicate that determines whether the person should be returned to the app, or displayed to the user.</summary>
+		///         <value>
+		///           <para>If set, the predicate that determines whether to return the person to the app (the predicate evaluates to true) or displayed (the predicate evaluates to false).</para>
+		///           <para>If the value is not set, the decision on whether the person is returned or displayed rests on the methods from the <see cref="T:AddressBookUI.ABPeoplePickerNavigationControllerDelegate" /> delegate.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Export ("predicateForSelectionOfPerson", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		NSPredicate PredicateForSelectionOfPerson { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("predicateForSelectionOfProperty", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		NSPredicate PredicateForSelectionOfProperty { get; set; }
@@ -163,18 +212,41 @@ namespace AddressBookUI {
 		[Export ("addressBook"), Internal]
 		IntPtr _AddressBook { get; set; }
 
+		/// <summary>Gets or sets whether the buttons for predefined actions (send text message, etc.) are displayed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allowsActions")]
 		bool AllowsActions { get; set; }
 
+		/// <summary>Gets or sets whether the user is allowed to edit the person's data.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allowsEditing")]
 		bool AllowsEditing { get; set; }
 
+		/// <summary>Gets or sets whether the view controller should show linked people.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("shouldShowLinkedPeople")]
 		bool ShouldShowLinkedPeople { get; set; }
 
+		/// <summary>An instance of the AddressBookUI.IABPersonViewControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the AddressBookUI.IABPersonViewControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IABPersonViewControllerDelegate Delegate { get; set; }
 
+		/// <summary>An object that can respond to the delegate protocol for this type</summary>
+		///         <value>The instance that will respond to events and data requests.</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+		///         </remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("personViewDelegate", ArgumentSemantic.Assign)]
 		NSObject WeakDelegate { get; set; }
@@ -193,72 +265,164 @@ namespace AddressBookUI {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the 'Contacts' API instead.")]
 	[Static]
 	interface ABPersonPredicateKey {
+		/// <summary>Represents the value associated with the constant ABPersonBirthdayProperty</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ABPersonBirthdayProperty")]
 		NSString Birthday { get; }
 
+		/// <summary>Represents the value associated with the constant ABPersonDatesProperty</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ABPersonDatesProperty")]
 		NSString Dates { get; }
 
+		/// <summary>Represents the value associated with the constant ABPersonDepartmentNameProperty</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ABPersonDepartmentNameProperty")]
 		NSString DepartmentName { get; }
 
+		/// <summary>Represents the value associated with the constant ABPersonEmailAddressesProperty</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ABPersonEmailAddressesProperty")]
 		NSString EmailAddresses { get; }
 
+		/// <summary>Represents the value associated with the constant ABPersonFamilyNameProperty</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ABPersonFamilyNameProperty")]
 		NSString FamilyName { get; }
 
+		/// <summary>Represents the value associated with the constant ABPersonGivenNameProperty</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ABPersonGivenNameProperty")]
 		NSString GivenName { get; }
 
+		/// <summary>Represents the value associated with the constant ABPersonInstantMessageAddressesProperty</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ABPersonInstantMessageAddressesProperty")]
 		NSString InstantMessageAddresses { get; }
 
+		/// <summary>Represents the value associated with the constant ABPersonJobTitleProperty</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ABPersonJobTitleProperty")]
 		NSString JobTitle { get; }
 
+		/// <summary>Represents the value associated with the constant ABPersonMiddleNameProperty</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ABPersonMiddleNameProperty")]
 		NSString MiddleName { get; }
 
+		/// <summary>Represents the value associated with the constant ABPersonNamePrefixProperty</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ABPersonNamePrefixProperty")]
 		NSString NamePrefix { get; }
 
+		/// <summary>Represents the value associated with the constant ABPersonNameSuffixProperty</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ABPersonNameSuffixProperty")]
 		NSString NameSuffix { get; }
 
+		/// <summary>Represents the value associated with the constant ABPersonNicknameProperty</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ABPersonNicknameProperty")]
 		NSString Nickname { get; }
 
+		/// <summary>Represents the value associated with the constant ABPersonNoteProperty</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ABPersonNoteProperty")]
 		NSString Note { get; }
 
+		/// <summary>Represents the value associated with the constant ABPersonOrganizationNameProperty</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ABPersonOrganizationNameProperty")]
 		NSString OrganizationName { get; }
 
+		/// <summary>Represents the value associated with the constant ABPersonPhoneNumbersProperty</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ABPersonPhoneNumbersProperty")]
 		NSString PhoneNumbers { get; }
 
+		/// <summary>Represents the value associated with the constant ABPersonPhoneticFamilyNameProperty</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ABPersonPhoneticFamilyNameProperty")]
 		NSString PhoneticFamilyName { get; }
 
+		/// <summary>Represents the value associated with the constant ABPersonPhoneticGivenNameProperty</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ABPersonPhoneticGivenNameProperty")]
 		NSString PhoneticGivenName { get; }
 
+		/// <summary>Represents the value associated with the constant ABPersonPhoneticMiddleNameProperty</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ABPersonPhoneticMiddleNameProperty")]
 		NSString PhoneticMiddleName { get; }
 
+		/// <summary>Represents the value associated with the constant ABPersonPostalAddressesProperty</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ABPersonPostalAddressesProperty")]
 		NSString PostalAddresses { get; }
 
+		/// <summary>Represents the value associated with the constant ABPersonPreviousFamilyNameProperty</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ABPersonPreviousFamilyNameProperty")]
 		NSString PreviousFamilyName { get; }
 
+		/// <summary>Represents the value associated with the constant ABPersonRelatedNamesProperty</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ABPersonRelatedNamesProperty")]
 		NSString RelatedNames { get; }
 
+		/// <summary>Represents the value associated with the constant ABPersonSocialProfilesProperty</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ABPersonSocialProfilesProperty")]
 		NSString SocialProfiles { get; }
 
+		/// <summary>Represents the value associated with the constant ABPersonUrlAddressesProperty</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ABPersonUrlAddressesProperty")]
 		NSString UrlAddresses { get; }
 	}
@@ -293,10 +457,22 @@ namespace AddressBookUI {
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
+		/// <summary>Gets or sets an alternative name other than first and last name for the person. Nullable. (see <see cref="P:AddressBookUI.ABUnknownPersonViewController.Message" />)</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("alternateName", ArgumentSemantic.Copy)]
 		string AlternateName { get; set; }
 
+		/// <summary>Gets or sets the text shown beneath the <see cref="P:AddressBookUI.ABUnknownPersonViewController.AlternateName" /> field.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("message", ArgumentSemantic.Copy)]
 		string Message { get; set; }
@@ -307,15 +483,35 @@ namespace AddressBookUI {
 		[Export ("addressBook"), Internal]
 		IntPtr _AddressBook { get; set; }
 
+		/// <summary>Gets or sets whether the buttons for predefined actions (send text message, etc.) are shown by the controller.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allowsActions")]
 		bool AllowsActions { get; set; }
 
+		/// <summary>Gets or sets whether the user's changes to the displayed data should be saved to the <see cref="P:AddressBookUI.ABUnknownPersonViewController.AddressBook" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allowsAddingToAddressBook")]
 		bool AllowsAddingToAddressBook { get; set; }
 
+		/// <summary>An instance of the AddressBookUI.IABUnknownPersonViewControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the AddressBookUI.IABUnknownPersonViewControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IABUnknownPersonViewControllerDelegate Delegate { get; set; }
 
+		/// <summary>An object that can respond to the delegate protocol for this type</summary>
+		///         <value>The instance that will respond to events and data requests.</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+		///         </remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("unknownPersonViewDelegate", ArgumentSemantic.Assign)]
 		NSObject WeakDelegate { get; set; }

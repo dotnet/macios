@@ -38,8 +38,11 @@ namespace Accounts {
 
 	// XI specific, not part of ObjC (NSString mapping)
 	public enum ACFacebookAudience {
+		/// <summary>Posts are visible to everyone.</summary>
 		Everyone = 1,
+		/// <summary>Posts are visible to friends only.</summary>
 		Friends,
+		/// <summary>Posts are visible to the user only.</summary>
 		OnlyMe,
 	}
 
@@ -60,6 +63,10 @@ namespace Accounts {
 		{
 		}
 
+		/// <summary>Represents Facebook App ID.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant ACFacebookAppIdKey value to access the underlying dictionary.</remarks>
 		public string? FacebookAppId {
 			set {
 				SetStringValue (ACFacebookKey.AppId, value);
@@ -97,6 +104,9 @@ namespace Accounts {
 			SetNativeValue (ACFacebookKey.Audience, v);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? TencentWeiboAppId {
 			set {
 				SetStringValue (ACTencentWeiboKey.AppId, value);

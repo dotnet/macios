@@ -63,12 +63,18 @@ namespace AddressBook {
 			AddressBook = addressbook;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Name {
 			get { return PropertyToString (ABSourcePropertyId.Name); }
 			set { SetValue (ABSourcePropertyId.Name, value); }
 		}
 
 		// Type is already a property in ABRecord
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABSourceType SourceType {
 			get { return (ABSourceType) (int) PropertyTo<NSNumber> (ABSourcePropertyId.Type); }
 			set { SetValue (ABSourcePropertyId.Type, new NSNumber ((int) value)); }

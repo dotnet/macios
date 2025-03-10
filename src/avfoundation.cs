@@ -299,6 +299,9 @@ namespace AVFoundation {
 		[Export ("depthDataMap")]
 		CVPixelBuffer DepthDataMap { get; }
 
+		/// <summary>Gets a Boolean value that tells whether the data is smoothed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("depthDataFiltered")]
 		bool IsDepthDataFiltered { [Bind ("isDepthDataFiltered")] get; }
 
@@ -3843,15 +3846,27 @@ namespace AVFoundation {
 		[Export ("chapterMetadataGroupsWithTitleLocale:containingItemsWithCommonKeys:")]
 		AVTimedMetadataGroup [] GetChapterMetadataGroups (NSLocale forLocale, [NullAllowed] AVMetadataItem [] commonKeys);
 
+		/// <summary>Whether the asset or its URL can be used with a <see cref="T:AVFoundation.AVPlayerItem" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isPlayable")]
 		bool Playable { get; }
 
+		/// <summary>Whether the asset can be exported using a <see cref="T:AVFoundation.AVAssetExportSession" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isExportable")]
 		bool Exportable { get; }
 
+		/// <summary>Whether the asset's media data is compatible with <see cref="T:AVFoundation.AVAssetReader" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isReadable")]
 		bool Readable { get; }
 
+		/// <summary>Whether the asset can be used within a segment of a <see cref="T:AVFoundation.AVCompositionTrack" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isComposable")]
 		bool Composable { get; }
 
@@ -3929,29 +3944,37 @@ namespace AVFoundation {
 		[Export ("containsFragments")]
 		bool ContainsFragments { get; }
 
+		/// <summary>Gets a Boolean value that tells whether the asset works with AirPlay Video.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("compatibleWithAirPlayVideo")]
 		bool CompatibleWithAirPlayVideo { [Bind ("isCompatibleWithAirPlayVideo")] get; }
 
+		/// <include file="../docs/api/AVFoundation/AVAsset.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVAsset.DurationDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetDurationDidChangeNotification")]
 		[Notification]
 		NSString DurationDidChangeNotification { get; }
 
+		/// <include file="../docs/api/AVFoundation/AVAsset.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVAsset.ChapterMetadataGroupsDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetChapterMetadataGroupsDidChangeNotification")]
 		[Notification]
 		NSString ChapterMetadataGroupsDidChangeNotification { get; }
 
+		/// <include file="../docs/api/AVFoundation/AVAsset.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVAsset.MediaSelectionGroupsDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification, Field ("AVAssetMediaSelectionGroupsDidChangeNotification")]
 		NSString MediaSelectionGroupsDidChangeNotification { get; }
 
+		/// <include file="../docs/api/AVFoundation/AVAsset.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVAsset.ContainsFragmentsDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetContainsFragmentsDidChangeNotification")]
 		[Notification]
 		NSString ContainsFragmentsDidChangeNotification { get; }
 
+		/// <include file="../docs/api/AVFoundation/AVAsset.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVAsset.WasDefragmentedNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetWasDefragmentedNotification")]
 		[Notification]
@@ -5412,6 +5435,9 @@ namespace AVFoundation {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AVAssetCache {
+		/// <summary>If true, indicates an asset can be rendered completely without requiring an active network connection.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("playableOffline")]
 		bool IsPlayableOffline { [Bind ("isPlayableOffline")] get; }
 
@@ -5767,6 +5793,9 @@ namespace AVFoundation {
 		[Export ("currentSampleSyncInfo")]
 		AVSampleCursorSyncInfo CurrentSampleSyncInfo { get; }
 #else
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("CurrentSampleSyncInfo_Blittable.ToAVSampleCursorSyncInfo ()", IsVirtual = true)]
 		AVSampleCursorSyncInfo CurrentSampleSyncInfo { get; }
 
@@ -5804,6 +5833,9 @@ namespace AVFoundation {
 		[Internal]
 		AVSampleCursorChunkInfo_Blittable CurrentChunkInfo_Blittable { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("CurrentChunkInfo_Blittable.ToAVSampleCursorChunkInfo ()", IsVirtual = true)]
 		AVSampleCursorChunkInfo CurrentChunkInfo { get; }
 #endif
@@ -11180,6 +11212,9 @@ namespace AVFoundation {
 		[Export ("recordedFileSize")]
 		long RecordedFileSize { get; }
 
+		/// <summary>Whether the system is currently recording captured data.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isRecording")]
 		bool Recording { get; }
 
@@ -11215,6 +11250,9 @@ namespace AVFoundation {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		IAVCaptureFileOutputDelegate Delegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[iOS (18, 0), MacCatalyst (15, 0), TV (18, 0)]
 		[Export ("recordingPaused")]
 		bool RecordingPaused { [Bind ("isRecordingPaused")] get; }
@@ -13633,6 +13671,9 @@ namespace AVFoundation {
 		[Export ("actionAtItemEnd")]
 		AVPlayerActionAtItemEnd ActionAtItemEnd { get; set; }
 
+		/// <summary>Whether the player displays closed captioning.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[Deprecated (PlatformName.TvOS, 11, 0)]
@@ -13765,6 +13806,9 @@ namespace AVFoundation {
 		[Export ("allowsExternalPlayback")]
 		bool AllowsExternalPlayback { get; set; }
 
+		/// <summary>Whether the player is currently playing back in external playback mode.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("externalPlaybackActive")]
 		bool ExternalPlaybackActive { [Bind ("isExternalPlaybackActive")] get; }
@@ -13782,6 +13826,9 @@ namespace AVFoundation {
 		[Export ("volume")]
 		float Volume { get; set; } // defined as 'float'
 
+		/// <summary>Whether the <see cref="T:AVFoundation.AVPlayer" /> is currently muted.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("muted")]
 		bool Muted { [Bind ("isMuted")] get; set; }
 
@@ -14065,12 +14112,21 @@ namespace AVFoundation {
 		[Export ("currentTime")]
 		CMTime CurrentTime { get; }
 
+		/// <summary>Predicts whether the current loading rate and playback buffer status is sufficient to play from the <see cref="P:AVFoundation.AVPlayerItem.CurrentTime" /> to the end without requiring a buffering pause.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("playbackLikelyToKeepUp")]
 		bool PlaybackLikelyToKeepUp { [Bind ("isPlaybackLikelyToKeepUp")] get; }
 
+		/// <summary>Whether the playback buffer is currently full.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("playbackBufferFull")]
 		bool PlaybackBufferFull { [Bind ("isPlaybackBufferFull")] get; }
 
+		/// <summary>Whether the playback buffer is currently empty.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("playbackBufferEmpty")]
 		bool PlaybackBufferEmpty { [Bind ("isPlaybackBufferEmpty")] get; }
 
@@ -14136,14 +14192,20 @@ namespace AVFoundation {
 		[Export ("error"), NullAllowed]
 		NSError Error { get; }
 
+		/// <include file="../docs/api/AVFoundation/AVPlayerItem.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVPlayerItem.DidPlayToEndTimeNotification']/*" />
 		[Field ("AVPlayerItemDidPlayToEndTimeNotification")]
 		[Notification]
 		NSString DidPlayToEndTimeNotification { get; }
 
+		/// <include file="../docs/api/AVFoundation/AVPlayerItem.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVPlayerItem.ItemFailedToPlayToEndTimeNotification']/*" />
 		[Field ("AVPlayerItemFailedToPlayToEndTimeNotification")]
 		[Notification (typeof (AVPlayerItemErrorEventArgs))]
 		NSString ItemFailedToPlayToEndTimeNotification { get; }
 
+		/// <summary>Represents the value associated with the constant AVPlayerItemFailedToPlayToEndTimeErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVPlayerItemFailedToPlayToEndTimeErrorKey")]
 		NSString ItemFailedToPlayToEndTimeErrorKey { get; }
 
@@ -14165,6 +14227,7 @@ namespace AVFoundation {
 		[Export ("canPlayFastForward")]
 		bool CanPlayFastForward { get; }
 
+		/// <include file="../docs/api/AVFoundation/AVPlayerItem.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVPlayerItem.TimeJumpedNotification']/*" />
 		[Field ("AVPlayerItemTimeJumpedNotification")]
 #if !NET
 		[Notification]
@@ -14241,16 +14304,19 @@ namespace AVFoundation {
 		[Export ("textStyleRules", ArgumentSemantic.Copy), NullAllowed]
 		AVTextStyleRule [] TextStyleRules { get; set; }
 
+		/// <include file="../docs/api/AVFoundation/AVPlayerItem.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVPlayerItem.PlaybackStalledNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("AVPlayerItemPlaybackStalledNotification")]
 		[Notification]
 		NSString PlaybackStalledNotification { get; }
 
+		/// <include file="../docs/api/AVFoundation/AVPlayerItem.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVPlayerItem.NewAccessLogEntryNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("AVPlayerItemNewAccessLogEntryNotification")]
 		[Notification]
 		NSString NewAccessLogEntryNotification { get; }
 
+		/// <include file="../docs/api/AVFoundation/AVPlayerItem.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVPlayerItem.NewErrorLogEntryNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("AVPlayerItemNewErrorLogEntryNotification")]
 		[Notification]
@@ -14773,6 +14839,13 @@ namespace AVFoundation {
 		[Export ("delegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakDelegate { get; }
 
+		/// <summary>An instance of the AVFoundation.IAVPlayerItemOutputPullDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the AVFoundation.IAVPlayerItemOutputPullDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IAVPlayerItemOutputPullDelegate Delegate { get; }
@@ -15099,15 +15172,30 @@ namespace AVFoundation {
 		[Protected]
 		NSString WeakVideoGravity { get; set; }
 
+		/// <summary>Represents the value associated with the constant AVLayerVideoGravityResizeAspect</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVLayerVideoGravityResizeAspect")]
 		NSString GravityResizeAspect { get; }
 
+		/// <summary>Represents the value associated with the constant AVLayerVideoGravityResizeAspectFill</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVLayerVideoGravityResizeAspectFill")]
 		NSString GravityResizeAspectFill { get; }
 
+		/// <summary>Represents the value associated with the constant AVLayerVideoGravityResize</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVLayerVideoGravityResize")]
 		NSString GravityResize { get; }
 
+		/// <summary>Gets a Boolean value that tells whether the first frame is ready for display.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isReadyForDisplay")]
 		bool ReadyForDisplay { get; }
 

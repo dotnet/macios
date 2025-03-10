@@ -23,8 +23,17 @@ namespace MessageUI {
 			Error = error;
 			Controller = controller;
 		}
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MFMailComposeResult Result { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSError? Error { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MFMailComposeViewController Controller { get; private set; }
 	}
 
@@ -73,7 +82,13 @@ namespace MessageUI {
 			Result = result;
 			Controller = controller;
 		}
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MessageComposeResult Result { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MFMessageComposeViewController Controller { get; private set; }
 	}
 

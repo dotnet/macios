@@ -101,9 +101,13 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NEOnDemandRuleAction : long {
+		/// <summary>To be added.</summary>
 		Connect = 1,
+		/// <summary>To be added.</summary>
 		Disconnect = 2,
+		/// <summary>To be added.</summary>
 		EvaluateConnection = 3,
+		/// <summary>To be added.</summary>
 		Ignore = 4,
 	}
 
@@ -111,10 +115,14 @@ namespace NetworkExtension {
 	[TV (17, 0)]
 	[Native]
 	public enum NEOnDemandRuleInterfaceType : long {
+		/// <summary>Indicates that any interface type should be matched.</summary>
 		Any = 0,
+		/// <summary>Indicates that ethernet interfaces should be matched.</summary>
 		[NoiOS, NoMacCatalyst]
 		Ethernet = 1,
+		/// <summary>Indicates that Wi-Fi interfaces should be matched.</summary>
 		WiFi = 2,
+		/// <summary>Indicates that cellular interfaces should be matched.</summary>
 		[NoTV, NoMac]
 		Cellular = 3,
 	}
@@ -168,9 +176,13 @@ namespace NetworkExtension {
 	[ErrorDomain ("NETunnelProviderErrorDomain")]
 	[Native]
 	public enum NETunnelProviderError : long {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Invalid = 1,
+		/// <summary>To be added.</summary>
 		Canceled = 2,
+		/// <summary>To be added.</summary>
 		Failed = 3,
 	}
 
@@ -206,20 +218,35 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NEProviderStopReason : long {
+		/// <summary>An unspecified failure occurred, or no failure occurred.</summary>
 		None = 0,
+		/// <summary>The user stopped the provider.</summary>
 		UserInitiated = 1,
+		/// <summary>The provider failed.</summary>
 		ProviderFailed = 2,
+		/// <summary>The network was unavailable.</summary>
 		NoNetworkAvailable = 3,
+		/// <summary>The network connectivity changed and the provider could not recover.</summary>
 		UnrecoverableNetworkChange = 4,
+		/// <summary>The provider was not enabled.</summary>
 		ProviderDisabled = 5,
+		/// <summary>An authentication operation was canceled.</summary>
 		AuthenticationCanceled = 6,
+		/// <summary>The network configuration failed.</summary>
 		ConfigurationFailed = 7,
+		/// <summary>The session timed out.</summary>
 		IdleTimeout = 8,
+		/// <summary>The network configuration was disabled.</summary>
 		ConfigurationDisabled = 9,
+		/// <summary>The netowrk configuration was removed.</summary>
 		ConfigurationRemoved = 10,
+		/// <summary>The configuration was superseded by another.</summary>
 		Superseded = 11,
+		/// <summary>The user logged off.</summary>
 		UserLogout = 12,
+		/// <summary>The user changed.</summary>
 		UserSwitch = 13,
+		/// <summary>The network connection failed.</summary>
 		ConnectionFailed = 14,
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]

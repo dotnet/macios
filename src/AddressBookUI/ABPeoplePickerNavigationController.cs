@@ -29,8 +29,14 @@ namespace AddressBookUI {
 			Person = person;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABPerson Person { get; private set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool Continue { get; set; }
 	}
 
@@ -49,7 +55,13 @@ namespace AddressBookUI {
 			Identifier = identifier;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABPersonProperty Property { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? Identifier { get; private set; }
 	}
 
@@ -66,6 +78,9 @@ namespace AddressBookUI {
 			Person = person;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABPerson Person { get; private set; }
 	}
 
@@ -84,7 +99,13 @@ namespace AddressBookUI {
 			Identifier = identifier;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABPersonProperty Property { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? Identifier { get; private set; }
 	}
 
@@ -169,6 +190,9 @@ namespace AddressBookUI {
 	partial class ABPeoplePickerNavigationController {
 
 		DisplayedPropertiesCollection? displayedProperties;
+		/// <summary>Gets the list of properties that the <see cref="T:AddressBookUI.ABPeoplePickerNavigationController" /> displays.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public DisplayedPropertiesCollection? DisplayedProperties {
 			get {
 				if (displayedProperties is null) {
@@ -182,6 +206,9 @@ namespace AddressBookUI {
 		}
 
 		ABAddressBook? addressBook;
+		/// <summary>Gets or sets the <see cref="T:AddressBook.ABAddressBook" /> that contains the list of contacts.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABAddressBook? AddressBook {
 			get {
 				MarkDirty ();

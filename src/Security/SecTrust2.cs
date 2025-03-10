@@ -55,6 +55,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr sec_trust_copy_ref (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SecTrust Trust => new SecTrust (sec_trust_copy_ref (GetCheckedHandle ()), owns: true);
 	}
 }

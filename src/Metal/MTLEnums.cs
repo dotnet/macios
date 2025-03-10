@@ -622,13 +622,21 @@ namespace Metal {
 	/// <summary>Holds a comparison test. When the comparison test passes, the incoming fragment is compared to the stored data at the specified location.</summary>
 	[Native]
 	public enum MTLCompareFunction : ulong {
+		/// <summary>To be added.</summary>
 		Never = 0,
+		/// <summary>To be added.</summary>
 		Less = 1,
+		/// <summary>To be added.</summary>
 		Equal = 2,
+		/// <summary>To be added.</summary>
 		LessEqual = 3,
+		/// <summary>To be added.</summary>
 		Greater = 4,
+		/// <summary>To be added.</summary>
 		NotEqual = 5,
+		/// <summary>To be added.</summary>
 		GreaterEqual = 6,
+		/// <summary>To be added.</summary>
 		Always = 7,
 	}
 
@@ -674,8 +682,11 @@ namespace Metal {
 	/// <summary>Enumerates modes for culling and which types of primitives are culled.</summary>
 	[Native]
 	public enum MTLCullMode : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Front = 1,
+		/// <summary>To be added.</summary>
 		Back = 2,
 	}
 
@@ -774,124 +785,202 @@ namespace Metal {
 	[Native]
 	public enum MTLDataType : ulong {
 
+		/// <summary>Indicates an unrecognized or invalid type.</summary>
 		None = 0,
 
+		/// <summary>Indicates a struct.</summary>
 		Struct = 1,
+		/// <summary>Indicates an array.</summary>
 		Array = 2,
 
+		/// <summary>Indicates a 32-bit floating point value.</summary>
 		Float = 3,
+		/// <summary>Indicates a vector of two 32-bit floating point values.</summary>
 		Float2 = 4,
+		/// <summary>Indicates a vector of three 32-bit floating point values.</summary>
 		Float3 = 5,
+		/// <summary>Indicates a vector of four 32-bit floating point values.</summary>
 		Float4 = 6,
 
+		/// <summary>Indicates a 2x2 matrix of 32-bit floating point values.</summary>
 		Float2x2 = 7,
+		/// <summary>Indicates a 2x3 matrix of 32-bit floating point values.</summary>
 		Float2x3 = 8,
+		/// <summary>Indicates a 2x4 matrix of 32-bit floating point values.</summary>
 		Float2x4 = 9,
 
+		/// <summary>Indicates a 3x2 matrix of 32-bit floating point values.</summary>
 		Float3x2 = 10,
+		/// <summary>Indicates a 3x3 matrix of 32-bit floating point values.</summary>
 		Float3x3 = 11,
+		/// <summary>Indicates a 3x4 matrix of 32-bit floating point values.</summary>
 		Float3x4 = 12,
 
+		/// <summary>Indicates a 4x2 matrix of 32-bit floating point values.</summary>
 		Float4x2 = 13,
+		/// <summary>Indicates a 4x3 matrix of 32-bit floating point values.</summary>
 		Float4x3 = 14,
+		/// <summary>Indicates a 4x4 matrix of 32-bit floating point values.</summary>
 		Float4x4 = 15,
 
+		/// <summary>Indicates a 16-bit floating point value.</summary>
 		Half = 16,
+		/// <summary>Indicates a vector of two 16-bit floating point values.</summary>
 		Half2 = 17,
+		/// <summary>Indicates a vector of three 16-bit floating point values.</summary>
 		Half3 = 18,
+		/// <summary>Indicates a vector of four 16-bit floating point values.</summary>
 		Half4 = 19,
 
+		/// <summary>Indicates a 2x2 matrix of 16-bit floating point values.</summary>
 		Half2x2 = 20,
+		/// <summary>Indicates a 2x3 matrix of 16-bit floating point values.</summary>
 		Half2x3 = 21,
+		/// <summary>Indicates a 2x4 matrix of 16-bit floating point values.</summary>
 		Half2x4 = 22,
 
+		/// <summary>Indicates a 3x2 matrix of 16-bit floating point values.</summary>
 		Half3x2 = 23,
+		/// <summary>Indicates a 3x3 matrix of 16-bit floating point values.</summary>
 		Half3x3 = 24,
+		/// <summary>Indicates a 3x4 matrix of 16-bit floating point values.</summary>
 		Half3x4 = 25,
 
+		/// <summary>Indicates a 4x2 matrix of 16-bit floating point values.</summary>
 		Half4x2 = 26,
+		/// <summary>Indicates a 4x3 matrix of 16-bit floating point values.</summary>
 		Half4x3 = 27,
+		/// <summary>Indicates a 4x4 matrix of 16-bit floating point values.</summary>
 		Half4x4 = 28,
 
+		/// <summary>Indicates a signed 32-bit integer.</summary>
 		Int = 29,
+		/// <summary>Indicates a vector of two 32-bit signed integers.</summary>
 		Int2 = 30,
+		/// <summary>Indicates a vector of three signed 32-bit integers.</summary>
 		Int3 = 31,
+		/// <summary>Indicates a vector of four signed 32-bit integers.</summary>
 		Int4 = 32,
 
+		/// <summary>Indicates an unsigned 32-bit integer.</summary>
 		UInt = 33,
+		/// <summary>Indicates a value that contains two unsigned 32-bit integer components.</summary>
 		UInt2 = 34,
+		/// <summary>Indicates a value that contains three unsigned 32-bit integer components.</summary>
 		UInt3 = 35,
+		/// <summary>Indicates a value that contains four unsigned 32-bit integer components.</summary>
 		UInt4 = 36,
 
+		/// <summary>Indicates a signed 16-bit integer.</summary>
 		Short = 37,
+		/// <summary>Indicates a value that contains two signed 16-bit integer components.</summary>
 		Short2 = 38,
+		/// <summary>Indicates a value that contains three signed 16-bit integer components.</summary>
 		Short3 = 39,
+		/// <summary>Indicates a value that contains four signed 16-bit integer components.</summary>
 		Short4 = 40,
 
+		/// <summary>Indicates an unsigned 16-bit integer.</summary>
 		UShort = 41,
+		/// <summary>Indicates a value that contains two unsigned 16-bit integer components.</summary>
 		UShort2 = 42,
+		/// <summary>Indicates a value that contains three unsigned 16-bit integer components.</summary>
 		UShort3 = 43,
+		/// <summary>Indicates a value that contains four unsigned 16-bit integer components.</summary>
 		UShort4 = 44,
 
+		/// <summary>Indicates a signed 8-bit character.</summary>
 		Char = 45,
+		/// <summary>Indicates a vector of two signed 8-bit characters.</summary>
 		Char2 = 46,
+		/// <summary>Indicates a vector of three signed 8-bit characters.</summary>
 		Char3 = 47,
+		/// <summary>Indicates a vector of four signed 8-bit characters.</summary>
 		Char4 = 48,
 
+		/// <summary>Indicates an unsigned 8-bit character.</summary>
 		UChar = 49,
+		/// <summary>Indicates a value that contains two unsigned 8-bit integer components.</summary>
 		UChar2 = 50,
+		/// <summary>Indicates a value that contains three unsigned 8-bit integer components.</summary>
 		UChar3 = 51,
+		/// <summary>Indicates a value that contains four unsigned 8-bit integer components.</summary>
 		UChar4 = 52,
 
+		/// <summary>Indicates a Boolean value.</summary>
 		Bool = 53,
+		/// <summary>Indicates vector of two Boolean values.</summary>
 		Bool2 = 54,
+		/// <summary>Indicates vector of three Boolean values.</summary>
 		Bool3 = 55,
+		/// <summary>Indicates vector of four Boolean values</summary>
 		Bool4 = 56,
+		/// <summary>Indicates a texture.</summary>
 		[MacCatalyst (13, 1)]
 
 		Texture = 58,
+		/// <summary>Indicates a sampler.</summary>
 		[MacCatalyst (13, 1)]
 		Sampler = 59,
+		/// <summary>Indicates a pointer.</summary>
 		[MacCatalyst (13, 1)]
 		Pointer = 60,
+		/// <summary>Indicates an unsigned 8-bit normalized integer.</summary>
 		[MacCatalyst (13, 1)]
 
 		[NoMac, TV (14, 5)] R8Unorm = 62,
+		/// <summary>Indicates a signed 8-bit normalized integer.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] R8Snorm = 63,
+		/// <summary>Indicates an unsigned 16-bit normalized integer.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] R16Unorm = 64,
+		/// <summary>Indicates a signed 16-bit normalized integer.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] R16Snorm = 65,
+		/// <summary>Indicates a value that contains two unsigned 8-bit normalized integer components.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rg8Unorm = 66,
+		/// <summary>Indicates a value that contains two signed 8-bit normalized integer components.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rg8Snorm = 67,
+		/// <summary>Indicates a value that contains two unsigned 16-bit normalized integer components.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rg16Unorm = 68,
+		/// <summary>Indicates a value that contains two signed 16-bit normalized integer components.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rg16Snorm = 69,
+		/// <summary>Indicates a value that contains four unsigned 8-bit normalized integer components.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rgba8Unorm = 70,
+		/// <summary>Indicates normalized unsigned 8-bit RGBA values, convertible to sRGB.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rgba8Unorm_sRgb = 71,
+		/// <summary>Indicates a value that contains four signed 8-bit normalized integer components.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rgba8Snorm = 72,
+		/// <summary>Indicates a value that contains four unsigned 16-bit normalized integer components.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rgba16Unorm = 73,
+		/// <summary>Indicates a value that contains four signed 16-bit normalized integer components.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rgba16Snorm = 74,
+		/// <summary>Indicates a packed RGBA normalized integer value with 10 bits each for RGB and 2 bits for A.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rgb10A2Unorm = 75,
+		/// <summary>Indicates a 32-bit packed floating point RGB value with 11 bits for R and G and 10 bits for B.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rg11B10Float = 76,
+		/// <summary>Indicates a packed RGBE normalized floating point value with 9 bits each for R, G, and B, with a 5-bit exponent.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rgb9E5Float = 77,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 
 		RenderPipeline = 78,
 		[MacCatalyst (13, 1)]
 		[iOS (13, 0), TV (13, 0)] ComputePipeline = 79,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		IndirectCommandBuffer = 80,
 
@@ -1147,7 +1236,9 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MTLDepthClipMode : ulong {
+		/// <summary>To be added.</summary>
 		Clip = 0,
+		/// <summary>To be added.</summary>
 		Clamp = 1,
 	}
 
@@ -1156,9 +1247,13 @@ namespace Metal {
 	[Native]
 	[Flags]
 	public enum MTLBlitOption : ulong {
+		/// <summary>Indicates that no blit option was specified.</summary>
 		None = 0,
+		/// <summary>Indicates that the depth attachment part of a depth/stencil resource will be blitted.</summary>
 		DepthFromDepthStencil = 1 << 0,
+		/// <summary>Indicates that the stencil attachment part of a depth/stencil resource will be blitted.</summary>
 		StencilFromDepthStencil = 1 << 1,
+		/// <summary>Indicates that compressed row-major, linearly arranged PVRTC texture data will be blitted.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		RowLinearPvrtc = 1 << 2,

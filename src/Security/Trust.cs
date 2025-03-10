@@ -176,6 +176,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static nint /* CFIndex */ SecTrustGetCertificateCount (IntPtr /* SecTrustRef */ trust);
 
+		/// <summary>Return the number of certificates used for evaluation.</summary>
+		///         <value>The number of certificates.</value>
+		///         <remarks>There can be more and different certificates than the one provided to the constructor.</remarks>
 		public int Count {
 			get {
 				if (Handle == IntPtr.Zero)

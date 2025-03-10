@@ -71,11 +71,17 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static /* SecIdentityRef */ IntPtr sec_identity_copy_ref (/* OS_sec_identity */ IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SecIdentity Identity => new SecIdentity (sec_identity_copy_ref (GetCheckedHandle ()), owns: true);
 
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr sec_identity_copy_certificates_ref (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SecCertificate [] Certificates {
 			get {
 				var certArray = sec_identity_copy_certificates_ref (GetCheckedHandle ());

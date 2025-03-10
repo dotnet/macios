@@ -718,6 +718,12 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextSetInterpolationQuality (/* CGContextRef */ IntPtr context, CGInterpolationQuality quality);
 
+		/// <summary>A hint for the level of quality used when interpolating images (for example, when scaling).</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>
+		///             <see cref="P:CoreGraphics.CGContext.InterpolationQuality" /> is only a hint. Not all contexts support all <see cref="T:CoreGraphics.CGInterpolationQuality" /> values.</para>
+		///         </remarks>
 		public CGInterpolationQuality InterpolationQuality {
 			get {
 				return CGContextGetInterpolationQuality (Handle);
@@ -787,6 +793,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGPoint CGContextGetTextPosition (/* CGContextRef */ IntPtr context);
 
+		/// <summary>The location, in user space coordinates, at which to draw text.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGPoint TextPosition {
 			get {
 				return CGContextGetTextPosition (Handle);
@@ -802,6 +811,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGAffineTransform CGContextGetTextMatrix (/* CGContextRef */ IntPtr c);
 
+		/// <summary>Defines the transform between text space and user space. Independent of the <see cref="T:CoreGraphics.CGContext" />'s state.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGAffineTransform TextMatrix {
 			get {
 				return CGContextGetTextMatrix (Handle);

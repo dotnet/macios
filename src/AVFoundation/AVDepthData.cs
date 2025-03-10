@@ -23,6 +23,9 @@ namespace AVFoundation {
 			return Create (dataInfo.Dictionary, out error);
 		}
 
+		/// <summary>Returns an array of depth data types that are suitable for use with <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:AVFoundation.AVDepthData.Create(CoreVideo.CVPixelFormatType)&amp;scope=Xamarin" title="M:AVFoundation.AVDepthData.Create(CoreVideo.CVPixelFormatType)">M:AVFoundation.AVDepthData.Create(CoreVideo.CVPixelFormatType)</a></format>.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CVPixelFormatType []? AvailableDepthDataTypes {
 			get {
 				var values = WeakAvailableDepthDataTypes;

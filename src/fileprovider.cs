@@ -265,11 +265,17 @@ namespace FileProvider {
 	[Native]
 	[Flags]
 	enum NSFileProviderItemCapabilities : ulong {
+		/// <summary>To be added.</summary>
 		Reading = 1 << 0,
+		/// <summary>To be added.</summary>
 		Writing = 1 << 1,
+		/// <summary>To be added.</summary>
 		Reparenting = 1 << 2,
+		/// <summary>To be added.</summary>
 		Renaming = 1 << 3,
+		/// <summary>To be added.</summary>
 		Trashing = 1 << 4,
+		/// <summary>To be added.</summary>
 		Deleting = 1 << 5,
 		[NoiOS]
 		[NoTV]
@@ -279,7 +285,9 @@ namespace FileProvider {
 		[NoTV]
 		[NoMacCatalyst]
 		ExcludingFromSync = 1 << 7,
+		/// <summary>To be added.</summary>
 		AddingSubItems = Writing,
+		/// <summary>To be added.</summary>
 		ContentEnumerating = Reading,
 #if !NET
 		[Obsolete ("This enum value is not constant across OS and versions.")]

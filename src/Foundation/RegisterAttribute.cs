@@ -44,16 +44,25 @@ namespace Foundation {
 			this.is_wrapper = isWrapper;
 		}
 
+		/// <summary>The name used to expose the class.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public string? Name {
 			get { return this.name; }
 			set { this.name = value; }
 		}
 
+		/// <summary>Specifies whether the class being registered is wrapping an existing Objective-C class, or if it's a new class.</summary>
+		///         <value>True if the class being registered is wrapping an existing Objective-C class.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsWrapper {
 			get { return this.is_wrapper; }
 			set { this.is_wrapper = value; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool SkipRegistration { get; set; }
 
 		/// <summary>

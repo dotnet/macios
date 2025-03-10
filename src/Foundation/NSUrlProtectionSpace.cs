@@ -27,6 +27,9 @@ namespace Foundation {
 				Handle = Init (host, port, protocol, realm, authenticationMethod);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SecTrust ServerSecTrust {
 			get {
 				IntPtr handle = ServerTrust;

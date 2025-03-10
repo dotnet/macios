@@ -11055,7 +11055,7 @@ namespace Foundation {
 		// bound using NSString instead of string, because often localized NSString has extra information we can't marshal to a C# string
 		[TV (18, 4), iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
 		[Export ("localizedStringForKey:value:table:localizations:")]
-		NSString GetLocalizedString (NSString key, [NullAllowed] NSString value, [NullAllowed] NSString tableName, NSString[] localizations);
+		NSString GetLocalizedString (NSString key, [NullAllowed] NSString value, [NullAllowed] NSString tableName, NSString [] localizations);
 	}
 
 	[NoMac]

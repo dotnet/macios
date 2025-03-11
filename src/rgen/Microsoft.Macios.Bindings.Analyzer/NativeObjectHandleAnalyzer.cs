@@ -120,6 +120,18 @@ public class NativeObjectHandleAnalyzer : DiagnosticAnalyzer {
 		if (!IsINativeObject (varType))
 			return;
 
+		// Ignore variables that are wrapped in `using (existingVariable)` block. These are
+		// not excluded by the `localSymbol.IsUsing` condition above.
+		var usingStatement = memberAccess.Parent?.FirstAncestorOrSelf<UsingStatementSyntax> ();
+		while (usingStatement is not null) {
+			if (usingStatement.Expression is not null) {
+				var resourceSymbol = context.SemanticModel.GetSymbolInfo (usingStatement.Expression).Symbol;
+				if (resourceSymbol is not null && SymbolEqualityComparer.Default.Equals (resourceSymbol, symbol))
+					return;
+			}
+			usingStatement = usingStatement.Parent?.FirstAncestorOrSelf<UsingStatementSyntax> ();
+		}
+
 		bool accessedAfter = false;
 		var block = memberAccess.FirstAncestorOrSelf<BlockSyntax> ();
 		if (block is null) {
@@ -147,7 +159,7 @@ public class NativeObjectHandleAnalyzer : DiagnosticAnalyzer {
 				return;
 
 			int index = block.Statements.IndexOf (statement);
-			if (index + 1 < block.Statements.Count) {
+			if (index >= 0 && index + 1 < block.Statements.Count) {
 				var df = context.SemanticModel.AnalyzeDataFlow (block.Statements [index + 1], block.Statements.Last ());
 				if (df is null)
 					return;

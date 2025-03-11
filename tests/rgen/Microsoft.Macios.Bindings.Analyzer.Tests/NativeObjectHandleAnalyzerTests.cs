@@ -163,9 +163,20 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 					{
 						using (Class foo = new Class("foo"))
 							_ = foo.Handle;
+
+						using (Class bar = new Class("foo")) {
+							_ = bar.Handle;
+						}
+
 						Class foo2 = new Class("foo");
 						using (foo2)
 							_ = foo2.Handle;
+
+						Class bar2 = new Class("foo");
+						using (bar2) {
+							_ = bar2.Handle;
+						}
+
 						using var foo3 = new Class("foo");
 						_ = foo3.Handle;
 					}

@@ -299,6 +299,7 @@ partial class Frameworks {
 		"AuthenticationServices",
 		"AVFoundation",
 		"AVKit",
+		"BackgroundAssets",
 		"BackgroundTasks",
 		"BrowserEngineKit",
 		"CFNetwork",

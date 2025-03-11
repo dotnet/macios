@@ -656,6 +656,8 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "BrowserEngineKit", "BrowserEngineKit", new Version (17, 4), NotAvailableInSimulator },
 
 					{ "PdfKit", "PDFKit", 18, 2 },
+
+					{ "BackgroundAssets", "BackgroundAssets", 18, 4 },
 				};
 			}
 			return tvos_frameworks;

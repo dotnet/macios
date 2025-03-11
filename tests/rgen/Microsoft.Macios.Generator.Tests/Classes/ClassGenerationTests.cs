@@ -66,7 +66,7 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 							OutputFileName: testData.OutputFile,
 							ExpectedOutputText: ReadFileAsString (file: testData.OutputFile),
 							ExpectedLibraryText: libraryText,
-							ExpectedTrampolineText: trampolineText 
+							ExpectedTrampolineText: trampolineText
 						)
 					];
 			}
@@ -76,7 +76,7 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 	}
 
 	[Theory]
-	[ClassData (typeof(TestDataGenerator))]
+	[ClassData (typeof (TestDataGenerator))]
 	public void GenerationTests (GenerationTestData testData)
 		=> CompareGeneratedCode (testData);
 

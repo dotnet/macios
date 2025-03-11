@@ -107,7 +107,7 @@ public class BaseGeneratorTestClass {
 				var generatedLibSyntax = runResult.GeneratedTrees.Single (t => t.FilePath.EndsWith ("Libraries.g.cs"));
 				Assert.Equal (testData.ExpectedLibraryText, generatedLibSyntax.GetText ().ToString ());
 			}
-			
+
 			if (testData.ExpectedTrampolineText is not null) {
 				// validate that Library.g.cs was created by the LibraryEmitter and matches the expectation
 				var generatedLibSyntax = runResult.GeneratedTrees.Single (t => t.FilePath.EndsWith ("Trampolines.g.cs"));

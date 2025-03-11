@@ -55,7 +55,7 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 		// generation more common than what we would like, but it is the smallest code generation.
 		var libraryProvider = provider
 			.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings.LibraryPaths));
-		
+
 		var trampolineProvider = provider
 			.Select ((tuple, _) => (tuple.RootBindingContext, tuple.Bindings.Trampolines));
 
@@ -64,7 +64,7 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 
 		context.RegisterSourceOutput (context.CompilationProvider.Combine (libraryProvider.Collect ()),
 			((ctx, t) => GenerateLibraryCode (ctx, t.Right)));
-		
+
 		context.RegisterSourceOutput (context.CompilationProvider.Combine (trampolineProvider.Collect ()),
 			((ctx, t) => GenerateTrampolineCode (ctx, t.Right)));
 	}
@@ -190,22 +190,22 @@ public class BindingSourceGeneratorGenerator : IIncrementalGenerator {
 		// we don't have any trampolines to generate, so we can return
 		if (trampolineChanges.Length == 0)
 			return;
-		
+
 		// retrieve the root context form the first items since they are all the same
 		var rootBindingContext = trampolineChanges [0].RootBindingContext;
 		var sb = new TabbedStringBuilder (new ());
 		sb.WriteHeader ();
-		
+
 		// trampolines are generated per type, the first thing we are going to do is to create a set
 		// so that we don't have duplicates, the hash code of the TypeInfo class is good for this to work
 		// this is a nested loop because each binding type might have several trampolines
 		var trampolines = new HashSet<TypeInfo> ();
 		foreach (var (_, trampolinesInfos) in trampolineChanges) {
 			foreach (var info in trampolinesInfos) {
-				trampolines.Add (info);	
+				trampolines.Add (info);
 			}
 		}
-		
+
 		// no need to collect the using statements, this file is completely generated
 		var emitter = new TrampolineEmitter (rootBindingContext, sb);
 

@@ -11,10 +11,10 @@ using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Emitters;
 
-class TrampolineEmitter ( 
+class TrampolineEmitter (
 	RootContext context,
 	TabbedStringBuilder builder) {
-	
+
 	public string SymbolNamespace => "ObjCRuntime";
 	public string SymbolName => "Trampolines";
 
@@ -24,16 +24,16 @@ class TrampolineEmitter (
 		// TODO: actual trampoline generation, for the current time write the using statements, namespace, class
 		// and some comments with the trampolines to emit
 		diagnostics = null;
-		
+
 		builder.WriteLine ("using Foundation;");
 		builder.WriteLine ("using ObjCBindings;");
 		builder.WriteLine ("using ObjCRuntime;");
 		builder.WriteLine ("using System;");
-		
+
 		builder.WriteLine ();
 		builder.WriteLine ($"namespace ObjCRuntime;");
 		builder.WriteLine ();
-		
+
 		using (var classBlock = builder.CreateBlock ($"static partial class {SymbolName}", true)) {
 			classBlock.WriteLine ($"// Generate trampolines for compilation");
 			_ = context.CurrentPlatform;

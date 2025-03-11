@@ -63,7 +63,7 @@ public class SmartEnumDiagnosticsTests : BaseGeneratorTestClass {
 	}
 
 	[Theory]
-	[ClassData (typeof(TestDataGenerator))]
+	[ClassData (typeof (TestDataGenerator))]
 	public void ExtensionGenerationTests (GenerationTestData testData)
 		=> CompareGeneratedCode (testData);
 

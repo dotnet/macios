@@ -75,7 +75,7 @@ readonly partial struct Binding {
 					yield return property.ReturnType;
 				}
 			}
-			
+
 			// same with methods, but in this case we need to check the return type and all the method parameters
 			foreach (var method in Methods) {
 				if (method.ReturnType.IsDelegate)
@@ -86,7 +86,7 @@ readonly partial struct Binding {
 				}
 			}
 		}
-	} 
+	}
 
 	/// <summary>
 	/// Decide if an enum value should be ignored as a change.

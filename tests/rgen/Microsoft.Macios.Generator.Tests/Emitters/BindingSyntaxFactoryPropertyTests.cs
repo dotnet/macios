@@ -372,7 +372,7 @@ public class BindingSyntaxFactoryPropertyTests {
 				"NSArray.ArrayFromHandleFunc<uint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle (\"myProperty\")), NSNumber.ToUInt32, false);",
 				"NSArray.ArrayFromHandleFunc<uint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle (\"myProperty\")), NSNumber.ToUInt32, false);",
 			];
-			
+
 			property = new Property (
 				name: "MyProperty",
 				returnType: ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true, isNullable: false),
@@ -392,7 +392,7 @@ public class BindingSyntaxFactoryPropertyTests {
 				ExportPropertyData = new ("myProperty", ArgumentSemantic.None, ObjCBindings.Property.IsThreadSafe),
 				BindAs = new (ReturnTypeForNSObject ("Foundation.NSString")),
 			};
-			
+
 			yield return [
 				property,
 				"global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetValue (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle (\"myProperty\")));",

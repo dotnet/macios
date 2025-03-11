@@ -161,7 +161,7 @@ public partial class PropertyTests {
 	[BindFrom (typeof (NSNumber))]
 	[Export<Property> ("canDraw")]
 	public virtual partial bool CanDraw { get; set; }
-	
+
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]

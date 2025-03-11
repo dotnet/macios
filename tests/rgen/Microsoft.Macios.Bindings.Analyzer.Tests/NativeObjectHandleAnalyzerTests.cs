@@ -75,6 +75,22 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 				}
 				"""];
 
+			// Constructor expression with misuse
+			yield return [
+				"""
+				using ObjCRuntime;
+
+				class BaseTest
+				{
+					protected BaseTest(NativeHandle handle) { }
+				}
+
+				class Test : BaseTest
+				{
+					Test(Class foo) : base(foo.Handle) => {}
+				}
+				"""];
+
 			// Method call with handle access and no intermediate local variable
 			yield return [
 				"""
@@ -150,6 +166,8 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 						Class foo2 = new Class("foo");
 						using (foo2)
 							_ = foo2.Handle;
+						using var foo3 = new Class("foo");
+						_ = foo3.Handle;
 					}
 				}
 				"""];

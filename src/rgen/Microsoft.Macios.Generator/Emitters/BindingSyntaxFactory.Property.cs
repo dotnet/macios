@@ -94,6 +94,10 @@ static partial class BindingSyntaxFactory {
 				{ BindAs.Type.FullyQualifiedName: "Foundation.NSNumber", ReturnType.IsArray: true } => 
 					NSArrayFromHandleFunc (property.ReturnType.FullyQualifiedName, [Argument (objMsgSend), Argument(NSNumberFromHandle (property.ReturnType)!), BoolArgument (false)]),
 				
+				// bind from NSString to a SmartEnum: "global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetNullableValue (arg1)
+				{ BindAs.Type.FullyQualifiedName: "Foundation.NSString", ReturnType.IsSmartEnum: true} =>
+					SmartEnumGetValue (property.ReturnType, [Argument (objMsgSend)]),
+				
 				// string[]? => CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (class_ptr, Selector.GetHandle ("selector")), false);
 				{ ReturnType.IsArray: true, ReturnType.Name: "string", ReturnType.IsNullable: true } =>
 					StringArrayFromHandle ([Argument (objMsgSend), BoolArgument (false)]),

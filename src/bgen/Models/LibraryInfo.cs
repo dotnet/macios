@@ -51,7 +51,6 @@ public class LibraryInfo {
 			switch (currentPlatform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 			case ApplePlatform.MacCatalyst:
 			case ApplePlatform.MacOSX:
 				return true;
@@ -103,12 +102,6 @@ public class LibraryInfo {
 				if (!libraryInfo.IsDotNet) {
 					references.Add ("Facades/System.Drawing.Common");
 					ReferenceFixer.FixSDKReferences (currentPlatform, "lib/mono/Xamarin.TVOS", references);
-				}
-				break;
-			case ApplePlatform.WatchOS:
-				if (!libraryInfo.IsDotNet) {
-					references.Add ("Facades/System.Drawing.Common");
-					ReferenceFixer.FixSDKReferences (currentPlatform, "lib/mono/Xamarin.WatchOS", references);
 				}
 				break;
 			case ApplePlatform.MacCatalyst:

@@ -30,40 +30,71 @@ namespace Foundation {
 
 	[Native]
 	public enum NSStringEncoding : ulong {
+		/// <summary>ASCII encoding contains, 7-bit of information stored in 8 bits.</summary>
 		ASCIIStringEncoding = 1,
+		/// <summary>To be added.</summary>
 		NEXTSTEP = 2,
+		/// <summary>To be added.</summary>
 		JapaneseEUC = 3,
+		/// <summary>8-bit based variable-length character encoding for Unicode. </summary>
 		UTF8 = 4,
+		/// <summary>8-bit ISO/IEC 8859-1, also knows as Latin1 encoding.</summary>
 		ISOLatin1 = 5,
+		/// <summary>To be added.</summary>
 		Symbol = 6,
+		/// <summary>To be added.</summary>
 		NonLossyASCII = 7,
+		/// <summary>To be added.</summary>
 		ShiftJIS = 8,
+		/// <summary>8-bit ISO/IEC 8859-2, also knows as Latin2 encoding.</summary>
 		ISOLatin2 = 9,
+		/// <summary>To be added.</summary>
 		Unicode = 10,
+		/// <summary>To be added.</summary>
 		WindowsCP1251 = 11,
+		/// <summary>To be added.</summary>
 		WindowsCP1252 = 12,
+		/// <summary>To be added.</summary>
 		WindowsCP1253 = 13,
+		/// <summary>To be added.</summary>
 		WindowsCP1254 = 14,
+		/// <summary>To be added.</summary>
 		WindowsCP1250 = 15,
+		/// <summary>To be added.</summary>
 		ISO2022JP = 21,
+		/// <summary>To be added.</summary>
 		MacOSRoman = 30,
+		/// <summary>16 bit-based variable length encoding, blocks are interpreted as big endian.</summary>
 		UTF16BigEndian = 0x90000100,
+		/// <summary>16 bit-based variable length encoding, blocks are interpreted as litle endian. </summary>
 		UTF16LittleEndian = 0x94000100,
+		/// <summary>32-bit unicode encoding.</summary>
 		UTF32 = 0x8c000100,
+		/// <summary>32 bit encoding, blocks are interpreted as big endian.</summary>
 		UTF32BigEndian = 0x98000100,
+		/// <summary>32 bit encoding, blocks are interpreted as little endian.</summary>
 		UTF32LittleEndian = 0x9c000100,
 	};
 
 	[Native]
 	public enum NSStringCompareOptions : ulong {
+		/// <summary>To be added.</summary>
 		CaseInsensitiveSearch = 1,
+		/// <summary>To be added.</summary>
 		LiteralSearch = 2,
+		/// <summary>To be added.</summary>
 		BackwardsSearch = 4,
+		/// <summary>To be added.</summary>
 		AnchoredSearch = 8,
+		/// <summary>To be added.</summary>
 		NumericSearch = 64,
+		/// <summary>To be added.</summary>
 		DiacriticInsensitiveSearch = 128,
+		/// <summary>To be added.</summary>
 		WidthInsensitiveSearch = 256,
+		/// <summary>To be added.</summary>
 		ForcedOrderingSearch = 512,
+		/// <summary>To be added.</summary>
 		RegularExpressionSearch = 1024,
 	}
 
@@ -82,9 +113,13 @@ namespace Foundation {
 	[NoTV]
 	[NoMacCatalyst]
 	public enum NSBundleExecutableArchitecture {
+		/// <summary>x86</summary>
 		I386 = 0x00000007,
+		/// <summary>PPC</summary>
 		PPC = 0x00000012,
+		/// <summary>x86-64</summary>
 		X86_64 = 0x01000007,
+		/// <summary>PPC64</summary>
 		PPC64 = 0x01000012,
 		ARM64 = 0x0100000c,
 	}
@@ -122,13 +157,21 @@ namespace Foundation {
 
 	[Native]
 	public enum NSStreamStatus : ulong {
+		/// <summary>The stream is not yet open.</summary>
 		NotOpen = 0,
+		/// <summary>The stream is in the opening state.</summary>
 		Opening = 1,
+		/// <summary>The stream has been opened.</summary>
 		Open = 2,
+		/// <summary>The stream is reading.</summary>
 		Reading = 3,
+		/// <summary>The stream is writing.</summary>
 		Writing = 4,
+		/// <summary>At the end.</summary>
 		AtEnd = 5,
+		/// <summary>The stream is closed.</summary>
 		Closed = 6,
+		/// <summary>Error</summary>
 		Error = 7,
 	}
 
@@ -166,8 +209,11 @@ namespace Foundation {
 	[Native]
 	[Flags]
 	public enum NSMachPortRights : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		SendRight = (1 << 0),
+		/// <summary>To be added.</summary>
 		ReceiveRight = (1 << 1),
 	}
 
@@ -316,10 +362,15 @@ namespace Foundation {
 
 	[Native]
 	public enum NSOperationQueuePriority : long {
+		/// <summary>To be added.</summary>
 		VeryLow = -8,
+		/// <summary>To be added.</summary>
 		Low = -4,
+		/// <summary>To be added.</summary>
 		Normal = 0,
+		/// <summary>To be added.</summary>
 		High = 4,
+		/// <summary>To be added.</summary>
 		VeryHigh = 8,
 	}
 
@@ -333,8 +384,11 @@ namespace Foundation {
 
 	[Native]
 	public enum NSPostingStyle : ulong {
+		/// <summary>To be added.</summary>
 		PostWhenIdle = 1,
+		/// <summary>To be added.</summary>
 		PostASAP = 2,
+		/// <summary>To be added.</summary>
 		Now = 3,
 	}
 
@@ -624,26 +678,39 @@ namespace Foundation {
 	[Native]
 	public enum NSKeyValueObservingOptions : ulong {
 		None = 0,
+		/// <summary>Request that new values be delivered to the observer.</summary>
 		New = 1,
+		/// <summary>Requests that old values be delivered to the observer.</summary>
 		Old = 2,
+		/// <summary>Requests that both old and new values be delivered to the observer.</summary>
 		OldNew = 3,
+		/// <summary>Use this to send a notification on first use, without waiting for an actual change to take place.</summary>
 		Initial = 4,
+		/// <summary>If set, notifications are sent before and after the change to the property is made.   Otherwise the notifications are only sent after the property has been set.</summary>
 		Prior = 8,
 	}
 
 	[Native]
 	public enum NSKeyValueChange : ulong {
+		/// <summary>The change is reported for setting a value in a property.</summary>
 		Setting = 1,
+		/// <summary>The change being reported is an insertion into a collection.</summary>
 		Insertion,
+		/// <summary>The change being reported is a removal from a collection.</summary>
 		Removal,
+		/// <summary>The change being reported is a set of changes in a collection.</summary>
 		Replacement,
 	}
 
 	[Native]
 	public enum NSKeyValueSetMutationKind : ulong {
+		/// <summary>To be added.</summary>
 		UnionSet = 1,
+		/// <summary>To be added.</summary>
 		MinusSet,
+		/// <summary>To be added.</summary>
 		IntersectSet,
+		/// <summary>To be added.</summary>
 		SetSet,
 	}
 
@@ -659,11 +726,17 @@ namespace Foundation {
 	[Flags]
 	[Native]
 	public enum NSStreamEvent : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		OpenCompleted = 1 << 0,
+		/// <summary>To be added.</summary>
 		HasBytesAvailable = 1 << 1,
+		/// <summary>To be added.</summary>
 		HasSpaceAvailable = 1 << 2,
+		/// <summary>To be added.</summary>
 		ErrorOccurred = 1 << 3,
+		/// <summary>To be added.</summary>
 		EndEncountered = 1 << 4,
 	}
 
@@ -679,19 +752,33 @@ namespace Foundation {
 
 	[Native]
 	public enum NSPredicateOperatorType : ulong {
+		/// <summary>To be added.</summary>
 		LessThan,
+		/// <summary>To be added.</summary>
 		LessThanOrEqualTo,
+		/// <summary>To be added.</summary>
 		GreaterThan,
+		/// <summary>To be added.</summary>
 		GreaterThanOrEqualTo,
+		/// <summary>To be added.</summary>
 		EqualTo,
+		/// <summary>To be added.</summary>
 		NotEqualTo,
+		/// <summary>To be added.</summary>
 		Matches,
+		/// <summary>To be added.</summary>
 		Like,
+		/// <summary>To be added.</summary>
 		BeginsWith,
+		/// <summary>To be added.</summary>
 		EndsWith,
+		/// <summary>To be added.</summary>
 		In,
+		/// <summary>To be added.</summary>
 		CustomSelector,
+		/// <summary>To be added.</summary>
 		Contains = 99,
+		/// <summary>To be added.</summary>
 		Between,
 	}
 
@@ -748,8 +835,11 @@ namespace Foundation {
 	[Flags]
 	[Native]
 	public enum NSFileManagerItemReplacementOptions : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		UsingNewMetadataOnly = 1 << 0,
+		/// <summary>To be added.</summary>
 		WithoutDeletingBackupItem = 1 << 1,
 	}
 
@@ -792,11 +882,17 @@ namespace Foundation {
 	[Flags]
 	[Native]
 	public enum NSSearchPathDomain : ulong {
+		/// <summary>Do not return anything.</summary>
 		None = 0,
+		/// <summary>Return user directories.</summary>
 		User = 1 << 0,
+		/// <summary>Return local directories.</summary>
 		Local = 1 << 1,
+		/// <summary>Return network directories.</summary>
 		Network = 1 << 2,
+		/// <summary>Return the system directories.</summary>
 		System = 1 << 3,
+		/// <summary>Return items for all domains.</summary>
 		All = 0x0ffff,
 	}
 
@@ -825,29 +921,41 @@ namespace Foundation {
 	[Flags]
 	[Native]
 	public enum NSStringDrawingOptions : ulong {
+		/// <summary>To be added.</summary>
 		UsesLineFragmentOrigin = (1 << 0),
+		/// <summary>To be added.</summary>
 		UsesFontLeading = (1 << 1),
+		/// <summary>This value is OSX-specific (not available in iOS)</summary>
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
 		[Deprecated (PlatformName.MacOSX, 10, 11)]
 		DisableScreenFontSubstitution = (1 << 2),
+		/// <summary>To be added.</summary>
 		UsesDeviceMetrics = (1 << 3),
+		/// <summary>This value is OSX-specific (not available in iOS)</summary>
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
 		[Deprecated (PlatformName.MacOSX, 10, 11)]
 		OneShot = (1 << 4),
+		/// <summary>To be added.</summary>
 		TruncatesLastVisibleLine = (1 << 5),
 	}
 
 	[Native]
 	public enum NSNumberFormatterStyle : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Decimal = 1,
+		/// <summary>To be added.</summary>
 		Currency = 2,
+		/// <summary>To be added.</summary>
 		Percent = 3,
+		/// <summary>To be added.</summary>
 		Scientific = 4,
+		/// <summary>To be added.</summary>
 		SpellOut = 5,
 		[MacCatalyst (13, 1)]
 		OrdinalStyle = 6,
@@ -879,12 +987,19 @@ namespace Foundation {
 
 	[Native]
 	public enum NSNumberFormatterRoundingMode : ulong {
+		/// <summary>To be added.</summary>
 		Ceiling,
+		/// <summary>To be added.</summary>
 		Floor,
+		/// <summary>To be added.</summary>
 		Down,
+		/// <summary>To be added.</summary>
 		Up,
+		/// <summary>To be added.</summary>
 		HalfEven,
+		/// <summary>To be added.</summary>
 		HalfDown,
+		/// <summary>To be added.</summary>
 		HalfUp,
 	}
 
@@ -953,7 +1068,9 @@ namespace Foundation {
 	[Flags]
 	[Native]
 	public enum NSJsonReadingOptions : ulong {
+		/// <summary>To be added.</summary>
 		MutableContainers = 1,
+		/// <summary>To be added.</summary>
 		MutableLeaves = 2,
 		FragmentsAllowed = 4,
 		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
@@ -965,7 +1082,9 @@ namespace Foundation {
 	[Flags]
 	[Native]
 	public enum NSJsonWritingOptions : ulong {
+		/// <summary>To be added.</summary>
 		PrettyPrinted = 1,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		SortedKeys = (1 << 1),
 		[TV (13, 0), iOS (13, 0)]
@@ -1224,7 +1343,9 @@ namespace Foundation {
 	[Flags]
 	[Native]
 	public enum NSSortOptions : ulong {
+		/// <summary>To be added.</summary>
 		Concurrent = 1 << 0,
+		/// <summary>To be added.</summary>
 		Stable = 1 << 4,
 	}
 
@@ -1318,10 +1439,15 @@ namespace Foundation {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSItemProviderErrorCode : long {
+		/// <summary>To be added.</summary>
 		Unknown = -1,
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		ItemUnavailable = -1000,
+		/// <summary>To be added.</summary>
 		UnexpectedValueClass = -1100,
+		/// <summary>To be added.</summary>
 		UnavailableCoercion = -1200,
 	}
 
@@ -1413,10 +1539,15 @@ namespace Foundation {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSMassFormatterUnit : long {
+		/// <summary>To be added.</summary>
 		Gram = 11,
+		/// <summary>To be added.</summary>
 		Kilogram = 14,
+		/// <summary>To be added.</summary>
 		Ounce = (6 << 8) + 1,
+		/// <summary>To be added.</summary>
 		Pound = (6 << 8) + 2,
+		/// <summary>To be added.</summary>
 		Stone = (6 << 8) + 3,
 	}
 
@@ -1499,20 +1630,30 @@ namespace Foundation {
 	[Native]
 	[Flags]
 	public enum NSMatchingOptions : ulong {
+		/// <summary>To be added.</summary>
 		ReportProgress = 1 << 0,
+		/// <summary>To be added.</summary>
 		ReportCompletion = 1 << 1,
+		/// <summary>To be added.</summary>
 		Anchored = 1 << 2,
+		/// <summary>To be added.</summary>
 		WithTransparentBounds = 1 << 3,
+		/// <summary>To be added.</summary>
 		WithoutAnchoringBounds = 1 << 4,
 	}
 
 	[Native]
 	[Flags]
 	public enum NSMatchingFlags : ulong {
+		/// <summary>To be added.</summary>
 		Progress = 1 << 0,
+		/// <summary>To be added.</summary>
 		Completed = 1 << 1,
+		/// <summary>To be added.</summary>
 		HitEnd = 1 << 2,
+		/// <summary>To be added.</summary>
 		RequiredEnd = 1 << 3,
+		/// <summary>To be added.</summary>
 		InternalError = 1 << 4,
 	}
 
@@ -1520,16 +1661,22 @@ namespace Foundation {
 	[Native]
 	[Flags]
 	public enum NSPersonNameComponentsFormatterOptions : ulong {
+		/// <summary>Value that indicates that the phonetic representation of a name should be formatted, rather than the name object's own components.</summary>
 		Phonetic = (1 << 1),
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSPersonNameComponentsFormatterStyle : long {
+		/// <summary>Display a medium-length representation of the name. Equivalent to <c>Medium</c>.</summary>
 		Default = 0,
+		/// <summary>Display a shortened form of the name by abbreviating or omitting various, user-specified, components.</summary>
 		Short,
+		/// <summary>Display a medium-length representation of the name. Equivalent to <c>Default</c>.</summary>
 		Medium,
+		/// <summary>Use all available name components, except for the nickname, to display the name.</summary>
 		Long,
+		/// <summary>Display the most abbreviated form of the name.</summary>
 		Abbreviated,
 	}
 
@@ -1546,20 +1693,34 @@ namespace Foundation {
 	[Native]
 	[Flags]
 	public enum NSIso8601DateFormatOptions : ulong {
+		/// <summary>Includes the year in the string.</summary>
 		Year = 1 << 0,
+		/// <summary>Includes the month in the string.</summary>
 		Month = 1 << 1,
+		/// <summary>Includes the week of the year in the string (e.g., "W33").</summary>
 		WeekOfYear = 1 << 2,
+		/// <summary>Includes the day in the string.</summary>
 		Day = 1 << 4,
+		/// <summary>Includes the time in the string.</summary>
 		Time = 1 << 5,
+		/// <summary>Includes the timezone in the string.</summary>
 		TimeZone = 1 << 6,
+		/// <summary>Puts a space between the date and the time.</summary>
 		SpaceBetweenDateAndTime = 1 << 7,
+		/// <summary>Separates date components with a dash.</summary>
 		DashSeparatorInDate = 1 << 8,
+		/// <summary>Puts a colon between time components</summary>
 		ColonSeparatorInTime = 1 << 9,
+		/// <summary>Puts a colon in the time.</summary>
 		ColonSeparatorInTimeZone = 1 << 10,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		FractionalSeconds = 1 << 11,
+		/// <summary>Includes the date in the string.</summary>
 		FullDate = Year | Month | Day | DashSeparatorInDate,
+		/// <summary>Includes the time in the string.</summary>
 		FullTime = Time | ColonSeparatorInTime | TimeZone | ColonSeparatorInTimeZone,
+		/// <summary>The standard ISO-8601 format (<c>yyyy-MM-ddTHH:mm:ssZ</c>).</summary>
 		InternetDateTime = FullDate | FullTime,
 	}
 
@@ -1576,8 +1737,11 @@ namespace Foundation {
 	[Native]
 	[Flags]
 	public enum NSMeasurementFormatterUnitOptions : ulong {
+		/// <summary>To be added.</summary>
 		ProvidedUnit = (1 << 0),
+		/// <summary>To be added.</summary>
 		NaturalScale = (1 << 1),
+		/// <summary>To be added.</summary>
 		TemperatureWithoutUnit = (1 << 2),
 	}
 
@@ -1585,19 +1749,24 @@ namespace Foundation {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSItemProviderRepresentationVisibility : long {
+		/// <summary>To be added.</summary>
 		All = 0,
+		/// <summary>To be added.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		Team = 1,
+		/// <summary>To be added.</summary>
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		Group = 2,
+		/// <summary>To be added.</summary>
 		OwnProcess = 3,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSItemProviderFileOptions : long {
+		/// <summary>To be added.</summary>
 		OpenInPlace = 1,
 	}
 

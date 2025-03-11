@@ -22,8 +22,11 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKAuthorizationStatus : long {
+		/// <summary>The permission has not yet been determined.</summary>
 		NotDetermined = 0,
+		/// <summary>Sharing is not allowed.</summary>
 		SharingDenied,
+		/// <summary>Sharing is allowed.</summary>
 		SharingAuthorized,
 	}
 
@@ -33,9 +36,13 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKBiologicalSex : long {
+		/// <summary>The user has not recorded their sex in the gender binary.</summary>
 		NotSet = 0,
+		/// <summary>The female sex.</summary>
 		Female,
+		/// <summary>The male sex.</summary>
 		Male,
+		/// <summary>The user is not categorized as either male or female.</summary>
 		[MacCatalyst (13, 1)]
 		Other,
 	}
@@ -46,14 +53,23 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKBloodType : long {
+		/// <summary>The user's blood type is not recorded.</summary>
 		NotSet = 0,
+		/// <summary>The A+ blood type.</summary>
 		APositive,
+		/// <summary>The A- blood type.</summary>
 		ANegative,
+		/// <summary>The B+ blood type.</summary>
 		BPositive,
+		/// <summary>The B- blood type.</summary>
 		BNegative,
+		/// <summary>The AB+ blood type</summary>
 		ABPositive,
+		/// <summary>The AB- blood type.</summary>
 		ABNegative,
+		/// <summary>The O+ blood type.</summary>
 		OPositive,
+		/// <summary>The O- blood type.</summary>
 		ONegative,
 	}
 
@@ -63,17 +79,29 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKBodyTemperatureSensorLocation : long {
+		/// <summary>The temperature reading location is unspecified.</summary>
 		Other = 0,
+		/// <summary>The temperature reading is taken at the user's armpit.</summary>
 		Armpit,
+		/// <summary>The temperature reading is taken somewhere on the user's body.</summary>
 		Body,
+		/// <summary>The temperature reading is taken at the user's ear.</summary>
 		Ear,
+		/// <summary>The temperature reading is taken at the user's finger.</summary>
 		Finger,
+		/// <summary>The temperature reading is taken in the user's gastrointestinal system.</summary>
 		GastroIntestinal,
+		/// <summary>The temperature reading is taken in the user's mouth.</summary>
 		Mouth,
+		/// <summary>The temperature reading is taken at the user's rectum.</summary>
 		Rectum,
+		/// <summary>The temperature reading is taken at the user's toe.</summary>
 		Toe,
+		/// <summary>The temperature reading is taken at the user's eardrum.</summary>
 		EarDrum,
+		/// <summary>The temperature reading is taken at the user's temporal artery.</summary>
 		TemporalArtery,
+		/// <summary>The temperature reading is taken at the user's forehead.</summary>
 		Forehead,
 	}
 
@@ -524,7 +552,9 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKBloodGlucoseMealTime : long {
+		/// <summary>Indicates a measurement taken before a meal.</summary>
 		Preprandial = 1,
+		/// <summary>Indicates a measurement taken after a meal.</summary>
 		Postprandial,
 #if !NET
 		[Obsolete ("Use 'Preprandial' instead.")]
@@ -614,8 +644,11 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKAuthorizationRequestStatus : long {
+		/// <summary>Indicates that it is unknown whether the app should request user permission.</summary>
 		Unknown = 0,
+		/// <summary>Indicates that the app should request user permission.</summary>
 		ShouldRequest,
+		/// <summary>Indicates that the app does not need to request user permission.</summary>
 		Unnecessary,
 	}
 

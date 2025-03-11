@@ -1,5 +1,3 @@
-
-#if !__WATCHOS__
 #if NET
 
 using System;
@@ -60,4 +58,3 @@ namespace MonoTouchFixtures.AudioToolbox {
 }
 
 #endif // NET
-#endif // !__WATCHOS__

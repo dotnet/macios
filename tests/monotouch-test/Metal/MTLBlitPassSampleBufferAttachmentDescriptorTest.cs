@@ -1,4 +1,3 @@
-#if !__WATCHOS__
 #nullable enable
 
 using System;
@@ -74,5 +73,3 @@ namespace MonoTouchFixtures.Metal {
 	}
 
 }
-
-#endif // !__WATCHOS__

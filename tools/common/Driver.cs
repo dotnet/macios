@@ -639,8 +639,6 @@ namespace Xamarin.Bundler {
 			switch (app.Platform) {
 			case ApplePlatform.iOS:
 				return Path.Combine (GetFrameworkLibDirectory (app), "mono", "Xamarin.iOS");
-			case ApplePlatform.WatchOS:
-				return Path.Combine (GetFrameworkLibDirectory (app), "mono", "Xamarin.WatchOS");
 			case ApplePlatform.TVOS:
 				return Path.Combine (GetFrameworkLibDirectory (app), "mono", "Xamarin.TVOS");
 			case ApplePlatform.MacCatalyst:
@@ -712,9 +710,6 @@ namespace Xamarin.Bundler {
 			case ApplePlatform.iOS:
 				sdkName = app.IsDeviceBuild ? "MonoTouch.iphoneos.sdk" : "MonoTouch.iphonesimulator.sdk";
 				break;
-			case ApplePlatform.WatchOS:
-				sdkName = app.IsDeviceBuild ? "Xamarin.WatchOS.sdk" : "Xamarin.WatchSimulator.sdk";
-				break;
 			case ApplePlatform.TVOS:
 				sdkName = app.IsDeviceBuild ? "Xamarin.AppleTVOS.sdk" : "Xamarin.AppleTVSimulator.sdk";
 				break;
@@ -736,8 +731,6 @@ namespace Xamarin.Bundler {
 			switch (app.Platform) {
 			case ApplePlatform.iOS:
 				return app.IsDeviceBuild ? "iPhoneOS" : "iPhoneSimulator";
-			case ApplePlatform.WatchOS:
-				return app.IsDeviceBuild ? "WatchOS" : "WatchSimulator";
 			case ApplePlatform.TVOS:
 				return app.IsDeviceBuild ? "AppleTVOS" : "AppleTVSimulator";
 			case ApplePlatform.MacOSX:
@@ -761,8 +754,6 @@ namespace Xamarin.Bundler {
 			switch (app.Platform) {
 			case ApplePlatform.iOS:
 				return IsDotNet ? "Microsoft.iOS" : "Xamarin.iOS";
-			case ApplePlatform.WatchOS:
-				return IsDotNet ? "Microsoft.watchOS" : "Xamarin.WatchOS";
 			case ApplePlatform.TVOS:
 				return IsDotNet ? "Microsoft.tvOS" : "Xamarin.TVOS";
 			case ApplePlatform.MacOSX:
@@ -946,9 +937,6 @@ namespace Xamarin.Bundler {
 					break;
 				case ApplePlatform.TVOS:
 					args.Add (is_simulator ? "appletvsimulator" : "appletvos");
-					break;
-				case ApplePlatform.WatchOS:
-					args.Add (is_simulator ? "watchsimulator" : "watchos");
 					break;
 				default:
 					throw ErrorHelper.CreateError (71, Errors.MX0071 /* Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/xamarin/xamarin-macios/issues/new with a test case. */, platform.ToString (), app.ProductName);

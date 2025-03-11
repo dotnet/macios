@@ -79,6 +79,7 @@ namespace AppKit {
 	public enum NSSpellingState : int
 #endif
 	{
+		/// <summary>To be added.</summary>
 		None = 0x0,
 		Spelling = 0x1,
 		Grammar = 0x2,

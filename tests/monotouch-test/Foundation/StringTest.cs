@@ -10,9 +10,7 @@
 using System;
 using System.IO;
 using CoreGraphics;
-#if !__WATCHOS__
 using System.Drawing;
-#endif
 using Foundation;
 using ObjCRuntime;
 #if MONOMAC
@@ -100,7 +98,7 @@ namespace MonoTouchFixtures.Foundation {
 		}
 
 		//No Mac version of DrawString with those parameters
-#if !__TVOS__ && !__WATCHOS__ && !MONOMAC && !__MACCATALYST__
+#if !__TVOS__ && !MONOMAC && !__MACCATALYST__
 		[Test]
 		[Culture ("en")] // fails for some cultures, e.g. ar-AE
 		public void DrawString_7 ()
@@ -151,7 +149,7 @@ namespace MonoTouchFixtures.Foundation {
 				throw;
 			}
 		}
-#endif // !__TVOS__ && !__WATCHOS__ && !MONOMAC
+#endif // !__TVOS__ && !MONOMAC && !__MACCATALYST__
 
 		[Test]
 		public void PathExtensions ()

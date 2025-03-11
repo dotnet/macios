@@ -26,7 +26,7 @@ using Foundation;
 using UIKit;
 #endif
 
-#if !__WATCHOS__ && !__MACOS__
+#if !__MACOS__
 using MonoTouch.Dialog;
 #endif
 
@@ -163,7 +163,7 @@ namespace MonoTouch.NUnit.UI {
 
 		public string TestName { get; set; }
 
-#if !__WATCHOS__ && !__MACOS__
+#if !__MACOS__
 		public UIViewController GetViewController ()
 		{
 #if TVOS
@@ -217,6 +217,6 @@ namespace MonoTouch.NUnit.UI {
 
 			return dv;
 		}
-#endif // !__WATCHOS__
+#endif // !__MACOS__
 	}
 }

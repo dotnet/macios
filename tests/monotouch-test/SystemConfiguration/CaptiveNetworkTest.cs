@@ -7,8 +7,6 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
 using System.IO;
 using Foundation;
@@ -187,5 +185,3 @@ namespace MonoTouchFixtures.SystemConfiguration {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

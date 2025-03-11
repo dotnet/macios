@@ -90,8 +90,6 @@ namespace Xamarin.Tests {
 				return TargetFramework.DotNet_iOS_String;
 			case Profile.tvOS:
 				return TargetFramework.DotNet_tvOS_String;
-			case Profile.watchOS:
-				return TargetFramework.DotNet_watchOS_String;
 			case Profile.MacCatalyst:
 				return TargetFramework.DotNet_MacCatalyst_String;
 			case Profile.macOSMobile:

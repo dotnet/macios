@@ -23,7 +23,6 @@ namespace Xamarin.MacDev.Tasks {
 		[TestCase (ApplePlatform.iOS, false)]
 		[TestCase (ApplePlatform.TVOS, true)]
 		[TestCase (ApplePlatform.TVOS, false)]
-		[TestCase (ApplePlatform.WatchOS, false)]
 		[TestCase (ApplePlatform.MacOSX, true)]
 		[TestCase (ApplePlatform.MacOSX, false)]
 		[TestCase (ApplePlatform.MacCatalyst, true)]
@@ -361,7 +360,6 @@ namespace Xamarin.MacDev.Tasks {
 		[TestCase (ApplePlatform.iOS, false)]
 		[TestCase (ApplePlatform.TVOS, true)]
 		[TestCase (ApplePlatform.TVOS, false)]
-		[TestCase (ApplePlatform.WatchOS, false)]
 		[TestCase (ApplePlatform.MacOSX, true)]
 		[TestCase (ApplePlatform.MacOSX, false)]
 		[TestCase (ApplePlatform.MacCatalyst, true)]
@@ -428,7 +426,6 @@ namespace Xamarin.MacDev.Tasks {
 		[TestCase (ApplePlatform.iOS, false)]
 		[TestCase (ApplePlatform.TVOS, true)]
 		[TestCase (ApplePlatform.TVOS, false)]
-		[TestCase (ApplePlatform.WatchOS, false)]
 		[TestCase (ApplePlatform.MacOSX, true)]
 		[TestCase (ApplePlatform.MacOSX, false)]
 		[TestCase (ApplePlatform.MacCatalyst, true)]
@@ -571,8 +568,6 @@ namespace Xamarin.MacDev.Tasks {
 				return (platforms & Platforms.tvOS) == Platforms.tvOS;
 			case ApplePlatform.MacOSX:
 				return (platforms & Platforms.macOS) == Platforms.macOS;
-			case ApplePlatform.WatchOS:
-				return (platforms & Platforms.watchOS) == Platforms.watchOS;
 			case ApplePlatform.MacCatalyst:
 				return (platforms & Platforms.MacCatalyst) == Platforms.MacCatalyst;
 			default:
@@ -613,10 +608,9 @@ namespace Xamarin.MacDev.Tasks {
 			None = 0,
 			iOS = 1,
 			tvOS = 2,
-			watchOS = 4,
 			macOS = 8,
 			MacCatalyst = 16,
-			Mobile = iOS | tvOS | watchOS,
+			Mobile = iOS | tvOS,
 			Desktop = macOS | MacCatalyst,
 			All = Mobile | Desktop,
 		}

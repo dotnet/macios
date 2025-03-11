@@ -362,10 +362,13 @@ namespace NetworkExtension {
 		Failure = 1,
 		/// <summary>In response to an "authenticate" command, user interaction is needed.</summary>
 		UIRequired = 2,
+		/// <summary>The command was not recognized.</summary>
 		CommandNotRecognized = 3,
+		/// <summary>In response to a "maintain" command, the network requires reauthentication.</summary>
 		AuthenticationRequired = 4,
 		/// <summary>The network is not supported.</summary>
 		UnsupportedNetwork = 5,
+		/// <summary>In response to an "authenticate" or "presentUI" command, a temporary failure resulted.</summary>
 		TemporaryFailure = 6,
 	}
 #endif

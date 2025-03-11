@@ -11,9 +11,7 @@ using UIKit;
 #endif
 using CoreGraphics;
 using ObjCRuntime;
-#if !__WATCHOS__
 using CoreText;
-#endif
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.Foundation {
@@ -25,7 +23,6 @@ namespace MonoTouchFixtures.Foundation {
 		CGColor red, yellow;
 		bool failEnum, t1, t2, tFont1, tFont2;
 
-#if !__WATCHOS__
 		[Test]
 		public void Attributes ()
 		{
@@ -41,7 +38,6 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.True (tFont1);
 			Assert.True (tFont2);
 		}
-#endif // !__WATCHOS__
 
 		void cb (NSDictionary attrs, NSRange range, ref bool stop)
 		{
@@ -82,7 +78,6 @@ namespace MonoTouchFixtures.Foundation {
 			}
 		}
 
-#if !__WATCHOS__
 		[Test]
 		public void UIKitAttachmentConveniences_New ()
 		{
@@ -96,7 +91,6 @@ namespace MonoTouchFixtures.Foundation {
 				Assert.That (as2.Value [0], Is.EqualTo ((char) 0xFFFC), "NSAttachmentCharacter");
 			}
 		}
-#endif // !__WATCHOS__
 
 		[Test]
 		public void InitWith ()
@@ -251,7 +245,6 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.IsNull (e, "Error");
 		}
 
-#if !__WATCHOS__
 		[Test]
 		public void IndirectNullDictionary ()
 		{
@@ -260,7 +253,6 @@ namespace MonoTouchFixtures.Foundation {
 				Assert.That (s.Handle, Is.Not.EqualTo (IntPtr.Zero));
 			}
 		}
-#endif // !__WATCHOS__
 
 #if NET // this test crashes in legacy Xamarin
 		[Test]

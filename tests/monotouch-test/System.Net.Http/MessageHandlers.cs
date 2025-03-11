@@ -36,12 +36,10 @@ namespace MonoTests.System.Net.Http {
 
 		HttpMessageHandler GetHandler (Type handler_type)
 		{
-#if !__WATCHOS__
 			if (handler_type == typeof (HttpClientHandler))
 				return new HttpClientHandler ();
 			if (handler_type == typeof (CFNetworkHandler))
 				return new CFNetworkHandler ();
-#endif
 #if NET
 			if (handler_type == typeof (SocketsHttpHandler))
 				return new SocketsHttpHandler ();
@@ -54,12 +52,10 @@ namespace MonoTests.System.Net.Http {
 
 
 		[Test]
-#if !__WATCHOS__
 		[TestCase (typeof (HttpClientHandler))]
 		[TestCase (typeof (CFNetworkHandler))]
 #if NET
 		[TestCase (typeof (SocketsHttpHandler))]
-#endif
 #endif
 		[TestCase (typeof (NSUrlSessionHandler))]
 		public void DnsFailure (Type handlerType)
@@ -79,7 +75,6 @@ namespace MonoTests.System.Net.Http {
 			Assert.IsInstanceOf (typeof (HttpRequestException), ex, "Exception");
 		}
 
-#if !__WATCHOS__
 		// ensure that we do get the same cookies as the managed handler
 		[Test]
 		public void TestNSUrlSessionHandlerCookies ()
@@ -399,13 +394,9 @@ namespace MonoTests.System.Net.Http {
 			}
 		}
 
-#endif
-
 		// ensure that if we have a redirect, we do not have the auth headers in the following requests
-#if !__WATCHOS__
 		[TestCase (typeof (HttpClientHandler))]
 		[TestCase (typeof (CFNetworkHandler))]
-#endif
 		[TestCase (typeof (NSUrlSessionHandler))]
 		public void RedirectionWithAuthorizationHeaders (Type handlerType)
 		{
@@ -439,10 +430,8 @@ namespace MonoTests.System.Net.Http {
 			}
 		}
 
-#if !__WATCHOS__
 #if !NET // By default HttpClientHandler redirects to a NSUrlSessionHandler, so no need to test that here.
 		[TestCase (typeof (HttpClientHandler))]
-#endif
 #endif
 #if NET
 		[TestCase (typeof (SocketsHttpHandler))]
@@ -536,9 +525,7 @@ namespace MonoTests.System.Net.Http {
 			}
 		}
 
-#if !__WATCHOS__
 		[TestCase (typeof (HttpClientHandler))]
-#endif
 		[TestCase (typeof (NSUrlSessionHandler))]
 		public void AcceptSslCertificatesServicePointManager (Type handlerType)
 		{

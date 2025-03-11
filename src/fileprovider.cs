@@ -249,9 +249,15 @@ namespace FileProvider {
 	[Static]
 	interface NSFileProviderItemIdentifier {
 
+		/// <summary>Gets the persistent name of the root directory in the shared hierarchy.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileProviderRootContainerItemIdentifier")]
 		NSString RootContainer { get; }
 
+		/// <summary>Gets the persistent name of the documents and directories.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileProviderWorkingSetContainerItemIdentifier")]
 		NSString WorkingSetContainer { get; }
 
@@ -331,6 +337,9 @@ namespace FileProvider {
 		[Field ("NSFileProviderInitialPageSortedByName")]
 		IntPtr _InitialPageSortedByName { get; }
 
+		/// <summary>Gets the first page in name order.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("Runtime.GetNSObject<NSData> (_InitialPageSortedByName)")]
 		NSData InitialPageSortedByName { get; }
@@ -339,6 +348,9 @@ namespace FileProvider {
 		[Field ("NSFileProviderInitialPageSortedByDate")]
 		IntPtr _InitialPageSortedByDate { get; }
 
+		/// <summary>Gets the first page in date order.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("Runtime.GetNSObject<NSData> (_InitialPageSortedByDate)")]
 		NSData InitialPageSortedByDate { get; }

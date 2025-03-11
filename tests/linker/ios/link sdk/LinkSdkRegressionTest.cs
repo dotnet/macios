@@ -32,9 +32,7 @@ using AddressBook;
 #if HAS_ADDRESSBOOKUI
 using AddressBookUI;
 #endif
-#if !__WATCHOS__
 using CoreAnimation;
-#endif
 using CoreData;
 using CoreFoundation;
 using Foundation;
@@ -47,7 +45,7 @@ using AppKit;
 #else
 using UIKit;
 #endif
-#if !__WATCHOS__ && !__MACCATALYST__ && !__MACOS__
+#if !__MACCATALYST__ && !__MACOS__
 using OpenGLES;
 #endif
 #if !(__TVOS__ && NET)
@@ -130,7 +128,6 @@ namespace LinkSdk {
 			Assert.NotNull (valuePair);
 		}
 
-#if !__WATCHOS__
 		[Test]
 		// http://bugzilla.xamarin.com/show_bug.cgi?id=328
 		public void Bug328_CompletionBlock ()
@@ -140,9 +137,8 @@ namespace LinkSdk {
 			// the above should not crash with a MonoTouchException
 			CATransaction.Commit ();
 		}
-#endif // !__WATCHOS__
 
-#if !__TVOS__ && !__WATCHOS__
+#if !__TVOS__
 		[Test]
 		// http://bugzilla.xamarin.com/show_bug.cgi?id=769
 		public void Bug769_UnregistredDelegate ()
@@ -156,9 +152,9 @@ namespace LinkSdk {
 				Class.ThrowOnInitFailure = tmp;
 			}
 		}
-#endif // !__TVOS__ && !__WATCHOS__
+#endif // !__TVOS__
 
-#if !__WATCHOS__ && !__MACOS__
+#if !__MACOS__
 		[Test]
 		// http://bugzilla.xamarin.com/show_bug.cgi?id=865
 		public void Bug865_CanOpenUrl ()
@@ -174,7 +170,7 @@ namespace LinkSdk {
 			// we now throw if `init*` fails
 			Assert.Throws<Exception> (() => new NSUrl (bad_tel), "ctor, bad url");
 		}
-#endif // !__WATCHOS__
+#endif // !__MACOS__
 
 		[Test]
 		// issue indirectly found when trying:  http://bugzilla.xamarin.com/show_bug.cgi?id=928
@@ -310,11 +306,9 @@ namespace LinkSdk {
 			// type is decorated with both [XmlSchemaProvider] and [XmlRoot]
 			Assert.NotNull (ed, "EndpointAddress10");
 
-#if !__WATCHOS__ // FIXME: this needs to use a different type than OpenTK.Quaternion, so that the test can run on WatchOS as wells
 			var q = new OpenTK.Quaternion ();
 			Assert.Null (q.GetType ().GetProperty ("XYZ"), "XmlIgnore");
 			// should be null if application is linked (won't be if "Don't link" is used)
-#endif // !__WATCHOS__
 		}
 #endif // !NET
 
@@ -328,7 +322,7 @@ namespace LinkSdk {
 			// should not throw an ExecutionEngineException on devices
 		}
 
-#if !__TVOS__ && !__WATCHOS__ && !__MACOS__
+#if !__TVOS__ && !__MACOS__
 		[Test]
 		// http://bugzilla.xamarin.com/show_bug.cgi?id=1516
 		public void Bug1516_Appearance_Linker ()
@@ -445,7 +439,7 @@ namespace LinkSdk {
 			Assert.That (f, Is.EqualTo ("hi"), "f");
 		}
 
-#if !__WATCHOS__ && !__MACCATALYST__
+#if !__MACCATALYST__
 #if !NET // OpenTK-1.0.dll is not supported yet
 		[Test]
 		public void OpenTk_3049 ()
@@ -473,7 +467,7 @@ namespace LinkSdk {
 			Assert.NotNull (core, "ES20/Core");
 		}
 #endif // !NET
-#endif // !__WATCHOS__ && !__MACCATALYST__
+#endif // !__MACCATALYST__
 
 		[Test]
 		public void XElement_3137 ()
@@ -495,7 +489,7 @@ namespace LinkSdk {
 			}
 		}
 
-#if !__TVOS__ && !__WATCHOS__ && !__MACOS__
+#if !__TVOS__ && !__MACOS__
 		[Test]
 		public void Modal_3489 ()
 		{
@@ -509,7 +503,7 @@ namespace LinkSdk {
 				a.DismissModalViewController (true); //error
 			}
 		}
-#endif // !__TVOS__ && !__WATCHOS__
+#endif // !__TVOS__ && !__MACOS__
 
 		[Test]
 		public void Parse_3677 ()
@@ -589,7 +583,7 @@ namespace LinkSdk {
 					else if (hardwareStr == "iPod4,1")
 						ret = HardwareVersion.iPod3G;
 					else if (hardwareStr == "i386" || hardwareStr == "x86_64") {
-#if __WATCHOS__ || __MACOS__
+#if __MACOS__
 						ret = HardwareVersion.Unknown;
 #else
 						if (UIDevice.CurrentDevice.Model.Contains ("iPhone"))
@@ -667,9 +661,6 @@ namespace LinkSdk {
 		[Test]
 		public void WebClient_SSL_Leak ()
 		{
-#if __WATCHOS__
-			Assert.Ignore ("WatchOS doesn't support BSD sockets, which our network stack currently requires.");
-#endif
 			var exceptions = new List<string> ();
 			WebClient wc = new WebClient ();
 			foreach (var url in NetworkResources.HttpsUrls) {
@@ -687,7 +678,7 @@ namespace LinkSdk {
 			Assert.That (exceptions, Is.Empty, "At least one url should work");
 		}
 
-#if !__TVOS__ && !__WATCHOS__ && !__MACOS__
+#if !__TVOS__ && !__MACOS__
 		[Test]
 		public void WebProxy_Leak ()
 		{
@@ -698,17 +689,10 @@ namespace LinkSdk {
 			Assert.NotNull (CFNetwork.GetSystemProxySettings (), "should not leak");
 #endif
 		}
-#endif // !__TVOS__ && !__WATCHOS__
+#endif // !__TVOS__ && !__MACOS__
 
 		[Test]
 		// https://bugzilla.novell.com/show_bug.cgi?id=650402
-#if __WATCHOS__
-		// Fails with:
-		//     System.ExecutionEngineException : Attempting to JIT compile method 'System.Data.DataColumn:set_Expression (string)' while running in aot-only mode.
-		// because DataColumn.set_Expression uses filter clauses, which we don't support with bitcode:
-		//     LLVM failed for 'DataColumn.set_Expression': non-finally/catch/fault clause.
-		[Ignore ("https://bugzilla.xamarin.com/show_bug.cgi?id=59987")]
-#endif
 		public void ForeignKey_650402 ()
 		{
 			DataSet data = new DataSet ();
@@ -1040,16 +1024,14 @@ namespace LinkSdk {
 			if (TestRuntime.IsDevice) {
 				if (isExtension)
 					Assert.That (path, Does.StartWith ("/private/var/mobile/Containers/Data/PluginKitPlugin/"), "Containers-ios8");
-#if !__WATCHOS__
 				else if (UIDevice.CurrentDevice.CheckSystemVersion (8, 0))
 					Assert.That (path, Does.StartWith ("/private/var/mobile/Containers/Data/Application/"), "Containers-ios8");
-#endif
 				else
 					Assert.That (path, Does.StartWith ("/private/var/mobile/Applications/"), "pre-Containers");
 			}
 #endif // __MACOS__
 
-#if !__WATCHOS__ && !__MACOS__
+#if !__MACOS__
 			// tvOS (device sandbox) is more restrictive than iOS as it limit access to more
 			// directories, mostly because they are not guaranteed to be preserved between executions
 			bool tvos = UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.TV;
@@ -1115,7 +1097,7 @@ namespace LinkSdk {
 #endif
 		}
 
-#if !__WATCHOS__ && !__MACOS__
+#if !__MACOS__
 		[Test]
 		public void Events ()
 		{
@@ -1139,7 +1121,7 @@ namespace LinkSdk {
 				Assert.NotNull (fi, "editingEnded/scrollview");
 			}
 		}
-#endif // !__WATCHOS__ && !__MACOS__
+#endif // !__MACOS__
 
 #if !NET
 		[Test]
@@ -1154,7 +1136,7 @@ namespace LinkSdk {
 		}
 #endif
 
-#if !__WATCHOS__ && !__MACOS__
+#if !__MACOS__
 		[Test]
 		public void UIButtonSubclass ()
 		{
@@ -1176,7 +1158,7 @@ namespace LinkSdk {
 			}
 		}
 
-#endif // !__WATCHOS__ && !__MACOS__
+#endif // !__MACOS__
 
 #if NET
 		static void CheckILLinkStubbedMethod (MethodInfo m)
@@ -1242,7 +1224,6 @@ namespace LinkSdk {
 			Assert.NotNull (Trace.Listeners, "C6 had a SecurityPermission call");
 		}
 
-#if !__WATCHOS__
 #if !NET // This test requires Mono.Security.dll, which .NET 5+ doesn't have
 		[Test]
 		public void TlsProvider_Apple ()
@@ -1270,12 +1251,11 @@ namespace LinkSdk {
 			}
 		}
 #endif // !__MACOS__
-#endif // !__WATCHOS__
 
 		[Test]
 		public void OldTlsProvider_LinkedOut ()
 		{
-			// make test work for classic (monotouch) and unified (iOS, tvOS and watchOS)
+			// make test work for classic (monotouch) and unified (iOS, tvOS)
 			var fqn = typeof (NSObject).AssemblyQualifiedName.Replace ("Foundation.NSObject", "Security.Tls.OldTlsProvider");
 			Assert.Null (GetTypeHelper (fqn), "Should not be included");
 		}
@@ -1283,12 +1263,12 @@ namespace LinkSdk {
 		[Test]
 		public void AppleTls_Default ()
 		{
-			// make test work for classic (monotouch) and unified (iOS, tvOS and watchOS)
+			// make test work for classic (monotouch) and unified (iOS, tvOS)
 			var fqn = typeof (NSObject).AssemblyQualifiedName.Replace ("Foundation.NSObject", "Security.Tls.AppleTlsProvider");
 			Assert.Null (GetTypeHelper (fqn), "Should be included");
 		}
 
-#if !__WATCHOS__ && !__TVOS__ // WebKit isn't available in tvOS or watchOS
+#if !__TVOS__ // WebKit isn't available in tvOS
 		[Test]
 		// https://bugzilla.xamarin.com/show_bug.cgi?id=59247
 		public void WebKit_NSProxy ()
@@ -1299,7 +1279,7 @@ namespace LinkSdk {
 			var fqn = typeof (NSObject).AssemblyQualifiedName.Replace ("Foundation.NSObject", "Foundation.NSProxy");
 			Assert.NotNull (GetTypeHelper (fqn), fqn);
 		}
-#endif // !__WATCHOS__ && !__TVOS__
+#endif // !__TVOS__
 
 		// Fools linker not to keep the type by using it in test check
 		static Type GetTypeHelper (string name)
@@ -1312,7 +1292,6 @@ namespace LinkSdk {
 			return Type.GetType (name, throwOnError);
 		}
 
-#if !__WATCHOS__
 		[Test]
 		// https://github.com/xamarin/xamarin-macios/issues/6711
 		public void PreserveINativeObject ()
@@ -1322,7 +1301,6 @@ namespace LinkSdk {
 			// and we check that it still implement INativeObject
 			Assert.IsNotNull (mta.GetInterface ("ObjCRuntime.INativeObject"), "INativeObject");
 		}
-#endif
 
 		[Test]
 		// https://github.com/xamarin/xamarin-macios/issues/6346

@@ -337,6 +337,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		internal extern static void CGEventSetFlags (IntPtr eventHandle, CGEventFlags flags);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGEventFlags Flags {
 			get {
 				return GetFlags (Handle);
@@ -488,6 +491,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static void CGEventSetType (IntPtr handle, CGEventType evtType);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGEventType EventType {
 			get {
 				return CGEventGetType (Handle);
@@ -516,6 +522,9 @@ namespace CoreGraphics {
 		}
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ulong Timestamp {
 			get {
 				return CGEventGetTimestamp (Handle);
@@ -723,15 +732,35 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("maccatalyst")]
 #endif
 	public struct CGEventTapInformation {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public uint /* uint32_t */ EventTapID;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGEventTapLocation TapPoint;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGEventTapOptions Options;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGEventMask EventsOfInterest;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public int /* pid_t = int */ TappingProcess;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public int /* pid_t = int */ ProcessBeingTapped;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public bool /* bool */ Enabled;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float */ MinUsecLatency;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float */ AvgUsecLatency;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float */ MaxUsecLatency;
 	};
 #endif // !COREBUILD

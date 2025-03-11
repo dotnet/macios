@@ -8,8 +8,6 @@
 // Copyright 2017 Microsoft Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
 
 using Foundation;
@@ -93,5 +91,3 @@ namespace MonoTouchFixtures.GamePlayKit {
 #endif // !NET
 	}
 }
-
-#endif // __WATCHOS__

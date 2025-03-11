@@ -134,8 +134,11 @@ namespace CloudKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKRecordSavePolicy : long {
+		/// <summary>Do not save data if the record was changed after the local copy was created.</summary>
 		SaveIfServerRecordUnchanged = 0,
+		/// <summary>Save values for all keys for which the data have changed.</summary>
 		SaveChangedKeys = 1,
+		/// <summary>Save data for all keys, regardless of whether the data have changed..</summary>
 		SaveAllKeys = 2,
 	}
 
@@ -144,9 +147,13 @@ namespace CloudKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKNotificationType : long {
+		/// <summary>The conditions of an app developer's query, specified in a subscription, were met.</summary>
 		Query = 1,
+		/// <summary>Data in a record zone changed.</summary>
 		RecordZone = 2,
+		/// <summary>A notification was marked as having been read.</summary>
 		ReadNotification = 3,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		Database = 4,
 	}
@@ -156,8 +163,11 @@ namespace CloudKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKQueryNotificationReason : long {
+		/// <summary>A record that matched the subscription's query was created.</summary>
 		RecordCreated = 1,
+		/// <summary>A record that matched the subscription's query was updated.</summary>
 		RecordUpdated,
+		/// <summary>A record that matched the subscription's query was deleted.</summary>
 		RecordDeleted,
 	}
 
@@ -167,8 +177,11 @@ namespace CloudKit {
 	[Flags]
 	[Native]
 	public enum CKRecordZoneCapabilities : ulong {
+		/// <summary>The zone can report data changes, rather than just entire records.</summary>
 		FetchChanges = 1 << 0,
+		/// <summary>The zone supports atomic operations on sets of records.</summary>
 		Atomic = 1 << 1,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		Sharing = 1 << 2,
 		[iOS (15, 0), TV (15, 0)]
@@ -182,7 +195,9 @@ namespace CloudKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKReferenceAction : ulong {
+		/// <summary>No action will be perfromed on records that contain a reference to the target record when the target record is deleted.</summary>
 		None = 0,
+		/// <summary>Records that contain a reference to the target record will be deleted when the target record is deleted.</summary>
 		DeleteSelf = 1,
 	}
 
@@ -191,8 +206,11 @@ namespace CloudKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKSubscriptionType : long {
+		/// <summary>The subscription tracks data lifecycle events for records that satisfy a query.</summary>
 		Query = 1,
+		/// <summary>The subscription tracks data lifecycle events for records in a particular record zone.</summary>
 		RecordZone = 2,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		Database = 3,
 	}
@@ -230,9 +248,13 @@ namespace CloudKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKShareParticipantAcceptanceStatus : long {
+		/// <summary>The user's status is unknown.</summary>
 		Unknown,
+		/// <summary>The user's status is pending.</summary>
 		Pending,
+		/// <summary>The user has been accepted to the share.</summary>
 		Accepted,
+		/// <summary>The user has been removed from the share.</summary>
 		Removed,
 	}
 
@@ -240,9 +262,13 @@ namespace CloudKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKShareParticipantPermission : long {
+		/// <summary>The user's share access permissions are unknown.</summary>
 		Unknown,
+		/// <summary>The user has no share access permissions.</summary>
 		None,
+		/// <summary>The user has can read data in the share.</summary>
 		ReadOnly,
+		/// <summary>The user has read and write data in the share.</summary>
 		ReadWrite,
 	}
 
@@ -254,9 +280,13 @@ namespace CloudKit {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'CKShareParticipantRole' instead.")]
 	[Native]
 	public enum CKShareParticipantType : long {
+		/// <summary>Indicates that the participant type is unknown.</summary>
 		Unknown = 0,
+		/// <summary>Indicates that a participant is the share owner.</summary>
 		Owner = 1,
+		/// <summary>Indicates that a participant is a credentialed user.</summary>
 		PrivateUser = 3,
+		/// <summary>Indicates that a participant is an anonymous user.</summary>
 		PublicUser = 4,
 	}
 
@@ -264,31 +294,47 @@ namespace CloudKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKQuerySubscriptionOptions : ulong {
+		/// <summary>To be added.</summary>
 		RecordCreation = 1 << 0,
+		/// <summary>To be added.</summary>
 		RecordUpdate = 1 << 1,
+		/// <summary>To be added.</summary>
 		RecordDeletion = 1 << 2,
+		/// <summary>To be added.</summary>
 		FiresOnce = 1 << 3,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKOperationGroupTransferSize : long {
+		/// <summary>To be added.</summary>
 		Unknown,
+		/// <summary>To be added.</summary>
 		Kilobytes,
+		/// <summary>To be added.</summary>
 		Megabytes,
+		/// <summary>To be added.</summary>
 		TensOfMegabytes,
+		/// <summary>To be added.</summary>
 		HundredsOfMegabytes,
+		/// <summary>To be added.</summary>
 		Gigabytes,
+		/// <summary>To be added.</summary>
 		TensOfGigabytes,
+		/// <summary>To be added.</summary>
 		HundredsOfGigabytes,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKShareParticipantRole : long {
+		/// <summary>To be added.</summary>
 		Unknown = 0,
+		/// <summary>To be added.</summary>
 		Owner = 1,
+		/// <summary>To be added.</summary>
 		PrivateUser = 3,
+		/// <summary>To be added.</summary>
 		PublicUser = 4,
 	}
 

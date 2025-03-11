@@ -7,8 +7,6 @@
 // Copyright 2013 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
 using Foundation;
 using ObjCRuntime;
@@ -46,10 +44,6 @@ namespace MonoTouchFixtures.GameKit {
 			var hasGroupIdentifier = true;
 			var hasIdentifier = true;
 			var hasRange = true;
-#elif __WATCHOS__
-			var hasGroupIdentifier = true;
-			var hasIdentifier = true;
-			var hasRange = TestRuntime.CheckSystemVersion (ApplePlatform.WatchOS, 3, 0);
 #endif
 			if (hasGroupIdentifier) {
 				Assert.Null (lb.GroupIdentifier, "GroupIdentifier");
@@ -91,5 +85,3 @@ namespace MonoTouchFixtures.GameKit {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

@@ -23,7 +23,6 @@ namespace VideoToolbox {
 	[SupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("maccatalyst")]
-	[UnsupportedOSPlatform ("watchos")]
 	[UnsupportedOSPlatform ("tvos")]
 #else
 	[NoiOS, NoMacCatalyst, NoTV]

@@ -460,6 +460,9 @@ namespace Foundation {
 		[Export ("initWithRTFDFileWrapper:documentAttributes:")]
 		NativeHandle Constructor (NSFileWrapper wrapper, out NSDictionary resultDocumentAttributes);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -819,6 +822,9 @@ namespace Foundation {
 		NSString TextLayoutSectionsAttribute { get; }
 #endif // !XAMCORE_5_0
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS, NoTV]
 		[Deprecated (PlatformName.MacOSX, 10, 11)]
 		[NoMacCatalyst]
@@ -1561,6 +1567,9 @@ namespace Foundation {
 		[Export ("unitStyle")]
 		NSFormattingUnitStyle UnitStyle { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("forPersonMassUse")]
 		bool ForPersonMassUse { [Bind ("isForPersonMassUse")] get; set; }
 
@@ -2642,21 +2651,29 @@ namespace Foundation {
 		[Export ("setWriteabilityHandler:")]
 		void SetWriteabilityHandle ([NullAllowed] Action<NSFileHandle> writeCallback);
 
+		/// <summary>Represents the value associated with the constant NSFileHandleOperationException</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileHandleOperationException")]
 		NSString OperationException { get; }
 
+		/// <include file="../docs/api/Foundation/NSFileHandle.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSFileHandle.ReadCompletionNotification']/*" />
 		[Field ("NSFileHandleReadCompletionNotification")]
 		[Notification (typeof (NSFileHandleReadEventArgs))]
 		NSString ReadCompletionNotification { get; }
 
+		/// <include file="../docs/api/Foundation/NSFileHandle.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSFileHandle.ReadToEndOfFileCompletionNotification']/*" />
 		[Field ("NSFileHandleReadToEndOfFileCompletionNotification")]
 		[Notification (typeof (NSFileHandleReadEventArgs))]
 		NSString ReadToEndOfFileCompletionNotification { get; }
 
+		/// <include file="../docs/api/Foundation/NSFileHandle.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSFileHandle.ConnectionAcceptedNotification']/*" />
 		[Field ("NSFileHandleConnectionAcceptedNotification")]
 		[Notification (typeof (NSFileHandleConnectionAcceptedEventArgs))]
 		NSString ConnectionAcceptedNotification { get; }
 
+		/// <include file="../docs/api/Foundation/NSFileHandle.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSFileHandle.DataAvailableNotification']/*" />
 		[Field ("NSFileHandleDataAvailableNotification")]
 		[Notification]
 		NSString DataAvailableNotification { get; }
@@ -2665,27 +2682,51 @@ namespace Foundation {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface NSPersonNameComponent {
+		/// <summary>Gets the key for the name component.</summary>
+		///         <value>The key for the name component.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPersonNameComponentKey")]
 		NSString ComponentKey { get; }
 
+		/// <summary>Gets the person's given name.</summary>
+		///         <value>The person's given name.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPersonNameComponentGivenName")]
 		NSString GivenName { get; }
 
+		/// <summary>Gets the person's family name.</summary>
+		///         <value>The person's family name.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPersonNameComponentFamilyName")]
 		NSString FamilyName { get; }
 
+		/// <summary>Gets the person's middle name.</summary>
+		///         <value>The person's middle name.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPersonNameComponentMiddleName")]
 		NSString MiddleName { get; }
 
+		/// <summary>Gets the prefix to the person's name.</summary>
+		///         <value>The prefix to the person's name.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPersonNameComponentPrefix")]
 		NSString Prefix { get; }
 
+		/// <summary>Gets the suffix to the person's name.</summary>
+		///         <value>The suffix to the person's name.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPersonNameComponentSuffix")]
 		NSString Suffix { get; }
 
+		/// <summary>Gets the person's nickname.</summary>
+		///         <value>The person's nickname.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPersonNameComponentNickname")]
 		NSString Nickname { get; }
 
+		/// <summary>Gets the delimiter.</summary>
+		///         <value>The delimiter.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPersonNameComponentDelimiter")]
 		NSString Delimiter { get; }
 	}
@@ -2723,6 +2764,9 @@ namespace Foundation {
 		[Export ("style", ArgumentSemantic.Assign)]
 		NSPersonNameComponentsFormatterStyle Style { get; set; }
 
+		/// <summary>Gets or sets a value that controls whether the receiver should  use only phonetic name component representations. Default is <see langword="false" />.</summary>
+		///         <value>A value that controls whether the receiver should  use only phonetic name component representations.</value>
+		///         <remarks>Default is <see langword="false" />.</remarks>
 		[Export ("phonetic")]
 		bool Phonetic { [Bind ("isPhonetic")] get; set; }
 
@@ -3136,12 +3180,21 @@ namespace Foundation {
 		[Export ("stopQuery")]
 		void StopQuery ();
 
+		/// <summary>Whether this query has begun.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isStarted")]
 		bool IsStarted { get; }
 
+		/// <summary>Whether this query is in the initial gathering phase of the query.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isGathering")]
 		bool IsGathering { get; }
 
+		/// <summary>Whether this query has stopped.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isStopped")]
 		bool IsStopped { get; }
 
@@ -3175,6 +3228,13 @@ namespace Foundation {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the Foundation.INSMetadataQueryDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the Foundation.INSMetadataQueryDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		INSMetadataQueryDelegate Delegate { get; set; }
 
@@ -10840,21 +10900,36 @@ namespace Foundation {
 		[Export ("main")]
 		void Main ();
 
+		/// <summary>Whether this NSOperation has been cancelled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isCancelled")]
 		bool IsCancelled { get; }
 
 		[Export ("cancel")]
 		void Cancel ();
 
+		/// <summary>Whether this operation is currently executing.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isExecuting")]
 		bool IsExecuting { get; }
 
+		/// <summary>Whether this operation is done executing.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isFinished")]
 		bool IsFinished { get; }
 
+		/// <summary>Whether this operation runs asynchronously.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isConcurrent")]
 		bool IsConcurrent { get; }
 
+		/// <summary>Whether this operation can be performed now.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isReady")]
 		bool IsReady { get; }
 
@@ -10887,6 +10962,9 @@ namespace Foundation {
 		[Export ("queuePriority")]
 		NSOperationQueuePriority QueuePriority { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("asynchronous")]
 		bool Asynchronous { [Bind ("isAsynchronous")] get; }
 
@@ -10968,6 +11046,9 @@ namespace Foundation {
 		[Export ("maxConcurrentOperationCount")]
 		nint MaxConcurrentOperationCount { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("suspended")]
 		bool Suspended { [Bind ("isSuspended")] get; set; }
 
@@ -12113,14 +12194,23 @@ namespace Foundation {
 		[Field ("NSItemProviderErrorDomain")]
 		NSString ErrorDomain { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS, NoTV, NoMacCatalyst]
 		[Export ("sourceFrame")]
 		CGRect SourceFrame { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS, NoTV, NoMacCatalyst]
 		[Export ("containerFrame")]
 		CGRect ContainerFrame { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("preferredPresentationSize")]
@@ -12337,9 +12427,15 @@ namespace Foundation {
 	[Static]
 	[MacCatalyst (13, 1)]
 	partial interface NSJavaScriptExtension {
+		/// <summary>A key whose value is an <see cref="T:Foundation.NSDictionary" /> whose contents are the argument to a JavaScript completion function.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSExtensionJavaScriptPreprocessingResultsKey")]
 		NSString PreprocessingResultsKey { get; }
 
+		/// <summary>A key whose value is an <see cref="T:Foundation.NSDictionary" /> whose contents are the arguments to a JavaScript finalize method.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSExtensionJavaScriptFinalizeArgumentKey")]
 		NSString FinalizeArgumentKey { get; }
 	}
@@ -12806,6 +12902,9 @@ namespace Foundation {
 		[Export ("suspended")]
 		bool Suspended { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSLocalNotificationCenterType")]
 		NSString NSLocalNotificationCenterType { get; }
 	}
@@ -13220,6 +13319,9 @@ namespace Foundation {
 		[Export ("allowedTopLevelClasses", ArgumentSemantic.Copy)]
 		Class [] AllowedTopLevelClasses { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("Array.ConvertAll (AllowedTopLevelClasses, c => Class.Lookup (c))")]
 		Type [] AllowedTopLevelTypes { get; }
@@ -13812,12 +13914,22 @@ namespace Foundation {
 		[Export ("invalidate")]
 		void Invalidate ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isValid")]
 		bool IsValid { get; }
 
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the Foundation.INSPortDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the Foundation.INSPortDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate"), NullAllowed]
 		INSPortDelegate Delegate { get; set; }
 
@@ -13940,6 +14052,13 @@ namespace Foundation {
 		[Override]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the Foundation.INSMachPortDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the Foundation.INSMachPortDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate"), NullAllowed]
 		INSMachPortDelegate Delegate { get; set; }
 	}
@@ -16929,6 +17048,9 @@ namespace Foundation {
 		[Export ("qualityOfService")]
 		NSQualityOfService QualityOfService { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isRunning")]
 		bool IsRunning { get; }
 
@@ -16952,6 +17074,9 @@ namespace Foundation {
 		NSString NSTaskDidTerminateNotification { get; }
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTaskDidTerminateNotification")]
 		[Notification]
 		NSString DidTerminateNotification { get; }
@@ -19019,7 +19144,9 @@ namespace Foundation {
 	[Native]
 	[Flags]
 	public enum NSFileManagerUnmountOptions : ulong {
+		/// <summary>To be added.</summary>
 		AllPartitionsAndEjectDisk = 1 << 0,
+		/// <summary>To be added.</summary>
 		WithoutUI = 1 << 1,
 	}
 
@@ -19559,6 +19686,9 @@ namespace Foundation {
 		[NoiOS, NoTV, NoMacCatalyst]
 		string [] ExcludedElements { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS, NoTV, NoMacCatalyst]
 		string TextEncodingName { get; set; }
 

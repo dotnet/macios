@@ -183,12 +183,21 @@ namespace CloudKit {
 	[MacCatalyst (13, 1)]
 	partial interface CKShareKeys {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CKShareTitleKey")]
 		NSString Title { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CKShareThumbnailImageDataKey")]
 		NSString ThumbnailImageData { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CKShareTypeKey")]
 		NSString Type { get; }
 	}
@@ -1194,6 +1203,9 @@ namespace CloudKit {
 		[Export ("allowsCellularAccess")]
 		bool AllowsCellularAccess { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that tells whether the operation is long-lived.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("longLived")]
 		bool LongLived { [Bind ("isLongLived")] get; set; }
 
@@ -1240,6 +1252,9 @@ namespace CloudKit {
 		[Export ("operationID")]
 		string OperationID { get; }
 
+		/// <summary>Gets or sets a value that tells whether this operation is long-lived.</summary>
+		///         <value>A value that tells whether this operation is long-lived.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("longLived")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'CKOperationConfiguration' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'CKOperationConfiguration' instead.")]
@@ -1551,6 +1566,10 @@ namespace CloudKit {
 	[BaseType (typeof (NSObject))]
 	interface CKRecordZone : NSSecureCoding, NSCopying {
 
+		/// <summary>Represents the value associated with the constant CKRecordZoneDefaultName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The name of the default zone.</remarks>
 		[Field ("CKRecordZoneDefaultName")]
 		NSString DefaultName { get; }
 

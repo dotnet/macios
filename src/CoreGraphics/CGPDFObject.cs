@@ -53,6 +53,9 @@ namespace CoreGraphics {
 #endif
 	// CGPDFObject.h
 	public class CGPDFObject : INativeObject {
+		/// <summary>Handle (pointer) to the unmanaged object representation.</summary>
+		///         <value>A pointer</value>
+		///         <remarks>This IntPtr is a handle to the underlying unmanaged representation for this object.</remarks>
 		public NativeHandle Handle { get; private set; }
 
 		// The lifetime management of CGPDFObject (and CGPDFArray, CGPDFDictionary and CGPDFStream) are tied to
@@ -83,10 +86,16 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static byte CGPDFObjectGetValue (/* CGPDFObjectRef */IntPtr pdfobj, CGPDFObjectType type, /* void* */ IntPtr* value);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGPDFObjectType Type {
 			get { return CGPDFObjectGetType (Handle); }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsNull {
 			get { return Type == CGPDFObjectType.Null; }
 		}

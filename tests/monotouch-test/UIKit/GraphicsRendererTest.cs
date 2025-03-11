@@ -7,7 +7,7 @@
 // Copyright 2016 Xamarin Inc.
 //
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 
 using System;
 using Foundation;

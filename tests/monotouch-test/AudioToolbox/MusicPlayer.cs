@@ -7,8 +7,6 @@
 // Copyright 2023 Microsoft Corp. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
 
 using AudioToolbox;
@@ -99,5 +97,3 @@ namespace MonoTouchFixtures.AudioToolbox {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

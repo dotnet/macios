@@ -9,8 +9,12 @@ namespace Xamarin.Tests {
 			if (assemblyName.EndsWith (".dll", StringComparison.Ordinal) || assemblyName.EndsWith (".pdb", StringComparison.Ordinal))
 				assemblyName = Path.GetFileNameWithoutExtension (assemblyName);
 			foreach (var platform in Enum.GetValues<ApplePlatform> ()) {
-				if (platform == ApplePlatform.None || platform == ApplePlatform.WatchOS)
+				if (platform == ApplePlatform.None)
 					continue;
+#pragma warning disable CS0618
+				if (platform == ApplePlatform.WatchOS)
+					continue;
+#pragma warning restore CS0618
 				var platformAssembly = Path.GetFileNameWithoutExtension (Configuration.GetBaseLibraryName (platform));
 				if (platformAssembly == assemblyName)
 					return true;

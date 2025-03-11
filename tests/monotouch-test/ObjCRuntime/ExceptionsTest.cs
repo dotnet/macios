@@ -26,9 +26,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 #if NET
 		MarshalObjectiveCExceptionMode defaultObjectiveCExceptionMode = MarshalObjectiveCExceptionMode.ThrowManagedException;
 		MarshalManagedExceptionMode defaultManagedExceptionMode = MarshalManagedExceptionMode.Default;
-#elif __WATCHOS__
-		MarshalObjectiveCExceptionMode defaultObjectiveCExceptionMode = MarshalObjectiveCExceptionMode.ThrowManagedException;
-		MarshalManagedExceptionMode defaultManagedExceptionMode = MarshalManagedExceptionMode.Default;
 #else
 #if (__MACOS__ || __MACCATALYST__) && DEBUG
 		MarshalObjectiveCExceptionMode defaultObjectiveCExceptionMode = MarshalObjectiveCExceptionMode.ThrowManagedException;
@@ -88,12 +85,12 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[Test]
 		public void ObjCException ()
 		{
-#if !__WATCHOS__ && !__MACOS__ && !__MACCATALYST__
+#if !__MACOS__ && !__MACCATALYST__
 			if (Runtime.Arch == Arch.DEVICE)
 				Assert.Ignore ("This test requires wrapper functions, which are not enabled for monotouch-test on device.");
 #endif
 
-#if !DEBUG && !__WATCHOS__
+#if !DEBUG
 			Assert.Ignore ("This test only works in debug mode in the simulator.");
 #endif
 
@@ -136,11 +133,11 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		{
 			Exception thrownException = null;
 
-#if !__WATCHOS__ && !__MACOS__
+#if !__MACOS__
 			TestRuntime.AssertNotDevice ("This test requires wrapper functions, which are not enabled for monotouch-test on device.");
 #endif
 
-#if !DEBUG && !__WATCHOS__
+#if !DEBUG
 			Assert.Ignore ("This test only works in debug mode in the simulator.");
 #endif
 

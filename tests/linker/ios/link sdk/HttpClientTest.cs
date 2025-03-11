@@ -125,7 +125,6 @@ namespace LinkSdk.Net.Http {
 			Get302 (client, allowRedirect: handler.AllowAutoRedirect);
 		}
 
-#if !__WATCHOS__
 		//[Test]
 		public void CFSimple ()
 		{
@@ -149,6 +148,5 @@ namespace LinkSdk.Net.Http {
 			var client = new HttpClient (handler);
 			Get302 (client, allowRedirect: handler.AllowAutoRedirect);
 		}
-#endif
 	}
 }

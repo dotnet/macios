@@ -50,11 +50,7 @@ namespace MonoTouchFixtures.EventKit {
 			var c = EKCalendar.FromEventStore (store);
 #endif
 			// defaults
-#if __WATCHOS__
-			Assert.False (c.AllowsContentModifications, "AllowsContentModifications");
-#else
 			Assert.True (c.AllowsContentModifications, "AllowsContentModifications");
-#endif
 			Assert.NotNull (c.CalendarIdentifier, "CalendarIdentifier");
 #if MONOMAC
 			Assert.Null (c.Color, "Color");
@@ -94,11 +90,7 @@ namespace MonoTouchFixtures.EventKit {
 
 			var c = EKCalendar.Create (EKEntityType.Reminder, new EKEventStore ());
 			// defaults
-#if __WATCHOS__
-			Assert.False (c.AllowsContentModifications, "AllowsContentModifications");
-#else
 			Assert.True (c.AllowsContentModifications, "AllowsContentModifications");
-#endif
 			Assert.NotNull (c.CalendarIdentifier, "CalendarIdentifier");
 #if MONOMAC
 			Assert.Null (c.Color, "Color");
@@ -106,11 +98,7 @@ namespace MonoTouchFixtures.EventKit {
 			Assert.Null (c.CGColor, "CGColor");
 #endif
 
-#if __WATCHOS__
-			Assert.True (c.Immutable, "Immutable");
-#else
 			Assert.False (c.Immutable, "Immutable");
-#endif
 			Assert.Null (c.Source, "Source");
 			Assert.False (c.Subscribed, "Subscribed");
 #if MONOMAC || __MACCATALYST__

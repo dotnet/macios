@@ -59,7 +59,6 @@ namespace GeneratorTests {
 		[TestCase (PlatformName.TvOS, ApplePlatform.TVOS)]
 		[TestCase (PlatformName.MacCatalyst, ApplePlatform.MacCatalyst)]
 		[TestCase (PlatformName.MacOSX, ApplePlatform.MacOSX)]
-		[TestCase (PlatformName.WatchOS, ApplePlatform.WatchOS)]
 		[TestCase (PlatformName.None, ApplePlatform.None)]
 		public void AsApplePlatformTest (PlatformName platformName, ApplePlatform expected)
 			=> Assert.AreEqual (expected, platformName.AsApplePlatform ());

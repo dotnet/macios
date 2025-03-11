@@ -48,7 +48,7 @@ namespace ObjCRuntime {
 #if NET && !LEGACY_TOOLS
 				return NSUrlSessionHandlerValue;
 #else
-				return (app.Platform == Utils.ApplePlatform.WatchOS) ? NSUrlSessionHandlerValue : HttpClientHandlerValue;
+				return HttpClientHandlerValue;
 #endif
 			case CFNetworkHandlerValue:
 #if NET && !LEGACY_TOOLS
@@ -56,16 +56,10 @@ namespace ObjCRuntime {
 #else
 			case HttpClientHandlerValue:
 #endif
-				if (app.Platform == Utils.ApplePlatform.WatchOS) {
-					ErrorHelper.Warning (2015, Errors.MT2015, value);
-					return NSUrlSessionHandlerValue;
-				}
 				return value;
 			case NSUrlSessionHandlerValue:
 				return value;
 			default:
-				if (app.Platform == Utils.ApplePlatform.WatchOS) // This is value we don't know about at all, show as error instead of warning.
-					throw ErrorHelper.CreateError (2015, Errors.MT2015, value);
 				throw ErrorHelper.CreateError (2010, Errors.MT2010, value);
 			}
 		}
@@ -97,8 +91,6 @@ namespace ObjCRuntime {
 
 			if (options is not null) {
 				handler = options.http_message_handler;
-			} else if (app.Platform == Utils.ApplePlatform.WatchOS) {
-				handler = NSUrlSessionHandlerValue;
 			} else {
 #if NET && !LEGACY_TOOLS
 				handler = NSUrlSessionHandlerValue;
@@ -125,21 +117,11 @@ namespace ObjCRuntime {
 				break;
 #else
 			case HttpClientHandlerValue:
-				if (app.Platform == Utils.ApplePlatform.WatchOS) {
-					ErrorHelper.Warning (2015, Errors.MT2015, handler);
-					type = platformModule!.GetType ("System.Net.Http", "NSUrlSessionHandler");
-				} else {
-					type = httpModule.GetType ("System.Net.Http", "HttpClientHandler");
-				}
+				type = httpModule.GetType ("System.Net.Http", "HttpClientHandler");
 				break;
 #endif
 			case CFNetworkHandlerValue:
-				if (app.Platform == Utils.ApplePlatform.WatchOS) {
-					ErrorHelper.Warning (2015, Errors.MT2015, handler);
-					type = platformModule!.GetType ("System.Net.Http", "NSUrlSessionHandler");
-				} else {
-					type = platformModule!.GetType ("System.Net.Http", "CFNetworkHandler");
-				}
+				type = platformModule!.GetType ("System.Net.Http", "CFNetworkHandler");
 				break;
 			case NSUrlSessionHandlerValue:
 				type = platformModule!.GetType ("System.Net.Http", "NSUrlSessionHandler");

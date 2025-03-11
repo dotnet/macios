@@ -136,12 +136,6 @@ namespace MonoTouchFixtures.Foundation {
 		[Test]
 		public void Https ()
 		{
-#if __WATCHOS__
-			if (global::ObjCRuntime.Runtime.Arch == global::ObjCRuntime.Arch.DEVICE) {
-				// This error is returned: Error: The file “robots.txt” couldn’t be opened. The file “robots.txt” couldn’t be opened.
-				Assert.Ignore ("NSData.FromUrl doesn't seem to work in watchOS");
-			}
-#endif
 			// Https seems broken on our macOS 10.9 bot, so skip this test.
 			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 10, throwIfOtherPlatform: false);
 

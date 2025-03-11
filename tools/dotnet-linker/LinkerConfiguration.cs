@@ -246,9 +246,6 @@ namespace Xamarin.Linker {
 					case "tvOS":
 						Platform = ApplePlatform.TVOS;
 						break;
-					case "watchOS":
-						Platform = ApplePlatform.WatchOS;
-						break;
 					case "macOS":
 						Platform = ApplePlatform.MacOSX;
 						break;
@@ -414,7 +411,6 @@ namespace Xamarin.Linker {
 			switch (Platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 				Application.BuildTarget = IsSimulatorBuild ? BuildTarget.Simulator : BuildTarget.Device;
 				break;
 			case ApplePlatform.MacOSX:

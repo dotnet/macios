@@ -5605,8 +5605,6 @@ public partial class Generator : IMemberGatherer {
 			return BindingTouch.IsDotNet ? "Microsoft.macOS" : "Xamarin.Mac";
 		case ApplePlatform.TVOS:
 			return BindingTouch.IsDotNet ? "Microsoft.tvOS" : "Xamarin.TVOS";
-		case ApplePlatform.WatchOS:
-			return BindingTouch.IsDotNet ? "Microsoft.watchOS" : "Xamarin.WatchOS";
 		case ApplePlatform.MacCatalyst:
 			return "Microsoft.MacCatalyst";
 		default:

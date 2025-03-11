@@ -2,7 +2,7 @@ namespace fsharp
 
 open UIKit
 
-#if !__WATCHOS__ && !TODAY_EXTENSION
+#if !TODAY_EXTENSION
 
 module Main = 
     [<EntryPoint>]

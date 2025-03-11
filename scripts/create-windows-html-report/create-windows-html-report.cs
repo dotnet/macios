@@ -101,14 +101,14 @@ public class Program {
 
 		indexContents.AppendLine ($"    <div>");
 		var stepUrl = $"{Environment.GetEnvironmentVariable ("SYSTEM_TEAMFOUNDATIONCOLLECTIONURI")}" +
-						$"{Environment.GetEnvironmentVariable ("SYSTEM_TEAMPROJECT")}" + 
+						$"{Environment.GetEnvironmentVariable ("SYSTEM_TEAMPROJECT")}" +
 						$"/_build" +
 						$"/results?buildId={Environment.GetEnvironmentVariable ("BUILD_BUILDID")}" +
 						$"&view=logs" +
 						$"&j={Environment.GetEnvironmentVariable ("SYSTEM_JOBID")}";
 		indexContents.AppendLine ($"        Step: <a href='{stepUrl}'>{stepUrl}</a> <br />");
 		var artifactsUrl = $"{Environment.GetEnvironmentVariable ("SYSTEM_TEAMFOUNDATIONCOLLECTIONURI")}" +
-						$"{Environment.GetEnvironmentVariable ("SYSTEM_TEAMPROJECT")}" + 
+						$"{Environment.GetEnvironmentVariable ("SYSTEM_TEAMPROJECT")}" +
 						$"/_build" +
 						$"/results?buildId={Environment.GetEnvironmentVariable ("BUILD_BUILDID")}" +
 						$"&view=artifacts" +

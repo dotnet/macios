@@ -342,6 +342,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			// This should not happen in bindings because all of the types should either be native objects
 			// nsobjects, or structs 
 			{ IsReferenceType: false } => Name,
+			
+			// delegates will use the native handle
+			{ IsDelegate: true} => NativeHandle,
 
 			_ => null,
 		};

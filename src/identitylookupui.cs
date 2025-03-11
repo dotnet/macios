@@ -20,6 +20,9 @@ namespace IdentityLookupUI {
 	[BaseType (typeof (NSExtensionContext))]
 	interface ILClassificationUIExtensionContext {
 
+		/// <summary>Gets or sets a Boolean value that tells whether the report is ready to be submitted.</summary>
+		///         <value>A Boolean value that tells whether the report is ready to be submitted.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("readyForClassificationResponse")]
 		bool ReadyForClassificationResponse { [Bind ("isReadyForClassificationResponse")] get; set; }
 	}

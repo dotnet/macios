@@ -30,13 +30,28 @@ namespace MessageUI {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MessageUI/Reference/MFMailComposeViewController_class/index.html">Apple documentation for <c>MFMailComposeViewController</c></related>
 	[BaseType (typeof (UINavigationController))]
 	interface MFMailComposeViewController : UIAppearance {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("canSendMail")]
 		bool CanSendMail { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("mailComposeDelegate", ArgumentSemantic.Weak)]
 		[NullAllowed]
 		NSObject WeakMailComposeDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakMailComposeDelegate")]
 		IMFMailComposeViewControllerDelegate MailComposeDelegate { get; set; }
 
@@ -81,6 +96,9 @@ namespace MessageUI {
 
 	/// <summary>Provides data for the  event.</summary>
 	interface MFMessageAvailabilityChangedEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("MFMessageComposeViewControllerTextMessageAvailabilityKey")]
 		bool TextMessageAvailability { get; }
 	}
@@ -90,28 +108,55 @@ namespace MessageUI {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MessageUI/Reference/MFMessageComposeViewController_class/index.html">Apple documentation for <c>MFMessageComposeViewController</c></related>
 	[BaseType (typeof (UINavigationController))]
 	interface MFMessageComposeViewController : UIAppearance {
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("messageComposeDelegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakMessageComposeDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakMessageComposeDelegate")]
 		IMFMessageComposeViewControllerDelegate MessageComposeDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("recipients", ArgumentSemantic.Copy)]
 		string [] Recipients { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("body", ArgumentSemantic.Copy)]
 		string Body { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("canSendText")]
 		bool CanSendText { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("canSendAttachments")]
 		bool CanSendAttachments { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("canSendSubject")]
 		bool CanSendSubject { get; }
@@ -120,6 +165,9 @@ namespace MessageUI {
 		[Export ("isSupportedAttachmentUTI:")]
 		bool IsSupportedAttachment (string uti);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("subject", ArgumentSemantic.Copy)]
 		string Subject { get; set; }
@@ -128,6 +176,12 @@ namespace MessageUI {
 		[Export ("attachments")]
 		NSDictionary [] GetAttachments ();
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("message", ArgumentSemantic.Copy)]
 		MSMessage Message { get; set; }
@@ -145,16 +199,29 @@ namespace MessageUI {
 		[Export ("disableUserAttachments")]
 		void DisableUserAttachments ();
 
+		/// <include file="../docs/api/MessageUI/MFMessageComposeViewController.xml" path="/Documentation/Docs[@DocId='P:MessageUI.MFMessageComposeViewController.TextMessageAvailabilityDidChangeNotification']/*" />
 		[Field ("MFMessageComposeViewControllerTextMessageAvailabilityDidChangeNotification")]
 		[Notification (typeof (MFMessageAvailabilityChangedEventArgs))]
 		NSString TextMessageAvailabilityDidChangeNotification { get; }
 
+		/// <summary>Represents the value associated with the constant MFMessageComposeViewControllerTextMessageAvailabilityKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MFMessageComposeViewControllerTextMessageAvailabilityKey")]
 		NSString TextMessageAvailabilityKey { get; }
 
+		/// <summary>Represents the value associated with the constant MFMessageComposeViewControllerAttachmentAlternateFilename</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MFMessageComposeViewControllerAttachmentAlternateFilename")]
 		NSString AttachmentAlternateFilename { get; }
 
+		/// <summary>Represents the value associated with the constant MFMessageComposeViewControllerAttachmentURL</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MFMessageComposeViewControllerAttachmentURL")]
 		NSString AttachmentURL { get; }
 

@@ -30,6 +30,9 @@ namespace Foundation {
 
 	public partial class NSThread {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static double Priority {
 			get { return _GetPriority (); }
 			// ignore the boolean return value

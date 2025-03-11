@@ -98,13 +98,11 @@ namespace AudioToolbox {
 		InvalidOfflineMode = -66626,
 		/// <summary>To be added.</summary>
 		BufferEnqueuedTwice = -66666,
-#if NET
 		/// <summary>To be added.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		CannotStartYet = -66665,
 
 		// There is countless of not well documented error codes returned
@@ -120,12 +118,10 @@ namespace AudioToolbox {
 		GeneralParamError = -50,
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AudioQueueException : Exception {
 		static string Lookup (int k)
 		{
@@ -322,12 +318,10 @@ namespace AudioToolbox {
 		EndOfStream = (1 << 9),
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioQueueBuffer {
 		/// <summary>To be added.</summary>
@@ -368,12 +362,10 @@ namespace AudioToolbox {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Explicit)]
 	public struct AudioQueueParameterEvent {
 		/// <summary>To be added.</summary>
@@ -400,12 +392,10 @@ namespace AudioToolbox {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioQueueLevelMeterState {
 		/// <summary>The audio channel average root mean square power.</summary>
@@ -418,12 +408,10 @@ namespace AudioToolbox {
 		public float PeakPower;
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioQueueChannelAssignment {
 		IntPtr deviceUID; // CFString
@@ -436,19 +424,13 @@ namespace AudioToolbox {
 			GC.KeepAlive (deviceUID);
 		}
 	}
-#if !NET
-	delegate void AudioQueueOutputCallback (IntPtr userData, IntPtr AQ, IntPtr audioQueueBuffer);
-	unsafe delegate void AudioQueueInputCallback (IntPtr userData, IntPtr AQ, IntPtr audioQueueBuffer,
-							  AudioTimeStamp* startTime, int descriptors, IntPtr AudioStreamPacketDescription_inPacketDesc);
-#endif
+
 	delegate void AudioQueuePropertyListener (IntPtr userData, IntPtr AQ, AudioQueueProperty id);
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class BufferCompletedEventArgs : EventArgs {
 		public BufferCompletedEventArgs (IntPtr audioQueueBuffer)
 		{
@@ -473,12 +455,10 @@ namespace AudioToolbox {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class InputCompletedEventArgs : EventArgs {
 		public unsafe InputCompletedEventArgs (IntPtr audioQueueBuffer, AudioTimeStamp timeStamp, AudioStreamPacketDescription []? pdec)
 		{
@@ -514,12 +494,10 @@ namespace AudioToolbox {
 		public AudioStreamPacketDescription []? PacketDescriptions { get; private set; }
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public abstract class AudioQueue : IDisposable {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
@@ -567,13 +545,9 @@ namespace AudioToolbox {
 				if (disposing) {
 					if (listeners is not null) {
 						foreach (AudioQueueProperty prop in listeners.Keys) {
-#if NET
 							unsafe {
 								AudioQueueRemovePropertyListener (handle, prop, &property_changed, GCHandle.ToIntPtr (gch));
 							}
-#else
-							AudioQueueRemovePropertyListener (handle, prop, property_changed, GCHandle.ToIntPtr (gch));
-#endif
 						}
 					}
 				}
@@ -984,17 +958,9 @@ namespace AudioToolbox {
 			}
 		}
 
-#if !NET
-		delegate void AudioQueuePropertyListenerProc (IntPtr userData, IntPtr AQ, AudioQueueProperty id);
-#endif
-
 		Hashtable? listeners;
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (AudioQueuePropertyListenerProc))]
-#endif
 		static void property_changed (IntPtr userData, IntPtr AQ, AudioQueueProperty id)
 		{
 			GCHandle gch = GCHandle.FromIntPtr (userData);
@@ -1022,13 +988,9 @@ namespace AudioToolbox {
 			lock (listeners) {
 				var a = (ArrayList) listeners [property]!;
 				if (a is null) {
-#if NET
 					unsafe {
 						res = AudioQueueAddPropertyListener (handle, property, &property_changed, GCHandle.ToIntPtr (gch));
 					}
-#else
-					res = AudioQueueAddPropertyListener (handle, property, property_changed, GCHandle.ToIntPtr (gch));
-#endif
 					if (res != AudioQueueStatus.Ok)
 						return res;
 
@@ -1052,32 +1014,18 @@ namespace AudioToolbox {
 					return;
 				a.Remove (callback);
 				if (a.Count == 0) {
-#if NET
 					unsafe {
 						AudioQueueRemovePropertyListener (handle, property, &property_changed, GCHandle.ToIntPtr (gch));
 					}
-#else
-					AudioQueueRemovePropertyListener (handle, property, property_changed, GCHandle.ToIntPtr (gch));
-#endif
 				}
 			}
 		}
 
-#if NET
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern unsafe static AudioQueueStatus AudioQueueAddPropertyListener (IntPtr AQ, AudioQueueProperty id, delegate* unmanaged<IntPtr, IntPtr, AudioQueueProperty, void> proc, IntPtr data);
-#else
-		[DllImport (Constants.AudioToolboxLibrary)]
-		extern static AudioQueueStatus AudioQueueAddPropertyListener (IntPtr AQ, AudioQueueProperty id, AudioQueuePropertyListenerProc proc, IntPtr data);
-#endif
 
-#if NET
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern unsafe static OSStatus AudioQueueRemovePropertyListener (IntPtr AQ, AudioQueueProperty id, delegate* unmanaged<IntPtr, IntPtr, AudioQueueProperty, void> proc, IntPtr data);
-#else
-		[DllImport (Constants.AudioToolboxLibrary)]
-		extern static OSStatus AudioQueueRemovePropertyListener (IntPtr AQ, AudioQueueProperty id, AudioQueuePropertyListenerProc proc, IntPtr data);
-#endif
 
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static AudioQueueStatus AudioQueueGetProperty (IntPtr AQ, uint id, IntPtr outdata, int* dataSize);
@@ -1134,11 +1082,7 @@ namespace AudioToolbox {
 		}
 
 		// Should be private
-#if NET
 		public unsafe T GetProperty<[DynamicallyAccessedMembers (DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] T> (AudioQueueProperty property) where T : struct
-#else
-		public unsafe T GetProperty<T> (AudioQueueProperty property) where T : struct
-#endif
 		{
 			int size;
 
@@ -1162,11 +1106,7 @@ namespace AudioToolbox {
 			}
 		}
 
-#if NET
 		unsafe T GetProperty<[DynamicallyAccessedMembers (DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] T> (AudioConverterPropertyID property) where T : struct
-#else
-		unsafe T GetProperty<T> (AudioConverterPropertyID property) where T : struct
-#endif
 		{
 			int size;
 
@@ -1483,17 +1423,10 @@ namespace AudioToolbox {
 		}
 #endif
 
-#if NET
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern unsafe static AudioQueueStatus AudioQueueProcessingTapNew (IntPtr inAQ, delegate* unmanaged<IntPtr, IntPtr, uint, AudioTimeStamp*, AudioQueueProcessingTapFlags*, uint*, IntPtr, void> inCallback,
 			IntPtr inClientData, AudioQueueProcessingTapFlags inFlags, uint* outMaxFrames,
 			AudioStreamBasicDescription* outProcessingFormat, IntPtr* outAQTap);
-#else
-		[DllImport (Constants.AudioToolboxLibrary)]
-		extern static AudioQueueStatus AudioQueueProcessingTapNew (IntPtr inAQ, AudioQueueProcessingTapCallbackShared inCallback,
-			IntPtr inClientData, AudioQueueProcessingTapFlags inFlags, out uint outMaxFrames,
-			out AudioStreamBasicDescription outProcessingFormat, out IntPtr outAQTap);
-#endif
 
 		public AudioQueueProcessingTap? CreateProcessingTap (AudioQueueProcessingTapDelegate processingCallback, AudioQueueProcessingTapFlags flags,
 															out AudioQueueStatus status)
@@ -1503,15 +1436,10 @@ namespace AudioToolbox {
 			AudioStreamBasicDescription processingFormat;
 			IntPtr tapHandle;
 
-#if NET
 			unsafe {
 				status = AudioQueueProcessingTapNew (handle, &AudioQueueProcessingTap.TapCallback, GCHandle.ToIntPtr (aqpt.Handle), flags, &maxFrames,
 						 &processingFormat, &tapHandle);
 			}
-#else
-			status = AudioQueueProcessingTapNew (handle, AudioQueueProcessingTap.CreateTapCallback, GCHandle.ToIntPtr (aqpt.Handle), flags, out maxFrames,
-												 out processingFormat, out tapHandle);
-#endif
 
 			if (status != AudioQueueStatus.Ok) {
 				aqpt.Dispose ();
@@ -1530,27 +1458,15 @@ namespace AudioToolbox {
 		}
 	}
 
-#if !NET
-	delegate void AudioQueueProcessingTapCallbackShared (IntPtr clientData, IntPtr tap, uint numberOfFrames,
-														 ref AudioTimeStamp timeStamp, ref AudioQueueProcessingTapFlags flags,
-														 out uint outNumberFrames, IntPtr data);
-#endif
-
 	public delegate uint AudioQueueProcessingTapDelegate (AudioQueueProcessingTap audioQueueTap, uint numberOfFrames,
 														  ref AudioTimeStamp timeStamp, ref AudioQueueProcessingTapFlags flags,
 														  AudioBuffers data);
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AudioQueueProcessingTap : IDisposable {
-#if !NET
-		internal static readonly AudioQueueProcessingTapCallbackShared CreateTapCallback = TapCallback;
-#endif
-
 		AudioQueueProcessingTapDelegate? callback;
 		readonly GCHandle gc_handle;
 
@@ -1639,61 +1555,36 @@ namespace AudioToolbox {
 			}
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
 		internal unsafe static void TapCallback (IntPtr clientData, IntPtr tap,
 			uint numberFrames, AudioTimeStamp* timeStamp,
 			AudioQueueProcessingTapFlags* flags, uint* outNumberFrames,
 			IntPtr data)
-#else
-		[MonoPInvokeCallback (typeof (AudioQueueProcessingTapCallbackShared))]
-		static void TapCallback (IntPtr clientData, IntPtr tap, uint numberFrames, ref AudioTimeStamp timeStamp, ref AudioQueueProcessingTapFlags flags,
-								 out uint outNumberFrames, IntPtr data)
-#endif
 		{
 			GCHandle gch = GCHandle.FromIntPtr (clientData);
 			var aqpt = (AudioQueueProcessingTap) gch.Target!;
 
 			using (var buffers = new AudioBuffers (data)) {
-#if NET
 				var localTimeStamp = *timeStamp;
 				var localFlags = *flags;
 				*outNumberFrames = aqpt.callback! (aqpt, numberFrames, ref localTimeStamp, ref localFlags, buffers);
 				*timeStamp = localTimeStamp;
 				*flags = localFlags;
-#else
-				outNumberFrames = aqpt.callback! (aqpt, numberFrames, ref timeStamp, ref flags, buffers);
-#endif
 			}
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class OutputAudioQueue : AudioQueue {
-#if NET
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern unsafe static OSStatus AudioQueueNewOutput (AudioStreamBasicDescription* format, delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> callback,
 			IntPtr userData, IntPtr cfrunLoop_callbackRunloop, IntPtr cfstr_runMode,
 			uint flags, IntPtr* audioQueue);
-#else
-		static readonly AudioQueueOutputCallback dOutputCallback = output_callback;
 
-		[DllImport (Constants.AudioToolboxLibrary)]
-		unsafe extern static OSStatus AudioQueueNewOutput (AudioStreamBasicDescription* format, AudioQueueOutputCallback callback,
-								IntPtr userData, IntPtr cfrunLoop_callbackRunloop, IntPtr cfstr_runMode,
-								uint flags, IntPtr* audioQueue);
-#endif
-
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (AudioQueueOutputCallback))]
-#endif
 		static void output_callback (IntPtr userData, IntPtr AQ, IntPtr audioQueueBuffer)
 		{
 			GCHandle gch = GCHandle.FromIntPtr (userData);
@@ -1727,11 +1618,7 @@ namespace AudioToolbox {
 			OSStatus code = 0;
 			unsafe {
 				code = AudioQueueNewOutput (&desc,
-#if NET
 					&output_callback,
-#else
-					dOutputCallback,
-#endif
 					GCHandle.ToIntPtr (gch),
 					runLoop.GetHandle (),
 					runMode.GetHandle (), 0, &h);
@@ -1788,22 +1675,12 @@ namespace AudioToolbox {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class InputAudioQueue : AudioQueue {
-#if !NET
-		static unsafe readonly AudioQueueInputCallback dInputCallback = input_callback;
-#endif
-
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (AudioQueueInputCallback))]
-#endif
 		unsafe static void input_callback (IntPtr userData, IntPtr AQ, IntPtr audioQueueBuffer,
 						AudioTimeStamp* startTime, int descriptors, IntPtr inPacketDesc)
 		{
@@ -1820,7 +1697,7 @@ namespace AudioToolbox {
 			if (h is not null)
 				h (this, new InputCompletedEventArgs (audioQueueBuffer, timeStamp, packetDescriptions));
 		}
-#if NET
+
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern unsafe static OSStatus AudioQueueNewInput (
 			AudioStreamBasicDescription* format,
@@ -1830,17 +1707,7 @@ namespace AudioToolbox {
 			IntPtr cfstringref_inCallbackRunLoopMode,
 			UInt32 inFlags,
 			IntPtr* audioQueue);
-#else
-		[DllImport (Constants.AudioToolboxLibrary)]
-		extern static OSStatus AudioQueueNewInput (
-			ref AudioStreamBasicDescription format,
-			AudioQueueInputCallback callback,
-			IntPtr inUserData,
-			IntPtr cfrunLoop_inCallbackRunLoop,
-			IntPtr cfstringref_inCallbackRunLoopMode,
-			UInt32 inFlags,
-			out IntPtr audioQueue);
-#endif
+
 		public InputAudioQueue (AudioStreamBasicDescription desc)
 		 : this (desc, null, null)
 		{
@@ -1852,7 +1719,6 @@ namespace AudioToolbox {
 			GCHandle mygch = GCHandle.Alloc (this);
 			CFString? s = runMode is null ? null : new CFString (runMode);
 
-#if NET
 			OSStatus code = 0;
 			unsafe {
 				code = AudioQueueNewInput (&desc, &input_callback, GCHandle.ToIntPtr (mygch),
@@ -1861,13 +1727,6 @@ namespace AudioToolbox {
 				GC.KeepAlive (runLoop);
 				GC.KeepAlive (s);
 			}
-#else
-			var code = AudioQueueNewInput (ref desc, dInputCallback, GCHandle.ToIntPtr (mygch),
-							   runLoop.GetHandle (),
-							   s.GetHandle (), 0, out h);
-			GC.KeepAlive (runLoop);
-			GC.KeepAlive (s);
-#endif
 			if (s is not null)
 				s.Dispose ();
 
@@ -1886,12 +1745,10 @@ namespace AudioToolbox {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AudioQueueTimeline : IDisposable {
 		/// <summary>Handle to the underlying C timeline object.</summary>
 		///         <remarks>

@@ -331,10 +331,6 @@ namespace Xamarin.Bundler {
 
 			if (metadata.LinkWithSwiftSystemLibraries)
 				LinkWithSwiftSystemLibraries = true;
-#if MONOTOUCH
-			if (metadata.Dlsym != DlsymOption.Default)
-				App.SetDlsymOption (FullPath, metadata.Dlsym == DlsymOption.Required);
-#endif
 		}
 
 		bool TryExtractNativeLibrary (AssemblyDefinition assembly, NativeReferenceMetadata metadata, out string library)
@@ -708,62 +704,7 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		public void CopySatellitesToDirectory (string directory)
-		{
-			if (Satellites is null)
-				return;
-
-			foreach (var a in Satellites) {
-				string target_dir = Path.Combine (directory, Path.GetFileName (Path.GetDirectoryName (a)));
-				string target_s = Path.Combine (target_dir, Path.GetFileName (a));
-
-				if (!Directory.Exists (target_dir))
-					Directory.CreateDirectory (target_dir);
-
-				CopyAssembly (a, target_s);
-			}
-		}
-
 		public delegate bool StripAssembly (string path);
-
-		// returns false if the assembly was not copied (because it was already up-to-date).
-		public bool CopyAssembly (string source, string target, bool copy_debug_symbols = true, StripAssembly strip = null)
-		{
-			var copied = false;
-
-			try {
-				var strip_assembly = strip is not null && strip (source);
-				if (!Application.IsUptodate (source, target) && (strip_assembly || !Cache.CompareAssemblies (source, target))) {
-					copied = true;
-					if (strip_assembly) {
-						PathUtils.FileDelete (target);
-						Directory.CreateDirectory (Path.GetDirectoryName (target));
-						MonoTouch.Tuner.Stripper.Process (source, target);
-					} else {
-						Application.CopyFile (source, target);
-					}
-				} else {
-					Driver.Log (3, "Target '{0}' is up-to-date.", target);
-				}
-
-				// Update the debug symbols file even if the assembly didn't change.
-				if (copy_debug_symbols && HasValidSymbols) {
-					// Unfortunately Cecil won't tell us the path of the symbol file, so we have to try all we support (.pdb+.mdb)
-					if (File.Exists (source + ".mdb"))
-						Application.UpdateFile (source + ".mdb", target + ".mdb", true);
-
-					var spdb = Path.ChangeExtension (source, "pdb");
-					if (File.Exists (spdb))
-						Application.UpdateFile (spdb, Path.ChangeExtension (target, "pdb"), true);
-				}
-
-				CopyConfigToDirectory (Path.GetDirectoryName (target));
-			} catch (Exception e) {
-				throw new ProductException (1009, true, e, Errors.MX1009, source, target, e.Message);
-			}
-
-			return copied;
-		}
 
 		public void CopyConfigToDirectory (string directory)
 		{

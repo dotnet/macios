@@ -478,7 +478,8 @@ static class TestDataFactory {
 		bool isEnum = false,
 		bool isSmartEnum = false,
 		bool isStruct = false,
-		bool isNSObject = false)
+		bool isNSObject = false,
+		SpecialType? underlyingType = null)
 		=> new (
 			name: type,
 			isNullable: isNullable,
@@ -489,6 +490,7 @@ static class TestDataFactory {
 			isStruct: isStruct
 		) {
 			EnumUnderlyingType = isEnum ? SpecialType.System_Int32 : null,
+			ArrayElementType = underlyingType,
 			ArrayElementTypeIsWrapped = isNSObject,
 			Parents = ["System.Array", "object"],
 			Interfaces = [

@@ -42,12 +42,10 @@ using AudioFileID = System.IntPtr;
 namespace AudioToolbox {
 
 	// AudioFormatListItem
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioFormat {
 		/// <summary>The AudioStreamBasicDescription.</summary>
@@ -103,12 +101,10 @@ namespace AudioToolbox {
 		// '!dat'
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioValueRange {
 		/// <summary>To be added.</summary>
@@ -127,12 +123,10 @@ namespace AudioToolbox {
 		EqualPower = 1,
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AudioBalanceFade {
 #if !COREBUILD
 		[StructLayout (LayoutKind.Sequential)]
@@ -218,12 +212,10 @@ namespace AudioToolbox {
 		VectorBasedPanning = 4,
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AudioPanningInfo {
 #if !COREBUILD
 		[StructLayout (LayoutKind.Sequential)]
@@ -311,12 +303,10 @@ namespace AudioToolbox {
 #endif // !COREBUILD
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	static partial class AudioFormatPropertyNative {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		public unsafe extern static AudioFormatError AudioFormatGetPropertyInfo (AudioFormatProperty propertyID, int inSpecifierSize, AudioFormatType* inSpecifier,
@@ -449,16 +439,12 @@ namespace AudioToolbox {
 		ID3TagToDictionary = 0x69643364,    // 'id3d' // TODO:
 
 #if !MONOMAC
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("ios8.0")]
 		[ObsoletedOSPlatform ("maccatalyst13.1")]
 		[ObsoletedOSPlatform ("tvos9.0")]
-#else
-		[Deprecated (PlatformName.iOS, 8, 0)]
-#endif
 		HardwareCodecCapabilities = 0x68776363, // 'hwcc'
 #endif
 	}

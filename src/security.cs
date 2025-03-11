@@ -98,6 +98,9 @@ namespace Security {
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV] // removed in tvOS 10
 	interface SecSharedCredential {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecSharedPassword")]
 		NSString SharedPassword { get; }
 	}
@@ -441,59 +444,131 @@ namespace Security {
 
 	[StrongDictionary ("SecAttributeKeys")]
 	interface SecKeyParameters {
+		/// <summary>Gets or sets the label for the key.</summary>
+		///         <value>The label for the key.</value>
+		///         <remarks>To be added.</remarks>
 		string Label { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key is permanent.</summary>
+		///         <value>A Boolean value that controls whether the key is permanent.</value>
+		///         <remarks>To be added.</remarks>
 		bool IsPermanent { get; set; }
 
+		/// <summary>Gets or sets the application's private tag.</summary>
+		///         <value>The application's private tag.</value>
+		///         <remarks>To be added.</remarks>
 		NSData ApplicationTag { get; set; }
 
+		/// <summary>Gets or sets a value that describes the minimum size of attack that can defeat the key. This value can be significantly smaller than the actual key size.</summary>
+		///         <value>A value that describes the minimum size of attack that can defeat the key. This value can be significantly smaller than the actual key size.</value>
+		///         <remarks>To be added.</remarks>
 		int EffectiveKeySize { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for encryption.</summary>
+		///         <value>A Boolean value that controls whether the key can be used for encryption.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanEncrypt { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for decryption.</summary>
+		///         <value>A  Boolean value that controls whether the key can be used for decryption.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanDecrypt { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for key derivation.</summary>
+		///         <value>A  Boolean value that controls whether the key can be used for key derivation.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanDerive { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for signing.</summary>
+		///         <value>A Boolean value that controls whether the key can be used for signing.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanSign { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for verifying signatures.</summary>
+		///         <value>A Boolean value that controls whether the key can be used for verifying signatures.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanVerify { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for key unwrapping.</summary>
+		///         <value>A Boolean value that controls whether the key can be used for key unwrapping.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanUnwrap { get; set; }
 	}
 
 	[StrongDictionary ("SecKeyGenerationAttributeKeys")]
 	interface SecKeyGenerationParameters {
+		/// <summary>Gets or sets the key size, in bits.</summary>
+		///         <value>The key size, in bits.</value>
+		///         <remarks>To be added.</remarks>
 		int KeySizeInBits { get; set; }
 
+		/// <summary>Gets or sets the attributes for the private key.</summary>
+		///         <value>The attributes for the private key.</value>
+		///         <remarks>To be added.</remarks>
 		[StrongDictionary]
 		[Export ("PrivateKeyAttrsKey")]
 		SecKeyParameters PrivateKeyAttrs { get; set; }
 
+		/// <summary>Gets or sets the attributes for the public key.</summary>
+		///         <value>The attributes for the public key.</value>
+		///         <remarks>To be added.</remarks>
 		[StrongDictionary]
 		[Export ("PublicKeyAttrsKey")]
 		SecKeyParameters PublicKeyAttrs { get; set; }
 
+		/// <summary>Gets or sets the label for the key.</summary>
+		///         <value>The label for the key.</value>
+		///         <remarks>To be added.</remarks>
 		string Label { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key is permanent.</summary>
+		///         <value>A Boolean value that controls whether the key is permanent.</value>
+		///         <remarks>To be added.</remarks>
 		bool IsPermanent { get; set; }
 
+		/// <summary>Gets or sets the application's private tag.</summary>
+		///         <value>The application's private tag.</value>
+		///         <remarks>To be added.</remarks>
 		NSData ApplicationTag { get; set; }
 
+		/// <summary>Gets or sets a value that describes the minimum size of attack that can defeat the key. This value can be significantly smaller than the actual key size.</summary>
+		///         <value>A value that describes the minimum size of attack that can defeat the key. This value can be significantly smaller than the actual key size.</value>
+		///         <remarks>To be added.</remarks>
 		int EffectiveKeySize { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for encryption.</summary>
+		///         <value>A Boolean value that controls whether the key can be used for encryption.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanEncrypt { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for decryption.</summary>
+		///         <value>A  Boolean value that controls whether the key can be used for decryption.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanDecrypt { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for key derivation.</summary>
+		///         <value>A  Boolean value that controls whether the key can be used for key derivation.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanDerive { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for signing.</summary>
+		///         <value>A Boolean value that controls whether the key can be used for signing.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanSign { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for verifying signatures.</summary>
+		///         <value>A Boolean value that controls whether the key can be used for verifying signatures.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanVerify { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for key wrapping.</summary>
+		///         <value>A Boolean value that controls whether the key can be used for key wrapping.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanWrap { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the key can be used for key unwrapping.</summary>
+		///         <value>A Boolean value that controls whether the key can be used for key unwrapping.</value>
+		///         <remarks>To be added.</remarks>
 		bool CanUnwrap { get; set; }
 	}
 
@@ -644,6 +719,10 @@ namespace Security {
 	[DisableDefaultCtor] // not required, nor useful
 	[Partial]
 	interface SecImportExport {
+		/// <summary>Represents the value associated with the constant kSecImportExportPassphrase</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecImportExportPassphrase")]
 		NSString Passphrase { get; }
 
@@ -659,18 +738,38 @@ namespace Security {
 		[Field ("kSecImportToMemoryOnly")]
 		NSString ToMemoryOnly { get; }
 
+		/// <summary>Represents the value associated with the constant kSecImportItemLabel</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecImportItemLabel")]
 		NSString Label { get; }
 
+		/// <summary>Represents the value associated with the constant kSecImportItemKeyID</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecImportItemKeyID")]
 		NSString KeyId { get; }
 
+		/// <summary>Represents the value associated with the constant kSecImportItemTrust</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecImportItemTrust")]
 		NSString Trust { get; }
 
+		/// <summary>Represents the value associated with the constant kSecImportItemCertChain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecImportItemCertChain")]
 		NSString CertChain { get; }
 
+		/// <summary>Represents the value associated with the constant kSecImportItemIdentity</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kSecImportItemIdentity")]
 		NSString Identity { get; }
 	}
@@ -814,248 +913,324 @@ namespace Security {
 
 	[MacCatalyst (13, 1)]
 	enum SecKeyAlgorithm {
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureRaw")]
 		RsaSignatureRaw,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPKCS1v15Raw")]
 		RsaSignatureDigestPkcs1v15Raw,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPKCS1v15SHA1")]
 		RsaSignatureDigestPkcs1v15Sha1,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPKCS1v15SHA224")]
 		RsaSignatureDigestPkcs1v15Sha224,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPKCS1v15SHA256")]
 		RsaSignatureDigestPkcs1v15Sha256,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPKCS1v15SHA384")]
 		RsaSignatureDigestPkcs1v15Sha384,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPKCS1v15SHA512")]
 		RsaSignatureDigestPkcs1v15Sha512,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA1")]
 		RsaSignatureMessagePkcs1v15Sha1,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA224")]
 		RsaSignatureMessagePkcs1v15Sha224,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA256")]
 		RsaSignatureMessagePkcs1v15Sha256,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA384")]
 		RsaSignatureMessagePkcs1v15Sha384,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA512")]
 		RsaSignatureMessagePkcs1v15Sha512,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureRFC4754")]
 		EcdsaSignatureRfc4754,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestX962")]
 		EcdsaSignatureDigestX962,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestX962SHA1")]
 		EcdsaSignatureDigestX962Sha1,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestX962SHA224")]
 		EcdsaSignatureDigestX962Sha224,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestX962SHA256")]
 		EcdsaSignatureDigestX962Sha256,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestX962SHA384")]
 		EcdsaSignatureDigestX962Sha384,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestX962SHA512")]
 		EcdsaSignatureDigestX962Sha512,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureMessageX962SHA1")]
 		EcdsaSignatureMessageX962Sha1,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureMessageX962SHA224")]
 		EcdsaSignatureMessageX962Sha224,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureMessageX962SHA256")]
 		EcdsaSignatureMessageX962Sha256,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureMessageX962SHA384")]
 		EcdsaSignatureMessageX962Sha384,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDSASignatureMessageX962SHA512")]
 		EcdsaSignatureMessageX962Sha512,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionRaw")]
 		RsaEncryptionRaw,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionPKCS1")]
 		RsaEncryptionPkcs1,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionOAEPSHA1")]
 		RsaEncryptionOaepSha1,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionOAEPSHA224")]
 		RsaEncryptionOaepSha224,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionOAEPSHA256")]
 		RsaEncryptionOaepSha256,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionOAEPSHA384")]
 		RsaEncryptionOaepSha384,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionOAEPSHA512")]
 		RsaEncryptionOaepSha512,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionOAEPSHA1AESGCM")]
 		RsaEncryptionOaepSha1AesCgm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionOAEPSHA224AESGCM")]
 		RsaEncryptionOaepSha224AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionOAEPSHA256AESGCM")]
 		RsaEncryptionOaepSha256AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionOAEPSHA384AESGCM")]
 		RsaEncryptionOaepSha384AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSAEncryptionOAEPSHA512AESGCM")]
 		RsaEncryptionOaepSha512AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECIESEncryptionStandardX963SHA1AESGCM")]
 		EciesEncryptionStandardX963Sha1AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECIESEncryptionStandardX963SHA224AESGCM")]
 		EciesEncryptionStandardX963Sha224AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECIESEncryptionStandardX963SHA256AESGCM")]
 		EciesEncryptionStandardX963Sha256AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECIESEncryptionStandardX963SHA384AESGCM")]
 		EciesEncryptionStandardX963Sha384AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECIESEncryptionStandardX963SHA512AESGCM")]
 		EciesEncryptionStandardX963Sha512AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECIESEncryptionCofactorX963SHA1AESGCM")]
 		EciesEncryptionCofactorX963Sha1AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECIESEncryptionCofactorX963SHA224AESGCM")]
 		EciesEncryptionCofactorX963Sha224AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECIESEncryptionCofactorX963SHA256AESGCM")]
 		EciesEncryptionCofactorX963Sha256AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECIESEncryptionCofactorX963SHA384AESGCM")]
 		EciesEncryptionCofactorX963Sha384AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECIESEncryptionCofactorX963SHA512AESGCM")]
 		EciesEncryptionCofactorX963Sha512AesGcm,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeStandard")]
 		EcdhKeyExchangeStandard,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeStandardX963SHA1")]
 		EcdhKeyExchangeStandardX963Sha1,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeStandardX963SHA224")]
 		EcdhKeyExchangeStandardX963Sha224,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeStandardX963SHA256")]
 		EcdhKeyExchangeStandardX963Sha256,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeStandardX963SHA384")]
 		EcdhKeyExchangeStandardX963Sha384,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeStandardX963SHA512")]
 		EcdhKeyExchangeStandardX963Sha512,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeCofactor")]
 		EcdhKeyExchangeCofactor,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeCofactorX963SHA1")]
 		EcdhKeyExchangeCofactorX963Sha1,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeCofactorX963SHA224")]
 		EcdhKeyExchangeCofactorX963Sha224,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeCofactorX963SHA256")]
 		EcdhKeyExchangeCofactorX963Sha256,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeCofactorX963SHA384")]
 		EcdhKeyExchangeCofactorX963Sha384,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmECDHKeyExchangeCofactorX963SHA512")]
 		EcdhKeyExchangeCofactorX963Sha512,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPSSSHA1")]
 		RsaSignatureDigestPssSha1,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPSSSHA224")]
 		RsaSignatureDigestPssSha224,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPSSSHA256")]
 		RsaSignatureDigestPssSha256,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPSSSHA384")]
 		RsaSignatureDigestPssSha384,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPSSSHA512")]
 		RsaSignatureDigestPssSha512,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePSSSHA1")]
 		RsaSignatureMessagePssSha1,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePSSSHA224")]
 		RsaSignatureMessagePssSha224,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePSSSHA256")]
 		RsaSignatureMessagePssSha256,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePSSSHA384")]
 		RsaSignatureMessagePssSha384,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePSSSHA512")]
 		RsaSignatureMessagePssSha512,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionStandardVariableIVX963SHA224AESGCM")]
 		EciesEncryptionStandardVariableIvx963Sha224AesGcm,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionStandardVariableIVX963SHA256AESGCM")]
 		EciesEncryptionStandardVariableIvx963Sha256AesGcm,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionStandardVariableIVX963SHA384AESGCM")]
 		EciesEncryptionStandardVariableIvx963Sha384AesGcm,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionStandardVariableIVX963SHA512AESGCM")]
 		EciesEncryptionStandardVariableIvx963Sha512AesGcm,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionCofactorVariableIVX963SHA224AESGCM")]
 		EciesEncryptionCofactorVariableIvx963Sha224AesGcm,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionCofactorVariableIVX963SHA256AESGCM")]
 		EciesEncryptionCofactorVariableIvx963Sha256AesGcm,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionCofactorVariableIVX963SHA384AESGCM")]
 		EciesEncryptionCofactorVariableIvx963Sha384AesGcm,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionCofactorVariableIVX963SHA512AESGCM")]
 		EciesEncryptionCofactorVariableIvx963Sha512AesGcm,

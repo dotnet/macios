@@ -25,11 +25,11 @@ using ObjCRuntime;
 using MonoTouch;
 using MonoTouch.Tuner;
 using PlatformResolver = MonoTouch.Tuner.MonoTouchResolver;
-using PlatformLinkContext = MonoTouch.Tuner.MonoTouchLinkContext;
+using PlatformLinkContext = Xamarin.Tuner.DerivedLinkContext;
 #elif MMP
 using MonoMac.Tuner;
 using PlatformResolver = Xamarin.Bundler.MonoMacResolver;
-using PlatformLinkContext = MonoMac.Tuner.MonoMacLinkContext;
+using PlatformLinkContext = Xamarin.Tuner.DerivedLinkContext;
 #elif NET
 using LinkerOptions = Xamarin.Linker.LinkerConfiguration;
 using PlatformLinkContext = Xamarin.Tuner.DerivedLinkContext;
@@ -58,7 +58,9 @@ namespace Xamarin.Bundler {
 		// If we didn't link because the existing (cached) assemblyes are up-to-date.
 		bool cached_link = false;
 
+#if !MMP
 		Symbols dynamic_symbols;
+#endif // MMP
 
 		// Note that each 'Target' can have multiple abis: armv7+armv7s for instance.
 		public List<Abi> Abis;
@@ -129,13 +131,6 @@ namespace Xamarin.Bundler {
 					exceptions.Add (e);
 				}
 			}
-
-#if MTOUCH
-			if (!App.OnlyStaticLibraries && Assemblies.Count ((v) => v.HasLinkWithAttributes) > 1) {
-				ErrorHelper.Warning (127, Errors.MT0127);
-				App.ClearAssemblyBuildTargets (); // the default is to compile to static libraries, so just revert to the default.
-			}
-#endif
 		}
 
 		[DllImport (Constants.libSystemLibrary, SetLastError = true)]
@@ -303,6 +298,7 @@ namespace Xamarin.Bundler {
 				Driver.Log ($"    References: '{ar.FullName}'");
 		}
 
+#if !MMP
 		public Symbols GetAllSymbols ()
 		{
 			CollectAllSymbols ();
@@ -388,6 +384,7 @@ namespace Xamarin.Bundler {
 				}
 			}
 		}
+#endif // MMP
 
 		bool IsRequiredSymbol (Symbol symbol, Assembly single_assembly = null, Abi? target_abis = null)
 		{
@@ -418,28 +415,6 @@ namespace Xamarin.Bundler {
 			case SymbolType.Field:
 				return true;
 			case SymbolType.Function:
-#if MTOUCH
-				// functions are not required if they're used in an assembly which isn't using dlsym, and we're AOT-compiling.
-				if (App.IsSimulatorBuild)
-					return true;
-				if (App.Platform == ApplePlatform.MacCatalyst)
-					return true;
-				if (single_assembly is not null)
-					return App.UseDlsym (single_assembly.FileName);
-
-				if (symbol.Members?.Any () == true) {
-					foreach (var member in symbol.Members) {
-						if (App.UseDlsym (member.Module.FileName)) {
-							// If any assembly uses dlsym to reference this symbol, it's a required symbol that must be preserved,
-							// because otherwise stripping the binary will cause the symbol (but not the function itself) to be removed,
-							// preventing any assembly using dlsym to find it.
-							return true;
-						}
-					}
-					// None of the members use dlsym (and we have at least one member), then we don't need to preserve the symbol.
-					return false;
-				}
-#endif
 				return true;
 			case SymbolType.ObjectiveCClass:
 				// Objective-C classes are not required when we're using the static registrar and we're not compiling to shared libraries,
@@ -453,6 +428,7 @@ namespace Xamarin.Bundler {
 			}
 		}
 
+#if !MMP
 		public Symbols GetRequiredSymbols (Assembly assembly = null, Abi? target_abis = null)
 		{
 			CollectAllSymbols ();
@@ -465,21 +441,15 @@ namespace Xamarin.Bundler {
 			}
 			return filtered ?? dynamic_symbols;
 		}
+#endif // MMP
 
-#if MTOUCH
-		IEnumerable<CompileTask> GenerateReferencingSource (string reference_m, IEnumerable<Symbol> symbols)
-#else
+#if !MMP && !MTOUCH
 		internal string GenerateReferencingSource (string reference_m, IEnumerable<Symbol> symbols)
-#endif
 		{
 			if (!symbols.Any ()) {
 				if (File.Exists (reference_m))
 					File.Delete (reference_m);
-#if MTOUCH
-				yield break;
-#else
 				return null;
-#endif
 			}
 			var sb = new StringBuilder ();
 			sb.AppendLine ("#import <Foundation/Foundation.h>");
@@ -518,24 +488,9 @@ namespace Xamarin.Bundler {
 
 			Driver.WriteIfDifferent (reference_m, sb.ToString (), true);
 
-#if MTOUCH
-			foreach (var abi in GetArchitectures (AssemblyBuildTarget.StaticObject)) {
-				var arch = abi.AsArchString ();
-				var reference_o = Path.Combine (Path.GetDirectoryName (reference_m), arch, Path.GetFileNameWithoutExtension (reference_m) + ".o");
-				var compile_task = new CompileTask {
-					Target = this,
-					Abi = abi,
-					InputFile = reference_m,
-					OutputFile = reference_o,
-					SharedLibrary = false,
-					Language = "objective-c",
-				};
-				yield return compile_task;
-			}
-#else
 			return reference_m;
-#endif
 		}
+#endif // !MMP && !MTOUCH
 
 		// This is to load the symbols for all assemblies, so that we can give better error messages
 		// (with file name / line number information).
@@ -545,6 +500,7 @@ namespace Xamarin.Bundler {
 				a.LoadSymbols ();
 		}
 
+#if !MMP
 		public void GenerateMain (ApplePlatform platform, Abi abi, string main_source, IList<string> registration_methods)
 		{
 			var sb = new StringBuilder ();
@@ -637,16 +593,6 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ($"\tsetenv (\"MONO_GC_PARAMS\", \"{App.MonoGCParams}\", 1);");
 
 			sw.WriteLine ("\txamarin_supports_dynamic_registration = {0};", App.DynamicRegistrationSupported ? "TRUE" : "FALSE");
-
-#if MMP
-			// AOT for .NET/macOS needs some design to verify it's staying the same way as current Xamarin.Mac
-			// for instance: we might decide to select which assemblies to AOT in a different way.
-			if (App.AOTOptions is not null && App.AOTOptions.IsHybridAOT)
-				sw.WriteLine ("\txamarin_mac_hybrid_aot = TRUE;");
-#endif
-
-			if (Driver.IsUnifiedMobile)
-				sw.WriteLine ("\txamarin_mac_modern = TRUE;");
 
 			sw.WriteLine ("\txamarin_invoke_registration_methods ();");
 
@@ -765,9 +711,7 @@ namespace Xamarin.Bundler {
 			if (app.EnableProfiling)
 				sw.WriteLine ("\txamarin_profiler_symbol = mono_profiler_init_log;");
 
-			if (app.EnableLLVMOnlyBitCode)
-				sw.WriteLine ("\tmono_jit_set_aot_mode (MONO_AOT_MODE_LLVMONLY);");
-			else if (app.UseInterpreter) {
+			if (app.UseInterpreter) {
 				sw.WriteLine ("\tmono_icall_table_init ();");
 				sw.WriteLine ("\tmono_marshal_ilgen_init ();");
 				sw.WriteLine ("\tmono_method_builder_ilgen_init ();");
@@ -911,6 +855,7 @@ namespace Xamarin.Bundler {
 				sw.WriteLine ($"\txamarin_extension_main = {extension_main};");
 			sw.WriteLine ("}");
 		}
+#endif // MMP
 
 #if NET && !LEGACY_TOOLS
 		static readonly char [] charsToReplaceAot = new [] { '.', '-', '+', '<', '>' };
@@ -944,6 +889,7 @@ namespace Xamarin.Bundler {
 			return sb.ToString ();
 		}
 
+#if !MMP
 		static bool IsBoundAssembly (Assembly s)
 		{
 			if (s.IsFrameworkAssembly == true)
@@ -958,5 +904,6 @@ namespace Xamarin.Bundler {
 
 			return false;
 		}
+#endif // MMP
 	}
 }

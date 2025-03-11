@@ -34,6 +34,7 @@ namespace Xamarin.Linker {
 			return attrib is not null;
 
 		}
+
 		// This method will look in any stored attributes in the link context as well as the provider itself.
 		public static bool HasCustomAttribute (this ICustomAttributeProvider provider, DerivedLinkContext context, string @namespace, string name)
 		{

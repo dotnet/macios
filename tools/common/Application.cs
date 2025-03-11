@@ -18,9 +18,11 @@ using Xamarin.Utils;
 
 using ObjCRuntime;
 
+#if !LEGACY_TOOLS
 using ClassRedirector;
+#endif
 
-#if MONOTOUCH
+#if MTOUCH
 using PlatformResolver = MonoTouch.Tuner.MonoTouchResolver;
 #elif MMP
 using PlatformResolver = Xamarin.Bundler.MonoMacResolver;
@@ -32,6 +34,17 @@ using PlatformResolver = Xamarin.Linker.DotNetResolver;
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable
+
+#if LEGACY_TOOLS
+namespace Mono.Linker {
+	public class LinkContext {
+		public IEnumerable<AssemblyDefinition> GetAssemblies ()
+		{
+			throw new System.NotImplementedException ();
+		}
+	}
+}
+#endif // LEGACY_TOOLS
 
 namespace Xamarin.Bundler {
 
@@ -81,8 +94,10 @@ namespace Xamarin.Bundler {
 		public List<string> AotOtherArguments = null;
 		public bool? AotFloat32 = null;
 
+#if !MMP && !MTOUCH
 		public DlsymOptions DlsymOptions;
 		public List<Tuple<string, bool>> DlsymAssemblies;
+#endif // !MMP && !MTOUCH
 		public List<string> CustomLinkFlags;
 
 		public string CompilerPath;
@@ -128,7 +143,7 @@ namespace Xamarin.Bundler {
 		}
 		public List<string> LinkSkipped = new List<string> ();
 		public List<string> Definitions = new List<string> ();
-#if !NET || LEGACY_TOOLS
+#if !NET && !LEGACY_TOOLS
 		public I18nAssemblies I18n;
 #endif
 		public List<string> WarnOnTypeRef = new List<string> ();
@@ -159,17 +174,7 @@ namespace Xamarin.Bundler {
 		public string CustomBundleName = "MonoBundle"; // Only applicable to Xamarin.Mac and Mac Catalyst
 
 		public XamarinRuntime XamarinRuntime;
-		public bool? UseMonoFramework;
 		public string RuntimeIdentifier; // Only used for build-time --run-registrar support
-
-		// The bitcode mode to compile to.
-		// This variable does not apply to macOS, because there's no bitcode on macOS.
-		public BitCodeMode BitCodeMode { get; set; }
-
-		public bool EnableAsmOnlyBitCode { get { return BitCodeMode == BitCodeMode.ASMOnly; } }
-		public bool EnableLLVMOnlyBitCode { get { return BitCodeMode == BitCodeMode.LLVMOnly; } }
-		public bool EnableMarkerOnlyBitCode { get { return BitCodeMode == BitCodeMode.MarkerOnly; } }
-		public bool EnableBitCode { get { return BitCodeMode != BitCodeMode.None; } }
 
 		public bool SkipMarkingNSObjectsInUserAssemblies { get; set; }
 
@@ -247,9 +252,7 @@ namespace Xamarin.Bundler {
 					throw ErrorHelper.CreateError (99, Errors.MX0099, "LibMonoLinkMode isn't a valid operation for macOS apps.");
 				}
 
-				if (Embeddinator) {
-					return AssemblyBuildTarget.StaticObject;
-				} else if (HasFrameworks || UseMonoFramework.Value) {
+				if (HasFrameworks) {
 					return AssemblyBuildTarget.Framework;
 				} else if (HasDynamicLibraries) {
 					return AssemblyBuildTarget.DynamicLibrary;
@@ -274,9 +277,7 @@ namespace Xamarin.Bundler {
 					throw ErrorHelper.CreateError (99, Errors.MX0099, "LibXamarinLinkMode isn't a valid operation for macOS apps.");
 				}
 
-				if (Embeddinator) {
-					return AssemblyBuildTarget.StaticObject;
-				} else if (HasFrameworks) {
+				if (HasFrameworks) {
 					return AssemblyBuildTarget.Framework;
 				} else if (HasDynamicLibraries) {
 					return AssemblyBuildTarget.DynamicLibrary;
@@ -443,7 +444,7 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-#if !NET || LEGACY_TOOLS
+#if !NET && !LEGACY_TOOLS
 		public static int Concurrency => Driver.Concurrency;
 #endif
 		public Version DeploymentTarget;
@@ -453,8 +454,6 @@ namespace Xamarin.Bundler {
 		public MonoNativeMode MonoNativeMode { get; set; }
 		List<Abi> abis;
 		public bool IsLLVM { get { return IsArchEnabled (Abi.LLVM); } }
-
-		public bool Embeddinator { get; set; }
 
 		public List<Target> Targets = new List<Target> ();
 
@@ -507,8 +506,6 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		public bool IsDualBuild { get { return Is32Build && Is64Build; } } // if we're building both a 32 and a 64 bit version.
-
 		public Application ()
 		{
 		}
@@ -551,7 +548,7 @@ namespace Xamarin.Bundler {
 			InterpretedAssemblies.Clear ();
 		}
 
-#if !NET || LEGACY_TOOLS
+#if !NET && !LEGACY_TOOLS
 		public void ParseI18nAssemblies (string i18n)
 		{
 			var assemblies = I18nAssemblies.None;
@@ -700,6 +697,7 @@ namespace Xamarin.Bundler {
 			}
 		}
 
+#if !MMP && !MTOUCH
 		public static void SaveAssembly (AssemblyDefinition assembly, string destination)
 		{
 			var main = assembly.MainModule;
@@ -727,6 +725,7 @@ namespace Xamarin.Bundler {
 					File.Delete (dest_pdb);
 			}
 		}
+#endif // !MMP && !MTOUCH
 
 		public static bool ExtractResource (ModuleDefinition module, string name, string path, bool remove)
 		{
@@ -835,9 +834,6 @@ namespace Xamarin.Bundler {
 		public void InitializeCommon ()
 		{
 			InitializeDeploymentTarget ();
-#if !NET || LEGACY_TOOLS
-			SelectRegistrar ();
-#endif
 			SelectMonoNative ();
 
 			RuntimeOptions = RuntimeOptions.Create (this, HttpMessageHandler, TlsProvider);
@@ -867,22 +863,8 @@ namespace Xamarin.Bundler {
 			SetManagedExceptionMode ();
 
 			if (SymbolMode == SymbolMode.Default) {
-#if MONOTOUCH
-				SymbolMode = EnableBitCode ? SymbolMode.Code : SymbolMode.Linker;
-#else
 				SymbolMode = SymbolMode.Linker;
-#endif
 			}
-
-#if MONOTOUCH
-			if (EnableBitCode && SymbolMode != SymbolMode.Code) {
-				// This is a warning because:
-				// * The user will get a linker error anyway if they do this.
-				// * I see it as quite unlikely that anybody will in fact try this (it must be manually set in the additional mtouch arguments).
-				// * I find it more probable that Apple will remove the -u restriction, in which case someone might actually want to try this, and if it's a warning, we won't prevent it.
-				ErrorHelper.Warning (115, Errors.MT0115);
-			}
-#endif
 
 			if (!DebugTrack.HasValue) {
 				DebugTrack = false;
@@ -894,12 +876,6 @@ namespace Xamarin.Bundler {
 				package_managed_debug_symbols = EnableDebug;
 			} else if (package_managed_debug_symbols.Value && IsLLVM) {
 				ErrorHelper.Warning (3007, Errors.MX3007);
-			}
-
-			if (Driver.XcodeVersion.Major >= 14 && BitCodeMode != BitCodeMode.None && Platform == ApplePlatform.TVOS) {
-				// We currently have to leave watchOS alone, because the process is to first build bitcode, then compile bitcode into native code, and finally remove the bitcode from the executable (this is likely fixable, but looks like it's a larger effort involving the runtime team).
-				ErrorHelper.Warning (186, Errors.MX0186 /* Bitcode is enabled, but bitcode is not supported in Xcode 14+ and has been disabled. Please disable bitcode by removing the 'MtouchEnableBitcode' property from the project file. */);
-				BitCodeMode = BitCodeMode.None;
 			}
 
 			Optimizations.Initialize (this, out var messages);
@@ -974,14 +950,6 @@ namespace Xamarin.Bundler {
 			};
 			resolver.Configure ();
 
-			if (Platform == ApplePlatform.iOS && !Driver.IsDotNet) {
-				if (Is32Build) {
-					resolver.ArchDirectory = Driver.GetArch32Directory (this);
-				} else {
-					resolver.ArchDirectory = Driver.GetArch64Directory (this);
-				}
-			}
-
 			var ps = new ReaderParameters ();
 			ps.AssemblyResolver = resolver;
 			foreach (var reference in References) {
@@ -1022,15 +990,6 @@ namespace Xamarin.Bundler {
 			if (!foundProductAssembly)
 				throw ErrorHelper.CreateError (131, Errors.MX0131, productAssembly, string.Join ("', '", RootAssemblies.ToArray ()));
 
-#if MONOTOUCH
-			if (SelectAbis (Abis, Abi.SimulatorArchMask).Count > 0) {
-				BuildTarget = BuildTarget.Simulator;
-			} else if (SelectAbis (Abis, Abi.DeviceArchMask).Count > 0) {
-				BuildTarget = BuildTarget.Device;
-			} else {
-				throw ErrorHelper.CreateError (99, Errors.MX0099, "No valid ABI");
-			}
-#endif
 			var registrar = new Registrar.StaticRegistrar (this);
 			if (RootAssemblies.Count == 1) {
 				registrar.GenerateSingleAssembly (resolver, resolvedAssemblies.Values, Path.ChangeExtension (registrar_m, "h"), registrar_m, Path.GetFileNameWithoutExtension (RootAssembly), out var _);
@@ -1056,42 +1015,6 @@ namespace Xamarin.Bundler {
 					return true;
 			}
 			return false;
-		}
-
-		public void SetDefaultAbi ()
-		{
-			if (abis is null)
-				abis = new List<Abi> ();
-
-			switch (Platform) {
-			case ApplePlatform.iOS:
-				if (abis.Count == 0) {
-					if (DeploymentTarget is null || DeploymentTarget.Major >= 11) {
-						abis.Add (IsDeviceBuild ? Abi.ARM64 : Abi.x86_64);
-					} else {
-						abis.Add (IsDeviceBuild ? Abi.ARMv7 : Abi.i386);
-					}
-				}
-				break;
-			case ApplePlatform.WatchOS:
-				if (abis.Count == 0)
-					throw ErrorHelper.CreateError (76, Errors.MT0076, "Xamarin.WatchOS");
-				break;
-			case ApplePlatform.TVOS:
-				if (abis.Count == 0)
-					throw ErrorHelper.CreateError (76, Errors.MT0076, "Xamarin.TVOS");
-				break;
-			case ApplePlatform.MacOSX:
-				if (abis.Count == 0)
-					abis.Add (Abi.x86_64);
-				break;
-			case ApplePlatform.MacCatalyst:
-				if (abis.Count == 0)
-					throw ErrorHelper.CreateError (76, Errors.MT0076, "Xamarin.MacCatalyst");
-				break;
-			default:
-				throw ErrorHelper.CreateError (71, Errors.MX0071, Platform, ProductName);
-			}
 		}
 
 		public void ValidateAbi ()
@@ -1518,6 +1441,7 @@ namespace Xamarin.Bundler {
 			return !IsInterpreted (assembly);
 		}
 
+#if !MMP && !MTOUCH
 		public IList<string> GetAotArguments (string filename, Abi abi, string outputDir, string outputFile, string llvmOutputFile, string dataFile)
 		{
 			GetAotArguments (filename, abi, outputDir, outputFile, llvmOutputFile, dataFile, null, out var processArguments, out var aotArguments);
@@ -1535,7 +1459,6 @@ namespace Xamarin.Bundler {
 			bool enable_thumb = (abi & Abi.Thumb) != 0;
 			bool enable_debug = app.EnableDebug;
 			bool enable_debug_symbols = app.PackageManagedDebugSymbols;
-			bool llvm_only = app.EnableLLVMOnlyBitCode;
 			bool interp = app.IsInterpreted (Assembly.GetIdentity (filename)) && !(isDedupAssembly.HasValue && isDedupAssembly.Value);
 			bool interp_full = !interp && app.UseInterpreter;
 			bool is32bit = (abi & Abi.Arch32Mask) > 0;
@@ -1546,7 +1469,7 @@ namespace Xamarin.Bundler {
 			if (enable_llvm)
 				processArguments.Add ("--llvm");
 
-			if (!llvm_only && !interp)
+			if (!interp)
 				processArguments.Add ("-O=gsharedvt");
 			if (app.AotOtherArguments is not null)
 				processArguments.AddRange (app.AotOtherArguments);
@@ -1576,9 +1499,7 @@ namespace Xamarin.Bundler {
 			if (app.LibMonoLinkMode == AssemblyBuildTarget.StaticObject || !Driver.IsDotNet)
 				aotArguments.Add ("direct-icalls");
 			aotArguments.AddRange (app.AotArguments);
-			if (llvm_only)
-				aotArguments.Add ("llvmonly");
-			else if (interp) {
+			if (interp) {
 				if (fname != Driver.CorlibName + ".dll")
 					throw ErrorHelper.CreateError (99, Errors.MX0099, fname);
 				aotArguments.Add ("interp");
@@ -1659,6 +1580,7 @@ namespace Xamarin.Bundler {
 			}
 #endif
 		}
+#endif // !MMP && !MTOUCH
 
 		public string AssemblyName {
 			get {
@@ -1683,6 +1605,7 @@ namespace Xamarin.Bundler {
 			}
 		}
 
+#if !MMP && !MTOUCH
 		public void SetDlsymOption (string asm, bool dlsym)
 		{
 			if (DlsymAssemblies is null)
@@ -1740,9 +1663,6 @@ namespace Xamarin.Bundler {
 				return false;
 			}
 
-			if (EnableLLVMOnlyBitCode)
-				return false;
-
 			// Even if this assembly is aot'ed, if we are using the interpreter we can't yet
 			// guarantee that code in this assembly won't be executed in interpreted mode,
 			// which can happen for virtual calls between assemblies, during exception handling
@@ -1771,6 +1691,7 @@ namespace Xamarin.Bundler {
 				throw ErrorHelper.CreateError (71, Errors.MX0071, Platform, ProductName);
 			}
 		}
+#endif // !MMP && !MTOUCH
 
 		public bool VerifyDynamicFramework (string framework_path)
 		{

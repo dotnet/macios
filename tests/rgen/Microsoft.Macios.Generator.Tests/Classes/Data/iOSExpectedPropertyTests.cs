@@ -257,9 +257,9 @@ public partial class PropertyTests
 		get
 		{
 			if (IsDirectBinding) {
-				return global::ObjCRuntime.Messaging.bool_objc_msgSend (this.Handle, Selector.GetHandle ("canDraw")) != 0;
+				return NSNumber.ToBool (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("canDraw")));
 			} else {
-				return global::ObjCRuntime.Messaging.bool_objc_msgSendSuper (this.Handle, Selector.GetHandle ("canDraw")) != 0;
+				return NSNumber.ToBool (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("canDraw")));
 			}
 		}
 

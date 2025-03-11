@@ -35,7 +35,7 @@ $(abspath Constants.cs): Constants.cs.in Makefile $(TOP)/Make.config.inc
 #
 define RunRegistrar
 .libs/Microsoft.$(9).registrar.$(10)%m .libs/Microsoft.$(9).registrar.$(10)%h: $(TOP)/src/build/dotnet/$(1)/$(3)/Microsoft.$(9).dll $(LOCAL_MTOUCH) | .libs
-	$$(Q_GEN) $$(LOCAL_MTOUCH_COMMAND) $$(MTOUCH_VERBOSITY) --runregistrar:$$(abspath $$(basename $$@).m) --sdkroot $$(XCODE_DEVELOPER_ROOT) --sdk $(4) $$< --registrar:static --target-framework .NETCoreApp,Version=$(subst net,,$(DOTNET_TFM)),Profile=$(1) --abi $(2) -r:$(DOTNET_BCL_DIR)/System.Runtime.dll -r:$(DOTNET_BCL_DIR)/System.Runtime.InteropServices.dll --rid $(10)
+	$$(Q_GEN) $$(LOCAL_MTOUCH_COMMAND) $$(MTOUCH_VERBOSITY) --runregistrar:$$(abspath $$(basename $$@).m) --sdkroot $$(XCODE_DEVELOPER_ROOT) --sdk $(4) $$< --registrar:static --target-framework .NETCoreApp,Version=$(subst net,,$(DOTNET_TFM)),Profile=$(1) --abi $(2) --reference:$(DOTNET_BCL_DIR)/System.Runtime.dll --reference:$(DOTNET_BCL_DIR)/System.Runtime.InteropServices.dll --rid $(10)
 	$$(Q) touch $$(basename $$@).m $$(basename $$@).h
 
 .libs/Microsoft.$(9).registrar.$(10).a: .libs/Microsoft.$(9).registrar.$(10).m .libs/Microsoft.$(9).registrar.$(10).h | .libs

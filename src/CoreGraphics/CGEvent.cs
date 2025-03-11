@@ -313,6 +313,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static void CGEventSetLocation (IntPtr handle, CGPoint location);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGPoint Location {
 			get {
 				return CGEventGetLocation (Handle);
@@ -325,6 +328,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static CGPoint CGEventGetUnflippedLocation (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGPoint UnflippedLocation {
 			get {
 				return CGEventGetUnflippedLocation (Handle);

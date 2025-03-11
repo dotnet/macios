@@ -348,6 +348,9 @@ namespace CoreLocation {
 		[Export ("locationServicesEnabled"), Static]
 		bool LocationServicesEnabled { get; }
 
+		/// <summary>The minimum change in heading, in degreees, necessary to generate a location update.</summary>
+		///         <value>The default value is 1 (degree).</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("headingFilter", ArgumentSemantic.Assign)]
@@ -378,6 +381,9 @@ namespace CoreLocation {
 		[NullAllowed, Export ("purpose")]
 		string Purpose { get; set; }
 
+		/// <summary>Whether the <see cref="P:CoreLocation.CLLocationManager.Heading" /> property is not <see langword="null" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("headingAvailable"), Static]
@@ -404,11 +410,19 @@ namespace CoreLocation {
 		[Export ("regionMonitoringEnabled"), Static]
 		bool RegionMonitoringEnabled { get; }
 
+		/// <summary>The orientation used to determine heading calculations.</summary>
+		///         <value>The default value assumes that the app, in upright portrait mode, represents due North.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("headingOrientation", ArgumentSemantic.Assign)]
 		CLDeviceOrientation HeadingOrientation { get; set; }
 
+		/// <summary>The most recent heading (direction in which the device is traveling).</summary>
+		///         <value>This value may be <see langword="null" /> if heading updates have not been started.</value>
+		///         <remarks>
+		///           <para>Heading information is only available on devices with a hardware magnetometer. (See <see cref="P:CoreLocation.CLLocationManager.HeadingAvailable" />.)</para>
+		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("heading", ArgumentSemantic.Copy)]
@@ -477,6 +491,11 @@ namespace CoreLocation {
 		[Export ("startMonitoringForRegion:")]
 		void StartMonitoring (CLRegion region);
 
+		/// <summary>Used to provide the operating system clues for better power consumption / accuracy.</summary>
+		///         <value>The default value is <see cref="F:CoreLocation.CLActivityType.Other" />.</value>
+		///         <remarks>
+		///           <para>Application developers should set this property when possible. It provides clues to the system about the application's need. For instance, if set to <see cref="F:CoreLocation.CLActivityType.AutomotiveNavigation" /> and the device has not moved for awhile, the system might power down updates until movement is detected.</para>
+		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("activityType", ArgumentSemantic.Assign)]
@@ -503,6 +522,9 @@ namespace CoreLocation {
 		[Export ("disallowDeferredLocationUpdates")]
 		void DisallowDeferredLocationUpdates ();
 
+		/// <summary>Whether background-generated deferred location data are available.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Not used anymore. It will always return 'false'.")]
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Not used anymore. It will always return 'false'.")]
@@ -572,6 +594,9 @@ namespace CoreLocation {
 		[Export ("stopRangingBeaconsSatisfyingConstraint:")]
 		void StopRangingBeacons (CLBeaconIdentityConstraint constraint);
 
+		/// <summary>Gets a Boolean value that tells whether the device can range Bluetooth beacons.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Static]
@@ -597,6 +622,9 @@ namespace CoreLocation {
 		[Export ("stopMonitoringVisits")]
 		void StopMonitoringVisits ();
 
+		/// <summary>Gets or sets a Boolean value that controls whether the application will respond to location updates while it is suspended.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("allowsBackgroundLocationUpdates")]

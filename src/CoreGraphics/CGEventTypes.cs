@@ -31,8 +31,11 @@ namespace CoreGraphics {
 	[MacCatalyst (13,1)]
 #endif
 	public enum CGEventTapLocation : int {
+		/// <summary>To be added.</summary>
 		HID,
+		/// <summary>To be added.</summary>
 		Session,
+		/// <summary>To be added.</summary>
 		AnnotatedSession,
 	}
 
@@ -44,7 +47,9 @@ namespace CoreGraphics {
 	[MacCatalyst (13,1)]
 #endif
 	public enum CGEventTapPlacement : uint {
+		/// <summary>To be added.</summary>
 		HeadInsert,
+		/// <summary>To be added.</summary>
 		TailAppend,
 	}
 
@@ -56,7 +61,9 @@ namespace CoreGraphics {
 	[MacCatalyst (13,1)]
 #endif
 	public enum CGEventTapOptions : uint {
+		/// <summary>To be added.</summary>
 		Default,
+		/// <summary>To be added.</summary>
 		ListenOnly,
 	}
 
@@ -68,8 +75,11 @@ namespace CoreGraphics {
 	[MacCatalyst (13,1)]
 #endif
 	public enum CGMouseButton : uint {
+		/// <summary>To be added.</summary>
 		Left,
+		/// <summary>To be added.</summary>
 		Right,
+		/// <summary>To be added.</summary>
 		Center,
 	}
 
@@ -81,7 +91,9 @@ namespace CoreGraphics {
 	[MacCatalyst (13,1)]
 #endif
 	public enum CGScrollEventUnit : uint {
+		/// <summary>To be added.</summary>
 		Pixel,
+		/// <summary>To be added.</summary>
 		Line,
 	}
 
@@ -94,22 +106,39 @@ namespace CoreGraphics {
 #endif
 	[Flags]
 	public enum CGEventMask : ulong {
+		/// <summary>To be added.</summary>
 		Null = 0x00000001,
+		/// <summary>To be added.</summary>
 		LeftMouseDown = 0x00000002,
+		/// <summary>To be added.</summary>
 		LeftMouseUp = 0x00000004,
+		/// <summary>To be added.</summary>
 		RightMouseDown = 0x00000008,
+		/// <summary>To be added.</summary>
 		RightMouseUp = 0x00000010,
+		/// <summary>To be added.</summary>
 		MouseMoved = 0x00000020,
+		/// <summary>To be added.</summary>
 		LeftMouseDragged = 0x00000040,
+		/// <summary>To be added.</summary>
 		RightMouseDragged = 0x00000080,
+		/// <summary>To be added.</summary>
 		KeyDown = 0x00000400,
+		/// <summary>To be added.</summary>
 		KeyUp = 0x00000800,
+		/// <summary>To be added.</summary>
 		FlagsChanged = 0x00001000,
+		/// <summary>To be added.</summary>
 		ScrollWheel = 0x00400000,
+		/// <summary>To be added.</summary>
 		TabletPointer = 0x00800000,
+		/// <summary>To be added.</summary>
 		TabletProximity = 0x01000000,
+		/// <summary>To be added.</summary>
 		OtherMouseDown = 0x02000000,
+		/// <summary>To be added.</summary>
 		OtherMouseUp = 0x04000000,
+		/// <summary>To be added.</summary>
 		OtherMouseDragged = 0x08000000,
 	}
 
@@ -122,14 +151,23 @@ namespace CoreGraphics {
 #endif
 	[Flags]
 	public enum CGEventFlags : ulong {
+		/// <summary>To be added.</summary>
 		NonCoalesced = 0x00000100,
+		/// <summary>To be added.</summary>
 		AlphaShift = 0x00010000,
+		/// <summary>To be added.</summary>
 		Shift = 0x00020000,
+		/// <summary>To be added.</summary>
 		Control = 0x00040000,
+		/// <summary>To be added.</summary>
 		Alternate = 0x00080000,
+		/// <summary>To be added.</summary>
 		Command = 0x00100000,
+		/// <summary>To be added.</summary>
 		NumericPad = 0x00200000,
+		/// <summary>To be added.</summary>
 		Help = 0x00400000,
+		/// <summary>To be added.</summary>
 		SecondaryFn = 0x00800000,
 	}
 
@@ -409,22 +447,39 @@ namespace CoreGraphics {
 	[MacCatalyst (13,1)]
 #endif
 	public enum CGEventType : uint {
+		/// <summary>To be added.</summary>
 		Null = 0x0,
+		/// <summary>To be added.</summary>
 		LeftMouseDown = 0x1,
+		/// <summary>To be added.</summary>
 		LeftMouseUp = 0x2,
+		/// <summary>To be added.</summary>
 		RightMouseDown = 0x3,
+		/// <summary>To be added.</summary>
 		RightMouseUp = 0x4,
+		/// <summary>To be added.</summary>
 		MouseMoved = 0x5,
+		/// <summary>To be added.</summary>
 		LeftMouseDragged = 0x6,
+		/// <summary>To be added.</summary>
 		RightMouseDragged = 0x7,
+		/// <summary>To be added.</summary>
 		KeyDown = 0xa,
+		/// <summary>To be added.</summary>
 		KeyUp = 0xb,
+		/// <summary>To be added.</summary>
 		FlagsChanged = 0xc,
+		/// <summary>To be added.</summary>
 		ScrollWheel = 0x16,
+		/// <summary>To be added.</summary>
 		TabletPointer = 0x17,
+		/// <summary>To be added.</summary>
 		TabletProximity = 0x18,
+		/// <summary>To be added.</summary>
 		OtherMouseDown = 0x19,
+		/// <summary>To be added.</summary>
 		OtherMouseUp = 0x1a,
+		/// <summary>To be added.</summary>
 		OtherMouseDragged = 0x1b,
 		TapDisabledByTimeout = 4294967294,
 		TapDisabledByUserInput = 4294967295,
@@ -438,8 +493,11 @@ namespace CoreGraphics {
 	[MacCatalyst (13,1)]
 #endif
 	public enum CGEventMouseSubtype : uint {
+		/// <summary>To be added.</summary>
 		Default,
+		/// <summary>To be added.</summary>
 		TabletPoint,
+		/// <summary>To be added.</summary>
 		TabletProximity,
 	}
 
@@ -451,8 +509,11 @@ namespace CoreGraphics {
 	[MacCatalyst (13,1)]
 #endif
 	public enum CGEventSourceStateID : int {
+		/// <summary>To be added.</summary>
 		Private = -1,
+		/// <summary>To be added.</summary>
 		CombinedSession = 0,
+		/// <summary>To be added.</summary>
 		HidSystem = 1,
 	}
 
@@ -465,8 +526,11 @@ namespace CoreGraphics {
 #endif
 	[Flags]
 	public enum CGEventFilterMask : uint {
+		/// <summary>To be added.</summary>
 		PermitLocalMouseEvents = 1,
+		/// <summary>To be added.</summary>
 		PermitLocalKeyboardEvents = 2,
+		/// <summary>To be added.</summary>
 		PermitSystemDefinedEvents = 4,
 	}
 
@@ -478,7 +542,9 @@ namespace CoreGraphics {
 	[MacCatalyst (13,1)]
 #endif
 	public enum CGEventSuppressionState : int {
+		/// <summary>To be added.</summary>
 		SuppressionInterval,
+		/// <summary>To be added.</summary>
 		RemoteMouseDrag,
 		NumberOfEventSuppressionStates,
 	}

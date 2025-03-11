@@ -954,29 +954,73 @@ namespace CoreData {
 		[Export ("initWithFetchRequest:managedObjectContext:sectionNameKeyPath:cacheName:")]
 		NativeHandle Constructor (NSFetchRequest fetchRequest, NSManagedObjectContext context, [NullAllowed] string sectionNameKeyPath, [NullAllowed] string name);
 
+		/// <summary>An instance of the CoreData.INSFetchedResultsControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the CoreData.INSFetchedResultsControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		INSFetchedResultsControllerDelegate Delegate { get; set; }
 
+		/// <summary>An object that can respond to the delegate protocol for this type</summary>
+		///         <value>The instance that will respond to events and data requests.</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+		///         </remarks>
 		[Export ("delegate", ArgumentSemantic.Assign)]
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>Gets the filename where section information is cached.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("cacheName")]
 		string CacheName { get; }
 
+		/// <summary>Gets an array that contains the fetched objects.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fetchedObjects")]
 		[NullAllowed]
 		NSObject [] FetchedObjects { get; }
 
+		/// <summary>Gets the request for the fetch for which this object contains the results.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fetchRequest")]
 		NSFetchRequest FetchRequest { get; }
 
+		/// <summary>Returns the <see cref="T:CoreData.NSManagedObjectContext" /> that is used for fetching.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("managedObjectContext")]
 		NSManagedObjectContext ManagedObjectContext { get; }
 
+		/// <summary>Returns the key path to the section name on fetched objects.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("sectionNameKeyPath")]
 		string SectionNameKeyPath { get; }
 
+		/// <summary>Gets the sections of the fetch results.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("sections")]
 		INSFetchedResultsSectionInfo [] Sections { get; }
 
@@ -1048,18 +1092,36 @@ namespace CoreData {
 	[Model]
 	[Protocol]
 	interface NSFetchedResultsSectionInfo {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("numberOfObjects")]
 		[Abstract]
 		nint Count { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("objects")]
 		[Abstract]
 		NSObject [] Objects { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("name")]
 		[Abstract]
 		string Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("indexTitle")]
 		[Abstract]
 		string IndexTitle { get; }
@@ -3218,6 +3280,10 @@ namespace CoreData {
 		NSString PersistentStoreUbiquitousContentUrlLKey { get; }
 #endif
 
+		/// <summary>Represents the value associated with the constant NSPersistentStoreFileProtectionKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("NSPersistentStoreFileProtectionKey")]

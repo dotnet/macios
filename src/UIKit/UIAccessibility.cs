@@ -23,15 +23,20 @@ namespace UIKit {
 
 	// helper enum - not part of Apple API
 	public enum UIAccessibilityPostNotification {
+		/// <summary>Inform the accessibility system that an announcement must be made to the user, use an NSString argument for this notification.</summary>
 		Announcement,
+		/// <summary>Inform the accessibility system that new UI elements have been added or removed from the screen, use an NSString argument with the information to convey the details.</summary>
 		LayoutChanged,
+		/// <summary>Inform the accessibility system that scrolling has completed, use an NSString argument to pass the information to be conveyed.</summary>
 		PageScrolled,
+		/// <summary>Inform the accessibility system that a major change to the user interface has taken place (essentially, a new screen is visible), use an NSString argument to convey the details.</summary>
 		ScreenChanged,
 	}
 
 	// NSInteger -> UIAccessibilityZoom.h
 	[Native]
 	public enum UIAccessibilityZoomType : long {
+		/// <summary>The system zoom type is the text insertion point.</summary>
 		InsertionPoint,
 	}
 
@@ -40,6 +45,11 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* BOOL */ byte UIAccessibilityIsVoiceOverRunning ();
 
+		/// <summary>Determines whether voiceover is currently active.</summary>
+		///         <value>eturns a Boolean indicating whether voiceover is enabled.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		static public bool IsVoiceOverRunning {
 			get {
 				return UIAccessibilityIsVoiceOverRunning () != 0;

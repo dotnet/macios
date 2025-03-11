@@ -6,7 +6,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.CodeAnalysis;
-using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.Extensions;
 
 namespace Microsoft.Macios.Generator.DataModel;
@@ -74,8 +73,14 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	public bool IsSmartEnum { get; }
 
 	/// <summary>
+	/// If the type is an array, it returns the special type of the underlying type.
+	/// </summary>
+	public SpecialType? ArrayElementType { get; init; }
+
+	/// <summary>
 	/// Returns if the return type is an array type.
 	/// </summary>
+	[MemberNotNullWhen (true, nameof (ArrayElementType))]
 	public bool IsArray { get; }
 
 	/// <summary>
@@ -209,6 +214,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		IsWrapped = symbol.IsWrapped (isNSObject);
 		if (symbol is IArrayTypeSymbol arraySymbol) {
 			IsArray = true;
+			ArrayElementType = arraySymbol.ElementType.SpecialType;
 			ArrayElementTypeIsWrapped = arraySymbol.ElementType.IsWrapped ();
 		}
 

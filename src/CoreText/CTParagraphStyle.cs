@@ -375,8 +375,10 @@ namespace CoreText {
 		static CTParagraphStyleSpecifierValue CreateValue (CTParagraphStyleSpecifier spec, IEnumerable<CTTextTab> value)
 		{
 			var handles = new List<NativeHandle> ();
-			foreach (var ts in value)
+			foreach (var ts in value) {
 				handles.Add (ts.Handle);
+				GC.KeepAlive (ts);
+			}
 			return new CTParagraphStyleSpecifierIntPtrsValue (spec, handles.ToArray ());
 		}
 

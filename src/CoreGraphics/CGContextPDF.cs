@@ -195,8 +195,10 @@ namespace CoreGraphics {
 
 		unsafe static IntPtr Create (CGDataConsumer? dataConsumer, CGRect* mediaBox, CGPDFInfo? info)
 		{
-			using (var dict = info?.ToDictionary ())
-				return CGPDFContextCreate (dataConsumer.GetHandle (), mediaBox, dict.GetHandle ());
+			using var dict = info?.ToDictionary ();
+			IntPtr result = CGPDFContextCreate (dataConsumer.GetHandle (), mediaBox, dict.GetHandle ());
+			GC.KeepAlive (dataConsumer);
+			return result;
 		}
 
 		unsafe CGContextPDF (CGDataConsumer? dataConsumer, CGRect* mediaBox, CGPDFInfo? info)
@@ -226,8 +228,10 @@ namespace CoreGraphics {
 
 		unsafe static IntPtr Create (NSUrl? url, CGRect* mediaBox, CGPDFInfo? info)
 		{
-			using (var dict = info?.ToDictionary ())
-				return CGPDFContextCreateWithURL (url.GetHandle (), mediaBox, dict.GetHandle ());
+			using var dict = info?.ToDictionary ();
+			IntPtr result = CGPDFContextCreateWithURL (url.GetHandle (), mediaBox, dict.GetHandle ());
+			GC.KeepAlive (url);
+			return result;
 		}
 
 		unsafe CGContextPDF (NSUrl? url, CGRect* mediaBox, CGPDFInfo? info)

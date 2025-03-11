@@ -246,8 +246,10 @@ namespace CoreText {
 			where T : INativeObject
 		{
 			var v = new List<NativeHandle> ();
-			foreach (var e in value)
+			foreach (var e in value) {
 				v.Add (e.Handle);
+				GC.KeepAlive (e);
+			}
 			return v;
 		}
 

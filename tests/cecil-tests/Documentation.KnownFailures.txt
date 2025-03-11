@@ -23290,6 +23290,10 @@ M:CarPlay.CPMessageListItem.#ctor(System.String,System.String,CarPlay.CPMessageL
 M:CarPlay.CPMessageListItem.#ctor(System.String,System.String,CarPlay.CPMessageListItemLeadingConfiguration,CarPlay.CPMessageListItemTrailingConfiguration,System.String,System.String)
 M:CarPlay.CPNavigationAlert.EncodeTo(Foundation.NSCoder)
 M:CarPlay.CPNowPlayingButton.EncodeTo(Foundation.NSCoder)
+M:CarPlay.CPNowPlayingMode.EncodeTo(Foundation.NSCoder)
+M:CarPlay.CPNowPlayingModeSports.EncodeTo(Foundation.NSCoder)
+M:CarPlay.CPNowPlayingSportsEventStatus.EncodeTo(Foundation.NSCoder)
+M:CarPlay.CPNowPlayingSportsTeam.EncodeTo(Foundation.NSCoder)
 M:CarPlay.CPNowPlayingTemplateObserver_Extensions.AlbumArtistButtonTapped(CarPlay.ICPNowPlayingTemplateObserver,CarPlay.CPNowPlayingTemplate)
 M:CarPlay.CPNowPlayingTemplateObserver_Extensions.UpNextButtonTapped(CarPlay.ICPNowPlayingTemplateObserver,CarPlay.CPNowPlayingTemplate)
 M:CarPlay.CPPointOfInterest.EncodeTo(Foundation.NSCoder)
@@ -49318,6 +49322,8 @@ P:CarPlay.CPMessageListItemLeadingConfiguration.Unread
 P:CarPlay.CPNowPlayingButton.Enabled
 P:CarPlay.CPNowPlayingButton.MaximumImageSize
 P:CarPlay.CPNowPlayingButton.Selected
+P:CarPlay.CPNowPlayingSportsClock.Paused
+P:CarPlay.CPNowPlayingSportsTeam.Favorite
 P:CarPlay.CPNowPlayingTemplate.IsAlbumArtistButtonEnabled
 P:CarPlay.CPNowPlayingTemplate.IsUpNextButtonEnabled
 P:CarPlay.CPPointOfInterestTemplate.PointOfInterestDelegate

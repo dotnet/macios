@@ -180,7 +180,7 @@ static partial class BindingSyntaxFactory {
 	/// </summary>
 	/// <param name="returnType">The type info of the return type.</param>
 	/// <returns>The member access to the correct NSValue method.</returns>
-	internal static MemberAccessExpressionSyntax? NSValueFromHandle (TypeInfo returnType)
+	internal static MemberAccessExpressionSyntax? NSValueFromHandle (in TypeInfo returnType)
 	{
 #pragma warning disable format
 		var memberName = returnType switch {
@@ -236,7 +236,7 @@ static partial class BindingSyntaxFactory {
 	/// </summary>
 	/// <param name="returnType">The type info of the return type.</param>
 	/// <returns>The member access to the correct NSNumber method.</returns>
-	internal static MemberAccessExpressionSyntax? NSNumberFromHandle (TypeInfo returnType)
+	internal static MemberAccessExpressionSyntax? NSNumberFromHandle (in TypeInfo returnType)
 	{
 		// create a tuple to store the name and special type depending if it is an array 
 		// or a non array type
@@ -281,7 +281,7 @@ static partial class BindingSyntaxFactory {
 	/// <param name="returnType">The return method of the method/property.</param>
 	/// <param name="arguments">The arguments to pass to the NSNumber method.</param>
 	/// <returns>The expression needed to call the NSNumber method iwth the given args.</returns>
-	internal static InvocationExpressionSyntax? NSNumberFromHandle (TypeInfo returnType,
+	internal static InvocationExpressionSyntax? NSNumberFromHandle (in TypeInfo returnType,
 		ImmutableArray<ArgumentSyntax> arguments)
 	{
 		// generate: (arg1, arg2, arg3)

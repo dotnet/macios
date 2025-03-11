@@ -32,7 +32,25 @@ public class NativeObjectHandleAnalyzer : DiagnosticAnalyzer {
 
 	private bool IsINativeObject (ITypeSymbol typeSymbol)
 	{
+		if (typeSymbol.TypeKind == TypeKind.TypeParameter)
+			return ((ITypeParameterSymbol) typeSymbol).ConstraintTypes.Any (t => IsINativeObject (t));
+		if (typeSymbol.TypeKind == TypeKind.Interface && typeSymbol.ToDisplayString () == "ObjCRuntime.INativeObject")
+			return true;
 		return typeSymbol.AllInterfaces.Any (i => i.ToDisplayString () == "ObjCRuntime.INativeObject");
+	}
+
+	private bool IsHandleAccessor (MemberAccessExpressionSyntax memberAccess)
+	{
+		string name = memberAccess.Name.Identifier.Text;
+		switch (name) {
+		case "Handle":
+		case "GetHandle":
+		case "GetNonNullHandle":
+		case "GetCheckedHandle":
+			return true;
+		default:
+			return false;
+		}
 	}
 
 	private bool IsSafeMethod (IMethodSymbol methodSymbol)
@@ -40,7 +58,21 @@ public class NativeObjectHandleAnalyzer : DiagnosticAnalyzer {
 		var name = methodSymbol.Name;
 		// White-list couple of methods that return one of the input parameters or a static
 		// object.
-		return name == "ThrowOnNull" || name == "DangerousAutorelease" || name == "GetConstant";
+		switch (name) {
+		case "ThrowOnNull":
+		case "DangerousAutorelease":
+		case "GetConstant":
+			return true;
+		default:
+			return false;
+		}
+	}
+
+	private ITypeSymbol GetRealReturnType (IMethodSymbol methodSymbol)
+	{
+		if (methodSymbol.MethodKind == MethodKind.Constructor)
+			return methodSymbol.ContainingType;
+		return methodSymbol.ReturnType;
 	}
 
 	private void AnalyzeNode (SyntaxNodeAnalysisContext context)
@@ -62,7 +94,7 @@ public class NativeObjectHandleAnalyzer : DiagnosticAnalyzer {
 			return;
 
 		if (symbol is IMethodSymbol methodSymbol) {
-			if (IsINativeObject (methodSymbol.ReturnType) &&
+			if (IsINativeObject (GetRealReturnType (methodSymbol)) &&
 				!IsSafeMethod (methodSymbol)) {
 				// Calling Handle directly on a value returned from method is wrong because
 				// the object is immediately collectible.                

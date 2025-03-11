@@ -84,7 +84,9 @@ namespace Foundation {
 			if (probe is null)
 				throw new ArgumentNullException (nameof (probe));
 
-			return Runtime.GetINativeObject<TKey> (_LookupMember (probe.Handle), false);
+			TKey result = Runtime.GetINativeObject<TKey> (_LookupMember (probe.Handle), false);
+			GC.KeepAlive (probe);
+			return result;
 		}
 
 		/// <summary>To be added.</summary>
@@ -101,7 +103,9 @@ namespace Foundation {
 			if (obj is null)
 				throw new ArgumentNullException (nameof (obj));
 
-			return _Contains (obj.Handle);
+			bool result = _Contains (obj.Handle);
+			GC.KeepAlive (obj);
+			return result;
 		}
 
 		public TKey [] ToArray ()

@@ -77,7 +77,9 @@ namespace Foundation {
 			if (obj is null)
 				throw new ArgumentNullException (nameof (obj));
 
-			return _Contains (obj.Handle);
+			bool result = _Contains (obj.Handle);
+			GC.KeepAlive (obj);
+			return result;
 		}
 
 		public nuint IndexOf (TValue obj)
@@ -85,7 +87,9 @@ namespace Foundation {
 			if (obj is null)
 				throw new ArgumentNullException (nameof (obj));
 
-			return _IndexOf (obj.Handle);
+			nuint result = _IndexOf (obj.Handle);
+			GC.KeepAlive (obj);
+			return result;
 		}
 
 		// Strongly typed methods from NSMutableArray
@@ -95,6 +99,7 @@ namespace Foundation {
 				throw new ArgumentNullException (nameof (obj));
 
 			_Add (obj.Handle);
+			GC.KeepAlive (obj);
 		}
 
 		public void Insert (TValue obj, nint index)
@@ -105,6 +110,7 @@ namespace Foundation {
 			ValidateIndex (index);
 
 			_Insert (obj.Handle, index);
+			GC.KeepAlive (obj);
 		}
 
 		public void ReplaceObject (nint index, TValue withObject)
@@ -115,6 +121,7 @@ namespace Foundation {
 			ValidateIndex (index);
 
 			_ReplaceObject (index, withObject.Handle);
+			GC.KeepAlive (withObject);
 		}
 
 		public void AddObjects (params TValue [] source)
@@ -166,6 +173,7 @@ namespace Foundation {
 					throw new ArgumentNullException (nameof (value));
 				ValidateIndex (index);
 				_ReplaceObject ((nint) index, value.Handle);
+				GC.KeepAlive (value);
 			}
 		}
 

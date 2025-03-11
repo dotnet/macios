@@ -1159,14 +1159,18 @@ namespace Foundation {
 	[Flags]
 	[Native]
 	public enum NSFileWrapperReadingOptions : ulong {
+		/// <summary>To be added.</summary>
 		Immediate = 1 << 0,
+		/// <summary>To be added.</summary>
 		WithoutMapping = 1 << 1,
 	}
 
 	[Flags]
 	[Native]
 	public enum NSFileWrapperWritingOptions : ulong {
+		/// <summary>To be added.</summary>
 		Atomic = 1 << 0,
+		/// <summary>To be added.</summary>
 		WithNameUpdating = 1 << 1,
 	}
 
@@ -1492,11 +1496,17 @@ namespace Foundation {
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum NSFormattingContext : long {
+		/// <summary>To be added.</summary>
 		Unknown = 0,
+		/// <summary>To be added.</summary>
 		Dynamic = 1,
+		/// <summary>To be added.</summary>
 		Standalone = 2,
+		/// <summary>To be added.</summary>
 		ListItem = 3,
+		/// <summary>To be added.</summary>
 		BeginningOfSentence = 4,
+		/// <summary>To be added.</summary>
 		MiddleOfSentence = 5,
 	}
 
@@ -1531,8 +1541,11 @@ namespace Foundation {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSFormattingUnitStyle : long {
+		/// <summary>To be added.</summary>
 		Short = 1,
+		/// <summary>To be added.</summary>
 		Medium,
+		/// <summary>To be added.</summary>
 		Long,
 	}
 

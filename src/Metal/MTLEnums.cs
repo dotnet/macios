@@ -1764,7 +1764,9 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MTLRenderStages : ulong {
+		/// <summary>To be added.</summary>
 		Vertex = (1 << 0),
+		/// <summary>To be added.</summary>
 		Fragment = (1 << 1),
 		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 		Tile = (1uL << 2),

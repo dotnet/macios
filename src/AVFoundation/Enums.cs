@@ -33,10 +33,15 @@ namespace AVFoundation {
 	[Native]
 	// NSInteger - AVAudioSettings.h
 	public enum AVAudioQuality : long {
+		/// <summary>Minimum quality.</summary>
 		Min = 0,
+		/// <summary>Low quality encoding.</summary>
 		Low = 0x20,
+		/// <summary>Medium quality.</summary>
 		Medium = 0x40,
+		/// <summary>High quality encoding.</summary>
 		High = 0x60,
+		/// <summary>Maximum quality.</summary>
 		Max = 0x7F,
 	}
 
@@ -365,10 +370,15 @@ namespace AVFoundation {
 	[Native]
 	// NSInteger - AVAsynchronousKeyValueLoading.h
 	public enum AVKeyValueStatus : long {
+		/// <summary>The load attempt's state is unknown.</summary>
 		Unknown,
+		/// <summary>The load attempt is ongoing.</summary>
 		Loading,
+		/// <summary>The load attempt succeeded.</summary>
 		Loaded,
+		/// <summary>The load attempt failed.</summary>
 		Failed,
+		/// <summary>The load attempt was cancelled.</summary>
 		Cancelled,
 	}
 
@@ -564,7 +574,9 @@ namespace AVFoundation {
 
 	// Convenience enum for native strings (defined in AVAudioSettings.h)
 	public enum AVSampleRateConverterAlgorithm : int {
+		/// <summary>To be added.</summary>
 		Normal,
+		/// <summary>To be added.</summary>
 		Mastering,
 	}
 
@@ -573,9 +585,13 @@ namespace AVFoundation {
 	[Native]
 	// NSInteger - AVCaptureDevice.h
 	public enum AVAuthorizationStatus : long {
+		/// <summary>The user has not interacted with the permissions dialog.</summary>
 		NotDetermined,
+		/// <summary>The user is denied access and may not change permission.</summary>
 		Restricted,
+		/// <summary>The user has denied access.</summary>
 		Denied,
+		/// <summary>The user has granted access.</summary>
 		Authorized,
 	}
 
@@ -637,8 +653,11 @@ namespace AVFoundation {
 	[Flags]
 	[Native]
 	public enum AVAudioPlayerNodeBufferOptions : ulong {
+		/// <summary>The buffer should loop indefinitely.</summary>
 		Loops = 0x01,
+		/// <summary>The buffer should interrupt any other buffer that is already playing.</summary>
 		Interrupts = 0x02,
+		/// <summary>The buffer should interrupt any other buffer at its loop point.</summary>
 		InterruptsAtLoop = 0x04,
 	}
 
@@ -890,8 +909,11 @@ namespace AVFoundation {
 	[MacCatalyst (15, 0)]
 	[Native]
 	public enum AVSampleBufferRequestDirection : long {
+		/// <summary>To be added.</summary>
 		Forward = 1,
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Reverse = -1,
 	}
 
@@ -900,7 +922,9 @@ namespace AVFoundation {
 	[MacCatalyst (15, 0)]
 	[Native]
 	public enum AVSampleBufferRequestMode : long {
+		/// <summary>To be added.</summary>
 		Immediate,
+		/// <summary>To be added.</summary>
 		Scheduled,
 		[MacCatalyst (13, 1)]
 		Opportunistic = 2,
@@ -1160,8 +1184,11 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum AVAudioPlayerNodeCompletionCallbackType : long {
+		/// <summary>To be added.</summary>
 		Consumed = 0,
+		/// <summary>To be added.</summary>
 		Rendered = 1,
+		/// <summary>To be added.</summary>
 		PlayedBack = 2,
 	}
 
@@ -1207,9 +1234,11 @@ namespace AVFoundation {
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	public enum AVAssetDownloadedAssetEvictionPriority {
+		/// <summary>To be added.</summary>
 		[Field ("AVAssetDownloadedAssetEvictionPriorityDefault")]
 		Default = 0,
 
+		/// <summary>To be added.</summary>
 		[Field ("AVAssetDownloadedAssetEvictionPriorityImportant")]
 		Important = 1,
 	}

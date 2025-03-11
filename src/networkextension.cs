@@ -1747,6 +1747,12 @@ namespace NetworkExtension {
 
 		// CopyAppRules was incorrectly bound to AppRules and it is only available on macOS
 #if NET || MONOMAC || __MACCATALYST__
+		/// <summary>Gets a copy of the rules that control which apps can use the tunnel.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoTV, NoiOS, MacCatalyst (15, 0)]
 		[Export ("appRules", ArgumentSemantic.Copy)]
 		NEAppRule [] AppRules { get; set; }

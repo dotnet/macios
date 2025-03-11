@@ -215,6 +215,9 @@ namespace FileProvider {
 	[Static]
 	interface NSFileProviderErrorKeys {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'NSFileProviderErrorItemKey' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSFileProviderErrorItemKey' instead.")]
@@ -387,6 +390,9 @@ namespace FileProvider {
 		[Export ("displayName")]
 		string DisplayName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Export ("pathRelativeToDocumentStorage")]
 		string PathRelativeToDocumentStorage { get; }
@@ -666,6 +672,9 @@ namespace FileProvider {
 	[DisableDefaultCtor]
 	interface NSFileProviderManager {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Static]
 		[Export ("defaultManager", ArgumentSemantic.Strong)]
@@ -679,10 +688,16 @@ namespace FileProvider {
 		[Export ("registerURLSessionTask:forItemWithIdentifier:completionHandler:")]
 		void Register (NSUrlSessionTask task, string identifier, Action<NSError> completion);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Export ("providerIdentifier")]
 		string ProviderIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Export ("documentStorageURL")]
 		NSUrl DocumentStorageUrl { get; }

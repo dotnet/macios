@@ -1101,13 +1101,21 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INAccountType : long {
+		/// <summary>An account whose type is unknown.</summary>
 		Unknown = 0,
+		/// <summary>A checking account maintained at a bank.</summary>
 		Checking,
+		/// <summary>A credit line.</summary>
 		Credit,
+		/// <summary>An account with a set debit amount.</summary>
 		Debit,
+		/// <summary>An investment account.</summary>
 		Investment,
+		/// <summary>A mortgage account.</summary>
 		Mortgage,
+		/// <summary>A prepaid debit card.</summary>
 		Prepaid,
+		/// <summary>A savings account held at a bank.</summary>
 		Saving,
 	}
 
@@ -1117,11 +1125,17 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INActivateCarSignalIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
 	}
 
@@ -4718,6 +4732,12 @@ namespace Intents {
 		[NullAllowed, Export ("relationship"), Protected]
 		NSString WeakRelationship { get; }
 
+		/// <summary>Gets the relationship to the current user.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("INPersonRelationshipExtensions.GetValue (WeakRelationship)")]
 		INPersonRelationship Relationship { get; }
 

@@ -47,18 +47,48 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface PKContact : NSSecureCoding {
+		/// <summary>The contact's name components.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("name", ArgumentSemantic.Strong)]
 		NSPersonNameComponents Name { get; set; }
 
+		/// <summary>Gets or sets the contact's address.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>The contact's address.</remarks>
 		[NullAllowed, Export ("postalAddress", ArgumentSemantic.Retain)]
 		CNPostalAddress PostalAddress { get; set; }
 
+		/// <summary>The contact's email address.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("emailAddress", ArgumentSemantic.Strong)]
 		string EmailAddress { get; set; }
 
+		/// <summary>The contact's phone number.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("phoneNumber", ArgumentSemantic.Strong)]
 		CNPhoneNumber PhoneNumber { get; set; }
 
+		/// <summary>Developers should not use this deprecated property. Developers should use 'SubLocality' and 'SubAdministrativeArea' on 'PostalAddress' instead.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 10, 3, message: "Use 'SubLocality' and 'SubAdministrativeArea' on 'PostalAddress' instead.")]
 		[MacCatalyst (13, 1)]
@@ -77,6 +107,9 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface PKPassLibrary {
+		/// <summary>Whether the pass library is available.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("isPassLibraryAvailable")]
 		bool IsAvailable { get; }
@@ -109,15 +142,20 @@ namespace PassKit {
 		[Async]
 		void AddPasses (PKPass [] passes, [NullAllowed] Action<PKPassLibraryAddPassesStatus> completion);
 
+		/// <include file="../docs/api/PassKit/PKPassLibrary.xml" path="/Documentation/Docs[@DocId='P:PassKit.PKPassLibrary.DidChangeNotification']/*" />
 		[Field ("PKPassLibraryDidChangeNotification")]
 		[Notification]
 		NSString DidChangeNotification { get; }
 
+		/// <include file="../docs/api/PassKit/PKPassLibrary.xml" path="/Documentation/Docs[@DocId='P:PassKit.PKPassLibrary.RemotePaymentPassesDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("PKPassLibraryRemotePaymentPassesDidChangeNotification")]
 		[Notification]
 		NSString RemotePaymentPassesDidChangeNotification { get; }
 
+		/// <summary>Developers should not use this deprecated property. Developers should use the library's instance 'IsLibraryPaymentPassActivationAvailable' property instead.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Static, Export ("isPaymentPassActivationAvailable")]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use the library's instance 'IsLibraryPaymentPassActivationAvailable' property instead.")]
@@ -125,6 +163,9 @@ namespace PassKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the library's instance 'IsLibraryPaymentPassActivationAvailable' property instead.")]
 		bool IsPaymentPassActivationAvailable { get; }
 
+		/// <summary>Whether the device allows adding library payment passes.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 4, message: "Use 'SecureElementPassActivationAvailable' instead.")]
 		[MacCatalyst (13, 1)]
@@ -175,6 +216,9 @@ namespace PassKit {
 		[Export ("canAddSecureElementPassWithPrimaryAccountIdentifier:")]
 		bool CanAddSecureElementPass (string primaryAccountIdentifier);
 
+		/// <summary>Gets a Boolean value that tells whether Felica passes can be added to the library.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("canAddFelicaPass")]
 		bool CanAddFelicaPass { get; }
@@ -184,11 +228,17 @@ namespace PassKit {
 		[Export ("endAutomaticPassPresentationSuppressionWithRequestToken:")]
 		void EndAutomaticPassPresentationSuppression (nuint requestToken);
 
+		/// <summary>Whether the system is suppressing automatic presentation of passes.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("isSuppressingAutomaticPassPresentation")]
 		bool IsSuppressingAutomaticPassPresentation { get; }
 
+		/// <summary>The <see cref="T:PassKit.PKPaymentPass" /> objects stored on a remote device.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 4, message: "Use 'RemoteSecureElementPasses' instead.")]
 		[MacCatalyst (13, 1)]
@@ -239,18 +289,38 @@ namespace PassKit {
 	[Static]
 	[MacCatalyst (13, 1)]
 	interface PKPassLibraryUserInfoKey {
+		/// <summary>Represents the value associated with the constant PKPassLibraryAddedPassesUserInfoKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PKPassLibraryAddedPassesUserInfoKey")]
 		NSString AddedPasses { get; }
 
+		/// <summary>Represents the value associated with the constant PKPassLibraryReplacementPassesUserInfoKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PKPassLibraryReplacementPassesUserInfoKey")]
 		NSString ReplacementPasses { get; }
 
+		/// <summary>Represents the value associated with the constant PKPassLibraryRemovedPassInfosUserInfoKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PKPassLibraryRemovedPassInfosUserInfoKey")]
 		NSString RemovedPassInfos { get; }
 
+		/// <summary>Represents the value associated with the constant PKPassLibraryPassTypeIdentifierUserInfoKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PKPassLibraryPassTypeIdentifierUserInfoKey")]
 		NSString PassTypeIdentifier { get; }
 
+		/// <summary>Represents the value associated with the constant PKPassLibrarySerialNumberUserInfoKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PKPassLibrarySerialNumberUserInfoKey")]
 		NSString SerialNumber { get; }
 
@@ -265,9 +335,15 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface PKPayment {
+		/// <summary>The <see cref="T:PassKit.PKPaymentToken" /> for the <see cref="T:PassKit.PKPayment" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("token", ArgumentSemantic.Strong)]
 		PKPaymentToken Token { get; }
 
+		/// <summary>Developers should not use this deprecated property. Developers should use 'BillingContact' instead.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[NoMacCatalyst]
 		[Export ("billingAddress", ArgumentSemantic.Assign)]
@@ -275,6 +351,9 @@ namespace PassKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'BillingContact' instead.")]
 		ABRecord BillingAddress { get; }
 
+		/// <summary>The shipping address associated with the <see cref="T:PassKit.PKPayment" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[NoMacCatalyst]
 		[Export ("shippingAddress", ArgumentSemantic.Assign)]
@@ -282,14 +361,29 @@ namespace PassKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ShippingContact' instead.")]
 		ABRecord ShippingAddress { get; }
 
+		/// <summary>The selected <see cref="T:PassKit.PKShippingMethod" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("shippingMethod", ArgumentSemantic.Strong)]
 		PKShippingMethod ShippingMethod { get; }
 
 
+		/// <summary>The shipping contact associated with the <see cref="T:PassKit.PKPayment" />.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("shippingContact", ArgumentSemantic.Strong)]
 		PKContact ShippingContact { get; }
 
+		/// <summary>The billing contact for the payment.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("billingContact", ArgumentSemantic.Strong)]
 		PKContact BillingContact { get; }
@@ -417,13 +511,30 @@ namespace PassKit {
 		[Export ("initWithDisbursementRequest:")]
 		NativeHandle Constructor (PKDisbursementRequest request);
 
+		/// <summary>An object that can respond to the delegate protocol for this type</summary>
+		///         <value>The instance that will respond to events and data requests.</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+		///         </remarks>
 		[Export ("delegate", ArgumentSemantic.UnsafeUnretained)]
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the PassKit.IPKPaymentAuthorizationViewControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the PassKit.IPKPaymentAuthorizationViewControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IPKPaymentAuthorizationViewControllerDelegate Delegate { get; set; }
 
+		/// <summary>Whether the user can make payments.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("canMakePayments")]
 		bool CanMakePayments { get; }
 
@@ -462,10 +573,22 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface PKPaymentSummaryItem {
+		/// <summary>A brief, localized description of the item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("label")]
 		string Label { get; set; }
 
+		/// <summary>The amount of the transaction.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("amount", ArgumentSemantic.Copy)]
 		NSDecimalNumber Amount { get; set; }
@@ -473,6 +596,9 @@ namespace PassKit {
 		[Static, Export ("summaryItemWithLabel:amount:")]
 		PKPaymentSummaryItem Create (string label, NSDecimalNumber amount);
 
+		/// <summary>Gets a value that tells whether the payment is final or pending.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("type", ArgumentSemantic.Assign)]
 		PKPaymentSummaryItemType Type { get; set; }
@@ -489,10 +615,22 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (PKPaymentSummaryItem))]
 	interface PKShippingMethod {
+		/// <summary>A unique identifier of the shipping method.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("identifier")]
 		string Identifier { get; set; }
 
+		/// <summary>An end-user meaningful description of the shipping method.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("detail")]
 		string Detail { get; set; }
@@ -588,6 +726,12 @@ namespace PassKit {
 		[Export ("requiredBillingAddressFields", ArgumentSemantic.UnsafeUnretained)]
 		PKAddressField RequiredBillingAddressFields { get; set; }
 
+		/// <summary>Developers should not use this deprecated property. Developers should use 'BillingContact' instead.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[NoMacCatalyst]
 		[NullAllowed] // by default this property is null
@@ -606,6 +750,12 @@ namespace PassKit {
 		[Export ("requiredShippingAddressFields", ArgumentSemantic.UnsafeUnretained)]
 		PKAddressField RequiredShippingAddressFields { get; set; }
 
+		/// <summary>Prepopulated address field.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[NoMacCatalyst]
 		[NullAllowed] // by default this property is null
@@ -772,20 +922,26 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[Flags]
 	enum PKContactFields {
+		/// <summary>Indicates a name field.</summary>
 		None = 0,
 
+		/// <summary>Indicates a postal address field.</summary>
 		[Field ("PKContactFieldPostalAddress")]
 		PostalAddress = 1 << 0,
 
+		/// <summary>Indicates an email address field.</summary>
 		[Field ("PKContactFieldEmailAddress")]
 		EmailAddress = 1 << 1,
 
+		/// <summary>Indicates a phone number field.</summary>
 		[Field ("PKContactFieldPhoneNumber")]
 		PhoneNumber = 1 << 2,
 
+		/// <summary>To be added.</summary>
 		[Field ("PKContactFieldName")]
 		Name = 1 << 3,
 
+		/// <summary>Indicates a phonetic name field.</summary>
 		[Field ("PKContactFieldPhoneticName")]
 		PhoneticName = 1 << 4,
 	}
@@ -798,6 +954,9 @@ namespace PassKit {
 	[BaseType (typeof (NSObject))]
 	interface PKPaymentToken {
 
+		/// <summary>Developers should not use this deprecated property. Developers should use 'PaymentMethod' instead.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Export ("paymentInstrumentName", ArgumentSemantic.Copy)]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'PaymentMethod' instead.")]
@@ -805,6 +964,9 @@ namespace PassKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'PaymentMethod' instead.")]
 		string PaymentInstrumentName { get; }
 
+		/// <summary>The network that funded the transaction. (Read-only)</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Export ("paymentNetwork")]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'PaymentMethod' instead.")]
@@ -812,12 +974,21 @@ namespace PassKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'PaymentMethod' instead.")]
 		string PaymentNetwork { get; }
 
+		/// <summary>A unique identifier for the payment. (Read-only)</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("transactionIdentifier")]
 		string TransactionIdentifier { get; }
 
+		/// <summary>A UTF-8-encoded serialized JSON dictionary of the payment data. (Read-only)</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("paymentData", ArgumentSemantic.Copy)]
 		NSData PaymentData { get; }
 
+		/// <summary>Information about the payment card or account used in the transaction.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("paymentMethod", ArgumentSemantic.Strong)]
 		PKPaymentMethod PaymentMethod { get; }
@@ -847,14 +1018,31 @@ namespace PassKit {
 		[Export ("initWithIssuerData:signature:error:")]
 		NativeHandle Constructor (NSData issuerData, NSData signature, [NullAllowed] out NSError error);
 
+		/// <summary>Whether this device supports adding passes.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("canAddPasses")]
 		bool CanAddPasses { get; }
 
+		/// <summary>An object that can respond to the delegate protocol for this type</summary>
+		///         <value>The instance that will respond to events and data requests.</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+		///         </remarks>
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the PassKit.IPKAddPassesViewControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the PassKit.IPKAddPassesViewControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IPKAddPassesViewControllerDelegate Delegate { get; set; }
 	}
@@ -891,15 +1079,39 @@ namespace PassKit {
 		[Export ("init")]
 		NativeHandle Constructor ();
 
+		/// <summary>An encrypted JSON string.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("encryptedPassData", ArgumentSemantic.Copy)]
 		NSData EncryptedPassData { get; set; }
 
+		/// <summary>The request's activation data.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("activationData", ArgumentSemantic.Copy)]
 		NSData ActivationData { get; set; }
 
+		/// <summary>The temporary public key used by the ECC schema.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("ephemeralPublicKey", ArgumentSemantic.Copy)]
 		NSData EphemeralPublicKey { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("wrappedKey", ArgumentSemantic.Copy)]
 		NSData WrappedKey { get; set; }
 	}
@@ -915,32 +1127,74 @@ namespace PassKit {
 		[Export ("initWithEncryptionScheme:")]
 		NativeHandle Constructor (NSString encryptionScheme);
 
+		/// <summary>The encryption scheme to be used.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("encryptionScheme")]
 		NSString EncryptionScheme { get; }
 
+		/// <summary>The name as shown on the card.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("cardholderName")]
 		string CardholderName { get; set; }
 
+		/// <summary>The last four or five digits of the card.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("primaryAccountSuffix")]
 		string PrimaryAccountSuffix { get; set; }
 
+		/// <summary>Gets or sets the array of <see cref="T:PassKit.PKLabeledValue" /> objects that describe the card.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("cardDetails", ArgumentSemantic.Copy)]
 		PKLabeledValue [] CardDetails { get; set; }
 
+		/// <summary>Describes the card, in a localized string.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("localizedDescription")]
 		string LocalizedDescription { get; set; }
 
+		/// <summary>The primary account identifier, used to filter pass libraries.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("primaryAccountIdentifier")]
 		string PrimaryAccountIdentifier { get; set; }
 
+		/// <summary>The payment network backing the card.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("paymentNetwork")]
 		string PaymentNetwork { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the Felica Secure Element is required.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("requiresFelicaSecureElement")]
 		bool RequiresFelicaSecureElement { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("style", ArgumentSemantic.Assign)]
 		PKAddPaymentPassStyle Style { get; set; }
@@ -959,6 +1213,9 @@ namespace PassKit {
 	[BaseType (typeof (UIViewController))]
 	[DisableDefaultCtor]
 	interface PKAddPaymentPassViewController {
+		/// <summary>Whether the app can add cards to Apple Pay.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("canAddPaymentPass")]
 		bool CanAddPaymentPass { get; }
@@ -973,10 +1230,24 @@ namespace PassKit {
 		NativeHandle Constructor (PKAddPaymentPassRequestConfiguration configuration, PKAddPaymentPassViewControllerDelegate viewControllerDelegate);
 #endif
 
+		/// <summary>An instance of the PassKit.IPKAddPaymentPassViewControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the PassKit.IPKAddPaymentPassViewControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IPKAddPaymentPassViewControllerDelegate Delegate { get; set; }
 
+		/// <summary>An object that can respond to the delegate protocol for this type</summary>
+		///         <value>The instance that will respond to events and data requests.</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+		///         </remarks>
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
 	}
@@ -1015,30 +1286,57 @@ namespace PassKit {
 		[Export ("initWithData:error:")]
 		NativeHandle Constructor (NSData data, out NSError error);
 
+		/// <summary>Used to authenticate with the Web service.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("authenticationToken", ArgumentSemantic.Copy)]
 		string AuthenticationToken { get; }
 
+		/// <summary>The icon for the pass.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[NoMacCatalyst]
 		[Export ("icon", ArgumentSemantic.Copy)]
 		UIImage Icon { get; }
 
+		/// <summary>A localized description of the pass.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("localizedDescription", ArgumentSemantic.Copy)]
 		string LocalizedDescription { get; }
 
+		/// <summary>A localized description of the pass's kind.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("localizedName", ArgumentSemantic.Copy)]
 		string LocalizedName { get; }
 
+		/// <summary>The organization that created the pass.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("organizationName", ArgumentSemantic.Copy)]
 		string OrganizationName { get; }
 
+		/// <summary>Identifies the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Pass%20Kit%20PKPass%20PKPass%20Type&amp;scope=Xamarin" title="P:PassKit.PKPass.PKPassType">P:PassKit.PKPass.PKPassType</a></format>.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("passTypeIdentifier", ArgumentSemantic.Copy)]
 		string PassTypeIdentifier { get; }
 
+		/// <summary>The URL that will open the pass in the Passbook app.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("passURL", ArgumentSemantic.Copy)]
 		NSUrl PassUrl { get; }
 
+		/// <summary>The date when the pass is most likely to be needed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'RelevantDates' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'RelevantDates' instead.")]
 		[Deprecated (PlatformName.TvOS, 18, 0, message: "Use 'RelevantDates' instead.")]
@@ -1046,9 +1344,15 @@ namespace PassKit {
 		[NullAllowed, Export ("relevantDate", ArgumentSemantic.Copy)]
 		NSDate RelevantDate { get; }
 
+		/// <summary>A unique identifier for the pass.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("serialNumber", ArgumentSemantic.Copy)]
 		string SerialNumber { get; }
 
+		/// <summary>The URL of the developer's Web service.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("webServiceURL", ArgumentSemantic.Copy)]
 		NSUrl WebServiceUrl { get; }
 
@@ -1062,13 +1366,22 @@ namespace PassKit {
 		NSString ErrorDomain { get; }
 #endif
 
+		/// <summary>Developer-specified extra data.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("userInfo", ArgumentSemantic.Copy)]
 		NSDictionary UserInfo { get; }
 
+		/// <summary>The <see cref="T:PassKit.PKPassType" /> of the pass.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("passType")]
 		PKPassType PassType { get; }
 
+		/// <summary>If not <see langword="null" />, the underlying <see cref="T:PassKit.PKPaymentPass" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 4, message: "Use 'SecureElementPass' instead.")]
 		[NoMac]
 		[MacCatalyst (13, 1)]
@@ -1081,10 +1394,16 @@ namespace PassKit {
 		[NullAllowed, Export ("secureElementPass")]
 		PKSecureElementPass SecureElementPass { get; }
 
+		/// <summary>Whether the pass is stored on a peer device (e.g., an Apple Watch).</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("remotePass")]
 		bool RemotePass { [Bind ("isRemotePass")] get; }
 
+		/// <summary>The name of the device hosting the pass.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("deviceName")]
 		string DeviceName { get; }
@@ -1100,15 +1419,36 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface PKPaymentMethod : NSSecureCoding {
+		/// <summary>A user-meaningful description of the card.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("displayName")]
 		string DisplayName { get; }
 
+		/// <summary>A user-meaningful name of the payment network backing the card.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("network")]
 		string Network { get; }
 
+		/// <summary>The <see cref="T:PassKit.PKPaymentMethodType" /> of the <see cref="T:PassKit.PKPaymentMethod" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("type")]
 		PKPaymentMethodType Type { get; }
 
+		/// <summary>Gets the payment pass for the method, if present.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 4, message: "Use 'SecureElementPass' instead.")]
 		[NoMac]
 		[MacCatalyst (13, 1)]
@@ -1134,6 +1474,9 @@ namespace PassKit {
 	[BaseType (typeof (PKSecureElementPass))]
 	interface PKPaymentPass {
 
+		/// <summary>The <see cref="T:PassKit.PKPaymentPassActivationState" /> of the pass. (Read-only)</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 4, message: "Use 'PKSecureElementPass.PassActivationState' instead.")]
 		[NoMac]
 		[MacCatalyst (13, 1)]
@@ -1155,9 +1498,16 @@ namespace PassKit {
 	[Static]
 	[MacCatalyst (13, 1)]
 	interface PKPaymentNetwork {
+		/// <summary>Represents the value associated with the constant PKPaymentNetworkAmex</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PKPaymentNetworkAmex")]
 		NSString Amex { get; }
 
+		/// <summary>Developers should not use this deprecated property. Developers should use 'CartesBancaires' instead.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'CartesBancaires' instead.")]
 		[MacCatalyst (13, 1)]
@@ -1165,6 +1515,9 @@ namespace PassKit {
 		[Field ("PKPaymentNetworkCarteBancaire")]
 		NSString CarteBancaire { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 11, 2, message: "Use 'CartesBancaires' instead.")]
 		[MacCatalyst (13, 1)]
@@ -1172,10 +1525,16 @@ namespace PassKit {
 		[Field ("PKPaymentNetworkCarteBancaires")]
 		NSString CarteBancaires { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("PKPaymentNetworkCartesBancaires")]
 		NSString CartesBancaires { get; }
 
+		/// <summary>Represents the value associated with the constant PKPaymentNetworkChinaUnionPay.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("PKPaymentNetworkChinaUnionPay")]
 		NSString ChinaUnionPay { get; }
@@ -1184,60 +1543,107 @@ namespace PassKit {
 		[Field ("PKPaymentNetworkDankort")]
 		NSString Dankort { get; }
 
+		/// <summary>Represents the value associated with the constant PKPaymentNetworkInterac.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("PKPaymentNetworkInterac")]
 		NSString Interac { get; }
 
+		/// <summary>Represents the value associated with the constant PKPaymentNetworkMasterCard</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PKPaymentNetworkMasterCard")]
 		NSString MasterCard { get; }
 
+		/// <summary>Represents the value associated with the constant PKPaymentNetworkVisa</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PKPaymentNetworkVisa")]
 		NSString Visa { get; }
 
+		/// <summary>The Discover payment network.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("PKPaymentNetworkDiscover")]
 		NSString Discover { get; }
 
+		/// <summary>Represents the value associated with the constant PKPaymentNetworkPrivateLabel.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("PKPaymentNetworkPrivateLabel")]
 		NSString PrivateLabel { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("PKPaymentNetworkJCB")]
 		NSString Jcb { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("PKPaymentNetworkSuica")]
 		NSString Suica { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("PKPaymentNetworkQuicPay")]
 		NSString QuicPay { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("PKPaymentNetworkIDCredit")]
 		NSString IDCredit { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("PKPaymentNetworkElectron")]
 		NSString Electron { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("PKPaymentNetworkMaestro")]
 		NSString Maestro { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("PKPaymentNetworkVPay")]
 		NSString VPay { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("PKPaymentNetworkEftpos")]
 		NSString Eftpos { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("PKPaymentNetworkElo")]
 		NSString Elo { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("PKPaymentNetworkMada")]
 		NSString Mada { get; }
@@ -1316,6 +1722,9 @@ namespace PassKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (PKPaymentButtonType type, PKPaymentButtonStyle style);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("cornerRadius")]
 		nfloat CornerRadius { get; set; }
@@ -1337,6 +1746,11 @@ namespace PassKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (PKAddPassButtonStyle style);
 
+		/// <summary>Gets the style of the button.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para id="tool-remark">This member participates in the <see cref="T:UIKit.UIAppearance" /> styling system.  See the <see cref="P:PassKit.PKAddPassButton.Appearance" /> property and the <see cref="M:PassKit.PKAddPassButton.AppearanceWhenContainedIn(System.Type[])" /> method.</para>
+		///         </remarks>
 		[Appearance]
 		[Export ("addPassButtonStyle", ArgumentSemantic.Assign)]
 		PKAddPassButtonStyle Style { get; set; }
@@ -1346,9 +1760,15 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface PKEncryptionScheme {
+		/// <summary>Elliptical Curve Cryptography, version 2.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PKEncryptionSchemeECC_V2")]
 		NSString Ecc_V2 { get; }
 
+		/// <summary>RSA v2.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("PKEncryptionSchemeRSA_V2")]
 		NSString Rsa_V2 { get; }
@@ -1364,6 +1784,9 @@ namespace PassKit {
 	[DisableDefaultCtor] // providing DesignatedInitializer
 	interface PKPaymentAuthorizationController {
 
+		/// <summary>Gets a value that tells whether the user can make payments.</summary>
+		///         <value>A value that tells whether the user can make payments.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("canMakePayments")]
 		bool CanMakePayments { get; }
@@ -1380,6 +1803,13 @@ namespace PassKit {
 		bool CanMakePaymentsUsingNetworks (string [] supportedNetworks, PKMerchantCapability capabilties);
 #endif
 
+		/// <summary>An instance of the PassKit.IPKPaymentAuthorizationControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the PassKit.IPKPaymentAuthorizationControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		IPKPaymentAuthorizationControllerDelegate Delegate { get; set; }
 
@@ -1516,9 +1946,15 @@ namespace PassKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (string label, string value);
 
+		/// <summary>Gets the label.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("label")]
 		string Label { get; }
 
+		/// <summary>Gets the value.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("value")]
 		string Value { get; }
 	}
@@ -1533,21 +1969,33 @@ namespace PassKit {
 		[return: NullAllowed]
 		PKTransitPassProperties GetPassProperties (PKPass pass);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 15, 0)]
 		[Deprecated (PlatformName.MacOSX, 12, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 		[Export ("transitBalance", ArgumentSemantic.Copy)]
 		NSDecimalNumber TransitBalance { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 15, 0)]
 		[Deprecated (PlatformName.MacOSX, 12, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 		[Export ("transitBalanceCurrencyCode")]
 		string TransitBalanceCurrencyCode { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("inStation")]
 		bool InStation { [Bind ("isInStation")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 14, 5, message: "Use 'Blocked' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 14, 5, message: "Use 'Blocked' instead.")]
 		[Deprecated (PlatformName.MacOSX, 11, 3, message: "Use 'Blocked' instead.")]
@@ -1559,6 +2007,9 @@ namespace PassKit {
 		[Export ("blocked")]
 		bool Blocked { [Bind ("isBlocked")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("expirationDate", ArgumentSemantic.Copy)]
 		NSDate ExpirationDate { get; }
 	}
@@ -1576,29 +2027,53 @@ namespace PassKit {
 		[return: NullAllowed]
 		PKSuicaPassProperties GetPassProperties (PKPass pass);
 
+		/// <summary>Gets the balance on the pass.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("transitBalance", ArgumentSemantic.Copy)]
 		NSDecimalNumber TransitBalance { get; }
 
+		/// <summary>Gets the currency of the balance.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("transitBalanceCurrencyCode")]
 		string TransitBalanceCurrencyCode { get; }
 
+		/// <summary>Gets a value that tells whether the pass works in a transit station.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("inStation")]
 		bool InStation { [Bind ("isInStation")] get; }
 
+		/// <summary>Gets a value that tells whether the pass works in the Shinkansen Station.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("inShinkansenStation")]
 		bool InShinkansenStation { [Bind ("isInShinkansenStation")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("balanceAllowedForCommute")]
 		bool BalanceAllowedForCommute { [Bind ("isBalanceAllowedForCommute")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("lowBalanceGateNotificationEnabled")]
 		bool LowBalanceGateNotificationEnabled { [Bind ("isLowBalanceGateNotificationEnabled")] get; }
 
+		/// <summary>Gets a value that tells whether the pass works with the Green Car service.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("greenCarTicketUsed")]
 		bool GreenCarTicketUsed { [Bind ("isGreenCarTicketUsed")] get; }
 
+		/// <summary>Gets a value that tells whether the pass is blacklisted.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("blacklisted")]
 		[Deprecated (PlatformName.iOS, 14, 5, message: "Use 'Blocked' instead.")] // exists in base class
 		[Deprecated (PlatformName.MacOSX, 11, 3, message: "Use 'Blocked' instead.")]
@@ -1614,9 +2089,15 @@ namespace PassKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (PKPaymentAuthorizationStatus status, [NullAllowed] NSError [] errors);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("status", ArgumentSemantic.Assign)]
 		PKPaymentAuthorizationStatus Status { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("errors", ArgumentSemantic.Copy)]
 		NSError [] Errors { get; set; }
 
@@ -1634,9 +2115,15 @@ namespace PassKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (PKPaymentSummaryItem [] paymentSummaryItems);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("status", ArgumentSemantic.Assign)]
 		PKPaymentAuthorizationStatus Status { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("paymentSummaryItems", ArgumentSemantic.Copy)]
 		PKPaymentSummaryItem [] PaymentSummaryItems { get; set; }
 
@@ -1671,9 +2158,15 @@ namespace PassKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor ([NullAllowed] NSError [] errors, PKPaymentSummaryItem [] paymentSummaryItems, PKShippingMethod [] shippingMethods);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("shippingMethods", ArgumentSemantic.Copy)]
 		PKShippingMethod [] ShippingMethods { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("errors", ArgumentSemantic.Copy)]
 		NSError [] Errors { get; set; }
 	}
@@ -1717,10 +2210,16 @@ namespace PassKit {
 	[Static] // not to enum'ify - exposed as NSString inside NSError
 	interface PKPaymentErrorKeys {
 
+		/// <summary>Gets a key that identifes the contact field as the source of the error.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("PKPaymentErrorContactFieldUserInfoKey")]
 		NSString ContactFieldUserInfoKey { get; }
 
+		/// <summary>Gets a key that identifes the postal address field as the source of the error.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("PKPaymentErrorPostalAddressUserInfoKey")]
 		NSString PostalAddressUserInfoKey { get; }
@@ -1735,7 +2234,9 @@ namespace PassKit {
 	[Obsoleted (PlatformName.MacCatalyst, 17, 0, message: "No longer used.")]
 	[Native]
 	public enum PKDisbursementRequestSchedule : long {
+		/// <summary>To be added.</summary>
 		OneTime,
+		/// <summary>To be added.</summary>
 		Future,
 	}
 #endif

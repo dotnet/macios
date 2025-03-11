@@ -16605,6 +16605,9 @@ namespace Foundation {
 		[Export ("invalidate")]
 		void Invalidate ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isValid")]
 		bool IsValid { get; }
 
@@ -16623,6 +16626,9 @@ namespace Foundation {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSConnectionDelegate Delegate { get; set; }
 	}

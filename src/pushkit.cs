@@ -75,6 +75,10 @@ namespace PushKit {
 	[Static]
 	interface PKPushType {
 
+		/// <summary>Represents the value associated with the constant PKPushTypeVoIP</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Introduced (PlatformName.MacCatalyst, 14, 0)]
 		[NoMac]
 		[Field ("PKPushTypeVoIP")]

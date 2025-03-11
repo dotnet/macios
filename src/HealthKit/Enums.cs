@@ -147,8 +147,11 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKCategoryValueSleepAnalysis : long {
+		/// <summary>The user is in bed.</summary>
 		InBed,
+		/// <summary>The user is asleep.</summary>
 		Asleep,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		Awake,
 		[MacCatalyst (16, 0), Mac (13, 0), iOS (16, 0), NoTV]
@@ -370,6 +373,7 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKCategoryValue : long {
+		/// <summary>A category value is not applicable to the category.</summary>
 		NotApplicable = 0,
 	}
 
@@ -378,11 +382,17 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKCategoryValueCervicalMucusQuality : long {
+		/// <summary>Either not recorded or permissions not given.</summary>
 		NotApplicable = 0,
+		/// <summary>Little or no mucus.</summary>
 		Dry = 1,
+		/// <summary>Sticky mucus.</summary>
 		Sticky,
+		/// <summary>Creamy mucus.</summary>
 		Creamy,
+		/// <summary>Watery mucus.</summary>
 		Watery,
+		/// <summary>Mucus the color and consistency of egg whites.</summary>
 		EggWhite,
 	}
 
@@ -395,10 +405,15 @@ namespace HealthKit {
 	[Deprecated (PlatformName.TvOS, 18, 0, message: "Use 'HKCategoryValueVaginalBleeding' instead.")]
 	[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'HKCategoryValueVaginalBleeding' instead.")]
 	public enum HKCategoryValueMenstrualFlow : long {
+		/// <summary>Categorization is not applicable.</summary>
 		NotApplicable = 0,
+		/// <summary>The level is unspecified.</summary>
 		Unspecified = 1,
+		/// <summary>Light flow.</summary>
 		Light,
+		/// <summary>Medium flow.</summary>
 		Medium,
+		/// <summary>Heavy flow.</summary>
 		Heavy,
 		[MacCatalyst (13, 1)]
 		None,
@@ -419,14 +434,18 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKCategoryValueOvulationTestResult : long {
+		/// <summary>The test is not applicable.</summary>
 		NotApplicable = 0,
+		/// <summary>The test was negative.</summary>
 		Negative = 1,
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		LuteinizingHormoneSurge = 2,
+		/// <summary>The test was positive.</summary>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'HKCategoryValueOvulationTestResult.LuteinizingHormoneSurge' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'HKCategoryValueOvulationTestResult.LuteinizingHormoneSurge' instead.")]
 		Positive = LuteinizingHormoneSurge,
+		/// <summary>The test was indeterminate.</summary>
 		Indeterminate = 3,
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -438,7 +457,9 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKCategoryValueAppleStandHour : long {
+		/// <summary>The user did stand for at least a few minutes.</summary>
 		Stood = 0,
+		/// <summary>The user did not stand.</summary>
 		Idle,
 	}
 
@@ -615,18 +636,25 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	public enum HKClinicalTypeIdentifier {
 
+		/// <summary>Indicates an allergy record.</summary>
 		[Field ("HKClinicalTypeIdentifierAllergyRecord")]
 		AllergyRecord,
+		/// <summary>Indicates a record for a medical condition.</summary>
 		[Field ("HKClinicalTypeIdentifierConditionRecord")]
 		ConditionRecord,
+		/// <summary>Indicates an immunization record.</summary>
 		[Field ("HKClinicalTypeIdentifierImmunizationRecord")]
 		ImmunizationRecord,
+		/// <summary>Indicates a lab result record.</summary>
 		[Field ("HKClinicalTypeIdentifierLabResultRecord")]
 		LabResultRecord,
+		/// <summary>Indicates a record of medication</summary>
 		[Field ("HKClinicalTypeIdentifierMedicationRecord")]
 		MedicationRecord,
+		/// <summary>Indicates a record of a procedure.</summary>
 		[Field ("HKClinicalTypeIdentifierProcedureRecord")]
 		ProcedureRecord,
+		/// <summary>Indicates a record of a vital sign.</summary>
 		[Field ("HKClinicalTypeIdentifierVitalSignRecord")]
 		VitalSignRecord,
 		[iOS (14, 0)]

@@ -75,7 +75,7 @@ class TestConfiguration {
                         $platformVars[$pair.Key] = $pair.Value
                     }
                     # set platform-specific variables
-                    $platformVars["LABEL_WITH_PLATFORM"] = "$($label)_$($platform)"
+                    $platformVars["LABEL_WITH_PLATFORM"] = "$($label)_$($platform.ToLower())"
                     $platformVars["STATUS_CONTEXT"] = "$($this.statusContext) - $($label) - $($platform)"
                     $platformVars["TEST_PREFIX"] = "$($testPrefix)$($underscoredLabel)_$($platform.ToLower())"
                     if ($platform -eq "Multiple") {

@@ -2134,7 +2134,23 @@ F:AppKit.NSPageControllerTransitionStyle.StackBook
 F:AppKit.NSPageControllerTransitionStyle.StackHistory
 F:AppKit.NSPageLayoutResult.Cancelled
 F:AppKit.NSPageLayoutResult.Changed
+F:AppKit.NSPasteboardAccessBehavior.AlwaysAllow
+F:AppKit.NSPasteboardAccessBehavior.AlwaysDeny
+F:AppKit.NSPasteboardAccessBehavior.Ask
+F:AppKit.NSPasteboardAccessBehavior.Default
 F:AppKit.NSPasteboardContentsOptions.CurrentHostOnly
+F:AppKit.NSPasteboardDetectionPattern.CalendarEvent
+F:AppKit.NSPasteboardDetectionPattern.EmailAddress
+F:AppKit.NSPasteboardDetectionPattern.FlightNumber
+F:AppKit.NSPasteboardDetectionPattern.Link
+F:AppKit.NSPasteboardDetectionPattern.MoneyAmount
+F:AppKit.NSPasteboardDetectionPattern.Number
+F:AppKit.NSPasteboardDetectionPattern.PhoneNumber
+F:AppKit.NSPasteboardDetectionPattern.PostalAddress
+F:AppKit.NSPasteboardDetectionPattern.ProbableWebSearch
+F:AppKit.NSPasteboardDetectionPattern.ProbableWebUrl
+F:AppKit.NSPasteboardDetectionPattern.ShipmentTrackingNumber
+F:AppKit.NSPasteboardMetadataType.ContentType
 F:AppKit.NSPasteboardName.Drag
 F:AppKit.NSPasteboardName.Find
 F:AppKit.NSPasteboardName.Font
@@ -11956,6 +11972,12 @@ F:UIKit.UIListEnvironment.Unspecified
 F:UIKit.UIListSeparatorVisibility.Automatic
 F:UIKit.UIListSeparatorVisibility.Hidden
 F:UIKit.UIListSeparatorVisibility.Visible
+F:UIKit.UIMailConversationEntryKind.News
+F:UIKit.UIMailConversationEntryKind.None
+F:UIKit.UIMailConversationEntryKind.Personal
+F:UIKit.UIMailConversationEntryKind.Promotion
+F:UIKit.UIMailConversationEntryKind.Social
+F:UIKit.UIMailConversationEntryKind.Transaction
 F:UIKit.UIMenuControllerArrowDirection.Default
 F:UIKit.UIMenuControllerArrowDirection.Down
 F:UIKit.UIMenuControllerArrowDirection.Left
@@ -12025,6 +12047,9 @@ F:UIKit.UIMenuOptions.Destructive
 F:UIKit.UIMenuOptions.DisplayAsPalette
 F:UIKit.UIMenuOptions.DisplayInline
 F:UIKit.UIMenuOptions.SingleSelection
+F:UIKit.UIMessageConversationEntryDataKind.Attachment
+F:UIKit.UIMessageConversationEntryDataKind.Other
+F:UIKit.UIMessageConversationEntryDataKind.Text
 F:UIKit.UIModalPresentationStyle.Automatic
 F:UIKit.UIModalPresentationStyle.BlurOverFullScreen
 F:UIKit.UIModalPresentationStyle.CurrentContext
@@ -15117,7 +15142,19 @@ M:AppKit.NSPanGestureRecognizer.EncodeTo(Foundation.NSCoder)
 M:AppKit.NSParagraphStyle.Copy(Foundation.NSZone)
 M:AppKit.NSParagraphStyle.EncodeTo(Foundation.NSCoder)
 M:AppKit.NSParagraphStyle.MutableCopy(Foundation.NSZone)
+M:AppKit.NSPasteboard.DetectMetadata(System.Collections.Generic.HashSet{AppKit.NSPasteboardMetadataType},AppKit.NSPasteboardDetectMetadataCompletionHandler)
+M:AppKit.NSPasteboard.DetectMetadata(System.Collections.Generic.HashSet{AppKit.NSPasteboardMetadataType},AppKit.NSPasteboardDetectMetadataHandler)
+M:AppKit.NSPasteboard.DetectPatterns(System.Collections.Generic.HashSet{AppKit.NSPasteboardDetectionPattern},AppKit.NSPasteboardDetectPatternsCompletionHandler)
+M:AppKit.NSPasteboard.DetectPatterns(System.Collections.Generic.HashSet{AppKit.NSPasteboardDetectionPattern},AppKit.NSPasteboardDetectPatternsHandler)
+M:AppKit.NSPasteboard.DetectValues(System.Collections.Generic.HashSet{AppKit.NSPasteboardDetectionPattern},AppKit.NSPasteboardDetectValuesCompletionHandler)
+M:AppKit.NSPasteboard.DetectValues(System.Collections.Generic.HashSet{AppKit.NSPasteboardDetectionPattern},AppKit.NSPasteboardDetectValuesHandler)
 M:AppKit.NSPasteboard.WriteObjects(AppKit.INSPasteboardWriting[])
+M:AppKit.NSPasteboardItem.DetectMetadata(System.Collections.Generic.HashSet{AppKit.NSPasteboardMetadataType},AppKit.NSPasteboardDetectMetadataCompletionHandler)
+M:AppKit.NSPasteboardItem.DetectMetadata(System.Collections.Generic.HashSet{AppKit.NSPasteboardMetadataType},AppKit.NSPasteboardDetectMetadataHandler)
+M:AppKit.NSPasteboardItem.DetectPatterns(System.Collections.Generic.HashSet{AppKit.NSPasteboardDetectionPattern},AppKit.NSPasteboardDetectPatternsCompletionHandler)
+M:AppKit.NSPasteboardItem.DetectPatterns(System.Collections.Generic.HashSet{AppKit.NSPasteboardDetectionPattern},AppKit.NSPasteboardDetectPatternsHandler)
+M:AppKit.NSPasteboardItem.DetectValues(System.Collections.Generic.HashSet{AppKit.NSPasteboardDetectionPattern},AppKit.NSPasteboardDetectValuesCompletionHandler)
+M:AppKit.NSPasteboardItem.DetectValues(System.Collections.Generic.HashSet{AppKit.NSPasteboardDetectionPattern},AppKit.NSPasteboardDetectValuesHandler)
 M:AppKit.NSPasteboardItemDataProvider_Extensions.FinishedWithDataProvider(AppKit.INSPasteboardItemDataProvider,AppKit.NSPasteboard)
 M:AppKit.NSPasteboardTypeOwner_Extensions.PasteboardChangedOwner(AppKit.INSPasteboardTypeOwner,AppKit.NSPasteboard)
 M:AppKit.NSPasteboardWriting_Extensions.GetWritingOptionsForType(AppKit.INSPasteboardWriting,System.String,AppKit.NSPasteboard)
@@ -35799,6 +35836,7 @@ M:Social.SLComposeServiceViewController.GetUndoManager(AppKit.NSTextView)
 M:Social.SLComposeServiceViewController.GetWritablePasteboardTypes(AppKit.NSTextView,AppKit.NSTextAttachmentCell,System.UIntPtr)
 M:Social.SLComposeServiceViewController.GetWritingToolsIgnoredRangesInEnclosingRange(AppKit.NSTextView,Foundation.NSRange)
 M:Social.SLComposeServiceViewController.GetWritingToolsIgnoredRangesInEnclosingRange(UIKit.UITextView,Foundation.NSRange)
+M:Social.SLComposeServiceViewController.InsertInputSuggestion(UIKit.UITextView,UIKit.UIInputSuggestion)
 M:Social.SLComposeServiceViewController.LinkClicked(AppKit.NSTextView,Foundation.NSObject,System.UIntPtr)
 M:Social.SLComposeServiceViewController.MenuForEvent(AppKit.NSTextView,AppKit.NSMenu,AppKit.NSEvent,System.UIntPtr)
 M:Social.SLComposeServiceViewController.SelectionChanged(UIKit.UITextView)
@@ -36934,10 +36972,14 @@ M:UIKit.IUITabBarControllerDelegate.VisibilityDidChangeForTabs(UIKit.UITabBarCon
 M:UIKit.IUITabBarControllerDelegate.WillBeginEditing(UIKit.UITabBarController)
 M:UIKit.IUITabBarControllerSidebarAnimating.AddAnimations(System.Action)
 M:UIKit.IUITabBarControllerSidebarAnimating.AddCompletion(System.Action)
+M:UIKit.IUITabBarControllerSidebarDelegate.AcceptItemsFromDropSession(UIKit.UITabBarController,UIKit.UITabBarControllerSidebar,UIKit.UIAction,UIKit.UITabGroup,UIKit.IUIDropSession)
 M:UIKit.IUITabBarControllerSidebarDelegate.DidEndDisplayingTab(UIKit.UITabBarController,UIKit.UITabBarControllerSidebar,UIKit.UITab)
 M:UIKit.IUITabBarControllerSidebarDelegate.GetContextMenuConfigurationForTab(UIKit.UITabBarController,UIKit.UITabBarControllerSidebar,UIKit.UITab)
 M:UIKit.IUITabBarControllerSidebarDelegate.GetItemForRequest(UIKit.UITabBarController,UIKit.UITabBarControllerSidebar,UIKit.UITabSidebarItemRequest)
+M:UIKit.IUITabBarControllerSidebarDelegate.GetItemsForAddingToDragSession(UIKit.UITabBarController,UIKit.UITabBarControllerSidebar,UIKit.IUIDragSession,UIKit.UITab)
+M:UIKit.IUITabBarControllerSidebarDelegate.GetItemsForBeginningDragSession(UIKit.UITabBarController,UIKit.UITabBarControllerSidebar,UIKit.IUIDragSession,UIKit.UITab)
 M:UIKit.IUITabBarControllerSidebarDelegate.GetLeadingSwipeActionsConfigurationForTab(UIKit.UITabBarController,UIKit.UITabBarControllerSidebar,UIKit.UITab)
+M:UIKit.IUITabBarControllerSidebarDelegate.GetOperationForAcceptingItemsFromDropSession(UIKit.UITabBarController,UIKit.UITabBarControllerSidebar,UIKit.UIAction,UIKit.UITabGroup,UIKit.IUIDropSession)
 M:UIKit.IUITabBarControllerSidebarDelegate.GetTrailingSwipeActionsConfigurationForTab(UIKit.UITabBarController,UIKit.UITabBarControllerSidebar,UIKit.UITab)
 M:UIKit.IUITabBarControllerSidebarDelegate.SidebarVisibilityWillChange(UIKit.UITabBarController,UIKit.UITabBarControllerSidebar,UIKit.IUITabBarControllerSidebarAnimating)
 M:UIKit.IUITabBarControllerSidebarDelegate.UpdateItem(UIKit.UITabBarController,UIKit.UITabBarControllerSidebar,UIKit.UITabSidebarItem)
@@ -37054,6 +37096,7 @@ M:UIKit.IUITextFieldDelegate.EditingEnded(UIKit.UITextField,UIKit.UITextFieldDid
 M:UIKit.IUITextFieldDelegate.EditingEnded(UIKit.UITextField)
 M:UIKit.IUITextFieldDelegate.EditingStarted(UIKit.UITextField)
 M:UIKit.IUITextFieldDelegate.GetEditMenu(UIKit.UITextField,Foundation.NSRange,UIKit.UIMenuElement[])
+M:UIKit.IUITextFieldDelegate.InsertInputSuggestion(UIKit.UITextField,UIKit.UIInputSuggestion)
 M:UIKit.IUITextFieldDelegate.ShouldBeginEditing(UIKit.UITextField)
 M:UIKit.IUITextFieldDelegate.ShouldChangeCharacters(UIKit.UITextField,Foundation.NSRange,System.String)
 M:UIKit.IUITextFieldDelegate.ShouldClear(UIKit.UITextField)
@@ -37096,6 +37139,7 @@ M:UIKit.IUITextInput.InsertAdaptiveImageGlyph(UIKit.NSAdaptiveImageGlyph,UIKit.U
 M:UIKit.IUITextInput.InsertAttributedText(Foundation.NSAttributedString)
 M:UIKit.IUITextInput.InsertDictationResult(Foundation.NSArray)
 M:UIKit.IUITextInput.InsertDictationResultPlaceholder
+M:UIKit.IUITextInput.InsertInputSuggestion(UIKit.UIInputSuggestion)
 M:UIKit.IUITextInput.InsertText(System.String,System.String[],UIKit.UITextAlternativeStyle)
 M:UIKit.IUITextInput.InsertTextPlaceholder(CoreGraphics.CGSize)
 M:UIKit.IUITextInput.RemoveDictationResultPlaceholder(Foundation.NSObject,System.Boolean)
@@ -37112,6 +37156,7 @@ M:UIKit.IUITextInput.UpdateFloatingCursor(CoreGraphics.CGPoint)
 M:UIKit.IUITextInput.WillDismissEditMenu(UIKit.IUIEditMenuInteractionAnimating)
 M:UIKit.IUITextInput.WillPresentEditMenu(UIKit.IUIEditMenuInteractionAnimating)
 M:UIKit.IUITextInput.WillPresentWritingTools
+M:UIKit.IUITextInputDelegate.ConversationContextDidChange(UIKit.UIConversationContext,UIKit.IUITextInput)
 M:UIKit.IUITextInputDelegate.SelectionDidChange(UIKit.IUITextInput)
 M:UIKit.IUITextInputDelegate.SelectionWillChange(UIKit.IUITextInput)
 M:UIKit.IUITextInputDelegate.TextDidChange(UIKit.IUITextInput)
@@ -37157,6 +37202,7 @@ M:UIKit.IUITextViewDelegate.GetEditMenuForText(UIKit.UITextView,Foundation.NSRan
 M:UIKit.IUITextViewDelegate.GetMenuConfiguration(UIKit.UITextView,UIKit.UITextItem,UIKit.UIMenu)
 M:UIKit.IUITextViewDelegate.GetPrimaryAction(UIKit.UITextView,UIKit.UITextItem,UIKit.UIAction)
 M:UIKit.IUITextViewDelegate.GetWritingToolsIgnoredRangesInEnclosingRange(UIKit.UITextView,Foundation.NSRange)
+M:UIKit.IUITextViewDelegate.InsertInputSuggestion(UIKit.UITextView,UIKit.UIInputSuggestion)
 M:UIKit.IUITextViewDelegate.SelectionChanged(UIKit.UITextView)
 M:UIKit.IUITextViewDelegate.ShouldBeginEditing(UIKit.UITextView)
 M:UIKit.IUITextViewDelegate.ShouldChangeText(UIKit.UITextView,Foundation.NSRange,System.String)
@@ -39698,6 +39744,7 @@ M:UIKit.UIInputView.UIInputViewAppearance.#ctor(System.IntPtr)
 M:UIKit.UIInputViewAudioFeedback_Extensions.GetEnableInputClicksWhenVisible(UIKit.IUIInputViewAudioFeedback)
 M:UIKit.UIInputViewController.#ctor(System.String,Foundation.NSBundle)
 M:UIKit.UIInputViewController.AdvanceToNextInputMode
+M:UIKit.UIInputViewController.ConversationContextDidChange(UIKit.UIConversationContext,UIKit.IUITextInput)
 M:UIKit.UIInputViewController.DismissKeyboard
 M:UIKit.UIInputViewController.HandleInputModeList(UIKit.UIView,UIKit.UIEvent)
 M:UIKit.UIInputViewController.RequestSupplementaryLexicon(System.Action{UIKit.UILexicon})
@@ -40655,6 +40702,7 @@ M:UIKit.UISearchTextFieldDelegate.EditingEnded(UIKit.UITextField)
 M:UIKit.UISearchTextFieldDelegate.EditingStarted(UIKit.UITextField)
 M:UIKit.UISearchTextFieldDelegate.GetEditMenu(UIKit.UITextField,Foundation.NSRange,UIKit.UIMenuElement[])
 M:UIKit.UISearchTextFieldDelegate.GetItemProvider(UIKit.UISearchTextField,UIKit.UISearchToken)
+M:UIKit.UISearchTextFieldDelegate.InsertInputSuggestion(UIKit.UITextField,UIKit.UIInputSuggestion)
 M:UIKit.UISearchTextFieldDelegate.ShouldBeginEditing(UIKit.UITextField)
 M:UIKit.UISearchTextFieldDelegate.ShouldChangeCharacters(UIKit.UITextField,Foundation.NSRange,System.String)
 M:UIKit.UISearchTextFieldDelegate.ShouldClear(UIKit.UITextField)
@@ -41015,10 +41063,14 @@ M:UIKit.UITabBarControllerDelegate.VisibilityDidChangeForTabs(UIKit.UITabBarCont
 M:UIKit.UITabBarControllerDelegate.WillBeginEditing(UIKit.UITabBarController)
 M:UIKit.UITabBarControllerSidebar.Dispose(System.Boolean)
 M:UIKit.UITabBarControllerSidebar.ReconfigureItemForTab(UIKit.UITab)
+M:UIKit.UITabBarControllerSidebarDelegate.AcceptItemsFromDropSession(UIKit.UITabBarController,UIKit.UITabBarControllerSidebar,UIKit.UIAction,UIKit.UITabGroup,UIKit.IUIDropSession)
 M:UIKit.UITabBarControllerSidebarDelegate.DidEndDisplayingTab(UIKit.UITabBarController,UIKit.UITabBarControllerSidebar,UIKit.UITab)
 M:UIKit.UITabBarControllerSidebarDelegate.GetContextMenuConfigurationForTab(UIKit.UITabBarController,UIKit.UITabBarControllerSidebar,UIKit.UITab)
 M:UIKit.UITabBarControllerSidebarDelegate.GetItemForRequest(UIKit.UITabBarController,UIKit.UITabBarControllerSidebar,UIKit.UITabSidebarItemRequest)
+M:UIKit.UITabBarControllerSidebarDelegate.GetItemsForAddingToDragSession(UIKit.UITabBarController,UIKit.UITabBarControllerSidebar,UIKit.IUIDragSession,UIKit.UITab)
+M:UIKit.UITabBarControllerSidebarDelegate.GetItemsForBeginningDragSession(UIKit.UITabBarController,UIKit.UITabBarControllerSidebar,UIKit.IUIDragSession,UIKit.UITab)
 M:UIKit.UITabBarControllerSidebarDelegate.GetLeadingSwipeActionsConfigurationForTab(UIKit.UITabBarController,UIKit.UITabBarControllerSidebar,UIKit.UITab)
+M:UIKit.UITabBarControllerSidebarDelegate.GetOperationForAcceptingItemsFromDropSession(UIKit.UITabBarController,UIKit.UITabBarControllerSidebar,UIKit.UIAction,UIKit.UITabGroup,UIKit.IUIDropSession)
 M:UIKit.UITabBarControllerSidebarDelegate.GetTrailingSwipeActionsConfigurationForTab(UIKit.UITabBarController,UIKit.UITabBarControllerSidebar,UIKit.UITab)
 M:UIKit.UITabBarControllerSidebarDelegate.SidebarVisibilityWillChange(UIKit.UITabBarController,UIKit.UITabBarControllerSidebar,UIKit.IUITabBarControllerSidebarAnimating)
 M:UIKit.UITabBarControllerSidebarDelegate.UpdateItem(UIKit.UITabBarController,UIKit.UITabBarControllerSidebar,UIKit.UITabSidebarItem)
@@ -41546,6 +41598,7 @@ M:UIKit.UITextField.InsertAdaptiveImageGlyph(UIKit.NSAdaptiveImageGlyph,UIKit.UI
 M:UIKit.UITextField.InsertAttributedText(Foundation.NSAttributedString)
 M:UIKit.UITextField.InsertDictationResult(Foundation.NSArray)
 M:UIKit.UITextField.InsertDictationResultPlaceholder
+M:UIKit.UITextField.InsertInputSuggestion(UIKit.UIInputSuggestion)
 M:UIKit.UITextField.InsertText(System.String,System.String[],UIKit.UITextAlternativeStyle)
 M:UIKit.UITextField.InsertText(System.String)
 M:UIKit.UITextField.InsertTextPlaceholder(CoreGraphics.CGSize)
@@ -41577,6 +41630,7 @@ M:UIKit.UITextFieldDelegate_Extensions.EditingEnded(UIKit.IUITextFieldDelegate,U
 M:UIKit.UITextFieldDelegate_Extensions.EditingEnded(UIKit.IUITextFieldDelegate,UIKit.UITextField)
 M:UIKit.UITextFieldDelegate_Extensions.EditingStarted(UIKit.IUITextFieldDelegate,UIKit.UITextField)
 M:UIKit.UITextFieldDelegate_Extensions.GetEditMenu(UIKit.IUITextFieldDelegate,UIKit.UITextField,Foundation.NSRange,UIKit.UIMenuElement[])
+M:UIKit.UITextFieldDelegate_Extensions.InsertInputSuggestion(UIKit.IUITextFieldDelegate,UIKit.UITextField,UIKit.UIInputSuggestion)
 M:UIKit.UITextFieldDelegate_Extensions.ShouldBeginEditing(UIKit.IUITextFieldDelegate,UIKit.UITextField)
 M:UIKit.UITextFieldDelegate_Extensions.ShouldChangeCharacters(UIKit.IUITextFieldDelegate,UIKit.UITextField,Foundation.NSRange,System.String)
 M:UIKit.UITextFieldDelegate_Extensions.ShouldClear(UIKit.IUITextFieldDelegate,UIKit.UITextField)
@@ -41589,6 +41643,7 @@ M:UIKit.UITextFieldDelegate.EditingEnded(UIKit.UITextField,UIKit.UITextFieldDidE
 M:UIKit.UITextFieldDelegate.EditingEnded(UIKit.UITextField)
 M:UIKit.UITextFieldDelegate.EditingStarted(UIKit.UITextField)
 M:UIKit.UITextFieldDelegate.GetEditMenu(UIKit.UITextField,Foundation.NSRange,UIKit.UIMenuElement[])
+M:UIKit.UITextFieldDelegate.InsertInputSuggestion(UIKit.UITextField,UIKit.UIInputSuggestion)
 M:UIKit.UITextFieldDelegate.ShouldBeginEditing(UIKit.UITextField)
 M:UIKit.UITextFieldDelegate.ShouldChangeCharacters(UIKit.UITextField,Foundation.NSRange,System.String)
 M:UIKit.UITextFieldDelegate.ShouldClear(UIKit.UITextField)
@@ -41651,6 +41706,7 @@ M:UIKit.UITextInput_Extensions.InsertAdaptiveImageGlyph(UIKit.IUITextInput,UIKit
 M:UIKit.UITextInput_Extensions.InsertAttributedText(UIKit.IUITextInput,Foundation.NSAttributedString)
 M:UIKit.UITextInput_Extensions.InsertDictationResult(UIKit.IUITextInput,Foundation.NSArray)
 M:UIKit.UITextInput_Extensions.InsertDictationResultPlaceholder(UIKit.IUITextInput)
+M:UIKit.UITextInput_Extensions.InsertInputSuggestion(UIKit.IUITextInput,UIKit.UIInputSuggestion)
 M:UIKit.UITextInput_Extensions.InsertText(UIKit.IUITextInput,System.String,System.String[],UIKit.UITextAlternativeStyle)
 M:UIKit.UITextInput_Extensions.InsertTextPlaceholder(UIKit.IUITextInput,CoreGraphics.CGSize)
 M:UIKit.UITextInput_Extensions.RemoveDictationResultPlaceholder(UIKit.IUITextInput,Foundation.NSObject,System.Boolean)
@@ -41664,6 +41720,7 @@ M:UIKit.UITextInput_Extensions.UpdateFloatingCursor(UIKit.IUITextInput,CoreGraph
 M:UIKit.UITextInput_Extensions.WillDismissEditMenu(UIKit.IUITextInput,UIKit.IUIEditMenuInteractionAnimating)
 M:UIKit.UITextInput_Extensions.WillPresentEditMenu(UIKit.IUITextInput,UIKit.IUIEditMenuInteractionAnimating)
 M:UIKit.UITextInput_Extensions.WillPresentWritingTools(UIKit.IUITextInput)
+M:UIKit.UITextInputDelegate.ConversationContextDidChange(UIKit.UIConversationContext,UIKit.IUITextInput)
 M:UIKit.UITextInputDelegate.SelectionDidChange(UIKit.IUITextInput)
 M:UIKit.UITextInputDelegate.SelectionWillChange(UIKit.IUITextInput)
 M:UIKit.UITextInputDelegate.TextDidChange(UIKit.IUITextInput)
@@ -41684,6 +41741,7 @@ M:UIKit.UITextInputTokenizer.ProbeDirectionWithinTextUnit(UIKit.UITextPosition,U
 M:UIKit.UITextInputTraits_Extensions.GetAllowedWritingToolsResultOptions(UIKit.IUITextInputTraits)
 M:UIKit.UITextInputTraits_Extensions.GetAutocapitalizationType(UIKit.IUITextInputTraits)
 M:UIKit.UITextInputTraits_Extensions.GetAutocorrectionType(UIKit.IUITextInputTraits)
+M:UIKit.UITextInputTraits_Extensions.GetConversationContext(UIKit.IUITextInputTraits)
 M:UIKit.UITextInputTraits_Extensions.GetEnablesReturnKeyAutomatically(UIKit.IUITextInputTraits)
 M:UIKit.UITextInputTraits_Extensions.GetInlinePredictionType(UIKit.IUITextInputTraits)
 M:UIKit.UITextInputTraits_Extensions.GetKeyboardAppearance(UIKit.IUITextInputTraits)
@@ -41701,6 +41759,7 @@ M:UIKit.UITextInputTraits_Extensions.GetWritingToolsBehavior(UIKit.IUITextInputT
 M:UIKit.UITextInputTraits_Extensions.SetAllowedWritingToolsResultOptions(UIKit.IUITextInputTraits,UIKit.UIWritingToolsResultOptions)
 M:UIKit.UITextInputTraits_Extensions.SetAutocapitalizationType(UIKit.IUITextInputTraits,UIKit.UITextAutocapitalizationType)
 M:UIKit.UITextInputTraits_Extensions.SetAutocorrectionType(UIKit.IUITextInputTraits,UIKit.UITextAutocorrectionType)
+M:UIKit.UITextInputTraits_Extensions.SetConversationContext(UIKit.IUITextInputTraits,UIKit.UIConversationContext)
 M:UIKit.UITextInputTraits_Extensions.SetEnablesReturnKeyAutomatically(UIKit.IUITextInputTraits,System.Boolean)
 M:UIKit.UITextInputTraits_Extensions.SetInlinePredictionType(UIKit.IUITextInputTraits,UIKit.UITextInlinePredictionType)
 M:UIKit.UITextInputTraits_Extensions.SetKeyboardAppearance(UIKit.IUITextInputTraits,UIKit.UIKeyboardAppearance)
@@ -41801,6 +41860,7 @@ M:UIKit.UITextView.InsertAdaptiveImageGlyph(UIKit.NSAdaptiveImageGlyph,UIKit.UIT
 M:UIKit.UITextView.InsertAttributedText(Foundation.NSAttributedString)
 M:UIKit.UITextView.InsertDictationResult(Foundation.NSArray)
 M:UIKit.UITextView.InsertDictationResultPlaceholder
+M:UIKit.UITextView.InsertInputSuggestion(UIKit.UIInputSuggestion)
 M:UIKit.UITextView.InsertText(System.String,System.String[],UIKit.UITextAlternativeStyle)
 M:UIKit.UITextView.InsertText(System.String)
 M:UIKit.UITextView.InsertTextPlaceholder(CoreGraphics.CGSize)
@@ -41840,6 +41900,7 @@ M:UIKit.UITextViewDelegate_Extensions.GetEditMenuForText(UIKit.IUITextViewDelega
 M:UIKit.UITextViewDelegate_Extensions.GetMenuConfiguration(UIKit.IUITextViewDelegate,UIKit.UITextView,UIKit.UITextItem,UIKit.UIMenu)
 M:UIKit.UITextViewDelegate_Extensions.GetPrimaryAction(UIKit.IUITextViewDelegate,UIKit.UITextView,UIKit.UITextItem,UIKit.UIAction)
 M:UIKit.UITextViewDelegate_Extensions.GetWritingToolsIgnoredRangesInEnclosingRange(UIKit.IUITextViewDelegate,UIKit.UITextView,Foundation.NSRange)
+M:UIKit.UITextViewDelegate_Extensions.InsertInputSuggestion(UIKit.IUITextViewDelegate,UIKit.UITextView,UIKit.UIInputSuggestion)
 M:UIKit.UITextViewDelegate_Extensions.SelectionChanged(UIKit.IUITextViewDelegate,UIKit.UITextView)
 M:UIKit.UITextViewDelegate_Extensions.ShouldBeginEditing(UIKit.IUITextViewDelegate,UIKit.UITextView)
 M:UIKit.UITextViewDelegate_Extensions.ShouldChangeText(UIKit.IUITextViewDelegate,UIKit.UITextView,Foundation.NSRange,System.String)
@@ -41865,6 +41926,7 @@ M:UIKit.UITextViewDelegate.GetEditMenuForText(UIKit.UITextView,Foundation.NSRang
 M:UIKit.UITextViewDelegate.GetMenuConfiguration(UIKit.UITextView,UIKit.UITextItem,UIKit.UIMenu)
 M:UIKit.UITextViewDelegate.GetPrimaryAction(UIKit.UITextView,UIKit.UITextItem,UIKit.UIAction)
 M:UIKit.UITextViewDelegate.GetWritingToolsIgnoredRangesInEnclosingRange(UIKit.UITextView,Foundation.NSRange)
+M:UIKit.UITextViewDelegate.InsertInputSuggestion(UIKit.UITextView,UIKit.UIInputSuggestion)
 M:UIKit.UITextViewDelegate.SelectionChanged(UIKit.UITextView)
 M:UIKit.UITextViewDelegate.ShouldBeginEditing(UIKit.UITextView)
 M:UIKit.UITextViewDelegate.ShouldChangeText(UIKit.UITextView,Foundation.NSRange,System.String)
@@ -56319,6 +56381,7 @@ P:UIKit.IUITextInput.WeakTokenizer
 P:UIKit.IUITextInputTraits.AllowedWritingToolsResultOptions
 P:UIKit.IUITextInputTraits.AutocapitalizationType
 P:UIKit.IUITextInputTraits.AutocorrectionType
+P:UIKit.IUITextInputTraits.ConversationContext
 P:UIKit.IUITextInputTraits.EnablesReturnKeyAutomatically
 P:UIKit.IUITextInputTraits.InlinePredictionType
 P:UIKit.IUITextInputTraits.KeyboardAppearance
@@ -57294,6 +57357,16 @@ P:UIKit.UIControl.ToolTipInteraction
 P:UIKit.UIControl.TouchInside
 P:UIKit.UIControl.Tracking
 P:UIKit.UIControl.VerticalAlignment
+P:UIKit.UIConversationContext.Entries
+P:UIKit.UIConversationContext.ParticipantNameByIdentifier
+P:UIKit.UIConversationContext.ResponsePrimaryRecipientIdentifiers
+P:UIKit.UIConversationContext.SelfIdentifiers
+P:UIKit.UIConversationContext.ThreadIdentifier
+P:UIKit.UIConversationEntry.EntryIdentifier
+P:UIKit.UIConversationEntry.PrimaryRecipientIdentifiers
+P:UIKit.UIConversationEntry.ReplyThreadIdentifier
+P:UIKit.UIConversationEntry.SenderIdentifier
+P:UIKit.UIConversationEntry.SentDate
 P:UIKit.UICoordinateSpace.Bounds
 P:UIKit.UICubicTimingParameters.AnimationCurve
 P:UIKit.UICubicTimingParameters.ControlPoint1
@@ -57884,6 +57957,11 @@ P:UIKit.UILongPressGestureRecognizer.AllowableMovement
 P:UIKit.UILongPressGestureRecognizer.MinimumPressDuration
 P:UIKit.UILongPressGestureRecognizer.NumberOfTapsRequired
 P:UIKit.UILongPressGestureRecognizer.NumberOfTouchesRequired
+P:UIKit.UIMailConversationContext.ResponseHasCustomSignature
+P:UIKit.UIMailConversationContext.ResponseSecondaryRecipientIdentifiers
+P:UIKit.UIMailConversationContext.ResponseSubject
+P:UIKit.UIMailConversationEntry.Kind
+P:UIKit.UIMailConversationEntry.ResponseSecondaryRecipientIdentifiers
 P:UIKit.UIManagedDocument.ManagedObjectContext
 P:UIKit.UIManagedDocument.ManagedObjectModel
 P:UIKit.UIManagedDocument.ModelConfiguration
@@ -57909,6 +57987,9 @@ P:UIKit.UIMenuElement.AccessibilityIdentifier
 P:UIKit.UIMenuElement.Subtitle
 P:UIKit.UIMenuSystem.ContextSystem
 P:UIKit.UIMenuSystem.MainSystem
+P:UIKit.UIMessageConversationContext.IsJunk
+P:UIKit.UIMessageConversationEntry.DataKind
+P:UIKit.UIMessageConversationEntry.WasSentBySelf
 P:UIKit.UIMotionEffectGroup.MotionEffects
 P:UIKit.UIMutableApplicationShortcutItem.Icon
 P:UIKit.UIMutableApplicationShortcutItem.LocalizedSubtitle
@@ -58443,6 +58524,7 @@ P:UIKit.UISearchBar.BackgroundImage
 P:UIKit.UISearchBar.BarPosition
 P:UIKit.UISearchBar.BarStyle
 P:UIKit.UISearchBar.BarTintColor
+P:UIKit.UISearchBar.ConversationContext
 P:UIKit.UISearchBar.Delegate
 P:UIKit.UISearchBar.Enabled
 P:UIKit.UISearchBar.EnablesReturnKeyAutomatically
@@ -58567,6 +58649,7 @@ P:UIKit.UISlider.UISliderAppearance.MinimumTrackTintColor
 P:UIKit.UISlider.UISliderAppearance.MinValueImage
 P:UIKit.UISlider.UISliderAppearance.ThumbTintColor
 P:UIKit.UISlider.Value
+P:UIKit.UISmartReplySuggestion.SmartReply
 P:UIKit.UISnapBehavior.Damping
 P:UIKit.UISnapBehavior.SnapPoint
 P:UIKit.UISplitViewController.AutomaticDimension
@@ -58712,6 +58795,8 @@ P:UIKit.UISymbolEffectCompletionContext.Finished
 P:UIKit.UITab.AccessibilityIdentifier
 P:UIKit.UITab.AllowsHiding
 P:UIKit.UITab.BadgeValue
+P:UIKit.UITab.Enabled
+P:UIKit.UITab.HasVisiblePlacement
 P:UIKit.UITab.Hidden
 P:UIKit.UITab.HiddenByDefault
 P:UIKit.UITab.ManagingTabGroup
@@ -58788,6 +58873,7 @@ P:UIKit.UITabBarController.ViewControllers
 P:UIKit.UITabBarControllerSidebar.BottomBarView
 P:UIKit.UITabBarControllerSidebar.Delegate
 P:UIKit.UITabBarControllerSidebar.Hidden
+P:UIKit.UITabBarControllerSidebar.NavigationOverflowItems
 P:UIKit.UITabBarControllerSidebar.PreferredLayout
 P:UIKit.UITabBarCustomizeChangeEventArgs.Changed
 P:UIKit.UITabBarCustomizeChangeEventArgs.ViewControllers
@@ -58999,6 +59085,7 @@ P:UIKit.UITextCursorDropPositionAnimator.TextInput
 P:UIKit.UITextDocumentProxy.AllowedWritingToolsResultOptions
 P:UIKit.UITextDocumentProxy.AutocapitalizationType
 P:UIKit.UITextDocumentProxy.AutocorrectionType
+P:UIKit.UITextDocumentProxy.ConversationContext
 P:UIKit.UITextDocumentProxy.DocumentContextAfterInput
 P:UIKit.UITextDocumentProxy.DocumentContextBeforeInput
 P:UIKit.UITextDocumentProxy.DocumentIdentifier
@@ -59037,6 +59124,7 @@ P:UIKit.UITextField.BorderStyle
 P:UIKit.UITextField.ClearButtonMode
 P:UIKit.UITextField.ClearsOnBeginEditing
 P:UIKit.UITextField.ClearsOnInsertion
+P:UIKit.UITextField.ConversationContext
 P:UIKit.UITextField.CurrentInputModeDidChangeNotification
 P:UIKit.UITextField.Delegate
 P:UIKit.UITextField.DidEndEditingReasonKey
@@ -59156,6 +59244,7 @@ P:UIKit.UITextView.AutocorrectionType
 P:UIKit.UITextView.BeginningOfDocument
 P:UIKit.UITextView.BorderStyle
 P:UIKit.UITextView.ClearsOnInsertion
+P:UIKit.UITextView.ConversationContext
 P:UIKit.UITextView.CurrentInputModeDidChangeNotification
 P:UIKit.UITextView.DataDetectorTypes
 P:UIKit.UITextView.Delegate
@@ -59196,6 +59285,7 @@ P:UIKit.UITextView.SmartDashesType
 P:UIKit.UITextView.SmartInsertDeleteType
 P:UIKit.UITextView.SmartQuotesType
 P:UIKit.UITextView.SpellCheckingType
+P:UIKit.UITextView.SubclassForWritingToolsCoordinator
 P:UIKit.UITextView.SupportsAdaptiveImageGlyph
 P:UIKit.UITextView.TextBackgroundColorKey
 P:UIKit.UITextView.TextColorKey
@@ -61459,8 +61549,17 @@ T:AppKit.NSPageControllerPrepareViewControllerEventArgs
 T:AppKit.NSPageControllerTransitionEventArgs
 T:AppKit.NSPageControllerTransitionStyle
 T:AppKit.NSPageLayoutResult
+T:AppKit.NSPasteboardAccessBehavior
 T:AppKit.NSPasteboardContentsOptions
+T:AppKit.NSPasteboardDetectionPattern
+T:AppKit.NSPasteboardDetectMetadataCompletionHandler
+T:AppKit.NSPasteboardDetectMetadataHandler
+T:AppKit.NSPasteboardDetectPatternsCompletionHandler
+T:AppKit.NSPasteboardDetectPatternsHandler
+T:AppKit.NSPasteboardDetectValuesCompletionHandler
+T:AppKit.NSPasteboardDetectValuesHandler
 T:AppKit.NSPasteboardItemDataProvider
+T:AppKit.NSPasteboardMetadataType
 T:AppKit.NSPasteboardName
 T:AppKit.NSPasteboardReadingOptions
 T:AppKit.NSPasteboardType
@@ -67588,6 +67687,8 @@ T:UIKit.UIControlContentVerticalAlignment
 T:UIKit.UIControlEnumerateEventsIteratorHandler
 T:UIKit.UIControlEvent
 T:UIKit.UIControlState
+T:UIKit.UIConversationContext
+T:UIKit.UIConversationEntry
 T:UIKit.UICoordinateSpace
 T:UIKit.UICornerCurve
 T:UIKit.UICubicTimingParameters
@@ -67712,6 +67813,7 @@ T:UIKit.UIImageSymbolScale
 T:UIKit.UIImageSymbolWeight
 T:UIKit.UIImageView
 T:UIKit.UIIndirectScribbleInteractionDelegate
+T:UIKit.UIInputSuggestion
 T:UIKit.UIInputView
 T:UIKit.UIInputViewController
 T:UIKit.UIInputViewStyle
@@ -67748,6 +67850,9 @@ T:UIKit.UIListEnvironment
 T:UIKit.UIListSeparatorVisibility
 T:UIKit.UILocalizedIndexedCollation
 T:UIKit.UILongPressGestureRecognizer
+T:UIKit.UIMailConversationContext
+T:UIKit.UIMailConversationEntry
+T:UIKit.UIMailConversationEntryKind
 T:UIKit.UIMenu
 T:UIKit.UIMenuDisplayPreferences
 T:UIKit.UIMenuElement
@@ -67757,6 +67862,9 @@ T:UIKit.UIMenuElementState
 T:UIKit.UIMenuIdentifier
 T:UIKit.UIMenuOptions
 T:UIKit.UIMenuSystem
+T:UIKit.UIMessageConversationContext
+T:UIKit.UIMessageConversationEntry
+T:UIKit.UIMessageConversationEntryDataKind
 T:UIKit.UIModalPresentationStyle
 T:UIKit.UIModalTransitionStyle
 T:UIKit.UIMotionEffect
@@ -67929,6 +68037,7 @@ T:UIKit.UISheetPresentationController
 T:UIKit.UISheetPresentationControllerDelegate
 T:UIKit.UISheetPresentationControllerDetent
 T:UIKit.UISheetPresentationControllerDetentIdentifier
+T:UIKit.UISmartReplySuggestion
 T:UIKit.UISnapBehavior
 T:UIKit.UISplitViewController
 T:UIKit.UISplitViewController_UIViewController

@@ -4891,7 +4891,9 @@ namespace UIKit {
 		[Export ("writingToolsCoordinator:selectRanges:inContext:completion:")]
 		void SelectRanges (XWritingToolsCoordinator writingToolsCoordinator, NSValue [] ranges, XWritingToolsCoordinatorContext context, Action completion);
 
-		[Abstract]
+		[Deprecated (PlatformName.MacOSX, 15, 4, "Not called anymore.")]
+		[Deprecated (PlatformName.MacCatalyst, 18, 4, "Not called anymore.")]
+		[Deprecated (PlatformName.iOS, 18, 4, "Not called anymore.")]
 		[Export ("writingToolsCoordinator:requestsRangeInContextWithIdentifierForPoint:completion:")]
 		void RequestsRange (XWritingToolsCoordinator writingToolsCoordinator, CGPoint point, XWritingToolsCoordinatorDelegateRequestsRangeCallback completion);
 

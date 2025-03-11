@@ -409,6 +409,16 @@ namespace Introspection {
 				}
 				break;
 #endif
+			case "UIInputViewController":
+				switch (name) {
+				case "conversationContext:didChange:":
+					// This method was added to the UITextInputDelegate
+					// protocol, which UIInputViewController implements, so
+					// all the UITextInputDelegate protocol's members are
+					// inlined in UIInputViewController, but apparently UIInputViewController doesn't implement this new method (yet?)
+					return true;
+				}
+				break;
 			}
 
 			switch (name) {

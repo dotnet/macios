@@ -3379,4 +3379,54 @@ namespace AppKit {
 		Visible,
 	}
 
+	[Native]
+	[Mac (15, 4), NoMacCatalyst]
+	public enum NSPasteboardAccessBehavior : ulong {
+		Default = 0,
+		Ask = 1,
+		AlwaysAllow = 2,
+		AlwaysDeny = 3,
+	}
+
+	[Mac (15, 4), NoMacCatalyst]
+	enum NSPasteboardDetectionPattern {
+		[Field ("NSPasteboardDetectionPatternProbableWebURL")]
+		ProbableWebUrl,
+
+		[Field ("NSPasteboardDetectionPatternProbableWebSearch")]
+		ProbableWebSearch,
+
+		[Field ("NSPasteboardDetectionPatternNumber")]
+		Number,
+
+		[Field ("NSPasteboardDetectionPatternLink")]
+		Link,
+
+		[Field ("NSPasteboardDetectionPatternPhoneNumber")]
+		PhoneNumber,
+
+		[Field ("NSPasteboardDetectionPatternEmailAddress")]
+		EmailAddress,
+
+		[Field ("NSPasteboardDetectionPatternPostalAddress")]
+		PostalAddress,
+
+		[Field ("NSPasteboardDetectionPatternCalendarEvent")]
+		CalendarEvent,
+
+		[Field ("NSPasteboardDetectionPatternShipmentTrackingNumber")]
+		ShipmentTrackingNumber,
+
+		[Field ("NSPasteboardDetectionPatternFlightNumber")]
+		FlightNumber,
+
+		[Field ("NSPasteboardDetectionPatternMoneyAmount")]
+		MoneyAmount,
+	}
+
+	[Mac (15, 4), NoMacCatalyst]
+	enum NSPasteboardMetadataType {
+		[Field ("NSPasteboardMetadataTypeContentType")]
+		ContentType,
+	}
 }

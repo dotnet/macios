@@ -375,7 +375,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 		var declaration = NSArrayFromHandleFunc (returnType, arguments);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
-	
+
 	class TestDataSmartEnumGetValue : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -404,8 +404,8 @@ public class BindingSyntaxFactoryRuntimeTests {
 	void SmartEnumGetValueTests (TypeInfo enumType, ImmutableArray<ArgumentSyntax> arguments, bool isNullable, string expectedDeclaration)
 	{
 		var declaration = SmartEnumGetValue (enumType, arguments, isNullable);
-		var str = declaration.ToString();
+		var str = declaration.ToString ();
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
-	} 
-	
+	}
+
 }

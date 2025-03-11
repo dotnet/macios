@@ -104,27 +104,21 @@ public class NativeObjectHandleAnalyzer : DiagnosticAnalyzer {
 			return;
 		}
 
-		var type = (symbol as ILocalSymbol)?.Type ?? (symbol as IParameterSymbol)?.Type;
-		if (type is null || !IsINativeObject (type))
+		ITypeSymbol varType;
+		if (symbol is ILocalSymbol localSymbol) {
+			varType = localSymbol.Type;
+			// Ignore variables that are wrapped in using block
+			if (localSymbol.IsUsing) {
+				return;
+			}
+		} else if (symbol is IParameterSymbol parameterSymbol) {
+			varType = parameterSymbol.Type;
+		} else {
 			return;
-
-		// Ignore variables that are wrapped in using block
-		var usingStatement = memberAccess.Parent?.FirstAncestorOrSelf<UsingStatementSyntax> ();
-		while (usingStatement is not null) {
-			if (usingStatement.Expression is not null) {
-				var resourceSymbol = context.SemanticModel.GetSymbolInfo (usingStatement.Expression).Symbol;
-				if (resourceSymbol is not null && SymbolEqualityComparer.Default.Equals (resourceSymbol, symbol))
-					return;
-			}
-			if (usingStatement.Declaration is not null) {
-				foreach (var variable in usingStatement.Declaration.Variables) {
-					var declaredSymbol = context.SemanticModel.GetDeclaredSymbol (variable);
-					if (declaredSymbol is not null && SymbolEqualityComparer.Default.Equals (declaredSymbol, symbol))
-						return;
-				}
-			}
-			usingStatement = usingStatement.Parent?.FirstAncestorOrSelf<UsingStatementSyntax> ();
 		}
+
+		if (!IsINativeObject (varType))
+			return;
 
 		bool accessedAfter = false;
 		var block = memberAccess.FirstAncestorOrSelf<BlockSyntax> ();
@@ -141,7 +135,10 @@ public class NativeObjectHandleAnalyzer : DiagnosticAnalyzer {
 					return;
 				accessedAfter = df.ReadInside.Contains (symbol);
 			} else {
-				// Assume expressions don't access the variable
+				// We end up here for empty constructor bodies or bodies written as an
+				// expression. Assume that expressions don't access the variable and
+				// produce an error.
+				accessedAfter = false;
 			}
 		} else {
 			// Search just the immediate containing block for variable access

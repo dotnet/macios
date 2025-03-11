@@ -82,9 +82,6 @@ DEPENDENCY_DIRECTORIES += $($(2)_PATH)
 
 endef
 
-$(eval $(call CheckVersionTemplate,mono,MONO))
-endif
-
 ifdef ENABLE_XAMARIN
 $(MACCORE_PATH):
 

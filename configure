@@ -5,40 +5,25 @@ cat <<EOL
 Usage: configure [options]
     -h, --help              Displays this help
 
-    --disable-mac           Disable most of the Mac-related parts.
-    --disable-ios           Disable most of the iOS-related parts.
-                            The iOS build depend on some parts of the Mac build, so
-                            a complete separation is not possible (neither desirable,
-                            some parts will always be enabled to catch common programmer
-                            errors causing build breaks).
-                            The main reasons for disabling either part is to have faster
-                            builds and disable the non-relevant tests.
+    --enable-macos
+    --disable-macos         Enable/disable building the macOS SDK.
 
-    --disable-ios-device    Disables all device-related parts from the iOS build.
-                            This can be used to speed up the build.
+    --enable-ios
+    --disable-ios           Enable/disable building the iOS SDK.
 
-    --disable-strip:        If executables should be stripped or not.
-                            Disable to make it easier to debug executables using lldb.
+    --enable-tvos
+    --disable-tvos          Enable/disable building the tvOS SDK.
+
+    --enable-maccatalyst
+    --disable-maccatalyst   Enable/disable building the Mac Catalyst SDK.
+
+    --disable-all-platforms Disable building all SDKs (typically followed by --enable-[iOS|tvOS|macOS|MacCatalyst] to only enable a single platform).
 
     --enable-ccache
     --disable-ccache        Enable/disable ccache. Default: enabled if detected.
 
     --enable-xamarin
     --disable-xamarin       Enable/disable additional Xamarin-specific parts of the build.
-
-    --disable-packaged-llvm Compile LLVM instead of downloading a precompiled version.
-
-    --enable-packaged-mono
-    --disable-packaged-mono Enable/disable using the precompiled version of mono. If disabled mono will be compiled from source.
-
-    --enable-dotnet         Enable building .NET 6 bits.
-    --disable-dotnet        Disable building .NET 6 bits.
-
-    --enable-documentation  Enable building of API documentation
-    --disable-documentation Disable building of API documentation.
-
-    --enable-legacy-xamarin  Enable building the legacy version of Xamarin.iOS/Xamarin.Mac.
-    --disable-legacy-xamarin Disable building the legacy version of Xamarin.iOS/Xamarin.Mac.
 
     --custom-dotnet=[artifacts] Use a locally built version of dotnet/runtime. See docs/CORECLR.md for detailed instructions about how to build dotnet/runtime from source.
 
@@ -80,10 +65,6 @@ while test "x$1" != x; do
         echo "Mac Build enabled"
         shift
         ;;
-    --disable-ios-device)
-        echo "INCLUDE_DEVICE=" >> $CONFIGURED_FILE
-        shift
-        ;;
     --disable-ios)
         echo "INCLUDE_IOS=" >> $CONFIGURED_FILE
         echo "iOS Build disabled"
@@ -114,10 +95,6 @@ while test "x$1" != x; do
         echo "Mac Catalyst Build enabled"
         shift
         ;;
-    --disable-strip)
-        echo "DISABLE_STRIP=1" >> $CONFIGURED_FILE
-        shift
-        ;;
     --disable-ccache)
         echo "ENABLE_CCACHE=" >> $CONFIGURED_FILE
         shift
@@ -137,46 +114,6 @@ while test "x$1" != x; do
         ;;
     --disable-xamarin)
         echo "ENABLE_XAMARIN=" >> $CONFIGURED_FILE
-        shift
-        ;;
-    --disable-packaged-llvm)
-        echo "DISABLE_DOWNLOAD_LLVM=1" >> $CONFIGURED_FILE
-        shift
-        ;;
-    --enable-packaged-mono)
-        echo "MONO_BUILD_FROM_SOURCE=" >> "$CONFIGURED_FILE"
-        shift
-        ;;
-    --disable-packaged-mono)
-        echo "MONO_BUILD_FROM_SOURCE=1" >> "$CONFIGURED_FILE"
-        shift
-        ;;
-    --disable-packaged-mono=no | --disable-packaged-mono=false)
-        echo "MONO_BUILD_FROM_SOURCE=" >> "$CONFIGURED_FILE"
-        shift
-        ;;
-    --enable-dotnet)
-        # This is the default, and there's no way do enable it, so ignore this argument
-        shift
-        ;;
-    --disable-dotnet)
-        echo "It's not possible to disable .NET anymore."
-        exit 1
-        ;;
-    --enable-dotnet-windows)
-        echo "$1 is ignored. Use --enable-dotnet instead"
-        shift
-        ;;
-    --disable-dotnet-windows)
-        echo "$1 is ignored. Use --disable-dotnet instead"
-        shift
-        ;;
-    --enable-legacy-xamarin)
-        echo "It's not possible to enable legacy Xamarin anymore."
-        exit 1
-        ;;
-    --disable-legacy-xamarin)
-        # This is the default, and there's no way do enable it, so ignore this argument
         shift
         ;;
     --custom-dotnet=*)

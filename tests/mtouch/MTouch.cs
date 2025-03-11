@@ -175,7 +175,6 @@ public class B : A {}
 		[Test]
 		public void FatAppFiles ()
 		{
-			AssertDeviceAvailable ();
 			Configuration.AssertiOS32BitAvailable ();
 
 			using (var mtouch = new MTouchTool ()) {
@@ -272,7 +271,6 @@ public class B : A {}
 		[TestCase ("debug", "", true)]
 		public void RebuildTest (string name, string abi, bool debug)
 		{
-			AssertDeviceAvailable ();
 			if (abi.Contains ("armv7"))
 				Configuration.AssertiOS32BitAvailable ();
 
@@ -584,9 +582,6 @@ public class B : A {}
 		[TestCase (Target.Dev, Config.Release, PackageMdb.WithMdb, MSym.Default, true, true, "--abi:armv7+llvm")]
 		public void SymbolicationData (Target target, Config configuration, PackageMdb package_mdb, MSym msym, bool has_mdb, bool has_msym, string extra_mtouch_args)
 		{
-			if (target == Target.Dev)
-				AssertDeviceAvailable ();
-
 			using (var mtouch = new MTouchTool ()) {
 				mtouch.Profile = Profile.iOS;
 				mtouch.CreateTemporaryApp (hasPlist: true);
@@ -750,8 +745,6 @@ public class B : A {}
 		[Test]
 		public void MT0073 ()
 		{
-			AssertDeviceAvailable ();
-
 			using (var mtouch = new MTouchTool ()) {
 				mtouch.CreateTemporaryApp ();
 				mtouch.TargetVer = "3.1";
@@ -2573,8 +2566,6 @@ public class TestApp {
 		[TestCase (Target.Sim, null)]
 		public void Architectures_TVOS (Target target, string abi)
 		{
-			AssertDeviceAvailable ();
-
 			using (var mtouch = new MTouchTool ()) {
 				mtouch.Profile = Profile.tvOS;
 				mtouch.Abi = abi;
@@ -2590,8 +2581,6 @@ public class TestApp {
 		[Test]
 		public void Architectures_TVOS_Invalid ()
 		{
-			AssertDeviceAvailable ();
-
 			using (var mtouch = new MTouchTool ()) {
 				mtouch.Profile = Profile.tvOS;
 				mtouch.CreateTemporaryApp ();
@@ -2626,8 +2615,6 @@ public class TestApp {
 		[Ignore ("Crashes in clang")]
 		public void Architectures_WatchOS (Target target, string abi, string expected_abi, MTouchBitcode bitcode)
 		{
-			AssertDeviceAvailable ();
-
 			using (var mtouch = new MTouchTool ()) {
 				mtouch.Profile = Profile.watchOS;
 				mtouch.Abi = abi;
@@ -2643,8 +2630,6 @@ public class TestApp {
 		[Test]
 		public void Architectures_WatchOS_Invalid ()
 		{
-			AssertDeviceAvailable ();
-
 			using (var mtouch = new MTouchTool ()) {
 				mtouch.Profile = Profile.watchOS;
 				mtouch.CreateTemporaryWatchKitExtension ();
@@ -2717,9 +2702,6 @@ public class TestApp {
 		[TestCase (Target.Dev, Profile.iOS, "", "monotouch-test", "Release")]
 		public void BuildTestProject (Target target, Profile profile, string subdir, string testname, string configuration)
 		{
-			if (target == Target.Dev)
-				AssertDeviceAvailable ();
-
 			var testDir = Path.Combine (Configuration.SourceRoot, "tests", subdir, testname);
 			var platform = target == Target.Dev ? "iPhone" : "iPhoneSimulator";
 			var csproj = Path.Combine (testDir, testname + GetProjectSuffix (profile) + ".csproj");
@@ -2746,7 +2728,6 @@ public class TestApp {
 		[TestCase (Target.Sim, MTouchLinker.DontLink, MTouchRegistrar.Dynamic, "")]
 		public void Registrar (Target target, MTouchLinker linker, MTouchRegistrar registrar, string abi)
 		{
-			AssertDeviceAvailable ();
 			if (abi.Contains ("armv7"))
 				Configuration.AssertiOS32BitAvailable ();
 
@@ -2770,8 +2751,6 @@ public class TestApp {
 		[TestCase (MTouchLinker.LinkSdk)]
 		public void ExportedSymbols (MTouchLinker linker_flag)
 		{
-			AssertDeviceAvailable ();
-
 			//
 			// Here we test that symbols P/Invokes and [Field] attributes references are not
 			// stripped by the native linker. mtouch has to pass '-u _SYMBOL' to the native linker
@@ -2833,8 +2812,6 @@ public class TestApp {
 		[Test]
 		public void ExportedSymbols_VerifyLinkedAwayField ()
 		{
-			AssertDeviceAvailable ();
-
 			//
 			// Here we test that unused P/Invokes and [Field] members are properly linked away
 			// (and we do not request the native linker to preserve those symbols).
@@ -2891,8 +2868,6 @@ public class TestApp {
 		[Test]
 		public void LinkerWarnings ()
 		{
-			AssertDeviceAvailable ();
-
 			using (var mtouch = new MTouchTool ()) {
 				mtouch.CreateTemporaryApp ();
 				mtouch.NoFastSim = true;
@@ -3113,7 +3088,6 @@ class TestClass {
 		[Test]
 		public void MT5107 ()
 		{
-			AssertDeviceAvailable ();
 			Configuration.AssertiOS32BitAvailable ();
 
 			using (var mtouch = new MTouchTool ()) {
@@ -4682,11 +4656,6 @@ public class TestApp {
 			var a = string.Join (", ", actual);
 
 			Assert.AreEqual (e, a, message);
-		}
-
-		public static void AssertDeviceAvailable ()
-		{
-			Configuration.AssertDeviceAvailable ();
 		}
 
 		public static IEnumerable<string> GetNativeSymbols (string file, string arch = null)

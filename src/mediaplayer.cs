@@ -66,6 +66,9 @@ namespace MediaPlayer {
 		NSObject GetObject (NSObject key);
 
 #if NET
+		/// <summary>The value that is associated with the MPMediaEntityPropertyPersistentID constant.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 #endif
 		[Field ("MPMediaEntityPropertyPersistentID")]
@@ -99,6 +102,11 @@ namespace MediaPlayer {
 		[Static]
 		string GetTitleProperty (MPMediaGrouping groupingType);
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyPersistentID</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyPersistentID")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString PersistentIDProperty { get; }
@@ -154,14 +162,29 @@ namespace MediaPlayer {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString ComposerPersistentIDProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyPodcastPersistentID</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyPodcastPersistentID")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString PodcastPersistentIDProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyMediaType</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyMediaType")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString MediaTypeProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyTitle</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyTitle")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString TitleProperty { get; }
@@ -211,6 +234,11 @@ namespace MediaPlayer {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString ComposerProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyPlaybackDuration</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyPlaybackDuration")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString PlaybackDurationProperty { get; }
@@ -261,10 +289,18 @@ namespace MediaPlayer {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString ArtworkProperty { get; }
 
+		/// <summary>The value that is associated with the MPMediaItemPropertyIsExplicit constant.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MPMediaItemPropertyIsExplicit")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString IsExplicitProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyLyrics</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyLyrics")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString LyricsProperty { get; }
@@ -278,6 +314,11 @@ namespace MediaPlayer {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString IsCompilationProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyReleaseDate</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyReleaseDate")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString ReleaseDateProperty { get; }
@@ -309,26 +350,56 @@ namespace MediaPlayer {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString AssetURLProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyPlayCount</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyPlayCount")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString PlayCountProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertySkipCount</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertySkipCount")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString SkipCountProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyRating</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyRating")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString RatingProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyLastPlayedDate</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyLastPlayedDate")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString LastPlayedDateProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyUserGrouping</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyUserGrouping")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString UserGroupingProperty { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaItemPropertyPodcastTitle</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("MPMediaItemPropertyPodcastTitle")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString PodcastTitleProperty { get; }
@@ -367,6 +438,9 @@ namespace MediaPlayer {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString DateAddedProperty { get; }
 
+		/// <summary>Backing store for the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Media%20Player%20Media%20Item%20Playback%20Store%20ID&amp;scope=Xamarin" title="P:MediaPlayer.MediaItem.PlaybackStoreID">P:MediaPlayer.MediaItem.PlaybackStoreID</a></format> property.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("MPMediaItemPropertyPlaybackStoreID")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
@@ -400,9 +474,15 @@ namespace MediaPlayer {
 		[return: NullAllowed]
 		UIImage ImageWithSize (CGSize size);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bounds")]
 		CGRect Bounds { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 10, 0)]
 		[Deprecated (PlatformName.TvOS, 10, 0)]
@@ -435,16 +515,28 @@ namespace MediaPlayer {
 		[Export ("initWithItems:")]
 		NativeHandle Constructor (MPMediaItem [] items);
 
+		/// <summary>Gets an array that contains the items in the collection.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("items")]
 		MPMediaItem [] Items { get; }
 
+		/// <summary>Gets a representative item.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("representativeItem")]
 		[NullAllowed]
 		MPMediaItem RepresentativeItem { get; }
 
+		/// <summary>Gets the number of items in the collection.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("count")]
 		nint Count { get; }
 
+		/// <summary>Gets an array that contains the media types of the items in the collection.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("mediaTypes")]
 		MPMediaType MediaTypes { get; }
 	}
@@ -457,9 +549,15 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MPMediaLibrary : NSSecureCoding {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("defaultMediaLibrary")]
 		MPMediaLibrary DefaultMediaLibrary { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lastModifiedDate")]
 		NSDate LastModifiedDate { get; }
 
@@ -469,10 +567,14 @@ namespace MediaPlayer {
 		[Export ("endGeneratingLibraryChangeNotifications")]
 		void EndGeneratingLibraryChangeNotifications ();
 
+		/// <include file="../docs/api/MediaPlayer/MPMediaLibrary.xml" path="/Documentation/Docs[@DocId='P:MediaPlayer.MPMediaLibrary.DidChangeNotification']/*" />
 		[Field ("MPMediaLibraryDidChangeNotification")]
 		[Notification]
 		NSString DidChangeNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("authorizationStatus")]
@@ -511,25 +613,57 @@ namespace MediaPlayer {
 		[Export ("initWithMediaTypes:")]
 		NativeHandle Constructor (MPMediaType mediaTypes);
 
+		/// <summary>Gets the media types that the picker enables the user to pick.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("mediaTypes")]
 		MPMediaType MediaTypes { get; }
 
+		/// <summary>An object that can respond to the delegate protocol for this type</summary>
+		///         <value>The instance that will respond to events and data requests.</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+		///         </remarks>
 		[Export ("delegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the MediaPlayer.IMPMediaPickerControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the MediaPlayer.IMPMediaPickerControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IMPMediaPickerControllerDelegate Delegate { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the user can pick multiple items.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allowsPickingMultipleItems")]
 		bool AllowsPickingMultipleItems { get; set; }
 
+		/// <summary>Gets or sets a string that appears above the picker.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("prompt", ArgumentSemantic.Copy)]
 		string Prompt { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether items from the cloud are shown.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("showsCloudItems")]
 		bool ShowsCloudItems { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether items that have protected assets are shown.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("showsItemsWithProtectedAssets")]
 		bool ShowsItemsWithProtectedAssets { get; set; }
@@ -579,25 +713,49 @@ namespace MediaPlayer {
 		[Export ("valueForProperty:")]
 		NSObject ValueForProperty (string property);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("persistentID")]
 		ulong PersistentID { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("name")]
 		[NullAllowed]
 		string Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("playlistAttributes")]
 		MPMediaPlaylistAttribute PlaylistAttributes { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("seedItems")]
 		[NullAllowed]
 		MPMediaItem [] SeedItems { get; }
 
+		/// <summary>Gets the user-supplied playlist description.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("descriptionText")]
 		string DescriptionText { get; }
 
+		/// <summary>When overridden by the developer, gets the playlist display name. The default value is the application name.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("authorDisplayName")]
 		string AuthorDisplayName { get; }
@@ -622,23 +780,45 @@ namespace MediaPlayer {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface MPMediaPlaylistProperty {
+		/// <summary>Represents the value associated with the constant MPMediaPlaylistPropertyPersistentID</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MPMediaPlaylistPropertyPersistentID")]
 		NSString PersistentID { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaPlaylistPropertyName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MPMediaPlaylistPropertyName")]
 		NSString Name { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaPlaylistPropertyPlaylistAttributes</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MPMediaPlaylistPropertyPlaylistAttributes")]
 		NSString PlaylistAttributes { get; }
 
+		/// <summary>Represents the value associated with the constant MPMediaPlaylistPropertySeedItems</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MPMediaPlaylistPropertySeedItems")]
 		NSString SeedItems { get; }
 
+		/// <summary>Gets the description text.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV] // do not work on AppleTV devices (only in simulator)
 		[MacCatalyst (13, 1)]
 		[Field ("MPMediaPlaylistPropertyDescriptionText")]
 		NSString DescriptionText { get; }
 
+		/// <summary>Gets the display name for the author.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV] // do not work on AppleTV devices (only in simulator)
 		[MacCatalyst (13, 1)]
 		[Field ("MPMediaPlaylistPropertyAuthorDisplayName")]
@@ -663,6 +843,12 @@ namespace MediaPlayer {
 		[Export ("initWithFilterPredicates:")]
 		NativeHandle Constructor ([NullAllowed] NSSet filterPredicates);
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("filterPredicates", ArgumentSemantic.Retain)]
 		NSSet FilterPredicates { get; set; }
@@ -673,57 +859,99 @@ namespace MediaPlayer {
 		[Export ("removeFilterPredicate:")]
 		void RemoveFilterPredicate (MPMediaPredicate predicate);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("items")]
 		[NullAllowed]
 		MPMediaItem [] Items { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("collections")]
 		[NullAllowed]
 		MPMediaItemCollection [] Collections { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("groupingType")]
 		MPMediaGrouping GroupingType { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("albumsQuery")]
 		[Static]
 		MPMediaQuery AlbumsQuery { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("artistsQuery")]
 		[Static]
 		MPMediaQuery ArtistsQuery { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("songsQuery")]
 		[Static]
 		MPMediaQuery SongsQuery { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("playlistsQuery")]
 		[Static]
 		MPMediaQuery PlaylistsQuery { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("podcastsQuery")]
 		[Static]
 		MPMediaQuery PodcastsQuery { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("audiobooksQuery")]
 		[Static]
 		MPMediaQuery AudiobooksQuery { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("compilationsQuery")]
 		[Static]
 		MPMediaQuery CompilationsQuery { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("composersQuery")]
 		[Static]
 		MPMediaQuery ComposersQuery { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("genresQuery")]
 		[Static]
 		MPMediaQuery GenresQuery { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("collectionSections")]
 		[NullAllowed]
 		MPMediaQuerySection [] CollectionSections { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("itemSections")]
 		[NullAllowed]
 		MPMediaQuerySection [] ItemSections { get; }
@@ -753,13 +981,22 @@ namespace MediaPlayer {
 		[Static, Export ("predicateWithValue:forProperty:comparisonType:")]
 		MPMediaPropertyPredicate PredicateWithValue ([NullAllowed] NSObject value, string property, MPMediaPredicateComparison comparisonType);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("property", ArgumentSemantic.Copy)]
 		string Property { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("value", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		NSObject Value { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("comparisonType")]
 		MPMediaPredicateComparison ComparisonType { get; }
 	}
@@ -774,12 +1011,21 @@ namespace MediaPlayer {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MPMovieAccessLog : NSCopying {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("events")]
 		MPMovieAccessLogEvent [] Events { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("extendedLogDataStringEncoding")]
 		NSStringEncoding ExtendedLogDataStringEncoding { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("extendedLogData")]
 		NSData ExtendedLogData { get; }
 	}
@@ -1394,6 +1640,9 @@ namespace MediaPlayer {
 		[Export ("initWithContentURL:")]
 		NativeHandle Constructor (NSUrl url);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("moviePlayer")]
 		MPMoviePlayerController MoviePlayer { get; }
 
@@ -1633,9 +1882,15 @@ namespace MediaPlayer {
 	// Objective-C exception thrown.  Name: NSInvalidArgumentException Reason: MPMediaQuerySection is a read-only object
 	[DisableDefaultCtor]
 	interface MPMediaQuerySection : NSSecureCoding, NSCopying {
+		/// <summary>The location and length, inside the originating <see cref="T:MediaPlayer.MPMediaQuery" />, of this section.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("range", ArgumentSemantic.Assign)]
 		NSRange Range { get; }
 
+		/// <summary>The identifier of this section.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("title", ArgumentSemantic.Copy)]
 		string Title { get; }
 	}
@@ -1648,6 +1903,9 @@ namespace MediaPlayer {
 		[Export ("nowPlayingInfo", ArgumentSemantic.Copy), NullAllowed, Internal]
 		NSDictionary _NowPlayingInfo { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("defaultCenter")]
 		MPNowPlayingInfoCenter DefaultCenter { get; }
@@ -1697,34 +1955,58 @@ namespace MediaPlayer {
 		[Field ("MPNowPlayingInfoPropertyCurrentLanguageOptions")]
 		NSString PropertyCurrentLanguageOptions { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("MPNowPlayingInfoCollectionIdentifier")]
 		NSString PropertyCollectionIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("MPNowPlayingInfoPropertyExternalContentIdentifier")]
 		NSString PropertyExternalContentIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("MPNowPlayingInfoPropertyExternalUserProfileIdentifier")]
 		NSString PropertyExternalUserProfileIdentifier { get; }
 
+		/// <summary>Gets the identifier for the property that specifies the service provider for the currently playing item.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("MPNowPlayingInfoPropertyServiceIdentifier")]
 		NSString PropertyServiceIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("MPNowPlayingInfoPropertyPlaybackProgress")]
 		NSString PropertyPlaybackProgress { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("MPNowPlayingInfoPropertyMediaType")]
 		NSString PropertyMediaType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("MPNowPlayingInfoPropertyIsLiveStream")]
 		NSString PropertyIsLiveStream { get; }
 
+		/// <summary>Represents the value that is associated with the MPNowPlayingInfoPropertyAssetURL constant.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("MPNowPlayingInfoPropertyAssetURL")]
 		NSString PropertyAssetUrl { get; }
@@ -1760,35 +2042,62 @@ namespace MediaPlayer {
 		[Export ("initWithIdentifier:")]
 		NativeHandle Constructor (string identifier);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("artwork")]
 		MPMediaItemArtwork Artwork { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("identifier")]
 		string Identifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("playbackProgress")]
 		float PlaybackProgress { get; set; } // float, not CGFloat
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("subtitle")]
 		string Subtitle { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("title")]
 		string Title { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("streamingContent")]
 		bool StreamingContent { [Bind ("isStreamingContent")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("explicitContent")]
 		bool ExplicitContent { [Bind ("isExplicitContent")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("container")]
 		bool Container { [Bind ("isContainer")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("playable")]
 		bool Playable { [Bind ("isPlayable")] get; set; }
 	}
@@ -1986,6 +2295,9 @@ namespace MediaPlayer {
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangePlaybackRateCommands cannot be initialized externally.
 	interface MPChangePlaybackRateCommand {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("supportedPlaybackRates")]
 		NSNumber [] SupportedPlaybackRates { get; set; }
 	}
@@ -1994,6 +2306,9 @@ namespace MediaPlayer {
 	[BaseType (typeof (MPRemoteCommand))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangeShuffleModeCommand cannot be initialized externally.
 	interface MPChangeShuffleModeCommand {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("currentShuffleType", ArgumentSemantic.Assign)]
 		MPShuffleType CurrentShuffleType { get; set; }
 	}
@@ -2002,6 +2317,9 @@ namespace MediaPlayer {
 	[BaseType (typeof (MPRemoteCommand))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangeRepeatModeCommand cannot be initialized externally.
 	interface MPChangeRepeatModeCommand {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("currentRepeatType", ArgumentSemantic.Assign)]
 		MPRepeatType CurrentRepeatType { get; set; }
 	}
@@ -2011,12 +2329,21 @@ namespace MediaPlayer {
 	[DisableDefaultCtor] // NSGenericException Reason: MPFeedbackCommands cannot be initialized externally.
 	interface MPFeedbackCommand {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("active")]
 		bool Active { [Bind ("isActive")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("localizedTitle")]
 		string LocalizedTitle { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("localizedShortTitle")]
 		string LocalizedShortTitle { get; set; }
@@ -2136,6 +2463,9 @@ namespace MediaPlayer {
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangePlaybackRateCommandEvents cannot be initialized externally.
 	interface MPChangePlaybackRateCommandEvent {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("playbackRate")]
 		float PlaybackRate { get; } // float, not CGFloat
 	}
@@ -2172,6 +2502,9 @@ namespace MediaPlayer {
 	[DisableDefaultCtor]
 	interface MPFeedbackCommandEvent {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("negative")]
 		bool Negative { [Bind ("isNegative")] get; }
 	}
@@ -2198,9 +2531,15 @@ namespace MediaPlayer {
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangeShuffleModeCommandEvent cannot be initialized externally.
 	interface MPChangeShuffleModeCommandEvent {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("shuffleType")]
 		MPShuffleType ShuffleType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("preservesShuffleMode")]
 		bool PreservesShuffleMode { get; }
@@ -2210,9 +2549,15 @@ namespace MediaPlayer {
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // NSGenericException Reason: MPChangeRepeatModeCommandEvent cannot be initialized externally.
 	interface MPChangeRepeatModeCommandEvent {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("repeatType")]
 		MPRepeatType RepeatType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("preservesRepeatMode")]
 		bool PreservesRepeatMode { get; }
@@ -2271,33 +2616,63 @@ namespace MediaPlayer {
 	[Static]
 	// not [Internal] since they are exposed as an NSString[] property in MPNowPlayingInfoLanguageOption
 	interface MPLanguageOptionCharacteristics {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MPLanguageOptionCharacteristicIsMainProgramContent")]
 		NSString IsMainProgramContent { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MPLanguageOptionCharacteristicIsAuxiliaryContent")]
 		NSString IsAuxiliaryContent { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MPLanguageOptionCharacteristicContainsOnlyForcedSubtitles")]
 		NSString ContainsOnlyForcedSubtitles { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MPLanguageOptionCharacteristicTranscribesSpokenDialog")]
 		NSString TranscribesSpokenDialog { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MPLanguageOptionCharacteristicDescribesMusicAndSound")]
 		NSString DescribesMusicAndSound { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MPLanguageOptionCharacteristicEasyToRead")]
 		NSString EasyToRead { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MPLanguageOptionCharacteristicDescribesVideo")]
 		NSString DescribesVideo { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MPLanguageOptionCharacteristicLanguageTranslation")]
 		NSString LanguageTranslation { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MPLanguageOptionCharacteristicDubbedTranslation")]
 		NSString DubbedTranslation { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MPLanguageOptionCharacteristicVoiceOverTranslation")]
 		NSString VoiceOverTranslation { get; }
 	}
@@ -2330,13 +2705,25 @@ namespace MediaPlayer {
 		[DesignatedInitializer]
 		NativeHandle Constructor (string name);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("name")]
 		string Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // null_resettable
 		[Export ("authorDisplayName")]
 		string AuthorDisplayName { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("descriptionText")]
 		string DescriptionText { get; set; }
 	}

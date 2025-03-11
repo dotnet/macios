@@ -81,16 +81,6 @@ xamarin_nsstring_to_string (MonoDomain *domain, NSString *obj)
 void
 xamarin_invoke_trampoline (enum TrampolineType type, id self, SEL sel, iterator_func iterator, marshal_return_value_func marshal_return_value, void *context)
 {
-	// COOP: No managed data in input, but accesses managed data.
-	// COOP: FIXME: This method needs a lot of work when the runtime team
-	//       implements a handle api for mono objects.
-	//       Random notes:
-	//       * Must switch to SAFE mode when calling any external code.
-	//       * mono_runtime_invoke will have to change, since 'out/ref'
-	//         objects arguments are now put into the arg_ptrs array
-	//         (clearly not GC-safe upon return).
-	MONO_ASSERT_GC_SAFE_OR_DETACHED;
-
 	MonoObject *exception = NULL;
 	MonoObject **exception_ptr = xamarin_is_managed_exception_marshaling_disabled () ? NULL : &exception;
 	GCHandle exception_gchandle = INVALID_GCHANDLE;
@@ -121,7 +111,7 @@ xamarin_invoke_trampoline (enum TrampolineType type, id self, SEL sel, iterator_
 		}
 	}
 
-	MONO_THREAD_ATTACH; // COOP: This will swith to GC_UNSAFE
+	MONO_THREAD_ATTACH;
 
 	MonoDomain *domain = mono_domain_get ();
 
@@ -468,13 +458,11 @@ xamarin_invoke_trampoline (enum TrampolineType type, id self, SEL sel, iterator_
 						arg_ptrs [i + mofs] = &arg_frame [frameofs];
 						LOGZ (" argument %i is IntPtr: %p\n", (int) i + 1, id_arg);
 						break;
-#if DOTNET
 					} else if (xamarin_is_class_nativehandle (p_klass)) {
 						arg_frame [ofs] = id_arg;
 						arg_ptrs [i + mofs] = &arg_frame [frameofs];
 						LOGZ (" argument %i is NativeHandle: %p\n", (int) i + 1, id_arg);
 						break;
-#endif
 					} else if (!id_arg) {
 						arg_ptrs [i + mofs] = NULL;
 						break;
@@ -798,7 +786,7 @@ exception_handling:
 
 	xamarin_bridge_free_mono_signature (&msig);
 
-	MONO_THREAD_DETACH; // COOP: This will switch to GC_SAFE
+	MONO_THREAD_DETACH;
 
 	if (exception_gchandle != INVALID_GCHANDLE) {
 		xamarin_process_managed_exception_gchandle (exception_gchandle);

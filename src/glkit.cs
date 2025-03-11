@@ -981,21 +981,39 @@ namespace GLKit {
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
+		/// <summary>The desired number of frames per second.   Controls the frequency that your Update and Draw methods will be called.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("preferredFramesPerSecond")]
 		nint PreferredFramesPerSecond { get; set; }
 
+		/// <summary>The actual frames per second that your application is getting.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("framesPerSecond")]
 		nint FramesPerSecond { get; }
 
+		/// <summary>When paused, the Update and Draw methods are not invoked.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("paused")]
 		bool Paused { [Bind ("isPaused")] get; set; }
 
+		/// <summary>Cumulative count of frames displayed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("framesDisplayed")]
 		nint FramesDisplayed { get; }
 
+		/// <summary>Gets the time interval, in seconds, since the view controller first resumed sending updates.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("timeSinceFirstResume")]
 		double TimeSinceFirstResume { get; }
 
+		/// <summary>Gets the time interval, in seconds, since the view controller most recently resumed sending updates.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("timeSinceLastResume")]
 		double TimeSinceLastResume { get; }
 
@@ -1005,15 +1023,35 @@ namespace GLKit {
 		[Export ("timeSinceLastDraw")]
 		double TimeSinceLastDraw { get; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the rendering loop will pause when the application resigns from the active state.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("pauseOnWillResignActive")]
 		bool PauseOnWillResignActive { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the rendering loop will resume when the application enters the active state.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("resumeOnDidBecomeActive")]
 		bool ResumeOnDidBecomeActive { get; set; }
 
+		/// <summary>An object that can respond to the delegate protocol for this type</summary>
+		///         <value>The instance that will respond to events and data requests.</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+		///         </remarks>
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the GLKit.IGLKViewControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the GLKit.IGLKViewControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IGLKViewControllerDelegate Delegate { get; set; }
 

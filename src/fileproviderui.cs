@@ -27,7 +27,9 @@ namespace FileProviderUI {
 	[ErrorDomain ("FPUIErrorDomain")]
 	[Native]
 	enum FPUIExtensionErrorCode : ulong {
+		/// <summary>Indicates that the user cancelled an action.</summary>
 		UserCancelled,
+		/// <summary>Indicates that a requested action failed.</summary>
 		Failed,
 	}
 
@@ -36,6 +38,12 @@ namespace FileProviderUI {
 	[BaseType (typeof (NSExtensionContext))]
 	interface FPUIActionExtensionContext {
 
+		/// <summary>Gets the unique ID of the file provider domain.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("domainIdentifier")]
 		string DomainIdentifier { get; }
 
@@ -58,6 +66,9 @@ namespace FileProviderUI {
 		[PostGet ("NibBundle")]
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
+		/// <summary>Gets the host app's extension context.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("extensionContext", ArgumentSemantic.Strong)]
 		FPUIActionExtensionContext ExtensionContext { get; }
 

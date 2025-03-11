@@ -15,22 +15,35 @@ using Foundation;
 namespace Contacts {
 	// Strong typed Keys to enum
 	public enum CNSocialProfileOption {
+		/// <summary>Associated with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNSocial%20Service%20Url%20String&amp;scope=Xamarin" title="P:Contacts.CNSocialService.UrlString">P:Contacts.CNSocialService.UrlString</a></format> property.</summary>
 		UrlString,
+		/// <summary>Associated with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNSocial%20Service%20Username&amp;scope=Xamarin" title="P:Contacts.CNSocialService.Username">P:Contacts.CNSocialService.Username</a></format> property.</summary>
 		Username,
+		/// <summary>Associated with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNSocial%20Service%20User%20Identifier&amp;scope=Xamarin" title="P:Contacts.CNSocialService.UserIdentifier">P:Contacts.CNSocialService.UserIdentifier</a></format> property.</summary>
 		UserIdentifier,
+		/// <summary>Associated with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Contacts%20CNSocial%20Service%20Service&amp;scope=Xamarin" title="P:Contacts.CNSocialService.Service">P:Contacts.CNSocialService.Service</a></format> property.</summary>
 		Service,
 	}
 
 	// Strong typed Keys to enum
 	public enum CNSocialProfileServiceOption {
+		/// <summary>Facebook.</summary>
 		Facebook,
+		/// <summary>Flickr.</summary>
 		Flickr,
+		/// <summary>LinkedIn.</summary>
 		LinkedIn,
+		/// <summary>MySpace.</summary>
 		MySpace,
+		/// <summary>SinaWeibo.</summary>
 		SinaWeibo,
+		/// <summary>TencentWeibo.</summary>
 		TencentWeibo,
+		/// <summary>Twitter.</summary>
 		Twitter,
+		/// <summary>Yelp.</summary>
 		Yelp,
+		/// <summary>Apple GameCenter.</summary>
 		GameCenter,
 	}
 

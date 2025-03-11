@@ -84,6 +84,9 @@ namespace SceneKit {
 			return Create (node, options?.ToDictionary ());
 		}
 
+		/// <summary>Gets the options that were used when creating the physics shape.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SCNPhysicsShapeOptions? Options {
 			get {
 				var o = _Options;
@@ -101,8 +104,17 @@ namespace SceneKit {
 	[SupportedOSPlatform ("tvos")]
 #endif
 	public class SCNPhysicsShapeOptions {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SCNPhysicsShapeType? ShapeType { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? KeepAsCompound { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SCNVector3? Scale { get; set; }
 
 		public SCNPhysicsShapeOptions () { }

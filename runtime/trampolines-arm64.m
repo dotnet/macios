@@ -67,7 +67,6 @@ dump_state (struct XamarinCallState *state, const char *prefix)
 static int
 param_read_primitive (struct ParamIterator *it, const char *type_ptr, uint8_t **target_ptr, size_t total_size, bool prohibit_fp_registers, bool is_struct, bool is_hfa, bool read_register, GCHandle *exception_gchandle)
 {
-	// COOP: does not access managed memory: any mode.
 	char type = *type_ptr;
 	void *target = *target_ptr;
 
@@ -173,7 +172,6 @@ param_read_primitive (struct ParamIterator *it, const char *type_ptr, uint8_t **
 static void
 param_iter_next (enum IteratorAction action, void *context, const char *type, size_t size, void *target, GCHandle *exception_gchandle)
 {
-	// COOP: does not access managed memory: any mode.
 	struct ParamIterator *it = (struct ParamIterator *) context;
 
 	if (action == IteratorStart) {
@@ -278,9 +276,6 @@ param_iter_next (enum IteratorAction action, void *context, const char *type, si
 static void
 marshal_return_value (void *context, const char *type, size_t size, void *vvalue, MonoType *mtype, bool retain, MonoMethod *method, MethodDescription *desc, GCHandle *exception_gchandle)
 {
-	// COOP: accessing managed memory (as input), so must be in unsafe mode.
-	MONO_ASSERT_GC_UNSAFE;
-
 	char struct_name[5];
 	MonoObject *value = (MonoObject *) vvalue;
 	struct ParamIterator *it = (struct ParamIterator *) context;
@@ -389,9 +384,6 @@ marshal_return_value (void *context, const char *type, size_t size, void *vvalue
 void
 xamarin_arch_trampoline (struct XamarinCallState *state)
 {
-	// COOP: called from ObjC, and does not access managed memory.
-	MONO_ASSERT_GC_SAFE;
-
 	state->_self = (id) state->x0;
 	state->_sel = (SEL) state->x1;
 

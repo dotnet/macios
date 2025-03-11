@@ -68,9 +68,13 @@ namespace PdfKit {
 	[Native]
 	[TV (18, 2)]
 	public enum PdfWidgetControlType : long {
+		/// <summary>Indicates that the control type is not known.</summary>
 		Unknown = -1,
+		/// <summary>Indicates a push button.</summary>
 		PushButton = 0,
+		/// <summary>Indicates a radio button.</summary>
 		RadioButton = 1,
+		/// <summary>Indicates a checkbox.</summary>
 		CheckBox = 2,
 	}
 
@@ -106,12 +110,19 @@ namespace PdfKit {
 	[Native]
 	[TV (18, 2)]
 	public enum PdfTextAnnotationIconType : long {
+		/// <summary>Indicates a comment icon.</summary>
 		Comment = 0,
+		/// <summary>Indicates a key icon.</summary>
 		Key = 1,
+		/// <summary>Indicates a note icon.</summary>
 		Note = 2,
+		/// <summary>Indicates a help icon.</summary>
 		Help = 3,
+		/// <summary>Indicates a new paragraph icon.</summary>
 		NewParagraph = 4,
+		/// <summary>Indicates a paragraph icon.</summary>
 		Paragraph = 5,
+		/// <summary>Indicates an insert icon.</summary>
 		Insert = 6,
 	}
 
@@ -136,8 +147,11 @@ namespace PdfKit {
 	[Unavailable (PlatformName.MacCatalyst)]
 	[Native]
 	public enum PdfPrintScalingMode : long {
+		/// <summary>Indicates that no scaling will be applied.</summary>
 		None = 0,
+		/// <summary>Indicates that pages will be enlarged or shrunk, as needed, to fit the physical page.</summary>
 		ToFit = 1,
+		/// <summary>Indicates that pages that are larger than the physical page are shrunk to fit the physical page.</summary>
 		DownToFit = 2,
 	}
 
@@ -239,8 +253,11 @@ namespace PdfKit {
 	[Native]
 	[TV (18, 2)]
 	public enum PdfWidgetCellState : long {
+		/// <summary>To be added.</summary>
 		Mixed = -1,
+		/// <summary>To be added.</summary>
 		Off = 0,
+		/// <summary>To be added.</summary>
 		On = 1,
 	}
 }

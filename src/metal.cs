@@ -67,6 +67,9 @@ namespace Metal {
 		[Export ("index")]
 		nuint Index { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("active")]
 		bool Active { [Bind ("isActive")] get; }
 

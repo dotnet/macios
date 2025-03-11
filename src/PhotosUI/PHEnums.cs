@@ -29,8 +29,11 @@ namespace PhotosUI {
 	[Native]
 	[Flags] // NS_OPTIONS
 	public enum PHLivePhotoBadgeOptions : ulong {
+		/// <summary>Indicates no badge.</summary>
 		None = 0,
+		/// <summary>Indicates a badge that will be placed over animated content.</summary>
 		OverContent = 1 << 0,
+		/// <summary>Indicates a badge for assets for which Live Photo content is disabled.</summary>
 		LiveOff = 1 << 1,
 	}
 #endif

@@ -29,18 +29,27 @@ namespace Intents {
 
 	public partial class INIntentResolutionResult {
 
+		/// <summary>Factory method to create an <see cref="T:Intents.INIntentResolutionResult" /> object indicating that a value is required for the parameter.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static INIntentResolutionResult NeedsValue {
 			get {
 				throw new NotImplementedException ("All subclasses of INIntentResolutionResult must re-implement this property");
 			}
 		}
 
+		/// <summary>Factory method to create an <see cref="T:Intents.INIntentResolutionResult" /> object indicating that a value is not required for the parameter.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static INIntentResolutionResult NotRequired {
 			get {
 				throw new NotImplementedException ("All subclasses of INIntentResolutionResult must re-implement this property");
 			}
 		}
 
+		/// <summary>Factory method to create an <see cref="T:Intents.INIntentResolutionResult" /> object indicating that the developer's app does not support the parameter.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static INIntentResolutionResult Unsupported {
 			get {
 				throw new NotImplementedException ("All subclasses of INIntentResolutionResult must re-implement this property");

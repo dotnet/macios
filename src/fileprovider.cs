@@ -215,6 +215,9 @@ namespace FileProvider {
 	[Static]
 	interface NSFileProviderErrorKeys {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'NSFileProviderErrorItemKey' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSFileProviderErrorItemKey' instead.")]
@@ -249,9 +252,15 @@ namespace FileProvider {
 	[Static]
 	interface NSFileProviderItemIdentifier {
 
+		/// <summary>Gets the persistent name of the root directory in the shared hierarchy.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileProviderRootContainerItemIdentifier")]
 		NSString RootContainer { get; }
 
+		/// <summary>Gets the persistent name of the documents and directories.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileProviderWorkingSetContainerItemIdentifier")]
 		NSString WorkingSetContainer { get; }
 
@@ -331,6 +340,9 @@ namespace FileProvider {
 		[Field ("NSFileProviderInitialPageSortedByName")]
 		IntPtr _InitialPageSortedByName { get; }
 
+		/// <summary>Gets the first page in name order.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("Runtime.GetNSObject<NSData> (_InitialPageSortedByName)")]
 		NSData InitialPageSortedByName { get; }
@@ -339,6 +351,9 @@ namespace FileProvider {
 		[Field ("NSFileProviderInitialPageSortedByDate")]
 		IntPtr _InitialPageSortedByDate { get; }
 
+		/// <summary>Gets the first page in date order.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("Runtime.GetNSObject<NSData> (_InitialPageSortedByDate)")]
 		NSData InitialPageSortedByDate { get; }
@@ -375,6 +390,9 @@ namespace FileProvider {
 		[Export ("displayName")]
 		string DisplayName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Export ("pathRelativeToDocumentStorage")]
 		string PathRelativeToDocumentStorage { get; }
@@ -654,6 +672,9 @@ namespace FileProvider {
 	[DisableDefaultCtor]
 	interface NSFileProviderManager {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Static]
 		[Export ("defaultManager", ArgumentSemantic.Strong)]
@@ -667,10 +688,16 @@ namespace FileProvider {
 		[Export ("registerURLSessionTask:forItemWithIdentifier:completionHandler:")]
 		void Register (NSUrlSessionTask task, string identifier, Action<NSError> completion);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Export ("providerIdentifier")]
 		string ProviderIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Export ("documentStorageURL")]
 		NSUrl DocumentStorageUrl { get; }

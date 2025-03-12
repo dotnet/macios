@@ -25,8 +25,14 @@ namespace MetalPerformanceShaders {
 	[SupportedOSPlatform ("tvos")]
 #endif
 	public struct MPSOffset {
+		/// <summary>The X coordinate.</summary>
+		///         <remarks>To be added.</remarks>
 		public nint X;
+		/// <summary>The Y coordinate.</summary>
+		///         <remarks>To be added.</remarks>
 		public nint Y;
+		/// <summary>The Z coordinate.</summary>
+		///         <remarks>To be added.</remarks>
 		public nint Z;
 	}
 
@@ -38,8 +44,14 @@ namespace MetalPerformanceShaders {
 	[SupportedOSPlatform ("tvos")]
 #endif
 	public struct MPSOrigin {
+		/// <summary>The X coordinate.</summary>
+		///         <remarks>To be added.</remarks>
 		public double X;
+		/// <summary>The Y coordinate.</summary>
+		///         <remarks>To be added.</remarks>
 		public double Y;
+		/// <summary>The Z coordinate.</summary>
+		///         <remarks>To be added.</remarks>
 		public double Z;
 	}
 
@@ -51,8 +63,14 @@ namespace MetalPerformanceShaders {
 	[SupportedOSPlatform ("tvos")]
 #endif
 	public struct MPSSize {
+		/// <summary>The width of the region.</summary>
+		///         <remarks>To be added.</remarks>
 		public double Width;
+		/// <summary>The height of the region.</summary>
+		///         <remarks>To be added.</remarks>
 		public double Height;
+		/// <summary>The depth of the region.</summary>
+		///         <remarks>To be added.</remarks>
 		public double Depth;
 	}
 
@@ -78,7 +96,11 @@ namespace MetalPerformanceShaders {
 	[SupportedOSPlatform ("tvos")]
 #endif
 	public struct MPSRegion {
+		/// <summary>The origin of the region.</summary>
+		///         <remarks>To be added.</remarks>
 		public MPSOrigin Origin;
+		/// <summary>The depth, width, and height of the region.</summary>
+		///         <remarks>To be added.</remarks>
 		public MPSSize Size;
 	}
 
@@ -90,9 +112,17 @@ namespace MetalPerformanceShaders {
 	[SupportedOSPlatform ("tvos")]
 #endif
 	public struct MPSScaleTransform {
+		/// <summary>The X direction scale factor.</summary>
+		///         <remarks>To be added.</remarks>
 		public double ScaleX;
+		/// <summary>The Y direction scale factor.</summary>
+		///         <remarks>To be added.</remarks>
 		public double ScaleY;
+		/// <summary>The X direction translation amount.</summary>
+		///         <remarks>To be added.</remarks>
 		public double TranslateX;
+		/// <summary>The Y direction translation amount.</summary>
+		///         <remarks>To be added.</remarks>
 		public double TranslateY;
 	}
 
@@ -103,8 +133,14 @@ namespace MetalPerformanceShaders {
 	[SupportedOSPlatform ("maccatalyst")]
 #endif
 	public struct MPSImageCoordinate {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nuint X;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nuint Y;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nuint Channel;
 	}
 
@@ -115,7 +151,11 @@ namespace MetalPerformanceShaders {
 	[SupportedOSPlatform ("maccatalyst")]
 #endif
 	public struct MPSImageRegion {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MPSImageCoordinate Offset;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MPSImageCoordinate Size;
 	}
 
@@ -128,12 +168,20 @@ namespace MetalPerformanceShaders {
 #endif
 	[StructLayout (LayoutKind.Explicit)]
 	public struct MPSImageHistogramInfo {
+		/// <summary>Specifies  the number of entries in a histogram.</summary>
+		///         <remarks>To be added.</remarks>
 		[FieldOffset (0)]
 		public nuint NumberOfHistogramEntries;
+		/// <summary>Specifies whether to encode the alpha channel in the histogram..</summary>
+		///         <remarks>To be added.</remarks>
 		[FieldOffset (8)]
 		public bool HistogramForAlpha;
+		/// <summary>Specifies the minimum value of histogram data in a histogram.</summary>
+		///         <remarks>To be added.</remarks>
 		[FieldOffset (16)]
 		public Vector4 MinPixelValue;
+		/// <summary>Specifies the maximum value of histogram data in a histogram.</summary>
+		///         <remarks>To be added.</remarks>
 		[FieldOffset (32)]
 		public Vector4 MaxPixelValue;
 	}
@@ -150,9 +198,17 @@ namespace MetalPerformanceShaders {
 	[SupportedOSPlatform ("maccatalyst")]
 #endif
 	public struct MPSMatrixCopyOffsets {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public uint SourceRowOffset;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public uint SourceColumnOffset;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public uint DestinationRowOffset;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public uint DestinationColumnOffset;
 	}
 
@@ -163,7 +219,11 @@ namespace MetalPerformanceShaders {
 	[SupportedOSPlatform ("maccatalyst")]
 #endif
 	public struct MPSImageReadWriteParams {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nuint FeatureChannelOffset;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nuint NumberOfFeatureChannelsToReadWrite;
 	}
 
@@ -174,7 +234,11 @@ namespace MetalPerformanceShaders {
 	[SupportedOSPlatform ("maccatalyst")]
 #endif
 	public struct MPSImageKeypointRangeInfo {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nuint MaximumKeypoints;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float MinimumThresholdValue;
 	}
 
@@ -185,9 +249,17 @@ namespace MetalPerformanceShaders {
 	[SupportedOSPlatform ("maccatalyst")]
 #endif
 	public struct MPSStateTextureInfo {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nuint Width;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nuint Height;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nuint Depth;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nuint ArrayLength;
 
 #pragma warning disable 0169 // Avoid warning when building core.dll and the unused reserved fields
@@ -202,16 +274,25 @@ namespace MetalPerformanceShaders {
 		nuint Reserved3;
 #pragma warning restore 0169
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MTLPixelFormat PixelFormat {
 			get => (MTLPixelFormat) (ulong) _PixelFormat;
 			set => _PixelFormat = (nuint) (ulong) value;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MTLTextureType TextureType {
 			get => (MTLTextureType) (ulong) _TextureType;
 			set => _TextureType = (nuint) (ulong) value;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MTLTextureUsage TextureUsage {
 			get => (MTLTextureUsage) (ulong) _TextureUsage;
 			set => _TextureUsage = (nuint) (ulong) value;
@@ -227,7 +308,11 @@ namespace MetalPerformanceShaders {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MPSAxisAlignedBoundingBox {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Vector3 Min;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Vector3 Max;
 	}
 

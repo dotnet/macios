@@ -372,6 +372,110 @@ public class BindingSyntaxFactoryPropertyTests {
 				"NSArray.ArrayFromHandleFunc<uint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle (\"myProperty\")), NSNumber.ToUInt32, false);",
 				"NSArray.ArrayFromHandleFunc<uint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle (\"myProperty\")), NSNumber.ToUInt32, false);",
 			];
+
+			property = new Property (
+				name: "MyProperty",
+				returnType: ReturnTypeForNSObject ("CoreAnimation.CATransform3D"),
+				symbolAvailability: new (),
+				attributes: [],
+				modifiers: [],
+				accessors: [
+					new (
+						accessorKind: AccessorKind.Getter,
+						symbolAvailability: new (),
+						exportPropertyData: null,
+						attributes: [],
+						modifiers: []
+					)
+				]
+			) {
+				ExportPropertyData = new ("myProperty", ArgumentSemantic.None, ObjCBindings.Property.IsThreadSafe),
+				BindAs = new (ReturnTypeForNSObject ("Foundation.NSValue")),
+			};
+
+			yield return [
+				property,
+				"ret = NSValue.ToCATransform3D (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle (\"myProperty\")));",
+				"ret = NSValue.ToCATransform3D (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle (\"myProperty\")));",
+			];
+
+			property = new Property (
+				name: "MyProperty",
+				returnType: ReturnTypeForNSObject ("CoreGraphics.CGPoint"),
+				symbolAvailability: new (),
+				attributes: [],
+				modifiers: [],
+				accessors: [
+					new (
+						accessorKind: AccessorKind.Getter,
+						symbolAvailability: new (),
+						exportPropertyData: null,
+						attributes: [],
+						modifiers: []
+					)
+				]
+			) {
+				ExportPropertyData = new ("myProperty", ArgumentSemantic.None, ObjCBindings.Property.IsThreadSafe),
+				BindAs = new (ReturnTypeForNSObject ("Foundation.NSValue")),
+			};
+
+			yield return [
+				property,
+				"ret = NSValue.ToCGPoint (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle (\"myProperty\")));",
+				"ret = NSValue.ToCGPoint (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle (\"myProperty\")));",
+			];
+
+			property = new Property (
+				name: "MyProperty",
+				returnType: ReturnTypeForArray ("CoreAnimation.CATransform3D"),
+				symbolAvailability: new (),
+				attributes: [],
+				modifiers: [],
+				accessors: [
+					new (
+						accessorKind: AccessorKind.Getter,
+						symbolAvailability: new (),
+						exportPropertyData: null,
+						attributes: [],
+						modifiers: []
+					)
+				]
+			) {
+				ExportPropertyData = new ("myProperty", ArgumentSemantic.None, ObjCBindings.Property.IsThreadSafe),
+				BindAs = new (ReturnTypeForNSObject ("Foundation.NSValue")),
+			};
+
+			yield return [
+				property,
+				"NSArray.ArrayFromHandleFunc<CoreAnimation.CATransform3D> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle (\"myProperty\")), NSValue.ToCATransform3D, false);",
+				"NSArray.ArrayFromHandleFunc<CoreAnimation.CATransform3D> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle (\"myProperty\")), NSValue.ToCATransform3D, false);",
+			];
+
+			property = new Property (
+				name: "MyProperty",
+				returnType: ReturnTypeForArray ("CoreGraphics.CGPoint"),
+				symbolAvailability: new (),
+				attributes: [],
+				modifiers: [],
+				accessors: [
+					new (
+						accessorKind: AccessorKind.Getter,
+						symbolAvailability: new (),
+						exportPropertyData: null,
+						attributes: [],
+						modifiers: []
+					)
+				]
+			) {
+				ExportPropertyData = new ("myProperty", ArgumentSemantic.None, ObjCBindings.Property.IsThreadSafe),
+				BindAs = new (ReturnTypeForNSObject ("Foundation.NSValue")),
+			};
+
+			yield return [
+				property,
+				"NSArray.ArrayFromHandleFunc<CoreGraphics.CGPoint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle (\"myProperty\")), NSValue.ToCGPoint, false);",
+				"NSArray.ArrayFromHandleFunc<CoreGraphics.CGPoint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle (\"myProperty\")), NSValue.ToCGPoint, false);",
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();

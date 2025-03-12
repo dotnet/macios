@@ -60,7 +60,9 @@ namespace Photos {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHVideoRequestOptionsVersion : long {
+		/// <summary>Return the current version, with edits.</summary>
 		Current = 0,
+		/// <summary>Return the original version, without edits.</summary>
 		Original,
 	}
 
@@ -69,9 +71,13 @@ namespace Photos {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHVideoRequestOptionsDeliveryMode : long {
+		/// <summary>Photos returns the data that is most appropriate for the request and network conditions.</summary>
 		Automatic = 0,
+		/// <summary>Photos provides high quality, but possibly larger video data..</summary>
 		HighQualityFormat = 1,
+		/// <summary>Photos provides medium quality image data.</summary>
 		MediumQualityFormat = 2,
+		/// <summary>Photos provides fast, lower quality video data.</summary>
 		FastFormat = 3,
 	}
 
@@ -80,12 +86,15 @@ namespace Photos {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHCollectionListType : long {
+		/// <summary>The collection is a moment list.</summary>
 		[Deprecated (PlatformName.iOS, 13, 0)]
 		[Deprecated (PlatformName.TvOS, 13, 0)]
 		[Unavailable (PlatformName.MacOSX)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		MomentList = 1,
+		/// <summary>The collection is a folder.</summary>
 		Folder = 2,
+		/// <summary>The collection is a smart folder.</summary>
 		SmartFolder = 3,
 	}
 
@@ -93,23 +102,29 @@ namespace Photos {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHCollectionListSubtype : long {
+		/// <summary>The collection is a moment list cluster.</summary>
 		[Deprecated (PlatformName.iOS, 13, 0)]
 		[Deprecated (PlatformName.TvOS, 13, 0)]
 		[Unavailable (PlatformName.MacOSX)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		MomentListCluster = 1,
 
+		/// <summary>The collection is a moment list year.</summary>
 		[Deprecated (PlatformName.iOS, 13, 0)]
 		[Deprecated (PlatformName.TvOS, 13, 0)]
 		[Unavailable (PlatformName.MacOSX)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		MomentListYear = 2,
 
+		/// <summary>The collection is a regular folder.</summary>
 		RegularFolder = 100,
 
+		/// <summary>The collection is a smart folder of events.</summary>
 		SmartFolderEvents = 200,
+		/// <summary>The collection is a smart folder of faces.</summary>
 		SmartFolderFaces = 201,
 
+		/// <summary>The collection subtype is unspecified.</summary>
 		Any = Int64.MaxValue,
 	}
 
@@ -376,7 +391,9 @@ namespace Photos {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHLivePhotoFrameType : long {
+		/// <summary>Indicates that the frame is a still photo.</summary>
 		Photo,
+		/// <summary>Indicates that the frame is a video frame.</summary>
 		Video,
 	}
 
@@ -402,8 +419,11 @@ namespace Photos {
 	[NoMacCatalyst]
 	[Native]
 	public enum PHProjectTextElementType : long {
+		/// <summary>To be added.</summary>
 		Body = 0,
+		/// <summary>To be added.</summary>
 		Title,
+		/// <summary>To be added.</summary>
 		Subtitle,
 	}
 
@@ -412,17 +432,29 @@ namespace Photos {
 	[NoMacCatalyst]
 	[Native]
 	public enum PHProjectCreationSource : long {
+		/// <summary>To be added.</summary>
 		Undefined = 0,
+		/// <summary>To be added.</summary>
 		UserSelection = 1,
+		/// <summary>To be added.</summary>
 		Album = 2,
+		/// <summary>To be added.</summary>
 		Memory = 3,
+		/// <summary>To be added.</summary>
 		Moment = 4,
+		/// <summary>To be added.</summary>
 		Project = 20,
+		/// <summary>To be added.</summary>
 		ProjectBook = 21,
+		/// <summary>To be added.</summary>
 		ProjectCalendar = 22,
+		/// <summary>To be added.</summary>
 		ProjectCard = 23,
+		/// <summary>To be added.</summary>
 		ProjectPrintOrder = 24,
+		/// <summary>To be added.</summary>
 		ProjectSlideshow = 25,
+		/// <summary>To be added.</summary>
 		ProjectExtension = 26,
 	}
 
@@ -431,9 +463,13 @@ namespace Photos {
 	[NoMacCatalyst]
 	[Native]
 	public enum PHProjectSectionType : long {
+		/// <summary>To be added.</summary>
 		Undefined = 0,
+		/// <summary>To be added.</summary>
 		Cover = 1,
+		/// <summary>To be added.</summary>
 		Content = 2,
+		/// <summary>To be added.</summary>
 		Auxiliary = 3,
 	}
 
@@ -443,8 +479,10 @@ namespace Photos {
 	[Native ("PHLivePhotoEditingErrorCode")]
 	[ErrorDomain ("PHLivePhotoEditingErrorDomain")]
 	public enum PHLivePhotoEditingError : long {
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'PHPhotosError.InternalError' instead.")]
 		Unknown,
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'PHPhotosError.UserCancelled' instead.")]
 		Aborted,
 	}

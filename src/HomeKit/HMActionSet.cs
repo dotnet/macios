@@ -9,6 +9,9 @@ namespace HomeKit {
 	partial class HMActionSet {
 
 #if NET
+		/// <summary>What kind of <see cref="T:HomeKit.HMActionSetType" /><c>this</c> is&gt;.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]

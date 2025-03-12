@@ -46,7 +46,11 @@ namespace CoreGraphics {
 #endif
 	// CGGeometry.h
 	public struct CGVector {
+		/// <summary>X component of the vector</summary>
+		///         <remarks>To be added.</remarks>
 		public /* CGFloat */ nfloat dx;
+		/// <summary>Y component of the vector</summary>
+		///         <remarks>To be added.</remarks>
 		public /* CGFloat */ nfloat dy;
 
 		public CGVector (nfloat dx, nfloat dy)

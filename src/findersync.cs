@@ -8,10 +8,16 @@ namespace FinderSync {
 
 	[BaseType (typeof (NSExtensionContext))]
 	interface FIFinderSyncController : NSSecureCoding, NSCopying {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("defaultController")]
 		FIFinderSyncController DefaultController { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // null_resettable
 		[Export ("directoryURLs", ArgumentSemantic.Copy)]
 		NSSet DirectoryUrls { get; set; }
@@ -22,9 +28,15 @@ namespace FinderSync {
 		[Export ("setBadgeIdentifier:forURL:")]
 		void SetBadgeIdentifier (string badgeID, NSUrl url);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("targetedURL")]
 		NSUrl TargetedURL { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("selectedItemURLs")]
 		NSUrl [] SelectedItemURLs { get; }
 
@@ -43,6 +55,9 @@ namespace FinderSync {
 		[Export ("setTagData:forItemWithURL:completion:")]
 		void SetTagData ([NullAllowed] NSData tagData, NSUrl itemUrl, Action<NSError> completion);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("extensionEnabled")]
 		bool ExtensionEnabled { [Bind ("isExtensionEnabled")] get; }

@@ -56,6 +56,9 @@ namespace MetalPerformanceShaders {
 			return new float [3] { t [0], t [1], t [2] };
 		}
 
+		/// <summary>Gets a region that represents the default clipping rectangle.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MPSRectNoClip", "MetalPerformanceShaders")]
 		public unsafe static MTLRegion RectNoClip {
 			get {
@@ -167,6 +170,9 @@ namespace MetalPerformanceShaders {
 			}
 		}
 
+		/// <summary>Gets the color transform that maps 3-channel pixels to single-channel values.</summary>
+		///         <value>The color transform that maps 3-channel pixels to single-channel values.</value>
+		///         <remarks>To be added.</remarks>
 		public float []? Transform {
 			get { return MPSKernel.GetTransform (_Transform); }
 		}
@@ -184,6 +190,9 @@ namespace MetalPerformanceShaders {
 			}
 		}
 
+		/// <summary>Gets the color transform that maps 3-channel pixels to single-channel values.</summary>
+		///         <value>The color transform that maps 3-channel pixels to single-channel values.</value>
+		///         <remarks>To be added.</remarks>
 		public float []? Transform {
 			get { return MPSKernel.GetTransform (_Transform); }
 		}
@@ -201,6 +210,9 @@ namespace MetalPerformanceShaders {
 			}
 		}
 
+		/// <summary>Gets the color transform that maps 3-channel pixels to single-channel values.</summary>
+		///         <value>The color transform that maps 3-channel pixels to single-channel values.</value>
+		///         <remarks>To be added.</remarks>
 		public float []? Transform {
 			get { return MPSKernel.GetTransform (_Transform); }
 		}
@@ -218,6 +230,9 @@ namespace MetalPerformanceShaders {
 			}
 		}
 
+		/// <summary>Gets the color transform that maps 3-channel pixels to single-channel values.</summary>
+		///         <value>The color transform that maps 3-channel pixels to single-channel values.</value>
+		///         <remarks>To be added.</remarks>
 		public float []? Transform {
 			get { return MPSKernel.GetTransform (_Transform); }
 		}
@@ -235,6 +250,9 @@ namespace MetalPerformanceShaders {
 			}
 		}
 
+		/// <summary>Gets the color transform that maps 3-channel pixels to single-channel values.</summary>
+		///         <value>The color transform that maps 3-channel pixels to single-channel values.</value>
+		///         <remarks>To be added.</remarks>
 		public float []? Transform {
 			get { return MPSKernel.GetTransform (_Transform); }
 		}
@@ -255,6 +273,9 @@ namespace MetalPerformanceShaders {
 			}
 		}
 
+		/// <summary>Gets the array of 3 floating point values that is dot-multiplied with the components of the color to produce a gray scale tone..</summary>
+		///         <value>The array of 3 floating point values that is dot-multiplied with the components of the color to produce a gray scale tone.</value>
+		///         <remarks>To be added.</remarks>
 		public float []? ColorTransform {
 			get { return MPSKernel.GetTransform (_ColorTransform); }
 		}

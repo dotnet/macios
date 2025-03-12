@@ -2669,6 +2669,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/AuthenticationServices.framework/AuthenticationServices",
 			"/System/Library/Frameworks/AVFoundation.framework/AVFoundation",
 			"/System/Library/Frameworks/AVKit.framework/AVKit",
+			"/System/Library/Frameworks/BackgroundAssets.framework/BackgroundAssets",
 			"/System/Library/Frameworks/BackgroundTasks.framework/BackgroundTasks",
 			"/System/Library/Frameworks/CFNetwork.framework/CFNetwork",
 			"/System/Library/Frameworks/Cinematic.framework/Cinematic",

@@ -2457,8 +2457,7 @@ namespace CarPlay {
 	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface CPNowPlayingMode : NSSecureCoding
-	{
+	interface CPNowPlayingMode : NSSecureCoding {
 		[Static]
 		[Export ("defaultNowPlayingMode")]
 		CPNowPlayingMode DefaultNowPlayingMode { get; }
@@ -2466,8 +2465,7 @@ namespace CarPlay {
 
 	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
 	[BaseType (typeof (CPNowPlayingMode))]
-	interface CPNowPlayingModeSports : NSSecureCoding
-	{
+	interface CPNowPlayingModeSports : NSSecureCoding {
 		[Export ("initWithLeftTeam:rightTeam:eventStatus:backgroundArtwork:")]
 		NativeHandle Constructor (CPNowPlayingSportsTeam leftTeam, CPNowPlayingSportsTeam rightTeam, [NullAllowed] CPNowPlayingSportsEventStatus eventStatus, [NullAllowed] UIImage backgroundArtwork);
 
@@ -2487,8 +2485,7 @@ namespace CarPlay {
 	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface CPNowPlayingSportsTeam : NSSecureCoding
-	{
+	interface CPNowPlayingSportsTeam : NSSecureCoding {
 		[Export ("initWithName:logo:teamStandings:eventScore:possessionIndicator:favorite:")]
 		NativeHandle Constructor (string name, CPNowPlayingSportsTeamLogo logo, [NullAllowed] string teamStandings, string eventScore, [NullAllowed] UIImage possessionIndicator, bool favorite);
 
@@ -2514,13 +2511,12 @@ namespace CarPlay {
 	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface CPNowPlayingSportsEventStatus : NSSecureCoding
-	{
+	interface CPNowPlayingSportsEventStatus : NSSecureCoding {
 		[Export ("initWithEventStatusText:eventStatusImage:eventClock:")]
-		NativeHandle Constructor ([NullAllowed] string[] eventStatusText, [NullAllowed] UIImage eventStatusImage, [NullAllowed] CPNowPlayingSportsClock eventClock);
+		NativeHandle Constructor ([NullAllowed] string [] eventStatusText, [NullAllowed] UIImage eventStatusImage, [NullAllowed] CPNowPlayingSportsClock eventClock);
 
 		[NullAllowed, Export ("eventStatusText", ArgumentSemantic.Copy)]
-		string[] EventStatusText { get; }
+		string [] EventStatusText { get; }
 
 		[NullAllowed, Export ("eventClock", ArgumentSemantic.Copy)]
 		CPNowPlayingSportsClock EventClock { get; }
@@ -2532,8 +2528,7 @@ namespace CarPlay {
 	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface CPNowPlayingSportsClock : INSSecureCoding
-	{
+	interface CPNowPlayingSportsClock : INSSecureCoding {
 		[Internal]
 		[Export ("initWithElapsedTime:paused:")]
 		NativeHandle _InitWithElapsedTime (double elapsedTime, bool paused);
@@ -2555,8 +2550,7 @@ namespace CarPlay {
 	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface CPNowPlayingSportsTeamLogo : INSSecureCoding
-	{
+	interface CPNowPlayingSportsTeamLogo : INSSecureCoding {
 		[Export ("initWithTeamLogo:")]
 		NativeHandle Constructor (UIImage teamLogo);
 

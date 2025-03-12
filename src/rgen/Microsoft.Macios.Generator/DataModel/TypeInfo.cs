@@ -151,7 +151,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// True if the type represents a delegate.
 	/// </summary>
 	public bool IsDelegate { get; init; }
-	
+
 	/// <summary>
 	/// True if the symbol represents a generic type.
 	/// </summary>
@@ -238,7 +238,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		if (namedTypeSymbol is not null) {
 			IsGenericType = namedTypeSymbol.IsGenericType;
 			TypeArguments = [
-				..namedTypeSymbol.TypeArguments
+				.. namedTypeSymbol.TypeArguments
 					.Select (x => x.ToDisplayString ())
 			];
 		}

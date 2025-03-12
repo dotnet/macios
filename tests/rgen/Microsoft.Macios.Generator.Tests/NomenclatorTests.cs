@@ -11,19 +11,19 @@ using Xunit;
 namespace Microsoft.Macios.Generator.Tests;
 
 public class NomenclatorTests : BaseGeneratorTestClass {
-	
+
 	[Theory]
 	[InlineData ("AVCaptureDeviceType", "AVCaptureDeviceTypeExtensions")]
 	[InlineData ("GKError", "GKErrorExtensions")]
 	public void GetSmartEnumExtensionClassNameTests (string enumName, string expectedName)
 		=> Assert.Equal (Nomenclator.GetSmartEnumExtensionClassName (enumName), expectedName);
-	
+
 	[Theory]
 	[AllSupportedPlatforms]
 	public void GetTrampolineNameGeneric (ApplePlatform platform)
 	{
 		var nomenclator = new Nomenclator ();
-		
+
 		// write a sample code to retrieve the roslyn symbol and type info so that 
 		// we can test the nomenclator.
 		var code = @"
@@ -40,9 +40,9 @@ public class Example {
 	public 	GenericTrampoline<string> Trampoline { get; set; }
 }
 ";
-		
+
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: code);
-		
+
 		Assert.Single (syntaxTrees);
 		var declaration = syntaxTrees [0].GetRoot ()
 			.DescendantNodes ()
@@ -54,7 +54,7 @@ public class Example {
 		Assert.True (Property.TryCreate (declaration, semanticModel, out var property));
 		Assert.NotNull (property);
 		var type = property.Value.ReturnType;
-		
+
 		var name1 = nomenclator.GetTrampolineName (type);
 		var name2 = nomenclator.GetTrampolineName (type);
 		// compare names and ensure that the correct number is used
@@ -63,4 +63,4 @@ public class Example {
 		Assert.NotEqual (name1, name2);
 	}
 }
-	
+

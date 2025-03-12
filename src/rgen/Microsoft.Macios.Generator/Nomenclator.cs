@@ -13,7 +13,7 @@ namespace Microsoft.Macios.Generator;
 /// In this case, the Nomenclator is used to generate the names of the bindings.
 /// </summary>
 class Nomenclator {
-	
+
 	// keep track of the generic versions of a trampoline, we will use the fully qualified name
 	// of the type to keep track of the generic versions.
 	readonly Dictionary<string, int> trampolinesGenericVersions = new ();
@@ -24,7 +24,7 @@ class Nomenclator {
 	/// <param name="enumName">The name of the smart enum.</param>
 	/// <returns>The name of the extension class to be generated for the given smart enum.</returns>
 	public static string GetSmartEnumExtensionClassName (string enumName) => $"{enumName}Extensions";
-	
+
 	/// <summary>
 	/// Returns the name to be used for a trampoline.
 	/// </summary>
@@ -46,16 +46,16 @@ class Nomenclator {
 		// 	trampolineName = trampolineName + "V" + trampolinesGenericVersions [gdef]++;
 		// }
 		// return trampolineName;
-		
+
 		// trampoline name will th e the name of the type + the arity + the lenght of the generic types
 		// else it will be the trampoline name 
 		var trampolineName = typeInfo.IsGenericType
-			? $"{typeInfo.Name[..typeInfo.Name.IndexOf ('<')]}Arity{typeInfo.TypeArguments.Length}"
+			? $"{typeInfo.Name [..typeInfo.Name.IndexOf ('<')]}Arity{typeInfo.TypeArguments.Length}"
 			: typeInfo.Name;
-		
-		if (!typeInfo.IsGenericType) 
+
+		if (!typeInfo.IsGenericType)
 			return trampolineName;
-		
+
 		// TryAdd will only insert 0 if it is not already present, reduces the dict access to a single operation
 		// rather than a contain + add
 		trampolinesGenericVersions.TryAdd (typeInfo.Name, 0);

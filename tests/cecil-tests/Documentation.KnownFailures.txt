@@ -5770,6 +5770,8 @@ F:CoreMedia.CMFormatDescriptionError.AllocationFailed
 F:CoreMedia.CMFormatDescriptionError.InvalidParameter
 F:CoreMedia.CMFormatDescriptionError.None
 F:CoreMedia.CMFormatDescriptionError.ValueNotAvailable
+F:CoreMedia.CMFormatDescriptionProjectionKind.Equirectangular
+F:CoreMedia.CMFormatDescriptionProjectionKind.HalfEquirectangular
 F:CoreMedia.CMFormatDescriptionProjectionKind.Rectilinear
 F:CoreMedia.CMFormatDescriptionViewPackingKind.OverUnder
 F:CoreMedia.CMFormatDescriptionViewPackingKind.SideBySide

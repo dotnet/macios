@@ -238,7 +238,7 @@ static partial class BindingSyntaxFactory {
 	/// <param name="returnType">The return method of the method/property.</param>
 	/// <param name="arguments">The arguments to pass to the NSValue method.</param>
 	/// <returns>The expression needed to call the NSNumber method with the given args.</returns>
-	internal static InvocationExpressionSyntax? NSValueFromHandle (TypeInfo returnType,
+	internal static InvocationExpressionSyntax? NSValueFromHandle (in TypeInfo returnType,
 		ImmutableArray<ArgumentSyntax> arguments)
 	{
 		// generate: (arg1, arg2, arg3)

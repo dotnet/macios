@@ -739,7 +739,7 @@ static partial class BindingSyntaxFactory {
 	}
 
 	static string? GetObjCMessageSendMethodName<T> (ExportData<T> exportData,
-		TypeInfo returnType, ImmutableArray<Parameter> parameters, bool isSuper = false, bool isStret = false)
+		in TypeInfo returnType, ImmutableArray<Parameter> parameters, bool isSuper = false, bool isStret = false)
 		where T : Enum
 	{
 		var flags = exportData.Flags;

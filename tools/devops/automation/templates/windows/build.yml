@@ -250,13 +250,6 @@ steps:
   env:
     XMA_PASSWORD: $(XMA.Password)
 
-- pwsh: |
-    Write-Host "There are test failures, so failing the build"
-    exit 1
-  displayName: 'Fail if test failures'
-  timeoutInMinutes: 1
-  condition: eq(variables['Agent.JobStatus'], 'SucceededWithIssues')
-
 - pwsh: $(Build.SourcesDirectory)\$(BUILD_REPOSITORY_TITLE)\tools\devops\automation\scripts\fetch-remote-binlogs.ps1
   displayName: 'Fetch remote binlogs'
   timeoutInMinutes: 5
@@ -277,6 +270,13 @@ steps:
 
 - pwsh: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/run-generator-tests-on-windows.ps1
   displayName: 'Run generator tests'
+
+- pwsh: |
+    Write-Host "There are test failures, so failing the build"
+    exit 1
+  displayName: 'Fail if test failures'
+  timeoutInMinutes: 1
+  condition: eq(variables['Agent.JobStatus'], 'SucceededWithIssues')
 
 # Copy the binlogs to the html report
 - pwsh: |

@@ -406,8 +406,6 @@ namespace Xamarin.Tests {
 		{
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
-			if (isDeviceBuild)
-				Configuration.AssertDeviceAvailable ();
 
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
 			Configuration.IgnoreIfIgnoredPlatform (platform);

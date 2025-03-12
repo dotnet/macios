@@ -206,7 +206,6 @@ namespace Xamarin.Tests {
 		public virtual void Setup ()
 		{
 			//testDirectory = GetTestDirectory (forceClone: true);
-			AssertValidDeviceBuild ();
 			//MonoTouchProject = SetupProjectPaths ("MySingleView");
 			//LibraryProject = SetupProjectPaths ("MySingleView/MyLibrary", false);
 			//MonoTouchProjectInstance = new MSBuildProject (MonoTouchProject, this);
@@ -341,12 +340,6 @@ namespace Xamarin.Tests {
 			} else {
 				Assert.AreEqual (0, rv.ExitCode, "ExitCode (success)");
 			}
-		}
-
-		void AssertValidDeviceBuild ()
-		{
-			if (!Configuration.include_device && Platform == "iPhone")
-				Assert.Ignore ("This build does not include device support.");
 		}
 
 		public static void NugetRestore (string project)

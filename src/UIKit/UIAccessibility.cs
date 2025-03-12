@@ -60,6 +60,11 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* BOOL */ byte UIAccessibilityIsMonoAudioEnabled ();
 
+		/// <summary>Determines whether the system is running with mono audio.</summary>
+		///         <value>Returns a Boolean indicating whether mono audio is enabled.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		static public bool IsMonoAudioEnabled {
 			get {
 				return UIAccessibilityIsMonoAudioEnabled () != 0;
@@ -97,6 +102,9 @@ namespace UIKit {
 		extern static /* BOOL */ byte UIAccessibilityIsShakeToUndoEnabled ();
 
 #if NET
+		/// <summary>Whether the "shake to undo" gesture is enabled on the device.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -111,6 +119,11 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* BOOL */ byte UIAccessibilityIsClosedCaptioningEnabled ();
 
+		/// <summary>Determines whether close captioning is currently enabled.</summary>
+		///         <value>Returns a Boolean indicating whether closed captioning is enabled.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		static public bool IsClosedCaptioningEnabled {
 			get {
 				return UIAccessibilityIsClosedCaptioningEnabled () != 0;

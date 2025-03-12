@@ -31,6 +31,9 @@ namespace Foundation {
 			return host;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NSHost? Current {
 			get { return CheckNull (_Current); }
 		}
@@ -121,6 +124,9 @@ namespace Foundation {
 			return FromAddress (address.ToString ());
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public IPAddress? Address {
 			get {
 				var address = _Address;
@@ -130,6 +136,9 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public IPAddress [] Addresses {
 			get {
 				var addrs = new IPAddress [_Addresses.Length];

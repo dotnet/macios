@@ -15,6 +15,10 @@ namespace HomeKit {
 	[MacCatalyst (14, 0)]
 	[Static]
 	partial interface HMErrors {
+		/// <summary>Represents the value associated with the constant HMErrorDomain</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("HMErrorDomain")]
 		NSString HMErrorDomain { get; }
 	}
@@ -332,6 +336,9 @@ namespace HomeKit {
 		[Export ("actions", ArgumentSemantic.Copy)]
 		NSSet Actions { get; }
 
+		/// <summary>Gets a value that tells whether the action set is currently running.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("executing")]
 		bool Executing { [Bind ("isExecuting")] get; }
 
@@ -408,6 +415,9 @@ namespace HomeKit {
 		[Export ("characteristicType", ArgumentSemantic.Copy)]
 		NSString WeakCharacteristicType { get; }
 
+		/// <summary>The type of value that is stored in the characteristic.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("HMCharacteristicTypeExtensions.GetValue (WeakCharacteristicType)")]
 		HMCharacteristicType CharacteristicType { get; }
 
@@ -423,6 +433,9 @@ namespace HomeKit {
 		[NullAllowed, Export ("value", ArgumentSemantic.Copy)]
 		NSObject Value { get; }
 
+		/// <summary>Gets a value that tells whether notifications are enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("notificationEnabled")]
 		bool NotificationEnabled { [Bind ("isNotificationEnabled")] get; }
 
@@ -452,10 +465,16 @@ namespace HomeKit {
 		[Export ("uniqueIdentifier", ArgumentSemantic.Copy)]
 		NSUuid UniqueIdentifier { get; }
 
+		/// <summary>Gets the key path for the characteristic.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicKeyPath")]
 		NSString KeyPath { get; }
 
+		/// <summary>Gets the keyp ath of the characteristic value.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicValueKeyPath")]
 		NSString ValueKeyPath { get; }
@@ -582,12 +601,22 @@ namespace HomeKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the HomeKit.IHMHomeDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the HomeKit.IHMHomeDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IHMHomeDelegate Delegate { get; set; }
 
 		[Export ("name")]
 		string Name { get; }
 
+		/// <summary>Gets a value that tells whether the receiver is the primary home for its manager.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("primary")]
 		bool Primary { [Bind ("isPrimary")] get; }
 
@@ -797,6 +826,10 @@ namespace HomeKit {
 
 		// constants
 
+		/// <summary>Represents the value associated with the constant HMUserFailedAccessoriesKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Field ("HMUserFailedAccessoriesKey")]
 		NSString UserFailedAccessoriesKey { get; }
@@ -1240,6 +1273,9 @@ namespace HomeKit {
 		[Export ("categoryType")]
 		NSString WeakCategoryType { get; }
 
+		/// <summary>The <see cref="T:HomeKit.HMAccessoryCategoryType" /> describing what kind of accessory the <see cref="P:HomeKit.HMAccessoryCategory.LocalizedDescription" /> refers to.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("HMAccessoryCategoryTypeExtensions.GetValue (WeakCategoryType)")]
 		HMAccessoryCategoryType CategoryType { get; }
 
@@ -1433,6 +1469,10 @@ namespace HomeKit {
 	[BaseType (typeof (HMAccessControl))]
 	[DisableDefaultCtor]
 	interface HMHomeAccessControl {
+		/// <summary>
+		///           <see langword="true" /> if the associated <see cref="T:HomeKit.HMUser" /> has administrative rights.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("administrator")]
 		bool Administrator { [Bind ("isAdministrator")] get; }
 	}

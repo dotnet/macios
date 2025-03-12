@@ -16,6 +16,9 @@ namespace Foundation {
 #if __IOS__ && !__MACCATALYST__
 	public partial class NSUrlConnection {
 		// Extension from iOS5, NewsstandKit
+		/// <summary>Retrieves the NKAssetDownload of this newsstand-related connection.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("The NewsstandKit framework has been removed from iOS.")]
 		public virtual global::NewsstandKit.NKAssetDownload NewsstandAssetDownload {

@@ -69,6 +69,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* size_t */ nint CGPDFDictionaryGetCount (/* CGPDFDictionaryRef */ IntPtr dict);
 
+		/// <summary>The number of items on this dictionary.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>You can iterate over the dictionary elements by using the Apply method.</remarks>
 		public int Count {
 			get {
 				return (int) CGPDFDictionaryGetCount (Handle);

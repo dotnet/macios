@@ -39,6 +39,9 @@ namespace CoreImage {
 
 	public partial class CIImageInitializationOptions {
 #if !COREBUILD
+		/// <summary>Gets or sets the color space.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGColorSpace? ColorSpace {
 			get {
 				return GetNativeValue<CGColorSpace> (CIImageInitializationOptionsKeys.ColorSpaceKey);

@@ -53,13 +53,21 @@ namespace ImageIO {
 
 	/// <summary>Enumerates orientation values.</summary>
 	public enum CGImagePropertyOrientation {
+		/// <summary>To be added.</summary>
 		Up = 1,
+		/// <summary>To be added.</summary>
 		UpMirrored,
+		/// <summary>To be added.</summary>
 		Down,
+		/// <summary>To be added.</summary>
 		DownMirrored,
+		/// <summary>To be added.</summary>
 		LeftMirrored,
+		/// <summary>To be added.</summary>
 		Right,
+		/// <summary>To be added.</summary>
 		RightMirrored,
+		/// <summary>To be added.</summary>
 		Left,
 	}
 
@@ -69,11 +77,17 @@ namespace ImageIO {
 	[MacCatalyst (13, 1)]
 	[Flags]
 	public enum CGImagePropertyPngFilters {
+		/// <summary>To be added.</summary>
 		No = 0,
+		/// <summary>To be added.</summary>
 		None = 0x08,
+		/// <summary>To be added.</summary>
 		Sub = 0x10,
+		/// <summary>To be added.</summary>
 		Up = 0x20,
+		/// <summary>To be added.</summary>
 		Average = 0x40,
+		/// <summary>To be added.</summary>
 		Paeth = 0x80,
 	}
 

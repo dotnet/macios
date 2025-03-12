@@ -89,11 +89,17 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CIDataMatrixCodeEccVersion : long {
+		/// <summary>To be added.</summary>
 		V000 = 0,
+		/// <summary>To be added.</summary>
 		V050 = 50,
+		/// <summary>To be added.</summary>
 		V080 = 80,
+		/// <summary>To be added.</summary>
 		V100 = 100,
+		/// <summary>To be added.</summary>
 		V140 = 140,
+		/// <summary>To be added.</summary>
 		V200 = 200,
 	}
 

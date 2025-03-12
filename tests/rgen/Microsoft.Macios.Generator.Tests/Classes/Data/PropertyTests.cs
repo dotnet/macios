@@ -170,4 +170,19 @@ public partial class PropertyTests {
 	[Export<Property> ("canDraw")]
 	public virtual partial AVCaptureReactionType ReactionType { get; set; }
 
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindFrom (typeof (NSValue))]
+	[Export<Property> ("Center")]
+	public virtual partial CGPoint Center { get; set; }
+
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindFrom (typeof (NSValue))]
+	[Export<Property> ("Center")]
+	public virtual partial CGPoint [] Location { get; set; }
 }

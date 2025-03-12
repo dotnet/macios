@@ -226,8 +226,10 @@ namespace CoreFoundation {
 			if (x is null)
 				return null;
 
-			if (x.str is null)
+			if (x.str is null) {
 				x.str = FromHandle (x.Handle);
+				GC.KeepAlive (x);
+			}
 
 			return x.str;
 		}

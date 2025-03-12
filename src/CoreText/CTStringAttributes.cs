@@ -249,8 +249,10 @@ namespace CoreText {
 			get {
 				var h = IntPtr.Zero;
 				var x = CTStringAttributeKey.BackgroundColor;
-				if (x is not null)
+				if (x is not null) {
 					h = CFDictionary.GetValue (Dictionary.Handle, x.Handle);
+					GC.KeepAlive (x);
+				}
 				return h == IntPtr.Zero ? null : new CGColor (h, false);
 			}
 			set {

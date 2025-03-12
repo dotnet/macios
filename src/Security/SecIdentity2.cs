@@ -65,8 +65,11 @@ namespace Security {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (identity));
 			if (certificates is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (certificates));
-			using (var nsarray = NSArray.FromObjects (certificates))
+			using (var nsarray = NSArray.FromObjects (certificates)) {
 				InitializeHandle (sec_identity_create_with_certificates (identity.Handle, nsarray.Handle));
+				GC.KeepAlive (identity);
+				GC.KeepAlive (nsarray);
+			}
 		}
 
 		[DllImport (Constants.SecurityLibrary)]

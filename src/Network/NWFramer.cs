@@ -462,8 +462,10 @@ namespace Network {
 			if (message is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (message));
 			unsafe {
-				fixed (byte* mh = buffer)
+				fixed (byte* mh = buffer) {
 					nw_framer_deliver_input (GetCheckedHandle (), mh, (nuint) buffer.Length, message.Handle, isComplete.AsByte ());
+					GC.KeepAlive (message);
+				}
 			}
 		}
 

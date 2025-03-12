@@ -540,6 +540,8 @@ namespace Security {
 
 		NSArray Bundle (SecIdentity? identity, IEnumerable<SecCertificate>? certificates)
 		{
+			// The analyzer cannot deal with arrays, we manually keep alive the whole array below
+#pragma warning disable RBI0014
 			int i = identity is null ? 0 : 1;
 			int n = certificates is null ? 0 : certificates.Count ();
 			var ptrs = new NativeHandle [n + i];
@@ -549,7 +551,11 @@ namespace Security {
 				foreach (var certificate in certificates)
 					ptrs [i++] = certificate.Handle;
 			}
-			return NSArray.FromIntPtrs (ptrs);
+			NSArray result = NSArray.FromIntPtrs (ptrs);
+			GC.KeepAlive (identity);
+			GC.KeepAlive (certificates);
+			return result;
+#pragma warning restore RBI0014
 		}
 
 		public SslStatus SetCertificate (SecIdentity identify, IEnumerable<SecCertificate> certificates)

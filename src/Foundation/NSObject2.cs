@@ -790,8 +790,11 @@ namespace Foundation {
 				// last chance for types like CGPath, CGColor... that are not NSObject but are CFObject
 				// see https://bugzilla.xamarin.com/show_bug.cgi?id=8458
 				INativeObject native = (obj as INativeObject);
-				if (native is not null)
-					return Runtime.GetNSObject (native.Handle);
+				if (native is not null) {
+					NSObject result = Runtime.GetNSObject (native.Handle);
+					GC.KeepAlive (native);
+					return result;
+				}
 				return null;
 			}
 		}

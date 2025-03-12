@@ -45,16 +45,18 @@ namespace Network {
 		{
 			if (urlEndpoint is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (urlEndpoint));
+			NativeHandle urlEndpointHandle = urlEndpoint.Handle;
 			switch (endpointType) {
 			case NWResolverConfigEndpointType.Https:
-				InitializeHandle (nw_resolver_config_create_https (urlEndpoint.Handle));
+				InitializeHandle (nw_resolver_config_create_https (urlEndpointHandle));
 				break;
 			case NWResolverConfigEndpointType.Tls:
-				InitializeHandle (nw_resolver_config_create_tls (urlEndpoint.Handle));
+				InitializeHandle (nw_resolver_config_create_tls (urlEndpointHandle));
 				break;
 			default:
 				throw new ArgumentOutOfRangeException ($"Unknown endpoint type: {endpointType}");
 			}
+			GC.KeepAlive (urlEndpoint);
 		}
 
 		[DllImport (Constants.NetworkLibrary)]

@@ -83,9 +83,11 @@ namespace Foundation {
 		{
 			switch (type) {
 			case NSAttributedStringDataType.DocFormat:
-				var tempAttributedString = new NSAttributedString (data, out resultDocumentAttributes);
-				Handle = tempAttributedString.Handle;
-				GC.KeepAlive (tempAttributedString);
+				{
+					var tempAttributedString = new NSAttributedString (data, out resultDocumentAttributes);
+					Handle = tempAttributedString.Handle;
+					GC.KeepAlive (tempAttributedString);
+				}
 				break;
 			case NSAttributedStringDataType.HTML:
 				Handle = InitWithHTML (data, out resultDocumentAttributes);

@@ -1817,6 +1817,14 @@ namespace Foundation {
 		[Export ("decodeDictionaryWithKeysOfClasses:objectsOfClasses:forKey:")]
 		[return: NullAllowed]
 		NSDictionary DecodeDictionary (NSSet<Class> keyClasses, NSSet<Class> objectClasses, string key);
+
+		[TV (18, 4), iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Export ("decodeBytesWithMinimumLength:")]
+		IntPtr DecodeBytes (nuint minimumLength);
+
+		[TV (18, 4), iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Export ("decodeBytesForKey:minimumLength:")]
+		IntPtr DecodeBytes (string key, nuint minimumLength);
 	}
 
 	[BaseType (typeof (NSPredicate))]
@@ -8262,6 +8270,10 @@ namespace Foundation {
 		[Export ("TLSMaximumSupportedProtocolVersion", ArgumentSemantic.Assign)]
 		TlsProtocolVersion TlsMaximumSupportedProtocolVersion { get; set; }
 
+		[Deprecated (PlatformName.iOS, 18, 4, message: "Use HTTP/2 or HTTP/3 instead. Only supported when the classic loader is enabled.")]
+		[Deprecated (PlatformName.TvOS, 18, 4, message: "Use HTTP/2 or HTTP/3 instead. Only supported when the classic loader is enabled.")]
+		[Deprecated (PlatformName.MacCatalyst, 18, 4, message: "Use HTTP/2 or HTTP/3 instead. Only supported when the classic loader is enabled.")]
+		[Deprecated (PlatformName.MacOSX, 15, 4, message: "Use HTTP/2 or HTTP/3 instead. Only supported when the classic loader is enabled.")]
 		[Export ("HTTPShouldUsePipelining")]
 		bool HttpShouldUsePipelining { get; set; }
 
@@ -8304,6 +8316,10 @@ namespace Foundation {
 		[Static, Export ("backgroundSessionConfigurationWithIdentifier:")]
 		NSUrlSessionConfiguration _CreateBackgroundSessionConfiguration (string identifier);
 
+		[Deprecated (PlatformName.iOS, 18, 4, message: "Not supported anymore.")]
+		[Deprecated (PlatformName.TvOS, 18, 4, message: "Not supported anymore.")]
+		[Deprecated (PlatformName.MacCatalyst, 18, 4, message: "Not supported anymore.")]
+		[Deprecated (PlatformName.MacOSX, 15, 4, message: "Not supported anymore.")]
 		[MacCatalyst (13, 1)]
 		[Export ("shouldUseExtendedBackgroundIdleMode")]
 		bool ShouldUseExtendedBackgroundIdleMode { get; set; }
@@ -8335,6 +8351,10 @@ namespace Foundation {
 		[Internal]
 		[Export ("proxyConfigurations", ArgumentSemantic.Copy)]
 		IntPtr _ProxyConfigurations { get; set; }
+
+		[iOS (18, 4), TV (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Export ("usesClassicLoadingMode")]
+		bool UsesClassicLoadingMode { get; set; }
 	}
 
 	[MacCatalyst (13, 1)]
@@ -8668,9 +8688,17 @@ namespace Foundation {
 		[Field ("NSURLProtectionSpaceHTTPS")]
 		NSString HTTPS { get; }
 
+		[Deprecated (PlatformName.iOS, 18, 4, message: "FTP is deprecated. Only supported when the classic loader is enabled.")]
+		[Deprecated (PlatformName.TvOS, 18, 4, message: "FTP is deprecated. Only supported when the classic loader is enabled.")]
+		[Deprecated (PlatformName.MacCatalyst, 18, 4, message: "FTP is deprecated. Only supported when the classic loader is enabled.")]
+		[Deprecated (PlatformName.MacOSX, 15, 4, message: "FTP is deprecated. Only supported when the classic loader is enabled.")]
 		[Field ("NSURLProtectionSpaceFTP")]
 		NSString FTP { get; }
 
+		[Deprecated (PlatformName.iOS, 18, 4, message: "FTP is deprecated. Only supported when the classic loader is enabled.")]
+		[Deprecated (PlatformName.TvOS, 18, 4, message: "FTP is deprecated. Only supported when the classic loader is enabled.")]
+		[Deprecated (PlatformName.MacCatalyst, 18, 4, message: "FTP is deprecated. Only supported when the classic loader is enabled.")]
+		[Deprecated (PlatformName.MacOSX, 15, 4, message: "FTP is deprecated. Only supported when the classic loader is enabled.")]
 		[Field ("NSURLProtectionSpaceHTTPProxy")]
 		NSString HTTPProxy { get; }
 
@@ -11023,6 +11051,11 @@ namespace Foundation {
 		[Notification]
 		[Field ("NSBundleDidLoadNotification")]
 		NSString BundleDidLoadNotification { get; }
+
+		// bound using NSString instead of string, because often localized NSString has extra information we can't marshal to a C# string
+		[TV (18, 4), iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Export ("localizedStringForKey:value:table:localizations:")]
+		NSString GetLocalizedString (NSString key, [NullAllowed] NSString value, [NullAllowed] NSString tableName, NSString [] localizations);
 	}
 
 	[NoMac]

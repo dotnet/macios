@@ -57,6 +57,7 @@ XIOS_RID = ios-arm64
 $(XIOS_PCH): .stamp-check-sharpie
 	$(SHARPIE) sdk-db --xcode $(XCODE) -s iphoneos$(IOS_SDK_VERSION) -a $(XIOS_ARCH) \
 	-modules false \
+	-exclude BrowserEngineCore \
 	-exclude FactoryOTAWifiUtils \
 	-exclude FactoryOTALogger \
 	-exclude FactoryOTANetworkUtils \
@@ -73,6 +74,7 @@ XTVOS_RID = tvos-arm64
 $(XTVOS_PCH): .stamp-check-sharpie
 	$(SHARPIE) sdk-db --xcode $(XCODE) -s appletvos$(TVOS_SDK_VERSION) -a $(XTVOS_ARCH) \
 		-modules false \
+		-exclude BrowserEngineCore \
 		-exclude Matter \
 
 XMACOS_ARCH = x86_64
@@ -83,6 +85,7 @@ $(XMACOS_PCH): .stamp-check-sharpie
 	$(SHARPIE) sdk-db --xcode $(XCODE) -s macosx$(MACOS_SDK_VERSION) -a $(XMACOS_ARCH) \
 		-modules false \
 		-exclude AccessorySetupKit \
+		-exclude BrowserEngineCore \
 		-exclude JavaNativeFoundation \
 		-exclude Matter \
 		-exclude ParavirtualizedGraphics \
@@ -99,6 +102,7 @@ $(XMACCATALYST_PCH): .stamp-check-sharpie
 	-exclude AccessorySetupKit \
 	-exclude AGL \
 	-exclude AudioVideoBridging \
+	-exclude BrowserEngineCore \
 	-exclude AssetsLibrary \
 	-exclude CalendarStore \
 	-exclude Carbon \

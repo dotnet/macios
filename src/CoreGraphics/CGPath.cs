@@ -47,10 +47,15 @@ namespace CoreGraphics {
 
 	// untyped enum -> CGPath.h
 	public enum CGPathElementType {
+		/// <summary>This is a MoveTo operation, one point parameter.</summary>
 		MoveToPoint,
+		/// <summary>This is a LineTo operation, one point parameter.</summary>
 		AddLineToPoint,
+		/// <summary>This is an AddQuadCurveTo operation, two point parameters.</summary>
 		AddQuadCurveToPoint,
+		/// <summary>This is an AddCurveTo operation, three point parameters.</summary>
 		AddCurveToPoint,
+		/// <summary>This is a close subpath operation.</summary>
 		CloseSubpath,
 	}
 
@@ -63,6 +68,8 @@ namespace CoreGraphics {
 #endif
 	// CGPath.h
 	public struct CGPathElement {
+		/// <summary>Determines the type of path element.</summary>
+		///         <remarks>Depending on the value, the values of Point1, Point2 and Point3 will be valid.</remarks>
 		public CGPathElementType Type;
 
 		public CGPathElement (int t)
@@ -72,12 +79,18 @@ namespace CoreGraphics {
 		}
 
 		// Set for MoveToPoint, AddLineToPoint, AddQuadCurveToPoint, AddCurveToPoint
+		/// <summary>First point.</summary>
+		///         <remarks>Used by MoveToPoint, AddLineToPoint, AddQuadCurveToPoint, AddCurveToPoint.</remarks>
 		public CGPoint Point1;
 
 		// Set for AddQuadCurveToPoint, AddCurveToPoint
+		/// <summary>Second point.</summary>
+		///         <remarks>AddQuadCurveToPoint, AddCurveToPoint.</remarks>
 		public CGPoint Point2;
 
 		// Set for AddCurveToPoint
+		/// <summary>Third point.</summary>
+		///         <remarks>Used by AddCurveToPoint.</remarks>
 		public CGPoint Point3;
 	}
 
@@ -421,6 +434,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static byte CGPathIsEmpty (/* CGPathRef */ IntPtr path);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsEmpty {
 			get {
 				return CGPathIsEmpty (Handle) != 0;
@@ -441,6 +457,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGPoint CGPathGetCurrentPoint (/* CGPathRef */ IntPtr path);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGPoint CurrentPoint {
 			get {
 				return CGPathGetCurrentPoint (Handle);
@@ -450,6 +469,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGRect CGPathGetBoundingBox (/* CGPathRef */IntPtr path);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGRect BoundingBox {
 			get {
 				return CGPathGetBoundingBox (Handle);
@@ -459,6 +481,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGRect CGPathGetPathBoundingBox (/* CGPathRef */ IntPtr path);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGRect PathBoundingBox {
 			get {
 				return CGPathGetPathBoundingBox (Handle);

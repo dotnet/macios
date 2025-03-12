@@ -186,49 +186,72 @@ static partial class BindingSyntaxFactory {
 		var memberName = returnType switch {
 			// CoreAnimation
 			{ FullyQualifiedName: "CoreAnimation.CATransform3D" } => "ToCATransform3D",
-			
+
 			// CoreGraphics
 			{ FullyQualifiedName: "CoreGraphics.CGAffineTransform" } => "ToCGAffineTransform",
 			{ FullyQualifiedName: "CoreGraphics.CGPoint" } => "ToCGPoint",
 			{ FullyQualifiedName: "CoreGraphics.CGRect" } => "ToCGRect",
 			{ FullyQualifiedName: "CoreGraphics.CGSize" } => "ToCGSize",
 			{ FullyQualifiedName: "CoreGraphics.CGVector" } => "ToCGVector",
-			
+
 			// CoreMedia
 			{ FullyQualifiedName: "CoreMedia.CMTime" } => "ToCMTime",
 			{ FullyQualifiedName: "CoreMedia.CMTimeMapping" } => "ToCMTimeMapping",
 			{ FullyQualifiedName: "CoreMedia.CMTimeRange" } => "ToCMTimeRange",
 			{ FullyQualifiedName: "CoreMedia.CMVideoDimensions" } => "ToCMVideoDimensions",
-			
+
 			// CoreLocation
 			{ FullyQualifiedName: "CoreLocation.CLLocationCoordinate2D" } => "ToCLLocationCoordinate2D",
-			
+
 			// Foundation
 			{ FullyQualifiedName: "Foundation.NSRange" } => "ToNSRange",
-			
+
 			// MapKit
 			{ FullyQualifiedName: "MapKit.MKCoordinateSpan" } => "ToMKCoordinateSpan",
-			
+
 			// SceneKit
 			{ FullyQualifiedName: "SceneKit.SCNMatrix4" } => "ToSCNMatrix4",
 			{ FullyQualifiedName: "SceneKit.SCNVector3" } => "ToSCNVector3",
 			{ FullyQualifiedName: "SceneKit.SCNVector4" } => "ToSCNVector4",
-			
+
 			// UIKit
 			{ FullyQualifiedName: "UIKit.NSDirectionalEdgeInsets" } => "ToNSDirectionalEdgeInsets",
 			{ FullyQualifiedName: "UIKit.UIEdgeInsets" } => "ToUIEdgeInsets",
 			{ FullyQualifiedName: "UIKit.UIOffset" } => "ToUIOffset",
-			
+
 			_ => null,
 		};
 #pragma warning restore format
-		
+
 		if (memberName is null)
 			return null;
 		return MemberAccessExpression (
 			SyntaxKind.SimpleMemberAccessExpression,
 			IdentifierName ("NSValue"),
 			IdentifierName (memberName));
+	}
+
+	/// <summary>
+	/// Generates the correct call to the To* methods in the NSValue class that converts a NativeHandle
+	/// to the return type of the method/property.
+	/// </summary>
+	/// <param name="returnType">The return method of the method/property.</param>
+	/// <param name="arguments">The arguments to pass to the NSValue method.</param>
+	/// <returns>The expression needed to call the NSNumber method with the given args.</returns>
+	internal static InvocationExpressionSyntax? NSValueFromHandle (TypeInfo returnType,
+		ImmutableArray<ArgumentSyntax> arguments)
+	{
+		// generate: (arg1, arg2, arg3)
+		var argumentList = ArgumentList (
+			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
+
+		// generate: NSNumber.ToInt (arg1, arg2, arg3)
+		var nsValueFromHandle = NSValueFromHandle (returnType);
+		if (nsValueFromHandle is null)
+			return null;
+		return InvocationExpression (
+				nsValueFromHandle.WithTrailingTrivia (Space))
+			.WithArgumentList (argumentList);
 	}
 
 	/// <summary>
@@ -323,4 +346,48 @@ static partial class BindingSyntaxFactory {
 						.WithTrailingTrivia (Space)))
 			.WithArgumentList (argumentList);
 	}
+
+	/// <summary>
+	/// Returns the enum extension method needed to get the value of the enum from a NativeHandle.
+	/// </summary>
+	/// <param name="enumType">The type info of the enum type.</param>
+	/// <param name="arguments">The arguments to pass to the method invocation.</param>
+	/// <param name="isNullable">If the execution should consider the enum to be nullable. This
+	/// method does not use the data in the TypeInfo to allow it to be overriden. This is because
+	/// the BindAsAttribute might need to override the call. Use the overload when the type info is all
+	/// we care about.</param>
+	/// <returns>The extension method invocation syntax.</returns>
+	internal static InvocationExpressionSyntax SmartEnumGetValue (in TypeInfo enumType,
+		ImmutableArray<ArgumentSyntax> arguments, bool isNullable)
+	{
+		// use the nomenclator to get the class name for the extensions
+		var extensionClassName = Nomenclator.GetSmartEnumExtensionClassName (enumType.FullyQualifiedName);
+		var getValueMethod = isNullable ? "GetNullableValue" : "GetValue";
+
+		// generate (arg1, arg2, arg3)
+		var argumentList = ArgumentList (
+			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
+
+		// generate: global::extensionNamespace.extensionClassName.GetValue
+		var memberAccess = MemberAccessExpression (SyntaxKind.SimpleMemberAccessExpression,
+			AliasQualifiedName (
+				IdentifierName (Token (SyntaxKind.GlobalKeyword)),
+				IdentifierName (extensionClassName)),
+			IdentifierName (getValueMethod).WithTrailingTrivia (Space));
+
+		// generate the invocation with the given params
+		return InvocationExpression (memberAccess)
+			.WithArgumentList (argumentList);
+	}
+
+	/// <summary>
+	/// Overload that returns the enum extension method need to get a enum value from a NativeHandle. This method
+	/// uses the type info data to decide if the result is a nullable enum value.
+	/// </summary>
+	/// <param name="enumType">The type info of the enum value.</param>
+	/// <param name="arguments">The arguments to pass to the method invocation.</param>
+	/// <returns>The extension method invocation syntax.</returns>
+	internal static InvocationExpressionSyntax SmartEnumGetValue (in TypeInfo enumType,
+		ImmutableArray<ArgumentSyntax> arguments)
+		=> SmartEnumGetValue (enumType, arguments, enumType.IsNullable);
 }

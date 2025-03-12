@@ -11,7 +11,7 @@ Describe "TestResults tests" {
         $platform = "iOS"
         $resultContext = "tests"
         $suite = [TestSuite]::new($label)
-        $testConfig = [TestConfiguration]::new($suite, $title, $platform, $resultContext)
+        $testConfig = [TestConfiguration]::new($suite, $title, $platform, $resultContext, "testStage")
         $jobStatus = "Succeeded"
         $attempt = 1
         $matrix = @"
@@ -19,6 +19,7 @@ Describe "TestResults tests" {
     "dotnettests_ios": {
         "LABEL": "dotnettests",
         "TESTS_LABELS": "--label=skip-all-tests,run-ios-tests,run-ios-simulator-tests,run-tvos-tests,run-mac-tests,run-maccatalyst-tests,run-system-permission-tests,run-dotnettests-tests",
+        "TEST_STAGE": "testStage",
         "LABEL_WITH_PLATFORM": "dotnettests_iOS",
         "STATUS_CONTEXT": "VSTS: simulator tests - dotnettests - iOS",
         "TEST_simulator_tests": "simulator_dotnettests_ios",
@@ -28,6 +29,7 @@ Describe "TestResults tests" {
       "dotnettests_tvos": {
         "LABEL": "dotnettests",
         "TESTS_LABELS": "--label=skip-all-tests,run-ios-tests,run-ios-simulator-tests,run-tvos-tests,run-mac-tests,run-maccatalyst-tests,run-system-permission-tests,run-dotnettests-tests",
+        "TEST_STAGE": "testStage",
         "LABEL_WITH_PLATFORM": "dotnettests_tvOS",
         "STATUS_CONTEXT": "VSTS: simulator tests - dotnettests - tvOS",
         "TEST_simulator_tests": "simulator_dotnettests_tvos",
@@ -37,6 +39,7 @@ Describe "TestResults tests" {
       "dotnettests_maccatalyst": {
         "LABEL": "dotnettests",
         "TESTS_LABELS": "--label=skip-all-tests,run-ios-tests,run-ios-simulator-tests,run-tvos-tests,run-mac-tests,run-maccatalyst-tests,run-system-permission-tests,run-dotnettests-tests",
+        "TEST_STAGE": "testStage",
         "LABEL_WITH_PLATFORM": "dotnettests_MacCatalyst",
         "STATUS_CONTEXT": "VSTS: simulator tests - dotnettests - MacCatalyst",
         "TEST_simulator_tests": "simulator_dotnettests_maccatalyst",
@@ -46,6 +49,7 @@ Describe "TestResults tests" {
       "dotnettests_macos": {
         "LABEL": "dotnettests",
         "TESTS_LABELS": "--label=skip-all-tests,run-ios-tests,run-ios-simulator-tests,run-tvos-tests,run-mac-tests,run-maccatalyst-tests,run-system-permission-tests,run-dotnettests-tests",
+        "TEST_STAGE": "testStage",
         "LABEL_WITH_PLATFORM": "dotnettests_macOS",
         "STATUS_CONTEXT": "VSTS: simulator tests - dotnettests - macOS",
         "TEST_simulator_tests": "simulator_dotnettests_macos",
@@ -55,6 +59,7 @@ Describe "TestResults tests" {
       "dotnettests_multiple": {
         "LABEL": "dotnettests",
         "TESTS_LABELS": "--label=skip-all-tests,run-ios-tests,run-ios-simulator-tests,run-tvos-tests,run-mac-tests,run-maccatalyst-tests,run-system-permission-tests,run-dotnettests-tests",
+        "TEST_STAGE": "testStage",
         "LABEL_WITH_PLATFORM": "dotnettests_Multiple",
         "STATUS_CONTEXT": "VSTS: simulator tests - dotnettests - Multiple",
         "TEST_simulator_tests": "simulator_dotnettests_multiple",
@@ -65,6 +70,7 @@ Describe "TestResults tests" {
     {
         "LABEL": "cecil",
         "TESTS_LABELS": "--label=skip-all-tests,run-ios-64-tests,run-ios-simulator-tests,run-tvos-tests,run-mac-tests,run-maccatalyst-tests,run-system-permission-tests,run-cecil-tests",
+        "TEST_STAGE": "testStage",
         "LABEL_WITH_PLATFORM": "cecil",
         "STATUS_CONTEXT": "VSTS: simulator tests - cecil",
         "TEST_simulator_tests": "simulator_cecil",
@@ -97,6 +103,7 @@ Describe "TestResults tests" {
                 "dotnettests_tvos.Bash23.TESTS_JOBSTATUS": "Failed",
                 "dotnettests_tvos.Bash23.TESTS_LABEL": "dotnettests",
                 "dotnettests_tvos.Bash23.TESTS_PLATFORM": "",
+                "dotnettests_tvos.Bash23.TESTS_TITLE": "dotnettests_tvos",
                 "dotnettests_tvos.DownloadPipelineArtifact2.BuildNumber": "8894907",
                 "dotnettests_maccatalyst.fix_commit.GIT_HASH": "fa3d1deb4e2d0ac358f2e0ac80e3d305ca541848",
                 "dotnettests_maccatalyst.DownloadPipelineArtifact1.BuildNumber": "8894907",
@@ -105,6 +112,7 @@ Describe "TestResults tests" {
                 "dotnettests_maccatalyst.Bash23.TESTS_JOBSTATUS": "Failed",
                 "dotnettests_maccatalyst.Bash23.TESTS_LABEL": "dotnettests",
                 "dotnettests_maccatalyst.Bash23.TESTS_PLATFORM": "",
+                "dotnettests_maccatalyst.Bash23.TESTS_TITLE": "dotnettests_maccatalyst",
                 "dotnettests_maccatalyst.DownloadPipelineArtifact2.BuildNumber": "8894907",
                 "dotnettests_macos.fix_commit.GIT_HASH": "fa3d1deb4e2d0ac358f2e0ac80e3d305ca541848",
                 "dotnettests_macos.DownloadPipelineArtifact1.BuildNumber": "8894907",
@@ -113,6 +121,7 @@ Describe "TestResults tests" {
                 "dotnettests_macos.Bash23.TESTS_JOBSTATUS": "Failed",
                 "dotnettests_macos.Bash23.TESTS_LABEL": "dotnettests",
                 "dotnettests_macos.Bash23.TESTS_PLATFORM": "",
+                "dotnettests_macos.Bash23.TESTS_TITLE": "dotnettests_macos",
                 "dotnettests_macos.DownloadPipelineArtifact2.BuildNumber": "8894907",
                 "dotnettests_macos.runTests.TESTS_JOBSTATUS": "Succeeded",
                 "dotnettests_ios.fix_commit.GIT_HASH": "fa3d1deb4e2d0ac358f2e0ac80e3d305ca541848",
@@ -122,6 +131,7 @@ Describe "TestResults tests" {
                 "dotnettests_ios.Bash23.TESTS_JOBSTATUS": "Failed",
                 "dotnettests_ios.Bash23.TESTS_LABEL": "dotnettests",
                 "dotnettests_ios.Bash23.TESTS_PLATFORM": "",
+                "dotnettests_ios.Bash23.TESTS_TITLE": "dotnettests_ios",
                 "dotnettests_ios.DownloadPipelineArtifact2.BuildNumber": "8894907",
                 "dotnettests_ios.runTests.TESTS_JOBSTATUS": "Succeeded",
                 "dotnettests_multiple.fix_commit.GIT_HASH": "fa3d1deb4e2d0ac358f2e0ac80e3d305ca541848",
@@ -131,6 +141,7 @@ Describe "TestResults tests" {
                 "dotnettests_multiple.Bash23.TESTS_JOBSTATUS": "Failed",
                 "dotnettests_multiple.Bash23.TESTS_LABEL": "dotnettests",
                 "dotnettests_multiple.Bash23.TESTS_PLATFORM": "",
+                "dotnettests_multiple.Bash23.TESTS_TITLE": "dotnettests_multiple",
                 "dotnettests_multiple.DownloadPipelineArtifact2.BuildNumber": "8894907",
                 "dotnettests_multiple.runTests.TESTS_JOBSTATUS": "Succeeded",
                 "cecil.fix_commit.GIT_HASH": "fa3d1deb4e2d0ac358f2e0ac80e3d305ca541848",
@@ -140,6 +151,7 @@ Describe "TestResults tests" {
                 "cecil.Bash23.TESTS_JOBSTATUS": "Failed",
                 "cecil.Bash23.TESTS_LABEL": "cecil",
                 "cecil.Bash23.TESTS_PLATFORM": "",
+                "cecil.Bash23.TESTS_TITLE": "cecil",
                 "cecil.DownloadPipelineArtifact2.BuildNumber": "8894907",
                 "cecil.runTests.TESTS_JOBSTATUS": "Succeeded"
             },
@@ -225,6 +237,398 @@ Describe "TestResults tests" {
     }
   }
 }
+"@
+
+        $stageDependenciesWithWindowsResults = @"
+{
+  "configure_build": {
+    "configure": {
+      "outputs": {
+        "agent.version": "4.252.0",
+        "JobExtension_Init.agent.version": "4.252.0",
+        "__system_2.agent.version": "4.252.0",
+        "__system_1.agent.version": "4.252.0",
+        "__system_3.agent.version": "4.252.0",
+        "__system_4.agent.version": "4.252.0",
+        "Checkout1.agent.version": "4.252.0",
+        "fix_commit.agent.version": "4.252.0",
+        "fix_commit.GIT_HASH": "cd6f17c5cb9b0fabbe0e2af9fc17d57e8aab3c1a",
+        "Checkout2.agent.version": "4.252.0",
+        "Checkout3.agent.version": "4.252.0",
+        "__system_postcheckout_1.agent.version": "4.252.0",
+        "Download.agent.version": "4.252.0",
+        "PowerShell1.agent.version": "4.252.0",
+        "configure_platforms.agent.version": "4.252.0",
+        "configure_platforms.DOTNET_IOS_RUNTIME_IDENTIFIERS": "ios-arm64 iossimulator-x64 iossimulator-arm64",
+        "configure_platforms.DOTNET_PLATFORMS": "iOS",
+        "configure_platforms.INCLUDE_DOTNET_IOS": "1",
+        "configure_platforms.INCLUDE_DOTNET_MACCATALYST": "",
+        "configure_platforms.INCLUDE_DOTNET_MACOS": "",
+        "configure_platforms.INCLUDE_DOTNET_TVOS": "",
+        "configure_platforms.INCLUDE_IOS": "1",
+        "configure_platforms.INCLUDE_MAC": "",
+        "configure_platforms.INCLUDE_MACCATALYST": "",
+        "configure_platforms.INCLUDE_TVOS": "",
+        "configure_platforms.IOS_NUGET_OS_VERSION": "18.2",
+        "configure_platforms.IOS_NUGET_REF_NAME": "Microsoft.iOS.Ref.net9.0_18.2",
+        "configure_platforms.IOS_NUGET_SDK_NAME": "Microsoft.iOS.Sdk.net9.0_18.2",
+        "configure_platforms.IOS_NUGET_VERSION_NO_METADATA": "18.2.9527-ci.dev-rolf-windows-tests-html-report",
+        "configure_platforms.ios-arm64_NUGET_RUNTIME_NAME": "Microsoft.iOS.Runtime.ios-arm64.net9.0_18.2",
+        "configure_platforms.iossimulator-arm64_NUGET_RUNTIME_NAME": "Microsoft.iOS.Runtime.iossimulator-arm64.net9.0_18.2",
+        "configure_platforms.iossimulator-x64_NUGET_RUNTIME_NAME": "Microsoft.iOS.Runtime.iossimulator-x64.net9.0_18.2",
+        "configure_platforms.MACCATALYST_NUGET_OS_VERSION": "18.2",
+        "configure_platforms.MACOS_NUGET_OS_VERSION": "15.2",
+        "configure_platforms.TVOS_NUGET_OS_VERSION": "18.2",
+        "labels.agent.version": "4.252.0",
+        "labels.prBuild": "False",
+        "decisions.agent.version": "4.252.0",
+        "decisions.RUN_MAC_TESTS": "false",
+        "decisions.RUN_WINDOWS_TESTS": "true",
+        "PowerShell2.agent.version": "4.252.0",
+        "test_matrix.agent.version": "4.252.0",
+        "test_matrix.DOTNET_IOS_RUNTIME_IDENTIFIERS": "ios-arm64 iossimulator-x64 iossimulator-arm64",
+        "test_matrix.DOTNET_PLATFORMS": "iOS",
+        "test_matrix.INCLUDE_DOTNET_IOS": "1",
+        "test_matrix.IOS_NUGET_REF_NAME": "Microsoft.iOS.Ref.net9.0_18.2",
+        "test_matrix.IOS_NUGET_SDK_NAME": "Microsoft.iOS.Sdk.net9.0_18.2",
+        "test_matrix.IOS_NUGET_VERSION_NO_METADATA": "18.2.9527-ci.dev-rolf-windows-tests-html-report",
+        "test_matrix.ios-arm64_NUGET_RUNTIME_NAME": "",
+        "test_matrix.iossimulator-arm64_NUGET_RUNTIME_NAME": "",
+        "test_matrix.iossimulator-x64_NUGET_RUNTIME_NAME": "",
+        "test_matrix.PARENT_BUILD_BUILD_BINARIESDIRECTORY": "/mnt/vss/_work/1/b",
+        "test_matrix.PARENT_BUILD_BUILD_BUILDID": "11141344",
+        "test_matrix.PARENT_BUILD_BUILD_BUILDNUMBER": "20250306.21",
+        "test_matrix.PARENT_BUILD_BUILD_BUILDURI": "vstfs:///Build/Build/11141344",
+        "test_matrix.PARENT_BUILD_BUILD_DEFINITIONNAME": "xamarin-macios-pr",
+        "test_matrix.PARENT_BUILD_BUILD_REASON": "IndividualCI",
+        "test_matrix.PARENT_BUILD_BUILD_REPOSITORY_ID": "dotnet/macios",
+        "test_matrix.PARENT_BUILD_BUILD_REPOSITORY_NAME": "dotnet/macios",
+        "test_matrix.PARENT_BUILD_BUILD_REPOSITORY_PROVIDER": "GitHub",
+        "test_matrix.PARENT_BUILD_BUILD_REPOSITORY_URI": "https://github.com/dotnet/macios",
+        "test_matrix.PARENT_BUILD_BUILD_SOURCEBRANCH": "refs/heads/dev/rolf/windows-tests-html-report",
+        "test_matrix.PARENT_BUILD_BUILD_SOURCEBRANCHNAME": "windows-tests-html-report",
+        "test_matrix.PARENT_BUILD_BUILD_SOURCEVERSION": "cd6f17c5cb9b0fabbe0e2af9fc17d57e8aab3c1a",
+        "test_matrix.SIMULATOR_TEST_MATRIX": "{\"cecil\":{\"LABEL\":\"cecil\",\"TESTS_LABELS\":\"--label=skip-all-tests,run-ios-tests,run-ios-simulator-tests,run-tvos-tests,run-mac-tests,run-maccatalyst-tests,run-system-permission-tests,run-cecil-tests\",\"TEST_STAGE\":\"simulator_tests\",\"LABEL_WITH_PLATFORM\":\"cecil\",\"STATUS_CONTEXT\":\"VSTS: simulator tests - cecil\",\"TEST_PREFIX\":\"simulator_testscecil\",\"TEST_PLATFORM\":\"\"}}",
+        "test_matrix.TEST_MATRIX": "{\"windows\":{\"LABEL\":\"windows\",\"TESTS_LABELS\":\"--label=skip-all-tests,run-ios-tests,run-ios-simulator-tests,run-tvos-tests,run-mac-tests,run-maccatalyst-tests,run-system-permission-tests,run-windows-tests\",\"TEST_STAGE\":\"windows_integration\",\"LABEL_WITH_PLATFORM\":\"windows\",\"STATUS_CONTEXT\":\"VSTS: simulator tests - windows\",\"TEST_PREFIX\":\"windows_integrationwindows\",\"TEST_PLATFORM\":\"\"},\"cecil\":{\"LABEL\":\"cecil\",\"TESTS_LABELS\":\"--label=skip-all-tests,run-ios-tests,run-ios-simulator-tests,run-tvos-tests,run-mac-tests,run-maccatalyst-tests,run-system-permission-tests,run-cecil-tests\",\"TEST_STAGE\":\"simulator_tests\",\"LABEL_WITH_PLATFORM\":\"cecil\",\"STATUS_CONTEXT\":\"VSTS: simulator tests - cecil\",\"TEST_PREFIX\":\"simulator_testscecil\",\"TEST_PLATFORM\":\"\"}}",
+        "PublishPipelineArtifact.agent.version": "4.252.0",
+        "__system_post_1.agent.version": "4.252.0",
+        "__system_post_2.agent.version": "4.252.0",
+        "JobExtension_Final.agent.version": "4.252.0"
+      },
+      "identifier": null,
+      "name": "configure",
+      "attempt": 1,
+      "startTime": null,
+      "finishTime": null,
+      "state": "NotStarted",
+      "result": "Succeeded"
+    }
+  },
+  "simulator_tests": {
+    "tests": {
+      "outputs": {
+        "cecil.agent.version": "3.248.0",
+        "cecil.JobExtension_Init.agent.version": "3.248.0",
+        "cecil.__system_1.agent.version": "3.248.0",
+        "cecil.__system_2.agent.version": "3.248.0",
+        "cecil.__system_3.agent.version": "3.248.0",
+        "cecil.DownloadSecureFile1.agent.version": "3.248.0",
+        "cecil.DownloadSecureFile1.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-AppleWWDRCAG3-2.cer",
+        "cecil.lingeringprocesstask.agent.version": "3.248.0",
+        "cecil.DownloadSecureFile2.agent.version": "3.248.0",
+        "cecil.DownloadSecureFile2.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-developer-id-application-luis-aguilera-jul-2029.p12",
+        "cecil.DownloadSecureFile3.agent.version": "3.248.0",
+        "cecil.DownloadSecureFile3.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-developer-id-installer-luis-aguilera-jul-2029.p12",
+        "cecil.DownloadSecureFile4.agent.version": "3.248.0",
+        "cecil.DownloadSecureFile4.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-la-dev-apple.p12",
+        "cecil.DownloadSecureFile5.agent.version": "3.248.0",
+        "cecil.DownloadSecureFile5.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-la-dev-iPhone.p12",
+        "cecil.DownloadSecureFile6.agent.version": "3.248.0",
+        "cecil.DownloadSecureFile6.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-la-distr-apple.p12",
+        "cecil.DownloadSecureFile7.agent.version": "3.248.0",
+        "cecil.DownloadSecureFile7.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-la-distr-iphone.p12",
+        "cecil.DownloadSecureFile8.agent.version": "3.248.0",
+        "cecil.DownloadSecureFile8.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-la-mac-app-dev.p12",
+        "cecil.DownloadSecureFile9.agent.version": "3.248.0",
+        "cecil.DownloadSecureFile9.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-la-mac-app-distr.p12",
+        "cecil.DownloadSecureFile10.agent.version": "3.248.0",
+        "cecil.DownloadSecureFile10.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-la-mac-installer-distr.p12",
+        "cecil.DownloadSecureFile11.agent.version": "3.248.0",
+        "cecil.DownloadSecureFile11.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-vseng-xamarin-mac-devices-2.p12",
+        "cecil.DownloadSecureFile12.agent.version": "3.248.0",
+        "cecil.DownloadSecureFile12.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-vseng-xamarin-mac-devices.p12",
+        "cecil.DownloadSecureFile13.agent.version": "3.248.0",
+        "cecil.DownloadSecureFile13.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-vsengxamarinmacdevices.mobileprovision",
+        "cecil.DownloadSecureFile14.agent.version": "3.248.0",
+        "cecil.DownloadSecureFile14.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-WildCardiOSDevelopment.mobileprovision",
+        "cecil.DownloadSecureFile15.agent.version": "3.248.0",
+        "cecil.DownloadSecureFile15.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-WildCardiOSDistribution.mobileprovision",
+        "cecil.DownloadSecureFile17.agent.version": "3.248.0",
+        "cecil.DownloadSecureFile17.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-WildCardMacDistribution.provisionprofile",
+        "cecil.DownloadSecureFile16.agent.version": "3.248.0",
+        "cecil.DownloadSecureFile16.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-WildCardMacAppDevelopment.provisionprofile",
+        "cecil.DownloadSecureFile18.agent.version": "3.248.0",
+        "cecil.DownloadSecureFile18.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-WildCardtvOSDevelopment.mobileprovision",
+        "cecil.artifactDropTask.agent.version": "3.248.0",
+        "cecil.DownloadSecureFile19.agent.version": "3.248.0",
+        "cecil.DownloadSecureFile19.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-WildCardtvOSDistribution.mobileprovision",
+        "cecil.__system_4.agent.version": "3.248.0",
+        "cecil.DumpEnv.agent.version": "3.248.0",
+        "cecil.Checkout1.agent.version": "3.248.0",
+        "cecil.fix_commit.agent.version": "3.248.0",
+        "cecil.fix_commit.GIT_HASH": "cd6f17c5cb9b0fabbe0e2af9fc17d57e8aab3c1a",
+        "cecil.Checkout2.agent.version": "3.248.0",
+        "cecil.Checkout3.agent.version": "3.248.0",
+        "cecil.__system_postcheckout_1.agent.version": "3.248.0",
+        "cecil.Bash1.agent.version": "3.248.0",
+        "cecil.osname.agent.version": "3.248.0",
+        "cecil.PowerShell1.agent.version": "3.248.0",
+        "cecil.PowerShell2.agent.version": "3.248.0",
+        "cecil.Bash2.agent.version": "3.248.0",
+        "cecil.Bash3.agent.version": "3.248.0",
+        "cecil.Bash4.agent.version": "3.248.0",
+        "cecil.PowerShell3.agent.version": "3.248.0",
+        "cecil.disableCodeQLOnArm64.agent.version": "3.248.0",
+        "cecil.Bash5.agent.version": "3.248.0",
+        "cecil.PowerShell4.agent.version": "3.248.0",
+        "cecil.Bash6.agent.version": "3.248.0",
+        "cecil.Bash8.agent.version": "3.248.0",
+        "cecil.Bash7.agent.version": "3.248.0",
+        "cecil.PowerShell5.agent.version": "3.248.0",
+        "cecil.PowerShell6.agent.version": "3.248.0",
+        "cecil.PowerShell7.agent.version": "3.248.0",
+        "cecil.Bash9.agent.version": "3.248.0",
+        "cecil.Bash10.agent.version": "3.248.0",
+        "cecil.PowerShell8.agent.version": "3.248.0",
+        "cecil.PowerShell10.agent.version": "3.248.0",
+        "cecil.PowerShell9.agent.version": "3.248.0",
+        "cecil.PowerShell11.agent.version": "3.248.0",
+        "cecil.Bash11.agent.version": "3.248.0",
+        "cecil.PowerShell12.agent.version": "3.248.0",
+        "cecil.Bash12.agent.version": "3.248.0",
+        "cecil.Bash13.agent.version": "3.248.0",
+        "cecil.Download1.agent.version": "3.248.0",
+        "cecil.Download2.agent.version": "3.248.0",
+        "cecil.Download3.agent.version": "3.248.0",
+        "cecil.PowerShell13.agent.version": "3.248.0",
+        "cecil.Bash14.agent.version": "3.248.0",
+        "cecil.PowerShell14.agent.version": "3.248.0",
+        "cecil.Bash15.agent.version": "3.248.0",
+        "cecil.Bash16.agent.version": "3.248.0",
+        "cecil.provisionator.agent.version": "3.248.0",
+        "cecil.UseDotNet.agent.version": "3.248.0",
+        "cecil.Bash17.agent.version": "3.248.0",
+        "cecil.Bash18.agent.version": "3.248.0",
+        "cecil.Bash19.agent.version": "3.248.0",
+        "cecil.PowerShell15.agent.version": "3.248.0",
+        "cecil.PowerShell15.TESTS_ATTEMPT": "1",
+        "cecil.PowerShell15.TESTS_BOT": "VSM-XAM-104.Sequoia.arm64",
+        "cecil.PowerShell15.TESTS_LABEL": "cecil",
+        "cecil.PowerShell15.TESTS_PLATFORM": "",
+        "cecil.PowerShell15.TESTS_TITLE": "cecil",
+        "cecil.PowerShell16.agent.version": "3.248.0",
+        "cecil.PowerShell17.agent.version": "3.248.0",
+        "cecil.PowerShell18.agent.version": "3.248.0",
+        "cecil.PowerShell19.agent.version": "3.248.0",
+        "cecil.Bash20.agent.version": "3.248.0",
+        "cecil.PowerShell20.agent.version": "3.248.0",
+        "cecil.Bash21.agent.version": "3.248.0",
+        "cecil.Bash22.agent.version": "3.248.0",
+        "cecil.runTests.agent.version": "3.248.0",
+        "cecil.runTests.TESTS_JOBSTATUS": "Succeeded",
+        "cecil.collectSimulatorInfo.agent.version": "3.248.0",
+        "cecil.PublishPipelineArtifact1.agent.version": "3.248.0",
+        "cecil.PublishPipelineArtifact2.agent.version": "3.248.0",
+        "cecil.PowerShell21.agent.version": "3.248.0",
+        "cecil.CountNUnitTestResults.agent.version": "3.248.0",
+        "cecil.PublishTestResults.agent.version": "3.248.0",
+        "cecil.ArchiveFiles.agent.version": "3.248.0",
+        "cecil.PublishPipelineArtifact3.agent.version": "3.248.0",
+        "cecil.CmdLine.agent.version": "3.248.0",
+        "cecil.PublishPipelineArtifact4.agent.version": "3.248.0",
+        "cecil.Bash23.agent.version": "3.248.0",
+        "cecil.PowerShell22.agent.version": "3.248.0",
+        "cecil.PowerShell23.agent.version": "3.248.0",
+        "cecil.Bash24.agent.version": "3.248.0",
+        "cecil.list1.agent.version": "3.248.0",
+        "cecil.Bash25.agent.version": "3.248.0",
+        "cecil.list2.agent.version": "3.248.0",
+        "cecil.list3.agent.version": "3.248.0",
+        "cecil.Bash26.agent.version": "3.248.0",
+        "cecil.list4.agent.version": "3.248.0",
+        "cecil.PowerShell24.agent.version": "3.248.0",
+        "cecil.PublishPipelineArtifact5.agent.version": "3.248.0",
+        "cecil.__system_post_2.agent.version": "3.248.0",
+        "cecil.__system_post_1.agent.version": "3.248.0",
+        "cecil.JobExtension_Final.agent.version": "3.248.0"
+      },
+      "identifier": null,
+      "name": "tests",
+      "attempt": 1,
+      "startTime": null,
+      "finishTime": null,
+      "state": "NotStarted",
+      "result": "Succeeded"
+    }
+  },
+  "windows_integration": {
+    "mac_reservation": {
+      "outputs": {
+        "agent.version": "3.246.0",
+        "JobExtension_Init.agent.version": "3.246.0",
+        "__system_1.agent.version": "3.246.0",
+        "__system_2.agent.version": "3.246.0",
+        "__system_3.agent.version": "3.246.0",
+        "DownloadSecureFile1.agent.version": "3.246.0",
+        "DownloadSecureFile1.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-AppleWWDRCAG3-2.cer",
+        "DownloadSecureFile3.agent.version": "3.246.0",
+        "DownloadSecureFile3.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-developer-id-installer-luis-aguilera-jul-2029.p12",
+        "DownloadSecureFile2.agent.version": "3.246.0",
+        "DownloadSecureFile2.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-developer-id-application-luis-aguilera-jul-2029.p12",
+        "DownloadSecureFile4.agent.version": "3.246.0",
+        "DownloadSecureFile4.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-la-dev-apple.p12",
+        "DownloadSecureFile5.agent.version": "3.246.0",
+        "DownloadSecureFile5.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-la-dev-iPhone.p12",
+        "DownloadSecureFile7.agent.version": "3.246.0",
+        "DownloadSecureFile7.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-la-distr-iphone.p12",
+        "DownloadSecureFile6.agent.version": "3.246.0",
+        "DownloadSecureFile6.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-la-distr-apple.p12",
+        "DownloadSecureFile8.agent.version": "3.246.0",
+        "DownloadSecureFile8.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-la-mac-app-dev.p12",
+        "DownloadSecureFile9.agent.version": "3.246.0",
+        "DownloadSecureFile9.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-la-mac-app-distr.p12",
+        "DownloadSecureFile10.agent.version": "3.246.0",
+        "DownloadSecureFile10.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-la-mac-installer-distr.p12",
+        "DownloadSecureFile11.agent.version": "3.246.0",
+        "DownloadSecureFile11.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-vseng-xamarin-mac-devices-2.p12",
+        "DownloadSecureFile12.agent.version": "3.246.0",
+        "DownloadSecureFile12.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-vseng-xamarin-mac-devices.p12",
+        "DownloadSecureFile13.agent.version": "3.246.0",
+        "DownloadSecureFile13.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-vsengxamarinmacdevices.mobileprovision",
+        "DownloadSecureFile14.agent.version": "3.246.0",
+        "DownloadSecureFile14.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-WildCardiOSDevelopment.mobileprovision",
+        "DownloadSecureFile15.agent.version": "3.246.0",
+        "DownloadSecureFile15.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-WildCardiOSDistribution.mobileprovision",
+        "DownloadSecureFile16.agent.version": "3.246.0",
+        "DownloadSecureFile16.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-WildCardMacAppDevelopment.provisionprofile",
+        "DownloadSecureFile17.agent.version": "3.246.0",
+        "DownloadSecureFile17.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-WildCardMacDistribution.provisionprofile",
+        "DownloadSecureFile18.agent.version": "3.246.0",
+        "DownloadSecureFile18.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-WildCardtvOSDevelopment.mobileprovision",
+        "DownloadSecureFile19.agent.version": "3.246.0",
+        "DownloadSecureFile19.secureFilePath": "/Users/builder/azdo/_work/_temp/macios-WildCardtvOSDistribution.mobileprovision",
+        "AzureKeyVault.agent.version": "3.246.0",
+        "__system_4.agent.version": "3.246.0",
+        "Checkout1.agent.version": "3.246.0",
+        "fix_commit.agent.version": "3.246.0",
+        "fix_commit.GIT_HASH": "cd6f17c5cb9b0fabbe0e2af9fc17d57e8aab3c1a",
+        "Checkout2.agent.version": "3.246.0",
+        "Checkout3.agent.version": "3.246.0",
+        "__system_postcheckout_1.agent.version": "3.246.0",
+        "PowerShell1.agent.version": "3.246.0",
+        "Bash1.agent.version": "3.246.0",
+        "disableCodeQLOnArm64.agent.version": "3.246.0",
+        "macInfo.agent.version": "3.246.0",
+        "macInfo.AGENT_BUILD_SOURCESDIRECTORY": "/Users/builder/azdo/_work/28/s",
+        "macInfo.AGENT_IP": "10.64.32.145",
+        "macInfo.AGENT_NAME": "VSM-XAM-49.Sonoma.arm64",
+        "macInfo.AGENT_POOL": "VSEng-VSMac-Xamarin-Shared",
+        "macInfo.AGENT_SYSTEM_DEFAULTWORKINGDIRECTORY": "/Users/builder/azdo/_work/28/s",
+        "PowerShell2.agent.version": "3.246.0",
+        "Bash2.agent.version": "3.246.0",
+        "PowerShell3.agent.version": "3.246.0",
+        "PowerShell4.agent.version": "3.246.0",
+        "PowerShell5.agent.version": "3.246.0",
+        "Bash3.agent.version": "3.246.0",
+        "PowerShell6.agent.version": "3.246.0",
+        "PowerShell7.agent.version": "3.246.0",
+        "PowerShell8.agent.version": "3.246.0",
+        "PowerShell9.agent.version": "3.246.0",
+        "PowerShell10.agent.version": "3.246.0",
+        "AzureCLI.agent.version": "3.246.0",
+        "PowerShell11.agent.version": "3.246.0",
+        "Bash4.agent.version": "3.246.0",
+        "provisionator.agent.version": "3.246.0",
+        "UseDotNet.agent.version": "3.246.0",
+        "Bash5.agent.version": "3.246.0",
+        "Bash6.agent.version": "3.246.0",
+        "Download1.agent.version": "3.246.0",
+        "Download2.agent.version": "3.246.0",
+        "Download3.agent.version": "3.246.0",
+        "Download4.agent.version": "3.246.0",
+        "PowerShell12.agent.version": "3.246.0",
+        "Download5.agent.version": "3.246.0",
+        "Bash7.agent.version": "3.246.0",
+        "Bash8.agent.version": "3.246.0",
+        "Bash9.agent.version": "3.246.0",
+        "__system_post_1.agent.version": "3.246.0",
+        "__system_post_2.agent.version": "3.246.0",
+        "JobExtension_Final.agent.version": "3.246.0"
+      },
+      "identifier": null,
+      "name": "mac_reservation",
+      "attempt": 1,
+      "startTime": null,
+      "finishTime": null,
+      "state": "NotStarted",
+      "result": "Succeeded"
+    },
+    "tests": {
+      "outputs": {
+        "fix_commit.GIT_HASH": "cd6f17c5cb9b0fabbe0e2af9fc17d57e8aab3c1a",
+        "PowerShell6.TESTS_ATTEMPT": "1",
+        "PowerShell6.TESTS_BOT": "VSM-XAM-126",
+        "PowerShell6.TESTS_LABEL": "windows",
+        "PowerShell6.TESTS_PLATFORM": "",
+        "PowerShell6.TESTS_TITLE": "windows",
+        "configuration.DOTNET_IOS_RUNTIME_IDENTIFIERS": "ios-arm64 iossimulator-x64 iossimulator-arm64",
+        "configuration.DOTNET_PLATFORMS": "iOS",
+        "configuration.INCLUDE_DOTNET_IOS": "1",
+        "configuration.IOS_NUGET_REF_NAME": "Microsoft.iOS.Ref.net9.0_18.2",
+        "configuration.IOS_NUGET_SDK_NAME": "Microsoft.iOS.Sdk.net9.0_18.2",
+        "configuration.IOS_NUGET_VERSION_NO_METADATA": "18.2.9527-ci.dev-rolf-windows-tests-html-report",
+        "configuration.ios-arm64_NUGET_RUNTIME_NAME": "",
+        "configuration.iossimulator-arm64_NUGET_RUNTIME_NAME": "",
+        "configuration.iossimulator-x64_NUGET_RUNTIME_NAME": "",
+        "configuration.PARENT_BUILD_BUILD_BINARIESDIRECTORY": "/mnt/vss/_work/1/b",
+        "configuration.PARENT_BUILD_BUILD_BUILDID": "11141344",
+        "configuration.PARENT_BUILD_BUILD_BUILDNUMBER": "20250306.21",
+        "configuration.PARENT_BUILD_BUILD_BUILDURI": "vstfs:///Build/Build/11141344",
+        "configuration.PARENT_BUILD_BUILD_DEFINITIONNAME": "xamarin-macios-pr",
+        "configuration.PARENT_BUILD_BUILD_REASON": "IndividualCI",
+        "configuration.PARENT_BUILD_BUILD_REPOSITORY_ID": "dotnet/macios",
+        "configuration.PARENT_BUILD_BUILD_REPOSITORY_NAME": "dotnet/macios",
+        "configuration.PARENT_BUILD_BUILD_REPOSITORY_PROVIDER": "GitHub",
+        "configuration.PARENT_BUILD_BUILD_REPOSITORY_URI": "https://github.com/dotnet/macios",
+        "configuration.PARENT_BUILD_BUILD_SOURCEBRANCH": "refs/heads/dev/rolf/windows-tests-html-report",
+        "configuration.PARENT_BUILD_BUILD_SOURCEBRANCHNAME": "windows-tests-html-report",
+        "configuration.PARENT_BUILD_BUILD_SOURCEVERSION": "cd6f17c5cb9b0fabbe0e2af9fc17d57e8aab3c1a",
+        "PowerShell22.TESTS_JOBSTATUS": "Succeeded"
+      },
+      "identifier": null,
+      "name": "tests",
+      "attempt": 1,
+      "startTime": null,
+      "finishTime": null,
+      "state": "NotStarted",
+      "result": "Succeeded"
+    },
+    "mac_reenable": {
+      "outputs": {
+        "fix_commit.GIT_HASH": "cd6f17c5cb9b0fabbe0e2af9fc17d57e8aab3c1a"
+      },
+      "identifier": null,
+      "name": "mac_reenable",
+      "attempt": 1,
+      "startTime": null,
+      "finishTime": null,
+      "state": "NotStarted",
+      "result": "Succeeded"
+    }
+  }
+}
+
+
 "@
 
     }
@@ -436,6 +840,42 @@ Describe "TestResults tests" {
     }
 
     Context "new test summmary results" {
+        It "computes the right summary with windows tests" {
+            $VerbosePreference = "Continue"
+            $DebugPreference = "Continue"
+            $Env:MyVerbosePreference = 'Continue'
+
+            $testDirectory = Join-Path "." "subdir"
+            New-Item -Path "$testDirectory" -ItemType "directory" -Force
+            New-Item -Path "$testDirectory/TestSummary-simulator_testscecil-1" -Name "TestSummary.md" -Value "# :tada: All 1 tests passed :tada:" -Force
+            New-Item -Path "$testDirectory/TestSummary-windows_integrationwindows-1" -Name "TestSummary.md" -Value "# :tada: All 2 tests passed :tada:" -Force
+
+            $parallelResults = New-ParallelTestsResults -Path "$testDirectory" -StageDependencies "$stageDependenciesWithWindowsResults" -Context "context" -VSDropsIndex "vsdropsIndex"
+
+            $parallelResults.IsSuccess() | Should -Be $true
+
+            $sb = [System.Text.StringBuilder]::new()
+            $parallelResults.WriteComment($sb)
+
+            Remove-Item -Path $testDirectory -Recurse
+
+            $content = $sb.ToString()
+
+            Write-Host $content
+
+            $content | Should -Be "# Test results
+:white_check_mark: All tests passed on context.
+
+:tada: All 3 tests passed :tada:
+
+## Tests counts
+:white_check_mark: cecil: All 1 tests passed. [Html Report (VSDrops)](vsdropsIndex/simulator_testscecil-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-simulator_testscecil-1&api-version=6.0&`$format=zip)
+:white_check_mark: windows: All 2 tests passed. [Html Report (VSDrops)](vsdropsIndex/windows_integrationwindows-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-windows_integrationwindows-1&api-version=6.0&`$format=zip)
+
+[comment]: <> (This is a test result report added by Azure DevOps)
+"
+        }
+
         It "computes the right summary with missing test results" {
             $VerbosePreference = "Continue"
             $Env:MyVerbosePreference = 'Continue'
@@ -478,15 +918,15 @@ Describe "TestResults tests" {
 
 </details>
 
-[Html Report (VSDrops)](vsdropsIndex/simulator_testsdotnettests_MacCatalyst-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-simulator_testsdotnettests_MacCatalyst-1&api-version=6.0&`$format=zip)
+[Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_maccatalyst-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_maccatalyst-1&api-version=6.0&`$format=zip)
 
 ## Successes
 
-:white_check_mark: cecil: All 1 tests passed. [Html Report (VSDrops)](vsdropsIndex/simulator_testscecil-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-simulator_testscecil-1&api-version=6.0&`$format=zip)
-:white_check_mark: dotnettests (iOS): All 3 tests passed. [Html Report (VSDrops)](vsdropsIndex/simulator_testsdotnettests_iOS-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-simulator_testsdotnettests_iOS-1&api-version=6.0&`$format=zip)
-:white_check_mark: dotnettests (macOS): All 6 tests passed. [Html Report (VSDrops)](vsdropsIndex/simulator_testsdotnettests_macOS-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-simulator_testsdotnettests_macOS-1&api-version=6.0&`$format=zip)
-:white_check_mark: dotnettests (Multiple platforms): All 7 tests passed. [Html Report (VSDrops)](vsdropsIndex/simulator_testsdotnettests_Multiple-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-simulator_testsdotnettests_Multiple-1&api-version=6.0&`$format=zip)
-:white_check_mark: dotnettests (tvOS): All 4 tests passed. [Html Report (VSDrops)](vsdropsIndex/simulator_testsdotnettests_tvOS-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-simulator_testsdotnettests_tvOS-1&api-version=6.0&`$format=zip)
+:white_check_mark: cecil: All 1 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagececil-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagececil-1&api-version=6.0&`$format=zip)
+:white_check_mark: dotnettests (iOS): All 3 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_ios-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_ios-1&api-version=6.0&`$format=zip)
+:white_check_mark: dotnettests (macOS): All 6 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_macos-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_macos-1&api-version=6.0&`$format=zip)
+:white_check_mark: dotnettests (Multiple platforms): All 7 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_multiple-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_multiple-1&api-version=6.0&`$format=zip)
+:white_check_mark: dotnettests (tvOS): All 4 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_tvos-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_tvos-1&api-version=6.0&`$format=zip)
 
 [comment]: <> (This is a test result report added by Azure DevOps)
 "
@@ -506,6 +946,9 @@ Describe "TestResults tests" {
             New-Item -Path "$testDirectory/TestSummary-simulator_testsdotnettests_multiple-1" -Name "TestSummary.md" -Value "# :tada: All 7 tests passed :tada:" -Force
 
             $parallelResults = New-ParallelTestsResults -Path "$testDirectory" -StageDependencies "$stageDependencies" -Context "context" -VSDropsIndex "vsdropsIndex"
+
+            Write-Host "New-ParallelTestsResults return value:"
+            Write-Host $parallelResults
 
             $parallelResults.IsSuccess() | Should -Be $false
 
@@ -532,15 +975,15 @@ Describe "TestResults tests" {
 
 </details>
 
-[Html Report (VSDrops)](vsdropsIndex/simulator_testsdotnettests_MacCatalyst-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-simulator_testsdotnettests_MacCatalyst-1&api-version=6.0&`$format=zip)
+[Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_maccatalyst-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_maccatalyst-1&api-version=6.0&`$format=zip)
 
 ## Successes
 
-:white_check_mark: cecil: All 1 tests passed. [Html Report (VSDrops)](vsdropsIndex/simulator_testscecil-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-simulator_testscecil-1&api-version=6.0&`$format=zip)
-:white_check_mark: dotnettests (iOS): All 3 tests passed. [Html Report (VSDrops)](vsdropsIndex/simulator_testsdotnettests_iOS-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-simulator_testsdotnettests_iOS-1&api-version=6.0&`$format=zip)
-:white_check_mark: dotnettests (macOS): All 6 tests passed. [Html Report (VSDrops)](vsdropsIndex/simulator_testsdotnettests_macOS-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-simulator_testsdotnettests_macOS-1&api-version=6.0&`$format=zip)
-:white_check_mark: dotnettests (Multiple platforms): All 7 tests passed. [Html Report (VSDrops)](vsdropsIndex/simulator_testsdotnettests_Multiple-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-simulator_testsdotnettests_Multiple-1&api-version=6.0&`$format=zip)
-:white_check_mark: dotnettests (tvOS): All 4 tests passed. [Html Report (VSDrops)](vsdropsIndex/simulator_testsdotnettests_tvOS-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-simulator_testsdotnettests_tvOS-1&api-version=6.0&`$format=zip)
+:white_check_mark: cecil: All 1 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagececil-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagececil-1&api-version=6.0&`$format=zip)
+:white_check_mark: dotnettests (iOS): All 3 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_ios-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_ios-1&api-version=6.0&`$format=zip)
+:white_check_mark: dotnettests (macOS): All 6 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_macos-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_macos-1&api-version=6.0&`$format=zip)
+:white_check_mark: dotnettests (Multiple platforms): All 7 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_multiple-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_multiple-1&api-version=6.0&`$format=zip)
+:white_check_mark: dotnettests (tvOS): All 4 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_tvos-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_tvos-1&api-version=6.0&`$format=zip)
 
 [comment]: <> (This is a test result report added by Azure DevOps)
 "

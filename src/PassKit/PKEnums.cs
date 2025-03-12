@@ -26,11 +26,17 @@ namespace PassKit {
 	[ErrorDomain ("PKPassKitErrorDomain")]
 	[Native]
 	public enum PKPassKitErrorCode : long {
+		/// <summary>An unknown error.</summary>
 		Unknown = -1,
+		/// <summary>No error.</summary>
 		None = 0,
+		/// <summary>Invalid data.</summary>
 		InvalidData = 1,
+		/// <summary>The pass version is not supported on this device.</summary>
 		UnsupportedVersion,
+		/// <summary>Indicates a mismatch in the signature, such as pass type identifier in the certificate versus the pass.</summary>
 		InvalidSignature,
+		/// <summary>The app does not have the required entitlements.</summary>
 		NotEntitled,
 	}
 
@@ -39,8 +45,11 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PKPassLibraryAddPassesStatus : long {
+		/// <summary>Passes were successfully added.</summary>
 		DidAddPasses,
+		/// <summary>The app should display the approval UI to the user.</summary>
 		ShouldReviewPasses,
+		/// <summary>The user cancelled the addition of passes.</summary>
 		DidCancelAddPasses,
 	}
 
@@ -48,8 +57,10 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PKPassType : ulong {
+		/// <summary>The pass is a barcode.</summary>
 		Barcode,
 		SecureElement,
+		/// <summary>A payment card.</summary>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 4, message: "Use 'SecureElement' instead.")]
 		[MacCatalyst (13, 1)]
@@ -62,31 +73,39 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PKPaymentAuthorizationStatus : long {
+		/// <summary>The authorization succeeded.</summary>
 		Success,
+		/// <summary>Authorization failed.</summary>
 		Failure,
 
+		/// <summary>Developers should not use this deprecated field. Developers should use 'Failure' and 'PKPaymentRequest.CreatePaymentBillingAddressInvalidError'.</summary>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'Failure' and 'PKPaymentRequest.CreatePaymentBillingAddressInvalidError'.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'Failure' and 'PKPaymentRequest.CreatePaymentBillingAddressInvalidError'.")]
 		InvalidBillingPostalAddress,
 
+		/// <summary>Unusable shipping address.</summary>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'Failure' and 'PKPaymentRequest.CreatePaymentShippingAddressInvalidError'.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'Failure' and 'PKPaymentRequest.CreatePaymentShippingAddressInvalidError'.")]
 		InvalidShippingPostalAddress,
 
+		/// <summary>Unusable shipping contact.</summary>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'Failure' and 'PKPaymentRequest.CreatePaymentContactInvalidError'.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'Failure' and 'PKPaymentRequest.CreatePaymentContactInvalidError'.")]
 		InvalidShippingContact,
 
+		/// <summary>Indicates that a PIN is required for the action.</summary>
 		[MacCatalyst (13, 1)]
 		PinRequired,
+		/// <summary>Indicates that an invalid PIN was entered.</summary>
 		[MacCatalyst (13, 1)]
 		PinIncorrect,
+		/// <summary>Indicates that too many incorrect PINs were entered and the user is locked out for PIN transactions.</summary>
 		[MacCatalyst (13, 1)]
 		PinLockout,
 	}
@@ -98,10 +117,15 @@ namespace PassKit {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'PKSecureElementPassActivationState' instead.")]
 	[Native]
 	public enum PKPaymentPassActivationState : ulong {
+		/// <summary>Ready to use for payment.</summary>
 		Activated,
+		/// <summary>Inactive. Requires user intervention to enable.</summary>
 		RequiresActivation,
+		/// <summary>Not ready to use, but activation is in progress.</summary>
 		Activating,
+		/// <summary>Inactive and cannot be reactivated.</summary>
 		Suspended,
+		/// <summary>The user has proactively disabled the asssociated account.</summary>
 		Deactivated,
 	}
 
@@ -120,9 +144,13 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PKMerchantCapability : ulong {
+		/// <summary>The 3D Secure payment protocol.</summary>
 		ThreeDS = 1 << 0,
+		/// <summary>Supports the EMV (EuroCard, MasterCard, Visa) payment protocol.</summary>
 		EMV = 1 << 1,
+		/// <summary>Supports credit cards.</summary>
 		Credit = 1 << 2,
+		/// <summary>Supports debit cards.</summary>
 		Debit = 1 << 3,
 		[iOS (17, 0), Mac (14, 0), NoTV, MacCatalyst (17, 0)]
 		InstantFundsOut = 1 << 7,
@@ -136,12 +164,18 @@ namespace PassKit {
 	[Native]
 	[Flags]
 	public enum PKAddressField : ulong {
+		/// <summary>None of the fields.</summary>
 		None = 0,
+		/// <summary>The buyer's address.</summary>
 		PostalAddress = 1 << 0,
+		/// <summary>The buyer's phone number.</summary>
 		Phone = 1 << 1,
+		/// <summary>The buyer's email.</summary>
 		Email = 1 << 2,
+		/// <summary>The buyer's full name.</summary>
 		[MacCatalyst (13, 1)]
 		Name = 1 << 3,
+		/// <summary>All the fields.</summary>
 		All = PostalAddress | Phone | Email | Name,
 	}
 
@@ -149,8 +183,11 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PKPaymentButtonStyle : long {
+		/// <summary>White background with black lettering.</summary>
 		White,
+		/// <summary>White background with black outline and black lettering.</summary>
 		WhiteOutline,
+		/// <summary>Black background with white lettering.</summary>
 		Black,
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
@@ -161,12 +198,17 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PKPaymentButtonType : long {
+		/// <summary>A button with the Apple Pay logo.</summary>
 		Plain,
+		/// <summary>A button reading "Buy with" and the Apple Pay logo.</summary>
 		Buy,
+		/// <summary>A button that prompts the user to set a card up for payment with Apple Pay.</summary>
 		[MacCatalyst (13, 1)]
 		SetUp,
+		/// <summary>A button that reads "Pay with," accompanied by the Apple Pay logo.</summary>
 		[MacCatalyst (13, 1)]
 		InStore,
+		/// <summary>A button that reads "Donate with" and the Apple Pay logo.</summary>
 		[MacCatalyst (13, 1)]
 		Donate,
 #if NET
@@ -221,9 +263,13 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PKShippingType : ulong {
+		/// <summary>The product will be delivered by a third-party service (Default).</summary>
 		Shipping,
+		/// <summary>The purchase will be delivered by the seller.</summary>
 		Delivery,
+		/// <summary>The product will be picked up at the seller's place of business.</summary>
 		StorePickup,
+		/// <summary>The product will be picked up by the delivery service.</summary>
 		ServicePickup,
 	}
 
@@ -231,8 +277,11 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PKAddPaymentPassError : long {
+		/// <summary>The operation is not supported on this device.</summary>
 		Unsupported,
+		/// <summary>The operation was cancelled by the user.</summary>
 		UserCancelled,
+		/// <summary>The system cancelled the operation.</summary>
 		SystemCancelled,
 	}
 
@@ -241,10 +290,15 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PKAutomaticPassPresentationSuppressionResult : ulong {
+		/// <summary>Suppression is not supported on this device.</summary>
 		NotSupported = 0,
+		/// <summary>System is already presenting a pass and cannot be suppressed.</summary>
 		AlreadyPresenting,
+		/// <summary>The user denied the ability to suppress presentation.</summary>
 		Denied,
+		/// <summary>The suppression was cancelled.</summary>
 		Cancelled,
+		/// <summary>The suppression of pass presentation succeeded.</summary>
 		Success,
 	}
 
@@ -252,10 +306,15 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PKPaymentMethodType : ulong {
+		/// <summary>The type of card is unknown.</summary>
 		Unknown = 0,
+		/// <summary>A debit card.</summary>
 		Debit,
+		/// <summary>A credit card.</summary>
 		Credit,
+		/// <summary>A prepaid card.</summary>
 		Prepaid,
+		/// <summary>A store card.</summary>
 		Store,
 		EMoney,
 	}
@@ -264,7 +323,9 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PKPaymentSummaryItemType : ulong {
+		/// <summary>The payment is final.</summary>
 		Final,
+		/// <summary>The payment is pending.</summary>
 		Pending,
 	}
 
@@ -273,7 +334,9 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PKAddPassButtonStyle : long {
+		/// <summary>To be added.</summary>
 		Black = 0,
+		/// <summary>To be added.</summary>
 		Outline,
 	}
 
@@ -282,9 +345,13 @@ namespace PassKit {
 	[ErrorDomain ("PKPaymentErrorDomain")]
 	[Native]
 	public enum PKPaymentErrorCode : long {
+		/// <summary>Indicates that an unknown error occurred.</summary>
 		Unknown = -1,
+		/// <summary>Indicates that the shipping contact was not valid.</summary>
 		ShippingContactInvalid = 1,
+		/// <summary>Indicates that the billing contact was not valid.</summary>
 		BillingContactInvalid,
+		/// <summary>Indicates that the shipping address was not serviceable.</summary>
 		ShippingAddressUnserviceable,
 		CouponCodeInvalid,
 		CouponCodeExpired,
@@ -293,7 +360,9 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PKAddPaymentPassStyle : ulong {
+		/// <summary>To be added.</summary>
 		Payment,
+		/// <summary>To be added.</summary>
 		Access,
 	}
 

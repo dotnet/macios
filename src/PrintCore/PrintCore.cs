@@ -108,6 +108,9 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static PMStatusCode PMSessionSetError (IntPtr handle, PMStatusCode code);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public PMStatusCode SessionError {
 			get {
 				return PMSessionError (Handle);
@@ -236,6 +239,9 @@ namespace PrintCore {
 		unsafe extern static PMStatusCode PMGetFirstPage (IntPtr handle, uint* first);
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static PMStatusCode PMSetFirstPage (IntPtr handle, uint first, byte lockb);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public uint FirstPage {
 			get {
 				uint val;
@@ -253,6 +259,9 @@ namespace PrintCore {
 		unsafe extern static PMStatusCode PMGetLastPage (IntPtr handle, uint* last);
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static PMStatusCode PMSetLastPage (IntPtr handle, uint last, byte lockb);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public uint LastPage {
 			get {
 				uint val;
@@ -300,6 +309,9 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static PMStatusCode PMSetCopies (IntPtr handle, uint copies, byte elock);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public uint Copies {
 			get {
 				PMStatusCode code;
@@ -322,6 +334,9 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static PMStatusCode PMSetCollate (IntPtr handle, byte collate);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool Collate {
 			get {
 				PMStatusCode code;
@@ -344,6 +359,9 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static PMStatusCode PMSetDuplex (IntPtr handle, PMDuplexMode mode);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public PMDuplexMode DuplexMode {
 			get {
 				PMStatusCode code;
@@ -366,6 +384,9 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static PMStatusCode PMSetScale (IntPtr handle, double scale);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double Scale {
 			get {
 				PMStatusCode code;
@@ -449,6 +470,9 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMGetOrientation (IntPtr handle, PMOrientation* orientation);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public PMOrientation Orientation {
 			get {
 				PMStatusCode code;
@@ -467,6 +491,9 @@ namespace PrintCore {
 
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMGetAdjustedPageRect (IntPtr pageFormat, PMRect* pageRect);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public PMRect AdjustedPageRect {
 			get {
 				PMStatusCode code;
@@ -482,6 +509,9 @@ namespace PrintCore {
 
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMGetAdjustedPaperRect (IntPtr pageFormat, PMRect* pageRect);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public PMRect AdjustedPaperRect {
 			get {
 				PMRect rect;
@@ -511,6 +541,9 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMPaperCreateLocalizedName (IntPtr handle, IntPtr printer, IntPtr* name);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? ID {
 			get {
 				PMStatusCode code;
@@ -524,6 +557,9 @@ namespace PrintCore {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double Width {
 			get {
 				PMStatusCode code;
@@ -537,6 +573,9 @@ namespace PrintCore {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double Height {
 			get {
 				PMStatusCode code;
@@ -550,6 +589,9 @@ namespace PrintCore {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public PMPaperMargins? Margins {
 			get {
 				PMStatusCode code;
@@ -657,6 +699,9 @@ namespace PrintCore {
 
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static IntPtr PMPrinterGetName (IntPtr handle);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Name => CFString.FromHandle (PMPrinterGetName (Handle));
 
 		[DllImport (Constants.PrintCoreLibrary)]
@@ -677,6 +722,9 @@ namespace PrintCore {
 			return PMStatusCode.Ok;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSUrl? DeviceUrl {
 			get {
 				if (TryGetDeviceUrl (out var url) != PMStatusCode.Ok)
@@ -688,6 +736,9 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMPrinterGetMakeAndModelName (IntPtr printer, IntPtr* makeAndModel);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? MakeAndModel {
 			get {
 				PMStatusCode code;
@@ -706,6 +757,9 @@ namespace PrintCore {
 		unsafe extern static PMStatusCode PMPrinterGetState (IntPtr printer, PMPrinterState* state);
 
 		// Return is overloaded - if negative, a PMStatusCode.
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public PMPrinterState PrinterState {
 			get {
 				PMStatusCode code;
@@ -755,6 +809,9 @@ namespace PrintCore {
 			return PMStatusCode.Ok;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public PMPaper [] PaperList {
 			get {
 				if (TryGetPaperList (out var paperList) != PMStatusCode.Ok)
@@ -836,18 +893,30 @@ namespace PrintCore {
 
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static byte PMPrinterIsFavorite (IntPtr printer);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsFavorite => PMPrinterIsFavorite (Handle) != 0;
 
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static byte PMPrinterIsDefault (IntPtr printer);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsDefault => PMPrinterIsDefault (Handle) != 0;
 
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static byte PMPrinterIsPostScriptCapable (IntPtr printer);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsPostScriptCapable => PMPrinterIsPostScriptCapable (Handle) != 0;
 
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMPrinterIsPostScriptPrinter (IntPtr printer, byte* isps);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsPostScriptPrinter {
 			get {
 				byte r;
@@ -861,6 +930,9 @@ namespace PrintCore {
 
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMPrinterIsRemote (IntPtr printer, byte* isrem);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsRemote {
 			get {
 				byte r;

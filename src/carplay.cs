@@ -50,10 +50,15 @@ namespace CarPlay {
 	[Flags, NoTV, NoMac]
 	[Native]
 	enum CPPanDirection : long {
+		/// <summary>No pan.</summary>
 		None = 0,
+		/// <summary>Towards the left side of the map.</summary>
 		Left = 1L << 0,
+		/// <summary>Towards the right side of the map.</summary>
 		Right = 1L << 1,
+		/// <summary>Towards the top of the map.</summary>
 		Up = 1L << 2,
+		/// <summary>Towards the bottom of the map.</summary>
 		Down = 1L << 3,
 	}
 
@@ -61,8 +66,11 @@ namespace CarPlay {
 	[NoTV, NoMac]
 	[Native]
 	enum CPNavigationAlertDismissalContext : ulong {
+		/// <summary>The alert had expired.</summary>
 		Timeout = 0,
+		/// <summary>The user dismissed the alert.</summary>
 		UserDismissed,
+		/// <summary>The system was responsible for dismissing the alert.</summary>
 		SystemDismissed,
 	}
 
@@ -70,10 +78,15 @@ namespace CarPlay {
 	[NoTV, NoMac]
 	[Native]
 	enum CPTripPauseReason : ulong {
+		/// <summary>The car has arrived at the trip destinatioj.</summary>
 		Arrived = 1,
+		/// <summary>The data for the trip is still loading.</summary>
 		Loading = 2,
+		/// <summary>The system is trying to locate the car.</summary>
 		Locating = 3,
+		/// <summary>The system is currently rerouting the trip.</summary>
 		Rerouting = 4,
+		/// <summary>The car is not on the trip route.</summary>
 		ProceedToRoute = 5,
 	}
 
@@ -100,26 +113,37 @@ namespace CarPlay {
 	[Flags]
 	[Native]
 	enum CPManeuverDisplayStyle : long {
+		/// <summary>To be added.</summary>
 		Default,
+		/// <summary>To be added.</summary>
 		LeadingSymbol,
+		/// <summary>To be added.</summary>
 		TrailingSymbol,
+		/// <summary>To be added.</summary>
 		SymbolOnly,
+		/// <summary>To be added.</summary>
 		InstructionOnly,
 	}
 
 	[NoTV, NoMac]
 	[Native]
 	enum CPTimeRemainingColor : ulong {
+		/// <summary>To be added.</summary>
 		Default = 0,
+		/// <summary>To be added.</summary>
 		Green,
+		/// <summary>To be added.</summary>
 		Orange,
+		/// <summary>To be added.</summary>
 		Red,
 	}
 
 	[NoTV, NoMac]
 	[Native]
 	enum CPTripEstimateStyle : ulong {
+		/// <summary>To be added.</summary>
 		Light = 0,
+		/// <summary>To be added.</summary>
 		Dark,
 	}
 
@@ -974,9 +998,15 @@ namespace CarPlay {
 		[DesignatedInitializer]
 		NativeHandle Constructor ([NullAllowed] Action<CPMapButton> handler);
 
+		/// <summary>Gets or sets whether the button is enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
+		/// <summary>Gets or sets whether the button is visible.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hidden")]
 		bool Hidden { [Bind ("isHidden")] get; set; }
 
@@ -1027,6 +1057,9 @@ namespace CarPlay {
 		[Export ("hidesButtonsWithNavigationBar")]
 		bool HidesButtonsWithNavigationBar { get; set; }
 
+		/// <summary>Gets or sets the delegate object for the map.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakMapDelegate")]
 		[NullAllowed]
 		ICPMapTemplateDelegate MapDelegate { get; set; }
@@ -1040,6 +1073,9 @@ namespace CarPlay {
 		[Export ("dismissPanningInterfaceAnimated:")]
 		void DismissPanningInterface (bool animated);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("panningInterfaceVisible")]
 		bool PanningInterfaceVisible { [Bind ("isPanningInterfaceVisible")] get; }
 
@@ -1237,6 +1273,13 @@ namespace CarPlay {
 	[BaseType (typeof (CPTemplate))]
 	interface CPSearchTemplate {
 
+		/// <summary>An instance of the CarPlay.ICPSearchTemplateDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the CarPlay.ICPSearchTemplateDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		ICPSearchTemplateDelegate Delegate { get; set; }
@@ -1288,6 +1331,13 @@ namespace CarPlay {
 		[Export ("contentStyle")]
 		CPContentStyle ContentStyle { get; }
 
+		/// <summary>An instance of the CarPlay.ICPSessionConfigurationDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the CarPlay.ICPSessionConfigurationDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		ICPSessionConfigurationDelegate Delegate { get; set; }

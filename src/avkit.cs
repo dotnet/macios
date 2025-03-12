@@ -88,6 +88,13 @@ namespace AVKit {
 		[Export ("playerLayer")]
 		AVPlayerLayer PlayerLayer { get; }
 
+		/// <summary>An instance of the AVKit.IAVPictureInPictureControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the AVKit.IAVPictureInPictureControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IAVPictureInPictureControllerDelegate Delegate { get; set; }
@@ -101,12 +108,22 @@ namespace AVKit {
 		[Export ("stopPictureInPicture")]
 		void StopPictureInPicture ();
 
+		/// <summary>Gets a value that tells whether Picture in Picture is currently possible on the device.</summary>
+		///         <value>
+		///           <see langword="false" /> if another app is running Picture in Picture.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("pictureInPicturePossible")]
 		bool PictureInPicturePossible { [Bind ("isPictureInPicturePossible")] get; }
 
+		/// <summary>Gets a value that tells whether Picture in Picture is currently displayed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("pictureInPictureActive")]
 		bool PictureInPictureActive { [Bind ("isPictureInPictureActive")] get; }
 
+		/// <summary>Gets a value that tells whether Picture in Picture playback has been paused and moved off the screen by another application.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("pictureInPictureSuspended")]
 		bool PictureInPictureSuspended { [Bind ("isPictureInPictureSuspended")] get; }
 
@@ -212,6 +229,9 @@ namespace AVKit {
 		[Export ("videoGravity")]
 		NSString WeakVideoGravity { get; set; }
 
+		/// <summary>Gets a value that tells whether the first frame of vido is ready to display.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("readyForDisplay")]
 		bool ReadyForDisplay { [Bind ("isReadyForDisplay")] get; }
 
@@ -249,6 +269,13 @@ namespace AVKit {
 		[Export ("exitsFullScreenWhenPlaybackEnds")]
 		bool ExitsFullScreenWhenPlaybackEnds { get; set; }
 
+		/// <summary>An instance of the AVKit.IAVPlayerViewControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the AVKit.IAVPlayerViewControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IAVPlayerViewControllerDelegate Delegate { get; set; }
@@ -875,6 +902,13 @@ namespace AVKit {
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
+		/// <summary>An instance of the AVKit.IAVRoutePickerViewDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the AVKit.IAVRoutePickerViewDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate", IsVirtual = true)]
 		[NullAllowed]
 		IAVRoutePickerViewDelegate Delegate { get; set; }

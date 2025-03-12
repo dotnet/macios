@@ -28,8 +28,11 @@ namespace AVKit {
 	[Native]
 	[ErrorDomain ("AVKitErrorDomain")]
 	public enum AVKitError : long {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Unknown = -1000,
+		/// <summary>To be added.</summary>
 		PictureInPictureStartFailed = -1001,
 		ContentRatingUnknown = -1100,
 		ContentDisallowedByPasscode = -1101,

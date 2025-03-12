@@ -24553,7 +24553,6 @@ M:CoreFoundation.CFBundle.GetBundlesFromDirectory(Foundation.NSUrl,System.String
 M:CoreFoundation.CFBundle.GetInfoDictionary(Foundation.NSUrl)
 M:CoreFoundation.CFBundle.GetLocalizations(Foundation.NSUrl)
 M:CoreFoundation.CFBundle.GetLocalizationsForPreferences(System.String[],System.String[])
-M:CoreFoundation.CFBundle.GetLocalizedString(System.String,System.String,System.String)
 M:CoreFoundation.CFBundle.GetMain
 M:CoreFoundation.CFBundle.GetPreferredLocalizations(System.String[])
 M:CoreFoundation.CFBundle.GetResourceUrl(Foundation.NSUrl,System.String,System.String,System.String)

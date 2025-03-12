@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.CodeAnalysis;
@@ -150,6 +151,11 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// True if the type represents a delegate.
 	/// </summary>
 	public bool IsDelegate { get; init; }
+	
+	/// <summary>
+	/// True if the symbol represents a generic type.
+	/// </summary>
+	public bool IsGenericType { get; init; }
 
 	readonly ImmutableArray<string> parents = [];
 	public ImmutableArray<string> Parents {
@@ -163,6 +169,12 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		get => interfaces;
 		init => interfaces = value;
 	}
+
+
+	/// <summary>
+	/// The type arguments of the generic type.
+	/// </summary>
+	public ImmutableArray<string> TypeArguments { get; init; } = [];
 
 	internal TypeInfo (string name, SpecialType specialType)
 	{
@@ -223,6 +235,13 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 
 		// store the enum special type, useful when generate code that needs to cast
 		EnumUnderlyingType = namedTypeSymbol?.EnumUnderlyingType?.SpecialType;
+		if (namedTypeSymbol is not null) {
+			IsGenericType = namedTypeSymbol.IsGenericType;
+			TypeArguments = [
+				..namedTypeSymbol.TypeArguments
+					.Select (x => x.ToDisplayString ())
+			];
+		}
 
 		if (!IsReferenceType && IsNullable && namedTypeSymbol is not null) {
 			// get the type argument for nullable, which we know is the data that was boxed and use it to 

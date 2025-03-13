@@ -211,6 +211,19 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 					void Method(Class foo) { _ = foo.DangerousRetain().DangerousAutorelease().Handle; }
 				}
 				"""];
+			
+			// Equals implementation
+			yield return [
+				"""
+				using ObjCRuntime;
+
+				class Test : INativeObject
+				{
+					NativeHandle Handle { get; }
+					bool Equals(Test other) { return this.Handle == other.Handle; }
+				}
+				"""];
+			
 
 			// TODO: Test ThrowOnNull, GetConstant
 		}

@@ -27,9 +27,7 @@ namespace UIKit {
 			UIAppearance ao = other as UIAppearance;
 			if (ao is null)
 				return false;
-			bool result = ao.Handle == Handle;
-			GC.KeepAlive (ao);
-			return result;
+			return ao.Handle == Handle;
 		}
 
 		public override int GetHashCode ()
@@ -43,11 +41,7 @@ namespace UIKit {
 				return ReferenceEquals (b, null);
 			else if (ReferenceEquals (b, null))
 				return false;
-
-			bool result = a.Handle == b.Handle;
-			GC.KeepAlive (a);
-			GC.KeepAlive (b);
-			return result;
+			return a.Handle == b.Handle;
 		}
 
 		public static bool operator != (UIAppearance a, UIAppearance b)

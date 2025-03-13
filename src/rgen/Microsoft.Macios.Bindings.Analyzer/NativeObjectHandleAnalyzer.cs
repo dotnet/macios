@@ -80,10 +80,7 @@ public class NativeObjectHandleAnalyzer : DiagnosticAnalyzer {
 		if (context.Node is not MemberAccessExpressionSyntax memberAccess)
 			return;
 
-		if (memberAccess.Name.Identifier.Text != "Handle" &&
-			memberAccess.Name.Identifier.Text != "GetHandle" &&
-			memberAccess.Name.Identifier.Text != "GetNonNullHandle" &&
-			memberAccess.Name.Identifier.Text != "GetCheckedHandle")
+		if (!IsHandleAccessor (memberAccess))
 			return;
 
 		var symbol = context.SemanticModel.GetSymbolInfo (memberAccess.Expression).Symbol;

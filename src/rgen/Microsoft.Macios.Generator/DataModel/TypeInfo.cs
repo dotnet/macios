@@ -152,7 +152,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// </summary>
 	[MemberNotNullWhen (true, nameof (Delegate))]
 	public bool IsDelegate { get; init; }
-	
+
 	/// <summary>
 	/// If the parameter is a delegate. The method information of the invoke.
 	/// </summary>
@@ -247,10 +247,10 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 				.. namedTypeSymbol.TypeArguments
 					.Select (x => x.ToDisplayString ())
 			];
-			
-		if (namedTypeSymbol.DelegateInvokeMethod is not null &&
-			DelegateInfo.TryCreate (namedTypeSymbol.DelegateInvokeMethod, out var delegateInfo))
-			Delegate = delegateInfo;
+
+			if (namedTypeSymbol.DelegateInvokeMethod is not null &&
+				DelegateInfo.TryCreate (namedTypeSymbol.DelegateInvokeMethod, out var delegateInfo))
+				Delegate = delegateInfo;
 		}
 
 		if (!IsReferenceType && IsNullable && namedTypeSymbol is not null) {

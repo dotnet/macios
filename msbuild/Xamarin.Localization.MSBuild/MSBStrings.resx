@@ -1719,4 +1719,8 @@
         <value>Did not extract {0} because it would write outside the target directory.</value>
     </data>
 
+    <data name="E7145" xml:space="preserve">
+        <value>Can't process the native reference '{0}' on this platform because it is or contains a symlink.</value>
+    </data>
+
 </root>

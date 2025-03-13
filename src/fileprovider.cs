@@ -825,8 +825,7 @@ namespace FileProvider {
 	[Category]
 	[BaseType (typeof (NSFileProviderManager))]
 	[NoTV, NoMacCatalyst, NoiOS, Mac (15, 4)]
-	interface NSFileProviderManager_Diagnostics
-	{
+	interface NSFileProviderManager_Diagnostics {
 		[Export ("requestDiagnosticCollectionForItemWithIdentifier:errorReason:completionHandler:")]
 		void RequestDiagnosticCollection (string itemIdentifier, NSError errorReason, NSFileProviderManagerRequestDiagnosticCollectionCallback completionHandler);
 	}

@@ -7,6 +7,29 @@ using System.Linq;
 
 namespace Microsoft.Macios.Bindings.Analyzer;
 
+/// <summary>
+/// Analyzer to ensure that native objects are kept alive for the duration of accessing them by their Handle.
+/// </summary>
+/// <remarks>
+/// Common pattern used in the manual bindings is to call a native method and pass objects using their
+/// handle like this:
+/// <code>
+/// var x = nw_framer_create_options (protocolDefinition.Handle);
+/// </code>
+/// If <c>protocolDefinition</c> is a local variable or method argument that is no longer accessed after
+/// the call then the .NET runtime may consider it eligible for garbage collection. Such garbage collection
+/// could run the object finalizer and render the <c>Handle</c> invalid while the native call is still in
+/// progress. In order to avoid this race condition the bindings have to keep the <c>protocolDefinition</c>
+/// variable alive for the garbage collector. This can be done by either accessing the same variable
+/// later in the method, or explicitly calling <c>GC.KeepAlive (protocolDefinition);</c>. This analyzer
+/// detects cases where such access is not performed and issues an error.
+/// 
+/// Current shortcommings of the analyzer include:
+/// <list type="bullet">
+/// <item><description>Handles stored inside an array are not tracked</description></item>
+/// <item><description>Only nearest scope is considered when checking if the variable is kept alive</description></item>
+/// </list>
+/// </remarks>
 [DiagnosticAnalyzer (LanguageNames.CSharp)]
 public class NativeObjectHandleAnalyzer : DiagnosticAnalyzer {
 	internal static readonly DiagnosticDescriptor RBI0014 = new (
@@ -116,6 +139,17 @@ public class NativeObjectHandleAnalyzer : DiagnosticAnalyzer {
 
 		if (!IsINativeObject (varType))
 			return;
+
+		// Exclude Class and Selector types, they are implicitly kept alive
+		if (varType.ContainingNamespace.Name == "ObjCRuntime" && varType.Name is "Class" or "Selector") {
+			return;
+		}
+
+		// Skip over this.Handle == other.Handle checks
+		if (memberAccess.Parent is BinaryExpressionSyntax binaryParent &&
+			binaryParent.Kind () is SyntaxKind.EqualsExpression or SyntaxKind.NotEqualsExpression) {
+			return;
+		}
 
 		// Ignore variables that are wrapped in `using (existingVariable)` block. These are
 		// not excluded by the `localSymbol.IsUsing` condition above.

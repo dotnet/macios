@@ -358,10 +358,7 @@ namespace UIKit {
 				return ((object) f2) is null;
 			else if ((object) f2 is null)
 				return false;
-			bool result = f1.Handle == f2.Handle;
-			GC.KeepAlive (f1);
-			GC.KeepAlive (f2);
-			return result;
+			return f1.Handle == f2.Handle;
 		}
 
 		public static bool operator != (UIFont f1, UIFont f2)

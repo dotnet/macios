@@ -57,10 +57,7 @@ namespace UIKit {
 			var descriptor = (BlockLiteral*) block;
 			var del = (UIConfigurationColorTransformerHandler) (descriptor->Target);
 			var retval = del is null ? null : del (Runtime.GetNSObject<UIColor> (color)!);
-			// FIXME: Should this run DangerousRetain + DangerousAutorelease?
-#pragma warning disable RBI0014
-			return retval.GetHandle ();
-#pragma warning restore RBI0014
+			return Runtime.RetainAndAutoreleaseNSObject (retval);
 		}
 	} /* class SDUIConfigurationColorTransformerHandler */
 

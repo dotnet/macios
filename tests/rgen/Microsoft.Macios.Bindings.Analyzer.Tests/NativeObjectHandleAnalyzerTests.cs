@@ -212,6 +212,19 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 				}
 				"""];
 
+			// Equals implementation
+			yield return [
+				"""
+				using ObjCRuntime;
+
+				class Test : INativeObject
+				{
+					NativeHandle Handle { get; }
+					bool Equals(Test other) { return this.Handle == other.Handle; }
+				}
+				"""];
+
+
 			// TODO: Test ThrowOnNull, GetConstant
 		}
 

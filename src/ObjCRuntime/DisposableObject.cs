@@ -116,10 +116,7 @@ namespace ObjCRuntime {
 				return b is null;
 			else if (b is null)
 				return false;
-			bool result = a.Handle == b.Handle;
-			GC.KeepAlive (a);
-			GC.KeepAlive (b);
-			return result;
+			return a.Handle == b.Handle;
 		}
 
 		public static bool operator != (DisposableObject? a, DisposableObject? b)
@@ -128,10 +125,7 @@ namespace ObjCRuntime {
 				return b is not null;
 			else if (b is null)
 				return true;
-			bool result = a.Handle != b.Handle;
-			GC.KeepAlive (a);
-			GC.KeepAlive (b);
-			return result;
+			return a.Handle != b.Handle;
 		}
 #endif
 	}

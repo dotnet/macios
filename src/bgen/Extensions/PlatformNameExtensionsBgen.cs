@@ -62,8 +62,6 @@ public static class PlatformNameExtensionsBgen {
 			return ApplePlatform.MacCatalyst;
 		case PlatformName.MacOSX:
 			return ApplePlatform.MacOSX;
-		case PlatformName.WatchOS:
-			return ApplePlatform.WatchOS;
 		case PlatformName.None:
 			return ApplePlatform.None;
 		default:

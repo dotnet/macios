@@ -128,7 +128,6 @@ static partial class BindingSyntaxFactory {
 	/// 2. Use the correct NSArray method depending on the content of the array. 
 	/// </summary>
 	/// <param name="parameter">The parameter whose aux variable we want to generate.</param>
-	/// <param name="withUsing">If the using clause should be added to the declaration.</param>
 	/// <returns>The variable declaration for the NSArray aux variable of the parameter.</returns>
 	internal static LocalDeclarationStatementSyntax? GetNSArrayAuxVariable (in Parameter parameter)
 	{
@@ -142,7 +141,7 @@ static partial class BindingSyntaxFactory {
 		var factoryInvocation = InvocationExpression (MemberAccessExpression (SyntaxKind.SimpleMemberAccessExpression,
 				IdentifierName ("NSArray"), IdentifierName (nsArrayFactoryMethod).WithTrailingTrivia (Space)))
 			.WithArgumentList (
-				ArgumentList (SingletonSeparatedList<ArgumentSyntax> (
+				ArgumentList (SingletonSeparatedList (
 					Argument (IdentifierName (parameter.Name)))));
 
 		// variable name
@@ -740,7 +739,7 @@ static partial class BindingSyntaxFactory {
 	}
 
 	static string? GetObjCMessageSendMethodName<T> (ExportData<T> exportData,
-		TypeInfo returnType, ImmutableArray<Parameter> parameters, bool isSuper = false, bool isStret = false)
+		in TypeInfo returnType, ImmutableArray<Parameter> parameters, bool isSuper = false, bool isStret = false)
 		where T : Enum
 	{
 		var flags = exportData.Flags;

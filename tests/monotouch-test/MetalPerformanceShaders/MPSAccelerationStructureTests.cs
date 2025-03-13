@@ -8,8 +8,6 @@
 // Copyright 2019 Microsoft Corporation.
 //
 
-#if !__WATCHOS__
-
 using System;
 using System.Runtime.InteropServices;
 
@@ -78,4 +76,3 @@ namespace MonoTouchFixtures.MetalPerformanceShaders {
 		}
 	}
 }
-#endif // !__WATCHOS__

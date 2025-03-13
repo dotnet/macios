@@ -7,8 +7,6 @@
 // Copyright 2013 Xamarin Inc.
 //
 
-#if !__WATCHOS__
-
 using System;
 using Foundation;
 using ExternalAccessory;
@@ -50,5 +48,3 @@ namespace MonoTouchFixtures.ExternalAccessory {
 #endif
 	}
 }
-
-#endif // !__WATCHOS__

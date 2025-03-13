@@ -360,7 +360,6 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<_IsMobileDefined>$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants.Trim())', '(^|;)__MOBILE__($|;)'))</_IsMobileDefined>
 		<_IsIOSDefined>$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants.Trim())', '(^|;)__IOS__($|;)'))</_IsIOSDefined>
 		<_IsTVOSDefined>$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants.Trim())', '(^|;)__TVOS__($|;)'))</_IsTVOSDefined>
-		<_IsWatchOSDefined>$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants.Trim())', '(^|;)__WATCHOS__($|;)'))</_IsWatchOSDefined>
 		<_IsMacOSDefined>$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants.Trim())', '(^|;)__MACOS__($|;)'))</_IsMacOSDefined>
 		<_IsMacCatalystDefined>$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants.Trim())', '(^|;)__MACCATALYST__($|;)'))</_IsMacCatalystDefined>
 
@@ -368,7 +367,6 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<DefineConstants Condition="!$(_IsMobileDefined) And '$(_PlatformName)' != 'macOS'">__MOBILE__;$(DefineConstants)</DefineConstants>
 		<DefineConstants Condition="!$(_IsIOSDefined) And '$(_PlatformName)' == 'iOS'">__IOS__;$(DefineConstants)</DefineConstants>
 		<DefineConstants Condition="!$(_IsTVOSDefined) And '$(_PlatformName)' == 'tvOS'">__TVOS__;$(DefineConstants)</DefineConstants>
-		<DefineConstants Condition="!$(_IsWatchOSDefined) And '$(_PlatformName)' == 'watchOS'">__WATCHOS__;$(DefineConstants)</DefineConstants>
 		<DefineConstants Condition="!$(_IsMacOSDefined) And '$(_PlatformName)' == 'macOS'">__MACOS__;$(DefineConstants)</DefineConstants>
 		<DefineConstants Condition="!$(_IsIOSDefined) And '$(_PlatformName)' == 'MacCatalyst'">__IOS__;$(DefineConstants)</DefineConstants> <!-- We define __IOS__ for MacCatalyst as well for now -->
 		<DefineConstants Condition="!$(_IsMacCatalystDefined) And '$(_PlatformName)' == 'MacCatalyst'">__MACCATALYST__;$(DefineConstants)</DefineConstants>

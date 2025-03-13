@@ -80,66 +80,86 @@ namespace Foundation {
 	/// <summary>Enumerates download status values.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NSItemDownloadingStatus {
+		/// <summary>To be added.</summary>
 		[Field (null)]
 		Unknown = -1,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSMetadataUbiquitousItemDownloadingStatusCurrent")]
 		Current,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSMetadataUbiquitousItemDownloadingStatusDownloaded")]
 		Downloaded,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSMetadataUbiquitousItemDownloadingStatusNotDownloaded")]
 		NotDownloaded,
 	}
 
 	[MacCatalyst (13, 1)]
 	public enum NSStringTransform {
+		/// <summary>To be added.</summary>
 		[Field ("NSStringTransformLatinToKatakana")]
 		LatinToKatakana,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSStringTransformLatinToHiragana")]
 		LatinToHiragana,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSStringTransformLatinToHangul")]
 		LatinToHangul,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSStringTransformLatinToArabic")]
 		LatinToArabic,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSStringTransformLatinToHebrew")]
 		LatinToHebrew,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSStringTransformLatinToThai")]
 		LatinToThai,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSStringTransformLatinToCyrillic")]
 		LatinToCyrillic,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSStringTransformLatinToGreek")]
 		LatinToGreek,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSStringTransformToLatin")]
 		ToLatin,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSStringTransformMandarinToLatin")]
 		MandarinToLatin,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSStringTransformHiraganaToKatakana")]
 		HiraganaToKatakana,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSStringTransformFullwidthToHalfwidth")]
 		FullwidthToHalfwidth,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSStringTransformToXMLHex")]
 		ToXmlHex,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSStringTransformToUnicodeName")]
 		ToUnicodeName,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSStringTransformStripCombiningMarks")]
 		StripCombiningMarks,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSStringTransformStripDiacritics")]
 		StripDiacritics,
 	}

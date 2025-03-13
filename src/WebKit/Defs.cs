@@ -61,16 +61,26 @@ namespace WebKit {
 	[Native]
 	[ErrorDomain ("WKErrorDomain")]
 	public enum WKErrorCode : long {
+		/// <summary>No error occurred.</summary>
 		None,
+		/// <summary>An unknown error occurred.</summary>
 		Unknown,
+		/// <summary>A WebContent process terminated unexpectetly.</summary>
 		WebContentProcessTerminated,
+		/// <summary>A WebView was invalidated.</summary>
 		WebViewInvalidated,
+		/// <summary>A JavaScript exception occurred.</summary>
 		JavaScriptExceptionOccurred,
+		/// <summary>The result of a JavaScript execution was not supported.</summary>
 		JavaScriptResultTypeIsUnsupported,
 		// Xcode 9
+		/// <summary>Indicates that a rule list could not be compiled.</summary>
 		ContentRuleListStoreCompileFailed,
+		/// <summary>Indicates that a rule list could not be looked up.</summary>
 		ContentRuleListStoreLookUpFailed,
+		/// <summary>Indicates that a rule list could not be removed from a store.</summary>
 		ContentRuleListStoreRemoveFailed,
+		/// <summary>Indicates that there was a mismatch between rule list store versions.</summary>
 		ContentRuleListStoreVersionMismatch,
 		// Xcode 11
 		AttributedStringContentFailedToLoad,
@@ -102,15 +112,25 @@ namespace WebKit {
 	[Native]
 	[Flags]
 	public enum WKDataDetectorTypes : ulong {
+		/// <summary>Indicates that no items are detected and converted to links.</summary>
 		None = 0,
+		/// <summary>Indicates that phone numbers are detected and converted to links.</summary>
 		PhoneNumber = 1 << 0,
+		/// <summary>Indicates that URLs are detected and converted to links.</summary>
 		Link = 1 << 1,
+		/// <summary>Indicates that addresses are detected and converted to links.</summary>
 		Address = 1 << 2,
+		/// <summary>Indicates that datetimes in the future are detected and converted to links.</summary>
 		CalendarEvent = 1 << 3,
+		/// <summary>Indicates that shipping numbers are detected and converted to links.</summary>
 		TrackingNumber = 1 << 4,
+		/// <summary>Indicates that flight numbers are detected and converted to links.</summary>
 		FlightNumber = 1 << 5,
+		/// <summary>Indicates that lookup suggestions will be provided.</summary>
 		LookupSuggestion = 1 << 6,
+		/// <summary>Indicates that Spotlight suggestsions are detected and converted into links.</summary>
 		SpotlightSuggestion = LookupSuggestion,
+		/// <summary>Indicates that all detectable items will be detected and converted to links.</summary>
 		All = UInt64.MaxValue,
 	}
 
@@ -119,9 +139,13 @@ namespace WebKit {
 	[Native]
 	[Flags]
 	public enum WKAudiovisualMediaTypes : ulong {
+		/// <summary>Indicates neither audio nor video media.</summary>
 		None = 0,
+		/// <summary>Indicates audio media.</summary>
 		Audio = 1 << 0,
+		/// <summary>Indicates video media.</summary>
 		Video = 1 << 1,
+		/// <summary>Indicates both audio and video media.</summary>
 		All = UInt64.MaxValue,
 	}
 

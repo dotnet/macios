@@ -331,6 +331,7 @@ namespace UIKit {
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum NSTextLayoutOrientation : long {
+		/// <summary>To be added.</summary>
 		Horizontal,
 		Vertical,
 	}

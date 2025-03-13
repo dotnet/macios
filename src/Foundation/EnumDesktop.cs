@@ -41,7 +41,9 @@ namespace Foundation {
 	[Native]
 	[NoiOS, NoTV, NoMacCatalyst]
 	public enum NSTaskTerminationReason : long {
+		/// <summary>To be added.</summary>
 		Exit = 1,
+		/// <summary>To be added.</summary>
 		UncaughtSignal = 2,
 	}
 

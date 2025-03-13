@@ -7,8 +7,6 @@
 // Copyright 2016 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
 using System.Threading;
 
@@ -196,5 +194,3 @@ namespace monotouchtest {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

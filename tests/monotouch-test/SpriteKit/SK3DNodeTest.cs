@@ -1,6 +1,3 @@
-
-#if !__WATCHOS__
-
 using System;
 using Foundation;
 #if !MONOMAC
@@ -67,5 +64,3 @@ namespace MonoTouchFixtures.SpriteKit {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

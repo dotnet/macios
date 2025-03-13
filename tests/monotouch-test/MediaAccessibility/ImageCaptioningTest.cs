@@ -7,8 +7,6 @@
 // Copyright 2019 Microsoft Corporation
 //
 
-#if !__WATCHOS__
-
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -148,5 +146,3 @@ namespace MonoTouchFixtures.MediaAccessibility {
 		}
 	}
 }
-
-#endif

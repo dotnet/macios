@@ -38,13 +38,17 @@ namespace CoreImage {
 
 	// convenience enum on kCISamplerWrap[Black|Clamp] fields -> CISampler.h (headers hidden under QuartzCore.framework)
 	public enum CIWrapMode {
+		/// <summary>Areas outside the source image are treated as black.</summary>
 		Black,
+		/// <summary>Areas outside the source image are clamped to the value at the edge.</summary>
 		Clamp,
 	}
 
 	// convenience enum on kCISamplerFilter[Nearest|Linear] fields -> CISampler.h (headers hidden under QuartzCore.framework)
 	public enum CIFilterMode {
+		/// <summary>Use the value of the nearest pixel.</summary>
 		Nearest,
+		/// <summary>Linearly interpolate a sample value from the neighboring pixels.</summary>
 		Linear,
 	}
 
@@ -57,9 +61,21 @@ namespace CoreImage {
 	public class CISamplerOptions {
 		public CISamplerOptions () { }
 
+		/// <summary>Gets or sets the matrix to use for affine transformations.</summary>
+		///         <value>The matrix to use for affine transformations.</value>
+		///         <remarks>To be added.</remarks>
 		public CGAffineTransform? AffineMatrix { get; set; }
+		/// <summary>Gets or sets the wrapping mode, which controls whether pixels outside of the source image boundary will be clamped to the edge value or be black.</summary>
+		///         <value>The wrapping mode, which controls whether pixels outside of the source image boundary will be clamped to the edge value or be black.</value>
+		///         <remarks>To be added.</remarks>
 		public CIWrapMode? WrapMode { get; set; }
+		/// <summary>Gets or sets the filter mode, which controls whether to do the nearest value or to linearly interpolate the value from the surrounding pixels.</summary>
+		///         <value>The filter mode, which controls whether to do the nearest value or to linearly interpolate the value from the surrounding pixels.</value>
+		///         <remarks>To be added.</remarks>
 		public CIFilterMode? FilterMode { get; set; }
+		/// <summary>Gets or sets the color space to which samples are converted before being passed to kernels.</summary>
+		///         <value>The color space to which samples are converted before being passed to kernels.</value>
+		///         <remarks>If the developer does not set this value, then samples are processed in the working color space of the rendering context.</remarks>
 		public CGColorSpace? ColorSpace { get; set; }
 
 		internal NSDictionary ToDictionary ()

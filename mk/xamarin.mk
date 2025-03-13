@@ -1,11 +1,3 @@
-
-ifneq ($(MONO_BUILD_FROM_SOURCE),)
-# The mono hash/branch + some other variables are specified in mono.mk, which is included from Make.config.
-# Here we only keep what makes sense to disable when not building from source.
-MONO_VERSION   := $(shell cd $(MONO_PATH) 2> /dev/null && git rev-parse HEAD 2> /dev/null)
-MONO_BRANCH    := $(shell cd $(MONO_PATH) 2> /dev/null && git symbolic-ref --short HEAD 2> /dev/null)
-endif
-
 ifdef ENABLE_XAMARIN
 NEEDED_ADR_VERSION := 10394d73ac2bfafa2fafda4e8080b7dd0ea66488
 NEEDED_ADR_BRANCH := main
@@ -89,14 +81,6 @@ print-versions:: print-$(1)
 DEPENDENCY_DIRECTORIES += $($(2)_PATH)
 
 endef
-
-ifneq ($(MONO_BUILD_FROM_SOURCE),)
-$(MONO_PATH):
-	$(Q) git clone --recursive $(MONO_MODULE) $(MONO_PATH)
-	$(Q) $(MAKE) reset-mono
-
-$(eval $(call CheckVersionTemplate,mono,MONO))
-endif
 
 ifdef ENABLE_XAMARIN
 $(MACCORE_PATH):

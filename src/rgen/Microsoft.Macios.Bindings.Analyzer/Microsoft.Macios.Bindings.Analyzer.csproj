@@ -96,11 +96,6 @@
         <Compile Include="../Microsoft.Macios.Generator/Availability/*.cs" >
             <Link>Generator/Availability/*.cs</Link>
         </Compile>
-        <Compile Update="Resources.Designer.cs">
-          <DesignTime>True</DesignTime>
-          <AutoGen>True</AutoGen>
-          <DependentUpon>Resources.resx</DependentUpon>
-        </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -109,9 +104,17 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Remove="Resources.Designer.cs" />
       <EmbeddedResource Update="Resources.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+        <StronglyTypedFileName>Resources.Designer.cs</StronglyTypedFileName>
+        <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+        <StronglyTypedNamespace>$(RootNamespace)</StronglyTypedNamespace>
+        <StronglyTypedClassName>Resources</StronglyTypedClassName>
+        <ManifestResourceName>$(RootNamespace).Resources</ManifestResourceName>
+        <GenerateResource>true</GenerateResource>
+        <PublicClass>false</PublicClass>
       </EmbeddedResource>
     </ItemGroup>
 

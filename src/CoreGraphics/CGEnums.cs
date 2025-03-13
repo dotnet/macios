@@ -16,7 +16,9 @@ using ObjCRuntime;
 namespace CoreGraphics {
 
 	public enum MatrixOrder {
+		/// <summary>To be added.</summary>
 		Prepend = 0,
+		/// <summary>To be added.</summary>
 		Append = 1,
 	}
 
@@ -24,26 +26,37 @@ namespace CoreGraphics {
 	/// <summary>Join type for drawing operations.</summary>
 	///     <remarks>Specifies how to join consecutive line or curve segments in a figure.</remarks>
 	public enum CGLineJoin {
+		/// <summary>Specifies a mitered join. This produces a sharp corner or a clipped corner.</summary>
 		Miter,
+		/// <summary>Specifies a circular join. This produces a circular arc between the lines.</summary>
 		Round,
+		/// <summary>Specifies a beveled join. This produces a diagonal corner.</summary>
 		Bevel,
 	}
 
 	// untyped enum -> CGPath.h
 	/// <summary>Style for line caps.</summary>
 	public enum CGLineCap {
+		/// <summary>Specifies a flat line cap.</summary>
 		Butt,
+		/// <summary>Specifies a round line cap.</summary>
 		Round,
+		/// <summary>Specifies a square line cap.</summary>
 		Square,
 	}
 
 	// untyped enum -> CGContext.h
 	/// <include file="../../docs/api/CoreGraphics/CGPathDrawingMode.xml" path="/Documentation/Docs[@DocId='T:CoreGraphics.CGPathDrawingMode']/*" />
 	public enum CGPathDrawingMode {
+		/// <summary>Fills the path using the non-zero winding rule.</summary>
 		Fill,
+		/// <summary>Fills the path using the even-odd rule.</summary>
 		EOFill,
+		/// <summary>Strokes the path.</summary>
 		Stroke,
+		/// <summary>Fills and strokes the path using the non-zero winding rule.</summary>
 		FillStroke,
+		/// <summary>Fills and strokes the path using the even-odd rule.</summary>
 		EOFillStroke,
 	}
 
@@ -51,13 +64,21 @@ namespace CoreGraphics {
 	/// <summary>Text drawing mode used by Quartz.</summary>
 	///     <remarks>These drawing modes are used with the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Graphics%20CGContext%20Set%20Drawing%20Mode&amp;scope=Xamarin" title="M:CoreGraphics.CGContext.SetDrawingMode*">M:CoreGraphics.CGContext.SetDrawingMode*</a></format> method and they specify how the glyphs that make up the text should be drawn.   </remarks>
 	public enum CGTextDrawingMode : uint {
+		/// <summary>Perform a Fill operation on the text glyphs.</summary>
 		Fill,
+		/// <summary>Perform a Stroke operation on the text glyphs.</summary>
 		Stroke,
+		/// <summary>Perform a Fill operation followed by a Stroke operation on the text glyphs.</summary>
 		FillStroke,
+		/// <summary>Does not draw the text, merely updates the text position</summary>
 		Invisible,
+		/// <summary>Perform a Fill operation on the text glyphs followed by a clip operation using the current clip path.</summary>
 		FillClip,
+		/// <summary>To be added.</summary>
 		StrokeClip,
+		/// <summary>Perform a Stroke operation on the text glyphs followed by a clip operation using the current clip path.</summary>
 		FillStrokeClip,
+		/// <summary>Performs a clip operation using the current clip path without drawing the text.</summary>
 		Clip,
 	}
 
@@ -68,51 +89,86 @@ namespace CoreGraphics {
 	[Deprecated (PlatformName.MacOSX, 10, 9)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	public enum CGTextEncoding {
+		/// <summary>Built-in encoding of the font.</summary>
 		FontSpecific,
+		/// <summary>Mac encoding, an old ASCII-like encoding system used on MacOS.</summary>
 		MacRoman,
 	}
 
 	// untyped enum -> CGContext.h
 	/// <summary>Quality of interpolation for drawing images.</summary>
 	public enum CGInterpolationQuality {
+		/// <summary>Let the context pick the best interpolation mode.</summary>
 		Default,
+		/// <summary>Do not interpolate.</summary>
 		None,
+		/// <summary>Low interpolation quality, fast processing.</summary>
 		Low,
+		/// <summary>High quality, at the cost of speed.</summary>
 		High,
+		/// <summary>To be added.</summary>
 		Medium,            /* Yes, in this order, since Medium was added in 4 */
 	}
 
 	// untyped enum -> CGContext.h
 	/// <include file="../../docs/api/CoreGraphics/CGBlendMode.xml" path="/Documentation/Docs[@DocId='T:CoreGraphics.CGBlendMode']/*" />
 	public enum CGBlendMode {
+		/// <summary>To be added.</summary>
 		Normal,
+		/// <summary>To be added.</summary>
 		Multiply,
+		/// <summary>To be added.</summary>
 		Screen,
+		/// <summary>To be added.</summary>
 		Overlay,
+		/// <summary>To be added.</summary>
 		Darken,
+		/// <summary>To be added.</summary>
 		Lighten,
+		/// <summary>To be added.</summary>
 		ColorDodge,
+		/// <summary>To be added.</summary>
 		ColorBurn,
+		/// <summary>To be added.</summary>
 		SoftLight,
+		/// <summary>To be added.</summary>
 		HardLight,
+		/// <summary>To be added.</summary>
 		Difference,
+		/// <summary>To be added.</summary>
 		Exclusion,
+		/// <summary>To be added.</summary>
 		Hue,
+		/// <summary>To be added.</summary>
 		Saturation,
+		/// <summary>To be added.</summary>
 		Color,
+		/// <summary>To be added.</summary>
 		Luminosity,
 
+		/// <summary>Clears the destination and makes it transparent (R=0).</summary>
 		Clear,
+		/// <summary>Copies the source color with alpha to the target (R=S)</summary>
 		Copy,
+		/// <summary>To be added.</summary>
 		SourceIn,
+		/// <summary>To be added.</summary>
 		SourceOut,
+		/// <summary>To be added.</summary>
 		SourceAtop,
+		/// <summary>To be added.</summary>
 		DestinationOver,
+		/// <summary>To be added.</summary>
 		DestinationIn,
+		/// <summary>To be added.</summary>
 		DestinationOut,
+		/// <summary>To be added.</summary>
 		DestinationAtop,
+		/// <summary>To be added.</summary>
 		XOR,
+		/// <summary>To be added.</summary>
 		PlusDarker,
+		/// <summary>To be added.</summary>
 		PlusLighter,
 	}
 
@@ -175,26 +231,43 @@ namespace CoreGraphics {
 	// untyped enum -> CGPDFObject.h
 	/// <summary>Enumerates the various types of values that are found in a PDF document.</summary>
 	public enum CGPDFObjectType {
+		/// <summary>To be added.</summary>
 		Null = 1,
+		/// <summary>To be added.</summary>
 		Boolean,
+		/// <summary>To be added.</summary>
 		Integer,
+		/// <summary>To be added.</summary>
 		Real,
+		/// <summary>To be added.</summary>
 		Name,
+		/// <summary>To be added.</summary>
 		String,
+		/// <summary>To be added.</summary>
 		Array,
+		/// <summary>To be added.</summary>
 		Dictionary,
+		/// <summary>To be added.</summary>
 		Stream,
 	};
 
 	[MacCatalyst (13, 1)]
 	public enum CGPDFAccessPermissions : uint {
+		/// <summary>To be added.</summary>
 		AllowsLowQualityPrinting = (1 << 0),
+		/// <summary>To be added.</summary>
 		AllowsHighQualityPrinting = (1 << 1),
+		/// <summary>To be added.</summary>
 		AllowsDocumentChanges = (1 << 2),
+		/// <summary>To be added.</summary>
 		AllowsDocumentAssembly = (1 << 3),
+		/// <summary>To be added.</summary>
 		AllowsContentCopying = (1 << 4),
+		/// <summary>To be added.</summary>
 		AllowsContentAccessibility = (1 << 5),
+		/// <summary>To be added.</summary>
 		AllowsCommenting = (1 << 6),
+		/// <summary>To be added.</summary>
 		AllowsFormFieldEntry = (1 << 7),
 	}
 
@@ -214,8 +287,11 @@ namespace CoreGraphics {
 	// uint32_t enum -> CGColorConversionInfo.h
 	[MacCatalyst (13, 1)]
 	public enum CGColorConversionInfoTransformType : uint {
+		/// <summary>To be added.</summary>
 		FromSpace = 0,
+		/// <summary>To be added.</summary>
 		ToSpace,
+		/// <summary>To be added.</summary>
 		ApplySpace,
 	}
 }

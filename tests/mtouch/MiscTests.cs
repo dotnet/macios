@@ -16,8 +16,6 @@ namespace Xamarin.Tests {
 		[Test]
 		public void InvalidStructOffset ()
 		{
-			MTouch.AssertDeviceAvailable ();
-
 			var str = "invalid struct offset";
 			var contents = ASCIIEncoding.ASCII.GetBytes (str);
 
@@ -62,8 +60,6 @@ namespace Xamarin.Tests {
 		[Test]
 		public void VerifySymbols ()
 		{
-			MTouch.AssertDeviceAvailable ();
-
 			var prohibited_symbols = new string [] { "_NSGetEnviron", "PKService", "SPPluginDelegate" };
 
 			foreach (var symbol in prohibited_symbols) {
@@ -84,8 +80,7 @@ namespace Xamarin.Tests {
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			var paths = new HashSet<string> ();
-			if (Configuration.include_device)
-				paths.UnionWith (Directory.GetFileSystemEntries (Configuration.GetSdkPath (profile, true), "*.a", SearchOption.AllDirectories));
+			paths.UnionWith (Directory.GetFileSystemEntries (Configuration.GetSdkPath (profile, true), "*.a", SearchOption.AllDirectories));
 			paths.UnionWith (Directory.GetFileSystemEntries (Configuration.GetSdkPath (profile, false), "*.a", SearchOption.AllDirectories));
 			var failed = new StringBuilder ();
 

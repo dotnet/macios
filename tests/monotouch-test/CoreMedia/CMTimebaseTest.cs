@@ -18,7 +18,6 @@ namespace MonoTouchFixtures.CoreMedia {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class CMTimebaseTest {
-#if !__WATCHOS__
 		[Test]
 		public void DefaultValues ()
 		{
@@ -38,7 +37,6 @@ namespace MonoTouchFixtures.CoreMedia {
 				Assert.Null (tb.GetMasterTimebase (), "GetMasterTimebase");
 			}
 		}
-#endif
 
 		[Test]
 		public void SetAnchorTime ()
@@ -67,7 +65,6 @@ namespace MonoTouchFixtures.CoreMedia {
 			}
 		}
 
-#if !__WATCHOS__
 		[Test]
 		public void GetMasterTests ()
 		{
@@ -87,7 +84,6 @@ namespace MonoTouchFixtures.CoreMedia {
 				AssertNullOrValidHandle (masterUlt, "GetUltimateMasterClock");
 			}
 		}
-#endif
 
 		[Test]
 		public void CopyMasterTests ()

@@ -504,6 +504,9 @@ namespace HealthKit {
 	[StrongDictionary ("HKDetailedCdaErrorKeys")]
 	[Internal]
 	interface HKDetailedCdaErrors {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSString ValidationError { get; }
 	}
 
@@ -2661,9 +2664,11 @@ namespace HealthKit {
 	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	enum HKCorrelationTypeIdentifier {
+		/// <summary>The correlation contains diastolic and systolic blood pressure readings.</summary>
 		[Field ("HKCorrelationTypeIdentifierBloodPressure")]
 		BloodPressure,
 
+		/// <summary>The correlation contains data about food items.</summary>
 		[Field ("HKCorrelationTypeIdentifierFood")]
 		Food,
 	}
@@ -2683,45 +2688,56 @@ namespace HealthKit {
 	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	enum HKCategoryTypeIdentifier {
+		/// <summary>The sleep analysis category.</summary>
 		[Field ("HKCategoryTypeIdentifierSleepAnalysis")]
 		SleepAnalysis,
 
+		/// <summary>Indicates a category whose value indicates whether the user stood for one minute in an hour.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("HKCategoryTypeIdentifierAppleStandHour")]
 		AppleStandHour,
 
+		/// <summary>Indicates a category whose value indicates the user's cervical mucous quality.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("HKCategoryTypeIdentifierCervicalMucusQuality")]
 		CervicalMucusQuality,
 
+		/// <summary>Indicates a category whose value indicates the user's ovulation test result.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("HKCategoryTypeIdentifierOvulationTestResult")]
 		OvulationTestResult,
 
+		/// <summary>Indicates a category whose value indicates the user's menstrual flow.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("HKCategoryTypeIdentifierMenstrualFlow")]
 		MenstrualFlow,
 
+		/// <summary>Indicates a category whose value indicates whether the user experienced intermenstrual bleeding.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("HKCategoryTypeIdentifierIntermenstrualBleeding")]
 		IntermenstrualBleeding,
 
+		/// <summary>Indicates a category whose value indicates the user's sexual activity.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("HKCategoryTypeIdentifierSexualActivity")]
 		SexualActivity,
 
+		/// <summary>Indicates a category whose value idicates the user's mindfulness session.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("HKCategoryTypeIdentifierMindfulSession")]
 		MindfulSession,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("HKCategoryTypeIdentifierHighHeartRateEvent")]
 		HighHeartRateEvent,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("HKCategoryTypeIdentifierLowHeartRateEvent")]
 		LowHeartRateEvent,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("HKCategoryTypeIdentifierIrregularHeartRhythmEvent")]
 		IrregularHeartRhythmEvent,
@@ -3014,19 +3030,24 @@ namespace HealthKit {
 	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	enum HKCharacteristicTypeIdentifier {
+		/// <summary>The biological sex characteristic.</summary>
 		[Field ("HKCharacteristicTypeIdentifierBiologicalSex")]
 		BiologicalSex,
 
+		/// <summary>The blood type characteristic.</summary>
 		[Field ("HKCharacteristicTypeIdentifierBloodType")]
 		BloodType,
 
+		/// <summary>The date of birth characteristic.</summary>
 		[Field ("HKCharacteristicTypeIdentifierDateOfBirth")]
 		DateOfBirth,
 
+		/// <summary>The Fitzpatrick skin type characteristic.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("HKCharacteristicTypeIdentifierFitzpatrickSkinType")]
 		FitzpatrickSkinType,
 
+		/// <summary>The wheelchair use characteristic.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("HKCharacteristicTypeIdentifierWheelchairUse")]
 		WheelchairUse,
@@ -3616,6 +3637,12 @@ namespace HealthKit {
 		[NullAllowed, Export ("metadata", ArgumentSemantic.Copy)]
 		NSDictionary WeakMetadata { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("WeakMetadata")]
 		HKMetadata Metadata { get; }

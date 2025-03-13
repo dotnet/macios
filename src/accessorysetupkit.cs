@@ -106,7 +106,6 @@ namespace AccessorySetupKit {
 
 	[BaseType (typeof (NSObject))]
 	[iOS (18, 0)]
-	[DisableDefaultCtor]
 	interface ASAccessorySession {
 		[Export ("accessories", ArgumentSemantic.Copy)]
 		ASAccessory [] Accessories { get; }

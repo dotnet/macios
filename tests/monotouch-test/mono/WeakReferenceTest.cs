@@ -24,16 +24,11 @@ namespace MonoTouchFixtures {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public partial class WeakReferenceTest {
-#if __WATCHOS__
-		const int totalTestObjects = 500;
-#else
 		const int totalTestObjects = 5000;
-#endif
 
 		[SetUp]
 		public void Setup ()
 		{
-			TestRuntime.AssertSystemVersion (ApplePlatform.WatchOS, 3, 0, throwIfOtherPlatform: false);
 			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 7, 0, throwIfOtherPlatform: false);
 			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 9, throwIfOtherPlatform: false);
 		}

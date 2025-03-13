@@ -481,80 +481,6 @@ public class Frameworks : Dictionary<string, Framework> {
 			};
 	}
 
-	static Frameworks watch_frameworks;
-	public static Frameworks GetwatchOSFrameworks (bool is_simulator_build)
-	{
-		if (watch_frameworks is null) {
-			watch_frameworks = new Frameworks {
-				{ "Accelerate", "Accelerate", 2 },
-				// The CFNetwork framework is in the SDK, but there are no headers inside the framework, so don't enable yet.
-				// { "CFNetwork", "CFNetwork", 2 },
-				{ "ClockKit", "ClockKit", 2 },
-				{ "Contacts", "Contacts", 2 },
-				{ "CoreAudio", "CoreAudio", 2 },
-				{ "CoreData", "CoreData", 2 },
-				{ "CoreFoundation", "CoreFoundation", 2 },
-				{ "CoreGraphics", "CoreGraphics", 2 },
-				{ "CoreLocation", "CoreLocation", 2 },
-				{ "CoreMotion", "CoreMotion", 2 },
-				{ "EventKit", "EventKit", 2 },
-				{ "Foundation", "Foundation", 2 },
-				{ "HealthKit", "HealthKit", 2 },
-				{ "HomeKit", "HomeKit", 2 },
-				{ "ImageIO", "ImageIO", 2 },
-				{ "MapKit", "MapKit", 2 },
-				{ "MobileCoreServices", "MobileCoreServices", 2 },
-				{ "PassKit", "PassKit", 2 },
-				{ "Security", "Security", 2 },
-				{ "UIKit", "UIKit", 2 },
-				{ "WatchConnectivity", "WatchConnectivity", 2 },
-				{ "WatchKit", "WatchKit", 2 },
-
-				{ "CoreText", "CoreText", 2,2 },
-
-				// AVFoundation was introduced in 3.0, but the simulator SDK was broken until 3.2.
-				{ "AVFoundation", "AVFoundation", 3, is_simulator_build ? 2 : 0 },
-				{ "CloudKit", "CloudKit", 3 },
-				{ "GameKit", "GameKit", new Version (3, 0), new Version (3, 2) /* No headers provided for watchOS/simulator until watchOS 3.2. */ },
-				{ "SceneKit", "SceneKit", 3 },
-				{ "SpriteKit", "SpriteKit", 3 },
-				{ "UserNotifications", "UserNotifications", 3 },
-				{ "Intents", "Intents", 3,2 },
-
-				{ "CoreBluetooth", "CoreBluetooth", 4 },
-				{ "CoreML", "CoreML", 4 },
-				{ "CoreVideo", "CoreVideo", 4 },
-
-				{ "NaturalLanguage", "NaturalLanguage", 5 },
-				{ "MediaPlayer", "MediaPlayer", 5 },
-
-				{ "AuthenticationServices", "AuthenticationServices", 6 },
-				{ "Network", "Network", 6 },
-				{ "PushKit", "PushKit", 6 },
-				{ "SoundAnalysis", "SoundAnalysis", 6 },
-				{ "CoreMedia", "CoreMedia", 6 },
-				{ "StoreKit", "StoreKit", 6,2 },
-
-				{ "Accessibility", "Accessibility", 7,0 },
-				{ "UniformTypeIdentifiers", "UniformTypeIdentifiers", 7,0 },
-
-				{ "CoreMidi", "CoreMIDI", 8,0 },
-				{ "CryptoTokenKit", "CryptoTokenKit", 8, 0 },
-				{ "NearbyInteraction", "NearbyInteraction", 8,0 },
-				{ "OSLog", "OSLog", 8,0 },
-				{ "ShazamKit", "ShazamKit", new Version (8, 0), NotAvailableInSimulator},
-
-				{ "DeviceCheck", "DeviceCheck", 9,0 },
-				{ "CallKit", "CallKit", 9,0 },
-				{ "LocalAuthentication", "LocalAuthentication", 9,0 },
-				{ "SafetyKit", "SafetyKit", 9, 0 },
-
-				{ "Symbols", "Symbols", 10, 0 },
-			};
-		}
-		return watch_frameworks;
-	}
-
 	static Frameworks tvos_frameworks;
 	public static Frameworks TVOSFrameworks {
 		get {
@@ -744,8 +670,6 @@ public class Frameworks : Dictionary<string, Framework> {
 		switch (platform) {
 		case ApplePlatform.iOS:
 			return GetiOSFrameworks (is_simulator_build);
-		case ApplePlatform.WatchOS:
-			return GetwatchOSFrameworks (is_simulator_build);
 		case ApplePlatform.TVOS:
 			return TVOSFrameworks;
 		case ApplePlatform.MacOSX:
@@ -826,7 +750,6 @@ public class Frameworks : Dictionary<string, Framework> {
 			}
 			break;
 		case ApplePlatform.TVOS:
-		case ApplePlatform.WatchOS:
 		case ApplePlatform.MacCatalyst:
 			break; // Include all frameworks by default
 		case ApplePlatform.MacOSX:

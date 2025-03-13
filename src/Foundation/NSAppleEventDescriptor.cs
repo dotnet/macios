@@ -11,7 +11,9 @@ using AppKit;
 
 namespace Foundation {
 	public enum NSAppleEventDescriptorType {
+		/// <summary>To be added.</summary>
 		Record,
+		/// <summary>To be added.</summary>
 		List,
 	}
 

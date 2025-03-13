@@ -64,4 +64,344 @@ void Setup ()
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioSession_ClassReference/index.html">Apple documentation for <c>AVAudioSession</c></related>
   </Docs>
+  <Docs DocId="P:AVFoundation.AVAudioSession.InterruptionNotification">
+    <summary>Notification constant for Interruption</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:AVFoundation.AVAudioSession.Notifications" />.<see cref="M:AVFoundation.AVAudioSession.Notifications.ObserveInterruption*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = AVAudioSession.Notifications.ObserveInterruption ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("InterruptionType", args.InterruptionType);
+    Console.WriteLine ("Option", args.Option);
+    Console.WriteLine ("WasSuspended", args.WasSuspended);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, AVFoundation.AVAudioSessionInterruptionEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("InterruptionType", args.InterruptionType);
+    Console.WriteLine ("Option", args.Option);
+    Console.WriteLine ("WasSuspended", args.WasSuspended);
+}
+
+void Setup ()
+{
+    notification = AVAudioSession.Notifications.ObserveInterruption (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+      </example>
+      <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        AVAudioSession.InterruptionNotification, (notification) => {Console.WriteLine ("Received the notification AVAudioSession", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification AVAudioSession", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (AVAudioSession.InterruptionNotification, Callback);
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="P:AVFoundation.AVAudioSession.MediaServicesWereResetNotification">
+    <summary>Notification constant for MediaServicesWereReset</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:AVFoundation.AVAudioSession.Notifications" />.<see cref="M:AVFoundation.AVAudioSession.Notifications.ObserveMediaServicesWereReset*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = AVAudioSession.Notifications.ObserveMediaServicesWereReset ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = AVAudioSession.Notifications.ObserveMediaServicesWereReset (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+      </example>
+      <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        AVAudioSession.MediaServicesWereResetNotification, (notification) => {Console.WriteLine ("Received the notification AVAudioSession", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification AVAudioSession", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (AVAudioSession.MediaServicesWereResetNotification, Callback);
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="P:AVFoundation.AVAudioSession.MediaServicesWereLostNotification">
+    <summary>Notification constant for MediaServicesWereLost</summary>
+    <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+    <remarks>
+      <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+      <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:AVFoundation.AVAudioSession.Notifications" />.<see cref="M:AVFoundation.AVAudioSession.Notifications.ObserveMediaServicesWereLost*" /> method which offers strongly typed access to the parameters of the notification.</para>
+      <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = AVAudioSession.Notifications.ObserveMediaServicesWereLost ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = AVAudioSession.Notifications.ObserveMediaServicesWereLost (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+      </example>
+      <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        AVAudioSession.MediaServicesWereLostNotification, (notification) => {Console.WriteLine ("Received the notification AVAudioSession", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification AVAudioSession", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (AVAudioSession.MediaServicesWereLostNotification, Callback);
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="P:AVFoundation.AVAudioSession.RouteChangeNotification">
+        <summary>Notification constant for RouteChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:AVFoundation.AVAudioSession.Notifications" />.<see cref="M:AVFoundation.AVAudioSession.Notifications.ObserveRouteChange*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = AVAudioSession.Notifications.ObserveRouteChange ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("Reason", args.Reason);
+    Console.WriteLine ("PreviousRoute", args.PreviousRoute);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, AVFoundation.AVAudioSessionRouteChangeEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("Reason", args.Reason);
+    Console.WriteLine ("PreviousRoute", args.PreviousRoute);
+}
+
+void Setup ()
+{
+    notification = AVAudioSession.Notifications.ObserveRouteChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        AVAudioSession.RouteChangeNotification, (notification) => {Console.WriteLine ("Received the notification AVAudioSession", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification AVAudioSession", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (AVAudioSession.RouteChangeNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:AVFoundation.AVAudioSession.SilenceSecondaryAudioHintNotification">
+        <summary>Notification constant for SilenceSecondaryAudioHint</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:AVFoundation.AVAudioSession.Notifications" />.<see cref="M:AVFoundation.AVAudioSession.Notifications.ObserveSilenceSecondaryAudioHint*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = AVAudioSession.Notifications.ObserveSilenceSecondaryAudioHint ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("Hint", args.Hint);
+    Console.WriteLine ("HintType", args.HintType);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, AVFoundation.AVAudioSessionSecondaryAudioHintEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("Hint", args.Hint);
+    Console.WriteLine ("HintType", args.HintType);
+}
+
+void Setup ()
+{
+    notification = AVAudioSession.Notifications.ObserveSilenceSecondaryAudioHint (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        AVAudioSession.SilenceSecondaryAudioHintNotification, (notification) => {Console.WriteLine ("Received the notification AVAudioSession", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification AVAudioSession", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (AVAudioSession.SilenceSecondaryAudioHintNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
 </Documentation>

@@ -1,6 +1,3 @@
-
-#if !__WATCHOS__
-
 using System;
 using Foundation;
 using ObjCRuntime;
@@ -40,6 +37,4 @@ namespace MonoTouchFixtures.SpriteKit {
 		}
 	}
 }
-
-#endif // !__WATCHOS__;
 

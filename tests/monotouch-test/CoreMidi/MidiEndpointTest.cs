@@ -8,7 +8,7 @@
 // Copyright 2016 Xamarin Inc. All rights reserved.
 //
 
-#if !__TVOS__ && !__WATCHOS__
+#if !__TVOS__
 using System;
 using Foundation;
 using CoreMidi;

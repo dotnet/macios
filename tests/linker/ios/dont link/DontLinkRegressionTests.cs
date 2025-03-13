@@ -110,7 +110,7 @@ namespace DontLink {
 			Assert.True (de.IsReadOnly, "IsReadOnly");
 		}
 
-#if __TVOS__ || __WATCHOS__
+#if __TVOS__
 		void AssertThrowsWrappedNotSupportedException (Action action, string message)
 		{
 			try {
@@ -167,7 +167,7 @@ namespace DontLink {
 
 			}
 		}
-#endif // __TVOS__ || __WATCHOS__
+#endif // __TVOS__
 
 
 #if __IOS__ && !__MACCATALYST__

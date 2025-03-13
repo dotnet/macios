@@ -28,7 +28,6 @@ namespace VideoToolbox {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios16.0")]
 	[SupportedOSPlatform ("maccatalyst16.0")]
-	[SupportedOSPlatform ("watchos9.0")]
 	[SupportedOSPlatform ("tvos16.0")]
 #else
 	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]

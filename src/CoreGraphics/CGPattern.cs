@@ -44,8 +44,11 @@ namespace CoreGraphics {
 
 	// untyped enum -> CGPattern.h
 	public enum CGPatternTiling {
+		/// <summary>No distortion.</summary>
 		NoDistortion,
+		/// <summary>To be added.</summary>
 		ConstantSpacingMinimalDistortion,
+		/// <summary>To be added.</summary>
 		ConstantSpacing,
 	}
 

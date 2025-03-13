@@ -1,4 +1,4 @@
-#if !__TVOS__ && !__WATCHOS__
+#if !__TVOS__
 
 using System;
 using System.Diagnostics.CodeAnalysis;

@@ -22,8 +22,11 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKAuthorizationStatus : long {
+		/// <summary>The permission has not yet been determined.</summary>
 		NotDetermined = 0,
+		/// <summary>Sharing is not allowed.</summary>
 		SharingDenied,
+		/// <summary>Sharing is allowed.</summary>
 		SharingAuthorized,
 	}
 
@@ -33,9 +36,13 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKBiologicalSex : long {
+		/// <summary>The user has not recorded their sex in the gender binary.</summary>
 		NotSet = 0,
+		/// <summary>The female sex.</summary>
 		Female,
+		/// <summary>The male sex.</summary>
 		Male,
+		/// <summary>The user is not categorized as either male or female.</summary>
 		[MacCatalyst (13, 1)]
 		Other,
 	}
@@ -46,14 +53,23 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKBloodType : long {
+		/// <summary>The user's blood type is not recorded.</summary>
 		NotSet = 0,
+		/// <summary>The A+ blood type.</summary>
 		APositive,
+		/// <summary>The A- blood type.</summary>
 		ANegative,
+		/// <summary>The B+ blood type.</summary>
 		BPositive,
+		/// <summary>The B- blood type.</summary>
 		BNegative,
+		/// <summary>The AB+ blood type</summary>
 		ABPositive,
+		/// <summary>The AB- blood type.</summary>
 		ABNegative,
+		/// <summary>The O+ blood type.</summary>
 		OPositive,
+		/// <summary>The O- blood type.</summary>
 		ONegative,
 	}
 
@@ -63,17 +79,29 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKBodyTemperatureSensorLocation : long {
+		/// <summary>The temperature reading location is unspecified.</summary>
 		Other = 0,
+		/// <summary>The temperature reading is taken at the user's armpit.</summary>
 		Armpit,
+		/// <summary>The temperature reading is taken somewhere on the user's body.</summary>
 		Body,
+		/// <summary>The temperature reading is taken at the user's ear.</summary>
 		Ear,
+		/// <summary>The temperature reading is taken at the user's finger.</summary>
 		Finger,
+		/// <summary>The temperature reading is taken in the user's gastrointestinal system.</summary>
 		GastroIntestinal,
+		/// <summary>The temperature reading is taken in the user's mouth.</summary>
 		Mouth,
+		/// <summary>The temperature reading is taken at the user's rectum.</summary>
 		Rectum,
+		/// <summary>The temperature reading is taken at the user's toe.</summary>
 		Toe,
+		/// <summary>The temperature reading is taken at the user's eardrum.</summary>
 		EarDrum,
+		/// <summary>The temperature reading is taken at the user's temporal artery.</summary>
 		TemporalArtery,
+		/// <summary>The temperature reading is taken at the user's forehead.</summary>
 		Forehead,
 	}
 
@@ -119,8 +147,11 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKCategoryValueSleepAnalysis : long {
+		/// <summary>The user is in bed.</summary>
 		InBed,
+		/// <summary>The user is asleep.</summary>
 		Asleep,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		Awake,
 		[MacCatalyst (16, 0), Mac (13, 0), iOS (16, 0), NoTV]
@@ -342,6 +373,7 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKCategoryValue : long {
+		/// <summary>A category value is not applicable to the category.</summary>
 		NotApplicable = 0,
 	}
 
@@ -350,11 +382,17 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKCategoryValueCervicalMucusQuality : long {
+		/// <summary>Either not recorded or permissions not given.</summary>
 		NotApplicable = 0,
+		/// <summary>Little or no mucus.</summary>
 		Dry = 1,
+		/// <summary>Sticky mucus.</summary>
 		Sticky,
+		/// <summary>Creamy mucus.</summary>
 		Creamy,
+		/// <summary>Watery mucus.</summary>
 		Watery,
+		/// <summary>Mucus the color and consistency of egg whites.</summary>
 		EggWhite,
 	}
 
@@ -367,10 +405,15 @@ namespace HealthKit {
 	[Deprecated (PlatformName.TvOS, 18, 0, message: "Use 'HKCategoryValueVaginalBleeding' instead.")]
 	[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'HKCategoryValueVaginalBleeding' instead.")]
 	public enum HKCategoryValueMenstrualFlow : long {
+		/// <summary>Categorization is not applicable.</summary>
 		NotApplicable = 0,
+		/// <summary>The level is unspecified.</summary>
 		Unspecified = 1,
+		/// <summary>Light flow.</summary>
 		Light,
+		/// <summary>Medium flow.</summary>
 		Medium,
+		/// <summary>Heavy flow.</summary>
 		Heavy,
 		[MacCatalyst (13, 1)]
 		None,
@@ -391,14 +434,18 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKCategoryValueOvulationTestResult : long {
+		/// <summary>The test is not applicable.</summary>
 		NotApplicable = 0,
+		/// <summary>The test was negative.</summary>
 		Negative = 1,
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		LuteinizingHormoneSurge = 2,
+		/// <summary>The test was positive.</summary>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'HKCategoryValueOvulationTestResult.LuteinizingHormoneSurge' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'HKCategoryValueOvulationTestResult.LuteinizingHormoneSurge' instead.")]
 		Positive = LuteinizingHormoneSurge,
+		/// <summary>The test was indeterminate.</summary>
 		Indeterminate = 3,
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -410,7 +457,9 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKCategoryValueAppleStandHour : long {
+		/// <summary>The user did stand for at least a few minutes.</summary>
 		Stood = 0,
+		/// <summary>The user did not stand.</summary>
 		Idle,
 	}
 
@@ -524,7 +573,9 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKBloodGlucoseMealTime : long {
+		/// <summary>Indicates a measurement taken before a meal.</summary>
 		Preprandial = 1,
+		/// <summary>Indicates a measurement taken after a meal.</summary>
 		Postprandial,
 #if !NET
 		[Obsolete ("Use 'Preprandial' instead.")]
@@ -585,18 +636,25 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	public enum HKClinicalTypeIdentifier {
 
+		/// <summary>Indicates an allergy record.</summary>
 		[Field ("HKClinicalTypeIdentifierAllergyRecord")]
 		AllergyRecord,
+		/// <summary>Indicates a record for a medical condition.</summary>
 		[Field ("HKClinicalTypeIdentifierConditionRecord")]
 		ConditionRecord,
+		/// <summary>Indicates an immunization record.</summary>
 		[Field ("HKClinicalTypeIdentifierImmunizationRecord")]
 		ImmunizationRecord,
+		/// <summary>Indicates a lab result record.</summary>
 		[Field ("HKClinicalTypeIdentifierLabResultRecord")]
 		LabResultRecord,
+		/// <summary>Indicates a record of medication</summary>
 		[Field ("HKClinicalTypeIdentifierMedicationRecord")]
 		MedicationRecord,
+		/// <summary>Indicates a record of a procedure.</summary>
 		[Field ("HKClinicalTypeIdentifierProcedureRecord")]
 		ProcedureRecord,
+		/// <summary>Indicates a record of a vital sign.</summary>
 		[Field ("HKClinicalTypeIdentifierVitalSignRecord")]
 		VitalSignRecord,
 		[iOS (14, 0)]
@@ -614,8 +672,11 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKAuthorizationRequestStatus : long {
+		/// <summary>Indicates that it is unknown whether the app should request user permission.</summary>
 		Unknown = 0,
+		/// <summary>Indicates that the app should request user permission.</summary>
 		ShouldRequest,
+		/// <summary>Indicates that the app does not need to request user permission.</summary>
 		Unnecessary,
 	}
 

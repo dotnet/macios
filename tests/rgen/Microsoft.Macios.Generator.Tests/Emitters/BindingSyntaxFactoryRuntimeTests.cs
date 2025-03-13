@@ -375,4 +375,37 @@ public class BindingSyntaxFactoryRuntimeTests {
 		var declaration = NSArrayFromHandleFunc (returnType, arguments);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
+
+	class TestDataSmartEnumGetValue : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return [
+				ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true),
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))),
+				false,
+				"global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetValue (arg1)"
+			];
+
+			yield return [
+				ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true),
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))),
+				true,
+				"global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetNullableValue (arg1)"
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataSmartEnumGetValue))]
+	void SmartEnumGetValueTests (TypeInfo enumType, ImmutableArray<ArgumentSyntax> arguments, bool isNullable, string expectedDeclaration)
+	{
+		var declaration = SmartEnumGetValue (enumType, arguments, isNullable);
+		var str = declaration.ToString ();
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+
 }

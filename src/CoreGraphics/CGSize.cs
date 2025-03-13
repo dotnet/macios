@@ -21,6 +21,8 @@ namespace CoreGraphics {
 		nfloat width;
 		nfloat height;
 
+		/// <summary>Represents an empty size.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly CGSize Empty;
 
 #if !COREBUILD
@@ -82,16 +84,25 @@ namespace CoreGraphics {
 			return size1 - size2;
 		}
 
+		/// <summary>The Width component of the CGSize.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat Width {
 			get { return width; }
 			set { width = value; }
 		}
 
+		/// <summary>The height component of the CGSize.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat Height {
 			get { return height; }
 			set { height = value; }
 		}
 
+		/// <summary>Returns true if the size is empty</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsEmpty {
 			get { return width == 0.0 && height == 0.0; }
 		}

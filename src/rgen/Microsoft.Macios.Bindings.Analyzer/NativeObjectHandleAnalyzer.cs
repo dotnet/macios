@@ -147,7 +147,7 @@ public class NativeObjectHandleAnalyzer : DiagnosticAnalyzer {
 
 		// Skip over this.Handle == other.Handle checks
 		if (memberAccess.Parent is BinaryExpressionSyntax binaryParent &&
-		    binaryParent.Kind() is SyntaxKind.EqualsExpression or SyntaxKind.NotEqualsExpression) {
+			binaryParent.Kind () is SyntaxKind.EqualsExpression or SyntaxKind.NotEqualsExpression) {
 			return;
 		}
 

@@ -66,8 +66,30 @@
         <Compile Include="../Microsoft.Macios.Generator/Attributes/UnsupportedOSPlatformData.cs" >
             <Link>Generator/Attributes/UnsupportedOSPlatformData.cs</Link>
         </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/DataModel/AttributeCodeChange.cs" >
+            <Link>DataModel/AttributeCodeChange.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/DataModel/AttributesEqualityComparer.cs" >
+            <Link>DataModel/AttributesEqualityComparer.cs</Link>
+        </Compile>
+        
         <Compile Include="../Microsoft.Macios.Generator/DataModel/TypeInfo.cs" >
             <Link>DataModel/TypeInfo.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/DataModel/DelegateInfo.cs" >
+            <Link>DataModel/DelegateInfo.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/DataModel/DelegateParameter.cs" >
+            <Link>DataModel/DelegateParameter.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/DataModel/Parameter.cs" >
+            <Link>DataModel/Parameter.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/DataModel/ParameterEqualityComparer.cs" >
+            <Link>DataModel/ParameterEqualityComparer.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/DataModel/ReferenceKind.cs" >
+            <Link>DataModel/ReferenceKind.cs</Link>
         </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Extensions/ApplePlatformExtensions.cs" >
             <Link>Generator/Extensions/ApplePlatformExtensions.cs</Link>

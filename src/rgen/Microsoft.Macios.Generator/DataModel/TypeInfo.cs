@@ -150,7 +150,13 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// <summary>
 	/// True if the type represents a delegate.
 	/// </summary>
+	[MemberNotNullWhen (true, nameof (Delegate))]
 	public bool IsDelegate { get; init; }
+	
+	/// <summary>
+	/// If the parameter is a delegate. The method information of the invoke.
+	/// </summary>
+	public DelegateInfo? Delegate { get; init; } = null;
 
 	/// <summary>
 	/// True if the symbol represents a generic type.
@@ -241,6 +247,10 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 				.. namedTypeSymbol.TypeArguments
 					.Select (x => x.ToDisplayString ())
 			];
+			
+		if (namedTypeSymbol.DelegateInvokeMethod is not null &&
+			DelegateInfo.TryCreate (namedTypeSymbol.DelegateInvokeMethod, out var delegateInfo))
+			Delegate = delegateInfo;
 		}
 
 		if (!IsReferenceType && IsNullable && namedTypeSymbol is not null) {

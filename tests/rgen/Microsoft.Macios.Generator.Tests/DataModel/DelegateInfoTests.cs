@@ -43,16 +43,16 @@ namespace NS {
 					parameters: [
 						new (
 							position: 0,
-							type: ReturnTypeForAction (),
+							type: ReturnTypeForAction (
+								delegateInfo: new (
+									type: "System.Action",
+									name: "Invoke",
+									returnType: "void",
+									parameters: []
+								)
+							),
 							name: "cb"
-						) {
-							Delegate = new (
-								type: "System.Action",
-								name: "Invoke",
-								returnType: "void",
-								parameters: []
-							)
-						}
+						)
 					]
 				)
 			];
@@ -82,22 +82,23 @@ namespace NS {
 					parameters: [
 						new (
 							position: 0,
-							type: ReturnTypeForAction ("string"),
+							type: ReturnTypeForAction (
+								delegateInfo: new (
+									type: "System.Action<string>",
+									name: "Invoke",
+									returnType: "void",
+									parameters: [
+										new (
+											position: 0,
+											type: "string",
+											name: "obj",
+											isBlittable: false
+										),
+									]
+								),
+								"string"),
 							name: "cb"
-						) {
-							Delegate = new (
-								type: "System.Action<string>",
-								name: "Invoke",
-								returnType: "void",
-								parameters: [
-									new (
-										position: 0,
-										type: "string",
-										name: "obj",
-										isBlittable: false
-									),
-								])
-						}
+						)
 					]
 				)
 			];
@@ -127,24 +128,25 @@ namespace NS {
 					parameters: [
 						new (
 							position: 0,
-							type: ReturnTypeForAction ("string?"),
+							type: ReturnTypeForAction (
+								delegateInfo: new (
+									type: "System.Action<string?>",
+									name: "Invoke",
+									returnType: "void",
+									parameters: [
+										new (
+											position: 0,
+											type: "string",
+											name: "obj",
+											isBlittable: false
+										) {
+											IsNullable = true
+										},
+									]
+								),
+								"string?"),
 							name: "cb"
-						) {
-							Delegate = new (
-								type: "System.Action<string?>",
-								name: "Invoke",
-								returnType: "void",
-								parameters: [
-									new (
-										position: 0,
-										type: "string",
-										name: "obj",
-										isBlittable: false
-									) {
-										IsNullable = true
-									},
-								])
-						}
+						)
 					]
 				)
 			];
@@ -174,28 +176,29 @@ namespace NS {
 					parameters: [
 						new (
 							position: 0,
-							type: ReturnTypeForAction ("string", "string"),
+							type: ReturnTypeForAction (
+								delegateInfo: new (
+									type: "System.Action<string, string>",
+									name: "Invoke",
+									returnType: "void",
+									parameters: [
+										new (
+											position: 0,
+											type: "string",
+											name: "arg1",
+											isBlittable: false
+										),
+										new (
+											position: 1,
+											type: "string",
+											name: "arg2",
+											isBlittable: false
+										),
+									]
+								),
+								"string", "string"),
 							name: "cb"
-						) {
-							Delegate = new (
-								type: "System.Action<string, string>",
-								name: "Invoke",
-								returnType: "void",
-								parameters: [
-									new (
-										position: 0,
-										type: "string",
-										name: "arg1",
-										isBlittable: false
-									),
-									new (
-										position: 1,
-										type: "string",
-										name: "arg2",
-										isBlittable: false
-									),
-								])
-						}
+						)
 					]
 				)
 			];
@@ -225,21 +228,23 @@ namespace NS {
 					parameters: [
 						new (
 							position: 0,
-							type: ReturnTypeForFunc ("string", "string"),
+							type: ReturnTypeForFunc (
+								delegateInfo: new (
+									type: "System.Func<string, string>",
+									name: "Invoke",
+									returnType: "string",
+									parameters: [
+										new (
+											position: 0,
+											type: "string",
+											name: "arg",
+											isBlittable: false
+										),
+									]
+								),
+								"string", "string"),
 							name: "cb"
 						) {
-							Delegate = new (
-								type: "System.Func<string, string>",
-								name: "Invoke",
-								returnType: "string",
-								parameters: [
-									new (
-										position: 0,
-										type: "string",
-										name: "arg",
-										isBlittable: false
-									),
-								])
 						}
 					]
 				)
@@ -270,28 +275,29 @@ namespace NS {
 					parameters: [
 						new (
 							position: 0,
-							type: ReturnTypeForFunc ("string", "string", "string"),
+							type: ReturnTypeForFunc (
+								delegateInfo: new (
+									type: "System.Func<string, string, string>",
+									name: "Invoke",
+									returnType: "string",
+									parameters: [
+										new (
+											position: 0,
+											type: "string",
+											name: "arg1",
+											isBlittable: false
+										),
+										new (
+											position: 1,
+											type: "string",
+											name: "arg2",
+											isBlittable: false
+										),
+									]
+								),
+								"string", "string", "string"),
 							name: "cb"
-						) {
-							Delegate = new (
-								type: "System.Func<string, string, string>",
-								name: "Invoke",
-								returnType: "string",
-								parameters: [
-									new (
-										position: 0,
-										type: "string",
-										name: "arg1",
-										isBlittable: false
-									),
-									new (
-										position: 1,
-										type: "string",
-										name: "arg2",
-										isBlittable: false
-									),
-								])
-						}
+						)
 					]
 				)
 			];
@@ -323,38 +329,41 @@ namespace NS {
 					parameters: [
 						new (
 							position: 0,
-							type: ReturnTypeForDelegate ("NS.MyClass.Callback"),
+							type: ReturnTypeForDelegate (
+								"NS.MyClass.Callback",
+								delegateInfo: new (
+									type: "NS.MyClass.Callback",
+									name: "Invoke",
+									returnType: "int?",
+									parameters: [
+										new (
+											position: 0,
+											type: "string",
+											name: "name",
+											isBlittable: false
+										),
+										new (
+											position: 1,
+											type: "string",
+											name: "middleName",
+											isBlittable: false
+										) {
+											IsNullable = true
+										},
+										new (
+											position: 2,
+											type: "string",
+											name: "surname",
+											isBlittable: false
+										) {
+											IsParams = true,
+											IsArray = true,
+										},
+									]
+								)
+							),
 							name: "cb"
 						) {
-							Delegate = new (
-								type: "NS.MyClass.Callback",
-								name: "Invoke",
-								returnType: "int?",
-								parameters: [
-									new (
-										position: 0,
-										type: "string",
-										name: "name",
-										isBlittable: false
-									),
-									new (
-										position: 1,
-										type: "string",
-										name: "middleName",
-										isBlittable: false
-									) {
-										IsNullable = true
-									},
-									new (
-										position: 2,
-										type: "string",
-										name: "surname",
-										isBlittable: false
-									) {
-										IsParams = true,
-										IsArray = true,
-									},
-								])
 						}
 					]
 				)

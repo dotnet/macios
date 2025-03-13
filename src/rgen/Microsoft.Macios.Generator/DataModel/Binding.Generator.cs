@@ -81,7 +81,7 @@ readonly partial struct Binding {
 				if (method.ReturnType.IsDelegate)
 					yield return method.ReturnType;
 				foreach (var parameter in method.Parameters) {
-					if (parameter.IsDelegate)
+					if (parameter.Type.IsDelegate)
 						yield return parameter.Type;
 				}
 			}

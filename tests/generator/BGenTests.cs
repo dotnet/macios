@@ -20,39 +20,13 @@ namespace GeneratorTests {
 		static Type variable_to_keep_reference_to_system_runtime_compilerservices_unsafe_assembly = typeof (System.Runtime.CompilerServices.Unsafe);
 
 		[Test]
-#if !NET
-		[TestCase (Profile.macOSFull)]
-		[TestCase (Profile.macOSSystem)]
-#endif
 		[TestCase (Profile.macOSMobile)]
 		public void BMac_Smoke (Profile profile)
 		{
 			BuildFile (profile, "bmac_smoke.cs");
 		}
 
-#if !NET // There's no System.Drawing in the .NET BCL
 		[Test]
-		[TestCase (Profile.macOSSystem)]
-		public void BMac_NonAbsoluteReference_StillBuilds (Profile profile)
-		{
-			BuildFile (profile, true, false, new List<string> () { "System.Drawing" }, "bmac_smoke.cs");
-		}
-#endif
-
-#if !NET
-		[Test]
-		[TestCase (Profile.macOSSystem)]
-		public void BMac_AbsoluteSystemReference_StillBuilds (Profile profile)
-		{
-			BuildFile (profile, true, false, new List<string> () { "/Library/Frameworks/Mono.framework/Versions/Current/lib/mono/4.5/System.Drawing.dll" }, "bmac_smoke.cs");
-		}
-#endif
-
-		[Test]
-#if !NET
-		[TestCase (Profile.macOSFull)]
-		[TestCase (Profile.macOSSystem)]
-#endif
 		[TestCase (Profile.macOSMobile)]
 		public void BMac_With_Hyphen_In_Name (Profile profile)
 		{
@@ -60,10 +34,6 @@ namespace GeneratorTests {
 		}
 
 		[Test]
-#if !NET
-		[TestCase (Profile.macOSFull)]
-		[TestCase (Profile.macOSSystem)]
-#endif
 		[TestCase (Profile.macOSMobile)]
 		public void PropertyRedefinitionMac (Profile profile)
 		{
@@ -71,10 +41,6 @@ namespace GeneratorTests {
 		}
 
 		[Test]
-#if !NET
-		[TestCase (Profile.macOSFull)]
-		[TestCase (Profile.macOSSystem)]
-#endif
 		[TestCase (Profile.macOSMobile)]
 		public void NSApplicationPublicEnsureMethods (Profile profile)
 		{
@@ -82,10 +48,6 @@ namespace GeneratorTests {
 		}
 
 		[Test]
-#if !NET
-		[TestCase (Profile.macOSFull)]
-		[TestCase (Profile.macOSSystem)]
-#endif
 		[TestCase (Profile.macOSMobile)]
 		public void ProtocolDuplicateAbstract (Profile profile)
 		{
@@ -104,15 +66,6 @@ namespace GeneratorTests {
 			BuildFile (Profile.iOS, "bug15307.cs");
 		}
 
-#if !NET
-		// error BI1055: bgen: Internal error: failed to convert type 'System.Runtime.Versioning.SupportedOSPlatformAttribute, System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'. Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
-		[Test]
-		public void Bug15799 ()
-		{
-			BuildFile (Profile.iOS, "bug15799.cs");
-		}
-#endif
-
 		[Test]
 		public void Bug16036 ()
 		{
@@ -124,15 +77,6 @@ namespace GeneratorTests {
 		{
 			BuildFile (Profile.iOS, "bug17232.cs");
 		}
-
-#if !NET
-		// error BI1055: bgen: Internal error: failed to convert type 'System.Runtime.Versioning.SupportedOSPlatformAttribute, System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'. Please file a bug report (https://github.com/xamarin/xamarin-macios/issues/new) with a test case.
-		[Test]
-		public void Bug23041 ()
-		{
-			BuildFile (Profile.iOS, "bug23041.cs");
-		}
-#endif
 
 		[Test]
 		public void Bug24078 ()
@@ -147,9 +91,6 @@ namespace GeneratorTests {
 		}
 
 		[Test]
-#if !NET
-		[Ignore ("This only works in .NET")]
-#endif
 		public void Bug27430 ()
 		{
 			BuildFile (Profile.iOS, "bug27430.cs");
@@ -167,11 +108,7 @@ namespace GeneratorTests {
 				.Union (allTypes.SelectMany ((type) => type.Properties));
 
 			var preserves = allMembers.Count ((v) => v.HasCustomAttributes && v.CustomAttributes.Any ((ca) => ca.AttributeType.Name == "PreserveAttribute"));
-#if NET
 			Assert.AreEqual (36, preserves, "Preserve attribute count"); // If you modified code that generates PreserveAttributes please update the preserve count
-#else
-			Assert.AreEqual (28, preserves, "Preserve attribute count"); // If you modified code that generates PreserveAttributes please update the preserve count
-#endif
 		}
 
 		[Test]
@@ -200,10 +137,6 @@ namespace GeneratorTests {
 		}
 
 		[Test]
-#if !NET
-		[TestCase (Profile.macOSFull)]
-		[TestCase (Profile.macOSSystem)]
-#endif
 		[TestCase (Profile.macOSMobile)]
 		public void Bug31788 (Profile profile)
 		{
@@ -215,13 +148,8 @@ namespace GeneratorTests {
 			bgen.AssertExecute ("build");
 			bgen.AssertNoWarnings ();
 
-#if NET
 			bgen.AssertApiCallsMethod ("Test", "MarshalInProperty", "get_Shared", "xamarin_NativeHandle_objc_msgSend_exception", "MarshalInProperty.Shared getter");
 			bgen.AssertApiCallsMethod ("Test", "MarshalOnProperty", "get_Shared", "xamarin_NativeHandle_objc_msgSend_exception", "MarshalOnProperty.Shared getter");
-#else
-			bgen.AssertApiCallsMethod ("Test", "MarshalInProperty", "get_Shared", "xamarin_IntPtr_objc_msgSend_exception", "MarshalInProperty.Shared getter");
-			bgen.AssertApiCallsMethod ("Test", "MarshalOnProperty", "get_Shared", "xamarin_IntPtr_objc_msgSend_exception", "MarshalOnProperty.Shared getter");
-#endif
 		}
 
 		[Test]
@@ -292,15 +220,9 @@ namespace GeneratorTests {
 
 			foreach (var ca in provider.CustomAttributes) {
 				switch (ca.AttributeType.Name) {
-#if NET
 				case "SupportedOSPlatformAttribute":
 				case "UnsupportedOSPlatformAttribute":
 				case "ObsoletedOSPlatformAttribute":
-#else
-				case "IntroducedAttribute":
-				case "ObsoletedAttribute":
-				case "DeprecatedAttribute":
-#endif
 					yield return ca;
 					break;
 				}
@@ -334,16 +256,11 @@ namespace GeneratorTests {
 				.Union (allTypes.SelectMany ((type) => type.Methods))
 				.Union (allTypes.SelectMany ((type) => type.Fields))
 				.Union (allTypes.SelectMany ((type) => type.Properties));
-#if NET
 			const string attrib = "SupportedOSPlatformAttribute";
-#else
-			const string attrib = "IntroducedAttribute";
-#endif
 			var allSupportedAttributes = allMembers.SelectMany (v => v.CustomAttributes.Where (ca => ca.AttributeType.Name == attrib).Select (ca => new Tuple<ICustomAttributeProvider, CustomAttribute> (v, ca)));
 			var renderedSupportedAttributes = allSupportedAttributes.Select (v => v.Item1.ToString () + ": " + RenderSupportedOSPlatformAttribute (v.Item2) + "");
 			var preserves = allSupportedAttributes.Count ();
 			var renderedAttributes = "\t" + string.Join ("\n\t", renderedSupportedAttributes.OrderBy (v => v)) + "\n";
-#if NET
 			string expectedAttributes =
 @"	Bug35176.IFooInterface: [SupportedOSPlatform(""ios14.3"")]
 	Bug35176.IFooInterface: [SupportedOSPlatform(""maccatalyst15.3"")]
@@ -370,26 +287,6 @@ namespace GeneratorTests {
 	UIKit.UIView Bug35176.IFooInterface::get_BarView(): [SupportedOSPlatform(""maccatalyst15.4"")]
 	UIKit.UIView Bug35176.IFooInterface::get_BarView(): [SupportedOSPlatform(""macos12.2"")]
 ";
-#else
-			string expectedAttributes =
-@"	Bug35176.IFooInterface: [Introduced(ObjCRuntime.PlatformName.iOS, 14, 3, ObjCRuntime.PlatformArchitecture.None, null)]
-	Bug35176.IFooInterface: [Introduced(ObjCRuntime.PlatformName.MacCatalyst, 15, 3, ObjCRuntime.PlatformArchitecture.None, null)]
-	Bug35176.IFooInterface: [Introduced(ObjCRuntime.PlatformName.MacOSX, 12, 2, ObjCRuntime.PlatformArchitecture.None, null)]
-	UIKit.UIView Bug35176.BarObject::BarView(): [Introduced(ObjCRuntime.PlatformName.iOS, 14, 3, ObjCRuntime.PlatformArchitecture.None, null)]
-	UIKit.UIView Bug35176.BarObject::BarView(): [Introduced(ObjCRuntime.PlatformName.MacCatalyst, 15, 3, ObjCRuntime.PlatformArchitecture.None, null)]
-	UIKit.UIView Bug35176.BarObject::BarView(): [Introduced(ObjCRuntime.PlatformName.MacOSX, 12, 2, ObjCRuntime.PlatformArchitecture.None, null)]
-	UIKit.UIView Bug35176.BarObject::FooView(): [Introduced(ObjCRuntime.PlatformName.iOS, 14, 3, ObjCRuntime.PlatformArchitecture.None, null)]
-	UIKit.UIView Bug35176.BarObject::FooView(): [Introduced(ObjCRuntime.PlatformName.MacCatalyst, 15, 3, ObjCRuntime.PlatformArchitecture.None, null)]
-	UIKit.UIView Bug35176.BarObject::FooView(): [Introduced(ObjCRuntime.PlatformName.MacOSX, 12, 2, ObjCRuntime.PlatformArchitecture.None, null)]
-	UIKit.UIView Bug35176.BarObject::get_BarView(): [Introduced(ObjCRuntime.PlatformName.iOS, 14, 4, ObjCRuntime.PlatformArchitecture.None, null)]
-	UIKit.UIView Bug35176.BarObject::get_BarView(): [Introduced(ObjCRuntime.PlatformName.MacCatalyst, 15, 4, ObjCRuntime.PlatformArchitecture.None, null)]
-	UIKit.UIView Bug35176.BarObject::GetBarMember(System.Int32): [Introduced(ObjCRuntime.PlatformName.iOS, 14, 3, ObjCRuntime.PlatformArchitecture.None, null)]
-	UIKit.UIView Bug35176.BarObject::GetBarMember(System.Int32): [Introduced(ObjCRuntime.PlatformName.MacCatalyst, 15, 3, ObjCRuntime.PlatformArchitecture.None, null)]
-	UIKit.UIView Bug35176.BarObject::GetBarMember(System.Int32): [Introduced(ObjCRuntime.PlatformName.MacOSX, 12, 2, ObjCRuntime.PlatformArchitecture.None, null)]
-	UIKit.UIView Bug35176.FooInterface_Extensions::GetBarView(Bug35176.IFooInterface): [Introduced(ObjCRuntime.PlatformName.iOS, 14, 4, ObjCRuntime.PlatformArchitecture.None, null)]
-	UIKit.UIView Bug35176.FooInterface_Extensions::GetBarView(Bug35176.IFooInterface): [Introduced(ObjCRuntime.PlatformName.MacCatalyst, 15, 4, ObjCRuntime.PlatformArchitecture.None, null)]
-";
-#endif
 
 			expectedAttributes = expectedAttributes.Replace ("\r", string.Empty);
 			renderedAttributes = renderedAttributes.Replace ("\r", string.Empty);
@@ -438,9 +335,6 @@ namespace GeneratorTests {
 			bgen.AssertWarning (1103, "'FooType`1' does not live under a namespace; namespaces are a highly recommended .NET best practice");
 		}
 
-#if !NET
-		[Ignore ("This only applies to .NET")]
-#endif
 		[TestCase (Profile.iOS)]
 		public void Bug18035 (Profile profile)
 		{
@@ -471,11 +365,7 @@ namespace GeneratorTests {
 				.Union (allTypes.SelectMany ((type) => type.Properties));
 
 			var preserves = allMembers.Sum ((v) => v.CustomAttributes.Count ((ca) => ca.AttributeType.Name == "AdviceAttribute"));
-#if NET
 			Assert.AreEqual (33, preserves, "Advice attribute count"); // If you modified code that generates AdviceAttributes please update the attribute count
-#else
-			Assert.AreEqual (24, preserves, "Advice attribute count"); // If you modified code that generates AdviceAttributes please update the attribute count
-#endif
 		}
 
 		[Test]
@@ -533,9 +423,6 @@ namespace GeneratorTests {
 		}
 
 		[Test]
-#if !NET
-		[Ignore ("This only works in .NET")]
-#endif
 		public void StackOverflow20696157 ()
 		{
 			BuildFile (Profile.iOS, "sof20696157.cs");
@@ -685,11 +572,7 @@ namespace GeneratorTests {
 				.Union (allTypes.SelectMany ((type) => type.Fields))
 				.Union (allTypes.SelectMany ((type) => type.Properties));
 
-#if NET
 			Assert.AreEqual (2, allMembers.Count ((member) => member.Name == "RequiredMethodAsync"), "Expected 2 RequiredMethodAsync members in generated code. If you modified code that generates RequiredMethodAsync (AsyncAttribute) please update the RequiredMethodAsync count.");
-#else
-			Assert.AreEqual (1, allMembers.Count ((member) => member.Name == "RequiredMethodAsync"), "Expected 1 RequiredMethodAsync members in generated code. If you modified code that generates RequiredMethodAsync (AsyncAttribute) please update the RequiredMethodAsync count.");
-#endif
 
 			var attribs = MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig;
 			bgen.AssertMethod ("NoAsyncInternalWrapperTests.MyFooDelegate_Extensions", "RequiredMethodAsync", attribs, "System.Threading.Tasks.Task", "NoAsyncInternalWrapperTests.IMyFooDelegate", "System.Int32");
@@ -811,11 +694,7 @@ namespace GeneratorTests {
 		public void GHIssue3869 () => BuildFile (Profile.iOS, "ghissue3869.cs");
 
 		[Test]
-#if NET
 		[TestCase ("issue3875.cs", "api0__Issue3875_AProtocol")]
-#else
-		[TestCase ("issue3875.cs", "AProtocol")]
-#endif
 		[TestCase ("issue3875B.cs", "BProtocol")]
 		[TestCase ("issue3875C.cs", "api0__Issue3875_AProtocol")]
 		public void Issue3875 (string file, string modelName)
@@ -861,9 +740,6 @@ namespace GeneratorTests {
 		public void GHIssue7304 () => BuildFile (Profile.macOSMobile, "ghissue7304.cs");
 
 		[Test]
-#if !NET
-		[Ignore ("This only works in .NET")]
-#endif
 		public void RefOutParameters ()
 		{
 			BuildFile (Profile.macOSMobile, true, "tests/ref-out-parameters.cs");
@@ -935,11 +811,7 @@ namespace GeneratorTests {
 
 			// processing custom attributes (like its properties) will call Resolve so we must be able to find the platform assembly to run this test
 			var resolver = bgen.ApiAssembly.MainModule.AssemblyResolver as BaseAssemblyResolver;
-#if NET
 			resolver.AddSearchDirectory (Configuration.GetRefDirectory (profile.AsPlatform ()));
-#else
-			resolver.AddSearchDirectory (Path.Combine (Configuration.SdkRootXI, "lib/mono/Xamarin.iOS/"));
-#endif
 
 			// [Dispose] is, by default, not optimizable
 			var with_dispose = bgen.ApiAssembly.MainModule.GetType ("NS", "WithDispose").Methods.First ((v) => v.Name == "Dispose");
@@ -965,11 +837,7 @@ namespace GeneratorTests {
 
 			// processing custom attributes (like its properties) will call Resolve so we must be able to find the platform assembly to run this test
 			var resolver = bgen.ApiAssembly.MainModule.AssemblyResolver as BaseAssemblyResolver;
-#if NET
 			resolver.AddSearchDirectory (Configuration.GetRefDirectory (profile.AsPlatform ()));
-#else
-			resolver.AddSearchDirectory (Path.Combine (Configuration.SdkRootXI, "lib/mono/Xamarin.iOS/"));
-#endif
 
 			// [SnippetAttribute] subclasses are, by default, not optimizable
 			var not_opt = bgen.ApiAssembly.MainModule.GetType ("NS", "NotOptimizable");
@@ -1022,11 +890,7 @@ namespace GeneratorTests {
 			var type = bgen.ApiAssembly.MainModule.GetType ("ObjCRuntime", "Trampolines").NestedTypes.First (v => v.Name == "DMyHandler");
 			Assert.NotNull (type, "DMyHandler");
 			var method = type.Methods.First (v => v.Name == "Invoke");
-#if NET
 			Assert.AreEqual ("ObjCRuntime.NativeHandle", method.ReturnType.FullName, "Return type");
-#else
-			Assert.AreEqual ("System.IntPtr", method.ReturnType.FullName, "Return type");
-#endif
 		}
 
 		[Test]
@@ -1069,38 +933,21 @@ namespace GeneratorTests {
 			// Assert that the return type from the delegate is IntPtr
 			var type = bgen.ApiAssembly.MainModule.GetType ("NS", "MyObject");
 			Assert.NotNull (type, "MyObject");
-#if NET
 			Assert.IsFalse (type.IsAbstract, "IsAbstract");
-#else
-			Assert.IsTrue (type.IsAbstract, "IsAbstract");
-#endif
 
 			var method = type.Methods.First (v => v.Name == ".ctor" && !v.HasParameters && !v.IsStatic);
-#if NET
 			Assert.IsTrue (method.IsFamily, "IsProtected ctor");
-#else
-			Assert.IsFalse (method.IsPublic, "IsPublic ctor");
-#endif
 
 			method = type.Methods.First (v => v.Name == "AbstractMember" && !v.HasParameters && !v.IsStatic);
 			var throwInstruction = method.Body?.Instructions?.FirstOrDefault (v => v.OpCode == OpCodes.Throw);
 			Assert.IsTrue (method.IsPublic, "IsPublic ctor");
 			Assert.IsTrue (method.IsVirtual, "IsVirtual");
-#if NET
 			Assert.IsFalse (method.IsAbstract, "IsAbstract");
 			Assert.IsNotNull (throwInstruction, "Throw");
-#else
-			Assert.IsTrue (method.IsAbstract, "IsAbstract");
-			Assert.IsNull (throwInstruction, "Throw");
-#endif
 		}
 
 		[Test]
-#if !NET
-		[Ignore ("This only applies to .NET")]
-#else
 		[Ignore ("https://github.com/dotnet/roslyn/issues/61525")]
-#endif
 		public void NativeIntDelegates ()
 		{
 			var bgen = BuildFile (Profile.iOS, "tests/nint-delegates.cs");
@@ -1125,9 +972,6 @@ namespace GeneratorTests {
 		}
 
 		[Test]
-#if !NET
-		[Ignore ("This only applies to .NET")]
-#endif
 		public void CSharp10Syntax ()
 		{
 			BuildFile (Profile.iOS, "tests/csharp10syntax.cs");
@@ -1135,9 +979,6 @@ namespace GeneratorTests {
 
 		[Test]
 		[TestCase (Profile.iOS)]
-#if !NET
-		[Ignore ("This only applies to .NET")]
-#endif
 		public void AttributesFromInlinedProtocols (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
@@ -1239,37 +1080,22 @@ namespace GeneratorTests {
 			bgen.AssertNoMethod ("NS.Whatever", "get_IPropBOpt");
 			bgen.AssertMethod ("NS.Whatever", ".ctor");
 			bgen.AssertMethod ("NS.Whatever", ".ctor", parameterTypes: "Foundation.NSObjectFlag");
-#if NET
 			bgen.AssertMethod ("NS.Whatever", ".ctor", parameterTypes: "ObjCRuntime.NativeHandle");
-#else
-			bgen.AssertMethod ("NS.Whatever", ".ctor", parameterTypes: "System.IntPtr");
-#endif
 			bgen.AssertPublicMethodCount ("NS.Whatever", 10); // 6 accessors + 3 constructors + ClassHandle getter
 
 			bgen.AssertMethod ("NS.IIProtocol", "get_IPropA");
-#if NET
 			bgen.AssertMethod ("NS.IIProtocol", "get_IPropAOpt");
-#endif
 			bgen.AssertNoMethod ("NS.IIProtocol", "set_IPropA", parameterTypes: "Foundation.NSObject");
 			bgen.AssertMethod ("NS.IIProtocol", "set_IPropB", parameterTypes: "Foundation.NSObject");
-#if NET
 			bgen.AssertMethod ("NS.IIProtocol", "set_IPropBOpt", parameterTypes: "Foundation.NSObject");
-#endif
 			bgen.AssertNoMethod ("NS.IIProtocol", "get_IPropB");
-#if NET
 			bgen.AssertPublicMethodCount ("NS.IIProtocol", 4);
-#else
-			bgen.AssertPublicMethodCount ("NS.IIProtocol", 2);
-#endif
 
 			bgen.AssertMethod ("NS.IProtocol_Extensions", "GetIPropAOpt", parameterTypes: "NS.IIProtocol");
 			bgen.AssertMethod ("NS.IProtocol_Extensions", "SetIPropBOpt", parameterTypes: new string [] { "NS.IIProtocol", "Foundation.NSObject" });
 			bgen.AssertPublicMethodCount ("NS.IProtocol_Extensions", 2);
 		}
 
-#if !NET
-		[Ignore ("This test only applies to .NET")]
-#endif
 		[Test]
 		public void GeneratedAttributeOnPropertyAccessors ()
 		{
@@ -1289,9 +1115,6 @@ namespace GeneratorTests {
 			Assert.AreEqual (string.Empty, RenderSupportedOSPlatformAttributes (getter), "Getter Attributes");
 		}
 
-#if !NET
-		[Ignore ("This test only applies to .NET")]
-#endif
 		[Test]
 		public void GeneratedAttributeOnPropertyAccessors2 ()
 		{
@@ -1321,9 +1144,6 @@ namespace GeneratorTests {
 			Assert.AreEqual (expectedSetterAttributes, RenderSupportedOSPlatformAttributes (setter), "Setter Attributes");
 		}
 
-#if !NET
-		[Ignore ("This only applies to .NET")]
-#endif
 		[Test]
 		[TestCase (Profile.iOS)]
 		public void NewerAvailabilityInInlinedProtocol (Profile profile)
@@ -1550,9 +1370,6 @@ namespace GeneratorTests {
 			BuildFile (profile, true, true, "tests/errordomain.cs");
 		}
 
-#if !NET
-		[Ignore ("This only applies to .NET")]
-#endif
 		[Test]
 		[TestCase (Profile.iOS)]
 		public void ObsoletedOSPlatform (Profile profile)
@@ -1573,9 +1390,7 @@ namespace GeneratorTests {
 
 		[Test]
 		[TestCase (Profile.iOS)]
-#if NET
 		[TestCase (Profile.MacCatalyst)]
-#endif
 		[TestCase (Profile.macOSMobile)]
 		[TestCase (Profile.tvOS)]
 		public void XmlDocs (Profile profile)
@@ -1583,11 +1398,7 @@ namespace GeneratorTests {
 			var bgen = BuildFile (profile, false, true, "tests/xmldocs.cs");
 			Assert.That (bgen.XmlDocumentation, Does.Exist);
 			var contents = File.ReadAllText (bgen.XmlDocumentation);
-#if NET
 			var expectedContentsPath = Path.Combine (Configuration.SourceRoot, "tests", "generator", $"ExpectedXmlDocs.{profile.AsPlatform ().AsString ()}.xml");
-#else
-			var expectedContentsPath = Path.Combine (Configuration.SourceRoot, "tests", "generator", $"ExpectedXmlDocs.{profile.AsPlatform ().AsString ()}.legacy.xml");
-#endif
 			if (!File.Exists (expectedContentsPath))
 				File.WriteAllText (expectedContentsPath, string.Empty);
 
@@ -1608,9 +1419,6 @@ namespace GeneratorTests {
 		}
 
 		[Test]
-#if !NET
-		[Ignore ("This only applies to .NET")]
-#endif
 		[TestCase (Profile.iOS)]
 		[TestCase (Profile.MacCatalyst)]
 		[TestCase (Profile.macOSMobile)]
@@ -1641,7 +1449,6 @@ namespace GeneratorTests {
 			BuildFile (Profile.iOS, "tests/delegate-parameter-attributes.cs");
 		}
 
-#if NET
 		[Test]
 		public void Issue19612 ()
 		{
@@ -1679,7 +1486,6 @@ namespace GeneratorTests {
 			bgen.AssertExecute ("build");
 			bgen.AssertNoWarnings ();
 		}
-#endif
 
 		[Test]
 		[TestCase (Profile.iOS)]
@@ -1688,13 +1494,8 @@ namespace GeneratorTests {
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			var bgen = BuildFile (profile, true, true, "tests/backingfieldtype.cs");
 
-#if NET
 			const string nintName = "System.IntPtr";
 			const string nuintName = "System.UIntPtr";
-#else
-			const string nintName = "System.nint";
-			const string nuintName = "System.nuint";
-#endif
 
 			var testCases = new [] {
 				new { BackingFieldType = "NSNumber", NullableType = "Foundation.NSNumber", RenderedBackingFieldType = "Foundation.NSNumber", SimplifiedNullableType = "Foundation.NSNumber" },

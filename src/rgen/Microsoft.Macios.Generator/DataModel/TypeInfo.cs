@@ -152,7 +152,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	readonly bool isDictionaryContainer = false;
 
 	/// <summary>
-	/// True if the type inherits form the DictionaryContainer class.
+	/// True if the type inherits from the DictionaryContainer class.
 	/// </summary>
 	public bool IsDictionaryContainer {
 		get => isDictionaryContainer;

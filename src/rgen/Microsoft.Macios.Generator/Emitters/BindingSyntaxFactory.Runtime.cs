@@ -390,4 +390,36 @@ static partial class BindingSyntaxFactory {
 	internal static InvocationExpressionSyntax SmartEnumGetValue (in TypeInfo enumType,
 		ImmutableArray<ArgumentSyntax> arguments)
 		=> SmartEnumGetValue (enumType, arguments, enumType.IsNullable);
+
+	/// <summary>
+	/// Generate a ternary expression that checks if the variable is IntPtr.Zero and returns null or the expression
+	/// </summary>
+	/// <param name="variableName">The variable to check against IntPtr.Zero.</param>
+	/// <param name="expressionSyntax">The expression to use on false.</param>
+	/// <param name="suppressNullableWarning">If we should suppress the nullable warning if the true case.</param>
+	/// <returns>The ternary expression.</returns>
+	internal static ExpressionSyntax IntPtrZeroCheck (string variableName, ExpressionSyntax expressionSyntax,
+		bool suppressNullableWarning = false)
+	{
+		// generate: null or null! depending if we want to suppress the nullable warning
+		ExpressionSyntax nullExpression = suppressNullableWarning
+			? PostfixUnaryExpression (
+				SyntaxKind.SuppressNullableWarningExpression,
+				LiteralExpression (
+					SyntaxKind.NullLiteralExpression))
+			: LiteralExpression (
+				SyntaxKind.NullLiteralExpression);
+		
+		// generate: (variableName == IntPtr.Zero) ? null : expressionSyntax
+		return ConditionalExpression (
+			BinaryExpression (
+				SyntaxKind.EqualsExpression,
+				IdentifierName (variableName).WithTrailingTrivia (Space),
+				MemberAccessExpression (
+					SyntaxKind.SimpleMemberAccessExpression,
+					IdentifierName ("IntPtr").WithLeadingTrivia (Space),
+					IdentifierName ("Zero").WithTrailingTrivia (Space))),
+			nullExpression.WithLeadingTrivia (Space).WithTrailingTrivia (Space), 
+			expressionSyntax.WithLeadingTrivia (Space));
+	}
 }

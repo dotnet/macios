@@ -407,5 +407,41 @@ public class BindingSyntaxFactoryRuntimeTests {
 		var str = declaration.ToString ();
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
+	
+	class TestDataIntPtrZeroCheck : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return [
+				"enumPtr",
+				SmartEnumGetValue (
+					ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true),
+					[Argument (IdentifierName ("enumPtr"))]
+					),
+				false,	
+				"enumPtr == IntPtr.Zero ? null : global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetValue (enumPtr)"
+			];
+			
+			yield return [
+				"enumPtr",
+				SmartEnumGetValue (
+					ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true),
+					[Argument (IdentifierName ("enumPtr"))]
+					),
+				true,	
+				"enumPtr == IntPtr.Zero ? null! : global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetValue (enumPtr)"
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataIntPtrZeroCheck))]
+	void IntPtrZeroCheckTests (string variableName, ExpressionSyntax falseExpression, bool suppressNullableWarning, string expectedDeclaration)
+	{
+		var declaration = IntPtrZeroCheck (variableName, falseExpression, suppressNullableWarning);
+		var str = declaration.ToString ();
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
 
 }

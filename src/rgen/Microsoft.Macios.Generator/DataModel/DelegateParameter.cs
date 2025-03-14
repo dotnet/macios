@@ -12,7 +12,7 @@ namespace Microsoft.Macios.Generator.DataModel;
 /// than Parameter since some of the extra fields make no sense in delegates.
 /// </summary>
 readonly struct DelegateParameter : IEquatable<DelegateParameter> {
-	
+
 	/// <summary>
 	/// Parameter position in the method.
 	/// </summary>

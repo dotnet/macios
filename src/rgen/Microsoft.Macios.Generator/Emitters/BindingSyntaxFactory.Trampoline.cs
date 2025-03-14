@@ -15,9 +15,9 @@ static partial class BindingSyntaxFactory {
 	/// <returns></returns>
 	internal static StatementSyntax? GetInvokeReturnType (TypeInfo typeInfo, string auxVariableName)
 	{
-		if (!typeInfo.IsDelegate)	
+		if (!typeInfo.IsDelegate)
 			return null;
-		
+
 		// based on the return type of the delegate we build a statement that will return the expected value
 		return null;
 	}

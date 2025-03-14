@@ -409,7 +409,7 @@ static partial class BindingSyntaxFactory {
 					SyntaxKind.NullLiteralExpression))
 			: LiteralExpression (
 				SyntaxKind.NullLiteralExpression);
-		
+
 		// generate: (variableName == IntPtr.Zero) ? null : expressionSyntax
 		return ConditionalExpression (
 			BinaryExpression (
@@ -419,7 +419,7 @@ static partial class BindingSyntaxFactory {
 					SyntaxKind.SimpleMemberAccessExpression,
 					IdentifierName ("IntPtr").WithLeadingTrivia (Space),
 					IdentifierName ("Zero").WithTrailingTrivia (Space))),
-			nullExpression.WithLeadingTrivia (Space).WithTrailingTrivia (Space), 
+			nullExpression.WithLeadingTrivia (Space).WithTrailingTrivia (Space),
 			expressionSyntax.WithLeadingTrivia (Space));
 	}
 }

@@ -407,7 +407,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 		var str = declaration.ToString ();
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
-	
+
 	class TestDataIntPtrZeroCheck : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -417,17 +417,17 @@ public class BindingSyntaxFactoryRuntimeTests {
 					ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true),
 					[Argument (IdentifierName ("enumPtr"))]
 					),
-				false,	
+				false,
 				"enumPtr == IntPtr.Zero ? null : global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetValue (enumPtr)"
 			];
-			
+
 			yield return [
 				"enumPtr",
 				SmartEnumGetValue (
 					ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true),
 					[Argument (IdentifierName ("enumPtr"))]
 					),
-				true,	
+				true,
 				"enumPtr == IntPtr.Zero ? null! : global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetValue (enumPtr)"
 			];
 		}

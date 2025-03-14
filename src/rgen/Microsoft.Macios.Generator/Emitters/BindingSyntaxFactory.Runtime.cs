@@ -31,6 +31,21 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
+	/// Generates a call to the RuntimeGetINativeObject.&lt;T&gt; method to create a INativeObject from a handle.
+	/// </summary>
+	/// <param name="nsObjectType">The type of object to use as T</param>
+	/// <param name="args">The arguments to pass to the GetNSObject method.</param>
+	/// <param name="suppressNullableWarning">If we should suppress the nullable warning.</param>
+	/// <returns>The expression that calls GetNSObject method.</returns>
+	public static ExpressionSyntax GetINativeObject (string nsObjectType, ImmutableArray<ArgumentSyntax> args,
+		bool suppressNullableWarning = false)
+	{
+		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ()));
+		return StaticInvocationGenericExpression (Runtime, "GetINativeObject",
+			nsObjectType, argsList, suppressNullableWarning);
+	}
+
+	/// <summary>
 	/// Generates a call to the method CFArray.ArrayFromHandle&lt;T&gt; to create a collection of NSObjects.
 	/// </summary>
 	/// <param name="nsObjectType">The type of the object to use as T</param>

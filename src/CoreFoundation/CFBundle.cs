@@ -487,7 +487,7 @@ namespace CoreFoundation {
 		[SupportedOSPlatform ("ios18.4")]
 		[SupportedOSPlatform ("tvos18.4")]
 		[SupportedOSPlatform ("maccatalyst18.4")]
-		public string? GetLocalizedString (string key, string? defaultValue, string? tableName, string[] localizations)
+		public string? GetLocalizedString (string key, string? defaultValue, string? tableName, string [] localizations)
 		{
 			if (string.IsNullOrEmpty (key))
 				throw new ArgumentException (nameof (key));
@@ -514,9 +514,9 @@ namespace CoreFoundation {
 		[SupportedOSPlatform ("ios18.4")]
 		[SupportedOSPlatform ("tvos18.4")]
 		[SupportedOSPlatform ("maccatalyst18.4")]
-		public string? GetLocalizedString (string key, string defaultValue, string tableName, params CultureInfo[] localizations)
+		public string? GetLocalizedString (string key, string defaultValue, string tableName, params CultureInfo [] localizations)
 		{
-			var locs = new string[localizations.Length];
+			var locs = new string [localizations.Length];
 			for (var i = 0; i < localizations.Length; i++)
 				locs [i] = localizations [i].Name;
 			return GetLocalizedString (key, defaultValue, tableName, locs);

@@ -358,7 +358,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 					expectedValue = "?";
 					switch (preferred) {
 					case "en-AU": expectedValue = "G'day mate"; break;
-					case "en-UK": expectedValue ="Wakey, wakey, eggs and bakey"; break;
+					case "en-UK": expectedValue = "Wakey, wakey, eggs and bakey"; break;
 					case "es": expectedValue = "Buenas"; break;
 					case "es-AR": expectedValue = "Buen día"; break;
 					case "es-ES": expectedValue = "Buenos días"; break;
@@ -384,7 +384,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 				expectedValue = "?";
 				switch (preferred) {
 				case "en-AU": expectedValue = "Quokka"; break;
-				case "en-UK": expectedValue ="Tiger of the Highlands"; break;
+				case "en-UK": expectedValue = "Tiger of the Highlands"; break;
 				case "es": expectedValue = "Ocelote"; break;
 				case "es-AR": expectedValue = "Pato vapor cabeza blanca"; break;
 				case "es-ES": expectedValue = "Lince ibérico"; break;
@@ -407,7 +407,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 				Assert.Throws<ArgumentException> (() => main.GetLocalizedString (null, "value", "table", Array.Empty<string> ()), "Key E1");
 				Assert.Throws<ArgumentException> (() => main.GetLocalizedString ("", "value", "table", Array.Empty<string> ()), "Key E2");
 
-				Assert.Throws<ArgumentNullException> (() => main.GetLocalizedString ("key", "value", "table", (string[]) null), "Localizations E1");
+				Assert.Throws<ArgumentNullException> (() => main.GetLocalizedString ("key", "value", "table", (string []) null), "Localizations E1");
 
 				var defaultValue = "default";
 				string tableName;
@@ -416,7 +416,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 
 				tableName = "CustomTable";
 				key = "Local Animal";
-				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] {});
+				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { });
 				Assert.AreEqual ("Tiger of the Highlands", s, $"{tableName}/{key}:[]");
 
 				// There's no en-US translation, so the en-UK one is picked instead
@@ -454,7 +454,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 				foreach (var tn in new string [] { "Localizable", null, "" }) {
 					tableName = tn;
 					key = "GoodMorning";
-					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] {});
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { });
 					Assert.AreEqual ("Wakey, wakey, eggs and bakey", s, $"{tableName}/{key}:[]");
 
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-CA" });
@@ -491,7 +491,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 				foreach (var tn in new string [] { "Base", "AnythingElse" }) {
 					tableName = tn;
 					key = "GoodMorning";
-					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] {});
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { });
 					Assert.AreEqual (defaultValue, s, $"{tableName}/{key}:[]");
 
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-CA" });

@@ -250,14 +250,9 @@ static partial class BindingSyntaxFactory {
 			return null;
 
 		// generates: CFString.CreateNative ({parameter.Name});
-		var cfstringFactoryInvocation = InvocationExpression (
-				MemberAccessExpression (
-					SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName ("CFString"),
-					IdentifierName ("CreateNative").WithTrailingTrivia (Space))
-			)
-			.WithArgumentList (ArgumentList (SingletonSeparatedList (
-				Argument (IdentifierName (parameter.Name)))));
+		var cfstringFactoryInvocation = StringCreateNative ([
+			Argument (IdentifierName (parameter.Name)),
+		]);
 
 		// generates {var} = CFString.CreateNative ({parameter.Name});
 		var declarator =

@@ -415,7 +415,7 @@ static partial class BindingSyntaxFactory {
 	/// <param name="arguments">The argument list for the object creation expression.</param>
 	/// <param name="global">If the global qualifier should be used.</param>
 	/// <returns>An object creation expression.</returns>
-	internal static ObjectCreationExpressionSyntax New (in TypeInfo type, ImmutableArray<ArgumentSyntax> arguments, 
+	internal static ObjectCreationExpressionSyntax New (in TypeInfo type, ImmutableArray<ArgumentSyntax> arguments,
 		bool global = false)
 	{
 		var argumentList = ArgumentList (
@@ -425,8 +425,8 @@ static partial class BindingSyntaxFactory {
 				IdentifierName (Token (SyntaxKind.GlobalKeyword)),
 				IdentifierName (type.FullyQualifiedName))
 			: IdentifierName (type.FullyQualifiedName);
-		
-		return ObjectCreationExpression (identifier.WithLeadingTrivia (Space).WithTrailingTrivia (Space))	
+
+		return ObjectCreationExpression (identifier.WithLeadingTrivia (Space).WithTrailingTrivia (Space))
 			.WithArgumentList (argumentList);
 	}
 }

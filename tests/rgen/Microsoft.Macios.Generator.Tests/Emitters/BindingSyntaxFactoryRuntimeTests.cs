@@ -436,7 +436,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 		var declaration = NSArrayFromNSObjects (arguments);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
-	
+
 	class TestDataNew : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -447,7 +447,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				false,
 				"new AudioToolbox.AudioBuffers ()"
 			];
-			
+
 			yield return [
 				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
 				ImmutableArray<ArgumentSyntax>.Empty,
@@ -464,7 +464,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				false,
 				"new AudioToolbox.AudioBuffers (arg1)"
 			];
-			
+
 			yield return [
 				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
 				ImmutableArray.Create (
@@ -473,9 +473,9 @@ public class BindingSyntaxFactoryRuntimeTests {
 				true,
 				"new global::AudioToolbox.AudioBuffers (arg1)"
 			];
-			
+
 			// several params
-			
+
 			yield return [
 				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
 				ImmutableArray.Create (
@@ -485,7 +485,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 				false,
 				"new AudioToolbox.AudioBuffers (arg1, arg2)"
 			];
-			
+
 			yield return [
 				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
 				ImmutableArray.Create (
@@ -495,26 +495,26 @@ public class BindingSyntaxFactoryRuntimeTests {
 				true,
 				"new global::AudioToolbox.AudioBuffers (arg1, arg2)"
 			];
-			
+
 			// out params
 			yield return [
 				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2"))
-						.WithRefOrOutKeyword (Token(SyntaxKind.OutKeyword))
+						.WithRefOrOutKeyword (Token (SyntaxKind.OutKeyword))
 						.NormalizeWhitespace ()
 				),
 				false,
 				"new AudioToolbox.AudioBuffers (arg1, out arg2)"
 			];
-			
+
 			yield return [
 				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2"))
-						.WithRefOrOutKeyword (Token(SyntaxKind.OutKeyword))
+						.WithRefOrOutKeyword (Token (SyntaxKind.OutKeyword))
 						.NormalizeWhitespace ()
 				),
 				true,

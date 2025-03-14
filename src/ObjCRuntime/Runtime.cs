@@ -2642,20 +2642,6 @@ namespace ObjCRuntime {
 			return @delegate;
 		}
 
-		// Throws an ArgumentNullException if 'obj' is null.
-		// This method is particularly helpful when calling another constructor from a constructor, where you can't add any statements before calling the other constructor:
-		//
-		//     Foo (object obj)
-		//         : base (Runtime.ThrowOnNull (obj, nameof (obj)).Handle)
-		//     {
-		//     }
-		//
-		internal static T ThrowOnNull<T> (T obj, string name, string? message = null) where T : class
-		{
-			return obj ?? throw new ArgumentNullException (name, message);
-		}
-
-
 		enum NXByteOrder /* unspecified in header, means most likely int */ {
 			Unknown,
 			LittleEndian,

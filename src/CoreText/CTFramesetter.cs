@@ -59,8 +59,9 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFramesetterCreateWithAttributedString (IntPtr @string);
 		public CTFramesetter (NSAttributedString value)
-			: base (CTFramesetterCreateWithAttributedString (Runtime.ThrowOnNull (value, nameof (value)).Handle), true, true)
+			: base (CTFramesetterCreateWithAttributedString (value.GetNonNullHandle (nameof (value))), true, true)
 		{
+			GC.KeepAlive (value);
 		}
 		#endregion
 

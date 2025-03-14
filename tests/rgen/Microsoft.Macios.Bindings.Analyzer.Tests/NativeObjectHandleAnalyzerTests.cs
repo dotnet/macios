@@ -19,10 +19,11 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 			yield return [
 				"""
 				using ObjCRuntime;
+				using Foundation;
 
 				class Test
 				{
-					void Method(Class foo) { _ = foo.Handle; }
+					void Method(NSUuid foo) { _ = foo.Handle; }
 				}
 				"""];
 
@@ -30,10 +31,11 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 			yield return [
 				"""
 				using ObjCRuntime;
+				using Foundation;
 
 				class Test
 				{
-					void Method(INativeObject foo) { _ = foo.Handle; }
+					void Method(NSUuid foo) { _ = foo.Handle; }
 				}
 				"""];
 
@@ -52,10 +54,11 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 			yield return [
 				"""
 				using ObjCRuntime;
+				using Foundation;
 
 				class Test
 				{
-					void Method(Class foo) => _ = foo.Handle;
+					void Method(NSUuid foo) => _ = foo.GetNonNullHandle();
 				}
 				"""];
 
@@ -63,6 +66,7 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 			yield return [
 				"""
 				using ObjCRuntime;
+				using Foundation;
 
 				class BaseTest
 				{
@@ -71,7 +75,7 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 
 				class Test : BaseTest
 				{
-					Test(Class foo) : base(foo.Handle) { }
+					Test(NSUuid foo) : base(foo.Handle) { }
 				}
 				"""];
 
@@ -79,6 +83,7 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 			yield return [
 				"""
 				using ObjCRuntime;
+				using Foundation;
 
 				class BaseTest
 				{
@@ -87,7 +92,7 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 
 				class Test : BaseTest
 				{
-					Test(Class foo) : base(foo.Handle) => {}
+					Test(NSUuid foo) : base(foo.Handle) => {}
 				}
 				"""];
 
@@ -101,7 +106,7 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 				{
 					void Method()
 					{
-						_ = CFArray.FromStrings().Handle;
+						_ = CFArray.FromStrings().GetHandle();
 					}
 				}
 				"""];
@@ -110,18 +115,16 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 			yield return [
 				"""
 				using ObjCRuntime;
+				using Foundation;
 
 				class Test
 				{
 					void Method()
 					{
-						_ = (new Class("foo")).Handle;
+						_ = (new NSUuid(new byte[16])).Handle;
 					}
 				}
 				"""];
-
-			// TODO: Test using INativeObject itself
-			// TODO: Test GetHandle and other methods
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
@@ -133,10 +136,11 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 			yield return [
 				"""
 				using ObjCRuntime;
+				using Foundation;
 
 				class Test
 				{
-					void Method(Class foo) { _ = foo.Handle; GC.KeepAlive(foo); }
+					void Method(NSUuid foo) { _ = foo.Handle; GC.KeepAlive(foo); }
 				}
 				"""];
 
@@ -156,28 +160,29 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 			yield return [
 				"""
 				using ObjCRuntime;
+				using Foundation;
 
 				class Test
 				{
 					void Method()
 					{
-						using (Class foo = new Class("foo"))
+						using (NSString foo = new NSString("foo"))
 							_ = foo.Handle;
 
-						using (Class bar = new Class("foo")) {
+						using (NSString bar = new NSString("foo")) {
 							_ = bar.Handle;
 						}
 
-						Class foo2 = new Class("foo");
+						NSString foo2 = new NSString("foo");
 						using (foo2)
 							_ = foo2.Handle;
 
-						Class bar2 = new Class("foo");
+						NSString bar2 = new NSString("foo");
 						using (bar2) {
 							_ = bar2.Handle;
 						}
 
-						using var foo3 = new Class("foo");
+						using var foo3 = new NSString("foo");
 						_ = foo3.Handle;
 					}
 				}
@@ -187,6 +192,7 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 			yield return [
 				"""
 				using ObjCRuntime;
+				using Foundation;
 
 				class BaseTest
 				{
@@ -195,7 +201,7 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 
 				class Test : BaseTest
 				{
-					Test(Class foo) : base(foo.Handle)
+					Test(NSString foo) : base(foo.Handle)
 					{
 						GC.KeepAlive(foo);
 					}
@@ -205,10 +211,22 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 			yield return [
 				"""
 				using ObjCRuntime;
+				using Foundation;
 
 				class Test
 				{
-					void Method(Class foo) { _ = foo.DangerousRetain().DangerousAutorelease().Handle; }
+					void Method(NSString foo) { _ = foo.DangerousRetain().DangerousAutorelease().Handle; }
+				}
+				"""];
+
+			yield return [
+				"""
+				using ObjCRuntime;
+				using Foundation;
+
+				class Test
+				{
+					void Method(NSString foo) { _ = foo.GetConstant().Handle; }
 				}
 				"""];
 
@@ -223,9 +241,6 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 					bool Equals(Test other) { return this.Handle == other.Handle; }
 				}
 				"""];
-
-
-			// TODO: Test ThrowOnNull, GetConstant
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();

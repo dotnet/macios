@@ -153,8 +153,9 @@ namespace SearchKit {
 		}
 
 		public SKDocument (NSUrl url)
-			: base (SKDocumentCreateWithURL (Runtime.ThrowOnNull (url, nameof (url)).Handle), true, true)
+			: base (SKDocumentCreateWithURL (url.GetNonNullHandle (nameof (url))), true, true)
 		{
+			GC.KeepAlive (url);
 		}
 
 		[DllImport (Constants.SearchKitLibrary)]

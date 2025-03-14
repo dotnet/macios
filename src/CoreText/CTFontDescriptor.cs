@@ -596,8 +596,18 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontDescriptorCreateWithAttributes (IntPtr attributes);
+		static IntPtr Create (CTFontDescriptorAttributes attributes)
+		{
+			if (attributes is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (attributes));
+			var dict = attributes.Dictionary;
+			IntPtr result = CTFontDescriptorCreateWithAttributes (dict.Handle);
+			GC.KeepAlive (dict);
+			return result;
+		}
+
 		public CTFontDescriptor (CTFontDescriptorAttributes attributes)
-			: base (CTFontDescriptorCreateWithAttributes (Runtime.ThrowOnNull (attributes, nameof (attributes)).Dictionary.Handle), true, true)
+			: base (Create (attributes), true, true)
 		{
 		}
 

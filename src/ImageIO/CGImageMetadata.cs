@@ -74,8 +74,9 @@ namespace ImageIO {
 			/* CFDataRef __nonnull */ IntPtr data);
 
 		public CGImageMetadata (NSData data)
-			: base (CGImageMetadataCreateFromXMPData (Runtime.ThrowOnNull (data, nameof (data)).Handle), true, verify: true)
+			: base (CGImageMetadataCreateFromXMPData (data.GetNonNullHandle (nameof (data))), true, verify: true)
 		{
+			GC.KeepAlive (data);
 		}
 
 		[DllImport (Constants.ImageIOLibrary, EntryPoint = "CGImageMetadataGetTypeID")]

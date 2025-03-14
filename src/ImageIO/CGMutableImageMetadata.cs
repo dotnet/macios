@@ -39,10 +39,9 @@ namespace ImageIO {
 			/* CGImageMetadataRef __nonnull */ IntPtr metadata);
 
 		public CGMutableImageMetadata (CGImageMetadata metadata)
-			: base (CGImageMetadataCreateMutableCopy (Runtime.ThrowOnNull (metadata, nameof (metadata)).Handle), true)
+			: base (CGImageMetadataCreateMutableCopy (metadata.GetNonNullHandle (nameof (metadata))), true)
 		{
-			if (metadata is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (metadata));
+			GC.KeepAlive (metadata);
 		}
 
 		[DllImport (Constants.ImageIOLibrary)]

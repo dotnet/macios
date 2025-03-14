@@ -80,6 +80,10 @@ namespace Darwin {
 
 		static IntPtr asl_open (string ident, string facility, Option options)
 		{
+			if (ident is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (ident));
+			if (facility is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (facility));
 			using var identStr = new TransientString (ident);
 			using var facilityStr = new TransientString (facility);
 			return asl_open (identStr, facilityStr, options);
@@ -97,13 +101,7 @@ namespace Darwin {
 		}
 
 		public SystemLog (string ident, string facility, Option options = 0)
-			: base (
-					asl_open (
-						Runtime.ThrowOnNull (ident, nameof (ident)),
-						Runtime.ThrowOnNull (facility, nameof (facility)),
-						options),
-					true
-				)
+			: base (asl_open (ident, facility, options), true)
 		{
 		}
 
@@ -112,19 +110,17 @@ namespace Darwin {
 
 		static IntPtr asl_open_from_file (int /* int */ fd, string ident, string facility)
 		{
+			if (ident is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (ident));
+			if (facility is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (facility));
 			using var identStr = new TransientString (ident);
 			using var facilityStr = new TransientString (facility);
 			return asl_open_from_file (fd, identStr, facilityStr);
 		}
 
 		public SystemLog (int fileDescriptor, string ident, string facility)
-			: base (
-					asl_open_from_file (
-						fileDescriptor,
-						Runtime.ThrowOnNull (ident, nameof (ident)),
-						Runtime.ThrowOnNull (facility, nameof (facility))),
-					true
-				)
+			: base (asl_open_from_file (fileDescriptor, ident, facility), true)
 		{
 		}
 

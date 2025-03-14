@@ -41,8 +41,9 @@ namespace CoreFoundation {
 		}
 
 		public DispatchBlock (DispatchBlock dispatchBlock, DispatchBlockFlags flags, DispatchQualityOfService qosClass, int relative_priority)
-			: base (dispatch_block_create_with_qos_class ((nuint) (ulong) flags, qosClass, relative_priority, Runtime.ThrowOnNull (dispatchBlock, nameof (dispatchBlock)).GetCheckedHandle ()), true)
+			: base (dispatch_block_create_with_qos_class ((nuint) (ulong) flags, qosClass, relative_priority, dispatchBlock.GetNonNullHandle (nameof (dispatchBlock))), true)
 		{
+			GC.KeepAlive (dispatchBlock);
 		}
 
 		public static DispatchBlock Create (Action action, DispatchBlockFlags flags = DispatchBlockFlags.None)

@@ -563,9 +563,9 @@ static partial class BindingSyntaxFactory {
 
 		// generate: NSArray.FromNSObjects (o => new NSNumber (o), shape);
 		var factoryInvocation = NSArrayFromNSObjects ([
-			Argument (lambdaExpression), 
+			Argument (lambdaExpression),
 			Argument (IdentifierName (parameter.Name))
-		]); 
+		]);
 
 		var declarator =
 			VariableDeclarator (Identifier (variableName).WithLeadingTrivia (Space).WithTrailingTrivia (Space))

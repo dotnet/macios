@@ -390,4 +390,19 @@ static partial class BindingSyntaxFactory {
 	internal static InvocationExpressionSyntax SmartEnumGetValue (in TypeInfo enumType,
 		ImmutableArray<ArgumentSyntax> arguments)
 		=> SmartEnumGetValue (enumType, arguments, enumType.IsNullable);
+
+	/// <summary>
+	/// Generates the expression GetHandle () for a given expression syntax. For example:
+	/// NSArray.FromNSObjects(retval).GetHandle ();
+	/// </summary>
+	/// <param name="nativeObject"></param>
+	/// <returns></returns>
+	internal static InvocationExpressionSyntax GetHandle (ExpressionSyntax nativeObject)
+		=> InvocationExpression (
+			MemberAccessExpression (
+				SyntaxKind.SimpleMemberAccessExpression,
+				nativeObject,
+				IdentifierName ("GetHandle").WithTrailingTrivia (Space)
+			)
+		);
 }

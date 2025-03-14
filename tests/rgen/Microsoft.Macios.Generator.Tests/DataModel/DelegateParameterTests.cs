@@ -89,7 +89,7 @@ public class DelegateParameterTests {
 			yield return [
 				new DelegateParameter (
 					position: 0,
-					type: ReturnTypeForStruct("MyStruct", isBlittable: true),
+					type: ReturnTypeForStruct ("MyStruct", isBlittable: true),
 					name: "arg1"
 				) {
 					IsOptional = false,
@@ -99,7 +99,7 @@ public class DelegateParameterTests {
 				},
 				new DelegateParameter (
 					position: 0,
-					type: ReturnTypeForStruct("MyStruct", isBlittable: false),
+					type: ReturnTypeForStruct ("MyStruct", isBlittable: false),
 					name: "arg1"
 				) {
 					IsOptional = false,

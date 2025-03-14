@@ -34,6 +34,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		}
 	}
 
+	/// <summary>
+	/// Type name.
+	/// </summary>
 	public string Name { get; private init; } = string.Empty;
 
 	/// <summary>
@@ -128,6 +131,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 
 	readonly bool isNSObject = false;
 
+	/// <summary>
+	/// True if the type represents a NSObject.
+	/// </summary>
 	public bool IsNSObject {
 		get => isNSObject;
 		init => isNSObject = value;
@@ -135,6 +141,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 
 	readonly bool isINativeObject = false;
 
+	/// <summary>
+	/// True if the type implements INativeObject.
+	/// </summary>
 	public bool IsINativeObject {
 		get => isINativeObject;
 		init => isINativeObject = value;
@@ -142,6 +151,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 
 	readonly bool isDictionaryContainer = false;
 
+	/// <summary>
+	/// True if the type inherits from the DictionaryContainer class.
+	/// </summary>
 	public bool IsDictionaryContainer {
 		get => isDictionaryContainer;
 		init => isDictionaryContainer = value;
@@ -164,6 +176,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	public bool IsGenericType { get; init; }
 
 	readonly ImmutableArray<string> parents = [];
+	/// <summary>
+	/// Array of the parent types of the type.
+	/// </summary>
 	public ImmutableArray<string> Parents {
 		get => parents;
 		init => parents = value;
@@ -171,6 +186,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 
 	readonly ImmutableArray<string> interfaces = [];
 
+	/// <summary>
+	/// Array of the implemented interfaces by the type.
+	/// </summary>
 	public ImmutableArray<string> Interfaces {
 		get => interfaces;
 		init => interfaces = value;
@@ -296,6 +314,8 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		if (IsNativeIntegerType != other.IsNativeIntegerType)
 			return false;
 		if (IsNativeEnum != other.IsNativeEnum)
+			return false;
+		if (Delegate != other.Delegate)
 			return false;
 
 		// compare base classes and interfaces, order does not matter at all

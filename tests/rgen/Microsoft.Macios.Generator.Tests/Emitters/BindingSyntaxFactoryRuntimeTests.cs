@@ -408,6 +408,35 @@ public class BindingSyntaxFactoryRuntimeTests {
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 
+	class TestDataNSArrayFromNSObjects : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return [
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))),
+				"NSArray.FromNSObjects (arg1)"
+			];
+
+			yield return [
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2")),
+					Argument (IdentifierName ("arg3"))),
+				"NSArray.FromNSObjects (arg1, arg2, arg3)"
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataNSArrayFromNSObjects))]
+	void NSArrayFromNSObjectsTests (ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
+	{
+		var declaration = NSArrayFromNSObjects (arguments);
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+
 	class TestDataGetHandle : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -436,7 +465,6 @@ public class BindingSyntaxFactoryRuntimeTests {
 	void GetHandleTests (ExpressionSyntax expression, string expectedDeclaration)
 	{
 		var declaration = GetHandle (expression);
-		var str = declaration.ToString ();
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 

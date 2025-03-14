@@ -407,12 +407,12 @@ public class BindingSyntaxFactoryRuntimeTests {
 		var str = declaration.ToString ();
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
-	
+
 	class TestDataGetNSObject : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
 			yield return [
-				"NSString", 
+				"NSString",
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
 				false,
@@ -420,15 +420,15 @@ public class BindingSyntaxFactoryRuntimeTests {
 			];
 
 			yield return [
-				"NSString", 
+				"NSString",
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
 				true,
 				"Runtime.GetNSObject<NSString> (arg1)!"
 			];
-			
+
 			yield return [
-				"NSNumber", 
+				"NSNumber",
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
@@ -439,7 +439,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 			];
 
 			yield return [
-				"NSNumber", 
+				"NSNumber",
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
@@ -460,12 +460,12 @@ public class BindingSyntaxFactoryRuntimeTests {
 		var declaration = GetNSObject (nsObjecttype, arguments, suppressNullable);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
-	
+
 	class TestGetINativeObject : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
 			yield return [
-				"NSString", 
+				"NSString",
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
 				false,
@@ -473,15 +473,15 @@ public class BindingSyntaxFactoryRuntimeTests {
 			];
 
 			yield return [
-				"NSString", 
+				"NSString",
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1"))),
 				true,
 				"Runtime.GetINativeObject<NSString> (arg1)!"
 			];
-			
+
 			yield return [
-				"NSNumber", 
+				"NSNumber",
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),
@@ -492,7 +492,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 			];
 
 			yield return [
-				"NSNumber", 
+				"NSNumber",
 				ImmutableArray.Create (
 					Argument (IdentifierName ("arg1")),
 					Argument (IdentifierName ("arg2")),

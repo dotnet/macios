@@ -407,7 +407,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 		var str = declaration.ToString ();
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
-	
+
 	class TestDataGetHandle : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{

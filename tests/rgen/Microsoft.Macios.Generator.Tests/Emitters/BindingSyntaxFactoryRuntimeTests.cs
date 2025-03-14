@@ -436,5 +436,101 @@ public class BindingSyntaxFactoryRuntimeTests {
 		var declaration = NSArrayFromNSObjects (arguments);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
+	
+	class TestDataNew : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			// empty constructor
+			yield return [
+				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
+				ImmutableArray<ArgumentSyntax>.Empty,
+				false,
+				"new AudioToolbox.AudioBuffers ()"
+			];
+			
+			yield return [
+				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
+				ImmutableArray<ArgumentSyntax>.Empty,
+				true,
+				"new global::AudioToolbox.AudioBuffers ()"
+			];
+
+			// single param
+			yield return [
+				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))
+				),
+				false,
+				"new AudioToolbox.AudioBuffers (arg1)"
+			];
+			
+			yield return [
+				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))
+				),
+				true,
+				"new global::AudioToolbox.AudioBuffers (arg1)"
+			];
+			
+			// several params
+			
+			yield return [
+				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2"))
+				),
+				false,
+				"new AudioToolbox.AudioBuffers (arg1, arg2)"
+			];
+			
+			yield return [
+				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2"))
+				),
+				true,
+				"new global::AudioToolbox.AudioBuffers (arg1, arg2)"
+			];
+			
+			// out params
+			yield return [
+				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2"))
+						.WithRefOrOutKeyword (Token(SyntaxKind.OutKeyword))
+						.NormalizeWhitespace ()
+				),
+				false,
+				"new AudioToolbox.AudioBuffers (arg1, out arg2)"
+			];
+			
+			yield return [
+				ReturnTypeForNSObject ("AudioToolbox.AudioBuffers"),
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2"))
+						.WithRefOrOutKeyword (Token(SyntaxKind.OutKeyword))
+						.NormalizeWhitespace ()
+				),
+				true,
+				"new global::AudioToolbox.AudioBuffers (arg1, out arg2)"
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataNew))]
+	void NewTests (TypeInfo typeInfo, ImmutableArray<ArgumentSyntax> arguments, bool global, string expectedDeclaration)
+	{
+		var declaration = New (typeInfo, arguments, global);
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
 
 }

@@ -17,6 +17,8 @@ static class ArgumentSyntaxExtensions {
 		// and for a comma for each parameter except for the last one
 		// length = parameters.Length + parameters.Length - 1
 		// length = (2 * parameters.Length) - 1
+		if (arguments.Length == 0)
+			return [];
 		var nodes = new SyntaxNodeOrToken [(2 * arguments.Length) - 1];
 		var argsIndex = 0;
 		var parametersIndex = 0;

@@ -174,13 +174,13 @@ static partial class BindingSyntaxFactory {
 					IdentifierName ("FromHandle").WithTrailingTrivia (Space)))
 			.WithArgumentList (argumentList);
 	}
-	
+
 	/// <summary>
 	/// Generates the expression to call the CFString.CreateNative method.
 	/// </summary>
 	/// <param name="arguments">The argument list for the invocation.</param>
 	/// <returns>The expression to call the CFString.CreateNative method with the provided args.</returns>
-	internal static InvocationExpressionSyntax StringCreateNative (ImmutableArray<ArgumentSyntax> arguments) 
+	internal static InvocationExpressionSyntax StringCreateNative (ImmutableArray<ArgumentSyntax> arguments)
 	{
 		var argumentList = ArgumentList (
 			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));

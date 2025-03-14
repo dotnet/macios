@@ -45,9 +45,8 @@ namespace NS {
 							position: 0,
 							type: ReturnTypeForAction (
 								delegateInfo: new (
-									type: "System.Action",
 									name: "Invoke",
-									returnType: "void",
+									returnType: ReturnTypeForVoid (),
 									parameters: []
 								)
 							),
@@ -84,15 +83,13 @@ namespace NS {
 							position: 0,
 							type: ReturnTypeForAction (
 								delegateInfo: new (
-									type: "System.Action<string>",
 									name: "Invoke",
-									returnType: "void",
+									returnType: ReturnTypeForVoid (),
 									parameters: [
 										new (
 											position: 0,
-											type: "string",
-											name: "obj",
-											isBlittable: false
+											type: ReturnTypeForString (),
+											name: "obj"
 										),
 									]
 								),
@@ -130,18 +127,14 @@ namespace NS {
 							position: 0,
 							type: ReturnTypeForAction (
 								delegateInfo: new (
-									type: "System.Action<string?>",
 									name: "Invoke",
-									returnType: "void",
+									returnType: ReturnTypeForVoid (),
 									parameters: [
 										new (
 											position: 0,
-											type: "string",
-											name: "obj",
-											isBlittable: false
-										) {
-											IsNullable = true
-										},
+											type: ReturnTypeForString (isNullable: true),
+											name: "obj"
+										),
 									]
 								),
 								"string?"),
@@ -178,21 +171,18 @@ namespace NS {
 							position: 0,
 							type: ReturnTypeForAction (
 								delegateInfo: new (
-									type: "System.Action<string, string>",
 									name: "Invoke",
-									returnType: "void",
+									returnType: ReturnTypeForVoid (),
 									parameters: [
 										new (
 											position: 0,
-											type: "string",
-											name: "arg1",
-											isBlittable: false
+											type: ReturnTypeForString (),
+											name: "arg1"
 										),
 										new (
 											position: 1,
-											type: "string",
-											name: "arg2",
-											isBlittable: false
+											type: ReturnTypeForString (),
+											name: "arg2"
 										),
 									]
 								),
@@ -230,22 +220,19 @@ namespace NS {
 							position: 0,
 							type: ReturnTypeForFunc (
 								delegateInfo: new (
-									type: "System.Func<string, string>",
 									name: "Invoke",
-									returnType: "string",
+									returnType: ReturnTypeForString (),
 									parameters: [
 										new (
 											position: 0,
-											type: "string",
-											name: "arg",
-											isBlittable: false
+											type: ReturnTypeForString (),
+											name: "arg"
 										),
 									]
 								),
 								"string", "string"),
 							name: "cb"
-						) {
-						}
+						)
 					]
 				)
 			];
@@ -277,21 +264,18 @@ namespace NS {
 							position: 0,
 							type: ReturnTypeForFunc (
 								delegateInfo: new (
-									type: "System.Func<string, string, string>",
 									name: "Invoke",
-									returnType: "string",
+									returnType: ReturnTypeForString (),
 									parameters: [
 										new (
 											position: 0,
-											type: "string",
-											name: "arg1",
-											isBlittable: false
+											type: ReturnTypeForString (),
+											name: "arg1"
 										),
 										new (
 											position: 1,
-											type: "string",
-											name: "arg2",
-											isBlittable: false
+											type: ReturnTypeForString (),
+											name: "arg2"
 										),
 									]
 								),
@@ -332,39 +316,31 @@ namespace NS {
 							type: ReturnTypeForDelegate (
 								"NS.MyClass.Callback",
 								delegateInfo: new (
-									type: "NS.MyClass.Callback",
 									name: "Invoke",
-									returnType: "int?",
+									returnType: ReturnTypeForInt (isNullable: true),
 									parameters: [
 										new (
 											position: 0,
-											type: "string",
-											name: "name",
-											isBlittable: false
+											type: ReturnTypeForString (),
+											name: "name"
 										),
 										new (
 											position: 1,
-											type: "string",
-											name: "middleName",
-											isBlittable: false
-										) {
-											IsNullable = true
-										},
+											type: ReturnTypeForString (isNullable: true),
+											name: "middleName"
+										),
 										new (
 											position: 2,
-											type: "string",
-											name: "surname",
-											isBlittable: false
+											type: ReturnTypeForArray ("string", isBlittable: false),
+											name: "surname"
 										) {
 											IsParams = true,
-											IsArray = true,
 										},
 									]
 								)
 							),
 							name: "cb"
-						) {
-						}
+						)
 					]
 				)
 			];

@@ -82,7 +82,6 @@ public class NativeObjectHandleAnalyzer : DiagnosticAnalyzer {
 		// White-list couple of methods that return one of the input parameters or a static
 		// object.
 		switch (name) {
-		case "ThrowOnNull":
 		case "DangerousAutorelease":
 		case "GetConstant":
 			return true;
@@ -106,7 +105,9 @@ public class NativeObjectHandleAnalyzer : DiagnosticAnalyzer {
 		if (!IsHandleAccessor (memberAccess))
 			return;
 
-		var symbol = context.SemanticModel.GetSymbolInfo (memberAccess.Expression).Symbol;
+		ExpressionSyntax expressionToCheck = memberAccess.Expression;
+
+		var symbol = context.SemanticModel.GetSymbolInfo (expressionToCheck).Symbol;
 		if (symbol is null)
 			return;
 
@@ -114,8 +115,13 @@ public class NativeObjectHandleAnalyzer : DiagnosticAnalyzer {
 			return;
 
 		if (symbol is IMethodSymbol methodSymbol) {
-			if (IsINativeObject (GetRealReturnType (methodSymbol)) &&
-				!IsSafeMethod (methodSymbol)) {
+			if (IsINativeObject (GetRealReturnType (methodSymbol))) {
+				// Ignore methods that return a handle that is guaranteed to stay
+				// alive.
+				if (methodSymbol.Name is "DangerousAutorelease" or "GetConstant") {
+					return;
+				}
+
 				// Calling Handle directly on a value returned from method is wrong because
 				// the object is immediately collectible.                
 				var diagnostic = Diagnostic.Create (RBI0014, memberAccess.GetLocation (), symbol.Name);

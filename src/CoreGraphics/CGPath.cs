@@ -114,16 +114,18 @@ namespace CoreGraphics {
 		unsafe extern static /* CGMutablePathRef */ IntPtr CGPathCreateMutableCopyByTransformingPath (/* CGPathRef */ IntPtr path, /* const CGAffineTransform* */ CGAffineTransform* transform);
 
 		public unsafe CGPath (CGPath reference, CGAffineTransform transform)
-			: base (CGPathCreateMutableCopyByTransformingPath (Runtime.ThrowOnNull (reference, nameof (reference)).Handle, &transform), true)
+			: base (CGPathCreateMutableCopyByTransformingPath (reference.GetNonNullHandle (nameof (reference)), &transform), true)
 		{
+			GC.KeepAlive (reference);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGMutablePathRef */ IntPtr CGPathCreateMutableCopy (/* CGPathRef */ IntPtr path);
 
 		public CGPath (CGPath basePath)
-			: base (CGPathCreateMutableCopy (Runtime.ThrowOnNull (basePath, nameof (basePath)).Handle), true)
+			: base (CGPathCreateMutableCopy (basePath.GetNonNullHandle (nameof (basePath))), true)
 		{
+			GC.KeepAlive (basePath);
 		}
 
 #if !NET

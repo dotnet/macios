@@ -102,8 +102,9 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTLineCreateWithAttributedString (IntPtr @string);
 		public CTLine (NSAttributedString value)
-			: base (CTLineCreateWithAttributedString (Runtime.ThrowOnNull (value, nameof (value)).Handle), true, true)
+			: base (CTLineCreateWithAttributedString (value.GetNonNullHandle (nameof (value))), true, true)
 		{
+			GC.KeepAlive (value);
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]

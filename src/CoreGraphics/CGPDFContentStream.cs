@@ -58,8 +58,9 @@ namespace CoreGraphics {
 		}
 
 		public CGPDFContentStream (CGPDFPage page)
-			: base (CGPDFContentStreamCreateWithPage (Runtime.ThrowOnNull (page, nameof (page)).Handle), true)
+			: base (CGPDFContentStreamCreateWithPage (page.GetNonNullHandle (nameof (page))), true)
 		{
+			GC.KeepAlive (page);
 		}
 
 		static IntPtr Create (CGPDFStream stream, NSDictionary? streamResources = null, CGPDFContentStream? parent = null)

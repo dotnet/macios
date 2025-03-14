@@ -812,8 +812,9 @@ namespace AddressBook {
 		extern static IntPtr ABPersonCreateInSource (IntPtr source);
 
 		public ABPerson (ABRecord source)
-			: base (ABPersonCreateInSource (ObjCRuntime.Runtime.ThrowOnNull (source, nameof (source)).Handle), true)
+			: base (ABPersonCreateInSource (source.GetNonNullHandle (nameof (source))), true)
 		{
+			GC.KeepAlive (source);
 		}
 
 		[Preserve (Conditional = true)]

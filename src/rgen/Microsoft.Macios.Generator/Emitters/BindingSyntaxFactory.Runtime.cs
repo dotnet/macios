@@ -348,6 +348,23 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
+	/// Factory method that returns the expression for the NSArray.FromNSObjects invocation.
+	/// </summary>
+	/// <param name="arguments">The arguments to be used with the invocation.</param>
+	/// <returns>The NSArray.FromNSObjects invocation.</returns>
+	internal static InvocationExpressionSyntax NSArrayFromNSObjects (ImmutableArray<ArgumentSyntax> arguments)
+	{
+		var argumentList = ArgumentList (
+			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
+
+		return InvocationExpression (MemberAccessExpression (
+			SyntaxKind.SimpleMemberAccessExpression,
+			IdentifierName ("NSArray"),
+			IdentifierName ("FromNSObjects").WithTrailingTrivia (Space)))
+			.WithArgumentList (argumentList);
+	}
+
+	/// <summary>
 	/// Returns the enum extension method needed to get the value of the enum from a NativeHandle.
 	/// </summary>
 	/// <param name="enumType">The type info of the enum type.</param>

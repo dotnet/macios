@@ -562,17 +562,10 @@ static partial class BindingSyntaxFactory {
 			.WithExpressionBody (constructor.WithLeadingTrivia (Space));
 
 		// generate: NSArray.FromNSObjects (o => new NSNumber (o), shape);
-		var factoryInvocation = InvocationExpression (MemberAccessExpression (
-			SyntaxKind.SimpleMemberAccessExpression,
-			IdentifierName ("NSArray"),
-			IdentifierName ("FromNSObjects").WithTrailingTrivia (Space))).WithArgumentList (
-			ArgumentList (
-				SeparatedList<ArgumentSyntax> (
-					new SyntaxNodeOrToken [] {
-						Argument (lambdaExpression),
-						Token (SyntaxKind.CommaToken),
-						Argument (IdentifierName (parameter.Name).WithLeadingTrivia (Space))
-					})));
+		var factoryInvocation = NSArrayFromNSObjects ([
+			Argument (lambdaExpression), 
+			Argument (IdentifierName (parameter.Name))
+		]); 
 
 		var declarator =
 			VariableDeclarator (Identifier (variableName).WithLeadingTrivia (Space).WithTrailingTrivia (Space))

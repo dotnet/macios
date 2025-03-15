@@ -587,7 +587,7 @@ public partial class Generator : IMemberGatherer {
 
 		if (mi.ReturnType.IsArray && TypeManager.IsWrappedType (mi.ReturnType.GetElementType ())) {
 			returntype = NativeHandleType;
-			returnformat = "return NSArray.FromNSObjects({0}).Handle;";
+			returnformat = "return NSArray.FromNSObjects({0}).GetHandle ();";
 		} else if (TypeManager.IsWrappedType (mi.ReturnType)) {
 			returntype = Generator.NativeHandleType;
 			returnformat = "return {0}.GetHandle ();";

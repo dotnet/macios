@@ -31,6 +31,21 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
+	/// Generates a call to the RuntimeGetINativeObject.&lt;T&gt; method to create a INativeObject from a handle.
+	/// </summary>
+	/// <param name="nsObjectType">The type of object to use as T</param>
+	/// <param name="args">The arguments to pass to the GetNSObject method.</param>
+	/// <param name="suppressNullableWarning">If we should suppress the nullable warning.</param>
+	/// <returns>The expression that calls GetNSObject method.</returns>
+	public static ExpressionSyntax GetINativeObject (string nsObjectType, ImmutableArray<ArgumentSyntax> args,
+		bool suppressNullableWarning = false)
+	{
+		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ()));
+		return StaticInvocationGenericExpression (Runtime, "GetINativeObject",
+			nsObjectType, argsList, suppressNullableWarning);
+	}
+
+	/// <summary>
 	/// Generates a call to the method CFArray.ArrayFromHandle&lt;T&gt; to create a collection of NSObjects.
 	/// </summary>
 	/// <param name="nsObjectType">The type of the object to use as T</param>
@@ -424,6 +439,21 @@ static partial class BindingSyntaxFactory {
 	internal static InvocationExpressionSyntax SmartEnumGetValue (in TypeInfo enumType,
 		ImmutableArray<ArgumentSyntax> arguments)
 		=> SmartEnumGetValue (enumType, arguments, enumType.IsNullable);
+
+	/// <summary>
+	/// Generates the expression GetHandle () for a given expression syntax. For example:
+	/// NSArray.FromNSObjects(retval).GetHandle ();
+	/// </summary>
+	/// <param name="nativeObject"></param>
+	/// <returns></returns>
+	internal static InvocationExpressionSyntax GetHandle (ExpressionSyntax nativeObject)
+		=> InvocationExpression (
+			MemberAccessExpression (
+				SyntaxKind.SimpleMemberAccessExpression,
+				nativeObject,
+				IdentifierName ("GetHandle").WithTrailingTrivia (Space)
+			)
+		);
 
 	/// <summary>
 	/// Generate an object creation expressing for the given type info using the provided arguments.

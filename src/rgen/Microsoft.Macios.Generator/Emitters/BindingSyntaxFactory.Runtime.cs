@@ -426,6 +426,28 @@ static partial class BindingSyntaxFactory {
 		=> SmartEnumGetValue (enumType, arguments, enumType.IsNullable);
 
 	/// <summary>
+	/// Generate an object creation expressing for the given type info using the provided arguments.
+	/// </summary>
+	/// <param name="type">The information of the type of object to be created.</param>
+	/// <param name="arguments">The argument list for the object creation expression.</param>
+	/// <param name="global">If the global qualifier should be used.</param>
+	/// <returns>An object creation expression.</returns>
+	internal static ObjectCreationExpressionSyntax New (in TypeInfo type, ImmutableArray<ArgumentSyntax> arguments,
+		bool global = false)
+	{
+		var argumentList = ArgumentList (
+			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
+		NameSyntax identifier = global
+			? AliasQualifiedName (
+				IdentifierName (Token (SyntaxKind.GlobalKeyword)),
+				IdentifierName (type.FullyQualifiedName))
+			: IdentifierName (type.FullyQualifiedName);
+
+		return ObjectCreationExpression (identifier.WithLeadingTrivia (Space).WithTrailingTrivia (Space))
+			.WithArgumentList (argumentList);
+	}
+
+	/// <summary>
 	/// Generate a ternary expression that checks if the variable is IntPtr.Zero and returns null or the expression
 	/// </summary>
 	/// <param name="variableName">The variable to check against IntPtr.Zero.</param>

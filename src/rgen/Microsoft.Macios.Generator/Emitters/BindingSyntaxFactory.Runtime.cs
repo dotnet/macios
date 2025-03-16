@@ -206,7 +206,7 @@ static partial class BindingSyntaxFactory {
 					IdentifierName ("CreateNative").WithTrailingTrivia (Space))
 			).WithArgumentList (argumentList);
 	}
-	
+
 	/// <summary>
 	/// Generates the expression to call the CFString.CreateNative method.
 	/// </summary>

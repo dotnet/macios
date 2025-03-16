@@ -14,7 +14,7 @@ using static Microsoft.Macios.Generator.Emitters.BindingSyntaxFactory;
 namespace Microsoft.Macios.Generator.Tests.Emitters;
 
 public class BindingSyntaxFactoryTrampolineTests : BaseGeneratorTestClass {
-	
+
 	class TestDataGetTrampolineInvokeReturnType : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -53,7 +53,7 @@ namespace NS {
 				nsObjectResult,
 				"auxVariable.GetHandle ()"
 			];
-			
+
 			const string systemStringResult = @"
 using System;
 
@@ -104,7 +104,7 @@ namespace NS {
 				boolReturnType,
 				"auxVariable ? (byte) 1 : (byte) 0"
 			];
-			
+
 			const string nativeEnum = @"
 using System;
 using ObjCBindings;
@@ -130,7 +130,7 @@ namespace NS {
 				nativeEnum,
 				"(IntPtr) (long) auxVariable",
 			];
-			
+
 			const string unsignedNativeEnum = @"
 using System;
 using ObjCBindings;
@@ -176,7 +176,7 @@ namespace NS {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[AllSupportedPlatformsClassData<TestDataGetTrampolineInvokeReturnType>]
 	void GetTrampolineInvokeReturnTypeTests (ApplePlatform platform, string inputText, string? expectedExpression)

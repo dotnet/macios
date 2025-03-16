@@ -24,7 +24,7 @@ static class AttributesNames {
 	public const string SupportedOSPlatformAttribute = "System.Runtime.Versioning.SupportedOSPlatformAttribute";
 	public const string UnsupportedOSPlatformAttribute = "System.Runtime.Versioning.UnsupportedOSPlatformAttribute";
 	public const string ObsoletedOSPlatformAttribute = "System.Runtime.Versioning.ObsoletedOSPlatformAttribute";
-	public const string NativeEnumAttribute = "ObjCRuntime.NativeAttribute";
+	public const string NativeAttribute = "ObjCRuntime.NativeAttribute";
 
 	public static readonly string [] BindingTypes = [
 		BindingCategoryAttribute,

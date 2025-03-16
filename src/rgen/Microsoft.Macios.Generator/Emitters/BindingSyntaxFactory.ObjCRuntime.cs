@@ -29,22 +29,32 @@ static partial class BindingSyntaxFactory {
 	/// and enum and be marked as native. If it is not, the method returns null</param>
 	/// <returns>The cast C# expression.</returns>
 	internal static CastExpressionSyntax? CastToNative (in Parameter parameter)
+		=> CastToNative (parameter.Name, parameter.Type);
+
+	/// <summary>
+	/// Returns the expression needed to cast a varuable to its native type.
+	/// </summary>
+	/// <param name="variableName">The variable whose casting we need to generate.</param>
+	/// <param name="typeInfo">The type information of the variable.  The type info has to be
+	/// and enum and be marked as native. If it is not, the method returns null</param>
+	/// <returns>The cast C# expression.</returns>
+	internal static CastExpressionSyntax? CastToNative (string variableName, in TypeInfo typeInfo)
 	{
 		// not an enum and not a native value. we cannot calculate the casting expression.
-		if (!parameter.Type.IsEnum || !parameter.Type.IsNativeEnum)
+		if (!typeInfo.IsEnum || !typeInfo.IsNativeEnum)
 			return null;
 
 		// build a casting expression based on the marshall type of the typeinfo
-		var marshalType = parameter.Type.ToMarshallType ();
+		var marshalType = typeInfo.ToMarshallType ();
 		if (marshalType is null)
 			// cannot calculate the marshal, return null
 			return null;
 
-		var enumBackingValue = parameter.Type.EnumUnderlyingType.Value.GetKeyword ();
+		var enumBackingValue = typeInfo.EnumUnderlyingType.Value.GetKeyword ();
 		var castExpression = CastExpression (IdentifierName (marshalType), // (IntPtr/UIntPtr) cast
 			CastExpression (
 					IdentifierName (enumBackingValue),
-					IdentifierName (parameter.Name)
+					IdentifierName (variableName)
 						.WithLeadingTrivia (Space))
 				.WithLeadingTrivia (Space)); // (backingfield) (variable) cast
 		return castExpression;
@@ -85,8 +95,17 @@ static partial class BindingSyntaxFactory {
 	/// <param name="parameter">The parameter to cast.</param>
 	/// <returns>A conditional expression that casts a bool to a byte.</returns>
 	internal static ConditionalExpressionSyntax? CastToByte (in Parameter parameter)
+		=> CastToByte (parameter.Name, parameter.Type);
+
+	/// <summary>
+	/// Returns the expression needed to cast a bool to a byte to be used in a native call. 
+	/// </summary>
+	/// <param name="variableName">The variable to cast.</param>
+	/// <param name="typeInfo">The type information of the variable.</param>
+	/// <returns>A conditional expression that casts a bool to a byte.</returns>
+	internal static ConditionalExpressionSyntax? CastToByte (string variableName, in TypeInfo typeInfo)
 	{
-		if (parameter.Type.SpecialType != SpecialType.System_Boolean)
+		if (typeInfo.SpecialType != SpecialType.System_Boolean)
 			return null;
 		// (byte) 1
 		var castOne = CastExpression (
@@ -103,7 +122,7 @@ static partial class BindingSyntaxFactory {
 		// with this exact space count
 		// foo ? (byte) 1 : (byte) 0
 		return ConditionalExpression (
-			condition: IdentifierName (parameter.Name).WithTrailingTrivia (Space),
+			condition: IdentifierName (variableName).WithTrailingTrivia (Space),
 			whenTrue: castOne.WithLeadingTrivia (Space),
 			whenFalse: castZero);
 	}
@@ -111,14 +130,14 @@ static partial class BindingSyntaxFactory {
 	/// <summary>
 	/// Return the expression needed to cast an invocation that returns a byte to a bool.
 	/// </summary>
-	/// <param name="invocation">The byte returning invocation expression.</param>
+	/// <param name="expression">The byte returning invocation expression.</param>
 	/// <returns>The expression need to cast the invocation to a byte.</returns>
-	internal static BinaryExpressionSyntax ByteToBool (InvocationExpressionSyntax invocation)
+	internal static BinaryExpressionSyntax ByteToBool (ExpressionSyntax expression)
 	{
 		// generates: invocation != 0
 		return BinaryExpression (
 			SyntaxKind.NotEqualsExpression,
-			invocation.WithTrailingTrivia (Space),
+			expression.WithTrailingTrivia (Space),
 			LiteralExpression (SyntaxKind.NumericLiteralExpression, Literal (0)).WithLeadingTrivia (Space));
 	}
 

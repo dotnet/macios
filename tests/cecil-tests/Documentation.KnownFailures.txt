@@ -9217,6 +9217,7 @@ F:HomeKit.HMError.FailedToJoinNetwork
 F:HomeKit.HMError.FireDateInPast
 F:HomeKit.HMError.GenericError
 F:HomeKit.HMError.HomeAccessNotAuthorized
+F:HomeKit.HMError.HomeUpgradeRequired
 F:HomeKit.HMError.HomeWithSimilarNameExists
 F:HomeKit.HMError.IncompatibleAccessory
 F:HomeKit.HMError.IncompatibleHomeHub

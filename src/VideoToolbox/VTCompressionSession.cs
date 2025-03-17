@@ -196,6 +196,8 @@ namespace VideoToolbox {
 				callbackHandle.IsAllocated ? (staticCback) : null,
 				GCHandle.ToIntPtr (callbackHandle),
 				&ret);
+			GC.KeepAlive (encoderSpecification);
+			GC.KeepAlive (sourceImageBufferAttributes);
 
 			if (result == VTStatus.Ok && ret != IntPtr.Zero)
 				return new VTCompressionSession (ret, true) {
@@ -260,7 +262,9 @@ namespace VideoToolbox {
 			if (sourceFrame is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (sourceFrame));
 
-			return EncodeFrame (imageBuffer, presentationTimestamp, duration, frameProperties, sourceFrame.GetCheckedHandle (), out infoFlags);
+			VTStatus status = EncodeFrame (imageBuffer, presentationTimestamp, duration, frameProperties, sourceFrame.GetCheckedHandle (), out infoFlags);
+			GC.KeepAlive (sourceFrame);
+			return status;
 		}
 
 		public VTStatus EncodeFrame (CVImageBuffer imageBuffer, CMTime presentationTimestamp, CMTime duration,
@@ -271,9 +275,12 @@ namespace VideoToolbox {
 
 			infoFlags = default;
 			unsafe {
-				return VTCompressionSessionEncodeFrame (GetCheckedHandle (), imageBuffer.Handle, presentationTimestamp, duration,
+				VTStatus status = VTCompressionSessionEncodeFrame (GetCheckedHandle (), imageBuffer.Handle, presentationTimestamp, duration,
 					frameProperties.GetHandle (),
 					sourceFrame, (VTEncodeInfoFlags*) Unsafe.AsPointer<VTEncodeInfoFlags> (ref infoFlags));
+				GC.KeepAlive (imageBuffer);
+				GC.KeepAlive (frameProperties);
+				return status;
 			}
 		}
 
@@ -311,7 +318,9 @@ namespace VideoToolbox {
 			if (sourceFrame is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (sourceFrame));
 
-			return EncodeFrame (imageBuffer, presentationTimestamp, duration, frameProperties, sourceFrame.GetCheckedHandle (), out infoFlags, outputHandler);
+			VTStatus status = EncodeFrame (imageBuffer, presentationTimestamp, duration, frameProperties, sourceFrame.GetCheckedHandle (), out infoFlags, outputHandler);
+			GC.KeepAlive (sourceFrame);
+			return status;
 		}
 
 		public VTStatus EncodeFrame (CVImageBuffer imageBuffer, CMTime presentationTimestamp, CMTime duration,
@@ -327,10 +336,13 @@ namespace VideoToolbox {
 			block.SetupBlockUnsafe (compressionOutputHandlerTrampoline, outputHandler);
 
 			try {
-				return VTCompressionSessionEncodeFrameWithOutputHandler (GetCheckedHandle (),
+				VTStatus status = VTCompressionSessionEncodeFrameWithOutputHandler (GetCheckedHandle (),
 					imageBuffer.Handle, presentationTimestamp, duration,
 					frameProperties.GetHandle (),
 					out infoFlags, ref block);
+				GC.KeepAlive (imageBuffer);
+				GC.KeepAlive (frameProperties);
+				return status;
 			} finally {
 				block.CleanupBlock ();
 			}

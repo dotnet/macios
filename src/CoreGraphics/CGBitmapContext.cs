@@ -67,11 +67,13 @@ namespace CoreGraphics {
 		public CGBitmapContext (IntPtr data, nint width, nint height, nint bitsPerComponent, nint bytesPerRow, CGColorSpace? colorSpace, CGImageAlphaInfo bitmapInfo)
 			: base (CGBitmapContextCreate (data, width, height, bitsPerComponent, bytesPerRow, colorSpace.GetHandle (), (uint) bitmapInfo), true)
 		{
+			GC.KeepAlive (colorSpace);
 		}
 
 		public CGBitmapContext (IntPtr data, nint width, nint height, nint bitsPerComponent, nint bytesPerRow, CGColorSpace? colorSpace, CGBitmapFlags bitmapInfo)
 			: base (CGBitmapContextCreate (data, width, height, bitsPerComponent, bytesPerRow, colorSpace.GetHandle (), (uint) bitmapInfo), true)
 		{
+			GC.KeepAlive (colorSpace);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -83,7 +85,9 @@ namespace CoreGraphics {
 			buffer = default (GCHandle);
 			if (data is not null)
 				buffer = GCHandle.Alloc (data, GCHandleType.Pinned); // This requires a pinned GCHandle, because unsafe code is scoped to the current block, and the address of the byte array will be used after this function returns.
-			return CGBitmapContextCreate (data, width, height, bitsPerComponent, bytesPerRow, colorSpace.GetHandle (), (uint) bitmapInfo);
+			IntPtr result = CGBitmapContextCreate (data, width, height, bitsPerComponent, bytesPerRow, colorSpace.GetHandle (), (uint) bitmapInfo);
+			GC.KeepAlive (colorSpace);
+			return result;
 		}
 
 		public CGBitmapContext (byte []? data, nint width, nint height, nint bitsPerComponent, nint bytesPerRow, CGColorSpace? colorSpace, CGImageAlphaInfo bitmapInfo)
@@ -97,7 +101,9 @@ namespace CoreGraphics {
 			buffer = default (GCHandle);
 			if (data is not null)
 				buffer = GCHandle.Alloc (data, GCHandleType.Pinned); // This requires a pinned GCHandle, because unsafe code is scoped to the current block, and the address of the byte array will be used after this function returns.
-			return CGBitmapContextCreate (data, width, height, bitsPerComponent, bytesPerRow, colorSpace.GetHandle (), (uint) bitmapInfo);
+			IntPtr result = CGBitmapContextCreate (data, width, height, bitsPerComponent, bytesPerRow, colorSpace.GetHandle (), (uint) bitmapInfo);
+			GC.KeepAlive (colorSpace);
+			return result;
 		}
 
 		public CGBitmapContext (byte []? data, nint width, nint height, nint bitsPerComponent, nint bytesPerRow, CGColorSpace? colorSpace, CGBitmapFlags bitmapInfo)

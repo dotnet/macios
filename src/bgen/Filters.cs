@@ -62,13 +62,7 @@ public partial class Generator {
 		var intptrctor_visibility = filter.IntPtrCtorVisibility;
 		if (intptrctor_visibility == MethodAttributes.PrivateScope) {
 			// since it was not generated code we never fixed the .ctor(IntPtr) visibility for unified
-			if (BindingTouch.IsDotNet) {
-				intptrctor_visibility = MethodAttributes.FamORAssem;
-			} else if (CurrentPlatform.GetXamcoreVersion () >= 3) {
-				intptrctor_visibility = MethodAttributes.FamORAssem;
-			} else {
-				intptrctor_visibility = MethodAttributes.Public;
-			}
+			intptrctor_visibility = MethodAttributes.FamORAssem;
 		}
 		print_generated_code ();
 		print ("{0}{1} ({2} handle) : base (handle)", GetVisibility (intptrctor_visibility), type_name, NativeHandleType);
@@ -300,18 +294,10 @@ public partial class Generator {
 		case "int":
 			print ("return GetInt (\"{0}\");", propertyName);
 			break;
-#if NET
 		case "IntPtr":
-#else
-		case "nint":
-#endif
 			print ("return GetNInt (\"{0}\");", propertyName);
 			break;
-#if NET
 		case "UIntPtr":
-#else
-		case "nuint":
-#endif
 			print ("return GetNUInt (\"{0}\");", propertyName);
 			break;
 		case "string":
@@ -349,18 +335,10 @@ public partial class Generator {
 		case "int":
 			print ("SetInt (\"{0}\", value);", propertyName);
 			break;
-#if NET
 		case "IntPtr":
-#else
-		case "nint":
-#endif
 			print ("SetNInt (\"{0}\", value);", propertyName);
 			break;
-#if NET
 		case "UIntPtr":
-#else
-		case "nuint":
-#endif
 			print ("SetNUInt (\"{0}\", value);", propertyName);
 			break;
 		// NSObject should not be added

@@ -269,6 +269,7 @@ namespace CoreMidi {
 		internal void SetDictionary (IntPtr property, NSDictionary dict)
 		{
 			MIDIObjectSetDictionaryProperty (handle, property, dict.Handle);
+			GC.KeepAlive (dict);
 		}
 
 		[DllImport (Constants.CoreMidiLibrary)]
@@ -299,6 +300,7 @@ namespace CoreMidi {
 			if (data is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
 			MIDIObjectSetDataProperty (handle, property, data.Handle);
+			GC.KeepAlive (data);
 		}
 
 		[DllImport (Constants.CoreMidiLibrary)]
@@ -963,17 +965,18 @@ namespace CoreMidi {
 				int code;
 
 				MidiPortRef tempHandle;
+				NativeHandle nsstrHandle = nsstr.Handle;
 				if (input) {
 					unsafe {
 #if NET
-						code = MIDIInputPortCreate (client.handle, nsstr.Handle, &Read, GCHandle.ToIntPtr (gch), &tempHandle);
+						code = MIDIInputPortCreate (client.handle, nsstrHandle, &Read, GCHandle.ToIntPtr (gch), &tempHandle);
 #else
-						code = MIDIInputPortCreate (client.handle, nsstr.Handle, static_MidiReadProc, GCHandle.ToIntPtr (gch), &tempHandle);
+						code = MIDIInputPortCreate (client.handle, nsstrHandle, static_MidiReadProc, GCHandle.ToIntPtr (gch), &tempHandle);
 #endif
 					}
 				} else {
 					unsafe {
-						code = MIDIOutputPortCreate (client.handle, nsstr.Handle, &tempHandle);
+						code = MIDIOutputPortCreate (client.handle, nsstrHandle, &tempHandle);
 					}
 				}
 				handle = tempHandle;
@@ -1061,14 +1064,18 @@ namespace CoreMidi {
 		{
 			if (endpoint is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (endpoint));
-			return (MidiError) MIDIPortConnectSource (handle, endpoint.handle, GCHandle.ToIntPtr (gch));
+			MidiError result = (MidiError) MIDIPortConnectSource (handle, endpoint.handle, GCHandle.ToIntPtr (gch));
+			GC.KeepAlive (endpoint);
+			return result;
 		}
 
 		public MidiError Disconnect (MidiEndpoint endpoint)
 		{
 			if (endpoint is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (endpoint));
-			return (MidiError) MIDIPortDisconnectSource (handle, endpoint.handle);
+			MidiError result = (MidiError) MIDIPortDisconnectSource (handle, endpoint.handle);
+			GC.KeepAlive (endpoint);
+			return result;
 		}
 
 		public override string ToString ()
@@ -1107,6 +1114,7 @@ namespace CoreMidi {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (packets));
 			var p = MidiPacket.CreatePacketList (packets);
 			var code = MIDISend (handle, endpoint.handle, p);
+			GC.KeepAlive (endpoint);
 			Marshal.FreeHGlobal (p);
 			return code;
 		}

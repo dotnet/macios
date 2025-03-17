@@ -85,6 +85,8 @@ namespace Security {
 			// note: only accept known OIDs or return null (unit test will alert us if that change, FIXME in Apple code)
 			// see: https://github.com/Apple-FOSS-Mirror/libsecurity_keychain/blob/master/lib/SecPolicy.cpp#L245
 			IntPtr ph = SecPolicyCreateWithProperties (policyIdentifier.Handle, dh);
+			GC.KeepAlive (properties);
+			GC.KeepAlive (policyIdentifier);
 			if (ph == IntPtr.Zero)
 				throw new ArgumentException ("Unknown policyIdentifier");
 			return new SecPolicy (ph, true);

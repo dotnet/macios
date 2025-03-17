@@ -47,7 +47,9 @@ namespace Network {
 				return false;
 			if (!(other is NWProtocolDefinition otherDefinition))
 				return false;
-			return nw_protocol_definition_is_equal (GetCheckedHandle (), otherDefinition.Handle) != 0;
+			bool result = nw_protocol_definition_is_equal (GetCheckedHandle (), otherDefinition.Handle) != 0;
+			GC.KeepAlive (otherDefinition);
+			return result;
 		}
 
 		[DllImport (Constants.NetworkLibrary)]

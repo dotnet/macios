@@ -175,6 +175,11 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// </summary>
 	public bool IsGenericType { get; init; }
 
+	/// <summary>
+	/// True if the type represents a ObjC protocol.
+	/// </summary>
+	public bool IsProtocol { get; init; }
+
 	readonly ImmutableArray<string> parents = [];
 	/// <summary>
 	/// Array of the parent types of the type.
@@ -239,6 +244,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		IsDelegate = symbol.TypeKind == TypeKind.Delegate;
 		IsNativeIntegerType = symbol.IsNativeIntegerType;
 		IsNativeEnum = symbol.HasAttribute (AttributesNames.NativeAttribute);
+		IsProtocol = symbol.HasAttribute (AttributesNames.ProtocolAttribute);
 
 		// data that we can get from the symbol without being INamedType
 		symbol.GetInheritance (
@@ -318,6 +324,8 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			return false;
 		if (Delegate != other.Delegate)
 			return false;
+		if (IsProtocol != other.IsProtocol)
+			return false;
 
 		// compare base classes and interfaces, order does not matter at all
 		var listComparer = new CollectionComparer<string> ();
@@ -338,7 +346,32 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// <inheritdoc/>
 	public override int GetHashCode ()
 	{
-		return HashCode.Combine (FullyQualifiedName, IsNullable, IsBlittable, IsSmartEnum, IsArray, IsReferenceType, IsVoid);
+		var hashCode = new HashCode ();
+		hashCode.Add (FullyQualifiedName);
+		hashCode.Add (SpecialType);
+		hashCode.Add (MetadataName);
+		hashCode.Add (IsNullable);
+		hashCode.Add (IsBlittable);
+		hashCode.Add (IsSmartEnum);
+		hashCode.Add (IsArray);
+		hashCode.Add (IsReferenceType);
+		hashCode.Add (IsStruct);
+		hashCode.Add (IsVoid);
+		hashCode.Add (EnumUnderlyingType);
+		hashCode.Add (IsInterface);
+		hashCode.Add (IsNativeIntegerType);
+		hashCode.Add (IsNativeEnum);
+		hashCode.Add (Delegate);
+		hashCode.Add (IsProtocol);
+		foreach (var parent in parents) {
+			hashCode.Add (parent);
+		}
+
+		foreach (var @interface in interfaces) {
+			hashCode.Add (@interface);
+		}
+
+		return hashCode.ToHashCode ();
 	}
 
 	public static bool operator == (TypeInfo left, TypeInfo right)
@@ -415,13 +448,15 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		sb.Append ($"IsArray: {IsArray}, ");
 		sb.Append ($"IsReferenceType: {IsReferenceType}, ");
 		sb.Append ($"IsStruct: {IsStruct}, ");
-		sb.Append ($"IsVoid : {IsVoid}, ");
-		sb.Append ($"IsNSObject : {IsNSObject}, ");
+		sb.Append ($"IsVoid: {IsVoid}, ");
+		sb.Append ($"IsNSObject: {IsNSObject}, ");
 		sb.Append ($"IsDictionaryContainer: {IsDictionaryContainer}, ");
 		sb.Append ($"IsNativeObject: {IsINativeObject}, ");
 		sb.Append ($"IsInterface: {IsInterface}, ");
 		sb.Append ($"IsNativeIntegerType: {IsNativeIntegerType}, ");
 		sb.Append ($"IsNativeEnum: {IsNativeEnum}, ");
+		sb.Append ($"IsProtocol: {IsProtocol}, ");
+		sb.Append ($"Delegate: {Delegate?.ToString () ?? "null"}, ");
 		sb.Append ($"EnumUnderlyingType: '{EnumUnderlyingType?.ToString () ?? "null"}', ");
 		sb.Append ("Parents: [");
 		sb.AppendJoin (", ", parents);

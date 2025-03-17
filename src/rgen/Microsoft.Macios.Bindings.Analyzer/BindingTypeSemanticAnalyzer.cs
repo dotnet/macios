@@ -263,11 +263,11 @@ public class BindingTypeSemanticAnalyzer : DiagnosticAnalyzer, IBindingTypeAnaly
 	public ImmutableArray<Diagnostic> Analyze (string matchedAttribute, PlatformName _,
 		BaseTypeDeclarationSyntax declarationNode, INamedTypeSymbol symbol)
 		=> matchedAttribute switch {
-			AttributesNames.BindingClassAttribute => ValidateClass (declarationNode, symbol),
-			AttributesNames.BindingCategoryAttribute => ValidateCategory (declarationNode, symbol),
-			AttributesNames.BindingProtocolAttribute => ValidateProtocol (declarationNode, symbol),
-			AttributesNames.BindingSmartEnumAttribute => ValidateSmartEnum (declarationNode, symbol),
-			AttributesNames.BindingStrongDictionaryAttribute => ValidateStrongDictionary (declarationNode, symbol),
+			AttributesNames.ClassAttribute => ValidateClass (declarationNode, symbol),
+			AttributesNames.CategoryAttribute => ValidateCategory (declarationNode, symbol),
+			AttributesNames.ProtocolAttribute => ValidateProtocol (declarationNode, symbol),
+			AttributesNames.SmartEnumAttribute => ValidateSmartEnum (declarationNode, symbol),
+			AttributesNames.StrongDictionaryAttribute => ValidateStrongDictionary (declarationNode, symbol),
 			_ => throw new InvalidOperationException ($"Not recognized attribute {matchedAttribute}.")
 		};
 }

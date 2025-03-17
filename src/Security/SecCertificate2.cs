@@ -49,6 +49,7 @@ namespace Security {
 			if (certificate is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (certificate));
 			InitializeHandle (sec_certificate_create (certificate.Handle));
+			GC.KeepAlive (certificate);
 		}
 
 		[DllImport (Constants.SecurityLibrary)]

@@ -70,9 +70,7 @@ public class NamespaceCache {
 		ImplicitNamespaces.Add ("System.Diagnostics");
 		ImplicitNamespaces.Add ("System.Diagnostics.CodeAnalysis");
 		ImplicitNamespaces.Add ("System.ComponentModel");
-#if NET
 		ImplicitNamespaces.Add ("System.Runtime.Versioning");
-#endif
 		ImplicitNamespaces.Add ("System.Threading.Tasks");
 		ImplicitNamespaces.Add ("CoreFoundation");
 		ImplicitNamespaces.Add ("Foundation");

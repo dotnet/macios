@@ -29,20 +29,6 @@ namespace GeneratorTests {
 			bgen.AssertError (86, "A target framework (--target-framework) must be specified.");
 		}
 
-#if !NET
-		[Test]
-		[TestCase (Profile.macOSClassic)]
-		public void BI0087 (Profile profile)
-		{
-			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
-			var bgen = new BGenTool ();
-			bgen.Profile = profile;
-			bgen.CreateTemporaryBinding ("");
-			bgen.AssertExecuteError ("build");
-			bgen.AssertError (87, "Xamarin.Mac Classic binding projects are not supported anymore. Please upgrade the binding project to a Xamarin.Mac Unified binding project.");
-		}
-#endif
-
 		[Test]
 		[TestCase (Profile.iOS)]
 		public void BI1036 (Profile profile)
@@ -58,9 +44,6 @@ namespace GeneratorTests {
 		}
 
 		[Test]
-#if !NET
-		[TestCase (Profile.macOSFull)]
-#endif
 		[TestCase (Profile.macOSMobile)]
 		public void BI1037 (Profile profile)
 		{
@@ -74,9 +57,6 @@ namespace GeneratorTests {
 		}
 
 		[Test]
-#if !NET
-		[TestCase (Profile.macOSFull)]
-#endif
 		[TestCase (Profile.macOSMobile)]
 		public void BI1038 (Profile profile)
 		{
@@ -90,9 +70,6 @@ namespace GeneratorTests {
 		}
 
 		[Test]
-#if !NET
-		[TestCase (Profile.macOSFull)]
-#endif
 		[TestCase (Profile.macOSMobile)]
 		public void BI1039 (Profile profile)
 		{
@@ -106,9 +83,6 @@ namespace GeneratorTests {
 		}
 
 		[Test]
-#if !NET
-		[TestCase (Profile.macOSFull)]
-#endif
 		[TestCase (Profile.macOSMobile)]
 		public void BI1040 (Profile profile)
 		{
@@ -122,9 +96,6 @@ namespace GeneratorTests {
 		}
 
 		[Test]
-#if !NET
-		[TestCase (Profile.macOSFull)]
-#endif
 		[TestCase (Profile.macOSMobile)]
 		public void BI1041 (Profile profile)
 		{
@@ -342,20 +313,6 @@ namespace Bug52570Tests {
 			bgen.AssertExecute ("build");
 			bgen.AssertNoWarnings ();
 		}
-
-#if !NET
-		[Test]
-		[TestCase (Profile.iOS)]
-		public void BI1117_allowstaticmembers (Profile profile)
-		{
-			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
-			var bgen = new BGenTool ();
-			bgen.Profile = profile;
-			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "bug52570allowstaticmembers.cs")));
-			bgen.AssertExecute ("build");
-			bgen.AssertNoWarnings ();
-		}
-#endif
 
 		[Test]
 		[TestCase (Profile.iOS)]
@@ -852,9 +809,6 @@ namespace BI1066Errors
 
 		[Test]
 		[TestCase (Profile.iOS)]
-#if !NET
-		[TestCase (Profile.macOSFull)]
-#endif
 		[TestCase (Profile.macOSMobile)]
 		public void WarnAsError (Profile profile)
 		{
@@ -906,9 +860,6 @@ namespace BI1066Errors
 
 		[Test]
 		[TestCase (Profile.iOS)]
-#if !NET
-		[TestCase (Profile.macOSFull)]
-#endif
 		[TestCase (Profile.macOSMobile)]
 		public void NoWarn (Profile profile)
 		{
@@ -963,9 +914,6 @@ namespace BI1066Errors
 
 		[Test]
 		[TestCase (Profile.iOS)]
-#if !NET
-		[TestCase (Profile.macOSFull)]
-#endif
 		[TestCase (Profile.macOSMobile)]
 		public void MissingExportOnProperty (Profile profile)
 		{

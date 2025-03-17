@@ -108,7 +108,9 @@ namespace CoreGraphics {
 		public static CGLayer Create (CGContext? context, CGSize size)
 		{
 			// note: auxiliaryInfo is reserved and should be null
-			return new CGLayer (CGLayerCreateWithContext (context.GetHandle (), size, IntPtr.Zero), true);
+			CGLayer result = new CGLayer (CGLayerCreateWithContext (context.GetHandle (), size, IntPtr.Zero), true);
+			GC.KeepAlive (context);
+			return result;
 		}
 #endif
 	}

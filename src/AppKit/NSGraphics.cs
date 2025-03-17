@@ -60,6 +60,7 @@ namespace AppKit {
 			NSWindowDepth rv;
 			unsafe {
 				rv = NSBestDepth (colorspace.Handle, bitsPerSample, bitsPerPixel, (byte) (planar ? 1 : 0), &exactMatchValue);
+				GC.KeepAlive (colorspace);
 			}
 			exactMatch = exactMatchValue != 0;
 			return rv;
@@ -75,6 +76,7 @@ namespace AppKit {
 			NSWindowDepth rv;
 			unsafe {
 				rv = NSBestDepth (colorspace.Handle, bitsPerSample, bitsPerPixel, (byte) (planar ? 1 : 0), &exactMatchValue);
+				GC.KeepAlive (colorspace);
 			}
 			exactMatch = exactMatchValue != 0;
 			return rv;
@@ -109,7 +111,9 @@ namespace AppKit {
 		{
 			if (colorspaceName is null)
 				throw new ArgumentNullException ("colorspaceName");
-			return NSNumberOfColorComponents (colorspaceName.Handle);
+			nint result = NSNumberOfColorComponents (colorspaceName.Handle);
+			GC.KeepAlive (colorspaceName);
+			return result;
 		}
 
 		[DllImport (Constants.AppKitLibrary)]
@@ -187,6 +191,8 @@ namespace AppKit {
 		public static void ShowAnimationEffect (NSAnimationEffect animationEffect, CGPoint centerLocation, CGSize size, NSObject animationDelegate, Selector didEndSelector, IntPtr contextInfo)
 		{
 			NSShowAnimationEffect ((nuint) (ulong) animationEffect, centerLocation, size, animationDelegate.GetHandle (), didEndSelector.Handle, contextInfo);
+			GC.KeepAlive (animationDelegate);
+			GC.KeepAlive (didEndSelector);
 		}
 
 		public static void ShowAnimationEffect (NSAnimationEffect animationEffect, CGPoint centerLocation, CGSize size, Action endedCallback)

@@ -298,10 +298,14 @@ namespace MediaPlayer {
 			if (TryGetValue (source, MPNowPlayingInfoCenter.PropertyDefaultPlaybackRate, out result))
 				DefaultPlaybackRate = (result as NSNumber)?.DoubleValue;
 
-			if (TryGetValue (source, MPNowPlayingInfoCenter.PropertyAvailableLanguageOptions, out result))
+			if (TryGetValue (source, MPNowPlayingInfoCenter.PropertyAvailableLanguageOptions, out result)) {
 				AvailableLanguageOptions = NSArray.ArrayFromHandle<MPNowPlayingInfoLanguageOptionGroup> (result.Handle);
-			if (TryGetValue (source, MPNowPlayingInfoCenter.PropertyCurrentLanguageOptions, out result))
+				GC.KeepAlive (result);
+			}
+			if (TryGetValue (source, MPNowPlayingInfoCenter.PropertyCurrentLanguageOptions, out result)) {
 				CurrentLanguageOptions = NSArray.ArrayFromHandle<MPNowPlayingInfoLanguageOption> (result.Handle);
+				GC.KeepAlive (result);
+			}
 			if (TryGetValue (source, MPNowPlayingInfoCenter.PropertyCollectionIdentifier, out result))
 				CollectionIdentifier = (string) (result as NSString);
 			if (TryGetValue (source, MPNowPlayingInfoCenter.PropertyExternalContentIdentifier, out result))

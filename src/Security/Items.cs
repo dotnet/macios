@@ -222,10 +222,13 @@ namespace Security {
 				val = SecMatchLimit.MatchLimitOne;
 			else {
 				n = NSNumber.FromInt32 (max);
+#pragma warning disable RBI0014
 				val = n.Handle;
+#pragma warning restore RBI0014
 			}
 
 			dict.LowlevelSetObject (val, SecItem.MatchLimit);
+			GC.KeepAlive (n);
 			return n;
 		}
 
@@ -1233,6 +1236,7 @@ namespace Security {
 				if (value is null)
 					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
 				SetValue (value.Handle, SecItem.UseAuthenticationContext);
+				GC.KeepAlive (value);
 			}
 		}
 #endif
@@ -1252,6 +1256,7 @@ namespace Security {
 					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
 				_secAccessControl = value;
 				SetValue (value.Handle, SecAttributeKeys.AccessControlKey.Handle);
+				GC.KeepAlive (value);
 			}
 		}
 
@@ -1711,6 +1716,7 @@ namespace Security {
 				if (value is null)
 					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
 				SetValue (value.Handle, SecItem.MatchPolicy);
+				GC.KeepAlive (value);
 			}
 		}
 
@@ -1836,6 +1842,7 @@ namespace Security {
 		public void SetValueRef (INativeObject value)
 		{
 			SetValue (value.GetHandle (), SecItem.ValueRef);
+			GC.KeepAlive (value);
 		}
 
 		public void SetCertificate (SecCertificate cert) => SetValueRef (cert);

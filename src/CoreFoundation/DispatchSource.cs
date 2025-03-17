@@ -279,6 +279,7 @@ namespace CoreFoundation {
 								 handle: IntPtr.Zero,
 								 mask: IntPtr.Zero,
 								 queue: queue.GetHandle ());
+				GC.KeepAlive (queue);
 				if (handle != IntPtr.Zero)
 					InitializeHandle (handle);
 			}
@@ -303,6 +304,7 @@ namespace CoreFoundation {
 								 handle: IntPtr.Zero,
 								 mask: IntPtr.Zero,
 								 queue: queue.GetHandle ());
+				GC.KeepAlive (queue);
 				if (handle != IntPtr.Zero)
 					InitializeHandle (handle);
 			}
@@ -347,6 +349,7 @@ namespace CoreFoundation {
 								 handle: (IntPtr) machPort,
 								 mask: (IntPtr) (sendDead ? 1 : 0),
 								 queue: queue.GetHandle ());
+				GC.KeepAlive (queue);
 				if (handle != IntPtr.Zero)
 					InitializeHandle (handle);
 			}
@@ -382,6 +385,7 @@ namespace CoreFoundation {
 								 handle: (IntPtr) machPort,
 								 mask: IntPtr.Zero,
 								 queue: queue.GetHandle ());
+				GC.KeepAlive (queue);
 				if (handle != IntPtr.Zero)
 					InitializeHandle (handle);
 			}
@@ -406,6 +410,7 @@ namespace CoreFoundation {
 								 handle: IntPtr.Zero,
 								 mask: (IntPtr) monitorFlags,
 								 queue: queue.GetHandle ());
+				GC.KeepAlive (queue);
 				if (handle != IntPtr.Zero)
 					InitializeHandle (handle);
 			}
@@ -439,6 +444,7 @@ namespace CoreFoundation {
 								 handle: (IntPtr) processId,
 								 mask: (IntPtr) monitorKind,
 								 queue: queue.GetHandle ());
+				GC.KeepAlive (queue);
 				if (handle != IntPtr.Zero)
 					InitializeHandle (handle);
 			}
@@ -480,6 +486,7 @@ namespace CoreFoundation {
 								 handle: (IntPtr) fileDescriptor,
 								 mask: IntPtr.Zero,
 								 queue: queue.GetHandle ());
+				GC.KeepAlive (queue);
 				if (handle != IntPtr.Zero)
 					InitializeHandle (handle);
 			}
@@ -529,6 +536,7 @@ namespace CoreFoundation {
 								 handle: (IntPtr) signalNumber,
 								 mask: IntPtr.Zero,
 								 queue: queue.GetHandle ());
+				GC.KeepAlive (queue);
 				if (handle != IntPtr.Zero)
 					InitializeHandle (handle);
 			}
@@ -571,6 +579,7 @@ namespace CoreFoundation {
 								 handle: IntPtr.Zero,
 								 mask: strict ? (IntPtr) 1 : IntPtr.Zero,
 								 queue: queue.GetHandle ());
+				GC.KeepAlive (queue);
 				if (handle != IntPtr.Zero)
 					InitializeHandle (handle);
 			}
@@ -617,6 +626,7 @@ namespace CoreFoundation {
 								 handle: (IntPtr) fileDescriptor,
 								 mask: (IntPtr) vnodeKind,
 								 queue: queue.GetHandle ());
+				GC.KeepAlive (queue);
 				if (handle != IntPtr.Zero)
 					InitializeHandle (handle);
 			}
@@ -645,6 +655,7 @@ namespace CoreFoundation {
 								 handle: (IntPtr) fd,
 								 mask: (IntPtr) vnodeKind,
 								 queue: queue.GetHandle ());
+				GC.KeepAlive (queue);
 				if (handle != IntPtr.Zero)
 					InitializeHandle (handle);
 			}
@@ -696,6 +707,7 @@ namespace CoreFoundation {
 								 handle: (IntPtr) fileDescriptor,
 								 mask: IntPtr.Zero,
 								 queue: queue.GetHandle ());
+				GC.KeepAlive (queue);
 				if (handle != IntPtr.Zero)
 					InitializeHandle (handle);
 			}

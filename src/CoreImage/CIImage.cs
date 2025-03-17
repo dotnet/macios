@@ -167,13 +167,16 @@ namespace CoreImage {
 			if (colorSpace is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (colorSpace));
 
+			CIImage result;
 			using (var arr = NSArray.FromIntPtrs (new [] { colorSpace.Handle })) {
 				using (var keys = NSArray.FromIntPtrs (new [] { CIImageInitializationOptionsKeys.ColorSpaceKey.Handle })) {
 					using (var dict = NSDictionary.FromObjectsAndKeysInternal (arr, keys)) {
-						return FromCGImage (image, dict);
+						result = FromCGImage (image, dict);
 					}
 				}
 			}
+			GC.KeepAlive (colorSpace);
+			return result;
 		}
 
 		// Apple removed this API in iOS9 SDK

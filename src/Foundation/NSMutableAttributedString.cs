@@ -52,6 +52,7 @@ namespace Foundation {
 				throw new ArgumentNullException ("attributes");
 
 			LowLevelSetAttributes (attributes.Handle, range);
+			GC.KeepAlive (attributes);
 		}
 
 		public void SetAttributes (CTStringAttributes attrs, NSRange range)

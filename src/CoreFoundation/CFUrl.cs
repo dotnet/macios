@@ -103,6 +103,7 @@ namespace CoreFoundation {
 		internal static CFUrl? FromStringHandle (IntPtr cfstringHandle, CFUrl? baseurl)
 		{
 			var handle = CFURLCreateWithString (IntPtr.Zero, cfstringHandle, baseurl.GetHandle ());
+			GC.KeepAlive (baseurl);
 			if (handle == IntPtr.Zero)
 				return null;
 			return new CFUrl (handle, true);

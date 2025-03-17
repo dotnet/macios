@@ -33,6 +33,7 @@ namespace NaturalLanguage {
 					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
 
 				var value = CFDictionary.GetValue (Dictionary.Handle, key.Handle);
+				GC.KeepAlive (key);
 				return CFArray.StringArrayFromHandle (value);
 			}
 

@@ -79,6 +79,7 @@ namespace Foundation {
 					throw new ArgumentNullException (nameof (value));
 
 				_SetObject (value.Handle, idx);
+				GC.KeepAlive (value);
 			}
 		}
 
@@ -94,6 +95,7 @@ namespace Foundation {
 				throw new ArgumentNullException (nameof (obj));
 
 			_Insert (obj.Handle, atIndex);
+			GC.KeepAlive (obj);
 		}
 
 		public void Replace (nint objectAtIndex, TKey newObject)
@@ -102,6 +104,7 @@ namespace Foundation {
 				throw new ArgumentNullException (nameof (newObject));
 
 			_Replace (objectAtIndex, newObject.Handle);
+			GC.KeepAlive (newObject);
 		}
 
 		public void Add (TKey obj)
@@ -110,6 +113,7 @@ namespace Foundation {
 				throw new ArgumentNullException (nameof (obj));
 
 			_Add (obj.Handle);
+			GC.KeepAlive (obj);
 		}
 
 		public void AddObjects (params TKey [] source)
@@ -146,6 +150,7 @@ namespace Foundation {
 				throw new ArgumentNullException (nameof (obj));
 
 			_RemoveObject (obj.Handle);
+			GC.KeepAlive (obj);
 		}
 
 		public void RemoveObjects (params TKey [] objects)

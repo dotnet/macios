@@ -149,6 +149,7 @@ namespace AudioToolbox {
 					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
 
 				MusicSequenceSetAUGraph (Handle, value.Handle);
+				GC.KeepAlive (value);
 			}
 		}
 
@@ -253,7 +254,9 @@ namespace AudioToolbox {
 
 			index = 0;
 			unsafe {
-				return MusicSequenceGetTrackIndex (Handle, track.Handle, (int*) Unsafe.AsPointer<int> (ref index));
+				MusicPlayerStatus status = MusicSequenceGetTrackIndex (Handle, track.Handle, (int*) Unsafe.AsPointer<int> (ref index));
+				GC.KeepAlive (track);
+				return status;
 			}
 		}
 
@@ -279,7 +282,9 @@ namespace AudioToolbox {
 		{
 			if (endpoint is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (endpoint));
-			return MusicSequenceSetMIDIEndpoint (Handle, endpoint.handle);
+			MusicPlayerStatus status = MusicSequenceSetMIDIEndpoint (Handle, endpoint.handle);
+			GC.KeepAlive (endpoint);
+			return status;
 		}
 #endif // IOS
 
@@ -375,7 +380,9 @@ namespace AudioToolbox {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			return MusicSequenceFileLoad (Handle, url.Handle, fileTypeId, loadFlags);
+			MusicPlayerStatus status = MusicSequenceFileLoad (Handle, url.Handle, fileTypeId, loadFlags);
+			GC.KeepAlive (url);
+			return status;
 		}
 
 		[DllImport (Constants.AudioToolboxLibrary)]
@@ -386,7 +393,9 @@ namespace AudioToolbox {
 			if (data is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
 
-			return MusicSequenceFileLoadData (Handle, data.Handle, fileTypeId, loadFlags);
+			MusicPlayerStatus status = MusicSequenceFileLoadData (Handle, data.Handle, fileTypeId, loadFlags);
+			GC.KeepAlive (data);
+			return status;
 		}
 
 
@@ -399,7 +408,9 @@ namespace AudioToolbox {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			return MusicSequenceFileCreate (Handle, url.Handle, fileType, flags, resolution);
+			MusicPlayerStatus status = MusicSequenceFileCreate (Handle, url.Handle, fileType, flags, resolution);
+			GC.KeepAlive (url);
+			return status;
 		}
 
 		[DllImport (Constants.AudioToolboxLibrary)]

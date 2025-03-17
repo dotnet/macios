@@ -60,6 +60,7 @@ namespace ImageIO {
 		public CGImageMetadataTag (NSString xmlns, NSString? prefix, NSString name, CGImageMetadataType type, NSObject? value) :
 			this (xmlns, prefix, name, type, value.GetHandle ())
 		{
+			GC.KeepAlive (value);
 		}
 
 		// CFBoolean support
@@ -79,6 +80,9 @@ namespace ImageIO {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
 
 			InitializeHandle (CGImageMetadataTagCreate (xmlns.Handle, prefix.GetHandle (), name.Handle, type, value));
+			GC.KeepAlive (xmlns);
+			GC.KeepAlive (prefix);
+			GC.KeepAlive (name);
 		}
 
 		[DllImport (Constants.ImageIOLibrary, EntryPoint = "CGImageMetadataTagGetTypeID")]

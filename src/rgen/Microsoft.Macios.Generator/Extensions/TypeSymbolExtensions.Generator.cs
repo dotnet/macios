@@ -71,7 +71,7 @@ static partial class TypeSymbolExtensions {
 		// a type is a smart enum if its type is a enum one AND it was decorated with the
 		// binding type attribute
 		return symbol.TypeKind == TypeKind.Enum
-			   && symbol.HasAttribute (AttributesNames.BindingSmartEnumAttribute);
+			   && symbol.HasAttribute (AttributesNames.SmartEnumAttribute);
 	}
 
 	/// <summary>

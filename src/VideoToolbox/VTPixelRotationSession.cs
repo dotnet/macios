@@ -74,6 +74,7 @@ namespace VideoToolbox {
 			IntPtr ret;
 			unsafe {
 				result = VTPixelRotationSessionCreate (allocator.GetHandle (), &ret);
+				GC.KeepAlive (allocator);
 			}
 
 			if (result == VTStatus.Ok && ret != IntPtr.Zero)
@@ -96,7 +97,10 @@ namespace VideoToolbox {
 			if (destinationBuffer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (destinationBuffer));
 
-			return VTPixelRotationSessionRotateImage (GetCheckedHandle (), sourceBuffer.Handle, destinationBuffer.Handle);
+			VTStatus status = VTPixelRotationSessionRotateImage (GetCheckedHandle (), sourceBuffer.Handle, destinationBuffer.Handle);
+			GC.KeepAlive (sourceBuffer);
+			GC.KeepAlive (destinationBuffer);
+			return status;
 		}
 
 		public VTStatus SetRotationProperties (VTPixelRotationProperties options)

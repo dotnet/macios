@@ -177,6 +177,7 @@ namespace AddressBook {
 		internal void SetValue (int property, NSObject? value)
 		{
 			SetValue (property, value.GetHandle ());
+			GC.KeepAlive (value);
 		}
 
 		internal void SetValue (int property, string? value)

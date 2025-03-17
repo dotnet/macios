@@ -357,6 +357,7 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (request));
 
 			var handle = CFReadStreamCreateForHTTPRequest (IntPtr.Zero, request.Handle);
+			GC.KeepAlive (request);
 			return new CFHTTPStream (handle, true);
 		}
 
@@ -390,6 +391,8 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (body));
 
 			var handle = CFReadStreamCreateForStreamedHTTPRequest (IntPtr.Zero, request.Handle, body.Handle);
+			GC.KeepAlive (request);
+			GC.KeepAlive (body);
 			return new CFHTTPStream (handle, true);
 		}
 
@@ -401,6 +404,8 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (body));
 
 			var handle = CFReadStreamCreateForStreamedHTTPRequest (IntPtr.Zero, request.Handle, body.Handle);
+			GC.KeepAlive (request);
+			GC.KeepAlive (body);
 			return new CFHTTPStream (handle, true);
 		}
 
@@ -712,6 +717,7 @@ namespace CoreFoundation {
 			}
 			set {
 				CFReadStreamSetDispatchQueue (Handle, value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 
@@ -728,6 +734,7 @@ namespace CoreFoundation {
 			}
 			set {
 				CFWriteStreamSetDispatchQueue (Handle, value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 	}

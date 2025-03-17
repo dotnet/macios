@@ -156,6 +156,8 @@ namespace CoreVideo {
 			IntPtr handle;
 			unsafe {
 				ret = CVPixelBufferPoolCreate (IntPtr.Zero, poolAttributes.GetHandle (), pixelBufferAttributes.GetHandle (), &handle);
+				GC.KeepAlive (poolAttributes);
+				GC.KeepAlive (pixelBufferAttributes);
 			}
 
 			if (ret != CVReturn.Success)

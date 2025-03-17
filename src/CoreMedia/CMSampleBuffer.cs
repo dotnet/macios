@@ -101,6 +101,8 @@ namespace CoreMedia {
 								samplesCount, sampleTimestamp,
 								packetDescriptionsPtr,
 								&buffer);
+					GC.KeepAlive (dataBuffer);
+					GC.KeepAlive (formatDescription);
 				}
 			}
 
@@ -148,6 +150,7 @@ namespace CoreMedia {
 
 			fixed (CMSampleTimingInfo* t = timing) {
 				status = CMSampleBufferCreateCopyWithNewTiming (IntPtr.Zero, original.Handle, count, t, &handle);
+				GC.KeepAlive (original);
 				if (status != (OSStatus) 0)
 					return null;
 			}
@@ -251,6 +254,8 @@ namespace CoreMedia {
 							formatDescription.Handle,
 							&sampleTiming,
 							&buffer);
+				GC.KeepAlive (imageBuffer);
+				GC.KeepAlive (formatDescription);
 			}
 
 			if (error != CMSampleBufferError.None)
@@ -596,7 +601,9 @@ namespace CoreMedia {
 
 		public CMSampleBufferError SetDataBuffer (CMBlockBuffer dataBuffer)
 		{
-			return CMSampleBufferSetDataBuffer (Handle, dataBuffer.GetHandle ());
+			CMSampleBufferError result = CMSampleBufferSetDataBuffer (Handle, dataBuffer.GetHandle ());
+			GC.KeepAlive (dataBuffer);
+			return result;
 		}
 
 		/*[DllImport(Constants.CoreMediaLibrary)]
@@ -667,7 +674,9 @@ namespace CoreMedia {
 
 		public CMSampleBufferError TrackDataReadiness (CMSampleBuffer bufferToTrack)
 		{
-			return CMSampleBufferTrackDataReadiness (Handle, bufferToTrack.GetHandle ());
+			CMSampleBufferError result = CMSampleBufferTrackDataReadiness (Handle, bufferToTrack.GetHandle ());
+			GC.KeepAlive (bufferToTrack);
+			return result;
 		}
 
 		[SupportedOSPlatform ("ios")]
@@ -728,6 +737,8 @@ namespace CoreMedia {
 								sampleTimestamp,
 								packetDescriptionsPtr,
 								&buffer);
+					GC.KeepAlive (dataBuffer);
+					GC.KeepAlive (formatDescription);
 				}
 			}
 
@@ -783,9 +794,11 @@ namespace CoreMedia {
 									sizeCount,
 									sampleSizeArrayPtr,
 									&buffer);
+						GC.KeepAlive (dataBuffer);
 					}
 				}
 			}
+			GC.KeepAlive (formatDescription);
 
 			if (error != CMSampleBufferError.None)
 				return null;
@@ -825,6 +838,8 @@ namespace CoreMedia {
 							formatDescription.Handle,
 							(CMSampleTimingInfo*) Unsafe.AsPointer<CMSampleTimingInfo> (ref sampleTiming),
 							&buffer);
+				GC.KeepAlive (imageBuffer);
+				GC.KeepAlive (formatDescription);
 			}
 
 			if (error != CMSampleBufferError.None)

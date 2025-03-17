@@ -272,7 +272,10 @@ namespace MobileCoreServices {
 				return uti2 is null;
 			else if (uti2 is null)
 				return false;
-			return UTTypeEqual (uti1.Handle, uti2.Handle) != 0;
+			bool result = UTTypeEqual (uti1.Handle, uti2.Handle) != 0;
+			GC.KeepAlive (uti1);
+			GC.KeepAlive (uti2);
+			return result;
 		}
 	}
 }

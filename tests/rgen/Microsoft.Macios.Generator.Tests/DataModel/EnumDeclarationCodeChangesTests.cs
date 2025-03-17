@@ -45,7 +45,7 @@ public enum AVCaptureDeviceType {
 		Assert.Equal ("AVFoundation.AVCaptureDeviceType", codeChanges.FullyQualifiedSymbol);
 		Assert.Equal (BindingType.SmartEnum, codeChanges.BindingType);
 		Assert.Single (codeChanges.Attributes);
-		Assert.Equal (AttributesNames.BindingSmartEnumAttribute, codeChanges.Attributes [0].Name);
+		Assert.Equal (AttributesNames.SmartEnumAttribute, codeChanges.Attributes [0].Name);
 		Assert.Empty (codeChanges.EnumMembers);
 		Assert.Equal (BindingType.SmartEnum, codeChanges.BindingType);
 	}
@@ -80,7 +80,7 @@ public enum AVCaptureDeviceType {
 		Assert.Equal ("AVFoundation.AVCaptureDeviceType", codeChanges.FullyQualifiedSymbol);
 		Assert.Equal (BindingType.SmartEnum, codeChanges.BindingType);
 		Assert.Single (codeChanges.Attributes);
-		Assert.Equal (AttributesNames.BindingSmartEnumAttribute, codeChanges.Attributes [0].Name);
+		Assert.Equal (AttributesNames.SmartEnumAttribute, codeChanges.Attributes [0].Name);
 		Assert.Equal (BindingType.SmartEnum, codeChanges.BindingType);
 		// validate that we have the 3 members and their attrs
 		Assert.Equal (3, codeChanges.EnumMembers.Length);
@@ -123,7 +123,7 @@ public enum AVCaptureDeviceType {
 		Assert.Equal ("AVFoundation.AVCaptureDeviceType", codeChanges.FullyQualifiedSymbol);
 		Assert.Equal (BindingType.SmartEnum, codeChanges.BindingType);
 		Assert.Single (codeChanges.Attributes);
-		Assert.Equal (AttributesNames.BindingSmartEnumAttribute, codeChanges.Attributes [0].Name);
+		Assert.Equal (AttributesNames.SmartEnumAttribute, codeChanges.Attributes [0].Name);
 		Assert.Empty (codeChanges.EnumMembers);
 		Assert.Equal (BindingType.SmartEnum, codeChanges.BindingType);
 	}
@@ -159,7 +159,7 @@ public enum AVCaptureDeviceType {
 		Assert.Equal ("AVFoundation.AVCaptureDeviceType", codeChanges.FullyQualifiedSymbol);
 		Assert.Equal (BindingType.SmartEnum, codeChanges.BindingType);
 		Assert.Single (codeChanges.Attributes);
-		Assert.Equal (AttributesNames.BindingSmartEnumAttribute, codeChanges.Attributes [0].Name);
+		Assert.Equal (AttributesNames.SmartEnumAttribute, codeChanges.Attributes [0].Name);
 		Assert.Equal (BindingType.SmartEnum, codeChanges.BindingType);
 		// validate that we have the 3 members and their attrs
 		Assert.Equal (2, codeChanges.EnumMembers.Length);

@@ -67,8 +67,8 @@ static partial class BindingSyntaxFactory {
 		if (property.UseTempReturn) {
 			// get the getter invocation and assign it to the return variable 
 			return (
-				Send: ExpressionStatement (AssignVariable (property.ReturnType.ReturnVariableName, getterSend)),
-				SendSuper: ExpressionStatement (AssignVariable (property.ReturnType.ReturnVariableName, getterSuperSend))
+				Send: ExpressionStatement (AssignVariable (Nomenclator.GetReturnVariableName (property.ReturnType), getterSend)),
+				SendSuper: ExpressionStatement (AssignVariable (Nomenclator.GetReturnVariableName (property.ReturnType), getterSuperSend))
 			);
 		}
 		// this is the simplest case, we just need to call the method and return the result, for that we

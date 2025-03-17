@@ -145,7 +145,7 @@ static partial class BindingSyntaxFactory {
 					Argument (IdentifierName (parameter.Name)))));
 
 		// variable name
-		var variableName = parameter.GetNameForVariableType (Parameter.VariableType.NSArray);
+		var variableName = Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.NSArray);
 		if (variableName is null)
 			return null;
 		var declarator = VariableDeclarator (Identifier (variableName));
@@ -189,7 +189,7 @@ static partial class BindingSyntaxFactory {
 		if (!parameter.Type.IsNSObject && !parameter.Type.IsINativeObject)
 			return null;
 
-		var variableName = parameter.GetNameForVariableType (Parameter.VariableType.Handle);
+		var variableName = Nomenclator.GetNameForVariableType(parameter.Name, Nomenclator.VariableType.Handle);
 		if (variableName is null)
 			return null;
 		// decide about the factory based on the need of a null check 
@@ -245,7 +245,7 @@ static partial class BindingSyntaxFactory {
 		if (parameter.Type.Name != "string")
 			return null;
 
-		var variableName = parameter.GetNameForVariableType (Parameter.VariableType.NSString);
+		var variableName = Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.NSString);
 		if (variableName is null)
 			return null;
 
@@ -325,7 +325,7 @@ static partial class BindingSyntaxFactory {
 		if (factoryMethod is null)
 			return null;
 
-		var variableName = parameter.GetNameForVariableType (Parameter.VariableType.BindFrom);
+		var variableName = Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.BindFrom);
 		if (variableName is null)
 			return null;
 
@@ -414,7 +414,7 @@ static partial class BindingSyntaxFactory {
 		if (factoryMethod is null)
 			return null;
 
-		var variableName = parameter.GetNameForVariableType (Parameter.VariableType.BindFrom);
+		var variableName = Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.BindFrom);
 		if (variableName is null)
 			return null;
 
@@ -444,7 +444,7 @@ static partial class BindingSyntaxFactory {
 		if (!parameter.Type.IsSmartEnum)
 			return null;
 
-		var variableName = parameter.GetNameForVariableType (Parameter.VariableType.BindFrom);
+		var variableName = Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.BindFrom);
 		if (variableName is null)
 			return null;
 
@@ -475,7 +475,7 @@ static partial class BindingSyntaxFactory {
 		if (!parameter.Type.IsArray)
 			return null;
 
-		var variableName = parameter.GetNameForVariableType (Parameter.VariableType.BindFrom);
+		var variableName = Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.BindFrom);
 		if (variableName is null)
 			return null;
 
@@ -673,7 +673,7 @@ static partial class BindingSyntaxFactory {
 	internal static (string Name, LocalDeclarationStatementSyntax Declaration) GetReturnValueAuxVariable (in TypeInfo returnType)
 	{
 		var typeSyntax = returnType.GetIdentifierSyntax ();
-		var variableName = returnType.ReturnVariableName;
+		var variableName = Nomenclator.GetReturnVariableName (returnType);
 		// generates Type ret; The GetIdentifierSyntax will ensure that the correct type and nullable annotation is used
 		var declaration = LocalDeclarationStatement (
 			VariableDeclaration (typeSyntax.WithTrailingTrivia (Space))

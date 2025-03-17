@@ -50,6 +50,7 @@ namespace Security {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (trust));
 
 			Handle = sec_trust_create (trust.Handle);
+			GC.KeepAlive (trust);
 		}
 
 		[DllImport (Constants.SecurityLibrary)]

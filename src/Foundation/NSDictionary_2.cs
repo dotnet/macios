@@ -112,7 +112,10 @@ namespace Foundation {
 			if (key is null)
 				throw new ArgumentNullException (nameof (key));
 
-			return Runtime.GetINativeObject<TValue> (_ObjectForKey (key.Handle), false);
+			TValue ret = Runtime.GetINativeObject<TValue> (_ObjectForKey (key.Handle), false);
+			GC.KeepAlive (key);
+
+			return ret;
 		}
 
 		/// <summary>To be added.</summary>
@@ -130,8 +133,11 @@ namespace Foundation {
 			if (obj is null)
 				throw new ArgumentNullException (nameof (obj));
 
-			using (var pool = new NSAutoreleasePool ())
-				return NSArray.ArrayFromHandle<TKey> (_AllKeysForObject (obj.Handle));
+			using (var pool = new NSAutoreleasePool ()) {
+				TKey [] ret = NSArray.ArrayFromHandle<TKey> (_AllKeysForObject (obj.Handle));
+				GC.KeepAlive (obj);
+				return ret;
+			}
 		}
 
 		/// <summary>To be added.</summary>
@@ -155,13 +161,21 @@ namespace Foundation {
 			if (keys.Length == 0)
 				return new TValue [] { };
 
-			using (var pool = new NSAutoreleasePool ())
-				return NSArray.ArrayFromHandle<TValue> (_ObjectsForKeys (NSArray.From<TKey> (keys).Handle, marker.Handle));
+			using (var pool = new NSAutoreleasePool ()) {
+				var keysArray = NSArray.From<TKey> (keys);
+				var result = NSArray.ArrayFromHandle<TValue> (_ObjectsForKeys (keysArray.Handle, marker.Handle));
+				GC.KeepAlive (keysArray);
+				GC.KeepAlive (marker);
+				return result;
+			}
 		}
 
 		static NSDictionary<TKey, TValue> GenericFromObjectsAndKeysInternal (NSArray objects, NSArray keys)
 		{
-			return Runtime.GetNSObject<NSDictionary<TKey, TValue>> (_FromObjectsAndKeysInternal (objects.Handle, keys.Handle));
+			var result = Runtime.GetNSObject<NSDictionary<TKey, TValue>> (_FromObjectsAndKeysInternal (objects.Handle, keys.Handle));
+			GC.KeepAlive (objects);
+			GC.KeepAlive (keys);
+			return result;
 		}
 
 		public static NSDictionary<TKey, TValue> FromObjectsAndKeys (TValue [] objects, TKey [] keys, nint count)
@@ -252,7 +266,9 @@ namespace Foundation {
 			if (key is null)
 				throw new ArgumentNullException (nameof (key));
 
-			return _ObjectForKey (key.Handle) != IntPtr.Zero;
+			bool ret = _ObjectForKey (key.Handle) != IntPtr.Zero;
+			GC.KeepAlive (key);
+			return ret;
 		}
 
 		public bool TryGetValue (TKey key, out TValue value)

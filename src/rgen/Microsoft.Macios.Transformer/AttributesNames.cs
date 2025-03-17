@@ -5,7 +5,8 @@
 using Microsoft.Macios.Transformer.Attributes;
 using Microsoft.Macios.Transformer.Generator;
 
-namespace Microsoft.Macios.Transformer;
+// Use the same namemspace as the generator, that way we can share the code but use different attribute names
+namespace Microsoft.Macios.Generator;
 
 static class AttributesNames {
 

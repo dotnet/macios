@@ -135,7 +135,9 @@ namespace Foundation {
 			if (key is null)
 				throw new ArgumentNullException (nameof (key));
 
-			return Runtime.GetINativeObject<TValue> (_ObjectForKey (key.Handle), false);
+			var result = Runtime.GetINativeObject<TValue> (_ObjectForKey (key.Handle), false);
+			GC.KeepAlive (key);
+			return result;
 		}
 
 		/// <summary>To be added.</summary>
@@ -153,8 +155,11 @@ namespace Foundation {
 			if (obj is null)
 				throw new ArgumentNullException (nameof (obj));
 
-			using (var pool = new NSAutoreleasePool ())
-				return NSArray.ArrayFromHandle<TKey> (_AllKeysForObject (obj.Handle));
+			using (var pool = new NSAutoreleasePool ()) {
+				var result = NSArray.ArrayFromHandle<TKey> (_AllKeysForObject (obj.Handle));
+				GC.KeepAlive (obj);
+				return result;
+			}
 		}
 
 		/// <summary>To be added.</summary>
@@ -178,7 +183,11 @@ namespace Foundation {
 			if (keys.Length == 0)
 				return new TValue [] { };
 
-			return NSArray.ArrayFromHandle<TValue> (_ObjectsForKeys (NSArray.From<TKey> (keys).Handle, marker.Handle));
+			var keysArray = NSArray.From<TKey> (keys);
+			var result = NSArray.ArrayFromHandle<TValue> (_ObjectsForKeys (keysArray.Handle, marker.Handle));
+			GC.KeepAlive (keysArray);
+			GC.KeepAlive (marker);
+			return result;
 		}
 
 		// Strongly typed methods from NSMutableDictionary
@@ -192,6 +201,8 @@ namespace Foundation {
 				throw new ArgumentNullException (nameof (value));
 
 			_SetObject (value.Handle, key.Handle);
+			GC.KeepAlive (value);
+			GC.KeepAlive (key);
 		}
 
 		public bool Remove (TKey key)
@@ -201,6 +212,7 @@ namespace Foundation {
 
 			var last = Count;
 			_RemoveObjectForKey (key.Handle);
+			GC.KeepAlive (key);
 			return last != Count;
 		}
 
@@ -225,7 +237,10 @@ namespace Foundation {
 
 		static NSMutableDictionary<TKey, TValue> GenericFromObjectsAndKeysInternal (NSArray objects, NSArray keys)
 		{
-			return Runtime.GetNSObject<NSMutableDictionary<TKey, TValue>> (_FromObjectsAndKeysInternal (objects.Handle, keys.Handle));
+			var result = Runtime.GetNSObject<NSMutableDictionary<TKey, TValue>> (_FromObjectsAndKeysInternal (objects.Handle, keys.Handle));
+			GC.KeepAlive (objects);
+			GC.KeepAlive (keys);
+			return result;
 		}
 
 		public static NSMutableDictionary<TKey, TValue> FromObjectsAndKeys (TValue [] objects, TKey [] keys, nint count)

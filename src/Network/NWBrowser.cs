@@ -61,6 +61,8 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (descriptor));
 
 			InitializeHandle (nw_browser_create (descriptor.Handle, parameters.GetHandle ()));
+			GC.KeepAlive (descriptor);
+			GC.KeepAlive (parameters);
 			SetChangesHandler (InternalChangesHandler);
 		}
 
@@ -75,6 +77,7 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (queue));
 			lock (startLock) {
 				nw_browser_set_queue (GetCheckedHandle (), queue.Handle);
+				GC.KeepAlive (queue);
 				queueSet = true;
 			}
 		}

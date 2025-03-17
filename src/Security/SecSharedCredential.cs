@@ -64,6 +64,9 @@ namespace Security {
 				block.SetupBlockUnsafe (ActionTrampoline.Handler, handler);
 #endif
 				SecAddSharedWebCredential (nsDomain.Handle, nsAccount.Handle, nsPassword.GetHandle (), &block);
+				GC.KeepAlive (nsDomain);
+				GC.KeepAlive (nsAccount);
+				GC.KeepAlive (nsPassword);
 			}
 		}
 
@@ -151,6 +154,8 @@ namespace Security {
 				block.SetupBlockUnsafe (ArrayErrorActionTrampoline.Handler, onComplete);
 #endif
 				SecRequestSharedWebCredential (nsDomain.GetHandle (), nsAccount.GetHandle (), &block);
+				GC.KeepAlive (nsDomain);
+				GC.KeepAlive (nsAccount);
 			}
 		}
 

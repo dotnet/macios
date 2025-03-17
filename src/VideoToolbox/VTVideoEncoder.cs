@@ -256,6 +256,7 @@ namespace VideoToolbox {
 			VTStatus result;
 			unsafe {
 				result = VTCopySupportedPropertyDictionaryForEncoder (width, height, codecType, encoderSpecification.GetHandle (), &encoderIdPtr, &supportedPropertiesPtr);
+				GC.KeepAlive (encoderSpecification);
 			}
 
 			if (result != VTStatus.Ok) {

@@ -656,17 +656,7 @@ public class AppearanceAttribute : Attribute {
 // }
 [AttributeUsage (AttributeTargets.Interface, AllowMultiple = false)]
 public class CategoryAttribute : Attribute {
-#if !NET
-	public bool AllowStaticMembers;
-#endif
 	public CategoryAttribute () { }
-#if !NET
-	[Obsolete ("Inline the static members in this category in the category's class (and remove this obsolete once fixed)")]
-	public CategoryAttribute (bool allowStaticMembers)
-	{
-		AllowStaticMembers = allowStaticMembers;
-	}
-#endif
 }
 
 //
@@ -884,7 +874,6 @@ public class BackingFieldTypeAttribute : Attribute {
 public class NoMethodAttribute : Attribute {
 }
 
-#if NET
 public enum AvailabilityKind {
 	Introduced,
 	Deprecated,
@@ -1238,4 +1227,3 @@ enum Platform : ulong {
 	TV_10_0 = 0x30000000000a0000,
 	TV_11_0 = 0x30000000000b0000,
 }
-#endif // NET

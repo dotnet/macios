@@ -433,6 +433,7 @@ namespace ObjCRuntime {
 			var objectHandle = value.GetHandle ();
 			if (objectHandle != IntPtr.Zero)
 				CFObject.CFRetain (objectHandle);
+			GC.KeepAlive (value);
 			Marshal.WriteIntPtr (indirect, objectHandle);
 		}
 

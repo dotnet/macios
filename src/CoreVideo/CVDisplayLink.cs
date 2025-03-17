@@ -232,7 +232,10 @@ namespace CoreVideo {
 		[SupportedOSPlatform ("macos")]
 		public CVReturn SetCurrentDisplay (CGLContext cglContext, CGLPixelFormat cglPixelFormat)
 		{
-			return CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext (Handle, cglContext.Handle, cglPixelFormat.Handle);
+			CVReturn result = CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext (Handle, cglContext.Handle, cglPixelFormat.Handle);
+			GC.KeepAlive (cglContext);
+			GC.KeepAlive (cglPixelFormat);
+			return result;
 		}
 
 		[ObsoletedOSPlatform ("macos15.0", "Use 'NSView.GetDisplayLink', 'NSWindow.GetDisplayLink' or 'NSScreen.GetDisplayLink' instead.")]

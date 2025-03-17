@@ -20,7 +20,6 @@ readonly partial struct TypeInfo {
 
 	internal TypeInfo (ITypeSymbol symbol, Compilation compilation) : this (symbol)
 	{
-		IsNativeEnum = symbol.HasAttribute (AttributesNames.NativeEnumAttribute);
 		NeedsStret = symbol.NeedsStret (compilation);
 	}
 

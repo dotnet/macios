@@ -42,6 +42,7 @@ namespace Foundation {
 
 			var ptr = CFString.CreateNative (name);
 			ObjCRuntime.Messaging.void_objc_msgSend_IntPtr_IntPtr (class_ptr, Selector.GetHandle ("setClassName:forClass:"), ptr, kls.Handle);
+			GC.KeepAlive (kls);
 			CFString.ReleaseNative (ptr);
 		}
 
@@ -50,7 +51,9 @@ namespace Foundation {
 			if (kls is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (kls));
 
-			return CFString.FromHandle (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr (class_ptr, Selector.GetHandle ("classNameForClass:"), kls.Handle));
+			string result = CFString.FromHandle (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr (class_ptr, Selector.GetHandle ("classNameForClass:"), kls.Handle));
+			GC.KeepAlive (kls);
+			return result;
 		}
 
 #if !NET

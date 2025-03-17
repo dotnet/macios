@@ -65,12 +65,15 @@ namespace CoreVideo {
 
 			IntPtr pixelBufferPtr;
 			unsafe {
+				var pixelBufferAttributesDict = pixelBufferAttributes?.Dictionary;
 				result = CVPixelBufferCreateWithIOSurface (
 					allocator: IntPtr.Zero,
 					surface: surface.Handle,
-					pixelBufferAttributes: pixelBufferAttributes?.Dictionary.Handle ?? IntPtr.Zero,
+					pixelBufferAttributes: pixelBufferAttributesDict?.Handle ?? IntPtr.Zero,
 					pixelBufferOut: &pixelBufferPtr
 				);
+				GC.KeepAlive (surface);
+				GC.KeepAlive (pixelBufferAttributesDict);
 			}
 
 			if (result != CVReturn.Success)

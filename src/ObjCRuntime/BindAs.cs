@@ -128,6 +128,7 @@ namespace ObjCRuntime {
 		static UIKit.NSDirectionalEdgeInsets xamarin_nsvalue_to_nsdirectionaledgeinsets (IntPtr value) { if (value == IntPtr.Zero) return default (UIKit.NSDirectionalEdgeInsets); return Runtime.GetNSObject<NSValue> (value)?.DirectionalEdgeInsetsValue ?? default (UIKit.NSDirectionalEdgeInsets); }
 #endif
 
+#pragma warning disable RBI0014
 		static IntPtr xamarin_nsrange_to_nsvalue (Foundation.NSRange value) { using var rv = NSValue.FromRange (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
 		static IntPtr xamarin_cgaffinetransform_to_nsvalue (CoreGraphics.CGAffineTransform value) { using var rv = NSValue.FromCGAffineTransform (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
 		static IntPtr xamarin_cgpoint_to_nsvalue (CoreGraphics.CGPoint value) { using var rv = NSValue.FromCGPoint (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
@@ -151,6 +152,7 @@ namespace ObjCRuntime {
 		static IntPtr xamarin_uioffset_to_nsvalue (UIKit.UIOffset value) { using var rv = NSValue.FromUIOffset (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
 		static IntPtr xamarin_nsdirectionaledgeinsets_to_nsvalue (UIKit.NSDirectionalEdgeInsets value) { using var rv = NSValue.FromDirectionalEdgeInsets (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
 #endif
+#pragma warning restore RBI0014
 
 		static System.SByte xamarin_nsnumber_to_sbyte (IntPtr value) { if (value == IntPtr.Zero) return default (System.SByte); return Runtime.GetNSObject<NSNumber> (value)?.SByteValue ?? default (System.SByte); }
 		static System.Byte xamarin_nsnumber_to_byte (IntPtr value) { if (value == IntPtr.Zero) return default (System.Byte); return Runtime.GetNSObject<NSNumber> (value)?.ByteValue ?? default (System.Byte); }

@@ -3,6 +3,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis;
+using Microsoft.Macios.Generator;
 using Microsoft.Macios.Generator.Attributes;
 using Xamarin.Utils;
 

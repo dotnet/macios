@@ -47,6 +47,7 @@ namespace VideoToolbox {
 				ret = VTCreateCGImageFromCVPixelBuffer (pixelBuffer.GetCheckedHandle (),
 				IntPtr.Zero, // no options as of 9.0/10.11 - always pass NULL
 				&imagePtr);
+				GC.KeepAlive (pixelBuffer);
 			}
 
 			image = Runtime.GetINativeObject<CGImage> (imagePtr, true); // This is already retained CM_RETURNS_RETAINED_PARAMETER
@@ -113,6 +114,7 @@ namespace VideoToolbox {
 			IntPtr handle;
 			unsafe {
 				error = VTCopyVideoDecoderExtensionProperties (formatDescription.GetNonNullHandle (nameof (formatDescription)), &handle);
+				GC.KeepAlive (formatDescription);
 			}
 			return Runtime.GetNSObject<NSDictionary> (handle, owns: true);
 		}
@@ -150,6 +152,7 @@ namespace VideoToolbox {
 			IntPtr handle;
 			unsafe {
 				error = VTCopyRAWProcessorExtensionProperties (formatDescription.GetNonNullHandle (nameof (formatDescription)), &handle);
+				GC.KeepAlive (formatDescription);
 			}
 			return Runtime.GetNSObject<NSDictionary> (handle, owns: true);
 		}

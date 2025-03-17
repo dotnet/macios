@@ -1463,6 +1463,9 @@ namespace SpriteKit {
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
+		/// <summary>Gets or sets a value that controls whether the view is paused.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("paused")]
 		bool Paused { [Bind ("isPaused")] get; set; }
 
@@ -1479,6 +1482,9 @@ namespace SpriteKit {
 		[Export ("showsPhysics")]
 		bool ShowsPhysics { get; set; }
 
+		/// <summary>Gets or sets whether the view is rendered asynchronously.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("asynchronous")]
 		bool Asynchronous { [Bind ("isAsynchronous")] get; set; }
 

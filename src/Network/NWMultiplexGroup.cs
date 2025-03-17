@@ -33,6 +33,9 @@ namespace Network {
 		internal NWMultiplexGroup (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		public NWMultiplexGroup (NWEndpoint endpoint)
-			: base (nw_group_descriptor_create_multiplex (endpoint.GetCheckedHandle ()), true) { }
+			: base (nw_group_descriptor_create_multiplex (endpoint.GetCheckedHandle ()), true)
+		{
+			GC.KeepAlive (endpoint);
+		}
 	}
 }

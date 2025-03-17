@@ -64,7 +64,11 @@ namespace Network {
 		static extern void nw_privacy_context_require_encrypted_name_resolution (OS_nw_privacy_context privacyContext, byte requireEncryptedNameResolution, OS_nw_resolver_config fallbackResolverConfig);
 
 		public void RequireEncryptedNameResolution (bool requireEncryptedNameResolution, NWResolverConfig? fallbackResolverConfig)
-			=> nw_privacy_context_require_encrypted_name_resolution (GetCheckedHandle (), requireEncryptedNameResolution.AsByte (), fallbackResolverConfig.GetHandle ());
+		{
+			nw_privacy_context_require_encrypted_name_resolution (GetCheckedHandle (), requireEncryptedNameResolution.AsByte (), fallbackResolverConfig.GetHandle ());
+			GC.KeepAlive (requireEncryptedNameResolution);
+			GC.KeepAlive (fallbackResolverConfig);
+		}
 
 #if NET
 		[SupportedOSPlatform ("tvos17.0")]
@@ -90,6 +94,7 @@ namespace Network {
 			if (proxyConfig is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (proxyConfig));
 			nw_privacy_context_add_proxy (GetCheckedHandle (), proxyConfig.GetCheckedHandle ());
+			GC.KeepAlive (proxyConfig);
 		}
 
 #if NET

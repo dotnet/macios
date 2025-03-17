@@ -429,6 +429,7 @@ namespace CoreMedia {
 			IntPtr desc;
 			unsafe {
 				error = CMVideoFormatDescriptionCreateForImageBuffer (IntPtr.Zero, imageBuffer.Handle, &desc);
+				GC.KeepAlive (imageBuffer);
 			}
 			if (error != CMFormatDescriptionError.None)
 				return null;
@@ -556,7 +557,9 @@ namespace CoreMedia {
 		{
 			if (imageBuffer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (imageBuffer));
-			return CMVideoFormatDescriptionMatchesImageBuffer (Handle, imageBuffer.Handle) != 0;
+			bool result = CMVideoFormatDescriptionMatchesImageBuffer (Handle, imageBuffer.Handle) != 0;
+			GC.KeepAlive (imageBuffer);
+			return result;
 		}
 
 		[SupportedOSPlatform ("ios")]
@@ -604,6 +607,7 @@ namespace CoreMedia {
 					fixed (IntPtr* parameterSetPtrsPtr = parameterSetPtrs) {
 						fixed (nuint* parameterSetSizesPtr = parameterSetSizes) {
 							error = CMVideoFormatDescriptionCreateFromHEVCParameterSets (IntPtr.Zero, (nuint) parameterSets.Count, parameterSetPtrsPtr, parameterSetSizesPtr, nalUnitHeaderLength, extensions.GetHandle (), &desc);
+							GC.KeepAlive (extensions);
 						}
 					}
 				}

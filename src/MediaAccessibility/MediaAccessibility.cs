@@ -57,7 +57,9 @@ namespace MediaAccessibility {
 		{
 			// this will throw an ANE if language is null
 			using (var lang = new CFString (language)) {
-				return MACaptionAppearanceAddSelectedLanguage ((int) domain, lang.Handle) != 0;
+				bool result = MACaptionAppearanceAddSelectedLanguage ((int) domain, lang.Handle) != 0;
+				GC.KeepAlive (lang);
+				return result;
 			}
 		}
 

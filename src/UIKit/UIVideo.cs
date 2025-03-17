@@ -64,8 +64,10 @@ namespace UIKit {
 			UIApplication.EnsureUIThread ();
 			var dis = new UIVideoStatusDispatcher (status);
 
-			using (var ns = new NSString (path))
+			using (var ns = new NSString (path)) {
 				UISaveVideoAtPathToSavedPhotosAlbum (ns.Handle, dis.Handle, Selector.GetHandle (UIVideoStatusDispatcher.callbackSelector), IntPtr.Zero);
+				GC.KeepAlive (dis);
+			}
 		}
 
 	}

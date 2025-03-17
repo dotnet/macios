@@ -256,6 +256,7 @@ namespace CoreFoundation {
 				IntPtr portHandle;
 				unsafe {
 					portHandle = CFMessagePortCreateLocal (allocator.GetHandle (), n, &MessagePortCallback, &contextProxy, &shouldFreeInfo);
+					GC.KeepAlive (allocator);
 				}
 
 				// TODO handle should free info
@@ -331,7 +332,9 @@ namespace CoreFoundation {
 			if (context?.CopyDescription is not null)
 				result = context.CopyDescription ();
 
+#pragma warning disable RBI0014
 			return result.GetHandle ();
+#pragma warning restore RBI0014
 		}
 
 		[UnmanagedCallersOnly]
@@ -349,7 +352,9 @@ namespace CoreFoundation {
 				var result = callback.Invoke (msgid, managedData);
 				// System will release returned CFData
 				result?.DangerousRetain ();
+#pragma warning disable RBI0014
 				return result.GetHandle ();
+#pragma warning restore RBI0014
 			}
 		}
 
@@ -373,6 +378,7 @@ namespace CoreFoundation {
 			var n = CFString.CreateNative (name);
 			try {
 				var portHandle = CFMessagePortCreateRemote (allocator.GetHandle (), n);
+				GC.KeepAlive (allocator);
 				return portHandle == IntPtr.Zero ? null : new CFMessagePort (portHandle, true);
 			} finally {
 				CFString.ReleaseNative (n);
@@ -390,6 +396,8 @@ namespace CoreFoundation {
 			IntPtr returnDataHandle;
 			unsafe {
 				result = CFMessagePortSendRequest (GetCheckedHandle (), msgid, data.GetHandle (), sendTimeout, rcvTimeout, replyMode.GetHandle (), &returnDataHandle);
+				GC.KeepAlive (data);
+				GC.KeepAlive (replyMode);
 			}
 
 			returnData = Runtime.GetINativeObject<NSData> (returnDataHandle, false);
@@ -407,6 +415,7 @@ namespace CoreFoundation {
 		public void SetDispatchQueue (DispatchQueue? queue)
 		{
 			CFMessagePortSetDispatchQueue (GetCheckedHandle (), queue.GetHandle ());
+			GC.KeepAlive (queue);
 		}
 	}
 }

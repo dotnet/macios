@@ -26,7 +26,9 @@ namespace UIKit {
 			global::UIKit.UIApplication.EnsureUIThread ();
 			if (indexPath is null)
 				throw new ArgumentNullException ("indexPath");
-			return (T) Runtime.GetNSObject (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr (Class.GetHandle (typeof (T)), Selector.GetHandle ("layoutAttributesForCellWithIndexPath:"), indexPath.Handle));
+			T result = (T) Runtime.GetNSObject (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr (Class.GetHandle (typeof (T)), Selector.GetHandle ("layoutAttributesForCellWithIndexPath:"), indexPath.Handle));
+			GC.KeepAlive (indexPath);
+			return result;
 		}
 
 		[CompilerGenerated]
@@ -37,7 +39,10 @@ namespace UIKit {
 				throw new ArgumentNullException ("kind");
 			if (indexPath is null)
 				throw new ArgumentNullException ("indexPath");
-			return (T) Runtime.GetNSObject (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (Class.GetHandle (typeof (T)), Selector.GetHandle ("layoutAttributesForDecorationViewOfKind:withIndexPath:"), kind.Handle, indexPath.Handle));
+			T result = (T) Runtime.GetNSObject (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (Class.GetHandle (typeof (T)), Selector.GetHandle ("layoutAttributesForDecorationViewOfKind:withIndexPath:"), kind.Handle, indexPath.Handle));
+			GC.KeepAlive (kind);
+			GC.KeepAlive (indexPath);
+			return result;
 		}
 
 		[CompilerGenerated]
@@ -48,7 +53,10 @@ namespace UIKit {
 				throw new ArgumentNullException ("kind");
 			if (indexPath is null)
 				throw new ArgumentNullException ("indexPath");
-			return (T) Runtime.GetNSObject (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (Class.GetHandle (typeof (T)), Selector.GetHandle ("layoutAttributesForSupplementaryViewOfKind:withIndexPath:"), kind.Handle, indexPath.Handle));
+			T result = (T) Runtime.GetNSObject (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (Class.GetHandle (typeof (T)), Selector.GetHandle ("layoutAttributesForSupplementaryViewOfKind:withIndexPath:"), kind.Handle, indexPath.Handle));
+			GC.KeepAlive (kind);
+			GC.KeepAlive (indexPath);
+			return result;
 		}
 
 		static NSString GetKindForSection (UICollectionElementKindSection section)

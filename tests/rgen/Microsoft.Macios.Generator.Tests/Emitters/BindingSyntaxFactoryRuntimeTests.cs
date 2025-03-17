@@ -21,9 +21,9 @@ public class BindingSyntaxFactoryRuntimeTests {
 	[InlineData ("Test", "Selector.GetHandle (\"Test\")")]
 	[InlineData ("name", "Selector.GetHandle (\"name\")")]
 	[InlineData ("setName:", "Selector.GetHandle (\"setName:\")")]
-	void GetHandleTest (string selector, string expectedDeclaration)
+	void SelectorGetHandleTests (string selector, string expectedDeclaration)
 	{
-		var declaration = GetHandle (selector);
+		var declaration = SelectorGetHandle (selector);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 
@@ -437,6 +437,38 @@ public class BindingSyntaxFactoryRuntimeTests {
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 
+	class TestDataGetHandle : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return [
+				SmartEnumGetValue (
+					ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true),
+					[Argument (IdentifierName ("arg1"))],
+					false),
+				"global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetValue (arg1).GetHandle ()"
+			];
+
+			yield return [
+				SmartEnumGetValue (
+					ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true),
+					[Argument (IdentifierName ("arg1"))],
+					true),
+				"global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetNullableValue (arg1).GetHandle ()"
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataGetHandle))]
+	void GetHandleTests (ExpressionSyntax expression, string expectedDeclaration)
+	{
+		var declaration = GetHandle (expression);
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+
+
 	class TestDataNew : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -530,6 +562,148 @@ public class BindingSyntaxFactoryRuntimeTests {
 	void NewTests (TypeInfo typeInfo, ImmutableArray<ArgumentSyntax> arguments, bool global, string expectedDeclaration)
 	{
 		var declaration = New (typeInfo, arguments, global);
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+
+	class TestDataGetNSObject : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return [
+				"NSString",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))),
+				false,
+				"Runtime.GetNSObject<NSString> (arg1)"
+			];
+
+			yield return [
+				"NSString",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))),
+				true,
+				"Runtime.GetNSObject<NSString> (arg1)!"
+			];
+
+			yield return [
+				"NSNumber",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2")),
+					Argument (IdentifierName ("arg3"))
+				),
+				false,
+				"Runtime.GetNSObject<NSNumber> (arg1, arg2, arg3)"
+			];
+
+			yield return [
+				"NSNumber",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2")),
+					Argument (IdentifierName ("arg3"))
+				),
+				true,
+				"Runtime.GetNSObject<NSNumber> (arg1, arg2, arg3)!"
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataGetNSObject))]
+	void GetNSObjectTests (string nsObjecttype, ImmutableArray<ArgumentSyntax> arguments, bool suppressNullable, string expectedDeclaration)
+	{
+		var declaration = GetNSObject (nsObjecttype, arguments, suppressNullable);
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+
+	class TestGetINativeObject : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return [
+				"NSString",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))),
+				false,
+				"Runtime.GetINativeObject<NSString> (arg1)"
+			];
+
+			yield return [
+				"NSString",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))),
+				true,
+				"Runtime.GetINativeObject<NSString> (arg1)!"
+			];
+
+			yield return [
+				"NSNumber",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2")),
+					Argument (IdentifierName ("arg3"))
+				),
+				false,
+				"Runtime.GetINativeObject<NSNumber> (arg1, arg2, arg3)"
+			];
+
+			yield return [
+				"NSNumber",
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2")),
+					Argument (IdentifierName ("arg3"))
+				),
+				true,
+				"Runtime.GetINativeObject<NSNumber> (arg1, arg2, arg3)!"
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestGetINativeObject))]
+	void GetINativeObjectTests (string iNativeObject, ImmutableArray<ArgumentSyntax> arguments, bool suppressNullable, string expectedDeclaration)
+	{
+		var declaration = GetINativeObject (iNativeObject, arguments, suppressNullable);
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+
+	class TestDataIntPtrZeroCheck : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return [
+				"enumPtr",
+				SmartEnumGetValue (
+					ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true),
+					[Argument (IdentifierName ("enumPtr"))]
+					),
+				false,
+				"enumPtr == IntPtr.Zero ? null : global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetValue (enumPtr)"
+			];
+
+			yield return [
+				"enumPtr",
+				SmartEnumGetValue (
+					ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true),
+					[Argument (IdentifierName ("enumPtr"))]
+					),
+				true,
+				"enumPtr == IntPtr.Zero ? null! : global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetValue (enumPtr)"
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataIntPtrZeroCheck))]
+	void IntPtrZeroCheckTests (string variableName, ExpressionSyntax falseExpression, bool suppressNullableWarning, string expectedDeclaration)
+	{
+		var declaration = IntPtrZeroCheck (variableName, falseExpression, suppressNullableWarning);
+		var str = declaration.ToString ();
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 

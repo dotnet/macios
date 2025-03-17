@@ -69,6 +69,7 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (networkInterface));
 
 			InitializeHandle (nw_ethernet_channel_create (ethernetType, networkInterface.Handle));
+			GC.KeepAlive (networkInterface);
 		}
 
 #if NET
@@ -88,9 +89,13 @@ namespace Network {
 #else
 		[Mac (13,0)]
 #endif
-		public NWEthernetChannel (ushort ethernetType, NWInterface networkInterface, NWParameters parameters) =>
+		public NWEthernetChannel (ushort ethernetType, NWInterface networkInterface, NWParameters parameters)
+		{
 			InitializeHandle (nw_ethernet_channel_create_with_parameters (ethernetType,
 						networkInterface.GetNonNullHandle (nameof (networkInterface)), parameters.GetNonNullHandle (nameof (parameters))));
+			GC.KeepAlive (networkInterface);
+			GC.KeepAlive (parameters);
+		}
 
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_ethernet_channel_start (OS_nw_ethernet_channel ethernet_channel);
@@ -110,6 +115,7 @@ namespace Network {
 			if (queue is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (queue));
 			nw_ethernet_channel_set_queue (GetCheckedHandle (), queue.Handle);
+			GC.KeepAlive (queue);
 		}
 
 #if NET

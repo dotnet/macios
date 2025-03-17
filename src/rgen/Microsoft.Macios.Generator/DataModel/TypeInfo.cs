@@ -238,6 +238,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		IsInterface = symbol.TypeKind == TypeKind.Interface;
 		IsDelegate = symbol.TypeKind == TypeKind.Delegate;
 		IsNativeIntegerType = symbol.IsNativeIntegerType;
+		IsNativeEnum = symbol.HasAttribute (AttributesNames.NativeAttribute);
 
 		// data that we can get from the symbol without being INamedType
 		symbol.GetInheritance (
@@ -380,9 +381,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			// IsNativeEnum: Depends on the enum backing field kind.
 			// GeneralEnum: Depends on the EnumUnderlyingType
 
-			{ IsSmartEnum: true } => NativeHandle, 
 			{ IsNativeEnum: true, EnumUnderlyingType: SpecialType.System_Int64 } => IntPtr, 
 			{ IsNativeEnum: true, EnumUnderlyingType: SpecialType.System_UInt64 } => UIntPtr, 
+			{ IsSmartEnum: true } => NativeHandle, 
 			{ IsEnum: true, EnumUnderlyingType: not null } => EnumUnderlyingType.GetKeyword (),
 
 			// special type that is a keyword (none would be a ref type)

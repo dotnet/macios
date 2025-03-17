@@ -290,7 +290,9 @@ namespace CoreFoundation {
 			if (mode is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
 
-			return CFRunLoopRunInMode (mode.Handle, seconds, returnAfterSourceHandled ? (byte) 1 : (byte) 0);
+			CFRunLoopExitReason result = CFRunLoopRunInMode (mode.Handle, seconds, returnAfterSourceHandled ? (byte) 1 : (byte) 0);
+			GC.KeepAlive (mode);
+			return result;
 		}
 
 		public CFRunLoopExitReason RunInMode (string mode, double seconds, bool returnAfterSourceHandled)
@@ -309,6 +311,8 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
 
 			CFRunLoopAddSource (Handle, source.Handle, mode.Handle);
+			GC.KeepAlive (source);
+			GC.KeepAlive (mode);
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]
@@ -321,7 +325,10 @@ namespace CoreFoundation {
 			if (mode is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
 
-			return CFRunLoopContainsSource (Handle, source.Handle, mode.Handle) != 0;
+			bool result = CFRunLoopContainsSource (Handle, source.Handle, mode.Handle) != 0;
+			GC.KeepAlive (source);
+			GC.KeepAlive (mode);
+			return result;
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]
@@ -335,6 +342,8 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
 
 			CFRunLoopRemoveSource (Handle, source.Handle, mode.Handle);
+			GC.KeepAlive (source);
+			GC.KeepAlive (mode);
 		}
 
 		[Preserve (Conditional = true)]

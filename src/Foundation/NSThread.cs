@@ -49,7 +49,11 @@ namespace Foundation {
 			if (selector is null)
 				throw new ArgumentNullException ("selector");
 
-			return xamarin_init_nsthread (IsDirectBinding ? this.Handle : this.SuperHandle, IsDirectBinding.AsByte (), target.Handle, selector.Handle, argument is null ? IntPtr.Zero : argument.Handle);
+			IntPtr result = xamarin_init_nsthread (IsDirectBinding ? this.Handle : this.SuperHandle, IsDirectBinding.AsByte (), target.Handle, selector.Handle, argument is null ? IntPtr.Zero : argument.Handle);
+			GC.KeepAlive (target);
+			GC.KeepAlive (selector);
+			GC.KeepAlive (argument);
+			return result;
 		}
 
 		[Export ("initWithTarget:selector:object:")]

@@ -63,12 +63,14 @@ namespace UIKit {
 			set {
 				global::UIKit.UIApplication.EnsureUIThread ();
 				var nsa_value = NSArray.FromNSObjects (value);
+				var nsa_valueHandle = nsa_value.Handle;
 
 				if (IsDirectBinding) {
-					ObjCRuntime.Messaging.void_objc_msgSend_IntPtr (this.Handle, Selector.GetHandle (selSetImages_), nsa_value.Handle);
+					ObjCRuntime.Messaging.void_objc_msgSend_IntPtr (this.Handle, Selector.GetHandle (selSetImages_), nsa_valueHandle);
 				} else {
-					ObjCRuntime.Messaging.void_objc_msgSendSuper_IntPtr (this.SuperHandle, Selector.GetHandle (selSetImages_), nsa_value.Handle);
+					ObjCRuntime.Messaging.void_objc_msgSendSuper_IntPtr (this.SuperHandle, Selector.GetHandle (selSetImages_), nsa_valueHandle);
 				}
+
 				nsa_value.Dispose ();
 			}
 		}

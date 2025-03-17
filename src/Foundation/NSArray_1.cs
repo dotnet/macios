@@ -63,12 +63,16 @@ namespace Foundation {
 			IntPtr buf = Marshal.AllocHGlobal ((IntPtr) (count * IntPtr.Size));
 			for (nint i = 0; i < count; i++) {
 				var item = items [i];
+				// The analyzer cannot deal with arrays, we manually keep alive the whole array below
+#pragma warning disable RBI0014
 				IntPtr h = item is null ? NSNull.Null.Handle : item.Handle;
 				Marshal.WriteIntPtr (buf, (int) (i * IntPtr.Size), h);
+#pragma warning restore RBI0014
 			}
 			IntPtr ret = NSArray.FromObjects (buf, count);
 			var arr = Runtime.GetNSObject<NSArray<TKey>> (ret)!;
 			Marshal.FreeHGlobal (buf);
+			GC.KeepAlive (items);
 			return arr;
 		}
 

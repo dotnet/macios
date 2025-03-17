@@ -56,6 +56,7 @@ namespace CoreServices {
 				throw new InvalidOperationException ();
 
 			var handle = CFHTTPAuthenticationCreateFromResponse (IntPtr.Zero, response.Handle);
+			GC.KeepAlive (response);
 			if (handle == IntPtr.Zero)
 				return null;
 
@@ -80,7 +81,9 @@ namespace CoreServices {
 			if (!request.IsRequest)
 				throw new InvalidOperationException ();
 
-			return CFHTTPAuthenticationAppliesToRequest (Handle, request.Handle) != 0;
+			bool result = CFHTTPAuthenticationAppliesToRequest (Handle, request.Handle) != 0;
+			GC.KeepAlive (request);
+			return result;
 		}
 
 		[DllImport (Constants.CFNetworkLibrary)]

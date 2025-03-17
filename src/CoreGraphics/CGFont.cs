@@ -92,7 +92,9 @@ namespace CoreGraphics {
 			// and have a unit tests to make sure this behavior does not change over time
 			if (provider is null)
 				return null;
-			return Create (CGFontCreateWithDataProvider (provider.Handle));
+			CGFont? result = Create (CGFontCreateWithDataProvider (provider.Handle));
+			GC.KeepAlive (provider);
+			return result;
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]

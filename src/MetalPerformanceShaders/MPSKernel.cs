@@ -18,7 +18,9 @@ namespace MetalPerformanceShaders {
 
 		public static bool Supports (IMTLDevice device)
 		{
-			return MPSSupportsMTLDevice (device.GetHandle ()) != 0;
+			bool result = MPSSupportsMTLDevice (device.GetHandle ()) != 0;
+			GC.KeepAlive (device);
+			return result;
 		}
 
 #if NET
@@ -87,7 +89,11 @@ namespace MetalPerformanceShaders {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 #endif
-		public static void HintTemporaryMemoryHighWaterMark (IMTLCommandBuffer commandBuffer, nuint sizeInBytes) => MPSHintTemporaryMemoryHighWaterMark (commandBuffer.GetHandle (), sizeInBytes);
+		public static void HintTemporaryMemoryHighWaterMark (IMTLCommandBuffer commandBuffer, nuint sizeInBytes)
+		{
+			MPSHintTemporaryMemoryHighWaterMark (commandBuffer.GetHandle (), sizeInBytes);
+			GC.KeepAlive (commandBuffer);
+		}
 
 #if NET
 		[SupportedOSPlatform ("tvos")]
@@ -104,7 +110,11 @@ namespace MetalPerformanceShaders {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 #endif
-		public static void SetHeapCacheDuration (IMTLCommandBuffer commandBuffer, double seconds) => MPSSetHeapCacheDuration (commandBuffer.GetHandle (), seconds);
+		public static void SetHeapCacheDuration (IMTLCommandBuffer commandBuffer, double seconds)
+		{
+			MPSSetHeapCacheDuration (commandBuffer.GetHandle (), seconds);
+			GC.KeepAlive (commandBuffer);
+		}
 #endif
 	}
 

@@ -22,17 +22,6 @@ namespace GeneratorTests {
 			Assert.AreEqual (expected, applicationClassName);
 		}
 
-		[TestCase (PlatformName.MacOSX, 2)]
-		[TestCase (PlatformName.iOS, 2)]
-		[TestCase (PlatformName.TvOS, 3)]
-		[TestCase (PlatformName.WatchOS, 3)]
-		public void GetXamcoreVersionTest (PlatformName platformName, int expected)
-#if NET
-			=> Assert.AreEqual (4, platformName.GetXamcoreVersion ());
-#else
-			=> Assert.AreEqual (expected, platformName.GetXamcoreVersion ());
-#endif
-
 		[TestCase (PlatformName.iOS, "CoreImage")]
 		[TestCase (PlatformName.WatchOS, "CoreImage")]
 		[TestCase (PlatformName.TvOS, "CoreImage")]

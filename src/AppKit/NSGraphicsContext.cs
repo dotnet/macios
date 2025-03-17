@@ -41,7 +41,9 @@ namespace AppKit {
 		{
 			if (context is null)
 				throw new ArgumentNullException (nameof (context));
-			return FromGraphicsPort (context.Handle, initialFlippedState);
+			NSGraphicsContext result = FromGraphicsPort (context.Handle, initialFlippedState);
+			GC.KeepAlive (context);
+			return result;
 		}
 
 		public virtual CGContext GraphicsPort {

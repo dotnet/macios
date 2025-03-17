@@ -8043,6 +8043,7 @@ F:GameKit.GKError.ApiNotAvailable
 F:GameKit.GKError.ApiObsolete
 F:GameKit.GKError.AppUnlisted
 F:GameKit.GKError.ConnectionTimeout
+F:GameKit.GKError.DebugMode
 F:GameKit.GKError.FriendListDenied
 F:GameKit.GKError.FriendListDescriptionMissing
 F:GameKit.GKError.FriendListRestricted
@@ -8067,6 +8068,9 @@ F:GameKit.GKMatchmakingMode.NearbyOnly
 F:GameKit.GKMatchSendDataMode.Reliable
 F:GameKit.GKMatchSendDataMode.Unreliable
 F:GameKit.GKPeerConnectionState.ConnectedRelay
+F:GameKit.GKReleaseState.Prereleased
+F:GameKit.GKReleaseState.Released
+F:GameKit.GKReleaseState.Unknown
 F:GameplayKit.GKBox.Max
 F:GameplayKit.GKBox.Min
 F:GameplayKit.GKGameModel.MaxScore
@@ -67473,6 +67477,7 @@ T:GameKit.GKPlayerPhotoLoaded
 T:GameKit.GKPlayersEventArgs
 T:GameKit.GKPlayersHandler
 T:GameKit.GKQueryHandler
+T:GameKit.GKReleaseState
 T:GameKit.GKScoresLoadedHandler
 T:GameKit.GKSendDataMode
 T:GameKit.GKSessionMode

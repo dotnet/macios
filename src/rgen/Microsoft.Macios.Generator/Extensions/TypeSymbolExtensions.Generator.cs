@@ -112,7 +112,7 @@ static partial class TypeSymbolExtensions {
 	/// <returns>The data of a BindFromAttribute that was added to the symbol or null if it was not found.</returns>
 	public static BindFromData? GetBindFromData (this ISymbol symbol)
 		=> GetAttribute<BindFromData> (symbol, AttributesNames.BindFromAttribute, BindFromData.TryParse);
-	
+
 	public static ForcedTypeData? GetForceTypeData (this ISymbol symbol)
 		=> GetAttribute<ForcedTypeData> (symbol, AttributesNames.ForcedTypeAttribute, ForcedTypeData.TryParse);
 

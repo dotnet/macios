@@ -8,14 +8,14 @@ using Microsoft.CodeAnalysis;
 namespace Microsoft.Macios.Generator.Attributes;
 
 readonly struct ForcedTypeData : IEquatable<ForcedTypeData> {
-	
+
 	public bool Owns { get; } = false;
-	
+
 	public ForcedTypeData (bool owns)
 	{
 		Owns = owns;
 	}
-	
+
 	public static bool TryParse (AttributeData attributeData,
 		[NotNullWhen (true)] out ForcedTypeData? data)
 	{
@@ -50,7 +50,7 @@ readonly struct ForcedTypeData : IEquatable<ForcedTypeData> {
 		data = new (owns);
 		return true;
 	}
-	
+
 	/// <inheritdoc />
 	public bool Equals (ForcedTypeData other)
 	{
@@ -81,6 +81,6 @@ readonly struct ForcedTypeData : IEquatable<ForcedTypeData> {
 
 	public override string ToString ()
 	{
-		return $"{{ Owns: {Owns} }}"; 
+		return $"{{ Owns: {Owns} }}";
 	}
 }

@@ -26,7 +26,7 @@ readonly partial struct Parameter : IEquatable<Parameter> {
 	/// Type of the parameter.
 	/// </summary>
 	public TypeInfo Type { get; }
-	
+
 	/// <summary>
 	/// Parameter name
 	/// </summary>

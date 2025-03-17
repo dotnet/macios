@@ -28,7 +28,7 @@ readonly partial struct Method : IEquatable<Method> {
 	/// Method return type.
 	/// </summary>
 	public TypeInfo ReturnType { get; }
-	
+
 	/// <summary>
 	/// The platform availability of the method.
 	/// </summary>

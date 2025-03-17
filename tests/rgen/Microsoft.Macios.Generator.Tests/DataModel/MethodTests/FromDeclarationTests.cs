@@ -574,7 +574,7 @@ namespace NS {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSNumber")),
 				}
 			];
-			
+
 			const string returnTypeForceTypeAttribute = @"
 using System;
 using Foundation;
@@ -597,7 +597,7 @@ namespace NS {
 					symbolAvailability: new (),
 					exportMethodData: new (),
 					attributes: [
-						new("ObjCBindings.ForcedTypeAttribute"),
+						new ("ObjCBindings.ForcedTypeAttribute"),
 					],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
@@ -607,7 +607,7 @@ namespace NS {
 					ForcedType = new (),
 				}
 			];
-			
+
 			const string returnTypeForceTypeOwnsAttribute = @"
 using System;
 using Foundation;
@@ -630,7 +630,7 @@ namespace NS {
 					symbolAvailability: new (),
 					exportMethodData: new (),
 					attributes: [
-						new("ObjCBindings.ForcedTypeAttribute", ["true"]),
+						new ("ObjCBindings.ForcedTypeAttribute", ["true"]),
 					],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
@@ -676,7 +676,7 @@ namespace NS {
 					]
 				)
 			];
-			
+
 			const string parameterForceTypeAttr = @"
 using System;
 using Foundation;
@@ -695,24 +695,24 @@ namespace NS {
 					type: "NS.MyClass",
 					name: "MyMethod",
 					returnType: ReturnTypeForVoid (),
-					symbolAvailability: new(),
-					exportMethodData: new(),
+					symbolAvailability: new (),
+					exportMethodData: new (),
 					attributes: [
 					],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 					],
 					parameters: [
-						new(0, ReturnTypeForInt (), "value") {
+						new (0, ReturnTypeForInt (), "value") {
 							Attributes = [
-								new("ObjCBindings.ForcedTypeAttribute"), 
+								new ("ObjCBindings.ForcedTypeAttribute"),
 							],
-							ForcedType = new(),
+							ForcedType = new (),
 						}
 					]
 				)
 			];
-			
+
 			const string parameterForceTypeOwnsAttr = @"
 using System;
 using Foundation;
@@ -731,19 +731,19 @@ namespace NS {
 					type: "NS.MyClass",
 					name: "MyMethod",
 					returnType: ReturnTypeForVoid (),
-					symbolAvailability: new(),
-					exportMethodData: new(),
+					symbolAvailability: new (),
+					exportMethodData: new (),
 					attributes: [
 					],
 					modifiers: [
 						SyntaxFactory.Token (SyntaxKind.PublicKeyword),
 					],
 					parameters: [
-						new(0, ReturnTypeForInt (), "value") {
+						new (0, ReturnTypeForInt (), "value") {
 							Attributes = [
-								new("ObjCBindings.ForcedTypeAttribute", ["true"]),
+								new ("ObjCBindings.ForcedTypeAttribute", ["true"]),
 							],
-							ForcedType = new(true),
+							ForcedType = new (true),
 						}
 					]
 				)

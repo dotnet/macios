@@ -36,7 +36,7 @@ readonly partial struct Property : IEquatable<Property> {
 			ValueParameter = new Parameter (0, returnType, "value");
 		}
 	}
-	
+
 	/// <summary>
 	/// Returns if the property type is bittable.
 	/// </summary>

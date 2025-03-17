@@ -16,7 +16,7 @@ readonly partial struct Parameter {
 	/// Returns the bind from data if present in the binding.
 	/// </summary>
 	public BindFromData? BindAs { get; init; }
-	
+
 	/// <summary>
 	/// Returns the forced type data if present in the binding.
 	/// </summary>

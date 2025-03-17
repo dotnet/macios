@@ -1007,7 +1007,7 @@ public class TestClass {
 					ExportPropertyData = new (selector: "name"),
 				}
 			];
-			
+
 			const string forcedTypeAttribute = @"
 using System;
 using Foundation;
@@ -1048,7 +1048,7 @@ public class TestClass {
 					ForcedType = new (),
 				}
 			];
-			
+
 			const string forcedTypeOwnedAttribute = @"
 using System;
 using Foundation;

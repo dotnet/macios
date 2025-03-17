@@ -10,7 +10,7 @@ using static Microsoft.Macios.Generator.Tests.TestDataFactory;
 namespace Microsoft.Macios.Generator.Tests.DataModel;
 
 public class ParameterTests {
-	
+
 	class TestDataNeedsNullCheckTests : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{

@@ -13,7 +13,7 @@ namespace Microsoft.Macios.Generator;
 /// In this case, the Nomenclator is used to generate the names of the bindings.
 /// </summary>
 class Nomenclator {
-	
+
 	public enum VariableType {
 		BlockLiteral,
 		Handle,
@@ -97,7 +97,7 @@ class Nomenclator {
 			_ => null
 		};
 	}
-	
+
 	/// <summary>
 	/// Get the name of the variable for the type when it is used as a return value.
 	/// </summary>

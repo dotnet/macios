@@ -189,7 +189,7 @@ static partial class BindingSyntaxFactory {
 		if (!parameter.Type.IsNSObject && !parameter.Type.IsINativeObject)
 			return null;
 
-		var variableName = Nomenclator.GetNameForVariableType(parameter.Name, Nomenclator.VariableType.Handle);
+		var variableName = Nomenclator.GetNameForVariableType (parameter.Name, Nomenclator.VariableType.Handle);
 		if (variableName is null)
 			return null;
 		// decide about the factory based on the need of a null check 

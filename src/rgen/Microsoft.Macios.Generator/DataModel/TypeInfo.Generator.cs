@@ -12,7 +12,7 @@ readonly partial struct TypeInfo {
 	/// True if the type needs to use a stret call.
 	/// </summary>
 	public bool NeedsStret { get; init; }
-	
+
 	internal TypeInfo (ITypeSymbol symbol, Compilation compilation) : this (symbol)
 	{
 		IsNativeEnum = symbol.HasAttribute (AttributesNames.NativeEnumAttribute);

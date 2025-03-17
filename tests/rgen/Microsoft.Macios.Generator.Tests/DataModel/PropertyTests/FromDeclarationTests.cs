@@ -959,6 +959,88 @@ public class TestClass {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSNumber")),
 				}
 			];
+			
+			const string forcedTypeAttribute = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace Test;
+
+public class TestClass {
+
+	[Export<Property>(""name""), ForcedType]
+	public int Name { get; }
+}
+";
+			yield return [
+				forcedTypeAttribute,
+				new Property (
+					name: "Name",
+					returnType: ReturnTypeForInt (),
+					symbolAvailability: new (),
+					attributes: [
+						new (name: "ObjCBindings.ExportAttribute<ObjCBindings.Property>", arguments: ["name"]),
+						new (name: "ObjCBindings.ForcedTypeAttribute"),
+					],
+					modifiers: [
+						SyntaxFactory.Token (kind: SyntaxKind.PublicKeyword),
+					],
+					accessors: [
+						new (
+							accessorKind: AccessorKind.Getter,
+							symbolAvailability: new (),
+							exportPropertyData: null,
+							attributes: [],
+							modifiers: []
+						)
+					]
+				) {
+					ExportPropertyData = new (selector: "name"),
+					ForcedType = new (),
+				}
+			];
+			
+			const string forcedTypeOwnedAttribute = @"
+using System;
+using Foundation;
+using ObjCBindings;
+
+namespace Test;
+
+public class TestClass {
+
+	[Export<Property>(""name""), ForcedType (true)]
+	public int Name { get; }
+}
+";
+			yield return [
+				forcedTypeOwnedAttribute,
+				new Property (
+					name: "Name",
+					returnType: ReturnTypeForInt (),
+					symbolAvailability: new (),
+					attributes: [
+						new (name: "ObjCBindings.ExportAttribute<ObjCBindings.Property>", arguments: ["name"]),
+						new (name: "ObjCBindings.ForcedTypeAttribute", arguments: ["true"]),
+					],
+					modifiers: [
+						SyntaxFactory.Token (kind: SyntaxKind.PublicKeyword),
+					],
+					accessors: [
+						new (
+							accessorKind: AccessorKind.Getter,
+							symbolAvailability: new (),
+							exportPropertyData: null,
+							attributes: [],
+							modifiers: []
+						)
+					]
+				) {
+					ExportPropertyData = new (selector: "name"),
+					ForcedType = new (true),
+				}
+			];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator ()

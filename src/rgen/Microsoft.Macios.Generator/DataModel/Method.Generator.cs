@@ -25,7 +25,12 @@ readonly partial struct Method {
 	/// Returns the bind from data if present in the binding.
 	/// </summary>
 	public BindFromData? BindAs { get; init; }
-
+	
+	/// <summary>
+	/// Returns the forced type data if present in the binding.
+	/// </summary>
+	public ForcedTypeData? ForcedType { get; init; }
+	
 	/// <summary>
 	/// Returns if the method was marked as thread safe.
 	/// </summary>
@@ -150,6 +155,7 @@ readonly partial struct Method {
 			modifiers: [.. declaration.Modifiers],
 			parameters: parametersBucket.ToImmutableArray ()) {
 			BindAs = method.GetBindFromData (),
+			ForcedType = method.GetForceTypeData (),
 		};
 
 		return true;

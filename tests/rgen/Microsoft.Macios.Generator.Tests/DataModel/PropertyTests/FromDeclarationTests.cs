@@ -959,7 +959,7 @@ public class TestClass {
 					BindAs = new (ReturnTypeForNSObject ("Foundation.NSNumber")),
 				}
 			];
-			
+
 			const string protocolProperty = @"
 using System;
 using Foundation;

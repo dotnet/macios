@@ -174,7 +174,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// True if the symbol represents a generic type.
 	/// </summary>
 	public bool IsGenericType { get; init; }
-	
+
 	/// <summary>
 	/// True if the type represents a ObjC protocol.
 	/// </summary>

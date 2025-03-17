@@ -630,7 +630,7 @@ static class TestDataFactory {
 			Parents = ["object"],
 			Interfaces = ["ObjCRuntime.INativeObject"]
 		};
-	
+
 	public static TypeInfo ReturnTypeForNSString (bool isNullable = false)
 		=> new (
 			name: "Foundation.NSString",

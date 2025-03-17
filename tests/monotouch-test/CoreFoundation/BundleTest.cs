@@ -357,11 +357,21 @@ namespace MonoTouchFixtures.CoreFoundation {
 					key = "GoodMorning";
 					expectedValue = "?";
 					switch (preferred) {
-					case "en-AU": expectedValue = "G'day mate"; break;
-					case "en-UK": expectedValue = "Wakey, wakey, eggs and bakey"; break;
-					case "es": expectedValue = "Buenas"; break;
-					case "es-AR": expectedValue = "Buen día"; break;
-					case "es-ES": expectedValue = "Buenos días"; break;
+					case "en-AU":
+						expectedValue = "G'day mate";
+						break;
+					case "en-UK":
+						expectedValue = "Wakey, wakey, eggs and bakey";
+						break;
+					case "es":
+						expectedValue = "Buenas";
+						break;
+					case "es-AR":
+						expectedValue = "Buen día";
+						break;
+					case "es-ES":
+						expectedValue = "Buenos días";
+						break;
 					default:
 						expectedValue = $"Unexpected preferred language ({preferred}), probably missing localizations.";
 						break;
@@ -383,11 +393,21 @@ namespace MonoTouchFixtures.CoreFoundation {
 				key = "Local Animal";
 				expectedValue = "?";
 				switch (preferred) {
-				case "en-AU": expectedValue = "Quokka"; break;
-				case "en-UK": expectedValue = "Tiger of the Highlands"; break;
-				case "es": expectedValue = "Ocelote"; break;
-				case "es-AR": expectedValue = "Pato vapor cabeza blanca"; break;
-				case "es-ES": expectedValue = "Lince ibérico"; break;
+				case "en-AU":
+					expectedValue = "Quokka";
+					break;
+				case "en-UK":
+					expectedValue = "Tiger of the Highlands";
+					break;
+				case "es":
+					expectedValue = "Ocelote";
+					break;
+				case "es-AR":
+					expectedValue = "Pato vapor cabeza blanca";
+					break;
+				case "es-ES":
+					expectedValue = "Lince ibérico";
+					break;
 				default:
 					expectedValue = $"Unexpected preferred language ({preferred}), probably missing localizations.";
 					break;

@@ -2,6 +2,7 @@
 
 #nullable enable
 
+using AVFoundation;
 using CoreGraphics;
 using Foundation;
 using ObjCBindings;
@@ -585,6 +586,38 @@ public partial class PropertyTests
 			} else {
 				return CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("surnames")), false)!;
 			}
+		}
+
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		set
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst13.1")]
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public virtual partial AVFoundation.AVCaptureReactionType ReactionType
+	{
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst13.1")]
+		get
+		{
+			AVFoundation.AVCaptureReactionType ret;
+			if (IsDirectBinding) {
+				ret = global::AVFoundation.AVCaptureReactionTypeExtensions.GetValue (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_stret (this.Handle, Selector.GetHandle ("canDraw")));
+			} else {
+				ret = global::AVFoundation.AVCaptureReactionTypeExtensions.GetValue (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_stret (this.Handle, Selector.GetHandle ("canDraw")));
+			}
+			return ret;
 		}
 
 		[SupportedOSPlatform ("macos")]

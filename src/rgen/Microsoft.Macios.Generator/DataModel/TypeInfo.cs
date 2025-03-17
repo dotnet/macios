@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.CodeAnalysis;
@@ -33,6 +34,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		}
 	}
 
+	/// <summary>
+	/// Type name.
+	/// </summary>
 	public string Name { get; private init; } = string.Empty;
 
 	/// <summary>
@@ -127,6 +131,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 
 	readonly bool isNSObject = false;
 
+	/// <summary>
+	/// True if the type represents a NSObject.
+	/// </summary>
 	public bool IsNSObject {
 		get => isNSObject;
 		init => isNSObject = value;
@@ -134,6 +141,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 
 	readonly bool isINativeObject = false;
 
+	/// <summary>
+	/// True if the type implements INativeObject.
+	/// </summary>
 	public bool IsINativeObject {
 		get => isINativeObject;
 		init => isINativeObject = value;
@@ -141,6 +151,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 
 	readonly bool isDictionaryContainer = false;
 
+	/// <summary>
+	/// True if the type inherits from the DictionaryContainer class.
+	/// </summary>
 	public bool IsDictionaryContainer {
 		get => isDictionaryContainer;
 		init => isDictionaryContainer = value;
@@ -149,9 +162,23 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	/// <summary>
 	/// True if the type represents a delegate.
 	/// </summary>
+	[MemberNotNullWhen (true, nameof (Delegate))]
 	public bool IsDelegate { get; init; }
 
+	/// <summary>
+	/// If the parameter is a delegate. The method information of the invoke.
+	/// </summary>
+	public DelegateInfo? Delegate { get; init; } = null;
+
+	/// <summary>
+	/// True if the symbol represents a generic type.
+	/// </summary>
+	public bool IsGenericType { get; init; }
+
 	readonly ImmutableArray<string> parents = [];
+	/// <summary>
+	/// Array of the parent types of the type.
+	/// </summary>
 	public ImmutableArray<string> Parents {
 		get => parents;
 		init => parents = value;
@@ -159,10 +186,19 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 
 	readonly ImmutableArray<string> interfaces = [];
 
+	/// <summary>
+	/// Array of the implemented interfaces by the type.
+	/// </summary>
 	public ImmutableArray<string> Interfaces {
 		get => interfaces;
 		init => interfaces = value;
 	}
+
+
+	/// <summary>
+	/// The type arguments of the generic type.
+	/// </summary>
+	public ImmutableArray<string> TypeArguments { get; init; } = [];
 
 	internal TypeInfo (string name, SpecialType specialType)
 	{
@@ -202,6 +238,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		IsInterface = symbol.TypeKind == TypeKind.Interface;
 		IsDelegate = symbol.TypeKind == TypeKind.Delegate;
 		IsNativeIntegerType = symbol.IsNativeIntegerType;
+		IsNativeEnum = symbol.HasAttribute (AttributesNames.NativeAttribute);
 
 		// data that we can get from the symbol without being INamedType
 		symbol.GetInheritance (
@@ -223,6 +260,17 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 
 		// store the enum special type, useful when generate code that needs to cast
 		EnumUnderlyingType = namedTypeSymbol?.EnumUnderlyingType?.SpecialType;
+		if (namedTypeSymbol is not null) {
+			IsGenericType = namedTypeSymbol.IsGenericType;
+			TypeArguments = [
+				.. namedTypeSymbol.TypeArguments
+					.Select (x => x.ToDisplayString ())
+			];
+
+			if (namedTypeSymbol.DelegateInvokeMethod is not null &&
+				DelegateInfo.TryCreate (namedTypeSymbol.DelegateInvokeMethod, out var delegateInfo))
+				Delegate = delegateInfo;
+		}
 
 		if (!IsReferenceType && IsNullable && namedTypeSymbol is not null) {
 			// get the type argument for nullable, which we know is the data that was boxed and use it to 
@@ -267,6 +315,8 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		if (IsNativeIntegerType != other.IsNativeIntegerType)
 			return false;
 		if (IsNativeEnum != other.IsNativeEnum)
+			return false;
+		if (Delegate != other.Delegate)
 			return false;
 
 		// compare base classes and interfaces, order does not matter at all
@@ -331,9 +381,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			// IsNativeEnum: Depends on the enum backing field kind.
 			// GeneralEnum: Depends on the EnumUnderlyingType
 
-			{ IsSmartEnum: true } => NativeHandle, 
 			{ IsNativeEnum: true, EnumUnderlyingType: SpecialType.System_Int64 } => IntPtr, 
 			{ IsNativeEnum: true, EnumUnderlyingType: SpecialType.System_UInt64 } => UIntPtr, 
+			{ IsSmartEnum: true } => NativeHandle, 
 			{ IsEnum: true, EnumUnderlyingType: not null } => EnumUnderlyingType.GetKeyword (),
 
 			// special type that is a keyword (none would be a ref type)
@@ -342,6 +392,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			// This should not happen in bindings because all of the types should either be native objects
 			// nsobjects, or structs 
 			{ IsReferenceType: false } => Name,
+			
+			// delegates will use the native handle
+			{ IsDelegate: true} => NativeHandle,
 
 			_ => null,
 		};

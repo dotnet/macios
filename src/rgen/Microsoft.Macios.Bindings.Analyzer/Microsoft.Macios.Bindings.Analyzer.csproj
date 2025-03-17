@@ -66,8 +66,30 @@
         <Compile Include="../Microsoft.Macios.Generator/Attributes/UnsupportedOSPlatformData.cs" >
             <Link>Generator/Attributes/UnsupportedOSPlatformData.cs</Link>
         </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/DataModel/AttributeCodeChange.cs" >
+            <Link>DataModel/AttributeCodeChange.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/DataModel/AttributesEqualityComparer.cs" >
+            <Link>DataModel/AttributesEqualityComparer.cs</Link>
+        </Compile>
+        
         <Compile Include="../Microsoft.Macios.Generator/DataModel/TypeInfo.cs" >
             <Link>DataModel/TypeInfo.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/DataModel/DelegateInfo.cs" >
+            <Link>DataModel/DelegateInfo.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/DataModel/DelegateParameter.cs" >
+            <Link>DataModel/DelegateParameter.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/DataModel/Parameter.cs" >
+            <Link>DataModel/Parameter.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/DataModel/ParameterEqualityComparer.cs" >
+            <Link>DataModel/ParameterEqualityComparer.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/DataModel/ReferenceKind.cs" >
+            <Link>DataModel/ReferenceKind.cs</Link>
         </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Extensions/ApplePlatformExtensions.cs" >
             <Link>Generator/Extensions/ApplePlatformExtensions.cs</Link>
@@ -96,11 +118,6 @@
         <Compile Include="../Microsoft.Macios.Generator/Availability/*.cs" >
             <Link>Generator/Availability/*.cs</Link>
         </Compile>
-        <Compile Update="Resources.Designer.cs">
-          <DesignTime>True</DesignTime>
-          <AutoGen>True</AutoGen>
-          <DependentUpon>Resources.resx</DependentUpon>
-        </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -109,9 +126,17 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Remove="Resources.Designer.cs" />
       <EmbeddedResource Update="Resources.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+        <StronglyTypedFileName>Resources.Designer.cs</StronglyTypedFileName>
+        <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+        <StronglyTypedNamespace>$(RootNamespace)</StronglyTypedNamespace>
+        <StronglyTypedClassName>Resources</StronglyTypedClassName>
+        <ManifestResourceName>$(RootNamespace).Resources</ManifestResourceName>
+        <GenerateResource>true</GenerateResource>
+        <PublicClass>false</PublicClass>
       </EmbeddedResource>
     </ItemGroup>
 

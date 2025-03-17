@@ -3241,7 +3241,13 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("CIImageProviderKeys")]
 	interface CIImageProviderOptions {
+		/// <summary>A <see cref="T:Foundation.NSNumber" /> that holds an int that is the length of a tile square.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSObject TileSize { get; set; }
+		/// <summary>User-supplied data.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSObject UserInfo { get; set; }
 	}
 
@@ -3319,6 +3325,9 @@ namespace CoreImage {
 		[Export ("kernelNamesFromMetalLibraryData:")]
 		string [] GetKernelNamesFromMetalLibrary (NSData data);
 
+		/// <summary>Gets the name of the <see cref="T:CoreImage.CIKernel" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("name")]
 		string Name { get; }
 
@@ -3422,9 +3431,15 @@ namespace CoreImage {
 		[Export ("initWithExtent:format:colorSpace:")]
 		NativeHandle Constructor (CGRect extent, CIFormat format, CGColorSpace colorSpace);
 
+		/// <summary>Gets the extent of the image that is replaced.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("extent")]
 		CGRect Extent { get; }
 
+		/// <summary>Gets the image format of the accumulator.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("format")]
 		int CIImageFormat { get; } /* CIFormat = int */
 
@@ -3435,6 +3450,9 @@ namespace CoreImage {
 		void Clear ();
 
 		//Detected properties
+		/// <summary>Gets or sets the accumulator contents.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("image")]
 		CIImage Image { get; set; }
 	}
@@ -4010,10 +4028,16 @@ namespace CoreImage {
 		[Export ("formatForInputAtIndex:")]
 		CIFormat GetFormat (int input);
 
+		/// <summary>The colorspace of the output image(s).</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("outputFormat")]
 		CIFormat OutputFormat { get; }
 
+		/// <summary>If <see langword="true" />, the system must synchronize inputs prior to calling the processing function.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("synchronizeInputs")]
 		bool SynchronizeInputs { get; }
@@ -4023,6 +4047,9 @@ namespace CoreImage {
 		[return: NullAllowed]
 		CIImage Apply (CGRect extent, [NullAllowed] CIImage [] inputs, [NullAllowed] NSDictionary<NSString, NSObject> args, out NSError error);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("outputIsOpaque")]
@@ -6514,6 +6541,9 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIImageGenerator {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputScaleFactor")]
 		float ScaleFactor { get; set; }
 	}
@@ -6569,6 +6599,9 @@ namespace CoreImage {
 	[Abstract]
 	[BaseType (typeof (CIFilter))]
 	interface CILinearBlur {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputRadius")]
 		float Radius { get; set; }
 	}
@@ -7407,6 +7440,9 @@ namespace CoreImage {
 	[StrongDictionary ("CIImageRepresentationKeys")]
 	interface CIImageRepresentationOptions {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float LossyCompressionQuality { get; set; }
 
 		AVDepthData AVDepthData { get; set; }
@@ -7418,6 +7454,9 @@ namespace CoreImage {
 		[MacCatalyst (13, 1)]
 		CIImage PortraitEffectsMatteImage { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		AVPortraitEffectsMatte AVPortraitEffectsMatte { get; set; }
 
@@ -7477,12 +7516,21 @@ namespace CoreImage {
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputGuideImage")]
 		CIImage GuideImage { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputEpsilon")]
 		float Epsilon { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputRadius")]
 		float Radius { get; set; }
 	}

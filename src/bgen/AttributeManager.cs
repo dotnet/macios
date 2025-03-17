@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
-#if !NET
-using ObjCRuntime;
-using PlatformName = ObjCRuntime.PlatformName;
-#endif
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable
@@ -96,12 +92,10 @@ public class AttributeManager {
 			return typeof (Foundation.ProtocolAttribute);
 		case "Foundation.RegisterAttribute":
 			return typeof (Foundation.RegisterAttribute);
-#if NET
 		case "Foundation.RequiredMemberAttribute":
 			return typeof (Foundation.RequiredMemberAttribute);
 		case "Foundation.OptionalMemberAttribute":
 			return typeof (Foundation.OptionalMemberAttribute);
-#endif
 		case "IgnoredInDelegateAttribute":
 			return typeof (IgnoredInDelegateAttribute);
 		case "InternalAttribute":
@@ -130,51 +124,22 @@ public class AttributeManager {
 			return typeof (ObjCRuntime.BindingImplAttribute);
 		case "ObjCRuntime.BindingImplOptions":
 			return typeof (ObjCRuntime.BindingImplOptions);
-#if NET
 		case "DeprecatedAttribute":
 			return typeof (DeprecatedAttribute);
-#else
-		case "ObjCRuntime.DeprecatedAttribute":
-			return typeof (ObjCRuntime.DeprecatedAttribute);
-#endif
-#if NET
 		case "IntroducedAttribute":
 			return typeof (IntroducedAttribute);
-#else
-		case "ObjCRuntime.IntroducedAttribute":
-			return typeof (ObjCRuntime.IntroducedAttribute);
-#endif
 		case "ObjCRuntime.NativeAttribute":
 			return typeof (ObjCRuntime.NativeAttribute);
 		case "ObjCRuntime.NativeNameAttribute":
 			return typeof (ObjCRuntime.NativeNameAttribute);
-#if NET
 		case "ObsoletedAttribute":
 			return typeof (ObsoletedAttribute);
-#else
-		case "ObjCRuntime.ObsoletedAttribute":
-			return typeof (ObjCRuntime.ObsoletedAttribute);
-#endif
-#if !NET
-		case "ObjCRuntime.PlatformArchitecture":
-			return typeof (ObjCRuntime.PlatformArchitecture);
-#endif
-#if NET
 		case "PlatformName":
 			return typeof (PlatformName);
-#else
-		case "ObjCRuntime.PlatformName":
-			return typeof (ObjCRuntime.PlatformName);
-#endif
 		case "ObjCRuntime.RequiresSuperAttribute":
 			return typeof (ObjCRuntime.RequiresSuperAttribute);
-#if NET
 		case "UnavailableAttribute":
 			return typeof (UnavailableAttribute);
-#else
-		case "ObjCRuntime.UnavailableAttribute":
-			return typeof (ObjCRuntime.UnavailableAttribute);
-#endif
 		case "OptionalImplementationAttribute":
 			return typeof (OptionalImplementationAttribute);
 		case "OverrideAttribute":
@@ -229,7 +194,6 @@ public class AttributeManager {
 			return typeof (Visibility);
 		case "WrapAttribute":
 			return typeof (WrapAttribute);
-#if NET
 		case "System.Diagnostics.CodeAnalysis.ExperimentalAttribute":
 			return typeof (System.Diagnostics.CodeAnalysis.ExperimentalAttribute);
 		case "System.Runtime.Versioning.SupportedOSPlatformAttribute":
@@ -238,7 +202,6 @@ public class AttributeManager {
 			return typeof (System.Runtime.Versioning.UnsupportedOSPlatformAttribute);
 		case "System.Runtime.Versioning.ObsoletedOSPlatformAttribute":
 			return typeof (System.Runtime.Versioning.ObsoletedOSPlatformAttribute);
-#endif
 		case "BackingFieldTypeAttribute":
 			return typeof (BackingFieldTypeAttribute);
 		}
@@ -307,9 +270,7 @@ public class AttributeManager {
 		case null: // Root namespace such as PlatformAvailabilityShadow.cs
 		case "MonoTouch.ObjCRuntime":
 		case "ObjCRuntime":
-#if NET
 		case "System.Runtime.Versioning":
-#endif
 			break;
 		default:
 			return Enumerable.Empty<System.Attribute> ();
@@ -345,7 +306,6 @@ public class AttributeManager {
 			return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (PlatformName.MacCatalyst).Yield ();
 		case "AvailabilityAttribute":
 			return AttributeConversionManager.ConvertAvailability (attribute);
-#if NET
 		case "ExperimentalAttribute":
 			var earg = attribute.ConstructorArguments [0].Value as string;
 			return new System.Diagnostics.CodeAnalysis.ExperimentalAttribute (earg).Yield ();
@@ -372,13 +332,11 @@ public class AttributeManager {
 				return AttributeFactory.CreateNewAttribute<ObsoletedAttribute> (op).Yield ();
 			else
 				return AttributeFactory.CreateNewAttribute<ObsoletedAttribute> (op, ov.Major, ov.Minor).Yield ();
-#endif
 		default:
 			return Enumerable.Empty<System.Attribute> ();
 		}
 	}
 
-#if NET
 	static (PlatformName, Version) ParseOSPlatformAttribute (string arg)
 	{
 		PlatformName name;
@@ -415,7 +373,6 @@ public class AttributeManager {
 		}
 		return (name, version);
 	}
-#endif
 
 	IEnumerable<T> CreateAttributeInstance<T> (CustomAttributeData attribute, ICustomAttributeProvider provider) where T : System.Attribute
 	{

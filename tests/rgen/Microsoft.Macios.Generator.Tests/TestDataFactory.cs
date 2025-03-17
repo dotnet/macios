@@ -3,6 +3,7 @@
 
 #pragma warning disable APL0003
 using Microsoft.CodeAnalysis;
+using Microsoft.Macios.Generator.DataModel;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Tests;
@@ -505,7 +506,7 @@ static class TestDataFactory {
 			]
 		};
 
-	public static TypeInfo ReturnTypeForAction ()
+	public static TypeInfo ReturnTypeForAction (DelegateInfo? delegateInfo = null)
 		=> new (
 			name: "System.Action",
 			isNullable: false,
@@ -513,6 +514,8 @@ static class TestDataFactory {
 			isArray: false,
 			isReferenceType: true
 		) {
+			IsDelegate = true,
+			Delegate = delegateInfo,
 			Parents = [
 				"System.MulticastDelegate",
 				"System.Delegate",
@@ -524,7 +527,7 @@ static class TestDataFactory {
 			]
 		};
 
-	public static TypeInfo ReturnTypeForAction (params string [] parameters)
+	public static TypeInfo ReturnTypeForAction (DelegateInfo? delegateInfo = null, params string [] parameters)
 		=> new (
 			name: $"System.Action<{string.Join (", ", parameters)}>",
 			isNullable: false,
@@ -532,6 +535,8 @@ static class TestDataFactory {
 			isArray: false,
 			isReferenceType: true
 		) {
+			IsDelegate = true,
+			Delegate = delegateInfo,
 			Parents = [
 				"System.MulticastDelegate",
 				"System.Delegate",
@@ -543,7 +548,7 @@ static class TestDataFactory {
 			]
 		};
 
-	public static TypeInfo ReturnTypeForFunc (params string [] parameters)
+	public static TypeInfo ReturnTypeForFunc (DelegateInfo? delegateInfo = null, params string [] parameters)
 		=> new (
 			name: $"System.Func<{string.Join (", ", parameters)}>",
 			isNullable: false,
@@ -551,6 +556,8 @@ static class TestDataFactory {
 			isArray: false,
 			isReferenceType: true
 		) {
+			IsDelegate = true,
+			Delegate = delegateInfo,
 			Parents = [
 				"System.MulticastDelegate",
 				"System.Delegate",
@@ -562,7 +569,7 @@ static class TestDataFactory {
 			]
 		};
 
-	public static TypeInfo ReturnTypeForDelegate (string delegateName)
+	public static TypeInfo ReturnTypeForDelegate (string delegateName, DelegateInfo? delegateInfo = null)
 		=> new (
 			name: delegateName,
 			isNullable: false,
@@ -570,6 +577,8 @@ static class TestDataFactory {
 			isArray: false,
 			isReferenceType: true
 		) {
+			IsDelegate = true,
+			Delegate = delegateInfo,
 			Parents = [
 				"System.MulticastDelegate",
 				"System.Delegate",

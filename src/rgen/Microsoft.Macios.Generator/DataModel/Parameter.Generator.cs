@@ -44,12 +44,6 @@ readonly partial struct Parameter {
 	public static bool TryCreate (IParameterSymbol symbol, ParameterSyntax declaration, RootContext context,
 		[NotNullWhen (true)] out Parameter? parameter)
 	{
-		DelegateInfo? delegateInfo = null;
-		if (symbol.Type is INamedTypeSymbol namedTypeSymbol
-			&& namedTypeSymbol.DelegateInvokeMethod is not null) {
-			DelegateInfo.TryCreate (namedTypeSymbol.DelegateInvokeMethod, out delegateInfo);
-		}
-
 		parameter = new (symbol.Ordinal, new (symbol.Type, context.Compilation), symbol.Name) {
 			BindAs = symbol.GetBindFromData (),
 			IsOptional = symbol.IsOptional,
@@ -57,7 +51,6 @@ readonly partial struct Parameter {
 			IsThis = symbol.IsThis,
 			DefaultValue = (symbol.HasExplicitDefaultValue) ? symbol.ExplicitDefaultValue?.ToString () : null,
 			ReferenceKind = symbol.RefKind.ToReferenceKind (),
-			Delegate = delegateInfo,
 			Attributes = declaration.GetAttributeCodeChanges (context.SemanticModel),
 		};
 		return true;

@@ -375,6 +375,32 @@ public class BindingSyntaxFactoryPropertyTests {
 
 			property = new Property (
 				name: "MyProperty",
+				returnType: ReturnTypeForEnum ("AVFoundation.AVCaptureSystemPressureLevel", isSmartEnum: true, isNullable: false),
+				symbolAvailability: new (),
+				attributes: [],
+				modifiers: [],
+				accessors: [
+					new (
+						accessorKind: AccessorKind.Getter,
+						symbolAvailability: new (),
+						exportPropertyData: null,
+						attributes: [],
+						modifiers: []
+					)
+				]
+			) {
+				ExportPropertyData = new ("myProperty", ArgumentSemantic.None, ObjCBindings.Property.IsThreadSafe),
+				BindAs = new (ReturnTypeForNSObject ("Foundation.NSString")),
+			};
+
+			yield return [
+				property,
+				"global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetValue (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle (\"myProperty\")));",
+				"global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetValue (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle (\"myProperty\")));",
+			];
+
+			property = new Property (
+				name: "MyProperty",
 				returnType: ReturnTypeForNSObject ("CoreAnimation.CATransform3D"),
 				symbolAvailability: new (),
 				attributes: [],

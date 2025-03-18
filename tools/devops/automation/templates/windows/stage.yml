@@ -46,8 +46,6 @@ stages:
 - stage: ${{ parameters.stageName }}
   displayName: ${{ parameters.displayName }}
   dependsOn:
-  - ${{ if eq(parameters.postPipeline, false) }}:
-    - build_macos_tests
   - configure_build
   condition: and(succeeded(), eq(dependencies.configure_build.outputs['configure.decisions.RUN_WINDOWS_TESTS'], 'true'))
 

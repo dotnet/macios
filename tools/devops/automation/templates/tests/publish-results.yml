@@ -35,12 +35,15 @@ parameters:
   type: boolean
   default: false
 
+- name: macTestsConfigurations
+  type: object
+
 stages:
 - stage: ${{ parameters.stageName }}
   displayName: ${{ parameters.displayName }}
   dependsOn:
-  - ${{ if eq(parameters.postPipeline, false) }}:
-    - build_macos_tests
+  - ${{ each config in parameters.macTestsConfigurations }}:
+    - ${{ config.stageName }}
   - configure_build
   - simulator_tests
   - windows_integration

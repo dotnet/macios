@@ -296,6 +296,7 @@ namespace AudioToolbox {
 
 			unsafe {
 				error = AudioServicesCreateSystemSoundID (fileUrl.Handle, &soundId);
+				GC.KeepAlive (fileUrl);
 			}
 
 			if (error != AudioServicesError.None)
@@ -319,6 +320,7 @@ namespace AudioToolbox {
 
 			unsafe {
 				error = AudioServicesCreateSystemSoundID (fileUrl.Handle, &soundId);
+				GC.KeepAlive (fileUrl);
 			}
 			if (error != AudioServicesError.None)
 				return null;
@@ -336,6 +338,7 @@ namespace AudioToolbox {
 			using (var url = new NSUrl (filename)) {
 				unsafe {
 					error = AudioServicesCreateSystemSoundID (url.Handle, &soundId);
+					GC.KeepAlive (url);
 				}
 				if (error != AudioServicesError.None)
 					return null;
@@ -365,11 +368,14 @@ namespace AudioToolbox {
 			completionRoutine = routine;
 
 			unsafe {
-				return AudioServicesAddSystemSoundCompletion (soundId,
+				AudioServicesError result = AudioServicesAddSystemSoundCompletion (
+														  soundId,
 														  runLoop.GetHandle (),
 														  IntPtr.Zero, // runLoopMode should be enum runLoopMode.GetHandle (),
 														  &SoundCompletionShared,
 														  GCHandle.ToIntPtr (gc_handle));
+				GC.KeepAlive (runLoop);
+				return result;
 			}
 		}
 

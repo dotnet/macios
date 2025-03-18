@@ -99,7 +99,9 @@ namespace CoreGraphics {
 
 			unsafe {
 				fixed (nfloat* componentsPtr = components, locationsPtr = locations) {
-					return CGGradientCreateWithColorComponents (colorspace.GetCheckedHandle (), componentsPtr, locationsPtr, components.Length / (colorspace.Components + 1));
+					IntPtr result = CGGradientCreateWithColorComponents (colorspace.GetCheckedHandle (), componentsPtr, locationsPtr, components.Length / (colorspace.Components + 1));
+					GC.KeepAlive (colorspace);
+					return result;
 				}
 			}
 		}
@@ -120,7 +122,9 @@ namespace CoreGraphics {
 
 			unsafe {
 				fixed (nfloat* componentsPtr = components) {
-					return CGGradientCreateWithColorComponents (colorspace.GetCheckedHandle (), componentsPtr, null, components.Length / (colorspace.Components + 1));
+					IntPtr result = CGGradientCreateWithColorComponents (colorspace.GetCheckedHandle (), componentsPtr, null, components.Length / (colorspace.Components + 1));
+					GC.KeepAlive (colorspace);
+					return result;
 				}
 			}
 		}
@@ -145,7 +149,9 @@ namespace CoreGraphics {
 			using (var array = CFArray.FromNativeObjects (colors)) {
 				unsafe {
 					fixed (nfloat* locationsPtr = locations) {
-						return CGGradientCreateWithColors (colorspace.GetHandle (), array.Handle, locationsPtr);
+						IntPtr result = CGGradientCreateWithColors (colorspace.GetHandle (), array.Handle, locationsPtr);
+						GC.KeepAlive (colorspace);
+						return result;
 					}
 				}
 			}
@@ -163,7 +169,9 @@ namespace CoreGraphics {
 
 			using (var array = CFArray.FromNativeObjects (colors)) {
 				unsafe {
-					return CGGradientCreateWithColors (colorspace.GetHandle (), array.Handle, null);
+					IntPtr result = CGGradientCreateWithColors (colorspace.GetHandle (), array.Handle, null);
+					GC.KeepAlive (colorspace);
+					return result;
 				}
 			}
 		}

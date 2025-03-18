@@ -30,6 +30,7 @@ namespace NetworkExtension {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (authorization));
 
 			_SetAuthorization (authorization.Handle);
+			GC.KeepAlive (authorization);
 		}
 	}
 }

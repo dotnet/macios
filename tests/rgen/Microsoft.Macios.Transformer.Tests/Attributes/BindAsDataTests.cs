@@ -5,6 +5,7 @@ using System.Collections;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Macios.Generator;
 using Microsoft.Macios.Generator.Extensions;
 using Microsoft.Macios.Transformer.Attributes;
 using Xamarin.Tests;

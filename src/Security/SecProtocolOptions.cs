@@ -47,6 +47,7 @@ namespace Security {
 			if (identity is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (identity));
 			sec_protocol_options_set_local_identity (GetCheckedHandle (), identity.GetCheckedHandle ());
+			GC.KeepAlive (identity);
 		}
 
 #if !NET
@@ -407,6 +408,7 @@ namespace Security {
 			if (parameters is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (parameters));
 			sec_protocol_options_set_tls_diffie_hellman_parameters (GetCheckedHandle (), parameters.Handle);
+			GC.KeepAlive (parameters);
 		}
 
 		[DllImport (Constants.SecurityLibrary)]
@@ -417,6 +419,7 @@ namespace Security {
 			if (parameters is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (parameters));
 			sec_protocol_options_set_tls_diffie_hellman_parameters (GetCheckedHandle (), parameters.Handle);
+			GC.KeepAlive (parameters);
 		}
 
 		[DllImport (Constants.SecurityLibrary)]
@@ -479,6 +482,7 @@ namespace Security {
 				block.SetupBlockUnsafe (Trampolines.SDSecProtocolKeyUpdate.Handler, keyUpdate);
 #endif
 				sec_protocol_options_set_key_update_block (Handle, &block, keyUpdateQueue.Handle);
+				GC.KeepAlive (keyUpdateQueue);
 			}
 		}
 
@@ -508,7 +512,9 @@ namespace Security {
 		{
 			if (other is null)
 				return false;
-			return sec_protocol_options_are_equal (GetCheckedHandle (), other.Handle) != 0;
+			bool result = sec_protocol_options_are_equal (GetCheckedHandle (), other.Handle) != 0;
+			GC.KeepAlive (other);
+			return result;
 		}
 
 #if NET
@@ -526,7 +532,10 @@ namespace Security {
 				return (optionsB is null);
 			else if (optionsB is null)
 				return false;
-			return sec_protocol_options_are_equal (optionsA.Handle, optionsB.Handle) != 0;
+			bool result = sec_protocol_options_are_equal (optionsA.Handle, optionsB.Handle) != 0;
+			GC.KeepAlive (optionsA);
+			GC.KeepAlive (optionsB);
+			return result;
 		}
 
 #if NET
@@ -555,6 +564,7 @@ namespace Security {
 			if (pskIdentityHint is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (pskIdentityHint));
 			sec_protocol_options_set_tls_pre_shared_key_identity_hint (GetCheckedHandle (), pskIdentityHint.Handle);
+			GC.KeepAlive (pskIdentityHint);
 		}
 #endif
 
@@ -580,6 +590,7 @@ namespace Security {
 				delegate* unmanaged<IntPtr, NativeHandle, NativeHandle, void> trampoline = &Trampolines.SDSecProtocolChallenge.Invoke;
 				using var block = new BlockLiteral (trampoline, challenge, typeof (Trampolines.SDSecProtocolChallenge), nameof (Trampolines.SDSecProtocolChallenge.Invoke));
 				sec_protocol_options_set_challenge_block (GetCheckedHandle (), &block, queue.GetNonNullHandle (nameof (queue)));
+				GC.KeepAlive (queue);
 			}
 		}
 
@@ -603,6 +614,7 @@ namespace Security {
 				delegate* unmanaged<IntPtr, NativeHandle, NativeHandle, NativeHandle, void> trampoline = &Trampolines.SDSecProtocolVerify.Invoke;
 				using var block = new BlockLiteral (trampoline, verify, typeof (Trampolines.SDSecProtocolVerify), nameof (Trampolines.SDSecProtocolVerify.Invoke));
 				sec_protocol_options_set_verify_block (GetCheckedHandle (), &block, queue.GetNonNullHandle (nameof (queue)));
+				GC.KeepAlive (queue);
 			}
 		}
 
@@ -626,6 +638,7 @@ namespace Security {
 				delegate* unmanaged<IntPtr, NativeHandle, NativeHandle, NativeHandle, void> trampoline = &Trampolines.SDSecProtocolPreSharedKeySelection.Invoke;
 				using var block = new BlockLiteral (trampoline, selection, typeof (Trampolines.SDSecProtocolPreSharedKeySelection), nameof (Trampolines.SDSecProtocolPreSharedKeySelection.Invoke));
 				sec_protocol_options_set_pre_shared_key_selection_block (GetCheckedHandle (), &block, queue.GetNonNullHandle (nameof (queue)));
+				GC.KeepAlive (queue);
 			}
 		}
 #endif // !COREBUILD

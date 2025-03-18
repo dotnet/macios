@@ -338,6 +338,7 @@ namespace Foundation {
 				IntPtr read, write;
 				unsafe {
 					CFStream.CFStreamCreatePairWithSocketToCFHost (IntPtr.Zero, host.Handle, endpoint.Port, &read, &write);
+					GC.KeepAlive (host);
 				}
 				AssignStreams (read, write, out readStream, out writeStream);
 			}

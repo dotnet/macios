@@ -68,6 +68,7 @@ namespace CoreMedia {
 			IntPtr buffer;
 			unsafe {
 				error = CMBlockBufferCreateWithBufferReference (IntPtr.Zero, targetBuffer.GetHandle (), offsetToData, dataLength, flags, &buffer);
+				GC.KeepAlive (targetBuffer);
 			}
 			if (error != CMBlockBufferError.None)
 				return null;
@@ -91,7 +92,9 @@ namespace CoreMedia {
 					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (targetBuffer));
 			}
 
-			return CMBlockBufferAppendBufferReference (GetCheckedHandle (), targetBuffer.GetHandle (), offsetToData, dataLength, flags);
+			CMBlockBufferError error = CMBlockBufferAppendBufferReference (GetCheckedHandle (), targetBuffer.GetHandle (), offsetToData, dataLength, flags);
+			GC.KeepAlive (targetBuffer);
+			return error;
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]
@@ -294,9 +297,11 @@ namespace CoreMedia {
 			unsafe {
 				if (customBlockSource is null) {
 					error = CMBlockBufferCreateContiguous (IntPtr.Zero, sourceBuffer.Handle, IntPtr.Zero, null, offsetToData, dataLength, flags, &buffer);
+					GC.KeepAlive (sourceBuffer);
 				} else {
 					fixed (CMCustomBlockAllocator.CMBlockBufferCustomBlockSource* cblock = &customBlockSource.Cblock) {
 						error = CMBlockBufferCreateContiguous (IntPtr.Zero, sourceBuffer.Handle, IntPtr.Zero, cblock, offsetToData, dataLength, flags, &buffer);
+						GC.KeepAlive (sourceBuffer);
 					}
 				}
 			}

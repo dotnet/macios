@@ -72,8 +72,9 @@ namespace CoreGraphics {
 		extern static /* CGPDFDocumentRef */ IntPtr CGPDFDocumentCreateWithProvider (/* CGDataProviderRef */ IntPtr provider);
 
 		public CGPDFDocument (CGDataProvider provider)
-			: base (CGPDFDocumentCreateWithProvider (Runtime.ThrowOnNull (provider, nameof (provider)).Handle), true)
+			: base (CGPDFDocumentCreateWithProvider (provider.GetNonNullHandle (nameof (provider))), true)
 		{
+			GC.KeepAlive (provider);
 		}
 
 		protected internal override void Retain ()

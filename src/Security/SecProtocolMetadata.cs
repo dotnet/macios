@@ -169,7 +169,10 @@ namespace Security {
 				return metadataB is null;
 			else if (metadataB is null)
 				return false; // This was tested in a native app. We do copy the behaviour.
-			return sec_protocol_metadata_challenge_parameters_are_equal (metadataA.GetCheckedHandle (), metadataB.GetCheckedHandle ()) != 0;
+			bool result = sec_protocol_metadata_challenge_parameters_are_equal (metadataA.GetCheckedHandle (), metadataB.GetCheckedHandle ()) != 0;
+			GC.KeepAlive (metadataA);
+			GC.KeepAlive (metadataB);
+			return result;
 		}
 
 		[DllImport (Constants.SecurityLibrary)]
@@ -181,7 +184,10 @@ namespace Security {
 				return metadataB is null;
 			else if (metadataB is null)
 				return false; // This was tested in a native app. We do copy the behaviour.
-			return sec_protocol_metadata_peers_are_equal (metadataA.GetCheckedHandle (), metadataB.GetCheckedHandle ()) != 0;
+			bool result = sec_protocol_metadata_peers_are_equal (metadataA.GetCheckedHandle (), metadataB.GetCheckedHandle ()) != 0;
+			GC.KeepAlive (metadataA);
+			GC.KeepAlive (metadataB);
+			return result;
 		}
 
 #if !NET

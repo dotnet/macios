@@ -28,6 +28,7 @@ namespace UIKit {
 			if (accessoryClass is null)
 				throw new ArgumentNullException (nameof (accessoryClass));
 			var ret = UICellAccessoryPositionBeforeAccessoryOfClass (accessoryClass.Handle);
+			GC.KeepAlive (accessoryClass);
 			return NIDUICellAccessoryPosition.Create (ret)!;
 		}
 
@@ -45,6 +46,7 @@ namespace UIKit {
 			if (accessoryClass is null)
 				throw new ArgumentNullException (nameof (accessoryClass));
 			var ret = UICellAccessoryPositionAfterAccessoryOfClass (accessoryClass.Handle);
+			GC.KeepAlive (accessoryClass);
 			return NIDUICellAccessoryPosition.Create (ret)!;
 		}
 
@@ -101,7 +103,9 @@ namespace UIKit {
 		{
 			using var nsa_accessories = accessories is null ? null : NSArray.FromNSObjects (accessories);
 
-			return invoker (BlockPointer, nsa_accessories.GetHandle ());
+			nuint result = invoker (BlockPointer, nsa_accessories.GetHandle ());
+			GC.KeepAlive (nsa_accessories);
+			return result;
 		}
 	} /* class NIDUICellAccessoryPosition */
 }

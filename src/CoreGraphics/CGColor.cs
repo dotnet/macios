@@ -81,11 +81,13 @@ namespace CoreGraphics {
 		{
 			if (components is null)
 				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (components));
-			var colorspace_handle = colorspace.GetNonNullHandle (nameof (colorspace));
 
 			unsafe {
 				fixed (nfloat* componentsPtr = components) {
-					return CGColorCreate (colorspace_handle, componentsPtr);
+					var colorspace_handle = colorspace.GetNonNullHandle (nameof (colorspace));
+					IntPtr result = CGColorCreate (colorspace_handle, componentsPtr);
+					GC.KeepAlive (colorspace);
+					return result;
 				}
 			}
 		}
@@ -152,6 +154,7 @@ namespace CoreGraphics {
 			if (constant is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (color));
 			var handle = CGColorGetConstantColor (constant.Handle);
+			GC.KeepAlive (constant);
 			if (handle == IntPtr.Zero)
 				throw new ArgumentException (nameof (color));
 			CGColorRetain (handle);
@@ -180,14 +183,16 @@ namespace CoreGraphics {
 		{
 			if (components is null)
 				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (components));
-			var colorspace_handle = colorspace.GetNonNullHandle (nameof (colorspace));
-			var pattern_handle = pattern.GetNonNullHandle (nameof (pattern));
 
 			unsafe {
 				fixed (nfloat* componentsPtr = components) {
+					var colorspace_handle = colorspace.GetNonNullHandle (nameof (colorspace));
+					var pattern_handle = pattern.GetNonNullHandle (nameof (pattern));
 					var handle = CGColorCreateWithPattern (colorspace_handle, pattern_handle, componentsPtr);
 					if (handle == IntPtr.Zero)
 						throw new ArgumentException ();
+					GC.KeepAlive (colorspace);
+					GC.KeepAlive (pattern);
 					return handle;
 				}
 			}
@@ -205,7 +210,9 @@ namespace CoreGraphics {
 		{
 			if (source is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
-			return CGColorCreateCopyWithAlpha (source.GetCheckedHandle (), alpha);
+			IntPtr result = CGColorCreateCopyWithAlpha (source.GetCheckedHandle (), alpha);
+			GC.KeepAlive (source);
+			return result;
 		}
 
 		public CGColor (CGColor source, nfloat alpha)
@@ -244,7 +251,9 @@ namespace CoreGraphics {
 			if (other is null)
 				return false;
 
-			return CGColorEqualToColor (this.Handle, other.Handle) != 0;
+			bool result = CGColorEqualToColor (this.Handle, other.Handle) != 0;
+			GC.KeepAlive (other);
+			return result;
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -345,6 +354,9 @@ namespace CoreGraphics {
 			CGColor color, NSDictionary options)
 		{
 			var h = CGColorCreateCopyByMatchingToColorSpace (space.GetHandle (), intent, color.GetHandle (), options.GetHandle ());
+			GC.KeepAlive (space);
+			GC.KeepAlive (color);
+			GC.KeepAlive (options);
 			return h == IntPtr.Zero ? null : new CGColor (h, owns: true);
 		}
 

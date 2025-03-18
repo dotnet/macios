@@ -210,8 +210,10 @@ namespace CoreGraphics {
 
 		unsafe static IntPtr Create (CGDataConsumer? dataConsumer, CGRect* mediaBox, CGPDFInfo? info)
 		{
-			using (var dict = info?.ToDictionary ())
-				return CGPDFContextCreate (dataConsumer.GetHandle (), mediaBox, dict.GetHandle ());
+			using var dict = info?.ToDictionary ();
+			IntPtr result = CGPDFContextCreate (dataConsumer.GetHandle (), mediaBox, dict.GetHandle ());
+			GC.KeepAlive (dataConsumer);
+			return result;
 		}
 
 		unsafe CGContextPDF (CGDataConsumer? dataConsumer, CGRect* mediaBox, CGPDFInfo? info)
@@ -241,8 +243,10 @@ namespace CoreGraphics {
 
 		unsafe static IntPtr Create (NSUrl? url, CGRect* mediaBox, CGPDFInfo? info)
 		{
-			using (var dict = info?.ToDictionary ())
-				return CGPDFContextCreateWithURL (url.GetHandle (), mediaBox, dict.GetHandle ());
+			using var dict = info?.ToDictionary ();
+			IntPtr result = CGPDFContextCreateWithURL (url.GetHandle (), mediaBox, dict.GetHandle ());
+			GC.KeepAlive (url);
+			return result;
 		}
 
 		unsafe CGContextPDF (NSUrl? url, CGRect* mediaBox, CGPDFInfo? info)
@@ -306,6 +310,7 @@ namespace CoreGraphics {
 			if (data is null)
 				return;
 			CGPDFContextAddDocumentMetadata (Handle, data.Handle);
+			GC.KeepAlive (data);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -316,6 +321,7 @@ namespace CoreGraphics {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 			CGPDFContextSetURLForRect (Handle, url.Handle, region);
+			GC.KeepAlive (url);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -374,6 +380,7 @@ namespace CoreGraphics {
 		public void BeginTag (CGPdfTagType tagType, NSDictionary tagProperties)
 		{
 			CGPDFContextBeginTag (Handle, tagType, tagProperties.GetHandle ());
+			GC.KeepAlive (tagProperties);
 		}
 
 #if NET
@@ -389,6 +396,7 @@ namespace CoreGraphics {
 		{
 			var d = tagProperties?.Dictionary;
 			CGPDFContextBeginTag (Handle, tagType, d.GetHandle ());
+			GC.KeepAlive (d);
 		}
 
 #if NET
@@ -439,6 +447,7 @@ namespace CoreGraphics {
 		public void SetParentTree (CGPDFDictionary parentTreeDictionary)
 		{
 			CGPDFContextSetParentTree (GetCheckedHandle (), parentTreeDictionary.GetNonNullHandle (nameof (parentTreeDictionary)));
+			GC.KeepAlive (parentTreeDictionary);
 		}
 
 #if NET
@@ -463,6 +472,7 @@ namespace CoreGraphics {
 		public void SetIdTree (CGPDFDictionary idTreeDictionary)
 		{
 			CGPDFContextSetIDTree (GetCheckedHandle (), idTreeDictionary.GetNonNullHandle (nameof (idTreeDictionary)));
+			GC.KeepAlive (idTreeDictionary);
 		}
 
 #if NET
@@ -487,6 +497,7 @@ namespace CoreGraphics {
 		public void SetPageTagStructureTree (NSDictionary pageTagStructureTreeDictionary)
 		{
 			CGPDFContextSetPageTagStructureTree (GetCheckedHandle (), pageTagStructureTreeDictionary.GetNonNullHandle (nameof (pageTagStructureTreeDictionary)));
+			GC.KeepAlive (pageTagStructureTreeDictionary);
 		}
 
 		protected override void Dispose (bool disposing)

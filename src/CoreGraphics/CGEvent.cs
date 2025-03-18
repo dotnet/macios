@@ -190,7 +190,9 @@ namespace CoreGraphics {
 			if (source is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 
-			return CGEventCreateFromData (IntPtr.Zero, source.Handle);
+			IntPtr result = CGEventCreateFromData (IntPtr.Zero, source.Handle);
+			GC.KeepAlive (source);
+			return result;
 		}
 
 		public CGEvent (NSData source)
@@ -204,6 +206,7 @@ namespace CoreGraphics {
 		public CGEvent (CGEventSource? eventSource)
 			: base (CGEventCreate (eventSource.GetHandle ()), true)
 		{
+			GC.KeepAlive (eventSource);
 		}
 
 #if !NET
@@ -225,6 +228,7 @@ namespace CoreGraphics {
 		public CGEvent (CGEventSource? source, CGEventType mouseType, CGPoint mouseCursorPosition, CGMouseButton mouseButton)
 			: base (CGEventCreateMouseEvent (source.GetHandle (), mouseType, mouseCursorPosition, mouseButton), true)
 		{
+			GC.KeepAlive (source);
 		}
 
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
@@ -233,6 +237,7 @@ namespace CoreGraphics {
 		public CGEvent (CGEventSource? source, ushort virtualKey, bool keyDown)
 			: base (CGEventCreateKeyboardEvent (source.GetHandle (), virtualKey, keyDown.AsByte ()), true)
 		{
+			GC.KeepAlive (source);
 		}
 
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
@@ -258,6 +263,9 @@ namespace CoreGraphics {
 			default:
 				throw new ArgumentException ("Only one to three wheels are supported on this constructor");
 			}
+
+			GC.KeepAlive (source);
+
 			return handle;
 		}
 
@@ -483,6 +491,7 @@ namespace CoreGraphics {
 			if (eventSource is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (eventSource));
 			CGEventSetSource (Handle, eventSource.Handle);
+			GC.KeepAlive (eventSource);
 		}
 
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
@@ -542,6 +551,7 @@ namespace CoreGraphics {
 			if (machPort is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (machPort));
 			CGEventTapEnable (machPort.Handle, 1);
+			GC.KeepAlive (machPort);
 		}
 
 		public static void TapDisable (CFMachPort machPort)
@@ -549,6 +559,7 @@ namespace CoreGraphics {
 			if (machPort is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (machPort));
 			CGEventTapEnable (machPort.Handle, 0);
+			GC.KeepAlive (machPort);
 		}
 
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
@@ -558,7 +569,9 @@ namespace CoreGraphics {
 		{
 			if (machPort is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (machPort));
-			return CGEventTapIsEnabled (machPort.Handle) != 0;
+			bool result = CGEventTapIsEnabled (machPort.Handle) != 0;
+			GC.KeepAlive (machPort);
+			return result;
 		}
 
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
@@ -602,6 +615,7 @@ namespace CoreGraphics {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (evt));
 
 			CGEventTapPostEvent (tapProxyEvent, evt.Handle);
+			GC.KeepAlive (evt);
 		}
 
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
@@ -613,6 +627,7 @@ namespace CoreGraphics {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (evt));
 
 			CGEventPost (location, evt.Handle);
+			GC.KeepAlive (evt);
 		}
 
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
@@ -626,6 +641,7 @@ namespace CoreGraphics {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (evt));
 
 			CGEventPostToPSN (processSerialNumber, evt.Handle);
+			GC.KeepAlive (evt);
 		}
 
 		/// <summary>Post an event to a specific process</summary>
@@ -645,6 +661,7 @@ namespace CoreGraphics {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (evt));
 
 			CGEventPostToPid (pid, evt.Handle);
+			GC.KeepAlive (evt);
 		}
 
 		/// <summary>Post an event to a specific process</summary>

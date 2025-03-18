@@ -73,6 +73,7 @@ namespace CoreText {
 		public void Draw (CGContext context, NSRange range)
 		{
 			CTRunDraw (Handle, context.Handle, range);
+			GC.KeepAlive (context);
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
@@ -154,7 +155,9 @@ namespace CoreText {
 		extern static CGRect CTRunGetImageBounds (IntPtr h, IntPtr context, NSRange range);
 		public CGRect GetImageBounds (CGContext context, NSRange range)
 		{
-			return CTRunGetImageBounds (Handle, context.Handle, range);
+			CGRect bounds = CTRunGetImageBounds (Handle, context.Handle, range);
+			GC.KeepAlive (context);
+			return bounds;
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]

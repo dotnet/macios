@@ -120,7 +120,9 @@ namespace Network {
 			if (other is null)
 				return false;
 
-			return nw_path_is_equal (GetCheckedHandle (), other.Handle) != 0;
+			bool result = nw_path_is_equal (GetCheckedHandle (), other.Handle) != 0;
+			GC.KeepAlive (other);
+			return result;
 		}
 
 		// Returning 'byte' since 'bool' isn't blittable

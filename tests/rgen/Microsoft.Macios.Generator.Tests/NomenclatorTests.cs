@@ -1,12 +1,15 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.DataModel;
 using Xamarin.Tests;
 using Xamarin.Utils;
 using Xunit;
+using static Microsoft.Macios.Generator.Tests.TestDataFactory;
 
 namespace Microsoft.Macios.Generator.Tests;
 
@@ -62,5 +65,26 @@ public class Example {
 		Assert.Equal ("GenericTrampolineArity1V1", name2);
 		Assert.NotEqual (name1, name2);
 	}
+
+	class TestDataGetVariableName : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			var exampleParameter = new Parameter (0, ReturnTypeForBool (), "firstParameter");
+			yield return [exampleParameter, Nomenclator.VariableType.Handle, $"{exampleParameter.Name}__handle__"];
+			yield return [exampleParameter, Nomenclator.VariableType.BlockLiteral, $"block_ptr_{exampleParameter.Name}"];
+			yield return [exampleParameter, Nomenclator.VariableType.PrimitivePointer, $"converted_{exampleParameter.Name}"];
+			yield return [exampleParameter, Nomenclator.VariableType.NSArray, $"nsa_{exampleParameter.Name}"];
+			yield return [exampleParameter, Nomenclator.VariableType.NSString, $"ns{exampleParameter.Name}"];
+			yield return [exampleParameter, Nomenclator.VariableType.NSStringStruct, $"_s{exampleParameter.Name}"];
+			yield return [exampleParameter, Nomenclator.VariableType.BindFrom, $"nsb_{exampleParameter.Name}"];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+
+	[Theory]
+	[ClassData (typeof (TestDataGetVariableName))]
+	void GetNameForVariableTypeTests (Parameter parameter, Nomenclator.VariableType variableType, string expectedName)
+		=> Assert.Equal (expectedName, Nomenclator.GetNameForVariableType (parameter.Name, variableType));
 }
 

@@ -213,6 +213,7 @@ namespace AddressBook {
 					throw CreateNotSupportedException ();
 				AssertValid ();
 				ABMultiValue.ReplaceLabelAtIndex (self.Handle, value.GetHandle (), index);
+				GC.KeepAlive (value);
 			}
 		}
 
@@ -343,7 +344,9 @@ namespace AddressBook {
 
 		public nint GetFirstIndexOfValue (NSObject value)
 		{
-			return ABMultiValue.GetFirstIndexOfValue (Handle, value.Handle);
+			nint index = ABMultiValue.GetFirstIndexOfValue (Handle, value.Handle);
+			GC.KeepAlive (value);
+			return index;
 		}
 
 		public nint GetIndexForIdentifier (int identifier)
@@ -395,20 +398,24 @@ namespace AddressBook {
 		public unsafe bool Add (T value, NSString? label)
 		{
 			int _;
-			return ABMultiValue.AddValueAndLabel (Handle,
+			bool result = ABMultiValue.AddValueAndLabel (Handle,
 						toNative (value),
 						label.GetHandle (),
 						&_) != 0;
+			GC.KeepAlive (label);
+			return result;
 		}
 
 		public unsafe bool Insert (nint index, T value, NSString? label)
 		{
 			int _;
-			return ABMultiValue.InsertValueAndLabelAtIndex (Handle,
+			bool result = ABMultiValue.InsertValueAndLabelAtIndex (Handle,
 					toNative (value),
 					label.GetHandle (),
 					index,
 					&_) != 0;
+			GC.KeepAlive (label);
+			return result;
 		}
 
 		public bool RemoveAt (nint index)

@@ -434,13 +434,17 @@ static class TestDataFactory {
 			isNullable: isNullable
 		);
 
-	public static TypeInfo ReturnTypeForInterface (string interfaceName)
+	public static TypeInfo ReturnTypeForInterface (string interfaceName, bool isNullable = false, bool isProtocol = false)
 		=> new (
 			name: interfaceName,
+			isNullable: isNullable,
+			isArray: false,
 			isReferenceType: true
 		) {
-			Parents = [],
 			IsInterface = true,
+			IsProtocol = isProtocol,
+			Parents = [],
+			Interfaces = []
 		};
 
 	public static TypeInfo ReturnTypeForStruct (string structName, bool isBlittable = false)

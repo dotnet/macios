@@ -374,10 +374,16 @@ namespace CoreText {
 
 		static CTParagraphStyleSpecifierValue CreateValue (CTParagraphStyleSpecifier spec, IEnumerable<CTTextTab> value)
 		{
+			// The analyzer cannot deal with arrays, we manually keep alive the whole array below
+#pragma warning disable RBI0014
 			var handles = new List<NativeHandle> ();
-			foreach (var ts in value)
+			foreach (var ts in value) {
 				handles.Add (ts.Handle);
-			return new CTParagraphStyleSpecifierIntPtrsValue (spec, handles.ToArray ());
+			}
+			CTParagraphStyleSpecifierValue result = new CTParagraphStyleSpecifierIntPtrsValue (spec, handles.ToArray ());
+			GC.KeepAlive (value);
+			return result;
+#pragma warning restore RBI0014
 		}
 
 		static CTParagraphStyleSpecifierValue CreateValue (CTParagraphStyleSpecifier spec, byte value)

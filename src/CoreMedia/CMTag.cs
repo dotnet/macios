@@ -311,7 +311,9 @@ namespace CoreMedia {
 		/// <remarks>Create the <see cref="NSDictionary" /> instance using <see cref="ToDictionary" />.</remarks>
 		public static CMTag? Create (NSDictionary dictionary)
 		{
-			return CMTagMakeFromDictionary (dictionary.GetNonNullHandle (nameof (dictionary)));
+			CMTag? result = CMTagMakeFromDictionary (dictionary.GetNonNullHandle (nameof (dictionary)));
+			GC.KeepAlive (dictionary);
+			return result;
 		}
 #endif // COREBUILD
 	}

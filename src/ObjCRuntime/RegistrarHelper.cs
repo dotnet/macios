@@ -426,11 +426,15 @@ namespace ObjCRuntime {
 #endif
 				return;
 			}
+			// The handle is captured and returned to caller, so the caller is
+			// responsible for keeping the object alive.
+#pragma warning disable RBI0014
 			IntPtr rv = value.GetHandle ();
 #if TRACE
 			Runtime.NSLog ($"INativeObject_managed_to_native (0x{(*ptr).ToString ("x")}, ? != ?): 0x{rv.ToString ("x")} => {value?.GetType ()}");
 #endif
 			*ptr = rv;
+#pragma warning restore RBI0014
 		}
 	}
 }

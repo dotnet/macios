@@ -65,7 +65,7 @@ static partial class BindingSyntaxFactory {
 	/// </summary>
 	/// <param name="selector">The selector whose handle we want to retrieve.</param>
 	/// <returns>The expression to retrieve a selector handle.</returns>
-	public static InvocationExpressionSyntax GetHandle (string selector)
+	public static InvocationExpressionSyntax SelectorGetHandle (string selector)
 	{
 		// (selector)
 		var args = ArgumentList (SingletonSeparatedList (
@@ -115,7 +115,7 @@ static partial class BindingSyntaxFactory {
 		// the first two arguments are the selector and the handle, we add those by hand
 		args [0] = Argument (ThisHandle ());
 		args [1] = Token (SyntaxKind.CommaToken).WithTrailingTrivia (Space);
-		args [2] = Argument (GetHandle (selector));
+		args [2] = Argument (SelectorGetHandle (selector));
 
 		// we need to add the commas and the arguments provided by the user of the api
 		if (parameters.Length > 0) {
@@ -203,6 +203,23 @@ static partial class BindingSyntaxFactory {
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
 					IdentifierName ("CFString"),
+					IdentifierName ("CreateNative").WithTrailingTrivia (Space))
+			).WithArgumentList (argumentList);
+	}
+
+	/// <summary>
+	/// Generates the expression to call the CFString.CreateNative method.
+	/// </summary>
+	/// <param name="arguments">The argument list for the invocation.</param>
+	/// <returns>The expression to call the CFString.CreateNative method with the provided args.</returns>
+	internal static InvocationExpressionSyntax NStringCreateNative (ImmutableArray<ArgumentSyntax> arguments)
+	{
+		var argumentList = ArgumentList (
+			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
+		return InvocationExpression (
+				MemberAccessExpression (
+					SyntaxKind.SimpleMemberAccessExpression,
+					IdentifierName ("NFString"),
 					IdentifierName ("CreateNative").WithTrailingTrivia (Space))
 			).WithArgumentList (argumentList);
 	}

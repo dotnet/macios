@@ -21,9 +21,9 @@ public class BindingSyntaxFactoryRuntimeTests {
 	[InlineData ("Test", "Selector.GetHandle (\"Test\")")]
 	[InlineData ("name", "Selector.GetHandle (\"name\")")]
 	[InlineData ("setName:", "Selector.GetHandle (\"setName:\")")]
-	void GetHandleTest (string selector, string expectedDeclaration)
+	void SelectorGetHandleTests (string selector, string expectedDeclaration)
 	{
-		var declaration = GetHandle (selector);
+		var declaration = SelectorGetHandle (selector);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 

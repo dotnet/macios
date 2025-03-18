@@ -37,6 +37,7 @@ namespace Foundation {
 
 			var ptr = CFString.CreateNative (codedName);
 			ObjCRuntime.Messaging.void_objc_msgSend_IntPtr_IntPtr (class_ptr, Selector.GetHandle ("setClass:forClassName:"), kls.Handle, ptr);
+			GC.KeepAlive (kls);
 			CFString.ReleaseNative (ptr);
 		}
 

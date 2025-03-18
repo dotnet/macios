@@ -24,9 +24,11 @@ namespace MediaPlayer {
 				if ((a is null) || (a.Count == 0))
 					return null;
 
-				return NSArray.ArrayFromHandle<double> (a.Handle, input => {
+				double []? result = NSArray.ArrayFromHandle<double> (a.Handle, input => {
 					return new NSNumber (input).DoubleValue;
 				});
+				GC.KeepAlive (a);
+				return result;
 			}
 			set {
 				if (value is null)

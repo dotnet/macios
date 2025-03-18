@@ -57,6 +57,8 @@ namespace Security {
 			SecStatusCode code;
 			unsafe {
 				code = SecPKCS12Import (data.Handle, options.Handle, &handle);
+				GC.KeepAlive (data);
+				GC.KeepAlive (options);
 			}
 			array = NSArray.ArrayFromHandle<NSDictionary> (handle);
 			NSObject.DangerousRelease (handle);

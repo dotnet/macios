@@ -93,17 +93,10 @@ steps:
 
   # upload config to be consumed later
   - ${{ if eq(parameters.uploadArtifacts, true) }}:
-      - ${{ if eq(parameters.use1ES, true) }}:
-          - task: 1ES.PublishPipelineArtifact@1
-            displayName: 'Publish Artifact: configuration.json'
-            inputs:
-              path: '$(Build.ArtifactStagingDirectory)/configuration.json'
-              artifact: '${{ parameters.uploadPrefix }}build-configuration'
-            continueOnError: true
-      - ${{ else }}:
-          - task: PublishPipelineArtifact@1
-            displayName: 'Publish Artifact: configuration.json'
-            inputs:
-              targetPath: '$(Build.ArtifactStagingDirectory)/configuration.json'
-              artifactName: '${{ parameters.uploadPrefix }}build-configuration'
-            continueOnError: true
+      - template: ../common/publish-pipeline-artifact.yml
+        parameters:
+          use1ES: ${{ parameters.use1ES }}
+          displayName: 'Publish Artifact: configuration.json'
+          path: '$(Build.ArtifactStagingDirectory)/configuration.json'
+          artifact: '${{ parameters.uploadPrefix }}build-configuration'
+          continueOnError: true

@@ -418,5 +418,3 @@
 !deprecated-attribute-missing! MPSInstanceAccelerationStructure missing a [Deprecated] attribute
 !deprecated-attribute-missing! MPSRayIntersector missing a [Deprecated] attribute
 !deprecated-attribute-missing! MPSTriangleAccelerationStructure missing a [Deprecated] attribute
-!missing-enum-value! MPSDataType native value MPSDataTypeInt2 = 536870914 not bound
-!missing-enum-value! MPSDataType native value MPSDataTypeUInt2 = 2 not bound

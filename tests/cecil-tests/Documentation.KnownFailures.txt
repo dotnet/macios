@@ -12060,6 +12060,7 @@ F:MetalPerformanceShaders.MPSDataType.Float16
 F:MetalPerformanceShaders.MPSDataType.Float32
 F:MetalPerformanceShaders.MPSDataType.FloatBit
 F:MetalPerformanceShaders.MPSDataType.Int16
+F:MetalPerformanceShaders.MPSDataType.Int2
 F:MetalPerformanceShaders.MPSDataType.Int32
 F:MetalPerformanceShaders.MPSDataType.Int4
 F:MetalPerformanceShaders.MPSDataType.Int64
@@ -12068,6 +12069,7 @@ F:MetalPerformanceShaders.MPSDataType.Invalid
 F:MetalPerformanceShaders.MPSDataType.NormalizedBit
 F:MetalPerformanceShaders.MPSDataType.SignedBit
 F:MetalPerformanceShaders.MPSDataType.UInt16
+F:MetalPerformanceShaders.MPSDataType.UInt2
 F:MetalPerformanceShaders.MPSDataType.UInt32
 F:MetalPerformanceShaders.MPSDataType.UInt4
 F:MetalPerformanceShaders.MPSDataType.UInt64

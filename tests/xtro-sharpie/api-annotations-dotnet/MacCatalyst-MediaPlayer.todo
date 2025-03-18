@@ -1,2 +1,0 @@
-!missing-selector! MPNowPlayingSession::automaticallyPublishesNowPlayingInfo not bound
-!missing-selector! MPNowPlayingSession::setAutomaticallyPublishesNowPlayingInfo: not bound

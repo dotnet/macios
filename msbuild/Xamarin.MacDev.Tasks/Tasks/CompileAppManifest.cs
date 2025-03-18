@@ -210,9 +210,8 @@ namespace Xamarin.MacDev.Tasks {
 			switch (Platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 			case ApplePlatform.MacCatalyst:
-				// Fonts are listed in the Info.plist in a UIAppFonts entry for iOS, tvOS, watchOS and Mac Catalyst.
+				// Fonts are listed in the Info.plist in a UIAppFonts entry for iOS, tvOS and Mac Catalyst.
 				var uiAppFonts = plist.GetArray ("UIAppFonts");
 				if (uiAppFonts is null) {
 					uiAppFonts = new PArray ();
@@ -339,7 +338,6 @@ namespace Xamarin.MacDev.Tasks {
 			switch (Platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 			case ApplePlatform.MacCatalyst:
 				return CompileMobile (plist);
 			case ApplePlatform.MacOSX:
@@ -624,9 +622,6 @@ namespace Xamarin.MacDev.Tasks {
 
 				uiDeviceFamily = IPhoneDeviceType.IPhone;
 				break;
-			case ApplePlatform.WatchOS:
-				uiDeviceFamily = IPhoneDeviceType.Watch;
-				break;
 			case ApplePlatform.TVOS:
 				uiDeviceFamily = IPhoneDeviceType.TV;
 				break;
@@ -645,8 +640,6 @@ namespace Xamarin.MacDev.Tasks {
 			//   It would also require a hostname for the mac, which it might not have either.
 			// * NSAppTransportSecurity/NSExceptionDomains does not allow exceptions based
 			//   on IP address (only hostname).
-			// * Which means the only way to make sure watchOS allows connections from 
-			//   the app on device to the mac is to disable App Transport Security altogether.
 			// Good news: watchOS 3 will apparently not apply ATS when connecting
 			// directly to IP addresses, which means we won't have to do this at all
 			// (sometime in the future).

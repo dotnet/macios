@@ -277,3 +277,4 @@
 !missing-type! WKWebExtensionMessagePort not bound
 !missing-type! WKWebExtensionTabConfiguration not bound
 !missing-type! WKWebExtensionWindowConfiguration not bound
+!missing-protocol-member! WKNavigationDelegate::webView:shouldGoToBackForwardListItem:willUseInstantBack:completionHandler: not found

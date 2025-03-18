@@ -34134,6 +34134,8 @@ M:MessageUI.MFComposeResultEventArgs.#ctor(MessageUI.MFMailComposeViewController
 M:MessageUI.MFMailComposeViewController.add_Finished(System.EventHandler{MessageUI.MFComposeResultEventArgs})
 M:MessageUI.MFMailComposeViewController.AddAttachmentData(Foundation.NSData,System.String,System.String)
 M:MessageUI.MFMailComposeViewController.Dispose(System.Boolean)
+M:MessageUI.MFMailComposeViewController.InsertCollaborationItemProvider(Foundation.NSItemProvider,System.Action{System.Boolean})
+M:MessageUI.MFMailComposeViewController.InsertCollaborationItemProviderAsync(Foundation.NSItemProvider)
 M:MessageUI.MFMailComposeViewController.MFMailComposeViewControllerAppearance.#ctor(System.IntPtr)
 M:MessageUI.MFMailComposeViewController.remove_Finished(System.EventHandler{MessageUI.MFComposeResultEventArgs})
 M:MessageUI.MFMailComposeViewController.SetBccRecipients(System.String[])

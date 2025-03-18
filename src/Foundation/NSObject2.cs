@@ -674,6 +674,8 @@ namespace Foundation {
 		private void InvokeOnMainThread (Selector sel, NSObject obj, bool wait)
 		{
 			Messaging.void_objc_msgSend_NativeHandle_NativeHandle_bool (this.Handle, Selector.GetHandle (Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDone), sel.Handle, obj.GetHandle (), wait ? (byte) 1 : (byte) 0);
+			GC.KeepAlive (sel);
+			GC.KeepAlive (obj);
 		}
 
 		public void BeginInvokeOnMainThread (Selector sel, NSObject obj)
@@ -691,6 +693,7 @@ namespace Foundation {
 			var d = new NSAsyncActionDispatcher (action);
 			Messaging.void_objc_msgSend_NativeHandle_NativeHandle_bool (d.Handle, Selector.GetHandle (Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDone),
 																NSDispatcher.Selector.Handle, d.Handle, 0);
+			GC.KeepAlive (d);
 		}
 
 		internal void BeginInvokeOnMainThread (System.Threading.SendOrPostCallback cb, object state)
@@ -698,6 +701,7 @@ namespace Foundation {
 			var d = new NSAsyncSynchronizationContextDispatcher (cb, state);
 			Messaging.void_objc_msgSend_NativeHandle_NativeHandle_bool (d.Handle, Selector.GetHandle (Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDone),
 															Selector.GetHandle (NSDispatcher.SelectorName), d.Handle, 0);
+			GC.KeepAlive (d);
 		}
 
 		public void InvokeOnMainThread (Action action)
@@ -786,8 +790,11 @@ namespace Foundation {
 				// last chance for types like CGPath, CGColor... that are not NSObject but are CFObject
 				// see https://bugzilla.xamarin.com/show_bug.cgi?id=8458
 				INativeObject native = (obj as INativeObject);
-				if (native is not null)
-					return Runtime.GetNSObject (native.Handle);
+				if (native is not null) {
+					NSObject result = Runtime.GetNSObject (native.Handle);
+					GC.KeepAlive (native);
+					return result;
+				}
 				return null;
 			}
 		}
@@ -798,8 +805,10 @@ namespace Foundation {
 				throw new ArgumentNullException ("keyPath");
 			if (IsDirectBinding) {
 				ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_NativeHandle (this.Handle, Selector.GetHandle ("setValue:forKeyPath:"), handle, keyPath.Handle);
+				GC.KeepAlive (keyPath);
 			} else {
 				ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle_NativeHandle (this.SuperHandle, Selector.GetHandle ("setValue:forKeyPath:"), handle, keyPath.Handle);
+				GC.KeepAlive (keyPath);
 			}
 		}
 
@@ -1012,6 +1021,7 @@ namespace Foundation {
 		public static NSObject Alloc (Class kls)
 		{
 			var h = Messaging.IntPtr_objc_msgSend (kls.Handle, Selector.GetHandle (Selector.Alloc));
+			GC.KeepAlive (kls);
 			return new NSObject (h, true);
 		}
 

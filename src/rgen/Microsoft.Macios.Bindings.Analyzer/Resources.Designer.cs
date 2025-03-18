@@ -407,5 +407,32 @@ namespace Microsoft.Macios.Bindings.Analyzer {
                 return ResourceManager.GetString("RBI0013Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Native object accessed by handle must be kept alive, either implicitly by access or through GC.KeepAlive..
+        /// </summary>
+        internal static string RBI0014Description {
+            get {
+                return ResourceManager.GetString("RBI0014Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable &apos;{0}&apos; has its Handle property accessed but is not kept alive later in the method.
+        /// </summary>
+        internal static string RBI0014MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0014MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to INativeObject not kept alive after Handle access.
+        /// </summary>
+        internal static string RBI0014Title {
+            get {
+                return ResourceManager.GetString("RBI0014Title", resourceCulture);
+            }
+        }
     }
 }

@@ -33,7 +33,9 @@ namespace MetalPerformanceShaders {
 			if (stateBatch is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (stateBatch));
 
-			return MPSStateBatchIncrementReadCount (stateBatch.Handle, amount);
+			nuint count = MPSStateBatchIncrementReadCount (stateBatch.Handle, amount);
+			GC.KeepAlive (stateBatch);
+			return count;
 		}
 
 		[DllImport (Constants.MetalPerformanceShadersLibrary)]
@@ -48,6 +50,8 @@ namespace MetalPerformanceShaders {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (commandBuffer));
 
 			MPSStateBatchSynchronize (stateBatch.Handle, commandBuffer.Handle);
+			GC.KeepAlive (stateBatch);
+			GC.KeepAlive (commandBuffer);
 		}
 
 #if NET
@@ -71,7 +75,9 @@ namespace MetalPerformanceShaders {
 			if (stateBatch is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (stateBatch));
 
-			return MPSStateBatchResourceSize (stateBatch.Handle);
+			nuint size = MPSStateBatchResourceSize (stateBatch.Handle);
+			GC.KeepAlive (stateBatch);
+			return size;
 		}
 	}
 }

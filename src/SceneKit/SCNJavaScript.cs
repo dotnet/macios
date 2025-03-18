@@ -32,6 +32,7 @@ namespace SceneKit {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
 
 			SCNExportJavaScriptModule (context.Handle);
+			GC.KeepAlive (context);
 		}
 	}
 }

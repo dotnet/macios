@@ -34,7 +34,9 @@ namespace AppKit {
 
 		public static CGRect GetFrameInView (NSView parentView, CGRect frame)
 		{
-			return NSAccessibilityFrameInView (parentView.GetHandle (), frame);
+			CGRect result = NSAccessibilityFrameInView (parentView.GetHandle (), frame);
+			GC.KeepAlive (parentView);
+			return result;
 		}
 
 		[DllImport (Constants.AppKitLibrary)]
@@ -42,7 +44,9 @@ namespace AppKit {
 
 		public static CGPoint GetPointInView (NSView parentView, CGPoint point)
 		{
-			return NSAccessibilityPointInView (parentView.GetHandle (), point);
+			CGPoint result = NSAccessibilityPointInView (parentView.GetHandle (), point);
+			GC.KeepAlive (parentView);
+			return result;
 		}
 
 		[DllImport (Constants.AppKitLibrary)]
@@ -56,9 +60,10 @@ namespace AppKit {
 			if (notification is null)
 				throw new ArgumentNullException ("notification");
 
-			var userInfoHandle = userInfo.GetHandle ();
-
-			NSAccessibilityPostNotificationWithUserInfo (element.Handle, notification.Handle, userInfoHandle);
+			NSAccessibilityPostNotificationWithUserInfo (element.Handle, notification.Handle, userInfo.GetHandle ());
+			GC.KeepAlive (element);
+			GC.KeepAlive (notification);
+			GC.KeepAlive (userInfo);
 		}
 
 		[DllImport (Constants.AppKitLibrary)]
@@ -73,6 +78,8 @@ namespace AppKit {
 				throw new ArgumentNullException ("notification");
 
 			NSAccessibilityPostNotification (element.Handle, notification.Handle);
+			GC.KeepAlive (element);
+			GC.KeepAlive (notification);
 		}
 
 		[DllImport (Constants.AppKitLibrary)]
@@ -83,9 +90,9 @@ namespace AppKit {
 			if (role is null)
 				throw new ArgumentNullException ("role");
 
-			var subroleHandle = subrole.GetHandle ();
-
-			IntPtr handle = NSAccessibilityRoleDescription (role.Handle, subroleHandle);
+			IntPtr handle = NSAccessibilityRoleDescription (role.Handle, subrole.GetHandle ());
+			GC.KeepAlive (role);
+			GC.KeepAlive (subrole);
 			return CFString.FromHandle (handle);
 		}
 
@@ -98,6 +105,7 @@ namespace AppKit {
 				throw new ArgumentNullException ("element");
 
 			IntPtr handle = NSAccessibilityRoleDescriptionForUIElement (element.Handle);
+			GC.KeepAlive (element);
 			return CFString.FromHandle (handle);
 		}
 
@@ -110,6 +118,7 @@ namespace AppKit {
 				throw new ArgumentNullException ("action");
 
 			IntPtr handle = NSAccessibilityActionDescription (action.Handle);
+			GC.KeepAlive (action);
 			return CFString.FromHandle (handle);
 		}
 
@@ -122,6 +131,7 @@ namespace AppKit {
 				throw new ArgumentNullException ("element");
 
 			var handle = NSAccessibilityUnignoredAncestor (element.Handle);
+			GC.KeepAlive (element);
 			return Runtime.GetNSObject (handle);
 		}
 
@@ -134,7 +144,7 @@ namespace AppKit {
 				throw new ArgumentNullException ("element");
 
 			var handle = NSAccessibilityUnignoredDescendant (element.Handle);
-
+			GC.KeepAlive (element);
 			return Runtime.GetNSObject (handle);
 		}
 
@@ -147,7 +157,7 @@ namespace AppKit {
 				throw new ArgumentNullException ("originalChildren");
 
 			var handle = NSAccessibilityUnignoredChildren (originalChildren.Handle);
-
+			GC.KeepAlive (originalChildren);
 			return NSArray.ArrayFromHandle<NSObject> (handle);
 		}
 
@@ -160,7 +170,7 @@ namespace AppKit {
 				throw new ArgumentNullException ("originalChild");
 
 			var handle = NSAccessibilityUnignoredChildrenForOnlyChild (originalChild.Handle);
-
+			GC.KeepAlive (originalChild);
 			return NSArray.ArrayFromHandle<NSObject> (handle);
 		}
 

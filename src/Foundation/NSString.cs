@@ -214,7 +214,9 @@ namespace Foundation {
 
 			if (a.Handle == b.Handle)
 				return true;
-			return a.IsEqualTo (b.Handle);
+			bool result = a.IsEqualTo (b.Handle);
+			GC.KeepAlive (b);
+			return result;
 		}
 
 		public static bool operator == (NSString a, NSString b)
@@ -271,30 +273,45 @@ namespace Foundation {
 
 		public static NSString LocalizedFormat (NSString format, NSObject [] args)
 		{
+			NSString result;
+			NativeHandle formatHandle = format.Handle;
 			switch (args.Length) {
 			case 0:
-				return new NSString (xamarin_localized_string_format (format.Handle));
+				result = new NSString (xamarin_localized_string_format (formatHandle));
+				break;
 			case 1:
-				return new NSString (xamarin_localized_string_format_1 (format.Handle, args [0].Handle));
+				result = new NSString (xamarin_localized_string_format_1 (formatHandle, args [0].Handle));
+				break;
 			case 2:
-				return new NSString (xamarin_localized_string_format_2 (format.Handle, args [0].Handle, args [1].Handle));
+				result = new NSString (xamarin_localized_string_format_2 (formatHandle, args [0].Handle, args [1].Handle));
+				break;
 			case 3:
-				return new NSString (xamarin_localized_string_format_3 (format.Handle, args [0].Handle, args [1].Handle, args [2].Handle));
+				result = new NSString (xamarin_localized_string_format_3 (formatHandle, args [0].Handle, args [1].Handle, args [2].Handle));
+				break;
 			case 4:
-				return new NSString (xamarin_localized_string_format_4 (format.Handle, args [0].Handle, args [1].Handle, args [2].Handle, args [3].Handle));
+				result = new NSString (xamarin_localized_string_format_4 (formatHandle, args [0].Handle, args [1].Handle, args [2].Handle, args [3].Handle));
+				break;
 			case 5:
-				return new NSString (xamarin_localized_string_format_5 (format.Handle, args [0].Handle, args [1].Handle, args [2].Handle, args [3].Handle, args [4].Handle));
+				result = new NSString (xamarin_localized_string_format_5 (formatHandle, args [0].Handle, args [1].Handle, args [2].Handle, args [3].Handle, args [4].Handle));
+				break;
 			case 6:
-				return new NSString (xamarin_localized_string_format_6 (format.Handle, args [0].Handle, args [1].Handle, args [2].Handle, args [3].Handle, args [4].Handle, args [5].Handle));
+				result = new NSString (xamarin_localized_string_format_6 (formatHandle, args [0].Handle, args [1].Handle, args [2].Handle, args [3].Handle, args [4].Handle, args [5].Handle));
+				break;
 			case 7:
-				return new NSString (xamarin_localized_string_format_7 (format.Handle, args [0].Handle, args [1].Handle, args [2].Handle, args [3].Handle, args [4].Handle, args [5].Handle, args [6].Handle));
+				result = new NSString (xamarin_localized_string_format_7 (formatHandle, args [0].Handle, args [1].Handle, args [2].Handle, args [3].Handle, args [4].Handle, args [5].Handle, args [6].Handle));
+				break;
 			case 8:
-				return new NSString (xamarin_localized_string_format_8 (format.Handle, args [0].Handle, args [1].Handle, args [2].Handle, args [3].Handle, args [4].Handle, args [5].Handle, args [6].Handle, args [7].Handle));
+				result = new NSString (xamarin_localized_string_format_8 (formatHandle, args [0].Handle, args [1].Handle, args [2].Handle, args [3].Handle, args [4].Handle, args [5].Handle, args [6].Handle, args [7].Handle));
+				break;
 			case 9:
-				return new NSString (xamarin_localized_string_format_9 (format.Handle, args [0].Handle, args [1].Handle, args [2].Handle, args [3].Handle, args [4].Handle, args [5].Handle, args [6].Handle, args [7].Handle, args [8].Handle));
+				result = new NSString (xamarin_localized_string_format_9 (formatHandle, args [0].Handle, args [1].Handle, args [2].Handle, args [3].Handle, args [4].Handle, args [5].Handle, args [6].Handle, args [7].Handle, args [8].Handle));
+				break;
 			default:
 				throw new Exception ("Unsupported number of arguments, maximum number is 9");
 			}
+			GC.KeepAlive (format);
+			GC.KeepAlive (args);
+			return result;
 		}
 
 		public NSString TransliterateString (NSStringTransform transform, bool reverse)

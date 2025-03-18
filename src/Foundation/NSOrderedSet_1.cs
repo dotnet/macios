@@ -79,7 +79,9 @@ namespace Foundation {
 			if (obj is null)
 				throw new ArgumentNullException (nameof (obj));
 
-			return _Contains (obj.Handle);
+			bool result = _Contains (obj.Handle);
+			GC.KeepAlive (obj);
+			return result;
 		}
 
 		public nint IndexOf (TKey obj)
@@ -87,7 +89,9 @@ namespace Foundation {
 			if (obj is null)
 				throw new ArgumentNullException (nameof (obj));
 
-			return _IndexOf (obj.Handle);
+			nint result = _IndexOf (obj.Handle);
+			GC.KeepAlive (obj);
+			return result;
 		}
 
 		public TKey? FirstObject ()

@@ -25,6 +25,7 @@ namespace CoreMedia {
 			if (target is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (target));
 			var attachments = CMCopyDictionaryOfAttachments (IntPtr.Zero, target.Handle, attachmentMode);
+			GC.KeepAlive (target);
 			if (attachments == IntPtr.Zero)
 				return null;
 			return Runtime.GetNSObject<NSDictionary> (attachments, true);
@@ -39,9 +40,9 @@ namespace CoreMedia {
 			if (target is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (target));
 			var attachments = CMCopyDictionaryOfAttachments (IntPtr.Zero, target.Handle, attachmentMode);
+			GC.KeepAlive (target);
 			if (attachments == IntPtr.Zero)
 				return null;
-
 			return Runtime.GetNSObject<NSDictionary<TKey, TValue>> (attachments, true);
 		}
 
@@ -59,6 +60,7 @@ namespace CoreMedia {
 			attachmentModeOut = default;
 			unsafe {
 				attchm = CMGetAttachment (target.Handle, nsKey, (CMAttachmentMode*) Unsafe.AsPointer<CMAttachmentMode> (ref attachmentModeOut));
+				GC.KeepAlive (target);
 			}
 			CFString.ReleaseNative (nsKey);
 			if (attchm != IntPtr.Zero)
@@ -79,6 +81,8 @@ namespace CoreMedia {
 			if (destination is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (destination));
 			CMPropagateAttachments (source.Handle, destination.Handle);
+			GC.KeepAlive (source);
+			GC.KeepAlive (destination);
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]
@@ -88,6 +92,7 @@ namespace CoreMedia {
 			if (target is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (target));
 			CMRemoveAllAttachments (target.Handle);
+			GC.KeepAlive (target);
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]
@@ -100,6 +105,7 @@ namespace CoreMedia {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
 			var nsKey = CFString.CreateNative (key);
 			CMRemoveAttachment (target.Handle, nsKey);
+			GC.KeepAlive (target);
 			CFString.ReleaseNative (nsKey);
 		}
 
@@ -116,6 +122,8 @@ namespace CoreMedia {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
 			var nsKey = CFString.CreateNative (key);
 			CMSetAttachment (target.Handle, nsKey, value.Handle, attachmentMode);
+			GC.KeepAlive (target);
+			GC.KeepAlive (value);
 			CFString.ReleaseNative (nsKey);
 		}
 
@@ -129,6 +137,8 @@ namespace CoreMedia {
 			if (theAttachments is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (theAttachments));
 			CMSetAttachments (target.Handle, theAttachments.Handle, attachmentMode);
+			GC.KeepAlive (target);
+			GC.KeepAlive (theAttachments);
 		}
 	}
 }

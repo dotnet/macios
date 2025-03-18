@@ -28,7 +28,9 @@ namespace PdfKit {
 			if (value is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
 
-			return _SetValue (value.Handle, key.GetConstant ()!);
+			bool result = _SetValue (value.Handle, key.GetConstant ()!);
+			GC.KeepAlive (value);
+			return result;
 		}
 
 		[SupportedOSPlatform ("macos")]

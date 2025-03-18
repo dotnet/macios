@@ -197,6 +197,7 @@ namespace CoreVideo {
 			if (FillCallBack is null)
 				throw new InvalidOperationException ($"The callback is null.");
 			var rv = FillCallBack (buffer.GetCheckedHandle (), UserInfo);
+			GC.KeepAlive (buffer);
 			return rv != 0;
 		}
 #endif

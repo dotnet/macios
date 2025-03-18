@@ -425,7 +425,9 @@ namespace CoreMedia {
 		{
 			if (dict is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (dict));
-			return CMTimeMakeFromDictionary (dict.Handle);
+			CMTime result = CMTimeMakeFromDictionary (dict.Handle);
+			GC.KeepAlive (dict);
+			return result;
 		}
 #endif // !COREBUILD
 	}

@@ -31,6 +31,21 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
+	/// Generates a call to the RuntimeGetINativeObject.&lt;T&gt; method to create a INativeObject from a handle.
+	/// </summary>
+	/// <param name="nsObjectType">The type of object to use as T</param>
+	/// <param name="args">The arguments to pass to the GetNSObject method.</param>
+	/// <param name="suppressNullableWarning">If we should suppress the nullable warning.</param>
+	/// <returns>The expression that calls GetNSObject method.</returns>
+	public static ExpressionSyntax GetINativeObject (string nsObjectType, ImmutableArray<ArgumentSyntax> args,
+		bool suppressNullableWarning = false)
+	{
+		var argsList = ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ()));
+		return StaticInvocationGenericExpression (Runtime, "GetINativeObject",
+			nsObjectType, argsList, suppressNullableWarning);
+	}
+
+	/// <summary>
 	/// Generates a call to the method CFArray.ArrayFromHandle&lt;T&gt; to create a collection of NSObjects.
 	/// </summary>
 	/// <param name="nsObjectType">The type of the object to use as T</param>
@@ -50,7 +65,7 @@ static partial class BindingSyntaxFactory {
 	/// </summary>
 	/// <param name="selector">The selector whose handle we want to retrieve.</param>
 	/// <returns>The expression to retrieve a selector handle.</returns>
-	public static InvocationExpressionSyntax GetHandle (string selector)
+	public static InvocationExpressionSyntax SelectorGetHandle (string selector)
 	{
 		// (selector)
 		var args = ArgumentList (SingletonSeparatedList (
@@ -100,7 +115,7 @@ static partial class BindingSyntaxFactory {
 		// the first two arguments are the selector and the handle, we add those by hand
 		args [0] = Argument (ThisHandle ());
 		args [1] = Token (SyntaxKind.CommaToken).WithTrailingTrivia (Space);
-		args [2] = Argument (GetHandle (selector));
+		args [2] = Argument (SelectorGetHandle (selector));
 
 		// we need to add the commas and the arguments provided by the user of the api
 		if (parameters.Length > 0) {
@@ -188,6 +203,23 @@ static partial class BindingSyntaxFactory {
 				MemberAccessExpression (
 					SyntaxKind.SimpleMemberAccessExpression,
 					IdentifierName ("CFString"),
+					IdentifierName ("CreateNative").WithTrailingTrivia (Space))
+			).WithArgumentList (argumentList);
+	}
+
+	/// <summary>
+	/// Generates the expression to call the CFString.CreateNative method.
+	/// </summary>
+	/// <param name="arguments">The argument list for the invocation.</param>
+	/// <returns>The expression to call the CFString.CreateNative method with the provided args.</returns>
+	internal static InvocationExpressionSyntax NStringCreateNative (ImmutableArray<ArgumentSyntax> arguments)
+	{
+		var argumentList = ArgumentList (
+			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
+		return InvocationExpression (
+				MemberAccessExpression (
+					SyntaxKind.SimpleMemberAccessExpression,
+					IdentifierName ("NFString"),
 					IdentifierName ("CreateNative").WithTrailingTrivia (Space))
 			).WithArgumentList (argumentList);
 	}
@@ -426,6 +458,21 @@ static partial class BindingSyntaxFactory {
 		=> SmartEnumGetValue (enumType, arguments, enumType.IsNullable);
 
 	/// <summary>
+	/// Generates the expression GetHandle () for a given expression syntax. For example:
+	/// NSArray.FromNSObjects(retval).GetHandle ();
+	/// </summary>
+	/// <param name="nativeObject"></param>
+	/// <returns></returns>
+	internal static InvocationExpressionSyntax GetHandle (ExpressionSyntax nativeObject)
+		=> InvocationExpression (
+			MemberAccessExpression (
+				SyntaxKind.SimpleMemberAccessExpression,
+				nativeObject,
+				IdentifierName ("GetHandle").WithTrailingTrivia (Space)
+			)
+		);
+
+	/// <summary>
 	/// Generate an object creation expressing for the given type info using the provided arguments.
 	/// </summary>
 	/// <param name="type">The information of the type of object to be created.</param>
@@ -445,5 +492,37 @@ static partial class BindingSyntaxFactory {
 
 		return ObjectCreationExpression (identifier.WithLeadingTrivia (Space).WithTrailingTrivia (Space))
 			.WithArgumentList (argumentList);
+	}
+
+	/// <summary>
+	/// Generate a ternary expression that checks if the variable is IntPtr.Zero and returns null or the expression
+	/// </summary>
+	/// <param name="variableName">The variable to check against IntPtr.Zero.</param>
+	/// <param name="expressionSyntax">The expression to use on false.</param>
+	/// <param name="suppressNullableWarning">If we should suppress the nullable warning if the true case.</param>
+	/// <returns>The ternary expression.</returns>
+	internal static ExpressionSyntax IntPtrZeroCheck (string variableName, ExpressionSyntax expressionSyntax,
+		bool suppressNullableWarning = false)
+	{
+		// generate: null or null! depending if we want to suppress the nullable warning
+		ExpressionSyntax nullExpression = suppressNullableWarning
+			? PostfixUnaryExpression (
+				SyntaxKind.SuppressNullableWarningExpression,
+				LiteralExpression (
+					SyntaxKind.NullLiteralExpression))
+			: LiteralExpression (
+				SyntaxKind.NullLiteralExpression);
+
+		// generate: (variableName == IntPtr.Zero) ? null : expressionSyntax
+		return ConditionalExpression (
+			BinaryExpression (
+				SyntaxKind.EqualsExpression,
+				IdentifierName (variableName).WithTrailingTrivia (Space),
+				MemberAccessExpression (
+					SyntaxKind.SimpleMemberAccessExpression,
+					IdentifierName ("IntPtr").WithLeadingTrivia (Space),
+					IdentifierName ("Zero").WithTrailingTrivia (Space))),
+			nullExpression.WithLeadingTrivia (Space).WithTrailingTrivia (Space),
+			expressionSyntax.WithLeadingTrivia (Space));
 	}
 }

@@ -201,7 +201,9 @@ namespace SpriteKit {
 		Angle0 = 0,
 		/// <summary>To be added.</summary>
 		Angle90,
+		/// <summary>To be added.</summary>
 		Angle180,
+		/// <summary>To be added.</summary>
 		Angle270,
 	}
 

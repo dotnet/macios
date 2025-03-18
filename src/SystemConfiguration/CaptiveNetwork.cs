@@ -161,7 +161,9 @@ namespace SystemConfiguration {
 		static public bool MarkPortalOnline (string iface)
 		{
 			using (var nss = new NSString (iface)) {
-				return CNMarkPortalOnline (nss.Handle) != 0;
+				bool result = CNMarkPortalOnline (nss.Handle) != 0;
+				GC.KeepAlive (nss);
+				return result;
 			}
 		}
 
@@ -177,7 +179,9 @@ namespace SystemConfiguration {
 		static public bool MarkPortalOffline (string iface)
 		{
 			using (var nss = new NSString (iface)) {
-				return CNMarkPortalOffline (nss.Handle) != 0;
+				bool result = CNMarkPortalOffline (nss.Handle) != 0;
+				GC.KeepAlive (nss);
+				return result;
 			}
 		}
 
@@ -205,7 +209,9 @@ namespace SystemConfiguration {
 		static public bool SetSupportedSSIDs (string [] ssids)
 		{
 			using (var arr = NSArray.FromStrings (ssids)) {
-				return CNSetSupportedSSIDs (arr.Handle) != 0;
+				bool result = CNSetSupportedSSIDs (arr.Handle) != 0;
+				GC.KeepAlive (arr);
+				return result;
 			}
 		}
 #endif // __TVOS__

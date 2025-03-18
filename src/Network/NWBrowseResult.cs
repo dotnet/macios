@@ -58,7 +58,12 @@ namespace Network {
 		static extern NWBrowseResultChange nw_browse_result_get_changes (OS_nw_browse_result old_result, OS_nw_browse_result new_result);
 
 		public static NWBrowseResultChange GetChanges (NWBrowseResult? oldResult, NWBrowseResult? newResult)
-			=> nw_browse_result_get_changes (oldResult.GetHandle (), newResult.GetHandle ());
+		{
+			NWBrowseResultChange result = nw_browse_result_get_changes (oldResult.GetHandle (), newResult.GetHandle ());
+			GC.KeepAlive (oldResult);
+			GC.KeepAlive (newResult);
+			return result;
+		}
 
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_browse_result_enumerate_interfaces (OS_nw_browse_result result, BlockLiteral* enumerator);

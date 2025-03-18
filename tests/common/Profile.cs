@@ -7,10 +7,7 @@ namespace Xamarin.Tests {
 		iOS,
 		tvOS,
 		watchOS,
-		macOSClassic,
 		macOSMobile,
-		macOSFull,
-		macOSSystem,
 		MacCatalyst,
 	}
 
@@ -22,10 +19,7 @@ namespace Xamarin.Tests {
 				return ApplePlatform.iOS;
 			case Profile.tvOS:
 				return ApplePlatform.TVOS;
-			case Profile.macOSClassic:
-			case Profile.macOSFull:
 			case Profile.macOSMobile:
-			case Profile.macOSSystem:
 				return ApplePlatform.MacOSX;
 			case Profile.MacCatalyst:
 				return ApplePlatform.MacCatalyst;

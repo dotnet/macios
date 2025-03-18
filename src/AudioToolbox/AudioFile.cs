@@ -782,8 +782,11 @@ namespace AudioToolbox {
 			var h = default (IntPtr);
 
 			unsafe {
-				if (AudioFileCreateWithURL (url.Handle, fileType, &format, inFlags, &h) == 0)
+				var urlHandle = url.Handle;
+				if (AudioFileCreateWithURL (urlHandle, fileType, &format, inFlags, &h) == 0) {
+					GC.KeepAlive (url);
 					return new AudioFile (h, true);
+				}
 			}
 			return null;
 		}
@@ -796,8 +799,11 @@ namespace AudioToolbox {
 			var h = default (IntPtr);
 
 			unsafe {
-				if (AudioFileCreateWithURL (url.Handle, fileType, &format, inFlags, &h) == 0)
+				var urlHandle = url.Handle;
+				if (AudioFileCreateWithURL (urlHandle, fileType, &format, inFlags, &h) == 0) {
+					GC.KeepAlive (url);
 					return new AudioFile (h, true);
+				}
 			}
 			return null;
 		}
@@ -862,7 +868,9 @@ namespace AudioToolbox {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			return Open (url.Handle, permissions, fileTypeHint, out error);
+			AudioFile? audioFile = Open (url.Handle, permissions, fileTypeHint, out error);
+			GC.KeepAlive (url);
+			return audioFile;
 		}
 
 		public static AudioFile? Open (NSUrl url, AudioFilePermission permissions, AudioFileType fileTypeHint = 0)
@@ -876,7 +884,9 @@ namespace AudioToolbox {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			return Open (url.Handle, permissions, fileTypeHint, out error);
+			AudioFile? audioFile = Open (url.Handle, permissions, fileTypeHint, out error);
+			GC.KeepAlive (url);
+			return audioFile;
 		}
 
 		static AudioFile? Open (IntPtr urlHandle, AudioFilePermission permissions, AudioFileType fileTypeHint, out AudioFileError error)

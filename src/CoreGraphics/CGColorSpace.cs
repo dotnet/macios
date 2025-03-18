@@ -97,7 +97,9 @@ namespace CoreGraphics {
 		{
 			if (propertyList is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (propertyList));
-			return CGColorSpaceCreateWithPropertyList (propertyList.GetCheckedHandle ());
+			IntPtr result = CGColorSpaceCreateWithPropertyList (propertyList.GetCheckedHandle ());
+			GC.KeepAlive (propertyList);
+			return result;
 		}
 
 		public CGColorSpace (CFPropertyList propertyList)
@@ -233,6 +235,7 @@ namespace CoreGraphics {
 		public static CGColorSpace? CreateIndexed (CGColorSpace baseSpace, int lastIndex, byte [] colorTable)
 		{
 			var ptr = CGColorSpaceCreateIndexed (baseSpace.GetHandle (), lastIndex, colorTable);
+			GC.KeepAlive (baseSpace);
 			return FromHandle (ptr, true);
 		}
 
@@ -243,6 +246,7 @@ namespace CoreGraphics {
 		public static CGColorSpace? CreatePattern (CGColorSpace? baseSpace)
 		{
 			var ptr = CGColorSpaceCreatePattern (baseSpace.GetHandle ());
+			GC.KeepAlive (baseSpace);
 			return FromHandle (ptr, true);
 		}
 
@@ -494,6 +498,7 @@ namespace CoreGraphics {
 #endif
 		{
 			IntPtr ptr = CGColorSpaceCreateWithICCProfile (data.GetHandle ());
+			GC.KeepAlive (data);
 			return FromHandle (ptr, true);
 		}
 
@@ -505,7 +510,9 @@ namespace CoreGraphics {
 #endif
 		public static CGColorSpace? CreateIccData (NSData data)
 		{
-			return CreateIccData (data.GetHandle ());
+			CGColorSpace? result = CreateIccData (data.GetHandle ());
+			GC.KeepAlive (data);
+			return result;
 		}
 
 #if NET
@@ -516,7 +523,9 @@ namespace CoreGraphics {
 #endif
 		public static CGColorSpace? CreateIccData (CGDataProvider provider)
 		{
-			return CreateIccData (provider.GetHandle ());
+			CGColorSpace? result = CreateIccData (provider.GetHandle ());
+			GC.KeepAlive (provider);
+			return result;
 		}
 
 		static CGColorSpace? CreateIccData (IntPtr handle)
@@ -541,6 +550,8 @@ namespace CoreGraphics {
 			unsafe {
 				fixed (nfloat* rangePtr = range) {
 					var ptr = CGColorSpaceCreateICCBased (nComponents, rangePtr, profile.GetHandle (), alternate.GetHandle ());
+					GC.KeepAlive (profile);
+					GC.KeepAlive (alternate);
 					return FromHandle (ptr, true);
 				}
 			}

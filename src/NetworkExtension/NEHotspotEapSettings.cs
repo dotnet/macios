@@ -31,6 +31,7 @@ namespace NetworkExtension {
 
 				var ret = NSArray.From (value, value.Length);
 				_SupportedEapTypes = ret.Handle;
+				GC.KeepAlive (ret);
 			}
 		}
 	}

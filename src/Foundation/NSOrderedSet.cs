@@ -69,7 +69,9 @@ namespace Foundation {
 		public static NSOrderedSet MakeNSOrderedSet<T> (T [] values) where T : NSObject
 		{
 			NSArray a = NSArray.FromNSObjects (values);
-			return (NSOrderedSet) Runtime.GetNSObject (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr (class_ptr, Selector.GetHandle (selSetWithArray), a.Handle));
+			var result = (NSOrderedSet) Runtime.GetNSObject (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr (class_ptr, Selector.GetHandle (selSetWithArray), a.Handle));
+			GC.KeepAlive (a);
+			return result;
 		}
 
 		/// <summary>Returns an enumerator that iterates through the set.</summary>

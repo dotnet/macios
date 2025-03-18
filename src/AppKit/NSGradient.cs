@@ -72,22 +72,25 @@ namespace AppKit {
 				throw new ArgumentNullException ("colorSpace");
 
 			var nsa_colorArray = NSArray.FromNSObjects (colors);
+			var nsa_colorArrayHandle = nsa_colorArray.Handle;
+			var colorSpaceHandle = colorSpace.Handle;
 
 			IntPtr locations = new IntPtr (locationPtr);
 #if NET
 			if (IsDirectBinding) {
-				Handle = ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle_NativeHandle_NativeHandle (this.Handle, selInitWithColorsAtLocationsColorSpace, nsa_colorArray.Handle, locations, colorSpace.Handle);
+				Handle = ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle_NativeHandle_NativeHandle (this.Handle, selInitWithColorsAtLocationsColorSpace, nsa_colorArrayHandle, locations, colorSpaceHandle);
 			} else {
-				Handle = ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle_NativeHandle_NativeHandle (this.SuperHandle, selInitWithColorsAtLocationsColorSpace, nsa_colorArray.Handle, locations, colorSpace.Handle);
+				Handle = ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle_NativeHandle_NativeHandle (this.SuperHandle, selInitWithColorsAtLocationsColorSpace, nsa_colorArrayHandle, locations, colorSpaceHandle);
 			}
 #else
 			if (IsDirectBinding) {
-				Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr (this.Handle, selInitWithColorsAtLocationsColorSpace, nsa_colorArray.Handle, locations, colorSpace.Handle);
+				Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr (this.Handle, selInitWithColorsAtLocationsColorSpace, nsa_colorArrayHandle, locations, colorSpaceHandle);
 			} else {
-				Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_IntPtr (this.SuperHandle, selInitWithColorsAtLocationsColorSpace, nsa_colorArray.Handle, locations, colorSpace.Handle);
+				Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr_IntPtr (this.SuperHandle, selInitWithColorsAtLocationsColorSpace, nsa_colorArrayHandle, locations, colorSpaceHandle);
 			}
 #endif
 			nsa_colorArray.Dispose ();
+			GC.KeepAlive (colorSpace);
 		}
 	}
 }

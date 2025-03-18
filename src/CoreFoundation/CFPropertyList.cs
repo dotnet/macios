@@ -59,6 +59,7 @@ namespace CoreFoundation {
 			IntPtr ret;
 			unsafe {
 				ret = CFPropertyListCreateWithData (IntPtr.Zero, data.Handle, (nuint) (ulong) options, &fmt, &error);
+				GC.KeepAlive (data);
 			}
 			if (ret != IntPtr.Zero)
 				return (new CFPropertyList (ret, owns: true), (CFPropertyListFormat) (long) fmt, null);

@@ -348,6 +348,7 @@ namespace Network {
 			}
 			set {
 				nw_parameters_require_interface (GetCheckedHandle (), value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 
@@ -360,6 +361,7 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (iface));
 
 			nw_parameters_prohibit_interface (GetCheckedHandle (), iface.Handle);
+			GC.KeepAlive (iface);
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -548,6 +550,7 @@ namespace Network {
 
 			set {
 				nw_parameters_set_local_endpoint (GetCheckedHandle (), value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 
@@ -669,7 +672,10 @@ namespace Network {
 		[MacCatalyst (15, 0)]
 #endif
 		public void SetPrivacyContext (NWPrivacyContext privacyContext)
-			=> nw_parameters_set_privacy_context (GetCheckedHandle (), privacyContext.Handle);
+		{
+			nw_parameters_set_privacy_context (GetCheckedHandle (), privacyContext.Handle);
+			GC.KeepAlive (privacyContext);
+		}
 
 #if NET
 		[SupportedOSPlatform ("tvos15.0")]

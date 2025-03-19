@@ -14,6 +14,17 @@ namespace Microsoft.Macios.Generator;
 /// </summary>
 class Nomenclator {
 
+	public enum VariableType {
+		BlockLiteral,
+		Handle,
+		NSArray,
+		NSString,
+		NSStringStruct,
+		PrimitivePointer,
+		StringPointer,
+		BindFrom,
+	}
+
 	// keep track of the generic versions of a trampoline, we will use the fully qualified name
 	// of the type to keep track of the generic versions.
 	readonly Dictionary<string, int> trampolinesGenericVersions = new ();
@@ -63,4 +74,33 @@ class Nomenclator {
 
 		return trampolineName;
 	}
+
+	/// <summary>
+	/// Returns the name of the aux variable that would have needed for the given parameter. Use the
+	/// variable type to name it.
+	/// </summary>
+	/// <param name="nameHint">Hint of the name for the variable.</param>
+	/// <param name="variableType">The type of aux variable.</param>
+	/// <returns>The name of the aux variable to use.</returns>
+	public static string? GetNameForVariableType (string nameHint, VariableType variableType)
+	{
+		var cleanedName = nameHint.Replace ("@", "");
+		return variableType switch {
+			VariableType.BlockLiteral => $"block_ptr_{cleanedName}",
+			VariableType.Handle => $"{cleanedName}__handle__",
+			VariableType.NSArray => $"nsa_{cleanedName}",
+			VariableType.NSString => $"ns{cleanedName}",
+			VariableType.NSStringStruct => $"_s{cleanedName}",
+			VariableType.PrimitivePointer => $"converted_{cleanedName}",
+			VariableType.StringPointer => $"_p{cleanedName}",
+			VariableType.BindFrom => $"nsb_{cleanedName}",
+			_ => null
+		};
+	}
+
+	/// <summary>
+	/// Get the name of the variable for the type when it is used as a return value.
+	/// </summary>
+	/// <param name="typeInfo">The type info whose name we want for the return type.</param>
+	public static string GetReturnVariableName (in TypeInfo typeInfo) => "ret"; // nothing fancy for now
 }

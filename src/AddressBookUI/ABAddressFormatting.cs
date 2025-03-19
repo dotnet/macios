@@ -34,8 +34,11 @@ namespace AddressBookUI {
 			if (address is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (address));
 
-			using (NSString s = new NSString (ABCreateStringWithAddressDictionary (address.Handle, addCountryName ? (byte) 1 : (byte) 0)))
+			NativeHandle addressHandle = address.Handle;
+			using (NSString s = new NSString (ABCreateStringWithAddressDictionary (addressHandle, addCountryName ? (byte) 1 : (byte) 0))) {
+				GC.KeepAlive (address);
 				return s.ToString ();
+			}
 		}
 	}
 }

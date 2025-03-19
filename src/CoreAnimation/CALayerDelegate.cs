@@ -36,17 +36,20 @@ using CoreGraphics;
 namespace CoreAnimation {
 
 	public unsafe partial class CALayerDelegate {
-		IntPtr calayer;
+		WeakReference<CALayer>? calayer;
 
 		internal void SetCALayer (CALayer? layer)
 		{
-			calayer = layer.GetHandle ();
+			calayer = layer is null ? null : new WeakReference<CALayer> (layer);
 		}
 
 		protected override void Dispose (bool disposing)
 		{
-			if (calayer != IntPtr.Zero)
-				Messaging.void_objc_msgSend_IntPtr (calayer, Selector.GetHandle ("setDelegate:"), IntPtr.Zero);
+			if (calayer?.TryGetTarget (out var layer) == true) {
+				Messaging.void_objc_msgSend_IntPtr (layer.Handle, Selector.GetHandle ("setDelegate:"), IntPtr.Zero);
+				GC.KeepAlive (layer);
+				calayer = null;
+			}
 
 			base.Dispose (disposing);
 		}

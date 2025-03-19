@@ -54,6 +54,7 @@ namespace CoreFoundation {
 			if (maxLength < 0)
 				throw new ArgumentException (nameof (maxLength));
 			Handle = CFStringCreateMutableCopy (IntPtr.Zero, maxLength, theString.GetHandle ());
+			GC.KeepAlive (theString);
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary, CharSet = CharSet.Unicode)]
@@ -79,12 +80,16 @@ namespace CoreFoundation {
 		// constant documentation mention it also accept any ICT transform
 		public bool Transform (ref CFRange range, CFString transform, bool reverse)
 		{
-			return Transform (ref range, transform.GetHandle (), reverse);
+			bool result = Transform (ref range, transform.GetHandle (), reverse);
+			GC.KeepAlive (transform);
+			return result;
 		}
 
 		public bool Transform (ref CFRange range, NSString transform, bool reverse)
 		{
-			return Transform (ref range, transform.GetHandle (), reverse);
+			bool result = Transform (ref range, transform.GetHandle (), reverse);
+			GC.KeepAlive (transform);
+			return result;
 		}
 
 		public bool Transform (ref CFRange range, string transform, bool reverse)
@@ -115,12 +120,16 @@ namespace CoreFoundation {
 		// constant documentation mention it also accept any ICT transform
 		public bool Transform (CFString transform, bool reverse)
 		{
-			return Transform (transform.GetHandle (), reverse);
+			bool result = Transform (transform.GetHandle (), reverse);
+			GC.KeepAlive (transform);
+			return result;
 		}
 
 		public bool Transform (NSString transform, bool reverse)
 		{
-			return Transform (transform.GetHandle (), reverse);
+			bool result = Transform (transform.GetHandle (), reverse);
+			GC.KeepAlive (transform);
+			return result;
 		}
 
 		public bool Transform (string transform, bool reverse)

@@ -421,6 +421,7 @@ namespace AudioToolbox {
 		{
 			this.deviceUID = deviceUID.Handle;
 			this.channelNumber = channelNumber;
+			GC.KeepAlive (deviceUID);
 		}
 	}
 
@@ -1621,6 +1622,8 @@ namespace AudioToolbox {
 					GCHandle.ToIntPtr (gch),
 					runLoop.GetHandle (),
 					runMode.GetHandle (), 0, &h);
+				GC.KeepAlive (runLoop);
+				GC.KeepAlive (runMode);
 			}
 
 			if (code != 0) {
@@ -1721,6 +1724,8 @@ namespace AudioToolbox {
 				code = AudioQueueNewInput (&desc, &input_callback, GCHandle.ToIntPtr (mygch),
 					runLoop.GetHandle (), s.GetHandle (),
 					0, &h);
+				GC.KeepAlive (runLoop);
+				GC.KeepAlive (s);
 			}
 			if (s is not null)
 				s.Dispose ();

@@ -141,6 +141,7 @@ namespace Network {
 			}
 			set {
 				nw_content_context_set_antecedent (GetCheckedHandle (), value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 
@@ -152,6 +153,7 @@ namespace Network {
 			if (protocolDefinition is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (protocolDefinition));
 			var x = nw_content_context_copy_protocol_metadata (GetCheckedHandle (), protocolDefinition.Handle);
+			GC.KeepAlive (protocolDefinition);
 			if (x == IntPtr.Zero)
 				return null;
 			return new NWProtocolMetadata (x, owns: true);
@@ -162,6 +164,7 @@ namespace Network {
 			if (protocolDefinition is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (protocolDefinition));
 			var x = nw_content_context_copy_protocol_metadata (GetCheckedHandle (), protocolDefinition.Handle);
+			GC.KeepAlive (protocolDefinition);
 			return Runtime.GetINativeObject<T> (x, owns: true);
 		}
 
@@ -173,6 +176,7 @@ namespace Network {
 			if (protocolMetadata is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (protocolMetadata));
 			nw_content_context_set_metadata_for_protocol (GetCheckedHandle (), protocolMetadata.Handle);
+			GC.KeepAlive (protocolMetadata);
 		}
 
 #if !NET

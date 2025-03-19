@@ -94,6 +94,7 @@ namespace AddressBook {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 
 			Handle = ABGroupCreateInSource (source.Handle);
+			GC.KeepAlive (source);
 		}
 
 		[Preserve (Conditional = true)]
@@ -147,6 +148,7 @@ namespace AddressBook {
 			unsafe {
 				if (ABGroupAddMember (Handle, person.Handle, &error) == 0)
 					throw CFException.FromCFError (error);
+				GC.KeepAlive (person);
 			}
 		}
 
@@ -190,6 +192,7 @@ namespace AddressBook {
 			unsafe {
 				if (ABGroupRemoveMember (Handle, member.Handle, &error) == 0)
 					throw CFException.FromCFError (error);
+				GC.KeepAlive (member);
 			}
 		}
 	}

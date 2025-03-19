@@ -61,6 +61,7 @@ namespace AVFoundation {
 		{
 			var constant = reactionType.GetConstant ();
 			var image = AVCaptureReactionSystemImageNameForType (constant.GetHandle ());
+			GC.KeepAlive (constant);
 			return CFString.FromHandle (image, false)!;
 		}
 	}

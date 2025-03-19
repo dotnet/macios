@@ -1691,7 +1691,7 @@ public partial class Generator : IMemberGatherer {
 			string cast_a = "", cast_b = "";
 			bool use_temp_return;
 
-			GenerateArgumentChecks (mi, true);
+			GenerateArgumentChecks (mi, true, null, out bool needsGCKeepAlives);
 
 			StringBuilder args, convs, disposes, by_ref_processing, by_ref_init;
 			GenerateTypeLowering (mi,
@@ -1717,6 +1717,8 @@ public partial class Generator : IMemberGatherer {
 				   cast_a,
 				   args.ToString (),
 				   cast_b);
+			if (needsGCKeepAlives)
+				GenerateArgumentGCKeepAlives (mi, null);
 			if (disposes.Length > 0)
 				print (disposes.ToString ());
 			if (by_ref_processing.Length > 0)
@@ -3351,8 +3353,10 @@ public partial class Generator : IMemberGatherer {
 		}
 	}
 
-	void GenerateArgumentChecks (MethodInfo mi, bool null_allowed_override, PropertyInfo propInfo = null)
+	void GenerateArgumentChecks (MethodInfo mi, bool null_allowed_override, PropertyInfo propInfo, out bool needsGCKeepAlives)
 	{
+		needsGCKeepAlives = false;
+
 		if (AttributeManager.IsNullable (mi))
 			exceptions.Add (ErrorHelper.CreateWarning (1118, mi));
 
@@ -3377,9 +3381,22 @@ public partial class Generator : IMemberGatherer {
 				} else {
 					print ($"var {safe_name}__handle__ = {safe_name}.GetHandle ();");
 				}
+				needsGCKeepAlives = true;
 			} else if (needs_null_check) {
 				print ("if ({0} is null)", safe_name);
 				print ("\tObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof ({0}));", safe_name);
+			}
+		}
+	}
+
+	void GenerateArgumentGCKeepAlives (MethodInfo mi, PropertyInfo propInfo = null)
+	{
+		foreach (var pi in mi.GetParameters ()) {
+			var cap = propInfo?.SetMethod == mi ? (ICustomAttributeProvider) propInfo : (ICustomAttributeProvider) pi;
+			var bind_as = GetBindAsAttribute (cap);
+			var pit = bind_as is null ? pi.ParameterType : bind_as.Type;
+			if (TypeManager.IsWrappedType (pit) || TypeCache.INativeObject.IsAssignableFrom (pit)) {
+				print ($"GC.KeepAlive ({pi.Name.GetSafeParamName ()});");
 			}
 		}
 	}
@@ -3450,7 +3467,7 @@ public partial class Generator : IMemberGatherer {
 
 		Inject<PrologueSnippetAttribute> (mi);
 
-		GenerateArgumentChecks (mi, false, propInfo);
+		GenerateArgumentChecks (mi, false, propInfo, out bool needsGCKeepAlives);
 
 		// Collect all strings that can be fast-marshalled
 		List<string> stringParameters = CollectFastStringMarshalParameters (mi);
@@ -3501,7 +3518,7 @@ public partial class Generator : IMemberGatherer {
 		bool use_temp_return =
 			minfo.is_return_release ||
 			(mi.Name != "Constructor" && shouldMarshalNativeExceptions && mi.ReturnType != TypeCache.System_Void) ||
-			(mi.Name != "Constructor" && (CheckNeedStret (mi) || disposes.Length > 0 || postget is not null) && mi.ReturnType != TypeCache.System_Void) ||
+			(mi.Name != "Constructor" && (CheckNeedStret (mi) || disposes.Length > 0 || needsGCKeepAlives || postget is not null) && mi.ReturnType != TypeCache.System_Void) ||
 			(AttributeManager.HasAttribute<FactoryAttribute> (mi)) ||
 			((body_options & BodyOption.NeedsTempReturn) == BodyOption.NeedsTempReturn) ||
 			(mi.ReturnType.IsSubclassOf (TypeCache.System_Delegate)) ||
@@ -3509,7 +3526,7 @@ public partial class Generator : IMemberGatherer {
 			(IsNativeEnum (mi.ReturnType)) ||
 			(mi.ReturnType == TypeCache.System_Boolean) ||
 			(mi.ReturnType == TypeCache.System_Char) ||
-			minfo.is_protocol_member && disposes.Length > 0 && mi.Name == "Constructor" ||
+			(minfo.is_protocol_member && (disposes.Length > 0 || needsGCKeepAlives) && mi.Name == "Constructor") ||
 			((mi.Name != "Constructor" || minfo.is_protocol_member) && by_ref_processing.Length > 0 && mi.ReturnType != TypeCache.System_Void);
 
 		if (use_temp_return) {
@@ -3577,6 +3594,8 @@ public partial class Generator : IMemberGatherer {
 
 		Inject<PostSnippetAttribute> (mi);
 
+		if (needsGCKeepAlives)
+			GenerateArgumentGCKeepAlives (mi, propInfo);
 		if (disposes.Length > 0)
 			print (sw, disposes.ToString ());
 		if ((body_options & BodyOption.StoreRet) == BodyOption.StoreRet) {

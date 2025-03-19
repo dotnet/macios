@@ -327,6 +327,7 @@ namespace CoreServices {
 						&context,
 						options.DeviceToWatch.Value,
 						pathsToWatch.Handle, sinceWhenId, latency, flags);
+					GC.KeepAlive (pathsToWatch);
 				} else {
 					handle = FSEventStreamCreate (
 						allocator,
@@ -337,6 +338,7 @@ namespace CoreServices {
 #endif
 						&context,
 						pathsToWatch.Handle, sinceWhenId, latency, flags);
+					GC.KeepAlive (pathsToWatch);
 				}
 			}
 
@@ -501,6 +503,8 @@ namespace CoreServices {
 		public void ScheduleWithRunLoop (CFRunLoop runLoop, NSString runLoopMode)
 		{
 			FSEventStreamScheduleWithRunLoop (GetCheckedHandle (), runLoop.Handle, runLoopMode.Handle);
+			GC.KeepAlive (runLoop);
+			GC.KeepAlive (runLoopMode);
 		}
 
 		public void ScheduleWithRunLoop (CFRunLoop runLoop)
@@ -531,6 +535,8 @@ namespace CoreServices {
 		public void UnscheduleFromRunLoop (CFRunLoop runLoop, NSString runLoopMode)
 		{
 			FSEventStreamScheduleWithRunLoop (GetCheckedHandle (), runLoop.Handle, runLoopMode.Handle);
+			GC.KeepAlive (runLoop);
+			GC.KeepAlive (runLoopMode);
 		}
 
 		public void UnscheduleFromRunLoop (CFRunLoop runLoop)
@@ -552,7 +558,10 @@ namespace CoreServices {
 		static extern void FSEventStreamSetDispatchQueue (IntPtr handle, IntPtr dispatchQueue);
 
 		public void SetDispatchQueue (DispatchQueue? dispatchQueue)
-			=> FSEventStreamSetDispatchQueue (GetCheckedHandle (), dispatchQueue.GetHandle ());
+		{
+			FSEventStreamSetDispatchQueue (GetCheckedHandle (), dispatchQueue.GetHandle ());
+			GC.KeepAlive (dispatchQueue);
+		}
 
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern ulong FSEventStreamGetDeviceBeingWatched (IntPtr handle);

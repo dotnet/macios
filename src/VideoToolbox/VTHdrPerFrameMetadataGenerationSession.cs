@@ -55,6 +55,7 @@ namespace VideoToolbox {
 			IntPtr handle;
 			unsafe {
 				error = (VTStatus) VTHDRPerFrameMetadataGenerationSessionCreate (IntPtr.Zero, framesPerSecond, options.GetHandle (), &handle);
+				GC.KeepAlive (options);
 			}
 			if (error == VTStatus.Ok && handle != IntPtr.Zero)
 				return new VTHdrPerFrameMetadataGenerationSession (handle, owns: true);
@@ -84,7 +85,9 @@ namespace VideoToolbox {
 		/// <returns>An error code if the operation was unsuccessful, otherwise <see cref="VTStatus.Ok" />.</returns>
 		public VTStatus AttachMetadata (CVPixelBuffer pixelBuffer, bool sceneChange)
 		{
-			return VTHDRPerFrameMetadataGenerationSessionAttachMetadata (GetCheckedHandle (), pixelBuffer.GetNonNullHandle (nameof (pixelBuffer)), sceneChange.AsByte ());
+			VTStatus status = VTHDRPerFrameMetadataGenerationSessionAttachMetadata (GetCheckedHandle (), pixelBuffer.GetNonNullHandle (nameof (pixelBuffer)), sceneChange.AsByte ());
+			GC.KeepAlive (pixelBuffer);
+			return status;
 		}
 	}
 }

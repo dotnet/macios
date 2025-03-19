@@ -213,6 +213,7 @@ namespace CoreText {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (ctx));
 
 			CTFrameDraw (Handle, ctx.Handle);
+			GC.KeepAlive (ctx);
 		}
 	}
 }

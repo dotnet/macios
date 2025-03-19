@@ -122,7 +122,9 @@ namespace CoreGraphics {
 			// not it's a __nullable parameter but it would return nil (see unit tests) and create an invalid instance
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
-			return CGDataProviderCreateWithURL (url.Handle);
+			IntPtr result = CGDataProviderCreateWithURL (url.Handle);
+			GC.KeepAlive (url);
+			return result;
 		}
 
 		public CGDataProvider (NSUrl url)
@@ -138,7 +140,9 @@ namespace CoreGraphics {
 			// not it's a __nullable parameter but it would return nil (see unit tests) and create an invalid instance
 			if (data is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
-			return CGDataProviderCreateWithCFData (data.Handle);
+			IntPtr result = CGDataProviderCreateWithCFData (data.Handle);
+			GC.KeepAlive (data);
+			return result;
 		}
 
 		public CGDataProvider (NSData data)

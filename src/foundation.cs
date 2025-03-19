@@ -8254,7 +8254,7 @@ namespace Foundation {
 	}
 
 	[BaseType (typeof (NSObject), Name = "NSURLCredential")]
-	// crash when calling NSObjecg.get_Description (and likely other selectors)
+	// crash when calling NSObject.get_Description (and likely other selectors)
 	[DisableDefaultCtor]
 	interface NSUrlCredential : NSSecureCoding, NSCopying {
 
@@ -8280,9 +8280,9 @@ namespace Foundation {
 		[Export ("hasPassword")]
 		bool HasPassword { get; }
 
-		[Export ("initWithIdentity:certificates:persistence:")]
 		[Internal]
-		NativeHandle Constructor (IntPtr identity, IntPtr certificates, NSUrlCredentialPersistence persistance);
+		[Export ("initWithIdentity:certificates:persistence:")]
+		NativeHandle _InitWithIdentity (IntPtr identity, IntPtr certificates, NSUrlCredentialPersistence persistence);
 
 		[Static]
 		[Internal]
@@ -8295,10 +8295,6 @@ namespace Foundation {
 
 		[Export ("certificates")]
 		SecCertificate [] Certificates { get; }
-
-		// bound manually to keep the managed/native signatures identical
-		//[Export ("initWithTrust:")]
-		//NativeHandle Constructor (IntPtr SecTrustRef_trust, bool ignored);
 
 		[Internal]
 		[Static]

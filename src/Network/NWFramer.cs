@@ -59,6 +59,7 @@ namespace Network {
 			if (data is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
 			nw_framer_write_output_data (GetCheckedHandle (), data.Handle);
+			GC.KeepAlive (data);
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -292,7 +293,9 @@ namespace Network {
 		{
 			if (options is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (options));
-			return nw_framer_prepend_application_protocol (GetCheckedHandle (), options.Handle) != 0;
+			bool result = nw_framer_prepend_application_protocol (GetCheckedHandle (), options.Handle) != 0;
+			GC.KeepAlive (options);
+			return result;
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -322,7 +325,9 @@ namespace Network {
 		{
 			if (message is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (message));
-			return nw_framer_deliver_input_no_copy (GetCheckedHandle (), length, message.Handle, isComplete.AsByte ()) != 0;
+			bool result = nw_framer_deliver_input_no_copy (GetCheckedHandle (), length, message.Handle, isComplete.AsByte ()) != 0;
+			GC.KeepAlive (message);
+			return result;
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -333,6 +338,7 @@ namespace Network {
 			if (protocolDefinition is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (protocolDefinition));
 			var x = nw_framer_create_options (protocolDefinition.Handle);
+			GC.KeepAlive (protocolDefinition);
 			return Runtime.GetINativeObject<T> (x, owns: true);
 		}
 
@@ -456,8 +462,10 @@ namespace Network {
 			if (message is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (message));
 			unsafe {
-				fixed (byte* mh = buffer)
+				fixed (byte* mh = buffer) {
 					nw_framer_deliver_input (GetCheckedHandle (), mh, (nuint) buffer.Length, message.Handle, isComplete.AsByte ());
+					GC.KeepAlive (message);
+				}
 			}
 		}
 

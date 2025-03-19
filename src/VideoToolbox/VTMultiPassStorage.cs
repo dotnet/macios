@@ -84,6 +84,8 @@ namespace VideoToolbox {
 				timeRange ?? CMTimeRange.InvalidRange,
 				options.GetHandle (),
 				&ret);
+				GC.KeepAlive (fileUrl);
+				GC.KeepAlive (options);
 			}
 
 			if (status != VTStatus.Ok)

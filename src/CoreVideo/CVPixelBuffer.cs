@@ -71,6 +71,7 @@ namespace CoreVideo {
 			IntPtr handle;
 			unsafe {
 				ret = CVPixelBufferCreate (IntPtr.Zero, width, height, pixelFormatType, pixelBufferAttributes.GetHandle (), &handle);
+				GC.KeepAlive (pixelBufferAttributes);
 			}
 
 			if (ret != CVReturn.Success)
@@ -98,6 +99,7 @@ namespace CoreVideo {
 			var nsarray = NSArray.FromNSObjects (attributes);
 			unsafe {
 				ret = CVPixelBufferCreateResolvedAttributesDictionary (IntPtr.Zero, nsarray.GetHandle (), &resolvedDictionaryOut);
+				GC.KeepAlive (nsarray);
 			}
 			GC.KeepAlive (nsarray);
 			if (ret != CVReturn.Success)

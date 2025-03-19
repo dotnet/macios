@@ -149,6 +149,8 @@ namespace CoreFoundation {
 			if (mode is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
 			CFWriteStreamScheduleWithRunLoop (Handle, loop.Handle, mode.Handle);
+			GC.KeepAlive (loop);
+			GC.KeepAlive (mode);
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]
@@ -161,6 +163,8 @@ namespace CoreFoundation {
 			if (mode is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
 			CFWriteStreamUnscheduleFromRunLoop (Handle, loop.Handle, mode.Handle);
+			GC.KeepAlive (loop);
+			GC.KeepAlive (mode);
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]
@@ -170,7 +174,9 @@ namespace CoreFoundation {
 		{
 			if (name is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name));
-			return CFWriteStreamCopyProperty (Handle, name.Handle);
+			IntPtr result = CFWriteStreamCopyProperty (Handle, name.Handle);
+			GC.KeepAlive (name);
+			return result;
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]
@@ -180,7 +186,10 @@ namespace CoreFoundation {
 		{
 			if (name is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name));
-			return CFWriteStreamSetProperty (Handle, name.Handle, value.GetHandle ()) != 0;
+			bool result = CFWriteStreamSetProperty (Handle, name.Handle, value.GetHandle ()) != 0;
+			GC.KeepAlive (name);
+			GC.KeepAlive (value);
+			return result;
 		}
 	}
 }

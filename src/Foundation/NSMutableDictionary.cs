@@ -176,7 +176,9 @@ namespace Foundation {
 			var _key = key as INativeObject;
 			if (_key is null)
 				return false;
-			return ContainsKey (_key.Handle);
+			bool result = ContainsKey (_key.Handle);
+			GC.KeepAlive (_key);
+			return result;
 		}
 
 		IDictionaryEnumerator IDictionary.GetEnumerator ()
@@ -193,6 +195,7 @@ namespace Foundation {
 				throw new ArgumentException ("The key must be an INativeObject");
 
 			_RemoveObjectForKey (nskey.Handle);
+			GC.KeepAlive (nskey);
 		}
 
 		/// <summary>To be added.</summary>
@@ -214,7 +217,9 @@ namespace Foundation {
 				var _key = key as INativeObject;
 				if (_key is null)
 					return null;
-				return _ObjectForKey (_key.Handle);
+				object result = _ObjectForKey (_key.Handle);
+				GC.KeepAlive (_key);
+				return result;
 			}
 			set {
 				var nsokey = key as INativeObject;
@@ -224,6 +229,8 @@ namespace Foundation {
 					throw new ArgumentException ("You can only use INativeObjects for keys and values in an NSMutableDictionary");
 
 				_SetObject (nsovalue.Handle, nsokey.Handle);
+				GC.KeepAlive (nsovalue);
+				GC.KeepAlive (nsokey);
 			}
 		}
 
@@ -357,6 +364,7 @@ namespace Foundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (obj));
 
 			LowlevelSetObject (obj.Handle, key);
+			GC.KeepAlive (obj);
 		}
 
 		public void LowlevelSetObject (string str, IntPtr key)

@@ -78,6 +78,7 @@ namespace QuickLook {
 			}
 
 			var handle = QLThumbnailImageCreate (IntPtr.Zero, url.Handle, maxThumbnailSize, dictionary.GetHandle ());
+			GC.KeepAlive (url);
 			GC.KeepAlive (dictionary);
 			if (handle != IntPtr.Zero)
 				return new CGImage (handle, true);

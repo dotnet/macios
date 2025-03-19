@@ -142,6 +142,7 @@ namespace CoreFoundation {
 				observedObject = objectToObserve.GetHandle (),
 				listener = notificationHandler,
 			};
+			GC.KeepAlive (objectToObserve);
 
 			//
 			// To allow callbacks to add observers, we duplicate the list of listeners on AddObserver
@@ -224,6 +225,8 @@ namespace CoreFoundation {
 				obj: objectToObserve.GetHandle (),
 				userInfo: userInfo.GetHandle (),
 				options: (deliverImmediately ? 1 : 0) | (postOnAllSessions ? 2 : 0));
+			GC.KeepAlive (objectToObserve);
+			GC.KeepAlive (userInfo);
 			CFString.ReleaseNative (strHandle);
 		}
 

@@ -93,13 +93,17 @@ namespace CoreGraphics {
 
 			// The first triple is not a varargs, but the subsequent ones are
 			var first = triples [0];
-			return Messaging.CallVariadicFunction4 (
+			var firstSpace = first.Space;
+			IntPtr result = Messaging.CallVariadicFunction4 (
 					CGColorConversionInfoCreateFromList,
 					options.GetHandle (),
-					first.Space.GetHandle (),
+					firstSpace.GetHandle (),
 					(IntPtr) first.Transform,
 					(IntPtr) first.Intent,
 					varArgs);
+			GC.KeepAlive (options);
+			GC.KeepAlive (firstSpace);
+			return result;
 		}
 
 #if NET
@@ -122,7 +126,10 @@ namespace CoreGraphics {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 			if (destination is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (destination));
-			return CGColorConversionInfoCreate (source.Handle, destination.Handle);
+			IntPtr result = CGColorConversionInfoCreate (source.Handle, destination.Handle);
+			GC.KeepAlive (source);
+			GC.KeepAlive (destination);
+			return result;
 		}
 
 		public CGColorConversionInfo (CGColorSpace source, CGColorSpace destination)
@@ -153,7 +160,11 @@ namespace CoreGraphics {
 			if (destination is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (destination));
 
-			return CGColorConversionInfoCreateWithOptions (source.Handle, destination.Handle, options.GetHandle ());
+			IntPtr result = CGColorConversionInfoCreateWithOptions (source.Handle, destination.Handle, options.GetHandle ());
+			GC.KeepAlive (source);
+			GC.KeepAlive (destination);
+			GC.KeepAlive (options);
+			return result;
 		}
 
 #if NET

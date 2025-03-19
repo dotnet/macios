@@ -177,27 +177,27 @@ public class BindingInfoTests {
 		public IEnumerator<object []> GetEnumerator ()
 		{
 			yield return [
-				new BindingInfo (BindingType.SmartEnum, new BindingTypeData ("Name")),
-				"{ BindingType: SmartEnum, BindingData: { Name: 'Name' } }",
+				new BindingInfo (new BindingTypeData<ObjCBindings.SmartEnum> ("Name")),
+				"{ BindingType: SmartEnum, BindingData: { Name: 'Name', Flags: 'Default' } }",
 			];
 
 			yield return [
-				new BindingInfo (new BindingTypeData<Class> ("Name")),
+				new BindingInfo (new BindingTypeData<ObjCBindings.Class> ("Name")),
 				"{ BindingType: Class, BindingData: { Name: 'Name', Flags: 'Default' } }"
 			];
 
 			yield return [
-				new BindingInfo (new BindingTypeData<Class> ("Name", Class.DisableDefaultCtor)),
+				new BindingInfo (new BindingTypeData<ObjCBindings.Class> ("Name", Class.DisableDefaultCtor)),
 				"{ BindingType: Class, BindingData: { Name: 'Name', Flags: 'DisableDefaultCtor' } }"
 			];
 
 			yield return [
-				new BindingInfo (new BindingTypeData<Protocol> ("Name")),
+				new BindingInfo (new BindingTypeData<ObjCBindings.Protocol> ("Name")),
 				"{ BindingType: Protocol, BindingData: { Name: 'Name', Flags: 'Default' } }"
 			];
 
 			yield return [
-				new BindingInfo (new BindingTypeData<Category> ("Name")),
+				new BindingInfo (new BindingTypeData<ObjCBindings.Category> ("Name")),
 				"{ BindingType: Category, BindingData: { Name: 'Name', Flags: 'Default' } }"
 			];
 		}

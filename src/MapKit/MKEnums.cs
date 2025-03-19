@@ -23,9 +23,13 @@ namespace MapKit {
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum MKDirectionsTransportType : ulong {
+		/// <summary>Routing for automobiles.</summary>
 		Automobile = 1 << 0,
+		/// <summary>Routing for walking.</summary>
 		Walking = 1 << 1,
+		/// <summary>Routing for public transport.</summary>
 		Transit = 1 << 2,
+		/// <summary>The routing type is not specified.</summary>
 		Any = 0x0FFFFFFF,
 	}
 
@@ -33,11 +37,17 @@ namespace MapKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKMapType : ulong {
+		/// <summary>Standard cartographic imagery.</summary>
 		Standard = 0,
+		/// <summary>Photos taken from space.</summary>
 		Satellite,
+		/// <summary>A combination of satellite and cartographic imagery.</summary>
 		Hybrid,
+		/// <summary>A flyover using satellite images.</summary>
 		SatelliteFlyover,
+		/// <summary>A flyover that combines satellite and cartographic imagery.</summary>
 		HybridFlyover,
+		/// <summary>A muted map that emphasized developer data.</summary>
 		[MacCatalyst (13, 1)]
 		MutedStandard,
 	}
@@ -46,9 +56,13 @@ namespace MapKit {
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum MKDistanceFormatterUnits : ulong {
+		/// <summary>To be added.</summary>
 		Default,
+		/// <summary>To be added.</summary>
 		Metric,
+		/// <summary>To be added.</summary>
 		Imperial,
+		/// <summary>To be added.</summary>
 		ImperialWithYards,
 	}
 
@@ -56,8 +70,11 @@ namespace MapKit {
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum MKDistanceFormatterUnitStyle : ulong {
+		/// <summary>To be added.</summary>
 		Default = 0,
+		/// <summary>To be added.</summary>
 		Abbreviated,
+		/// <summary>To be added.</summary>
 		Full,
 	}
 
@@ -65,7 +82,9 @@ namespace MapKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKOverlayLevel : long {
+		/// <summary>The overlay should render above roads, but below labels, points of interest, and annotation views.</summary>
 		AboveRoads = 0,
+		/// <summary>The overlay should render above all map content except for annotation views.</summary>
 		AboveLabels,
 	}
 
@@ -74,10 +93,15 @@ namespace MapKit {
 	[Native]
 	[ErrorDomain ("MKErrorDomain")]
 	public enum MKErrorCode : ulong {
+		/// <summary>To be added.</summary>
 		Unknown = 1,
+		/// <summary>To be added.</summary>
 		ServerFailure,
+		/// <summary>To be added.</summary>
 		LoadingThrottled,
+		/// <summary>To be added.</summary>
 		PlacemarkNotFound,
+		/// <summary>To be added.</summary>
 		DirectionsNotFound,
 		DecodingFailed,
 	}
@@ -88,10 +112,15 @@ namespace MapKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKAnnotationViewDragState : ulong {
+		/// <summary>To be added.</summary>
 		None,
+		/// <summary>To be added.</summary>
 		Starting,
+		/// <summary>To be added.</summary>
 		Dragging,
+		/// <summary>To be added.</summary>
 		Canceling,
+		/// <summary>To be added.</summary>
 		Ending,
 	}
 
@@ -104,8 +133,11 @@ namespace MapKit {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'MKPinAnnotationView.PinTintColor' instead.")]
 	[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'MKPinAnnotationView.PinTintColor' instead.")]
 	public enum MKPinAnnotationColor : ulong {
+		/// <summary>To be added.</summary>
 		Red,
+		/// <summary>To be added.</summary>
 		Green,
+		/// <summary>To be added.</summary>
 		Purple,
 	}
 
@@ -113,12 +145,15 @@ namespace MapKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKUserTrackingMode : ulong {
+		/// <summary>To be added.</summary>
 		None,
+		/// <summary>To be added.</summary>
 		Follow,
 #if !XAMCORE_5_0 && !(IOS || MACCATALYST)
 		[Obsolete ("This is only available on iOS and MacCatalyst.")]
 		FollowWithHeading,
 #elif IOS || MACCATALYST
+		/// <summary>To be added.</summary>
 		FollowWithHeading,
 #endif
 	}
@@ -130,14 +165,18 @@ namespace MapKit {
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'MKLocalSearchCompleterResultType' instead.")]
 	public enum MKSearchCompletionFilterType : long {
+		/// <summary>Include related search queries in the completion results, in addition to place names.</summary>
 		AndQueries = 0,
+		/// <summary>Only include place names in the completion results.</summary>
 		Only,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKAnnotationViewCollisionMode : long {
+		/// <summary>Indicates that the entire frame rectangle should be used for collision detection.</summary>
 		Rectangle,
+		/// <summary>Indicates that a circle inscribed within the frame rectangle should be used for collision detection.</summary>
 		Circle,
 		[TV (14, 0)]
 		[iOS (14, 0)]
@@ -149,15 +188,20 @@ namespace MapKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKScaleViewAlignment : long {
+		/// <summary>To be added.</summary>
 		Leading,
+		/// <summary>To be added.</summary>
 		Trailing,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKFeatureVisibility : long {
+		/// <summary>Indicates that the title text is shown or hidden in response to the map state.</summary>
 		Adaptive,
+		/// <summary>Indicates that the title text is hidden.</summary>
 		Hidden,
+		/// <summary>Indicates that the title text is always visible.</summary>
 		Visible,
 	}
 

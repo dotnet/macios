@@ -18,15 +18,27 @@ namespace CoreText {
 	/// <summary>A class whose static properties can be used as keys for the <see cref="T:Foundation.NSDictionary" /> used by <see cref="T:CoreText.CTFontFeatures" />.</summary>
 	[Static]
 	interface CTFontFeatureKey {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureTypeIdentifierKey")]
 		NSString Identifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureTypeNameKey")]
 		NSString Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureTypeExclusiveKey")]
 		NSString Exclusive { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureTypeSelectorsKey")]
 		NSString Selectors { get; }
 	}
@@ -34,15 +46,27 @@ namespace CoreText {
 	/// <summary>A class whose static properties can be used as keys for the <see cref="T:Foundation.NSDictionary" /> used by <see cref="T:CoreText.CTFontFeatureSelectors" />.</summary>
 	[Static]
 	interface CTFontFeatureSelectorKey {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureSelectorIdentifierKey")]
 		NSString Identifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureSelectorNameKey")]
 		NSString Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureSelectorDefaultKey")]
 		NSString Default { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureSelectorSettingKey")]
 		NSString Setting { get; }
 
@@ -61,21 +85,39 @@ namespace CoreText {
 	[Static]
 	interface CTFontVariationAxisKey {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontVariationAxisIdentifierKey")]
 		NSString Identifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontVariationAxisMinimumValueKey")]
 		NSString MinimumValue { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontVariationAxisMaximumValueKey")]
 		NSString MaximumValue { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontVariationAxisDefaultValueKey")]
 		NSString DefaultValue { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontVariationAxisNameKey")]
 		NSString Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCTFontVariationAxisHiddenKey")]
 		NSString Hidden { get; }
@@ -103,6 +145,9 @@ namespace CoreText {
 		NSString ForceEmbeddingLevel { get; }
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCTTypesetterOptionAllowUnboundedLayout")]
 		NSString AllowUnboundedLayout { get; }

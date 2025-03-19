@@ -104,7 +104,7 @@ namespace CoreText {
 		/// <summary>To be added.</summary>
 		Reference,
 		/// <summary>To be added.</summary>
-		Original
+		Original,
 	}
 
 	static partial class CTBaselineFontID {

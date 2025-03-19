@@ -67,28 +67,40 @@ namespace ARKit {
 	[ErrorDomain ("ARErrorDomain")]
 	[Native]
 	public enum ARErrorCode : long {
+		/// <summary>The requested <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=ARKit%20ARSession%20Configuration&amp;scope=Xamarin" title="T:ARKit.ARSessionConfiguration">T:ARKit.ARSessionConfiguration</a></format> is not compatible with the device.</summary>
 		UnsupportedConfiguration = 100,
+		/// <summary>A suitable capture device could not be found.</summary>
 		SensorUnavailable = 101,
+		/// <summary>A failure relating to the capture device(s).</summary>
 		SensorFailed = 102,
+		/// <summary>Indicates that the user has not allowed access to the camera.</summary>
 		CameraUnauthorized = 103,
 		MicrophoneUnauthorized = 104,
 		LocationUnauthorized = 105,
 		HighResolutionFrameCaptureInProgress = 106,
 		HighResolutionFrameCaptureFailed = 107,
+		/// <summary>A failure relating to world tracking.</summary>
 		WorldTrackingFailed = 200,
 		GeoTrackingNotAvailableAtLocation = 201,
 		GeoTrackingFailed = 202,
+		/// <summary>To be added.</summary>
 		InvalidReferenceImage = 300,
+		/// <summary>To be added.</summary>
 		InvalidReferenceObject = 301,
+		/// <summary>To be added.</summary>
 		InvalidWorldMap = 302,
+		/// <summary>To be added.</summary>
 		InvalidConfiguration = 303,
 #if !NET
 		[Obsolete ("Please use the 'InvalidCollaborationData' value instead.")]
 		CollaborationDataUnavailable = InvalidCollaborationData,
 #endif
 		InvalidCollaborationData = 304,
+		/// <summary>To be added.</summary>
 		InsufficientFeatures = 400,
+		/// <summary>To be added.</summary>
 		ObjectMergeFailed = 401,
+		/// <summary>To be added.</summary>
 		FileIOFailed = 500,
 		RequestFailed = 501,
 	}
@@ -98,11 +110,17 @@ namespace ARKit {
 	[Flags]
 	[Native]
 	public enum ARHitTestResultType : ulong {
+		/// <summary>A point detected by image processing that appears to be on a continuous surface but does not have an <see cref="T:ARKit.ARAnchor" />.</summary>
 		FeaturePoint = 1 << 0,
+		/// <summary>A real-world horizontal plane detected by image analysis.</summary>
 		EstimatedHorizontalPlane = 1 << 1,
+		/// <summary>A real-world vertical plane detected by image analysis.</summary>
 		EstimatedVerticalPlane = 1 << 2,
+		/// <summary>An existing plane in the scene, detected without constraints on the plane's size.</summary>
 		ExistingPlane = 1 << 3,
+		/// <summary>An existing plane in the scene, detected only if the point is within the plane's extent.</summary>
 		ExistingPlaneUsingExtent = 1 << 4,
+		/// <summary>An existint plane in the scene, detected if the point is coplanar with the plane's geometry.</summary>
 		ExistingPlaneUsingGeometry = 1 << 5,
 	}
 
@@ -110,7 +128,9 @@ namespace ARKit {
 	[NoTV, NoMac]
 	[Native]
 	public enum ARPlaneAnchorAlignment : long {
+		/// <summary>A plane perpendicular to the direction of gravity.</summary>
 		Horizontal,
+		/// <summary>A plane parallel to the direction of gravity.</summary>
 		Vertical,
 	}
 
@@ -141,8 +161,11 @@ namespace ARKit {
 	[Flags]
 	[Native]
 	public enum ARPlaneDetection : ulong {
+		/// <summary>No planes should be detected.</summary>
 		None = 0,
+		/// <summary>Planes that are perpendicular to the direction of gravity.</summary>
 		Horizontal = 1 << 0,
+		/// <summary>Planes that are aligned to the direction of gravity.</summary>
 		Vertical = 1 << 1,
 	}
 
@@ -150,8 +173,11 @@ namespace ARKit {
 	[NoTV, NoMac]
 	[Native]
 	public enum AREnvironmentTexturing : long {
+		/// <summary>Environmental texture-map generation is not in use.</summary>
 		None,
+		/// <summary>The developer creates and places <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=ARKit%20ARWorld%20Tracking%20Probe%20Anchor&amp;scope=Xamarin" title="T:ARKit.ARWorldTrackingProbeAnchor">T:ARKit.ARWorldTrackingProbeAnchor</a></format> objects.</summary>
 		Manual,
+		/// <summary>The system automatically creates and places <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=ARKit%20ARWorld%20Tracking%20Probe%20Anchor&amp;scope=Xamarin" title="T:ARKit.ARWorldTrackingProbeAnchor">T:ARKit.ARWorldTrackingProbeAnchor</a></format> objects. .</summary>
 		Automatic,
 	}
 
@@ -168,20 +194,30 @@ namespace ARKit {
 	[NoTV, NoMac]
 	[Native]
 	public enum ARPlaneClassificationStatus : long {
+		/// <summary>To be added.</summary>
 		NotAvailable = 0,
+		/// <summary>To be added.</summary>
 		Undetermined,
+		/// <summary>To be added.</summary>
 		Unknown,
+		/// <summary>To be added.</summary>
 		Known,
 	}
 
 	[NoTV, NoMac]
 	[Native]
 	public enum ARPlaneClassification : long {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Wall,
+		/// <summary>To be added.</summary>
 		Floor,
+		/// <summary>To be added.</summary>
 		Ceiling,
+		/// <summary>To be added.</summary>
 		Table,
+		/// <summary>To be added.</summary>
 		Seat,
 		[iOS (13, 0)]
 		Window,
@@ -562,6 +598,9 @@ namespace ARKit {
 
 		// [Export ("initWithTransform:")] marked as NS_UNAVAILABLE
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("classificationSupported")]
 		bool ClassificationSupported { [Bind ("isClassificationSupported")] get; }
@@ -1023,6 +1062,9 @@ namespace ARKit {
 		[Export ("worldAlignment", ArgumentSemantic.Assign)]
 		ARWorldAlignment WorldAlignment { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that tells whether ARKit estimates ambient lighting to render augmented reality elements.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lightEstimationEnabled")]
 		bool LightEstimationEnabled { [Bind ("isLightEstimationEnabled")] get; set; }
 
@@ -1143,6 +1185,9 @@ namespace ARKit {
 		[Export ("supportedVideoFormats")]
 		ARVideoFormat [] GetSupportedVideoFormats ();
 
+		/// <summary>Gets or sets a Boolean value that tells whether the device camera is currently autofocusing.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("autoFocusEnabled")]
 		bool AutoFocusEnabled { [Bind ("isAutoFocusEnabled")] get; set; }
 
@@ -1157,9 +1202,15 @@ namespace ARKit {
 	[Static]
 	interface ARSCNDebugOptions {
 
+		/// <summary>The [0, 0, 0] coordinate of the world coordinate system will be displayed as a large heavy + shape.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ARSCNDebugOptionShowWorldOrigin")]
 		SCNDebugOptions ShowWorldOrigin { get; }
 
+		/// <summary>The point cloud being used by image processing will be shown as a series of + shapes.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ARSCNDebugOptionShowFeaturePoints")]
 		SCNDebugOptions ShowFeaturePoints { get; }
 	}
@@ -1213,108 +1264,264 @@ namespace ARKit {
 	[StrongDictionary ("ARBlendShapeLocationKeys")]
 	interface ARBlendShapeLocationOptions {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float BrowDownLeft { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float BrowDownRight { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float BrowInnerUp { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float BrowOuterUpLeft { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float BrowOuterUpRight { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float CheekPuff { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float CheekSquintLeft { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float CheekSquintRight { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float EyeBlinkLeft { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float EyeBlinkRight { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float EyeLookDownLeft { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float EyeLookDownRight { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float EyeLookInLeft { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float EyeLookInRight { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float EyeLookOutLeft { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float EyeLookOutRight { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float EyeLookUpLeft { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float EyeLookUpRight { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float EyeSquintLeft { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float EyeSquintRight { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float EyeWideLeft { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float EyeWideRight { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float JawForward { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float JawLeft { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float JawOpen { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float JawRight { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float MouthClose { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float MouthDimpleLeft { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float MouthDimpleRight { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float MouthFrownLeft { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float MouthFrownRight { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float MouthFunnel { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float MouthLeft { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float MouthLowerDownLeft { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float MouthLowerDownRight { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float MouthPressLeft { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float MouthPressRight { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float MouthPucker { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float MouthRight { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float MouthRollLower { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float MouthRollUpper { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float MouthShrugLower { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float MouthShrugUpper { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float MouthSmileLeft { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float MouthSmileRight { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float MouthStretchLeft { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float MouthStretchRight { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float MouthUpperUpLeft { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float MouthUpperUpRight { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float NoseSneerLeft { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float NoseSneerRight { get; set; }
 
+		/// <summary>Gets or sets the extension of a tongue.</summary>
+		///         <value>The extension of a tongue.</value>
+		///         <remarks>To be added.</remarks>
 		float TongueOut { get; set; }
 	}
 
@@ -1520,6 +1727,9 @@ namespace ARKit {
 		[Export ("blendShapes")]
 		NSDictionary WeakBlendShapes { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakBlendShapes")]
 		ARBlendShapeLocationOptions BlendShapes { get; }
 	}
@@ -1640,6 +1850,9 @@ namespace ARKit {
 		[Export ("supportedVideoFormats")]
 		ARVideoFormat [] GetSupportedVideoFormats ();
 
+		/// <summary>Gets or sets whether the camera is using autofocus. If <see langword="false" />, fixed focus is used.</summary>
+		///         <value>The default value is <see langword="true" />.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("autoFocusEnabled")]
 		bool AutoFocusEnabled { [Bind ("isAutoFocusEnabled")] get; set; }
 
@@ -1666,6 +1879,9 @@ namespace ARKit {
 		[Export ("supportedVideoFormats")]
 		ARVideoFormat [] GetSupportedVideoFormats ();
 
+		/// <summary>Gets or sets whether the camera should use autofocusing. If <see langword="false" />, manual focus is used.</summary>
+		///         <value>The default value is <see langword="true" />.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("autoFocusEnabled")]
 		bool AutoFocusEnabled { [Bind ("isAutoFocusEnabled")] get; set; }
 
@@ -1757,6 +1973,9 @@ namespace ARKit {
 		[return: NullAllowed]
 		ARReferenceObject Merge (ARReferenceObject @object, [NullAllowed] out NSError error);
 
+		/// <summary>The file extension used for archived 3D objects.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("ARReferenceObjectArchiveExtension")]
 		NSString ArchiveExtension { get; }
 	}

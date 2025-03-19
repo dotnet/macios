@@ -49,6 +49,9 @@ namespace NaturalLanguage {
 			}
 		}
 
+		/// <summary>Gets or sets a list of language hints.</summary>
+		///         <value>A list of language hints.</value>
+		///         <remarks>To be added.</remarks>
 		public Dictionary<NLLanguage, double> LanguageHints {
 			get {
 				return NLLanguageExtensions.Convert (NativeLanguageHints);

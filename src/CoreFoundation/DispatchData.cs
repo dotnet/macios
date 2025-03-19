@@ -35,28 +35,14 @@ using System.Threading;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreFoundation {
 
 	public partial class DispatchData : DispatchObject {
 #if !COREBUILD
 		[Preserve (Conditional = true)]
-#if NET
 		internal DispatchData (NativeHandle handle, bool owns) : base (handle, owns)
-#else
-		public DispatchData (NativeHandle handle, bool owns) : base (handle, owns)
-#endif
 		{
 		}
-
-#if !NET
-		public DispatchData (NativeHandle handle) : base (handle, false)
-		{
-		}
-#endif
 
 		[DllImport (Constants.libcLibrary)]
 		extern static IntPtr dispatch_data_create (IntPtr buffer, nuint size, IntPtr dispatchQueue, IntPtr destructor);
@@ -120,6 +106,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.libcLibrary)]
 		extern static nuint dispatch_data_get_size (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nuint Size => dispatch_data_get_size (Handle);
 
 		[DllImport (Constants.libcLibrary)]

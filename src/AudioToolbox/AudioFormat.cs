@@ -50,7 +50,13 @@ namespace AudioToolbox {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioFormat {
+		/// <summary>The AudioStreamBasicDescription.</summary>
+		///         <remarks>
+		///         </remarks>
 		public AudioStreamBasicDescription AudioStreamBasicDescription;
+		/// <summary>The AudioChannelLayoutTag</summary>
+		///         <remarks>
+		///         </remarks>
 		public AudioChannelLayoutTag AudioChannelLayoutTag;
 
 		public unsafe static AudioFormat? GetFirstPlayableFormat (AudioFormat [] formatList)
@@ -78,13 +84,20 @@ namespace AudioToolbox {
 
 	public enum AudioFormatError : int // Implictly cast to OSType
 	{
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Unspecified = 0x77686174,   // 'what'
+		/// <summary>To be added.</summary>
 		UnsupportedProperty = 0x70726f70,   // 'prop'
+		/// <summary>To be added.</summary>
 		BadPropertySize = 0x2173697a,   // '!siz'
+		/// <summary>To be added.</summary>
 		BadSpecifierSize = 0x21737063,  // '!spc'
+		/// <summary>To be added.</summary>
 		UnsupportedDataFormat = 0x666d743f, // 'fmt?'
-		UnknownFormat = 0x21666d74  // '!fmt'
+		/// <summary>To be added.</summary>
+		UnknownFormat = 0x21666d74, // '!fmt'
 
 		// TODO: Not documented
 		// '!dat'
@@ -98,14 +111,20 @@ namespace AudioToolbox {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioValueRange {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public double Minimum;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public double Maximum;
 	}
 
 	public enum AudioBalanceFadeType : uint // UInt32 in AudioBalanceFades
 	{
+		/// <summary>Overall gain is not allowed to exceed 1.0.</summary>
 		MaxUnityGain = 0,
-		EqualPower = 1
+		/// <summary>Overall loudness remains constant, but gain may be as high as 1.414 (+3dB).</summary>
+		EqualPower = 1,
 	}
 
 #if NET
@@ -132,9 +151,21 @@ namespace AudioToolbox {
 			this.ChannelLayout = channelLayout;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float LeftRightBalance { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float BackFrontFade { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioBalanceFadeType Type { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioChannelLayout ChannelLayout { get; private set; }
 
 		public unsafe float []? GetBalanceFade ()
@@ -181,8 +212,10 @@ namespace AudioToolbox {
 
 	public enum PanningMode : uint // UInt32 in AudioPanningInfo
 	{
+		/// <summary>To be added.</summary>
 		SoundField = 3,
-		VectorBasedPanning = 4
+		/// <summary>To be added.</summary>
+		VectorBasedPanning = 4,
 	}
 
 #if NET
@@ -212,10 +245,25 @@ namespace AudioToolbox {
 			this.OutputChannelMap = outputChannelMap;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public PanningMode PanningMode { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioChannelFlags CoordinateFlags { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float [] Coordinates { get; private set; } = Array.Empty<float> ();
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float GainScale { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioChannelLayout OutputChannelMap { get; private set; }
 
 		public unsafe float []? GetPanningMatrix ()
@@ -250,7 +298,7 @@ namespace AudioToolbox {
 				Coord0 = Coordinates [0],
 				Coord1 = Coordinates [1],
 				Coord2 = Coordinates [2],
-				GainScale = GainScale
+				GainScale = GainScale,
 			};
 
 			if (OutputChannelMap is not null) {

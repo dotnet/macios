@@ -30,22 +30,37 @@ namespace GameplayKit {
 		/// <summary>Do not use</summary>
 		protected internal GKHybridStrategist (NativeHandle handle) : base (handle) => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
 		public virtual IGKGameModelUpdate GetBestMoveForActivePlayer () => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual nuint Budget {
 			get => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
 			set => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
 		}
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual nuint ExplorationParameter {
 			get => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
 			set => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
 		}
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual IGKGameModel? GameModel {
 			get => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
 			set => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
 		}
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual nuint MaxLookAheadDepth {
 			get => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
 			set => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
 		}
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual IGKRandom? RandomSource {
 			get => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
 			set => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);

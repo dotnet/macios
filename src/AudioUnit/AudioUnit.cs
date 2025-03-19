@@ -267,6 +267,9 @@ namespace AudioUnit {
 #endif
 	public class AudioUnitParameterInfo {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? UnitName { get; private set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -280,6 +283,9 @@ namespace AudioUnit {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public AudioUnitParameterUnit Unit { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float MinValue { get; private set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -289,7 +295,13 @@ namespace AudioUnit {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public float DefaultValue { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitParameterFlag Flags { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitParameterType Type { get; private set; }
 
 		internal static AudioUnitParameterInfo Create (AudioUnitParameterInfoNative native, AudioUnitParameterType type)
@@ -322,7 +334,9 @@ namespace AudioUnit {
 	}
 
 	public enum AUParameterEventType : uint {
+		/// <summary>Indicates an instantaneous, or step, change in a value.</summary>
 		Immediate = 1,
+		/// <summary>Indicates a linear ramp change in a value over time.</summary>
 		Ramped = 2,
 	}
 
@@ -630,7 +644,7 @@ namespace AudioUnit {
 			var auc = new AudioUnitConnection {
 				SourceAudioUnit = sourceAudioUnit.GetHandle (),
 				SourceOutputNumber = sourceOutputNumber,
-				DestInputNumber = destInputNumber
+				DestInputNumber = destInputNumber,
 			};
 
 			unsafe {
@@ -1450,7 +1464,9 @@ namespace AudioUnit {
 		///         <remarks>To be added.</remarks>
 		public AURenderEventType EventType;
 
-		internal byte reserved1, reserved2, reserved3;
+		internal byte reserved1;
+		internal byte reserved2;
+		internal byte reserved3;
 
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>

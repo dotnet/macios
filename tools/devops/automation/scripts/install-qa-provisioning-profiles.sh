@@ -105,9 +105,12 @@ if test -z "$ONLY_CREATE_KEYCHAIN"; then
 		security import "$p12" -P "${AUTH_TOKEN_LA_DEV_APPLE_P12}" -A -t cert -f pkcs12 -k "$KEYCHAIN_FILE"
 	done
 
+	targetdir="$HOME/Library/MobileDevice/Provisioning Profiles"
+	mkdir -p "$targetdir"
+
 	for source in provisioning-profiles/certificates-and-profiles/*.mobileprovision; do
 		fn="$(basename "$source")"
-		target="$HOME/Library/MobileDevice/Provisioning Profiles/$fn"
+		target="$targetdir/$fn"
 		if ! test -f "$target" || ! diff "$source" "$target" >/dev/null 2>&1; then
 			cp "$source" "$target"
 			echo "${BLUE}Installing provisioning profile '${WHITE}$fn${BLUE}'${CLEAR}"

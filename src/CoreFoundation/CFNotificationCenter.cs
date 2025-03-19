@@ -21,10 +21,6 @@ using Foundation;
 using CoreFoundation;
 using System.Collections.Generic;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreFoundation {
 
 	[Native] // CFIndex
@@ -36,7 +32,7 @@ namespace CoreFoundation {
 		/// <summary>Notifications are kept around in a queue, and they are all delivered serially when the application returns to the foreground.   Some notifications might be dropped if the queue overflows.</summary>
 		Hold = 3,
 		/// <summary>The notifications are delivered immediately.  Any pending notifications that might be queued are delivered first.</summary>
-		DeliverImmediately = 4
+		DeliverImmediately = 4,
 	}
 
 	//
@@ -144,7 +140,7 @@ namespace CoreFoundation {
 				centerHandle = Handle,
 				nameHandle = strHandle,
 				observedObject = objectToObserve.GetHandle (),
-				listener = notificationHandler
+				listener = notificationHandler,
 			};
 
 			//
@@ -157,7 +153,6 @@ namespace CoreFoundation {
 			lock (listeners) {
 				if (!listeners.TryGetValue (name, out listenersForName)) {
 					listenersForName = new List<CFNotificationObserverToken> (1);
-#if NET
 					unsafe {
 						CFNotificationCenterAddObserver (center: Handle,
 									 observer: Handle,
@@ -166,14 +161,6 @@ namespace CoreFoundation {
 									 obj: token.observedObject,
 									 suspensionBehavior: (IntPtr) suspensionBehavior);
 					}
-#else
-					CFNotificationCenterAddObserver (center: Handle,
-									 observer: Handle,
-									 callback: NotificationCallback,
-									 name: strHandle,
-									 obj: token.observedObject,
-									 suspensionBehavior: (IntPtr) suspensionBehavior);
-#endif
 				} else
 					listenersForName = new List<CFNotificationObserverToken> (listenersForName);
 				listenersForName.Add (token);
@@ -205,15 +192,7 @@ namespace CoreFoundation {
 			}
 		}
 
-#if !NET
-		delegate void CFNotificationCallback (CFNotificationCenterRef center, IntPtr observer, IntPtr name, IntPtr obj, IntPtr userInfo);
-#endif
-
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (CFNotificationCallback))]
-#endif
 		static void NotificationCallback (CFNotificationCenterRef centerPtr, IntPtr observer, IntPtr name, IntPtr obj, IntPtr userInfo)
 		{
 			CFNotificationCenter center;
@@ -293,17 +272,10 @@ namespace CoreFoundation {
 		}
 
 
-#if NET
 		[DllImport (Constants.CoreFoundationLibrary)]
 		static extern unsafe void CFNotificationCenterAddObserver (CFNotificationCenterRef center, IntPtr observer,
 									   delegate* unmanaged<CFNotificationCenterRef, IntPtr, IntPtr, IntPtr, IntPtr, void> callback, IntPtr name, IntPtr obj,
 									   /* CFNotificationSuspensionBehavior */ IntPtr suspensionBehavior);
-#else
-		[DllImport (Constants.CoreFoundationLibrary)]
-		static extern unsafe void CFNotificationCenterAddObserver (CFNotificationCenterRef center, IntPtr observer,
-									   CFNotificationCallback callback, IntPtr name, IntPtr obj,
-									   /* CFNotificationSuspensionBehavior */ IntPtr suspensionBehavior);
-#endif
 
 		[DllImport (Constants.CoreFoundationLibrary)]
 		static extern unsafe void CFNotificationCenterPostNotificationWithOptions (CFNotificationCenterRef center, IntPtr name, IntPtr obj, IntPtr userInfo, int options);

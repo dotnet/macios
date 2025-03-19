@@ -666,7 +666,10 @@ namespace Metal {
 	public struct MTLTextureSwizzleChannels {
 #if COREBUILD
 		// keep size identical
-		byte Red, Green, Blue, Alpha;
+		byte Red;
+		byte Green;
+		byte Blue;
+		byte Alpha;
 #else
 		public MTLTextureSwizzle Red;
 

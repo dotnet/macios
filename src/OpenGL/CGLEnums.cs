@@ -53,7 +53,7 @@ namespace OpenGL {
 		BadAddress = 10014, /* invalid pointer                 */
 		BadCodeModule = 10015,  /* invalid code module             */
 		BadAlloc = 10016,   /* invalid memory allocation       */
-		BadConnection = 10017   /* invalid CoreGraphics connection */
+		BadConnection = 10017,  /* invalid CoreGraphics connection */
 
 	}
 
@@ -100,7 +100,7 @@ namespace OpenGL {
 		RemotePixelBuffer = 91,
 		AllowOfflineRenderers = 96,
 		AcceleratedCompute = 97,
-		VirtualScreenCount = 128
+		VirtualScreenCount = 128,
 	}
 
 }

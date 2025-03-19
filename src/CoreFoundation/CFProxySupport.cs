@@ -54,7 +54,7 @@ namespace CoreFoundation {
 		/// <summary>An HTTPS proxy.</summary>
 		HTTPS,
 		/// <summary>A SOCKS proxy.</summary>
-		SOCKS
+		SOCKS,
 	}
 
 	[SupportedOSPlatform ("ios")]
@@ -513,6 +513,9 @@ namespace CoreFoundation {
 		}
 
 #if !MONOMAC
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? ProxyAutoConfigJavaScript {
 			get {
 				if (CFNetworkProxiesProxyAutoConfigJavaScript is null)

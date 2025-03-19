@@ -58,8 +58,11 @@ namespace CoreMidi {
 	// NSUInteger -> MIDINetworkSession.h
 	[Native]
 	public enum MidiNetworkConnectionPolicy : ulong {
+		/// <summary>To be added.</summary>
 		NoOne,
+		/// <summary>To be added.</summary>
 		HostsInContactsList,
+		/// <summary>To be added.</summary>
 		Anyone,
 	}
 
@@ -178,7 +181,7 @@ namespace CoreMidi {
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		DeltaClockstampTicksPerQuarterNote = 0x3,
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-		TicksSinceLastEvent = 0x4
+		TicksSinceLastEvent = 0x4,
 	}
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -203,7 +206,7 @@ namespace CoreMidi {
 	public enum MidiUmpFunctionBlockMidi1Info {
 		NotMidi1 = 0,
 		UnrestrictedBandwidth = 1,
-		RestrictedBandwidth = 2
+		RestrictedBandwidth = 2,
 	}
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -212,7 +215,7 @@ namespace CoreMidi {
 		Unknown = 0,
 		Receiver = 1,
 		Sender = 2,
-		SenderReceiver = 3
+		SenderReceiver = 3,
 	}
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -221,7 +224,7 @@ namespace CoreMidi {
 		Unknown = 0,
 		Input = 1,
 		Output = 2,
-		Bidirectional = 3
+		Bidirectional = 3,
 	}
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -230,7 +233,7 @@ namespace CoreMidi {
 		Complete = 0x00,
 		Start = 0x01,
 		Continuing = 0x02,
-		End = 0x03
+		End = 0x03,
 	}
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -337,19 +340,34 @@ namespace CoreMidi {
 	[BaseType (typeof (NSObject), Name = "MIDINetworkHost")]
 	[DisableDefaultCtor]
 	interface MidiNetworkHost {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("name", ArgumentSemantic.Retain)]
 		string Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("address", ArgumentSemantic.Retain)]
 		string Address { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("port")]
 		nint Port { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("netServiceName", ArgumentSemantic.Retain)]
 		string NetServiceName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("netServiceDomain", ArgumentSemantic.Retain)]
 		string NetServiceDomain { get; }
@@ -402,6 +420,9 @@ namespace CoreMidi {
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject), Name = "MIDINetworkConnection")]
 	interface MidiNetworkConnection {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("host", ArgumentSemantic.Retain)]
 		MidiNetworkHost Host { get; }
 
@@ -418,25 +439,46 @@ namespace CoreMidi {
 	// default 'init' crash the application
 	[DisableDefaultCtor]
 	interface MidiNetworkSession {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("networkPort")]
 		nint NetworkPort { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("networkName")]
 		string NetworkName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("localName")]
 		string LocalName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("connectionPolicy")]
 		MidiNetworkConnectionPolicy ConnectionPolicy { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("defaultSession")]
 		MidiNetworkSession DefaultSession { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("contacts")]
 		NSSet Contacts { get; }
 
@@ -446,6 +488,9 @@ namespace CoreMidi {
 		[Export ("removeContact:")]
 		bool RemoveContact (MidiNetworkHost contact);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("connections")]
 		NSSet Connections { get; }
 
@@ -486,9 +531,15 @@ namespace CoreMidi {
 	[BaseType (typeof (NSObject), Name = "MIDICIProfile")]
 	[DisableDefaultCtor]
 	interface MidiCIProfile : NSSecureCoding {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("name")]
 		string Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("profileID")]
 		NSData ProfileId { get; }
 
@@ -558,12 +609,21 @@ namespace CoreMidi {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "No longer supported.")]
 	[Deprecated (PlatformName.MacOSX, 15, 0, message: "No longer supported.")]
 	interface MidiCISession {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("entity")]
 		uint Entity { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("supportsProfileCapability")]
 		bool SupportsProfileCapability { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("supportsPropertyCapability")]
 		bool SupportsPropertyCapability { get; }
 
@@ -575,6 +635,9 @@ namespace CoreMidi {
 		[Export ("deviceIdentification")]
 		MidiCIDeviceIdentification_Blittable _DeviceIdentification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("_DeviceIdentification.ToMidiCIDeviceIdentification ()", IsVirtual = true)]
 		MidiCIDeviceIdentification DeviceIdentification { get; }
 #endif
@@ -588,6 +651,9 @@ namespace CoreMidi {
 		[Export ("disableProfile:onChannel:error:")]
 		bool DisableProfile (MidiCIProfile profile, byte channel, [NullAllowed] out NSError outError);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("profileChangedCallback", ArgumentSemantic.Assign)]
 		MidiCIProfileChangedHandler ProfileChangedCallback { get; set; }
 

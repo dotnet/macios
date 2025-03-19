@@ -117,7 +117,7 @@ namespace AudioToolbox {
 
 		// From kAudio_
 		/// <summary>To be added.</summary>
-		GeneralParamError = -50
+		GeneralParamError = -50,
 	}
 
 #if NET
@@ -269,7 +269,7 @@ namespace AudioToolbox {
 		LowQualityZeroLatency = 0x6c717a6c,     // lqzl
 #endif
 		/// <summary>To be added.</summary>
-		Varispeed = 0x76737064                  // vspd
+		Varispeed = 0x76737064,                 // vspd
 	}
 
 	public enum AudioQueueHardwareCodecPolicy { // A AudioQueuePropertyID (UInt32)
@@ -282,7 +282,7 @@ namespace AudioToolbox {
 		/// <summary>To be added.</summary>
 		PreferSoftware = 3,
 		/// <summary>To be added.</summary>
-		PreferHardware = 4
+		PreferHardware = 4,
 	}
 
 	public enum AudioQueueParameter : uint // UInt32 AudioQueueParameterID
@@ -303,7 +303,7 @@ namespace AudioToolbox {
 		/// <summary>To be added.</summary>
 		SampleRate = 0x61717372,
 		/// <summary>To be added.</summary>
-		NumberChannels = 0x61716463
+		NumberChannels = 0x61716463,
 	}
 
 	[Flags]
@@ -1571,7 +1571,16 @@ namespace AudioToolbox {
 		}
 
 		internal IntPtr TapHandle { get; set; }
+		/// <summary>Maximum number of sample frames per tap.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>Apple lists this as being "50 msec of audio, 2048 samples at 44.1Khz".</remarks>
 		public uint MaxFrames { get; internal set; }
+		/// <summary>The format of the data that will be provided to the tap render function.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public AudioStreamBasicDescription ProcessingFormat { get; internal set; }
 
 		public void Dispose ()
@@ -1770,7 +1779,7 @@ namespace AudioToolbox {
 
 			var stamp = new AudioTimeStamp () {
 				SampleTime = timeStamp,
-				Flags = AudioTimeStamp.AtsFlags.SampleTimeValid
+				Flags = AudioTimeStamp.AtsFlags.SampleTimeValid,
 			};
 			return AudioQueueOfflineRender (handle, &stamp, audioQueueBuffer, frameCount);
 		}

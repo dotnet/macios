@@ -38,8 +38,10 @@ namespace AVFoundation {
 
 	// Convenience enum for native strings - AVVideoSettings.h
 	public enum AVVideoCodec : int {
+		/// <summary>To be added.</summary>
 		H264 = 1,
-		JPEG = 2
+		/// <summary>To be added.</summary>
+		JPEG = 2,
 	}
 
 	// Convenience enum for native strings - AVVideoSettings.h
@@ -53,7 +55,7 @@ namespace AVFoundation {
 		/// <summary>Preserves aspect ratio of the source and fills remaining areas with black to fit destination dimensions.</summary>
 		ResizeAspect,
 		/// <summary>Preserves aspect ratio of the source and crops picture to fit destination dimensions.</summary>
-		ResizeAspectFill
+		ResizeAspectFill,
 	}
 
 	// Convenience enum for native strings - AVVideoSettings.h
@@ -159,8 +161,10 @@ namespace AVFoundation {
 #if !MONOMAC
 	// Convenience enum for native strings - AVVideoSettings.h
 	public enum AVVideoH264EntropyMode {
+		/// <summary>To be added.</summary>
 		AdaptiveVariableLength,
-		AdaptiveBinaryArithmetic
+		/// <summary>To be added.</summary>
+		AdaptiveBinaryArithmetic,
 	}
 #endif
 
@@ -267,6 +271,9 @@ namespace AVFoundation {
 
 #if !MONOMAC
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -282,6 +289,9 @@ namespace AVFoundation {
 		}
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -323,6 +333,9 @@ namespace AVFoundation {
 
 		// frame rate can be floating point (29.97 is common for instance)
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -339,6 +352,9 @@ namespace AVFoundation {
 
 		// frame rate can be floating point (29.97 is common for instance)
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]

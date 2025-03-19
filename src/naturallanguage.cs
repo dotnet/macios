@@ -58,6 +58,9 @@ namespace NaturalLanguage {
 		[NullAllowed, Export ("dominantLanguage")]
 		NSString _DominantLanguage { get; }
 
+		/// <summary>Gets the language in which the text that was analyzed with <see cref="M:NaturalLanguage.NLLanguageRecognizer.Process(System.String)" /> was most likely written.</summary>
+		///         <value>The the language in which the text was most likely written.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("NLLanguageExtensions.GetValue (_DominantLanguage)")]
 		NLLanguage DominantLanguage { get; }
 
@@ -67,6 +70,9 @@ namespace NaturalLanguage {
 		NSDictionary<NSString, NSNumber> GetNativeLanguageHypotheses (nuint maxHypotheses);
 
 		// left in case the user does not want to get a c# dict
+		/// <summary>Gets or sets a list of language hints that use native types.</summary>
+		///         <value>A list of language hints that use native types.</value>
+		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("languageHints", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSNumber> NativeLanguageHints { get; set; }
@@ -75,6 +81,9 @@ namespace NaturalLanguage {
 		[Export ("languageConstraints", ArgumentSemantic.Copy)]
 		NSString [] _LanguageConstraints { get; set; }
 
+		/// <summary>Gets or sets the array of languages from which the recognizer must choose.</summary>
+		///         <value>The array of languages from which the recognizer must choose..</value>
+		///         <remarks>To be added.</remarks>
 		NLLanguage [] LanguageConstraints {
 			[Wrap ("Array.ConvertAll (_LanguageConstraints, e => NLLanguageExtensions.GetValue (e))")]
 			get;
@@ -87,6 +96,9 @@ namespace NaturalLanguage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NLModelConfiguration : NSCopying, NSSecureCoding {
+		/// <summary>Gets the model type.</summary>
+		///         <value>A value that tells whether the model tags at the token level, or at a higher level.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("type")]
 		NLModelType Type { get; }
 
@@ -94,8 +106,14 @@ namespace NaturalLanguage {
 		[NullAllowed, Export ("language")]
 		NSString _Language { get; }
 
+		/// <summary>Gets the language that the model supports.</summary>
+		///         <value>The language that the model supports..</value>
+		///         <remarks>To be added.</remarks>
 		NLLanguage Language { [Wrap ("(_Language is not null)? NLLanguageExtensions.GetValue (_Language) : NLLanguage.Undetermined")] get; }
 
+		/// <summary>Gets the framework version on which the model was trained.</summary>
+		///         <value>The framework version on which the model was trained.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("revision")]
 		nuint Revision { get; }
 
@@ -123,6 +141,9 @@ namespace NaturalLanguage {
 		[return: NullAllowed]
 		NLModel Create (MLModel mlModel, [NullAllowed] out NSError error);
 
+		/// <summary>Gets the configuration information, such as which language the model supports, or the current version of the model.</summary>
+		///         <value>The configuration information, such as which language the model supports, or the current version of the model.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("configuration", ArgumentSemantic.Copy)]
 		NLModelConfiguration Configuration { get; }
 
@@ -164,9 +185,15 @@ namespace NaturalLanguage {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NLTokenUnit unit);
 
+		/// <summary>Gets the semantic unit of the tokens that this tokenizer returns.</summary>
+		///         <value>The semantic unit of the tokens that this tokenizer returns.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("unit")]
 		NLTokenUnit Unit { get; }
 
+		/// <summary>Gets or sets the string to process.</summary>
+		///         <value>The string to process.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("string", ArgumentSemantic.Retain)]
 		string String { get; set; }
 
@@ -216,9 +243,15 @@ namespace NaturalLanguage {
 		[Export ("tagSchemes", ArgumentSemantic.Copy)]
 		NSString [] _TagSchemes { get; }
 
+		/// <summary>Gets the tagging schemes that are supported by this tagger.</summary>
+		///         <value>The tagging schemes that are supported by this tagger.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Array.ConvertAll (_TagSchemes, e => NLTagSchemeExtensions.GetValue (e))")]
 		NLTagScheme [] TagSchemes { get; }
 
+		/// <summary>Gets or sets the string to tag.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("string", ArgumentSemantic.Retain)]
 		string String { get; set; }
 
@@ -238,6 +271,9 @@ namespace NaturalLanguage {
 		[NullAllowed, Export ("dominantLanguage")]
 		NSString _DominantLanguage { get; }
 
+		/// <summary>Gets the dominant language for the tagged text.</summary>
+		///         <value>The dominant language for the tagged text.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("NLLanguageExtensions.GetValue (_DominantLanguage)")]
 		NLLanguage DominantLanguage { get; }
 
@@ -356,66 +392,159 @@ namespace NaturalLanguage {
 	[MacCatalyst (13, 1)]
 	[Static] // only used to compare with NSString not as input/output
 	interface NLTag {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagWord")]
 		NSString Word { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagPunctuation")]
 		NSString Punctuation { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagWhitespace")]
 		NSString Whitespace { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagOther")]
 		NSString Other { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagNoun")]
 		NSString Noun { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagVerb")]
 		NSString Verb { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagAdjective")]
 		NSString Adjective { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagAdverb")]
 		NSString Adverb { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagPronoun")]
 		NSString Pronoun { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagDeterminer")]
 		NSString Determiner { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagParticle")]
 		NSString Particle { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagPreposition")]
 		NSString Preposition { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagNumber")]
 		NSString Number { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagConjunction")]
 		NSString Conjunction { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagInterjection")]
 		NSString Interjection { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagClassifier")]
 		NSString Classifier { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagIdiom")]
 		NSString Idiom { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagOtherWord")]
 		NSString OtherWord { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagSentenceTerminator")]
 		NSString SentenceTerminator { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagOpenQuote")]
 		NSString OpenQuote { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagCloseQuote")]
 		NSString CloseQuote { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagOpenParenthesis")]
 		NSString OpenParenthesis { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagCloseParenthesis")]
 		NSString CloseParenthesis { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagWordJoiner")]
 		NSString WordJoiner { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagDash")]
 		NSString Dash { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagOtherPunctuation")]
 		NSString OtherPunctuation { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagParagraphBreak")]
 		NSString ParagraphBreak { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagOtherWhitespace")]
 		NSString OtherWhitespace { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagPersonalName")]
 		NSString PersonalName { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagPlaceName")]
 		NSString PlaceName { get; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NLTagOrganizationName")]
 		NSString OrganizationName { get; }
 	}

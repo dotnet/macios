@@ -45,10 +45,14 @@ namespace CoreText {
 
 	// defined as uint32_t - System/Library/Frameworks/CoreText.framework/Headers/CTRun.h
 	public enum CTRunStatus {
+		/// <summary>To be added.</summary>
 		NoStatus = 0,
+		/// <summary>To be added.</summary>
 		RightToLeft = (1 << 0),
+		/// <summary>To be added.</summary>
 		NonMonotonic = (1 << 1),
-		HasNonIdentityMatrix = (1 << 2)
+		/// <summary>To be added.</summary>
+		HasNonIdentityMatrix = (1 << 2),
 	}
 
 #if NET
@@ -116,6 +120,9 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		extern static nint CTRunGetGlyphCount (IntPtr handle);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint GlyphCount {
 			get {
 				return CTRunGetGlyphCount (Handle);
@@ -173,6 +180,9 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		extern static CTRunStatus CTRunGetStatus (IntPtr handle);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CTRunStatus Status {
 			get {
 				return CTRunGetStatus (Handle);
@@ -202,6 +212,9 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		extern static NSRange CTRunGetStringRange (IntPtr handle);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSRange StringRange {
 			get {
 				return CTRunGetStringRange (Handle);
@@ -210,6 +223,9 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		extern static CGAffineTransform CTRunGetTextMatrix (IntPtr handle);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGAffineTransform TextMatrix {
 			get {
 				return CTRunGetTextMatrix (Handle);

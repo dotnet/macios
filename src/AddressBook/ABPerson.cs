@@ -46,14 +46,12 @@ using NativeHandle = System.IntPtr;
 
 namespace AddressBook {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	static class ABPersonPropertyId {
 
 		public static int Address { get; private set; }
@@ -180,16 +178,12 @@ namespace AddressBook {
 		}
 	}
 
-#if NET
-	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public static class ABPersonAddressKey {
 
 		public static NSString? City { get; private set; }
@@ -216,16 +210,12 @@ namespace AddressBook {
 		}
 	}
 
-#if NET
-	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public static class ABPersonDateLabel {
 		public static NSString? Anniversary { get; private set; }
 
@@ -240,14 +230,12 @@ namespace AddressBook {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	static class ABPersonKindId {
 		public static NSNumber? Organization { get; private set; }
 		public static NSNumber? Person { get; private set; }
@@ -283,16 +271,12 @@ namespace AddressBook {
 		}
 	}
 
-#if NET
-	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	static class ABPersonSocialProfile {
 		public static readonly NSString? URLKey;
 		public static readonly NSString? ServiceKey;
@@ -309,16 +293,12 @@ namespace AddressBook {
 		}
 	}
 
-#if NET
-	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public static class ABPersonSocialProfileService {
 		public static readonly NSString? Twitter;
 		public static readonly NSString? GameCenter;
@@ -341,16 +321,12 @@ namespace AddressBook {
 		}
 	}
 
-#if NET
-	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public static class ABPersonPhoneLabel {
 		public static NSString? HomeFax { get; private set; }
 		public static NSString? iPhone { get; private set; }
@@ -378,16 +354,12 @@ namespace AddressBook {
 		}
 	}
 
-#if NET
-	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public static class ABPersonInstantMessageService {
 		public static NSString? Aim { get; private set; }
 		public static NSString? Icq { get; private set; }
@@ -421,16 +393,12 @@ namespace AddressBook {
 		}
 	}
 
-#if NET
-	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public static class ABPersonInstantMessageKey {
 		public static NSString? Service { get; private set; }
 		public static NSString? Username { get; private set; }
@@ -448,16 +416,12 @@ namespace AddressBook {
 		}
 	}
 
-#if NET
-	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public static class ABPersonUrlLabel {
 		public static NSString? HomePage { get; private set; }
 
@@ -472,16 +436,12 @@ namespace AddressBook {
 		}
 	}
 
-#if NET
-	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public static class ABPersonRelatedNamesLabel {
 		public static NSString? Assistant { get; private set; }
 		public static NSString? Brother { get; private set; }
@@ -517,16 +477,12 @@ namespace AddressBook {
 		}
 	}
 
-#if NET
-	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public static class ABLabel {
 		public static NSString? Home { get; private set; }
 		public static NSString? Other { get; private set; }
@@ -546,16 +502,12 @@ namespace AddressBook {
 		}
 	}
 
-#if NET
-	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public class ABPerson : ABRecord, IComparable, IComparable<ABPerson> {
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABPersonCreate ();
@@ -670,53 +622,27 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static ABPersonCompositeNameFormat ABPersonGetCompositeNameFormat ();
 
-#if NET
-		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("ios")]
-		[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-		[ObsoletedOSPlatform ("ios7.0", "Use 'GetCompositeNameFormat (null)' instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'GetCompositeNameFormat (null)' instead.")]
-#endif
+		[ObsoletedOSPlatform ("ios", "Use 'GetCompositeNameFormat (null)' instead.")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'GetCompositeNameFormat (null)' instead.")]
+		[UnsupportedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("tvos")]
 		public static ABPersonCompositeNameFormat CompositeNameFormat {
 			get { return ABPersonGetCompositeNameFormat (); }
 		}
 
-#if NET
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-		[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#endif
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static ABPersonCompositeNameFormat ABPersonGetCompositeNameFormatForRecord (IntPtr record);
 
-#if NET
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-		[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#endif
 		public static ABPersonCompositeNameFormat GetCompositeNameFormat (ABRecord? record)
 		{
 			return ABPersonGetCompositeNameFormatForRecord (record.GetHandle ());
 		}
 
-#if NET
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-		[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#endif
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABPersonCopyCompositeNameDelimiterForRecord (IntPtr record);
 
-#if NET
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-		[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#endif
 		public static string? GetCompositeNameDelimiter (ABRecord? record)
 		{
 			var handle = ABPersonCopyCompositeNameDelimiterForRecord (record.GetHandle ());
@@ -1056,16 +982,12 @@ namespace AddressBook {
 		}
 	}
 
-#if NET
-	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public class SocialProfile : DictionaryContainer {
 		public SocialProfile ()
 		{
@@ -1113,16 +1035,12 @@ namespace AddressBook {
 		}
 	}
 
-#if NET
-	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public class InstantMessageService : DictionaryContainer {
 		public InstantMessageService ()
 		{
@@ -1155,16 +1073,12 @@ namespace AddressBook {
 		}
 	}
 
-#if NET
-	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public class PersonAddress : DictionaryContainer {
 		public PersonAddress ()
 		{

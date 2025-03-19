@@ -382,6 +382,9 @@ namespace ClassRedirector {
 
 		void MarkForSave (AssemblyDefinition assembly)
 		{
+#if LEGACY_TOOLS
+			throw new NotImplementedException ();
+#else
 			var annotations = derivedLinkContext.Annotations;
 			if (!annotations.HasAction (assembly)) {
 				annotations.SetAction (assembly, AssemblyAction.Link);
@@ -391,6 +394,7 @@ namespace ClassRedirector {
 					annotations.SetAction (assembly, AssemblyAction.Save);
 				}
 			}
+#endif
 		}
 	}
 #endif

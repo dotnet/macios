@@ -52,6 +52,7 @@ namespace Mono.ApiTools {
 
 			var change = new ApiChange (GetDescription (source), State);
 			change.Header = "Modified " + GroupName;
+			RenderAttributes (source, target, change);
 			change.Append ("public event ");
 
 			var srcEventType = source.GetTypeName ("eventtype", State);

@@ -669,6 +669,17 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <summary>For streams whose length is known, the number of audio byte data.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para>
+		/// 	    After the audio stream header is parsed, it is possible to determine the number of bytes of audio data.  For streaming formats, this value is not specified.
+		/// 	  </para>
+		///           <para>
+		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	  </para>
+		///         </remarks>
 		public long DataByteCount {
 			get {
 				return GetLong (AudioFileStreamProperty.AudioDataByteCount);

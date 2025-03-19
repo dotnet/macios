@@ -35,27 +35,24 @@ using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreFoundation {
 
 	// CFURLPathStyle -> CFIndex -> CFURL.h
 	[Native]
 	public enum CFUrlPathStyle : long {
+		/// <summary>As a POSIX filename.   Path elements are separated with a slash character.</summary>
 		POSIX = 0,
+		/// <summary>As an Apple HFS filename.   Path elements are separated with a colon.</summary>
 		HFS = 1,
-		Windows = 2
+		/// <summary>Window style filename.</summary>
+		Windows = 2,
 	};
 
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CFURL.h
 	public class CFUrl : NativeObject {
 #if !COREBUILD
@@ -123,6 +120,9 @@ namespace CoreFoundation {
 		extern static /* CFStringRef */ IntPtr CFURLCopyFileSystemPath (/* CFURLRef */ IntPtr anURL,
 			/* CFURLPathStyle */ nint style);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? FileSystemPath {
 			get {
 				return GetFileSystemPath (Handle);
@@ -134,21 +134,20 @@ namespace CoreFoundation {
 			return CFString.FromHandle (CFURLCopyFileSystemPath (hcfurl, 0), true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* Boolean */ byte CFURLIsFileReferenceURL (/* CFURLRef */IntPtr url);
 
-#if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public bool IsFileReference {
 			get {
 				return CFURLIsFileReferenceURL (Handle) != 0;

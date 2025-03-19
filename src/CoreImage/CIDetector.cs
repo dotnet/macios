@@ -34,8 +34,10 @@ namespace CoreImage {
 
 	// convenience enum for CIDetectorAccuracy[High|Low] internal fields in CIDetector (coreimage.cs)
 	public enum FaceDetectorAccuracy {
+		/// <summary>Low detection accuracy.</summary>
 		High,
-		Low
+		/// <summary>High detection accuracy.</summary>
+		Low,
 	}
 
 	public partial class CIDetector {
@@ -64,7 +66,7 @@ namespace CoreImage {
 			CIDetectorOptions dopt = new CIDetectorOptions () {
 				Accuracy = accuracy,
 				MinFeatureSize = minFeatureSize,
-				TrackingEnabled = trackingEnabled
+				TrackingEnabled = trackingEnabled,
 			};
 
 			using (var options = dopt.ToDictionary ())

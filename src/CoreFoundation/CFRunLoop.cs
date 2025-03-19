@@ -37,15 +37,7 @@ using ObjCRuntime;
 using Foundation;
 using System.Runtime.Versioning;
 
-#if NET
 using CFIndex = System.IntPtr;
-#else
-using CFIndex = System.nint;
-#endif
-
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
 
 #nullable enable
 
@@ -60,16 +52,12 @@ namespace CoreFoundation {
 		/// <summary>The number of seconds specified in the call to <see cref="M:CoreFoundation.CFRunLoop.RunInMode(Foundation.NSString,System.Double,System.Boolean)" /> elapsed.</summary>
 		TimedOut = 3,
 		/// <summary>An event from a source was handled, and the developer specified that a single source should be processed on the call to <see cref="M:CoreFoundation.CFRunLoop.RunInMode(Foundation.NSString,System.Double,System.Boolean)" /></summary>
-		HandledSource = 4
+		HandledSource = 4,
 	}
 
 	// CFRunLoop.h
 	[StructLayout (LayoutKind.Sequential)]
-#if NET
 	internal unsafe struct CFRunLoopSourceContext {
-#else
-	internal struct CFRunLoopSourceContext {
-#endif
 		public CFIndex Version;
 		public IntPtr Info;
 		public IntPtr Retain;
@@ -77,37 +65,18 @@ namespace CoreFoundation {
 		public IntPtr CopyDescription;
 		public IntPtr Equal;
 		public IntPtr Hash;
-#if NET
 		public delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> Schedule;
 		public delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> Cancel;
 		public delegate* unmanaged<IntPtr, void> Perform;
-#else
-		public IntPtr Schedule;
-		public IntPtr Cancel;
-		public IntPtr Perform;
-#endif
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CFRunLoopSource : NativeObject {
-#if !NET
-		public CFRunLoopSource (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
-#if NET
 		internal CFRunLoopSource (NativeHandle handle, bool owns)
-#else
-		public CFRunLoopSource (NativeHandle handle, bool owns)
-#endif
 			: base (handle, owns)
 		{
 		}
@@ -154,23 +123,15 @@ namespace CoreFoundation {
 	}
 
 #if !COREBUILD
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public abstract class CFRunLoopSourceCustom : CFRunLoopSource {
 		GCHandle gch;
 
 		[DllImport (Constants.CoreFoundationLibrary)]
 		unsafe extern static /* CFRunLoopSourceRef */ IntPtr CFRunLoopSourceCreate (/* CFAllocatorRef */ IntPtr allocator, /* CFIndex */ nint order, /* CFRunLoopSourceContext* */ CFRunLoopSourceContext* context);
-
-#if !NET
-		static ScheduleCallback ScheduleDelegate = (ScheduleCallback) Schedule;
-		static CancelCallback CancelDelegate = (CancelCallback) Cancel;
-		static PerformCallback PerformDelegate = (PerformCallback) Perform;
-#endif
 
 		protected CFRunLoopSourceCustom ()
 			: base (IntPtr.Zero, true)
@@ -178,17 +139,11 @@ namespace CoreFoundation {
 			gch = GCHandle.Alloc (this);
 			var ctx = new CFRunLoopSourceContext ();
 			ctx.Info = GCHandle.ToIntPtr (gch);
-#if NET
 			unsafe {
 				ctx.Schedule = &Schedule;
 				ctx.Cancel = &Cancel;
 				ctx.Perform = &Perform;
 			}
-#else
-			ctx.Schedule = Marshal.GetFunctionPointerForDelegate (ScheduleDelegate);
-			ctx.Cancel = Marshal.GetFunctionPointerForDelegate (CancelDelegate);
-			ctx.Perform = Marshal.GetFunctionPointerForDelegate (PerformDelegate);
-#endif
 
 			IntPtr handle;
 			unsafe {
@@ -197,15 +152,7 @@ namespace CoreFoundation {
 			InitializeHandle (handle);
 		}
 
-#if !NET
-		delegate void ScheduleCallback (IntPtr info, IntPtr runLoop, IntPtr mode);
-#endif
-
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (ScheduleCallback))]
-#endif
 		static void Schedule (IntPtr info, IntPtr runLoop, IntPtr mode)
 		{
 			var source = GCHandle.FromIntPtr (info).Target as CFRunLoopSourceCustom;
@@ -220,15 +167,7 @@ namespace CoreFoundation {
 
 		protected abstract void OnSchedule (CFRunLoop loop, NSString mode);
 
-#if !NET
-		delegate void CancelCallback (IntPtr info, IntPtr runLoop, IntPtr mode);
-#endif
-
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (CancelCallback))]
-#endif
 		static void Cancel (IntPtr info, IntPtr runLoop, IntPtr mode)
 		{
 			var source = GCHandle.FromIntPtr (info).Target as CFRunLoopSourceCustom;
@@ -243,15 +182,7 @@ namespace CoreFoundation {
 
 		protected abstract void OnCancel (CFRunLoop loop, NSString mode);
 
-#if !NET
-		delegate void PerformCallback (IntPtr info);
-#endif
-
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (PerformCallback))]
-#endif
 		static void Perform (IntPtr info)
 		{
 			var source = GCHandle.FromIntPtr (info).Target as CFRunLoopSourceCustom;
@@ -429,43 +360,6 @@ namespace CoreFoundation {
 				return CFString.FromHandle (CFRunLoopCopyCurrentMode (GetCheckedHandle ()), releaseHandle: true);
 			}
 		}
-
-#if !NET
-		public static bool operator == (CFRunLoop? a, CFRunLoop? b)
-		{
-			if (a is null)
-				return b is null;
-			else if (b is null)
-				return false;
-
-			return a.Handle == b.Handle;
-		}
-
-		public static bool operator != (CFRunLoop? a, CFRunLoop? b)
-		{
-			if (a is null)
-				return b is not null;
-			else if (b is null)
-				return true;
-			return a.Handle != b.Handle;
-		}
-
-		// For the .net profile `DisposableObject` implements both
-		// `Equals` and `GetHashCode` based on the Handle property.
-		public override int GetHashCode ()
-		{
-			return Handle.GetHashCode ();
-		}
-
-		public override bool Equals (object? other)
-		{
-			var cfother = other as CFRunLoop;
-			if (cfother is null)
-				return false;
-
-			return cfother.Handle == Handle;
-		}
-#endif
 #endif // !COREBUILD
 	}
 }

@@ -71,7 +71,7 @@ namespace HealthKit {
 	public enum HKWorkoutSessionLocationType : long {
 		Unknown = 1,
 		Indoor,
-		Outdoor
+		Outdoor,
 	}
 
 	[iOS (17, 0)]

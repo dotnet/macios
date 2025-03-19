@@ -75,11 +75,17 @@ namespace MediaAccessibility {
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum MACaptionAppearanceTextEdgeStyle : long {
+		/// <summary>To be added.</summary>
 		Undefined = 0,
+		/// <summary>To be added.</summary>
 		None = 1,
+		/// <summary>To be added.</summary>
 		Raised = 2,
+		/// <summary>To be added.</summary>
 		Depressed = 3,
+		/// <summary>To be added.</summary>
 		Uniform = 4,
+		/// <summary>To be added.</summary>
 		DropShadow = 5,
 	}
 }

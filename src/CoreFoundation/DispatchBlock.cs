@@ -16,19 +16,13 @@ using System.Threading;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreFoundation {
 #if !COREBUILD
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public sealed class DispatchBlock : NativeObject {
 		[Preserve (Conditional = true)]
 		internal DispatchBlock (NativeHandle handle, bool owns)
@@ -158,6 +152,9 @@ namespace CoreFoundation {
 			return dispatch_block_testcancel (GetCheckedHandle ());
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool Cancelled {
 			get { return TestCancel () != 0; }
 		}
@@ -199,12 +196,19 @@ namespace CoreFoundation {
 	[Flags]
 	[Native]
 	public enum DispatchBlockFlags : ulong {
+		/// <summary>To be added.</summary>
 		None,
+		/// <summary>To be added.</summary>
 		Barrier = 1,
+		/// <summary>To be added.</summary>
 		Detached = 2,
+		/// <summary>To be added.</summary>
 		AssignCurrent = 4,
+		/// <summary>To be added.</summary>
 		NoQosClass = 8,
+		/// <summary>To be added.</summary>
 		InheritQosClass = 16,
+		/// <summary>To be added.</summary>
 		EnforceQosClass = 32,
 	}
 #endif // !COREBUILD

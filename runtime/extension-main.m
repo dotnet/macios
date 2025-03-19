@@ -18,8 +18,6 @@ xamarin_initialize_extension_main ()
 	xamarin_extension_main = TVExtensionMain;
 #elif EXTENSION
 	xamarin_extension_main = NSExtensionMain;
-#elif WATCH_EXTENSION
-	xamarin_extension_main = xamarin_watch_extension_main;
 #else
 	xamarin_extension_main = NULL;
 #endif

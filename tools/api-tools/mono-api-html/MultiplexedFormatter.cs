@@ -68,6 +68,23 @@ namespace Mono.ApiTools {
 			foreach (var formatter in formatters)
 				formatter.BeginNamespace (Replace (formatter, action));
 		}
+		public override void BeginAttributeModification ()
+		{
+			foreach (var formatter in formatters)
+				formatter.BeginAttributeModification ();
+		}
+
+		public override void AddAttributeModification (string oldAttributeName, string newAttributeName, bool breaking)
+		{
+			foreach (var formatter in formatters)
+				formatter.AddAttributeModification (oldAttributeName, newAttributeName, breaking);
+		}
+
+		public override void EndAttributeModification ()
+		{
+			foreach (var formatter in formatters)
+				formatter.EndAttributeModification ();
+		}
 
 		public override void BeginTypeAddition ()
 		{
@@ -87,10 +104,10 @@ namespace Mono.ApiTools {
 				formatter.BeginTypeModification ();
 		}
 
-		public override void BeginTypeRemoval ()
+		public override void BeginTypeRemoval (bool breaking)
 		{
 			foreach (var formatter in formatters)
-				formatter.BeginTypeRemoval ();
+				formatter.BeginTypeRemoval (breaking);
 		}
 
 		public override void BeginMemberAddition (IEnumerable<XElement> list, MemberComparer member)
@@ -123,10 +140,10 @@ namespace Mono.ApiTools {
 				formatter.EndMemberModification ();
 		}
 
-		public override void BeginMemberRemoval (IEnumerable<XElement> list, MemberComparer member)
+		public override void BeginMemberRemoval (IEnumerable<XElement> list, MemberComparer member, bool breaking)
 		{
 			foreach (var formatter in formatters)
-				formatter.BeginMemberRemoval (list, member);
+				formatter.BeginMemberRemoval (list, member, breaking);
 		}
 
 		public override void RemoveMember (MemberComparer member, bool is_breaking, string obsolete, string description)
@@ -145,6 +162,12 @@ namespace Mono.ApiTools {
 		{
 			foreach (var formatter in formatters)
 				formatter.RenderObsoleteMessage (chunk, member, Replace (formatter, description), Replace (formatter, optionalObsoleteMessage));
+		}
+
+		public override void RenderAttribute (TextChunk chunk, Comparer member, string attributeName, bool breaking, string description, params string [] attributeArguments)
+		{
+			foreach (var formatter in formatters)
+				formatter.RenderAttribute (chunk, member, attributeName, breaking, Replace (formatter, description), attributeArguments);
 		}
 
 		public override void DiffAddition (TextChunk chunk, string text, bool breaking)

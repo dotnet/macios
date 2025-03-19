@@ -135,12 +135,21 @@ namespace MapKit {
 		[Export ("calloutOffset")]
 		CGPoint CalloutOffset { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the annotation is enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the annotation view is highlighetd.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("highlighted")]
 		bool Highlighted { [Bind ("isHighlighted")] get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the annotation view is selected.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("selected")]
 		bool Selected { [Bind ("isSelected")] get; set; }
 
@@ -168,6 +177,9 @@ namespace MapKit {
 		[MacCatalyst (13, 1)]
 		MKAnnotationViewDragState DragState { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the user can drag the annotation view.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("draggable")]
@@ -433,6 +445,9 @@ namespace MapKit {
 		[NullAllowed]
 		NSTimeZone TimeZone { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("MKMapItemTypeIdentifier")]
 		NSString TypeIdentifier { get; }
@@ -461,6 +476,13 @@ namespace MapKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the MapKit.IMKMapViewDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the MapKit.IMKMapViewDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IMKMapViewDelegate Delegate { get; set; }
 
@@ -502,9 +524,16 @@ namespace MapKit {
 		[Export ("convertRect:toRegionFromView:")]
 		MKCoordinateRegion ConvertRect (CGRect rect, [NullAllowed] UIView toRegionFromView);
 
+		/// <summary>Controls if the user can zoom in and out of the map using a pinch gesture.</summary>
+		///         <value>Default is <see langword="true" />.</value>
+		///         <remarks>The default value of <see langword="true" /> allows zooming. This property only controls if the user can interactively zoom. It has no affect on zooming the map in code, which can be done by changing either the <see cref="P:MapKit.MKMapView.Region" /> or <see cref="P:MapKit.MKMapView.VisibleMapRect" /> properties.</remarks>
 		[Export ("zoomEnabled")]
 		bool ZoomEnabled { [Bind ("isZoomEnabled")] get; set; }
 
+		/// <summary>Control if the map can be scrolled with a pan gesture.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>Only controls interactive scrolling. The region can be changed in code regardless of this property.</remarks>
 		[Export ("scrollEnabled")]
 		bool ScrollEnabled { [Bind ("isScrollEnabled")] get; set; }
 
@@ -514,6 +543,10 @@ namespace MapKit {
 		[Export ("userLocation")]
 		MKUserLocation UserLocation { get; }
 
+		/// <summary>Returns if the user's location is currently visible on the map.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("userLocationVisible")]
 		bool UserLocationVisible { [Bind ("isUserLocationVisible")] get; }
 
@@ -644,11 +677,17 @@ namespace MapKit {
 		[Export ("setCamera:animated:")]
 		void SetCamera (MKMapCamera camera, bool animated);
 
+		/// <summary>Whether the view uses the heading defined by the <see cref="P:MapKit.MKMapView.Camera" />.</summary>
+		///         <value>The default value is <see langword="true" />.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("rotateEnabled")]
 		bool RotateEnabled { [Bind ("isRotateEnabled")] get; set; }
 
+		/// <summary>Whether the view uses the angle defined by the <see cref="P:MapKit.MKMapView.Camera" />.</summary>
+		///         <value>The default value is <see langword="true" />.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("pitchEnabled")]
@@ -757,9 +796,15 @@ namespace MapKit {
 	[Static]
 	[MacCatalyst (13, 1)]
 	interface MKMapViewDefault {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MKMapViewDefaultAnnotationViewReuseIdentifier")]
 		NSString AnnotationViewReuseIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MKMapViewDefaultClusterAnnotationViewReuseIdentifier")]
 		NSString ClusterAnnotationViewReuseIdentifier { get; }
 	}
@@ -928,16 +973,34 @@ namespace MapKit {
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("global::AddressBook.ABPersonAddressKey")]
 	interface MKPlacemarkAddress {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("City")]
 		string City { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("Country")]
 		string Country { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("CountryCode")]
 		string CountryCode { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("State")]
 		string State { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("Street")]
 		string Street { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("Zip")]
 		string Zip { get; set; }
 	}
@@ -990,10 +1053,20 @@ namespace MapKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the MapKit.IMKReverseGeocoderDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the MapKit.IMKReverseGeocoderDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IMKReverseGeocoderDelegate Delegate { get; set; }
 
 #if !XAMCORE_5_0
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'Coordinate' property instead.")]
 		[Wrap ("Coordinate", IsVirtual = true)]
 		CLLocationCoordinate2D coordinate { get; }
@@ -1005,6 +1078,9 @@ namespace MapKit {
 		[Export ("start")]
 		void Start ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("querying")]
 		bool Querying { [Bind ("isQuerying")] get; }
 
@@ -1321,6 +1397,9 @@ namespace MapKit {
 #else
 	interface MKUserLocation : IMKAnnotation { // This is wrong. It should be MKAnnotation but we can't due to API compat. When you fix this remove hack in generator.cs to enable warning again. In the meantime, we're stating that MKUserLocation implements the IMKAnnotation protocol by using a manual binding.
 #endif
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("updating")]
 		bool Updating { [Bind ("isUpdating")] get; }
 
@@ -1390,6 +1469,12 @@ namespace MapKit {
 		[Export ("cancel")]
 		void Cancel ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("searching")]
 		bool IsSearching { [Bind ("isSearching")] get; }
 	}
@@ -1492,6 +1577,9 @@ namespace MapKit {
 		[Export ("cancel")]
 		void Cancel ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("calculating")]
 		bool Calculating { [Bind ("isCalculating")] get; }
 
@@ -1789,6 +1877,9 @@ namespace MapKit {
 		[Export ("cancel")]
 		void Cancel ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("loading")]
 		bool Loading { [Bind ("isLoading")] get; }
 	}
@@ -1980,6 +2071,12 @@ namespace MapKit {
 		[Export ("tileSize")]
 		CGSize TileSize { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Export ("geometryFlipped")]
 		bool GeometryFlipped { [Bind ("isGeometryFlipped")] get; set; }
 
@@ -2042,6 +2139,13 @@ namespace MapKit {
 		[Export ("filterType", ArgumentSemantic.Assign)]
 		MKSearchCompletionFilterType FilterType { get; set; }
 
+		/// <summary>An instance of the MapKit.IMKLocalSearchCompleterDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the MapKit.IMKLocalSearchCompleterDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IMKLocalSearchCompleterDelegate Delegate { get; set; }
@@ -2052,6 +2156,9 @@ namespace MapKit {
 		[Export ("results", ArgumentSemantic.Strong)]
 		MKLocalSearchCompletion [] Results { get; }
 
+		/// <summary>Gets a <see langword="bool" /> that tells whether a search is in progress.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("searching")]
 		bool Searching { [Bind ("isSearching")] get; }
 

@@ -36,7 +36,6 @@
     <BarManifestOutputPath Condition=" '$(BarManifestOutputPath)' == '' ">$(NupkgPath)\bar-manifests\$(_PlatformName)</BarManifestOutputPath>
     <_AssemblyInfix Condition="'$(_PlatformName)' == 'iOS'">iOS</_AssemblyInfix>
     <_AssemblyInfix Condition="'$(_PlatformName)' == 'tvOS'">tvOS</_AssemblyInfix>
-    <_AssemblyInfix Condition="'$(_PlatformName)' == 'watchOS'">watchOS</_AssemblyInfix>
     <_AssemblyInfix Condition="'$(_PlatformName)' == 'macOS'">macOS</_AssemblyInfix>
     <_AssemblyInfix Condition="'$(_PlatformName)' == 'MacCatalyst'">MacCatalyst</_AssemblyInfix>
   </PropertyGroup>
@@ -131,6 +130,8 @@
 
     <ItemGroup>
       <ItemsToPush Include="$(NupkgPath)\*.nupkg" />
+      <WorkloadArtifacts Include="$(NupkgPath)\*.zip" />
+      <ItemsToPush Include="@(WorkloadArtifacts)" PublishFlatContainer="true" RelativeBlobPath="macios/$(_PackageVersion)/%(Filename)%(Extension)" />
     </ItemGroup>
 
     <Error Condition="'@(ItemsToPush)' == ''" Text="No packages to push." />

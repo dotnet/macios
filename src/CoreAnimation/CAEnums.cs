@@ -55,7 +55,7 @@ namespace CoreAnimation {
 		/// <summary>Left and right sides of the layer are antialiased.</summary>
 		LeftRightEdges = LeftEdge | RightEdge,
 		/// <summary>Top and bottom side of the layer are antialiased.</summary>
-		TopBottomEdges = TopEdge | BottomEdge
+		TopBottomEdges = TopEdge | BottomEdge,
 	}
 
 	[MacCatalyst (13, 1)]
@@ -79,13 +79,20 @@ namespace CoreAnimation {
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	public enum CAAutoresizingMask : uint {
+		/// <summary>To be added.</summary>
 		NotSizable = 0,
+		/// <summary>To be added.</summary>
 		MinXMargin = 1 << 0,
+		/// <summary>To be added.</summary>
 		WidthSizable = 1 << 1,
+		/// <summary>To be added.</summary>
 		MaxXMargin = 1 << 2,
+		/// <summary>To be added.</summary>
 		MinYMargin = 1 << 3,
+		/// <summary>To be added.</summary>
 		HeightSizable = 1 << 4,
-		MaxYMargin = 1 << 5
+		/// <summary>To be added.</summary>
+		MaxYMargin = 1 << 5,
 	}
 
 	// typedef int -> CAConstraintLayoutManager.h
@@ -93,13 +100,21 @@ namespace CoreAnimation {
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	public enum CAConstraintAttribute {
+		/// <summary>To be added.</summary>
 		MinX,
+		/// <summary>To be added.</summary>
 		MidX,
+		/// <summary>To be added.</summary>
 		MaxX,
+		/// <summary>To be added.</summary>
 		Width,
+		/// <summary>To be added.</summary>
 		MinY,
+		/// <summary>To be added.</summary>
 		MidY,
+		/// <summary>To be added.</summary>
 		MaxY,
+		/// <summary>To be added.</summary>
 		Height,
 	};
 }

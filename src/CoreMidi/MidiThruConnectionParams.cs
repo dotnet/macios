@@ -38,7 +38,7 @@ namespace CoreMidi {
 		/// <summary>To be added.</summary>
 		MaxValue = 11,
 		/// <summary>To be added.</summary>
-		MapValue = 12
+		MapValue = 12,
 	}
 
 	public enum MidiTransformControlType : byte {
@@ -53,7 +53,7 @@ namespace CoreMidi {
 		/// <summary>To be added.</summary>
 		SevenBitNRpn = 4,
 		/// <summary>To be added.</summary>
-		FourteenBitNRpn = 5
+		FourteenBitNRpn = 5,
 	}
 
 #if NET

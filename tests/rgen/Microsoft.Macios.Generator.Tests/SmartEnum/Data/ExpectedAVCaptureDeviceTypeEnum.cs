@@ -9,6 +9,9 @@ using System;
 
 namespace AVFoundation;
 
+/// <summary>
+/// Extension methods for the <see cref="AVCaptureDeviceTypeExtensions" /> enumeration.
+/// </summary>
 [BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 public static partial class AVCaptureDeviceTypeExtensions
 {
@@ -125,6 +128,10 @@ public static partial class AVCaptureDeviceTypeExtensions
 		}
 	}
 
+	/// <summary>
+	/// Retrieves the <see cref="global::Foundation.NSString" /> constant that describes <paramref name="self" />.
+	/// </summary>
+	/// <param name="self">The instance on which this method operates.</param>
 	public static NSString? GetConstant (this AVCaptureDeviceType self)
 	{
 		IntPtr ptr = IntPtr.Zero;
@@ -167,6 +174,10 @@ public static partial class AVCaptureDeviceTypeExtensions
 		return (NSString?) Runtime.GetNSObject (ptr);
 	}
 
+	/// <summary>
+	/// Retrieves the <see cref="AVCaptureDeviceTypeExtensions" /> value named by <paramref name="constant" />.
+	/// </summary>
+	/// <param name="constant">The name of the constant to retrieve.</param>
 	public static AVCaptureDeviceType GetValue (NSString constant)
 	{
 		if (constant is null)
@@ -196,6 +207,20 @@ public static partial class AVCaptureDeviceTypeExtensions
 		throw new NotSupportedException ($"The constant {constant} has no associated enum value on this platform.");
 	}
 
+	/// <summary>
+	/// Retrieves the <see cref="AVCaptureDeviceTypeExtensions" /> value represented by the backing field value in <paramref name="handle" />.
+	/// </summary>
+	/// <param name="handle">The native handle with the name of the constant to retrieve.</param>
+	public static AVCaptureDeviceType GetValue (NativeHandle handle)
+	{
+		using var str = Runtime.GetNSObject<NSString> (handle)!;
+		return GetValue (str);
+	}
+
+	/// <summary>
+	/// Converts an array of <see cref="AVCaptureDeviceTypeExtensions" /> enum values into an array of their corresponding constants.
+	/// </summary>
+	/// <param name="values">The array of enum values to convert.</param>
 	internal static NSString?[]? ToConstantArray (this AVCaptureDeviceType[]? values)
 	{
 		if (values is null)
@@ -208,6 +233,10 @@ public static partial class AVCaptureDeviceTypeExtensions
 		return rv.ToArray ();
 	}
 
+	/// <summary>
+	/// Converts an array of <see cref="NSString" /> values into an array of their corresponding enum values.
+	/// </summary>
+	/// <param name="values">The array if <see cref="NSString" /> values to convert.</param>
 	internal static AVCaptureDeviceType[]? ToEnumArray (this NSString[]? values)
 	{
 		if (values is null)

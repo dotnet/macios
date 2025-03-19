@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.Macios.Generator.Extensions;
 
@@ -17,6 +18,16 @@ readonly struct FieldData<T> : IEquatable<FieldData<T>> where T : Enum {
 	}
 	public string SymbolName { get; }
 	public string? LibraryName { get; }
+
+	/// <summary>
+	/// Gets and set the type to be used. This is a property that can be used on notifications.
+	/// </summary>
+	public string? Type { get; init; }
+
+	/// <summary>
+	/// The notification center to be used, if null, the default one will be used.
+	/// </summary>
+	public string? NotificationCenter { get; init; }
 
 	public T? Flags { get; } = default;
 
@@ -45,6 +56,11 @@ readonly struct FieldData<T> : IEquatable<FieldData<T>> where T : Enum {
 		string? symbolName;
 		string? libraryName = null;
 		T? flags = default;
+
+		// notifications customizations
+		string? notificationType = null;
+		string? notificationCenter = null;
+
 		switch (count) {
 		case 1:
 			if (!attributeData.ConstructorArguments [0].TryGetIdentifier (out symbolName)) {
@@ -89,13 +105,23 @@ readonly struct FieldData<T> : IEquatable<FieldData<T>> where T : Enum {
 			case "Flags":
 				flags = (T) value.Value!;
 				break;
+			case "Type":
+				notificationType = ((INamedTypeSymbol) value.Value!).ToDisplayString ();
+				break;
+			case "NotificationCenter":
+				notificationCenter = (string?) value.Value!;
+				break;
 			default:
 				data = null;
 				error = new (ParsingError.UnknownNamedArgument, name);
 				return false;
 			}
 		}
-		data = new (symbolName, libraryName, flags);
+
+		data = new (symbolName, libraryName, flags) {
+			Type = notificationType,
+			NotificationCenter = notificationCenter,
+		};
 		return true;
 	}
 
@@ -105,6 +131,10 @@ readonly struct FieldData<T> : IEquatable<FieldData<T>> where T : Enum {
 		if (SymbolName != other.SymbolName)
 			return false;
 		if (LibraryName != other.LibraryName)
+			return false;
+		if (Type != other.Type)
+			return false;
+		if (NotificationCenter != other.NotificationCenter)
 			return false;
 		if (Flags is not null && other.Flags is not null) {
 			return Flags.Equals (other.Flags);
@@ -137,6 +167,11 @@ readonly struct FieldData<T> : IEquatable<FieldData<T>> where T : Enum {
 	/// <inheritdoc />
 	public override string ToString ()
 	{
-		return $"{{ SymbolName: '{SymbolName}', LibraryName: '{LibraryName ?? "null"}', Flags: '{Flags}' }}";
+		var sb = new StringBuilder ($"{{ SymbolName: '{SymbolName}', ");
+		sb.Append ($"LibraryName: '{LibraryName ?? "null"}', ");
+		sb.Append ($"Type: '{Type ?? "null"}', ");
+		sb.Append ($"NotificationCenter: '{NotificationCenter ?? "null"}', ");
+		sb.Append ($"Flags: '{Flags}' }}");
+		return sb.ToString ();
 	}
 }

@@ -247,7 +247,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);_IncludeBindingResourcesInNuGetPackage</TargetsForTfmSpecificContentInPackage>
 	</PropertyGroup>
 	<Target Name="_IncludeBindingResourcesInNuGetPackage"
-		Condition="'$(IsMacEnabled)' == 'true' And '$(IncludeBuildOutput)' != 'false'"
+		Condition="'$(IncludeBuildOutput)' != 'false'"
 	>
 		<PropertyGroup>
 			<_HasOldStyleBindingItems Condition="@(ObjcBindingNativeLibrary->Count()) > 0">true</_HasOldStyleBindingItems>

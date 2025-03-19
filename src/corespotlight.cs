@@ -40,16 +40,34 @@ namespace CoreSpotlight {
 		[Export ("initWithDisplayName:handles:handleIdentifier:")]
 		NativeHandle Constructor ([NullAllowed] string displayName, string [] handles, NSString handleIdentifier);
 
+		/// <summary>Gets the display name for the person.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("displayName")]
 		string DisplayName { get; }
 
+		/// <summary>Gets a list of contact handles for the person.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("handles")]
 		string [] Handles { get; }
 
+		/// <summary>Gets the key that represents the resource type that the handle represents.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("handleIdentifier")]
 		NSString HandleIdentifier { get; }
 
+		/// <summary>Gets or sets the contact identifier for the CSPerson.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>Setting this property to the <see cref="P:Contacts.CNContact.Identifier" /> property for the contact enables direct lookup of the contact.</remarks>
 		[NullAllowed]
 		[Export ("contactIdentifier")]
 		string ContactIdentifier { get; set; }
@@ -65,14 +83,26 @@ namespace CoreSpotlight {
 	[BaseType (typeof (NSObject))]
 	interface CSSearchableIndex {
 
+		/// <summary>Gets or sets the delegate that responds to requests for index-related tasks.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("indexDelegate", ArgumentSemantic.Weak)]
 		[NullAllowed]
 		ICSSearchableIndexDelegate IndexDelegate { get; set; }
 
+		/// <summary>Gets a Boolean value that tells whether indexing is available.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("isIndexingAvailable")]
 		bool IsIndexingAvailable { get; }
 
+		/// <summary>Gets the default search index for the device.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("defaultSearchableIndex")]
 		CSSearchableIndex DefaultSearchableIndex { get; }
@@ -201,16 +231,28 @@ namespace CoreSpotlight {
 	[BaseType (typeof (NSObject))]
 	interface CSSearchableItem : NSSecureCoding, NSCopying {
 
+		/// <summary>Gets the action type for the searchable item.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CSSearchableItemActionType")]
 		NSString ActionType { get; }
 
+		/// <summary>Gets the key for the item's unique user info dictionary.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CSSearchableItemActivityIdentifier")]
 		NSString ActivityIdentifier { get; }
 
+		/// <summary>Gets a value that tells whether the continuation action is a search or query.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("CSQueryContinuationActionType")]
 		NSString ContinuationActionType { get; }
 
+		/// <summary>Gets the user info key for the current query.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("CSSearchQueryString")]
 		NSString QueryString { get; }
@@ -218,17 +260,35 @@ namespace CoreSpotlight {
 		[Export ("initWithUniqueIdentifier:domainIdentifier:attributeSet:")]
 		NativeHandle Constructor ([NullAllowed] string uniqueIdentifier, [NullAllowed] string domainIdentifier, CSSearchableItemAttributeSet attributeSet);
 
+		/// <summary>Gets or sets the value that developers can use to uniquely identify the searchable item within their applications.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("uniqueIdentifier")]
 		string UniqueIdentifier { get; set; }
 
+		/// <summary>Gets or sets the optional domain identifier or owner identifier.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("domainIdentifier")]
 		string DomainIdentifier { get; set; }
 
+		/// <summary>Gets or sets the searchable item's expiration date.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // <- null_resettable
 		[Export ("expirationDate")]
 		NSDate ExpirationDate { get; set; }
 
+		/// <summary>Gets or sets the dictionary of attributes for the searchable item.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("attributeSet", ArgumentSemantic.Strong)]
 		CSSearchableItemAttributeSet AttributeSet { get; set; }
 
@@ -273,18 +333,33 @@ namespace CoreSpotlight {
 		[Export ("initWithKeyName:searchable:searchableByDefault:unique:multiValued:")]
 		NativeHandle Constructor (string keyName, bool searchable, bool searchableByDefault, bool unique, bool multiValued);
 
+		/// <summary>Gets the attribute key name.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("keyName")]
 		string KeyName { get; }
 
+		/// <summary>Gets a value that tells whether the attribute can be used as a search word. The default is <see langword="true" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("searchable")]
 		bool Searchable { [Bind ("isSearchable")] get; }
 
+		/// <summary>Gets a value that tells whether the attribute is searchable by default. The default is <see langword="false" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("searchableByDefault")]
 		bool SearchableByDefault { [Bind ("isSearchableByDefault")] get; }
 
+		/// <summary>Gets a value that tells whether the attribute should be treated as unique in order to save storage space. The default is <see langword="false" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("unique")]
 		bool Unique { [Bind ("isUnique")] get; }
 
+		/// <summary>Gets a value that tells whether the attribute will likely be associated with arrays, hashes, or other compound values. The default is <see langword="false" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("multiValued")]
 		bool MultiValued { [Bind ("isMultiValued")] get; }
 	}
@@ -318,6 +393,9 @@ namespace CoreSpotlight {
 		[Field ("CSMailboxJunk")]
 		NSString Junk { get; }
 
+		/// <summary>The key for the Trash mailbox.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CSMailboxTrash")]
 		NSString Trash { get; }
 
@@ -352,58 +430,142 @@ namespace CoreSpotlight {
 
 		// CSSearchableItemAttributeSet_Documents.h
 		// CSSearchableItemAttributeSet (CSDocuments) Category
+		/// <summary>Gets or sets the subject for a message.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("subject")]
 		string Subject { get; set; }
 
+		/// <summary>Gets or sets the theme of a document.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("theme")]
 		string Theme { get; set; }
 
+		/// <summary>Gets or sets a description for an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("contentDescription")]
 		string ContentDescription { get; set; }
 
+		/// <summary>Gets or sets the identifier for an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("identifier")]
 		string Identifier { get; set; }
 
+		/// <summary>Gets or sets an intended audience descriptor for a media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("audiences")]
 		string [] Audiences { get; set; }
 
+		/// <summary>Gets or sets the size of a file.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("fileSize")]
 		NSNumber FileSize { get; set; }
 
+		/// <summary>Gets or sets the number of pages in a document item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("pageCount", ArgumentSemantic.Strong)]
 		NSNumber PageCount { get; set; }
 
+		/// <summary>Gets or sets the page width.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("pageWidth", ArgumentSemantic.Strong)]
 		NSNumber PageWidth { get; set; }
 
+		/// <summary>Gets or sets the page height.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("pageHeight", ArgumentSemantic.Strong)]
 		NSNumber PageHeight { get; set; }
 
+		/// <summary>Gets or sets a description of the encryption method used for an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("securityMethod")]
 		string SecurityMethod { get; set; }
 
+		/// <summary>The name of the software tool that was used to create an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("creator")]
 		string Creator { get; set; }
 
+		/// <summary>Gets or sets the name of the application that encoded content within a PDF stream.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("encodingApplications")]
 		string [] EncodingApplications { get; set; }
 
+		/// <summary>Gets or sets a document kind.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("kind")]
 		string Kind { get; set; }
 
+		/// <summary>Gets or sets an array that contains the names of all of the fonts used in a document.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("fontNames")]
 		string [] FontNames { get; set; }
@@ -411,26 +573,62 @@ namespace CoreSpotlight {
 		// CSSearchableItemAttributeSet_Events.h
 		// CSSearchableItemAttributeSet (CSEvents) Category
 
+		/// <summary>Gets or sets the date at which an item is due.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("dueDate", ArgumentSemantic.Strong)]
 		NSDate DueDate { get; set; }
 
+		/// <summary>Gets or sets the date on which an item was finished.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("completionDate", ArgumentSemantic.Strong)]
 		NSDate CompletionDate { get; set; }
 
+		/// <summary>Gets or sets a starting date for an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("startDate", ArgumentSemantic.Strong)]
 		NSDate StartDate { get; set; }
 
+		/// <summary>Gets or sets an item's end date.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("endDate", ArgumentSemantic.Strong)]
 		NSDate EndDate { get; set; }
 
+		/// <summary>Gets or sets an array of important dates for an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("importantDates")]
 		NSDate [] ImportantDates { get; set; }
 
+		/// <summary>Gets a value that tells whether an event is an all-day event.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allDay", ArgumentSemantic.Strong)]
 		[NullAllowed]
 		NSNumber AllDay { get; set; }
@@ -438,62 +636,152 @@ namespace CoreSpotlight {
 		// CSSearchableItemAttributeSet_General.h
 		// CSSearchableItemAttributeSet (CSGeneral) Category
 
+		/// <summary>Gets or sets the display name for an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("displayName")]
 		string DisplayName { get; set; }
 
+		/// <summary>Gets or sets an array of localized display names for an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("alternateNames")]
 		string [] AlternateNames { get; set; }
 
+		/// <summary>Gets or sets the absolute path to an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("path")]
 		string Path { get; set; }
 
+		/// <summary>Gets or sets the URL of indexable content.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("contentURL", ArgumentSemantic.Strong)]
 		NSUrl ContentUrl { get; set; }
 
+		/// <summary>Gets or sets the URL for the thumbnail image of an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("thumbnailURL", ArgumentSemantic.Strong)]
 		NSUrl ThumbnailUrl { get; set; }
 
+		/// <summary>Gets or sets data that represent the thumbnail image of an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("thumbnailData", ArgumentSemantic.Copy)]
 		NSData ThumbnailData { get; set; }
 
+		/// <summary>Gets or sets the list of unique identifiers for items that are related to an activity.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("relatedUniqueIdentifier")]
 		string RelatedUniqueIdentifier { get; set; }
 
+		/// <summary>Gets or sets the most recent date that a metadata attribute was changed.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("metadataModificationDate", ArgumentSemantic.Strong)]
 		NSDate MetadataModificationDate { get; set; }
 
+		/// <summary>Gets or sets the Uniform Type Identifier (UTI), of an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("contentType")]
 		string ContentType { get; set; }
 
+		/// <summary>Gets or sets the hierarchy of types for an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("contentTypeTree")]
 		string [] ContentTypeTree { get; set; }
 
+		/// <summary>Gets or sets an array of keywords for an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("keywords")]
 		string [] Keywords { get; set; }
 
+		/// <summary>Gets or sets the title of an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("title")]
 		string Title { get; set; }
 
+		/// <summary>Gets or sets the version of an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("version")]
 		string Version { get; set; }
 
+		/// <summary>Gets or sets an identifier for an item that is related to, but not linked with, an activity.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("weakRelatedUniqueIdentifier", ArgumentSemantic.Copy)]
 		string WeakRelatedUniqueIdentifier { get; set; }
 
+		/// <summary>Gets or sets a tag that can be used to group items for deletion.</summary>
+		///         <value>
+		///           <para>Developers can set this value to <see langword="null" /> to remove the item from all groups.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("domainIdentifier")]
 		string DomainIdentifier { get; set; }
@@ -501,126 +789,318 @@ namespace CoreSpotlight {
 		// CSSearchableItemAttributeSet_Images.h
 		// CSSearchableItemAttributeSet (CSImages) Category
 
+		/// <summary>Gets the height of a visual media item in pixels.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("pixelHeight", ArgumentSemantic.Strong)]
 		NSNumber PixelHeight { get; set; }
 
+		/// <summary>Gets the width of a visual media item in pixels.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("pixelWidth", ArgumentSemantic.Strong)]
 		NSNumber PixelWidth { get; set; }
 
+		/// <summary>Gets or sets the number of pixels in an image item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("pixelCount", ArgumentSemantic.Strong)]
 		NSNumber PixelCount { get; set; }
 
+		/// <summary>Gets or sets a string representation, such as <c>RGB</c>, of a color space model for an image item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("colorSpace")]
 		string ColorSpace { get; set; }
 
+		/// <summary>Gets or sets the bit depth of image or audio items.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("bitsPerSample", ArgumentSemantic.Strong)]
 		NSNumber BitsPerSample { get; set; }
 
+		/// <summary>Gets or sets a number with Boolean semantics that indicates if flash was used to capture an image.</summary>
+		///         <value>
+		///           <para>
+		///             <c>1</c> indicates that a flash was used. <c>0</c> indicates that no flash was used.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("flashOn", ArgumentSemantic.Strong)]
 		NSNumber FlashOn { [Bind ("isFlashOn")] get; set; }
 
+		/// <summary>Gets or sets the focal length of the device that was used to capture an image.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("focalLength", ArgumentSemantic.Strong)]
 		NSNumber FocalLength { get; set; }
 
+		/// <summary>Gets or sets a number with Boolean semantics that indicates if the focal length of the device that was used to capture an image was 35 mm.</summary>
+		///         <value>
+		///           <para>
+		///             <c>1</c> indicates that the focal length was 35mm. <c>0</c> indicates that it was not.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("focalLength35mm", ArgumentSemantic.Strong)]
 		NSNumber FocalLength35mm { [Bind ("isFocalLength35mm")] get; set; }
 
+		/// <summary>Gets or sets the manufacturer of the device that captured an image.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("acquisitionMake")]
 		string AcquisitionMake { get; set; }
 
+		/// <summary>Gets or sets the model of the device that captured an image.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("acquisitionModel")]
 		string AcquisitionModel { get; set; }
 
+		/// <summary>Gets or sets the owner of the camera that captured an image.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("cameraOwner")]
 		string CameraOwner { get; set; }
 
+		/// <summary>Gets or sets the lens model on the device that was used to capture an image.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("lensModel")]
 		string LensModel { get; set; }
 
+		/// <summary>Gets or sets the ISO speed that was used to capture an image item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("ISOSpeed", ArgumentSemantic.Strong)]
 		NSNumber IsoSpeed { get; set; }
 
+		/// <summary>Gets or sets a number that represents the orientation of image item data.</summary>
+		///         <value>
+		///           <para>
+		///             <c>1</c> indicates portrait mode. <c>0</c> indicates landscape mode.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("orientation", ArgumentSemantic.Strong)]
 		NSNumber Orientation { get; set; }
 
+		/// <summary>Gets or sets a list of strings that represent layer names.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("layerNames")]
 		string [] LayerNames { get; set; }
 
+		/// <summary>Gets or sets the white balance of the device that recorded an image.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("whiteBalance", ArgumentSemantic.Strong)]
 		NSNumber WhiteBalance { get; set; }
 
+		/// <summary>Gets or sets the logarithmic APEX value that describes the aperture of the capturing device at the time that an image was captured.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("aperture", ArgumentSemantic.Strong)]
 		NSNumber Aperture { get; set; }
 
+		/// <summary>Gets or sets the color profile used in an image media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("profileName")]
 		string ProfileName { get; set; }
 
+		/// <summary>Gets or sets the resolution width of an image in DPI.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("resolutionWidthDPI", ArgumentSemantic.Strong)]
 		NSNumber ResolutionWidthDpi { get; set; }
 
+		/// <summary>Gets or sets the resolution height of an image in DPI.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("resolutionHeightDPI", ArgumentSemantic.Strong)]
 		NSNumber ResolutionHeightDPI { get; set; }
 
+		/// <summary>Gets or sets a value that describes the exposure mode that was used to capture an image.</summary>
+		///         <value>
+		///           <para>
+		///             <c>0</c> indicates that exposure was handled automatically. <c>1</c> indicates that the exposure was handled manually. <c>2</c> indicates that auto-bracketing was used.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("exposureMode", ArgumentSemantic.Strong)]
 		NSNumber ExposureMode { get; set; }
 
+		/// <summary>Gets or sets the exposure time that was used to capture an image item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("exposureTime", ArgumentSemantic.Strong)]
 		NSNumber ExposureTime { get; set; }
 
+		/// <summary>Gets or sets the EXIF version for a media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("EXIFVersion")]
 		string ExifVersion { get; set; }
 
+		/// <summary>Gets or sets the EXIF version for a media item's GPS metadata.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("EXIFGPSVersion")]
 		string ExifGpsVersion { get; set; }
 
+		/// <summary>Gets or sets a number with Boolean semantics that indicates if the color representation used by an image has an alpha channel.</summary>
+		///         <value>
+		///           <para>
+		///             <c>1</c> indicates that an alpha channel is present. <c>0</c> indicates that an alpha channel is not present.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("hasAlphaChannel", ArgumentSemantic.Strong)]
 		NSNumber HasAlphaChannel { get; set; }
 
+		/// <summary>Gets or sets a number with Boolean semantics that tells whether red-eye reduction was used to capture an image.</summary>
+		///         <value>
+		///           <para>
+		///             <c>1</c> indicates that red-eye reduction was used. <c>0</c> indicates that red-eye reduction was not used.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("redEyeOn", ArgumentSemantic.Strong)]
 		NSNumber RedEyeOn { [Bind ("isRedEyeOn")] get; set; }
 
+		/// <summary>Gets or sets the metering mode that was used on the device to capture an image item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("meteringMode")]
 		string MeteringMode { get; set; }
 
+		/// <summary>Gets or sets the smallest F number for a lens.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("maxAperture", ArgumentSemantic.Strong)]
 		NSNumber MaxAperture { get; set; }
 
+		/// <summary>Gets or sets the focal ratio that was used when capturing an image.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("fNumber", ArgumentSemantic.Strong)]
 		NSNumber FNumber { get; set; }
 
+		/// <summary>Gets or sets a string that describes the exposure program that was used to capture an image.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("exposureProgram")]
 		string ExposureProgram { get; set; }
 
+		/// <summary>Gets or sets a string description of the exposure time that was used to capture an image item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("exposureTimeString")]
 		string ExposureTimeString { get; set; }
@@ -628,162 +1108,404 @@ namespace CoreSpotlight {
 		// CSSearchableItemAttributeSet_Media.h
 		// CSSearchableItemAttributeSet (CSMedia) Category
 
+		/// <summary>Gets or sets a list of the names of the editors who have contributed to the file.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("editors")]
 		string [] Editors { get; set; }
 
+		/// <summary>Gets or sets a list of people represented in an image or document.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("participants")]
 		string [] Participants { get; set; }
 
+		/// <summary>Gets or sets a list of projects to which a file belongs.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("projects")]
 		string [] Projects { get; set; }
 
+		/// <summary>Gets or sets the date on which an item was downloaded.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("downloadedDate", ArgumentSemantic.Strong)]
 		NSDate DownloadedDate { get; set; }
 
+		/// <summary>Gets or sets an array of URLs, email subject lines, ore etc., that represent the sources from which a media item was obtained.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("contentSources")]
 		string [] ContentSources { get; set; }
 
+		/// <summary>Gets or sets a comment for a media file.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("comment")]
 		string Comment { get; set; }
 
+		/// <summary>Gets or sets the date that a media item was copyrighted.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("copyright")]
 		string Copyright { get; set; }
 
+		/// <summary>Gets or sets the most recent date on which an item was used.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("lastUsedDate", ArgumentSemantic.Strong)]
 		NSDate LastUsedDate { get; set; }
 
+		/// <summary>Gets or sets the creation date of an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("contentCreationDate", ArgumentSemantic.Strong)]
 		NSDate ContentCreationDate { get; set; }
 
+		/// <summary>Gets or sets the date when a content item was most recently modified.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("contentModificationDate", ArgumentSemantic.Strong)]
 		NSDate ContentModificationDate { get; set; }
 
+		/// <summary>Gets or sets the date that a media item was added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("addedDate", ArgumentSemantic.Strong)]
 		NSDate AddedDate { get; set; }
 
+		/// <summary>Gets or sets the length of time that a playable content item plays.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("duration", ArgumentSemantic.Strong)]
 		NSNumber Duration { get; set; }
 
+		/// <summary>Gets or sets the list of the names of contacts who are associated with an item, but who are not the authors of the item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("contactKeywords")]
 		string [] ContactKeywords { get; set; }
 
+		/// <summary>Gets or sets the codecs that were used to encode a media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("codecs")]
 		string [] Codecs { get; set; }
 
+		/// <summary>Gets or sets an array of strings that represent the media types that are contained in a media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("mediaTypes")]
 		string [] MediaTypes { get; set; }
 
+		/// <summary>Gets or sets a number with Boolean semantics that tells whether a media item is streamable.</summary>
+		///         <value>
+		///           <para>
+		///             <c>1</c> indicates that the item can be streamed. <c>0</c> indicates that the item cannot be streamed.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("streamable", ArgumentSemantic.Strong)]
 		NSNumber Streamable { [Bind ("isStreamable")] get; set; }
 
+		/// <summary>Gets or sets the combined audio and visual bitrate of a video media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("totalBitRate", ArgumentSemantic.Strong)]
 		NSNumber TotalBitRate { get; set; }
 
+		/// <summary>Gets or set the video bitrate of a video media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("videoBitRate", ArgumentSemantic.Strong)]
 		NSNumber VideoBitRate { get; set; }
 
+		/// <summary>Gets or sets the bitrate of the audio portion of a media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("audioBitRate", ArgumentSemantic.Strong)]
 		NSNumber AudioBitRate { get; set; }
 
+		/// <summary>Gets or sets a value that is <c>0</c> to represent "fast start" and <c>1</c> to represent the Real Time Streaming Protocol.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("deliveryType", ArgumentSemantic.Strong)]
 		NSNumber DeliveryType { get; set; }
 
+		/// <summary>Gets or sets a list of contributing organizations for an item's content.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("organizations")]
 		string [] Organizations { get; set; }
 
+		/// <summary>Gets or sets the role associated with the creator of content.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("role")]
 		string Role { get; set; }
 
+		/// <summary>Gets or sets a list of languages for an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("languages")]
 		string [] Languages { get; set; }
 
+		/// <summary>Gets or sets a string that represents rights information for an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("rights")]
 		string Rights { get; set; }
 
+		/// <summary>Gets or sets a list of publishers for a media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("publishers")]
 		string [] Publishers { get; set; }
 
+		/// <summary>Gets or sets a list of contributors to the production of a media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("contributors")]
 		string [] Contributors { get; set; }
 
+		/// <summary>Gets or sets an arbitrary string that is intended to represent the geographica or temporal scope of a media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("coverage")]
 		string [] Coverage { get; set; }
 
+		/// <summary>Gets or sets a user-supplied media item rating.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("rating", ArgumentSemantic.Strong)]
 		NSNumber Rating { get; set; }
 
+		/// <summary>Gets or sets the rating description.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("ratingDescription")]
 		NSNumber RatingDescription { get; set; }
 
+		/// <summary>Gets or sets the play count for a media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("playCount", ArgumentSemantic.Strong)]
 		NSNumber PlayCount { get; set; }
 
+		/// <summary>Gets or sets an information string.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("information")]
 		string Information { get; set; }
 
+		/// <summary>Gets or sets the director of a media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("director")]
 		string Director { get; set; }
 
+		/// <summary>Gets or sets the producer for a media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("producer")]
 		string Producer { get; set; }
 
+		/// <summary>Gets or sets a string that describes the genre of a media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("genre")]
 		string Genre { get; set; }
 
+		/// <summary>Gets or sets a list of performers in a media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("performers")]
 		string [] Performers { get; set; }
 
+		/// <summary>Gets or sets a description of the original format of a media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("originalFormat")]
 		string OriginalFormat { get; set; }
 
+		/// <summary>Gets or sets a description of the original source of a media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("originalSource")]
 		string OriginalSource { get; set; }
 
+		/// <summary>Gets or sets a value with Boolean semantics that tells whether a media item is local.</summary>
+		///         <value>
+		///           <para>
+		///             <c>1</c> indicates that the media item is local. <c>0</c> indicates that the item remote.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("local", ArgumentSemantic.Strong)]
 		NSNumber Local { [Bind ("isLocal")] get; set; }
 
+		/// <summary>Gets or sets a value that represents whether a media item is explicit.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("contentRating", ArgumentSemantic.Strong)]
 		NSNumber ContentRating { get; set; }
 
+		/// <summary>Gets or sets the url for an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("URL", ArgumentSemantic.Strong)]
 		NSUrl Url { get; set; }
@@ -791,66 +1513,163 @@ namespace CoreSpotlight {
 		// CSSearchableItemAttributeSet_Media.h
 		// CSSearchableItemAttributeSet (CSMusic) Category
 
+		/// <summary>Gets or sets the frequency at which audio data was sampled when it was recorded, in Hz.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("audioSampleRate", ArgumentSemantic.Strong)]
 		NSNumber AudioSampleRate { get; set; }
 
+		/// <summary>Gets or sets the number of channels in an audio data file.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("audioChannelCount", ArgumentSemantic.Strong)]
 		NSNumber AudioChannelCount { get; set; }
 
+		/// <summary>Gets or sets the tempo of a musical audio media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("tempo", ArgumentSemantic.Strong)]
 		NSNumber Tempo { get; set; }
 
+		/// <summary>Gets or sets a string representation of the key signature of a musical piece.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("keySignature")]
 		string KeySignature { get; set; }
 
+		/// <summary>Gets or sets the time signature of a musical audio media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("timeSignature")]
 		string TimeSignature { get; set; }
 
+		/// <summary>Gets or sets the name of the application that encoded the audio data in a file.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("audioEncodingApplication")]
 		string AudioEncodingApplication { get; set; }
 
+		/// <summary>Gets or sets the composer for an audio media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("composer")]
 		string Composer { get; set; }
 
+		/// <summary>Gets or sets the lyricist for a song.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("lyricist")]
 		string Lyricist { get; set; }
 
+		/// <summary>Gets or sets the album for audio items.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("album")]
 		string Album { get; set; }
 
+		/// <summary>Gets or sets the artist for a media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("artist")]
 		string Artist { get; set; }
 
+		/// <summary>Gets or sets the track number of an audio media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("audioTrackNumber", ArgumentSemantic.Strong)]
 		NSNumber AudioTrackNumber { get; set; }
 
+		/// <summary>Gets or sets the date on which a musical media item was recorded.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("recordingDate", ArgumentSemantic.Strong)]
 		NSDate RecordingDate { get; set; }
 
+		/// <summary>Gets or sets the genre of an audio media item that contains music.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("musicalGenre")]
 		string MusicalGenre { get; set; }
 
+		/// <summary>Gets or sets a number with Boolean semantics that indicates whether the MIDI sequence in a file is set up for use with general MIDI devices.</summary>
+		///         <value>
+		///           <para>
+		///             <c>1</c> indicates that the sequence is set up for general MIDI devices. <c>0</c> indicates that it is not.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("generalMIDISequence", ArgumentSemantic.Strong)]
 		NSNumber GeneralMidiSequence { [Bind ("isGeneralMIDISequence")] get; set; }
 
+		/// <summary>Gets or sets a string that represents the category of musical instrument in an audio media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("musicalInstrumentCategory")]
 		string MusicalInstrumentCategory { get; set; }
 
+		/// <summary>Gets or sets a string that represents the name of the musical instrument in an audio media item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("musicalInstrumentName")]
 		string MusicalInstrumentName { get; set; }
@@ -858,209 +1677,516 @@ namespace CoreSpotlight {
 		// CSSearchableItemAttributeSet_Messaging.h
 		// CSSearchableItemAttributeSet (CSMessaging) Category
 
+		/// <summary>Gets or sets the account identifier for a message.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("accountIdentifier")]
 		string AccountIdentifier { get; set; }
 
+		/// <summary>Gets or sets an array of account handles that a message is associated with.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("accountHandles")]
 		string [] AccountHandles { get; set; }
 
+		/// <summary>Gets or sets the UTF-8 string representation of the HTML contents of a document.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("HTMLContentData", ArgumentSemantic.Copy)]
 		NSData HtmlContentData { get; set; }
 
+		/// <summary>Gets or sets the text content of a message.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("textContent")]
 		string TextContent { get; set; }
 
+		/// <summary>Gets or sets an array of <see cref="T:CoreSpotlight.CSPerson" /> objects that represent the authors of a message.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("authors", ArgumentSemantic.Copy)]
 		CSPerson [] Authors { get; set; }
 
+		/// <summary>Gets or sets an array of <see cref="T:CoreSpotlight.CSPerson" /> objects that represent the recipients on the To: line of an email.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("primaryRecipients", ArgumentSemantic.Copy)]
 		CSPerson [] PrimaryRecipients { get; set; }
 
+		/// <summary>Gets or sets an array of <see cref="T:CoreSpotlight.CSPerson" /> objects that comprise the recipients on the Cc: field.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("additionalRecipients", ArgumentSemantic.Copy)]
 		CSPerson [] AdditionalRecipients { get; set; }
 
+		/// <summary>Gets or sets an array of <see cref="T:CoreSpotlight.CSPerson" /> objects that represent the recipients on the Bcc: line of an email.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("hiddenAdditionalRecipients", ArgumentSemantic.Copy)]
 		CSPerson [] HiddenAdditionalRecipients { get; set; }
 
+		/// <summary>Gets or sets a dictionary that contains the headers for an email message.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("emailHeaders", ArgumentSemantic.Copy)]
 		NSDictionary EmailHeaders { get; set; }
 
+		/// <summary>Gets or sets a list of mailbox identifiers for a message.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("mailboxIdentifiers")]
 		string [] MailboxIdentifiers { get; set; }
 
+		/// <summary>Gets or sets the list of names of the people who have authored a message.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("authorNames")]
 		string [] AuthorNames { get; set; }
 
+		/// <summary>Gets or sets a list of recipient names associated with a message.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("recipientNames")]
 		string [] RecipientNames { get; set; }
 
+		/// <summary>Gets or sets an array of author email addresses.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("authorEmailAddresses")]
 		string [] AuthorEmailAddresses { get; set; }
 
+		/// <summary>Gets or sets a list of recipient email addresses associated with a message.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("recipientEmailAddresses")]
 		string [] RecipientEmailAddresses { get; set; }
 
+		/// <summary>Gets or sets an array of author addresses.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("authorAddresses")]
 		string [] AuthorAddresses { get; set; }
 
+		/// <summary>Gets or sets a list of recipient addresses associated with a message.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("recipientAddresses")]
 		string [] RecipientAddresses { get; set; }
 
+		/// <summary>Gets or sets an array of phone numbers related to a message.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("phoneNumbers")]
 		string [] PhoneNumbers { get; set; }
 
+		/// <summary>Gets or sets a list of email messages that are associated with a file's author.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("emailAddresses")]
 		string [] EmailAddresses { get; set; }
 
+		/// <summary>Gets or sets an array of instant message addresses for an instant message.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("instantMessageAddresses")]
 		string [] InstantMessageAddresses { get; set; }
 
+		/// <summary>Gets or sets a value with Boolean semantics that tells whether a message is likely to be considered junk.</summary>
+		///         <value>
+		///           <para>
+		///             <c>1</c> indicates that the item is likely junk. <c>0</c> indicates that the item is not likely junk.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("likelyJunk", ArgumentSemantic.Strong)]
 		NSNumber LikelyJunk { [Bind ("isLikelyJunk")] get; set; }
 
 		// CSSearchableItemAttributeSet_Places.h
 		// CSSearchableItemAttributeSet (CSPlaces) Category
 
+		/// <summary>Gets or sets a brief description of an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("headline")]
 		string Headline { get; set; }
 
+		/// <summary>Gets or sets a string that contains instructions for an item. E.g., a warning or note.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("instructions")]
 		string Instructions { get; set; }
 
+		/// <summary>Gets or sets the city of an item's origin.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("city")]
 		string City { get; set; }
 
+		/// <summary>Gets or sets the state or province information for an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("stateOrProvince")]
 		string StateOrProvince { get; set; }
 
+		/// <summary>Gets or sets the name of the country were a media item was created.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("country")]
 		string Country { get; set; }
 
+		/// <summary>Gets or sets the altitude, in meters, above the WGS84 datum sea level.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("altitude", ArgumentSemantic.Strong)]
 		NSNumber Altitude { get; set; }
 
+		/// <summary>Gets or sets the north latitude for an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("latitude", ArgumentSemantic.Strong)]
 		NSNumber Latitude { get; set; }
 
+		/// <summary>Gets or sets the east longitude for an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("longitude", ArgumentSemantic.Strong)]
 		NSNumber Longitude { get; set; }
 
+		/// <summary>Gets or sets a speed value in kilometers/hour.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("speed", ArgumentSemantic.Strong)]
 		NSNumber Speed { get; set; }
 
+		/// <summary>Gets or sets the timestamp for an item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("timestamp", ArgumentSemantic.Strong)]
 		NSDate Timestamp { get; set; }
 
+		/// <summary>Gets or sets direction in which an image was taken.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("imageDirection", ArgumentSemantic.Strong)]
 		NSNumber ImageDirection { get; set; }
 
+		/// <summary>Gets or sets the possibly user-specified location name of a point of interest.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("namedLocation")]
 		string NamedLocation { get; set; }
 
+		/// <summary>Gets or sets the direction of travel as a number of degrees clockwise from true north.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("GPSTrack", ArgumentSemantic.Strong)]
 		NSNumber GpsTrack { get; set; }
 
+		/// <summary>Gets or sets the GPS receiver's status.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("GPSStatus")]
 		string GpsStatus { get; set; }
 
+		/// <summary>Gets or sets the measurement precision mode for the GPS receiver.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("GPSMeasureMode")]
 		string GpsMeasureMode { get; set; }
 
+		/// <summary>Gets or sets the dilution of precision for GPS data.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("GPSDOP", ArgumentSemantic.Strong)]
 		NSNumber GpsDop { get; set; }
 
+		/// <summary>Gets or sets the coordinate system and reference points that are used in conjunction with GPS data.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("GPSMapDatum")]
 		string GpsMapDatum { get; set; }
 
+		/// <summary>Gets or sets the latitude of a GPS destination.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("GPSDestLatitude", ArgumentSemantic.Strong)]
 		NSNumber GpsDestLatitude { get; set; }
 
+		/// <summary>Gets or sets the longitude of a GPS destination.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("GPSDestLongitude", ArgumentSemantic.Strong)]
 		NSNumber GpsDestLongitude { get; set; }
 
+		/// <summary>Gets or sets the bearing to a destination.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("GPSDestBearing", ArgumentSemantic.Strong)]
 		NSNumber GpsDestBearing { get; set; }
 
+		/// <summary>Gets or sets the distance to a destination.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("GPSDestDistance", ArgumentSemantic.Strong)]
 		NSNumber GpsDestDistance { get; set; }
 
+		/// <summary>Gets or sets the location processing method for the GPS receiver.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("GPSProcessingMethod")]
 		string GpsProcessingMethod { get; set; }
 
+		/// <summary>Gets or sets GPS area information for a place item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("GPSAreaInformation")]
 		string GpsAreaInformation { get; set; }
 
+		/// <summary>Gets or sets the GPS date stamp.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("GPSDateStamp", ArgumentSemantic.Strong)]
 		NSDate GpsDateStamp { get; set; }
 
+		/// <summary>Gets or sets a differential correction to GPS.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("GPSDifferental", ArgumentSemantic.Strong)]
 		NSNumber GpsDifferental { get; set; }
 
+		/// <summary>Gets or sets the fully formatted geographic address of the item.</summary>
+		///         <value>
+		///           <para>Map Kit provides this address.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("fullyFormattedAddress")]
 		string FullyFormattedAddress { get; set; }
 
+		/// <summary>Gets or sets the postal code for the item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("postalCode")]
 		string PostalCode { get; set; }
 
+		/// <summary>Gets or sets a secondary street component, such as a house number.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("subThoroughfare")]
 		string SubThoroughfare { get; set; }
 
+		/// <summary>Gets or sets the street name for the item.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("thoroughfare")]
 		string Thoroughfare { get; set; }
 
 		// CSActionExtras
 
+		/// <summary>Gets or sets a value that tells whether the number associated with an item can be called.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("supportsPhoneCall", ArgumentSemantic.Strong)]
 		NSNumber SupportsPhoneCall { get; set; }
 
+		/// <summary>Gets or sets a value that tells whether a location item can be navigated to.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("supportsNavigation", ArgumentSemantic.Strong)]
 		NSNumber SupportsNavigation { get; set; }
 
@@ -1081,15 +2207,39 @@ namespace CoreSpotlight {
 
 		// CSContainment
 
+		/// <summary>Gets or sets the title of the item's container.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("containerTitle")]
 		string ContainerTitle { get; set; }
 
+		/// <summary>Gets or sets the localized container display name.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("containerDisplayName")]
 		string ContainerDisplayName { get; set; }
 
+		/// <summary>Gets or sets the identifer of the item's container.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("containerIdentifier")]
 		string ContainerIdentifier { get; set; }
 
+		/// <summary>Gets or sets the order of the item within its container.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("containerOrder", ArgumentSemantic.Strong)]
 		NSNumber ContainerOrder { get; set; }
 
@@ -1124,6 +2274,12 @@ namespace CoreSpotlight {
 		[Internal] // We would like to use [BindAs (typeof (bool?))]
 		NSNumber _IsUserCurated { [Bind ("isUserCurated")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("rankingHint", ArgumentSemantic.Strong)]
@@ -1135,16 +2291,34 @@ namespace CoreSpotlight {
 
 		// CSSearchableItemAttributeSet_CSItemProvider
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("providerDataTypeIdentifiers", ArgumentSemantic.Copy)]
 		string [] ProviderDataTypeIdentifiers { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("providerFileTypeIdentifiers", ArgumentSemantic.Copy)]
 		string [] ProviderFileTypeIdentifiers { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("providerInPlaceFileTypeIdentifiers", ArgumentSemantic.Copy)]
@@ -1168,18 +2342,39 @@ namespace CoreSpotlight {
 		[DesignatedInitializer]
 		NativeHandle Constructor (string queryString, [NullAllowed] CSSearchQueryContext queryContext);
 
+		/// <summary>Gets a value that tells whether the query has been canceled.</summary>
+		///         <value>A value that tells whether the query has been canceled.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancelled")]
 		bool Cancelled { [Bind ("isCancelled")] get; }
 
+		/// <summary>Gets the current number of found items.</summary>
+		///         <value>The current number of found items.</value>
+		///         <remarks>This number will grow as more search results become ready.</remarks>
 		[Export ("foundItemCount")]
 		nuint FoundItemCount { get; }
 
+		/// <summary>Gets or sets a handler that, if it is not <see langword="null" />, is run when a batch of search results is ready.</summary>
+		///         <value>
+		///           <para>A a handler that, if it is not <see langword="null" />, is run when a batch of search results is ready.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("foundItemsHandler", ArgumentSemantic.Copy)]
 		Action<CSSearchableItem []> FoundItemsHandler { get; set; }
 
+		/// <summary>Gets or sets a handler that, if it is not <see langword="null" />, is run when the search completes.</summary>
+		///         <value>
+		///           <para>A  handler that, if supplied, is run when the search completes.</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("completionHandler", ArgumentSemantic.Copy)]
 		Action<NSError> CompletionHandler { get; set; }
 
+		/// <summary>Gets or sets an array of protection classes for the indexed data.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("protectionClasses", ArgumentSemantic.Copy)]
 		string [] ProtectionClasses { get; set; }
 

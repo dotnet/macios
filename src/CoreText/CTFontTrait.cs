@@ -60,33 +60,61 @@ namespace CoreText {
 	[Flags]
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontTraits.h
 	public enum CTFontSymbolicTraits : uint {
+		/// <summary>Used when no values are set.</summary>
 		None = 0,
+		/// <summary>This is an italic font.  If querying <see cref="T:CoreText.CTFontTraits" /> you can get more
+		/// 	  information about the slant from the <see cref="P:CoreText.CTFontTraits.Slant" /> property.</summary>
 		Italic = (1 << 0),
+		/// <summary>
+		/// 	  This is a bold font.  If querying <see cref="T:CoreText.CTFontTraits" /> you can get more
+		/// 	  information about the weight from the <see cref="P:CoreText.CTFontTraits.Weight" /> property.
+		/// 	</summary>
 		Bold = (1 << 1),
+		/// <summary>This is an expanded font.</summary>
 		Expanded = (1 << 5),
+		/// <summary>This is a condensed font.  If querying <see cref="T:CoreText.CTFontTraits" /> you can get more
+		/// 	  information about the width from the <see cref="P:CoreText.CTFontTraits.Width" /> property.</summary>
 		Condensed = (1 << 6),
+		/// <summary>Use fixed fonts if available.</summary>
 		MonoSpace = (1 << 10),
+		/// <summary>The font has vertical information for rendering.</summary>
 		Vertical = (1 << 11),
+		/// <summary>The font is optimized for UI rendering.</summary>
 		UIOptimized = (1 << 12),
+		/// <summary>This font contains glyphs with colors (for example, some Emoji fonts).</summary>
 		ColorGlyphs = (1 << 13),
+		/// <summary>The font is a composite font reference, and a cascade list is expected for the font.</summary>
 		Composite = (1 << 14),
 
-		Mask = ((uint) 15 << CTFontTraits.ClassMaskShift)
+		/// <summary>Mask used to extract trait values.</summary>
+		Mask = ((uint) 15 << CTFontTraits.ClassMaskShift),
 	}
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontTraits.h
 	public enum CTFontStylisticClass : uint {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Unknown = ((uint) 0 << CTFontTraits.ClassMaskShift),
+		/// <summary>To be added.</summary>
 		OldStyleSerifs = ((uint) 1 << CTFontTraits.ClassMaskShift),
+		/// <summary>To be added.</summary>
 		TransitionalSerifs = ((uint) 2 << CTFontTraits.ClassMaskShift),
+		/// <summary>To be added.</summary>
 		ModernSerifs = ((uint) 3 << CTFontTraits.ClassMaskShift),
+		/// <summary>To be added.</summary>
 		ClarendonSerifs = ((uint) 4 << CTFontTraits.ClassMaskShift),
+		/// <summary>To be added.</summary>
 		SlabSerifs = ((uint) 5 << CTFontTraits.ClassMaskShift),
+		/// <summary>To be added.</summary>
 		FreeformSerifs = ((uint) 7 << CTFontTraits.ClassMaskShift),
+		/// <summary>To be added.</summary>
 		SansSerif = ((uint) 8 << CTFontTraits.ClassMaskShift),
+		/// <summary>To be added.</summary>
 		Ornamentals = ((uint) 9 << CTFontTraits.ClassMaskShift),
+		/// <summary>To be added.</summary>
 		Scripts = ((uint) 10 << CTFontTraits.ClassMaskShift),
+		/// <summary>To be added.</summary>
 		Symbolic = ((uint) 12 << CTFontTraits.ClassMaskShift),
 	}
 

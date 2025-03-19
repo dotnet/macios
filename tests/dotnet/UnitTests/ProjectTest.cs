@@ -1686,8 +1686,6 @@ namespace Xamarin.Tests {
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 
-			DotNet.InstallWorkload ("mobile-librarybuilder-net9");
-
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, netVersion: "net9.0");
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
@@ -2159,8 +2157,6 @@ namespace Xamarin.Tests {
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 
-			DotNet.InstallWorkload ("mobile-librarybuilder-net9");
-
 			// Get all the supported API versions
 			var supportedApiVersion = Configuration.GetVariableArray ($"SUPPORTED_API_VERSIONS_{platform.AsString ().ToUpperInvariant ()}");
 			supportedApiVersion = RemovePostCurrentOnMacCatalyst (supportedApiVersion, platform);
@@ -2565,6 +2561,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/CoreText.framework/CoreText",
 			"/System/Library/Frameworks/CoreVideo.framework/CoreVideo",
 			"/System/Library/Frameworks/CryptoTokenKit.framework/CryptoTokenKit",
+			"/System/Library/Frameworks/DataDetection.framework/DataDetection",
 			"/System/Library/Frameworks/DeviceCheck.framework/DeviceCheck",
 			"/System/Library/Frameworks/DeviceDiscoveryExtension.framework/DeviceDiscoveryExtension",
 			"/System/Library/Frameworks/EventKit.framework/EventKit",
@@ -2724,6 +2721,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/CoreVideo.framework/CoreVideo",
 			"/System/Library/Frameworks/CryptoKit.framework/CryptoKit",
 			"/System/Library/Frameworks/CryptoTokenKit.framework/CryptoTokenKit",
+			"/System/Library/Frameworks/DataDetection.framework/DataDetection",
 			"/System/Library/Frameworks/DeviceCheck.framework/DeviceCheck",
 			"/System/Library/Frameworks/DeviceDiscoveryUI.framework/DeviceDiscoveryUI",
 			"/System/Library/Frameworks/ExternalAccessory.framework/ExternalAccessory",
@@ -2871,6 +2869,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/CoreVideo.framework/Versions/A/CoreVideo",
 			"/System/Library/Frameworks/CoreWLAN.framework/Versions/A/CoreWLAN",
 			"/System/Library/Frameworks/CryptoTokenKit.framework/Versions/A/CryptoTokenKit",
+			"/System/Library/Frameworks/DataDetection.framework/Versions/A/DataDetection",
 			"/System/Library/Frameworks/DeviceCheck.framework/Versions/A/DeviceCheck",
 			"/System/Library/Frameworks/DeviceDiscoveryExtension.framework/Versions/A/DeviceDiscoveryExtension",
 			"/System/Library/Frameworks/EventKit.framework/Versions/A/EventKit",
@@ -3095,6 +3094,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/CoreWLAN.framework/Versions/A/CoreWLAN",
 			"/System/Library/Frameworks/CryptoKit.framework/Versions/A/CryptoKit",
 			"/System/Library/Frameworks/CryptoTokenKit.framework/Versions/A/CryptoTokenKit",
+			"/System/Library/Frameworks/DataDetection.framework/Versions/A/DataDetection",
 			"/System/Library/Frameworks/DeviceCheck.framework/Versions/A/DeviceCheck",
 			"/System/Library/Frameworks/DeviceDiscoveryExtension.framework/Versions/A/DeviceDiscoveryExtension",
 			"/System/Library/Frameworks/EventKit.framework/Versions/A/EventKit",

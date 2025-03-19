@@ -10,6 +10,9 @@ using System.Runtime.Versioning;
 
 namespace AVFoundation;
 
+/// <summary>
+/// Extension methods for the <see cref="AVMediaCharacteristicsExtensions" /> enumeration.
+/// </summary>
 [SupportedOSPlatform ("macos")]
 [SupportedOSPlatform ("ios11.0")]
 [SupportedOSPlatform ("tvos11.0")]
@@ -272,6 +275,10 @@ static partial class AVMediaCharacteristicsExtensions
 		}
 	}
 
+	/// <summary>
+	/// Retrieves the <see cref="global::Foundation.NSString" /> constant that describes <paramref name="self" />.
+	/// </summary>
+	/// <param name="self">The instance on which this method operates.</param>
 	public static NSString? GetConstant (this AVMediaCharacteristics self)
 	{
 		IntPtr ptr = IntPtr.Zero;
@@ -335,6 +342,10 @@ static partial class AVMediaCharacteristicsExtensions
 		return (NSString?) Runtime.GetNSObject (ptr);
 	}
 
+	/// <summary>
+	/// Retrieves the <see cref="AVMediaCharacteristicsExtensions" /> value named by <paramref name="constant" />.
+	/// </summary>
+	/// <param name="constant">The name of the constant to retrieve.</param>
 	public static AVMediaCharacteristics GetValue (NSString constant)
 	{
 		if (constant is null)
@@ -378,6 +389,20 @@ static partial class AVMediaCharacteristicsExtensions
 		throw new NotSupportedException ($"The constant {constant} has no associated enum value on this platform.");
 	}
 
+	/// <summary>
+	/// Retrieves the <see cref="AVMediaCharacteristicsExtensions" /> value represented by the backing field value in <paramref name="handle" />.
+	/// </summary>
+	/// <param name="handle">The native handle with the name of the constant to retrieve.</param>
+	public static AVMediaCharacteristics GetValue (NativeHandle handle)
+	{
+		using var str = Runtime.GetNSObject<NSString> (handle)!;
+		return GetValue (str);
+	}
+
+	/// <summary>
+	/// Converts an array of <see cref="AVMediaCharacteristicsExtensions" /> enum values into an array of their corresponding constants.
+	/// </summary>
+	/// <param name="values">The array of enum values to convert.</param>
 	internal static NSString?[]? ToConstantArray (this AVMediaCharacteristics[]? values)
 	{
 		if (values is null)
@@ -390,6 +415,10 @@ static partial class AVMediaCharacteristicsExtensions
 		return rv.ToArray ();
 	}
 
+	/// <summary>
+	/// Converts an array of <see cref="NSString" /> values into an array of their corresponding enum values.
+	/// </summary>
+	/// <param name="values">The array if <see cref="NSString" /> values to convert.</param>
 	internal static AVMediaCharacteristics[]? ToEnumArray (this NSString[]? values)
 	{
 		if (values is null)

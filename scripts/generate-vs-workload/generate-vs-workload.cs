@@ -52,13 +52,13 @@ using (TextWriter writer = new StreamWriter (outputPath)) {
 	writer.WriteLine ($"<Project>");
 	writer.WriteLine ($"  <PropertyGroup>");
 	var allPlatforms = string.Join (".", platforms.Select (v => v.Item1).OrderBy (v => v));
-	writer.WriteLine ($"    <TargetName>Microsoft.NET.Sdk.{allPlatforms}.Workload.{tfm}.{xcodeName}</TargetName>");
+	writer.WriteLine ($"    <TargetName>{allPlatforms}.{tfm}.{xcodeName}</TargetName>");
 	// Find the iOS version, otherwise use the version of the first platform listed.
 	var iOSPlatform = platforms.Where (v => v.Item1 == "iOS");
 	var manifestBuildVersion = iOSPlatform.Any () ? iOSPlatform.First ().Item2 : platforms.First ().Item2;
 	writer.WriteLine ($"    <ManifestBuildVersion>{manifestBuildVersion}</ManifestBuildVersion>");
 	writer.WriteLine ($"    <EnableSideBySideManifests>true</EnableSideBySideManifests>");
-	writer.WriteLine ($"    <UseVisualStudioComponentPrefix>true</UseVisualStudioComponentPrefix>");
+	writer.WriteLine ($"    <UseVisualStudioComponentPrefix>false</UseVisualStudioComponentPrefix>");
 	writer.WriteLine ($"  </PropertyGroup>");
 	writer.WriteLine ($"  <ItemGroup>");
 	writer.WriteLine ($"    <!-- Shorten package names to avoid long path caching issues in Visual Studio -->");

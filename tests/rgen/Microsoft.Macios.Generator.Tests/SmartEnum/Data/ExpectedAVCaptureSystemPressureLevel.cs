@@ -9,6 +9,9 @@ using System;
 
 namespace AVFoundation;
 
+/// <summary>
+/// Extension methods for the <see cref="AVCaptureSystemPressureLevelExtensions" /> enumeration.
+/// </summary>
 [BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 public static partial class AVCaptureSystemPressureLevelExtensions
 {
@@ -65,6 +68,10 @@ public static partial class AVCaptureSystemPressureLevelExtensions
 		}
 	}
 
+	/// <summary>
+	/// Retrieves the <see cref="global::Foundation.NSString" /> constant that describes <paramref name="self" />.
+	/// </summary>
+	/// <param name="self">The instance on which this method operates.</param>
 	public static NSString? GetConstant (this AVCaptureSystemPressureLevel self)
 	{
 		IntPtr ptr = IntPtr.Zero;
@@ -89,6 +96,10 @@ public static partial class AVCaptureSystemPressureLevelExtensions
 		return (NSString?) Runtime.GetNSObject (ptr);
 	}
 
+	/// <summary>
+	/// Retrieves the <see cref="AVCaptureSystemPressureLevelExtensions" /> value named by <paramref name="constant" />.
+	/// </summary>
+	/// <param name="constant">The name of the constant to retrieve.</param>
 	public static AVCaptureSystemPressureLevel GetValue (NSString constant)
 	{
 		if (constant is null)
@@ -106,6 +117,20 @@ public static partial class AVCaptureSystemPressureLevelExtensions
 		throw new NotSupportedException ($"The constant {constant} has no associated enum value on this platform.");
 	}
 
+	/// <summary>
+	/// Retrieves the <see cref="AVCaptureSystemPressureLevelExtensions" /> value represented by the backing field value in <paramref name="handle" />.
+	/// </summary>
+	/// <param name="handle">The native handle with the name of the constant to retrieve.</param>
+	public static AVCaptureSystemPressureLevel GetValue (NativeHandle handle)
+	{
+		using var str = Runtime.GetNSObject<NSString> (handle)!;
+		return GetValue (str);
+	}
+
+	/// <summary>
+	/// Converts an array of <see cref="AVCaptureSystemPressureLevelExtensions" /> enum values into an array of their corresponding constants.
+	/// </summary>
+	/// <param name="values">The array of enum values to convert.</param>
 	internal static NSString?[]? ToConstantArray (this AVCaptureSystemPressureLevel[]? values)
 	{
 		if (values is null)
@@ -118,6 +143,10 @@ public static partial class AVCaptureSystemPressureLevelExtensions
 		return rv.ToArray ();
 	}
 
+	/// <summary>
+	/// Converts an array of <see cref="NSString" /> values into an array of their corresponding enum values.
+	/// </summary>
+	/// <param name="values">The array if <see cref="NSString" /> values to convert.</param>
 	internal static AVCaptureSystemPressureLevel[]? ToEnumArray (this NSString[]? values)
 	{
 		if (values is null)

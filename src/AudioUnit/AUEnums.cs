@@ -308,6 +308,7 @@ namespace AudioUnit {
 		ClockDeviceList = 1668049699, //'clk#'
 		TranslateUidToClockDevice = 1969841251, // 'uidc',
 #if !XAMCORE_5_0
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)] // This is required for .NET, because otherwise the generator thinks it's not available because it's not available on iOS.
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use the 'ProcessIsMain' element instead.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use the 'ProcessIsMain' element instead.")]
@@ -319,14 +320,23 @@ namespace AudioUnit {
 		[NoiOS]
 		[MacCatalyst (15, 0), NoTV]
 		ProcessIsMain = 1835100526, // 'main'
+		/// <summary>To be added.</summary>
 		IsInitingOrExiting = 1768845172, // 'inot'
+		/// <summary>To be added.</summary>
 		UserIDChanged = 1702193508, // 'euid'
+		/// <summary>To be added.</summary>
 		ProcessIsAudible = 1886221684, // 'pmut'
+		/// <summary>To be added.</summary>
 		SleepingIsAllowed = 1936483696, // 'slep'
+		/// <summary>To be added.</summary>
 		UnloadingIsAllowed = 1970170980, // 'unld'
+		/// <summary>To be added.</summary>
 		HogModeIsAllowed = 1752131442, // 'hogr'
+		/// <summary>To be added.</summary>
 		UserSessionIsActiveOrHeadless = 1970496882, // 'user'
+		/// <summary>To be added.</summary>
 		ServiceRestarted = 1936880500, // 'srst'
+		/// <summary>To be added.</summary>
 		PowerHint = 1886353256, // 'powh'
 		ActualSampleRate = 1634955892,// 'asrt',
 		ClockDevice = 1634755428, // 'apcd',
@@ -564,35 +574,49 @@ namespace AudioUnit {
 		MutedSpeechActivityEventListener = 2106,
 
 		// AUNBandEQ unit
+		/// <summary>To be added.</summary>
 		NumberOfBands = 2200,
+		/// <summary>To be added.</summary>
 		MaxNumberOfBands = 2201,
+		/// <summary>To be added.</summary>
 		BiquadCoefficients = 2203,
 
 		// Mixers
 		// General mixers
+		/// <summary>To be added.</summary>
 		MeteringMode = 3007,
 
 		// Matrix Mixer
+		/// <summary>To be added.</summary>
 		MatrixLevels = 3006,
+		/// <summary>To be added.</summary>
 		MatrixDimensions = 3009,
+		/// <summary>To be added.</summary>
 		MeterClipping = 3011,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		InputAnchorTimeStamp = 3016,
 
 		// SpatialMixer
+		/// <summary>To be added.</summary>
 		ReverbRoomType = 10,
+		/// <summary>To be added.</summary>
 		UsesInternalReverb = 1005,
+		/// <summary>To be added.</summary>
 		SpatializationAlgorithm = 3000,
 		SpatialMixerRenderingFlags = 3003,
 		SpatialMixerSourceMode = 3005,
 		SpatialMixerDistanceParams = 3010,
 #if !XAMCORE_5_0
+		/// <summary>To be added.</summary>
 		[Obsolete ("Use 'SpatialMixerDistanceParams' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		DistanceParams = SpatialMixerDistanceParams,
+		/// <summary>Developers should not use this deprecated field. </summary>
 		[Obsolete ("Use 'SpatialMixerAttenuationCurve' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		AttenuationCurve = SpatialMixerAttenuationCurve,
+		/// <summary>To be added.</summary>
 		[Obsolete ("Use 'SpatialMixerRenderingFlags' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		RenderingFlags = SpatialMixerRenderingFlags,
@@ -608,15 +632,23 @@ namespace AudioUnit {
 		SpatialMixerAnyInputIsUsingPersonalizedHrtf = 3116,
 
 		// AUScheduledSoundPlayer
+		/// <summary>To be added.</summary>
 		ScheduleAudioSlice = 3300,
+		/// <summary>To be added.</summary>
 		ScheduleStartTimeStamp = 3301,
+		/// <summary>To be added.</summary>
 		CurrentPlayTime = 3302,
 
 		// AUAudioFilePlayer
+		/// <summary>To be added.</summary>
 		ScheduledFileIDs = 3310,
+		/// <summary>To be added.</summary>
 		ScheduledFileRegion = 3311,
+		/// <summary>To be added.</summary>
 		ScheduledFilePrime = 3312,
+		/// <summary>To be added.</summary>
 		ScheduledFileBufferSizeFrames = 3313,
+		/// <summary>To be added.</summary>
 		ScheduledFileNumberBuffers = 3314,
 
 #if MONOMAC
@@ -628,24 +660,35 @@ namespace AudioUnit {
 #endif // !MONOMAC
 
 		// Music Device Properties
+		/// <summary>To be added.</summary>
 		InstrumentName = 1001,
+		/// <summary>To be added.</summary>
 		InstrumentNumber = 1004,
 
 		// Music Device Properties used by DLSMusicDevice and AUMIDISynth
+		/// <summary>To be added.</summary>
 		InstrumentCount = 1000,
+		/// <summary>To be added.</summary>
 		BankName = 1007,
+		/// <summary>To be added.</summary>
 		SoundBankURL = 1100,
 
 		// AUMIDISynth
+		/// <summary>To be added.</summary>
 		MidiSynthEnablePreload = 4119,
 
 		// AUSampler
+		/// <summary>To be added.</summary>
 		LoadInstrument = 4102,
+		/// <summary>To be added.</summary>
 		LoadAudioFiles = 4101,
 
 		// AUDeferredRenderer
+		/// <summary>To be added.</summary>
 		DeferredRendererPullSize = 3320,
+		/// <summary>To be added.</summary>
 		DeferredRendererExtraLatency = 3321,
+		/// <summary>To be added.</summary>
 		DeferredRendererWaitFrames = 3322,
 
 #if MONOMAC
@@ -857,6 +900,7 @@ namespace AudioUnit {
 		DynamicsProcessorAttackTime = 4,
 		/// <summary>To be added.</summary>
 		DynamicsProcessorReleaseTime = 5,
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'DynamicsProcessorOverallGain' instead.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'DynamicsProcessorOverallGain' instead.")]
 		[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use 'DynamicsProcessorOverallGain' instead.")]
@@ -864,88 +908,148 @@ namespace AudioUnit {
 		DynamicsProcessorMasterGain = 6,
 		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 		DynamicsProcessorOverallGain = 6,
+		/// <summary>To be added.</summary>
 		DynamicsProcessorCompressionAmount = 1000,
+		/// <summary>To be added.</summary>
 		DynamicsProcessorInputAmplitude = 2000,
+		/// <summary>To be added.</summary>
 		DynamicsProcessorOutputAmplitude = 3000,
 
 		// AUVarispeed
+		/// <summary>To be added.</summary>
 		VarispeedPlaybackRate = 0,
+		/// <summary>To be added.</summary>
 		VarispeedPlaybackCents = 1,
 
 		// Distortion unit 
+		/// <summary>To be added.</summary>
 		DistortionDelay = 0,
+		/// <summary>To be added.</summary>
 		DistortionDecay = 1,
+		/// <summary>To be added.</summary>
 		DistortionDelayMix = 2,
+		/// <summary>To be added.</summary>
 		DistortionDecimation = 3,
+		/// <summary>To be added.</summary>
 		DistortionRounding = 4,
+		/// <summary>To be added.</summary>
 		DistortionDecimationMix = 5,
+		/// <summary>To be added.</summary>
 		DistortionLinearTerm = 6,
+		/// <summary>To be added.</summary>
 		DistortionSquaredTerm = 7,
+		/// <summary>To be added.</summary>
 		DistortionCubicTerm = 8,
+		/// <summary>To be added.</summary>
 		DistortionPolynomialMix = 9,
+		/// <summary>To be added.</summary>
 		DistortionRingModFreq1 = 10,
+		/// <summary>To be added.</summary>
 		DistortionRingModFreq2 = 11,
+		/// <summary>To be added.</summary>
 		DistortionRingModBalance = 12,
+		/// <summary>To be added.</summary>
 		DistortionRingModMix = 13,
+		/// <summary>To be added.</summary>
 		DistortionSoftClipGain = 14,
+		/// <summary>To be added.</summary>
 		DistortionFinalMix = 15,
 
 		// AUDelay
+		/// <summary>To be added.</summary>
 		DelayWetDryMix = 0,
+		/// <summary>To be added.</summary>
 		DelayTime = 1,
+		/// <summary>To be added.</summary>
 		DelayFeedback = 2,
+		/// <summary>To be added.</summary>
 		DelayLopassCutoff = 3,
 
 		// AUNBandEQ
+		/// <summary>To be added.</summary>
 		AUNBandEQGlobalGain = 0,
+		/// <summary>To be added.</summary>
 		AUNBandEQBypassBand = 1000,
+		/// <summary>To be added.</summary>
 		AUNBandEQFilterType = 2000,
+		/// <summary>To be added.</summary>
 		AUNBandEQFrequency = 3000,
+		/// <summary>To be added.</summary>
 		AUNBandEQGain = 4000,
+		/// <summary>To be added.</summary>
 		AUNBandEQBandwidth = 5000,
 
 		// AURandomUnit
+		/// <summary>To be added.</summary>
 		RandomBoundA = 0,
+		/// <summary>To be added.</summary>
 		RandomBoundB = 1,
+		/// <summary>To be added.</summary>
 		RandomCurve = 2,
 
 #if !MONOMAC
 		// iOS reverb
+		/// <summary>To be added.</summary>
 		Reverb2DryWetMix = 0,
+		/// <summary>To be added.</summary>
 		Reverb2Gain = 1,
+		/// <summary>To be added.</summary>
 		Reverb2MinDelayTime = 2,
+		/// <summary>To be added.</summary>
 		Reverb2MaxDelayTime = 3,
+		/// <summary>To be added.</summary>
 		Reverb2DecayTimeAt0Hz = 4,
+		/// <summary>To be added.</summary>
 		Reverb2DecayTimeAtNyquist = 5,
+		/// <summary>To be added.</summary>
 		Reverb2RandomizeReflections = 6,
 #endif
 
 		// RoundTripAAC
+		/// <summary>To be added.</summary>
 		RoundTripAacFormat = 0,
+		/// <summary>To be added.</summary>
 		RoundTripAacEncodingStrategy = 1,
+		/// <summary>To be added.</summary>
 		RoundTripAacRateOrQuality = 2,
 
 		// Spacial Mixer
+		/// <summary>To be added.</summary>
 		SpacialMixerAzimuth = 0,
+		/// <summary>To be added.</summary>
 		Elevation = 1,
+		/// <summary>To be added.</summary>
 		Distance = 2,
+		/// <summary>To be added.</summary>
 		Gain = 3,
+		/// <summary>To be added.</summary>
 		PlaybackRate = 4,
+		/// <summary>To be added.</summary>
 		Enable = 5,
+		/// <summary>To be added.</summary>
 		MinGain = 6,
+		/// <summary>To be added.</summary>
 		MaxGain = 7,
+		/// <summary>To be added.</summary>
 		ReverbBlend = 8,
+		/// <summary>To be added.</summary>
 		GlobalReverbGain = 9,
+		/// <summary>To be added.</summary>
 		OcclussionAttenuation = 10,
+		/// <summary>To be added.</summary>
 		ObstructionAttenuation = 11,
 	}
 
 	/// <summary>Enumerates attenuation modes.</summary>
 	[MacCatalyst (13, 1)]
 	public enum SpatialMixerAttenuation {
+		/// <summary>To be added.</summary>
 		Power = 0,
+		/// <summary>To be added.</summary>
 		Exponential = 1,
+		/// <summary>To be added.</summary>
 		Inverse = 2,
+		/// <summary>To be added.</summary>
 		Linear = 3,
 	}
 
@@ -966,14 +1070,20 @@ namespace AudioUnit {
 	/// <summary>Enumerates timing flags for rendering audio slices.</summary>
 	[Flags]
 	public enum ScheduledAudioSliceFlag {
+		/// <summary>To be added.</summary>
 		Complete = 0x01,
+		/// <summary>To be added.</summary>
 		BeganToRender = 0x02,
+		/// <summary>To be added.</summary>
 		BeganToRenderLate = 0x04,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		Loop = 0x08,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		Interrupt = 0x10,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		InterruptAtLoop = 0x20,
 	}
@@ -1075,7 +1185,7 @@ namespace AudioUnit {
 		/// <summary>Indicates an input bus.</summary>
 		Input = 1,
 		/// <summary>Indicates an output bus.</summary>
-		Output = 2
+		Output = 2,
 	}
 
 	public enum AudioUnitParameterOptions : uint {
@@ -1141,54 +1251,91 @@ namespace AudioUnit {
 	}
 
 	public enum AUSpatialMixerAttenuationCurve : uint {
+		/// <summary>To be added.</summary>
 		Power = 0,
+		/// <summary>To be added.</summary>
 		Exponential = 1,
+		/// <summary>To be added.</summary>
 		Inverse = 2,
+		/// <summary>To be added.</summary>
 		Linear = 3,
 	}
 
 	public enum AU3DMixerRenderingFlags : uint {
+		/// <summary>To be added.</summary>
 		InterAuralDelay = (1 << 0),
+		/// <summary>To be added.</summary>
 		DopplerShift = (1 << 1),
+		/// <summary>To be added.</summary>
 		DistanceAttenuation = (1 << 2),
+		/// <summary>To be added.</summary>
 		DistanceFilter = (1 << 3),
+		/// <summary>To be added.</summary>
 		DistanceDiffusion = (1 << 4),
+		/// <summary>To be added.</summary>
 		LinearDistanceAttenuation = (1 << 5),
+		/// <summary>To be added.</summary>
 		ConstantReverbBlend = (1 << 6),
 	}
 
 	public enum AUReverbRoomType : uint {
+		/// <summary>To be added.</summary>
 		SmallRoom = 0,
+		/// <summary>To be added.</summary>
 		MediumRoom = 1,
+		/// <summary>To be added.</summary>
 		LargeRoom = 2,
+		/// <summary>To be added.</summary>
 		MediumHall = 3,
+		/// <summary>To be added.</summary>
 		LargeHall = 4,
+		/// <summary>To be added.</summary>
 		Plate = 5,
+		/// <summary>To be added.</summary>
 		MediumChamber = 6,
+		/// <summary>To be added.</summary>
 		LargeChamber = 7,
+		/// <summary>To be added.</summary>
 		Cathedral = 8,
+		/// <summary>To be added.</summary>
 		LargeRoom2 = 9,
+		/// <summary>To be added.</summary>
 		MediumHall2 = 10,
+		/// <summary>To be added.</summary>
 		MediumHall3 = 11,
+		/// <summary>To be added.</summary>
 		LargeHall2 = 12,
 	}
 
 	public enum AUScheduledAudioSliceFlags : uint {
+		/// <summary>To be added.</summary>
 		Complete = 1,
+		/// <summary>To be added.</summary>
 		BeganToRender = 2,
+		/// <summary>To be added.</summary>
 		BeganToRenderLate = 4,
+		/// <summary>To be added.</summary>
 		Loop = 8,
+		/// <summary>To be added.</summary>
 		Interrupt = 16,
+		/// <summary>To be added.</summary>
 		InterruptAtLoop = 32,
 	}
 
 	public enum AUSpatializationAlgorithm : uint {
+		/// <summary>To be added.</summary>
 		EqualPowerPanning = 0,
+		/// <summary>To be added.</summary>
 		SphericalHead = 1,
+		/// <summary>To be added.</summary>
 		Hrtf = 2,
+		/// <summary>To be added.</summary>
 		SoundField = 3,
+		/// <summary>To be added.</summary>
 		VectorBasedPanning = 4,
+		/// <summary>To be added.</summary>
 		StereoPassThrough = 5,
+		/// <summary>To be added.</summary>
 		HrtfHQ = 6,
 		[iOS (14, 0)]
 		[TV (14, 0)]
@@ -1198,14 +1345,20 @@ namespace AudioUnit {
 
 	/// <summary>Enumerates attentuation curve types.</summary>
 	public enum AU3DMixerAttenuationCurve : uint {
+		/// <summary>Indicates an equal-power attenuation curve.</summary>
 		Power = 0,
+		/// <summary>Indicates an exponential attenuation curve.</summary>
 		Exponential = 1,
+		/// <summary>Indicates an inverse attenuation curve.</summary>
 		Inverse = 2,
+		/// <summary>Indicates a linear attenuation curve.</summary>
 		Linear = 3,
 	}
 
 	public enum AUSpatialMixerRenderingFlags : uint {
+		/// <summary>To be added.</summary>
 		InterAuralDelay = (1 << 0),
+		/// <summary>To be added.</summary>
 		DistanceAttenuation = (1 << 2),
 	}
 

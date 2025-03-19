@@ -31,15 +31,19 @@ namespace IntentsUI {
 		/// <summary>To be added.</summary>
 		SiriSnippet,
 		/// <summary>To be added.</summary>
-		MapsCard
+		MapsCard,
 	}
 
 	[NoMac]
 	[Native]
 	public enum INUIInteractiveBehavior : ulong {
+		/// <summary>To be added.</summary>
 		None,
+		/// <summary>To be added.</summary>
 		NextView,
+		/// <summary>To be added.</summary>
 		Launch,
+		/// <summary>To be added.</summary>
 		GenericAction,
 	}
 
@@ -125,6 +129,13 @@ namespace IntentsUI {
 	[DisableDefaultCtor]
 	interface INUIAddVoiceShortcutViewController {
 
+		/// <summary>An instance of the IntentsUI.IINUIAddVoiceShortcutViewControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the IntentsUI.IINUIAddVoiceShortcutViewControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IINUIAddVoiceShortcutViewControllerDelegate Delegate { get; set; }
@@ -166,6 +177,13 @@ namespace IntentsUI {
 	[DisableDefaultCtor]
 	interface INUIEditVoiceShortcutViewController {
 
+		/// <summary>An instance of the IntentsUI.IINUIEditVoiceShortcutViewControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the IntentsUI.IINUIEditVoiceShortcutViewControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IINUIEditVoiceShortcutViewControllerDelegate Delegate { get; set; }
@@ -221,6 +239,9 @@ namespace IntentsUI {
 		[Export ("style")]
 		INUIAddVoiceShortcutButtonStyle Style { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		IINUIAddVoiceShortcutButtonDelegate Delegate { get; set; }

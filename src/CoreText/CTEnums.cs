@@ -35,16 +35,25 @@ namespace CoreText {
 	[ErrorDomain ("kCTFontManagerErrorDomain")]
 	// defined as CFIndex (signed long [long] = nint) - /System/Library/Frameworks/CoreText.framework/Headers/CTFontManagerError.h
 	public enum CTFontManagerError : long {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		FileNotFount = 101,
+		/// <summary>To be added.</summary>
 		InsufficientPermissions = 102,
+		/// <summary>To be added.</summary>
 		UnrecognizedFormat = 103,
+		/// <summary>To be added.</summary>
 		InvalidFontData = 104,
+		/// <summary>To be added.</summary>
 		AlreadyRegistered = 105,
 		ExceededResourceLimit = 106,
 		AssetNotFound = 107,
+		/// <summary>To be added.</summary>
 		NotRegistered = 201,
+		/// <summary>To be added.</summary>
 		InUse = 202,
+		/// <summary>To be added.</summary>
 		SystemRequired = 203,
 		RegistrationFailed = 301,
 		MissingEntitlement = 302,

@@ -26,53 +26,82 @@ namespace AudioToolbox {
 
 	// untyped enum (used as an OSStatus in the API) -> MusicPlayer.h
 	public enum MusicPlayerStatus {
+		/// <summary>To be added.</summary>
 		Success = 0,
+		/// <summary>To be added.</summary>
 		InvalidSequenceType = -10846,
+		/// <summary>To be added.</summary>
 		TrackIndexError = -10859,
+		/// <summary>To be added.</summary>
 		TrackNotFound = -10858,
+		/// <summary>To be added.</summary>
 		EndOfTrack = -10857,
+		/// <summary>To be added.</summary>
 		StartOfTrack = -10856,
+		/// <summary>To be added.</summary>
 		IllegalTrackDestination = -10855,
+		/// <summary>To be added.</summary>
 		NoSequence = -10854,
+		/// <summary>To be added.</summary>
 		InvalidEventType = -10853,
+		/// <summary>To be added.</summary>
 		InvalidPlayerState = -10852,
+		/// <summary>To be added.</summary>
 		CannotDoInCurrentContext = -10863,
-		NoTrackDestination = -66720
+		/// <summary>To be added.</summary>
+		NoTrackDestination = -66720,
 	}
 
 	// typedef UInt32 -> MusicPlayer.h
 	public enum MusicEventType : uint {
+		/// <summary>To be added.</summary>
 		Null,
+		/// <summary>To be added.</summary>
 		ExtendedNote = 1,
+		/// <summary>To be added.</summary>
 		ExtendedTempo = 3,
+		/// <summary>To be added.</summary>
 		User = 4,
+		/// <summary>To be added.</summary>
 		Meta = 5,
+		/// <summary>To be added.</summary>
 		MidiNoteMessage = 6,
+		/// <summary>To be added.</summary>
 		MidiChannelMessage = 7,
+		/// <summary>To be added.</summary>
 		MidiRawData = 8,
+		/// <summary>To be added.</summary>
 		Parameter = 9,
-		AUPreset = 10
+		/// <summary>To be added.</summary>
+		AUPreset = 10,
 	}
 
 	// typedef UInt32 -> MusicPlayer.h
 	[Flags]
 	public enum MusicSequenceLoadFlags {
+		/// <summary>Indicates that the input tracks will be preserved in the output.</summary>
 		PreserveTracks = 0,
-		ChannelsToTracks = 1 << 0
+		/// <summary>Indicates that the output will contain a tempo track, a track for each SMF MIDI channel, and a track for SysEx or MetaEvents.</summary>
+		ChannelsToTracks = 1 << 0,
 	}
 
 	// typedef UInt32 -> MusicPlayer.h
 	public enum MusicSequenceFileTypeID : uint {
+		/// <summary>Indicates that the type is not specified.</summary>
 		Any = 0,
+		/// <summary>Indicates a MIDI file.</summary>
 		Midi = 0x6d696469, // 'midi'
+		/// <summary>Indicates an iMelody file.</summary>
 		iMelody = 0x696d656c, // 'imel'
 	}
 
 	// typedef UInt32 -> MusicPlayer.h
 	[Flags]
 	public enum MusicSequenceFileFlags {
+		/// <summary>Indicates that the existing file should not be erased.</summary>
 		Default = 0,
-		EraseFile = 1
+		/// <summary>Indicates that the existing file should be erased.</summary>
+		EraseFile = 1,
 	}
 
 
@@ -139,6 +168,9 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern static /* OSStatus */ MusicPlayerStatus MusicPlayerSetTime (/* MusicPlayer */ IntPtr inPlayer, /* MusicTimeStamp* */ double inTime);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double Time {
 			get {
 				double time;
@@ -192,6 +224,9 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static /* OSStatus */ MusicPlayerStatus MusicPlayerIsPlaying (/* MusicPlayer */ IntPtr inPlayer, /* Boolean* */ byte* outIsPlaying);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsPlaying {
 			get {
 				byte res;
@@ -208,6 +243,9 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static /* OSStatus */ MusicPlayerStatus MusicPlayerGetPlayRateScalar (/* MusicPlayer */ IntPtr inPlayer, /* Float64* */ double* outScaleRate);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double PlayRateScalar {
 			get {
 				double rate;
@@ -250,6 +288,9 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern static /* OSStatus */ MusicPlayerStatus MusicPlayerSetSequence (/* MusicPlayer */ IntPtr inPlayer, IntPtr inSequence);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MusicSequence? MusicSequence {
 			get {
 				IntPtr seqHandle;

@@ -52,7 +52,7 @@ namespace CoreSpotlight {
 		/// <summary>Indicates that the query was invalid.</summary>
 		InvalidQuery = -2002,
 		/// <summary>Indicates that the search was canceled.</summary>
-		Cancelled = -2003
+		Cancelled = -2003,
 	}
 
 	/// <summary>Enumerates file protection options in calls to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Spotlight%20CSSearchable%20Index%20From%20Name&amp;scope=Xamarin" title="M:CoreSpotlight.CSSearchableIndex.FromName*">M:CoreSpotlight.CSSearchableIndex.FromName*</a></format>.</summary>

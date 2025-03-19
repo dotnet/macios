@@ -150,15 +150,24 @@ namespace GameKit {
 		[Export ("receivedData:fromParticipantID:")]
 		void ReceivedData (NSData arbitraryData, string participantID);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("microphoneMuted")]
 		bool MicrophoneMuted { [Bind ("isMicrophoneMuted")] get; set; }
 
 		[Export ("remoteParticipantVolume")]
 		float RemoteParticipantVolume { get; set; } /* float, not CGFloat */
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("outputMeteringEnabled")]
 		bool OutputMeteringEnabled { [Bind ("isOutputMeteringEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("inputMeteringEnabled")]
 		bool InputMeteringEnabled { [Bind ("isInputMeteringEnabled")] get; set; }
 
@@ -193,6 +202,13 @@ namespace GameKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the GameKit.IGKSessionDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the GameKit.IGKSessionDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IGKSessionDelegate Delegate { get; set; }
 
@@ -211,6 +227,9 @@ namespace GameKit {
 		[Export ("peerID")]
 		string PeerID { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("available")]
 		bool Available { [Bind ("isAvailable")] get; set; }
 
@@ -401,6 +420,9 @@ namespace GameKit {
 		[Export ("initWithPlayers:")]
 		NativeHandle Constructor (GKPlayer [] players);
 
+		/// <summary>Gets a Boolean value that tells whether the leaderboard is currently retrieving scores.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'LoadEntries' instead.")]
 		[Deprecated (PlatformName.TvOS, 14, 0, message: "Use 'LoadEntries' instead.")]
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'LoadEntries' instead.")]
@@ -565,6 +587,7 @@ namespace GameKit {
 		[Async]
 		void LoadPlayersForIdentifiers (string [] identifiers, [NullAllowed] GKPlayersHandler completionHandler);
 
+		/// <include file="../docs/api/GameKit/GKPlayer.xml" path="/Documentation/Docs[@DocId='P:GameKit.GKPlayer.DidChangeNotificationNameNotification']/*" />
 		[Field ("GKPlayerDidChangeNotificationName")]
 		[Notification]
 		// This name looks wrong, see the "Notification" at the end.
@@ -804,6 +827,16 @@ namespace GameKit {
 		: GKSavedGameListener
 #endif
 	{
+		/// <summary>Current authentication state for the local player.</summary>
+		///         <value>True if the user has been authenticated, false otherwise.</value>
+		///         <remarks>
+		///
+		/// 	  This property changes as the application transitions from
+		/// 	  background to foreground, so you should check the value of
+		/// 	  this property on your handler and enable or disable features
+		/// 	  that depend on it in your game.
+		///
+		/// 	</remarks>
 		[Export ("authenticated")]
 		bool Authenticated { [Bind ("isAuthenticated")] get; }
 
@@ -819,6 +852,9 @@ namespace GameKit {
 		[Static, Export ("localPlayer")]
 		GKLocalPlayer LocalPlayer { get; }
 
+		/// <summary>Gets a value that tells whether the player is undreaged.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isUnderage")]
 		bool IsUnderage { get; }
 
@@ -845,6 +881,7 @@ namespace GameKit {
 		[Async]
 		void LoadFriends ([NullAllowed] GKFriendsHandler handler);
 
+		/// <include file="../docs/api/GameKit/GKLocalPlayer.xml" path="/Documentation/Docs[@DocId='P:GameKit.GKLocalPlayer.AuthenticationDidChangeNotificationName']/*" />
 		[Field ("GKPlayerAuthenticationDidChangeNotificationName")]
 		[Notification]
 		NSString AuthenticationDidChangeNotificationName { get; }
@@ -1057,6 +1094,13 @@ namespace GameKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the GameKit.IGKMatchDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the GameKit.IGKMatchDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IGKMatchDelegate Delegate { get; set; }
 
@@ -1193,6 +1237,9 @@ namespace GameKit {
 		[Export ("name", ArgumentSemantic.Copy)]
 		string Name { get; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the microphone is being sampled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("active", ArgumentSemantic.Assign)]
 		bool Active { [Bind ("isActive")] get; set; }
 
@@ -1341,6 +1388,9 @@ namespace GameKit {
 		[Export ("inviter", ArgumentSemantic.Retain)]
 		string Inviter { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hosted", ArgumentSemantic.Assign)]
 		bool Hosted { [Bind ("isHosted")] get; }
 
@@ -1486,6 +1536,9 @@ namespace GameKit {
 		[Export ("matchmakerDelegate", ArgumentSemantic.Assign)]
 		NSObject WeakMatchmakerDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Wrap ("WeakMatchmakerDelegate")]
 		IGKMatchmakerViewControllerDelegate MatchmakerDelegate { get; set; }
@@ -1493,6 +1546,9 @@ namespace GameKit {
 		[Export ("matchRequest", ArgumentSemantic.Strong)]
 		GKMatchRequest MatchRequest { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hosted", ArgumentSemantic.Assign)]
 		bool Hosted { [Bind ("isHosted")] get; set; }
 
@@ -1605,6 +1661,9 @@ namespace GameKit {
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	interface GKAchievement : NSSecureCoding {
+		/// <summary>Deprecated.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 6, 0, message: "Use 'IsHidden' on the 'GKAchievementDescription' class instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'IsHidden' on the 'GKAchievementDescription' class instead.")]
@@ -1621,6 +1680,9 @@ namespace GameKit {
 		[Export ("percentComplete", ArgumentSemantic.Assign)]
 		double PercentComplete { get; set; }
 
+		/// <summary>Gets a value that tells whether the player completed the achievement.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("completed")]
 		bool Completed { [Bind ("isCompleted")] get; }
 
@@ -1760,6 +1822,9 @@ namespace GameKit {
 		[Export ("maximumPoints", ArgumentSemantic.Assign)]
 		nint MaximumPoints { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hidden", ArgumentSemantic.Assign)]
 		bool Hidden { [Bind ("isHidden")] get; }
 
@@ -1777,6 +1842,9 @@ namespace GameKit {
 		[NullAllowed]
 		string GroupIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("replayable", ArgumentSemantic.Assign)]
 		bool Replayable { [Bind ("isReplayable")] get; }
 
@@ -2059,6 +2127,13 @@ namespace GameKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the GameKit.IGKTurnBasedEventHandlerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the GameKit.IGKTurnBasedEventHandlerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IGKTurnBasedEventHandlerDelegate Delegate { get; set; }
 
@@ -2181,10 +2256,18 @@ namespace GameKit {
 		[Async]
 		void SaveCurrentTurn (NSData matchData, [NullAllowed] Action<NSError> completionHandler);
 
+		/// <summary>Represents the value associated with the constant GKTurnTimeoutDefault</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("GKTurnTimeoutDefault"), Static]
 		double DefaultTimeout { get; }
 
+		/// <summary>Represents the value associated with the constant GKTurnTimeoutNone</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("GKTurnTimeoutNone"), Static]
 		double NoTimeout { get; }
@@ -2277,6 +2360,13 @@ namespace GameKit {
 		[Export ("turnBasedMatchmakerDelegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the GameKit.IGKTurnBasedMatchmakerViewControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the GameKit.IGKTurnBasedMatchmakerViewControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IGKTurnBasedMatchmakerViewControllerDelegate Delegate { get; set; }
 	}
@@ -2458,6 +2548,13 @@ namespace GameKit {
 		[Export ("gameCenterDelegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the GameKit.IGKGameCenterControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the GameKit.IGKGameCenterControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IGKGameCenterControllerDelegate Delegate { get; set; }
 
@@ -2523,6 +2620,13 @@ namespace GameKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the GameKit.IGKChallengeEventHandlerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the GameKit.IGKChallengeEventHandlerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IGKChallengeEventHandlerDelegate Delegate { get; set; }
 
@@ -2625,9 +2729,17 @@ namespace GameKit {
 		[Async]
 		void Reply (string localizableMessage, NSObject [] arguments, NSData data, [NullAllowed] Action<NSError> completionHandler);
 
+		/// <summary>Represents the value associated with the constant GKExchangeTimeoutDefault</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("GKExchangeTimeoutDefault")]
 		double TimeoutDefault { get; }
 
+		/// <summary>Represents the value associated with the constant GKExchangeTimeoutNone</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("GKExchangeTimeoutNone")]
 		double TimeoutNone { get; }
 	}

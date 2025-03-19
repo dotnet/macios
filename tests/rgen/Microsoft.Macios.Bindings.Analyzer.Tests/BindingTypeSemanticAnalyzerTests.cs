@@ -125,7 +125,7 @@ namespace Test {
 using ObjCBindings;
 
 namespace Test {
-	[BindingType]
+	[BindingType<SmartEnum>]
 	public class Examples {
 	}
 }

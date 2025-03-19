@@ -99,54 +99,71 @@ namespace Vision {
 	/// <summary>Enumerated supported barcode standards.</summary>
 	[MacCatalyst (13, 1)]
 	enum VNBarcodeSymbology {
+		/// <summary>Indicates the Aztec barcode format.</summary>
 		[Field ("VNBarcodeSymbologyAztec")]
 		Aztec,
 
+		/// <summary>Indicates the Code 39 barcode format.</summary>
 		[Field ("VNBarcodeSymbologyCode39")]
 		Code39,
 
+		/// <summary>Indicates the Code 39 mod 43 barcode format.</summary>
 		[Field ("VNBarcodeSymbologyCode39Checksum")]
 		Code39Checksum,
 
+		/// <summary>Indicates the Full ASCII Code 39 barcode format.</summary>
 		[Field ("VNBarcodeSymbologyCode39FullASCII")]
 		Code39FullAscii,
 
+		/// <summary>Indicates the Full ASCII Code 39 mod 43 barcode format.</summary>
 		[Field ("VNBarcodeSymbologyCode39FullASCIIChecksum")]
 		Code39FullAsciiChecksum,
 
+		/// <summary>Indicates the Code 93 barcode format.</summary>
 		[Field ("VNBarcodeSymbologyCode93")]
 		Code93,
 
+		/// <summary>Indicates the Code 93 barcode format.</summary>
 		[Field ("VNBarcodeSymbologyCode93i")]
 		Code93i,
 
+		/// <summary>Indicates the Code128 barcode format.</summary>
 		[Field ("VNBarcodeSymbologyCode128")]
 		Code128,
 
+		/// <summary>Indicates the Data Matrix ECC 200 barcode format.</summary>
 		[Field ("VNBarcodeSymbologyDataMatrix")]
 		DataMatrix,
 
+		/// <summary>Indicates the EAN-8 barcode format.</summary>
 		[Field ("VNBarcodeSymbologyEAN8")]
 		Ean8,
 
+		/// <summary>Indicates the EAN-13 barcode format.</summary>
 		[Field ("VNBarcodeSymbologyEAN13")]
 		Ean13,
 
+		/// <summary>Indicates the Interleaved 2 of 5 barcode format.</summary>
 		[Field ("VNBarcodeSymbologyI2of5")]
 		I2OF5,
 
+		/// <summary>Indicates the Interleaved 2 of 5 barcode format, with a checksum.</summary>
 		[Field ("VNBarcodeSymbologyI2of5Checksum")]
 		I2OF5Checksum,
 
+		/// <summary>Indicates the ITF-14 barcode format.</summary>
 		[Field ("VNBarcodeSymbologyITF14")]
 		Itf14,
 
+		/// <summary>Indicates the PDF417 barcode format.</summary>
 		[Field ("VNBarcodeSymbologyPDF417")]
 		Pdf417,
 
+		/// <summary>Indicates the QR code format.</summary>
 		[Field ("VNBarcodeSymbologyQR")]
 		QR,
 
+		/// <summary>Indicates the UPC-E barcode format.</summary>
 		[Field ("VNBarcodeSymbologyUPCE")]
 		Upce,
 
@@ -341,8 +358,11 @@ namespace Vision {
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNBarcodeObservationRequestRevision : ulong {
+		/// <summary>To be added.</summary>
 		Unspecified = 0,
+		/// <summary>To be added.</summary>
 		One = 1,
+		/// <summary>To be added.</summary>
 		Two = 2,
 	}
 
@@ -1129,6 +1149,9 @@ namespace Vision {
 		[Export ("supportedSymbologies", ArgumentSemantic.Copy)]
 		NSString [] WeakSupportedSymbologies { get; }
 
+		/// <summary>Gets the set of supported <see cref="T:Vision.VNBarcodeSymbology" /> formats.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("VNBarcodeSymbologyExtensions.GetValues (WeakSupportedSymbologies)")]
 		VNBarcodeSymbology [] SupportedSymbologies { get; }
@@ -1164,6 +1187,9 @@ namespace Vision {
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNDetectBarcodesRequestRevision> (WeakSupportedRevisions)")]
@@ -2223,6 +2249,9 @@ namespace Vision {
 		[Export ("symbology")]
 		NSString WeakSymbology { get; }
 
+		/// <summary>The barcode standard of the recognized barcode.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("VNBarcodeSymbologyExtensions.GetValue (WeakSymbology)")]
 		VNBarcodeSymbology Symbology { get; }
 

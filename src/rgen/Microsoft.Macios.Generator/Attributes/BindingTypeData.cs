@@ -103,6 +103,16 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 	public string? Name { get; }
 
 	/// <summary>
+	/// The domain of an error enumerator. This has to be used with the SmartEnum flag.
+	/// </summary>
+	public string? ErrorDomain { get; init; }
+
+	/// <summary>
+	/// The library name of an error/smart enum.
+	/// </summary>
+	public string? LibraryName { get; init; }
+
+	/// <summary>
 	/// The configuration flags used on the exported class/interface.
 	/// </summary>
 	public T? Flags { get; } = default;
@@ -152,6 +162,8 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 		var count = attributeData.ConstructorArguments.Length;
 		string? name = null;
 		T? flags = default;
+		string? errorDomain = null;
+		string? libraryName = null;
 		var defaultCtorVisibility = MethodAttributes.Public;
 		var intPtrCtorVisibility = MethodAttributes.PrivateScope;
 		var stringCtorVisibility = MethodAttributes.PrivateScope;
@@ -192,6 +204,12 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 			case "Flags":
 				flags = (T) value.Value!;
 				break;
+			case "ErrorDomain":
+				errorDomain = (string?) value.Value!;
+				break;
+			case "LibraryName":
+				libraryName = (string?) value.Value!;
+				break;
 			case "DefaultCtorVisibility":
 				defaultCtorVisibility = (MethodAttributes) Convert.ToSingle ((int) value.Value!);
 				break;
@@ -208,8 +226,16 @@ readonly struct BindingTypeData<T> : IEquatable<BindingTypeData<T>> where T : En
 		}
 
 		data = flags is not null
-			? new (name, flags)
+			? new (name, flags) {
+				ErrorDomain = errorDomain,
+				LibraryName = libraryName,
+				DefaultCtorVisibility = defaultCtorVisibility,
+				IntPtrCtorVisibility = intPtrCtorVisibility,
+				StringCtorVisibility = stringCtorVisibility,
+			}
 			: new (name) {
+				ErrorDomain = errorDomain,
+				LibraryName = libraryName,
 				DefaultCtorVisibility = defaultCtorVisibility,
 				IntPtrCtorVisibility = intPtrCtorVisibility,
 				StringCtorVisibility = stringCtorVisibility,

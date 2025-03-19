@@ -195,20 +195,12 @@ MACOS_DOTNET_SOURCES += \
 	$(MACOS_DOTNET_BUILD_DIR)/AssemblyInfo.cs \
 	$(SHARED_DESIGNER_CS) \
 
-MAC_CFNETWORK_SOURCES = \
-	CFNetwork/Content.cs \
-	CFNetwork/MessageHandler.cs \
-	CFNetwork/WebRequestStream.cs \
-	CFNetwork/WebResponseStream.cs \
-	CFNetwork/WorkerThread.cs
-
 MAC_HTTP_SOURCES = \
 	Foundation/NSUrlSessionHandler.cs \
 	System.Net.Http/CFContentStream.cs \
 	System.Net.Http/CFNetworkHandler.cs \
 
 MACOS_DOTNET_SOURCES += \
-	$(MAC_CFNETWORK_SOURCES) \
 	$(MAC_HTTP_SOURCES) \
 
 $(MACOS_DOTNET_BUILD_DIR)/Constants.cs: Constants.mac.cs.in Makefile $(TOP)/Make.config.inc | $(MACOS_DOTNET_BUILD_DIR)

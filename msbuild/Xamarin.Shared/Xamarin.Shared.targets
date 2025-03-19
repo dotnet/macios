@@ -1860,7 +1860,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			@(_CompiledApiDefinitionsCompile);"
 		Outputs="$(_CompiledApiDefinitionAssembly);$(_CompiledApiDefinitionDocumentationFile)"
 		DependsOnTargets="_ComputeCompileApiDefinitionsInputs"
-		Condition="'$(IsBindingProject)' == 'true'"
+		Condition="'$(IsBindingProject)' == 'true' And '$(DesignTimeBuild)' != 'true'"
 		>
 
 		<!-- This is a mirror of the method GetCompiledApiBindingsAssembly in BindingTouch.cs where the compilation is done inside bgen -->
@@ -1898,7 +1898,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		Inputs="$(MSBuildAllProjects);@(ObjcBindingApiDefinition);@(ObjcBindingCoreSource);@(ReferencePath);@(ObjcBindingNativeLibrary)"
 		Outputs="$(_GeneratedSourcesFileList)"
 		DependsOnTargets="$(_GenerateBindingsDependsOn)"
-		Condition="'$(IsBindingProject)' == 'true'">
+		Condition="'$(IsBindingProject)' == 'true' And '$(DesignTimeBuild)' != 'true'">
 
 		<Error Condition="'$(IsMacEnabled)' != 'true' And '$(BuildBindingProjectLocally)' != 'true'" Text="The property 'BuildBindingProjectLocally' build is disabled, but there's no connection to a remote Mac." />
 

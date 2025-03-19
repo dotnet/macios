@@ -547,7 +547,7 @@ endif
 
 rsp:: $($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp
 
-$($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp: Makefile | $($(2)_DOTNET_BUILD_DIR)
+$($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp: Makefile frameworks.sources | $($(2)_DOTNET_BUILD_DIR)
 	$$(Q) rm -f $$@
 	$$(Q) echo \
 		$(DOTNET_FLAGS) \

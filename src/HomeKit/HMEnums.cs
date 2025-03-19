@@ -119,6 +119,8 @@ namespace HomeKit {
 		AccessoryIsSuspended = 103,
 		// iOS 17.4
 		PartialCommunicationFailure = 104,
+		// iOS 18.4
+		HomeUpgradeRequired = 105,
 	}
 
 

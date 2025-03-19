@@ -62,6 +62,7 @@ $(XIOS_PCH): .stamp-check-sharpie
 	-exclude FactoryOTALogger \
 	-exclude FactoryOTANetworkUtils \
 	-exclude AssetsLibrary \
+	-exclude LockedCameraCapture \
 	-exclude Matter \
 	-exclude _CoreNFC_UIKit \
 	-i ThreadNetwork/THClient.h \
@@ -75,6 +76,7 @@ $(XTVOS_PCH): .stamp-check-sharpie
 	$(SHARPIE) sdk-db --xcode $(XCODE) -s appletvos$(TVOS_SDK_VERSION) -a $(XTVOS_ARCH) \
 		-modules false \
 		-exclude BrowserEngineCore \
+		-exclude LockedCameraCapture \
 		-exclude Matter \
 
 XMACOS_ARCH = x86_64
@@ -87,6 +89,7 @@ $(XMACOS_PCH): .stamp-check-sharpie
 		-exclude AccessorySetupKit \
 		-exclude BrowserEngineCore \
 		-exclude JavaNativeFoundation \
+		-exclude LockedCameraCapture \
 		-exclude Matter \
 		-exclude ParavirtualizedGraphics \
 		$(CORETELEPHONY_HEADERS) \
@@ -117,6 +120,7 @@ $(XMACCATALYST_PCH): .stamp-check-sharpie
 	-exclude IOBluetoothUI \
 	-exclude JavaNativeFoundation \
 	-exclude LDAP \
+	-exclude LockedCameraCapture \
 	-exclude Matter \
 	-exclude Python \
 	-exclude Quartz \

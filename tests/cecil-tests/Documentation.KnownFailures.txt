@@ -8043,6 +8043,7 @@ F:GameKit.GKError.ApiNotAvailable
 F:GameKit.GKError.ApiObsolete
 F:GameKit.GKError.AppUnlisted
 F:GameKit.GKError.ConnectionTimeout
+F:GameKit.GKError.DebugMode
 F:GameKit.GKError.FriendListDenied
 F:GameKit.GKError.FriendListDescriptionMissing
 F:GameKit.GKError.FriendListRestricted
@@ -8067,6 +8068,9 @@ F:GameKit.GKMatchmakingMode.NearbyOnly
 F:GameKit.GKMatchSendDataMode.Reliable
 F:GameKit.GKMatchSendDataMode.Unreliable
 F:GameKit.GKPeerConnectionState.ConnectedRelay
+F:GameKit.GKReleaseState.Prereleased
+F:GameKit.GKReleaseState.Released
+F:GameKit.GKReleaseState.Unknown
 F:GameplayKit.GKBox.Max
 F:GameplayKit.GKBox.Min
 F:GameplayKit.GKGameModel.MaxScore
@@ -9217,6 +9221,7 @@ F:HomeKit.HMError.FailedToJoinNetwork
 F:HomeKit.HMError.FireDateInPast
 F:HomeKit.HMError.GenericError
 F:HomeKit.HMError.HomeAccessNotAuthorized
+F:HomeKit.HMError.HomeUpgradeRequired
 F:HomeKit.HMError.HomeWithSimilarNameExists
 F:HomeKit.HMError.IncompatibleAccessory
 F:HomeKit.HMError.IncompatibleHomeHub
@@ -34134,6 +34139,8 @@ M:MessageUI.MFComposeResultEventArgs.#ctor(MessageUI.MFMailComposeViewController
 M:MessageUI.MFMailComposeViewController.add_Finished(System.EventHandler{MessageUI.MFComposeResultEventArgs})
 M:MessageUI.MFMailComposeViewController.AddAttachmentData(Foundation.NSData,System.String,System.String)
 M:MessageUI.MFMailComposeViewController.Dispose(System.Boolean)
+M:MessageUI.MFMailComposeViewController.InsertCollaborationItemProvider(Foundation.NSItemProvider,System.Action{System.Boolean})
+M:MessageUI.MFMailComposeViewController.InsertCollaborationItemProviderAsync(Foundation.NSItemProvider)
 M:MessageUI.MFMailComposeViewController.MFMailComposeViewControllerAppearance.#ctor(System.IntPtr)
 M:MessageUI.MFMailComposeViewController.remove_Finished(System.EventHandler{MessageUI.MFComposeResultEventArgs})
 M:MessageUI.MFMailComposeViewController.SetBccRecipients(System.String[])
@@ -73919,6 +73926,7 @@ T:GameKit.GKPlayerPhotoLoaded
 T:GameKit.GKPlayersEventArgs
 T:GameKit.GKPlayersHandler
 T:GameKit.GKQueryHandler
+T:GameKit.GKReleaseState
 T:GameKit.GKScoresLoadedHandler
 T:GameKit.GKSendDataMode
 T:GameKit.GKSessionMode

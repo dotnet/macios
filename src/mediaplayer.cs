@@ -2909,7 +2909,7 @@ namespace MediaPlayer {
 	interface IMPNowPlayingSessionDelegate { }
 
 	[TV (14, 0), iOS (16, 0)]
-	[NoMac, NoMacCatalyst]
+	[NoMac, MacCatalyst (18, 4)]
 #if NET
 	[Protocol, Model]
 #else
@@ -2926,7 +2926,7 @@ namespace MediaPlayer {
 	}
 
 	[TV (14, 0), iOS (16, 0)]
-	[NoMac, NoMacCatalyst]
+	[NoMac, MacCatalyst (18, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPNowPlayingSession {
@@ -2966,12 +2966,12 @@ namespace MediaPlayer {
 		[Export ("removePlayer:")]
 		void RemovePlayer (AVPlayer player);
 
-		[TV (16, 0), NoMacCatalyst, NoMac]
+		[TV (16, 0), MacCatalyst (18, 4), NoMac]
 		[Export ("automaticallyPublishesNowPlayingInfo")]
 		bool AutomaticallyPublishesNowPlayingInfo { get; set; }
 	}
 
-	[TV (16, 0), NoMacCatalyst, NoMac, iOS (16, 0)]
+	[TV (16, 0), MacCatalyst (18, 4), NoMac, iOS (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPAdTimeRange : NSCopying {

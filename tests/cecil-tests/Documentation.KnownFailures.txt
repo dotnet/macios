@@ -9921,6 +9921,7 @@ F:Security.SecStatusCode.AttributeNotInContext
 F:Security.SecStatusCode.BlockSizeMismatch
 F:Security.SecStatusCode.CallbackFailed
 F:Security.SecStatusCode.CertificateCannotOperate
+F:Security.SecStatusCode.CertificateDuplicateExtension
 F:Security.SecStatusCode.CertificateExpired
 F:Security.SecStatusCode.CertificateIsCA
 F:Security.SecStatusCode.CertificateNameNotAllowed
@@ -10118,6 +10119,7 @@ F:Security.SecStatusCode.MissingAttributeSymmetricKeyFormat
 F:Security.SecStatusCode.MissingAttributeVersion
 F:Security.SecStatusCode.MissingAttributeWrappedKeyFormat
 F:Security.SecStatusCode.MissingEntitlement
+F:Security.SecStatusCode.MissingQualifiedCertStatement
 F:Security.SecStatusCode.MissingRequiredExtension
 F:Security.SecStatusCode.MissingValue
 F:Security.SecStatusCode.MobileMeCSRVerifyFailure
@@ -55852,8 +55854,12 @@ P:Security.SecMatchLimit.MatchLimitAll
 P:Security.SecMatchLimit.MatchLimitOne
 P:Security.SecPolicyIdentifier.AppleCodeSigning
 P:Security.SecPolicyIdentifier.AppleEAP
+P:Security.SecPolicyIdentifier.AppleEapClient
+P:Security.SecPolicyIdentifier.AppleEapServer
 P:Security.SecPolicyIdentifier.AppleIDValidation
 P:Security.SecPolicyIdentifier.AppleIPsec
+P:Security.SecPolicyIdentifier.AppleIPSecClient
+P:Security.SecPolicyIdentifier.AppleIPSecServer
 P:Security.SecPolicyIdentifier.ApplePassbookSigning
 P:Security.SecPolicyIdentifier.ApplePayIssuerEncryption
 P:Security.SecPolicyIdentifier.ApplePKINITClient
@@ -55861,6 +55867,8 @@ P:Security.SecPolicyIdentifier.ApplePKINITServer
 P:Security.SecPolicyIdentifier.AppleRevocation
 P:Security.SecPolicyIdentifier.AppleSMIME
 P:Security.SecPolicyIdentifier.AppleSSL
+P:Security.SecPolicyIdentifier.AppleSslClient
+P:Security.SecPolicyIdentifier.AppleSslServer
 P:Security.SecPolicyIdentifier.AppleTimeStamping
 P:Security.SecPolicyIdentifier.AppleX509Basic
 P:Security.SecPolicyIdentifier.MacAppStoreReceipt
@@ -55899,6 +55907,8 @@ P:Security.SecTrustResultKey.CertificateTransparencyWhiteList
 P:Security.SecTrustResultKey.EvaluationDate
 P:Security.SecTrustResultKey.ExtendedValidation
 P:Security.SecTrustResultKey.OrganizationName
+P:Security.SecTrustResultKey.QCStatements
+P:Security.SecTrustResultKey.QwacValidation
 P:Security.SecTrustResultKey.ResultValue
 P:Security.SecTrustResultKey.RevocationChecked
 P:Security.SecTrustResultKey.RevocationValidUntilDate

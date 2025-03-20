@@ -435,6 +435,8 @@ namespace Security {
 		CertificateNameNotAllowed = -67900,
 		CertificateValidityPeriodTooLong = -67901,
 		CertificateIsCA = -67902,
+		CertificateDuplicateExtension = -67903,
+		MissingQualifiedCertStatement = -67904,
 	}
 
 	// typedef uint32_t SecPadding;

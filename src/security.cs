@@ -71,6 +71,30 @@ namespace Security {
 		[MacCatalyst (13, 1)]
 		[Field ("kSecPolicyApplePayIssuerEncryption")]
 		NSString ApplePayIssuerEncryption { get; }
+
+		[iOS (18, 4), TV (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Field ("kSecPolicyAppleSSLServer")]
+		NSString AppleSslServer { get; }
+
+		[iOS (18, 4), TV (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Field ("kSecPolicyAppleSSLClient")]
+		NSString AppleSslClient { get; }
+
+		[iOS (18, 4), TV (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Field ("kSecPolicyAppleEAPServer")]
+		NSString AppleEapServer { get; }
+
+		[iOS (18, 4), TV (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Field ("kSecPolicyAppleEAPClient")]
+		NSString AppleEapClient { get; }
+
+		[iOS (18, 4), TV (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Field ("kSecPolicyAppleIPSecServer")]
+		NSString AppleIPSecServer { get; }
+
+		[iOS (18, 4), TV (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Field ("kSecPolicyAppleIPSecClient")]
+		NSString AppleIPSecClient { get; }
 	}
 
 	[Static]
@@ -147,6 +171,16 @@ namespace Security {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Field ("kSecTrustCertificateTransparencyWhiteList")]
 		NSString CertificateTransparencyWhiteList { get; }
+
+		// QC = Qualified Certificate
+		[iOS (18, 4), TV (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Field ("kSecTrustQCStatements")]
+		NSString QCStatements { get; }
+
+		// QWAC = Qualified Website Authentication Certificate.
+		[iOS (18, 4), TV (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Field ("kSecTrustQWACValidation")]
+		NSString QwacValidation { get; }
 	}
 
 	[Static]

@@ -2899,9 +2899,11 @@ public partial class Generator : IMemberGatherer {
 		}
 	}
 
-	void GenerateInvoke (bool stret, bool supercall, MethodInfo mi, MemberInformation minfo, string selector, string args, bool assign_to_temp, Type category_type, bool aligned)
+	void GenerateInvoke (bool stret, bool supercall, MethodInfo mi, MemberInformation minfo, string selector, string args, Type category_type, bool aligned)
 	{
-		string target_name = (category_type is null && !minfo.is_extension_method && !minfo.is_protocol_implementation_method) ? "this" : "This";
+		var isInsanceMethod = category_type is null && !minfo.is_extension_method &&
+		                          !minfo.is_protocol_implementation_method; 
+		string target_name = isInsanceMethod ? "this" : "This";
 		string handle = supercall ? ".SuperHandle" : ".Handle";
 
 		// If we have supercall == false, we can be a Bind method that has a [Target]
@@ -2988,7 +2990,7 @@ public partial class Generator : IMemberGatherer {
 				print (postproc.ToString ());
 		}
 
-		if (target_name == "This") {
+		if (!isInsanceMethod) {
 			// if this is a extension of any kind, ensure that we keep alive the this parameter
 			// so that it is not collected before the msg send call has completed.
 			print ("GC.KeepAlive (This);");
@@ -3005,15 +3007,15 @@ public partial class Generator : IMemberGatherer {
 			if (x64_stret) {
 				print ("if (global::ObjCRuntime.Runtime.IsARM64CallingConvention) {");
 				indent++;
-				GenerateInvoke (false, supercall, mi, minfo, selector, args, assign_to_temp, category_type, false);
+				GenerateInvoke (false, supercall, mi, minfo, selector, args, category_type, false);
 				indent--;
 				print ("} else {");
 				indent++;
-				GenerateInvoke (x64_stret, supercall, mi, minfo, selector, args, assign_to_temp, category_type, aligned && x64_stret);
+				GenerateInvoke (x64_stret, supercall, mi, minfo, selector, args, category_type, aligned && x64_stret);
 				indent--;
 				print ("}");
 			} else {
-				GenerateInvoke (false, supercall, mi, minfo, selector, args, assign_to_temp, category_type, false);
+				GenerateInvoke (false, supercall, mi, minfo, selector, args, category_type, false);
 			}
 			return;
 		}
@@ -3028,37 +3030,37 @@ public partial class Generator : IMemberGatherer {
 				// First check for arm64
 				print ("if (global::ObjCRuntime.Runtime.IsARM64CallingConvention) {");
 				indent++;
-				GenerateInvoke (false, supercall, mi, minfo, selector, args, assign_to_temp, category_type, false);
+				GenerateInvoke (false, supercall, mi, minfo, selector, args, category_type, false);
 				indent--;
 				// If we're not arm64, but we're 64-bit, then we're x86_64
 				print ("} else if (IntPtr.Size == 8) {");
 				indent++;
-				GenerateInvoke (x64_stret, supercall, mi, minfo, selector, args, assign_to_temp, category_type, aligned && x64_stret);
+				GenerateInvoke (x64_stret, supercall, mi, minfo, selector, args, category_type, aligned && x64_stret);
 				indent--;
 				// if we're not 64-bit, but we're on device, then we're 32-bit arm
 				print ("} else if (Runtime.Arch == Arch.DEVICE) {");
 				indent++;
-				GenerateInvoke (arm_stret, supercall, mi, minfo, selector, args, assign_to_temp, category_type, aligned && arm_stret);
+				GenerateInvoke (arm_stret, supercall, mi, minfo, selector, args, category_type, aligned && arm_stret);
 				indent--;
 				// if we're none of the above, we're x86
 				print ("} else {");
 				indent++;
-				GenerateInvoke (x86_stret, supercall, mi, minfo, selector, args, assign_to_temp, category_type, aligned && x86_stret);
+				GenerateInvoke (x86_stret, supercall, mi, minfo, selector, args, category_type, aligned && x86_stret);
 				indent--;
 				print ("}");
 			} else {
 				print ("if (IntPtr.Size == 8) {");
 				indent++;
-				GenerateInvoke (x64_stret, supercall, mi, minfo, selector, args, assign_to_temp, category_type, aligned && x64_stret);
+				GenerateInvoke (x64_stret, supercall, mi, minfo, selector, args, category_type, aligned && x64_stret);
 				indent--;
 				print ("} else {");
 				indent++;
-				GenerateInvoke (x86_stret, supercall, mi, minfo, selector, args, assign_to_temp, category_type, aligned && x86_stret);
+				GenerateInvoke (x86_stret, supercall, mi, minfo, selector, args, category_type, aligned && x86_stret);
 				indent--;
 				print ("}");
 			}
 		} else {
-			GenerateInvoke (false, supercall, mi, minfo, selector, args, assign_to_temp, category_type, false);
+			GenerateInvoke (false, supercall, mi, minfo, selector, args, category_type, false);
 		}
 	}
 
@@ -3569,7 +3571,6 @@ public partial class Generator : IMemberGatherer {
 				print ("{0} ret;", TypeManager.FormatType (minfo.type, mi.ReturnType));
 			}
 		} else if (minfo.is_ctor && minfo.is_protocol_member) {
-			print ("// {0} is protocol {1} ", mi.Name, minfo.is_protocol_member);
 			// special case because constructors in protocol members will be converted to factory methods
 			print ($"T? ret;");
 		}

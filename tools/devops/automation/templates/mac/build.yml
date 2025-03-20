@@ -12,6 +12,9 @@ parameters:
 - name: keyringPass
   type: string
 
+- name: xqaCertPass
+  type: string
+
 - name: isPR
   type: boolean
 
@@ -175,18 +178,29 @@ steps:
   inputs:
     version: 8.x
 
-- bash: |
-    # disable the xamarin-macios keychain
-    set -x
-    # list current search list
-    security list-keychains
-    # the awk command removes duplicates, without sorting first (which would change the order)
-    security list-keychains -s $(security list-keychains | grep -v xamarin-macios.keychain | sed -e s/\"//g | awk '!x[$0]++')
-    # list current search list
-    security list-keychains
-  displayName: 'Disable xamarin-macios keychain'
-  timeoutInMinutes: 1
-  continueOnError: true
+#- bash: |
+#    # disable the xamarin-macios keychain
+#    set -x
+#    # list current search list
+#    security list-keychains
+#    # the awk command removes duplicates, without sorting first (which would change the order)
+#    security list-keychains -s $(security list-keychains | grep -v xamarin-macios.keychain | sed -e s/\"//g | awk '!x[$0]++')
+#    # list current search list
+#    security list-keychains
+#  displayName: 'Disable xamarin-macios keychain'
+#  timeoutInMinutes: 1
+#  continueOnError: true
+
+- template: ../common/install-qa-provisioning-profiles.yml
+  parameters:
+    env:
+      AUTH_TOKEN_GITHUB_COM: $(GitHub.Token)
+      AUTH_TOKEN_LA_DEV_APPLE_P12: ${{ parameters.xqaCertPass }}
+      AUTH_TOKEN_LA_DISTR_APPLE_P12: ${{ parameters.xqaCertPass }}
+      AUTH_TOKEN_LA_MAC_INSTALLER_DISTR_P12: ${{ parameters.xqaCertPass }}
+      AUTH_TOKEN_VSENG_XAMARIN_MAC_DEVICES_P12: ${{ parameters.xqaCertPass }}
+      AUTH_TOKEN_VSENG_XAMARIN_MAC_DEVICES_2_P12: ${{ parameters.xqaCertPass }}
+
 
 - pwsh: >-
     $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/run_mac_tests.ps1

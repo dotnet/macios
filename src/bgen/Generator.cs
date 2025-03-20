@@ -3570,7 +3570,7 @@ public partial class Generator : IMemberGatherer {
 			}
 		} else if (minfo.is_ctor && minfo.is_protocol_member) {
 			print ("// {0} is protocol {1} ", mi.Name, minfo.is_protocol_member);
-			// special case be cause constructors in protocol memners will be converted to factory methods
+			// special case because constructors in protocol members will be converted to factory methods
 			print ($"T? ret;");
 		}
 
@@ -3688,7 +3688,7 @@ public partial class Generator : IMemberGatherer {
 			// special case since ctrs in protocol members become create methods
 			print ("return ret;");
 		} else if (mi.ReturnType != TypeCache.System_Void && mi.Name != "Constructor") {
-			// general case if we do return and we are not a construc ctor.
+			// general case if we do return and we are not a constructor.
 			print ("return ret;");
 		}
 		if (minfo.is_ctor)

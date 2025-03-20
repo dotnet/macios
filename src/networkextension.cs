@@ -3088,11 +3088,11 @@ namespace NetworkExtension {
 
 		[Export ("matchFQDNs", ArgumentSemantic.Copy), NullAllowed]
 		[TV (18, 4), Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4)]
-		string[] MatchFqdns { get; set; }
+		string [] MatchFqdns { get; set; }
 
 		[Export ("excludedFQDNs", ArgumentSemantic.Copy), NullAllowed]
 		[TV (18, 4), Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4)]
-		string[] ExcludedFqdns { get; set; }
+		string [] ExcludedFqdns { get; set; }
 
 		[Export ("UIToggleEnabled")]
 		[TV (18, 4), Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4)]

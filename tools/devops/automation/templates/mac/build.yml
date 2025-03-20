@@ -177,7 +177,12 @@ steps:
 
 - bash: |
     # disable the xamarin-macios keychain
+    set -x
+    # list current search list
+    security list-keychains
     security list-keychains -s $(security list-keychains | grep -v xamarin-macios.keychain | tr $'\n' ' ' | sed -e s/\"//g)
+    # list current search list
+    security list-keychains
   displayName: 'Disable xamarin-macios keychain'
   timeoutInMinutes: 1
   continueOnError: true

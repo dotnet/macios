@@ -10606,6 +10606,7 @@ F:ShazamKit.SHMediaItemProperty.AppleMusicId
 F:ShazamKit.SHMediaItemProperty.AppleMusicUrl
 F:ShazamKit.SHMediaItemProperty.Artist
 F:ShazamKit.SHMediaItemProperty.ArtworkUrl
+F:ShazamKit.SHMediaItemProperty.Confidence
 F:ShazamKit.SHMediaItemProperty.CreationDate
 F:ShazamKit.SHMediaItemProperty.ExplicitContent
 F:ShazamKit.SHMediaItemProperty.FrequencySkew

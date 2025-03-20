@@ -125,7 +125,8 @@ namespace ScreenTime {
 		// STWebHistoryProfileIdentifier is a strongly typed enum, but Apple doesn't define any values for it, so bind as NSString
 		[iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
 		[Export ("profileIdentifier", ArgumentSemantic.Copy), NullAllowed]
-		/* STWebHistoryProfileIdentifier */ NSString ProfileIdentifier { get; set; }
+		/* STWebHistoryProfileIdentifier */
+		NSString ProfileIdentifier { get; set; }
 	}
 
 }

@@ -2958,7 +2958,7 @@ public partial class Generator : IMemberGatherer {
 			print ($"IntPtr {handleName};");
 			print ($"{handleName} = global::{NamespaceCache.Messaging}.IntPtr_objc_msgSend (Class.GetHandle (typeof (T)), Selector.GetHandle (\"alloc\"));");
 			print ($"{handleName} = {sig} ({handleName}, {selector_field}{args});");
-			print ($"{(assign_to_temp ? "ret = " : "return ")} global::ObjCRuntime.Runtime.GetINativeObject<T> ({handleName}, true);");
+			print ($"ret = global::ObjCRuntime.Runtime.GetINativeObject<T> ({handleName}, true);");
 		} else {
 			bool returns = mi.ReturnType != TypeCache.System_Void && mi.Name != "Constructor";
 			string cast_a = "", cast_b = "";
@@ -2973,19 +2973,25 @@ public partial class Generator : IMemberGatherer {
 
 			if (minfo.is_static)
 				print ("{0}{1}{2} (class_ptr, {5}{6}){7};",
-					   returns ? (assign_to_temp ? "ret = " : "return ") : "",
+					   returns ? "ret = " : "",
 					   cast_a, sig, target_name,
 					   "/*unusued3*/", //supercall ? "Super" : "",
 					   selector_field, args, cast_b);
 			else
 				print ("{0}{1}{2} ({3}{4}, {5}{6}){7};",
-					   returns ? (assign_to_temp ? "ret = " : "return ") : "",
+					   returns ? "ret = " : "",
 					   cast_a, sig, target_name,
 					   handle,
 					   selector_field, args, cast_b);
 
 			if (postproc.Length > 0)
 				print (postproc.ToString ());
+		}
+
+		if (target_name == "This") {
+			// if this is a extension of any kind, ensure that we keep alive the this parameter
+			// so that it is not collected before the msg send call has completed.
+			print ("GC.KeepAlive (This);");
 		}
 	}
 
@@ -3554,6 +3560,18 @@ public partial class Generator : IMemberGatherer {
 				var nullableReturn = isClassType ? "?" : string.Empty;
 				print ("{0}{1} ret;", TypeManager.FormatType (minfo.type, mi.ReturnType), nullableReturn);
 			}
+		} else if (mi.ReturnType != TypeCache.System_Void && mi.Name != "Constructor") {
+			if (minfo.is_bindAs) {
+				var bindAsAttrib = GetBindAsAttribute (minfo.mi);
+				// tricky, e.g. when an nullable `NSNumber[]` is bound as a `float[]`, since FormatType and bindAsAttrib have not clue about the original nullability 
+				print ("{0} ret;", TypeManager.FormatType (bindAsAttrib.Type.DeclaringType, bindAsAttrib.Type));
+			} else {
+				print ("{0} ret;", TypeManager.FormatType (minfo.type, mi.ReturnType));
+			}
+		} else if (minfo.is_ctor && minfo.is_protocol_member) {
+			print ("// {0} is protocol {1} ", mi.Name, minfo.is_protocol_member);
+			// special case be cause constructors in protocol memners will be converted to factory methods
+			print ($"T? ret;");
 		}
 
 		bool needs_temp = use_temp_return || disposes.Length > 0;
@@ -3666,6 +3684,12 @@ public partial class Generator : IMemberGatherer {
 				// we can't be 100% confident that the ObjC API annotations are correct so we always null check inside generated code
 				print ("return ret!;");
 			}
+		} else if (minfo.is_ctor && minfo.is_protocol_member) {
+			// special case since ctrs in protocol members become create methods
+			print ("return ret;");
+		} else if (mi.ReturnType != TypeCache.System_Void && mi.Name != "Constructor") {
+			// general case if we do return and we are not a construc ctor.
+			print ("return ret;");
 		}
 		if (minfo.is_ctor)
 			WriteMarkDirtyIfDerived (sw, mi.DeclaringType);

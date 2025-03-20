@@ -178,18 +178,18 @@ steps:
   inputs:
     version: 8.x
 
-#- bash: |
-#    # disable the xamarin-macios keychain
-#    set -x
-#    # list current search list
-#    security list-keychains
-#    # the awk command removes duplicates, without sorting first (which would change the order)
-#    security list-keychains -s $(security list-keychains | grep -v xamarin-macios.keychain | sed -e s/\"//g | awk '!x[$0]++')
-#    # list current search list
-#    security list-keychains
-#  displayName: 'Disable xamarin-macios keychain'
-#  timeoutInMinutes: 1
-#  continueOnError: true
+# - bash: |
+#     # disable the xamarin-macios keychain
+#     set -x
+#     # list current search list
+#     security list-keychains
+#     # the awk command removes duplicates, without sorting first (which would change the order)
+#     security list-keychains -s $(security list-keychains | grep -v xamarin-macios.keychain | sed -e s/\"//g | awk '!x[$0]++')
+#     # list current search list
+#     security list-keychains
+#   displayName: 'Disable xamarin-macios keychain'
+#   timeoutInMinutes: 1
+#   continueOnError: true
 
 - template: ../common/install-qa-provisioning-profiles.yml
   parameters:

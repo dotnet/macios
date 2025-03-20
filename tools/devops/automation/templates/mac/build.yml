@@ -175,6 +175,13 @@ steps:
   inputs:
     version: 8.x
 
+- bash: |
+    # disable the xamarin-macios keychain
+    security list-keychains -s $(security list-keychains | grep -v xamarin-macios.keychain | tr $'\n' ' ' | sed -e s/\"//g)
+  displayName: 'Disable xamarin-macios keychain'
+  timeoutInMinutes: 1
+  continueOnError: true
+
 - pwsh: >-
     $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/run_mac_tests.ps1
     -GithubToken $(GitHub.Token)

@@ -290,6 +290,8 @@ public class Frameworks : Dictionary<string, Framework> {
 					// FSKit was removed from Xcode 16 RC, but keeping it commented, because it's likely to return in a later release
 					// { "FSKit", "FSKit", 15, 0 },
 					{ "MediaExtension", "MediaExtension", 15, 0 },
+
+					{ "SecurityUI", "SecurityUI", 15, 4 },
 				};
 			}
 			return mac_frameworks;
@@ -471,6 +473,8 @@ public class Frameworks : Dictionary<string, Framework> {
 
 				{ "AccessorySetupKit", "AccessorySetupKit", 18, 0 },
 
+				{ "SecurityUI", "SecurityUI", 18, 4 },
+
 				// the above MUST be kept in sync with simlauncher
 				// see tools/mtouch/Makefile
 				// please also keep it sorted to ease comparison
@@ -584,6 +588,7 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "PdfKit", "PDFKit", 18, 2 },
 
 					{ "BackgroundAssets", "BackgroundAssets", 18, 4 },
+					{ "SecurityUI", "SecurityUI", 18, 4 },
 				};
 			}
 			return tvos_frameworks;

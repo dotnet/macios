@@ -38496,7 +38496,6 @@ M:PassKit.PKIdentityIntentToStore.Copy(Foundation.NSZone)
 M:PassKit.PKIdentityIntentToStore.MayStoreIntentForDays(System.IntPtr)
 M:PassKit.PKIdentityNationalIdCardDescriptor.AddElements(PassKit.PKIdentityElement[],PassKit.PKIdentityIntentToStore)
 M:PassKit.PKIdentityNationalIdCardDescriptor.GetIntentToStore(PassKit.PKIdentityElement)
-M:PassKit.PKIdentityRequest.Dispose(System.Boolean)
 M:PassKit.PKInstantFundsOutFeeSummaryItem.Copy(Foundation.NSZone)
 M:PassKit.PKInstantFundsOutFeeSummaryItem.EncodeTo(Foundation.NSCoder)
 M:PassKit.PKIssuerProvisioningExtensionHandler.GenerateAddPaymentPassRequest(System.String,PassKit.PKAddPaymentPassRequestConfiguration,Foundation.NSData[],Foundation.NSData,Foundation.NSData,System.Action{PassKit.PKAddPaymentPassRequest})
@@ -63802,8 +63801,10 @@ P:PassKit.PKPaymentNetwork.Eftpos
 P:PassKit.PKPaymentNetwork.Electron
 P:PassKit.PKPaymentNetwork.Elo
 P:PassKit.PKPaymentNetwork.Girocard
+P:PassKit.PKPaymentNetwork.Himyan
 P:PassKit.PKPaymentNetwork.IDCredit
 P:PassKit.PKPaymentNetwork.Interac
+P:PassKit.PKPaymentNetwork.Jaywan
 P:PassKit.PKPaymentNetwork.Jcb
 P:PassKit.PKPaymentNetwork.Mada
 P:PassKit.PKPaymentNetwork.Maestro

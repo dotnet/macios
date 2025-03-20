@@ -721,6 +721,8 @@ public class AsyncAttribute : Attribute {
 	public string MethodName { get; set; }
 	public string ResultTypeName { get; set; }
 	public string PostNonResultSnippet { get; set; }
+	public string XmlDocs { get; set; }
+	public string XmlDocsWithOutParameter { get; set; }
 }
 
 //

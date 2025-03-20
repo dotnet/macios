@@ -35,6 +35,26 @@ namespace XmlDocumentation {
 		[Field ("TEventArgs", "__Internal")]
 		[Notification (typeof (TEventArgs))]
 		NSString TEventArgs { get; }
+
+		/// <summary>Summary for T1.DoSomething</summary>
+		[Async (XmlDocs = """
+						<summary>Summary for async version of T1.DoSomething</summary>
+						""",
+				XmlDocsWithOutParameter = """
+						<summary>Summary for async version of T1.DoSomething - with out parameter (shouldn't show up in xml docs)</summary>
+						""")]
+		[Export ("doSomething:")]
+		void DoSomething (Action completionHandler);
+
+		/// <summary>Summary for T1.DoSomethingElse</summary>
+		[Async (XmlDocs = """
+						<summary>Summary for async version of T1.DoSomethingElse</summary>
+						""",
+				XmlDocsWithOutParameter = """
+						<summary>Summary for async version of T1.DoSomethingElse - with out parameter (should show up in xml docs)</summary>
+						""")]
+		[Export ("doSomething:")]
+		bool DoSomethingElse (Action completionHandler);
 	}
 
 	/// <summary>TEventArgs</summary>

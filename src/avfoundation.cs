@@ -31,15 +31,9 @@
 
 using System.ComponentModel;
 
-#if NET
 using Vector3 = global::System.Numerics.Vector3;
 using NMatrix3 = global::CoreGraphics.NMatrix3;
 using NMatrix4x3 = global::CoreGraphics.NMatrix4x3;
-#else
-using Vector3 = global::OpenTK.Vector3;
-using NMatrix3 = global::OpenTK.NMatrix3;
-using NMatrix4x3 = global::OpenTK.NMatrix4x3;
-#endif
 
 using AudioUnit;
 using AVKit;
@@ -72,10 +66,6 @@ using AppKit;
 using UIImage = AppKit.NSImage;
 #else
 using UIKit;
-#endif
-
-#if !NET
-using NativeHandle = System.IntPtr;
 #endif
 
 namespace AVFoundation {
@@ -162,17 +152,6 @@ namespace AVFoundation {
 		[Field ("AVMediaTypeTimecode")]
 		Timecode = 5,
 
-#if !NET
-		[NoTV]
-		[Obsoleted (PlatformName.iOS, 6, 0)]
-		[Deprecated (PlatformName.iOS, 12, 0, message: "Always 'null'.")]
-		[Obsoleted (PlatformName.MacOSX, 10, 8)]
-		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Always 'null'.")]
-		[NoMacCatalyst]
-		[Field ("AVMediaTypeTimedMetadata")] // last header where I can find this: iOS 5.1 SDK, 10.7 only on Mac
-		TimedMetadata = 6,
-#endif
-
 		/// <summary>Indicates muxed content.</summary>
 		[Field ("AVMediaTypeMuxed")]
 		Muxed = 7,
@@ -200,49 +179,6 @@ namespace AVFoundation {
 		[Field ("AVMediaTypeHaptic")]
 		Haptic = 12,
 	}
-
-#if !NET
-	[Obsolete ("Use AVMediaTypes enum values.")]
-	[BaseType (typeof (NSObject))]
-	[Static]
-	interface AVMediaType {
-		[Field ("AVMediaTypeVideo")]
-		NSString Video { get; }
-
-		[Field ("AVMediaTypeAudio")]
-		NSString Audio { get; }
-
-		[Field ("AVMediaTypeText")]
-		NSString Text { get; }
-
-		[Field ("AVMediaTypeClosedCaption")]
-		NSString ClosedCaption { get; }
-
-		[Field ("AVMediaTypeSubtitle")]
-		NSString Subtitle { get; }
-
-		[Field ("AVMediaTypeTimecode")]
-		NSString Timecode { get; }
-
-		[NoTV]
-		[Field ("AVMediaTypeTimedMetadata")] // last header where I can find this: iOS 5.1 SDK, 10.7 only on Mac
-		[Deprecated (PlatformName.iOS, 12, 0, message: "Always 'null'.")]
-		[Obsoleted (PlatformName.iOS, 6, 0, message: "Always 'null'.")]
-		[Obsoleted (PlatformName.MacOSX, 10, 8, message: "Always 'null'.")]
-		[NoMacCatalyst]
-		NSString TimedMetadata { get; }
-
-		[Field ("AVMediaTypeMuxed")]
-		NSString Muxed { get; }
-
-		[NoMac]
-		[Field ("AVMediaTypeMetadataObject")]
-		NSString MetadataObject { get; }
-
-		[Field ("AVMediaTypeMetadata")]
-		NSString Metadata { get; }
-	}
-#endif // !NET
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVMetadataGroup))]
@@ -430,68 +366,6 @@ namespace AVFoundation {
 
 	}
 
-#if !NET
-	[Obsolete ("Use AVMediaCharacteristics enum values.")]
-	[BaseType (typeof (NSObject))]
-	[Static]
-	interface AVMediaCharacteristic {
-		[Field ("AVMediaCharacteristicVisual")]
-		NSString Visual { get; }
-
-		[Field ("AVMediaCharacteristicAudible")]
-		NSString Audible { get; }
-
-		[Field ("AVMediaCharacteristicLegible")]
-		NSString Legible { get; }
-
-		[Field ("AVMediaCharacteristicFrameBased")]
-		NSString FrameBased { get; }
-
-		[Field ("AVMediaCharacteristicUsesWideGamutColorSpace")]
-		NSString UsesWideGamutColorSpace { get; }
-
-		[Field ("AVMediaCharacteristicIsMainProgramContent")]
-		NSString IsMainProgramContent { get; }
-
-		[Field ("AVMediaCharacteristicIsAuxiliaryContent")]
-		NSString IsAuxiliaryContent { get; }
-
-		[Field ("AVMediaCharacteristicContainsOnlyForcedSubtitles")]
-		NSString ContainsOnlyForcedSubtitles { get; }
-
-		[Field ("AVMediaCharacteristicTranscribesSpokenDialogForAccessibility")]
-		NSString TranscribesSpokenDialogForAccessibility { get; }
-
-		[Field ("AVMediaCharacteristicDescribesMusicAndSoundForAccessibility")]
-		NSString DescribesMusicAndSoundForAccessibility { get; }
-
-		[Field ("AVMediaCharacteristicDescribesVideoForAccessibility")]
-		NSString DescribesVideoForAccessibility { get; }
-
-		[Field ("AVMediaCharacteristicEasyToRead")]
-		NSString EasyToRead { get; }
-
-		[Field ("AVMediaCharacteristicLanguageTranslation")]
-		NSString LanguageTranslation { get; }
-
-		[Field ("AVMediaCharacteristicDubbedTranslation")]
-		NSString DubbedTranslation { get; }
-
-		[Field ("AVMediaCharacteristicVoiceOverTranslation")]
-		NSString VoiceOverTranslation { get; }
-
-		[TV (13, 0), iOS (13, 0)]
-		[Field ("AVMediaCharacteristicIsOriginalContent")]
-		NSString IsOriginalContent { get; }
-
-		[TV (13, 0), iOS (13, 0)]
-		[Field ("AVMediaCharacteristicContainsAlphaChannel")]
-		NSString ContainsAlphaChannel { get; }
-
-		// Do not add more fields here, add them to the AVMediaCharacteristics enum instead.
-	}
-#endif
-
 	[MacCatalyst (13, 1)]
 	enum AVMetadataFormat {
 		[MacCatalyst (13, 1)]
@@ -626,57 +500,6 @@ namespace AVFoundation {
 		[Field ("AVFileTypeAHAP")]
 		Ahap = 23,
 	}
-
-#if !NET
-	[BaseType (typeof (NSObject))]
-	[Static]
-	[Obsolete ("Use AVFileTypes enum values.")]
-	interface AVFileType {
-		[Field ("AVFileTypeQuickTimeMovie")]
-		NSString QuickTimeMovie { get; }
-
-		[Field ("AVFileTypeMPEG4")]
-		NSString Mpeg4 { get; }
-
-		[Field ("AVFileTypeAppleM4V")]
-		NSString AppleM4V { get; }
-		[Field ("AVFileType3GPP")]
-		NSString ThreeGpp { get; }
-
-		[Field ("AVFileTypeAppleM4A")]
-		NSString AppleM4A { get; }
-
-		[Field ("AVFileTypeCoreAudioFormat")]
-		NSString CoreAudioFormat { get; }
-
-		[Field ("AVFileTypeWAVE")]
-		NSString Wave { get; }
-
-		[Field ("AVFileTypeAIFF")]
-		NSString Aiff { get; }
-
-		[Field ("AVFileTypeAIFC")]
-		NSString Aifc { get; }
-
-		[Field ("AVFileTypeAMR")]
-		NSString Amr { get; }
-
-		[Field ("AVFileType3GPP2")]
-		NSString ThreeGpp2 { get; }
-
-		[Field ("AVFileTypeMPEGLayer3")]
-		NSString MpegLayer3 { get; }
-
-		[Field ("AVFileTypeSunAU")]
-		NSString SunAU { get; }
-
-		[Field ("AVFileTypeAC3")]
-		NSString AC3 { get; }
-
-		[Field ("AVFileTypeEnhancedAC3")]
-		NSString EnhancedAC3 { get; }
-	}
-#endif
 
 	[MacCatalyst (13, 1)]
 	[Static]
@@ -919,11 +742,7 @@ namespace AVFoundation {
 
 		[DesignatedInitializer]
 		[Export ("initWithLayout:"), Internal]
-#if NET
 		NativeHandle Constructor (IntPtr layout);
-#else
-		NativeHandle Constructor (nint /* This is really an IntPtr, but it conflicts with the default (Handle) ctor. */ layout);
-#endif
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -1194,11 +1013,7 @@ namespace AVFoundation {
 		AVAudioEnvironmentReverbParameters ReverbParameters { get; }
 
 		[Export ("applicableRenderingAlgorithms")]
-#if NET
 		NSNumber [] ApplicableRenderingAlgorithms { get; }
-#else
-		NSObject [] ApplicableRenderingAlgorithms ();
-#endif
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -1464,7 +1279,6 @@ namespace AVFoundation {
 		[Export ("position")]
 		Vector3 Position { get; set; }
 
-#if NET
 		[Abstract]
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -1476,24 +1290,6 @@ namespace AVFoundation {
 		[MacCatalyst (13, 1)]
 		[Export ("pointSourceInHeadMode", ArgumentSemantic.Assign)]
 		AVAudio3DMixingPointSourceInHeadMode PointSourceInHeadMode { get; set; }
-
-#else
-		[TV (13, 0), iOS (13, 0)]
-		[Export ("sourceMode", ArgumentSemantic.Assign)]
-		AVAudio3DMixingSourceMode GetSourceMode ();
-
-		[TV (13, 0), iOS (13, 0)]
-		[Export ("setSourceMode:")]
-		void SetSourceMode (AVAudio3DMixingSourceMode sourceMode);
-
-		[TV (13, 0), iOS (13, 0)]
-		[Export ("pointSourceInHeadMode", ArgumentSemantic.Assign)]
-		AVAudio3DMixingPointSourceInHeadMode GetPointSourceInHeadMode ();
-
-		[TV (13, 0), iOS (13, 0)]
-		[Export ("setPointSourceInHeadMode:")]
-		void SetPointSourceInHeadMode (AVAudio3DMixingPointSourceInHeadMode pointSourceInHeadMode);
-#endif
 	}
 
 	[MacCatalyst (13, 1)]
@@ -1502,10 +1298,7 @@ namespace AVFoundation {
 		, AVAudio3DMixing {
 
 		[MacCatalyst (13, 1)]
-#if NET
-		// Apple added a new required member in iOS 9, but that breaks our binary compat, so we can't do that in our existing code.
 		[Abstract]
-#endif
 		[Export ("destinationForMixer:bus:")]
 		[return: NullAllowed]
 		AVAudioMixingDestination DestinationForMixer (AVAudioNode mixer, nuint bus);
@@ -1980,11 +1773,7 @@ namespace AVFoundation {
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Export ("audioPlayerEndInterruption:withOptions:")]
-#if NET
 		void EndInterruption (AVAudioPlayer player, AVAudioSessionInterruptionOptions flags);
-#else
-		void EndInterruption (AVAudioPlayer player, AVAudioSessionInterruptionFlags flags);
-#endif
 	}
 
 	[MacCatalyst (13, 1)]
@@ -2320,13 +2109,6 @@ namespace AVFoundation {
 		[MacCatalyst (13, 1)]
 		[Wrap ("SetActive (beActive, out var outError) ? null : outError")]
 		NSError SetActive (bool beActive);
-
-#if !NET
-		[NoTV, NoMac]
-		[Export ("setActive:withFlags:error:")]
-		[Deprecated (PlatformName.iOS, 6, 0, message: "Use 'SetActive (bool, AVAudioSessionSetActiveOptions, out NSError)' instead.")]
-		bool SetActive (bool beActive, AVAudioSessionFlags flags, out NSError outError);
-#endif // !NET
 
 		[NoMac]
 		[MacCatalyst (13, 1)]
@@ -3528,11 +3310,7 @@ namespace AVFoundation {
 		void InputIsAvailableChanged (bool isInputAvailable);
 
 		[Export ("endInterruptionWithFlags:")]
-#if NET
 		void EndInterruption (AVAudioSessionInterruptionOptions flags);
-#else
-		void EndInterruption (AVAudioSessionInterruptionFlags flags);
-#endif
 	}
 
 	[NoMac]
@@ -3591,11 +3369,7 @@ namespace AVFoundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("dataSources"), NullAllowed]
-#if NET
 		AVAudioSessionDataSourceDescription [] DataSources { get; }
-#else
-		AVAudioSessionDataSourceDescription [] DataSourceDescriptions { get; }
-#endif
 
 		/// <summary>Gets the currently selected data source for the port.</summary>
 		///         <value>
@@ -4177,16 +3951,6 @@ namespace AVFoundation {
 		[Deprecated (PlatformName.iOS, 18, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0)]
 		[Deprecated (PlatformName.TvOS, 18, 0)]
-#if !NET
-		[Obsolete ("Use 'GetMetadataForFormat' with enum values AVMetadataFormat.")]
-		[Wrap ("GetMetadataForFormat (new NSString (format))", IsVirtual = true)]
-		AVMetadataItem [] MetadataForFormat (string format);
-#endif
-
-		[Deprecated (PlatformName.MacOSX, 15, 0)]
-		[Deprecated (PlatformName.iOS, 18, 0)]
-		[Deprecated (PlatformName.MacCatalyst, 18, 0)]
-		[Deprecated (PlatformName.TvOS, 18, 0)]
 		[Export ("metadataForFormat:")]
 		AVMetadataItem [] GetMetadataForFormat (NSString format);
 
@@ -4402,10 +4166,7 @@ namespace AVFoundation {
 	[Protocol]
 	[MacCatalyst (13, 1)]
 	interface AVFragmentMinding {
-
-#if !MONOMAC || NET
-		[Abstract] // not kept in Mac OS because is a breaking change, in other platforms we are ok
-#endif
+		[Abstract]
 		[Export ("isAssociatedWithFragmentMinder")]
 		bool IsAssociatedWithFragmentMinder ();
 	}
@@ -4511,10 +4272,8 @@ namespace AVFoundation {
 		void DidOutputSampleBuffer (AVCaptureOutput captureOutput, CMSampleBuffer sampleBuffer, AVCaptureConnection connection);
 	}
 
-#if NET
 	// Making a class abstract has problems: https://github.com/xamarin/xamarin-macios/issues/4969, so we're not doing this yet
 	// [Abstract] // Abstract superclass.
-#endif
 	/// <summary>Base class for media samples that were captured with <see cref="T:AVFoundation.AVCaptureDataOutputSynchronizer" />.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[TV (17, 0)]
@@ -4534,21 +4293,6 @@ namespace AVFoundation {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AVCaptureSynchronizedDataCollection : INSFastEnumeration {
-#if !NET
-		[Obsolete ("Use 'GetSynchronizedData' instead.")]
-		[Wrap ("GetSynchronizedData (captureOutput)", isVirtual: true)]
-		[return: NullAllowed]
-		AVCaptureSynchronizedData From (AVCaptureOutput captureOutput);
-
-		// This is not reexposed because it is not needed you can use 'GetSynchronizedData' instead, also from docs:
-		// https://developer.apple.com/documentation/avfoundation/avcapturesynchronizeddatacollection/2873892-objectforkeyedsubscript?language=objc
-		// > This call is equivalent to the synchronizedDataForCaptureOutput: method, but allows subscript syntax.
-		[Obsolete ("Use 'GetSynchronizedData' instead.")]
-		[Export ("objectForKeyedSubscript:")]
-		[return: NullAllowed]
-		AVCaptureSynchronizedData ObjectForKeyedSubscript (AVCaptureOutput key);
-#endif
-
 		[Export ("synchronizedDataForCaptureOutput:")]
 		[return: NullAllowed]
 		AVCaptureSynchronizedData GetSynchronizedData (AVCaptureOutput captureOutput);
@@ -4672,9 +4416,7 @@ namespace AVFoundation {
 		[Export ("stopRequestingMediaData")]
 		void StopRequestingMediaData ();
 
-#if NET
 		[Abstract]
-#endif
 		[TV (14, 5), iOS (14, 5)]
 		[MacCatalyst (14, 5)]
 		[Export ("hasSufficientMediaDataForReliablePlaybackStart")]
@@ -5222,9 +4964,6 @@ namespace AVFoundation {
 	[Model]
 	[Protocol]
 	interface AVAssetResourceLoaderDelegate {
-#if !NET
-		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("resourceLoader:shouldWaitForLoadingOfRequestedResource:")]
 		bool ShouldWaitForLoadingOfRequestedResource (AVAssetResourceLoader resourceLoader, AVAssetResourceLoadingRequest loadingRequest);
@@ -5382,12 +5121,7 @@ namespace AVFoundation {
 
 	[TV (14, 0), iOS (14, 0)]
 	[MacCatalyst (14, 0)]
-#if NET
 	[Protocol, Model]
-#else
-	[Protocol]
-	[Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject))]
 	interface AVAssetWriterDelegate {
 		[Export ("assetWriter:didOutputSegmentData:segmentType:segmentReport:")]
@@ -6572,12 +6306,6 @@ namespace AVFoundation {
 		[Field ("AVMetadataCommonKeyAccessibilityDescription")]
 		NSString CommonKeyAccessibilityDescription { get; }
 
-#if !NET
-		[Field ("AVMetadataFormatQuickTimeUserData")]
-		[Obsolete ("Use 'AVMetadataFormat' enum values.")]
-		NSString FormatQuickTimeUserData { get; }
-#endif
-
 		/// <summary>Represents the value associated with the constant AVMetadataKeySpaceQuickTimeUserData</summary>
 		///         <value>
 		///         </value>
@@ -6975,12 +6703,6 @@ namespace AVFoundation {
 		[Field ("AVMetadata3GPUserDataKeyMediaRating")]
 		NSString K3GPUserDataKeyMediaRating { get; }
 
-#if !NET
-		[Field ("AVMetadataFormatISOUserData")]
-		[Obsolete ("Use 'AVMetadataFormat' enum values.")]
-		NSString KFormatISOUserData { get; }
-#endif
-
 		/// <summary>Represents the value associated with the constant AVMetadataKeySpaceISOUserData</summary>
 		///         <value>
 		///         </value>
@@ -7299,12 +7021,6 @@ namespace AVFoundation {
 		[Field ("AVMetadataQuickTimeMetadataKeyIsMontage")]
 		NSString QuickTimeMetadataKeyIsMontage { get; }
 
-#if !NET
-		[Field ("AVMetadataFormatiTunesMetadata")]
-		[Obsolete ("Use 'AVMetadataFormat' enum values.")]
-		NSString FormatiTunesMetadata { get; }
-#endif
-
 		/// <summary>Represents the value associated with the constant AVMetadataKeySpaceiTunes</summary>
 		///         <value>
 		///         </value>
@@ -7588,12 +7304,6 @@ namespace AVFoundation {
 		///         <remarks>To be added.</remarks>
 		[Field ("AVMetadataiTunesMetadataKeyExecProducer")]
 		NSString iTunesMetadataKeyExecProducer { get; }
-
-#if !NET
-		[Field ("AVMetadataFormatID3Metadata")]
-		[Obsolete ("Use 'AVMetadataFormat' enum values.")]
-		NSString FormatID3Metadata { get; }
-#endif
 
 		/// <summary>Represents the value associated with the constant AVMetadataKeySpaceID3</summary>
 		///         <value>
@@ -8304,12 +8014,6 @@ namespace AVFoundation {
 		[MacCatalyst (13, 1)]
 		[Field ("AVMetadataIcyMetadataKeyStreamURL")]
 		NSString IcyMetadataKeyStreamUrl { get; }
-
-#if !NET
-		[Field ("AVMetadataFormatHLSMetadata")]
-		[Obsolete ("Use 'AVMetadataFormat' enum values.")]
-		NSString FormatHlsMetadata { get; }
-#endif
 
 		/// <summary>Represents the value associated with the constant AVMetadataKeySpaceHslDateRange.</summary>
 		///         <value>To be added.</value>
@@ -9404,66 +9108,6 @@ namespace AVFoundation {
 
 		[Export ("time")]
 		CMTime Time { get; }
-
-#if !NET
-		[Field ("AVMetadataObjectTypeFace")]
-		NSString TypeFace { get; }
-
-		[Field ("AVMetadataObjectTypeAztecCode")]
-		NSString TypeAztecCode { get; }
-
-		[Field ("AVMetadataObjectTypeCode128Code")]
-		NSString TypeCode128Code { get; }
-
-		[Field ("AVMetadataObjectTypeCode39Code")]
-		NSString TypeCode39Code { get; }
-
-		[Field ("AVMetadataObjectTypeCode39Mod43Code")]
-		NSString TypeCode39Mod43Code { get; }
-
-		[Field ("AVMetadataObjectTypeCode93Code")]
-		NSString TypeCode93Code { get; }
-
-		[Field ("AVMetadataObjectTypeEAN13Code")]
-		NSString TypeEAN13Code { get; }
-
-		[Field ("AVMetadataObjectTypeEAN8Code")]
-		NSString TypeEAN8Code { get; }
-
-		[Field ("AVMetadataObjectTypePDF417Code")]
-		NSString TypePDF417Code { get; }
-
-		[Field ("AVMetadataObjectTypeQRCode")]
-		NSString TypeQRCode { get; }
-
-		[Field ("AVMetadataObjectTypeUPCECode")]
-		NSString TypeUPCECode { get; }
-
-		[Field ("AVMetadataObjectTypeInterleaved2of5Code")]
-		NSString TypeInterleaved2of5Code { get; }
-
-		[Field ("AVMetadataObjectTypeITF14Code")]
-		NSString TypeITF14Code { get; }
-
-		[Field ("AVMetadataObjectTypeDataMatrixCode")]
-		NSString TypeDataMatrixCode { get; }
-
-		[TV (17, 0), iOS (13, 0)]
-		[Field ("AVMetadataObjectTypeCatBody")]
-		NSString TypeCatBody { get; }
-
-		[TV (17, 0), iOS (13, 0)]
-		[Field ("AVMetadataObjectTypeDogBody")]
-		NSString TypeDogBody { get; }
-
-		[NoTV, iOS (13, 0)]
-		[Field ("AVMetadataObjectTypeHumanBody")]
-		NSString TypeHumanBody { get; }
-
-		[TV (17, 0), iOS (13, 0)]
-		[Field ("AVMetadataObjectTypeSalientObject")]
-		NSString TypeSalientObject { get; }
-#endif
 	}
 
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
@@ -10218,12 +9862,6 @@ namespace AVFoundation {
 	[BaseType (typeof (AVMovieTrack))]
 	[DisableDefaultCtor]
 	interface AVFragmentedMovieTrack {
-#if !NET
-		[NoiOS]
-		[Field ("AVFragmentedMovieTrackTimeRangeDidChangeNotification")]
-		NSString ATimeRangeDidChangeNotification { get; }
-#endif
-
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -10706,11 +10344,7 @@ namespace AVFoundation {
 		string PresetName { get; }
 
 		[Export ("supportedFileTypes")]
-#if NET
 		string [] SupportedFileTypes { get; }
-#else
-		NSObject [] SupportedFileTypes { get; }
-#endif
 
 		[NullAllowed]
 		[Export ("outputFileType", ArgumentSemantic.Copy)]
@@ -12314,10 +11948,8 @@ namespace AVFoundation {
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[TV (17, 0)]
 	[BaseType (typeof (NSObject))]
-#if NET
 	// Making a class abstract has problems (see https://github.com/xamarin/xamarin-macios/issues/4969), so not doing this (yet).
 	// [Abstract] // as per docs
-#endif
 	// Objective-C exception thrown.  Name: NSGenericException Reason: Cannot instantiate AVCaptureOutput because it is an abstract superclass.
 	[DisableDefaultCtor]
 	interface AVCaptureOutput {
@@ -12519,26 +12151,11 @@ namespace AVFoundation {
 		[Export ("alwaysDiscardsLateVideoFrames")]
 		bool AlwaysDiscardsLateVideoFrames { get; set; }
 
-#if !NET
-		[Obsolete ("Use overload accepting a 'IAVCaptureVideoDataOutputSampleBufferDelegate'.")]
 		[Export ("setSampleBufferDelegate:queue:")]
-		[PostGet ("SampleBufferDelegate")]
-		[PostGet ("SampleBufferCallbackQueue")]
-		void SetSampleBufferDelegate ([NullAllowed] AVCaptureVideoDataOutputSampleBufferDelegate sampleBufferDelegate, [NullAllowed] DispatchQueue sampleBufferCallbackQueue);
-#endif
-
-		[Export ("setSampleBufferDelegate:queue:")]
-#if NET
 		void SetSampleBufferDelegate ([NullAllowed] IAVCaptureVideoDataOutputSampleBufferDelegate sampleBufferDelegate, [NullAllowed] DispatchQueue sampleBufferCallbackQueue);
-#else
-		[Sealed]
-		void SetSampleBufferDelegateQueue ([NullAllowed] IAVCaptureVideoDataOutputSampleBufferDelegate sampleBufferDelegate, [NullAllowed] DispatchQueue sampleBufferCallbackQueue);
-#endif
 
 		// 5.0 APIs
-#if NET
 		[BindAs (typeof (CoreVideo.CVPixelFormatType []))]
-#endif
 		[Export ("availableVideoCVPixelFormatTypes")]
 		NSNumber [] AvailableVideoCVPixelFormatTypes { get; }
 
@@ -12638,18 +12255,7 @@ namespace AVFoundation {
 		DispatchQueue SampleBufferCallbackQueue { get; }
 
 		[Export ("setSampleBufferDelegate:queue:")]
-#if NET
 		void SetSampleBufferDelegate ([NullAllowed] IAVCaptureAudioDataOutputSampleBufferDelegate sampleBufferDelegate, [NullAllowed] DispatchQueue sampleBufferCallbackDispatchQueue);
-#else
-		[Sealed]
-		void SetSampleBufferDelegateQueue ([NullAllowed] IAVCaptureAudioDataOutputSampleBufferDelegate sampleBufferDelegate, [NullAllowed] DispatchQueue sampleBufferCallbackDispatchQueue);
-#endif
-
-#if !NET
-		[Obsolete ("Use overload accepting a 'IAVCaptureVideoDataOutputSampleBufferDelegate'.")]
-		[Export ("setSampleBufferDelegate:queue:")]
-		void SetSampleBufferDelegateQueue ([NullAllowed] AVCaptureAudioDataOutputSampleBufferDelegate sampleBufferDelegate, [NullAllowed] DispatchQueue sampleBufferCallbackDispatchQueue);
-#endif
 
 		[MacCatalyst (13, 1)]
 		[Export ("recommendedAudioSettingsForAssetWriterWithOutputFileType:")]
@@ -13040,16 +12646,10 @@ namespace AVFoundation {
 		[Export ("availableEmbeddedThumbnailPhotoCodecTypes")]
 		NSString [] _GetAvailableEmbeddedThumbnailPhotoCodecTypes { get; }
 
-#if !NET
-		[Obsolete ("Use 'AvailableEmbeddedThumbnailPhotoCodecTypes' instead.")]
-		[Wrap ("Array.ConvertAll (_GetAvailableEmbeddedThumbnailPhotoCodecTypes, s => AVVideoCodecTypeExtensions.GetValue (s))", IsVirtual = false)]
-		AVVideoCodecType [] GetAvailableEmbeddedThumbnailPhotoCodecTypes { get; }
-#endif
 		[MacCatalyst (14, 0)]
 		[Wrap ("Array.ConvertAll (_GetAvailableEmbeddedThumbnailPhotoCodecTypes, s => AVVideoCodecTypeExtensions.GetValue (s))", IsVirtual = true)]
 		AVVideoCodecType [] AvailableEmbeddedThumbnailPhotoCodecTypes { get; }
 
-#if NET
 		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("embeddedThumbnailPhotoFormat", ArgumentSemantic.Copy)]
 		NSDictionary WeakEmbeddedThumbnailPhotoFormat { get; set; }
@@ -13057,10 +12657,6 @@ namespace AVFoundation {
 		[MacCatalyst (14, 0)]
 		[Wrap ("WeakEmbeddedThumbnailPhotoFormat")]
 		AVCapturePhotoSettingsThumbnailFormat EmbeddedThumbnailPhotoFormat { get; set; }
-#else
-		[NullAllowed, Export ("embeddedThumbnailPhotoFormat", ArgumentSemantic.Copy)]
-		NSDictionary EmbeddedThumbnailPhotoFormat { get; set; }
-#endif
 
 		[NoMac]
 		[MacCatalyst (14, 0)]
@@ -13402,9 +12998,7 @@ namespace AVFoundation {
 
 		[Mac (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[BindAs (typeof (AVCaptureFlashMode []))]
-#endif
 		[Export ("supportedFlashModes")]
 		NSNumber [] SupportedFlashModes { get; }
 
@@ -13900,17 +13494,9 @@ namespace AVFoundation {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // init NS_UNAVAILABLE
 	interface AVCaptureDeviceDiscoverySession {
-
-#if !NET
-		[Internal]
-		[Static]
-		[Export ("discoverySessionWithDeviceTypes:mediaType:position:")]
-		AVCaptureDeviceDiscoverySession _Create (NSArray deviceTypes, [NullAllowed] string mediaType, AVCaptureDevicePosition position);
-#else
 		[Static]
 		[Export ("discoverySessionWithDeviceTypes:mediaType:position:")]
 		AVCaptureDeviceDiscoverySession Create ([BindAs (typeof (AVCaptureDeviceType []))] NSString [] deviceTypes, [NullAllowed][BindAs (typeof (AVMediaTypes))] NSString mediaType, AVCaptureDevicePosition position);
-#endif
 
 		[Export ("devices")]
 		AVCaptureDevice [] Devices { get; }
@@ -14065,14 +13651,6 @@ namespace AVFoundation {
 		[Wrap ("GetDefaultDevice (mediaType.GetConstant ()!)")]
 		[return: NullAllowed]
 		AVCaptureDevice GetDefaultDevice (AVMediaTypes mediaType);
-
-#if !NET
-		[Obsolete ("Use 'GetDefaultDevice (AVMediaTypes)'.")]
-		[Static]
-		[Wrap ("GetDefaultDevice ((NSString) mediaType)")]
-		[return: NullAllowed]
-		AVCaptureDevice DefaultDeviceWithMediaType (string mediaType);
-#endif
 
 		[MacCatalyst (13, 1)]
 		[Static]
@@ -15020,9 +14598,7 @@ namespace AVFoundation {
 
 		[MacCatalyst (14, 0)]
 		[Export ("supportedColorSpaces")]
-#if NET
 		[BindAs (typeof (AVCaptureColorSpace []))]
-#endif
 		NSNumber [] SupportedColorSpaces { get; }
 
 		[MacCatalyst (14, 0)]
@@ -15562,31 +15138,6 @@ namespace AVFoundation {
 		[Export ("audioOutputDeviceUniqueID"), NullAllowed]
 		string AudioOutputDeviceUniqueID { get; set; }
 
-#if !NET
-		[Obsolete ("Use 'AVPlayerWaitingReason' enum instead.")]
-		[Field ("AVPlayerWaitingToMinimizeStallsReason")]
-		NSString WaitingToMinimizeStallsReason { get; }
-
-		[Obsolete ("Use 'AVPlayerWaitingReason' enum instead.")]
-		[Field ("AVPlayerWaitingWhileEvaluatingBufferingRateReason")]
-		NSString WaitingWhileEvaluatingBufferingRateReason { get; }
-
-		[Obsolete ("Use 'AVPlayerWaitingReason' enum instead.")]
-		[Field ("AVPlayerWaitingWithNoItemToPlayReason")]
-		NSString WaitingWithNoItemToPlayReason { get; }
-
-		[Obsolete ("Use 'AVPlayerWaitingReason' enum instead.")]
-		[iOS (14, 5), TV (14, 5)]
-		[MacCatalyst (14, 5)]
-		[Field ("AVPlayerWaitingDuringInterstitialEventReason")]
-		NSString WaitingDuringInterstitialEventReason { get; }
-
-		[Obsolete ("Use 'AVPlayerWaitingReason' enum instead.")]
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
-		[Field ("AVPlayerWaitingForCoordinatedPlaybackReason")]
-		NSString AVPlayerWaitingForCoordinatedPlaybackReason { get; }
-#endif // !NET
-
 		// From AVPlayer (AVPlayerPlaybackCapabilities) Category
 
 		[NoMac]
@@ -15943,11 +15494,7 @@ namespace AVFoundation {
 
 		/// <include file="../docs/api/AVFoundation/AVPlayerItem.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVPlayerItem.TimeJumpedNotification']/*" />
 		[Field ("AVPlayerItemTimeJumpedNotification")]
-#if !NET
-		[Notification]
-#else
 		[Notification (typeof (AVPlayerItemTimeJumpedEventArgs))]
-#endif
 		NSString TimeJumpedNotification { get; }
 
 		[Export ("seekToTime:completionHandler:")]
@@ -17286,11 +16833,7 @@ namespace AVFoundation {
 	interface AVAsynchronousKeyValueLoading {
 		[Abstract]
 		[Export ("statusOfValueForKey:error:")]
-#if NET
 		AVKeyValueStatus GetStatusOfValue (string forKey, out NSError error);
-#else
-		AVKeyValueStatus StatusOfValueForKeyerror (string key, [NullAllowed] IntPtr outError);
-#endif
 		[Abstract]
 		[Export ("loadValuesAsynchronouslyForKeys:completionHandler:")]
 		void LoadValuesAsynchronously (string [] keys, [NullAllowed] Action handler);
@@ -17453,12 +16996,6 @@ namespace AVFoundation {
 		[Export ("enqueueSampleBuffer:")]
 		void Enqueue (CMSampleBuffer sampleBuffer);
 
-#if !NET
-		[Wrap ("Enqueue (sampleBuffer)", IsVirtual = true)]
-		[Obsolete ("Use the 'Enqueue' method instead.")]
-		void EnqueueSampleBuffer (CMSampleBuffer sampleBuffer);
-#endif
-
 		[Deprecated (PlatformName.MacOSX, 15, 0)]
 		[Deprecated (PlatformName.iOS, 18, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0)]
@@ -17479,12 +17016,6 @@ namespace AVFoundation {
 		[Deprecated (PlatformName.TvOS, 18, 0)]
 		[Export ("requestMediaDataWhenReadyOnQueue:usingBlock:")]
 		void RequestMediaData (DispatchQueue queue, Action handler);
-
-#if !NET
-		[Wrap ("RequestMediaData (queue, enqueuer)", IsVirtual = true)]
-		[Obsolete ("Use the 'RequestMediaData' method instead.")]
-		void RequestMediaDataWhenReadyOnQueue (DispatchQueue queue, Action enqueuer);
-#endif
 
 		[Deprecated (PlatformName.MacOSX, 15, 0)]
 		[Deprecated (PlatformName.iOS, 18, 0)]
@@ -17983,12 +17514,8 @@ namespace AVFoundation {
 		AVUrlAsset UrlAsset { get; }
 	}
 
-#if NET
 	[NoTV]
 	[MacCatalyst (13, 1)]
-#else
-	[Obsoleted (PlatformName.TvOS, 12, 0)]
-#endif
 	[Static, Internal]
 	interface AVAssetDownloadTaskKeys {
 		[MacCatalyst (13, 1)]
@@ -18020,12 +17547,8 @@ namespace AVFoundation {
 		NSString MinimumRequiredPresentationSizeKey { get; }
 	}
 
-#if NET
 	[NoTV]
 	[MacCatalyst (13, 1)]
-#else
-	[Obsoleted (PlatformName.TvOS, 12, 0)]
-#endif
 	[StrongDictionary ("AVAssetDownloadTaskKeys")]
 	interface AVAssetDownloadOptions {
 		/// <summary>To be added.</summary>
@@ -19075,7 +18598,7 @@ namespace AVFoundation {
 		[Internal]
 		[Static]
 		[Export ("contentKeyResponseWithFairPlayStreamingKeyResponseData:")]
-		AVContentKeyResponse _InitWithFairPlayStreamingKeyResponseData (NSData fairPlayStreamingKeyResponseData);
+		AVContentKeyResponse _CreateWithFairPlayStreamingKeyResponseData (NSData fairPlayStreamingKeyResponseData);
 
 		[MacCatalyst (13, 1)]
 		[Static]
@@ -19087,7 +18610,7 @@ namespace AVFoundation {
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("contentKeyResponseWithAuthorizationTokenData:")]
-		AVContentKeyResponse _InitWithAuthorizationToken (NSData authorizationTokenData);
+		AVContentKeyResponse _CreateWithAuthorizationToken (NSData authorizationTokenData);
 	}
 
 	[TV (14, 5), iOS (14, 5)]
@@ -19779,11 +19302,7 @@ namespace AVFoundation {
 	interface IAVPlaybackCoordinatorPlaybackControlDelegate { }
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
-#if NET
 	[Protocol, Model]
-#else
-	[Protocol, Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject))]
 	interface AVPlaybackCoordinatorPlaybackControlDelegate {
 		[Abstract]
@@ -19940,11 +19459,7 @@ namespace AVFoundation {
 	interface IAVPlayerPlaybackCoordinatorDelegate { }
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
-#if NET
 	[Protocol, Model]
-#else
-	[Protocol, Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject))]
 	interface AVPlayerPlaybackCoordinatorDelegate {
 		[Export ("playbackCoordinator:identifierForPlayerItem:")]

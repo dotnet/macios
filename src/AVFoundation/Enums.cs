@@ -162,16 +162,6 @@ namespace AVFoundation {
 		ContinuousAutoWhiteBalance,
 	}
 
-#if !NET
-	[Deprecated (PlatformName.iOS, 6, 0)]
-	[Flags]
-	[Native]
-	// NSUInteger - AVAudioSession.h
-	public enum AVAudioSessionInterruptionFlags : ulong {
-		ShouldResume = 1,
-	}
-#endif
-
 	// Populated in NSError.Code, an NSInteger
 	// anonymous enum - AVError.h
 	[MacCatalyst (13, 1)]
@@ -355,17 +345,6 @@ namespace AVFoundation {
 		Failed,
 	}
 
-#if !NET
-	[NoTV]
-	[Deprecated (PlatformName.iOS, 6, 0)]
-	[Flags]
-	[Native]
-	// declared as AVAudioSessionSetActiveOptions (NSUInteger) - AVAudioSession.h
-	public enum AVAudioSessionFlags : ulong {
-		NotifyOthersOnDeactivation = 1,
-	}
-#endif
-
 	[MacCatalyst (13, 1)]
 	[Native]
 	// NSInteger - AVAsynchronousKeyValueLoading.h
@@ -544,10 +523,6 @@ namespace AVFoundation {
 		CannotStartRecording = 0x21726563, // '!rec'
 		BadParam = -50,
 		InsufficientPriority = 0x21707269, // '!pri'
-#if !NET
-		[Obsolete ("Use 'ResourceNotAvailable' instead.")]
-		CodeResourceNotAvailable = 0x21726573,
-#endif
 		ResourceNotAvailable = 0x21726573, // '!res'
 		Unspecified = 0x77686174, // 'what'
 		ExpiredSession = 0x21736573, // '!ses'

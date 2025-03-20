@@ -30,13 +30,10 @@ using ObjCRuntime;
 #nullable enable
 
 namespace AVFoundation {
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVAudioConverterPrimeInfo {
 		/// <summary>To be added.</summary>

@@ -86,12 +86,10 @@ namespace AVFoundation {
 		HighAutoLevel,
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AVVideoSettingsUncompressed : CVPixelBufferAttributes {
 #if !COREBUILD
 		public AVVideoSettingsUncompressed ()
@@ -168,12 +166,10 @@ namespace AVFoundation {
 	}
 #endif
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AVVideoSettingsCompressed : DictionaryContainer {
 #if !COREBUILD
 		public AVVideoSettingsCompressed ()
@@ -187,9 +183,15 @@ namespace AVFoundation {
 		}
 
 		/// <summary>Represents codec used to encode the video.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>The property uses constant AVVideoCodecKey value to access the underlying dictionary.</remarks>
+		/// <remarks>The property uses constant AVVideoCodecKey value to access the underlying dictionary.</remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("ios11.0", "Use 'CodecType' instead.")]
+		[ObsoletedOSPlatform ("macos10.13", "Use 'CodecType' instead.")]
+		[ObsoletedOSPlatform ("tvos11.0", "Use 'CodecType' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst13.1", "Use 'CodecType' instead.")]
 		public AVVideoCodec? Codec {
 			get {
 				var k = GetNSStringValue (AVVideo.CodecKey);
@@ -216,6 +218,27 @@ namespace AVFoundation {
 					throw new ArgumentException ("value");
 				}
 
+				if (v is null)
+					RemoveValue (AVVideo.CodecKey);
+				else
+					SetNativeValue (AVVideo.CodecKey, v);
+			}
+		}
+
+		/// <summary>Represents codec used to encode the video.</summary>
+		/// <remarks>The property uses constant AVVideoCodecKey value to access the underlying dictionary.</remarks>
+		public AVVideoCodecType? CodecType {
+			get {
+				var k = GetNSStringValue (AVVideo.CodecKey);
+				if (k is null)
+					return null;
+				return AVVideoCodecTypeExtensions.GetValue (k);
+			}
+
+			set {
+				NSString? v = null;
+				if (value is not null)
+					v = value.Value.GetConstant ();
 				if (v is null)
 					RemoveValue (AVVideo.CodecKey);
 				else
@@ -251,7 +274,6 @@ namespace AVFoundation {
 			}
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -259,7 +281,6 @@ namespace AVFoundation {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public double? MaxKeyFrameIntervalDuration {
 			get {
 				return GetDoubleValue (AVVideo.MaxKeyFrameIntervalDurationKey);
@@ -270,7 +291,6 @@ namespace AVFoundation {
 		}
 
 #if !MONOMAC
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -278,7 +298,6 @@ namespace AVFoundation {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
-#endif
 		public bool? AllowFrameReordering {
 			get {
 				return GetBoolValue (AVVideo.AllowFrameReorderingKey);
@@ -288,7 +307,6 @@ namespace AVFoundation {
 			}
 		}
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -296,7 +314,6 @@ namespace AVFoundation {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
-#endif
 		public AVVideoH264EntropyMode? EntropyEncoding {
 			get {
 				var k = GetNSStringValue (AVVideo.H264EntropyModeKey);
@@ -332,7 +349,6 @@ namespace AVFoundation {
 		}
 
 		// frame rate can be floating point (29.97 is common for instance)
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -340,7 +356,6 @@ namespace AVFoundation {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
-#endif
 		public float? ExpectedSourceFrameRate {
 			get {
 				return GetFloatValue (AVVideo.ExpectedSourceFrameRateKey);
@@ -351,7 +366,6 @@ namespace AVFoundation {
 		}
 
 		// frame rate can be floating point (29.97 is common for instance)
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -359,7 +373,6 @@ namespace AVFoundation {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
-#endif
 		public float? AverageNonDroppableFrameRate {
 			get {
 				return GetFloatValue (AVVideo.AverageNonDroppableFrameRateKey);
@@ -427,12 +440,10 @@ namespace AVFoundation {
 #endif
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AVVideoCodecSettings : DictionaryContainer {
 #if !COREBUILD
 		public AVVideoCodecSettings ()
@@ -619,12 +630,10 @@ namespace AVFoundation {
 #endif
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AVVideoPixelAspectRatioSettings : DictionaryContainer {
 #if !COREBUILD
 		public AVVideoPixelAspectRatioSettings ()
@@ -665,12 +674,10 @@ namespace AVFoundation {
 #endif
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AVVideoCleanApertureSettings : DictionaryContainer {
 #if !COREBUILD
 		public AVVideoCleanApertureSettings ()

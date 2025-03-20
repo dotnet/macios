@@ -264,15 +264,11 @@ AVFOUNDATION_SOURCES = \
 	AVFoundation/AVAudioSessionPortDescription.cs \
 	AVFoundation/AVAudioSinkNode.cs \
 	AVFoundation/AVAudioSourceNode.cs \
-	AVFoundation/AVCaptureConnection.cs \
-	AVFoundation/AVCaptureDeviceDiscoverySession.cs \
 	AVFoundation/AVCaptureDeviceInput.cs \
 	AVFoundation/AVCaptureFileOutput.cs \
 	AVFoundation/AVCaptureMetadataOutput.cs \
 	AVFoundation/AVCaptureSynchronizedDataCollection.cs \
-	AVFoundation/AVCaptureSynchronizedDepthData.cs \
 	AVFoundation/AVCaptureVideoPreviewLayer.cs \
-	AVFoundation/AVCompat.cs \
 	AVFoundation/AVContentKeyResponse.cs \
 	AVFoundation/AVDepthData.cs \
 	AVFoundation/AVLayerVideoGravity.cs \
@@ -290,7 +286,6 @@ AVFOUNDATION_SOURCES = \
 	AVFoundation/AVSpeechUtterance.cs \
 	AVFoundation/AVTextStyleRule.cs \
 	AVFoundation/Events.cs \
-	AVFoundation/AVPlayerLooper.cs \
 	AVFoundation/AudioRendererWasFlushedAutomaticallyEventArgs.cs \
 	AVFoundation/AVCaptureReactionType.rgen.cs \
 	AVFoundation/CMTagCollectionVideoOutputPreset.cs \

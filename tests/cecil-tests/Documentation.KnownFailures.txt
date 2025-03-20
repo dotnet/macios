@@ -63402,11 +63402,14 @@ P:NetworkExtension.NERelay.SyntheticDnsAnswerIPv4Prefix
 P:NetworkExtension.NERelay.SyntheticDnsAnswerIPv6Prefix
 P:NetworkExtension.NERelayManager.Enabled
 P:NetworkExtension.NERelayManager.ExcludedDomains
+P:NetworkExtension.NERelayManager.ExcludedFqdns
 P:NetworkExtension.NERelayManager.LocalizedDescription
 P:NetworkExtension.NERelayManager.MatchDomains
+P:NetworkExtension.NERelayManager.MatchFqdns
 P:NetworkExtension.NERelayManager.OnDemandRules
 P:NetworkExtension.NERelayManager.Relays
 P:NetworkExtension.NERelayManager.Shared
+P:NetworkExtension.NERelayManager.UIToggleEnabled
 P:NetworkExtension.NETransparentProxyNetworkSettings.ExcludedNetworkRules
 P:NetworkExtension.NETransparentProxyNetworkSettings.IncludedNetworkRules
 P:NetworkExtension.NETunnelNetworkSettings.DnsSettings

@@ -1,2 +1,0 @@
-!missing-selector! ASAuthorizationProviderExtensionLoginManager::attestKey:clientDataHash:completion: not bound
-!missing-selector! ASAuthorizationProviderExtensionLoginManager::attestPendingKey:clientDataHash:completion: not bound

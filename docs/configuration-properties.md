@@ -9,7 +9,6 @@ There are a number of properties that are contingent upon the configuration sett
 |---------------------------------------------------------	|-----------------------------------	|---------------------------------------	|
 | DebuggerSupport                                         	| false                             	|                                       	|
 | EnableAssemblyILStripping                               	| true                              	|                                       	|
-| MetricsSupport                                          	| false                             	|                                       	|
 | RuntimeIdentifiers                                      	| maccatalyst-x64;maccatalyst-arm64 	| TargetFramework == netx.x-maccatalyst 	|
 | RuntimeIdentifiers                                      	| osx-x64;osx-arm64                 	| TargetFramework == netx.x-macos       	|
 | UseSystemResourceKeys                                   	| true                              	|                                       	|
@@ -26,3 +25,12 @@ There are a number of properties that are contingent upon the configuration sett
 | RuntimeIdentifiers       	| maccatalyst-x64   	| TargetFramework == netx.x-maccatalyst 	|
 | RuntimeIdentifiers       	| osx-x64           	| TargetFramework == netx.x-macos       	|
 | UseSystemResourceKeys    	| false             	|                                       	|
+
+### Optimize=true
+
+These are options that are set when the `Optimize` property is `true` (which happens by default if `Configuration=Release`).
+
+| **Property**                   | **Value**  |
+|--------------------------------|------------|
+| MetricsSupport                 | false      |
+

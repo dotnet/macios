@@ -2422,7 +2422,8 @@ namespace ObjCRuntime {
 #pragma warning restore RBI0014
 		}
 
-		internal static NativeHandle RetainAndAutoreleaseNSObject (NSObject? obj)
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		public static NativeHandle RetainAndAutoreleaseNSObject (NSObject? obj)
 		{
 			if (obj is null)
 				return NativeHandle.Zero;
@@ -2433,7 +2434,8 @@ namespace ObjCRuntime {
 #pragma warning restore RBI0014
 		}
 
-		internal static NativeHandle RetainAndAutoreleaseNativeObject (INativeObject? obj)
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		public static NativeHandle RetainAndAutoreleaseNativeObject (INativeObject? obj)
 		{
 			if (obj is null)
 				return NativeHandle.Zero;

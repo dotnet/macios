@@ -591,7 +591,7 @@ public partial class Generator : IMemberGatherer {
 			returnformat = "return Runtime.RetainAndAutoreleaseNativeObject ({0});";
 		} else if (TypeManager.IsWrappedType (mi.ReturnType)) {
 			returntype = Generator.NativeHandleType;
-			returnformat = "return Runtime.RetainAndAutoreleaseNSObject ({{0}});";
+			returnformat = "return Runtime.RetainAndAutoreleaseNSObject ({0});";
 		} else if (mi.ReturnType == TypeCache.System_String) {
 			returntype = Generator.NativeHandleType;
 			returnformat = "return NSString.CreateNative ({0}, true);";

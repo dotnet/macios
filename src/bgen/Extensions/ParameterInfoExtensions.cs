@@ -28,7 +28,7 @@ public static class ParameterInfoExtensions {
 				var constraints = t.GetGenericParameterConstraints ();
 				if (constraints.Length == 0)
 					return parameterInfo.ParameterType;
-				
+
 				// we have a constraint, we need to find the first one that is not generic
 				foreach (var constraint in constraints) {
 					if (!constraint.IsGenericType)

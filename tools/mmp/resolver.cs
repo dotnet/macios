@@ -26,7 +26,6 @@ using System.IO;
 using System.Text;
 
 using Mono.Cecil;
-using Mono.Linker;
 
 namespace Xamarin.Bundler {
 	public partial class MonoMacResolver : CoreResolver {
@@ -108,40 +107,6 @@ namespace Xamarin.Bundler {
 			}
 
 			return null;
-		}
-
-		public override void Configure ()
-		{
-			base.Configure ();
-
-			if (!Driver.UseLegacyAssemblyResolution && (Driver.IsUnifiedFullSystemFramework || Driver.IsUnifiedFullXamMacFramework) && Driver.Action != Action.RunRegistrar) {
-				// We need to look in the GAC/System mono for both FullSystem and FullXamMac, because that's
-				// how we've been resolving assemblies in the past (Cecil has a fall-back mode where it looks
-				// in the GAC, and we never disabled that, meaning that we always looked in the GAC if failing
-				// to resolve from somewhere else). This makes it explicit that we look in the GAC, and we
-				// now also warn when using FullXamMac and finding assemblies in the GAC.
-				GlobalAssemblyCache = Path.Combine (Driver.SystemMonoDirectory, "lib", "mono", "gac");
-				var framework_dir = Path.GetDirectoryName (typeof (object).Module.FullyQualifiedName);
-				SystemFrameworkDirectories = new [] {
-						framework_dir,
-						Path.Combine (framework_dir, "Facades")
-					};
-			}
-		}
-	}
-
-	public class MonoMacAssemblyResolver : AssemblyResolver {
-		public MonoMacResolver Resolver;
-
-		public MonoMacAssemblyResolver (MonoMacResolver resolver)
-			: base (resolver.cache ?? new Dictionary<string, AssemblyDefinition> ())
-		{
-			this.Resolver = resolver;
-		}
-
-		public override AssemblyDefinition Resolve (AssemblyNameReference name, ReaderParameters parameters)
-		{
-			return Resolver.Resolve (name, parameters);
 		}
 	}
 }

@@ -43,6 +43,13 @@ namespace PushKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PKPushRegistry {
+		/// <summary>An instance of the PushKit.IPKPushRegistryDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the PushKit.IPKPushRegistryDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IPKPushRegistryDelegate Delegate { get; set; }
 
@@ -68,6 +75,10 @@ namespace PushKit {
 	[Static]
 	interface PKPushType {
 
+		/// <summary>Represents the value associated with the constant PKPushTypeVoIP</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Introduced (PlatformName.MacCatalyst, 14, 0)]
 		[NoMac]
 		[Field ("PKPushTypeVoIP")]
@@ -80,6 +91,9 @@ namespace PushKit {
 		[Field ("PKPushTypeComplication")]
 		NSString Complication { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("PKPushTypeFileProvider")]
 		NSString FileProvider { get; }

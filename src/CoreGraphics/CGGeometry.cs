@@ -40,9 +40,13 @@ namespace CoreGraphics {
 
 	// untyped enum -> CGGeometry.h
 	public enum CGRectEdge : uint {
+		/// <summary>To be added.</summary>
 		MinXEdge,
+		/// <summary>To be added.</summary>
 		MinYEdge,
+		/// <summary>To be added.</summary>
 		MaxXEdge,
+		/// <summary>To be added.</summary>
 		MaxYEdge,
 	}
 

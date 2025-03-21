@@ -80,6 +80,9 @@ namespace CoreGraphics {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGFunctionEvaluate? EvaluateFunction {
 			get {
 				return evaluate;

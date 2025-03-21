@@ -50,6 +50,7 @@ namespace CoreAnimation {
 
 			if (this.GetType () == typeof (CALayer)) {
 				Messaging.IntPtr_objc_msgSend_IntPtr (Handle, Selector.GetHandle (selInitWithLayer), other.Handle);
+				GC.KeepAlive (other);
 			} else {
 				Messaging.IntPtr_objc_msgSendSuper_IntPtr (SuperHandle, Selector.GetHandle (selInitWithLayer), other.Handle);
 				Clone (other);
@@ -122,6 +123,7 @@ namespace CoreAnimation {
 		public void SetContents (NSObject value)
 		{
 			_Contents = value.GetHandle ();
+			GC.KeepAlive (value);
 		}
 
 #if MONOMAC && !NET

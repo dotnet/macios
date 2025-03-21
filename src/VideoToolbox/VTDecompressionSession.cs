@@ -247,6 +247,9 @@ namespace VideoToolbox {
 					destinationImageBufferAttributes.GetHandle (),
 					&callbackStruct,
 					&ret);
+				GC.KeepAlive (formatDescription);
+				GC.KeepAlive (decoderSpecification);
+				GC.KeepAlive (destinationImageBufferAttributes);
 			}
 
 			if (result == VTStatus.Ok && ret != IntPtr.Zero)
@@ -276,7 +279,9 @@ namespace VideoToolbox {
 
 			infoFlags = default;
 			unsafe {
-				return VTDecompressionSessionDecodeFrame (GetCheckedHandle (), sampleBuffer.Handle, decodeFlags, sourceFrame, (VTDecodeInfoFlags*) Unsafe.AsPointer<VTDecodeInfoFlags> (ref infoFlags));
+				VTStatus status = VTDecompressionSessionDecodeFrame (GetCheckedHandle (), sampleBuffer.Handle, decodeFlags, sourceFrame, (VTDecodeInfoFlags*) Unsafe.AsPointer<VTDecodeInfoFlags> (ref infoFlags));
+				GC.KeepAlive (sampleBuffer);
+				return status;
 			}
 		}
 #if false // Disabling for now until we have some tests on this
@@ -317,8 +322,10 @@ namespace VideoToolbox {
 			var block = new BlockLiteral ();
 			block.SetupBlockUnsafe (decompressionOutputHandlerTrampoline, outputHandler);
 			try {
-				return VTDecompressionSessionDecodeFrameWithOutputHandler (GetCheckedHandle (),
+				VTStatus status = VTDecompressionSessionDecodeFrameWithOutputHandler (GetCheckedHandle (),
 					sampleBuffer.Handle, decodeFlags, out infoFlags, ref block);
+				GC.KeepAlive (sampleBuffer);
+				return status;
 			} finally {
 				block.CleanupBlock ();
 			}
@@ -340,7 +347,9 @@ namespace VideoToolbox {
 			if (newDescriptor is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (newDescriptor));
 
-			return VTDecompressionSessionCanAcceptFormatDescription (GetCheckedHandle (), newDescriptor.Handle);
+			VTStatus status = VTDecompressionSessionCanAcceptFormatDescription (GetCheckedHandle (), newDescriptor.Handle);
+			GC.KeepAlive (newDescriptor);
+			return status;
 		}
 
 		[DllImport (Constants.VideoToolboxLibrary)]

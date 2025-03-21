@@ -33,10 +33,15 @@ namespace AVFoundation {
 	[Native]
 	// NSInteger - AVAudioSettings.h
 	public enum AVAudioQuality : long {
+		/// <summary>Minimum quality.</summary>
 		Min = 0,
+		/// <summary>Low quality encoding.</summary>
 		Low = 0x20,
+		/// <summary>Medium quality.</summary>
 		Medium = 0x40,
+		/// <summary>High quality encoding.</summary>
 		High = 0x60,
+		/// <summary>Maximum quality.</summary>
 		Max = 0x7F,
 	}
 
@@ -79,9 +84,13 @@ namespace AVFoundation {
 	[Native]
 	// NSInteger - AVCaptureSession.h
 	public enum AVCaptureVideoOrientation : long {
+		/// <summary>Portrait</summary>
 		Portrait = 1,
+		/// <summary>Portrait, upside down.</summary>
 		PortraitUpsideDown,
+		/// <summary>Landscape, turned right.</summary>
 		LandscapeRight,
+		/// <summary>Landscape, turned left.</summary>
 		LandscapeLeft,
 	}
 
@@ -100,8 +109,11 @@ namespace AVFoundation {
 	[Native]
 	// NSInteger - AVCaptureDevice.h
 	public enum AVCaptureTorchMode : long {
+		/// <summary>Never uses the torch.</summary>
 		Off,
+		/// <summary>Always uses the torch.</summary>
 		On,
+		/// <summary>Uses the torch based on the available light measured.</summary>
 		Auto,
 	}
 
@@ -142,8 +154,11 @@ namespace AVFoundation {
 	[Native]
 	// NSInteger - AVCaptureDevice.h
 	public enum AVCaptureWhiteBalanceMode : long {
+		/// <summary>Auto white balance has been locked.</summary>
 		Locked,
+		/// <summary>Automatic white balance, set it once.</summary>
 		AutoWhiteBalance,
+		/// <summary>Contimuously evaluate and set the white balance.</summary>
 		ContinuousAutoWhiteBalance,
 	}
 
@@ -162,76 +177,142 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum AVError : long {
+		/// <summary>Indicates that an unknown error occurred.</summary>
 		Unknown = -11800,
+		/// <summary>Indicates that system memory became full.</summary>
 		OutOfMemory = -11801,
+		/// <summary>Indicates that no data was received because the session was not running.</summary>
 		SessionNotRunning = -11803,
+		/// <summary>Indicates that the device was in use by another session.</summary>
 		DeviceAlreadyUsedByAnotherSession = -11804,
+		/// <summary>Indicates that no data was sent to the recording session.</summary>
 		NoDataCaptured = -11805,
+		/// <summary>Indicates that the recording session configuration was changed.</summary>
 		SessionConfigurationChanged = -11806,
+		/// <summary>Indicates that non-volatile storage was full.</summary>
 		DiskFull = -11807,
+		/// <summary>Indicates that the device was not connected.</summary>
 		DeviceWasDisconnected = -11808,
+		/// <summary>Indicates that the recording source media changed.</summary>
 		MediaChanged = -11809,
+		/// <summary>Indicates that the maximum allowable recording duration was reached.</summary>
 		MaximumDurationReached = -11810,
+		/// <summary>Indicates that the maximum allowable output file size was reached.</summary>
 		MaximumFileSizeReached = -11811,
+		/// <summary>Indicates that the source data was interrupted.</summary>
 		MediaDiscontinuity = -11812,
+		/// <summary>Indicates that the maximum number of samples was reached for the output file.</summary>
 		MaximumNumberOfSamplesForFileFormatReached = -11813,
+		/// <summary>Indicates that the device was not connected.</summary>
 		DeviceNotConnected = -11814,
+		/// <summary>Indicates that the device was in use by another application.</summary>
 		DeviceInUseByAnotherApplication = -11815,
+		/// <summary>Indicates that the device is locked for an update or for other configuration.</summary>
 		DeviceLockedForConfigurationByAnotherProcess = -11817,
+		/// <summary>Indicates that the recording sesion was interrupted.</summary>
 		SessionWasInterrupted = -11818,
+		/// <summary>Indicates that media services were reset.</summary>
 		MediaServicesWereReset = -11819,
+		/// <summary>Indicates that data export failed.</summary>
 		ExportFailed = -11820,
+		/// <summary>Indicates that the media data could not be decoded.</summary>
 		DecodeFailed = -11821,
+		/// <summary>Indicates that the source media was not valid.</summary>
 		InvalidSourceMedia = -11822,
+		/// <summary>Indicates that data could not be written because the output file already exists.</summary>
 		FileAlreadyExists = -11823,
+		/// <summary>Indicates that the source media contained gaps and could not be loaded.</summary>
 		CompositionTrackSegmentsNotContiguous = -11824,
+		/// <summary>Indicates that the source media's play duration on the device was not valid.</summary>
 		InvalidCompositionTrackSegmentDuration = -11825,
+		/// <summary>Indicates that the source media could not be opened because a track start time was not valid.</summary>
 		InvalidCompositionTrackSegmentSourceStartTime = -11826,
+		/// <summary>Indicates that the source media had no duration set.</summary>
 		InvalidCompositionTrackSegmentSourceDuration = -11827,
+		/// <summary>Indicates that the media was in an urecognizable format and could therefore not be opened.</summary>
 		FormatNotRecognized = -11828,
+		/// <summary>Indicates that the data could not be parsed.</summary>
 		FailedToParse = -11829, // Should have been FileFailedToParse
+		/// <summary>Indicates that the maximum number of still images was reached for the output file.</summary>
 		MaximumStillImageCaptureRequestsExceeded = -11830,
+		/// <summary>Indicates that the app is not authorized to play the content.</summary>
 		ContentIsProtected = -11831,
+		/// <summary>Indicates that playback failed because no image was present at a specified time.</summary>
 		NoImageAtTime = -11832,
+		/// <summary>Indicates that a decoder for the media data could not be found.</summary>
 		DecoderNotFound = -11833,
+		/// <summary>Indicates that a required data encoder was missing.</summary>
 		EncoderNotFound = -11834,
+		/// <summary>Indicates that the user is not authorized to play the content.</summary>
 		ContentIsNotAuthorized = -11835,
+		/// <summary>The application is not authorized.</summary>
 		ApplicationIsNotAuthorized = -11836,
+		/// <summary>Indicates that the device is not available while the app is backgrounded.</summary>
 		DeviceIsNotAvailableInBackground = -11837,
+		/// <summary>Indicates that an operation that was not supported on a specific asset or asset type was attempted.</summary>
 		OperationNotSupportedForAsset = -11838,
+		/// <summary>Indicates that the decoder for the media data was unavailable.</summary>
 		DecoderTemporarilyUnavailable = -11839,
+		/// <summary>Indicates that a required data encoder was unavailable.</summary>
 		EncoderTemporarilyUnavailable = -11840,
+		/// <summary>Indicates that a video composition operation was not valid.</summary>
 		InvalidVideoComposition = -11841,
+		/// <summary>Indicates that an attempt was made to follow a reference for which authorization was lacking.</summary>
 		ReferenceForbiddenByReferencePolicy = -11842,
+		/// <summary>Indicates that the ouptut path contained an invalid extension.</summary>
 		InvalidOutputURLPathExtension = -11843,
+		/// <summary>Indicates that the screen could not be captured.</summary>
 		ScreenCaptureFailed = -11844,
+		/// <summary>Indicates that the display was disabled.</summary>
 		DisplayWasDisabled = -11845,
+		/// <summary>Indicates that a torch level was unavailable, possibly due to overheating.</summary>
 		TorchLevelUnavailable = -11846,
+		/// <summary>Indicates that an operation was interrupted.</summary>
 		OperationInterrupted = -11847,
+		/// <summary>Indicates that the media format is not supported by the device.</summary>
 		IncompatibleAsset = -11848,
+		/// <summary>Indicates taht the media data could not be loaded due to missing required data.</summary>
 		FailedToLoadMediaData = -11849,
+		/// <summary>Indicates that the media server is not correctly configured.</summary>
 		ServerIncorrectlyConfigured = -11850,
+		/// <summary>Indicates that the application was not authorized on the device.</summary>
 		ApplicationIsNotAuthorizedToUseDevice = -11852,
 
+		/// <summary>Indicates that the data could not be parsed.</summary>
 		FailedToParse2 = -11853,
+		/// <summary>Indicates that the file type does not support sample references.</summary>
 		FileTypeDoesNotSupportSampleReferences = -11854,
+		/// <summary>Indicates that the media data was corrupted.</summary>
 		UndecodableMediaData = -11855,
 
+		/// <summary>Indicates that playback failed because the controller lacked necessary internet access.</summary>
 		AirPlayControllerRequiresInternet = -11856,
+		/// <summary>Indicates that playback failed because the receiver lacked necessary internet access.</summary>
 		AirPlayReceiverRequiresInternet = -11857,
 
+		/// <summary>Indicates that a video compositor failed.</summary>
 		VideoCompositorFailed = -11858,
 
+		/// <summary>Indicates that an attempt was made to start a recording while another was in progress.</summary>
 		RecordingAlreadyInProgress = -11859,
 		CreateContentKeyRequestFailed = -11860,
+		/// <summary>Indicates that the output settings were not supported.</summary>
 		UnsupportedOutputSettings = -11861,
+		/// <summary>Indicates that a disallowed operation was attempted.</summary>
 		OperationNotAllowed = -11862,
+		/// <summary>To be added.</summary>
 		ContentIsUnavailable = -11863,
+		/// <summary>To be added.</summary>
 		FormatUnsupported = -11864,
+		/// <summary>To be added.</summary>
 		MalformedDepth = -11865,
+		/// <summary>To be added.</summary>
 		ContentNotUpdated = -11866,
+		/// <summary>To be added.</summary>
 		NoLongerPlayable = -11867,
+		/// <summary>To be added.</summary>
 		NoCompatibleAlternatesForExternalDisplay = -11868,
+		/// <summary>To be added.</summary>
 		NoSourceTrack = -11869,
 		ExternalPlaybackNotSupportedForAsset = -11870,
 		OperationNotSupportedForPreset = -11871,
@@ -257,8 +338,11 @@ namespace AVFoundation {
 	[Native]
 	// NSInteger - AVPlayer.h
 	public enum AVPlayerActionAtItemEnd : long {
+		/// <summary>Indicates the player should advance to the next item, if it exists.</summary>
 		Advance,
+		/// <summary>The player should pause.</summary>
 		Pause,
+		/// <summary>The player should do nothing.</summary>
 		None,
 	}
 
@@ -286,10 +370,15 @@ namespace AVFoundation {
 	[Native]
 	// NSInteger - AVAsynchronousKeyValueLoading.h
 	public enum AVKeyValueStatus : long {
+		/// <summary>The load attempt's state is unknown.</summary>
 		Unknown,
+		/// <summary>The load attempt is ongoing.</summary>
 		Loading,
+		/// <summary>The load attempt succeeded.</summary>
 		Loaded,
+		/// <summary>The load attempt failed.</summary>
 		Failed,
+		/// <summary>The load attempt was cancelled.</summary>
 		Cancelled,
 	}
 
@@ -297,8 +386,11 @@ namespace AVFoundation {
 	[Native]
 	// NSInteger - AVPlayer.h
 	public enum AVPlayerStatus : long {
+		/// <summary>The status of the player is unknown, generally because media has not been loaded.</summary>
 		Unknown,
+		/// <summary>The player is ready to play the <see cref="T:AVFoundation.AVPlayerItem" />.</summary>
 		ReadyToPlay,
+		/// <summary>The player can no longer play the <see cref="T:AVFoundation.AVPlayerItem" />.</summary>
 		Failed,
 	}
 
@@ -482,7 +574,9 @@ namespace AVFoundation {
 
 	// Convenience enum for native strings (defined in AVAudioSettings.h)
 	public enum AVSampleRateConverterAlgorithm : int {
+		/// <summary>To be added.</summary>
 		Normal,
+		/// <summary>To be added.</summary>
 		Mastering,
 	}
 
@@ -491,9 +585,13 @@ namespace AVFoundation {
 	[Native]
 	// NSInteger - AVCaptureDevice.h
 	public enum AVAuthorizationStatus : long {
+		/// <summary>The user has not interacted with the permissions dialog.</summary>
 		NotDetermined,
+		/// <summary>The user is denied access and may not change permission.</summary>
 		Restricted,
+		/// <summary>The user has denied access.</summary>
 		Denied,
+		/// <summary>The user has granted access.</summary>
 		Authorized,
 	}
 
@@ -555,81 +653,136 @@ namespace AVFoundation {
 	[Flags]
 	[Native]
 	public enum AVAudioPlayerNodeBufferOptions : ulong {
+		/// <summary>The buffer should loop indefinitely.</summary>
 		Loops = 0x01,
+		/// <summary>The buffer should interrupt any other buffer that is already playing.</summary>
 		Interrupts = 0x02,
+		/// <summary>The buffer should interrupt any other buffer at its loop point.</summary>
 		InterruptsAtLoop = 0x04,
 	}
 
 	[Native]
 	public enum AVAudioUnitEQFilterType : long {
+		/// <summary>Parametric filter based on Butterworth analog prototype. Must have <c>frequency</c> for center, <c>bandwidth</c>, and <c>gain</c></summary>
 		Parametric = 0,
+		/// <summary>To be added.</summary>
 		LowPass = 1,
+		/// <summary>To be added.</summary>
 		HighPass = 2,
+		/// <summary>Low pass filter with resonance. Must have <c>frequency</c> (-3dB cutoff) and <c>bandwidth</c>.</summary>
 		ResonantLowPass = 3,
+		/// <summary>High pass filter with resonance. Must have <c>frequency</c> (-3dB cutoff) and <c>bandwidth</c>.</summary>
 		ResonantHighPass = 4,
+		/// <summary>Band pass filter. Must specify <c>frequency</c> and <c>bandwidth</c>.</summary>
 		BandPass = 5,
+		/// <summary>Band stop / notch filter. Must specify <c>frequency</c> and <c>bandwidth</c>.</summary>
 		BandStop = 6,
+		/// <summary>To be added.</summary>
 		LowShelf = 7,
+		/// <summary>To be added.</summary>
 		HighShelf = 8,
+		/// <summary>Low shelf filter with resonance. Must have <c>frequency</c>, <c>bandwidth</c>, and <c>gain</c>.</summary>
 		ResonantLowShelf = 9,
+		/// <summary>High shelf filter with resonance. Must have <c>frequency</c>, <c>bandwidth</c>, and <c>gain</c>.</summary>
 		ResonantHighShelf = 10,
 	}
 
 	[Native]
 	public enum AVAudioUnitReverbPreset : long {
+		/// <summary>To be added.</summary>
 		SmallRoom = 0,
+		/// <summary>To be added.</summary>
 		MediumRoom = 1,
+		/// <summary>To be added.</summary>
 		LargeRoom = 2,
+		/// <summary>To be added.</summary>
 		MediumHall = 3,
+		/// <summary>To be added.</summary>
 		LargeHall = 4,
+		/// <summary>To be added.</summary>
 		Plate = 5,
+		/// <summary>To be added.</summary>
 		MediumChamber = 6,
+		/// <summary>To be added.</summary>
 		LargeChamber = 7,
+		/// <summary>To be added.</summary>
 		Cathedral = 8,
+		/// <summary>To be added.</summary>
 		LargeRoom2 = 9,
+		/// <summary>To be added.</summary>
 		MediumHall2 = 10,
+		/// <summary>To be added.</summary>
 		MediumHall3 = 11,
+		/// <summary>To be added.</summary>
 		LargeHall2 = 12,
 	}
 
 	[Native]
 	public enum AVAudioUnitDistortionPreset : long {
+		/// <summary>To be added.</summary>
 		DrumsBitBrush = 0,
+		/// <summary>To be added.</summary>
 		DrumsBufferBeats = 1,
+		/// <summary>To be added.</summary>
 		DrumsLoFi = 2,
+		/// <summary>To be added.</summary>
 		MultiBrokenSpeaker = 3,
+		/// <summary>To be added.</summary>
 		MultiCellphoneConcert = 4,
+		/// <summary>To be added.</summary>
 		MultiDecimated1 = 5,
+		/// <summary>To be added.</summary>
 		MultiDecimated2 = 6,
+		/// <summary>To be added.</summary>
 		MultiDecimated3 = 7,
+		/// <summary>To be added.</summary>
 		MultiDecimated4 = 8,
+		/// <summary>To be added.</summary>
 		MultiDistortedFunk = 9,
+		/// <summary>To be added.</summary>
 		MultiDistortedCubed = 10,
+		/// <summary>To be added.</summary>
 		MultiDistortedSquared = 11,
+		/// <summary>To be added.</summary>
 		MultiEcho1 = 12,
+		/// <summary>To be added.</summary>
 		MultiEcho2 = 13,
+		/// <summary>To be added.</summary>
 		MultiEchoTight1 = 14,
+		/// <summary>To be added.</summary>
 		MultiEchoTight2 = 15,
+		/// <summary>To be added.</summary>
 		MultiEverythingIsBroken = 16,
+		/// <summary>To be added.</summary>
 		SpeechAlienChatter = 17,
+		/// <summary>To be added.</summary>
 		SpeechCosmicInterference = 18,
+		/// <summary>To be added.</summary>
 		SpeechGoldenPi = 19,
+		/// <summary>To be added.</summary>
 		SpeechRadioTower = 20,
+		/// <summary>To be added.</summary>
 		SpeechWaves = 21,
 	}
 
 	[Native]
 	public enum AVAudioEnvironmentDistanceAttenuationModel : long {
+		/// <summary>Gain = (Distance / ReferenceDistance)^(-RolloffFactor)</summary>
 		Exponential = 1,
+		/// <summary>Gain = ReferenceDistance / (ReferenceDistance + RolloffFactor * (Distance - ReferenceDistance))</summary>
 		Inverse = 2,
+		/// <summary>Gain = (1 - RolloffFactor * (Distance - ReferenceDistance) / (MaximumDistance - ReferenceDistance))</summary>
 		Linear = 3,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum AVQueuedSampleBufferRenderingStatus : long {
+		/// <summary>No sample buffers have been enqueued yet.</summary>
 		Unknown,
+		/// <summary>At least one sample buffer is queued for rendering.</summary>
 		Rendering,
+		/// <summary>The player failed during or preparing for rendering.</summary>
 		Failed,
 	}
 
@@ -637,8 +790,11 @@ namespace AVFoundation {
 	[TV (17, 0)]
 	[Native]
 	public enum AVCaptureVideoStabilizationMode : long {
+		/// <summary>No video stabilization should be applied.</summary>
 		Off,
+		/// <summary>The default video stabilization algorithm should be used.</summary>
 		Standard = 1,
+		/// <summary>The "cinematic stabilization" algorithm should be used.</summary>
 		Cinematic = 2,
 		[iOS (13, 0)]
 		[MacCatalyst (14, 0)]
@@ -647,6 +803,7 @@ namespace AVFoundation {
 		PreviewOptimized = 4,
 		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), NoMac]
 		CinematicExtendedEnhanced = 5,
+		/// <summary>The device determines the stabilization mode.</summary>
 		Auto = -1,
 	}
 
@@ -664,10 +821,15 @@ namespace AVFoundation {
 	[Native]
 	[NoMac]
 	public enum AVCaptureSessionInterruptionReason : long {
+		/// <summary>Indicates that the app was sent to the background while capturing.</summary>
 		VideoDeviceNotAvailableInBackground = 1,
+		/// <summary>Indicates that another client began using the audio capture device.</summary>
 		AudioDeviceInUseByAnotherClient = 2,
+		/// <summary>Indicates that another client began using the video capture device.</summary>
 		VideoDeviceInUseByAnotherClient = 3,
+		/// <summary>Indicates that the app was displayed in Slide Over, Split View, or PIP mode, which would result in resource contention and degraded capture quality.</summary>
 		VideoDeviceNotAvailableWithMultipleForegroundApps = 4,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		VideoDeviceNotAvailableDueToSystemPressure = 5,
 	}
@@ -710,7 +872,9 @@ namespace AVFoundation {
 	[Flags]
 	[Native]
 	public enum AVMusicSequenceLoadOptions : ulong {
+		/// <summary>To be added.</summary>
 		PreserveTracks = 0,
+		/// <summary>To be added.</summary>
 		ChannelsToTracks = (1 << 0),
 	}
 
@@ -720,7 +884,9 @@ namespace AVFoundation {
 	[Flags]
 	[Native]
 	public enum AVMovieWritingOptions : ulong {
+		/// <summary>To be added.</summary>
 		AddMovieHeaderToDestination = 0,
+		/// <summary>To be added.</summary>
 		TruncateDestinationToMovieHeaderOnly = (1 << 0),
 	}
 
@@ -743,8 +909,11 @@ namespace AVFoundation {
 	[MacCatalyst (15, 0)]
 	[Native]
 	public enum AVSampleBufferRequestDirection : long {
+		/// <summary>To be added.</summary>
 		Forward = 1,
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Reverse = -1,
 	}
 
@@ -753,7 +922,9 @@ namespace AVFoundation {
 	[MacCatalyst (15, 0)]
 	[Native]
 	public enum AVSampleBufferRequestMode : long {
+		/// <summary>To be added.</summary>
 		Immediate,
+		/// <summary>To be added.</summary>
 		Scheduled,
 		[MacCatalyst (13, 1)]
 		Opportunistic = 2,
@@ -763,7 +934,9 @@ namespace AVFoundation {
 	[TV (17, 0)]
 	[Native]
 	public enum AVCaptureColorSpace : long {
+		/// <summary>Indicates an RGB color space.</summary>
 		Srgb = 0,
+		/// <summary>Indicates the DCI-P3 color space with a CIE D65 white point.</summary>
 		P3D65 = 1,
 		[Introduced (PlatformName.MacCatalyst, 14, 1)]
 		[iOS (14, 1)]
@@ -776,14 +949,18 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum AVMusicTrackLoopCount : long {
+		/// <summary>To be added.</summary>
 		Forever = -1,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum AVPlayerTimeControlStatus : long {
+		/// <summary>Indicates that the player is paused.</summary>
 		Paused,
+		/// <summary>Indicates that the player is waiting to play at a specified rate.</summary>
 		WaitingToPlayAtSpecifiedRate,
+		/// <summary>Indicates that the player is playing.</summary>
 		Playing,
 	}
 
@@ -962,7 +1139,9 @@ namespace AVFoundation {
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[Native]
 	public enum AVDepthDataAccuracy : long {
+		/// <summary>Indicates that the depth data indicate relative depths from depth to depth.</summary>
 		Relative = 0,
+		/// <summary>Indicates that the depth data indicate distances in the real world.</summary>
 		Absolute = 1,
 	}
 
@@ -1005,8 +1184,11 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum AVAudioPlayerNodeCompletionCallbackType : long {
+		/// <summary>To be added.</summary>
 		Consumed = 0,
+		/// <summary>To be added.</summary>
 		Rendered = 1,
+		/// <summary>To be added.</summary>
 		PlayedBack = 2,
 	}
 
@@ -1052,9 +1234,11 @@ namespace AVFoundation {
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	public enum AVAssetDownloadedAssetEvictionPriority {
+		/// <summary>To be added.</summary>
 		[Field ("AVAssetDownloadedAssetEvictionPriorityDefault")]
 		Default = 0,
 
+		/// <summary>To be added.</summary>
 		[Field ("AVAssetDownloadedAssetEvictionPriorityImportant")]
 		Important = 1,
 	}
@@ -1121,7 +1305,9 @@ namespace AVFoundation {
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[Native]
 	public enum AVDepthDataQuality : long {
+		/// <summary>To be added.</summary>
 		Low = 0,
+		/// <summary>To be added.</summary>
 		High = 1,
 	}
 
@@ -1131,9 +1317,13 @@ namespace AVFoundation {
 	[Flags]
 	[Native]
 	public enum AVCaptureSystemPressureFactors : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		SystemTemperature = (1 << 0),
+		/// <summary>To be added.</summary>
 		PeakPower = (1 << 1),
+		/// <summary>To be added.</summary>
 		DepthModuleTemperature = (1 << 2),
 		[iOS (17, 0), MacCatalyst (17, 0)]
 		CameraTemperature = (1uL << 3),
@@ -1144,8 +1334,11 @@ namespace AVFoundation {
 	[Native]
 	[Flags]
 	public enum AVPlayerHdrMode : long {
+		/// <summary>To be added.</summary>
 		Hlg = 0x1,
+		/// <summary>To be added.</summary>
 		Hdr10 = 0x2,
+		/// <summary>To be added.</summary>
 		DolbyVision = 0x4,
 	}
 

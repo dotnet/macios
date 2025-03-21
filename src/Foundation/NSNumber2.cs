@@ -274,6 +274,9 @@ namespace Foundation {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat NFloatValue {
 			get {
 				return (nfloat) DoubleValue;
@@ -315,7 +318,9 @@ namespace Foundation {
 		{
 			if (other is null)
 				return false;
-			return IsEqualTo (other.Handle);
+			bool result = IsEqualTo (other.Handle);
+			GC.KeepAlive (other);
+			return result;
 		}
 
 		public override int GetHashCode ()

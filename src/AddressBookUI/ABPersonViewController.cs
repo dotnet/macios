@@ -29,10 +29,22 @@ namespace AddressBookUI {
 			Identifier = identifier;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABPerson Person { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABPersonProperty Property { get; private set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? Identifier { get; private set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool ShouldPerformDefaultAction { get; set; }
 	}
 
@@ -66,6 +78,9 @@ namespace AddressBookUI {
 	partial class ABPersonViewController {
 
 		ABPerson? displayedPerson;
+		/// <summary>Returns the <see cref="T:AddressBook.ABPerson" /> associated with the displayed data.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABPerson? DisplayedPerson {
 			get {
 				MarkDirty ();
@@ -78,6 +93,9 @@ namespace AddressBookUI {
 		}
 
 		DisplayedPropertiesCollection? displayedProperties;
+		/// <summary>Gets the collection of properties that are displayed about the <see cref="P:AddressBookUI.ABPersonViewController.DisplayedPerson" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public DisplayedPropertiesCollection? DisplayedProperties {
 			get {
 				if (displayedProperties is null) {
@@ -91,6 +109,9 @@ namespace AddressBookUI {
 		}
 
 		ABAddressBook? addressBook;
+		/// <summary>Gets or sets the <see cref="T:AddressBook.ABAddressBook" /> that is the store for the data.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABAddressBook? AddressBook {
 			get {
 				MarkDirty ();

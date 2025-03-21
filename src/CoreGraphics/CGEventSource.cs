@@ -62,6 +62,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static void CGEventSourceSetKeyboardType (IntPtr handle, int /* CGEventSourceKeyboardType = uint32_t */ keyboardType);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int KeyboardType {
 			get {
 				return CGEventSourceGetKeyboardType (Handle);
@@ -74,6 +77,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static CGEventSourceStateID CGEventSourceGetSourceStateID (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGEventSourceStateID StateID {
 			get {
 				return CGEventSourceGetSourceStateID (Handle);
@@ -87,6 +93,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static void CGEventSourceSetPixelsPerLine (IntPtr handle, double value);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double PixelsPerLine {
 			get {
 				return CGEventSourceGetPixelsPerLine (Handle);
@@ -123,6 +132,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static long CGEventSourceGetUserData (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public long UserData {
 			get {
 				return CGEventSourceGetUserData (Handle);
@@ -155,6 +167,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static double CGEventSourceGetLocalEventsSuppressionInterval (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double LocalEventsSupressionInterval {
 			get {
 				return CGEventSourceGetLocalEventsSuppressionInterval (Handle);

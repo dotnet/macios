@@ -7,8 +7,6 @@
 // Copyright 2015 Xamarin Inc.
 //
 
-#if !__WATCHOS__
-
 using System;
 using Foundation;
 #if !MONOMAC
@@ -79,5 +77,3 @@ namespace MonoTouchFixtures.ModelIO {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

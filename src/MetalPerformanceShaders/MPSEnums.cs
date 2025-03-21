@@ -45,8 +45,11 @@ namespace MetalPerformanceShaders {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPSAlphaType : ulong {
+		/// <summary>Indicates that the image will not be premultiplied, and the alpha channel will not be guaranteed to be 1.</summary>
 		NonPremultiplied = 0,
+		/// <summary>Indicates that the alpha channel will be clamped to 1, even if it is not encoded in the source data.</summary>
 		AlphaIsOne = 1,
+		/// <summary>Indicates that the image will be premultiplied, and the alpha channel will not be guaranteed to be 1.</summary>
 		Premultiplied = 2,
 	}
 
@@ -60,6 +63,8 @@ namespace MetalPerformanceShaders {
 		Float32 = FloatBit | 32,
 
 		SignedBit = 0x20000000,
+		[TV (18, 4), Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4)]
+		Int2 = SignedBit | 2,
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		Int4 = SignedBit | 4,
 		Int8 = SignedBit | 8,
@@ -70,6 +75,8 @@ namespace MetalPerformanceShaders {
 		[MacCatalyst (14, 1)]
 		Int64 = SignedBit | 64,
 
+		[TV (18, 4), Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4)]
+		UInt2 = 2,
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		UInt4 = 4,
 		UInt8 = 8,
@@ -190,7 +197,9 @@ namespace MetalPerformanceShaders {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPSCnnBinaryConvolutionFlags : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		UseBetaScaling = 1 << 0,
 	}
 
@@ -198,8 +207,11 @@ namespace MetalPerformanceShaders {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPSCnnBinaryConvolutionType : ulong {
+		/// <summary>To be added.</summary>
 		BinaryWeights = 0,
+		/// <summary>To be added.</summary>
 		Xnor,
+		/// <summary>To be added.</summary>
 		And,
 	}
 
@@ -258,7 +270,9 @@ namespace MetalPerformanceShaders {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPSBoundingBoxIntersectionTestType : ulong {
+		/// <summary>To be added.</summary>
 		Default = 0,
+		/// <summary>To be added.</summary>
 		AxisAligned = 1,
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -306,8 +320,11 @@ namespace MetalPerformanceShaders {
 	[Flags]
 	[Native]
 	public enum MPSAccelerationStructureUsage : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Refit = 1,
+		/// <summary>To be added.</summary>
 		FrequentRebuild = 2,
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -320,7 +337,9 @@ namespace MetalPerformanceShaders {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPSAccelerationStructureStatus : ulong {
+		/// <summary>To be added.</summary>
 		Unbuilt = 0,
+		/// <summary>To be added.</summary>
 		Built = 1,
 	}
 
@@ -335,8 +354,11 @@ namespace MetalPerformanceShaders {
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum MPSCnnConvolutionGradientOption : ulong {
+		/// <summary>To be added.</summary>
 		GradientWithData = 0x1,
+		/// <summary>To be added.</summary>
 		GradientWithWeightsAndBias = 0x2,
+		/// <summary>To be added.</summary>
 		All = GradientWithData | GradientWithWeightsAndBias,
 	}
 
@@ -388,10 +410,15 @@ namespace MetalPerformanceShaders {
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum MPSCnnBatchNormalizationFlags : ulong {
+		/// <summary>To be added.</summary>
 		Default = 0x0,
+		/// <summary>To be added.</summary>
 		CalculateStatisticsAutomatic = Default,
+		/// <summary>To be added.</summary>
 		CalculateStatisticsAlways = 0x1,
+		/// <summary>To be added.</summary>
 		CalculateStatisticsNever = 0x2,
+		/// <summary>To be added.</summary>
 		CalculateStatisticsMask = 0x3,
 	}
 

@@ -418,5 +418,3 @@
 !missing-enum-value! MPSDataType native value MPSDataTypeComplexBit = 16777216 not bound
 !missing-enum-value! MPSDataType native value MPSDataTypeComplexFloat16 = 285212704 not bound
 !missing-enum-value! MPSDataType native value MPSDataTypeComplexFloat32 = 285212736 not bound
-!missing-enum-value! MPSDataType native value MPSDataTypeInt2 = 536870914 not bound
-!missing-enum-value! MPSDataType native value MPSDataTypeUInt2 = 2 not bound

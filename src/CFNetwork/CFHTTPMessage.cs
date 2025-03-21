@@ -95,6 +95,8 @@ namespace CoreServices {
 
 			var handle = CFHTTPMessageCreateRequest (
 				IntPtr.Zero, method.Handle, url.Handle, GetVersion (version));
+			GC.KeepAlive (method);
+			GC.KeepAlive (url);
 			return new CFHTTPMessage (handle, true);
 		}
 
@@ -283,6 +285,7 @@ namespace CoreServices {
 				CFStreamError error;
 				unsafe {
 					ok = CFHTTPMessageApplyCredentials (Handle, auth.Handle, username, password, &error);
+					GC.KeepAlive (auth);
 				}
 				if (ok == 0)
 					throw GetException ((CFStreamErrorHTTPAuthentication) error.code);
@@ -355,9 +358,13 @@ namespace CoreServices {
 			if (password is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (password));
 
-			return CFHTTPMessageAddAuthentication (
+			bool result = CFHTTPMessageAddAuthentication (
 				Handle, failureResponse.GetHandle (), username.Handle,
 				password.Handle, GetAuthScheme (scheme), forProxy ? (byte) 1 : (byte) 0) != 0;
+			GC.KeepAlive (failureResponse);
+			GC.KeepAlive (username);
+			GC.KeepAlive (password);
+			return result;
 		}
 
 		[DllImport (Constants.CFNetworkLibrary)]
@@ -391,6 +398,8 @@ namespace CoreServices {
 				unsafe {
 					ok = CFHTTPMessageApplyCredentialDictionary (
 						Handle, auth.Handle, dict.Handle, &error);
+					GC.KeepAlive (auth);
+					GC.KeepAlive (dict);
 				}
 				if (ok != 0)
 					return;

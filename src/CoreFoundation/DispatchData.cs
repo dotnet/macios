@@ -106,6 +106,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.libcLibrary)]
 		extern static nuint dispatch_data_get_size (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nuint Size => dispatch_data_get_size (Handle);
 
 		[DllImport (Constants.libcLibrary)]
@@ -131,7 +134,10 @@ namespace CoreFoundation {
 			if (data2 is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data2));
 
-			return new DispatchData (dispatch_data_create_concat (data1.Handle, data2.Handle), owns: true);
+			var data = new DispatchData (dispatch_data_create_concat (data1.Handle, data2.Handle), owns: true);
+			GC.KeepAlive (data1);
+			GC.KeepAlive (data2);
+			return data;
 		}
 
 		[DllImport (Constants.libcLibrary)]

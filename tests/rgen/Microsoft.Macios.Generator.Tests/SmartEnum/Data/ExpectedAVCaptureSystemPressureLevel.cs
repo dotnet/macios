@@ -128,6 +128,18 @@ public static partial class AVCaptureSystemPressureLevelExtensions
 	}
 
 	/// <summary>
+	/// Retrieves the <see cref="AVCaptureSystemPressureLevelExtensions" /> value represented by the backing field value in <paramref name="handle" />.
+	/// </summary>
+	/// <param name="handle">The native handle with the name of the constant to retrieve.</param>
+	public static AVCaptureSystemPressureLevel? GetNullableValue (NativeHandle handle)
+	{
+		using var str = Runtime.GetNSObject<NSString> (handle);
+		if (str is null)
+			return null;
+		return GetValue (str);
+	}
+
+	/// <summary>
 	/// Converts an array of <see cref="AVCaptureSystemPressureLevelExtensions" /> enum values into an array of their corresponding constants.
 	/// </summary>
 	/// <param name="values">The array of enum values to convert.</param>

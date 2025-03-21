@@ -2926,9 +2926,15 @@ namespace Contacts {
 		[Field ("CNSocialProfileServiceTencentWeibo")]
 		NSString TencentWeibo { get; }
 
+		/// <summary>Twitter.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CNSocialProfileServiceTwitter")]
 		NSString Twitter { get; }
 
+		/// <summary>Yelp.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CNSocialProfileServiceYelp")]
 		NSString Yelp { get; }
 

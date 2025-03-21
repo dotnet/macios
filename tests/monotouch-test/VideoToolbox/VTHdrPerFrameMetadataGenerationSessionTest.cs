@@ -2,7 +2,6 @@
 // Unit tests for VTHdrPerFrameMetadataGenerationSession
 //
 
-#if !__WATCHOS__
 #if NET
 
 using System;
@@ -85,4 +84,3 @@ namespace MonoTouchFixtures.VideoToolbox {
 }
 
 #endif // NET
-#endif // !__WATCHOS__

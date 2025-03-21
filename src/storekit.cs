@@ -148,6 +148,10 @@ namespace StoreKit {
 		[Static]
 		void DeleteContentForProduct (string productId);
 
+		/// <summary>Represents the value associated with the constant SKDownloadTimeRemainingUnknown</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SKDownloadTimeRemainingUnknown")]
 		double TimeRemainingUnknown { get; }
@@ -550,6 +554,13 @@ namespace StoreKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the StoreKit.ISKRequestDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the StoreKit.ISKRequestDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		ISKRequestDelegate Delegate { get; set; }
 
@@ -595,6 +606,9 @@ namespace StoreKit {
 		[Export ("receiptProperties")]
 		NSDictionary WeakReceiptProperties { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Wrap ("WeakReceiptProperties")]
 		SKReceiptProperties ReceiptProperties { get; }
@@ -632,6 +646,13 @@ namespace StoreKit {
 		[New]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the StoreKit.ISKProductsRequestDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the StoreKit.ISKProductsRequestDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[New]
 		ISKProductsRequestDelegate Delegate { get; set; }
@@ -687,6 +708,13 @@ namespace StoreKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the StoreKit.ISKStoreProductViewControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the StoreKit.ISKStoreProductViewControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		ISKStoreProductViewControllerDelegate Delegate { get; set; }
 
@@ -784,25 +812,46 @@ namespace StoreKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SKStoreProductParameterKey {
+		/// <summary>Represents the value associated with the constant SKStoreProductParameterITunesItemIdentifier</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SKStoreProductParameterITunesItemIdentifier")]
 		NSString ITunesItemIdentifier { get; }
 
+		/// <summary>Represents the value associated with the constant SKStoreProductParameterProductIdentifier.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SKStoreProductParameterProductIdentifier")]
 		NSString ProductIdentifier { get; }
 
+		/// <summary>Represents the value associated with the constant SKStoreProductParameterAffiliateToken</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SKStoreProductParameterAffiliateToken")]
 		NSString AffiliateToken { get; }
 
+		/// <summary>Represents the value associated with the constant SKStoreProductParameterCampaignToken</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SKStoreProductParameterCampaignToken")]
 		NSString CampaignToken { get; }
 
+		/// <summary>TRepresents the value associated with the constant SKStoreProductParameterProviderToken.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SKStoreProductParameterProviderToken")]
 		NSString ProviderToken { get; }
 
+		/// <summary>Represents the value associated with the constant SKStoreProductParameterAdvertisingPartnerToken.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SKStoreProductParameterAdvertisingPartnerToken")]
 		NSString AdvertisingPartnerToken { get; }
@@ -1016,14 +1065,17 @@ namespace StoreKit {
 		[Export ("requestUserTokenForDeveloperToken:completionHandler:")]
 		void RequestUserToken (string developerToken, Action<NSString, NSError> completionHandler);
 
+		/// <include file="../docs/api/StoreKit/SKCloudServiceController.xml" path="/Documentation/Docs[@DocId='P:StoreKit.SKCloudServiceController.StorefrontIdentifierDidChangeNotification']/*" />
 		[Notification]
 		[Field ("SKStorefrontIdentifierDidChangeNotification")]
 		NSString StorefrontIdentifierDidChangeNotification { get; }
 
+		/// <include file="../docs/api/StoreKit/SKCloudServiceController.xml" path="/Documentation/Docs[@DocId='P:StoreKit.SKCloudServiceController.CloudServiceCapabilitiesDidChangeNotification']/*" />
 		[Notification]
 		[Field ("SKCloudServiceCapabilitiesDidChangeNotification")]
 		NSString CloudServiceCapabilitiesDidChangeNotification { get; }
 
+		/// <include file="../docs/api/StoreKit/SKCloudServiceController.xml" path="/Documentation/Docs[@DocId='P:StoreKit.SKCloudServiceController.StorefrontCountryCodeDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("SKStorefrontCountryCodeDidChangeNotification")]
@@ -1223,7 +1275,9 @@ namespace StoreKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKProductDiscountType : long {
+		/// <summary>To be added.</summary>
 		Introductory,
+		/// <summary>To be added.</summary>
 		Subscription,
 	}
 

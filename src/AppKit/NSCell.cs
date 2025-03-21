@@ -55,6 +55,9 @@ namespace AppKit {
 				(nint) (long) op,
 				alphaFraction,
 				flipped ? (byte) 1 : (byte) 0);
+			GC.KeepAlive (startCap);
+			GC.KeepAlive (centerFill);
+			GC.KeepAlive (endCap);
 		}
 
 		[DllImport (Constants.AppKitLibrary)]
@@ -81,6 +84,15 @@ namespace AppKit {
 				bottomEdgeFill.GetHandle (),
 				bottomRightCorner.GetHandle (),
 				(nint) (long) op, alphaFraction, flipped ? (byte) 1 : (byte) 0);
+			GC.KeepAlive (topLeftCorner);
+			GC.KeepAlive (topEdgeFill);
+			GC.KeepAlive (topRightCorner);
+			GC.KeepAlive (leftEdgeFill);
+			GC.KeepAlive (centerFill);
+			GC.KeepAlive (rightEdgeFill);
+			GC.KeepAlive (bottomLeftCorner);
+			GC.KeepAlive (bottomEdgeFill);
+			GC.KeepAlive (bottomRightCorner);
 		}
 	}
 }

@@ -17,7 +17,8 @@ namespace Microsoft.Macios.Generator.Emitters;
 
 class EnumEmitter : ICodeEmitter {
 
-	public string GetSymbolName (in Binding binding) => $"{binding.Name}Extensions";
+	public string GetSymbolName (in Binding binding)
+		=> Nomenclator.GetSmartEnumExtensionClassName (binding.Name);
 	public IEnumerable<string> UsingStatements => ["Foundation", "ObjCRuntime", "System"];
 
 	void EmitEnumFieldAtIndex (TabbedWriter<StringWriter> classBlock, in Binding binding, int index)
@@ -112,8 +113,23 @@ class EnumEmitter : ICodeEmitter {
 return GetValue (str);
 ");
 		}
-
 		classBlock.WriteLine ();
+
+		// get nullable value from a handle, similar to the above but used when the enum could be null (yes, apple
+		// does have methods that return null for enums)
+		classBlock.WriteDocumentation (Documentation.SmartEnum.GetValueHandle (symbolName));
+		using (var getValueFromHandle =
+			   classBlock.CreateBlock ($"public static {binding.Name}? GetNullableValue (NativeHandle handle)",
+				   true)) {
+			getValueFromHandle.WriteRaw (
+@"using var str = Runtime.GetNSObject<NSString> (handle);
+if (str is null)
+	return null;
+return GetValue (str);
+");
+		}
+		classBlock.WriteLine ();
+
 		// To ConstantArray
 		classBlock.WriteDocumentation (Documentation.SmartEnum.ToConstantArray (symbolName));
 		classBlock.WriteRaw (

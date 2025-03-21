@@ -98,7 +98,9 @@ namespace GameController {
 		{
 			snapshotData = default;
 			unsafe {
-				return GCGamepadSnapShotDataV100FromNSData ((GCGamepadSnapShotDataV100*) Unsafe.AsPointer<GCGamepadSnapShotDataV100> (ref snapshotData), data.GetHandle ()) != 0;
+				bool result = GCGamepadSnapShotDataV100FromNSData ((GCGamepadSnapShotDataV100*) Unsafe.AsPointer<GCGamepadSnapShotDataV100> (ref snapshotData), data.GetHandle ()) != 0;
+				GC.KeepAlive (data);
+				return result;
 			}
 		}
 	}

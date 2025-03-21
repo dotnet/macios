@@ -68,6 +68,7 @@ namespace CoreMedia {
 			IntPtr buffer;
 			unsafe {
 				error = CMBlockBufferCreateWithBufferReference (IntPtr.Zero, targetBuffer.GetHandle (), offsetToData, dataLength, flags, &buffer);
+				GC.KeepAlive (targetBuffer);
 			}
 			if (error != CMBlockBufferError.None)
 				return null;
@@ -91,7 +92,9 @@ namespace CoreMedia {
 					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (targetBuffer));
 			}
 
-			return CMBlockBufferAppendBufferReference (GetCheckedHandle (), targetBuffer.GetHandle (), offsetToData, dataLength, flags);
+			CMBlockBufferError error = CMBlockBufferAppendBufferReference (GetCheckedHandle (), targetBuffer.GetHandle (), offsetToData, dataLength, flags);
+			GC.KeepAlive (targetBuffer);
+			return error;
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]
@@ -199,6 +202,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* size_t */ nuint CMBlockBufferGetDataLength (/* CMBlockBufferRef */ IntPtr theBuffer);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nuint DataLength {
 			get {
 				return CMBlockBufferGetDataLength (Handle);
@@ -219,6 +225,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* Boolean */ byte CMBlockBufferIsEmpty (/* CMBlockBufferRef */ IntPtr theBuffer);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsEmpty {
 			get {
 				return CMBlockBufferIsEmpty (GetCheckedHandle ()) != 0;
@@ -288,9 +297,11 @@ namespace CoreMedia {
 			unsafe {
 				if (customBlockSource is null) {
 					error = CMBlockBufferCreateContiguous (IntPtr.Zero, sourceBuffer.Handle, IntPtr.Zero, null, offsetToData, dataLength, flags, &buffer);
+					GC.KeepAlive (sourceBuffer);
 				} else {
 					fixed (CMCustomBlockAllocator.CMBlockBufferCustomBlockSource* cblock = &customBlockSource.Cblock) {
 						error = CMBlockBufferCreateContiguous (IntPtr.Zero, sourceBuffer.Handle, IntPtr.Zero, cblock, offsetToData, dataLength, flags, &buffer);
+						GC.KeepAlive (sourceBuffer);
 					}
 				}
 			}

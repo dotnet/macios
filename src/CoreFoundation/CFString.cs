@@ -53,18 +53,30 @@ namespace CoreFoundation {
 		nint loc; // defined as 'long' in native code
 		nint len; // defined as 'long' in native code
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int Location {
 			get { return (int) loc; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int Length {
 			get { return (int) len; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public long LongLocation {
 			get { return (long) loc; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public long LongLength {
 			get { return (long) len; }
 		}
@@ -230,8 +242,10 @@ namespace CoreFoundation {
 			if (x is null)
 				return null;
 
-			if (x.str is null)
+			if (x.str is null) {
 				x.str = FromHandle (x.Handle);
+				GC.KeepAlive (x);
+			}
 
 			return x.str;
 		}
@@ -245,6 +259,9 @@ namespace CoreFoundation {
 			return new CFString (s);
 		}
 
+		/// <summary>String length.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int Length {
 			get {
 				if (str is not null)

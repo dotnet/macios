@@ -47,7 +47,18 @@ namespace Foundation {
 		AllowMultiple = true)]
 	public sealed class PreserveAttribute : Attribute {
 
+		/// <summary>Ensures that all members of this type are preserved.</summary>
+		///         <remarks>All members of this type, including fields, properties, methods, subclasses are preserved during linking.</remarks>
 		public bool AllMembers;
+		/// <summary>Flags the method as a method to preserve during linking if the container class is pulled in.</summary>
+		///         <remarks>
+		///           <para>
+		/// 	    If the Conditional value is set on a Preserve attribute on a method, then the method will be preserved if the containing NSObject is kept after the linker has done its job.
+		/// 	  </para>
+		///           <para>
+		/// 	    You would typically use this for callbacks that you know will be called in your code dynamically (for example with a selector invocation from Objective-C) since a static linker would not be able to infer that this particual method is required.
+		/// 	  </para>
+		///         </remarks>
 		public bool Conditional;
 
 		public PreserveAttribute ()

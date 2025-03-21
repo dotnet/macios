@@ -47,11 +47,17 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INBookRestaurantReservationIntentCode : long {
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success = 0,
+		/// <summary>The processing completed, but the booking was not made.</summary>
 		Denied,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate that the companion app must verify the user's credentals.</summary>
 		FailureRequiringAppLaunchMustVerifyCredentials,
+		/// <summary>Developers should use this code to indicate that the required service is temporarily unavailable and continuation requires the companion app.</summary>
 		FailureRequiringAppLaunchServiceTemporarilyUnavailable,
 	}
 
@@ -68,12 +74,18 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INCallRecordType : long {
+		/// <summary>The form of the call could not be determined.</summary>
 		Unknown = 0,
+		/// <summary>The call originated on the device.</summary>
 		Outgoing,
+		/// <summary>The call was not answered.</summary>
 		Missed,
+		/// <summary>The call was answered.</summary>
 		Received,
+		/// <summary>The most recent call for the user.</summary>
 		[MacCatalyst (13, 1)]
 		Latest,
+		/// <summary>A voicemail.</summary>
 		[MacCatalyst (13, 1)]
 		Voicemail,
 		[iOS (13, 0)]
@@ -216,8 +228,11 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INGetAvailableRestaurantReservationBookingDefaultsIntentResponseCode : long {
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified,
 	}
 
@@ -225,9 +240,13 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INGetAvailableRestaurantReservationBookingsIntentCode : long {
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that while processing succeeded, no available bookings satisfy the request.</summary>
 		FailureRequestUnsatisfiable,
+		/// <summary>Developers should use this code to iindicate a failure for an unspecified reason.</summary>
 		FailureRequestUnspecified,
 	}
 
@@ -235,7 +254,9 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INGetRestaurantGuestIntentResponseCode : long {
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
 	}
 
@@ -261,9 +282,13 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INGetUserCurrentRestaurantReservationBookingsIntentResponseCode : long {
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate failure because the request could not be honored.</summary>
 		FailureRequestUnsatisfiable,
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified,
 	}
 
@@ -272,37 +297,69 @@ namespace Intents {
 	[Native]
 	[ErrorDomain ("INIntentErrorDomain")]
 	public enum INIntentErrorCode : long {
+		/// <summary>The interaction could not be donated or deleted because the device does not support the behavior.</summary>
 		InteractionOperationNotSupported = 1900,
+		/// <summary>An error occurred while donating an interaction.</summary>
 		DonatingInteraction = 1901,
+		/// <summary>An error occurred when attempting to delete all interactions.</summary>
 		DeletingAllInteractions = 1902,
+		/// <summary>An error occurred when attempting to delete specific interactions.</summary>
 		DeletingInteractionWithIdentifiers = 1903,
+		/// <summary>An error occurred when attempting to delete grouped interactions.</summary>
 		DeletingInteractionWithGroupIdentifier = 1904,
+		/// <summary>The app has multiple extensions attempting to handle the same intent.</summary>
 		IntentSupportedByMultipleExtension = 2001,
+		/// <summary>There is at least one intent in the info.plist <c>IntentsRestrictedWhileLocked</c> list that is not in the file's <c>IntentsSupported</c> list.</summary>
 		RestrictedIntentsNotSupportedByExtension = 2002,
+		/// <summary>The info.plist contains intents for which the app does not provide an extension.</summary>
 		NoHandlerProvidedForIntent = 2003,
+		/// <summary>The extension's intent does not match the intent names provided in info.plist.</summary>
 		InvalidIntentName = 2004,
+		/// <summary>To be added.</summary>
 		NoAppAvailable = 2005,
+		/// <summary>Too much time has elapsed for the underlying request.</summary>
 		RequestTimedOut = 3001,
+		/// <summary>To be added.</summary>
 		MissingInformation = 3002,
+		/// <summary>The user vocabulary file is not at the specified location.</summary>
 		InvalidUserVocabularyFileLocation = 4000,
+		/// <summary>The extension timed out.</summary>
 		ExtensionLaunchingTimeout = 5000,
+		/// <summary>An error occurred while tryig to start communication with an extension.</summary>
 		ExtensionBringUpFailed = 5001,
+		/// <summary>To be added.</summary>
 		ImageGeneric = 6000,
+		/// <summary>To be added.</summary>
 		ImageNoServiceAvailable = 6001,
+		/// <summary>To be added.</summary>
 		ImageStorageFailed = 6002,
+		/// <summary>To be added.</summary>
 		ImageLoadingFailed = 6003,
+		/// <summary>To be added.</summary>
 		ImageRetrievalFailed = 6004,
+		/// <summary>To be added.</summary>
 		ImageProxyLoop = 6005,
+		/// <summary>To be added.</summary>
 		ImageProxyInvalid = 6006,
+		/// <summary>To be added.</summary>
 		ImageProxyTimeout = 6007,
+		/// <summary>To be added.</summary>
 		ImageServiceFailure = 6008,
+		/// <summary>To be added.</summary>
 		ImageScalingFailed = 6009,
+		/// <summary>To be added.</summary>
 		PermissionDenied = 6010,
+		/// <summary>To be added.</summary>
 		VoiceShortcutCreationFailed = 7000,
+		/// <summary>To be added.</summary>
 		VoiceShortcutGetFailed = 7001,
+		/// <summary>To be added.</summary>
 		VoiceShortcutDeleteFailed = 7002,
+		/// <summary>To be added.</summary>
 		EncodingGeneric = 8000,
+		/// <summary>To be added.</summary>
 		EncodingFailed = 8001,
+		/// <summary>To be added.</summary>
 		DecodingGeneric = 9000,
 		UnableToCreateAppIntentRepresentation = 10000,
 		NoAppIntent = 10001,
@@ -312,12 +369,19 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INIntentHandlingStatus : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that processing of the intent should be done in the app.</summary>
 		DeferredToApplication,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		UserConfirmationRequired,
 	}
@@ -326,8 +390,11 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INInteractionDirection : long {
+		/// <summary>Indicates that direction does not flow from or towards the device.</summary>
 		Unspecified = 0,
+		/// <summary>Data flows outward from the device (for instance, initiating a call).</summary>
 		Outgoing,
+		/// <summary>Data moves towards the device (for instance, a message to the user).</summary>
 		Incoming,
 	}
 
@@ -1034,13 +1101,21 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INAccountType : long {
+		/// <summary>An account whose type is unknown.</summary>
 		Unknown = 0,
+		/// <summary>A checking account maintained at a bank.</summary>
 		Checking,
+		/// <summary>A credit line.</summary>
 		Credit,
+		/// <summary>An account with a set debit amount.</summary>
 		Debit,
+		/// <summary>An investment account.</summary>
 		Investment,
+		/// <summary>A mortgage account.</summary>
 		Mortgage,
+		/// <summary>A prepaid debit card.</summary>
 		Prepaid,
+		/// <summary>A savings account held at a bank.</summary>
 		Saving,
 	}
 
@@ -1050,11 +1125,17 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INActivateCarSignalIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
 	}
 
@@ -1653,20 +1734,35 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INMediaItemType : long {
+		/// <summary>To be added.</summary>
 		Unknown = 0,
+		/// <summary>To be added.</summary>
 		Song,
+		/// <summary>To be added.</summary>
 		Album,
+		/// <summary>To be added.</summary>
 		Artist,
+		/// <summary>To be added.</summary>
 		Genre,
+		/// <summary>To be added.</summary>
 		Playlist,
+		/// <summary>To be added.</summary>
 		PodcastShow,
+		/// <summary>To be added.</summary>
 		PodcastEpisode,
+		/// <summary>To be added.</summary>
 		PodcastPlaylist,
+		/// <summary>To be added.</summary>
 		MusicStation,
+		/// <summary>To be added.</summary>
 		AudioBook,
+		/// <summary>To be added.</summary>
 		Movie,
+		/// <summary>To be added.</summary>
 		TVShow,
+		/// <summary>To be added.</summary>
 		TVShowEpisode,
+		/// <summary>To be added.</summary>
 		MusicVideo,
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -4636,6 +4732,12 @@ namespace Intents {
 		[NullAllowed, Export ("relationship"), Protected]
 		NSString WeakRelationship { get; }
 
+		/// <summary>Gets the relationship to the current user.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("INPersonRelationshipExtensions.GetValue (WeakRelationship)")]
 		INPersonRelationship Relationship { get; }
 

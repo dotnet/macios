@@ -107,6 +107,7 @@ namespace OpenGL {
 
 			set {
 				var retValue = CGLSetCurrentContext (value.GetHandle ());
+				GC.KeepAlive (value);
 				if (retValue != CGLErrorCode.NoError)
 					throw new Exception ("Error setting the Current Context");
 			}

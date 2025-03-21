@@ -37,8 +37,11 @@ namespace CoreLocation {
 	[MacCatalyst (13, 1)]
 	[Native] // NSInteger -> CLRegion.h
 	public enum CLRegionState : long {
+		/// <summary>The device's relation to the region could not be determined.</summary>
 		Unknown,
+		/// <summary>The device is inside the region.</summary>
 		Inside,
+		/// <summary>The device is outside the region.</summary>
 		Outside,
 	}
 
@@ -50,9 +53,13 @@ namespace CoreLocation {
 	[MacCatalyst (13, 1)]
 	[Native] // NSInteger -> CLRegion.h
 	public enum CLProximity : long {
+		/// <summary>The distance to the iBeacon could not be estimated.</summary>
 		Unknown,
+		/// <summary>The closest distance reported by an iBeacon.</summary>
 		Immediate,
+		/// <summary>An intermediate distance reported by an iBeacon.</summary>
 		Near,
+		/// <summary>The furthest distance reported by an iBeacon.</summary>
 		Far,
 	}
 
@@ -103,24 +110,45 @@ namespace CoreLocation {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // will crash, see CoreLocation.cs for compatibility stubs
 	partial interface CLHeading : NSSecureCoding, NSCopying {
+		/// <summary>Heading, relative to magnetic North, in degrees.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("magneticHeading")]
 		double MagneticHeading { get; }
 
+		/// <summary>The heading, relative to true North, in degrees.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("trueHeading")]
 		double TrueHeading { get; }
 
+		/// <summary>If negative, indicates invalid heading. If positive, the maximum deviation, in degrees, between <see cref="P:CoreLocation.CLHeading.MagneticHeading" /> and the actual magnetic North.</summary>
+		///         <value>If negative, indicates the heading is invalid (due to, for instance heavy magnetic interference or lack of calibration). If positive, it indicates the the maximum deviation, in degrees, between actual magnetic North and <see cref="P:CoreLocation.CLHeading.MagneticHeading" />.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("headingAccuracy")]
 		double HeadingAccuracy { get; }
 
+		/// <summary>The geomagnetic signal, in microteslas, along the X axis.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("x")]
 		double X { get; }
 
+		/// <summary>The geomagnetic signal, in microteslas, along the Y axis.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("y")]
 		double Y { get; }
 
+		/// <summary>The geomagnetic signal, in microteslas, along the Z axis.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("z")]
 		double Z { get; }
 
+		/// <summary>The time at which the reading was taken.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("timestamp", ArgumentSemantic.Copy)]
 		NSDate Timestamp { get; }
 	}
@@ -208,6 +236,10 @@ namespace CoreLocation {
 
 		// Apple keep changing the 'introduction' of this field (5.0->8.0->5.0) but it was not available in 6.1
 		// nor in 7.0 - but it works on my iPad3 running iOS 7.1
+		/// <summary>Represents the value associated with the constant kCLErrorUserInfoAlternateRegionKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("kCLErrorUserInfoAlternateRegionKey")]
@@ -348,6 +380,9 @@ namespace CoreLocation {
 		[Export ("locationServicesEnabled"), Static]
 		bool LocationServicesEnabled { get; }
 
+		/// <summary>The minimum change in heading, in degreees, necessary to generate a location update.</summary>
+		///         <value>The default value is 1 (degree).</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("headingFilter", ArgumentSemantic.Assign)]
@@ -368,6 +403,12 @@ namespace CoreLocation {
 		[Export ("dismissHeadingCalibrationDisplay")]
 		void DismissHeadingCalibrationDisplay ();
 
+		/// <summary>Developers should not use this deprecated property. </summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>Application developers should not use this deprecated property.</para>
+		///           <para>Prior to iOS 6, this property was displayed to the user when they were prompted as to whether to allow location services.</para>
+		///         </remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 6, 0)]
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Set the purpose using the NSLocationUsageDescription key in the Info.plist instead.")]
@@ -378,16 +419,28 @@ namespace CoreLocation {
 		[NullAllowed, Export ("purpose")]
 		string Purpose { get; set; }
 
+		/// <summary>Whether the <see cref="P:CoreLocation.CLLocationManager.Heading" /> property is not <see langword="null" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("headingAvailable"), Static]
 		bool HeadingAvailable { get; }
 
+		/// <summary>Whether "significant location change" monitoring (e.g., via cell tower switch) is available.</summary>
+		///         <value>
+		///           <see langword="true" /> if such monitoring is available.</value>
+		///         <remarks>
+		///           <para>"Significant location change" monitoring is the lowest-power location monitoring mode and is done primarily via tracking cellphone tower changes. This type of monitoring is primarily useful for applications that are satisfied by approximate location data. </para>
+		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("significantLocationChangeMonitoringAvailable"), Static]
 		bool SignificantLocationChangeMonitoringAvailable { get; }
 
+		/// <summary>Application developers should use <see cref="M:CoreLocation.CLLocationManager.IsMonitoringAvailable(System.Type)" /> rather than this deprecated method.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'IsMonitoringAvailable' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'IsMonitoringAvailable' instead.")]
@@ -396,6 +449,9 @@ namespace CoreLocation {
 		[Export ("regionMonitoringAvailable"), Static]
 		bool RegionMonitoringAvailable { get; }
 
+		/// <summary>Application developers should use <see cref="M:CoreLocation.CLLocationManager.IsMonitoringAvailable(System.Type)" /> rather than this deprecated method.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 6, 0, message: "Use 'IsMonitoringAvailable' and 'AuthorizationStatus' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'IsMonitoringAvailable' and 'AuthorizationStatus' instead.")]
@@ -404,21 +460,37 @@ namespace CoreLocation {
 		[Export ("regionMonitoringEnabled"), Static]
 		bool RegionMonitoringEnabled { get; }
 
+		/// <summary>The orientation used to determine heading calculations.</summary>
+		///         <value>The default value assumes that the app, in upright portrait mode, represents due North.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("headingOrientation", ArgumentSemantic.Assign)]
 		CLDeviceOrientation HeadingOrientation { get; set; }
 
+		/// <summary>The most recent heading (direction in which the device is traveling).</summary>
+		///         <value>This value may be <see langword="null" /> if heading updates have not been started.</value>
+		///         <remarks>
+		///           <para>Heading information is only available on devices with a hardware magnetometer. (See <see cref="P:CoreLocation.CLLocationManager.HeadingAvailable" />.)</para>
+		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("heading", ArgumentSemantic.Copy)]
 		CLHeading Heading { get; }
 
+		/// <summary>The largest boundary distance, in meters, that can be assigned to a region.</summary>
+		///         <value>A return value of -1 indicates that region monitoring is unavailable.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("maximumRegionMonitoringDistance")]
 		double MaximumRegionMonitoringDistance { get; }
 
+		/// <summary>The set of <see cref="T:CoreLocation.CLRegion" />s being monitored by the app.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>The <see cref="T:CoreLocation.CLRegion" />s objects returned by this method may be different than those created by the app. Application developers should use the <see cref="P:CoreLocation.CLRegion.Identifier" /> property to determine equality.</para>
+		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("monitoredRegions", ArgumentSemantic.Copy)]
@@ -477,11 +549,21 @@ namespace CoreLocation {
 		[Export ("startMonitoringForRegion:")]
 		void StartMonitoring (CLRegion region);
 
+		/// <summary>Used to provide the operating system clues for better power consumption / accuracy.</summary>
+		///         <value>The default value is <see cref="F:CoreLocation.CLActivityType.Other" />.</value>
+		///         <remarks>
+		///           <para>Application developers should set this property when possible. It provides clues to the system about the application's need. For instance, if set to <see cref="F:CoreLocation.CLActivityType.AutomotiveNavigation" /> and the device has not moved for awhile, the system might power down updates until movement is detected.</para>
+		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("activityType", ArgumentSemantic.Assign)]
 		CLActivityType ActivityType { get; set; }
 
+		/// <summary>Whether the system is allowed to pause location updates (for instance, if the device has not moved in awhile).</summary>
+		///         <value>The default value is <see langword="true" />.</value>
+		///         <remarks>
+		///           <para>Application developers can make pauses more logical by assigning <see cref="P:CoreLocation.CLLocationManager.ActivityType" /> appropriately.</para>
+		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("pausesLocationUpdatesAutomatically", ArgumentSemantic.Assign)]
@@ -503,6 +585,9 @@ namespace CoreLocation {
 		[Export ("disallowDeferredLocationUpdates")]
 		void DisallowDeferredLocationUpdates ();
 
+		/// <summary>Whether background-generated deferred location data are available.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Not used anymore. It will always return 'false'.")]
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Not used anymore. It will always return 'false'.")]
@@ -525,6 +610,9 @@ namespace CoreLocation {
 		[Static, Export ("isMonitoringAvailableForClass:")]
 		bool IsMonitoringAvailable (Class regionClass);
 
+		/// <summary>The set of <see cref="T:CoreLocation.CLRegion" />s being tracked using ranging.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'RangedBeaconConstraints' instead.")]
@@ -572,6 +660,9 @@ namespace CoreLocation {
 		[Export ("stopRangingBeaconsSatisfyingConstraint:")]
 		void StopRangingBeacons (CLBeaconIdentityConstraint constraint);
 
+		/// <summary>Gets a Boolean value that tells whether the device can range Bluetooth beacons.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Static]
@@ -597,11 +688,17 @@ namespace CoreLocation {
 		[Export ("stopMonitoringVisits")]
 		void StopMonitoringVisits ();
 
+		/// <summary>Gets or sets a Boolean value that controls whether the application will respond to location updates while it is suspended.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("allowsBackgroundLocationUpdates")]
 		bool AllowsBackgroundLocationUpdates { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("showsBackgroundLocationIndicator")]
@@ -786,6 +883,9 @@ namespace CoreLocation {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // will crash, see CoreLocation.cs for compatibility stubs
 	partial interface CLRegion : NSSecureCoding, NSCopying {
+		/// <summary>The region's center</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'CLCircularRegion' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'CLCircularRegion' instead.")]
@@ -794,6 +894,9 @@ namespace CoreLocation {
 		[Export ("center")]
 		CLLocationCoordinate2D Center { get; }
 
+		/// <summary>Radius in meters of the region.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'CLCircularRegion' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'CLCircularRegion' instead.")]
@@ -955,6 +1058,12 @@ namespace CoreLocation {
 		NSTimeZone TimeZone { get; }
 
 		// From CLPlacemark (ContactsAdditions) category.
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("postalAddress")]
@@ -1057,6 +1166,11 @@ namespace CoreLocation {
 		[Export ("peripheralDataWithMeasuredPower:")]
 		NSMutableDictionary GetPeripheralData ([NullAllowed] NSNumber measuredPower);
 
+		/// <summary>The UUID associated with the iBeacon.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>The UUID of an iBeacon instance will often be the same UUID used in other instances (for instance, a chain of stores might use a UUID associated with the chain, not with the specific store in which the user finds themselves ).</para>
+		///         </remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'Uuid' instead.")]
 		[MacCatalyst (13, 1)]
@@ -1069,12 +1183,23 @@ namespace CoreLocation {
 		[Export ("UUID", ArgumentSemantic.Copy)]
 		NSUuid Uuid { get; }
 
+		/// <summary>A number that can be used by the application developer for any purpose.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("major", ArgumentSemantic.Copy)]
 		NSNumber Major { get; }
 
+		/// <summary>A number that can be used by the application developer for any purpose.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("minor", ArgumentSemantic.Copy)]
 		NSNumber Minor { get; }
 
+		/// <summary>Controls whether the entry/leave events are displayed to the user when they turn on their display.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Export ("notifyEntryStateOnDisplay", ArgumentSemantic.Assign)]
 		bool NotifyEntryStateOnDisplay { get; set; }
 
@@ -1090,6 +1215,9 @@ namespace CoreLocation {
 	[BaseType (typeof (NSObject))]
 	partial interface CLBeacon : NSCopying, NSSecureCoding {
 
+		/// <summary>The proximity ID of the beacon.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'Uuid' instead.")]
 		[MacCatalyst (13, 1)]
@@ -1102,18 +1230,42 @@ namespace CoreLocation {
 		[Export ("UUID", ArgumentSemantic.Copy)]
 		NSUuid Uuid { get; }
 
+		/// <summary>A number that can be used by the application developer for any purpose.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>This property, and <see cref="P:CoreLocation.CLBeacon.Minor" /> can be used by the application developer for any purpose. For example, a department store would have a chain-wide <see cref="P:CoreLocation.CLBeacon.ProximityUuid" /> but might store the store-number in <see cref="P:CoreLocation.CLBeacon.Major" /> and the department number in <see cref="P:CoreLocation.CLBeacon.Minor" />.</para>
+		///         </remarks>
 		[Export ("major", ArgumentSemantic.Copy)]
 		NSNumber Major { get; }
 
+		/// <summary>A number that can be used by the application developer for any purpose.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>This property, and <see cref="P:CoreLocation.CLBeacon.Major" /> can be used by the application developer for any purpose. For example, a department store would have a chain-wide <see cref="P:CoreLocation.CLBeacon.ProximityUuid" /> but might store the store-number in <see cref="P:CoreLocation.CLBeacon.Major" /> and the department number in <see cref="P:CoreLocation.CLBeacon.Minor" />.</para>
+		///         </remarks>
 		[Export ("minor", ArgumentSemantic.Copy)]
 		NSNumber Minor { get; }
 
+		/// <summary>The distance to the beacon.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("proximity")]
 		CLProximity Proximity { get; }
 
+		/// <summary>The accuracy of <see cref="P:CoreLocation.CLBeacon.Proximity" />, in meters.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>Application developers should not use this value to try to indicate a precise location. It should be used to tell the difference between multiple beacons with the same <see cref="P:CoreLocation.CLBeacon.Proximity" /> value.</para>
+		///           <para>Even if both the device and the beacon are stationary, this value may vary over time due to radio interference.</para>
+		///         </remarks>
 		[Export ("accuracy")]
 		double Accuracy { get; }
 
+		/// <summary>The average received signal strength, measured in decibels.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>The average RSSI value of those samples received from the beacon since the last time range (see <see cref="P:CoreLocation.CLBeacon.Proximity" />) was reported to the app.</para>
+		///         </remarks>
 		[Export ("rssi")]
 		nint Rssi { get; }
 
@@ -1188,15 +1340,27 @@ namespace CoreLocation {
 	[BaseType (typeof (NSObject))]
 	interface CLVisit : NSSecureCoding, NSCopying {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("arrivalDate", ArgumentSemantic.Copy)]
 		NSDate ArrivalDate { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("departureDate", ArgumentSemantic.Copy)]
 		NSDate DepartureDate { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("coordinate")]
 		CLLocationCoordinate2D Coordinate { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("horizontalAccuracy")]
 		double HorizontalAccuracy { get; }
 	}

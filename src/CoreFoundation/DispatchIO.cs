@@ -82,6 +82,7 @@ namespace CoreFoundation {
 				delegate* unmanaged<IntPtr, IntPtr, int, void> trampoline = &Trampoline_DispatchReadWriteHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (DispatchIO), nameof (Trampoline_DispatchReadWriteHandler));
 				dispatch_read (fd, size, dispatchQueue.Handle, &block);
+				GC.KeepAlive (dispatchQueue);
 			}
 		}
 
@@ -102,6 +103,8 @@ namespace CoreFoundation {
 				delegate* unmanaged<IntPtr, IntPtr, int, void> trampoline = &Trampoline_DispatchReadWriteHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (DispatchIO), nameof (Trampoline_DispatchReadWriteHandler));
 				dispatch_write (fd, dispatchData.Handle, dispatchQueue.Handle, &block);
+				GC.KeepAlive (dispatchData);
+				GC.KeepAlive (dispatchQueue);
 			}
 		}
 	}

@@ -60,7 +60,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 #if __IOS__
 				if (TestRuntime.CheckSystemVersion (ApplePlatform.iOS, 7, 0))
 					value = "file:///";
-#elif __WATCHOS__ || __TVOS__
+#elif __TVOS__
 				value = "file:///";
 #elif __MACOS__
 				if (TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 9))

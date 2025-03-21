@@ -299,9 +299,11 @@ namespace Network {
 			using var rv = NSArray.FromNSObjects (array);
 			if (rv is null)
 				return IntPtr.Zero;
+#pragma warning disable RBI0014
 			rv.DangerousRetain ();
 			rv.DangerousAutorelease ();
 			return rv.Handle;
+#pragma warning restore RBI0014
 		}
 #endif // !COREBUILD
 

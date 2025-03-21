@@ -91,6 +91,7 @@ namespace AVFoundation {
 				cbFinishedPlaying (player, new AVStatusEventArgs (flag));
 			if (player.Handle == IntPtr.Zero)
 				throw new ObjectDisposedException ("player", "the player object was Dispose()d during the callback, this has corrupted the state of the program");
+			GC.KeepAlive (player);
 		}
 
 		[Preserve (Conditional = true)]
@@ -283,6 +284,9 @@ namespace AVFoundation {
 		{
 			SampleRate = sampleRate;
 		}
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double SampleRate { get; private set; }
 	}
 
@@ -297,6 +301,9 @@ namespace AVFoundation {
 		{
 			NumberOfChannels = numberOfChannels;
 		}
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int NumberOfChannels { get; private set; }
 	}
 
@@ -312,6 +319,9 @@ namespace AVFoundation {
 			Category = category;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string Category { get; private set; }
 	}
 

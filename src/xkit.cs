@@ -331,6 +331,7 @@ namespace UIKit {
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum NSTextLayoutOrientation : long {
+		/// <summary>To be added.</summary>
 		Horizontal,
 		Vertical,
 	}
@@ -360,6 +361,11 @@ namespace UIKit {
 		NSAttributedString AttributedString { get; }
 #endif
 
+		/// <summary>An array of <see cref="T:UIKit.NSTextContainer" />s that model the geometric layout of a document.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>The <see cref="T:UIKit.NSLayoutManager" /> lays out the text in its <see cref="P:UIKit.NSLayoutManager.TextStorage" /> property in the <see cref="T:UIKit.NSTextContainer" />s of this property, starting with the <see cref="T:UIKit.NSTextContainer" /> at index 0. </para>
+		///         </remarks>
 		[Export ("textContainers")]
 		NSTextContainer [] TextContainers { get; }
 
@@ -391,6 +397,11 @@ namespace UIKit {
 		NSGlyphStorageOptions LayoutOptions { get; }
 #endif
 
+		/// <summary>Whether the <see cref="T:UIKit.NSLayoutManager" /> currently contains any areas of noncontiguous layout.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>Even if <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Allows%20Non%20Continguous%20Layout&amp;scope=Xamarin" title="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout">P:UIKit.NSLayoutManager.AllowsNonContinguousLayout</a></format> is <see langword="true" />, this method may return <see langword="false" />, for instance, if layout is complete.</para>
+		///         </remarks>
 		[Export ("hasNonContiguousLayout")]
 		bool HasNonContiguousLayout { get; }
 
@@ -539,6 +550,11 @@ namespace UIKit {
 		void InvalidateGlyphsOnLayoutInvalidation (NSRange glyphRange);
 #endif
 
+		/// <summary>The number of glyphs in the <see cref="T:UIKit.NSLayoutManager" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>If <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Allows%20Non%20Continuous%20Layout&amp;scope=Xamarin" title="P:UIKit.NSLayoutManager.AllowsNonContinuousLayout">P:UIKit.NSLayoutManager.AllowsNonContinuousLayout</a></format> is <see langword="false" />, this method will force glyph generation for all characters.</para>
+		///         </remarks>
 		[Export ("numberOfGlyphs")]
 #if NET || !MONOMAC
 		/* NSUInteger */
@@ -664,6 +680,9 @@ namespace UIKit {
 		void GetFirstUnlaidCharacterIndex (ref nuint charIndex, ref nuint glyphIndex);
 #endif
 
+		/// <summary>The index of the first character that has not been laid out.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("firstUnlaidCharacterIndex")]
 #if NET || !MONOMAC
 		nuint FirstUnlaidCharacterIndex { get; }
@@ -671,6 +690,9 @@ namespace UIKit {
 		nint FirstUnlaidCharacterIndex { get; }
 #endif
 
+		/// <summary>The index of the first glyph that has not been laid out.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("firstUnlaidGlyphIndex")]
 #if NET || !MONOMAC
 		nuint FirstUnlaidGlyphIndex { get; }
@@ -796,12 +818,21 @@ namespace UIKit {
 		[Export ("lineFragmentUsedRectForGlyphAtIndex:effectiveRange:withoutAdditionalLayout:")]
 		CGRect GetLineFragmentUsedRect (nuint glyphIndex, out /* nullable NSRangePointer */ NSRange effectiveGlyphRange, bool withoutAdditionalLayout);
 
+		/// <summary>The <see cref="T:System.Drawing.RectangleF" /> needed for the insertion point.</summary>
+		///         <value>Returns the rectangle defining the extra line fragment for the insertion point or {0,0,0,0} if there is no such retangle.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("extraLineFragmentRect")]
 		CGRect ExtraLineFragmentRect { get; }
 
+		/// <summary>The rectangle enclosing the insertion point.</summary>
+		///         <value>Twice the <see cref="P:UIKit.NSTextContainer.LineFragmentPadding" />, with the insertion point in the middle.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("extraLineFragmentUsedRect")]
 		CGRect ExtraLineFragmentUsedRect { get; }
 
+		/// <summary>The <see cref="T:UIKit.NSTextContainer" /> containing the <see cref="P:UIKit.NSLayoutManager.ExtraLineFragmentRect" />.</summary>
+		///         <value>Returns <see langword="null" /> if the <see cref="P:UIKit.NSLayoutManager.ExtraLineFragmentRect" /> does not exist (is {0,0,0,0}).</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("extraLineFragmentTextContainer")]
 		NSTextContainer ExtraLineFragmentTextContainer { get; }
 
@@ -1268,6 +1299,13 @@ namespace UIKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the UIKit.INSLayoutManagerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.INSLayoutManagerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		INSLayoutManagerDelegate Delegate { get; set; }
 
@@ -1284,12 +1322,23 @@ namespace UIKit {
 		[Export ("usesScreenFonts")]
 		bool UsesScreenFonts { get; set; }
 
+		/// <summary>Specifies whether normally-invisible characters such as whitespace should have visible glyphs.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("showsInvisibleCharacters")]
 		bool ShowsInvisibleCharacters { get; set; }
 
+		/// <summary>Specifies whether control characters should be shown or not.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("showsControlCharacters")]
 		bool ShowsControlCharacters { get; set; }
 
+		/// <summary>The hyphenation threshold.</summary>
+		///         <value>A value in the range 0 to 1. 0 indicates hyphenation is off, 1.0 causes hyphenation to always be attempted.</value>
+		///         <remarks>
+		///           <para>Application developers should prefer to set this value to 0.0, because hyphenation is slow and consumes memory.</para>
+		///         </remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Please use 'UsesDefaultHyphenation' or 'NSParagraphStyle.HyphenationFactor' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Please use 'UsesDefaultHyphenation' or 'NSParagraphStyle.HyphenationFactor' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Please use 'UsesDefaultHyphenation' or 'NSParagraphStyle.HyphenationFactor' instead.")]
@@ -1314,9 +1363,13 @@ namespace UIKit {
 		[Export ("typesetterBehavior")]
 		NSTypesetterBehavior TypesetterBehavior { get; set; }
 
+		/// <include file="../docs/api/UIKit/NSLayoutManager.xml" path="/Documentation/Docs[@DocId='P:UIKit.NSLayoutManager.AllowsNonContiguousLayout']/*" />
 		[Export ("allowsNonContiguousLayout")]
 		bool AllowsNonContiguousLayout { get; set; }
 
+		/// <summary>Whether the <see cref="T:UIKit.NSLayoutManager" /> should use the leading provided in the font.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("usesFontLeading")]
 		bool UsesFontLeading { get; set; }
 
@@ -1456,6 +1509,9 @@ namespace UIKit {
 		[Export ("showAttachmentCell:inRect:characterIndex:")]
 		void ShowAttachmentCell (NSCell cell, CGRect rect, nuint characterIndex);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("limitsLayoutForSuspiciousContents")]
 		bool LimitsLayoutForSuspiciousContents { get; set; }
@@ -2432,34 +2488,89 @@ namespace UIKit {
 		[Export ("constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:")]
 		NSLayoutConstraint Create (INativeObject view1, NSLayoutAttribute attribute1, NSLayoutRelation relation, [NullAllowed] INativeObject view2, NSLayoutAttribute attribute2, nfloat multiplier, nfloat constant);
 
+		/// <summary>The priority of the constraint. Must be in range [0, UILayoutPriority.Required].</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("priority")]
 		float Priority { get; set; } // Returns a float, not nfloat.
 
+		/// <summary>Whether the constraint should be archived by its owning UIView.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("shouldBeArchived")]
 		bool ShouldBeArchived { get; set; }
 
+		/// <summary>The first item participating in the constraint.</summary>
+		///         <value>
+		///           <para />
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>
+		///           <para />
+		///         </remarks>
 		[NullAllowed, Export ("firstItem", ArgumentSemantic.Assign)]
 		NSObject FirstItem { get; }
 
+		/// <summary>The attribute of the first item participating in the constraint.</summary>
+		///         <value>
+		///           <para />
+		///         </value>
+		///         <remarks>
+		///           <para />
+		///         </remarks>
 		[Export ("firstAttribute")]
 		NSLayoutAttribute FirstAttribute { get; }
 
+		/// <summary>The NSRelation that holds between the two items in the constraint.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("relation")]
 		NSLayoutRelation Relation { get; }
 
+		/// <summary>The second item participating in the constraint.</summary>
+		///         <value>
+		///           <para />
+		///         </value>
+		///         <remarks>
+		///           <para />
+		///         </remarks>
 		[Export ("secondItem", ArgumentSemantic.Assign)]
 		[NullAllowed]
 		NSObject SecondItem { get; }
 
+		/// <summary>The attribute of the second item participating in the constraint.</summary>
+		///         <value>
+		///           <para />
+		///         </value>
+		///         <remarks>
+		///           <para />
+		///         </remarks>
 		[Export ("secondAttribute")]
 		NSLayoutAttribute SecondAttribute { get; }
 
+		/// <summary>Applied to the second attribute participating in the constraint.</summary>
+		///         <value>
+		///           <para />
+		///         </value>
+		///         <remarks>
+		///           <para />
+		///         </remarks>
 		[Export ("multiplier")]
 		nfloat Multiplier { get; }
 
+		/// <summary>Indicates the constant float applied to the constraint.</summary>
+		///         <value>
+		///           <para />
+		///         </value>
+		///         <remarks>
+		///           <para />
+		///         </remarks>
 		[Export ("constant")]
 		nfloat Constant { get; set; }
 
+		/// <summary>Controls whether the constraint is active.  Active constraints are used as part of the auto-layout process, those that are not are ignored.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("active")]
 		bool Active { [Bind ("isActive")] get; set; }

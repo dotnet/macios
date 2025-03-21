@@ -334,6 +334,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern IntPtr nw_parameters_copy_required_interface (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWInterface? RequiredInterface {
 			get {
 				var iface = nw_parameters_copy_required_interface (GetCheckedHandle ());
@@ -345,6 +348,7 @@ namespace Network {
 			}
 			set {
 				nw_parameters_require_interface (GetCheckedHandle (), value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 
@@ -357,6 +361,7 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (iface));
 
 			nw_parameters_prohibit_interface (GetCheckedHandle (), iface.Handle);
+			GC.KeepAlive (iface);
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -489,6 +494,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_reuse_local_address (IntPtr handle, byte reuse_local_address);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool ReuseLocalAddress {
 			get => nw_parameters_get_reuse_local_address (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_reuse_local_address (GetCheckedHandle (), value.AsByte ());
@@ -500,6 +508,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_fast_open_enabled (IntPtr handle, byte fast_open_enabled);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool FastOpenEnabled {
 			get => nw_parameters_get_fast_open_enabled (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_fast_open_enabled (GetCheckedHandle (), value.AsByte ());
@@ -511,6 +522,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_service_class (IntPtr handle, NWServiceClass service_class);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWServiceClass ServiceClass {
 			get => nw_parameters_get_service_class (GetCheckedHandle ());
 			set => nw_parameters_set_service_class (GetCheckedHandle (), value);
@@ -522,6 +536,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_local_endpoint (IntPtr handle, IntPtr endpoint);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWEndpoint? LocalEndpoint {
 			get {
 				var x = nw_parameters_copy_local_endpoint (GetCheckedHandle ());
@@ -533,6 +550,7 @@ namespace Network {
 
 			set {
 				nw_parameters_set_local_endpoint (GetCheckedHandle (), value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 
@@ -543,6 +561,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_parameters_get_include_peer_to_peer (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IncludePeerToPeer {
 			get => nw_parameters_get_include_peer_to_peer (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_include_peer_to_peer (GetCheckedHandle (), value.AsByte ());
@@ -651,7 +672,10 @@ namespace Network {
 		[MacCatalyst (15, 0)]
 #endif
 		public void SetPrivacyContext (NWPrivacyContext privacyContext)
-			=> nw_parameters_set_privacy_context (GetCheckedHandle (), privacyContext.Handle);
+		{
+			nw_parameters_set_privacy_context (GetCheckedHandle (), privacyContext.Handle);
+			GC.KeepAlive (privacyContext);
+		}
 
 #if NET
 		[SupportedOSPlatform ("tvos15.0")]

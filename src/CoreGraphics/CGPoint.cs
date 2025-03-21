@@ -28,6 +28,8 @@ namespace CoreGraphics {
 		nfloat x;
 		nfloat y;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly CGPoint Empty;
 
 #if !COREBUILD
@@ -84,16 +86,25 @@ namespace CoreGraphics {
 			return point - size;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat X {
 			get { return x; }
 			set { x = value; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat Y {
 			get { return y; }
 			set { y = value; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsEmpty {
 			get { return x == 0.0 && y == 0.0; }
 		}
@@ -132,7 +143,9 @@ namespace CoreGraphics {
 			}
 			unsafe {
 				point = default;
-				return NativeDrawingMethods.CGPointMakeWithDictionaryRepresentation (dictionaryRepresentation.Handle, (CGPoint*) Unsafe.AsPointer<CGPoint> (ref point)) != 0;
+				bool result = NativeDrawingMethods.CGPointMakeWithDictionaryRepresentation (dictionaryRepresentation.Handle, (CGPoint*) Unsafe.AsPointer<CGPoint> (ref point)) != 0;
+				GC.KeepAlive (dictionaryRepresentation);
+				return result;
 			}
 		}
 

@@ -23,35 +23,91 @@ using NativeHandle = System.IntPtr;
 namespace CoreData {
 	[StrongDictionary ("UserInfoKeys")]
 	interface UserInfo {
+		/// <summary>Gets or sets an array that contains the multiple erros that occurred, if multiple errors occurred.</summary>
+		///         <value>An array of <see cref="T:Foundation.NSError" /> objects that contains the errors that occurred.</value>
+		///         <remarks>To be added.</remarks>
 		NSError [] DetailedErrors { get; set; }
+		/// <summary>Gets or sets the object that failed validation.</summary>
+		///         <value>The object that failed validation.</value>
+		///         <remarks>To be added.</remarks>
 		NSManagedObject ObjectForValidationError { get; set; }
+		/// <summary>Gets or sets the key that identifies the validation error that occurred.</summary>
+		///         <value>The key that identifies the validation error that occurred.</value>
+		///         <remarks>To be added.</remarks>
 		NSString KeyForValidationError { get; set; }
+		/// <summary>Gets or sets the predicate that failed validation.</summary>
+		///         <value>The <see cref="T:Foundation.NSPredicate" /> object for the predicate that failed.</value>
+		///         <remarks>To be added.</remarks>
 		NSPredicate PredicateForValidationError { get; set; }
+		/// <summary>Gets or sets the value that failed validation.</summary>
+		///         <value>The value that failed validation.</value>
+		///         <remarks>To be added.</remarks>
 		NSValue ValueForValidationError { get; set; }
+		/// <summary>Gets or sets the array of merge conflicts.</summary>
+		///         <value>An array of <see cref="T:CoreData.NSMergeConflict" /> objects.</value>
+		///         <remarks>To be added.</remarks>
 		NSMergeConflict [] PersistentStoreSaveConflicts { get; set; }
+		/// <summary>Gets or sets an array that contains the stores that were affected by the error.</summary>
+		///         <value>An array that contains the stores that were affected by the error.</value>
+		///         <remarks>To be added.</remarks>
 		NSPersistentStore [] AffectedStoresForError { get; set; }
 	}
 
 	[Static]
 	interface UserInfoKeys {
+		/// <summary>To be added.</summary>
+		///         <value>A key that identifies an array of <see cref="T:Foundation.NSError" /> objects that contains the errors that occured.</value>
+		///         <remarks>
+		///           <para>This key corresponds to the <see cref="P:CoreData.UserInfo.DetailedErrors" /> property.</para>
+		///         </remarks>
 		[Field ("NSDetailedErrorsKey")]
 		NSString DetailedErrorsKey { get; }
 
+		/// <summary>Gets the key that identifies the object that failed validation.</summary>
+		///         <value>The key that identifies the object that failed validation.</value>
+		///         <remarks>
+		///           <para>This key corresponds to the <see cref="P:CoreData.UserInfo.ObjectForValidationError" /> property.</para>
+		///         </remarks>
 		[Field ("NSValidationObjectErrorKey")]
 		NSString ObjectForValidationErrorKey { get; }
 
+		/// <summary>Gets the key that identifies the key that, in turn, identifies the validation error that occurred.</summary>
+		///         <value>The key that identifies the key that, in turn, identifies the validation error that occurred.</value>
+		///         <remarks>
+		///           <para>This key corresponds to the <see cref="P:CoreData.UserInfo.KeyForValidationError" /> property.</para>
+		///         </remarks>
 		[Field ("NSValidationKeyErrorKey")]
 		NSString KeyForValidationErrorKey { get; }
 
+		/// <summary>Gets the key that identifies the predicate that failed validation..</summary>
+		///         <value>The key that identifies the <see cref="T:Foundation.NSPredicate" /> object for the predicate that failed..</value>
+		///         <remarks>
+		///           <para>This key corresponds to the <see cref="P:CoreData.UserInfo.PredicateForValidationError" /> property.</para>
+		///         </remarks>
 		[Field ("NSValidationPredicateErrorKey")]
 		NSString PredicateForValidationErrorKey { get; }
 
+		/// <summary>Gets the key that identifies the value that failed validation.</summary>
+		///         <value>The key that identifies the value that failed validation.</value>
+		///         <remarks>
+		///           <para>This key corresponds to the <see cref="P:CoreData.UserInfo.ValueForValidationError" /> property.</para>
+		///         </remarks>
 		[Field ("NSValidationValueErrorKey")]
 		NSString ValueForValidationErrorKey { get; }
 
+		/// <summary>Gets the key that identifies the array of merge conflicts..</summary>
+		///         <value>A key that identifies an array of <see cref="T:CoreData.NSMergeConflict" /> objects.</value>
+		///         <remarks>
+		///           <para>This key corresponds to the <see cref="P:CoreData.UserInfoKeys.PersistentStoreSaveConflictsKey" /> property.</para>
+		///         </remarks>
 		[Field ("NSPersistentStoreSaveConflictsErrorKey")]
 		NSString PersistentStoreSaveConflictsKey { get; }
 
+		/// <summary>Gets the key that identifies an array that contains the stores that were affected by the error.</summary>
+		///         <value>A key that identifies an array of <see cref="T:CoreData.NSPersistentStore" /> objects that were affected by the error.</value>
+		///         <remarks>
+		///           <para>This key corresponds to the <see cref="P:CoreData.UserInfo.AffectedStoresForError" /> property.</para>
+		///         </remarks>
 		[Field ("NSAffectedStoresErrorKey")]
 		NSString AffectedStoresForErrorKey { get; }
 
@@ -76,19 +132,29 @@ namespace CoreData {
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Please see the release notes and Core Data documentation.")]
 	public enum NSPersistentStoreUbiquitousTransitionType : ulong {
+		/// <summary>To be added.</summary>
 		AccountAdded = 1,
+		/// <summary>To be added.</summary>
 		AccountRemoved,
+		/// <summary>To be added.</summary>
 		ContentRemoved,
+		/// <summary>To be added.</summary>
 		InitialImportCompleted,
 	}
 
 	[Native]
 	public enum NSSnapshotEventType : ulong {
+		/// <summary>Indicates that an insertion was undone.</summary>
 		UndoInsertion = 1 << 1,
+		/// <summary>Indicates that a deletion was undone.</summary>
 		UndoDeletion = 1 << 2,
+		/// <summary>Indicates that an update was undone.</summary>
 		UndoUpdate = 1 << 3,
+		/// <summary>Indicates that a rollback occurred.</summary>
 		Rollback = 1 << 4,
+		/// <summary>Indicates that a managed object was refreshed.</summary>
 		Refresh = 1 << 5,
+		/// <summary>Indicates that a conflict was resolved while saving.</summary>
 		MergePolicy = 1 << 6,
 	}
 
@@ -888,29 +954,73 @@ namespace CoreData {
 		[Export ("initWithFetchRequest:managedObjectContext:sectionNameKeyPath:cacheName:")]
 		NativeHandle Constructor (NSFetchRequest fetchRequest, NSManagedObjectContext context, [NullAllowed] string sectionNameKeyPath, [NullAllowed] string name);
 
+		/// <summary>An instance of the CoreData.INSFetchedResultsControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the CoreData.INSFetchedResultsControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		INSFetchedResultsControllerDelegate Delegate { get; set; }
 
+		/// <summary>An object that can respond to the delegate protocol for this type</summary>
+		///         <value>The instance that will respond to events and data requests.</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+		///         </remarks>
 		[Export ("delegate", ArgumentSemantic.Assign)]
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>Gets the filename where section information is cached.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("cacheName")]
 		string CacheName { get; }
 
+		/// <summary>Gets an array that contains the fetched objects.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fetchedObjects")]
 		[NullAllowed]
 		NSObject [] FetchedObjects { get; }
 
+		/// <summary>Gets the request for the fetch for which this object contains the results.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fetchRequest")]
 		NSFetchRequest FetchRequest { get; }
 
+		/// <summary>Returns the <see cref="T:CoreData.NSManagedObjectContext" /> that is used for fetching.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("managedObjectContext")]
 		NSManagedObjectContext ManagedObjectContext { get; }
 
+		/// <summary>Returns the key path to the section name on fetched objects.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("sectionNameKeyPath")]
 		string SectionNameKeyPath { get; }
 
+		/// <summary>Gets the sections of the fetch results.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("sections")]
 		INSFetchedResultsSectionInfo [] Sections { get; }
 
@@ -982,18 +1092,36 @@ namespace CoreData {
 	[Model]
 	[Protocol]
 	interface NSFetchedResultsSectionInfo {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("numberOfObjects")]
 		[Abstract]
 		nint Count { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("objects")]
 		[Abstract]
 		NSObject [] Objects { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("name")]
 		[Abstract]
 		string Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("indexTitle")]
 		[Abstract]
 		string IndexTitle { get; }
@@ -1312,6 +1440,9 @@ namespace CoreData {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSQueryGenerationToken : NSSecureCoding, NSCopying {
+		/// <summary>Gets the current query generation token.</summary>
+		///         <value>The current query generation token.</value>
+		///         <remarks>To be added</remarks>
 		[Static, Export ("currentQueryGenerationToken", ArgumentSemantic.Strong)]
 		NSQueryGenerationToken CurrentToken { get; }
 	}
@@ -1672,21 +1803,39 @@ namespace CoreData {
 	}
 
 	interface NSManagedObjectChangeEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSInsertedObjectsKey")]
 		NSSet InsertedObjects { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSUpdatedObjectsKey")]
 		NSSet UpdatedObjects { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSDeletedObjectsKey")]
 		NSSet DeletedObjects { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSRefreshedObjectsKey")]
 		NSSet RefreshedObjects { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSInvalidatedObjectsKey")]
 		NSSet InvalidatedObjects { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[ProbePresence]
 		[Export ("NSInvalidatedAllObjectsKey")]
 		bool InvalidatedAllObjects { get; }
@@ -1843,6 +1992,9 @@ namespace CoreData {
 		NSDictionary FetchRequestTemplatesByName { get; }
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("versionIdentifiers", ArgumentSemantic.Copy)]
 		NSSet VersionIdentifiers { get; set; }
 
@@ -1894,10 +2046,16 @@ namespace CoreData {
 		[Export ("initWithContentsOfURL:")]
 		NativeHandle Constructor ([NullAllowed] NSUrl url);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("entityMappings", ArgumentSemantic.Retain)]
 		[NullAllowed]
 		NSEntityMapping [] EntityMappings { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("entityMappingsByName", ArgumentSemantic.Copy)]
 #if XAMCORE_5_0
 		NSDictionary<NSString, NSEntityMapping> EntityMappingsByName { get; }
@@ -3122,6 +3280,10 @@ namespace CoreData {
 		NSString PersistentStoreUbiquitousContentUrlLKey { get; }
 #endif
 
+		/// <summary>Represents the value associated with the constant NSPersistentStoreFileProtectionKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("NSPersistentStoreFileProtectionKey")]
@@ -3253,6 +3415,9 @@ namespace CoreData {
 	}
 
 	interface NSPersistentStoreCoordinatorStoreChangeEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Export ("NSPersistentStoreUbiquitousTransitionTypeKey")]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Please see the release notes and Core Data documentation.")]
@@ -3374,32 +3539,62 @@ namespace CoreData {
 	[BaseType (typeof (NSObject))]
 	interface NSPropertyDescription : NSCoding, NSCopying {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("entity")]
 		NSEntityDescription Entity { get; }
 
 		// by default this property is null, but docs mention possible 
 		// exception on setter so allowing a null is not a good idea
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("name")]
 		string Name { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("optional")]
 		bool Optional { [Bind ("isOptional")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("transient")]
 		bool Transient { [Bind ("isTransient")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("validationPredicates")]
 		NSPredicate [] ValidationPredicates { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("validationWarnings")]
 		string [] ValidationWarnings { get; }
 
 		[Export ("setValidationPredicates:withValidationWarnings:")]
 		void SetValidationPredicates ([NullAllowed] NSPredicate [] validationPredicates, [NullAllowed] string [] validationWarnings);
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("userInfo", ArgumentSemantic.Retain)]
 		NSDictionary UserInfo { get; set; }
 
+		/// <summary>Developers should not use this deprecated property. Developers should use 'NSEntityDescription.Indexes' instead.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("indexed")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'NSEntityDescription.Indexes' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'NSEntityDescription.Indexes' instead.")]
@@ -3407,21 +3602,39 @@ namespace CoreData {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSEntityDescription.Indexes' instead.")]
 		bool Indexed { [Bind ("isIndexed")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("versionHash")]
 		NSData VersionHash { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("versionHashModifier")]
 		string VersionHashModifier { get; set; }
 
+		/// <summary>Gets the receiver's renaming identifier.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("renamingIdentifier")]
 		[NullAllowed]
 		string RenamingIdentifier { get; set; }
 
 		// 5.0
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("indexedBySpotlight")]
 		bool IndexedBySpotlight { [Bind ("isIndexedBySpotlight")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("storedInExternalRecord")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'CoreSpotlight' integration instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'CoreSpotlight' integration instead.")]
@@ -3433,14 +3646,32 @@ namespace CoreData {
 	[BaseType (typeof (NSObject))]
 	interface NSPropertyMapping {
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("name")]
 		string Name { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("valueExpression", ArgumentSemantic.Retain)]
 		NSExpression ValueExpression { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("userInfo", ArgumentSemantic.Retain)]
 		NSDictionary UserInfo { get; set; }
@@ -3449,30 +3680,60 @@ namespace CoreData {
 	[BaseType (typeof (NSPropertyDescription))]
 	interface NSRelationshipDescription {
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("destinationEntity")]
 		NSEntityDescription DestinationEntity { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("inverseRelationship")]
 		NSRelationshipDescription InverseRelationship { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("maxCount")]
 		nuint MaxCount { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("minCount")]
 		nuint MinCount { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("deleteRule")]
 		NSDeleteRule DeleteRule { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("toMany")]
 		bool IsToMany { [Bind ("isToMany")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("versionHash")]
 		NSData VersionHash { get; }
 
 		// 5.0
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("ordered")]
 		bool Ordered { [Bind ("isOrdered")] get; set; }
 	}
@@ -3486,6 +3747,12 @@ namespace CoreData {
 		NativeHandle Constructor ([NullAllowed] NSSet insertedObjects, [NullAllowed] NSSet updatedObjects, [NullAllowed] NSSet deletedObjects, [NullAllowed] NSSet lockedObjects);
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("insertedObjects", ArgumentSemantic.Strong)]
 #if XAMCORE_5_0
 		NSSet<NSManagedObject> InsertedObjects { get; }
@@ -3493,6 +3760,12 @@ namespace CoreData {
 		NSSet InsertedObjects { get; }
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("updatedObjects", ArgumentSemantic.Strong)]
 #if XAMCORE_5_0
 		NSSet<NSManagedObject> UpdatedObjects { get; }
@@ -3500,6 +3773,12 @@ namespace CoreData {
 		NSSet UpdatedObjects { get; }
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("deletedObjects", ArgumentSemantic.Strong)]
 #if XAMCORE_5_0
 		NSSet<NSManagedObject> DeletedObjects { get; }
@@ -3507,6 +3786,12 @@ namespace CoreData {
 		NSSet DeletedObjects { get; }
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("lockedObjects", ArgumentSemantic.Strong)]
 #if XAMCORE_5_0
 		NSSet<NSManagedObject> LockedObjects { get; }

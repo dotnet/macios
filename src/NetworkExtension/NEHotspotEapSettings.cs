@@ -18,6 +18,9 @@ namespace NetworkExtension {
 
 	public partial class NEHotspotEapSettings {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NEHotspotConfigurationEapType [] SupportedEapTypes {
 			get {
 				return NSArray.EnumsFromHandle<NEHotspotConfigurationEapType> (_SupportedEapTypes)!;
@@ -28,6 +31,7 @@ namespace NetworkExtension {
 
 				var ret = NSArray.From (value, value.Length);
 				_SupportedEapTypes = ret.Handle;
+				GC.KeepAlive (ret);
 			}
 		}
 	}

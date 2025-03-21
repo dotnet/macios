@@ -48,8 +48,6 @@ namespace Xamarin.Tests {
 		public void MinOSVersion (Profile profile, MachO.LoadCommands load_command, MachO.Platform platform, bool device = false)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
-			if (device)
-				Configuration.AssertDeviceAvailable ();
 
 			var machoFiles = Directory.GetFiles (Configuration.GetSdkPath (profile, device), "*", SearchOption.AllDirectories)
 						.Where ((v) => {

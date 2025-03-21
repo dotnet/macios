@@ -60,8 +60,9 @@ namespace CoreFoundation {
 			if (bundleUrl is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (bundleUrl));
 
-			return CFBundleCreate (IntPtr.Zero, bundleUrl.Handle);
-
+			IntPtr result = CFBundleCreate (IntPtr.Zero, bundleUrl.Handle);
+			GC.KeepAlive (bundleUrl);
+			return result;
 		}
 
 		public CFBundle (NSUrl bundleUrl)
@@ -81,6 +82,7 @@ namespace CoreFoundation {
 			var bundleTypeHandle = CFString.CreateNative (bundleType);
 			try {
 				var rv = CFBundleCreateBundlesFromDirectory (IntPtr.Zero, directoryUrl.Handle, bundleTypeHandle);
+				GC.KeepAlive (directoryUrl);
 				return CFArray.ArrayFromHandleFunc (rv, (handle) => new CFBundle (handle, true), true);
 			} finally {
 				CFString.ReleaseNative (bundleTypeHandle);
@@ -334,6 +336,7 @@ namespace CoreFoundation {
 			try {
 				// follows the create rules and therefore we do not need to retain
 				var urlHandle = CFBundleCopyResourceURLInDirectory (bundleUrl.Handle, resourceNameHandle, resourceTypeHandle, dirNameHandle);
+				GC.KeepAlive (bundleUrl);
 				return Runtime.GetNSObject<NSUrl> (urlHandle, true);
 			} finally {
 				CFString.ReleaseNative (resourceNameHandle);
@@ -376,6 +379,7 @@ namespace CoreFoundation {
 			var dirNameHandle = CFString.CreateNative (string.IsNullOrEmpty (subDirName) ? null : subDirName);
 			try {
 				var rv = CFBundleCopyResourceURLsOfTypeInDirectory (bundleUrl.Handle, resourceTypeHandle, dirNameHandle);
+				GC.KeepAlive (bundleUrl);
 				return CFArray.ArrayFromHandleFunc (rv, (handle) => Runtime.GetNSObject<NSUrl> (handle, true), true);
 			} finally {
 				CFString.ReleaseNative (resourceTypeHandle);
@@ -556,6 +560,7 @@ namespace CoreFoundation {
 			if (bundle is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (bundle));
 			var rv = CFBundleCopyLocalizationsForURL (bundle.Handle);
+			GC.KeepAlive (bundle);
 			return CFArray.StringArrayFromHandle (rv, true);
 		}
 
@@ -647,7 +652,9 @@ namespace CoreFoundation {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 			// follow the create rule, no need to retain
-			return Runtime.GetNSObject<NSDictionary> (CFBundleCopyInfoDictionaryForURL (url.Handle));
+			NSDictionary? result = Runtime.GetNSObject<NSDictionary> (CFBundleCopyInfoDictionaryForURL (url.Handle));
+			GC.KeepAlive (url);
+			return result;
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]
@@ -713,7 +720,9 @@ namespace CoreFoundation {
 			if (bundle is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (bundle));
 
-			return CFBundleIsExecutableLoadable (bundle.GetCheckedHandle ()) != 0;
+			bool result = CFBundleIsExecutableLoadable (bundle.GetCheckedHandle ()) != 0;
+			GC.KeepAlive (bundle);
+			return result;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -728,7 +737,9 @@ namespace CoreFoundation {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			return CFBundleIsExecutableLoadableForURL (url.Handle) != 0;
+			bool result = CFBundleIsExecutableLoadableForURL (url.Handle) != 0;
+			GC.KeepAlive (url);
+			return result;
 		}
 
 		[SupportedOSPlatform ("macos")]

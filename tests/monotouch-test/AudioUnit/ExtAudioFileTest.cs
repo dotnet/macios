@@ -7,8 +7,6 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using NUnit.Framework;
 using Foundation;
 using AudioUnit;
@@ -63,5 +61,3 @@ namespace MonoTouchFixtures.AudioUnit {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

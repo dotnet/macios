@@ -127,6 +127,7 @@ namespace CoreVideo {
 			if (attachments is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (attachments));
 			var h = CVImageBufferCreateColorSpaceFromAttachments (attachments.Handle);
+			GC.KeepAlive (attachments);
 			return h == IntPtr.Zero ? null : new CGColorSpace (h, true);
 		}
 #endif

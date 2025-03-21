@@ -77,6 +77,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGSize CGLayerGetSize (/* CGLayerRef */ IntPtr layer);
 
+		/// <summary>The size of the CGLayer</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>Returns the size that was used to create this CGLayer.</remarks>
 		public CGSize Size {
 			get {
 				return CGLayerGetSize (Handle);
@@ -86,6 +90,12 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGContextRef */ IntPtr CGLayerGetContext (/* CGLayerRef */ IntPtr layer);
 
+		/// <summary>Returns the graphics context associated with this layer.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		/// 	  Use this graphics context to perform drawing operations on the layer.
+		/// 	</remarks>
 		public CGContext Context {
 			get {
 				return new CGContext (CGLayerGetContext (Handle), false);
@@ -98,7 +108,9 @@ namespace CoreGraphics {
 		public static CGLayer Create (CGContext? context, CGSize size)
 		{
 			// note: auxiliaryInfo is reserved and should be null
-			return new CGLayer (CGLayerCreateWithContext (context.GetHandle (), size, IntPtr.Zero), true);
+			CGLayer result = new CGLayer (CGLayerCreateWithContext (context.GetHandle (), size, IntPtr.Zero), true);
+			GC.KeepAlive (context);
+			return result;
 		}
 #endif
 	}

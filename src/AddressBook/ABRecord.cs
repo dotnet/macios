@@ -52,7 +52,21 @@ namespace AddressBook {
 	[UnsupportedOSPlatform ("tvos")]
 	public class ABRecord : NativeObject {
 
+		/// <summary>
+		///           An invalid value for a record id.
+		///         </summary>
+		///         <remarks>
+		///           <para>
+		///             <see cref="P:AddressBook.ABRecord.Id" /> returns this
+		///             value when the record hasn't been saved to the database.
+		///           </para>
+		///         </remarks>
 		public const int InvalidRecordId = -1;
+		/// <summary>
+		///           An invalid value for a property id.
+		///         </summary>
+		///         <remarks>
+		///         </remarks>
 		public const int InvalidPropertyId = -1;
 
 		[Preserve (Conditional = true)]
@@ -112,12 +126,30 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static int ABRecordGetRecordID (IntPtr record);
+		/// <summary>Gets the unique ID of the record.</summary>
+		///         <value>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> which is the unique ID of the record.
+		///         </value>
+		///         <remarks>
+		///           <para>
+		///             If the record hasn't been saved into the database, this is
+		///             <see cref="F:AddressBook.ABRecord.InvalidRecordId" />.
+		///           </para>
+		///         </remarks>
+		///         <altmember cref="M:AddressBook.ABAddressBook.Save" />
 		public int Id {
 			get { return ABRecordGetRecordID (Handle); }
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static ABRecordType ABRecordGetRecordType (IntPtr record);
+		/// <summary>Gets the type of the record.</summary>
+		///         <value>
+		///           A <see cref="T:AddressBook.ABRecordType" /> containing
+		///           the type of the record.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public ABRecordType Type {
 			get { return ABRecordGetRecordType (Handle); }
 		}
@@ -145,6 +177,7 @@ namespace AddressBook {
 		internal void SetValue (int property, NSObject? value)
 		{
 			SetValue (property, value.GetHandle ());
+			GC.KeepAlive (value);
 		}
 
 		internal void SetValue (int property, string? value)

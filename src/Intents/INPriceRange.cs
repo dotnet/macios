@@ -15,7 +15,9 @@ using Foundation;
 
 namespace Intents {
 	public enum INPriceRangeOption {
+		/// <summary>The greatest price.</summary>
 		Maximum,
+		/// <summary>The lowest price.</summary>
 		Minimum,
 	}
 

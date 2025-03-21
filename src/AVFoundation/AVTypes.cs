@@ -27,7 +27,11 @@ namespace AVFoundation {
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVAudio3DVectorOrientation {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Vector3 Forward;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Vector3 Up;
 
 		public AVAudio3DVectorOrientation (Vector3 forward, Vector3 up)
@@ -79,8 +83,14 @@ namespace AVFoundation {
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVAudio3DAngularOrientation {
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float Yaw;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float Pitch;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float Roll;
 
 		public override string ToString ()
@@ -129,8 +139,14 @@ namespace AVFoundation {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVCaptureWhiteBalanceGains {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float RedGain;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float GreenGain;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float BlueGain;
 
 		public AVCaptureWhiteBalanceGains (float redGain, float greenGain, float blueGain)
@@ -186,7 +202,11 @@ namespace AVFoundation {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVCaptureWhiteBalanceChromaticityValues {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float X;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float Y;
 
 		public AVCaptureWhiteBalanceChromaticityValues (float x, float y)
@@ -237,7 +257,11 @@ namespace AVFoundation {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVCaptureWhiteBalanceTemperatureAndTintValues {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float Temperature;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float Tint;
 
 		public AVCaptureWhiteBalanceTemperatureAndTintValues (float temperature, float tint)
@@ -334,12 +358,21 @@ namespace AVFoundation {
 			set => isDroppable = value.AsByte ();
 		}
 #else
+		/// <summary>
+		///           <see langword="true" /> if the sample is an Instantaneous Decoder Refresh sample and the developer can rely on it, by itself, to resynchronize a decoder.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool IsFullSync;
 
+		/// <summary>
+		///           <see langword="true" /> if the sample is not Instantaneous Decoder Refresh sample.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool IsPartialSync;
 
+		/// <summary>
+		///           <see langword="true" /> if the sample can be dropped.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool IsDroppable;
 #endif
@@ -431,21 +464,39 @@ namespace AVFoundation {
 			set => hasRedundantCoding = value.AsByte ();
 		}
 #else
+		/// <summary>
+		///           <see langword="true" /> if and only if the sample indicates whether other samples in the sequence depend on the sample.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool IndicatesWhetherItHasDependentSamples;
 
+		/// <summary>
+		///           <see langword="true" /> if and only if the sample has dependent samples.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool HasDependentSamples;
 
+		/// <summary>
+		///           <see langword="true" /> if and only if the sample indicates whether it depends on other samples in the sequence.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool IndicatesWhetherItDependsOnOthers;
 
+		/// <summary>
+		///           <see langword="true" /> if and only if the sample depends on other samples in the sequence.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool DependsOnOthers;
 
+		/// <summary>
+		///           <see langword="true" /> if and only if the sample indicates whether it has redundant coding.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool IndicatesWhetherItHasRedundantCoding;
 
+		/// <summary>
+		///           <see langword="true" /> if and only if the sample has redundant coding.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool HasRedundantCoding;
 #endif
@@ -521,7 +572,11 @@ namespace AVFoundation {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVSampleCursorStorageRange {
+		/// <summary>The location of the first byte.</summary>
+		///         <remarks>To be added.</remarks>
 		public long Offset;
+		/// <summary>The number of bytes in the sample or chunk.</summary>
+		///         <remarks>To be added.</remarks>
 		public long Length;
 	}
 
@@ -537,6 +592,8 @@ namespace AVFoundation {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVSampleCursorChunkInfo {
+		/// <summary>The number of samples present.</summary>
+		///         <remarks>To be added.</remarks>
 		public long SampleCount;
 
 #if XAMCORE_5_0
@@ -559,12 +616,21 @@ namespace AVFoundation {
 			set => hasUniformFormatDescriptions = value.AsByte ();
 		}
 #else
+		/// <summary>
+		///           <see langword="true" /> if and only if every chunk has the same sample size.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool HasUniformSampleSizes;
 
+		/// <summary>
+		///           <see langword="true" /> if and only if every chunk has the same duration.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool HasUniformSampleDurations;
 
+		/// <summary>
+		///           <see langword="true" /> if and only if every chunk has the same format description.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool HasUniformFormatDescriptions;
 

@@ -9,13 +9,13 @@ namespace Microsoft.Macios.Generator;
 /// </summary>
 static class AttributesNames {
 
-	public const string BindingCategoryAttribute = "ObjCBindings.BindingTypeAttribute<ObjCBindings.Category>";
-	public const string BindingClassAttribute = "ObjCBindings.BindingTypeAttribute<ObjCBindings.Class>";
-	public const string BindingCoreImageFilterAttribute = "ObjCBindings.BindingTypeAttribute<ObjCBindings.CoreImageFilter>";
-	public const string BindingSmartEnumAttribute = "ObjCBindings.BindingTypeAttribute<ObjCBindings.SmartEnum>";
+	public const string CategoryAttribute = "ObjCBindings.BindingTypeAttribute<ObjCBindings.Category>";
+	public const string ClassAttribute = "ObjCBindings.BindingTypeAttribute<ObjCBindings.Class>";
+	public const string CoreImageFilterAttribute = "ObjCBindings.BindingTypeAttribute<ObjCBindings.CoreImageFilter>";
+	public const string SmartEnumAttribute = "ObjCBindings.BindingTypeAttribute<ObjCBindings.SmartEnum>";
 	public const string BindFromAttribute = "ObjCBindings.BindFromAttribute";
-	public const string BindingProtocolAttribute = "ObjCBindings.BindingTypeAttribute<ObjCBindings.Protocol>";
-	public const string BindingStrongDictionaryAttribute = "ObjCBindings.BindingTypeAttribute<ObjCBindings.StrongDictionary>";
+	public const string ProtocolAttribute = "ObjCBindings.BindingTypeAttribute<ObjCBindings.Protocol>";
+	public const string StrongDictionaryAttribute = "ObjCBindings.BindingTypeAttribute<ObjCBindings.StrongDictionary>";
 	public const string FieldAttribute = "ObjCBindings.FieldAttribute";
 	public const string EnumFieldAttribute = "ObjCBindings.FieldAttribute<ObjCBindings.EnumValue>";
 	public const string FieldPropertyAttribute = "ObjCBindings.FieldAttribute<ObjCBindings.Property>";
@@ -24,15 +24,15 @@ static class AttributesNames {
 	public const string SupportedOSPlatformAttribute = "System.Runtime.Versioning.SupportedOSPlatformAttribute";
 	public const string UnsupportedOSPlatformAttribute = "System.Runtime.Versioning.UnsupportedOSPlatformAttribute";
 	public const string ObsoletedOSPlatformAttribute = "System.Runtime.Versioning.ObsoletedOSPlatformAttribute";
-	public const string NativeEnumAttribute = "ObjCRuntime.NativeAttribute";
+	public const string NativeAttribute = "ObjCRuntime.NativeAttribute";
 
 	public static readonly string [] BindingTypes = [
-		BindingCategoryAttribute,
-		BindingClassAttribute,
-		BindingProtocolAttribute,
-		BindingStrongDictionaryAttribute,
-		BindingCoreImageFilterAttribute,
-		BindingSmartEnumAttribute,
+		CategoryAttribute,
+		ClassAttribute,
+		ProtocolAttribute,
+		StrongDictionaryAttribute,
+		CoreImageFilterAttribute,
+		SmartEnumAttribute,
 	];
 
 
@@ -40,19 +40,19 @@ static class AttributesNames {
 	{
 		var type = typeof (T);
 		if (type == typeof (ObjCBindings.Category)) {
-			return BindingCategoryAttribute;
+			return CategoryAttribute;
 		}
 		if (type == typeof (ObjCBindings.Class)) {
-			return BindingClassAttribute;
+			return ClassAttribute;
 		}
 		if (type == typeof (ObjCBindings.Protocol)) {
-			return BindingProtocolAttribute;
+			return ProtocolAttribute;
 		}
 		if (type == typeof (ObjCBindings.StrongDictionary)) {
-			return BindingStrongDictionaryAttribute;
+			return StrongDictionaryAttribute;
 		}
 		if (type == typeof (ObjCBindings.SmartEnum)) {
-			return BindingSmartEnumAttribute;
+			return SmartEnumAttribute;
 		}
 
 		return null;

@@ -2,8 +2,6 @@
 // Unit tests for AudioUnit
 //
 
-#if !__WATCHOS__
-
 using System.Runtime.InteropServices;
 
 using NUnit.Framework;
@@ -92,5 +90,3 @@ namespace MonoTouchFixtures.AudioUnit {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

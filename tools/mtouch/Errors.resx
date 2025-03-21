@@ -397,10 +397,7 @@
 		</value>
 	</data>
 
-	<data name="MT0077" xml:space="preserve">
-		<value>WatchOS projects must be extensions.
-		</value>
-	</data>
+	<!-- MT0077 is not in use anymore -->
 
 	<data name="MT0078" xml:space="preserve">
 		<value>Incremental builds are enabled with a deployment target &#60; 8.0 (currently {0}). This is not supported (the resulting application will not launch on iOS 9), so the deployment target will be set to 8.0.
@@ -433,10 +430,7 @@
 		</value>
 	</data>
 
-	<data name="MT0083" xml:space="preserve">
-		<value>Asm-only bitcode is not supported on watchOS. Use either --bitcode:marker or --bitcode:full.
-		</value>
-	</data>
+	<!-- MT0083 is not in use anymore -->
 
 	<data name="MT0084" xml:space="preserve">
 		<value>Bitcode is not supported in the simulator. Do not pass --bitcode when building for the simulator.
@@ -457,6 +451,9 @@
 		<value>Incremental builds (--fastdev) is not supported with the Boehm GC. Incremental builds will be disabled.
 		</value>
 	</data>
+
+	<!-- MT0088 is not in use anymore -->
+	<!-- MT0089 is not in use anymore -->
 
 	<data name="MX0090" xml:space="preserve">
 		<value>The target framework '{0}' is deprecated. Use '{1}' instead.
@@ -548,11 +545,7 @@
 	</data>
 
 	<!-- MT0110 is not in use anymore -->
-
-	<data name="MT0111" xml:space="preserve">
-		<value>Bitcode has been enabled because this version of Xamarin.iOS does not support building watchOS projects using LLVM without enabling bitcode.
-		</value>
-	</data>
+	<!-- MT0111 is not in use anymore -->
 
 	<data name="MT0112" xml:space="preserve">
 		<value>Native code sharing has been disabled because {0}
@@ -780,15 +773,8 @@
 		</value>
 	</data>
 
-	<data name="MT0145" xml:space="preserve">
-		<value>Please use device specific builds on WatchOS when building for Debug.
-		</value>
-	</data>
-
-	<data name="MT0146" xml:space="preserve">
-		<value>ARM64_32 Debug mode requires --interpreter[=all], forcing it.
-		</value>
-	</data>
+	<!-- MT0145 is not in use anymore -->
+	<!-- MT0146 is not in use anymore -->
 
 	<data name="MM0147" xml:space="preserve">
 		<value>Unable to parse the cflags '{0} from pkg-config: {1}
@@ -1163,10 +1149,7 @@
 		</value>
 	</data>
 
-	<data name="MT2015" xml:space="preserve">
-		<value>Invalid HttpMessageHandler `{0}` for watchOS. The only valid value is NSUrlSessionHandler.
-		</value>
-	</data>
+	<!-- MT2015 is not in use anymore -->
 
 	<data name="MX2016" xml:space="preserve">
 		<value>Keeping the dynamic registrar (by passing '--optimize=-remove-dynamic-registrar') is not possible, because the dynamic registrar is not supported when using NativeAOT. Support for dynamic registration will still be removed.</value>
@@ -1326,7 +1309,7 @@
 	</data>
 	<!-- 2200 -> 2299 is used by/reserved for ExceptionalSubStep subclasses in the linker -->
 	<!-- 220x: PreserveSmartEnumConversionsSubStep -->
-	<!-- 221x: RemoveBitcodeIncompatibleCodeStep -->
+	<!-- 221x: <unused> -->
 	<!-- 222x: RemoveRejectedTypesStep -->
 	<!-- 223x: CollectUnmarkedMembersSubStep -->
 	<!-- 224x: PreserveBlockCodeSubStep -->
@@ -2076,7 +2059,7 @@
 		<value>Did not link with the framework '{0}', because the current {1} SDK does not contain support for this framework in the simulator.</value>
 		<comment>This is a warning explaining why a native framework won't be referenced from the app when building for the simulator. The following are literal names and should not be translated: SDK
 			{0}: The name of the native framework
-			{1}: The current platform (will be either iOS, tvOS, watchOS or macOS).
+			{1}: The current platform (will be either iOS, tvOS, Mac Catalyst or macOS).
 		</comment>
 	</data>
 

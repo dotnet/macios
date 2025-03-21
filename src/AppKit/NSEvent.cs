@@ -19,7 +19,9 @@ namespace AppKit {
 		/// <remarks>This method will return null if there's no corresponding Cocoa event.</remarks>
 		public static NSEvent? Create (CGEvent @event)
 		{
-			return EventWithCGEvent (@event.GetNonNullHandle (nameof (@event)));
+			NSEvent? result = EventWithCGEvent (@event.GetNonNullHandle (nameof (@event)));
+			GC.KeepAlive (@event);
+			return result;
 		}
 
 		class NSEventDebuggerProxy {

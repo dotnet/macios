@@ -24,6 +24,7 @@ namespace HealthKit {
 		public static HKAppleSleepingBreathingDisturbancesClassification? GetClassification (HKQuantity value)
 		{
 			var ptr = HKAppleSleepingBreathingDisturbancesClassificationForQuantity (value.GetHandle ());
+			GC.KeepAlive (value);
 			var number = Runtime.GetNSObject<NSNumber> (ptr);
 			if (number is null)
 				return null;

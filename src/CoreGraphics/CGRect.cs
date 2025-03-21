@@ -24,16 +24,27 @@ namespace CoreGraphics {
 		nfloat height;
 
 #if !COREBUILD
+		/// <summary>Represents a <see cref="T:CoreGraphics.CGRect" /> structure with its properties left uninitialized.</summary>
+		///         <remarks>
+		///           <attribution license="cc4" from="Microsoft" modified="false" />
+		///           <para>A rectangle is defined by its width, height and upper-left corner.</para>
+		///         </remarks>
 		[Field ("CGRectZero", "CoreGraphics")] // unused but helps xtro
 #endif
 		public static readonly CGRect Empty;
 
 #if !COREBUILD
+		/// <summary>Gets an invalid, or null, rectangle.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CGRectNull", "CoreGraphics")] // unused but helps xtro
 		public static CGRect Null {
 			get { return Dlfcn.GetCGRect (Libraries.CoreGraphics.Handle, "CGRectNull"); }
 		}
 
+		/// <summary>Gets an infinitely large rectangle.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CGRectInfinite", "CoreGraphics")] // unused but helps xtro
 		public static CGRect Infinite {
 			get { return Dlfcn.GetCGRect (Libraries.CoreGraphics.Handle, "CGRectInfinite"); }
@@ -119,46 +130,91 @@ namespace CoreGraphics {
 			return inflated;
 		}
 
+		/// <summary>Tests whether all numeric properties of this <see cref="T:CoreGraphics.CGRect" /> have values of zero.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added</remarks>
 		public bool IsEmpty {
 			get { return width == 0.0 || height == 0.0; }
 		}
 
+		/// <summary>Gets or sets the x-coordinate of the upper-left corner of this <see cref="T:CoreGraphics.CGRect" /> structure.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <attribution license="cc4" from="Microsoft" modified="false" />
+		///           <para>Changing the <see cref="P:CoreGraphics.CGRect.X" /> property will also cause a change in the <see cref="P:CoreGraphics.CGRect.Right" /> property of the <see cref="T:CoreGraphics.CGRect" />.</para>
+		///         </remarks>
 		public nfloat X {
 			get { return x; }
 			set { x = value; }
 		}
 
+		/// <summary>Gets or sets the y-coordinate of the upper-left corner of this <see cref="T:CoreGraphics.CGRect" /> structure.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <attribution license="cc4" from="Microsoft" modified="false" />
+		///           <para>Changing the <see cref="P:CoreGraphics.CGRect.Y" /> property will also cause a change in the <see cref="P:CoreGraphics.CGRect.Bottom" /> property of the <see cref="T:CoreGraphics.CGRect" />.</para>
+		///         </remarks>
 		public nfloat Y {
 			get { return y; }
 			set { y = value; }
 		}
 
+		/// <include file="../../docs/api/CoreGraphics/CGRect.xml" path="/Documentation/Docs[@DocId='P:CoreGraphics.CGRect.Width']/*" />
 		public nfloat Width {
 			get { return width; }
 			set { width = value; }
 		}
 
+		/// <include file="../../docs/api/CoreGraphics/CGRect.xml" path="/Documentation/Docs[@DocId='P:CoreGraphics.CGRect.Height']/*" />
 		public nfloat Height {
 			get { return height; }
 			set { height = value; }
 		}
 
+		/// <summary>The Y coordinate of the top of the rectangle.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat Top {
 			get { return Y; }
 		}
 
+		/// <summary>Gets the y-coordinate that is the sum of the <see cref="P:CoreGraphics.CGRect.Y" /> and <see cref="P:CoreGraphics.CGRect.Height" /> property values of this <see cref="T:CoreGraphics.CGRect" /> structure.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <attribution license="cc4" from="Microsoft" modified="false" />
+		///           <para>The value of the <see cref="P:CoreGraphics.CGRect.Bottom" /> property represents the y-coordinate of the first point at the bottom edge of the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:CoreGraphics.CGRect.Rectangle&amp;scope=Xamarin" title="T:CoreGraphics.CGRect.Rectangle">T:CoreGraphics.CGRect.Rectangle</a></format> that is not contained in the <see cref="T:CoreGraphics.CGRect" />.</para>
+		///         </remarks>
 		public nfloat Bottom {
 			get { return Y + Height; }
 		}
 
+		/// <summary>Gets the x-coordinate of the left edge of this <see cref="T:CoreGraphics.CGRect" /> structure.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added</remarks>
 		public nfloat Left {
 			get { return X; }
 		}
 
+		/// <summary>Gets the x-coordinate that is the sum of <see cref="P:CoreGraphics.CGRect.X" /> and <see cref="P:CoreGraphics.CGRect.Width" /> property values of this <see cref="T:CoreGraphics.CGRect" /> structure.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <attribution license="cc4" from="Microsoft" modified="false" />
+		///           <para>The value of the <see cref="P:CoreGraphics.CGRect.Right" /> property represents the x-coordinate of the first point at the right edge of the rectangle that is not contained in the rectangle.</para>
+		///         </remarks>
 		public nfloat Right {
 			get { return X + Width; }
 		}
 
+		/// <summary>Gets or sets the coordinates of the upper-left corner of this <see cref="T:CoreGraphics.CGRect" /> structure.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added</remarks>
 		public CGPoint Location {
 			get { return new CGPoint (x, y); }
 			set {
@@ -167,6 +223,10 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Gets or sets the size of this <see cref="T:CoreGraphics.CGRect" />.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added</remarks>
 		public CGSize Size {
 			get { return new CGSize (width, height); }
 			set {
@@ -369,7 +429,9 @@ namespace CoreGraphics {
 			}
 			rect = default;
 			unsafe {
-				return NativeDrawingMethods.CGRectMakeWithDictionaryRepresentation (dictionaryRepresentation.Handle, (CGRect*) Unsafe.AsPointer<CGRect> (ref rect)) != 0;
+				bool result = NativeDrawingMethods.CGRectMakeWithDictionaryRepresentation (dictionaryRepresentation.Handle, (CGRect*) Unsafe.AsPointer<CGRect> (ref rect)) != 0;
+				GC.KeepAlive (dictionaryRepresentation);
+				return result;
 			}
 		}
 

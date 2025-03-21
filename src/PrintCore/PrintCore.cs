@@ -108,6 +108,9 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static PMStatusCode PMSessionSetError (IntPtr handle, PMStatusCode code);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public PMStatusCode SessionError {
 			get {
 				return PMSessionError (Handle);
@@ -125,6 +128,7 @@ namespace PrintCore {
 			if (settings is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (settings));
 			PMSessionDefaultPrintSettings (Handle, settings.Handle);
+			GC.KeepAlive (settings);
 		}
 
 		[DllImport (Constants.PrintCoreLibrary)]
@@ -135,6 +139,7 @@ namespace PrintCore {
 			if (pageFormat is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (pageFormat));
 			PMSessionDefaultPageFormat (Handle, pageFormat.Handle);
+			GC.KeepAlive (pageFormat);
 		}
 
 		[DllImport (Constants.PrintCoreLibrary)]
@@ -177,6 +182,7 @@ namespace PrintCore {
 			byte c;
 			unsafe {
 				code = PMSessionValidatePrintSettings (Handle, settings.Handle, &c);
+				GC.KeepAlive (settings);
 			}
 			if (code != PMStatusCode.Ok) {
 				changed = false;
@@ -236,6 +242,9 @@ namespace PrintCore {
 		unsafe extern static PMStatusCode PMGetFirstPage (IntPtr handle, uint* first);
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static PMStatusCode PMSetFirstPage (IntPtr handle, uint first, byte lockb);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public uint FirstPage {
 			get {
 				uint val;
@@ -253,6 +262,9 @@ namespace PrintCore {
 		unsafe extern static PMStatusCode PMGetLastPage (IntPtr handle, uint* last);
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static PMStatusCode PMSetLastPage (IntPtr handle, uint last, byte lockb);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public uint LastPage {
 			get {
 				uint val;
@@ -292,7 +304,9 @@ namespace PrintCore {
 		{
 			if (destination is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (destination));
-			return PMCopyPrintSettings (Handle, destination.Handle);
+			PMStatusCode status = PMCopyPrintSettings (Handle, destination.Handle);
+			GC.KeepAlive (destination);
+			return status;
 		}
 
 		[DllImport (Constants.PrintCoreLibrary)]
@@ -300,6 +314,9 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static PMStatusCode PMSetCopies (IntPtr handle, uint copies, byte elock);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public uint Copies {
 			get {
 				PMStatusCode code;
@@ -322,6 +339,9 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static PMStatusCode PMSetCollate (IntPtr handle, byte collate);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool Collate {
 			get {
 				PMStatusCode code;
@@ -344,6 +364,9 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static PMStatusCode PMSetDuplex (IntPtr handle, PMDuplexMode mode);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public PMDuplexMode DuplexMode {
 			get {
 				PMStatusCode code;
@@ -366,6 +389,9 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static PMStatusCode PMSetScale (IntPtr handle, double scale);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double Scale {
 			get {
 				PMStatusCode code;
@@ -408,6 +434,7 @@ namespace PrintCore {
 			} else {
 				unsafe {
 					code = PMCreatePageFormatWithPMPaper (&value, paper.Handle);
+					GC.KeepAlive (paper);
 				}
 			}
 			if (code == PMStatusCode.Ok)
@@ -433,6 +460,7 @@ namespace PrintCore {
 			} else {
 				unsafe {
 					code = PMCreatePageFormatWithPMPaper (&value, paper.Handle);
+					GC.KeepAlive (paper);
 				}
 			}
 
@@ -449,6 +477,9 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMGetOrientation (IntPtr handle, PMOrientation* orientation);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public PMOrientation Orientation {
 			get {
 				PMStatusCode code;
@@ -467,6 +498,9 @@ namespace PrintCore {
 
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMGetAdjustedPageRect (IntPtr pageFormat, PMRect* pageRect);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public PMRect AdjustedPageRect {
 			get {
 				PMStatusCode code;
@@ -482,6 +516,9 @@ namespace PrintCore {
 
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMGetAdjustedPaperRect (IntPtr pageFormat, PMRect* pageRect);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public PMRect AdjustedPaperRect {
 			get {
 				PMRect rect;
@@ -511,6 +548,9 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMPaperCreateLocalizedName (IntPtr handle, IntPtr printer, IntPtr* name);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? ID {
 			get {
 				PMStatusCode code;
@@ -524,6 +564,9 @@ namespace PrintCore {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double Width {
 			get {
 				PMStatusCode code;
@@ -537,6 +580,9 @@ namespace PrintCore {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double Height {
 			get {
 				PMStatusCode code;
@@ -550,6 +596,9 @@ namespace PrintCore {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public PMPaperMargins? Margins {
 			get {
 				PMStatusCode code;
@@ -571,6 +620,7 @@ namespace PrintCore {
 			IntPtr name;
 			unsafe {
 				code = PMPaperCreateLocalizedName (Handle, printer.Handle, &name);
+				GC.KeepAlive (printer);
 			}
 			if (code != PMStatusCode.Ok)
 				return null;
@@ -657,6 +707,9 @@ namespace PrintCore {
 
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static IntPtr PMPrinterGetName (IntPtr handle);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Name => CFString.FromHandle (PMPrinterGetName (Handle));
 
 		[DllImport (Constants.PrintCoreLibrary)]
@@ -677,6 +730,9 @@ namespace PrintCore {
 			return PMStatusCode.Ok;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSUrl? DeviceUrl {
 			get {
 				if (TryGetDeviceUrl (out var url) != PMStatusCode.Ok)
@@ -688,6 +744,9 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMPrinterGetMakeAndModelName (IntPtr printer, IntPtr* makeAndModel);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? MakeAndModel {
 			get {
 				PMStatusCode code;
@@ -706,6 +765,9 @@ namespace PrintCore {
 		unsafe extern static PMStatusCode PMPrinterGetState (IntPtr printer, PMPrinterState* state);
 
 		// Return is overloaded - if negative, a PMStatusCode.
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public PMPrinterState PrinterState {
 			get {
 				PMStatusCode code;
@@ -729,6 +791,7 @@ namespace PrintCore {
 			IntPtr m;
 			unsafe {
 				code = PMPrinterGetMimeTypes (Handle, settings.GetHandle (), &m);
+				GC.KeepAlive (settings);
 			}
 			if (code != PMStatusCode.Ok) {
 				mimeTypes = null;
@@ -755,6 +818,9 @@ namespace PrintCore {
 			return PMStatusCode.Ok;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public PMPaper [] PaperList {
 			get {
 				if (TryGetPaperList (out var paperList) != PMStatusCode.Ok)
@@ -775,7 +841,11 @@ namespace PrintCore {
 
 			IntPtr mime = CFString.CreateNative (mimeType);
 			try {
-				return PMPrinterPrintWithFile (Handle, settings.Handle, pageFormat.GetHandle (), mime, fileUrl.Handle);
+				PMStatusCode status = PMPrinterPrintWithFile (Handle, settings.Handle, pageFormat.GetHandle (), mime, fileUrl.Handle);
+				GC.KeepAlive (settings);
+				GC.KeepAlive (pageFormat);
+				GC.KeepAlive (fileUrl);
+				return status;
 			} finally {
 				CFString.ReleaseNative (mime);
 			}
@@ -793,7 +863,11 @@ namespace PrintCore {
 
 			IntPtr mime = CFString.CreateNative (mimeType);
 			try {
-				return PMPrinterPrintWithProvider (Handle, settings.Handle, pageFormat.GetHandle (), mime, provider.Handle);
+				PMStatusCode status = PMPrinterPrintWithProvider (Handle, settings.Handle, pageFormat.GetHandle (), mime, provider.Handle);
+				GC.KeepAlive (settings);
+				GC.KeepAlive (pageFormat);
+				GC.KeepAlive (provider);
+				return status;
 			} finally {
 				CFString.ReleaseNative (mime);
 			}
@@ -811,7 +885,9 @@ namespace PrintCore {
 
 			PMResolution res;
 			unsafe {
-				if (PMPrinterGetOutputResolution (Handle, settings.Handle, &res) == PMStatusCode.Ok)
+				PMStatusCode status = PMPrinterGetOutputResolution (Handle, settings.Handle, &res);
+				GC.KeepAlive (settings);
+				if (status == PMStatusCode.Ok)
 					return res;
 			}
 			return new PMResolution (0, 0);
@@ -823,6 +899,7 @@ namespace PrintCore {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (settings));
 			unsafe {
 				PMPrinterSetOutputResolution (Handle, settings.Handle, &res);
+				GC.KeepAlive (settings);
 			}
 		}
 
@@ -836,18 +913,30 @@ namespace PrintCore {
 
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static byte PMPrinterIsFavorite (IntPtr printer);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsFavorite => PMPrinterIsFavorite (Handle) != 0;
 
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static byte PMPrinterIsDefault (IntPtr printer);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsDefault => PMPrinterIsDefault (Handle) != 0;
 
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static byte PMPrinterIsPostScriptCapable (IntPtr printer);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsPostScriptCapable => PMPrinterIsPostScriptCapable (Handle) != 0;
 
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMPrinterIsPostScriptPrinter (IntPtr printer, byte* isps);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsPostScriptPrinter {
 			get {
 				byte r;
@@ -861,6 +950,9 @@ namespace PrintCore {
 
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMPrinterIsRemote (IntPtr printer, byte* isrem);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsRemote {
 			get {
 				byte r;

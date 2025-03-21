@@ -129,11 +129,7 @@ public class DocumentationManager {
 				name.Append ('`');
 			}
 			name.Append (tr.GenericParameterPosition);
-#if NET
 		} else if (tr.IsSZArray) {
-#else
-		} else if (tr.IsArray && tr.GetArrayRank () == 1) { // Not quite the same as IsSZArray (see https://github.com/dotnet/runtime/issues/20376), but good enough for legacy.
-#endif
 			name.Append (GetDocId (tr.GetElementType ()!));
 			name.Append ("[]");
 		} else if (tr.IsArray) {

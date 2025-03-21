@@ -36,9 +36,7 @@ using NativeException = Foundation.MonoTouchException;
 #endif
 #endif
 using ObjCRuntime;
-#if !__WATCHOS__
 using CoreAnimation;
-#endif
 using CoreGraphics;
 using CoreLocation;
 #if !__TVOS__
@@ -304,7 +302,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			Assert.AreEqual (value.Handle, ptr, "#1");
 		}
 
-#if !__TVOS__ && !__WATCHOS__ && !MONOMAC
+#if !__TVOS__ && !MONOMAC
 		[MonoPInvokeCallback (typeof (DActionArity1V1))]
 		static void DActionArity1V1Func (IntPtr block, UIBackgroundFetchResult result)
 		{
@@ -326,7 +324,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				block.CleanupBlock ();
 			}
 		}
-#endif // !__TVOS__ && !__WATCHOS__
+#endif // !__TVOS__ && !MONOMAC
 
 		class TS1 : NSObject { }
 		class TS2 : NSObject { }
@@ -642,7 +640,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 		}
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 		[Test]
 		public void TestGenericUIView ()
 		{
@@ -657,9 +655,9 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				}
 			}
 		}
-#endif // !__WATCHOS__
+#endif // !MONOMAC
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 		[Test]
 		public void TestNativeEnum ()
 		{
@@ -691,7 +689,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				}
 			}
 		}
-#endif // !__WATCHOS__
+#endif // !MONOMAC
 
 		[Test]
 		public void Bug23289 ()
@@ -961,13 +959,13 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				value = @in;
 			}
 
-#if !__TVOS__ && !__WATCHOS__ && !MONOMAC
+#if !__TVOS__ && !MONOMAC
 			[Export ("testAction:")]
 			public void TestAction ([BlockProxy (typeof (NIDActionArity1V1))] Action<UIBackgroundFetchResult> action)
 			{
 				// bug ?
 			}
-#endif // !__TVOS__ && !__WATCHOS__
+#endif // !__TVOS__ && !MONOMAC
 
 			[return: ReleaseAttribute ()]
 			[Export ("testRetainArray")]
@@ -1010,7 +1008,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				return new NSObject ();
 			}
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 			[Export ("testNativeEnum1:")]
 #if NET
 			public virtual void TestNativeEnum1 (NSWritingDirection twd)
@@ -1057,7 +1055,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				Assert.AreEqual (3141592, b, "TestNativeEnum3 b");
 			}
 #endif // NET
-#endif // !__WATCHOS__
+#endif // !MONOMAC
 
 			[Export ("testCGPoint:out:")]
 			public void TestCGPoint (PointF pnt, ref PointF pnt2)
@@ -1065,10 +1063,10 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				pnt2.X = pnt.X;
 				pnt2.Y = pnt.Y;
 			}
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 			[Export ("arrayOfINativeObject")]
 			public IUIKeyInput [] NativeObjects { get { return null; } }
-#endif // !__WATCHOS__
+#endif // !MONOMAC
 
 			[Export ("fetchNSArrayOfNSString:")]
 			NSArray<NSString> FetchNSArrayOfNSString (NSArray<NSNumber> p0)
@@ -1092,7 +1090,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 		}
 
-#if !__TVOS__ && !__WATCHOS__ && !MONOMAC
+#if !__TVOS__ && !MONOMAC
 		[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
 		internal delegate void DActionArity1V1 (IntPtr block, UIBackgroundFetchResult obj);
 
@@ -1134,7 +1132,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				invoker (blockPtr, obj);
 			}
 		} /*		 class NIDActionArity1V1 */
-#endif // !__TVOS__
+#endif // !__TVOS__ && !MONOMAC
 
 
 		[Register ("StaticBaseClass")]
@@ -1422,7 +1420,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 		}
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 		[Test]
 		public void TestCopyWithZone ()
 		{
@@ -1444,7 +1442,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				return this;
 			}
 		}
-#endif // !__WATCHOS__
+#endif // !MONOMAC
 
 		[Test]
 		public void TestProtocolRegistration ()
@@ -1452,7 +1450,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			var iProtocol = typeof (IProtocol).FullName.Replace (".", "_").Replace ("+", "_");
 			Assert.AreNotEqual (IntPtr.Zero, Runtime.GetProtocol (iProtocol), "IProtocol");
 			Assert.IsTrue (Messaging.bool_objc_msgSend_IntPtr (Class.GetHandle (typeof (MyProtocolImplementation)), Selector.GetHandle ("conformsToProtocol:"), Runtime.GetProtocol (iProtocol)), "Interface/IProtocol");
-#if !__TVOS__ && !__WATCHOS__ && !MONOMAC
+#if !__TVOS__ && !MONOMAC
 			Assert.IsTrue (Messaging.bool_objc_msgSend_IntPtr (Class.GetHandle (typeof (Test24970)), Selector.GetHandle ("conformsToProtocol:"), Protocol.GetHandle ("UIApplicationDelegate")), "UIApplicationDelegate/17669");
 #endif
 			// We don't support [Adopts] (yet at least).
@@ -1492,7 +1490,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 
 #if !__TVOS__ // No MapKit in TVOS
-#if !__WATCHOS__ // WatchOS has MapKit, but not MKMapView
 		[Test]
 		public void TestNativeObjectArray ()
 		{
@@ -1537,7 +1534,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				this.Annotations = annotations;
 			}
 		}
-#endif // !__WATCHOS__
 #endif // !__TVOS__
 
 		class ConstrainedGenericType<T> : NSObject where T : NSObject {
@@ -1593,7 +1589,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 		class CustomView<T> : UIView {
 			public object TypeName;
 			public object TypeT;
@@ -1613,7 +1609,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		class NullableIntView : CustomView<int?> {
 			public NullableIntView (RectangleF rect) : base (rect) { }
 		}
-#endif // !__WATCHOS__
+#endif // !MONOMAC
 
 		class GenericConstrainedBase<T> : NSObject where T : NSObject {
 			public T FooT;
@@ -1910,7 +1906,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 #endif
 
-#if !__TVOS__ && !__WATCHOS__ && !MONOMAC
+#if !__TVOS__ && !MONOMAC
 		class Test24970 : UIApplicationDelegate {
 			// This method uses the [Transient] attribute.
 			public override UIInterfaceOrientationMask GetSupportedInterfaceOrientations (UIApplication application, UIWindow forWindow)
@@ -2002,7 +1998,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 
 		}
-#endif // !__TVOS__ && !__WATCHOS__
+#endif // !__TVOS__ && !MONOMAC
 
 		[Protocol]
 		[Model]
@@ -2313,7 +2309,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 #endif
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 		class Bug28757A : NSObject, IUITableViewDataSource {
 			public virtual nint RowsInSection (UITableView tableView, nint section)
 			{
@@ -2331,9 +2327,9 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				return 2;
 			}
 		}
-#endif // !__WATCHOS__
+#endif // !MONOMAC
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 		[Test]
 		public void TestInheritedProtocols ()
 		{
@@ -2341,9 +2337,9 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				Assert.AreEqual ((nint) 2, Messaging.nint_objc_msgSend_IntPtr_nint (obj.Handle, Selector.GetHandle ("tableView:numberOfRowsInSection:"), IntPtr.Zero, 0), "#test");
 			}
 		}
-#endif // !__WATCHOS
+#endif // !MONOMAC
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 		[Test]
 		public void InOutProtocolMethodArgument ()
 		{
@@ -2359,9 +2355,9 @@ namespace MonoTouchFixtures.ObjCRuntime {
 #endif
 			}
 		}
-#endif // !__WATCHOS
+#endif // !MONOMAC
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 		class Scroller : NSObject, IUIScrollViewDelegate {
 			[Export ("scrollViewWillEndDragging:withVelocity:targetContentOffset:")]
 			public void WillEndDragging (UIScrollView scrollView, PointF velocity, ref PointF targetContentOffset)
@@ -2376,7 +2372,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				targetContentOffset = new CGPoint (123, 345);
 			}
 		}
-#endif // !__WATCHOS__
+#endif // !MONOMAC
 
 #if HAS_ADDRESSBOOK && HAS_ADDRESSBOOKUI
 		[Test]
@@ -2779,11 +2775,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[Test]
 		public void TestStringArray ()
 		{
-#if !__WATCHOS__
 			var items = 10000; // Big enough to make the GC run while we're marshalling.
-#else
-			var items = Runtime.Arch == Arch.DEVICE ? 10 : 10000; // Don't test the GC on device, there's not enough memory.
-#endif
 			var array = new string [items];
 			for (var i = 0; i < array.Length; i++)
 				array [i] = i.ToString ();
@@ -2821,11 +2813,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[Test]
 		public void TestNSObjectArray ()
 		{
-#if !__WATCHOS__
 			var items = 10000; // Big enough to make the GC run while we're marshalling.
-#else
-			var items = Runtime.Arch == Arch.DEVICE ? 10 : 10000; // Don't test the GC on device, there's not enough memory.
-#endif
 			var array = new NSObject [items];
 			for (var i = 0; i < array.Length; i++)
 				array [i] = NSNumber.FromInt32 (i);
@@ -2863,11 +2851,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[Test]
 		public void TestINSCodingArray ()
 		{
-#if !__WATCHOS__
 			var items = 10000; // Big enough to make the GC run while we're marshalling.
-#else
-			var items = Runtime.Arch == Arch.DEVICE ? 10 : 10000; // Don't test the GC on device, there's not enough memory.
-#endif
 			var array = new INSCoding [items];
 			for (var i = 0; i < array.Length; i++)
 				array [i] = NSNumber.FromInt32 (i);
@@ -5465,7 +5449,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 		}
 
-#if !__WATCHOS__ && !__TVOS__ // No WebKit on watchOS/tvOS
+#if !__TVOS__ // No WebKit on tvOS
 		[Test]
 		public void GenericClassWithUnrelatedGenericDelegate ()
 		{
@@ -5500,7 +5484,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 					del ((WKNavigationActionPolicy) (long) value);
 			}
 		}
-#endif // !__WATCHOS__ && !__TVOS__
+#endif // !__TVOS__
 
 		[Test]
 		public void RefEnumValues ()
@@ -5574,7 +5558,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 #endif // NET && HAS_UIKIT
 	}
 
-#if !__WATCHOS__
 	[Category (typeof (CALayer))]
 	static class CALayerColorsHelpers {
 		[Export ("setBorderUIColor:")]
@@ -5583,7 +5566,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			self.BorderColor = borderColor.CGColor;
 		}
 	}
-#endif // !__WATCHOS__
 
 
 	[TestFixture]
@@ -5718,7 +5700,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 	}
 
-#if !__WATCHOS__ && !__TVOS__ // No WebKit on watchOS/tvOS
+#if !__TVOS__ // No WebKit on watchOS/tvOS
 	[Preserve]
 	public class GenericWebNavigationThingie<WebViewModel> : NSObject, IWKNavigationDelegate {
 		[Export ("webView:decidePolicyForNavigationAction:decisionHandler:")]
@@ -5729,7 +5711,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 	}
 #endif
 
-#if !__WATCHOS__ // no MetalKit on watchOS
 	// These classes implement Metal* protocols, so that the generated registrar code includes the corresponding Metal* headers.
 	// https://github.com/xamarin/xamarin-macios/issues/4422
 	class MetalKitTypesInTheSimulator : NSObject, MetalKit.IMTKViewDelegate {
@@ -5783,7 +5764,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 	}
 #endif // !__TVOS__
-#endif // !__WATCHOS__
 
 #if HAS_COREMIDI && !__TVOS__
 	// This type exports methods with 'MidiThruConnectionEndpoint' parameters, which is a struct with different casing in Objective-C ("MIDI...")

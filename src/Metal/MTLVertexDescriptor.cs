@@ -30,7 +30,9 @@ namespace Metal {
 		{
 			if (descriptor is null)
 				throw new ArgumentException ("descriptor");
-			return Runtime.GetNSObject<MTLVertexDescriptor> (MTKMetalVertexDescriptorFromModelIO (descriptor.Handle));
+			MTLVertexDescriptor? result = Runtime.GetNSObject<MTLVertexDescriptor> (MTKMetalVertexDescriptorFromModelIO (descriptor.Handle));
+			GC.KeepAlive (descriptor);
+			return result;
 		}
 
 #if NET
@@ -56,6 +58,7 @@ namespace Metal {
 			MTLVertexDescriptor? vd;
 			unsafe {
 				vd = Runtime.GetNSObject<MTLVertexDescriptor> (MTKMetalVertexDescriptorFromModelIOWithError (descriptor.Handle, &err));
+				GC.KeepAlive (descriptor);
 			}
 			error = Runtime.GetNSObject<NSError> (err);
 			return vd;

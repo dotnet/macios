@@ -74,6 +74,7 @@ namespace Foundation {
 				throw new ArgumentNullException (nameof (key));
 
 			var value = CFDictionary.GetValue (Dictionary.Handle, key.Handle);
+			GC.KeepAlive (key);
 			return NSArray.ArrayFromHandle<T> (value);
 		}
 
@@ -83,6 +84,7 @@ namespace Foundation {
 				throw new ArgumentNullException (nameof (key));
 
 			var value = CFDictionary.GetValue (Dictionary.Handle, key.Handle);
+			GC.KeepAlive (key);
 			return NSArray.ArrayFromHandleFunc<T> (value, creator);
 		}
 
@@ -199,6 +201,7 @@ namespace Foundation {
 				throw new ArgumentNullException (nameof (key));
 
 			var value = CFDictionary.GetValue (Dictionary.Handle, key.Handle);
+			GC.KeepAlive (key);
 			if (value == IntPtr.Zero)
 				return null;
 
@@ -210,7 +213,9 @@ namespace Foundation {
 			if (key is null)
 				throw new ArgumentNullException (nameof (key));
 
-			return Runtime.GetINativeObject<T> (Dictionary.LowlevelObjectForKey (key.Handle), false);
+			T? result = Runtime.GetINativeObject<T> (Dictionary.LowlevelObjectForKey (key.Handle), false);
+			GC.KeepAlive (key);
+			return result;
 		}
 
 		protected string []? GetStringArrayValue (NSString key)
@@ -219,6 +224,7 @@ namespace Foundation {
 				throw new ArgumentNullException (nameof (key));
 
 			var array = Dictionary.LowlevelObjectForKey (key.Handle);
+			GC.KeepAlive (key);
 			return CFArray.StringArrayFromHandle (array)!;
 		}
 
@@ -283,7 +289,9 @@ namespace Foundation {
 			if (!Dictionary.TryGetValue (key, out value))
 				return null;
 
-			return CFString.FromHandle (value.Handle);
+			var result = CFString.FromHandle (value.Handle);
+			GC.KeepAlive (value);
+			return result;
 		}
 
 		protected string? GetStringValue (string key)
@@ -392,16 +400,22 @@ namespace Foundation {
 
 		protected void SetArrayValue (NSString key, INativeObject []? values)
 		{
-			if (NullCheckAndRemoveKey (key, values is null))
-				CFMutableDictionary.SetValue (Dictionary.Handle, key.Handle, CFArray.FromNativeObjects (values!).Handle);
+			if (NullCheckAndRemoveKey (key, values is null)) {
+				var array = CFArray.FromNativeObjects (values!);
+				CFMutableDictionary.SetValue (Dictionary.Handle, key.Handle, array.Handle);
+				GC.KeepAlive (key);
+				GC.KeepAlive (array);
+			}
 		}
 
 		#region Sets CFBoolean value
 
 		protected void SetBooleanValue (NSString key, bool? value)
 		{
-			if (NullCheckAndRemoveKey (key, !value.HasValue))
+			if (NullCheckAndRemoveKey (key, !value.HasValue)) {
 				CFMutableDictionary.SetValue (Dictionary.Handle, key.Handle, value!.Value ? CFBoolean.TrueHandle : CFBoolean.FalseHandle);
+				GC.KeepAlive (key);
+			}
 		}
 
 		#endregion
@@ -471,8 +485,11 @@ namespace Foundation {
 
 		protected void SetNativeValue (NSString key, INativeObject? value, bool removeNullValue = true)
 		{
-			if (NullCheckAndRemoveKey (key, removeNullValue && value is null))
+			if (NullCheckAndRemoveKey (key, removeNullValue && value is null)) {
 				CFMutableDictionary.SetValue (Dictionary.Handle, key.Handle, value.GetHandle ());
+				GC.KeepAlive (key);
+				GC.KeepAlive (value);
+			}
 		}
 
 		#endregion

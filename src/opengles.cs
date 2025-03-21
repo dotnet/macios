@@ -31,6 +31,12 @@ namespace OpenGLES {
 	[DisableDefaultCtor]
 	interface EAGLSharegroup {
 
+		/// <summary>Gets or sets a descriptive label for the share group for debugging.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("debugLabel")]
 		[NullAllowed]
 		string DebugLabel { get; set; }
@@ -54,16 +60,34 @@ namespace OpenGLES {
 		[Static, Export ("setCurrentContext:")]
 		bool SetCurrentContext ([NullAllowed] EAGLContext context);
 
+		/// <summary>Gets the current EAGL context.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("currentContext")]
 		[NullAllowed]
 		EAGLContext CurrentContext { get; }
 
+		/// <summary>Gets the OpenGL ES rendering API version with which the EAGL context was created.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("API")]
 		EAGLRenderingAPI API { get; }
 
+		/// <summary>Gets the share group to which the EAGL context belongs.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sharegroup")]
 		EAGLSharegroup ShareGroup { get; }
 
+		/// <summary>Gets or sets a label that is used to identify the context for debugging.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("debugLabel")]
 		[NullAllowed]
 		string DebugLabel { get; set; }
@@ -86,6 +110,9 @@ namespace OpenGLES {
 		[Export ("presentRenderbuffer:afterMinimumDuration:")]
 		bool _PresentRenderbufferAfterMinimumDuration (nuint target, double duration);
 
+		/// <summary>Gets or sets a Boolean value that controls whether OpenGL ES uses other threads to perform work.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("multiThreaded")]
 		bool IsMultiThreaded { [Bind ("isMultiThreaded")] get; set; }
 

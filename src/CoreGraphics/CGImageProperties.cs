@@ -42,9 +42,13 @@ namespace CoreGraphics {
 
 	// convenience enum mapped to kCGImagePropertyColorModelXXX fields (see imageio.cs)
 	public enum CGImageColorModel {
+		/// <summary>To be added.</summary>
 		RGB,
+		/// <summary>To be added.</summary>
 		Gray,
+		/// <summary>To be added.</summary>
 		CMYK,
+		/// <summary>To be added.</summary>
 		Lab,
 	}
 
@@ -67,6 +71,9 @@ namespace CoreGraphics {
 		{
 		}
 
+		/// <summary>Gets or sets whether an image has an alpha channel.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? Alpha {
 			get {
 				return GetBoolValue (Keys.HasAlpha);
@@ -76,6 +83,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Gets or sets the color model for an image, as a <see cref="T:CoreGraphics.CGImageColorModel" /> object.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGImageColorModel? ColorModel {
 			get {
 				var v = GetNSStringValue (Keys.ColorModel);
@@ -112,6 +122,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Gets or sets the number of bits in the color sample of each pixel for an image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? Depth {
 			get {
 				return GetInt32Value (Keys.Depth);
@@ -121,6 +134,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Gets or sets the resolution, in dots per inch, of an image for the x axis.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? DPIHeightF {
 			get {
 				return GetFloatValue (Keys.DPIHeight);
@@ -130,6 +146,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Gets or sets the resolution, in dots per inch, of an image for the y axis.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? DPIWidthF {
 			get {
 				return GetFloatValue (Keys.DPIWidth);
@@ -139,6 +158,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Gets or sets the size of the image file, in bytes.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? FileSize {
 			get {
 				return GetInt32Value (Keys.FileSize);
@@ -148,6 +170,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Gets or sets whether an image contains floating-point pixel samples.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? IsFloat {
 			get {
 				return GetBoolValue (Keys.IsFloat);
@@ -157,6 +182,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Gets or sets whether an image contains indexed pixel samples.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? IsIndexed {
 			get {
 				return GetBoolValue (Keys.IsIndexed);
@@ -166,6 +194,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Gets or sets the orientation of an image, as a <see cref="T:CoreImage.CIImageOrientation" /> object.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CIImageOrientation? Orientation {
 			get {
 				return (CIImageOrientation?) GetInt32Value (Keys.Orientation);
@@ -175,6 +206,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Gets or sets the number of pixels in an image for the y axis.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? PixelHeight {
 			get {
 				return GetInt32Value (Keys.PixelHeight);
@@ -184,6 +218,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Gets or sets the number of pixels in an image for the x axis.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? PixelWidth {
 			get {
 				return GetInt32Value (Keys.PixelWidth);
@@ -193,6 +230,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Gets or sets name of the ICC profile for an image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? ProfileName {
 			get {
 				return GetStringValue (Keys.ProfileName);
@@ -202,6 +242,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGImagePropertiesExif? Exif {
 			get {
 				var dict = GetNSDictionary (Keys.ExifDictionary);
@@ -209,6 +252,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGImagePropertiesGps? Gps {
 			get {
 				var dict = GetNSDictionary (Keys.GPSDictionary);
@@ -216,6 +262,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGImagePropertiesIptc? Iptc {
 			get {
 				var dict = GetNSDictionary (Keys.IPTCDictionary);
@@ -223,6 +272,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGImagePropertiesPng? Png {
 			get {
 				var dict = GetNSDictionary (Keys.PNGDictionary);
@@ -230,6 +282,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGImagePropertiesJfif? Jfif {
 			get {
 				var dict = GetNSDictionary (Keys.JFIFDictionary);
@@ -237,6 +292,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGImagePropertiesTiff? Tiff {
 			get {
 				var dict = GetNSDictionary (Keys.TIFFDictionary);
@@ -265,6 +323,9 @@ namespace CoreGraphics {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? Aperture {
 			get {
 				return GetFloatValue (Keys.ExifApertureValue);
@@ -274,6 +335,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? Brightness {
 			get {
 				return GetFloatValue (Keys.ExifBrightnessValue);
@@ -283,6 +347,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? CompressedBitsPerPixel {
 			get {
 				return GetFloatValue (Keys.ExifCompressedBitsPerPixel);
@@ -292,6 +359,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? DigitalZoomRatio {
 			get {
 				return GetFloatValue (Keys.ExifDigitalZoomRatio);
@@ -301,6 +371,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? ExposureBias {
 			get {
 				return GetFloatValue (Keys.ExifExposureBiasValue);
@@ -310,6 +383,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? ExposureIndex {
 			get {
 				return GetFloatValue (Keys.ExifExposureIndex);
@@ -319,6 +395,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? ExposureTime {
 			get {
 				return GetFloatValue (Keys.ExifExposureTime);
@@ -328,6 +407,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? ExposureProgram {
 			get {
 				return GetInt32Value (Keys.ExifExposureProgram);
@@ -337,6 +419,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? Flash {
 			get {
 				return GetBoolValue (Keys.ExifFlash);
@@ -346,6 +431,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? FlashEnergy {
 			get {
 				return GetFloatValue (Keys.ExifFlashEnergy);
@@ -355,6 +443,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? FocalPlaneXResolution {
 			get {
 				return GetFloatValue (Keys.ExifFocalPlaneXResolution);
@@ -364,6 +455,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? FocalPlaneYResolution {
 			get {
 				return GetFloatValue (Keys.ExifFocalPlaneYResolution);
@@ -373,6 +467,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? GainControl {
 			get {
 				return GetFloatValue (Keys.ExifGainControl);
@@ -382,12 +479,18 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int []? ISOSpeedRatings {
 			get {
 				return GetArray (Keys.ExifISOSpeedRatings, l => new NSNumber (l).Int32Value);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? MaximumLensAperture {
 			get {
 				return GetFloatValue (Keys.ExifMaxApertureValue);
@@ -397,6 +500,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? PixelXDimension {
 			get {
 				return GetInt32Value (Keys.ExifPixelXDimension);
@@ -406,6 +512,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? PixelYDimension {
 			get {
 				return GetInt32Value (Keys.ExifPixelYDimension);
@@ -415,6 +524,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? SubjectDistance {
 			get {
 				return GetFloatValue (Keys.ExifSubjectDistance);
@@ -424,6 +536,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? ShutterSpeed {
 			get {
 				return GetFloatValue (Keys.ExifShutterSpeedValue);
@@ -453,6 +568,9 @@ namespace CoreGraphics {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CIImageOrientation? Orientation {
 			get {
 				return (CIImageOrientation?) GetInt32Value (Keys.TIFFOrientation);
@@ -462,6 +580,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? XResolution {
 			get {
 				return GetInt32Value (Keys.TIFFXResolution);
@@ -471,6 +592,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? YResolution {
 			get {
 				return GetInt32Value (Keys.TIFFYResolution);
@@ -480,6 +604,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Software {
 			get {
 				return GetStringValue (Keys.TIFFSoftware);
@@ -509,6 +636,9 @@ namespace CoreGraphics {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? XDensity {
 			get {
 				return GetInt32Value (Keys.JFIFXDensity);
@@ -518,6 +648,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? YDensity {
 			get {
 				return GetInt32Value (Keys.JFIFYDensity);
@@ -547,6 +680,9 @@ namespace CoreGraphics {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Author {
 			get {
 				return GetStringValue (Keys.PNGAuthor);
@@ -556,6 +692,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Description {
 			get {
 				return GetStringValue (Keys.PNGDescription);
@@ -565,6 +704,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? Gamma {
 			get {
 				return GetFloatValue (Keys.PNGGamma);
@@ -574,6 +716,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Software {
 			get {
 				return GetStringValue (Keys.PNGSoftware);
@@ -583,6 +728,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? XPixelsPerMeter {
 			get {
 				return GetInt32Value (Keys.PNGXPixelsPerMeter);
@@ -592,6 +740,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? YPixelsPerMeter {
 			get {
 				return GetInt32Value (Keys.PNGYPixelsPerMeter);
@@ -601,6 +752,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Title {
 			get {
 				return GetStringValue (Keys.PNGTitle);
@@ -630,6 +784,9 @@ namespace CoreGraphics {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? Altitude {
 			get {
 				return GetInt32Value (Keys.GPSAltitude);
@@ -639,6 +796,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? Latitude {
 			get {
 				return GetFloatValue (Keys.GPSLatitude);
@@ -657,6 +817,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float? Longitude {
 			get {
 				return GetFloatValue (Keys.GPSLongitude);
@@ -696,6 +859,9 @@ namespace CoreGraphics {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Byline {
 			get {
 				return GetStringValue (Keys.IPTCByline);
@@ -705,6 +871,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? BylineTitle {
 			get {
 				return GetStringValue (Keys.IPTCBylineTitle);
@@ -714,6 +883,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? CaptionAbstract {
 			get {
 				return GetStringValue (Keys.IPTCCaptionAbstract);
@@ -723,6 +895,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? City {
 			get {
 				return GetStringValue (Keys.IPTCCity);
@@ -732,6 +907,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? ContentLocationName {
 			get {
 				return GetStringValue (Keys.IPTCContentLocationName);
@@ -741,6 +919,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? CountryPrimaryLocationName {
 			get {
 				return GetStringValue (Keys.IPTCCountryPrimaryLocationName);
@@ -750,6 +931,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? CopyrightNotice {
 			get {
 				return GetStringValue (Keys.IPTCCopyrightNotice);
@@ -759,6 +943,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Credit {
 			get {
 				return GetStringValue (Keys.IPTCCredit);
@@ -768,6 +955,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Source {
 			get {
 				return GetStringValue (Keys.IPTCSource);
@@ -777,6 +967,9 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? WriterEditor {
 			get {
 				return GetStringValue (Keys.IPTCWriterEditor);

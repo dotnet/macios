@@ -1341,8 +1341,6 @@ namespace Registrar {
 				switch (App.Platform) {
 				case ApplePlatform.iOS:
 					return Driver.IsDotNet ? "Microsoft.iOS" : "Xamarin.iOS";
-				case ApplePlatform.WatchOS:
-					return Driver.IsDotNet ? "Microsoft.watchOS" : "Xamarin.WatchOS";
 				case ApplePlatform.TVOS:
 					return Driver.IsDotNet ? "Microsoft.tvOS" : "Xamarin.TVOS";
 				case ApplePlatform.MacOSX:
@@ -2694,7 +2692,6 @@ namespace Registrar {
 #if MTOUCH || MMP || BUNDLER
 				switch (App.Platform) {
 				case ApplePlatform.iOS:
-				case ApplePlatform.WatchOS:
 				case ApplePlatform.TVOS:
 					return Is64Bits ? "B" : "c";
 				case ApplePlatform.MacOSX:

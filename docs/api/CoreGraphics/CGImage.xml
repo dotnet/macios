@@ -1,0 +1,43 @@
+<Documentation>
+  <Docs DocId="P:CoreGraphics.CGImage.ScreenImage">
+        <summary>Takes a screenshot.</summary>
+        <value>A CGImage</value>
+        <remarks>
+          <para>This property will return a new image with the current contents of the screen.</para>
+          <para> Since this is a new image from the screen, it will
+	    generate a new image each time it is invoked.  On an
+	    iPhone4S this will consume about 2 megs of memory
+	    (960*640*3) that you might want to Dispose as soon as you are done using it, to return the memory to the operating system. 
+	  </para>
+          <para>
+	    In particular if you are taking many screenshots in a
+	    tight loop, you will want to ensure that the memory is
+	    released as soon as you use it.  The following example
+	    shows one way of explicitly disposing the memory.  It uses
+	    an NSAutoReleasePool to ensure that the image is disposed
+	    before we return control to the main loop processing.
+
+	  </para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+//
+// Notice that this does not return control to the main loop,
+// so the images, even if disposed by the `using' statement
+// would not be released, because they are added to the main
+// loop NSAutoReleasePool.   This sample uses an explicit
+// NSAutoReleasePool that is disposed immediately after 
+// it is used.
+//
+while (true){
+    using (var pool = new NSAutoreleasePool ()) {
+        using (var img = CGImage.ScreenImage) {       
+        
+        	// Use the contents of the image.
+        }
+    }
+}
+	    ]]></code>
+          </example>
+        </remarks>
+      </Docs>
+</Documentation>

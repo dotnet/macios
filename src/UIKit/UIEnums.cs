@@ -1680,10 +1680,16 @@ namespace UIKit {
 
 	// Xamarin.iOS home-grown define
 	public enum NSTextEffect {
+		/// <summary>No style.</summary>
 		None,
+		/// <summary>A style that looks like paper that has been layered and pressed onto the page.</summary>
 		LetterPressStyle,
 
 		// An unkonwn value, the real value can be fetched using the WeakTextEffect: Apple added a new effect and the bindings are old.
+		/// <summary>This value is returned when the underlying <see cref="P:UIKit.UIStringAttributes.WeakTextEffect" />
+		/// 	can not be mapped to one of the strongly typed known
+		/// 	enumeration values.   In that case use the <see cref="P:UIKit.UIStringAttributes.WeakTextEffect" />
+		/// 	value to determine what kind of effect is being applied. </summary>
 		UnknownUseWeakEffect,
 	}
 

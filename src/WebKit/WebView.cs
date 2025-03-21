@@ -42,6 +42,7 @@ namespace WebKit {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (decisionToken));
 
 			ObjCRuntime.Messaging.void_objc_msgSend (decisionToken.Handle, selUse);
+			GC.KeepAlive (decisionToken);
 		}
 
 		public static void DecideDownload (NSObject decisionToken)
@@ -50,6 +51,7 @@ namespace WebKit {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (decisionToken));
 
 			ObjCRuntime.Messaging.void_objc_msgSend (decisionToken.Handle, selDownload);
+			GC.KeepAlive (decisionToken);
 		}
 
 		public static void DecideIgnore (NSObject decisionToken)
@@ -58,6 +60,7 @@ namespace WebKit {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (decisionToken));
 
 			ObjCRuntime.Messaging.void_objc_msgSend (decisionToken.Handle, selIgnore);
+			GC.KeepAlive (decisionToken);
 		}
 
 	}

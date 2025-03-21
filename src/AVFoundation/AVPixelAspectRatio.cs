@@ -40,7 +40,11 @@ namespace AVFoundation {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVPixelAspectRatio {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nint /* NSInteger */ HorizontalSpacing;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nint /* NSInteger */ VerticalSpacing;
 
 		public AVPixelAspectRatio (nint horizontalSpacing, nint verticalSpacing)

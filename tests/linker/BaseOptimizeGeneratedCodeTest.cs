@@ -516,10 +516,6 @@ namespace Linker.Shared {
 		public void IsARM64CallingConvention ()
 		{
 			IgnoreIfNotLinkAll ();
-#if __WATCHOS__
-			if (!Runtime.IsARM64CallingConvention && Runtime.Arch == Arch.DEVICE)
-				Assert.Ignore ("Can't inline when running on armv7k.");
-#endif
 
 #if DEBUG // Release builds will strip IL, so any IL checking has to be done in debug builds.
 			MethodInfo method;

@@ -53,6 +53,7 @@ namespace Security {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (identity));
 
 			InitializeHandle (sec_identity_create (identity.Handle));
+			GC.KeepAlive (identity);
 		}
 
 		[DllImport (Constants.SecurityLibrary)]
@@ -64,18 +65,27 @@ namespace Security {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (identity));
 			if (certificates is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (certificates));
-			using (var nsarray = NSArray.FromObjects (certificates))
+			using (var nsarray = NSArray.FromObjects (certificates)) {
 				InitializeHandle (sec_identity_create_with_certificates (identity.Handle, nsarray.Handle));
+				GC.KeepAlive (identity);
+				GC.KeepAlive (nsarray);
+			}
 		}
 
 		[DllImport (Constants.SecurityLibrary)]
 		extern static /* SecIdentityRef */ IntPtr sec_identity_copy_ref (/* OS_sec_identity */ IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SecIdentity Identity => new SecIdentity (sec_identity_copy_ref (GetCheckedHandle ()), owns: true);
 
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr sec_identity_copy_certificates_ref (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SecCertificate [] Certificates {
 			get {
 				var certArray = sec_identity_copy_certificates_ref (GetCheckedHandle ());

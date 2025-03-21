@@ -46,8 +46,11 @@ namespace ARKit {
 	[NoTV, NoMac]
 	[Native]
 	public enum ARTrackingState : long {
+		/// <summary>World-tracking is not available.</summary>
 		NotAvailable,
+		/// <summary>World-tracking is at a reduced quality.</summary>
 		Limited,
+		/// <summary>World-tracking is at normal quality.</summary>
 		Normal,
 	}
 
@@ -55,10 +58,15 @@ namespace ARKit {
 	[NoTV, NoMac]
 	[Native]
 	public enum ARTrackingStateReason : long {
+		/// <summary>Either tracking is <see cref="F:ARKit.ARTrackingState.Normal" /> or the reason for poor tracking cannot be determined.</summary>
 		None,
+		/// <summary>ARKit is still starting up.</summary>
 		Initializing,
+		/// <summary>The camera is moving too quickly.</summary>
 		ExcessiveMotion,
+		/// <summary>Processing is not revealing sufficient high-contrast points in the field of view.</summary>
 		InsufficientFeatures,
+		/// <summary>The AR session was interrupted and is reorienting.</summary>
 		Relocalizing,
 	}
 
@@ -139,8 +147,11 @@ namespace ARKit {
 	[Flags]
 	[Native]
 	public enum ARSessionRunOptions : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>The <see cref="T:ARKit.ARSession" /> should reset its world-tracking.</summary>
 		ResetTracking = 1 << 0,
+		/// <summary>The <see cref="T:ARKit.ARSession" /> should remove any existing <see cref="T:ARKit.ARAnchor" /> objects.</summary>
 		RemoveExistingAnchors = 1 << 1,
 		StopTrackedRaycasts = 1 << 2,
 		[iOS (13, 4)]
@@ -151,8 +162,11 @@ namespace ARKit {
 	[NoTV, NoMac]
 	[Native]
 	public enum ARWorldAlignment : long {
+		/// <summary>The world coordinate system's Y-axis is perpendicular to gravity, with an origin at the original position of the device.</summary>
 		Gravity,
+		/// <summary>The world coordinate system's Y-axis is perpendicular to gravity, X- and Z- are oriented to a compass heading, and it's origin is the original position of the device.</summary>
 		GravityAndHeading,
+		/// <summary>The world coordinate system is locked to the orientation of the camera.</summary>
 		Camera,
 	}
 
@@ -185,9 +199,13 @@ namespace ARKit {
 	[NoTV, NoMac]
 	[Native]
 	public enum ARWorldMappingStatus : long {
+		/// <summary>No real-world map is available.</summary>
 		NotAvailable,
+		/// <summary>Not enough data has been gathered to accurately fix the device in space.</summary>
 		Limited,
+		/// <summary>Some areas have been mapped, but further mapping is still required.</summary>
 		Extending,
+		/// <summary>There is enough data to accurately track the device in the real world.</summary>
 		Mapped,
 	}
 
@@ -1109,6 +1127,9 @@ namespace ARKit {
 		[Export ("supportedVideoFormats")]
 		ARVideoFormat [] GetSupportedVideoFormats ();
 
+		/// <summary>Gets or sets a value that controls whether autofocus is enabled on the device camera.</summary>
+		///         <value>A value that controls whether autofocus is enabled on the device camera.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("autoFocusEnabled")]
 		bool AutoFocusEnabled { [Bind ("isAutoFocusEnabled")] get; set; }
 

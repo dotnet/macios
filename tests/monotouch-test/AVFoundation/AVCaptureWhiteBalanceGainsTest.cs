@@ -1,4 +1,3 @@
-#if !__WATCHOS__
 using Foundation;
 using AVFoundation;
 using NUnit.Framework;
@@ -56,4 +55,3 @@ namespace MonoTouchFixtures.AVFoundation {
 		}
 	}
 }
-#endif

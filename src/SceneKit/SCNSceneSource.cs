@@ -26,7 +26,10 @@ namespace SceneKit {
 
 		public string [] GetIdentifiersOfEntries<T> ()
 		{
-			return CFArray.StringArrayFromHandle (Messaging.IntPtr_objc_msgSend_IntPtr (this.Handle, Selector.GetHandle ("identifiersOfEntriesWithClass:"), new Class (typeof (T)).Handle))!;
+			var klass = new Class (typeof (T));
+			string [] result = CFArray.StringArrayFromHandle (Messaging.IntPtr_objc_msgSend_IntPtr (this.Handle, Selector.GetHandle ("identifiersOfEntriesWithClass:"), klass.Handle))!;
+			GC.KeepAlive (klass);
+			return result;
 		}
 	}
 }

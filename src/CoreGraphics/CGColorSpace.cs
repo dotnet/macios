@@ -44,23 +44,37 @@ namespace CoreGraphics {
 
 	// untyped enum -> CGColorSpace.h
 	public enum CGColorRenderingIntent {
+		/// <summary>The default rendering intent.</summary>
 		Default,
+		/// <summary>Clamps colors outside of the gamut of the device into the space supported by the device.</summary>
 		AbsoluteColorimetric,
+		/// <summary>Shifts all colors to adjust for the requirements of the context.</summary>
 		RelativeColorimetric,
+		/// <summary>Preserves the color relationship by compressing the gamut of the graphics context to fit the output device.</summary>
 		Perceptual,
+		/// <summary>Preserves the relative saturation.</summary>
 		Saturation,
 	};
 
 	// untyped enum -> CGColorSpace.h
 	public enum CGColorSpaceModel {
+		/// <summary>Unknown color space model.</summary>
 		Unknown = -1,
+		/// <summary>Monochrome color space model.</summary>
 		Monochrome,
+		/// <summary>Red, Green and Blue model.</summary>
 		RGB,
+		/// <summary>Cyan, Magenta, Yellow and Key Black.</summary>
 		CMYK,
+		/// <summary>CIELAB color space (L* a* b*).</summary>
 		Lab,
+		/// <summary>DeviceN color space.</summary>
 		DeviceN,
+		/// <summary>Indexed color model, up to 256 values that are looked up.</summary>
 		Indexed,
+		/// <summary>Pattern color space, used when stroking or filling with a pattern.</summary>
 		Pattern,
+		/// <summary>To be added.</summary>
 		Xyz,
 	}
 
@@ -83,7 +97,9 @@ namespace CoreGraphics {
 		{
 			if (propertyList is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (propertyList));
-			return CGColorSpaceCreateWithPropertyList (propertyList.GetCheckedHandle ());
+			IntPtr result = CGColorSpaceCreateWithPropertyList (propertyList.GetCheckedHandle ());
+			GC.KeepAlive (propertyList);
+			return result;
 		}
 
 		public CGColorSpace (CFPropertyList propertyList)
@@ -219,6 +235,7 @@ namespace CoreGraphics {
 		public static CGColorSpace? CreateIndexed (CGColorSpace baseSpace, int lastIndex, byte [] colorTable)
 		{
 			var ptr = CGColorSpaceCreateIndexed (baseSpace.GetHandle (), lastIndex, colorTable);
+			GC.KeepAlive (baseSpace);
 			return FromHandle (ptr, true);
 		}
 
@@ -229,6 +246,7 @@ namespace CoreGraphics {
 		public static CGColorSpace? CreatePattern (CGColorSpace? baseSpace)
 		{
 			var ptr = CGColorSpaceCreatePattern (baseSpace.GetHandle ());
+			GC.KeepAlive (baseSpace);
 			return FromHandle (ptr, true);
 		}
 
@@ -397,6 +415,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGColorSpaceModel CGColorSpaceGetModel (/* CGColorSpaceRef */ IntPtr space);
 
+		/// <summary>The colorspace model.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGColorSpaceModel Model {
 			get {
 				return CGColorSpaceGetModel (Handle);
@@ -406,6 +427,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* size_t */ nint CGColorSpaceGetNumberOfComponents (/* CGColorSpaceRef */ IntPtr space);
 
+		/// <summary>Number of components on this colorspace.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public nint Components {
 			get {
 				return CGColorSpaceGetNumberOfComponents (Handle);
@@ -474,6 +498,7 @@ namespace CoreGraphics {
 #endif
 		{
 			IntPtr ptr = CGColorSpaceCreateWithICCProfile (data.GetHandle ());
+			GC.KeepAlive (data);
 			return FromHandle (ptr, true);
 		}
 
@@ -485,7 +510,9 @@ namespace CoreGraphics {
 #endif
 		public static CGColorSpace? CreateIccData (NSData data)
 		{
-			return CreateIccData (data.GetHandle ());
+			CGColorSpace? result = CreateIccData (data.GetHandle ());
+			GC.KeepAlive (data);
+			return result;
 		}
 
 #if NET
@@ -496,7 +523,9 @@ namespace CoreGraphics {
 #endif
 		public static CGColorSpace? CreateIccData (CGDataProvider provider)
 		{
-			return CreateIccData (provider.GetHandle ());
+			CGColorSpace? result = CreateIccData (provider.GetHandle ());
+			GC.KeepAlive (provider);
+			return result;
 		}
 
 		static CGColorSpace? CreateIccData (IntPtr handle)
@@ -521,6 +550,8 @@ namespace CoreGraphics {
 			unsafe {
 				fixed (nfloat* rangePtr = range) {
 					var ptr = CGColorSpaceCreateICCBased (nComponents, rangePtr, profile.GetHandle (), alternate.GetHandle ());
+					GC.KeepAlive (profile);
+					GC.KeepAlive (alternate);
 					return FromHandle (ptr, true);
 				}
 			}
@@ -596,6 +627,9 @@ namespace CoreGraphics {
 		static extern unsafe /* CFStringRef* */ IntPtr CGColorSpaceCopyName (/* CGColorSpaceRef */ IntPtr space);
 
 #if NET
+		/// <summary>Gets the color space name.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -617,6 +651,9 @@ namespace CoreGraphics {
 		static extern byte CGColorSpaceIsWideGamutRGB (/* CGColorSpaceRef */ IntPtr space);
 
 #if NET
+		/// <summary>Gets a value that tells whether the color space supports wide gamut colors.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
@@ -638,6 +675,9 @@ namespace CoreGraphics {
 		static extern byte CGColorSpaceSupportsOutput (/* CGColorSpaceRef */ IntPtr space);
 
 #if NET
+		/// <summary>Gets a Boolean value that tells whether the color space supports output.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]

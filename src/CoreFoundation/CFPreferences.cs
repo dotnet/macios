@@ -80,6 +80,8 @@ namespace CoreFoundation {
 
 			using (var cfKey = new CFString (key)) {
 				valuePtr = CFPreferencesCopyAppValue (cfKey.Handle, applicationId.Handle);
+				GC.KeepAlive (cfKey);
+				GC.KeepAlive (applicationId);
 			}
 
 			if (valuePtr == IntPtr.Zero) {
@@ -123,10 +125,13 @@ namespace CoreFoundation {
 			using (var cfKey = new CFString (key)) {
 				if (value is null) {
 					CFPreferencesSetAppValue (cfKey.Handle, IntPtr.Zero, applicationId.Handle);
+					GC.KeepAlive (cfKey);
+					GC.KeepAlive (applicationId);
 					return;
 				} else if (value is string) {
 					using (var valueStr = new CFString ((string) value)) {
 						CFPreferencesSetAppValue (cfKey.Handle, valueStr.Handle, applicationId.Handle);
+						GC.KeepAlive (applicationId);
 					}
 
 					return;
@@ -136,6 +141,8 @@ namespace CoreFoundation {
 					value is NSDictionary || value is CFDictionary ||
 					value is NSNumber || value is CFBoolean) {
 					CFPreferencesSetAppValue (cfKey.Handle, ((INativeObject) value).Handle, applicationId.Handle);
+					GC.KeepAlive (value);
+					GC.KeepAlive (applicationId);
 					return;
 				}
 
@@ -143,6 +150,7 @@ namespace CoreFoundation {
 				if (nsnumber is not null) {
 					using (nsnumber) {
 						CFPreferencesSetAppValue (cfKey.Handle, nsnumber.Handle, applicationId.Handle);
+						GC.KeepAlive (applicationId);
 					}
 					return;
 				}
@@ -199,7 +207,9 @@ namespace CoreFoundation {
 			}
 
 			using (var cfKey = new CFString (key)) {
-				return CFPreferencesGetAppBooleanValue (cfKey.Handle, applicationId.Handle, IntPtr.Zero) != 0;
+				bool result = CFPreferencesGetAppBooleanValue (cfKey.Handle, applicationId.Handle, IntPtr.Zero) != 0;
+				GC.KeepAlive (applicationId);
+				return result;
 			}
 		}
 
@@ -234,7 +244,9 @@ namespace CoreFoundation {
 			}
 
 			using (var cfKey = new CFString (key)) {
-				return CFPreferencesGetAppIntegerValue (cfKey.Handle, applicationId.Handle, IntPtr.Zero);
+				nint result = CFPreferencesGetAppIntegerValue (cfKey.Handle, applicationId.Handle, IntPtr.Zero);
+				GC.KeepAlive (applicationId);
+				return result;
 			}
 		}
 
@@ -269,6 +281,8 @@ namespace CoreFoundation {
 
 			using (var cfSuiteId = new CFString (suiteId)) {
 				CFPreferencesAddSuitePreferencesToApp (applicationId.Handle, cfSuiteId.Handle);
+				GC.KeepAlive (applicationId);
+				GC.KeepAlive (cfSuiteId);
 			}
 		}
 
@@ -303,6 +317,8 @@ namespace CoreFoundation {
 
 			using (var cfSuiteId = new CFString (suiteId)) {
 				CFPreferencesRemoveSuitePreferencesFromApp (applicationId.Handle, cfSuiteId.Handle);
+				GC.KeepAlive (applicationId);
+				GC.KeepAlive (cfSuiteId);
 			}
 		}
 
@@ -333,7 +349,9 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (applicationId));
 			}
 
-			return CFPreferencesAppSynchronize (applicationId.Handle) != 0;
+			bool result = CFPreferencesAppSynchronize (applicationId.Handle) != 0;
+			GC.KeepAlive (applicationId);
+			return result;
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]
@@ -366,7 +384,9 @@ namespace CoreFoundation {
 			}
 
 			using (var cfKey = new CFString (key)) {
-				return CFPreferencesAppValueIsForced (cfKey.Handle, applicationId.Handle) != 0;
+				bool result = CFPreferencesAppValueIsForced (cfKey.Handle, applicationId.Handle) != 0;
+				GC.KeepAlive (applicationId);
+				return result;
 			}
 		}
 	}

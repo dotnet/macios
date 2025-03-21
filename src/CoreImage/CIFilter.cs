@@ -143,10 +143,13 @@ namespace CoreImage {
 
 		public NSObject? this [NSString key] {
 			get {
-				return ValueForKey (key.GetHandle ());
+				NSObject? result = ValueForKey (key.GetHandle ());
+				GC.KeepAlive (key);
+				return result;
 			}
 			set {
 				SetValueForKey (value, key.GetHandle ());
+				GC.KeepAlive (key);
 			}
 		}
 
@@ -161,6 +164,7 @@ namespace CoreImage {
 		internal void SetValue (string key, NSObject? value)
 		{
 			SetHandle (key, value.GetHandle ());
+			GC.KeepAlive (value);
 		}
 
 		internal static IntPtr CreateFilter (string name)
@@ -295,6 +299,9 @@ namespace CoreImage {
 		}
 
 #if MONOMAC
+		/// <summary>Gets the image that results from applying the filter to <see cref="P:CoreImage.CIFilter.Image" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual CIImage? OutputImage {
 			get { return ValueForKey (CIFilterOutputKey.Image) as CIImage; }
 		}

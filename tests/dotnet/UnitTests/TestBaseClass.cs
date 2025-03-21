@@ -201,7 +201,6 @@ namespace Xamarin.Tests {
 			switch (platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 				return false;
 			case ApplePlatform.MacOSX:
 			case ApplePlatform.MacCatalyst:
@@ -225,7 +224,6 @@ namespace Xamarin.Tests {
 			switch (platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 				return "Resources";
 			case ApplePlatform.MacOSX:
 			case ApplePlatform.MacCatalyst:
@@ -240,7 +238,6 @@ namespace Xamarin.Tests {
 			switch (platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 				return string.Empty;
 			case ApplePlatform.MacOSX:
 			case ApplePlatform.MacCatalyst:
@@ -260,7 +257,6 @@ namespace Xamarin.Tests {
 			switch (platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 				return Path.Combine (app_directory, "Info.plist");
 			case ApplePlatform.MacOSX:
 			case ApplePlatform.MacCatalyst:
@@ -305,7 +301,6 @@ namespace Xamarin.Tests {
 			switch (platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 				return string.Empty;
 			case ApplePlatform.MacOSX:
 			case ApplePlatform.MacCatalyst:
@@ -320,7 +315,6 @@ namespace Xamarin.Tests {
 			switch (platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 				return string.Empty;
 			case ApplePlatform.MacOSX:
 			case ApplePlatform.MacCatalyst:
@@ -335,7 +329,6 @@ namespace Xamarin.Tests {
 			switch (platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 				return app_directory;
 			case ApplePlatform.MacOSX:
 			case ApplePlatform.MacCatalyst:

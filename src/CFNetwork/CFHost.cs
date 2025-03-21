@@ -16,18 +16,7 @@ using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
-// CFHost is in CFNetwork.framework, no idea why it ended up in CoreServices when it was bound.
-#if NET
 namespace CFNetwork {
-#else
-namespace CoreServices {
-#endif
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -36,12 +25,6 @@ namespace CoreServices {
 	[ObsoletedOSPlatform ("maccatalyst15.0", Constants.UseNetworkInstead)]
 	[ObsoletedOSPlatform ("macos12.0", Constants.UseNetworkInstead)]
 	[ObsoletedOSPlatform ("ios15.0", Constants.UseNetworkInstead)]
-#else
-	[Deprecated (PlatformName.TvOS, 15, 0, message: Constants.UseNetworkInstead)]
-	[Deprecated (PlatformName.iOS, 15, 0, message: Constants.UseNetworkInstead)]
-	[Deprecated (PlatformName.MacCatalyst, 15, 0, message: Constants.UseNetworkInstead)]
-	[Deprecated (PlatformName.MacOSX, 12, 0, message: Constants.UseNetworkInstead)]
-#endif
 	class CFHost : NativeObject {
 		[Preserve (Conditional = true)]
 		internal CFHost (NativeHandle handle, bool owns)

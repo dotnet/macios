@@ -8451,6 +8451,7 @@ F:MetalPerformanceShaders.MPSDataType.Float16
 F:MetalPerformanceShaders.MPSDataType.Float32
 F:MetalPerformanceShaders.MPSDataType.FloatBit
 F:MetalPerformanceShaders.MPSDataType.Int16
+F:MetalPerformanceShaders.MPSDataType.Int2
 F:MetalPerformanceShaders.MPSDataType.Int32
 F:MetalPerformanceShaders.MPSDataType.Int4
 F:MetalPerformanceShaders.MPSDataType.Int64
@@ -8459,6 +8460,7 @@ F:MetalPerformanceShaders.MPSDataType.Invalid
 F:MetalPerformanceShaders.MPSDataType.NormalizedBit
 F:MetalPerformanceShaders.MPSDataType.SignedBit
 F:MetalPerformanceShaders.MPSDataType.UInt16
+F:MetalPerformanceShaders.MPSDataType.UInt2
 F:MetalPerformanceShaders.MPSDataType.UInt32
 F:MetalPerformanceShaders.MPSDataType.UInt4
 F:MetalPerformanceShaders.MPSDataType.UInt64
@@ -35303,10 +35305,14 @@ M:ScreenTime.STScreenTimeConfiguration.EncodeTo(Foundation.NSCoder)
 M:ScreenTime.STScreenTimeConfigurationObserver.#ctor(CoreFoundation.DispatchQueue)
 M:ScreenTime.STScreenTimeConfigurationObserver.StartObserving
 M:ScreenTime.STScreenTimeConfigurationObserver.StopObserving
-M:ScreenTime.STWebHistory.#ctor(System.String,Foundation.NSError@)
+M:ScreenTime.STWebHistory.#ctor(Foundation.NSString)
 M:ScreenTime.STWebHistory.DeleteAllHistory
 M:ScreenTime.STWebHistory.DeleteHistory(Foundation.NSDateInterval)
 M:ScreenTime.STWebHistory.DeleteHistory(Foundation.NSUrl)
+M:ScreenTime.STWebHistory.FetchHistory(Foundation.NSDateInterval,ScreenTime.STWebHistoryFetchHistoryCallback)
+M:ScreenTime.STWebHistory.FetchHistory(ScreenTime.STWebHistoryFetchHistoryCallback)
+M:ScreenTime.STWebHistory.FetchHistoryAsync
+M:ScreenTime.STWebHistory.FetchHistoryAsync(Foundation.NSDateInterval)
 M:ScreenTime.STWebpageController.#ctor(System.String,Foundation.NSBundle)
 M:ScreenTime.STWebpageController.SetBundleIdentifier(System.String,Foundation.NSError@)
 M:ScriptingBridge.ISBApplicationDelegate.EventFailed(System.IntPtr,Foundation.NSError)
@@ -55808,6 +55814,7 @@ P:ScreenCaptureKit.SCWindow.Active
 P:ScreenCaptureKit.SCWindow.OnScreen
 P:ScreenTime.STScreenTimeConfiguration.EnforcesChildRestrictions
 P:ScreenTime.STScreenTimeConfigurationObserver.Configuration
+P:ScreenTime.STWebpageController.ProfileIdentifier
 P:ScreenTime.STWebpageController.SuppressUsageRecording
 P:ScreenTime.STWebpageController.Url
 P:ScreenTime.STWebpageController.UrlIsBlocked
@@ -66865,6 +66872,7 @@ T:ScreenCaptureKit.SCStreamType
 T:ScreenTime.STScreenTimeConfiguration
 T:ScreenTime.STScreenTimeConfigurationObserver
 T:ScreenTime.STWebHistory
+T:ScreenTime.STWebHistoryFetchHistoryCallback
 T:ScreenTime.STWebpageController
 T:ScriptingBridge.AESendMode
 T:ScriptingBridge.ISBApplicationDelegate

@@ -1615,6 +1615,9 @@ SCRIPTINGBRIDGE_SOURCES = \
 
 # ScreenTime
 
+SCREENTIME_SOURCES = \
+	ScreenTime/STWebHistory.cs \
+
 # SearchKit
 
 SEARCHKIT_SOURCES = \

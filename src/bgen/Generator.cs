@@ -697,7 +697,7 @@ public partial class Generator : IMemberGatherer {
 					convert.Append ($"var {refname} = Runtime.GetINativeObject<{TypeManager.RenderType (nt)}> ({safe_name} is not null ? *{safe_name} : NativeHandle.Zero, false)!;");
 					pars.Add (new TrampolineParameterInfo ($"{NativeHandleType}*", safe_name));
 					postConvert.AppendLine ($"if ({safe_name} is not null)");
-					postConvert.Append ($"\t*{safe_name} = {refname}.GetHandle ();");
+					postConvert.Append ($"\t*{safe_name} = Runtime.RetainAndAutoreleaseNativeObject ({refname});");
 					invoke.Append (outOrRef);
 					invoke.Append (" ");
 					invoke.Append (refname);

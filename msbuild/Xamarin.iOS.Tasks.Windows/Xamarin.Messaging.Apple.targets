@@ -22,6 +22,7 @@
 			<IsRemoteBuild>True</IsRemoteBuild>
 			<IsRemoteBuild Condition="'$(IsHotRestartBuild)' == 'True'">False</IsRemoteBuild>
 			<IsRemoteBuild Condition="'$(BundleOriginalResources)' == 'true' And '$(OutputType)' != 'Exe' And '$(IsBindingProject)' != 'true'">False</IsRemoteBuild>
+			<BuildInParallel Condition="'$(IsRemoteBuild)' == 'true'">false</BuildInParallel>
 		</PropertyGroup>
 	</Target>
 

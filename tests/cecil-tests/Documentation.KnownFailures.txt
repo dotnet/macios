@@ -4018,6 +4018,7 @@ F:BackgroundAssets.BAErrorCode.CallFromInactiveProcessNotAllowed
 F:BackgroundAssets.BAErrorCode.DownloadAlreadyFailed
 F:BackgroundAssets.BAErrorCode.DownloadAlreadyScheduled
 F:BackgroundAssets.BAErrorCode.DownloadBackgroundActivityProhibited
+F:BackgroundAssets.BAErrorCode.DownloadDoesNotExist
 F:BackgroundAssets.BAErrorCode.DownloadEssentialDownloadNotPermitted
 F:BackgroundAssets.BAErrorCode.DownloadFailedToStart
 F:BackgroundAssets.BAErrorCode.DownloadInvalid

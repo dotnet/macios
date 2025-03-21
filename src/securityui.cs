@@ -13,11 +13,10 @@ using UIKit;
 #endif
 
 namespace SecurityUI {
-	[TV (18, 4), MacCatalyst (18, 4), Mac (15,4), iOS (18,4)]
-	[BaseType (typeof(NSObject))]
+	[TV (18, 4), MacCatalyst (18, 4), Mac (15, 4), iOS (18, 4)]
+	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface SFCertificatePresentation
-	{
+	interface SFCertificatePresentation {
 		[Export ("initWithTrust:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (SecTrust trust);

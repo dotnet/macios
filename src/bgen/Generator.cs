@@ -2901,9 +2901,9 @@ public partial class Generator : IMemberGatherer {
 
 	void GenerateInvoke (bool stret, bool supercall, MethodInfo mi, MemberInformation minfo, string selector, string args, Type category_type, bool aligned)
 	{
-		var isInsanceMethod = category_type is null && !minfo.is_extension_method &&
+		var isInstanceMethod = category_type is null && !minfo.is_extension_method &&
 								  !minfo.is_protocol_implementation_method;
-		string target_name = isInsanceMethod ? "this" : "This";
+		string target_name = isInstanceMethod ? "this" : "This";
 		string handle = supercall ? ".SuperHandle" : ".Handle";
 
 		// If we have supercall == false, we can be a Bind method that has a [Target]
@@ -2990,7 +2990,7 @@ public partial class Generator : IMemberGatherer {
 				print (postproc.ToString ());
 		}
 
-		if (!isInsanceMethod) {
+		if (!isInstanceMethod) {
 			// if this is a extension of any kind, ensure that we keep alive the this parameter
 			// so that it is not collected before the msg send call has completed.
 			print ("GC.KeepAlive (This);");

@@ -18,17 +18,7 @@ using Foundation;
 using CoreFoundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
-// CFHTTPMessage is in CFNetwork.framework, no idea why it ended up in CoreServices when it was bound.
-#if NET
 namespace CFNetwork {
-#else
-namespace CoreServices {
-#endif
-
 	public partial class CFHTTPMessage : CFType {
 		[Preserve (Conditional = true)]
 		internal CFHTTPMessage (NativeHandle handle, bool owns)
@@ -49,8 +39,10 @@ namespace CoreServices {
 
 			if (version.Major == 3 && version.Minor == 0) {
 				// HTTP 3.0 requires OS X 10.16 or later.
+#pragma warning disable CA1416 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'CFHTTPMessage._HTTPVersion3_0.get' is only supported on: 'ios' 14.0 and later, 'tvos' 14.0 and later.
 				if (_HTTPVersion3_0 != IntPtr.Zero)
 					return _HTTPVersion3_0;
+#pragma warning restore CA1416
 				else if (_HTTPVersion2_0 != IntPtr.Zero)
 					return _HTTPVersion2_0;
 				else
@@ -302,20 +294,17 @@ namespace CoreServices {
 			Negotiate,
 			NTLM,
 			Digest,
-#if NET
+#if !XAMCORE_5_0
 			[SupportedOSPlatform ("macos")]
 			[SupportedOSPlatform ("ios")]
 			[SupportedOSPlatform ("tvos")]
-			[UnsupportedOSPlatform ("maccatalyst")]
+			[SupportedOSPlatform ("maccatalyst")]
 			[ObsoletedOSPlatform ("tvos12.0", "Not available anymore.")]
 			[ObsoletedOSPlatform ("macos10.14", "Not available anymore.")]
 			[ObsoletedOSPlatform ("ios12.0", "Not available anymore.")]
-#else
-			[Deprecated (PlatformName.iOS, 12, 0, message: "Not available anymore.")]
-			[Deprecated (PlatformName.TvOS, 12, 0, message: "Not available anymore.")]
-			[Deprecated (PlatformName.MacOSX, 10, 14, message: "Not available anymore.")]
-#endif
+			[ObsoletedOSPlatform ("maccatalyst13.1", "Not available anymore.")]
 			OAuth1,
+#endif
 		}
 
 		internal static IntPtr GetAuthScheme (AuthenticationScheme scheme)
@@ -331,10 +320,6 @@ namespace CoreServices {
 				return _AuthenticationSchemeNTLM;
 			case AuthenticationScheme.Digest:
 				return _AuthenticationSchemeDigest;
-			case AuthenticationScheme.OAuth1:
-				if (_AuthenticationSchemeOAuth1 == IntPtr.Zero)
-					throw new NotSupportedException ("Requires iOS 7.0 or macOS 10.9 and lower than iOS 12 or macOS 10.14");
-				return _AuthenticationSchemeOAuth1;
 			default:
 				throw new ArgumentException ();
 			}

@@ -14,29 +14,14 @@ using Foundation;
 using CoreFoundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
-// CFHttpStream is in CFNetwork.framework, no idea why it ended up in CoreServices when it was bound.
-#if NET
 namespace CFNetwork {
-#else
-namespace CoreServices {
-#endif
-
 	// all fields constants that this is using are deprecated in Xcode 7
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	[ObsoletedOSPlatform ("macos10.11", "Use 'NSUrlSession'.")]
 	[ObsoletedOSPlatform ("ios9.0", "Use 'NSUrlSession'.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'NSUrlSession'.")]
-	[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'NSUrlSession'.")]
-#endif
 	// Dotnet attributes are included in partial class inside cfnetwork.cs
 	public partial class CFHTTPStream : CFReadStream {
 

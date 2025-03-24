@@ -65,6 +65,7 @@ $(XIOS_PCH): .stamp-check-sharpie
 	-exclude LockedCameraCapture \
 	-exclude Matter \
 	-exclude _CoreNFC_UIKit \
+	-exclude TranslationUIProvider \
 	-i ThreadNetwork/THClient.h \
 	$(CORETELEPHONY_HEADERS) \
 
@@ -78,6 +79,7 @@ $(XTVOS_PCH): .stamp-check-sharpie
 		-exclude BrowserEngineCore \
 		-exclude LockedCameraCapture \
 		-exclude Matter \
+		-exclude TranslationUIProvider \
 
 XMACOS_ARCH = x86_64
 XMACOS_PCH = macosx$(MACOS_SDK_VERSION)-$(XMACOS_ARCH).pch
@@ -92,6 +94,7 @@ $(XMACOS_PCH): .stamp-check-sharpie
 		-exclude LockedCameraCapture \
 		-exclude Matter \
 		-exclude ParavirtualizedGraphics \
+		-exclude TranslationUIProvider \
 		$(CORETELEPHONY_HEADERS) \
 
 XMACCATALYST_ARCH = x86_64
@@ -127,6 +130,7 @@ $(XMACCATALYST_PCH): .stamp-check-sharpie
 	-exclude QuickLookUI \
 	-exclude SecurityInterface \
 	-exclude Virtualization \
+	-exclude TranslationUIProvider \
 	-i HomeKit/HomeKit.h \
 	$(CORETELEPHONY_HEADERS) \
 

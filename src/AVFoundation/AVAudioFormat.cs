@@ -40,19 +40,15 @@ namespace AVFoundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("StreamDescription")]
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public virtual AudioStreamBasicDescription StreamDescription {
-#if NET
 			[SupportedOSPlatform ("ios")]
 			[SupportedOSPlatform ("macos")]
 			[SupportedOSPlatform ("tvos")]
 			[SupportedOSPlatform ("maccatalyst")]
-#endif
 			get {
 				var ptr = _StreamDescription;
 				if (ptr == IntPtr.Zero)

@@ -55,7 +55,6 @@ namespace Xamarin.MacDev.Tasks {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					var plist = PDictionary.FromFile (AppManifestPath);
 					return plist.GetUIDeviceFamily ();
 				default:
@@ -79,7 +78,6 @@ namespace Xamarin.MacDev.Tasks {
 				case IPhoneDeviceType.IPhone:
 				case IPhoneDeviceType.IPad:
 				case IPhoneDeviceType.TV:
-				case IPhoneDeviceType.Watch:
 					productFamily = DeviceType.ToString ();
 					break;
 				case IPhoneDeviceType.IPhoneAndIPad:
@@ -150,9 +148,6 @@ namespace Xamarin.MacDev.Tasks {
 						break;
 					case ApplePlatform.TVOS:
 						simdevicetype = "com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-1080p";
-						break;
-					case ApplePlatform.WatchOS:
-						simdevicetype = "com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-5-40mm";
 						break;
 					default:
 						throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));

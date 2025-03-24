@@ -22,8 +22,6 @@
 !missing-pinvoke! MIDIDestinationCreateWithProtocol is not bound
 !missing-pinvoke! MIDIDeviceNewEntity is not bound
 !missing-pinvoke! MIDIInputPortCreateWithProtocol is not bound
-!missing-pinvoke! MIDIReceivedEventList is not bound
-!missing-pinvoke! MIDISendEventList is not bound
 !missing-pinvoke! MIDISourceCreateWithProtocol is not bound
 !missing-pinvoke! MIDIEventPacketSysexBytesForGroup is not bound
 !missing-pinvoke! MIDISendUMPSysex is not bound

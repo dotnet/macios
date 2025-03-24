@@ -12,6 +12,9 @@ parameters:
 - name: keyringPass
   type: string
 
+- name: xqaCertPass
+  type: string
+
 - name: isPR
   type: boolean
 
@@ -174,6 +177,16 @@ steps:
 - task: UseDotNet@2
   inputs:
     version: 8.x
+
+- template: ../common/install-qa-provisioning-profiles.yml
+  parameters:
+    env:
+      AUTH_TOKEN_GITHUB_COM: $(GitHub.Token)
+      AUTH_TOKEN_LA_DEV_APPLE_P12: ${{ parameters.xqaCertPass }}
+      AUTH_TOKEN_LA_DISTR_APPLE_P12: ${{ parameters.xqaCertPass }}
+      AUTH_TOKEN_LA_MAC_INSTALLER_DISTR_P12: ${{ parameters.xqaCertPass }}
+      AUTH_TOKEN_VSENG_XAMARIN_MAC_DEVICES_P12: ${{ parameters.xqaCertPass }}
+      AUTH_TOKEN_VSENG_XAMARIN_MAC_DEVICES_2_P12: ${{ parameters.xqaCertPass }}
 
 - pwsh: >-
     $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/run_mac_tests.ps1

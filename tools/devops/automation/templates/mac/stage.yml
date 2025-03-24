@@ -20,6 +20,9 @@ parameters:
 - name: keyringPass
   type: string
 
+- name: xqaCertPass
+  type: string
+
 - name: demands
   type: object
   default: []
@@ -81,3 +84,4 @@ stages:
         commit: ${{ parameters.commit }}
         statusContext: ${{ parameters.statusContext }}
         keyringPass: ${{ parameters.keyringPass }} 
+        xqaCertPass: ${{ parameters.xqaCertPass }}

@@ -1,6 +1,0 @@
-!missing-selector! STWebHistory::initWithBundleIdentifier:profileIdentifier:error: not bound
-!missing-selector! STWebHistory::initWithProfileIdentifier: not bound
-!missing-selector! STWebpageController::profileIdentifier not bound
-!missing-selector! STWebpageController::setProfileIdentifier: not bound
-!missing-selector! STWebHistory::fetchAllHistoryWithCompletionHandler: not bound
-!missing-selector! STWebHistory::fetchHistoryDuringInterval:completionHandler: not bound

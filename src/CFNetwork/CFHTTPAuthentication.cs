@@ -17,23 +17,11 @@ using Foundation;
 using CoreFoundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
-// CFHTTPAuthentication is in CFNetwork.framework, no idea why it ended up in CoreServices when it was bound.
-#if NET
 namespace CFNetwork {
-#else
-namespace CoreServices {
-#endif
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CFHTTPAuthentication : CFType {
 		[Preserve (Conditional = true)]
 		internal CFHTTPAuthentication (NativeHandle handle, bool owns)

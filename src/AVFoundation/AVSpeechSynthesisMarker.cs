@@ -41,6 +41,10 @@ namespace AVFoundation {
 		/// <param name="range">The range of the marker.</param>
 		/// <param name="byteSampleOffset">The byte offset into the audio buffer.</param>
 		/// <param name="option">Use this option to specify how to interpret the <paramref name="range" /> parameter.</param>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("tvos17.0")]
 		public AVSpeechSynthesisMarker (NSRange range, nint byteSampleOffset, AVSpeechSynthesisMarkerRangeOption option)
 			: base (NSObjectFlag.Empty)
 		{
@@ -63,6 +67,10 @@ namespace AVFoundation {
 		/// <param name="value">The phoneme or bookmark name of the marker.</param>
 		/// <param name="byteSampleOffset">The byte offset into the audio buffer.</param>
 		/// <param name="option">Use this option to specify how to interpret the <paramref name="value" /> parameter.</param>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("tvos17.0")]
 		public AVSpeechSynthesisMarker (string value, nint byteSampleOffset, AVSpeechSynthesisMarkerStringOption option)
 			: base (NSObjectFlag.Empty)
 		{

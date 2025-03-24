@@ -10,9 +10,7 @@ namespace Xamarin.Utils {
 		None,
 		MacOSX,
 		iOS,
-#if !MSBUILD_TASKS // not quite yet
 		[System.Obsolete ("Do not use")]
-#endif
 		WatchOS,
 		TVOS,
 		MacCatalyst,

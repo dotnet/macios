@@ -4041,6 +4041,18 @@ namespace NetworkExtension {
 		[Export ("getLastClientErrors:completionHandler:")]
 		[Async]
 		void GetLastClientErrors (double seconds, NERelayManagerGetLastClientErrorsCallback completionHandler);
+
+		[Export ("matchFQDNs", ArgumentSemantic.Copy), NullAllowed]
+		[TV (18, 4), Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4)]
+		string [] MatchFqdns { get; set; }
+
+		[Export ("excludedFQDNs", ArgumentSemantic.Copy), NullAllowed]
+		[TV (18, 4), Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4)]
+		string [] ExcludedFqdns { get; set; }
+
+		[Export ("UIToggleEnabled")]
+		[TV (18, 4), Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4)]
+		bool UIToggleEnabled { [Bind ("isUIToggleEnabled")] get; set; }
 	}
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]

@@ -274,3 +274,4 @@ stages:
           keyringPass: $(pass--lab--mac--builder--keychain)
           demands: ${{ config.demands }}
           postPipeline: true
+          xqaCertPass: $(xqa--certificates--password)

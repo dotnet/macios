@@ -17,7 +17,6 @@ namespace Xamarin.MacDev {
 
 		public static MacOSXSdk MacOS { get; private set; }
 		public static MonoTouchSdk XamIOS { get; internal set; }
-		public static AppleWatchSdk Watch { get; private set; }
 		public static AppleTVOSSdk TVOS { get; private set; }
 
 		static Sdks ()
@@ -40,7 +39,6 @@ namespace Xamarin.MacDev {
 
 			XamIOS = new MonoTouchSdk (monotouch);
 			IOS = new AppleIPhoneSdk (AppleSdkSettings.DeveloperRoot, AppleSdkSettings.DeveloperRootVersionPlist);
-			Watch = new AppleWatchSdk (AppleSdkSettings.DeveloperRoot, AppleSdkSettings.DeveloperRootVersionPlist);
 			TVOS = new AppleTVOSSdk (AppleSdkSettings.DeveloperRoot, AppleSdkSettings.DeveloperRootVersionPlist);
 
 			XamMac = new XamMacSdk (null);
@@ -52,8 +50,6 @@ namespace Xamarin.MacDev {
 			switch (framework) {
 			case ApplePlatform.iOS:
 				return IOS;
-			case ApplePlatform.WatchOS:
-				return Watch;
 			case ApplePlatform.TVOS:
 				return TVOS;
 			default:
@@ -71,8 +67,6 @@ namespace Xamarin.MacDev {
 			switch (framework) {
 			case ApplePlatform.iOS:
 				return IOS;
-			case ApplePlatform.WatchOS:
-				return Watch;
 			case ApplePlatform.TVOS:
 				return TVOS;
 			case ApplePlatform.MacCatalyst:

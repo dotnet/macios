@@ -584,6 +584,7 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "PdfKit", "PDFKit", 18, 2 },
 
 					{ "BackgroundAssets", "BackgroundAssets", 18, 4 },
+					{ "MetalFX", "MetalFX", new Version (18, 4), NotAvailableInSimulator },
 				};
 			}
 			return tvos_frameworks;

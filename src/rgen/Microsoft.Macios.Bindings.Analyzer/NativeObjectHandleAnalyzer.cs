@@ -196,11 +196,35 @@ public class NativeObjectHandleAnalyzer : DiagnosticAnalyzer {
 				return;
 
 			int index = block.Statements.IndexOf (statement);
+
+			// we have to deal with two possible scenarions:
+			// 1. The symbol is accessed in the same block after it was used 
+			// 2. The symbol was used in an outer block and after it was used. This happens when we call the 
+			//    GC.KeepAlive method outside an if statement
+
+			// case 1 check in the enclosing block
+			DataFlowAnalysis? df;
 			if (index >= 0 && index + 1 < block.Statements.Count) {
-				var df = context.SemanticModel.AnalyzeDataFlow (block.Statements [index + 1], block.Statements.Last ());
+				df = context.SemanticModel.AnalyzeDataFlow (block.Statements [index + 1], block.Statements.Last ());
 				if (df is null)
 					return;
 				accessedAfter = df.ReadInside.Contains (symbol);
+			}
+			// case 2
+			// check if the usage is inside a if statement, only do the check if we did not find a usage in the block
+			var enclosingIfStatement = statement.FirstAncestorOrSelf<IfStatementSyntax> ();
+			if (!accessedAfter && enclosingIfStatement is not null) {
+				// bind the index to the if statement
+				var methodBlock = enclosingIfStatement.FirstAncestorOrSelf<BlockSyntax> ();
+				if (methodBlock is null)
+					return;
+				var ifStatementIndex = methodBlock.Statements.IndexOf (enclosingIfStatement);
+				if (ifStatementIndex >= 0 && ifStatementIndex + 1 < methodBlock.Statements.Count) {
+					var dataFlowAnalysis = context.SemanticModel.AnalyzeDataFlow (methodBlock.Statements [ifStatementIndex + 1], methodBlock.Statements.Last ());
+					if (dataFlowAnalysis is null)
+						return;
+					accessedAfter = dataFlowAnalysis.ReadInside.Contains (symbol);
+				}
 			}
 		}
 

@@ -72,8 +72,9 @@ namespace CoreGraphics {
 		extern static /* CGPDFDocumentRef */ IntPtr CGPDFDocumentCreateWithProvider (/* CGDataProviderRef */ IntPtr provider);
 
 		public CGPDFDocument (CGDataProvider provider)
-			: base (CGPDFDocumentCreateWithProvider (Runtime.ThrowOnNull (provider, nameof (provider)).Handle), true)
+			: base (CGPDFDocumentCreateWithProvider (provider.GetNonNullHandle (nameof (provider))), true)
 		{
+			GC.KeepAlive (provider);
 		}
 
 		protected internal override void Retain ()
@@ -117,6 +118,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* size_t */ nint CGPDFDocumentGetNumberOfPages (/* CGPDFDocumentRef */ IntPtr document);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint Pages {
 			get {
 				return CGPDFDocumentGetNumberOfPages (Handle);
@@ -147,6 +151,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static byte CGPDFDocumentIsEncrypted (/* CGPDFDocumentRef */ IntPtr document);
 
+		/// <summary>Gets whether <c>this</c> <see cref="T:CoreGraphics.CGPDFDocument" /> object is encrypted.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsEncrypted {
 			get {
 				return CGPDFDocumentIsEncrypted (Handle) != 0;
@@ -165,6 +172,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static byte CGPDFDocumentIsUnlocked (/* CGPDFDocumentRef */ IntPtr document);
 
+		/// <summary>Gets whether the <c>this</c> <see cref="T:CoreGraphics.CGPDFDocument" /> object is not locked, either because the object is not encrypted or a password has been supplied.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsUnlocked {
 			get {
 				return CGPDFDocumentIsUnlocked (Handle) != 0;
@@ -174,6 +184,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static byte CGPDFDocumentAllowsPrinting (/* CGPDFDocumentRef */ IntPtr document);
 
+		/// <summary>Gets whether <c>this</c> <see cref="T:CoreGraphics.CGPDFDocument" /> object allows printing.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool AllowsPrinting {
 			get {
 				return CGPDFDocumentAllowsPrinting (Handle) != 0;
@@ -183,6 +196,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static byte CGPDFDocumentAllowsCopying (/* CGPDFDocumentRef */ IntPtr document);
 
+		/// <summary>Gets whether <c>this</c> <see cref="T:CoreGraphics.CGPDFDocument" /> object allows copying.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool AllowsCopying {
 			get {
 				return CGPDFDocumentAllowsCopying (Handle) != 0;

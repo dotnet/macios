@@ -18,7 +18,9 @@ namespace AppKit {
 		{
 			if (font is null)
 				return null;
-			return new NSFont (font.Handle);
+			var result = new NSFont (font.Handle);
+			GC.KeepAlive (font);
+			return result;
 		}
 
 		public unsafe CGRect [] GetBoundingRects (CGGlyph [] glyphs)

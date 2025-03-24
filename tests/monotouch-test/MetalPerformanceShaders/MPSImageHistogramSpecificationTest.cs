@@ -1,7 +1,5 @@
 // Copyright 2017 Microsoft Inc. All rights reserved.
 
-#if !__WATCHOS__
-
 using System;
 using Foundation;
 using ObjCRuntime;
@@ -49,5 +47,3 @@ namespace MonoTouchFixtures.MetalPerformanceShaders {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

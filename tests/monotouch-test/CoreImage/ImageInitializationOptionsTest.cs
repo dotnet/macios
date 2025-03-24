@@ -7,8 +7,6 @@
 // Copyright 2014 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
 using CoreGraphics;
 using CoreImage;
@@ -73,5 +71,3 @@ namespace MonoTouchFixtures.CoreImage {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

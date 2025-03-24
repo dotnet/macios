@@ -13,15 +13,14 @@ using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
 using Xamarin.Utils;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	public class Codesign : XamarinParallelTask, ITaskCallback, ICancelableTask {
 		const string ToolName = "codesign";
 		const string MacOSDirName = "MacOS";
 		const string CodeSignatureDirName = "_CodeSignature";
-		string toolExe;
+		string? toolExe;
 
 		#region Inputs
 
@@ -31,31 +30,31 @@ namespace Xamarin.MacDev.Tasks {
 		public bool DisallowResourcesSubdirectoryInAppBundle { get; set; }
 
 		// Can also be specified per resource using the 'CodesignStampFile' metadata
-		public string StampFile { get; set; }
+		public string StampFile { get; set; } = string.Empty;
 
 		// Can also be specified per resource using the 'CodesignAllocate' metadata
-		public string CodesignAllocate { get; set; }
+		public string CodesignAllocate { get; set; } = string.Empty;
 
 		// Can also be specified per resource using the 'CodesignDisableTimestamp' metadata
 		public bool DisableTimestamp { get; set; }
 
 		// Can also be specified per resource using the 'CodesignEntitlements' metadata
-		public string Entitlements { get; set; }
+		public string Entitlements { get; set; } = string.Empty;
 
 		// Can also be specified per resource using the 'CodesignKeychain' metadata
-		public string Keychain { get; set; }
+		public string Keychain { get; set; } = string.Empty;
 
 		[Required]
-		public ITaskItem [] Resources { get; set; }
+		public ITaskItem [] Resources { get; set; } = Array.Empty<ITaskItem> ();
 
 		// Can also be specified per resource using the 'CodesignResourceRules' metadata
-		public string ResourceRules { get; set; }
+		public string ResourceRules { get; set; } = string.Empty;
 
 		// Can also be specified per resource using the 'CodesignSigningKey' metadata
-		public string SigningKey { get; set; }
+		public string SigningKey { get; set; } = string.Empty;
 
 		// Can also be specified per resource using the 'CodesignExtraArgs' metadata
-		public string ExtraArgs { get; set; }
+		public string ExtraArgs { get; set; } = string.Empty;
 
 		// Can also be specified per resource using the 'CodesignDeep' metadata (yes, the naming difference is correct and due to historical reasons)
 		public bool IsAppExtension { get; set; }
@@ -71,7 +70,7 @@ namespace Xamarin.MacDev.Tasks {
 			set { toolExe = value; }
 		}
 
-		public string ToolPath { get; set; }
+		public string ToolPath { get; set; } = string.Empty;
 
 		#endregion
 
@@ -80,7 +79,7 @@ namespace Xamarin.MacDev.Tasks {
 		// This output value is not observed anywhere in our targets, but it's required for building on Windows
 		// to make sure any codesigned files other tasks depend on are copied back to the windows machine.
 		[Output]
-		public ITaskItem [] CodesignedFiles { get; set; }
+		public ITaskItem [] CodesignedFiles { get; set; } = Array.Empty<ITaskItem> ();
 
 		#endregion
 
@@ -197,8 +196,8 @@ namespace Xamarin.MacDev.Tasks {
 			if (Path.IsPathRooted (path))
 				return path;
 
-			var sourceProjectPath = GetNonEmptyStringOrFallback (item, "SourceProjectPath", null);
-			if (sourceProjectPath is null)
+			var sourceProjectPath = GetNonEmptyStringOrFallback (item, "SourceProjectPath", out var foundSourceProjectPath, "");
+			if (!foundSourceProjectPath)
 				return path;
 
 			return Path.Combine (sourceProjectPath, path);
@@ -299,18 +298,18 @@ namespace Xamarin.MacDev.Tasks {
 			var item = info.Item;
 			var fileName = GetFullPathToTool ();
 			var arguments = info.GetCommandLineArguments (this);
-			var environment = new Dictionary<string, string> () {
+			var environment = new Dictionary<string, string?> () {
 				{ "CODESIGN_ALLOCATE", GetCodesignAllocate (item) },
 			};
 			var rv = ExecuteAsync (fileName, arguments, null, environment, mergeOutput: false).Result;
 			var exitCode = rv.ExitCode;
-			var messages = rv.StandardOutput.ToString ();
+			var messages = rv.StandardOutput?.ToString () ?? string.Empty;
 
 			if (messages.Length > 0)
 				Log.LogMessage (MessageImportance.Normal, "{0}", messages.ToString ());
 
 			if (exitCode != 0) {
-				var errors = rv.StandardError.ToString ();
+				var errors = rv.StandardError?.ToString () ?? string.Empty;
 				if (errors.Length > 0)
 					Log.LogError (MSBStrings.E0004, item.ItemSpec, errors);
 				else
@@ -327,7 +326,7 @@ namespace Xamarin.MacDev.Tasks {
 					File.WriteAllText (stampFile, info.GetStampFileContents (this));
 				} else {
 					Log.LogMessage (MessageImportance.Low, "The stamp file '{0}' does not exit for the item '{1}', and it will be created", stampFile, item.ItemSpec);
-					Directory.CreateDirectory (Path.GetDirectoryName (stampFile));
+					Directory.CreateDirectory (Path.GetDirectoryName (stampFile)!);
 					File.WriteAllText (stampFile, info.GetStampFileContents (this));
 				}
 
@@ -423,7 +422,7 @@ namespace Xamarin.MacDev.Tasks {
 			var itemsToSign = new List<SignInfo> ();
 			for (var i = 0; i < resourcesToSign.Length; i++) {
 				var item = resourcesToSign [i];
-				var info = new SignInfo { Item = item };
+				var info = new SignInfo (item);
 				if (!Validate (info))
 					continue;
 				if (NeedsCodesign (resourcesToSign, i, info.GetStampFileContents (this)))
@@ -580,7 +579,13 @@ namespace Xamarin.MacDev.Tasks {
 		class SignInfo {
 			public ITaskItem Item;
 
-			IList<string> arguments;
+			IList<string>? arguments;
+
+			public SignInfo (ITaskItem item)
+			{
+				Item = item;
+			}
+
 			public IList<string> GetCommandLineArguments (Codesign task)
 			{
 				if (arguments is null)

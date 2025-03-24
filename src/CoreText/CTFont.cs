@@ -2336,6 +2336,7 @@ namespace CoreText {
 			IntPtr handle;
 			unsafe {
 				handle = CTFontCreateWithFontDescriptor (descriptor.Handle, size, null);
+				GC.KeepAlive (descriptor);
 			}
 			if (handle == IntPtr.Zero)
 				throw ConstructorError.Unknown (typeof (CTFont));
@@ -2357,6 +2358,7 @@ namespace CoreText {
 			IntPtr handle;
 			unsafe {
 				handle = CTFontCreateWithFontDescriptor (descriptor.Handle, size, (CGAffineTransform*) Unsafe.AsPointer<CGAffineTransform> (ref matrix));
+				GC.KeepAlive (descriptor);
 			}
 			if (handle == IntPtr.Zero)
 				throw ConstructorError.Unknown (typeof (CTFont));
@@ -2442,6 +2444,7 @@ namespace CoreText {
 			IntPtr handle;
 			unsafe {
 				handle = CTFontCreateWithFontDescriptorAndOptions (descriptor.Handle, size, null, (nuint) (ulong) options);
+				GC.KeepAlive (descriptor);
 			}
 			if (handle == IntPtr.Zero)
 				throw ConstructorError.Unknown (typeof (CTFont));
@@ -2475,6 +2478,7 @@ namespace CoreText {
 			IntPtr handle;
 			unsafe {
 				handle = CTFontCreateWithFontDescriptorAndOptions (descriptor.Handle, size, (CGAffineTransform*) Unsafe.AsPointer<CGAffineTransform> (ref matrix), (nuint) (ulong) options);
+				GC.KeepAlive (descriptor);
 			}
 			if (handle == IntPtr.Zero)
 				throw ConstructorError.Unknown (typeof (CTFont));
@@ -2505,6 +2509,8 @@ namespace CoreText {
 			IntPtr handle;
 			unsafe {
 				handle = CTFontCreateWithGraphicsFont (font.Handle, size, &transform, descriptor.GetHandle ());
+				GC.KeepAlive (font);
+				GC.KeepAlive (descriptor);
 			}
 			if (handle == IntPtr.Zero)
 				throw ConstructorError.Unknown (typeof (CTFont));
@@ -2523,6 +2529,8 @@ namespace CoreText {
 			IntPtr handle;
 			unsafe {
 				handle = CTFontCreateWithGraphicsFont (font.Handle, size, null, descriptor.GetHandle ());
+				GC.KeepAlive (font);
+				GC.KeepAlive (descriptor);
 			}
 			if (handle == IntPtr.Zero)
 				throw ConstructorError.Unknown (typeof (CTFont));
@@ -2541,6 +2549,7 @@ namespace CoreText {
 			IntPtr handle;
 			unsafe {
 				handle = CTFontCreateWithGraphicsFont (font.Handle, size, &transform, IntPtr.Zero);
+				GC.KeepAlive (font);
 			}
 			if (handle == IntPtr.Zero)
 				throw ConstructorError.Unknown (typeof (CTFont));
@@ -2578,7 +2587,9 @@ namespace CoreText {
 			if (attributes is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (attributes));
 			unsafe {
-				return CreateFont (CTFontCreateCopyWithAttributes (Handle, size, null, attributes.Handle));
+				CTFont? result = CreateFont (CTFontCreateCopyWithAttributes (Handle, size, null, attributes.Handle));
+				GC.KeepAlive (attributes);
+				return result;
 			}
 		}
 
@@ -2594,7 +2605,9 @@ namespace CoreText {
 		public CTFont? WithAttributes (nfloat size, CTFontDescriptor attributes, ref CGAffineTransform matrix)
 		{
 			unsafe {
-				return CreateFont (CTFontCreateCopyWithAttributes (Handle, size, (CGAffineTransform*) Unsafe.AsPointer<CGAffineTransform> (ref matrix), attributes.GetHandle ()));
+				CTFont? result = CreateFont (CTFontCreateCopyWithAttributes (Handle, size, (CGAffineTransform*) Unsafe.AsPointer<CGAffineTransform> (ref matrix), attributes.GetHandle ()));
+				GC.KeepAlive (attributes);
+				return result;
 			}
 		}
 
@@ -2728,7 +2741,9 @@ namespace CoreText {
 		{
 			if (attribute is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (attribute));
-			return Runtime.GetNSObject (CTFontCopyAttribute (Handle, attribute.Handle));
+			var result = Runtime.GetNSObject (CTFontCopyAttribute (Handle, attribute.Handle));
+			GC.KeepAlive (attribute);
+			return result;
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
@@ -2821,7 +2836,10 @@ namespace CoreText {
 		static extern IntPtr CTFontCopyName (IntPtr font, IntPtr nameKey);
 		public string? GetName (CTFontNameKey nameKey)
 		{
-			return CFString.FromHandle (CTFontCopyName (Handle, CTFontNameKeyId.ToId (nameKey).GetHandle ()), releaseHandle: true);
+			var id = CTFontNameKeyId.ToId (nameKey);
+			string? name = CFString.FromHandle (CTFontCopyName (Handle, id.GetHandle ()), releaseHandle: true);
+			GC.KeepAlive (id);
+			return name;
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
@@ -2837,7 +2855,9 @@ namespace CoreText {
 			IntPtr actual;
 			string? ret;
 			unsafe {
-				ret = CFString.FromHandle (CTFontCopyLocalizedName (Handle, CTFontNameKeyId.ToId (nameKey).GetHandle (), &actual), releaseHandle: true);
+				var id = CTFontNameKeyId.ToId (nameKey);
+				ret = CFString.FromHandle (CTFontCopyLocalizedName (Handle, id.GetHandle (), &actual), releaseHandle: true);
+				GC.KeepAlive (id);
 			}
 			actualLanguage = CFString.FromHandle (actual, releaseHandle: true);
 			return ret;
@@ -3172,6 +3192,7 @@ namespace CoreText {
 			if (gl != positions.Length)
 				throw new ArgumentException ("array sizes fo context and glyphs differ");
 			CTFontDrawGlyphs (Handle, glyphs, positions, gl, context.Handle);
+			GC.KeepAlive (context);
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
@@ -3247,6 +3268,7 @@ namespace CoreText {
 		public CGFont? ToCGFont (CTFontDescriptor? attributes)
 		{
 			var h = CTFontCopyGraphicsFont (Handle, attributes.GetHandle ());
+			GC.KeepAlive (attributes);
 			if (h == IntPtr.Zero)
 				return null;
 			return new CGFont (h, true);
@@ -3324,7 +3346,9 @@ namespace CoreText {
 #endif
 		public CGRect GetTypographicBoundsForAdaptiveImageProvider (ICTAdaptiveImageProviding? provider)
 		{
-			return CTFontGetTypographicBoundsForAdaptiveImageProvider (Handle, provider.GetHandle ());
+			CGRect result = CTFontGetTypographicBoundsForAdaptiveImageProvider (Handle, provider.GetHandle ());
+			GC.KeepAlive (provider);
+			return result;
 		}
 
 #if NET
@@ -3357,6 +3381,8 @@ namespace CoreText {
 		public void DrawImage (ICTAdaptiveImageProviding provider, CGPoint point, CGContext context)
 		{
 			CTFontDrawImageFromAdaptiveImageProviderAtPoint (Handle, provider.GetNonNullHandle (nameof (provider)), point, context.GetNonNullHandle (nameof (context)));
+			GC.KeepAlive (provider);
+			GC.KeepAlive (context);
 		}
 
 #if NET

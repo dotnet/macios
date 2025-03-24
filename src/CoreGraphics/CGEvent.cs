@@ -190,7 +190,9 @@ namespace CoreGraphics {
 			if (source is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 
-			return CGEventCreateFromData (IntPtr.Zero, source.Handle);
+			IntPtr result = CGEventCreateFromData (IntPtr.Zero, source.Handle);
+			GC.KeepAlive (source);
+			return result;
 		}
 
 		public CGEvent (NSData source)
@@ -204,6 +206,7 @@ namespace CoreGraphics {
 		public CGEvent (CGEventSource? eventSource)
 			: base (CGEventCreate (eventSource.GetHandle ()), true)
 		{
+			GC.KeepAlive (eventSource);
 		}
 
 #if !NET
@@ -225,6 +228,7 @@ namespace CoreGraphics {
 		public CGEvent (CGEventSource? source, CGEventType mouseType, CGPoint mouseCursorPosition, CGMouseButton mouseButton)
 			: base (CGEventCreateMouseEvent (source.GetHandle (), mouseType, mouseCursorPosition, mouseButton), true)
 		{
+			GC.KeepAlive (source);
 		}
 
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
@@ -233,6 +237,7 @@ namespace CoreGraphics {
 		public CGEvent (CGEventSource? source, ushort virtualKey, bool keyDown)
 			: base (CGEventCreateKeyboardEvent (source.GetHandle (), virtualKey, keyDown.AsByte ()), true)
 		{
+			GC.KeepAlive (source);
 		}
 
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
@@ -258,6 +263,9 @@ namespace CoreGraphics {
 			default:
 				throw new ArgumentException ("Only one to three wheels are supported on this constructor");
 			}
+
+			GC.KeepAlive (source);
+
 			return handle;
 		}
 
@@ -305,6 +313,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static void CGEventSetLocation (IntPtr handle, CGPoint location);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGPoint Location {
 			get {
 				return CGEventGetLocation (Handle);
@@ -317,6 +328,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static CGPoint CGEventGetUnflippedLocation (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGPoint UnflippedLocation {
 			get {
 				return CGEventGetUnflippedLocation (Handle);
@@ -331,6 +345,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		internal extern static void CGEventSetFlags (IntPtr eventHandle, CGEventFlags flags);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGEventFlags Flags {
 			get {
 				return GetFlags (Handle);
@@ -474,6 +491,7 @@ namespace CoreGraphics {
 			if (eventSource is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (eventSource));
 			CGEventSetSource (Handle, eventSource.Handle);
+			GC.KeepAlive (eventSource);
 		}
 
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
@@ -482,6 +500,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static void CGEventSetType (IntPtr handle, CGEventType evtType);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGEventType EventType {
 			get {
 				return CGEventGetType (Handle);
@@ -510,6 +531,9 @@ namespace CoreGraphics {
 		}
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ulong Timestamp {
 			get {
 				return CGEventGetTimestamp (Handle);
@@ -527,6 +551,7 @@ namespace CoreGraphics {
 			if (machPort is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (machPort));
 			CGEventTapEnable (machPort.Handle, 1);
+			GC.KeepAlive (machPort);
 		}
 
 		public static void TapDisable (CFMachPort machPort)
@@ -534,6 +559,7 @@ namespace CoreGraphics {
 			if (machPort is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (machPort));
 			CGEventTapEnable (machPort.Handle, 0);
+			GC.KeepAlive (machPort);
 		}
 
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
@@ -543,7 +569,9 @@ namespace CoreGraphics {
 		{
 			if (machPort is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (machPort));
-			return CGEventTapIsEnabled (machPort.Handle) != 0;
+			bool result = CGEventTapIsEnabled (machPort.Handle) != 0;
+			GC.KeepAlive (machPort);
+			return result;
 		}
 
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
@@ -587,6 +615,7 @@ namespace CoreGraphics {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (evt));
 
 			CGEventTapPostEvent (tapProxyEvent, evt.Handle);
+			GC.KeepAlive (evt);
 		}
 
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
@@ -598,6 +627,7 @@ namespace CoreGraphics {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (evt));
 
 			CGEventPost (location, evt.Handle);
+			GC.KeepAlive (evt);
 		}
 
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
@@ -611,6 +641,7 @@ namespace CoreGraphics {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (evt));
 
 			CGEventPostToPSN (processSerialNumber, evt.Handle);
+			GC.KeepAlive (evt);
 		}
 
 		/// <summary>Post an event to a specific process</summary>
@@ -630,6 +661,7 @@ namespace CoreGraphics {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (evt));
 
 			CGEventPostToPid (pid, evt.Handle);
+			GC.KeepAlive (evt);
 		}
 
 		/// <summary>Post an event to a specific process</summary>
@@ -717,15 +749,35 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("maccatalyst")]
 #endif
 	public struct CGEventTapInformation {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public uint /* uint32_t */ EventTapID;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGEventTapLocation TapPoint;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGEventTapOptions Options;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGEventMask EventsOfInterest;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public int /* pid_t = int */ TappingProcess;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public int /* pid_t = int */ ProcessBeingTapped;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public bool /* bool */ Enabled;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float */ MinUsecLatency;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float */ AvgUsecLatency;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float */ MaxUsecLatency;
 	};
 #endif // !COREBUILD

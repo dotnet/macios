@@ -128,27 +128,18 @@ namespace AudioToolbox {
 		EnhancedAC3 = 0x65632d33, // 'ec-3'
 		/// <summary>To be added.</summary>
 		Flac = 0x666c6163, // 'flac'
-#if NET
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (13, 0)]
-		[TV (13, 0)]
-#endif
 		LatmInLoas = 0x6c6f6173, // 'loas'
 		/// <summary>To be added.</summary>
 		Opus = 0x6f707573, // 'opus'
 		/// <summary>Apple Positional Audio Codec.</summary>
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
-#else
-		[iOS (18, 0), TV (18, 0), MacCatalyst (18, 0), Mac (15, 0)]
-#endif
 		Apac = 0x61706163, // 'apac'
 	}
 
@@ -218,12 +209,10 @@ namespace AudioToolbox {
 		public int MagicCookieSize;
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[DebuggerDisplay ("{FormatName}")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioStreamBasicDescription {
@@ -274,7 +263,6 @@ namespace AudioToolbox {
 		const int AudioUnitSampleFractionBits = 24;
 		const AudioFormatFlags AudioFormatFlagIsBigEndian = 0;
 
-#if NET
 		/// <summary>Developers should not use this deprecated field. Canonical is no longer encouraged, since fixed-point no longer provides a performance advantage over floating point. 'AudioFormatFlagsNativeFloatPacked' is preffered instead.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
@@ -285,10 +273,6 @@ namespace AudioToolbox {
 		[ObsoletedOSPlatform ("ios8.0", "Canonical is no longer encouraged, since fixed-point no longer provides a performance advantage over floating point. 'AudioFormatFlagsNativeFloatPacked' is preferred instead.")]
 		[ObsoletedOSPlatform ("tvos9.0", "Canonical is no longer encouraged, since fixed-point no longer provides a performance advantage over floating point. 'AudioFormatFlagsNativeFloatPacked' is preferred instead.")]
 		[ObsoletedOSPlatform ("maccatalyst13.1", "Canonical is no longer encouraged, since fixed-point no longer provides a performance advantage over floating point. 'AudioFormatFlagsNativeFloatPacked' is preferred instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 8, 0, message: "Canonical is no longer encouraged, since fixed-point no longer provides a performance advantage over floating point. 'AudioFormatFlagsNativeFloatPacked' is preferred instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Canonical is no longer encouraged, since fixed-point no longer provides a performance advantage over floating point. 'AudioFormatFlagsNativeFloatPacked' is preferred instead.")]
-#endif
 		public static readonly AudioFormatFlags AudioFormatFlagsAudioUnitCanonical = AudioFormatFlags.IsSignedInteger | (BitConverter.IsLittleEndian ? 0 : AudioFormatFlags.IsBigEndian) |
 			AudioFormatFlags.IsPacked | AudioFormatFlags.IsNonInterleaved | (AudioFormatFlags) (AudioUnitSampleFractionBits << (int) AudioFormatFlags.LinearPCMSampleFractionShift);
 
@@ -493,12 +477,10 @@ namespace AudioToolbox {
 #endif // !COREBUILD
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioStreamPacketDescription {
 		/// <summary>The zero-based byte index from the beginning of the buffer to the beginning of the packet.</summary>
@@ -735,12 +717,10 @@ namespace AudioToolbox {
 	}
 
 #if !COREBUILD
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public static class AudioChannelLabelExtensions {
 		public static bool IsReserved (this AudioChannelLabel value)
 		{
@@ -802,12 +782,10 @@ namespace AudioToolbox {
 		RightTopRear = 1 << 26,
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioChannelDescription {
 		/// <summary>To be added.</summary>
@@ -1221,117 +1199,59 @@ namespace AudioToolbox {
 		DiscreteInOrder = (147 << 16) | 0,                       // needs to be ORed with the actual number of channels  
 
 
-#if NET
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-#else
-		[Mac (14, 0)]
-		[iOS (17, 0)]
-		[TV (17, 0)]
-		[MacCatalyst (17, 0)]
-#endif
 		Ogg_3_0 = AC3_3_0,
-#if NET
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-#else
-		[Mac (14, 0)]
-		[iOS (17, 0)]
-		[TV (17, 0)]
-		[MacCatalyst (17, 0)]
-#endif
 		Ogg_4_0 = Wave_4_0_B,
-#if NET
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-#else
-		[Mac (14, 0)]
-		[iOS (17, 0)]
-		[TV (17, 0)]
-		[MacCatalyst (17, 0)]
-#endif
 		Ogg_5_0 = (212U << 16) | 5,
-#if NET
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-#else
-		[Mac (14, 0)]
-		[iOS (17, 0)]
-		[TV (17, 0)]
-		[MacCatalyst (17, 0)]
-#endif
 		Ogg_5_1 = (213U << 16) | 6,
-#if NET
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-#else
-		[Mac (14, 0)]
-		[iOS (17, 0)]
-		[TV (17, 0)]
-		[MacCatalyst (17, 0)]
-#endif
 		Ogg_6_1 = (214U << 16) | 7,
-#if NET
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-#else
-		[Mac (14, 0)]
-		[iOS (17, 0)]
-		[TV (17, 0)]
-		[MacCatalyst (17, 0)]
-#endif
 		Ogg_7_1 = (215U << 16) | 8,
 
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		MPEG_5_0_E = (216U << 16) | 5,
 
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		MPEG_5_1_E = (217U << 16) | 6,
 
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		MPEG_6_1_B = (218U << 16) | 7,
 
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		MPEG_7_1_D = (219U << 16) | 8,
 
 		/// <summary>To be added.</summary>
@@ -1339,12 +1259,10 @@ namespace AudioToolbox {
 	}
 
 #if !COREBUILD
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public static class AudioChannelLayoutTagExtensions {
 		public static AudioChannelBit? ToAudioChannel (this AudioChannelLayoutTag layoutTag)
 		{
@@ -1372,12 +1290,10 @@ namespace AudioToolbox {
 	}
 #endif // !COREBUILD
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[DebuggerDisplay ("{Name}")]
 	public class AudioChannelLayout {
 #if !COREBUILD
@@ -1721,12 +1637,10 @@ namespace AudioToolbox {
 		Hvxc = 9,
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct SmpteTime { // CoreAudio.framework - CoreAudioTypes.h
 		/// <summary>A subframe offset to add to the time.</summary>
@@ -1789,10 +1703,6 @@ namespace AudioToolbox {
 
 	public enum SmpteTimeType : uint // UInt32 in AudioFileRegionList
 	{
-#if !NET
-		[Obsolete ("Value is not to be used with any API.")]
-		None = uint.MaxValue,
-#endif
 		/// <summary>To be added.</summary>
 		Type24 = 0,
 		/// <summary>To be added.</summary>
@@ -1819,12 +1729,10 @@ namespace AudioToolbox {
 		Type2398 = 11,
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioTimeStamp {
 
@@ -1904,12 +1812,10 @@ namespace AudioToolbox {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioBuffer {
 		/// <summary>The number of channels in the audio buffer.   One for monophonic, non-interleaved data or two for stereo, interleaved data.</summary>
@@ -1955,12 +1861,10 @@ namespace AudioToolbox {
 	///   ]]></code>
 	///   </example>
 	/// </remarks>
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public unsafe readonly ref struct AudioBufferList {
 		readonly uint mNumberOfBuffers;
@@ -1996,12 +1900,10 @@ namespace AudioToolbox {
 
 	// CoreAudioClock.h (inside AudioToolbox)
 	// It was a confusion between CA (CoreAudio) and CA (CoreAnimation)
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct CABarBeatTime {
 		/// <summary>To be added.</summary>

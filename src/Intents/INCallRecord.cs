@@ -17,10 +17,16 @@ using ObjCRuntime;
 namespace Intents {
 	public partial class INCallRecord {
 
+		/// <summary>Gets the length of the call, in seconds.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double? CallDuration {
 			get { return WeakCallDuration?.DoubleValue; }
 		}
 
+		/// <summary>Gets a Boolean value that tells whether the call record has been viewed by the user.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? Unseen {
 			get { return WeakUnseen?.BoolValue; }
 		}

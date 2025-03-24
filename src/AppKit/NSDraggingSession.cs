@@ -24,6 +24,7 @@ namespace AppKit {
 		public void EnumerateDraggingItems (NSDraggingItemEnumerationOptions enumOpts, NSView view, NSArray classArray, NSDictionary searchOptions, NSDraggingEnumerator enumerator)
 		{
 			EnumerateDraggingItems (enumOpts, view, classArray.Handle, searchOptions, enumerator);
+			GC.KeepAlive (classArray);
 		}
 	}
 }

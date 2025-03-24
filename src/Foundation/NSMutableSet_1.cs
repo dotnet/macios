@@ -89,7 +89,9 @@ namespace Foundation {
 			if (probe is null)
 				throw new ArgumentNullException (nameof (probe));
 
-			return Runtime.GetINativeObject<TKey> (_LookupMember (probe.Handle), false);
+			TKey result = Runtime.GetINativeObject<TKey> (_LookupMember (probe.Handle), false);
+			GC.KeepAlive (probe);
+			return result;
 		}
 
 		/// <summary>To be added.</summary>
@@ -106,7 +108,9 @@ namespace Foundation {
 			if (obj is null)
 				throw new ArgumentNullException (nameof (obj));
 
-			return _Contains (obj.Handle);
+			bool result = _Contains (obj.Handle);
+			GC.KeepAlive (obj);
+			return result;
 		}
 
 		public TKey [] ToArray ()
@@ -120,7 +124,9 @@ namespace Foundation {
 				return new NSMutableSet<TKey> (second);
 			if (second is null || second.Count == 0)
 				return new NSMutableSet<TKey> (first);
-			return new NSMutableSet<TKey> (first._SetByAddingObjectsFromSet (second.Handle));
+			var result = new NSMutableSet<TKey> (first._SetByAddingObjectsFromSet (second.Handle));
+			GC.KeepAlive (second);
+			return result;
 		}
 
 		public static NSMutableSet<TKey> operator - (NSMutableSet<TKey> first, NSMutableSet<TKey> second)
@@ -141,6 +147,7 @@ namespace Foundation {
 				throw new ArgumentNullException (nameof (obj));
 
 			_Add (obj.Handle);
+			GC.KeepAlive (obj);
 		}
 
 		public void Remove (TKey obj)
@@ -149,6 +156,7 @@ namespace Foundation {
 				throw new ArgumentNullException (nameof (obj));
 
 			_Remove (obj.Handle);
+			GC.KeepAlive (obj);
 		}
 
 		public void AddObjects (params TKey [] objects)

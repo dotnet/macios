@@ -183,12 +183,21 @@ namespace CloudKit {
 	[MacCatalyst (13, 1)]
 	partial interface CKShareKeys {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CKShareTitleKey")]
 		NSString Title { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CKShareThumbnailImageDataKey")]
 		NSString ThumbnailImageData { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CKShareTypeKey")]
 		NSString Type { get; }
 	}
@@ -227,6 +236,10 @@ namespace CloudKit {
 	[BaseType (typeof (NSObject))]
 	interface CKContainer {
 
+		/// <summary>Developers should not use this deprecated property. Developers should use 'CurrentUserDefaultName' instead.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'CurrentUserDefaultName' instead.")]
 		[Deprecated (PlatformName.TvOS, 10, 0, message: "Use 'CurrentUserDefaultName' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Use 'CurrentUserDefaultName' instead.")]
@@ -235,6 +248,9 @@ namespace CloudKit {
 		[Field ("CKOwnerDefaultName")]
 		NSString OwnerDefaultName { get; }
 
+		/// <summary>The current user of the database.</summary>
+		///         <value>The default value is "defaultOwner".</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("CKCurrentUserDefaultName")]
 		NSString CurrentUserDefaultName { get; }
@@ -327,6 +343,7 @@ namespace CloudKit {
 		[Async]
 		void DiscoverUserIdentity (CKRecordID userRecordID, Action<CKUserIdentity, NSError> completionHandler);
 
+		/// <include file="../docs/api/CloudKit/CKContainer.xml" path="/Documentation/Docs[@DocId='P:CloudKit.CKContainer.AccountChangedNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("CKAccountChangedNotification")]
 		[Notification]
@@ -489,18 +506,38 @@ namespace CloudKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface CKErrorFields {
+		/// <summary>Represents the value associated with the constant CKPartialErrorsByItemIDKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CKPartialErrorsByItemIDKey")]
 		NSString PartialErrorsByItemIdKey { get; }
 
+		/// <summary>Represents the value associated with the constant CKRecordChangedErrorAncestorRecordKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CKRecordChangedErrorAncestorRecordKey")]
 		NSString RecordChangedErrorAncestorRecordKey { get; }
 
+		/// <summary>Represents the value associated with the constant CKRecordChangedErrorServerRecordKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CKRecordChangedErrorServerRecordKey")]
 		NSString RecordChangedErrorServerRecordKey { get; }
 
+		/// <summary>Represents the value associated with the constant CKRecordChangedErrorClientRecordKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CKRecordChangedErrorClientRecordKey")]
 		NSString RecordChangedErrorClientRecordKey { get; }
 
+		/// <summary>Represents the value associated with the constant CKErrorRetryAfterKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CKErrorRetryAfterKey")]
 		NSString ErrorRetryAfterKey { get; }
 
@@ -1166,6 +1203,9 @@ namespace CloudKit {
 		[Export ("allowsCellularAccess")]
 		bool AllowsCellularAccess { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that tells whether the operation is long-lived.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("longLived")]
 		bool LongLived { [Bind ("isLongLived")] get; set; }
 
@@ -1212,6 +1252,9 @@ namespace CloudKit {
 		[Export ("operationID")]
 		string OperationID { get; }
 
+		/// <summary>Gets or sets a value that tells whether this operation is long-lived.</summary>
+		///         <value>A value that tells whether this operation is long-lived.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("longLived")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'CKOperationConfiguration' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'CKOperationConfiguration' instead.")]
@@ -1523,6 +1566,10 @@ namespace CloudKit {
 	[BaseType (typeof (NSObject))]
 	interface CKRecordZone : NSSecureCoding, NSCopying {
 
+		/// <summary>Represents the value associated with the constant CKRecordZoneDefaultName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The name of the default zone.</remarks>
 		[Field ("CKRecordZoneDefaultName")]
 		NSString DefaultName { get; }
 

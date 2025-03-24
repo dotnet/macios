@@ -7,7 +7,7 @@
 // Copyright 2024 Microsoft Corp. All rights reserved.
 //
 
-#if !__TVOS__ && !__WATCHOS__
+#if !__TVOS__
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -1039,4 +1039,4 @@ namespace MonoTouchFixtures.CoreMidi {
 		}
 	}
 }
-#endif // !__TVOS__ && !__WATCHOS__
+#endif // !__TVOS__

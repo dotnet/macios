@@ -512,7 +512,6 @@ namespace Xamarin.Bundler {
 					return "-lcompression";
 				return "-weak-lcompression";
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 				return "-lcompression";
 			default:
 				throw ErrorHelper.CreateError (71, Errors.MX0071, App.Platform, App.SdkVersion);

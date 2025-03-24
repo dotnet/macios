@@ -357,6 +357,7 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (request));
 
 			var handle = CFReadStreamCreateForHTTPRequest (IntPtr.Zero, request.Handle);
+			GC.KeepAlive (request);
 			return new CFHTTPStream (handle, true);
 		}
 
@@ -390,6 +391,8 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (body));
 
 			var handle = CFReadStreamCreateForStreamedHTTPRequest (IntPtr.Zero, request.Handle, body.Handle);
+			GC.KeepAlive (request);
+			GC.KeepAlive (body);
 			return new CFHTTPStream (handle, true);
 		}
 
@@ -401,6 +404,8 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (body));
 
 			var handle = CFReadStreamCreateForStreamedHTTPRequest (IntPtr.Zero, request.Handle, body.Handle);
+			GC.KeepAlive (request);
+			GC.KeepAlive (body);
 			return new CFHTTPStream (handle, true);
 		}
 
@@ -506,6 +511,9 @@ namespace CoreFoundation {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		public class StreamEventArgs : EventArgs {
+			/// <summary>To be added.</summary>
+			///         <value>To be added.</value>
+			///         <remarks>To be added.</remarks>
 			public CFStreamEventType EventType {
 				get;
 				private set;
@@ -696,6 +704,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* dispatch_queue_t */ IntPtr CFWriteStreamCopyDispatchQueue (/* CFWriteStreamRef */ IntPtr stream);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -706,9 +717,13 @@ namespace CoreFoundation {
 			}
 			set {
 				CFReadStreamSetDispatchQueue (Handle, value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -719,6 +734,7 @@ namespace CoreFoundation {
 			}
 			set {
 				CFWriteStreamSetDispatchQueue (Handle, value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 	}

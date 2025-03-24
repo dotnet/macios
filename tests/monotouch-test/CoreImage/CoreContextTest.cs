@@ -7,8 +7,6 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
 using System.Drawing;
 
@@ -93,5 +91,3 @@ namespace MonoTouchFixtures.CoreImage {
 #endif // HAS_OPENGLES
 	}
 }
-
-#endif // !__WATCHOS__

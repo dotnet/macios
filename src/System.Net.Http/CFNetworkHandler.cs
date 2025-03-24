@@ -318,10 +318,12 @@ namespace System.Net.Http {
 		void CloseStream (CFHTTPStream stream)
 		{
 			lock (streamBuckets) {
-				if (streamBuckets.TryGetValue (stream.Handle, out var bucket)) {
+				var streamHandle = stream.Handle;
+				if (streamBuckets.TryGetValue (streamHandle, out var bucket)) {
 					bucket.Close ();
-					streamBuckets.Remove (stream.Handle);
+					streamBuckets.Remove (streamHandle);
 				}
+				GC.KeepAlive (stream);
 			}
 			stream.Close ();
 		}

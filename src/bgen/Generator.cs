@@ -323,7 +323,6 @@ public partial class Generator : IMemberGatherer {
 		return AttributeManager.HasAttribute<ProtocolAttribute> (protocol);
 	}
 
-#if NET
 	public ExperimentalAttribute GetExperimentalAttribute (ICustomAttributeProvider cu)
 	{
 		ExperimentalAttribute rv;
@@ -332,7 +331,6 @@ public partial class Generator : IMemberGatherer {
 
 		return null;
 	}
-#endif
 
 	public BindAsAttribute GetBindAsAttribute (ICustomAttributeProvider cu)
 	{
@@ -500,7 +498,11 @@ public partial class Generator : IMemberGatherer {
 				throw GetBindAsException ("unbox", retType.Name, originalReturnType.Name, "container", minfo.mi);
 			}
 		} else if (originalReturnType == TypeCache.NSString && IsSmartEnum (retType)) {
-			append = $"{TypeManager.FormatType (retType.DeclaringType, retType)}Extensions.GetValue (";
+			if (isNullable) {
+				append = $"{TypeManager.FormatType (retType.DeclaringType, retType)}Extensions.GetNullableValue (";
+			} else {
+				append = $"{TypeManager.FormatType (retType.DeclaringType, retType)}Extensions.GetValue (";
+			}
 			suffix = ")";
 		} else if (originalReturnType.IsArray && originalReturnType.GetArrayRank () == 1) {
 			var arrType = originalReturnType.GetElementType ();
@@ -583,7 +585,7 @@ public partial class Generator : IMemberGatherer {
 
 		if (mi.ReturnType.IsArray && TypeManager.IsWrappedType (mi.ReturnType.GetElementType ())) {
 			returntype = NativeHandleType;
-			returnformat = "return NSArray.FromNSObjects({0}).Handle;";
+			returnformat = "return NSArray.FromNSObjects({0}).GetHandle ();";
 		} else if (TypeManager.IsWrappedType (mi.ReturnType)) {
 			returntype = Generator.NativeHandleType;
 			returnformat = "return {0}.GetHandle ();";
@@ -1289,7 +1291,7 @@ public partial class Generator : IMemberGatherer {
 		this.debug = debug;
 		this.api = api;
 		basedir = ".";
-		NativeHandleType = binding_touch.IsDotNet ? "NativeHandle" : "IntPtr";
+		NativeHandleType = "NativeHandle";
 	}
 
 	public void Go ()
@@ -1364,11 +1366,7 @@ public partial class Generator : IMemberGatherer {
 					throw new BindingException (1018, true, t.FullName, pi.Name);
 				}
 
-#if NET
 				var is_abstract = false;
-#else
-				bool is_abstract = AttributeManager.HasAttribute<AbstractAttribute> (pi) && pi.DeclaringType == t;
-#endif
 
 				if (pi.CanRead) {
 					MethodInfo getter = pi.GetGetMethod ();
@@ -1447,10 +1445,8 @@ public partial class Generator : IMemberGatherer {
 						continue;
 					else if (attr is NoMethodAttribute)
 						continue;
-#if NET
 					else if (attr is ExperimentalAttribute)
 						continue;
-#endif
 					else if (attr is OptionalMemberAttribute || attr is RequiredMemberAttribute)
 						continue;
 					else {
@@ -1605,16 +1601,8 @@ public partial class Generator : IMemberGatherer {
 			// but we have a workaround in place because we can't fix old, binary bindings so...
 			// print ("[Preserve (Conditional=true)]");
 			// For .NET we fix it using the DynamicDependency attribute below
-#if !NET
-			print ("unsafe static internal readonly {0} Handler = Invoke;", ti.DelegateName);
-			print ("");
-#endif
-#if NET
 			print ("[Preserve (Conditional = true)]");
 			print ("[UnmanagedCallersOnly]");
-#else
-			print ("[MonoPInvokeCallback (typeof ({0}))]", ti.DelegateName);
-#endif
 			print ("[UserDelegateType (typeof ({0}))]", ti.UserDelegate);
 			print ("internal static unsafe {0} Invoke ({1}) {{", ti.ReturnType, ti.Parameters);
 			indent++;
@@ -1664,14 +1652,8 @@ public partial class Generator : IMemberGatherer {
 			print ("internal static unsafe BlockLiteral CreateBlock ({0} callback)", ti.UserDelegate);
 			print ("{");
 			indent++;
-#if NET
 			print ("delegate* unmanaged<{0}> trampoline = &Invoke;", ti.FunctionPointerSignature);
 			print ("return new BlockLiteral (trampoline, callback, typeof ({0}), nameof (Invoke));", ti.StaticName);
-#else
-			print ("var block = new BlockLiteral ();");
-			print ("block.SetupBlockUnsafe (Handler, callback);");
-			print ("return block;");
-#endif
 			indent--;
 			print ("}");
 			indent--;
@@ -1709,7 +1691,7 @@ public partial class Generator : IMemberGatherer {
 			string cast_a = "", cast_b = "";
 			bool use_temp_return;
 
-			GenerateArgumentChecks (mi, true);
+			GenerateArgumentChecks (mi, true, null, out bool needsGCKeepAlives);
 
 			StringBuilder args, convs, disposes, by_ref_processing, by_ref_init;
 			GenerateTypeLowering (mi,
@@ -1735,6 +1717,8 @@ public partial class Generator : IMemberGatherer {
 				   cast_a,
 				   args.ToString (),
 				   cast_b);
+			if (needsGCKeepAlives)
+				GenerateArgumentGCKeepAlives (mi, null);
 			if (disposes.Length > 0)
 				print (disposes.ToString ());
 			if (by_ref_processing.Length > 0)
@@ -2292,36 +2276,9 @@ public partial class Generator : IMemberGatherer {
 	// more important since dotnet and legacy have different minimums (so this can't be done in binding files)
 	bool FilterMinimumVersion (AvailabilityBaseAttribute aa)
 	{
-#if NET
 		// dotnet can never filter minimum versions, as they are semantically important in some cases
 		// See for details: https://github.com/xamarin/xamarin-macios/issues/10170
 		return true;
-#else
-		if (aa.AvailabilityKind != AvailabilityKind.Introduced)
-			return true;
-
-		Version min;
-		switch (aa.Platform) {
-		case PlatformName.iOS:
-			min = Xamarin.SdkVersions.MiniOSVersion;
-			break;
-		case PlatformName.TvOS:
-			min = Xamarin.SdkVersions.MinTVOSVersion;
-			break;
-		case PlatformName.WatchOS:
-			min = Xamarin.SdkVersions.MinWatchOSVersion;
-			break;
-		case PlatformName.MacOSX:
-			min = Xamarin.SdkVersions.MinOSXVersion;
-			break;
-		case PlatformName.MacCatalyst:
-			min = Xamarin.SdkVersions.MinMacCatalystVersion;
-			break;
-		default:
-			throw new BindingException (1047, aa.Platform.ToString ());
-		}
-		return aa.Version > min;
-#endif
 	}
 
 	HashSet<string> GetFrameworkListForPlatform (PlatformName platform)
@@ -2477,11 +2434,6 @@ public partial class Generator : IMemberGatherer {
 				else
 					type_ca = Array.Empty<AvailabilityBaseAttribute> ();
 			}
-#if !NET
-			// if we're comparing to something else (than ourself) then don't generate duplicate attributes
-			if ((mi != t) && Duplicated (availability, type_ca))
-				continue;
-#endif
 			switch (availability.AvailabilityKind) {
 			case AvailabilityKind.Unavailable:
 				// an unavailable member can override type-level attribute
@@ -2489,11 +2441,6 @@ public partial class Generator : IMemberGatherer {
 				printed = true;
 				break;
 			default:
-#if !NET
-				// can't introduce or deprecate/obsolete a member on a type that is not available
-				if (IsUnavailable (type_ca, availability.Platform))
-					continue;
-#endif
 				if (FilterMinimumVersion (availability))
 					print (availability.ToString ());
 				printed = true;
@@ -2547,13 +2494,6 @@ public partial class Generator : IMemberGatherer {
 		}
 
 		var generated_type_ca = new HashSet<string> ();
-
-#if !NET
-		foreach (var availability in AttributeManager.GetCustomAttributes<AvailabilityBaseAttribute> (generatedType)) {
-			var s = availability.ToString ();
-			generated_type_ca.Add (s);
-		}
-#endif
 
 		// the type, in which we are inlining the current method, might already have the same availability attribute
 		// which we would duplicate if generated
@@ -2859,9 +2799,6 @@ public partial class Generator : IMemberGatherer {
 		print (w, "");
 		print (w, "#nullable enable");
 		print (w, "");
-		print (w, "#if !NET");
-		print (w, "using NativeHandle = System.IntPtr;");
-		print (w, "#endif");
 	}
 
 	//
@@ -2909,14 +2846,8 @@ public partial class Generator : IMemberGatherer {
 				var wrapper = GetFromBindAsWrapper (minfo, out suffix);
 				var formattedReturnType = TypeManager.FormatType (minfo.type, mi.ReturnType);
 				if (mi.ReturnType == TypeCache.NSString) {
-					if (isNullable) {
-						print ("{0} retvaltmp;", NativeHandleType);
-						cast_a = "((retvaltmp = ";
-						cast_b = $") == IntPtr.Zero ? default ({formattedBindAsType}) : ({wrapper}Runtime.GetNSObject<{formattedReturnType}> (retvaltmp, {owns})!){suffix})";
-					} else {
-						cast_a = $"{wrapper}Runtime.GetNSObject<{formattedReturnType}> (";
-						cast_b = $", {owns})!{suffix}";
-					}
+					cast_a = $"{wrapper}";
+					cast_b = $"{suffix}";
 				} else {
 					var enumCast = (bindAsType.IsEnum && !minfo.type.IsArray) ? $"({formattedBindAsType}) " : string.Empty;
 					cast_a = $"{enumCast}Runtime.GetNSObject<{formattedReturnType}> (";
@@ -3422,8 +3353,10 @@ public partial class Generator : IMemberGatherer {
 		}
 	}
 
-	void GenerateArgumentChecks (MethodInfo mi, bool null_allowed_override, PropertyInfo propInfo = null)
+	void GenerateArgumentChecks (MethodInfo mi, bool null_allowed_override, PropertyInfo propInfo, out bool needsGCKeepAlives)
 	{
+		needsGCKeepAlives = false;
+
 		if (AttributeManager.IsNullable (mi))
 			exceptions.Add (ErrorHelper.CreateWarning (1118, mi));
 
@@ -3448,9 +3381,22 @@ public partial class Generator : IMemberGatherer {
 				} else {
 					print ($"var {safe_name}__handle__ = {safe_name}.GetHandle ();");
 				}
+				needsGCKeepAlives = true;
 			} else if (needs_null_check) {
 				print ("if ({0} is null)", safe_name);
 				print ("\tObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof ({0}));", safe_name);
+			}
+		}
+	}
+
+	void GenerateArgumentGCKeepAlives (MethodInfo mi, PropertyInfo propInfo = null)
+	{
+		foreach (var pi in mi.GetParameters ()) {
+			var cap = propInfo?.SetMethod == mi ? (ICustomAttributeProvider) propInfo : (ICustomAttributeProvider) pi;
+			var bind_as = GetBindAsAttribute (cap);
+			var pit = bind_as is null ? pi.ParameterType : bind_as.Type;
+			if (TypeManager.IsWrappedType (pit) || TypeCache.INativeObject.IsAssignableFrom (pit)) {
+				print ($"GC.KeepAlive ({pi.Name.GetSafeParamName ()});");
 			}
 		}
 	}
@@ -3521,7 +3467,7 @@ public partial class Generator : IMemberGatherer {
 
 		Inject<PrologueSnippetAttribute> (mi);
 
-		GenerateArgumentChecks (mi, false, propInfo);
+		GenerateArgumentChecks (mi, false, propInfo, out bool needsGCKeepAlives);
 
 		// Collect all strings that can be fast-marshalled
 		List<string> stringParameters = CollectFastStringMarshalParameters (mi);
@@ -3572,7 +3518,7 @@ public partial class Generator : IMemberGatherer {
 		bool use_temp_return =
 			minfo.is_return_release ||
 			(mi.Name != "Constructor" && shouldMarshalNativeExceptions && mi.ReturnType != TypeCache.System_Void) ||
-			(mi.Name != "Constructor" && (CheckNeedStret (mi) || disposes.Length > 0 || postget is not null) && mi.ReturnType != TypeCache.System_Void) ||
+			(mi.Name != "Constructor" && (CheckNeedStret (mi) || disposes.Length > 0 || needsGCKeepAlives || postget is not null) && mi.ReturnType != TypeCache.System_Void) ||
 			(AttributeManager.HasAttribute<FactoryAttribute> (mi)) ||
 			((body_options & BodyOption.NeedsTempReturn) == BodyOption.NeedsTempReturn) ||
 			(mi.ReturnType.IsSubclassOf (TypeCache.System_Delegate)) ||
@@ -3580,7 +3526,7 @@ public partial class Generator : IMemberGatherer {
 			(IsNativeEnum (mi.ReturnType)) ||
 			(mi.ReturnType == TypeCache.System_Boolean) ||
 			(mi.ReturnType == TypeCache.System_Char) ||
-			minfo.is_protocol_member && disposes.Length > 0 && mi.Name == "Constructor" ||
+			(minfo.is_protocol_member && (disposes.Length > 0 || needsGCKeepAlives) && mi.Name == "Constructor") ||
 			((mi.Name != "Constructor" || minfo.is_protocol_member) && by_ref_processing.Length > 0 && mi.ReturnType != TypeCache.System_Void);
 
 		if (use_temp_return) {
@@ -3648,6 +3594,8 @@ public partial class Generator : IMemberGatherer {
 
 		Inject<PostSnippetAttribute> (mi);
 
+		if (needsGCKeepAlives)
+			GenerateArgumentGCKeepAlives (mi, propInfo);
 		if (disposes.Length > 0)
 			print (sw, disposes.ToString ());
 		if ((body_options & BodyOption.StoreRet) == BodyOption.StoreRet) {
@@ -3934,13 +3882,11 @@ public partial class Generator : IMemberGatherer {
 		if (!minfo.is_protocol_member || minfo.is_protocol_implementation_method)
 			return;
 
-#if NET
 		if (minfo.is_protocol_member_required.Value) {
 			print ("[global::Foundation.RequiredMember]");
 		} else {
 			print ("[global::Foundation.OptionalMember]");
 		}
-#endif
 	}
 
 	void GenerateProperty (Type type, PropertyInfo pi, List<string> instance_fields_to_clear_on_dispose, bool is_model, bool is_interface_impl = false, bool is_protocol_member = false, bool? is_protocol_member_required = null, bool is_protocol_implementation_method = false)
@@ -3995,9 +3941,6 @@ public partial class Generator : IMemberGatherer {
 					pi.Name.GetSafeParamName ());
 			indent++;
 			if (generate_getter) {
-#if !NET
-				PrintAttributes (pi, platform: true);
-#endif
 				PrintAttributes (pi.GetGetMethod (), platform: true, preserve: true, advice: true);
 				print ("get {");
 				indent++;
@@ -4017,9 +3960,6 @@ public partial class Generator : IMemberGatherer {
 				print ("}");
 			}
 			if (generate_setter) {
-#if !NET
-				PrintAttributes (pi, platform: true);
-#endif
 				PrintAttributes (pi.GetSetMethod (), platform: true, preserve: true, advice: true);
 				print ("set {");
 				indent++;
@@ -4128,25 +4068,16 @@ public partial class Generator : IMemberGatherer {
 			string sel = ba is not null ? ba.Selector : export.Selector;
 
 			// print availability separately since we could be inlining
-#if !NET
-			PrintPlatformAttributes (pi, type);
-#endif
-
 			if (!minfo.is_sealed || !minfo.is_wrapper) {
 				PrintDelegateProxy (pi.GetGetMethod ());
 				PrintExport (minfo, sel, export.ArgumentSemantic);
 			}
 
 			PrintAttributes (pi.GetGetMethod (), platform: true, preserve: true, advice: true, notImplemented: true, inlinedType: inlinedType);
-#if NET
 			if (minfo.is_protocol_member && !minfo.is_static) {
 				print ("get {");
 				print ($"\treturn _Get{pi.Name.GetSafeParamName ()} (this);");
 				print ("}");
-#else
-			if (minfo.is_abstract) {
-				print ("get; ");
-#endif
 			} else {
 				print ("get {");
 				if (debug)
@@ -4195,24 +4126,14 @@ public partial class Generator : IMemberGatherer {
 
 			PrintBlockProxy (pi.PropertyType);
 
-			// print availability separately since we could be inlining
-#if !NET
-			PrintPlatformAttributes (pi, type);
-#endif
-
 			if (not_implemented_attr is null && (!minfo.is_sealed || !minfo.is_wrapper))
 				PrintExport (minfo, sel, export.ArgumentSemantic);
 
 			PrintAttributes (pi.GetSetMethod (), platform: true, preserve: true, advice: true, notImplemented: true, inlinedType: inlinedType);
-#if NET
 			if (minfo.is_protocol_member && !minfo.is_static) {
 				print ("set {");
 				print ($"\t_Set{pi.Name.GetSafeParamName ()} (this, value);");
 				print ("}");
-#else
-			if (minfo.is_abstract) {
-				print ("set; ");
-#endif
 			} else {
 				print ("set {");
 				if (debug)
@@ -4550,7 +4471,6 @@ public partial class Generator : IMemberGatherer {
 
 		var mod = minfo.GetVisibility ();
 
-#if NET
 		var is_abstract = false;
 		bool do_not_call_base;
 		if (minfo.is_ctor && minfo.is_protocol_member) {
@@ -4564,10 +4484,7 @@ public partial class Generator : IMemberGatherer {
 		} else {
 			do_not_call_base = false;
 		}
-#else
-		var is_abstract = minfo.is_abstract;
-		var do_not_call_base = minfo.is_model;
-#endif
+
 		print_generated_code (optimizable: IsOptimizable (minfo.mi));
 		print ("{0} {1}{2}{3}",
 			   mod,
@@ -4822,11 +4739,7 @@ public partial class Generator : IMemberGatherer {
 	void GenerateProtocolTypes (Type type, string class_visibility, string TypeName, string protocol_name, ProtocolAttribute protocolAttribute)
 	{
 		var protocol = AttributeManager.GetCustomAttribute<ProtocolAttribute> (type);
-#if NET
 		var backwardsCompatibleCodeGeneration = protocol.BackwardsCompatibleCodeGeneration;
-#else
-		var backwardsCompatibleCodeGeneration = true;
-#endif
 		var allProtocolMethods = new List<MethodInfo> ();
 		var allProtocolProperties = new List<PropertyInfo> ();
 		var allProtocolConstructors = new List<MethodInfo> ();
@@ -4997,7 +4910,6 @@ public partial class Generator : IMemberGatherer {
 		print ("{");
 		indent++;
 
-#if NET
 		foreach (var ctor in allProtocolConstructors) {
 			var minfo = new MemberInformation (this, this, ctor, type, null);
 			minfo.is_protocol_member = true;
@@ -5044,28 +4956,7 @@ public partial class Generator : IMemberGatherer {
 			print ("\tGC.KeepAlive (null);"); // need to do _something_ (doesn't seem to matter what), otherwise the static cctor (and the DynamicDependency attributes) are trimmed away.
 			print ("}");
 		}
-#else
-		foreach (var mi in requiredInstanceMethods) {
-			if (AttributeManager.HasAttribute<StaticAttribute> (mi))
-				continue;
 
-			var minfo = new MemberInformation (this, this, mi, type, null);
-			var mod = string.Empty;
-
-			WriteDocumentation (mi);
-			PrintMethodAttributes (minfo);
-			print_generated_code ();
-			PrintDelegateProxy (minfo);
-			PrintExport (minfo);
-			print ("[Preserve (Conditional = true)]");
-			if (minfo.is_unsafe)
-				mod = "unsafe ";
-			print ("{0}{1};", mod, MakeSignature (minfo, true));
-			print ("");
-		}
-#endif
-
-#if NET
 		var instance_fields_to_clear_on_dispose = new List<string> ();
 		foreach (var pi in instanceProperties) {
 			GenerateProperty (type, pi, instance_fields_to_clear_on_dispose, false, is_protocol_member: true, is_protocol_member_required: IsRequired (pi));
@@ -5101,50 +4992,6 @@ public partial class Generator : IMemberGatherer {
 				GenerateMethod (type, setter, false, null, false, false, false, ba?.Selector ?? attrib.ToSetter (pi).Selector, is_protocol_member: true, is_protocol_member_required: IsRequired (pi));
 			}
 		}
-#else
-		foreach (var pi in requiredInstanceProperties) {
-			var minfo = new MemberInformation (this, this, pi, type);
-			var mod = string.Empty;
-			minfo.is_export = true;
-
-			WriteDocumentation (pi);
-			print ("[Preserve (Conditional = true)]");
-			PrintAttributes (pi, platform: true);
-
-			if (minfo.is_unsafe)
-				mod = "unsafe ";
-			// IsValueType check needed for `IntPtr` signatures (which can't become `IntPtr?`)
-			var nullable = !pi.PropertyType.IsValueType && AttributeManager.IsNullable (pi) ? "?" : String.Empty;
-			GetAccessorInfo (pi, out var getMethod, out var setMethod, out var generate_getter, out var generate_setter);
-			print ("{0}{1}{2} {3} {{", mod, TypeManager.FormatType (type, pi.PropertyType), nullable, pi.Name, generate_getter ? "get;" : string.Empty, generate_setter ? "set;" : string.Empty);
-			indent++;
-			if (generate_getter) {
-				var ea = GetGetterExportAttribute (pi);
-				// there can be a [Bind] there that override the selector name to be used
-				// e.g. IMTLTexture.FramebufferOnly
-				var ba = GetBindAttribute (getMethod);
-				PrintDelegateProxy (getMethod);
-				if (!AttributeManager.HasAttribute<NotImplementedAttribute> (getMethod)) {
-					if (ba is not null)
-						PrintExport (minfo, ba.Selector, ea.ArgumentSemantic);
-					else
-						PrintExport (minfo, ea);
-				}
-				PrintAttributes (getMethod, notImplemented: true, platform: true);
-				print ("get;");
-			}
-			if (generate_setter) {
-				PrintBlockProxy (pi.PropertyType);
-				PrintAttributes (setMethod, notImplemented: true, platform: true);
-				if (!AttributeManager.HasAttribute<NotImplementedAttribute> (setMethod))
-					PrintExport (minfo, GetSetterExportAttribute (pi));
-				print ("set;");
-			}
-			indent--;
-			print ("}");
-			print ("");
-		}
-#endif
 
 		indent--;
 		print ("}");
@@ -5518,12 +5365,10 @@ public partial class Generator : IMemberGatherer {
 
 	public void PrintExperimentalAttribute (ICustomAttributeProvider mi)
 	{
-#if NET
 		var e = GetExperimentalAttribute (mi);
 		if (e is null)
 			return;
 		print ($"[Experimental (\"{e.DiagnosticId}\")]");
-#endif
 	}
 
 	void WriteDocumentation (MemberInfo info)
@@ -5602,13 +5447,11 @@ public partial class Generator : IMemberGatherer {
 
 		switch (BindingTouch.TargetFramework.Platform) {
 		case ApplePlatform.iOS:
-			return BindingTouch.IsDotNet ? "Microsoft.iOS" : "Xamarin.iOS";
+			return "Microsoft.iOS";
 		case ApplePlatform.MacOSX:
-			return BindingTouch.IsDotNet ? "Microsoft.macOS" : "Xamarin.Mac";
+			return "Microsoft.macOS";
 		case ApplePlatform.TVOS:
-			return BindingTouch.IsDotNet ? "Microsoft.tvOS" : "Xamarin.TVOS";
-		case ApplePlatform.WatchOS:
-			return BindingTouch.IsDotNet ? "Microsoft.watchOS" : "Xamarin.WatchOS";
+			return "Microsoft.tvOS";
 		case ApplePlatform.MacCatalyst:
 			return "Microsoft.MacCatalyst";
 		default:
@@ -5671,13 +5514,9 @@ public partial class Generator : IMemberGatherer {
 			if (is_model) {
 				if (!string.IsNullOrEmpty (model.Name)) {
 					register_name = model.Name;
-#if NET
 				} else {
 					// For .NET, we'll always generate the Objective-C name. If a user wants to use a different name,
 					// they can set the model name (so we'll enter the previous condition)
-#else
-				} else if (model.AutoGeneratedName) {
-#endif
 					register_name = Registrar.Registrar.SanitizeObjectiveCName (GetAssemblyName () + "__" + type.FullName);
 				}
 			}
@@ -5731,12 +5570,8 @@ public partial class Generator : IMemberGatherer {
 					// This can happen if the OS gives an instance of a subclass, but that subclass is private (so we haven't bound it).
 					// In this case, the best managed type is this type, but it can't be abstract if we want to create an instance of it.
 					// Except that we declare models as abstract, because they're meant to be subclassed (and they're not wrapping a native type anyway).
-#if NET
 					if (is_model)
 						class_mod = "abstract ";
-#else
-					class_mod = "abstract ";
-#endif
 				} else if (is_sealed)
 					class_mod = "sealed ";
 			}
@@ -5793,10 +5628,6 @@ public partial class Generator : IMemberGatherer {
 					// So we can't make the MKUserLocation implement the MKAnnotation protocol in the api definition (for now at least).
 					if (type.Name == "MKUserLocation" && protocolType.Name == "IMKAnnotation")
 						continue;
-#if !NET
-					if (type.Name == "NSFontAssetRequest" || protocolType.Name == "INSProgressReporting")
-						continue;
-#endif
 
 					ErrorHelper.Warning (1111, protocolType, type, nonInterfaceName);
 					continue;

@@ -35,43 +35,71 @@ namespace CoreImage {
 	///       <para>The enumeration values are equal to those of the EXIF and TIFF specifications.</para>
 	///     </remarks>
 	public enum CIImageOrientation {
+		/// <summary>Standard position.</summary>
 		TopLeft = 1,
+		/// <summary>Mirror image of standard position.</summary>
 		TopRight = 2,
+		/// <summary>Rotated 180 degrees from standard position.</summary>
 		BottomRight = 3,
+		/// <summary>Mirror image taken after the standard position image has been rotated 180 degrees.</summary>
 		BottomLeft = 4,
+		/// <summary>Mirror image taken after the standard position image has been rotated 90 degrees clockwise.</summary>
 		LeftTop = 5,
+		/// <summary>Rotated 90 degrees counterclockwise from standard position.</summary>
 		RightTop = 6,
+		/// <summary>Mirror image taken after the standard position image has been rotated 90 degrees counterclockwise.</summary>
 		RightBottom = 7,
+		/// <summary>Rotated 90 degrees clockwise from standard position.</summary>
 		LeftBottom = 8,
 	}
 
 	// convenience enum (fields are used) but also a `typedef int` -> CIImage.h
 	/// <summary>An enumeration whose values specify pixel formats.</summary>
 	public enum CIFormat {
+		/// <summary>Value that represents the kCIFormatARGB8 pixel format.</summary>
 		ARGB8 = 0,
+		/// <summary>Value that represents the kCIFormatRGBAh pixel format.</summary>
 		RGBAh = 1,
 #if MONOMAC
+		/// <summary>To be added.</summary>
 		RGBA16 = 2,
+		/// <summary>To be added.</summary>
 		[Obsolete ("This value can not be shared across Mac/iOS binaries, future proof with kRGBAf instead.")]
 		RGBAf = 3,
 
 		// Please, do not add values into MonoMac/iOS without adding an explicit value
 #endif
+		/// <summary>Value that represents the kCIFormatkRGBAf pixel format.</summary>
 		kRGBAf = 4,
+		/// <summary>Value that represents the kCIFormatkBGRA8 pixel format.</summary>
 		kBGRA8 = 5,
+		/// <summary>Value that represents the kCIFormatkRGBA8 pixel format.</summary>
 		kRGBA8 = 6,
+		/// <summary>Value that represents the kCIFormatABGR8 pixel format.</summary>
 		ABGR8 = 7,
+		/// <summary>Value that represents the kCIFormatA8 pixel format.</summary>
 		A8 = 11,
+		/// <summary>Value that represents the kCIFormatA16 pixel format.</summary>
 		A16 = 12,
+		/// <summary>Value that represents the kCIFormatAh pixel format.</summary>
 		Ah = 13,
+		/// <summary>Value that represents the kCIFormatAf pixel format.</summary>
 		Af = 14,
+		/// <summary>Value that represents the kCIFormatR8 pixel format.</summary>
 		R8 = 15,
+		/// <summary>Value that represents the kCIFormatR16 pixel format.</summary>
 		R16 = 16,
+		/// <summary>Value that represents the kCIFormatRh pixel format.</summary>
 		Rh = 17,
+		/// <summary>Value that represents the kCIFormatRf pixel format.</summary>
 		Rf = 18,
+		/// <summary>Value that represents the kCIFormatRG8 pixel format.</summary>
 		RG8 = 19,
+		/// <summary>Value that represents the kCIFormatRG16 pixel format.</summary>
 		RG16 = 20,
+		/// <summary>Value that represents the kCIFormatRGh pixel format.</summary>
 		RGh = 21,
+		/// <summary>Value that represents the kCIFormatRGf pixel format.</summary>
 		RGf = 22,
 	}
 
@@ -89,11 +117,17 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CIDataMatrixCodeEccVersion : long {
+		/// <summary>To be added.</summary>
 		V000 = 0,
+		/// <summary>To be added.</summary>
 		V050 = 50,
+		/// <summary>To be added.</summary>
 		V080 = 80,
+		/// <summary>To be added.</summary>
 		V100 = 100,
+		/// <summary>To be added.</summary>
 		V140 = 140,
+		/// <summary>To be added.</summary>
 		V200 = 200,
 	}
 

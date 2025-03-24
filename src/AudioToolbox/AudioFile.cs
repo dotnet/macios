@@ -43,10 +43,6 @@ using Foundation;
 
 using AudioFileID = System.IntPtr;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace AudioToolbox {
 
 	public enum AudioFileType {  // UInt32 AudioFileTypeID
@@ -56,13 +52,11 @@ namespace AudioToolbox {
 		AIFC = 0x41494643, // AIFC
 		/// <summary>Microsoft WAVE format.</summary>
 		WAVE = 0x57415645, // WAVE
-#if NET
 		/// <summary>BWF-compatible RF64 multichannel sound format.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		RF64 = 0x52463634, // RF64
 		/// <summary>Sound Designer 2 file.</summary>
 		SoundDesigner2 = 0x53643266, // Sd2f
@@ -92,23 +86,16 @@ namespace AudioToolbox {
 		ThreeGP2 = 0x33677032, // 3gp2
 		/// <summary>Adaptive Multi-Rate format, optimized for speech coding   Used widely in GSM an UMTS.</summary>
 		AMR = 0x616d7266, // amrf
-#if NET
 		/// <summary>Free Lossless Audio Codec format.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		FLAC = 0x666c6163, // flac
-#if NET
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (13, 0)]
-		[TV (13, 0)]
-#endif
 		LatmInLoas = 0x6c6f6173, // loas
 	}
 
@@ -308,12 +295,10 @@ namespace AudioToolbox {
 		IsEstimate = 1,
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioFileSmpteTime { // AudioFile_SMPTE_Time
 		/// <summary>To be added.</summary>
@@ -333,12 +318,10 @@ namespace AudioToolbox {
 		public uint SubFrameSampleOffset;
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioFileMarker {
 		/// <summary>To be added.</summary>
@@ -371,15 +354,10 @@ namespace AudioToolbox {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios13.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos13.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[iOS (13, 0)]
-	[TV (13, 0)]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioPacketRangeByteCountTranslation {
 		public long Packet;
@@ -387,45 +365,30 @@ namespace AudioToolbox {
 		public long ByteCountUpperBound;
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios13.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos13.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[iOS (13, 0)]
-	[TV (13, 0)]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioPacketRollDistanceTranslation {
 		public long Packet;
 		public long RollDistance;
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios13.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos13.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[iOS (13, 0)]
-	[TV (13, 0)]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioIndependentPacketTranslation {
 		public long Packet;
 		public long IndependentlyDecodablePacket;
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios13.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos13.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[iOS (13, 0)]
-	[TV (13, 0)]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioPacketDependencyInfoTranslation {
 		public long Packet;
@@ -488,12 +451,10 @@ namespace AudioToolbox {
 		CAFKeySignature = 0x6b736967,   // 'ksig'
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AudioFileMarkerList : IDisposable {
 		IntPtr ptr;
 		readonly bool owns;
@@ -569,12 +530,10 @@ namespace AudioToolbox {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioFilePacketTableInfo {
 		/// <summary>To be added.</summary>
@@ -588,12 +547,10 @@ namespace AudioToolbox {
 		public int RemainderFrames;
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioFileRegion {
 		readonly IntPtr ptr;
@@ -686,12 +643,10 @@ namespace AudioToolbox {
 		PlayBackward = 4,
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AudioFileRegionList : IDisposable {
 		IntPtr ptr;
 		readonly bool owns;
@@ -772,23 +727,15 @@ namespace AudioToolbox {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AudioFile : DisposableObject {
 		internal AudioFile ()
 		{
 			// This ctor is used by AudioSource that will set the handle later.
 		}
-
-#if !NET
-		protected internal AudioFile (bool x)
-		{
-		}
-#endif
 
 		[Preserve (Conditional = true)]
 		internal AudioFile (NativeHandle handle, bool owns)
@@ -835,8 +782,11 @@ namespace AudioToolbox {
 			var h = default (IntPtr);
 
 			unsafe {
-				if (AudioFileCreateWithURL (url.Handle, fileType, &format, inFlags, &h) == 0)
+				var urlHandle = url.Handle;
+				if (AudioFileCreateWithURL (urlHandle, fileType, &format, inFlags, &h) == 0) {
+					GC.KeepAlive (url);
 					return new AudioFile (h, true);
+				}
 			}
 			return null;
 		}
@@ -849,8 +799,11 @@ namespace AudioToolbox {
 			var h = default (IntPtr);
 
 			unsafe {
-				if (AudioFileCreateWithURL (url.Handle, fileType, &format, inFlags, &h) == 0)
+				var urlHandle = url.Handle;
+				if (AudioFileCreateWithURL (urlHandle, fileType, &format, inFlags, &h) == 0) {
+					GC.KeepAlive (url);
 					return new AudioFile (h, true);
+				}
 			}
 			return null;
 		}
@@ -915,7 +868,9 @@ namespace AudioToolbox {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			return Open (url.Handle, permissions, fileTypeHint, out error);
+			AudioFile? audioFile = Open (url.Handle, permissions, fileTypeHint, out error);
+			GC.KeepAlive (url);
+			return audioFile;
 		}
 
 		public static AudioFile? Open (NSUrl url, AudioFilePermission permissions, AudioFileType fileTypeHint = 0)
@@ -929,7 +884,9 @@ namespace AudioToolbox {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			return Open (url.Handle, permissions, fileTypeHint, out error);
+			AudioFile? audioFile = Open (url.Handle, permissions, fileTypeHint, out error);
+			GC.KeepAlive (url);
+			return audioFile;
 		}
 
 		static AudioFile? Open (IntPtr urlHandle, AudioFilePermission permissions, AudioFileType fileTypeHint, out AudioFileError error)
@@ -1378,14 +1335,10 @@ namespace AudioToolbox {
 			return GetUserDataSize ((uint) chunkType, index);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[SupportedOSPlatform ("macos14.0")]
-#else
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
-#endif
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static OSStatus AudioFileGetUserDataSize64 (AudioFileID audioFile, uint userDataID, int index, ulong* userDataSize);
 
@@ -1394,14 +1347,10 @@ namespace AudioToolbox {
 		/// <param name="index">The index of the chunk if there are more than one chunk.</param>
 		/// <param name="size">The retrieved 64-bit size of the specified user data.</param>
 		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
-#if NET
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[SupportedOSPlatform ("macos14.0")]
-#else
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
-#endif
 		public AudioFileError GetUserDataSize (uint userDataId, int index, out ulong size)
 		{
 			size = 0;
@@ -1415,14 +1364,10 @@ namespace AudioToolbox {
 		/// <param name="index">The index of the chunk if there are more than one chunk.</param>
 		/// <param name="size">The retrieved 64-bit size of the specified user data.</param>
 		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
-#if NET
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[SupportedOSPlatform ("macos14.0")]
-#else
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
-#endif
 		public AudioFileError GetUserDataSize (AudioFileChunkType chunkType, int index, out ulong size)
 		{
 			return GetUserDataSize ((uint) chunkType, index, out size);
@@ -1459,14 +1404,10 @@ namespace AudioToolbox {
 			return (AudioFileError) GetUserData ((int) chunkType, index, ref size, userData);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[SupportedOSPlatform ("macos14.0")]
-#else
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
-#endif
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static OSStatus AudioFileGetUserDataAtOffset (AudioFileID audioFile, uint userDataID, int index, long inOffset, int* userDataSize, IntPtr userData);
 
@@ -1477,14 +1418,10 @@ namespace AudioToolbox {
 		/// <param name="size">On input the size of the memory <paramref name="userData" /> points to. On output the number of bytes written.</param>
 		/// <param name="userData">A pointer to memory where the data will be copied.</param>
 		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
-#if NET
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[SupportedOSPlatform ("macos14.0")]
-#else
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
-#endif
 		public AudioFileError GetUserData (uint userDataId, int index, long offset, ref int size, IntPtr userData)
 		{
 			unsafe {
@@ -1499,14 +1436,10 @@ namespace AudioToolbox {
 		/// <param name="size">On input the size of the memory <paramref name="userData" /> points to. On output the number of bytes written.</param>
 		/// <param name="userData">A pointer to memory where the data will be copied.</param>
 		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
-#if NET
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[SupportedOSPlatform ("macos14.0")]
-#else
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
-#endif
 		public AudioFileError GetUserData (AudioFileChunkType chunkType, int index, long offset, ref int size, IntPtr userData)
 		{
 			return GetUserData ((uint) chunkType, index, offset, ref size, userData);
@@ -1519,14 +1452,10 @@ namespace AudioToolbox {
 		/// <param name="size">The number of bytes written into the byte array.</param>
 		/// <param name="data">An array of bytes where the data will be copied.</param>
 		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
-#if NET
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[SupportedOSPlatform ("macos14.0")]
-#else
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
-#endif
 		public AudioFileError GetUserData (uint userDataId, int index, long offset, byte [] data, out int size)
 		{
 			size = data.Length;
@@ -1543,14 +1472,10 @@ namespace AudioToolbox {
 		/// <param name="size">The number of bytes written into the byte array.</param>
 		/// <param name="data">An array of bytes where the data will be copied.</param>
 		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
-#if NET
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[SupportedOSPlatform ("macos14.0")]
-#else
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
-#endif
 		public AudioFileError GetUserData (AudioFileChunkType chunkType, int index, long offset, byte [] data, out int size)
 		{
 			return GetUserData ((uint) chunkType, index, offset, data, out size);
@@ -1623,11 +1548,8 @@ namespace AudioToolbox {
 			Marshal.FreeHGlobal (buffer);
 			return IntPtr.Zero;
 		}
-#if NET
+
 		unsafe T? GetProperty<[DynamicallyAccessedMembers (DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] T> (AudioFileProperty property) where T : unmanaged
-#else
-		unsafe T? GetProperty<T> (AudioFileProperty property) where T : unmanaged
-#endif
 		{
 			int size, writable;
 
@@ -2090,12 +2012,10 @@ namespace AudioToolbox {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AudioFileInfoDictionary : DictionaryContainer {
 		internal AudioFileInfoDictionary (NSDictionary dict)
 			: base (dict)
@@ -2306,79 +2226,39 @@ namespace AudioToolbox {
 	delegate long GetSizeProc (IntPtr clientData);
 	delegate int SetSizeProc (IntPtr clientData, long size);
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public abstract class AudioSource : AudioFile {
 		GCHandle gch;
-#if !NET
-		static ReadProc dRead;
-		static WriteProc dWrite;
-		static GetSizeProc dGetSize;
-		static SetSizeProc dSetSize;
 
-		static AudioSource ()
-		{
-			dRead = SourceRead;
-			dWrite = SourceWrite;
-			dGetSize = SourceGetSize;
-			dSetSize = SourceSetSize;
-		}
-#endif
-
-#if NET
 		[UnmanagedCallersOnly]
 		static unsafe int SourceRead (IntPtr clientData, long inPosition, int requestCount, IntPtr buffer, int* actualCount)
-#else
-		[MonoPInvokeCallback (typeof (ReadProc))]
-		static int SourceRead (IntPtr clientData, long inPosition, int requestCount, IntPtr buffer, out int actualCount)
-#endif
 		{
 			GCHandle handle = GCHandle.FromIntPtr (clientData);
 			var audioSource = handle.Target as AudioSource;
-#if NET
 			var localCount = 0;
 			var result = audioSource?.Read (inPosition, requestCount, buffer, out localCount) == true ? 0 : 1;
 			*actualCount = localCount;
 			return result;
-#else
-			actualCount = 0;
-			return audioSource?.Read (inPosition, requestCount, buffer, out actualCount) == true ? 0 : 1;
-#endif
 		}
 
 		public abstract bool Read (long position, int requestCount, IntPtr buffer, out int actualCount);
 
-#if NET
 		[UnmanagedCallersOnly]
 		static unsafe int SourceWrite (IntPtr clientData, long position, int requestCount, IntPtr buffer, int* actualCount)
-#else
-		[MonoPInvokeCallback (typeof (WriteProc))]
-		static int SourceWrite (IntPtr clientData, long position, int requestCount, IntPtr buffer, out int actualCount)
-#endif
 		{
 			GCHandle handle = GCHandle.FromIntPtr (clientData);
 			var audioSource = handle.Target as AudioSource;
-#if NET
 			var localCount = 0;
 			var result = audioSource?.Write (position, requestCount, buffer, out localCount) == true ? 0 : 1;
 			*actualCount = localCount;
 			return result;
-#else
-			actualCount = 0;
-			return audioSource?.Write (position, requestCount, buffer, out actualCount) == true ? 0 : 1;
-#endif
 		}
 		public abstract bool Write (long position, int requestCount, IntPtr buffer, out int actualCount);
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (GetSizeProc))]
-#endif
 		static long SourceGetSize (IntPtr clientData)
 		{
 			GCHandle handle = GCHandle.FromIntPtr (clientData);
@@ -2386,11 +2266,7 @@ namespace AudioToolbox {
 			return audioSource?.Size ?? 0;
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (SetSizeProc))]
-#endif
 		static int SourceSetSize (IntPtr clientData, long size)
 		{
 			GCHandle handle = GCHandle.FromIntPtr (clientData);
@@ -2413,7 +2289,6 @@ namespace AudioToolbox {
 		}
 
 		[DllImport (Constants.AudioToolboxLibrary)]
-#if NET
 		extern unsafe static OSStatus AudioFileInitializeWithCallbacks (
 			IntPtr inClientData,
 			delegate* unmanaged<IntPtr, long, int, IntPtr, int*, int> inReadFunc,
@@ -2421,11 +2296,6 @@ namespace AudioToolbox {
 			delegate* unmanaged<IntPtr, long> inGetSizeFunc,
 			delegate* unmanaged<IntPtr, long, int> inSetSizeFunc,
 			AudioFileType inFileType, AudioStreamBasicDescription* format, uint flags, IntPtr* id);
-#else
-		extern static OSStatus AudioFileInitializeWithCallbacks (
-			IntPtr inClientData, ReadProc inReadFunc, WriteProc inWriteFunc, GetSizeProc inGetSizeFunc, SetSizeProc inSetSizeFunc,
-			AudioFileType inFileType, ref AudioStreamBasicDescription format, uint flags, out IntPtr id);
-#endif
 
 		public AudioSource (AudioFileType inFileType, AudioStreamBasicDescription format)
 		{
@@ -2439,15 +2309,11 @@ namespace AudioToolbox {
 		protected void Initialize (AudioFileType inFileType, AudioStreamBasicDescription format)
 		{
 			gch = GCHandle.Alloc (this);
-#if NET
 			int code = 0;
 			IntPtr handle = IntPtr.Zero;
 			unsafe {
 				code = AudioFileInitializeWithCallbacks (GCHandle.ToIntPtr (gch), &SourceRead, &SourceWrite, &SourceGetSize, &SourceSetSize, inFileType, &format, 0, &handle);
 			}
-#else
-			var code = AudioFileInitializeWithCallbacks (GCHandle.ToIntPtr (gch), dRead, dWrite, dGetSize, dSetSize, inFileType, ref format, 0, out var handle);
-#endif
 			if (code == 0) {
 				InitializeHandle (handle);
 				return;
@@ -2455,7 +2321,6 @@ namespace AudioToolbox {
 			throw new Exception (String.Format ("Unable to create AudioSource, code: 0x{0:x}", code));
 		}
 
-#if NET
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern static unsafe int AudioFileOpenWithCallbacks (
 			IntPtr inClientData,
@@ -2464,12 +2329,6 @@ namespace AudioToolbox {
 			delegate* unmanaged<IntPtr, long> inGetSizeFunc,
 			delegate* unmanaged<IntPtr, long, int> inSetSizeFunc,
 			AudioFileType inFileTypeHint, IntPtr* outAudioFile);
-#else
-		[DllImport (Constants.AudioToolboxLibrary)]
-		extern static int AudioFileOpenWithCallbacks (
-			IntPtr inClientData, ReadProc inReadFunc, WriteProc inWriteFunc,
-			GetSizeProc inGetSizeFunc, SetSizeProc inSetSizeFunc, AudioFileType inFileTypeHint, out IntPtr outAudioFile);
-#endif
 
 		public AudioSource (AudioFileType fileTypeHint)
 		{
@@ -2479,15 +2338,11 @@ namespace AudioToolbox {
 		protected void Open (AudioFileType fileTypeHint)
 		{
 			gch = GCHandle.Alloc (this);
-#if NET
 			int code = 0;
 			IntPtr handle = IntPtr.Zero;
 			unsafe {
 				code = AudioFileOpenWithCallbacks (GCHandle.ToIntPtr (gch), &SourceRead, &SourceWrite, &SourceGetSize, &SourceSetSize, fileTypeHint, &handle);
 			}
-#else
-			var code = AudioFileOpenWithCallbacks (GCHandle.ToIntPtr (gch), dRead, dWrite, dGetSize, dSetSize, fileTypeHint, out var handle);
-#endif
 			if (code == 0) {
 				InitializeHandle (handle);
 				return;

@@ -43,6 +43,8 @@ namespace Network {
 			if (firstHop is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (firstHop));
 			var handle = nw_proxy_config_create_relay (firstHop.GetCheckedHandle (), secondHop.GetHandle ());
+			GC.KeepAlive (firstHop);
+			GC.KeepAlive (secondHop);
 			if (handle == NativeHandle.Zero)
 				return default;
 			return new NWProxyConfig (handle, owns: true);
@@ -65,6 +67,7 @@ namespace Network {
 			unsafe {
 				fixed (byte* gatewayKeyConfigPointer = gatewayKeyConfig) {
 					var handle = nw_proxy_config_create_oblivious_http (hop.GetCheckedHandle (), resourcePathPtr, gatewayKeyConfigPointer, (nuint) gatewayKeyConfig.Length);
+					GC.KeepAlive (hop);
 					if (handle == NativeHandle.Zero)
 						return default;
 					return new NWProxyConfig (handle, owns: true);
@@ -81,6 +84,8 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (proxyEndpoint));
 
 			var handle = nw_proxy_config_create_http_connect (proxyEndpoint.GetCheckedHandle (), options.GetHandle ());
+			GC.KeepAlive (proxyEndpoint);
+			GC.KeepAlive (options);
 			if (handle == NativeHandle.Zero)
 				return default;
 			return new NWProxyConfig (handle, true);
@@ -94,6 +99,7 @@ namespace Network {
 			if (endpoint is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (endpoint));
 			var handle = nw_proxy_config_create_socksv5 (endpoint.GetCheckedHandle ());
+			GC.KeepAlive (endpoint);
 			if (handle == NativeHandle.Zero)
 				return default;
 			return new NWProxyConfig (handle, true);

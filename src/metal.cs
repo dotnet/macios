@@ -2373,12 +2373,21 @@ namespace Metal {
 		[Export ("sampleCount")]
 		nuint SampleCount { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("alphaToCoverageEnabled")]
 		bool AlphaToCoverageEnabled { [Bind ("isAlphaToCoverageEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("alphaToOneEnabled")]
 		bool AlphaToOneEnabled { [Bind ("isAlphaToOneEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rasterizationEnabled")]
 		bool RasterizationEnabled { [Bind ("isRasterizationEnabled")] get; set; }
 
@@ -2407,6 +2416,9 @@ namespace Metal {
 		[Export ("maxTessellationFactor")]
 		nuint MaxTessellationFactor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("tessellationFactorScaleEnabled")]
 		bool IsTessellationFactorScaleEnabled { [Bind ("isTessellationFactorScaleEnabled")] get; set; }
@@ -3171,6 +3183,9 @@ namespace Metal {
 		[Export ("depthCompareFunction")]
 		MTLCompareFunction DepthCompareFunction { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("depthWriteEnabled")]
 		bool DepthWriteEnabled { [Bind ("isDepthWriteEnabled")] get; set; }
 
@@ -4038,6 +4053,9 @@ namespace Metal {
 		[Export ("pixelFormat", ArgumentSemantic.Assign)]
 		MTLPixelFormat PixelFormat { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("blendingEnabled")]
 		bool BlendingEnabled { [Bind ("isBlendingEnabled")] get; set; }
 

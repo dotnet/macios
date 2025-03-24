@@ -2212,6 +2212,9 @@ namespace MediaPlayer {
 		[Export ("defaultCenter")]
 		MPNowPlayingInfoCenter DefaultCenter { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]

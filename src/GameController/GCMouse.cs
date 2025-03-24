@@ -18,8 +18,10 @@ namespace GameController {
 		{
 			if (IsDirectBinding) {
 				InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr (this.Handle, Selector.GetHandle ("initWithCoder:"), coder.Handle), "initWithCoder:");
+				GC.KeepAlive (coder);
 			} else {
 				InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_IntPtr (this.SuperHandle, Selector.GetHandle ("initWithCoder:"), coder.Handle), "initWithCoder:");
+				GC.KeepAlive (coder);
 			}
 		}
 
@@ -47,6 +49,7 @@ namespace GameController {
 				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_IntPtr (this.SuperHandle, Selector.GetHandle ("encodeWithCoder:"), encoder__handle__);
 			}
 #endif
+			GC.KeepAlive (encoder);
 		}
 	}
 #endif // !XAMCORE_5_0

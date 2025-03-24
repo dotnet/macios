@@ -94,6 +94,7 @@ namespace AddressBook {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 
 			Handle = ABGroupCreateInSource (source.Handle);
+			GC.KeepAlive (source);
 		}
 
 		[Preserve (Conditional = true)]
@@ -108,6 +109,14 @@ namespace AddressBook {
 			AddressBook = addressbook;
 		}
 
+		/// <summary>
+		///           The name of the group.
+		///         </summary>
+		///         <value>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing the name of the group.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string? Name {
 			get { return PropertyToString (ABGroupProperty.Name); }
 			set { SetValue (ABGroupProperty.Name, value); }
@@ -116,6 +125,9 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABGroupCopySource (IntPtr group);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABRecord? Source {
 			get {
 				var h = ABGroupCopySource (Handle);
@@ -136,6 +148,7 @@ namespace AddressBook {
 			unsafe {
 				if (ABGroupAddMember (Handle, person.Handle, &error) == 0)
 					throw CFException.FromCFError (error);
+				GC.KeepAlive (person);
 			}
 		}
 
@@ -179,6 +192,7 @@ namespace AddressBook {
 			unsafe {
 				if (ABGroupRemoveMember (Handle, member.Handle, &error) == 0)
 					throw CFException.FromCFError (error);
+				GC.KeepAlive (member);
 			}
 		}
 	}

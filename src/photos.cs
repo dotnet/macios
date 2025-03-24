@@ -85,6 +85,9 @@ namespace Photos {
 		[Export ("hidden")]
 		bool Hidden { [Bind ("isHidden")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "No longer supported.")]
 		[NoTV]
 		[NoiOS]
@@ -160,6 +163,9 @@ namespace Photos {
 		[Export ("playbackStyle", ArgumentSemantic.Assign)]
 		PHAssetPlaybackStyle PlaybackStyle { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMacCatalyst]
 		[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use 'PHPhotosError.IdentifierNotFound' instead.")]
 		[NoTV]
@@ -333,18 +339,33 @@ namespace Photos {
 		[Export ("canHandleAdjustmentData", ArgumentSemantic.Copy)]
 		Func<PHAdjustmentData, bool> CanHandleAdjustmentData { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether Photos may download the asset from iCloud.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("networkAccessAllowed", ArgumentSemantic.Assign)]
 		bool NetworkAccessAllowed { [Bind ("isNetworkAccessAllowed")] get; set; }
 
 		[NullAllowed, Export ("progressHandler", ArgumentSemantic.Copy)]
 		PHProgressHandler ProgressHandler { get; set; }
 
+		/// <summary>Represents the value associated with the constant PHContentEditingInputResultIsInCloudKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PHContentEditingInputResultIsInCloudKey")]
 		NSString ResultIsInCloudKey { get; }
 
+		/// <summary>Represents the value associated with the constant PHContentEditingInputCancelledKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PHContentEditingInputCancelledKey")]
 		NSString CancelledKey { get; }
 
+		/// <summary>Represents the value associated with the constant PHContentEditingInputErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PHContentEditingInputErrorKey")]
 		NSString InputErrorKey { get; }
 	}
@@ -445,6 +466,9 @@ namespace Photos {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface PHAssetResourceRequestOptions : NSCopying {
+		/// <summary>Whether the resource data needs to be downloaded from iCloud.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("networkAccessAllowed")]
 		bool NetworkAccessAllowed { [Bind ("isNetworkAccessAllowed")] get; set; }
 
@@ -1004,9 +1028,15 @@ namespace Photos {
 		[Export ("normalizedCropRect", ArgumentSemantic.Assign)]
 		CGRect NormalizedCropRect { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("networkAccessAllowed", ArgumentSemantic.Assign)]
 		bool NetworkAccessAllowed { [Bind ("isNetworkAccessAllowed")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("synchronous", ArgumentSemantic.Assign)]
 		bool Synchronous { [Bind ("isSynchronous")] get; set; }
 
@@ -1029,6 +1059,9 @@ namespace Photos {
 	[BaseType (typeof (NSObject))]
 	interface PHVideoRequestOptions : NSCopying {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("networkAccessAllowed", ArgumentSemantic.Assign)]
 		bool NetworkAccessAllowed { [Bind ("isNetworkAccessAllowed")] get; set; }
 
@@ -1048,18 +1081,38 @@ namespace Photos {
 	[Static]
 	interface PHImageKeys {
 
+		/// <summary>Represents the value associated with the constant PHImageResultIsInCloudKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PHImageResultIsInCloudKey")]
 		NSString ResultIsInCloud { get; }
 
+		/// <summary>Represents the value associated with the constant PHImageResultIsDegradedKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PHImageResultIsDegradedKey")]
 		NSString ResultIsDegraded { get; }
 
+		/// <summary>Represents the value associated with the constant PHImageCancelledKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PHImageCancelledKey")]
 		NSString Cancelled { get; }
 
+		/// <summary>Represents the value associated with the constant PHImageErrorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PHImageErrorKey")]
 		NSString Error { get; }
 
+		/// <summary>Represents the value associated with the constant PHImageResultRequestIDKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PHImageResultRequestIDKey")]
 		NSString ResultRequestID { get; }
 	}
@@ -1128,6 +1181,10 @@ namespace Photos {
 		int /* PHImageRequestID = int32_t */ RequestAvAsset (PHAsset asset, [NullAllowed] PHVideoRequestOptions options, PHImageManagerRequestAvAssetHandler resultHandler);
 #endif
 
+		/// <summary>Represents the value associated with the constant PHImageManagerMaximumSize</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PHImageManagerMaximumSize")]
 		CGSize MaximumSize { get; }
 
@@ -1379,6 +1436,9 @@ namespace Photos {
 		[Export ("deliveryMode", ArgumentSemantic.Assign)]
 		PHImageRequestOptionsDeliveryMode DeliveryMode { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the app may request Live Photos from iCloud.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("networkAccessAllowed")]
 		bool NetworkAccessAllowed { [Bind ("isNetworkAccessAllowed")] get; set; }
 
@@ -1394,12 +1454,21 @@ namespace Photos {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface PHLivePhotoInfo {
+		/// <summary>Key for the error message.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PHLivePhotoInfoErrorKey")]
 		NSString ErrorKey { get; }
 
+		/// <summary>Key for a Boolean value that tells whether the returned resource is of a lower quality than the requested resource.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PHLivePhotoInfoIsDegradedKey")]
 		NSString IsDegradedKey { get; }
 
+		/// <summary>Key for a Boolean that tells whether the request was cancelled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PHLivePhotoInfoCancelledKey")]
 		NSString CancelledKey { get; }
 	}
@@ -1522,6 +1591,9 @@ namespace Photos {
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("PHLivePhotoEditingOptionKeys")]
 	interface PHLivePhotoEditingOption {
+		/// <summary>Gets a Boolean value that tells whether rendering should happen at playback time.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool ShouldRenderAtPlaybackTime { get; }
 	}
 

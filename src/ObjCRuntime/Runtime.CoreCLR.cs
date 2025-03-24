@@ -113,6 +113,7 @@ namespace ObjCRuntime {
 				} else if (obj is INativeObject inativeobj) {
 					// Don't call ToString on an INativeObject, we may end up with infinite recursion.
 					arg = $"{inativeobj.Handle.ToString ()} ({obj.GetType ()})";
+					GC.KeepAlive (inativeobj);
 				} else {
 					var toString = obj.ToString () ?? string.Empty;
 					// Print one line, and at most 256 characters.

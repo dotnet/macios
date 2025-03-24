@@ -75,6 +75,8 @@ namespace UIKit
 						if (views is null)
 							views = new NSMutableDictionary ();
 						views.LowlevelSetObject (((INativeObject) value).Handle, nskey.Handle);
+						GC.KeepAlive (value);
+						GC.KeepAlive (nskey);
 						continue;
 					}
 #if !MONOMAC
@@ -83,6 +85,8 @@ namespace UIKit
 						if (views is null)
 							views = new NSMutableDictionary ();
 						views.LowlevelSetObject (((INativeObject) value).Handle, nskey.Handle);
+						GC.KeepAlive (value);
+						GC.KeepAlive (nskey);
 						continue;
 					}
 #endif // !MONOMAC

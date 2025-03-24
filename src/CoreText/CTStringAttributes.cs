@@ -247,11 +247,15 @@ namespace CoreText {
 #endif
 		public CGColor? BackgroundColor {
 			get {
-				var h = IntPtr.Zero;
 				var x = CTStringAttributeKey.BackgroundColor;
-				if (x is not null)
-					h = CFDictionary.GetValue (Dictionary.Handle, x.Handle);
-				return h == IntPtr.Zero ? null : new CGColor (h, false);
+				if (x is not null) {
+					var h = CFDictionary.GetValue (Dictionary.Handle, x.Handle);
+					CGColor result = new CGColor (h, false);
+					GC.KeepAlive (x);
+					return result;
+				} else {
+					return null;
+				}
 			}
 			set {
 				var x = CTStringAttributeKey.BackgroundColor;

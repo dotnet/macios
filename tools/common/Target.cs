@@ -344,7 +344,6 @@ namespace Xamarin.Bundler {
 				switch (App.Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					has_dyn_msgSend = App.IsSimulatorBuild || App.MarshalObjectiveCExceptions == MarshalObjectiveCExceptionMode.UnwindManagedCode;
 					break;
 				case ApplePlatform.MacCatalyst:
@@ -536,7 +535,6 @@ namespace Xamarin.Bundler {
 					switch (platform) {
 					case ApplePlatform.iOS:
 					case ApplePlatform.TVOS:
-					case ApplePlatform.WatchOS:
 					case ApplePlatform.MacCatalyst:
 						GenerateIOSMain (sw, abi);
 						break;
@@ -790,8 +788,7 @@ namespace Xamarin.Bundler {
 				sw.WriteLine ("\txamarin_set_is_managed_static_registrar (true);");
 			sw.WriteLine ("}");
 			sw.WriteLine ();
-			sw.Write ("int ");
-			sw.Write (app.IsWatchExtension ? "xamarin_watchextension_main" : "main");
+			sw.Write ("int main");
 			sw.WriteLine (" (int argc, char **argv)");
 			sw.WriteLine ("{");
 			sw.WriteLine ("\tNSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];");
@@ -814,36 +811,6 @@ namespace Xamarin.Bundler {
 				sw.WriteLine ();
 			}
 
-			string extension_main = null;
-			if (app.Platform == ApplePlatform.WatchOS && app.IsWatchExtension) {
-				// We're building a watch extension, and we have multiple scenarios, depending on the watchOS version we're executing on:
-				//
-				// * watchOS 2.0 -> 5.*: we must call a `main` function provided in the WatchKit framework.
-				// * watchOS 6.0 -> *  : we must call a `WKExtensionMain` function provided in the WatchKit framework.
-				// * watchOS 7.0 -> *  : The `WKExtensionMain` function uses dlsym to find any `main` functions in the
-				//                       main executable, and calls that function (otherwise WKExtensionMain will call
-				//                       UIApplicationMain and normal startup occurs)
-				//
-				// * We can't call our entry point "main", because we call WKExtensionMain, and then we run into an
-				//   infinite loop on watchOS 7.0. So we call it xamarin_watch_extension_main.
-				// * The watchOS 6+ SDK helpfully provides a static library (WKExtensionMainLegacy) that has a
-				//   WKExtensionMain function, which we use when the deployment target is earlier than watchOS 6.0.
-				//   This means that calling WKExtensionMain works everywhere (as long as we're using the
-				//   watchOS 6+ SDK to build; otherwise we just call "main" directly and don't link with the
-				//   WKExtensionMainLegacy library)
-
-				if (app.SdkVersion.Major >= 6) {
-					extension_main = "WKExtensionMain";
-				} else {
-					extension_main = "main";
-				}
-			}
-
-			if (!string.IsNullOrEmpty (extension_main)) {
-				sw.WriteLine ($"extern \"C\" {{ int {extension_main} (int argc, char* argv[]); }}");
-				sw.WriteLine ();
-			}
-
 			sw.WriteLine ();
 			sw.WriteLine ("void xamarin_initialize_callbacks () __attribute__ ((constructor));");
 			sw.WriteLine ("void xamarin_initialize_callbacks ()");
@@ -851,8 +818,6 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ("\txamarin_setup = xamarin_setup_impl;");
 			sw.WriteLine ("\txamarin_register_assemblies = xamarin_register_assemblies_impl;");
 			sw.WriteLine ("\txamarin_register_modules = xamarin_register_modules_impl;");
-			if (!string.IsNullOrEmpty (extension_main))
-				sw.WriteLine ($"\txamarin_extension_main = {extension_main};");
 			sw.WriteLine ("}");
 		}
 #endif // MMP

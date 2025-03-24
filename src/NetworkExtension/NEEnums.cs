@@ -6,11 +6,17 @@ namespace NetworkExtension {
 	[ErrorDomain ("NEVPNErrorDomain")]
 	[Native]
 	public enum NEVpnError : long {
+		/// <summary>The VPN configuration was not valid.</summary>
 		ConfigurationInvalid = 1,
+		/// <summary>The VPN configuration was not enabled.</summary>
 		ConfigurationDisabled = 2,
+		/// <summary>The VPN connection failed.</summary>
 		ConnectionFailed = 3,
+		/// <summary>The VPN configuration was updated by another process after it was loaded.</summary>
 		ConfigurationStale = 4,
+		/// <summary>The VPN configuration could either not be read from or written to.</summary>
 		ConfigurationReadWriteFailed = 5,
+		/// <summary>The VPN configuration was not recognized.</summary>
 		ConfigurationUnknown = 6,
 	}
 
@@ -36,14 +42,20 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native ("NEVPNIKEv2EncryptionAlgorithm")]
 	public enum NEVpnIke2EncryptionAlgorithm : long {
+		/// <summary>To be added.</summary>
 		[NoTV]
 		DES = 1,
+		/// <summary>To be added.</summary>
 		[NoTV]
 		TripleDES = 2,
+		/// <summary>To be added.</summary>
 		AES128 = 3,
+		/// <summary>To be added.</summary>
 		AES256 = 4,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		AES128GCM = 5,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		AES256GCM = 6,
 		[iOS (13, 0)]
@@ -66,30 +78,47 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native ("NEVPNIKEv2DeadPeerDetectionRate")]
 	public enum NEVpnIke2DeadPeerDetectionRate : long {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Low = 1,
+		/// <summary>To be added.</summary>
 		Medium = 2,
+		/// <summary>To be added.</summary>
 		High = 3,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native ("NEVPNIKEv2DiffieHellmanGroup")]
 	public enum NEVpnIke2DiffieHellman : long {
+		/// <summary>To be added.</summary>
 		Invalid = 0,
+		/// <summary>To be added.</summary>
 		Group0 = Invalid,
+		/// <summary>To be added.</summary>
 		[NoTV]
 		Group1 = 1,
+		/// <summary>To be added.</summary>
 		[NoTV]
 		Group2 = 2,
+		/// <summary>To be added.</summary>
 		[NoTV]
 		Group5 = 5,
+		/// <summary>To be added.</summary>
 		Group14 = 14,
+		/// <summary>To be added.</summary>
 		Group15 = 15,
+		/// <summary>To be added.</summary>
 		Group16 = 16,
+		/// <summary>To be added.</summary>
 		Group17 = 17,
+		/// <summary>To be added.</summary>
 		Group18 = 18,
+		/// <summary>To be added.</summary>
 		Group19 = 19,
+		/// <summary>To be added.</summary>
 		Group20 = 20,
+		/// <summary>To be added.</summary>
 		Group21 = 21,
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -101,9 +130,13 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NEOnDemandRuleAction : long {
+		/// <summary>To be added.</summary>
 		Connect = 1,
+		/// <summary>To be added.</summary>
 		Disconnect = 2,
+		/// <summary>To be added.</summary>
 		EvaluateConnection = 3,
+		/// <summary>To be added.</summary>
 		Ignore = 4,
 	}
 
@@ -111,10 +144,14 @@ namespace NetworkExtension {
 	[TV (17, 0)]
 	[Native]
 	public enum NEOnDemandRuleInterfaceType : long {
+		/// <summary>Indicates that any interface type should be matched.</summary>
 		Any = 0,
+		/// <summary>Indicates that ethernet interfaces should be matched.</summary>
 		[NoiOS, NoMacCatalyst]
 		Ethernet = 1,
+		/// <summary>Indicates that Wi-Fi interfaces should be matched.</summary>
 		WiFi = 2,
+		/// <summary>Indicates that cellular interfaces should be matched.</summary>
 		[NoTV, NoMac]
 		Cellular = 3,
 	}
@@ -131,9 +168,13 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native ("NEVPNIKEv2CertificateType")] // NSInteger
 	public enum NEVpnIke2CertificateType : long {
+		/// <summary>To be added.</summary>
 		RSA = 1,
+		/// <summary>To be added.</summary>
 		ECDSA256 = 2,
+		/// <summary>To be added.</summary>
 		ECDSA384 = 3,
+		/// <summary>To be added.</summary>
 		ECDSA521 = 4,
 		[NoTV]
 		[iOS (13, 0)]
@@ -168,9 +209,13 @@ namespace NetworkExtension {
 	[ErrorDomain ("NETunnelProviderErrorDomain")]
 	[Native]
 	public enum NETunnelProviderError : long {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Invalid = 1,
+		/// <summary>To be added.</summary>
 		Canceled = 2,
+		/// <summary>To be added.</summary>
 		Failed = 3,
 	}
 
@@ -206,20 +251,35 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NEProviderStopReason : long {
+		/// <summary>An unspecified failure occurred, or no failure occurred.</summary>
 		None = 0,
+		/// <summary>The user stopped the provider.</summary>
 		UserInitiated = 1,
+		/// <summary>The provider failed.</summary>
 		ProviderFailed = 2,
+		/// <summary>The network was unavailable.</summary>
 		NoNetworkAvailable = 3,
+		/// <summary>The network connectivity changed and the provider could not recover.</summary>
 		UnrecoverableNetworkChange = 4,
+		/// <summary>The provider was not enabled.</summary>
 		ProviderDisabled = 5,
+		/// <summary>An authentication operation was canceled.</summary>
 		AuthenticationCanceled = 6,
+		/// <summary>The network configuration failed.</summary>
 		ConfigurationFailed = 7,
+		/// <summary>The session timed out.</summary>
 		IdleTimeout = 8,
+		/// <summary>The network configuration was disabled.</summary>
 		ConfigurationDisabled = 9,
+		/// <summary>The netowrk configuration was removed.</summary>
 		ConfigurationRemoved = 10,
+		/// <summary>The configuration was superseded by another.</summary>
 		Superseded = 11,
+		/// <summary>The user logged off.</summary>
 		UserLogout = 12,
+		/// <summary>The user changed.</summary>
 		UserSwitch = 13,
+		/// <summary>The network connection failed.</summary>
 		ConnectionFailed = 14,
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -279,7 +339,9 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NETunnelProviderRoutingMethod : long {
+		/// <summary>Indicates that network traffic should be routed according to the destination IP version.</summary>
 		DestinationIP = 1,
+		/// <summary>Indicates that network traffic should be routed according to the source application IP version.</summary>
 		SourceApplication = 2,
 		[NoiOS]
 		[NoMacCatalyst]
@@ -335,10 +397,13 @@ namespace NetworkExtension {
 		Failure = 1,
 		/// <summary>In response to an "authenticate" command, user interaction is needed.</summary>
 		UIRequired = 2,
+		/// <summary>The command was not recognized.</summary>
 		CommandNotRecognized = 3,
+		/// <summary>In response to a "maintain" command, the network requires reauthentication.</summary>
 		AuthenticationRequired = 4,
 		/// <summary>The network is not supported.</summary>
 		UnsupportedNetwork = 5,
+		/// <summary>In response to an "authenticate" or "presentUI" command, a temporary failure resulted.</summary>
 		TemporaryFailure = 6,
 	}
 #endif

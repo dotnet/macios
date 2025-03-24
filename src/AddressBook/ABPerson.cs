@@ -186,11 +186,60 @@ namespace AddressBook {
 	[UnsupportedOSPlatform ("tvos")]
 	public static class ABPersonAddressKey {
 
+		/// <summary>Represents the value associated with the constant kABPersonAddressCityKey</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing the
+		///           key to use for the City portion of the address.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? City { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonAddressCountryKey</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing the
+		///           key to use for the Country portion of the address.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Country { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonAddressCountryCodeKey</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing the
+		///           key to use for the CountryCode portion of the address.
+		///         </value>
+		///         <remarks>
+		///           <para>
+		///             <format type="text/html">
+		///               <span>
+		///             See <a href="https://developer.apple.com/iphone/library/documentation/AddressBook/Reference/ABPersonRef_iPhoneOS/Reference/reference.html#//apple_ref/doc/uid/TP40007210-CH991-SW33">kABPersonAddresCountryCodeKey</a> documentation for a list of supported values.
+		///             </span>
+		///             </format>
+		///           </para>
+		///         </remarks>
 		public static NSString? CountryCode { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonAddressStateKey</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing the
+		///           key to use for the State portion of the address.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? State { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonAddressStreetKey</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing the
+		///           key to use for the Street portion of the address.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Street { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonAddressZIPKey</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing the
+		///           key to use for the Zip portion of the address.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Zip { get; private set; }
 
 		static ABPersonAddressKey ()
@@ -217,6 +266,13 @@ namespace AddressBook {
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
 	public static class ABPersonDateLabel {
+		/// <summary>Represents the value associated with the constant kABPersonAnniversaryLabel</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the "Birthdate" label.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Anniversary { get; private set; }
 
 		static ABPersonDateLabel ()
@@ -300,12 +356,26 @@ namespace AddressBook {
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
 	public static class ABPersonSocialProfileService {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly NSString? Twitter;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly NSString? GameCenter;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly NSString? Facebook;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly NSString? Myspace;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly NSString? LinkedIn;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly NSString? Flickr;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly NSString? SinaWeibo;
 
 		static ABPersonSocialProfileService ()
@@ -328,12 +398,58 @@ namespace AddressBook {
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
 	public static class ABPersonPhoneLabel {
+		/// <summary>Represents the value associated with the constant kABPersonPhoneHomeFAXLabel</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the Home fax phone number label.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? HomeFax { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonPhoneIPhoneLabel</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the iPhone phone number label.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? iPhone { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonPhoneMainLabel</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the Main phone number label.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Main { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonPhoneMobileLabel</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the Mobile phone number label.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Mobile { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonPhonePagerLabel</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the Pager phone number label.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Pager { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonPhoneWorkFAXLabel</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the Work fax phone number label.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? WorkFax { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonPhoneOtherFAXLabel</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		public static NSString? OtherFax { get; private set; }
 
 		static ABPersonPhoneLabel ()
@@ -361,15 +477,70 @@ namespace AddressBook {
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
 	public static class ABPersonInstantMessageService {
+		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceAIM</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the AIM instant message service.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Aim { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceICQ</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the ICQ instant message service.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Icq { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceJabber</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the Jabber instant message service.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Jabber { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceMSN</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the MSN instant message service.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Msn { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceYahoo</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the Yahoo instant message service.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Yahoo { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceQQ</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		public static NSString? QQ { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceGoogleTalk</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		public static NSString? GoogleTalk { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceSkype</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		public static NSString? Skype { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceFacebook</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		public static NSString? Facebook { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceGaduGadu</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		public static NSString? GaduGadu { get; private set; }
 
 		static ABPersonInstantMessageService ()
@@ -400,7 +571,21 @@ namespace AddressBook {
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
 	public static class ABPersonInstantMessageKey {
+		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceKey</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing the
+		///           key to use for the Service portion of the instant message information.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Service { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonInstantMessageUsernameKey</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing the
+		///           key to use for the Username portion of the instant message information.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Username { get; private set; }
 
 		static ABPersonInstantMessageKey ()
@@ -423,6 +608,13 @@ namespace AddressBook {
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
 	public static class ABPersonUrlLabel {
+		/// <summary>Represents the value associated with the constant kABPersonHomePageLabel</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the Home page URL label.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? HomePage { get; private set; }
 
 		static ABPersonUrlLabel ()
@@ -443,16 +635,93 @@ namespace AddressBook {
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
 	public static class ABPersonRelatedNamesLabel {
+		/// <summary>Represents the value associated with the constant kABPersonAssistantLabel</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the Assistant related name label.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Assistant { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonBrotherLabel</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the Brother related name label.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Brother { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonChildLabel</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the Child related name label.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Child { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonFatherLabel</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the Father related name label.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Father { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonFriendLabel</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the Friend related name label.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Friend { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonManagerLabel</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the Manager related name label.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Manager { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonMotherLabel</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the Mother related name label.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Mother { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonParentLabel</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the Parent related name label.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Parent { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonPartnerLabel</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the Partner related name label.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Partner { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonSisterLabel</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the Sister related name label.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Sister { get; private set; }
+		/// <summary>Represents the value associated with the constant kABPersonSpouseLabel</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the Spouse related name label.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Spouse { get; private set; }
 
 		static ABPersonRelatedNamesLabel ()
@@ -484,8 +753,29 @@ namespace AddressBook {
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
 	public static class ABLabel {
+		/// <summary>Represents the value associated with the constant kABHomeLabel</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the "Home" label.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Home { get; private set; }
+		/// <summary>Represents the value associated with the constant kABOtherLabel</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the "Other" label.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Other { get; private set; }
+		/// <summary>Represents the value associated with the constant kABWorkLabel</summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the "Work" label.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static NSString? Work { get; private set; }
 
 		static ABLabel ()
@@ -522,8 +812,9 @@ namespace AddressBook {
 		extern static IntPtr ABPersonCreateInSource (IntPtr source);
 
 		public ABPerson (ABRecord source)
-			: base (ABPersonCreateInSource (ObjCRuntime.Runtime.ThrowOnNull (source, nameof (source)).Handle), true)
+			: base (ABPersonCreateInSource (source.GetNonNullHandle (nameof (source))), true)
 		{
+			GC.KeepAlive (source);
 		}
 
 		[Preserve (Conditional = true)]
@@ -559,7 +850,9 @@ namespace AddressBook {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (other));
 			if (ordering != ABPersonSortBy.FirstName && ordering != ABPersonSortBy.LastName)
 				throw new ArgumentException ("Invalid ordering value: " + ordering, "ordering");
-			return ABPersonComparePeopleByName (Handle, other.Handle, ordering);
+			int result = ABPersonComparePeopleByName (Handle, other.Handle, ordering);
+			GC.KeepAlive (other);
+			return result;
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
@@ -591,6 +884,21 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABPersonCopyImageData (IntPtr person);
 
+		/// <summary>
+		///           Gets or sets the
+		///           <see cref="T:AddressBook.ABPerson" />'s picture.
+		///         </summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSData" /> containing
+		///           the picture data.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
+		///         <exception cref="T:CoreFoundation.CFException">
+		///           The reason the picture couldn't be set.
+		///         </exception>
+		///         <altmember cref="P:AddressBook.ABPerson.HasImage" />
+		///         <altmember cref="P:AddressBook.ABPerson.RemoveImage" />
 		public NSData? Image {
 			get { return Runtime.GetNSObject<NSData> (ABPersonCopyImageData (Handle)); }
 			set {
@@ -598,12 +906,24 @@ namespace AddressBook {
 				unsafe {
 					if (ABPersonSetImageData (Handle, value.GetHandle (), &error) == 0)
 						throw CFException.FromCFError (error);
+					GC.KeepAlive (value);
 				}
 			}
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static byte ABPersonHasImageData (IntPtr person);
+		/// <summary>
+		///           Gets a value indicating whether the
+		///           <see cref="T:AddressBook.ABPerson" /> has a picture.
+		///         </summary>
+		///         <value>
+		///           <see langword="true" /> if the
+		///           <see cref="T:AddressBook.ABPerson" /> has a picture;
+		///           otherwise, <see langword="false" />.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public bool HasImage {
 			get { return ABPersonHasImageData (Handle) != 0; }
 		}
@@ -622,6 +942,14 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static ABPersonCompositeNameFormat ABPersonGetCompositeNameFormat ();
 
+		/// <summary>Developers should not use this deprecated property. Developers should use GetCompositeNameFormat (null) instead</summary>
+		///         <value>
+		///           A <see cref="T:AddressBook.ABPersonCompositeNameFormat" />
+		///           which controls the format used for the person's composite name.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("ios")]
 		[ObsoletedOSPlatform ("ios", "Use 'GetCompositeNameFormat (null)' instead.")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -637,7 +965,9 @@ namespace AddressBook {
 
 		public static ABPersonCompositeNameFormat GetCompositeNameFormat (ABRecord? record)
 		{
-			return ABPersonGetCompositeNameFormatForRecord (record.GetHandle ());
+			var result = ABPersonGetCompositeNameFormatForRecord (record.GetHandle ());
+			GC.KeepAlive (record);
+			return result;
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
@@ -646,70 +976,192 @@ namespace AddressBook {
 		public static string? GetCompositeNameDelimiter (ABRecord? record)
 		{
 			var handle = ABPersonCopyCompositeNameDelimiterForRecord (record.GetHandle ());
+			GC.KeepAlive (record);
 			return CFString.FromHandle (handle, true);
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static ABPersonSortBy ABPersonGetSortOrdering ();
+		/// <summary>
+		///           Gets the user's sort ordering preference for lists of persons.
+		///         </summary>
+		///         <value>
+		///           A <see cref="T:AddressBook.ABPersonSortBy" /> which
+		///           is the user's sort ordering preference for lists of persons.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static ABPersonSortBy SortOrdering {
 			get { return ABPersonGetSortOrdering (); }
 		}
 
+		/// <summary>
+		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s first name.
+		///         </summary>
+		///         <value>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           the <see cref="T:AddressBook.ABPerson" />'s first name.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string? FirstName {
 			get { return PropertyToString (ABPersonPropertyId.FirstName); }
 			set { SetValue (ABPersonPropertyId.FirstName, value); }
 		}
 
+		/// <summary>
+		///           Gets or sets <see cref="T:AddressBook.ABPerson" />'s first name
+		///           phonetic pronounciation.
+		///         </summary>
+		///         <value>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           the <see cref="T:AddressBook.ABPerson" />'s first name
+		///           phonetic pronounciation.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string? FirstNamePhonetic {
 			get { return PropertyToString (ABPersonPropertyId.FirstNamePhonetic); }
 			set { SetValue (ABPersonPropertyId.FirstNamePhonetic, value); }
 		}
 
+		/// <summary>
+		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s last name.
+		///         </summary>
+		///         <value>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           the <see cref="T:AddressBook.ABPerson" />'s last name.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string? LastName {
 			get { return PropertyToString (ABPersonPropertyId.LastName); }
 			set { SetValue (ABPersonPropertyId.LastName, value); }
 		}
 
+		/// <summary>
+		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s last name
+		///           phonetic pronounciation.
+		///         </summary>
+		///         <value>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           the <see cref="T:AddressBook.ABPerson" />'s last name phonetic pronounciation.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string? LastNamePhonetic {
 			get { return PropertyToString (ABPersonPropertyId.LastNamePhonetic); }
 			set { SetValue (ABPersonPropertyId.LastNamePhonetic, value); }
 		}
 
+		/// <summary>
+		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s middle name.
+		///         </summary>
+		///         <value>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           the <see cref="T:AddressBook.ABPerson" />'s middle name.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string? MiddleName {
 			get { return PropertyToString (ABPersonPropertyId.MiddleName); }
 			set { SetValue (ABPersonPropertyId.MiddleName, value); }
 		}
 
+		/// <summary>
+		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s middle name
+		///           phonetic pronounciation.
+		///         </summary>
+		///         <value>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           the <see cref="T:AddressBook.ABPerson" />'s middle name phonetic pronounciation.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string? MiddleNamePhonetic {
 			get { return PropertyToString (ABPersonPropertyId.MiddleNamePhonetic); }
 			set { SetValue (ABPersonPropertyId.MiddleNamePhonetic, value); }
 		}
 
+		/// <summary>
+		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s prefix.
+		///         </summary>
+		///         <value>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           the <see cref="T:AddressBook.ABPerson" />'s prefix.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string? Prefix {
 			get { return PropertyToString (ABPersonPropertyId.Prefix); }
 			set { SetValue (ABPersonPropertyId.Prefix, value); }
 		}
 
+		/// <summary>
+		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s suffix.
+		///         </summary>
+		///         <value>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           the <see cref="T:AddressBook.ABPerson" />'s suffix.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string? Suffix {
 			get { return PropertyToString (ABPersonPropertyId.Suffix); }
 			set { SetValue (ABPersonPropertyId.Suffix, value); }
 		}
 
+		/// <summary>
+		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s nickname.
+		///         </summary>
+		///         <value>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           the <see cref="T:AddressBook.ABPerson" />'s nickname.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string? Nickname {
 			get { return PropertyToString (ABPersonPropertyId.Nickname); }
 			set { SetValue (ABPersonPropertyId.Nickname, value); }
 		}
 
+		/// <summary>
+		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s organization.
+		///         </summary>
+		///         <value>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           the <see cref="T:AddressBook.ABPerson" />'s organization.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string? Organization {
 			get { return PropertyToString (ABPersonPropertyId.Organization); }
 			set { SetValue (ABPersonPropertyId.Organization, value); }
 		}
 
+		/// <summary>
+		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s job title.
+		///         </summary>
+		///         <value>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           the <see cref="T:AddressBook.ABPerson" />'s job title.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string? JobTitle {
 			get { return PropertyToString (ABPersonPropertyId.JobTitle); }
 			set { SetValue (ABPersonPropertyId.JobTitle, value); }
 		}
 
+		/// <summary>
+		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s department.
+		///         </summary>
+		///         <value>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           the <see cref="T:AddressBook.ABPerson" />'s department.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string? Department {
 			get { return PropertyToString (ABPersonPropertyId.Department); }
 			set { SetValue (ABPersonPropertyId.Department, value); }
@@ -718,6 +1170,9 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABPersonCopySource (IntPtr group);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABRecord? Source {
 			get {
 				var h = ABPersonCopySource (Handle);
@@ -748,23 +1203,60 @@ namespace AddressBook {
 		public void SetEmails (ABMultiValue<string>? value)
 		{
 			SetValue (ABPersonPropertyId.Email, value.GetHandle ());
+			GC.KeepAlive (value);
 		}
 
+		/// <summary>
+		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s birthday.
+		///         </summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSDate" /> containing
+		///           the person's birthday.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSDate? Birthday {
 			get { return PropertyTo<NSDate> (ABPersonPropertyId.Birthday); }
 			set { SetValue (ABPersonPropertyId.Birthday, value); }
 		}
 
+		/// <summary>
+		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s note.
+		///         </summary>
+		///         <value>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           the <see cref="T:AddressBook.ABPerson" />'s note.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string? Note {
 			get { return PropertyToString (ABPersonPropertyId.Note); }
 			set { SetValue (ABPersonPropertyId.Note, value); }
 		}
 
+		/// <summary>
+		///           Gets or sets the record's creation date.
+		///         </summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSDate" /> containing
+		///           the record's creation date.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSDate? CreationDate {
 			get { return PropertyTo<NSDate> (ABPersonPropertyId.CreationDate); }
 			set { SetValue (ABPersonPropertyId.CreationDate, value); }
 		}
 
+		/// <summary>
+		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s modification date.
+		///         </summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSDate" /> containing
+		///           the <see cref="T:AddressBook.ABPerson" />'s modification date.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSDate? ModificationDate {
 			get { return PropertyTo<NSDate> (ABPersonPropertyId.ModificationDate); }
 			set { SetValue (ABPersonPropertyId.ModificationDate, value); }
@@ -779,11 +1271,13 @@ namespace AddressBook {
 		public void SetAddresses (ABMultiValue<NSDictionary>? value)
 		{
 			SetValue (ABPersonPropertyId.Address, value.GetHandle ());
+			GC.KeepAlive (value);
 		}
 
 		public void SetAddresses (ABMultiValue<PersonAddress>? addresses)
 		{
 			SetValue (ABPersonPropertyId.Address, addresses.GetHandle ());
+			GC.KeepAlive (addresses);
 		}
 
 		// Obsolete
@@ -820,8 +1314,23 @@ namespace AddressBook {
 		public void SetDates (ABMultiValue<NSDate>? value)
 		{
 			SetValue (ABPersonPropertyId.Date, value.GetHandle ());
+			GC.KeepAlive (value);
 		}
 
+		/// <summary>
+		///           Gets or sets the <see cref="T:AddressBook.ABPerson" />'s
+		///           <see cref="T:AddressBook.ABPersonKind" />.
+		///         </summary>
+		///         <value>
+		///           A <see cref="T:AddressBook.ABPersonKind" /> containing
+		///           the <see cref="T:AddressBook.ABPerson" />'s kind.
+		///         </value>
+		///         <remarks>
+		///           <para>
+		///             The <see cref="T:AddressBook.ABPersonKind" />
+		///             controls whether the instance is a person or an organization.
+		///           </para>
+		///         </remarks>
 		public ABPersonKind PersonKind {
 			get { return ABPersonKindId.ToPersonKind (PropertyTo<NSNumber> (ABPersonPropertyId.Kind!)!); }
 			set { SetValue (ABPersonPropertyId.Kind!, ABPersonKindId.FromPersonKind (value)); }
@@ -835,6 +1344,7 @@ namespace AddressBook {
 		public void SetPhones (ABMultiValue<string>? value)
 		{
 			SetValue (ABPersonPropertyId.Phone, value.GetHandle ());
+			GC.KeepAlive (value);
 		}
 
 		[Advice ("Use GetInstantMessageServices.")]
@@ -852,11 +1362,13 @@ namespace AddressBook {
 		public void SetInstantMessages (ABMultiValue<NSDictionary>? value)
 		{
 			SetValue (ABPersonPropertyId.InstantMessage, value.GetHandle ());
+			GC.KeepAlive (value);
 		}
 
 		public void SetInstantMessages (ABMultiValue<InstantMessageService>? services)
 		{
 			SetValue (ABPersonPropertyId.InstantMessage, services.GetHandle ());
+			GC.KeepAlive (services);
 		}
 
 		[Advice ("Use GetSocialProfiles.")]
@@ -874,11 +1386,13 @@ namespace AddressBook {
 		public void SetSocialProfile (ABMultiValue<NSDictionary>? value)
 		{
 			SetValue (ABPersonPropertyId.SocialProfile, value.GetHandle ());
+			GC.KeepAlive (value);
 		}
 
 		public void SetSocialProfile (ABMultiValue<SocialProfile>? profiles)
 		{
 			SetValue (ABPersonPropertyId.SocialProfile, profiles.GetHandle ());
+			GC.KeepAlive (profiles);
 		}
 
 		public ABMultiValue<string>? GetUrls ()
@@ -889,6 +1403,7 @@ namespace AddressBook {
 		public void SetUrls (ABMultiValue<string>? value)
 		{
 			SetValue (ABPersonPropertyId.Url, value.GetHandle ());
+			GC.KeepAlive (value);
 		}
 
 		public ABMultiValue<string>? GetRelatedNames ()
@@ -899,6 +1414,7 @@ namespace AddressBook {
 		public void SetRelatedNames (ABMultiValue<string>? value)
 		{
 			SetValue (ABPersonPropertyId.RelatedNames, value.GetHandle ());
+			GC.KeepAlive (value);
 		}
 
 		public object? GetProperty (ABPersonProperty property)
@@ -978,6 +1494,9 @@ namespace AddressBook {
 			// TODO: SIGSEGV when source is not null
 			var res = ABPersonCreatePeopleInSourceWithVCardRepresentation (source.GetHandle (), vCardData.Handle);
 
+			GC.KeepAlive (source);
+			GC.KeepAlive (vCardData);
+
 			return NSArray.ArrayFromHandle (res, l => new ABPerson (l, null));
 		}
 	}
@@ -998,6 +1517,10 @@ namespace AddressBook {
 		{
 		}
 
+		/// <summary>Social profile service name.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant kABPersonSocialProfileServiceKey value to access the underlying dictionary.</remarks>
 		public string? ServiceName {
 			get {
 				return GetStringValue (ABPersonSocialProfile.ServiceKey!);
@@ -1007,6 +1530,10 @@ namespace AddressBook {
 			}
 		}
 
+		/// <summary>Represents the social profile username.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant kABPersonSocialProfileUsernameKey value to access the underlying dictionary.</remarks>
 		public string? Username {
 			get {
 				return GetStringValue (ABPersonSocialProfile.UsernameKey!);
@@ -1016,6 +1543,10 @@ namespace AddressBook {
 			}
 		}
 
+		/// <summary>Represents the social profile user identifier.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant kABPersonSocialProfileUserIdentifierKey value to access the underlying dictionary.</remarks>
 		public string? UserIdentifier {
 			get {
 				return GetStringValue (ABPersonSocialProfile.UserIdentifierKey!);
@@ -1025,6 +1556,10 @@ namespace AddressBook {
 			}
 		}
 
+		/// <summary>Represents the social profile URL.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant kABPersonSocialProfileURLKey value to access the underlying dictionary.</remarks>
 		public string? Url {
 			get {
 				return GetStringValue (ABPersonSocialProfile.URLKey!);
@@ -1051,6 +1586,10 @@ namespace AddressBook {
 		{
 		}
 
+		/// <summary>Instant message service name.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant kABPersonInstantMessageServiceKey value to access the underlying dictionary.</remarks>
 		public string? ServiceName {
 			get {
 				// TODO: It does not return ABPersonInstantMessageService value. Underlying
@@ -1063,6 +1602,10 @@ namespace AddressBook {
 			}
 		}
 
+		/// <summary>Instant message service user name.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant kABPersonInstantMessageUsernameKey value to access the underlying dictionary.</remarks>
 		public string? Username {
 			get {
 				return GetStringValue (ABPersonInstantMessageKey.Username!);
@@ -1089,6 +1632,10 @@ namespace AddressBook {
 		{
 		}
 
+		/// <summary>City</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant kABPersonAddressProperty value to access the underlying dictionary.</remarks>
 		public string? City {
 			get {
 				return GetStringValue (ABPersonAddressKey.City!);
@@ -1098,6 +1645,10 @@ namespace AddressBook {
 			}
 		}
 
+		/// <summary>Represents country name.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant kABPersonAddressCountryKey value to access the underlying dictionary.</remarks>
 		public string? Country {
 			get {
 				return GetStringValue (ABPersonAddressKey.Country!);
@@ -1107,6 +1658,9 @@ namespace AddressBook {
 			}
 		}
 
+		/// <summary>Represents country code.</summary>
+		///         <value>The value must be in the form of 2 character ISO-3166 country codes.</value>
+		///         <remarks>The property uses constant kABPersonAddressCountryCodeKey value to access the underlying dictionary.</remarks>
 		public string? CountryCode {
 			get {
 				return GetStringValue (ABPersonAddressKey.CountryCode!);
@@ -1116,6 +1670,10 @@ namespace AddressBook {
 			}
 		}
 
+		/// <summary>State</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant kABPersonAddressStateKey value to access the underlying dictionary.</remarks>
 		public string? State {
 			get {
 				return GetStringValue (ABPersonAddressKey.State!);
@@ -1125,6 +1683,10 @@ namespace AddressBook {
 			}
 		}
 
+		/// <summary>Street</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant kABPersonAddressStreetKey value to access the underlying dictionary.</remarks>
 		public string? Street {
 			get {
 				return GetStringValue (ABPersonAddressKey.Street!);
@@ -1134,6 +1696,10 @@ namespace AddressBook {
 			}
 		}
 
+		/// <summary>ZIP</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The property uses constant kABPersonAddressZIPKey value to access the underlying dictionary.</remarks>
 		public string? Zip {
 			get {
 				return GetStringValue (ABPersonAddressKey.Zip!);

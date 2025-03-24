@@ -41,7 +41,6 @@ namespace UIKit {
 				return ReferenceEquals (b, null);
 			else if (ReferenceEquals (b, null))
 				return false;
-
 			return a.Handle == b.Handle;
 		}
 
@@ -90,9 +89,11 @@ namespace UIKit {
 				throw new ArgumentNullException ("traits");
 
 			using (var array = NSArray.FromIntPtrs (TypesToPointers (whenFoundIn))) {
-				return Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (class_ptr,
+				IntPtr result = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (class_ptr,
 					Selector.GetHandle (UIAppearance.selAppearanceForTraitCollectionWhenContainedInInstancesOfClasses),
 					traits.Handle, array.Handle);
+				GC.KeepAlive (traits);
+				return result;
 			}
 		}
 #else
@@ -127,12 +128,14 @@ namespace UIKit {
 			var firstPtr = ptrs [0];
 			Array.Copy (ptrs, 1, ptrs, 0, ptrs.Length - 1);
 			Array.Resize (ref ptrs, ptrs.Length - 1);
-			return Messaging.objc_msgSend_4_vargs (
+			IntPtr result = Messaging.objc_msgSend_4_vargs (
 				class_ptr,
 				Selector.GetHandle (UIAppearance.selAppearanceForTraitCollectionWhenContainedIn),
 				traits.Handle,
 				firstPtr,
 				ptrs);
+			GC.KeepAlive (traits);
+			return result;
 		}
 
 		[DllImport (Messaging.LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
@@ -146,7 +149,9 @@ namespace UIKit {
 			if (traits is null)
 				throw new ArgumentNullException ("traits");
 
-			return Messaging.IntPtr_objc_msgSend_IntPtr (class_ptr, Selector.GetHandle (UIAppearance.selAppearanceForTraitCollection), traits.Handle);
+			IntPtr result = Messaging.IntPtr_objc_msgSend_IntPtr (class_ptr, Selector.GetHandle (UIAppearance.selAppearanceForTraitCollection), traits.Handle);
+			GC.KeepAlive (traits);
+			return result;
 		}
 	}
 }

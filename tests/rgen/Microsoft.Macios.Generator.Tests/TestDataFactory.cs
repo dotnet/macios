@@ -3,6 +3,7 @@
 
 #pragma warning disable APL0003
 using Microsoft.CodeAnalysis;
+using Microsoft.Macios.Generator.DataModel;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Tests;
@@ -433,13 +434,17 @@ static class TestDataFactory {
 			isNullable: isNullable
 		);
 
-	public static TypeInfo ReturnTypeForInterface (string interfaceName)
+	public static TypeInfo ReturnTypeForInterface (string interfaceName, bool isNullable = false, bool isProtocol = false)
 		=> new (
 			name: interfaceName,
+			isNullable: isNullable,
+			isArray: false,
 			isReferenceType: true
 		) {
-			Parents = [],
 			IsInterface = true,
+			IsProtocol = isProtocol,
+			Parents = [],
+			Interfaces = []
 		};
 
 	public static TypeInfo ReturnTypeForStruct (string structName, bool isBlittable = false)
@@ -478,7 +483,8 @@ static class TestDataFactory {
 		bool isEnum = false,
 		bool isSmartEnum = false,
 		bool isStruct = false,
-		bool isNSObject = false)
+		bool isNSObject = false,
+		SpecialType? underlyingType = null)
 		=> new (
 			name: type,
 			isNullable: isNullable,
@@ -489,6 +495,7 @@ static class TestDataFactory {
 			isStruct: isStruct
 		) {
 			EnumUnderlyingType = isEnum ? SpecialType.System_Int32 : null,
+			ArrayElementType = underlyingType,
 			ArrayElementTypeIsWrapped = isNSObject,
 			Parents = ["System.Array", "object"],
 			Interfaces = [
@@ -503,7 +510,7 @@ static class TestDataFactory {
 			]
 		};
 
-	public static TypeInfo ReturnTypeForAction ()
+	public static TypeInfo ReturnTypeForAction (DelegateInfo? delegateInfo = null)
 		=> new (
 			name: "System.Action",
 			isNullable: false,
@@ -511,6 +518,8 @@ static class TestDataFactory {
 			isArray: false,
 			isReferenceType: true
 		) {
+			IsDelegate = true,
+			Delegate = delegateInfo,
 			Parents = [
 				"System.MulticastDelegate",
 				"System.Delegate",
@@ -522,7 +531,7 @@ static class TestDataFactory {
 			]
 		};
 
-	public static TypeInfo ReturnTypeForAction (params string [] parameters)
+	public static TypeInfo ReturnTypeForAction (DelegateInfo? delegateInfo = null, params string [] parameters)
 		=> new (
 			name: $"System.Action<{string.Join (", ", parameters)}>",
 			isNullable: false,
@@ -530,6 +539,8 @@ static class TestDataFactory {
 			isArray: false,
 			isReferenceType: true
 		) {
+			IsDelegate = true,
+			Delegate = delegateInfo,
 			Parents = [
 				"System.MulticastDelegate",
 				"System.Delegate",
@@ -541,7 +552,7 @@ static class TestDataFactory {
 			]
 		};
 
-	public static TypeInfo ReturnTypeForFunc (params string [] parameters)
+	public static TypeInfo ReturnTypeForFunc (DelegateInfo? delegateInfo = null, params string [] parameters)
 		=> new (
 			name: $"System.Func<{string.Join (", ", parameters)}>",
 			isNullable: false,
@@ -549,6 +560,8 @@ static class TestDataFactory {
 			isArray: false,
 			isReferenceType: true
 		) {
+			IsDelegate = true,
+			Delegate = delegateInfo,
 			Parents = [
 				"System.MulticastDelegate",
 				"System.Delegate",
@@ -560,7 +573,7 @@ static class TestDataFactory {
 			]
 		};
 
-	public static TypeInfo ReturnTypeForDelegate (string delegateName)
+	public static TypeInfo ReturnTypeForDelegate (string delegateName, DelegateInfo? delegateInfo = null)
 		=> new (
 			name: delegateName,
 			isNullable: false,
@@ -568,6 +581,8 @@ static class TestDataFactory {
 			isArray: false,
 			isReferenceType: true
 		) {
+			IsDelegate = true,
+			Delegate = delegateInfo,
 			Parents = [
 				"System.MulticastDelegate",
 				"System.Delegate",

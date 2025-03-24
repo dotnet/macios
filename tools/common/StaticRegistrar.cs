@@ -230,7 +230,7 @@ namespace Registrar {
 		public Dictionary<ICustomAttribute, MethodDefinition> ProtocolMemberMethodMap {
 			get {
 				if (protocol_member_method_map is null) {
-					if (App.Platform != ApplePlatform.MacOSX && App.IsExtension && !App.IsWatchExtension && App.IsCodeShared) {
+					if (App.Platform != ApplePlatform.MacOSX && App.IsExtension && App.IsCodeShared) {
 						protocol_member_method_map = Target.ContainerTarget.StaticRegistrar.ProtocolMemberMethodMap;
 					} else {
 						protocol_member_method_map = new Dictionary<ICustomAttribute, MethodDefinition> ();
@@ -1617,8 +1617,6 @@ namespace Registrar {
 				return global::ObjCRuntime.PlatformName.iOS;
 			case ApplePlatform.TVOS:
 				return global::ObjCRuntime.PlatformName.TvOS;
-			case ApplePlatform.WatchOS:
-				return global::ObjCRuntime.PlatformName.WatchOS;
 			case ApplePlatform.MacOSX:
 				return global::ObjCRuntime.PlatformName.MacOSX;
 			case ApplePlatform.MacCatalyst:
@@ -1785,9 +1783,6 @@ namespace Registrar {
 				break;
 			case ApplePlatform.TVOS:
 				currentPlatform = ApplePlatform.TVOS;
-				break;
-			case ApplePlatform.WatchOS:
-				currentPlatform = ApplePlatform.WatchOS;
 				break;
 			case ApplePlatform.MacOSX:
 				currentPlatform = ApplePlatform.MacOSX;

@@ -194,7 +194,9 @@ namespace GameController {
 		{
 			snapshotData = default;
 			unsafe {
-				return GCMicroGamepadSnapShotDataV100FromNSData ((GCMicroGamepadSnapShotDataV100*) Unsafe.AsPointer<GCMicroGamepadSnapShotDataV100> (ref snapshotData), data.GetHandle ()) != 0;
+				bool result = GCMicroGamepadSnapShotDataV100FromNSData ((GCMicroGamepadSnapShotDataV100*) Unsafe.AsPointer<GCMicroGamepadSnapShotDataV100> (ref snapshotData), data.GetHandle ()) != 0;
+				GC.KeepAlive (data);
+				return result;
 			}
 		}
 
@@ -227,7 +229,9 @@ namespace GameController {
 		{
 			snapshotData = default;
 			unsafe {
-				return GCMicroGamepadSnapshotDataFromNSData ((GCMicroGamepadSnapshotData*) Unsafe.AsPointer<GCMicroGamepadSnapshotData> (ref snapshotData), data.GetHandle ()) != 0;
+				bool result = GCMicroGamepadSnapshotDataFromNSData ((GCMicroGamepadSnapshotData*) Unsafe.AsPointer<GCMicroGamepadSnapshotData> (ref snapshotData), data.GetHandle ()) != 0;
+				GC.KeepAlive (data);
+				return result;
 			}
 		}
 

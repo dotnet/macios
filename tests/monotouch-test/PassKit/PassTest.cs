@@ -34,10 +34,8 @@ namespace MonoTouchFixtures.PassKit {
 
 			using (PKPass pass = new PKPass ()) {
 				Assert.Null (pass.AuthenticationToken, "AuthenticationToken");
-#if !__WATCHOS__
 #if !__MACCATALYST__ // PKPass.Icon doesn't work: https://github.com/xamarin/maccore/issues/2347
 				Assert.NotNull (pass.Icon, "Icon");
-#endif
 #endif
 				Assert.Null (pass.LocalizedDescription, "LocalizedDescription");
 				Assert.That (string.IsNullOrEmpty (pass.LocalizedName), Is.False, "LocalizedName");
@@ -68,10 +66,8 @@ namespace MonoTouchFixtures.PassKit {
 
 			using (var pass = GetBoardingPass ()) {
 				Assert.That (pass.AuthenticationToken, Is.EqualTo ("vxwxd7J8AlNNFPS8k0a0FfUFtq0ewzFdc"), "AuthenticationToken");
-#if !__WATCHOS__
 #if !__MACCATALYST__ // PKPass.Icon doesn't work: https://github.com/xamarin/maccore/issues/2347
 				Assert.NotNull (pass.Icon, "Icon");
-#endif
 #endif
 
 				Assert.That (pass.LocalizedDescription, Is.Not.Null, "LocalizedDescription is not null");

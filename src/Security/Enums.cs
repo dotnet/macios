@@ -10,48 +10,86 @@ namespace Security {
 	// values are defined in Security.framework/Headers/SecBase.h 
 	/// <summary>Status return from the SecKeyChain operations.</summary>
 	public enum SecStatusCode {
+		/// <summary>Success, there was no error.</summary>
 		Success = 0,
+		/// <summary>The specified feature is not implemented.</summary>
 		Unimplemented = -4,
+		/// <summary>Indicates that the disk was full.</summary>
 		DiskFull = -34,
+		/// <summary>Indicates an IO error.</summary>
 		IO = -36,
+		/// <summary>Indicates that a file is already open with read and write privileges.</summary>
 		OpWr = -49,
+		/// <summary>Invalid or incomplete parameters passed.</summary>
 		Param = -50,
 		WritePermissions = -61,
 		Allocate = -108,
+		/// <summary>Indicates that the user cancelled the operation.</summary>
 		UserCanceled = -128,
+		/// <summary>Indicates that authentication failed.</summary>
 		BadReq = -909,
+		/// <summary>Indicates an unspecified error in an internal component.</summary>
 		InternalComponent = -2070,
+		/// <summary>Indicates that an unknown Core Foundation error occurred.</summary>
 		CoreFoundationUnknown = -4960,
+		/// <summary>Indicates that a trust results were not available.</summary>
 		NotAvailable = -25291,
+		/// <summary>The keychain is read only.</summary>
 		ReadOnly = -25292,
+		/// <summary>Authentication failed.</summary>
 		AuthFailed = -25293,
+		/// <summary>The keychain specified does not exist.</summary>
 		NoSuchKeyChain = -25294,
+		/// <summary>The keychain provided is invalid.</summary>
 		InvalidKeyChain = -25295,
+		/// <summary>Duplicated key chain.</summary>
 		DuplicateKeyChain = -25296,
+		/// <summary>The item is duplicated.</summary>
 		DuplicateItem = -25299,
+		/// <summary>The item was not found.</summary>
 		ItemNotFound = -25300,
+		/// <summary>Indicates that the interaction with the Security Server was not allowed.</summary>
 		InteractionNotAllowed = -25308,
 		Decode = -26275,
+		/// <summary>Indicates that a callback was duplicated</summary>
 		DuplicateCallback = -25297,
+		/// <summary>Indicates that a callback was not valid.</summary>
 		InvalidCallback = -25298,
+		/// <summary>Indicates that a buffer was too small.</summary>
 		BufferTooSmall = -25301,
+		/// <summary>Indicates that data were too large.</summary>
 		DataTooLarge = -25302,
+		/// <summary>Indicates that no such attribute was found.</summary>
 		NoSuchAttribute = -25303,
+		/// <summary>Indicates an invalid item reference.</summary>
 		InvalidItemRef = -25304,
+		/// <summary>Indicates an invalid search reference.</summary>
 		InvalidSearchRef = -25305,
 		NoSuchClass = -25306,
+		/// <summary>Indicates that no default key chain was found.</summary>
 		NoDefaultKeychain = -25307,
 		ReadOnlyAttribute = -25309,
+		/// <summary>Indicates that the wrong security version was encountered.</summary>
 		WrongSecVersion = -25310,
+		/// <summary>Indicates that a key's size was not supported.</summary>
 		KeySizeNotAllowed = -25311,
+		/// <summary>Indicates that no storage module was found.</summary>
 		NoStorageModule = -25312,
+		/// <summary>Indicates that no certificate module was found.</summary>
 		NoCertificateModule = -25313,
+		/// <summary>Indicates that no policy module was found.</summary>
 		NoPolicyModule = -25314,
+		/// <summary>Indicates that user interaction was required.</summary>
 		InteractionRequired = -25315,
+		/// <summary>Indicates that certain data were not available.</summary>
 		DataNotAvailable = -25316,
+		/// <summary>Indicates that data could not be modified.</summary>
 		DataNotModifiable = -25317,
+		/// <summary>Indicates that the certificate chain failed.</summary>
 		CreateChainFailed = -25318,
+		/// <summary>Indicates an invalid preferences domain.</summary>
 		InvalidPrefsDomain = -25319,
+		/// <summary>Indicates that a dark wake state prevented a UI from being displayed.</summary>
 		InDarkWake = -25320,
 		ACLNotSimple = -25240,
 		PolicyNotFound = -25241,
@@ -464,8 +502,10 @@ namespace Security {
 	/// <summary>Enumeration whose values represent valid options for <see cref="P:Security.SecRecord.AuthenticationUI" />.</summary>
 	[MacCatalyst (13, 1)]
 	public enum SecAuthenticationUI {
+		/// <summary>To be added.</summary>
 		NotSet = -1,
 
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'LAContext.InteractionNotAllowed' instead.")]
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'LAContext.InteractionNotAllowed' instead.")]
 		[Deprecated (PlatformName.TvOS, 14, 0, message: "Use 'LAContext.InteractionNotAllowed' instead.")]
@@ -473,6 +513,7 @@ namespace Security {
 		[Field ("kSecUseAuthenticationUIAllow")]
 		Allow,
 
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'LAContext.InteractionNotAllowed' instead.")]
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'LAContext.InteractionNotAllowed' instead.")]
 		[Deprecated (PlatformName.TvOS, 14, 0, message: "Use 'LAContext.InteractionNotAllowed' instead.")]
@@ -480,6 +521,7 @@ namespace Security {
 		[Field ("kSecUseAuthenticationUIFail")]
 		Fail,
 
+		/// <summary>To be added.</summary>
 		[Field ("kSecUseAuthenticationUISkip")]
 		Skip,
 	}

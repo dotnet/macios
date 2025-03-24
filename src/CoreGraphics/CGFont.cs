@@ -92,7 +92,9 @@ namespace CoreGraphics {
 			// and have a unit tests to make sure this behavior does not change over time
 			if (provider is null)
 				return null;
-			return Create (CGFontCreateWithDataProvider (provider.Handle));
+			CGFont? result = Create (CGFontCreateWithDataProvider (provider.Handle));
+			GC.KeepAlive (provider);
+			return result;
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -122,6 +124,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* size_t */ nint CGFontGetNumberOfGlyphs (/* CGFontRef */ IntPtr font);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint NumberOfGlyphs {
 			get {
 				return CGFontGetNumberOfGlyphs (Handle);
@@ -131,6 +136,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* int */ int CGFontGetUnitsPerEm (/* CGFontRef */ IntPtr font);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int UnitsPerEm {
 			get {
 				return CGFontGetUnitsPerEm (Handle);
@@ -140,6 +148,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CFStringRef __nullable */ IntPtr CGFontCopyPostScriptName (/* CGFontRef __nullable */ IntPtr font);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? PostScriptName {
 			get {
 				return CFString.FromHandle (CGFontCopyPostScriptName (Handle), releaseHandle: true);
@@ -149,6 +160,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CFStringRef __nullable */ IntPtr CGFontCopyFullName (/* CGFontRef __nullable */ IntPtr font);
 
+		/// <summary>Returns the full name of the font.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? FullName {
 			get {
 				return CFString.FromHandle (CGFontCopyFullName (Handle), releaseHandle: true);
@@ -158,6 +172,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* int */ int CGFontGetAscent (/* CGFontRef */ IntPtr font);
 
+		/// <summary>Returns the ascent of the font.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int Ascent {
 			get {
 				return CGFontGetAscent (Handle);
@@ -167,6 +184,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* int */ int CGFontGetDescent (/* CGFontRef */ IntPtr font);
 
+		/// <summary>Returns the descent of the font.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int Descent {
 			get {
 				return CGFontGetDescent (Handle);
@@ -176,6 +196,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* int */ int CGFontGetLeading (/* CGFontRef */ IntPtr font);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int Leading {
 			get {
 				return CGFontGetLeading (Handle);
@@ -185,6 +208,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* int */ int CGFontGetCapHeight (/* CGFontRef */ IntPtr font);
 
+		/// <summary>Returns the cap height of the font.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int CapHeight {
 			get {
 				return CGFontGetCapHeight (Handle);
@@ -194,6 +220,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* int */ int CGFontGetXHeight (/* CGFontRef */ IntPtr font);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int XHeight {
 			get {
 				return CGFontGetXHeight (Handle);
@@ -203,6 +232,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGRect CGFontGetFontBBox (/* CGFontRef */ IntPtr font);
 
+		/// <summary>Returns a rectangle specifing the bounding box of the font.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGRect FontBBox {
 			get {
 				return CGFontGetFontBBox (Handle);
@@ -212,6 +244,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGFloat */ nfloat CGFontGetItalicAngle (/* CGFontRef */ IntPtr font);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat ItalicAngle {
 			get {
 				return CGFontGetItalicAngle (Handle);
@@ -221,6 +256,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGFloat */ nfloat CGFontGetStemV (/* CGFontRef */ IntPtr font);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat StemV {
 			get {
 				return CGFontGetStemV (Handle);

@@ -49,6 +49,7 @@ namespace Network {
 			if (options is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (options));
 			nw_protocol_stack_prepend_application_protocol (GetCheckedHandle (), options.Handle);
+			GC.KeepAlive (options);
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -143,7 +144,10 @@ namespace Network {
 					}
 				}
 			}
-			set => nw_protocol_stack_set_transport_protocol (GetCheckedHandle (), value.GetHandle ());
+			set {
+				nw_protocol_stack_set_transport_protocol (GetCheckedHandle (), value.GetHandle ());
+				GC.KeepAlive (value);
+			}
 		}
 
 		[DllImport (Constants.NetworkLibrary)]

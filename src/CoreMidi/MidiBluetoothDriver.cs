@@ -39,7 +39,12 @@ namespace CoreMidi {
 		[DllImport (Constants.CoreMidiLibrary)]
 		static extern unsafe int MIDIBluetoothDriverDisconnect (/* CFStringRef* */ NativeHandle uuid);
 
-		public static int Disconnect (NSString uuid) => MIDIBluetoothDriverDisconnect (uuid.GetHandle ());
+		public static int Disconnect (NSString uuid)
+		{
+			int result = MIDIBluetoothDriverDisconnect (uuid.GetHandle ());
+			GC.KeepAlive (uuid);
+			return result;
+		}
 	}
 }
 #endif

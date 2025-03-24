@@ -54,6 +54,8 @@ namespace CoreGraphics {
 			info = userInfo;
 			gch = GCHandle.Alloc (this);
 			InitializeHandle (CGPDFScannerCreate (cs.Handle, table.Handle, GCHandle.ToIntPtr (gch)));
+			GC.KeepAlive (cs);
+			GC.KeepAlive (table);
 		}
 
 #if !NET
@@ -69,6 +71,9 @@ namespace CoreGraphics {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public object? UserInfo {
 			get { return info; }
 		}

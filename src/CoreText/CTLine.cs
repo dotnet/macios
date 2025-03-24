@@ -102,8 +102,9 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTLineCreateWithAttributedString (IntPtr @string);
 		public CTLine (NSAttributedString value)
-			: base (CTLineCreateWithAttributedString (Runtime.ThrowOnNull (value, nameof (value)).Handle), true, true)
+			: base (CTLineCreateWithAttributedString (value.GetNonNullHandle (nameof (value))), true, true)
 		{
+			GC.KeepAlive (value);
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
@@ -111,6 +112,7 @@ namespace CoreText {
 		public CTLine? GetTruncatedLine (double width, CTLineTruncation truncationType, CTLine? truncationToken)
 		{
 			var h = CTLineCreateTruncatedLine (Handle, width, truncationType, truncationToken.GetHandle ());
+			GC.KeepAlive (truncationToken);
 			if (h == IntPtr.Zero)
 				return null;
 			return new CTLine (h, true);
@@ -172,6 +174,7 @@ namespace CoreText {
 			if (context is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
 			CTLineDraw (Handle, context.Handle);
+			GC.KeepAlive (context);
 		}
 		#endregion
 
@@ -182,7 +185,9 @@ namespace CoreText {
 
 		public CGRect GetImageBounds (CGContext? context)
 		{
-			return CTLineGetImageBounds (Handle, context.GetHandle ());
+			CGRect bounds = CTLineGetImageBounds (Handle, context.GetHandle ());
+			GC.KeepAlive (context);
+			return bounds;
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]

@@ -228,35 +228,39 @@ namespace CoreFoundation {
 
 		static CFProxyType CFProxyTypeToEnum (NSString type)
 		{
+			var typeHandle = type.Handle;
+
 			if (CFProxyTypeAutoConfigurationJavaScript is not null) {
-				if (type.Handle == CFProxyTypeAutoConfigurationJavaScript.Handle)
+				if (typeHandle == CFProxyTypeAutoConfigurationJavaScript.Handle)
 					return CFProxyType.AutoConfigurationJavaScript;
 			}
 
 			if (CFProxyTypeAutoConfigurationURL is not null) {
-				if (type.Handle == CFProxyTypeAutoConfigurationURL.Handle)
+				if (typeHandle == CFProxyTypeAutoConfigurationURL.Handle)
 					return CFProxyType.AutoConfigurationUrl;
 			}
 
 			if (CFProxyTypeFTP is not null) {
-				if (type.Handle == CFProxyTypeFTP.Handle)
+				if (typeHandle == CFProxyTypeFTP.Handle)
 					return CFProxyType.FTP;
 			}
 
 			if (CFProxyTypeHTTP is not null) {
-				if (type.Handle == CFProxyTypeHTTP.Handle)
+				if (typeHandle == CFProxyTypeHTTP.Handle)
 					return CFProxyType.HTTP;
 			}
 
 			if (CFProxyTypeHTTPS is not null) {
-				if (type.Handle == CFProxyTypeHTTPS.Handle)
+				if (typeHandle == CFProxyTypeHTTPS.Handle)
 					return CFProxyType.HTTPS;
 			}
 
 			if (CFProxyTypeSOCKS is not null) {
-				if (type.Handle == CFProxyTypeSOCKS.Handle)
+				if (typeHandle == CFProxyTypeSOCKS.Handle)
 					return CFProxyType.SOCKS;
 			}
+
+			GC.KeepAlive (type);
 
 			return CFProxyType.None;
 		}
@@ -559,6 +563,8 @@ namespace CoreFoundation {
 			IntPtr native;
 			unsafe {
 				native = CFNetworkCopyProxiesForAutoConfigurationScript (proxyAutoConfigurationScript.Handle, targetURL.Handle, &err);
+				GC.KeepAlive (proxyAutoConfigurationScript);
+				GC.KeepAlive (targetURL);
 			}
 			return native == IntPtr.Zero ? null : new NSArray (native);
 		}
@@ -576,6 +582,7 @@ namespace CoreFoundation {
 					return null;
 
 				NSDictionary [] dictionaries = NSArray.ArrayFromHandle<NSDictionary> (array.Handle);
+				GC.KeepAlive (array);
 				if (dictionaries is null)
 					return null;
 
@@ -609,6 +616,8 @@ namespace CoreFoundation {
 		static NSArray? CopyProxiesForURL (NSUrl url, NSDictionary proxySettings)
 		{
 			IntPtr native = CFNetworkCopyProxiesForURL (url.Handle, proxySettings.Handle);
+			GC.KeepAlive (url);
+			GC.KeepAlive (proxySettings);
 			return native == IntPtr.Zero ? null : new NSArray (native);
 		}
 
@@ -628,6 +637,7 @@ namespace CoreFoundation {
 					return null;
 
 				NSDictionary [] dictionaries = NSArray.ArrayFromHandle<NSDictionary> (array.Handle);
+				GC.KeepAlive (array);
 				if (dictionaries is null)
 					return null;
 
@@ -857,7 +867,10 @@ namespace CoreFoundation {
 				unsafe {
 					factory = delegate (delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> cb, ref CFStreamClientContext context)
 					{
-						return CFNetworkExecuteProxyAutoConfigurationScript (pacScript.Handle, url.Handle, cb, (CFStreamClientContext*) Unsafe.AsPointer<CFStreamClientContext> (ref context));
+						var result = CFNetworkExecuteProxyAutoConfigurationScript (pacScript.Handle, url.Handle, cb, (CFStreamClientContext*) Unsafe.AsPointer<CFStreamClientContext> (ref context));
+						GC.KeepAlive (pacScript);
+						GC.KeepAlive (url);
+						return result;
 					};
 				}
 				return ExecutePacCFRunLoopSourceBlocking (factory, out outError);
@@ -878,7 +891,10 @@ namespace CoreFoundation {
 				unsafe {
 					factory = delegate (delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> cb, ref CFStreamClientContext context)
 					{
-						return CFNetworkExecuteProxyAutoConfigurationScript (pacScript.Handle, url.Handle, cb, (CFStreamClientContext*) Unsafe.AsPointer<CFStreamClientContext> (ref context));
+						var result = CFNetworkExecuteProxyAutoConfigurationScript (pacScript.Handle, url.Handle, cb, (CFStreamClientContext*) Unsafe.AsPointer<CFStreamClientContext> (ref context));
+						GC.KeepAlive (pacScript);
+						GC.KeepAlive (url);
+						return result;
 					};
 				}
 				// use the helper task with a factory for this method
@@ -908,7 +924,10 @@ namespace CoreFoundation {
 				unsafe {
 					factory = delegate (delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> cb, ref CFStreamClientContext context)
 					{
-						return CFNetworkExecuteProxyAutoConfigurationURL (pacUrl.Handle, url.Handle, cb, (CFStreamClientContext*) Unsafe.AsPointer<CFStreamClientContext> (ref context));
+						var result = CFNetworkExecuteProxyAutoConfigurationURL (pacUrl.Handle, url.Handle, cb, (CFStreamClientContext*) Unsafe.AsPointer<CFStreamClientContext> (ref context));
+						GC.KeepAlive (pacUrl);
+						GC.KeepAlive (url);
+						return result;
 					};
 				}
 				return ExecutePacCFRunLoopSourceBlocking (factory, out outError);
@@ -930,7 +949,10 @@ namespace CoreFoundation {
 				unsafe {
 					factory = delegate (delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> cb, ref CFStreamClientContext context)
 					{
-						return CFNetworkExecuteProxyAutoConfigurationURL (pacUrl.Handle, url.Handle, cb, (CFStreamClientContext*) Unsafe.AsPointer<CFStreamClientContext> (ref context));
+						var result = CFNetworkExecuteProxyAutoConfigurationURL (pacUrl.Handle, url.Handle, cb, (CFStreamClientContext*) Unsafe.AsPointer<CFStreamClientContext> (ref context));
+						GC.KeepAlive (pacUrl);
+						GC.KeepAlive (url);
+						return result;
 					};
 				}
 				// use the helper task with a factory for this method

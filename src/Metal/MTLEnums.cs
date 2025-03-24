@@ -80,22 +80,34 @@ namespace Metal {
 	[Native]
 	[Flags]
 	public enum MTLColorWriteMask : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Red = 0x1 << 3,
+		/// <summary>To be added.</summary>
 		Green = 0x1 << 2,
+		/// <summary>To be added.</summary>
 		Blue = 0x1 << 1,
+		/// <summary>To be added.</summary>
 		Alpha = 0x1 << 0,
+		/// <summary>To be added.</summary>
 		All = 0xf,
 	}
 
 	/// <summary>The state of the command-buffer state-machine. Enqueued-&gt;Committed-&gt;Scheduled-&gt;Completed.</summary>
 	[Native]
 	public enum MTLCommandBufferStatus : ulong {
+		/// <summary>To be added.</summary>
 		NotEnqueued,
+		/// <summary>To be added.</summary>
 		Enqueued,
+		/// <summary>To be added.</summary>
 		Committed,
+		/// <summary>To be added.</summary>
 		Scheduled,
+		/// <summary>To be added.</summary>
 		Completed,
+		/// <summary>To be added.</summary>
 		Error,
 	}
 
@@ -103,15 +115,25 @@ namespace Metal {
 	[Native]
 	[ErrorDomain ("MTLCommandBufferErrorDomain")]
 	public enum MTLCommandBufferError : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Internal = 1,
+		/// <summary>To be added.</summary>
 		Timeout = 2,
+		/// <summary>To be added.</summary>
 		PageFault = 3,
+		/// <summary>To be added.</summary>
 		Blacklisted = 4,
+		/// <summary>To be added.</summary>
 		NotPermitted = 7,
+		/// <summary>To be added.</summary>
 		OutOfMemory = 8,
+		/// <summary>To be added.</summary>
 		InvalidResource = 9,
+		/// <summary>To be added.</summary>
 		Memoryless = 10,
+		/// <summary>Indicates that the device was removed.</summary>
 		DeviceRemoved = 11,
 		StackOverflow = 12,
 	}
@@ -119,21 +141,30 @@ namespace Metal {
 	/// <summary>An action performed at the start of a rendering pass.</summary>
 	[Native]
 	public enum MTLLoadAction : ulong {
+		/// <summary>To be added.</summary>
 		DontCare,
+		/// <summary>To be added.</summary>
 		Load,
+		/// <summary>To be added.</summary>
 		Clear,
 	}
 
 	/// <summary>The action to be performed at the end of a rendering pass.</summary>
 	[Native]
 	public enum MTLStoreAction : ulong {
+		/// <summary>To be added.</summary>
 		DontCare,
+		/// <summary>To be added.</summary>
 		Store,
+		/// <summary>To be added.</summary>
 		MultisampleResolve,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		StoreAndMultisampleResolve,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		Unknown,
+		/// <summary>Indicates that data will be stored in a way that does not consider the sample position.</summary>
 		[MacCatalyst (13, 1)]
 		CustomSampleDepthStore,
 	}
@@ -141,17 +172,27 @@ namespace Metal {
 	/// <summary>The dimensionality of each texture and how multiple images are arranged.</summary>
 	[Native]
 	public enum MTLTextureType : ulong {
+		/// <summary>To be added.</summary>
 		k1D = 0,
+		/// <summary>To be added.</summary>
 		k1DArray = 1,
+		/// <summary>To be added.</summary>
 		k2D = 2,
+		/// <summary>To be added.</summary>
 		k2DArray = 3,
+		/// <summary>To be added.</summary>
 		k2DMultisample = 4,
+		/// <summary>To be added.</summary>
 		kCube = 5,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		kCubeArray = 6,
+		/// <summary>To be added.</summary>
 		k3D = 7,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		k2DMultisampleArray = 8,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		kTextureBuffer = 9,
 	}
@@ -159,29 +200,40 @@ namespace Metal {
 	/// <summary>Options for calculating the pixel value returned within a mipmap level.</summary>
 	[Native]
 	public enum MTLSamplerMinMagFilter : ulong {
+		/// <summary>To be added.</summary>
 		Nearest,
+		/// <summary>To be added.</summary>
 		Linear,
 	}
 
 	/// <summary>Options for calculating the pixel value returned with multiple mipmap levels.</summary>
 	[Native]
 	public enum MTLSamplerMipFilter : ulong {
+		/// <summary>To be added.</summary>
 		NotMipmapped,
+		/// <summary>To be added.</summary>
 		Nearest,
+		/// <summary>To be added.</summary>
 		Linear,
 	}
 
 	/// <summary>The wrapping mode. Used when a fetch falls outside the bounds of a texture.</summary>
 	[Native]
 	public enum MTLSamplerAddressMode : ulong {
+		/// <summary>To be added.</summary>
 		ClampToEdge = 0,
+		/// <summary>To be added.</summary>
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		MirrorClampToEdge = 1,
+		/// <summary>To be added.</summary>
 		Repeat = 2,
+		/// <summary>To be added.</summary>
 		MirrorRepeat = 3,
+		/// <summary>To be added.</summary>
 		ClampToZero = 4,
 
+		/// <summary>To be added.</summary>
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		ClampToBorderColor = 5,
@@ -278,212 +330,324 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MTLPixelFormat : ulong {
+		/// <summary>Indicates an invalid pixel format.</summary>
 		Invalid = 0,
+		/// <summary>Indicates the unsigned, normalized integer format.</summary>
 		A8Unorm = 1,
+		/// <summary>Indicates a single 8-bit normalized integer format.</summary>
 		R8Unorm = 10,
+		/// <summary>Indicates a single 8-bit unnormalized signed integer format with sRGB-Linear conversion.</summary>
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
 		R8Unorm_sRGB = 11,
+		/// <summary>Indicates a single 8-bit normalized integer format.</summary>
 		R8Snorm = 12,
+		/// <summary>Indicates a single 8-bit unsigned integer format.</summary>
 		R8Uint = 13,
+		/// <summary>Indicates a single 8-bit signed integer format.</summary>
 		R8Sint = 14,
+		/// <summary>Indicates a single 16-bit normalized integer format.</summary>
 		R16Unorm = 20,
+		/// <summary>Indicates a single 16-bit normalized integer format.</summary>
 		R16Snorm = 22,
+		/// <summary>Indicates a single 16-bit unsigned integer format.</summary>
 		R16Uint = 23,
+		/// <summary>Indicates a single 16-bit signed integer format.</summary>
 		R16Sint = 24,
+		/// <summary>Indicates a single 16-bit floating point format.</summary>
 		R16Float = 25,
+		/// <summary>Indicates a 2-channel unnormalized signed integer format with 8 bits per channel.</summary>
 		RG8Unorm = 30,
+		/// <summary>Indicates a 2-channel unnormalized signed integer format with 8 bits per channel and sRGB-Linear conversion.</summary>
 		[MacCatalyst (13, 1)]
 		RG8Unorm_sRGB = 31,
+		/// <summary>Indicates a 2-channel normalized signed integer format with 8 bits per channel.</summary>
 		RG8Snorm = 32,
+		/// <summary>Indicates a 2-channel unsigned integer format with 8 bits per channel.</summary>
 		RG8Uint = 33,
+		/// <summary>Indicates a 2-channel signed integer format with 8 bits per channel.</summary>
 		RG8Sint = 34,
+		/// <summary>Indicates a 5-bit B, 6-bit G, and 5-bit R unsigned, normalized integer format.</summary>
 		[MacCatalyst (13, 1)]
 		B5G6R5Unorm = 40,
+		/// <summary>Indicates the unsigned, normalized integer format.</summary>
 		[MacCatalyst (13, 1)]
 		A1BGR5Unorm = 41,
+		/// <summary>Indicates the unsigned, normalized integer format.</summary>
 		[MacCatalyst (13, 1)]
 		ABGR4Unorm = 42,
+		/// <summary>Indicates a 5-bit B, 6-bit G, 5-bit R, and 1-bit Alpha unnormalized signed integer format.</summary>
 		[MacCatalyst (13, 1)]
 		BGR5A1Unorm = 43,
+		/// <summary>Indicates a single 32-bit unsigned integer format.</summary>
 		R32Uint = 53,
+		/// <summary>Indicates a single 32-bit signed integer format.</summary>
 		R32Sint = 54,
+		/// <summary>Indicates a single 32-bit floating point format.</summary>
 		R32Float = 55,
+		/// <summary>Indicates a 2-channel unnormalized signed integer format with 16 bits per channel.</summary>
 		RG16Unorm = 60,
+		/// <summary>Indicates a 2-channel normalized integer format with 16 bits per channel.</summary>
 		RG16Snorm = 62,
+		/// <summary>Indicates a 2-channel unsigned integer format with 16 bits per channel.</summary>
 		RG16Uint = 63,
+		/// <summary>Indicates a 2-channel signed integer format with 16 bits per channel.</summary>
 		RG16Sint = 64,
+		/// <summary>Indicates a 2-channel floating point format with 16 bits per channel.</summary>
 		RG16Float = 65,
+		/// <summary>Indicates a format with 4 8-bit normalized unsigned integer channels.</summary>
 		RGBA8Unorm = 70,
+		/// <summary>Indicates a format with 4 8-bit normalized unsigned integer channels, with sRGB-Linear conversion.</summary>
 		RGBA8Unorm_sRGB = 71,
+		/// <summary>Indicates a format with 4 8-bit normalized signed integer channels.</summary>
 		RGBA8Snorm = 72,
+		/// <summary>Indicates a format with 4 8-bit unsigned integer channels.</summary>
 		RGBA8Uint = 73,
+		/// <summary>Indicates a format with 4 8-bit signed integer channels.</summary>
 		RGBA8Sint = 74,
+		/// <summary>Indicates an 8-bit BGRA unnormalized signed integer format.</summary>
 		BGRA8Unorm = 80,
+		/// <summary>Indicates an 8-bit BGRA unnormalized signed integer format with sRGB-Linear conversion</summary>
 		BGRA8Unorm_sRGB = 81,
+		/// <summary>Indicates a format with 10-bit normalized unsigned integer RGB values plus 2 alpha bits.</summary>
 		RGB10A2Unorm = 90,
+		/// <summary>Indicates a format with 10-bit unsigned integer RGB values plus 2 alpha bits.</summary>
 		RGB10A2Uint = 91,
+		/// <summary>Indicates an 11-bit RG plus 10-bit B value floating-point format.</summary>
 		RG11B10Float = 92,
+		/// <summary>Indicates a format with 9 bits per RGB channel plus a 5-bit shared exponent.</summary>
 		RGB9E5Float = 93,
+		/// <summary>Indicates a 10-bit B, 10-bit G, 10-bit R, and 2-bit Alpha normalized unsigned integer format.</summary>
 		[MacCatalyst (13, 1)]
 		BGR10A2Unorm = 94,
+		/// <summary>Indicates a 2-channel unsigned integer format with 32 bits per channel.</summary>
 		RG32Uint = 103,
+		/// <summary>Indicates a 2-channel signed integer format with 32 bits per channel.</summary>
 		RG32Sint = 104,
+		/// <summary>Indicates a 2-channel floating point format with 32 bits per channel.</summary>
 		RG32Float = 105,
+		/// <summary>Indicates a format with 4 16-bit normalized unsigned integer channels.</summary>
 		RGBA16Unorm = 110,
+		/// <summary>Indicates a format with 4 16-bit normalized signed integer channels.</summary>
 		RGBA16Snorm = 112,
+		/// <summary>Indicates a format with 4 16-bit unsigned integer channels.</summary>
 		RGBA16Uint = 113,
+		/// <summary>Indicates a format with 4 16-bit signed integer channels.</summary>
 		RGBA16Sint = 114,
+		/// <summary>Indicates a format with 4 16-bit floating point channels.</summary>
 		RGBA16Float = 115,
+		/// <summary>Indicates a format with 4 32-bit unsigned integer channels.</summary>
 		RGBA32Uint = 123,
+		/// <summary>Indicates a format with 4 32-bit signed integer channels.</summary>
 		RGBA32Sint = 124,
+		/// <summary>Indicates a format with 4 32-bit floating point channels.</summary>
 		RGBA32Float = 125,
+		/// <summary>To be added.</summary>
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]
 		BC1RGBA = 130,
+		/// <summary>To be added.</summary>
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]
 		BC1_RGBA_sRGB = 131,
+		/// <summary>To be added.</summary>
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]
 		BC2RGBA = 132,
+		/// <summary>To be added.</summary>
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]
 		BC2_RGBA_sRGB = 133,
+		/// <summary>To be added.</summary>
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]
 		BC3RGBA = 134,
+		/// <summary>To be added.</summary>
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]
 		BC3_RGBA_sRGB = 135,
+		/// <summary>To be added.</summary>
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]
 		BC4_RUnorm = 140,
+		/// <summary>To be added.</summary>
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]
 		BC4_RSnorm = 141,
+		/// <summary>To be added.</summary>
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]
 		BC5_RGUnorm = 142,
+		/// <summary>To be added.</summary>
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]
 		BC5_RGSnorm = 143,
+		/// <summary>To be added.</summary>
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]
 		BC6H_RGBFloat = 150,
+		/// <summary>To be added.</summary>
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]
 		BC6H_RGBUFloat = 151,
+		/// <summary>To be added.</summary>
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]
 		BC7_RGBAUnorm = 152,
+		/// <summary>To be added.</summary>
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]
 		BC7_RGBAUnorm_sRGB = 153,
 
+		/// <summary>Indicatea a 2bpp PVRTC RGB format.</summary>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.TvOS, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		PVRTC_RGB_2BPP = 160,
 
+		/// <summary>Indicatea a 2bpp PVRTC RGB format with sRGB-Linear conversion.</summary>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.TvOS, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		PVRTC_RGB_2BPP_sRGB = 161,
 
+		/// <summary>Indicatea a 4bpp PVRTC RGB format.</summary>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.TvOS, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		PVRTC_RGB_4BPP = 162,
 
+		/// <summary>Indicatea a 4bpp PVRTC RGB format with sRGB-Linear conversion.</summary>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.TvOS, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		PVRTC_RGB_4BPP_sRGB = 163,
 
+		/// <summary>Indicatea a 2bpp PVRTC RGBA format.</summary>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.TvOS, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		PVRTC_RGBA_2BPP = 164,
 
+		/// <summary>Indicatea a 2bpp PVRTC RGBA format with sRGB-Linear conversion.</summary>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.TvOS, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		PVRTC_RGBA_2BPP_sRGB = 165,
 
+		/// <summary>Indicatea a 4bpp PVRTC RGBA format.</summary>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.TvOS, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		PVRTC_RGBA_4BPP = 166,
 
+		/// <summary>Indicatea a 4bpp PVRTC RGBA format with sRGB-Linear conversion.</summary>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		[Deprecated (PlatformName.TvOS, 18, 0, message: "Use ASTC/ETC2/BC formats instead.")]
 		PVRTC_RGBA_4BPP_sRGB = 167,
 
+		/// <summary>Indicates a single-channel EAC, unnormalized signed integer format.</summary>
 		EAC_R11Unorm = 170,
+		/// <summary>Indicates a single-channel EAC, normalized signed integer format.</summary>
 		EAC_R11Snorm = 172,
+		/// <summary>Indicates a two-channel EAC, unnormalized signed integer format.</summary>
 		EAC_RG11Unorm = 174,
+		/// <summary>Indicates a two-channel EAC, normalized signed integer format.</summary>
 		EAC_RG11Snorm = 176,
+		/// <summary>Indicates an 8-bit RGB EAC format.</summary>
 		EAC_RGBA8 = 178,
+		/// <summary>Indicates an 8-bit RGBa EAC format with sRGB-Linear conversion.</summary>
 		EAC_RGBA8_sRGB = 179,
+		/// <summary>Indicates an ETC2 format.</summary>
 		ETC2_RGB8 = 180,
+		/// <summary>Indicates an ETC2 format with sRGB-Linear conversion.</summary>
 		ETC2_RGB8_sRGB = 181,
+		/// <summary>Indicates an ETC2 format with 8-bit RGB channels and a single-bit Alpha channel.</summary>
 		ETC2_RGB8A1 = 182,
+		/// <summary>Indicates an ETC2 format with 8-bit RGB channels and a single-bit Alpha channel, with sRGB-Linear conversion.</summary>
 		ETC2_RGB8A1_sRGB = 183,
 
 
+		/// <summary>Indicates the 4x4 ASTC format, with sRGB-Linear conversion.</summary>
 		ASTC_4x4_sRGB = 186,
+		/// <summary>Indicates the 5x4 ASTC format, with sRGB-Linear conversion.</summary>
 		ASTC_5x4_sRGB = 187,
+		/// <summary>Indicates the 5x5 ASTC format, with sRGB-Linear conversion.</summary>
 		ASTC_5x5_sRGB = 188,
+		/// <summary>Indicates the 6x5 ASTC format, with sRGB-Linear conversion.</summary>
 		ASTC_6x5_sRGB = 189,
+		/// <summary>Indicates the 6x6 ASTC format, with sRGB-Linear conversion.</summary>
 		ASTC_6x6_sRGB = 190,
+		/// <summary>Indicates the 8x5 ASTC format, with sRGB-Linear conversion.</summary>
 		ASTC_8x5_sRGB = 192,
+		/// <summary>Indicates the 8x6 ASTC format, with sRGB-Linear conversion.</summary>
 		ASTC_8x6_sRGB = 193,
+		/// <summary>Indicates the 8x8 ASTC format, with sRGB-Linear conversion.</summary>
 		ASTC_8x8_sRGB = 194,
+		/// <summary>Indicates the 10x5 ASTC format, with sRGB-Linear conversion.</summary>
 		ASTC_10x5_sRGB = 195,
+		/// <summary>Indicates the 10x6 ASTC format, with sRGB-Linear conversion.</summary>
 		ASTC_10x6_sRGB = 196,
+		/// <summary>Indicates the 10x8 ASTC format, with sRGB-Linear conversion.</summary>
 		ASTC_10x8_sRGB = 197,
+		/// <summary>Indicates the 10x10 ASTC format, with sRGB-Linear conversion.</summary>
 		ASTC_10x10_sRGB = 198,
+		/// <summary>Indicates the 12x10 ASTC format, with sRGB-Linear conversion.</summary>
 		ASTC_12x10_sRGB = 199,
+		/// <summary>Indicates the 12x12 ASTC format, with sRGB-Linear conversion.</summary>
 		ASTC_12x12_sRGB = 200,
 
+		/// <summary>Indicates the 4x4 ASTC, low dynamic range format.</summary>
 		ASTC_4x4_LDR = 204,
+		/// <summary>Indicates the 5x4 ASTC, low dynamic range format.</summary>
 		ASTC_5x4_LDR = 205,
+		/// <summary>Indicates the 5x5 ASTC, low dynamic range format.</summary>
 		ASTC_5x5_LDR = 206,
+		/// <summary>Indicates the 6x5 ASTC, low dynamic range format.</summary>
 		ASTC_6x5_LDR = 207,
+		/// <summary>Indicates the 6x6 ASTC, low dynamic range format.</summary>
 		ASTC_6x6_LDR = 208,
+		/// <summary>Indicates the 8x5 ASTC, low dynamic range format.</summary>
 		ASTC_8x5_LDR = 210,
+		/// <summary>Indicates the 8x6 ASTC, low dynamic range format.</summary>
 		ASTC_8x6_LDR = 211,
+		/// <summary>Indicates the 8x8 ASTC, low dynamic range format.</summary>
 		ASTC_8x8_LDR = 212,
+		/// <summary>Indicates the 10x5 ASTC, low dynamic range format.</summary>
 		ASTC_10x5_LDR = 213,
+		/// <summary>Indicates the 10x6 ASTC, low dynamic range format.</summary>
 		ASTC_10x6_LDR = 214,
+		/// <summary>Indicates the 10x8 ASTC, low dynamic range format.</summary>
 		ASTC_10x8_LDR = 215,
+		/// <summary>Indicates the 10x10 ASTC, low dynamic range format.</summary>
 		ASTC_10x10_LDR = 216,
+		/// <summary>Indicates the 12x10 ASTC, low dynamic range format.</summary>
 		ASTC_12x10_LDR = 217,
+		/// <summary>Indicates the 12x12 ASTC, low dynamic range format.</summary>
 		ASTC_12x12_LDR = 218,
 
 		[iOS (13, 0)]
@@ -543,25 +707,33 @@ namespace Metal {
 		[MacCatalyst (13, 1)]
 		ASTC_12x12_HDR = 236,
 
+		/// <summary>Indicates a red-green horizontally subsampled format.</summary>
 		GBGR422 = 240,
+		/// <summary>Indicates a red-green horizontally subsampled format.</summary>
 		BGRG422 = 241,
 
 		Depth16Unorm = 250,
 
+		/// <summary>Indicates a 32-bit format that is suitable for depth stencils.</summary>
 		Depth32Float = 252,
+		/// <summary>Indicates a single-channel 8-bit stencil format.</summary>
 		Stencil8 = 253,
 
+		/// <summary>To be added.</summary>
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
 		Depth24Unorm_Stencil8 = 255,
 
+		/// <summary>Indicates a 24-bit depth and 8-bit stencil floating-point format.</summary>
 		[MacCatalyst (13, 1)]
 		Depth32Float_Stencil8 = 260,
 
+		/// <summary>Indicates an 8-bit stencil format.</summary>
 		[MacCatalyst (13, 1)]
 		X32_Stencil8 = 261,
 
+		/// <summary>To be added.</summary>
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
@@ -580,8 +752,11 @@ namespace Metal {
 	/// <summary>The type of a Metal function.</summary>
 	[Native]
 	public enum MTLFunctionType : ulong {
+		/// <summary>To be added.</summary>
 		Vertex = 1,
+		/// <summary>To be added.</summary>
 		Fragment = 2,
+		/// <summary>To be added.</summary>
 		Kernel = 3,
 		[iOS (14, 0)]
 		[TV (14, 0)]
@@ -601,11 +776,17 @@ namespace Metal {
 	[Native]
 	[ErrorDomain ("MTLLibraryErrorDomain")]
 	public enum MTLLibraryError : ulong {
+		/// <summary>To be added.</summary>
 		Unsupported = 1,
+		/// <summary>To be added.</summary>
 		Internal,
+		/// <summary>To be added.</summary>
 		CompileFailure,
+		/// <summary>To be added.</summary>
 		CompileWarning,
+		/// <summary>To be added.</summary>
 		FunctionNotFound,
+		/// <summary>To be added.</summary>
 		FileNotFound,
 	}
 
@@ -622,13 +803,21 @@ namespace Metal {
 	/// <summary>Holds a comparison test. When the comparison test passes, the incoming fragment is compared to the stored data at the specified location.</summary>
 	[Native]
 	public enum MTLCompareFunction : ulong {
+		/// <summary>To be added.</summary>
 		Never = 0,
+		/// <summary>To be added.</summary>
 		Less = 1,
+		/// <summary>To be added.</summary>
 		Equal = 2,
+		/// <summary>To be added.</summary>
 		LessEqual = 3,
+		/// <summary>To be added.</summary>
 		Greater = 4,
+		/// <summary>To be added.</summary>
 		NotEqual = 5,
+		/// <summary>To be added.</summary>
 		GreaterEqual = 6,
+		/// <summary>To be added.</summary>
 		Always = 7,
 	}
 
@@ -636,30 +825,45 @@ namespace Metal {
 	/// <summary>What to do if a stencil value passes or fails a comparison test.</summary>
 	[Native]
 	public enum MTLStencilOperation : ulong {
+		/// <summary>To be added.</summary>
 		Keep = 0,
+		/// <summary>To be added.</summary>
 		Zero = 1,
+		/// <summary>To be added.</summary>
 		Replace = 2,
+		/// <summary>To be added.</summary>
 		IncrementClamp = 3,
+		/// <summary>To be added.</summary>
 		DecrementClamp = 4,
+		/// <summary>To be added.</summary>
 		Invert = 5,
+		/// <summary>To be added.</summary>
 		IncrementWrap = 6,
+		/// <summary>To be added.</summary>
 		DecrementWrap = 7,
 	}
 
 	/// <summary>Enumerates the primitive geometry used for drawing commands.</summary>
 	[Native]
 	public enum MTLPrimitiveType : ulong {
+		/// <summary>To be added.</summary>
 		Point = 0,
+		/// <summary>To be added.</summary>
 		Line = 1,
+		/// <summary>To be added.</summary>
 		LineStrip = 2,
+		/// <summary>To be added.</summary>
 		Triangle = 3,
+		/// <summary>To be added.</summary>
 		TriangleStrip = 4,
 	}
 
 	/// <summary>The index type for an index buffer.</summary>
 	[Native]
 	public enum MTLIndexType : ulong {
+		/// <summary>To be added.</summary>
 		UInt16,
+		/// <summary>To be added.</summary>
 		UInt32,
 	}
 
@@ -674,8 +878,11 @@ namespace Metal {
 	/// <summary>Enumerates modes for culling and which types of primitives are culled.</summary>
 	[Native]
 	public enum MTLCullMode : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Front = 1,
+		/// <summary>To be added.</summary>
 		Back = 2,
 	}
 
@@ -696,16 +903,22 @@ namespace Metal {
 	/// <summary>The purgeable state of the resource.</summary>
 	[Native]
 	public enum MTLPurgeableState : ulong {
+		/// <summary>To be added.</summary>
 		KeepCurrent = 1,
+		/// <summary>To be added.</summary>
 		NonVolatile = 2,
+		/// <summary>To be added.</summary>
 		Volatile = 3,
+		/// <summary>To be added.</summary>
 		Empty = 4,
 	}
 
 	/// <summary>Enumerates what cache mode is used for CPU mapping of a resource.</summary>
 	[Native]
 	public enum MTLCpuCacheMode : ulong {
+		/// <summary>To be added.</summary>
 		DefaultCache,
+		/// <summary>To be added.</summary>
 		WriteCombined,
 	}
 
@@ -715,6 +928,7 @@ namespace Metal {
 	[Flags]
 	public enum MTLTextureUsage : ulong {
 		Unknown = 0x0000,
+		/// <summary>A value that indicates that the texture will be read by shaders at any stage in rendering.</summary>
 		ShaderRead = 0x0001,
 		ShaderWrite = 0x0002,
 		RenderTarget = 0x0004,
@@ -722,6 +936,7 @@ namespace Metal {
 		[Obsolete ("This option is unavailable.")]
 		Blit = 0x0008,
 #endif
+		/// <summary>A value that indicates that the texture will be used for creating new textures.</summary>
 		PixelFormatView = 0x0010,
 
 		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
@@ -733,22 +948,29 @@ namespace Metal {
 	[Native]
 	[Flags]
 	public enum MTLResourceOptions : ulong {
+		/// <summary>Indicates the default CPU cache mode.</summary>
 		CpuCacheModeDefault = MTLCpuCacheMode.DefaultCache << 0,
+		/// <summary>Indicates a write-combined CPU cache mode, which is best for resources that the CPU will write but never read.</summary>
 		CpuCacheModeWriteCombined = MTLCpuCacheMode.WriteCombined << 0,
 
+		/// <summary>Indicates that the resource is stored in a location where both the GPU and CPU can access it.</summary>
 		[MacCatalyst (13, 1)]
 		StorageModeShared = MTLStorageMode.Shared << 4,
+		/// <summary>To be added.</summary>
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
 		StorageModeManaged = MTLStorageMode.Managed << 4,
+		/// <summary>Indicates that the resource is stored in a location where only the GPU can acces it.</summary>
 		[MacCatalyst (13, 1)]
 		StorageModePrivate = MTLStorageMode.Private << 4,
 
+		/// <summary>Indicates that the resource is a temporary render target and is stored only on the tile.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		StorageModeMemoryless = MTLStorageMode.Memoryless << 4,
 
+		/// <summary>Indicates that the developer must track command encoder dependencies with fences.</summary>
 		[MacCatalyst (13, 1)]
 		HazardTrackingModeUntracked = 1 << 8,
 
@@ -774,124 +996,202 @@ namespace Metal {
 	[Native]
 	public enum MTLDataType : ulong {
 
+		/// <summary>Indicates an unrecognized or invalid type.</summary>
 		None = 0,
 
+		/// <summary>Indicates a struct.</summary>
 		Struct = 1,
+		/// <summary>Indicates an array.</summary>
 		Array = 2,
 
+		/// <summary>Indicates a 32-bit floating point value.</summary>
 		Float = 3,
+		/// <summary>Indicates a vector of two 32-bit floating point values.</summary>
 		Float2 = 4,
+		/// <summary>Indicates a vector of three 32-bit floating point values.</summary>
 		Float3 = 5,
+		/// <summary>Indicates a vector of four 32-bit floating point values.</summary>
 		Float4 = 6,
 
+		/// <summary>Indicates a 2x2 matrix of 32-bit floating point values.</summary>
 		Float2x2 = 7,
+		/// <summary>Indicates a 2x3 matrix of 32-bit floating point values.</summary>
 		Float2x3 = 8,
+		/// <summary>Indicates a 2x4 matrix of 32-bit floating point values.</summary>
 		Float2x4 = 9,
 
+		/// <summary>Indicates a 3x2 matrix of 32-bit floating point values.</summary>
 		Float3x2 = 10,
+		/// <summary>Indicates a 3x3 matrix of 32-bit floating point values.</summary>
 		Float3x3 = 11,
+		/// <summary>Indicates a 3x4 matrix of 32-bit floating point values.</summary>
 		Float3x4 = 12,
 
+		/// <summary>Indicates a 4x2 matrix of 32-bit floating point values.</summary>
 		Float4x2 = 13,
+		/// <summary>Indicates a 4x3 matrix of 32-bit floating point values.</summary>
 		Float4x3 = 14,
+		/// <summary>Indicates a 4x4 matrix of 32-bit floating point values.</summary>
 		Float4x4 = 15,
 
+		/// <summary>Indicates a 16-bit floating point value.</summary>
 		Half = 16,
+		/// <summary>Indicates a vector of two 16-bit floating point values.</summary>
 		Half2 = 17,
+		/// <summary>Indicates a vector of three 16-bit floating point values.</summary>
 		Half3 = 18,
+		/// <summary>Indicates a vector of four 16-bit floating point values.</summary>
 		Half4 = 19,
 
+		/// <summary>Indicates a 2x2 matrix of 16-bit floating point values.</summary>
 		Half2x2 = 20,
+		/// <summary>Indicates a 2x3 matrix of 16-bit floating point values.</summary>
 		Half2x3 = 21,
+		/// <summary>Indicates a 2x4 matrix of 16-bit floating point values.</summary>
 		Half2x4 = 22,
 
+		/// <summary>Indicates a 3x2 matrix of 16-bit floating point values.</summary>
 		Half3x2 = 23,
+		/// <summary>Indicates a 3x3 matrix of 16-bit floating point values.</summary>
 		Half3x3 = 24,
+		/// <summary>Indicates a 3x4 matrix of 16-bit floating point values.</summary>
 		Half3x4 = 25,
 
+		/// <summary>Indicates a 4x2 matrix of 16-bit floating point values.</summary>
 		Half4x2 = 26,
+		/// <summary>Indicates a 4x3 matrix of 16-bit floating point values.</summary>
 		Half4x3 = 27,
+		/// <summary>Indicates a 4x4 matrix of 16-bit floating point values.</summary>
 		Half4x4 = 28,
 
+		/// <summary>Indicates a signed 32-bit integer.</summary>
 		Int = 29,
+		/// <summary>Indicates a vector of two 32-bit signed integers.</summary>
 		Int2 = 30,
+		/// <summary>Indicates a vector of three signed 32-bit integers.</summary>
 		Int3 = 31,
+		/// <summary>Indicates a vector of four signed 32-bit integers.</summary>
 		Int4 = 32,
 
+		/// <summary>Indicates an unsigned 32-bit integer.</summary>
 		UInt = 33,
+		/// <summary>Indicates a value that contains two unsigned 32-bit integer components.</summary>
 		UInt2 = 34,
+		/// <summary>Indicates a value that contains three unsigned 32-bit integer components.</summary>
 		UInt3 = 35,
+		/// <summary>Indicates a value that contains four unsigned 32-bit integer components.</summary>
 		UInt4 = 36,
 
+		/// <summary>Indicates a signed 16-bit integer.</summary>
 		Short = 37,
+		/// <summary>Indicates a value that contains two signed 16-bit integer components.</summary>
 		Short2 = 38,
+		/// <summary>Indicates a value that contains three signed 16-bit integer components.</summary>
 		Short3 = 39,
+		/// <summary>Indicates a value that contains four signed 16-bit integer components.</summary>
 		Short4 = 40,
 
+		/// <summary>Indicates an unsigned 16-bit integer.</summary>
 		UShort = 41,
+		/// <summary>Indicates a value that contains two unsigned 16-bit integer components.</summary>
 		UShort2 = 42,
+		/// <summary>Indicates a value that contains three unsigned 16-bit integer components.</summary>
 		UShort3 = 43,
+		/// <summary>Indicates a value that contains four unsigned 16-bit integer components.</summary>
 		UShort4 = 44,
 
+		/// <summary>Indicates a signed 8-bit character.</summary>
 		Char = 45,
+		/// <summary>Indicates a vector of two signed 8-bit characters.</summary>
 		Char2 = 46,
+		/// <summary>Indicates a vector of three signed 8-bit characters.</summary>
 		Char3 = 47,
+		/// <summary>Indicates a vector of four signed 8-bit characters.</summary>
 		Char4 = 48,
 
+		/// <summary>Indicates an unsigned 8-bit character.</summary>
 		UChar = 49,
+		/// <summary>Indicates a value that contains two unsigned 8-bit integer components.</summary>
 		UChar2 = 50,
+		/// <summary>Indicates a value that contains three unsigned 8-bit integer components.</summary>
 		UChar3 = 51,
+		/// <summary>Indicates a value that contains four unsigned 8-bit integer components.</summary>
 		UChar4 = 52,
 
+		/// <summary>Indicates a Boolean value.</summary>
 		Bool = 53,
+		/// <summary>Indicates vector of two Boolean values.</summary>
 		Bool2 = 54,
+		/// <summary>Indicates vector of three Boolean values.</summary>
 		Bool3 = 55,
+		/// <summary>Indicates vector of four Boolean values</summary>
 		Bool4 = 56,
+		/// <summary>Indicates a texture.</summary>
 		[MacCatalyst (13, 1)]
 
 		Texture = 58,
+		/// <summary>Indicates a sampler.</summary>
 		[MacCatalyst (13, 1)]
 		Sampler = 59,
+		/// <summary>Indicates a pointer.</summary>
 		[MacCatalyst (13, 1)]
 		Pointer = 60,
+		/// <summary>Indicates an unsigned 8-bit normalized integer.</summary>
 		[MacCatalyst (13, 1)]
 
 		[NoMac, TV (14, 5)] R8Unorm = 62,
+		/// <summary>Indicates a signed 8-bit normalized integer.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] R8Snorm = 63,
+		/// <summary>Indicates an unsigned 16-bit normalized integer.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] R16Unorm = 64,
+		/// <summary>Indicates a signed 16-bit normalized integer.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] R16Snorm = 65,
+		/// <summary>Indicates a value that contains two unsigned 8-bit normalized integer components.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rg8Unorm = 66,
+		/// <summary>Indicates a value that contains two signed 8-bit normalized integer components.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rg8Snorm = 67,
+		/// <summary>Indicates a value that contains two unsigned 16-bit normalized integer components.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rg16Unorm = 68,
+		/// <summary>Indicates a value that contains two signed 16-bit normalized integer components.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rg16Snorm = 69,
+		/// <summary>Indicates a value that contains four unsigned 8-bit normalized integer components.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rgba8Unorm = 70,
+		/// <summary>Indicates normalized unsigned 8-bit RGBA values, convertible to sRGB.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rgba8Unorm_sRgb = 71,
+		/// <summary>Indicates a value that contains four signed 8-bit normalized integer components.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rgba8Snorm = 72,
+		/// <summary>Indicates a value that contains four unsigned 16-bit normalized integer components.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rgba16Unorm = 73,
+		/// <summary>Indicates a value that contains four signed 16-bit normalized integer components.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rgba16Snorm = 74,
+		/// <summary>Indicates a packed RGBA normalized integer value with 10 bits each for RGB and 2 bits for A.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rgb10A2Unorm = 75,
+		/// <summary>Indicates a 32-bit packed floating point RGB value with 11 bits for R and G and 10 bits for B.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rg11B10Float = 76,
+		/// <summary>Indicates a packed RGBE normalized floating point value with 9 bits each for R, G, and B, with a 5-bit exponent.</summary>
 		[MacCatalyst (13, 1)]
 		[NoMac, TV (14, 5)] Rgb9E5Float = 77,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 
 		RenderPipeline = 78,
 		[MacCatalyst (13, 1)]
 		[iOS (13, 0), TV (13, 0)] ComputePipeline = 79,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		IndirectCommandBuffer = 80,
 
@@ -981,8 +1281,10 @@ namespace Metal {
 	[Native]
 	[Flags]
 	public enum MTLPipelineOption : ulong {
+		/// <summary>To be added.</summary>
 		None,
 #if !XAMCORE_5_0
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'BindingInfo' instead.")]
 		[Deprecated (PlatformName.TvOS, 18, 0, message: "Use 'BindingInfo' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'BindingInfo' instead.")]
@@ -990,6 +1292,7 @@ namespace Metal {
 		ArgumentInfo = 1 << 0,
 #endif
 		BindingInfo = 1 << 0,
+		/// <summary>To be added.</summary>
 		BufferTypeInfo,
 		[iOS (14, 0)]
 		[TV (14, 0)]
@@ -1000,6 +1303,7 @@ namespace Metal {
 	/// <summary>Enumerates the hardware feature sets that are available on a device.</summary>
 	[Native]
 	public enum MTLFeatureSet : ulong {
+		/// <summary>The iOS GPU Family 1 v1 feature set.</summary>
 #if XAMCORE_5_0
 		[NoMacCatalyst]
 #elif __MACCATALYST__
@@ -1007,6 +1311,7 @@ namespace Metal {
 #endif
 		[NoTV, NoMac]
 		iOS_GPUFamily1_v1 = 0,
+		/// <summary>The iOS GPU Family 1 v2 feature set.</summary>
 #if XAMCORE_5_0
 		[NoMacCatalyst]
 #elif __MACCATALYST__
@@ -1014,6 +1319,7 @@ namespace Metal {
 #endif
 		[NoTV, NoMac]
 		iOS_GPUFamily1_v2 = 2,
+		/// <summary>The iOS GPU Family 2 v1 feature set.</summary>
 #if XAMCORE_5_0
 		[NoMacCatalyst]
 #elif __MACCATALYST__
@@ -1021,6 +1327,7 @@ namespace Metal {
 #endif
 		[NoTV, NoMac]
 		iOS_GPUFamily2_v1 = 1,
+		/// <summary>The iOS GPU Family 2 v2 feature set.</summary>
 #if XAMCORE_5_0
 		[NoMacCatalyst]
 #elif __MACCATALYST__
@@ -1028,6 +1335,7 @@ namespace Metal {
 #endif
 		[NoTV, NoMac]
 		iOS_GPUFamily2_v2 = 3,
+		/// <summary>The iOS GPU Family 3 v1 feature set.</summary>
 #if XAMCORE_5_0
 		[NoMacCatalyst]
 #elif __MACCATALYST__
@@ -1035,43 +1343,59 @@ namespace Metal {
 #endif
 		[NoTV, NoMac]
 		iOS_GPUFamily3_v1 = 4,
+		/// <summary>The iOS GPU Family 1 v3 feature set.</summary>
 		[NoTV, NoMac, NoMacCatalyst]
 		iOS_GPUFamily1_v3 = 5,
+		/// <summary>The iOS GPU Family 2 v3 feature set.</summary>
 		[NoTV, NoMac, NoMacCatalyst]
 		iOS_GPUFamily2_v3 = 6,
+		/// <summary>The iOS GPU Family 3 v2 feature set.</summary>
 		[NoTV, NoMac, NoMacCatalyst]
 		iOS_GPUFamily3_v2 = 7,
+		/// <summary>The iOS GPU Family 1 v4 feature set.</summary>
 		[NoTV, NoMac, NoMacCatalyst]
 		iOS_GPUFamily1_v4 = 8,
+		/// <summary>The iOS GPU Family 2 v4 feature set.</summary>
 		[NoTV, NoMac, NoMacCatalyst]
 		iOS_GPUFamily2_v4 = 9,
+		/// <summary>The iOS GPU Family 3 v3 feature set.</summary>
 		[NoTV, NoMac, NoMacCatalyst]
 		iOS_GPUFamily3_v3 = 10,
+		/// <summary>The iOS GPU Family 4 v1 feature set.</summary>
 		[NoTV, NoMac, NoMacCatalyst]
 		iOS_GPUFamily4_v1 = 11,
 
+		/// <summary>To be added.</summary>
 		[NoTV, NoMac, NoMacCatalyst]
 		iOS_GPUFamily1_v5 = 12,
+		/// <summary>To be added.</summary>
 		[NoTV, NoMac, NoMacCatalyst]
 		iOS_GPUFamily2_v5 = 13,
+		/// <summary>To be added.</summary>
 		[NoTV, NoMac, NoMacCatalyst]
 		iOS_GPUFamily3_v4 = 14,
+		/// <summary>To be added.</summary>
 		[NoTV, NoMac, NoMacCatalyst]
 		iOS_GPUFamily4_v2 = 15,
+		/// <summary>To be added.</summary>
 		[NoTV, NoMac, NoMacCatalyst]
 		iOS_GPUFamily5_v1 = 16,
 
+		/// <summary>The macOS GPU Family 1 v1 feature set.</summary>
 		[NoiOS, NoTV, NoMacCatalyst]
 		macOS_GPUFamily1_v1 = 10000,
 
+		/// <summary>The macOS GPU Family 1 v2 feature set.</summary>
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		macOS_GPUFamily1_v2 = 10001,
 
+		/// <summary>The macOS read-write texture, tier 2 feature set.</summary>
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		macOS_ReadWriteTextureTier2 = 10002,
 
+		/// <summary>The macOS GPU Family 1 v3 feature set.</summary>
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		macOS_GPUFamily1_v3 = 10003,
@@ -1093,6 +1417,7 @@ namespace Metal {
 		[NoiOS, NoMac]
 		tvOS_GPUFamily1_v1 = 30000,
 
+		/// <summary>The TVOS GPU Family 1 v2 feature set.</summary>
 		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		tvOS_GPUFamily1_v2 = 30001,
@@ -1101,10 +1426,12 @@ namespace Metal {
 		[NoMacCatalyst]
 		tvOS_GPUFamily1_v3 = 30002,
 
+		/// <summary>The TVOS GPU Family 2 v1 feature set.</summary>
 		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		tvOS_GPUFamily2_v1 = 30003,
 
+		/// <summary>To be added.</summary>
 		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		tvOS_GPUFamily1_v4 = 30004,
@@ -1117,14 +1444,19 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MTLLanguageVersion : ulong {
+		/// <summary>Indicates version 1.0.</summary>
 		[NoMac]
 		[NoMacCatalyst]
 		v1_0 = (1 << 16),
+		/// <summary>Indicates version 1.1.</summary>
 		v1_1 = (1 << 16) + 1,
+		/// <summary>Indicates version 1.2.</summary>
 		[MacCatalyst (13, 1)]
 		v1_2 = (1 << 16) + 2,
+		/// <summary>Indicates version 2.0.</summary>
 		[MacCatalyst (13, 1)]
 		v2_0 = (2 << 16),
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		v2_1 = (2 << 16) + 1,
 		[iOS (13, 0), TV (13, 0)]
@@ -1147,7 +1479,9 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MTLDepthClipMode : ulong {
+		/// <summary>To be added.</summary>
 		Clip = 0,
+		/// <summary>To be added.</summary>
 		Clamp = 1,
 	}
 
@@ -1156,9 +1490,13 @@ namespace Metal {
 	[Native]
 	[Flags]
 	public enum MTLBlitOption : ulong {
+		/// <summary>Indicates that no blit option was specified.</summary>
 		None = 0,
+		/// <summary>Indicates that the depth attachment part of a depth/stencil resource will be blitted.</summary>
 		DepthFromDepthStencil = 1 << 0,
+		/// <summary>Indicates that the stencil attachment part of a depth/stencil resource will be blitted.</summary>
 		StencilFromDepthStencil = 1 << 1,
+		/// <summary>Indicates that compressed row-major, linearly arranged PVRTC texture data will be blitted.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		RowLinearPvrtc = 1 << 2,
@@ -1168,12 +1506,16 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MTLStorageMode : ulong {
+		/// <summary>Indicates that both the CPU and GPU can access the location of the resource.</summary>
 		Shared = 0,
+		/// <summary>To be added.</summary>
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
 		Managed = 1,
+		/// <summary>Indicates that only the GPU can access the location of the resource.</summary>
 		Private = 2,
+		/// <summary>Indicates the memory mode for an unbacked temporary render target.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		Memoryless = 3,
@@ -1182,8 +1524,11 @@ namespace Metal {
 	/// <summary>Enumerates MSAA dept resolve filter operations.</summary>
 	[Native]
 	public enum MTLMultisampleDepthResolveFilter : ulong {
+		/// <summary>Indicates that no filter is applied. Default.</summary>
 		Sample0,
+		/// <summary>Indicates that a minimum filter is applied, selecting the minimum depth sample for each pixel.</summary>
 		Min,
+		/// <summary>Indicates that a maximum filter is applied, selecting the largest depth sample for each pixel.</summary>
 		Max,
 	}
 
@@ -1192,8 +1537,11 @@ namespace Metal {
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum MTLSamplerBorderColor : ulong {
+		/// <summary>To be added.</summary>
 		TransparentBlack = 0,
+		/// <summary>To be added.</summary>
 		OpaqueBlack = 1,
+		/// <summary>To be added.</summary>
 		OpaqueWhite = 2,
 	}
 
@@ -1201,49 +1549,68 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MTLPrimitiveTopologyClass : ulong {
+		/// <summary>To be added.</summary>
 		Unspecified = 0,
+		/// <summary>To be added.</summary>
 		Point = 1,
+		/// <summary>To be added.</summary>
 		Line = 2,
+		/// <summary>To be added.</summary>
 		Triangle = 3,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MTLTessellationPartitionMode : ulong {
+		/// <summary>To be added.</summary>
 		Pow2 = 0,
+		/// <summary>To be added.</summary>
 		Integer = 1,
+		/// <summary>To be added.</summary>
 		FractionalOdd = 2,
+		/// <summary>To be added.</summary>
 		FractionalEven = 3,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MTLTessellationFactorFormat : ulong {
+		/// <summary>To be added.</summary>
 		Half = 0,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MTLTessellationControlPointIndexType : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		UInt16 = 1,
+		/// <summary>To be added.</summary>
 		UInt32 = 2,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MTLTessellationFactorStepFunction : ulong {
+		/// <summary>To be added.</summary>
 		Constant = 0,
+		/// <summary>To be added.</summary>
 		PerPatch = 1,
+		/// <summary>To be added.</summary>
 		PerInstance = 2,
+		/// <summary>To be added.</summary>
 		PerPatchAndPerInstance = 3,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MTLPatchType : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Triangle = 1,
+		/// <summary>To be added.</summary>
 		Quad = 2,
 	}
 
@@ -1374,21 +1741,32 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MTLStepFunction : ulong {
+		/// <summary>To be added.</summary>
 		Constant = 0,
+		/// <summary>To be added.</summary>
 		PerVertex = 1,
+		/// <summary>To be added.</summary>
 		PerInstance = 2,
+		/// <summary>To be added.</summary>
 		PerPatch = 3,
+		/// <summary>To be added.</summary>
 		PerPatchControlPoint = 4,
+		/// <summary>To be added.</summary>
 		ThreadPositionInGridX = 5,
+		/// <summary>To be added.</summary>
 		ThreadPositionInGridY = 6,
+		/// <summary>To be added.</summary>
 		ThreadPositionInGridXIndexed = 7,
+		/// <summary>To be added.</summary>
 		ThreadPositionInGridYIndexed = 8,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MTLRenderStages : ulong {
+		/// <summary>To be added.</summary>
 		Vertex = (1 << 0),
+		/// <summary>To be added.</summary>
 		Fragment = (1 << 1),
 		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 		Tile = (1uL << 2),
@@ -1403,8 +1781,11 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Native, Flags]
 	public enum MTLResourceUsage : ulong {
+		/// <summary>Indicates reading operations.</summary>
 		Read = 1 << 0,
+		/// <summary>Indicate writing operations.</summary>
 		Write = 1 << 1,
+		/// <summary>Indicates sampling operations.</summary>
 		Sample = 1 << 2,
 	}
 
@@ -1412,16 +1793,22 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MTLMutability : ulong {
+		/// <summary>Indicates the default mutability of the buffer, by tupe.</summary>
 		Default = 0,
+		/// <summary>Indicates a mutable buffer.</summary>
 		Mutable = 1,
+		/// <summary>Indicates an immutable buffer.</summary>
 		Immutable = 2,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MTLReadWriteTextureTier : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		One = 1,
+		/// <summary>To be added.</summary>
 		Two = 2,
 	}
 
@@ -1439,14 +1826,18 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Native, Flags]
 	public enum MTLStoreActionOptions : ulong {
+		/// <summary>Indicates no store action modification.</summary>
 		None = 0,
+		/// <summary>Indicates that data will be stored in a way that does not consider the sample position.</summary>
 		CustomSamplePositions = 1 << 0,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MTLDispatchType : ulong {
+		/// <summary>To be added.</summary>
 		Serial,
+		/// <summary>To be added.</summary>
 		Concurrent,
 	}
 
@@ -1468,11 +1859,15 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MTLIndirectCommandType : ulong {
+		/// <summary>To be added.</summary>
 		Draw = 1 << 0,
+		/// <summary>To be added.</summary>
 		DrawIndexed = 1 << 1,
+		/// <summary>To be added.</summary>
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
 		DrawPatches = 1 << 2,
+		/// <summary>To be added.</summary>
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
 		DrawIndexedPatches = 1 << 3,
@@ -1492,7 +1887,9 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MTLMultisampleStencilResolveFilter : ulong {
+		/// <summary>To be added.</summary>
 		Sample0 = 0,
+		/// <summary>To be added.</summary>
 		DepthResolvedSample = 1,
 	}
 

@@ -798,6 +798,13 @@ namespace GameKit {
 		[Export ("leaderboardDelegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the GameKit.IGKLeaderboardViewControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the GameKit.IGKLeaderboardViewControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IGKLeaderboardViewControllerDelegate Delegate { get; set; }
 
@@ -1920,6 +1927,13 @@ namespace GameKit {
 #endif
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the GameKit.IGKAchievementViewControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the GameKit.IGKAchievementViewControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IGKAchievementViewControllerDelegate Delegate { get; set; }
 	}
@@ -1968,6 +1982,12 @@ namespace GameKit {
 		[Export ("composeViewDelegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakComposeViewDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 10, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]

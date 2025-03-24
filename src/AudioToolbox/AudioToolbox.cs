@@ -15,12 +15,10 @@ using Foundation;
 
 namespace AudioToolbox {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class InstrumentInfo {
 
 		// defines, not NSString, are used for the key names
@@ -77,29 +75,23 @@ namespace AudioToolbox {
 		public NSDictionary Dictionary { get; private set; }
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public static class SoundBank {
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static OSStatus CopyNameFromSoundBank (/* CFURLRef */ IntPtr inURL, /* CFStringRef */ IntPtr* outName);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static string? GetName (NSUrl url)
 		{
 			if (url is null)
@@ -109,26 +101,23 @@ namespace AudioToolbox {
 			OSStatus error;
 			unsafe {
 				error = CopyNameFromSoundBank (url.Handle, &name);
+				GC.KeepAlive (url);
 			}
 			var result = CFString.FromHandle (name);
 			return (error != 0) ? null : result;
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static OSStatus CopyInstrumentInfoFromSoundBank (/* CFURLRef */ IntPtr inURL, /* CFSArrayRef */ IntPtr* outInstrumentInfo);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static InstrumentInfo []? GetInstrumentInfo (NSUrl url)
 		{
 			if (url is null)
@@ -139,6 +128,7 @@ namespace AudioToolbox {
 			OSStatus error;
 			unsafe {
 				error = CopyInstrumentInfoFromSoundBank (url.Handle, &array);
+				GC.KeepAlive (url);
 			}
 			if (array != IntPtr.Zero) {
 				var dicts = NSArray.ArrayFromHandle<NSDictionary> (array);

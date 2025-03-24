@@ -18,10 +18,6 @@ using System.Runtime.Versioning;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace AudioToolbox {
 
 	// untyped enum (used as an OSStatus in the API) -> MusicPlayer.h
@@ -105,12 +101,10 @@ namespace AudioToolbox {
 	}
 
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// MusicPlayer.h
 	public class MusicPlayer : DisposableObject {
 		[DllImport (Constants.AudioToolboxLibrary)]
@@ -304,6 +298,7 @@ namespace AudioToolbox {
 			set {
 				currentSequence = value;
 				MusicPlayerSetSequence (Handle, value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 #endif

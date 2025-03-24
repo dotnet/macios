@@ -20,7 +20,6 @@ namespace MonoTouchFixtures.CoreGraphics {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class FunctionTest {
-#if !__WATCHOS__ // FIXME: It doesn't look like this test needs to use UIKit, so it might be possible to rewrite it to run on WatchOS as well.
 		[Test]
 		public void Test ()
 		{
@@ -112,8 +111,6 @@ namespace MonoTouchFixtures.CoreGraphics {
 				set { SetCGPointValue (PointKey, value); }
 			}
 		}
-
-#endif // !__WATCHOS__
 	}
 }
 #endif

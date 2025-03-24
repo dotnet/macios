@@ -37,6 +37,7 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (endpoint));
 
 			InitializeHandle (nw_group_descriptor_create_multicast (endpoint.GetCheckedHandle ()));
+			GC.KeepAlive (endpoint);
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -47,6 +48,7 @@ namespace Network {
 			if (endpoint is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (endpoint));
 			nw_group_descriptor_add_endpoint (GetCheckedHandle (), endpoint.GetCheckedHandle ());
+			GC.KeepAlive (endpoint);
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -68,6 +70,7 @@ namespace Network {
 			if (endpoint is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (endpoint));
 			nw_multicast_group_descriptor_set_specific_source (GetCheckedHandle (), endpoint.GetCheckedHandle ());
+			GC.KeepAlive (endpoint);
 		}
 
 		[DllImport (Constants.NetworkLibrary)]

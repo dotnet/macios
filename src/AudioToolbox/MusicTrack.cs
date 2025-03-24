@@ -28,12 +28,10 @@ using System.Runtime.Versioning;
 namespace AudioToolbox {
 
 	// MusicPlayer.h
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiNoteMessage {
 		/// <summary>To be added.</summary>
@@ -63,12 +61,10 @@ namespace AudioToolbox {
 	}
 
 	// MusicPlayer.h
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiChannelMessage {
 		/// <summary>To be added.</summary>
@@ -98,15 +94,11 @@ namespace AudioToolbox {
 	// high level API, and we provide a ToUnmanaged that returns an allocated
 	// IntPtr buffer with the data
 	//
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public abstract class MidiData {
-#else
-	public abstract class _MidiData {
-#endif
 		protected int len;
 		protected int start;
 		protected byte []? data;
@@ -147,15 +139,11 @@ namespace AudioToolbox {
 	}
 
 #if !COREBUILD
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class MidiRawData : MidiData {
-#else
-	public class MidiRawData : _MidiData {
-#endif
 		public MidiRawData () { }
 
 		internal override IntPtr ToUnmanaged ()
@@ -175,12 +163,10 @@ namespace AudioToolbox {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class MusicEventUserData : MidiRawData {
 		public MusicEventUserData () { }
 
@@ -204,15 +190,11 @@ namespace AudioToolbox {
 	// high level API, and we provide a ToUnmanaged that returns an allocated
 	// IntPtr buffer with the data
 	//
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class MidiMetaEvent : MidiData {
-#else
-	public class MidiMetaEvent : _MidiData {
-#endif
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		public byte MetaEventType;
@@ -237,12 +219,10 @@ namespace AudioToolbox {
 	}
 
 	// MusicPlayer.h
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct ExtendedNoteOnEvent {
 		/// <summary>To be added.</summary>
@@ -270,12 +250,10 @@ namespace AudioToolbox {
 	}
 #endif
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class MusicTrack : DisposableObject {
 #if !COREBUILD
 		MusicSequence? sequence;
@@ -543,7 +521,9 @@ namespace AudioToolbox {
 		{
 			if (targetTrack is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (targetTrack));
-			return MusicTrackCopyInsert (Handle, sourceStartTime, sourceEndTime, targetTrack.Handle, targetInsertTime);
+			MusicPlayerStatus status = MusicTrackCopyInsert (Handle, sourceStartTime, sourceEndTime, targetTrack.Handle, targetInsertTime);
+			GC.KeepAlive (targetTrack);
+			return status;
 		}
 
 		[DllImport (Constants.AudioToolboxLibrary)]
@@ -553,7 +533,9 @@ namespace AudioToolbox {
 		{
 			if (targetTrack is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (targetTrack));
-			return MusicTrackMerge (Handle, sourceStartTime, sourceEndTime, targetTrack.Handle, targetInsertTime);
+			MusicPlayerStatus status = MusicTrackMerge (Handle, sourceStartTime, sourceEndTime, targetTrack.Handle, targetInsertTime);
+			GC.KeepAlive (targetTrack);
+			return status;
 		}
 #endif // !COREBUILD
 	}

@@ -1,0 +1,28 @@
+<Documentation>
+  <Docs DocId="P:AddressBook.ABMultiValue`1.IsReadOnly">
+        <summary>
+          Gets a value indicating whether the
+          <see cref="T:AddressBook.ABMultiValue`1" />
+          is read-only.
+        </summary>
+        <value>
+          <see langword="true" /> if the current instance and
+          <see cref="T:AddressBook.ABMultiValueEntry`1" /> instances
+          within the current collection can be changed; otherwise,
+          <see langword="false" />.
+        </value>
+        <remarks>
+          <para>
+            Use
+            <see cref="M:AddressBook.ABMultiValue`1.ToMutableMultiValue" />
+            to get an instance where
+            <see cref="P:AddressBook.ABMultiValue`1.IsReadOnly" /> is
+            <see langword="false" />.
+          </para>
+        </remarks>
+        <altmember cref="M:AddressBook.ABMultiValue`1.ToMutableMultiValue" />
+        <altmember cref="T:AddressBook.ABMutableDateMultiValue" />
+        <altmember cref="T:AddressBook.ABMutableDictionaryMultiValue" />
+        <altmember cref="T:AddressBook.ABMutableStringMultiValue" />
+      </Docs>
+</Documentation>

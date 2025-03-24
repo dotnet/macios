@@ -79,7 +79,9 @@ namespace SpriteKit {
 			using (var classes = new NSMutableSet<Class> ((nint) types.Length)) {
 				foreach (var type in types)
 					classes.Add (new Class (type));
-				return Create (filename, classes.Handle, out error);
+				SKNode? result = Create (filename, classes.Handle, out error);
+				GC.KeepAlive (classes);
+				return result;
 			}
 		}
 
@@ -97,7 +99,9 @@ namespace SpriteKit {
 			if (classes.Count == 0)
 				ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (classes), "Length must be greater than zero.");
 
-			return Create (filename, classes.Handle, out error);
+			SKNode? result = Create (filename, classes.Handle, out error);
+			GC.KeepAlive (classes);
+			return result;
 		}
 	}
 }

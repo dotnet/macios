@@ -53,7 +53,10 @@ namespace Network {
 		}
 
 		public void SetValue<T> (string key, T? value) where T : NSObject
-			=> nw_framer_options_set_object_value (GetCheckedHandle (), key, value.GetHandle ());
+		{
+			nw_framer_options_set_object_value (GetCheckedHandle (), key, value.GetHandle ());
+			GC.KeepAlive (value);
+		}
 
 		[DllImport (Constants.NetworkLibrary)]
 		static extern NativeHandle nw_framer_options_copy_object_value (OS_nw_protocol_options options, IntPtr key);

@@ -1259,6 +1259,10 @@ namespace CoreImage {
 	///     <remarks>At this point, this only includes the CIFilterOutputKey</remarks>
 	[Static]
 	interface CIFilterOutputKey {
+		/// <summary>Represents the value associated with the constant kCIOutputImageKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIOutputImageKey", "+CoreImage")]
 		NSString Image { get; }
 	}
@@ -1266,102 +1270,213 @@ namespace CoreImage {
 	/// <summary>Keys that can be used to configure the CIFilter input values.</summary>
 	[Static]
 	interface CIFilterInputKey {
+		/// <summary>Represents the value associated with the constant kCIInputBackgroundImageKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIInputBackgroundImageKey", "+CoreImage")]
 		NSString BackgroundImage { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputImageKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIInputImageKey", "+CoreImage")]
 		NSString Image { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputVersionKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIInputVersionKey", "+CoreImage")]
 		NSString Version { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputRefractionKey.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIInputRefractionKey", "+CoreImage")]
 		NSString Refraction { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputGradientImageKey.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIInputGradientImageKey", "+CoreImage")]
 		NSString GradientImage { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputShadingImageKey.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIInputShadingImageKey", "+CoreImage")]
 		NSString ShadingImage { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputTimeKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIInputTimeKey", "+CoreImage")]
 		NSString Time { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputTransformKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIInputTransformKey", "+CoreImage")]
 		NSString Transform { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputScaleKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIInputScaleKey", "+CoreImage")]
 		NSString Scale { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputAspectRatioKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIInputAspectRatioKey", "+CoreImage")]
 		NSString AspectRatio { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputCenterKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIInputCenterKey", "+CoreImage")]
 		NSString Center { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputRadiusKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIInputRadiusKey", "+CoreImage")]
 		NSString Radius { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputAngleKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIInputAngleKey", "+CoreImage")]
 		NSString Angle { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputWidthKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIInputWidthKey", "+CoreImage")]
 		NSString Width { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputSharpnessKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIInputSharpnessKey", "+CoreImage")]
 		NSString Sharpness { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputIntensityKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIInputIntensityKey", "+CoreImage")]
 		NSString Intensity { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputEVKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIInputEVKey", "+CoreImage")]
 		NSString EV { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputSaturationKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIInputSaturationKey", "+CoreImage")]
 		NSString Saturation { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputColorKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIInputColorKey", "+CoreImage")]
 		NSString Color { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputBrightnessKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIInputBrightnessKey", "+CoreImage")]
 		NSString Brightness { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputContrastKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIInputContrastKey", "+CoreImage")]
 		NSString Contrast { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputBiasKey.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIInputBiasKey", "+CoreImage")]
 		NSString BiasKey { get; }
 
+		/// <summary>A key indicating a value that is a weight matrix for a convolution filter.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIInputWeightsKey", "+CoreImage")]
 		NSString WeightsKey { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputMaskImageKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIInputMaskImageKey", "+CoreImage")]
 		NSString MaskImage { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputTargetImageKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIInputTargetImageKey", "+CoreImage")]
 		NSString TargetImage { get; }
 
+		/// <summary>Represents the value associated with the constant kCIInputExtentKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIInputExtentKey", "+CoreImage")]
 		NSString Extent { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIInputDepthImageKey", "+CoreImage")]
 		NSString DepthImage { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIInputDisparityImageKey", "+CoreImage")]
 		NSString DisparityImage { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIInputMatteImageKey", "+CoreImage")]
 		NSString MatteImage { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIInputAmountKey", "+CoreImage")]
 		NSString Amount { get; }
@@ -1370,114 +1485,242 @@ namespace CoreImage {
 	/// <summary>Constants used for CIFilter's attributes</summary>
 	[Static]
 	interface CIFilterAttributes {
+		/// <summary>Represents the value associated with the constant kCIAttributeFilterName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeFilterName", "+CoreImage")]
 		NSString FilterName { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeFilterDisplayName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeFilterDisplayName", "+CoreImage")]
 		NSString FilterDisplayName { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeDescription</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIAttributeDescription", "+CoreImage")]
 		NSString Description { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeReferenceDocumentation</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIAttributeReferenceDocumentation", "+CoreImage")]
 		NSString ReferenceDocumentation { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeFilterCategories</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeFilterCategories", "+CoreImage")]
 		NSString FilterCategories { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeClass</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeClass", "+CoreImage")]
 		NSString Class { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeType</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeType", "+CoreImage")]
 		NSString Type { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeMin</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeMin", "+CoreImage")]
 		NSString Min { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeMax</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeMax", "+CoreImage")]
 		NSString Max { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeSliderMin</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeSliderMin", "+CoreImage")]
 		NSString SliderMin { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeSliderMax</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeSliderMax", "+CoreImage")]
 		NSString SliderMax { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeDefault</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeDefault", "+CoreImage")]
 		NSString Default { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeIdentity</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeIdentity", "+CoreImage")]
 		NSString Identity { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeName", "+CoreImage")]
 		NSString Name { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeDisplayName</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeDisplayName", "+CoreImage")]
 		NSString DisplayName { get; }
 
+		/// <summary>Represents the value associated with the constant kCIUIParameterSet</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIUIParameterSet", "+CoreImage")]
 		NSString UIParameterSet { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeTypeTime</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeTypeTime", "+CoreImage")]
 		NSString TypeTime { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeTypeScalar</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeTypeScalar", "+CoreImage")]
 		NSString TypeScalar { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeTypeDistance</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeTypeDistance", "+CoreImage")]
 		NSString TypeDistance { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeTypeAngle</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeTypeAngle", "+CoreImage")]
 		NSString TypeAngle { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeTypeBoolean</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeTypeBoolean", "+CoreImage")]
 		NSString TypeBoolean { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeTypeInteger</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeTypeInteger", "+CoreImage")]
 		NSString TypeInteger { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeTypeCount</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeTypeCount", "+CoreImage")]
 		NSString TypeCount { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeTypePosition</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeTypePosition", "+CoreImage")]
 		NSString TypePosition { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeTypeOffset</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeTypeOffset", "+CoreImage")]
 		NSString TypeOffset { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeTypePosition3</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeTypePosition3", "+CoreImage")]
 		NSString TypePosition3 { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeTypeRectangle</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIAttributeTypeRectangle", "+CoreImage")]
 		NSString TypeRectangle { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeTypeOpaqueColor</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIAttributeTypeOpaqueColor", "+CoreImage")]
 		NSString TypeOpaqueColor { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeTypeGradient</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIAttributeTypeGradient", "+CoreImage")]
 		NSString TypeGradient { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeTypeImage</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIAttributeTypeImage", "+CoreImage")]
 		NSString TypeImage { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeTypeTransform</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIAttributeTypeTransform", "+CoreImage")]
 		NSString TypeTransform { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeTypeColor</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIAttributeTypeColor", "+CoreImage")]
 		NSString TypeColor { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeFilterAvailable_Mac</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIAttributeFilterAvailable_Mac", "+CoreImage")]
 		NSString Available_Mac { get; }
 
+		/// <summary>Represents the value associated with the constant kCIAttributeFilterAvailable_iOS</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIAttributeFilterAvailable_iOS", "+CoreImage")]
 		NSString Available_iOS { get; }
@@ -1486,66 +1729,149 @@ namespace CoreImage {
 	/// <summary>Constants used for CIFilter filtering facilities to find filters by category.</summary>
 	[Static]
 	interface CIFilterCategory {
+		/// <summary>Represents the value associated with the constant kCICategoryDistortionEffect</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCICategoryDistortionEffect", "+CoreImage")]
 		NSString DistortionEffect { get; }
 
+		/// <summary>Represents the value associated with the constant kCICategoryGeometryAdjustment</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCICategoryGeometryAdjustment", "+CoreImage")]
 		NSString GeometryAdjustment { get; }
 
+		/// <summary>Represents the value associated with the constant kCICategoryCompositeOperation</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCICategoryCompositeOperation", "+CoreImage")]
 		NSString CompositeOperation { get; }
 
+		/// <summary>Represents the value associated with the constant kCICategoryHalftoneEffect</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCICategoryHalftoneEffect", "+CoreImage")]
 		NSString HalftoneEffect { get; }
 
+		/// <summary>Represents the value associated with the constant kCICategoryColorAdjustment</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCICategoryColorAdjustment", "+CoreImage")]
 		NSString ColorAdjustment { get; }
 
+		/// <summary>Represents the value associated with the constant kCICategoryColorEffect</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCICategoryColorEffect", "+CoreImage")]
 		NSString ColorEffect { get; }
 
+		/// <summary>Represents the value associated with the constant kCICategoryTransition</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCICategoryTransition", "+CoreImage")]
 		NSString Transition { get; }
 
+		/// <summary>Represents the value associated with the constant kCICategoryTileEffect</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCICategoryTileEffect", "+CoreImage")]
 		NSString TileEffect { get; }
 
+		/// <summary>Represents the value associated with the constant kCICategoryGenerator</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCICategoryGenerator", "+CoreImage")]
 		NSString Generator { get; }
 
+		/// <summary>Represents the value associated with the constant kCICategoryReduction</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCICategoryReduction", "+CoreImage")]
 		NSString Reduction { get; }
 
+		/// <summary>Represents the value associated with the constant kCICategoryGradient</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCICategoryGradient", "+CoreImage")]
 		NSString Gradient { get; }
 
+		/// <summary>Represents the value associated with the constant kCICategoryStylize</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCICategoryStylize", "+CoreImage")]
 		NSString Stylize { get; }
 
+		/// <summary>Represents the value associated with the constant kCICategorySharpen</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCICategorySharpen", "+CoreImage")]
 		NSString Sharpen { get; }
 
+		/// <summary>Represents the value associated with the constant kCICategoryBlur</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCICategoryBlur", "+CoreImage")]
 		NSString Blur { get; }
 
+		/// <summary>Represents the value associated with the constant kCICategoryVideo</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCICategoryVideo", "+CoreImage")]
 		NSString Video { get; }
 
+		/// <summary>Represents the value associated with the constant kCICategoryStillImage</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCICategoryStillImage", "+CoreImage")]
 		NSString StillImage { get; }
 
+		/// <summary>Represents the value associated with the constant kCICategoryInterlaced</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCICategoryInterlaced", "+CoreImage")]
 		NSString Interlaced { get; }
 
+		/// <summary>Represents the value associated with the constant kCICategoryNonSquarePixels</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCICategoryNonSquarePixels", "+CoreImage")]
 		NSString NonSquarePixels { get; }
 
+		/// <summary>Represents the value associated with the constant kCICategoryHighDynamicRange</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCICategoryHighDynamicRange", "+CoreImage")]
 		NSString HighDynamicRange { get; }
 
+		/// <summary>Represents the value associated with the constant kCICategoryBuiltIn</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCICategoryBuiltIn", "+CoreImage")]
 		NSString BuiltIn { get; }
 
+		/// <summary>Represents the value associated with the constant kCICategoryFilterGenerator</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCICategoryFilterGenerator", "+CoreImage")]
 		NSString FilterGenerator { get; }
@@ -1585,15 +1911,27 @@ namespace CoreImage {
 	[NoTV]
 	[Static]
 	interface CIFilterApply {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIApplyOptionExtent", "+CoreImage")]
 		NSString OptionExtent { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIApplyOptionDefinition", "+CoreImage")]
 		NSString OptionDefinition { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIApplyOptionUserInfo", "+CoreImage")]
 		NSString OptionUserInfo { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIApplyOptionColorSpace", "+CoreImage")]
 		NSString OptionColorSpace { get; }
 	}
@@ -1636,6 +1974,9 @@ namespace CoreImage {
 		[Export ("removeExportedKey:")]
 		void RemoveExportedKey (string exportedKeyName);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("exportedKeys")]
 		NSDictionary ExportedKeys { get; }
 
@@ -1652,17 +1993,29 @@ namespace CoreImage {
 		bool Save (NSUrl toUrl, bool atomically);
 
 		//Detected properties
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("classAttributes")]
 		NSDictionary ClassAttributes { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS, NoMacCatalyst]
 		[Field ("kCIFilterGeneratorExportedKey", "+CoreImage")]
 		NSString ExportedKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS, NoMacCatalyst]
 		[Field ("kCIFilterGeneratorExportedKeyTargetObject", "+CoreImage")]
 		NSString ExportedKeyTargetObject { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS, NoMacCatalyst]
 		[Field ("kCIFilterGeneratorExportedKeyName", "+CoreImage")]
 		NSString ExportedKeyName { get; }
@@ -1700,6 +2053,9 @@ namespace CoreImage {
 		[Export ("intersectWithRect:")]
 		CIFilterShape Intersect (CGRect rectangle);
 
+		/// <summary>The rectangle that encloses the filter, in the working coordinate space.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("extent")]
 		CGRect Extent { get; }
 	}
@@ -1711,20 +2067,38 @@ namespace CoreImage {
 		// (https://bugzilla.xamarin.com/show_bug.cgi?id=60726)
 		// CGColorSpace ColorSpace { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		CoreGraphics.CGImageProperties Properties { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		bool ApplyOrientationProperty { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		bool NearestSampling { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		bool AuxiliaryDepth { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		bool AuxiliaryDisparity { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		bool AuxiliaryPortraitEffectsMatte { get; set; }
 
@@ -1982,6 +2356,11 @@ namespace CoreImage {
 		[Export ("imageWithColor:")]
 		CIImage ImageWithColor (CIColor color);
 
+		/// <summary>The empty image.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Static]
 		[Export ("emptyImage")]
 		CIImage EmptyImage { get; }
@@ -2142,121 +2521,221 @@ namespace CoreImage {
 		[Export ("imageByCroppingToRect:")]
 		CIImage ImageByCroppingToRect (CGRect r);
 
+		/// <summary>Returns the extent of the image.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Export ("extent")]
 		CGRect Extent { get; }
 
 		[Export ("properties"), Internal]
 		NSDictionary WeakProperties { get; }
 
+		/// <summary>Gets a collection of metadata for this <see cref="T:CoreImage.CIImage" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakProperties")]
 		CoreGraphics.CGImageProperties Properties { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("definition")]
 		CIFilterShape Definition { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIFormatRGBA16")]
 		int FormatRGBA16 { get; } /* CIFormat = int */
 
+		/// <summary>Represents the value associated with the constant kCIFormatARGB8</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>32-bit color in ARGB format.</remarks>
 		[Field ("kCIFormatARGB8")]
 		int FormatARGB8 { get; } /* CIFormat = int */
 
+		/// <summary>Represents the value associated with the constant kCIFormatRGBAh</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("kCIFormatRGBAh")]
 		int FormatRGBAh { get; } /* CIFormat = int */
 
+		/// <summary>Represents the value associated with the constant kCIFormatRGBAf</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIFormatRGBAf")]
 		int FormatRGBAf { get; } /* CIFormat = int */
 
+		/// <summary>Represents the value associated with the constant kCIFormatBGRA8</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("kCIFormatBGRA8")]
 		int FormatBGRA8 { get; } /* CIFormat = int */
 
+		/// <summary>Represents the value associated with the constant kCIFormatRGBA8</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[Field ("kCIFormatRGBA8")]
 		int FormatRGBA8 { get; } /* CIFormat = int */
 
+		/// <summary>Represents the value associated with the constant kCIFormatABGR8.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatABGR8")]
 		[MacCatalyst (13, 1)]
 		int FormatABGR8 { get; }
 
+		/// <summary>Represents the value associated with the constant kCIFormatA8.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatA8")]
 		[MacCatalyst (13, 1)]
 		int FormatA8 { get; }
 
+		/// <summary>Represents the value associated with the constant kCIFormatA16.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatA16")]
 		[MacCatalyst (13, 1)]
 		int FormatA16 { get; }
 
+		/// <summary>Represents the value associated with the constant kCIFormatAh.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatAh")]
 		[MacCatalyst (13, 1)]
 		int FormatAh { get; }
 
+		/// <summary>Represents the value associated with the constant kCIFormatAf.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatAf")]
 		[MacCatalyst (13, 1)]
 		int FormatAf { get; }
 
+		/// <summary>Represents the value associated with the constant kCIFormatR8.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatR8")]
 		[MacCatalyst (13, 1)]
 		int FormatR8 { get; }
 
+		/// <summary>Represents the value associated with the constant kCIFormatR16.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatR16")]
 		[MacCatalyst (13, 1)]
 		int FormatR16 { get; }
 
+		/// <summary>Represents the value associated with the constant kCIFormatRh.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatRh")]
 		[MacCatalyst (13, 1)]
 		int FormatRh { get; }
 
+		/// <summary>Represents the value associated with the constant kCIFormatRf.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatRf")]
 		[MacCatalyst (13, 1)]
 		int FormatRf { get; }
 
+		/// <summary>Represents the value associated with the constant kCIFormatRG8.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatRG8")]
 		[MacCatalyst (13, 1)]
 		int FormatRG8 { get; }
 
+		/// <summary>Represents the value associated with the constant kCIFormatRG16.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatRG16")]
 		[MacCatalyst (13, 1)]
 		int FormatRG16 { get; }
 
+		/// <summary>Represents the value associated with the constant kCIFormatRGh.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatRGh")]
 		[MacCatalyst (13, 1)]
 		int FormatRGh { get; }
 
+		/// <summary>Represents the value associated with the constant kCIFormatRGf.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIFormatRGf")]
 		[MacCatalyst (13, 1)]
 		int FormatRGf { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIFormatL8")]
 		int FormatL8 { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIFormatL16")]
 		int FormatL16 { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIFormatLh")]
 		int FormatLh { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIFormatLf")]
 		int FormatLf { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIFormatLA8")]
 		int FormatLA8 { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIFormatLA16")]
 		int FormatLA16 { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIFormatLAh")]
 		int FormatLAh { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIFormatLAf")]
 		int FormatLAf { get; }
@@ -2352,10 +2831,22 @@ namespace CoreImage {
 		[Field ("kCIImageAutoAdjustLevel"), Internal]
 		NSString AutoAdjustLevel { get; }
 
+		/// <summary>If not <see langword="null" />, the URL from which the image was loaded.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("url")]
 		NSUrl Url { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("colorSpace")]
 		CGColorSpace ColorSpace { get; }
@@ -2410,14 +2901,32 @@ namespace CoreImage {
 		[Export ("imageBySettingProperties:")]
 		CIImage CreateBySettingProperties (NSDictionary properties);
 
+		/// <summary>The image data, as a <see cref="T:CoreVideo.CVPixelBuffer" />.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("pixelBuffer")]
 		CVPixelBuffer PixelBuffer { get; }
 
+		/// <summary>Copies the <see cref="T:CoreImage.CIImage" /> into a new <see cref="T:CoreGraphics.CGImage" />.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("CGImage")]
 		CGImage CGImage { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("depthData")]
 		AVDepthData DepthData { get; }
@@ -2451,6 +2960,9 @@ namespace CoreImage {
 		bool Opaque { [Bind ("isOpaque")] get; }
 		// CIImage_AVPortraitEffectsMatte category
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("portraitEffectsMatte")]
 		AVPortraitEffectsMatte PortraitEffectsMatte { get; }
@@ -2729,7 +3241,13 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("CIImageProviderKeys")]
 	interface CIImageProviderOptions {
+		/// <summary>A <see cref="T:Foundation.NSNumber" /> that holds an int that is the length of a tile square.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSObject TileSize { get; set; }
+		/// <summary>User-supplied data.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSObject UserInfo { get; set; }
 	}
 
@@ -2807,6 +3325,9 @@ namespace CoreImage {
 		[Export ("kernelNamesFromMetalLibraryData:")]
 		string [] GetKernelNamesFromMetalLibrary (NSData data);
 
+		/// <summary>Gets the name of the <see cref="T:CoreImage.CIKernel" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("name")]
 		string Name { get; }
 
@@ -2910,9 +3431,15 @@ namespace CoreImage {
 		[Export ("initWithExtent:format:colorSpace:")]
 		NativeHandle Constructor (CGRect extent, CIFormat format, CGColorSpace colorSpace);
 
+		/// <summary>Gets the extent of the image that is replaced.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("extent")]
 		CGRect Extent { get; }
 
+		/// <summary>Gets the image format of the accumulator.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("format")]
 		int CIImageFormat { get; } /* CIFormat = int */
 
@@ -2923,6 +3450,9 @@ namespace CoreImage {
 		void Clear ();
 
 		//Detected properties
+		/// <summary>Gets or sets the accumulator contents.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("image")]
 		CIImage Image { get; set; }
 	}
@@ -2972,9 +3502,15 @@ namespace CoreImage {
 		[Internal, Export ("initWithImage:options:")]
 		NSObject Constructor (CIImage image, [NullAllowed] NSDictionary options);
 
+		/// <summary>The bounding shape and domain of definition of this <see cref="T:CoreImage.CISampler" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("definition")]
 		CIFilterShape Definition { get; }
 
+		/// <summary>The rectangle to which this <see cref="T:CoreImage.CISampler" /> applies.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("extent")]
 		CGRect Extent { get; }
 
@@ -3082,29 +3618,53 @@ namespace CoreImage {
 		[Export ("valueAtIndex:"), Internal]
 		nfloat ValueAtIndex (nint index);
 
+		/// <summary>Gets the number of items in this <see cref="T:CoreImage.CIVector" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("count")]
 		nint Count { get; }
 
+		/// <summary>Gets the first value in the vector.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("X")]
 		nfloat X { get; }
 
+		/// <summary>Gets the second value in the vector.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("Y")]
 		nfloat Y { get; }
 
+		/// <summary>Gets the third value in the vector.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("Z")]
 		nfloat Z { get; }
 
+		/// <summary>Gets the fourth value in the vector.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("W")]
 		nfloat W { get; }
 
+		/// <summary>Gets the point that is represented by (<see cref="P:CoreImage.CIVector.X" />,<see cref="P:CoreImage.CIVector.Y" />).</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("CGPointValue")]
 		CGPoint Point { get; }
 
+		/// <summary>Gets a rectangle whose X-coordinate, Y-coordinate, height, and width are given by the <see cref="P:CoreImage.CIVector.X" />, <see cref="P:CoreImage.CIVector.Y" />. <see cref="P:CoreImage.CIVector.Z" />, and <see cref="P:CoreImage.CIVector.W" /> properties, respectively. .</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("CGRectValue")]
 		CGRect Rectangle { get; }
 
+		/// <summary>Gets the affine transform that is represented by the first 6 elements of this <see cref="T:CoreImage.CIVector" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("CGAffineTransformValue")]
 		CGAffineTransform AffineTransform { get; }
@@ -3221,23 +3781,42 @@ namespace CoreImage {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CIFeature {
+		/// <summary>Gets the type of the feature.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("type", ArgumentSemantic.Retain)]
 		NSString Type { get; }
 
+		/// <summary>Gets the rectangle that surrounds the feature.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bounds", ArgumentSemantic.Assign)]
 		CGRect Bounds { get; }
 
+		/// <summary>Represents the value associated with the constant CIFeatureTypeFace</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CIFeatureTypeFace")]
 		NSString TypeFace { get; }
 
+		/// <summary>Represents the value associated with the constant CIFeatureTypeRectangle.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("CIFeatureTypeRectangle")]
 		NSString TypeRectangle { get; }
 
+		/// <summary>Represents the value associated with the constant CIFeatureTypeQRCode.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("CIFeatureTypeQRCode")]
 		NSString TypeQRCode { get; }
 
+		/// <summary>Represents the value associated with the constant CIFeatureTypeText.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("CIFeatureTypeText")]
 		NSString TypeText { get; }
@@ -3249,56 +3828,104 @@ namespace CoreImage {
 	[BaseType (typeof (CIFeature))]
 	[DisableDefaultCtor]
 	interface CIFaceFeature {
+		/// <summary>Gets a value that indicates whether the <see cref="P:CoreImage.CIFaceFeature.LeftEyePosition" /> property is set.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hasLeftEyePosition", ArgumentSemantic.Assign)]
 		bool HasLeftEyePosition { get; }
 
+		/// <summary>Gets the position of the left eye.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("leftEyePosition", ArgumentSemantic.Assign)]
 		CGPoint LeftEyePosition { get; }
 
+		/// <summary>Gets a value that indicates whether the <see cref="P:CoreImage.CIFaceFeature.RightEyePosition" /> property is set.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hasRightEyePosition", ArgumentSemantic.Assign)]
 		bool HasRightEyePosition { get; }
 
+		/// <summary>Gets the position of the right eye.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rightEyePosition", ArgumentSemantic.Assign)]
 		CGPoint RightEyePosition { get; }
 
+		/// <summary>Gets a value that indicates whether the <see cref="P:CoreImage.CIFaceFeature.MouthPosition" /> property is set.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hasMouthPosition", ArgumentSemantic.Assign)]
 		bool HasMouthPosition { get; }
 
+		/// <summary>Gets the position of the mouth.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("mouthPosition", ArgumentSemantic.Assign)]
 		CGPoint MouthPosition { get; }
 
+		/// <summary>Gets a value that indicates whether the <see cref="P:CoreImage.CIFaceFeature.TrackingId" /> property is set.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hasTrackingID", ArgumentSemantic.Assign)]
 		bool HasTrackingId { get; }
 
+		/// <summary>Gets the tracking ID.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("trackingID", ArgumentSemantic.Assign)]
 		int TrackingId { get; } /* int, not NSInteger */
 
+		/// <summary>Gets a value that indicates whether the <see cref="P:CoreImage.CIFaceFeature.TrackingFrameCount" /> property is set.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hasTrackingFrameCount", ArgumentSemantic.Assign)]
 		bool HasTrackingFrameCount { get; }
 
+		/// <summary>Gets the tracking frame count.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("trackingFrameCount", ArgumentSemantic.Assign)]
 		int TrackingFrameCount { get; } /* int, not NSInteger */
 
+		/// <summary>Gets the bounding image-space rectangle of the face.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("bounds", ArgumentSemantic.Assign)]
 		CGRect Bounds { get; }
 
+		/// <summary>Gets the counterclockwise in-plane rotation of the face, in radians. "0" represents a conventionally upright face.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("faceAngle", ArgumentSemantic.Assign)]
 		float FaceAngle { get; } /* float, not CGFloat */
 
+		/// <summary>Gets a value that indicates whether the <see cref="P:CoreImage.CIFaceFeature.FaceAngle" /> property is set.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("hasFaceAngle", ArgumentSemantic.Assign)]
 		bool HasFaceAngle { get; }
 
+		/// <summary>Gets a value that indicates whether the <see cref="P:CoreImage.CIFaceFeature.HasSmile" /> property is set.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("hasSmile", ArgumentSemantic.Assign)]
 		bool HasSmile { get; }
 
+		/// <summary>Gets a value that indicates whether the left eye is closed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("leftEyeClosed", ArgumentSemantic.Assign)]
 		bool LeftEyeClosed { get; }
 
+		/// <summary>Gets a value that indicates whether the left eye is closed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("rightEyeClosed", ArgumentSemantic.Assign)]
 		bool RightEyeClosed { get; }
@@ -3401,10 +4028,16 @@ namespace CoreImage {
 		[Export ("formatForInputAtIndex:")]
 		CIFormat GetFormat (int input);
 
+		/// <summary>The colorspace of the output image(s).</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("outputFormat")]
 		CIFormat OutputFormat { get; }
 
+		/// <summary>If <see langword="true" />, the system must synchronize inputs prior to calling the processing function.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("synchronizeInputs")]
 		bool SynchronizeInputs { get; }
@@ -3414,6 +4047,9 @@ namespace CoreImage {
 		[return: NullAllowed]
 		CIImage Apply (CGRect extent, [NullAllowed] CIImage [] inputs, [NullAllowed] NSDictionary<NSString, NSObject> args, out NSError error);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("outputIsOpaque")]
@@ -3447,6 +4083,10 @@ namespace CoreImage {
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
+		/// <summary>The background image to use.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>This is the background image used by the filter.</remarks>
 		[CoreImageFilterProperty ("inputBackgroundImage")]
 		CIImage BackgroundImage { get; set; }
 	}
@@ -3562,6 +4202,9 @@ namespace CoreImage {
 		float Count { get; set; }
 #endif
 
+		/// <summary>Gets or sets the region in the source image for which to produce a histogram.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputExtent")]
 		CIVector Extent { get; set; }
 
@@ -3652,6 +4295,9 @@ namespace CoreImage {
 	[Abstract]
 	[BaseType (typeof (CIFilter))]
 	interface CICodeGenerator {
+		/// <summary>Gets or sets the message to encode.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputMessage")]
 		NSData Message { get; set; }
 	}
@@ -3752,6 +4398,9 @@ namespace CoreImage {
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the radius of the effect.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputRadius")]
 		float Radius { get; set; }
 
@@ -3962,6 +4611,10 @@ namespace CoreImage {
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
+		/// <summary>The background image to use.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>This is the background image used by the filter.</remarks>
 		[CoreImageFilterProperty ("inputBackgroundImage")]
 		CIImage BackgroundImage { get; set; }
 	}
@@ -4092,6 +4745,9 @@ namespace CoreImage {
 	[BaseType (typeof (CIFilter))]
 	interface CIConstantColorGenerator {
 
+		/// <summary>Gets or sets the color to use.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputColor")]
 		CIColor Color { get; set; }
 	}
@@ -4108,9 +4764,15 @@ namespace CoreImage {
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the weights for the convolution.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputWeights")]
 		CIVector Weights { get; set; }
 
+		/// <summary>Gets or sets the bias of the convolution.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputBias")]
 		float Bias { get; set; }
 	}
@@ -4155,18 +4817,33 @@ namespace CoreImage {
 	[BaseType (typeof (CITransitionFilter))]
 	interface CICopyMachineTransition {
 
+		/// <summary>Gets or sets the color of the swipe.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputColor")]
 		CIColor Color { get; set; }
 
+		/// <summary>Gets or sets the width of the swipe.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputWidth")]
 		float Width { get; set; }
 
+		/// <summary>Gets or sets the opacity of the swipe.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputOpacity")]
 		float Opacity { get; set; }
 
+		/// <summary>Gets or sets the angle of the swipe.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputAngle")]
 		float Angle { get; set; }
 
+		/// <summary>Gets or sets the extent of the image to transform.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputExtent")]
 		CIVector Extent { get; set; }
 	}
@@ -4179,6 +4856,9 @@ namespace CoreImage {
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
+		/// <summary>Gets or sets the region that will remain after the image is cropped.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputRectangle")]
 		CIVector Rectangle { get; set; }
 	}
@@ -5718,6 +6398,9 @@ namespace CoreImage {
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
+		/// <summary>A vector whose values define the clamped rectangle within the <see cref="P:CoreImage.CIFilter.Image" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputExtent")]
 		CIVector Extent { get; set; }
 	}
@@ -5845,6 +6528,9 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIAreaMaximum))]
 	interface CIAreaMinMaxRed : CIAreaMinMaxRedProtocol {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputExtent")]
 		CIVector Extent { get; set; }
 	}
@@ -5855,6 +6541,9 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIImageGenerator {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputScaleFactor")]
 		float ScaleFactor { get; set; }
 	}
@@ -5910,6 +6599,9 @@ namespace CoreImage {
 	[Abstract]
 	[BaseType (typeof (CIFilter))]
 	interface CILinearBlur {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputRadius")]
 		float Radius { get; set; }
 	}
@@ -5941,9 +6633,15 @@ namespace CoreImage {
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputAperture")]
 		float Aperture { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputCalibrationData")]
 		AVCameraCalibrationData CalibrationData { get; set; }
 
@@ -5952,27 +6650,51 @@ namespace CoreImage {
 		// [CoreImageFilterProperty ("inputTuningParameters")]
 		// NSDictionary WeakTuningParameters { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputNosePositions")]
 		CIVector NosePositions { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputLumaNoiseScale")]
 		float LumaNoiseScale { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputChinPositions")]
 		CIVector ChinPositions { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputDisparityImage")]
 		CIImage DisparityImage { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputScaleFactor")]
 		float ScaleFactor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputRightEyePositions")]
 		CIVector RightEyePositions { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputLeftEyePositions")]
 		CIVector LeftEyePositions { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputFocusRect")]
 		CIVector FocusRect { get; set; }
 
@@ -6178,15 +6900,27 @@ namespace CoreImage {
 	[BaseType (typeof (CIBarcodeDescriptor))]
 	interface CIDataMatrixCodeDescriptor {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("errorCorrectedPayload")]
 		NSData ErrorCorrectedPayload { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rowCount")]
 		nint RowCount { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("columnCount")]
 		nint ColumnCount { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("eccVersion")]
 		CIDataMatrixCodeEccVersion EccVersion { get; }
 
@@ -6227,166 +6961,289 @@ namespace CoreImage {
 
 		// @interface BuiltIn (CIBlendKernel)
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("componentAdd", ArgumentSemantic.Strong)]
 		CIBlendKernel ComponentAdd { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("componentMultiply", ArgumentSemantic.Strong)]
 		CIBlendKernel ComponentMultiply { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("componentMin", ArgumentSemantic.Strong)]
 		CIBlendKernel ComponentMin { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("componentMax", ArgumentSemantic.Strong)]
 		CIBlendKernel ComponentMax { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("clear", ArgumentSemantic.Strong)]
 		CIBlendKernel Clear { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("source", ArgumentSemantic.Strong)]
 		CIBlendKernel Source { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("destination", ArgumentSemantic.Strong)]
 		CIBlendKernel Destination { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("sourceOver", ArgumentSemantic.Strong)]
 		CIBlendKernel SourceOver { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("destinationOver", ArgumentSemantic.Strong)]
 		CIBlendKernel DestinationOver { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("sourceIn", ArgumentSemantic.Strong)]
 		CIBlendKernel SourceIn { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("destinationIn", ArgumentSemantic.Strong)]
 		CIBlendKernel DestinationIn { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("sourceOut", ArgumentSemantic.Strong)]
 		CIBlendKernel SourceOut { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("destinationOut", ArgumentSemantic.Strong)]
 		CIBlendKernel DestinationOut { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("sourceAtop", ArgumentSemantic.Strong)]
 		CIBlendKernel SourceAtop { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("destinationAtop", ArgumentSemantic.Strong)]
 		CIBlendKernel DestinationAtop { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("exclusiveOr", ArgumentSemantic.Strong)]
 		CIBlendKernel ExclusiveOr { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("multiply", ArgumentSemantic.Strong)]
 		CIBlendKernel Multiply { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("screen", ArgumentSemantic.Strong)]
 		CIBlendKernel Screen { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("overlay", ArgumentSemantic.Strong)]
 		CIBlendKernel Overlay { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("darken", ArgumentSemantic.Strong)]
 		CIBlendKernel Darken { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("lighten", ArgumentSemantic.Strong)]
 		CIBlendKernel Lighten { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("colorDodge", ArgumentSemantic.Strong)]
 		CIBlendKernel ColorDodge { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("colorBurn", ArgumentSemantic.Strong)]
 		CIBlendKernel ColorBurn { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("hardLight", ArgumentSemantic.Strong)]
 		CIBlendKernel HardLight { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("softLight", ArgumentSemantic.Strong)]
 		CIBlendKernel SoftLight { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("difference", ArgumentSemantic.Strong)]
 		CIBlendKernel Difference { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("exclusion", ArgumentSemantic.Strong)]
 		CIBlendKernel Exclusion { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("hue", ArgumentSemantic.Strong)]
 		CIBlendKernel Hue { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("saturation", ArgumentSemantic.Strong)]
 		CIBlendKernel Saturation { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("color", ArgumentSemantic.Strong)]
 		CIBlendKernel Color { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("luminosity", ArgumentSemantic.Strong)]
 		CIBlendKernel Luminosity { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("subtract", ArgumentSemantic.Strong)]
 		CIBlendKernel Subtract { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("divide", ArgumentSemantic.Strong)]
 		CIBlendKernel Divide { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("linearBurn", ArgumentSemantic.Strong)]
 		CIBlendKernel LinearBurn { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("linearDodge", ArgumentSemantic.Strong)]
 		CIBlendKernel LinearDodge { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("vividLight", ArgumentSemantic.Strong)]
 		CIBlendKernel VividLight { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("linearLight", ArgumentSemantic.Strong)]
 		CIBlendKernel LinearLight { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("pinLight", ArgumentSemantic.Strong)]
 		CIBlendKernel PinLight { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("hardMix", ArgumentSemantic.Strong)]
 		CIBlendKernel HardMix { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("darkerColor", ArgumentSemantic.Strong)]
 		CIBlendKernel DarkerColor { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("lighterColor", ArgumentSemantic.Strong)]
 		CIBlendKernel LighterColor { get; }
@@ -6583,6 +7440,9 @@ namespace CoreImage {
 	[StrongDictionary ("CIImageRepresentationKeys")]
 	interface CIImageRepresentationOptions {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		float LossyCompressionQuality { get; set; }
 
 		AVDepthData AVDepthData { get; set; }
@@ -6594,6 +7454,9 @@ namespace CoreImage {
 		[MacCatalyst (13, 1)]
 		CIImage PortraitEffectsMatteImage { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		AVPortraitEffectsMatte AVPortraitEffectsMatte { get; set; }
 
@@ -6653,12 +7516,21 @@ namespace CoreImage {
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputGuideImage")]
 		CIImage GuideImage { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputEpsilon")]
 		float Epsilon { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputRadius")]
 		float Radius { get; set; }
 	}
@@ -6692,9 +7564,15 @@ namespace CoreImage {
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputAVCameraCalibrationData")]
 		AVCameraCalibrationData AVCameraCalibrationData { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputUseInverseLookUpTable")]
 		bool UseInverseLookUpTable { get; set; }
 	}
@@ -6707,6 +7585,9 @@ namespace CoreImage {
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputModel")]
 		MLModel Model { get; set; }
 

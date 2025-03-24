@@ -45,20 +45,30 @@ namespace CoreFoundation {
 	// The native constants are defined in usr/include/dispatch/queue.h, but since they're
 	// not in any enum, they're untyped.
 	public enum DispatchQueuePriority : int {
+		/// <summary>To be added.</summary>
 		High = 2,
+		/// <summary>To be added.</summary>
 		Default = 0,
+		/// <summary>To be added.</summary>
 		Low = -2,
+		/// <summary>To be added.</summary>
 		Background = Int16.MinValue,
 	}
 
 	// dispatch_qos_class_t is defined in usr/include/dispatch/queue.h, but redirects to qos_class_t
 	// the qos_class_t enum is defined in usr/include/sys/qos.h (typed as 'unsigned int')
 	public enum DispatchQualityOfService : uint {
+		/// <summary>To be added.</summary>
 		UserInteractive = 0x21,
+		/// <summary>To be added.</summary>
 		UserInitiated = 0x19,
+		/// <summary>To be added.</summary>
 		Default = 0x15,
+		/// <summary>To be added.</summary>
 		Utility = 0x11,
+		/// <summary>To be added.</summary>
 		Background = 0x09,
+		/// <summary>To be added.</summary>
 		Unspecified = 0x00,
 	}
 
@@ -104,6 +114,7 @@ namespace CoreFoundation {
 		{
 			// note: null is allowed because DISPATCH_TARGET_QUEUE_DEFAULT is defined as NULL (dispatch/queue.h)
 			IntPtr q = queue.GetHandle ();
+			GC.KeepAlive (queue);
 			dispatch_set_target_queue (Handle, q);
 		}
 
@@ -172,18 +183,28 @@ namespace CoreFoundation {
 		public DispatchQueue (string label, Attributes attributes, DispatchQueue? target = null)
 			: base (dispatch_queue_create_with_target (label, attributes?.Create () ?? IntPtr.Zero, target.GetHandle ()), true)
 		{
+			GC.KeepAlive (target);
 		}
 
 		//
 		// Properties and methods
 		//
 
+		/// <summary>Returns the label for this DispatchQueue.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>This is the same name that was provided when the queue was constructed</remarks>
 		public string? Label {
 			get {
 				return Marshal.PtrToStringAnsi (dispatch_queue_get_label (GetCheckedHandle ()));
 			}
 		}
 
+		/// <summary>Label for the current queue.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -213,6 +234,10 @@ namespace CoreFoundation {
 		[DllImport (Constants.libcLibrary)]
 		extern unsafe static void dispatch_apply_f (IntPtr iterations, IntPtr queue, IntPtr ctx, delegate* unmanaged<IntPtr, IntPtr, void> dispatch);
 
+		/// <summary>User defined context information attachech to a DispatchQueue.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>You can use the Context property on a DispatchQueue to store state that your application might want to associate with it.</remarks>
 		public IntPtr Context {
 			get {
 				return dispatch_get_context (GetCheckedHandle ());
@@ -222,6 +247,11 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>Developers should not use this deprecated property. </summary>
+		///         <value>The current dispatch queue if invoked from code that
+		///         was queued into a DispatchQueue, otherwise it returns the same
+		///         queue as <see cref="P:CoreFoundation.DispatchQueue.MainQueue" />.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -244,6 +274,11 @@ namespace CoreFoundation {
 			return new DispatchQueue (dispatch_get_global_queue ((nint) (int) service, 0), false);
 		}
 
+		/// <summary>Returns the default global queue, which is one of the built-in queues at the default priority.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static DispatchQueue DefaultGlobalQueue {
 			get {
 				return new DispatchQueue (dispatch_get_global_queue ((nint) (int) DispatchQueuePriority.Default, 0), false);
@@ -252,6 +287,17 @@ namespace CoreFoundation {
 
 		static IntPtr main_q;
 
+		/// <summary>Returns the main global queue.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///
+		/// 	  The dispatch framework provides a default serial queue for
+		/// 	  the application to use.  If you are using this on Xamarin.Mac Framework
+		/// 	  without using AppKit, you must invoke the MainIteration
+		/// 	  method to run the main dispatch queue.
+		///
+		/// 	</remarks>
 		public static DispatchQueue MainQueue {
 			get {
 				if (main_q == IntPtr.Zero) {
@@ -344,6 +390,7 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (block));
 
 			dispatch_async (GetCheckedHandle (), block.GetCheckedHandle ());
+			GC.KeepAlive (block);
 		}
 
 		public void DispatchSync (Action action)
@@ -362,6 +409,7 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (block));
 
 			dispatch_sync (GetCheckedHandle (), block.GetCheckedHandle ());
+			GC.KeepAlive (block);
 		}
 
 		public void DispatchBarrierAsync (Action action)
@@ -380,6 +428,7 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (block));
 
 			dispatch_barrier_async (GetCheckedHandle (), block.GetCheckedHandle ());
+			GC.KeepAlive (block);
 		}
 
 		public void DispatchBarrierSync (Action action)
@@ -398,6 +447,7 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (block));
 
 			dispatch_barrier_sync (GetCheckedHandle (), block.GetCheckedHandle ());
+			GC.KeepAlive (block);
 		}
 
 		public void DispatchAfter (DispatchTime when, Action action)
@@ -415,6 +465,7 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (block));
 
 			dispatch_after (when.Nanoseconds, GetCheckedHandle (), block.GetCheckedHandle ());
+			GC.KeepAlive (block);
 		}
 
 		public void Submit (Action<int> action, long times)
@@ -451,6 +502,9 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -562,26 +616,41 @@ namespace CoreFoundation {
 #endif
 
 		public class Attributes {
+			/// <summary>To be added.</summary>
+			///         <value>To be added.</value>
+			///         <remarks>To be added.</remarks>
 			public bool Concurrent { get; set; }
 
+			/// <summary>To be added.</summary>
+			///         <value>To be added.</value>
+			///         <remarks>To be added.</remarks>
 			[SupportedOSPlatform ("macos")]
 			[SupportedOSPlatform ("maccatalyst")]
 			[SupportedOSPlatform ("ios")]
 			[SupportedOSPlatform ("tvos")]
 			public bool IsInitiallyInactive { get; set; }
 
+			/// <summary>To be added.</summary>
+			///         <value>To be added.</value>
+			///         <remarks>To be added.</remarks>
 			[SupportedOSPlatform ("macos")]
 			[SupportedOSPlatform ("maccatalyst")]
 			[SupportedOSPlatform ("ios")]
 			[SupportedOSPlatform ("tvos")]
 			public AutoreleaseFrequency? AutoreleaseFrequency { get; set; }
 
+			/// <summary>To be added.</summary>
+			///         <value>To be added.</value>
+			///         <remarks>To be added.</remarks>
 			[SupportedOSPlatform ("macos")]
 			[SupportedOSPlatform ("ios")]
 			[SupportedOSPlatform ("tvos")]
 			[SupportedOSPlatform ("maccatalyst")]
 			public int RelativePriority { get; set; }
 
+			/// <summary>To be added.</summary>
+			///         <value>To be added.</value>
+			///         <remarks>To be added.</remarks>
 			[SupportedOSPlatform ("macos")]
 			[SupportedOSPlatform ("ios")]
 			[SupportedOSPlatform ("tvos")]
@@ -632,8 +701,11 @@ namespace CoreFoundation {
 		[Native]
 		public enum AutoreleaseFrequency : ulong /* unsigned long */
 		{
+			/// <summary>To be added.</summary>
 			Inherit = 0,
+			/// <summary>To be added.</summary>
 			WorkItem = 1,
+			/// <summary>To be added.</summary>
 			Never = 2,
 		}
 #endif // !COREBUILD
@@ -651,6 +723,9 @@ namespace CoreFoundation {
 		///         <remarks>
 		///         </remarks>
 		public static readonly DispatchTime Now = new DispatchTime ();
+		/// <summary>Represents infinity time.</summary>
+		///         <remarks>
+		///         </remarks>
 		public static readonly DispatchTime Forever = new DispatchTime (ulong.MaxValue);
 
 		public DispatchTime (ulong nanoseconds)
@@ -670,8 +745,18 @@ namespace CoreFoundation {
 			Nanoseconds = dispatch_time (when.Nanoseconds, delta.Ticks * 100);
 		}
 
+		/// <summary>The total number of nanoseconds represented by this instance.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public ulong Nanoseconds { get; private set; }
 
+		/// <summary>Returns a milestone relative to a fixed point in time using the wall clock.</summary>
+		///         <value>The wall time.</value>
+		///         <remarks>
+		///           <para />
+		///         </remarks>
 		public DispatchTime WallTime {
 			get {
 				// This gives us access to setting the time to _dispatch_get_nanoseconds.
@@ -724,6 +809,7 @@ namespace CoreFoundation {
 
 			unsafe {
 				dispatch_group_async_f (GetCheckedHandle (), queue.Handle, (IntPtr) GCHandle.Alloc (Tuple.Create (action, queue)), &DispatchQueue.static_dispatcher_to_managed);
+				GC.KeepAlive (queue);
 			}
 		}
 
@@ -734,6 +820,8 @@ namespace CoreFoundation {
 			if (block is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (block));
 			dispatch_group_notify (GetCheckedHandle (), queue.Handle, block.GetCheckedHandle ());
+			GC.KeepAlive (queue);
+			GC.KeepAlive (block);
 		}
 
 		public void Notify (DispatchQueue queue, Action action)
@@ -744,6 +832,7 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (action));
 			unsafe {
 				dispatch_group_notify_f (GetCheckedHandle (), queue.Handle, (IntPtr) GCHandle.Alloc (Tuple.Create (action, queue)), &DispatchQueue.static_dispatcher_to_managed);
+				GC.KeepAlive (queue);
 			}
 		}
 

@@ -39,10 +39,25 @@ namespace CoreGraphics {
 
 	public partial class CGPDFPageInfo {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGRect? MediaBox { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGRect? CropBox { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGRect? BleedBox { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGRect? TrimBox { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGRect? ArtBox { get; set; }
 
 		static void Add (NSMutableDictionary dict, IntPtr key, CGRect? val)
@@ -72,16 +87,49 @@ namespace CoreGraphics {
 
 	public partial class CGPDFInfo : CGPDFPageInfo {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Title { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Author { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Subject { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string []? Keywords { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Creator { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? OwnerPassword { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? UserPassword { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int? EncryptionKeyLength { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? AllowsPrinting { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? AllowsCopying { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGPDFAccessPermissions? AccessPermissions { get; set; }
 		//public NSDictionary OutputIntent { get; set; }
 #if NET
@@ -162,8 +210,10 @@ namespace CoreGraphics {
 
 		unsafe static IntPtr Create (CGDataConsumer? dataConsumer, CGRect* mediaBox, CGPDFInfo? info)
 		{
-			using (var dict = info?.ToDictionary ())
-				return CGPDFContextCreate (dataConsumer.GetHandle (), mediaBox, dict.GetHandle ());
+			using var dict = info?.ToDictionary ();
+			IntPtr result = CGPDFContextCreate (dataConsumer.GetHandle (), mediaBox, dict.GetHandle ());
+			GC.KeepAlive (dataConsumer);
+			return result;
 		}
 
 		unsafe CGContextPDF (CGDataConsumer? dataConsumer, CGRect* mediaBox, CGPDFInfo? info)
@@ -193,8 +243,10 @@ namespace CoreGraphics {
 
 		unsafe static IntPtr Create (NSUrl? url, CGRect* mediaBox, CGPDFInfo? info)
 		{
-			using (var dict = info?.ToDictionary ())
-				return CGPDFContextCreateWithURL (url.GetHandle (), mediaBox, dict.GetHandle ());
+			using var dict = info?.ToDictionary ();
+			IntPtr result = CGPDFContextCreateWithURL (url.GetHandle (), mediaBox, dict.GetHandle ());
+			GC.KeepAlive (url);
+			return result;
 		}
 
 		unsafe CGContextPDF (NSUrl? url, CGRect* mediaBox, CGPDFInfo? info)
@@ -258,6 +310,7 @@ namespace CoreGraphics {
 			if (data is null)
 				return;
 			CGPDFContextAddDocumentMetadata (Handle, data.Handle);
+			GC.KeepAlive (data);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -268,6 +321,7 @@ namespace CoreGraphics {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 			CGPDFContextSetURLForRect (Handle, url.Handle, region);
+			GC.KeepAlive (url);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -326,6 +380,7 @@ namespace CoreGraphics {
 		public void BeginTag (CGPdfTagType tagType, NSDictionary tagProperties)
 		{
 			CGPDFContextBeginTag (Handle, tagType, tagProperties.GetHandle ());
+			GC.KeepAlive (tagProperties);
 		}
 
 #if NET
@@ -341,6 +396,7 @@ namespace CoreGraphics {
 		{
 			var d = tagProperties?.Dictionary;
 			CGPDFContextBeginTag (Handle, tagType, d.GetHandle ());
+			GC.KeepAlive (d);
 		}
 
 #if NET
@@ -391,6 +447,7 @@ namespace CoreGraphics {
 		public void SetParentTree (CGPDFDictionary parentTreeDictionary)
 		{
 			CGPDFContextSetParentTree (GetCheckedHandle (), parentTreeDictionary.GetNonNullHandle (nameof (parentTreeDictionary)));
+			GC.KeepAlive (parentTreeDictionary);
 		}
 
 #if NET
@@ -415,6 +472,7 @@ namespace CoreGraphics {
 		public void SetIdTree (CGPDFDictionary idTreeDictionary)
 		{
 			CGPDFContextSetIDTree (GetCheckedHandle (), idTreeDictionary.GetNonNullHandle (nameof (idTreeDictionary)));
+			GC.KeepAlive (idTreeDictionary);
 		}
 
 #if NET
@@ -439,6 +497,7 @@ namespace CoreGraphics {
 		public void SetPageTagStructureTree (NSDictionary pageTagStructureTreeDictionary)
 		{
 			CGPDFContextSetPageTagStructureTree (GetCheckedHandle (), pageTagStructureTreeDictionary.GetNonNullHandle (nameof (pageTagStructureTreeDictionary)));
+			GC.KeepAlive (pageTagStructureTreeDictionary);
 		}
 
 		protected override void Dispose (bool disposing)

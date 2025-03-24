@@ -31,12 +31,10 @@ using ObjCRuntime;
 
 namespace AVFoundation {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVBeatRange {
 		/// <summary>To be added.</summary>

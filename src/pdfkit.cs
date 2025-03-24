@@ -2635,11 +2635,17 @@ namespace PdfKit {
 		[Export ("thumbnailSize")]
 		CGSize ThumbnailSize { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("layoutMode")]
 		PdfThumbnailLayoutMode LayoutMode { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("contentInset")]
@@ -2718,9 +2724,18 @@ namespace PdfKit {
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
+		/// <summary>Gets or sets the document to display.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("document"), NullAllowed]
 		PdfDocument Document { get; set; }
 
+		/// <summary>Gets a Boolean value that tells whether the view can navigate to the first page.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("canGoToFirstPage")]
 		bool CanGoToFirstPage { get; }
 
@@ -2728,36 +2743,54 @@ namespace PdfKit {
 		[Export ("goToFirstPage:")]
 		void GoToFirstPage ([NullAllowed] NSObject sender);
 
+		/// <summary>Gets a Boolean value that tells whether the view can navigate to the last page.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("canGoToLastPage")]
 		bool CanGoToLastPage { get; }
 
 		[Export ("goToLastPage:")]
 		void GoToLastPage ([NullAllowed] NSObject sender);
 
+		/// <summary>Gets a Boolean value that tells whether the view can navigate to the next page.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("canGoToNextPage")]
 		bool CanGoToNextPage { get; }
 
 		[Export ("goToNextPage:")]
 		void GoToNextPage ([NullAllowed] NSObject sender);
 
+		/// <summary>Gets a Boolean value that tells whether the view can navigate to the previous page.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("canGoToPreviousPage")]
 		bool CanGoToPreviousPage { get; }
 
 		[Export ("goToPreviousPage:")]
 		void GoToPreviousPage ([NullAllowed] NSObject sender);
 
+		/// <summary>Gets a Boolean value that tells whether the view can navigate back one page.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("canGoBack")]
 		bool CanGoBack { get; }
 
 		[Export ("goBack:")]
 		void GoBack ([NullAllowed] NSObject sender);
 
+		/// <summary>Gets a Boolean value that tells whether the view can navigate forward one page.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("canGoForward")]
 		bool CanGoForward { get; }
 
 		[Export ("goForward:")]
 		void GoForward ([NullAllowed] NSObject sender);
 
+		/// <summary>Gets the currently displayed page.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("currentPage")]
 		[NullAllowed]
 		PdfPage CurrentPage { get; }
@@ -2765,6 +2798,9 @@ namespace PdfKit {
 		[Export ("goToPage:")]
 		void GoToPage (PdfPage page);
 
+		/// <summary>Gets the currently displayed location.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("currentDestination")]
 		[NullAllowed]
 		PdfDestination CurrentDestination { get; }
@@ -2778,30 +2814,54 @@ namespace PdfKit {
 		[Export ("goToRect:onPage:")]
 		void GoToRectangle (CGRect rect, PdfPage page);
 
+		/// <summary>Gets or sets the display mode.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displayMode")]
 		PdfDisplayMode DisplayMode { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("displayDirection")]
 		PdfDisplayDirection DisplayDirection { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether page breaks will be displayed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displaysPageBreaks")]
 		bool DisplaysPageBreaks { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("pageBreakMargins")]
 		NSEdgeInsets PageBreakMargins { get; set; }
 
+		/// <summary>Gets or sets the display box style.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displayBox")]
 		PdfDisplayBox DisplayBox { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the first page is displayed as a book cover for two-up or two-up continuous display.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displaysAsBook")]
 		bool DisplaysAsBook { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("displaysRTL")]
 		bool DisplaysRtl { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[NoMacCatalyst]
@@ -2809,6 +2869,9 @@ namespace PdfKit {
 		[Export ("shouldAntiAlias")]
 		bool ShouldAntiAlias { get; set; }
 
+		/// <summary>Developers should not use this deprecated property. </summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[NoMacCatalyst]
@@ -2823,12 +2886,21 @@ namespace PdfKit {
 		[Export ("takeBackgroundColorFrom:")]
 		void TakeBackgroundColor (NSObject sender);
 
+		/// <summary>Gets or sets the background color for the view.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("backgroundColor")]
 		NSColor BackgroundColor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("interpolationQuality", ArgumentSemantic.Assign)]
 		PdfInterpolationQuality InterpolationQuality { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("pageShadowsEnabled")]
 		bool PageShadowsEnabled { get; [Bind ("enablePageShadows:")] set; }
@@ -2838,24 +2910,50 @@ namespace PdfKit {
 		[Export ("usePageViewController:withViewOptions:")]
 		void UsePageViewController (bool enable, [NullAllowed] NSDictionary viewOptions);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("isUsingPageViewController")]
 		bool IsUsingPageViewController { get; }
 
+		/// <summary>An object that can respond to the delegate protocol for this type</summary>
+		///         <value>The instance that will respond to events and data requests.</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+		///         </remarks>
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the PdfKit.IPdfViewDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the PdfKit.IPdfViewDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IPdfViewDelegate Delegate { get; set; }
 
+		/// <summary>Gets or sets the view scale factor.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleFactor")]
 		nfloat ScaleFactor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("minScaleFactor")]
 		nfloat MinScaleFactor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("maxScaleFactor")]
 		nfloat MaxScaleFactor { get; set; }
@@ -2863,18 +2961,30 @@ namespace PdfKit {
 		[Export ("zoomIn:")]
 		void ZoomIn ([NullAllowed] NSObject sender);
 
+		/// <summary>Gets a Boolean value that tells whether the view can zoom in.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("canZoomIn")]
 		bool CanZoomIn { get; }
 
 		[Export ("zoomOut:")]
 		void ZoomOut ([NullAllowed] NSObject sender);
 
+		/// <summary>Gets a Boolean value that tells whether the view can zoom out.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("canZoomOut")]
 		bool CanZoomOut { get; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the pages of the PDF autoscale to fit the view.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("autoScales")]
 		bool AutoScales { get; set; }
 
+		/// <summary>Gets the scale factor that would fit the current PDF page(s) in the view.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("scaleFactorForSizeToFit")]
 		nfloat ScaleFactorForSizeToFit { get; }
@@ -2895,6 +3005,9 @@ namespace PdfKit {
 		[Export ("performAction:")]
 		void PerformAction (PdfAction action);
 
+		/// <summary>Gets or sets the current selection.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("currentSelection")]
 		[NullAllowed]
 		PdfSelection CurrentSelection { get; set; }
@@ -2911,6 +3024,9 @@ namespace PdfKit {
 		[Export ("scrollSelectionToVisible:")]
 		void ScrollSelectionToVisible ([NullAllowed] NSObject sender);
 
+		/// <summary>Gets or sets the currently highlighted selections.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("highlightedSelections")]
 		[NullAllowed]
 		PdfSelection [] HighlightedSelections { get; set; }
@@ -2977,6 +3093,9 @@ namespace PdfKit {
 		[Export ("convertRect:fromPage:")]
 		CGRect ConvertRectangleFromPage (CGRect rect, PdfPage page);
 
+		/// <summary>Gets the innermost view.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("documentView")]
 		[NullAllowed]
 		NSView DocumentView { get; }
@@ -2990,6 +3109,9 @@ namespace PdfKit {
 		[Export ("rowSizeForPage:")]
 		CGSize RowSize (PdfPage page);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
 		[NoMacCatalyst]
@@ -2997,9 +3119,15 @@ namespace PdfKit {
 		[Export ("allowsDragging")]
 		bool AllowsDragging { get; set; }
 
+		/// <summary>Returns the currently visible pages.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("visiblePages")]
 		PdfPage [] VisiblePages { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 15, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0)]
 		[Deprecated (PlatformName.iOS, 18, 0)]
@@ -3007,54 +3135,69 @@ namespace PdfKit {
 		[Export ("enableDataDetectors")]
 		bool EnableDataDetectors { get; set; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.ChangedHistoryNotification']/*" />
 		[Field ("PDFViewChangedHistoryNotification", "+PDFKit")]
 		[Notification]
 		NSString ChangedHistoryNotification { get; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.DocumentChangedNotification']/*" />
 		[Field ("PDFViewDocumentChangedNotification", "+PDFKit")]
 		[Notification]
 		NSString DocumentChangedNotification { get; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.PageChangedNotification']/*" />
 		[Field ("PDFViewPageChangedNotification", "+PDFKit")]
 		[Notification]
 		NSString PageChangedNotification { get; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.ScaleChangedNotification']/*" />
 		[Field ("PDFViewScaleChangedNotification", "+PDFKit")]
 		[Notification]
 		NSString ScaleChangedNotification { get; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.AnnotationHitNotification']/*" />
 		[Field ("PDFViewAnnotationHitNotification", "+PDFKit")]
 		[Notification (typeof (PdfViewAnnotationHitEventArgs))]
 		NSString AnnotationHitNotification { get; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.CopyPermissionNotification']/*" />
 		[Field ("PDFViewCopyPermissionNotification", "+PDFKit")]
 		[Notification]
 		NSString CopyPermissionNotification { get; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.PrintPermissionNotification']/*" />
 		[Field ("PDFViewPrintPermissionNotification", "+PDFKit")]
 		[Notification]
 		NSString PrintPermissionNotification { get; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.AnnotationWillHitNotification']/*" />
 		[Field ("PDFViewAnnotationWillHitNotification", "+PDFKit")]
 		[Notification]
 		NSString AnnotationWillHitNotification { get; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.SelectionChangedNotification']/*" />
 		[Field ("PDFViewSelectionChangedNotification", "+PDFKit")]
 		[Notification]
 		NSString SelectionChangedNotification { get; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.DisplayModeChangedNotification']/*" />
 		[Field ("PDFViewDisplayModeChangedNotification", "+PDFKit")]
 		[Notification]
 		NSString DisplayModeChangedNotification { get; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.DisplayBoxChangedNotification']/*" />
 		[Field ("PDFViewDisplayBoxChangedNotification", "+PDFKit")]
 		[Notification]
 		NSString DisplayBoxChangedNotification { get; }
 
+		/// <include file="../docs/api/PdfKit/PdfView.xml" path="/Documentation/Docs[@DocId='P:PdfKit.PdfView.VisiblePagesChangedNotification']/*" />
 		[Field ("PDFViewVisiblePagesChangedNotification", "+PDFKit")]
 		[Notification]
 		NSString VisiblePagesChangedNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]

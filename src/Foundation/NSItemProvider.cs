@@ -39,8 +39,10 @@ namespace Foundation {
 		{
 			return LoadObject (new Class (typeof (T)), (rv, err) => {
 				var obj = rv as T;
-				if (obj is null && rv is not null)
+				if (obj is null && rv is not null) {
 					obj = Runtime.ConstructNSObject<T> (rv.Handle);
+					GC.KeepAlive (rv);
+				}
 				completionHandler (obj, err);
 			});
 		}

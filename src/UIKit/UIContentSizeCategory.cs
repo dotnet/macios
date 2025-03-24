@@ -30,7 +30,10 @@ namespace UIKit {
 			if (c2 is null)
 				throw new ArgumentException ($"Unknown 'UIContentSizeCategory' value", nameof (category2));
 
-			return (NSComparisonResult) (long) UIContentSizeCategoryCompareToCategory (c1.Handle, c2.Handle);
+			NSComparisonResult result = (NSComparisonResult) (long) UIContentSizeCategoryCompareToCategory (c1.Handle, c2.Handle);
+			GC.KeepAlive (c1);
+			GC.KeepAlive (c2);
+			return result;
 		}
 
 #if NET
@@ -52,7 +55,9 @@ namespace UIKit {
 			if (c1 is null)
 				throw new ArgumentException ($"Unknown 'UIContentSizeCategory' value");
 
-			return UIContentSizeCategoryIsAccessibilityCategory (c1.Handle) != 0;
+			bool result = UIContentSizeCategoryIsAccessibilityCategory (c1.Handle) != 0;
+			GC.KeepAlive (c1);
+			return result;
 		}
 	}
 }

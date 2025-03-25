@@ -147,6 +147,7 @@ namespace MonoTests.System.Net.Http {
 			if (!completed)
 				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
 			var intermittentFailures = new string [] {
+				"500 Internal Server Error",
 				"502 Bad Gateway",
 				"503 Service Temporarily Unavailable",
 				"504 Gateway Time-out",

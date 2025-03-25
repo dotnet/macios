@@ -466,6 +466,12 @@ namespace GeneratorTests {
 		}
 
 		[Test]
+		public void GenericNSObjectParameter ()
+		{
+			BuildFile (Profile.iOS, "generic-type-nsobject.cs");
+		}
+
+		[Test]
 		public void BindAsTests ()
 		{
 			BuildFile (Profile.iOS, "bindastests.cs");

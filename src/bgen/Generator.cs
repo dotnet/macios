@@ -3382,7 +3382,7 @@ public partial class Generator : IMemberGatherer {
 			var needs_null_check = ParameterNeedsNullCheck (pi, mi, propInfo);
 			var cap = propInfo?.SetMethod == mi ? (ICustomAttributeProvider) propInfo : (ICustomAttributeProvider) pi;
 			var bind_as = GetBindAsAttribute (cap);
-			var pit = bind_as is null ? pi.ParameterType : bind_as.Type;
+			var pit = pi.GetBindingType (mi, bind_as);
 			if (TypeManager.IsWrappedType (pit) || TypeCache.INativeObject.IsAssignableFrom (pit)) {
 				if (needs_null_check && !null_allowed_override) {
 					print ($"var {safe_name}__handle__ = {safe_name}!.GetNonNullHandle (nameof ({safe_name}));");
@@ -3402,7 +3402,7 @@ public partial class Generator : IMemberGatherer {
 		foreach (var pi in mi.GetParameters ()) {
 			var cap = propInfo?.SetMethod == mi ? (ICustomAttributeProvider) propInfo : (ICustomAttributeProvider) pi;
 			var bind_as = GetBindAsAttribute (cap);
-			var pit = bind_as is null ? pi.ParameterType : bind_as.Type;
+			var pit = pi.GetBindingType (mi, bind_as);
 			if (TypeManager.IsWrappedType (pit) || TypeCache.INativeObject.IsAssignableFrom (pit)) {
 				print ($"GC.KeepAlive ({pi.Name.GetSafeParamName ()});");
 			}

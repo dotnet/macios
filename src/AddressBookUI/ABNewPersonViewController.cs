@@ -137,6 +137,8 @@ namespace AddressBookUI {
 				h (this, e);
 		}
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		public event EventHandler<ABNewPersonCompleteEventArgs> NewPersonComplete {
 			add { EnsureEventDelegate ().newPersonComplete += value; }
 			remove { EnsureEventDelegate ().newPersonComplete -= value; }

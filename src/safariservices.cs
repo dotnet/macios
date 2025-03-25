@@ -78,7 +78,12 @@ namespace SafariServices {
 		///         </param>
 		///         <summary>Relaods the specified content blocker and runs a completion handler when the operation completes.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="identifier">To be added.</param>
+			<summary>Relaods the specified content blocker and runs a completion handler when the operation completes.</summary>
+			<returns>A task that represents the asynchronous ReloadContentBlocker operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Static, Export ("reloadContentBlockerWithIdentifier:completionHandler:")]
 		void ReloadContentBlocker (string identifier, [NullAllowed] Action<NSError> completionHandler);
 
@@ -88,7 +93,17 @@ namespace SafariServices {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 4)]
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="identifier">To be added.</param>
+			<summary>Asynchronously gets the state of the specified content blocker.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous GetStateOfContentBlocker operation.  The value of the TResult parameter is of type System.Action&lt;SafariServices.SFContentBlockerState,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The GetStateOfContentBlockerAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("getStateOfContentBlockerWithIdentifier:completionHandler:")]
 		void GetStateOfContentBlocker (string identifier, Action<SFContentBlockerState, NSError> completionHandler);
 	}
@@ -416,7 +431,12 @@ namespace SafariServices {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="url">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("openWindowWithURL:completionHandler:")]
 		void OpenWindow (NSUrl url, [NullAllowed] Action<SFSafariWindow> completionHandler);
 
@@ -442,7 +462,14 @@ namespace SafariServices {
 		///         <remarks>To be added.</remarks>
 		[Advice ("Unavailable to extensions.")]
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="messageName">To be added.</param>
+			<param name="identifier">To be added.</param>
+			<param name="userInfo">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("dispatchMessageWithName:toExtensionWithIdentifier:userInfo:completionHandler:")]
 		void DispatchMessage (string messageName, string identifier, [NullAllowed] NSDictionary<NSString, NSObject> userInfo, [NullAllowed] Action<NSError> completionHandler);
 
@@ -680,7 +707,13 @@ namespace SafariServices {
 		///         <param name="completionHandler">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[Async]
+		[Async (XmlDocs = """
+			<param name="url">To be added.</param>
+			<param name="activateTab">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("openTabWithURL:makeActiveIfPossible:completionHandler:")]
 		void OpenTab (NSUrl url, bool activateTab, [NullAllowed] Action<SFSafariTab> completionHandler);
 

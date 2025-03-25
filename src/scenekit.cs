@@ -3766,7 +3766,14 @@ namespace SceneKit {
 
 		[Abstract]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="objects">The objects to prepare.</param>
+			<summary>Prepares the provided objects for rendering on a background thread.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous Prepare operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("prepareObjects:withCompletionHandler:")]
 		void Prepare (NSObject [] objects, [NullAllowed] Action<bool> completionHandler);
 
@@ -3774,7 +3781,17 @@ namespace SceneKit {
 		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
 #endif
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="scene">The scene to present.</param>
+			<param name="transition">The transistion to use to present the scene.</param>
+			<param name="pointOfView">The point of view to which to present the scene.</param>
+			<summary>Displays the provided scene.</summary>
+			<returns>A task that represents the asynchronous PresentScene operation</returns>
+			<remarks>
+			          <para copied="true">The PresentSceneAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("presentScene:withTransition:incomingPointOfView:completionHandler:")]
 		void PresentScene (SCNScene scene, SKTransition transition, [NullAllowed] SCNNode pointOfView, [NullAllowed] Action completionHandler);
 

@@ -317,7 +317,13 @@ namespace MetalKit {
 		///         <summary>Creates a new Metal texture from the resource at the specified <paramref name="url" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("FromUrl (url, options.GetDictionary (), completionHandler)")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="url">The location of the image data to load.</param>
+			<param name="options">Options for loading the texture data.</param>
+			<summary>Creates a new Metal texture from the resource at the specified <paramref name="url" />, returning a task that provides the resulting texture.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FromUrl (NSUrl url, [NullAllowed] MTKTextureLoaderOptions options, MTKTextureLoaderCallback completionHandler);
 
 		[Export ("newTextureWithData:options:completionHandler:"), Internal]
@@ -329,7 +335,13 @@ namespace MetalKit {
 		///         <summary>Creates and returns a Metal texture from the specified image data and options, and runs a completion handler when it completes.</summary>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("FromData (data, options.GetDictionary (), completionHandler)")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="data">The texture data.</param>
+			<param name="options">Options for loading the texture data.</param>
+			<summary>Creates a Metal texture from the specified image data and options, returning a task that provides the resulting image.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FromData (NSData data, [NullAllowed] MTKTextureLoaderOptions options, MTKTextureLoaderCallback completionHandler);
 
 		[Export ("newTextureWithCGImage:options:completionHandler:"), Internal]
@@ -341,7 +353,13 @@ namespace MetalKit {
 		///         <summary>Creates and returns a Metal texture from the specified Core Graphics image and options, and runs a completion handler when it completes.</summary>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("FromCGImage (cgImage, options.GetDictionary (), completionHandler)")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="cgImage">A Core Graphics image.</param>
+			<param name="options">Options for loading the texture data.</param>
+			<summary>Asynchronously creates a Metal texture from the specified Core Graphics image and options, and returns a task that provides the resulting image.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FromCGImage (CGImage cgImage, [NullAllowed] MTKTextureLoaderOptions options, MTKTextureLoaderCallback completionHandler);
 
 		[Export ("newTextureWithContentsOfURL:options:error:"), Internal]
@@ -360,7 +378,16 @@ namespace MetalKit {
 
 		[MacCatalyst (13, 1)]
 		[Export ("newTexturesWithContentsOfURLs:options:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="urls">The locations of the image data to load.</param>
+			<param name="options">Options for loading the texture data.
+			          This parameter can be .</param>
+			<summary>Creates an array of new Metal textures from the resources at the specified <paramref name="urls" />.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous FromUrls operation.   The value of the TResult parameter is a <see cref="MetalKit.MTKTextureLoaderArrayCallback" />.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FromUrls (NSUrl [] urls, [NullAllowed] NSDictionary options, MTKTextureLoaderArrayCallback completionHandler);
 
 		/// <param name="urls">The locations of the image data to load.</param>
@@ -370,7 +397,13 @@ namespace MetalKit {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("FromUrls (urls, options.GetDictionary (), completionHandler)")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="urls">The locations of the image data to load.</param>
+			<param name="options">Options for loading the texture data.</param>
+			<summary>Creates an array of new Metal textures from the resource sat the specified <paramref name="urls" />, returning a task that provides the resulting texture array.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FromUrls (NSUrl [] urls, [NullAllowed] MTKTextureLoaderOptions options, MTKTextureLoaderArrayCallback completionHandler);
 
 		[MacCatalyst (13, 1)]
@@ -465,7 +498,19 @@ namespace MetalKit {
 
 		[MacCatalyst (13, 1)]
 		[Export ("newTextureWithMDLTexture:options:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="texture">The texture to load.</param>
+			<param name="options">Options for loading the texture data.
+			          This parameter can be .</param>
+			<summary>Creates a new Metal texture from the specified <paramref name="texture" />.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous FromTexture operation.   The value of the TResult parameter is a <see cref="MetalKit.MTKTextureLoaderCallback" />.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The FromTextureAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void FromTexture (MDLTexture texture, [NullAllowed] NSDictionary options, MTKTextureLoaderCallback completionHandler);
 
 		/// <param name="texture">The texture to load.</param>
@@ -475,7 +520,13 @@ namespace MetalKit {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("FromTexture (texture, options.GetDictionary (), completionHandler)")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="texture">The texture to load.</param>
+			<param name="options">Options for loading the texture data.</param>
+			<summary>Creates a new Metal texture from the specified <paramref name="options" />, returning a task that provides the resulting texture.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FromTexture (MDLTexture texture, [NullAllowed] MTKTextureLoaderOptions options, MTKTextureLoaderCallback completionHandler);
 
 		[MacCatalyst (13, 1)]

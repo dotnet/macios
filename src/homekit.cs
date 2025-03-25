@@ -56,19 +56,39 @@ namespace HomeKit {
 		[Deprecated (PlatformName.iOS, 16, 1, message: "No longer supported.")]
 		[Deprecated (PlatformName.MacCatalyst, 16, 1, message: "No longer supported.")]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="home">To be added.</param>
+			<summary>Asynchronously updates the primary home to be <paramref name="home" />.</summary>
+			<returns>A task that represents the asynchronous UpdatePrimaryHome operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("updatePrimaryHome:completionHandler:")]
 		void UpdatePrimaryHome (HMHome home, Action<NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="homeName">To be added.</param>
+			<summary>Asynchronously adds a home that is named <paramref name="homeName" /> to the manager.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AddHome operation.  The value of the TResult parameter is of type System.Action&lt;HomeKit.HMHome,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addHomeWithName:completionHandler:")]
 		void AddHome (string homeName, Action<HMHome, NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="home">To be added.</param>
+			<summary>Asynchronously removes <paramref name="home" /> from the manager.</summary>
+			<returns>A task that represents the asynchronous RemoveHome operation</returns>
+			<remarks>
+			          <para copied="true">The RemoveHomeAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("removeHome:completionHandler:")]
 		void RemoveHome (HMHome home, Action<NSError> completion);
 
@@ -208,7 +228,12 @@ namespace HomeKit {
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="name">To be added.</param>
+			<summary>Asynchronously updates the name of the accessory.</summary>
+			<returns>A task that represents the asynchronous UpdateName operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("updateName:completionHandler:")]
 		void UpdateName (string name, Action<NSError> completion);
 
@@ -374,19 +399,37 @@ namespace HomeKit {
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="name">To be added.</param>
+			<summary>Asynchronously updates the name of the action set by using <paramref name="name" />.</summary>
+			<returns>A task that represents the asynchronous UpdateName operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("updateName:completionHandler:")]
 		void UpdateName (string name, Action<NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="action">To be added.</param>
+			<summary>Asynchronously adds <paramref name="action" /> to the action set.</summary>
+			<returns>A task that represents the asynchronous AddAction operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addAction:completionHandler:")]
 		void AddAction (HMAction action, Action<NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="action">To be added.</param>
+			<summary>Asynchronously removes <paramref name="action" /> from the action set.</summary>
+			<returns>A task that represents the asynchronous RemoveAction operation</returns>
+			<remarks>
+			          <para copied="true">The RemoveActionAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("removeAction:completionHandler:")]
 		void RemoveAction (HMAction action, Action<NSError> completion);
 
@@ -469,7 +512,12 @@ namespace HomeKit {
 		[Export ("notificationEnabled")]
 		bool NotificationEnabled { [Bind ("isNotificationEnabled")] get; }
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="value">To be added.</param>
+			<summary>Asynchronously writes <paramref name="value" /> to the value of the characteristic.</summary>
+			<returns>A task that represents the asynchronous WriteValue operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("writeValue:completionHandler:")]
 		void WriteValue (NSObject value, Action<NSError> completion);
 
@@ -477,13 +525,26 @@ namespace HomeKit {
 		[Export ("readValueWithCompletionHandler:")]
 		void ReadValue (Action<NSError> completion);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="enable">To be added.</param>
+			<summary>Asynchronously enables or disables notifications.</summary>
+			<returns>A task that represents the asynchronous EnableNotification operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("enableNotification:completionHandler:")]
 		void EnableNotification (bool enable, Action<NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="data">To be added.</param>
+			<summary>Asynchronously updates the authorization data by using <paramref name="data" />.</summary>
+			<returns>A task that represents the asynchronous UpdateAuthorizationData operation</returns>
+			<remarks>
+			          <para copied="true">The UpdateAuthorizationDataAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("updateAuthorizationData:completionHandler:")]
 		void UpdateAuthorizationData ([NullAllowed] NSData data, Action<NSError> completion);
 
@@ -656,7 +717,12 @@ namespace HomeKit {
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="name">To be added.</param>
+			<summary>Asynchronously changes the home name to <paramref name="name" />.</summary>
+			<returns>A task that represents the asynchronous UpdateName operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("updateName:completionHandler:")]
 		void UpdateName (string name, Action<NSError> completion);
 
@@ -671,19 +737,35 @@ namespace HomeKit {
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="accessory">To be added.</param>
+			<summary>Asynchronously adds <paramref name="accessory" /> to the home.</summary>
+			<returns>A task that represents the asynchronous AddAccessory operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addAccessory:completionHandler:")]
 		void AddAccessory (HMAccessory accessory, Action<NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="accessory">To be added.</param>
+			<summary>Asynchronously removes <paramref name="accessory" /> from the home.</summary>
+			<returns>A task that represents the asynchronous RemoveAccessory operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("removeAccessory:completionHandler:")]
 		void RemoveAccessory (HMAccessory accessory, Action<NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="accessory">To be added.</param>
+			<param name="room">To be added.</param>
+			<summary>Asynchronously assigns <paramref name="accessory" /> to <paramref name="room" />.</summary>
+			<returns>A task that represents the asynchronous AssignAccessory operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("assignAccessory:toRoom:completionHandler:")]
 		void AssignAccessory (HMAccessory accessory, HMRoom room, Action<NSError> completion);
 
@@ -694,7 +776,12 @@ namespace HomeKit {
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="accessory">To be added.</param>
+			<summary>Asynchronously unblocks <paramref name="accessory" /> from the home.</summary>
+			<returns>A task that represents the asynchronous UnblockAccessory operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("unblockAccessory:completionHandler:")]
 		void UnblockAccessory (HMAccessory accessory, Action<NSError> completion);
 
@@ -709,7 +796,12 @@ namespace HomeKit {
 		[Deprecated (PlatformName.iOS, 15, 4, message: "Use 'HMAccessorySetupManager.PerformAccessorySetup' instead.")]
 		[NoTV, NoMacCatalyst]
 		[Deprecated (PlatformName.MacCatalyst, 15, 4, message: "Use 'HMAccessorySetupManager.PerformAccessorySetup' instead.")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="payload">The setup payload.</param>
+			<summary>Displays a device selection user interface that allows the user to choose which devices to add and set up, and returning a task that represents the asynchronous AddAndSetupAccessories operation.</summary>
+			<returns>A task that represents the asynchronous AddAndSetupAccessories operation.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addAndSetupAccessoriesWithPayload:completionHandler:")]
 		void AddAndSetupAccessories (HMAccessorySetupPayload payload, Action<HMAccessory [], NSError> completion);
 
@@ -720,13 +812,25 @@ namespace HomeKit {
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="roomName">To be added.</param>
+			<summary>Asynchronously adds a room named <paramref name="roomName" /> to the home.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AddRoom operation.  The value of the TResult parameter is of type System.Action&lt;HomeKit.HMRoom,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addRoomWithName:completionHandler:")]
 		void AddRoom (string roomName, Action<HMRoom, NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="room">To be added.</param>
+			<summary>Asynchronously removes <paramref name="room" /> from the home.</summary>
+			<returns>A task that represents the asynchronous RemoveRoom operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("removeRoom:completionHandler:")]
 		void RemoveRoom (HMRoom room, Action<NSError> completion);
 
@@ -740,13 +844,25 @@ namespace HomeKit {
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="zoneName">The zone to add.</param>
+			<summary>Adds a zone that is named <paramref name="zoneName" /> to the home.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AddZone operation.  The value of the TResult parameter is of type System.Action&lt;HomeKit.HMZone,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addZoneWithName:completionHandler:")]
 		void AddZone (string zoneName, Action<HMZone, NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="zone">To be added.</param>
+			<summary>Asynchronously removes <paramref name="zone" /> from the home.</summary>
+			<returns>A task that represents the asynchronous RemoveZone operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("removeZone:completionHandler:")]
 		void RemoveZone (HMZone zone, Action<NSError> completion);
 
@@ -757,13 +873,25 @@ namespace HomeKit {
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="serviceGroupName">To be added.</param>
+			<summary>Asynchronously adds a service group named <paramref name="serviceGroupName" /> to the home.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AddServiceGroup operation.  The value of the TResult parameter is of type System.Action&lt;HomeKit.HMServiceGroup,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addServiceGroupWithName:completionHandler:")]
 		void AddServiceGroup (string serviceGroupName, Action<HMServiceGroup, NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="group">To be added.</param>
+			<summary>Asynchronously removes <paramref name="group" /> from the home.</summary>
+			<returns>A task that represents the asynchronous RemoveServiceGroup operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("removeServiceGroup:completionHandler:")]
 		void RemoveServiceGroup (HMServiceGroup group, Action<NSError> completion);
 
@@ -774,17 +902,34 @@ namespace HomeKit {
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="actionSetName">To be added.</param>
+			<summary>Asynchronously adds an action set named <paramref name="actionSetName" /> to the home.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AddActionSet operation.  The value of the TResult parameter is of type System.Action&lt;HomeKit.HMActionSet,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addActionSetWithName:completionHandler:")]
 		void AddActionSet (string actionSetName, Action<HMActionSet, NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="actionSet">To be added.</param>
+			<summary>Asynchronously removes <paramref name="actionSet" /> from the home.</summary>
+			<returns>A task that represents the asynchronous RemoveActionSet operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("removeActionSet:completionHandler:")]
 		void RemoveActionSet (HMActionSet actionSet, Action<NSError> completion);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="actionSet">To be added.</param>
+			<summary>Asynchronously runs the specified <paramref name="actionSet" />.</summary>
+			<returns>A task that represents the asynchronous ExecuteActionSet operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("executeActionSet:completionHandler:")]
 		void ExecuteActionSet (HMActionSet actionSet, Action<NSError> completion);
 
@@ -800,13 +945,23 @@ namespace HomeKit {
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="trigger">To be added.</param>
+			<summary>Asynchronously adds <paramref name="trigger" /> to the home.</summary>
+			<returns>A task that represents the asynchronous AddTrigger operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addTrigger:completionHandler:")]
 		void AddTrigger (HMTrigger trigger, Action<NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="trigger">To be added.</param>
+			<summary>Asynchronously removes <paramref name="trigger" /> from the home.</summary>
+			<returns>A task that represents the asynchronous RemoveTrigger operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("removeTrigger:completionHandler:")]
 		void RemoveTrigger (HMTrigger trigger, Action<NSError> completion);
 
@@ -991,7 +1146,15 @@ namespace HomeKit {
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="name">To be added.</param>
+			<summary>Asynchronously updates the name of the room by using <paramref name="name" />.</summary>
+			<returns>A task that represents the asynchronous UpdateName operation</returns>
+			<remarks>
+			          <para copied="true">The UpdateNameAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("updateName:completionHandler:")]
 		void UpdateName (string name, Action<NSError> completion);
 
@@ -1036,14 +1199,27 @@ namespace HomeKit {
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="name">To be added.</param>
+			<summary>Asynchronously updates the name of the service to <paramref name="name" />.</summary>
+			<returns>A task that represents the asynchronous UpdateName operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("updateName:completionHandler:")]
 		void UpdateName (string name, Action<NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="serviceType">To be added.</param>
+			<summary>Asynchronously updates the associated service type to  <paramref name="serviceType" />.</summary>
+			<returns>A task that represents the asynchronous UpdateAssociatedServiceType operation</returns>
+			<remarks>
+			          <para copied="true">The UpdateAssociatedServiceTypeAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("updateAssociatedServiceType:completionHandler:")]
 		void UpdateAssociatedServiceType ([NullAllowed] string serviceType, Action<NSError> completion);
 
@@ -1092,19 +1268,37 @@ namespace HomeKit {
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="name">To be added.</param>
+			<summary>Asynchronously updates the service group name to <paramref name="name" />.</summary>
+			<returns>A task that represents the asynchronous UpdateName operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("updateName:completionHandler:")]
 		void UpdateName (string name, Action<NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="service">To be added.</param>
+			<summary>Asynchronously adds <paramref name="service" /> to the service group.</summary>
+			<returns>A task that represents the asynchronous AddService operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addService:completionHandler:")]
 		void AddService (HMService service, Action<NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="service">To be added.</param>
+			<summary>Asynchronously removes <paramref name="service" /> from the service group.</summary>
+			<returns>A task that represents the asynchronous RemoveService operation</returns>
+			<remarks>
+			          <para copied="true">The RemoveServiceAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("removeService:completionHandler:")]
 		void RemoveService (HMService service, Action<NSError> completion);
 
@@ -1149,7 +1343,12 @@ namespace HomeKit {
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="fireDate">To be added.</param>
+			<summary>Asynchronously updates the fire date by using <paramref name="fireDate" />.</summary>
+			<returns>A task that represents the asynchronous UpdateFireDate operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("updateFireDate:completionHandler:")]
 		void UpdateFireDate (NSDate fireDate, Action<NSError> completion);
 
@@ -1157,13 +1356,26 @@ namespace HomeKit {
 		[Deprecated (PlatformName.MacCatalyst, 16, 4, message: "Use 'HMEventTrigger' with 'HMCalendarEvent' for triggers based on a time-zone-relative time of day.")]
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="timeZone">To be added.</param>
+			<summary>Asynchronously updates the time zone by using <paramref name="timeZone" />.</summary>
+			<returns>A task that represents the asynchronous UpdateTimeZone operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("updateTimeZone:completionHandler:")]
 		void UpdateTimeZone ([NullAllowed] NSTimeZone timeZone, Action<NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="recurrence">To be added.</param>
+			<summary>Asynchronously updates the recurrence by using <paramref name="recurrence" />.</summary>
+			<returns>A task that represents the asynchronous UpdateRecurrence operation</returns>
+			<remarks>
+			          <para copied="true">The UpdateRecurrenceAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("updateRecurrence:completionHandler:")]
 		void UpdateRecurrence ([NullAllowed] NSDateComponents recurrence, Action<NSError> completion);
 	}
@@ -1194,25 +1406,48 @@ namespace HomeKit {
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="name">To be added.</param>
+			<summary>Asynchronously updates the name of the trigger.</summary>
+			<returns>A task that represents the asynchronous UpdateName operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("updateName:completionHandler:")]
 		void UpdateName (string name, Action<NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="actionSet">To be added.</param>
+			<summary>Asynchronously adds <paramref name="actionSet" /> to the list of action sets that are run by this trigger.</summary>
+			<returns>A task that represents the asynchronous AddActionSet operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addActionSet:completionHandler:")]
 		void AddActionSet (HMActionSet actionSet, Action<NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="actionSet">To be added.</param>
+			<summary>Asynchronously removes <paramref name="actionSet" /> from the trigger.</summary>
+			<returns>A task that represents the asynchronous RemoveActionSet operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("removeActionSet:completionHandler:")]
 		void RemoveActionSet (HMActionSet actionSet, Action<NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="enable">To be added.</param>
+			<summary>Asynchronously enables or disables the trigger.</summary>
+			<returns>A task that represents the asynchronous Enable operation</returns>
+			<remarks>
+			          <para copied="true">The EnableAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("enable:completionHandler:")]
 		void Enable (bool enable, Action<NSError> completion);
 
@@ -1234,19 +1469,37 @@ namespace HomeKit {
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="name">To be added.</param>
+			<summary>Asynchronously updates the name of the zone to <paramref name="name" />.</summary>
+			<returns>A task that represents the asynchronous UpdateName operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("updateName:completionHandler:")]
 		void UpdateName (string name, Action<NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="room">To be added.</param>
+			<summary>Asynchronously adds <paramref name="room" /> to the zone.</summary>
+			<returns>A task that represents the asynchronous AddRoom operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addRoom:completionHandler:")]
 		void AddRoom (HMRoom room, Action<NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="room">To be added.</param>
+			<summary>Asynchronously removes <paramref name="room" /> from the zone.</summary>
+			<returns>A task that represents the asynchronous RemoveRoom operation</returns>
+			<remarks>
+			          <para copied="true">The RemoveRoomAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("removeRoom:completionHandler:")]
 		void RemoveRoom (HMRoom room, Action<NSError> completion);
 
@@ -1345,7 +1598,15 @@ namespace HomeKit {
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="triggerValue">The new trigger value. May be .</param>
+			<summary>Developers should not use this deprecated method. </summary>
+			<returns>A task that represents the asynchronous UpdateTriggerValue operation</returns>
+			<remarks>
+			          <para copied="true">The UpdateTriggerValueAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("updateTriggerValue:completionHandler:")]
 		void UpdateTriggerValue ([NullAllowed] INSCopying triggerValue, Action<NSError> completion);
 	}
@@ -1464,7 +1725,12 @@ namespace HomeKit {
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'UpdateEvents' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'UpdateEvents' instead.")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="event">The event to add.</param>
+			<summary>Developers should not use this deprecated method. Developers should use 'UpdateEvents' instead.</summary>
+			<returns>A task that represents the asynchronous AddEvent operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addEvent:completionHandler:")]
 		void AddEvent (HMEvent @event, Action<NSError> completion);
 
@@ -1472,37 +1738,70 @@ namespace HomeKit {
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'UpdateEvents' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'UpdateEvents' instead.")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="event">The event to remove.</param>
+			<summary>Asynchronously attempts to remove <paramref name="event" /> from <see cref="P:HomeKit.HMEventTrigger.Events" />.</summary>
+			<returns>A task that represents the asynchronous RemoveEvent operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("removeEvent:completionHandler:")]
 		void RemoveEvent (HMEvent @event, Action<NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (14, 0)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="events">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous UpdateEvents operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("updateEvents:completionHandler:")]
 		void UpdateEvents (HMEvent [] events, Action<NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (14, 0)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="endEvents">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous UpdateEndEvents operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("updateEndEvents:completionHandler:")]
 		void UpdateEndEvents (HMEvent [] endEvents, Action<NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="predicate">The predicate to update. May be .</param>
+			<summary>Asynchronously attempts to modify the <see cref="P:HomeKit.HMEventTrigger.Predicate" />.</summary>
+			<returns>A task that represents the asynchronous UpdatePredicate operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("updatePredicate:completionHandler:")]
 		void UpdatePredicate ([NullAllowed] NSPredicate predicate, Action<NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (14, 0)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="recurrences">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous UpdateRecurrences operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("updateRecurrences:completionHandler:")]
 		void UpdateRecurrences ([NullAllowed] NSDateComponents [] recurrences, Action<NSError> completion);
 
 		[NoTV]
 		[MacCatalyst (14, 0)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="executeOnce">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous UpdateExecuteOnce operation</returns>
+			<remarks>
+			          <para copied="true">The UpdateExecuteOnceAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("updateExecuteOnce:completionHandler:")]
 		void UpdateExecuteOnce (bool executeOnce, Action<NSError> completion);
 	}
@@ -1535,7 +1834,15 @@ namespace HomeKit {
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="region">To be added.</param>
+			<summary>Developers should not use this deprecated method. </summary>
+			<returns>A task that represents the asynchronous UpdateRegion operation</returns>
+			<remarks>
+			          <para copied="true">The UpdateRegionAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("updateRegion:completionHandler:")]
 		void UpdateRegion (CLRegion region, Action<NSError> completion);
 	}
@@ -1685,7 +1992,15 @@ namespace HomeKit {
 
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="audioStreamSetting">To be added.</param>
+			<summary>Asynchronously modifies the <see cref="P:HomeKit.HMCameraStream.AudioStreamSetting" />.</summary>
+			<returns>A task that represents the asynchronous UpdateAudioStreamSetting operation</returns>
+			<remarks>
+			          <para copied="true">The UpdateAudioStreamSettingAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("updateAudioStreamSetting:completionHandler:")]
 		void UpdateAudioStreamSetting (HMCameraAudioStreamSetting audioStreamSetting, Action<NSError> completion);
 	}

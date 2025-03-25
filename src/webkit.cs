@@ -4503,15 +4503,35 @@ namespace WebKit {
 		WKContentRuleListStore FromUrl (NSUrl url);
 
 		[Export ("compileContentRuleListForIdentifier:encodedContentRuleList:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="identifier">The identifier for the newly compiled list.</param>
+			<param name="encodedContentRuleList">JSON source to compile.</param>
+			<summary>Compiles the provided list of rules, adds the list to the store with the specified <paramref name="identifier" />, and runs a handler that receives the content list and any error that is encountered.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous CompileContentRuleList operation.  The value of the TResult parameter is of type System.Action&lt;WebKit.WKContentRuleList,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void CompileContentRuleList (string identifier, string encodedContentRuleList, Action<WKContentRuleList, NSError> completionHandler);
 
 		[Export ("lookUpContentRuleListForIdentifier:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="identifier">The identifer for the rule list to look up.</param>
+			<summary>Asynchronously finds and returns the content rule list that is specified by the provided <paramref name="identifier" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LookUpContentRuleList operation.  The value of the TResult parameter is of type System.Action&lt;WebKit.WKContentRuleList,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void LookUpContentRuleList (string identifier, Action<WKContentRuleList, NSError> completionHandler);
 
 		[Export ("removeContentRuleListForIdentifier:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="identifier">The identifier for the list to remove.</param>
+			<summary>Asynchronously removes the content rule list that is specified by the provided <paramref name="identifier" />.</summary>
+			<returns>A task that represents the asynchronous RemoveContentRuleList operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void RemoveContentRuleList (string identifier, Action<NSError> completionHandler);
 
 		[Export ("getAvailableContentRuleListIdentifiers:")]
@@ -4529,11 +4549,24 @@ namespace WebKit {
 		void GetAllCookies (Action<NSHttpCookie []> completionHandler);
 
 		[Export ("setCookie:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="cookie">The cookie to set.</param>
+			<summary>Sets the specified <paramref name="cookie" /> and runs a handler when the operation completes.</summary>
+			<returns>A task that represents the asynchronous SetCookie operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void SetCookie (NSHttpCookie cookie, [NullAllowed] Action completionHandler);
 
 		[Export ("deleteCookie:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="cookie">The cookie to remove.</param>
+			<summary>Deletes the specified <paramref name="cookie" /> from the store and runs a completion handler when the operation is complete.</summary>
+			<returns>A task that represents the asynchronous DeleteCookie operation</returns>
+			<remarks>
+			          <para copied="true">The DeleteCookieAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void DeleteCookie (NSHttpCookie cookie, [NullAllowed] Action completionHandler);
 
 		[Export ("addObserver:")]
@@ -5074,15 +5107,37 @@ namespace WebKit {
 		NSSet<NSString> AllWebsiteDataTypes { get; }
 
 		[Export ("fetchDataRecordsOfTypes:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="dataTypes">The data types for which to fetch website data.</param>
+			<summary>Returns data records of the specified data types, and passes them to a handler when the operation completes.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchDataRecordsOfTypes operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSArray&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void FetchDataRecordsOfTypes (NSSet<NSString> dataTypes, Action<NSArray> completionHandler);
 
 		[Export ("removeDataOfTypes:forDataRecords:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="dataTypes">The types of data to remove.</param>
+			<param name="dataRecords">The data records from which to delete data of the specified type.</param>
+			<summary>Removes data of the specified type from the store, and passes the removed items to a completion handler.</summary>
+			<returns>A task that represents the asynchronous RemoveDataOfTypes operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void RemoveDataOfTypes (NSSet<NSString> dataTypes, WKWebsiteDataRecord [] dataRecords, Action completionHandler);
 
 		[Export ("removeDataOfTypes:modifiedSince:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="websiteDataTypes">The types of data to remove.</param>
+			<param name="date">The date after which to remove all data of the specified type.</param>
+			<summary>Removes data of the specified type from the store, and passes the removed items to a completion handler.</summary>
+			<returns>A task that represents the asynchronous RemoveDataOfTypes operation</returns>
+			<remarks>
+			          <para copied="true">The RemoveDataOfTypesAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void RemoveDataOfTypes (NSSet<NSString> websiteDataTypes, NSDate date, Action completionHandler);
 
 		[MacCatalyst (13, 1)]
@@ -5490,12 +5545,64 @@ namespace WebKit {
 		void StopLoading ();
 
 		[Export ("evaluateJavaScript:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="javascript">The JavaScript string to evaluate</param>
+			<summary>Evaluates the given JavaScript string.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous EvaluateJavaScript operation.   The value of the TResult parameter is a <see cref="T:WebKit.WKJavascriptEvaluationResult" />.</para>
+			        </returns>
+			<remarks>
+			          <para>This method will throw a <see cref="T:Foundation.NSErrorException" /> if the JavaScript is not evaluated successfully.</para>
+			          <example>
+			            <code lang="csharp lang-csharp"><![CDATA[
+			var config = new WKWebViewConfiguration();
+			var wk = new WKWebView(UIScreen.MainScreen.Bounds, config);
+			var js = (NSString) "document.getElementById('foo').innerHTML = 'bar'";
+			var result = await wk.EvaluateJavaScriptAsync(js); //== "bar"
+			    ]]></code>
+			          </example>
+			          <para>The EvaluateJavaScriptAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para>The arguments to the handler are an <see cref="T:Foundation.NSObject" /> containing the results of the evaluation and an <see cref="T:Foundation.NSError" /> if an error. If an error occurred, the <c>result</c> argument will be <see langword="null" />. If no error occurred, the <c>error</c> argument will be <see langword="null" />.</para>
+			          <example>
+			            <code lang="csharp lang-csharp"><![CDATA[
+			var config = new WKWebViewConfiguration();
+			var wk = new WKWebView(UIScreen.MainScreen.Bounds, config);
+			var js = (NSString) "document.getElementById('foo').innerHTML = 'bar'";
+			WKJavascriptEvaluationResult handler = (NSObject result, NSError err) => { 
+			  if(err is not null)
+			  {
+			    System.Console.WriteLine(err);
+			  }
+			  if(result is not null)
+			  {
+			     System.Console.WriteLine(result);
+			  }
+			};
+			wk.EvaluateJavaScript(js, handler);
+			    ]]></code>
+			          </example>
+			        </remarks>
+			""")]
 		void EvaluateJavaScript (NSString javascript, [NullAllowed] WKJavascriptEvaluationResult completionHandler);
 
 		/// <include file="../docs/api/WebKit/WKWebView.xml" path="/Documentation/Docs[@DocId='M:WebKit.WKWebView.EvaluateJavaScript(System.String,WebKit.WKJavascriptEvaluationResult)']/*" />
 		[Wrap ("EvaluateJavaScript ((NSString)javascript, completionHandler)")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="javascript">A well-formed JavaScript expression.</param>
+			<summary>Evaluates the given JavaScript string.</summary>
+			<returns>A task that represents the asynchronous EvaluateJavaScript operation. The TResult holds the results of the evaluation.</returns>
+			<remarks>
+			          <para>This method will throw a <see cref="T:Foundation.NSErrorException" /> if the JavaScript is not evaluated successfully.</para>
+			          <example>
+			            <code lang="csharp lang-csharp"><![CDATA[
+			var config = new WKWebViewConfiguration();
+			var wk = new WKWebView(UIScreen.MainScreen.Bounds, config);
+			var js = (NSString) "document.getElementById('foo').innerHTML = 'bar'";
+			var result = await wk.EvaluateJavaScriptAsync(js); //== "bar"
+			    ]]></code>
+			          </example>
+			        </remarks>
+			""")]
 		void EvaluateJavaScript (string javascript, WKJavascriptEvaluationResult completionHandler);
 
 		[NoiOS]
@@ -5539,7 +5646,17 @@ namespace WebKit {
 		SecTrust ServerTrust { get; }
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="snapshotConfiguration">The snapshot configuration to use.This parameter can be .</param>
+			<summary>Asynchronously takes a snapshot of the current viewport.</summary>
+			<returns>
+			          <para>The result is of type System.Tasks.Task&lt;AppKit.NSImage&gt; on MacOS and System.Tasks.Task&lt;UIKit.UIImage&gt; on iOS.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The TakeSnapshotAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("takeSnapshotWithConfiguration:completionHandler:")]
 		void TakeSnapshot ([NullAllowed] WKSnapshotConfiguration snapshotConfiguration, Action<UIImage, NSError> completionHandler);
 

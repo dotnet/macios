@@ -2743,7 +2743,13 @@ namespace UIKit {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("OpenUrl (url, options.GetDictionary ()!, completion)")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="url">The URL to be opened.</param>
+			<param name="options">Launch options.</param>
+			<summary>Asynchronously opens the specified URL, launching the app that is registered to handle the scheme, and returns a task the represents success or failure.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void OpenUrl (NSUrl url, UIApplicationOpenUrlOptions options, [NullAllowed] Action<bool> completion);
 
 		[Export ("canOpenURL:")]
@@ -3450,7 +3456,15 @@ namespace UIKit {
 		bool SupportsAlternateIcons { get; }
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="alternateIconName">The name of the new alternate icon. This parameter can be .This parameter can be .</param>
+			<summary>Sets the name of the alternate icon.</summary>
+			<returns>A task that represents the asynchronous SetAlternateIconName operation</returns>
+			<remarks>
+			          <para copied="true">The SetAlternateIconNameAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("setAlternateIconName:completionHandler:")]
 		void SetAlternateIconName ([NullAllowed] string alternateIconName, [NullAllowed] Action<NSError> completionHandler);
 
@@ -4936,19 +4950,51 @@ namespace UIKit {
 		void MoveItem (NSIndexPath indexPath, NSIndexPath newIndexPath);
 
 		[Export ("performBatchUpdates:completion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="updates">An  delegate specifying the updates to apply.</param>
+			<summary>Applies and simultaneously animates multiple manipulations of the <see cref="T:UIKit.UICollectionView" />.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous PerformBatchUpdates operation.   The value of the TResult parameter is a <see cref="T:UIKit.UICompletionHandler" />.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void PerformBatchUpdates ([NullAllowed] Action updates, [NullAllowed] UICompletionHandler completed);
 
 		//
 		// 7.0
 		//
 		[Export ("startInteractiveTransitionToCollectionViewLayout:completion:")]
-		[Async (ResultTypeName = "UICollectionViewTransitionResult")]
+		[Async (ResultTypeName = "UICollectionViewTransitionResult", XmlDocs = """
+			<param name="newCollectionViewLayout">The new layout object for the collected views.</param>
+			<summary>Changes the UICollectionView's layout using an interactive transition.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous <see cref="M:UIKit.UICollectionView.StartInteractiveTransition(UIKit.UICollectionViewLayout,UIKit.UICollectionViewLayoutInteractiveTransitionCompletion)" /> operation.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="newCollectionViewLayout">The new layout object for the collected views.</param>
+			<param name="result">Action executed when the layout transition finishes.</param>
+			<summary>Asynchronously starts an interactive transition to the new layout, with a reference to the result.</summary>
+			<returns>A task that represents the asynchronous <see cref="M:UIKit.UICollectionView.StartInteractiveTransition(UIKit.UICollectionViewLayout,UIKit.UICollectionViewLayoutInteractiveTransitionCompletion)" /> operation.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		UICollectionViewTransitionLayout StartInteractiveTransition (UICollectionViewLayout newCollectionViewLayout,
 										 [NullAllowed] UICollectionViewLayoutInteractiveTransitionCompletion completion);
 
 		[Export ("setCollectionViewLayout:animated:completion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="layout">The new .</param>
+			<param name="animated"> if the transition to the new layout should be animated.</param>
+			<summary>Sets the layout used by this <see cref="T:UIKit.UICollectionView" />.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous SetCollectionViewLayout operation.   The value of the TResult parameter is a <see cref="T:UIKit.UICompletionHandler" />.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The SetCollectionViewLayoutAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void SetCollectionViewLayout (UICollectionViewLayout layout, bool animated, [NullAllowed] UICompletionHandler completion);
 
 		[Export ("finishInteractiveTransition")]
@@ -6860,7 +6906,19 @@ namespace UIKit {
 		void UpdateChangeCount (NSObject changeCountToken, UIDocumentSaveOperation saveOperation);
 
 		[Export ("saveToURL:forSaveOperation:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="url">URL that indicates the location of a document file.</param>
+			<param name="saveOperation">This represents a constant indicating if a document file is being written for the first time or being overwritten.</param>
+			<summary>Saves the document data to the specified location in the application sandbox.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous Save operation.   The value of the TResult parameter is a <see cref="T:UIKit.UIOperationHandler" />.</para>
+			        </returns>
+			<remarks>
+			          <para>
+			          </para>
+			          <para tool="threads">This can be used from a background thread.</para>
+			        </remarks>
+			""")]
 		void Save (NSUrl url, UIDocumentSaveOperation saveOperation, [NullAllowed] UIOperationHandler completionHandler);
 
 		[Export ("autosaveWithCompletionHandler:")]
@@ -6901,7 +6959,20 @@ namespace UIKit {
 		void UserInteractionNoLongerPermittedForError (NSError error);
 
 		[Export ("revertToContentsOfURL:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="url">URL address that indicates the location of a document file.</param>
+			<summary>Reverts the UIDocument to the most recent document data stored on-disk.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous RevertToContentsOfUrl operation.   The value of the TResult parameter is a <see cref="T:UIKit.UIOperationHandler" />.</para>
+			        </returns>
+			<remarks>
+			          <para>
+			          </para>
+			          <para tool="threads">This can be used from a background thread.</para>
+			          <para copied="true">The RevertToContentsOfUrlAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para tool="threads" copied="true">This can be used from a background thread.</para>
+			        </remarks>
+			""")]
 		void RevertToContentsOfUrl (NSUrl url, [NullAllowed] UIOperationHandler completionHandler);
 
 		/// <include file="../docs/api/UIKit/UIDocument.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIDocument.StateChangedNotification']/*" />
@@ -12586,7 +12657,19 @@ namespace UIKit {
 
 		[Export ("setViewControllers:direction:animated:completion:")]
 		[PostGet ("ViewControllers")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="viewControllers">To be added.</param>
+			<param name="direction">To be added.</param>
+			<param name="animated">To be added.</param>
+			<summary>Sets the UIViewControllers to be displayed.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous SetViewControllers operation.   The value of the TResult parameter is a <see cref="T:UIKit.UICompletionHandler" />.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The SetViewControllersAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void SetViewControllers (UIViewController [] viewControllers, UIPageViewControllerNavigationDirection direction, bool animated, [NullAllowed] UICompletionHandler completionHandler);
 
 		/// <summary>Represents the value associated with the constant UIPageViewControllerOptionSpineLocationKey</summary>
@@ -16228,7 +16311,17 @@ namespace UIKit {
 		UITableViewSeparatorInsetReference SeparatorInsetReference { get; set; }
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="updates">The updates to perform.This parameter can be .</param>
+			<summary>Applies and simultaneously animates multiple manipulations of the <see cref="T:UIKit.UITableView" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous PerformBatchUpdates operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The PerformBatchUpdatesAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("performBatchUpdates:completion:")]
 		void PerformBatchUpdates ([NullAllowed] Action updates, [NullAllowed] Action<bool> completion);
 
@@ -18446,19 +18539,59 @@ namespace UIKit {
 		void Animate (double duration, /* non null */ Action animation);
 
 		[Static, Export ("animateWithDuration:animations:completion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="duration">Duration in seconds for the animation.</param>
+			<param name="animation">Code containing the changes that you will apply to your view.</param>
+			<summary>Animates the property changes that take place in the specified action and invokes a completion callback when the animation completes.</summary>
+			<returns>System.Threading.Tasks.Task&lt;System.Boolean&gt;</returns>
+			<remarks>
+			          <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+			        </remarks>
+			""")]
 		void AnimateNotify (double duration, /* non null */ Action animation, [NullAllowed] UICompletionHandler completion);
 
 		[Static, Export ("animateWithDuration:delay:options:animations:completion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="duration">Duration in seconds for the animation.</param>
+			<param name="delay">Delay before the animation begins.</param>
+			<param name="options">Animation options.</param>
+			<param name="animation">The changes to be applied to the view.</param>
+			<summary>Executes the specified <paramref name="animation" /> as an asynchronous operation.</summary>
+			<returns>To be added.</returns>
+			<remarks>
+			          <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+			        </remarks>
+			""")]
 		void AnimateNotify (double duration, double delay, UIViewAnimationOptions options, /* non null */ Action animation, [NullAllowed] UICompletionHandler completion);
 
 		[Static, Export ("transitionFromView:toView:duration:options:completion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="fromView">The initial view.</param>
+			<param name="toView">The final view.</param>
+			<param name="duration">The duration, in seconds, of the animation.</param>
+			<param name="options">A mask of options to be used with the animation.</param>
+			<summary>Specifies a transition animation to be used between the specified <see cref="T:UIKit.UIView" />s.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous TransitionNotify operation.   The value of the TResult parameter is a <see cref="T:UIKit.UICompletionHandler" />.</para>
+			        </returns>
+			<remarks>
+			          <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+			        </remarks>
+			""")]
 		void TransitionNotify (UIView fromView, UIView toView, double duration, UIViewAnimationOptions options, [NullAllowed] UICompletionHandler completion);
 
 		[Static, Export ("transitionWithView:duration:options:animations:completion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="withView">View whose state is being manipulated and in which the animation should occur.</param>
+			<param name="duration">The duration of the animation in seconds.</param>
+			<param name="options">A mask of options to be used with the animation.</param>
+			<param name="animation">Action containing the animation and state manipulation of the view.</param>
+			<summary>Creates a transition animation action that is used for the current container view.</summary>
+			<returns>A task that represents the asynchronous TransitionNotify operation. </returns>
+			<remarks>
+			          <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+			        </remarks>
+			""")]
 		void TransitionNotify (UIView withView, double duration, UIViewAnimationOptions options, [NullAllowed] Action animation, [NullAllowed] UICompletionHandler completion);
 
 		[Export ("contentScaleFactor")]
@@ -18621,7 +18754,17 @@ namespace UIKit {
 		void PerformWithoutAnimation (Action actionsWithoutAnimation);
 
 		[Static, Export ("performSystemAnimation:onViews:options:animations:completion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="animation">Defined UISystemAnimation to perform.</param>
+			<param name="views">Views on which to to perform the animations.</param>
+			<param name="options">Mask of options that indicates how the animations are to be performed.</param>
+			<param name="parallelAnimations">Additional animations specified to run alongside system animation.</param>
+			<summary>Performs specified system-provided animation sequence on one or more views, together with user-defined parallel animations.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous PerformSystemAnimation operation.   The value of the TResult parameter is a UIKit.UICompletionHandler.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void PerformSystemAnimation (UISystemAnimation animation, UIView [] views, UIViewAnimationOptions options, [NullAllowed] Action parallelAnimations, [NullAllowed] UICompletionHandler completion);
 
 		[TV (13, 0), iOS (13, 0)] // Yep headers stated iOS 12 but they are such a liars...
@@ -18631,7 +18774,17 @@ namespace UIKit {
 		void ModifyAnimations (nfloat count, bool autoreverses, Action animations);
 
 		[Static, Export ("animateKeyframesWithDuration:delay:options:animations:completion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="duration">Duration in seconds for the animation.</param>
+			<param name="delay">Duration in seconds before starting the animation.</param>
+			<param name="options">Designates a mask of options that indicates how the developer wants to perform the animations.</param>
+			<param name="animations">An action object that contains the changes to be committed to the views.</param>
+			<summary>Creates an animation action object that is to be used to set up keyframe-based animations for the current view.</summary>
+			<returns>Boolean indicating whether animations finished before a completion handler was called.</returns>
+			<remarks>
+			          <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+			        </remarks>
+			""")]
 		void AnimateKeyframes (double duration, double delay, UIViewKeyframeAnimationOptions options, Action animations, [NullAllowed] UICompletionHandler completion);
 
 		[Static, Export ("addKeyframeWithRelativeStartTime:relativeDuration:animations:")]
@@ -19312,11 +19465,22 @@ namespace UIKit {
 		bool IsMovingFromParentViewController { get; }
 
 		[Export ("presentViewController:animated:completion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="viewControllerToPresent">View controller that displays over the current view controller content.</param>
+			<param name="animated">Boolean indicating whether to animate presentation or not.</param>
+			<summary>Modally presents  a view controller.</summary>
+			<returns>A task that represents the asynchronous PresentViewController operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void PresentViewController (UIViewController viewControllerToPresent, bool animated, [NullAllowed] Action completionHandler);
 
 		[Export ("dismissViewControllerAnimated:completion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="animated">Boolean that determines if the transition is to be animated.</param>
+			<summary>Dismisses the presented view controller.</summary>
+			<returns>A task that represents the asynchronous DismissViewController operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void DismissViewController (bool animated, [NullAllowed] Action completionHandler);
 
 		// UIViewControllerRotation
@@ -19348,7 +19512,21 @@ namespace UIKit {
 		void RemoveFromParentViewController ();
 
 		[Export ("transitionFromViewController:toViewController:duration:options:animations:completion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="fromViewController">The view controller that initiates the action and which is currently visible in the parent hierarchy.</param>
+			<param name="toViewController">The target view controller (not currently visible).</param>
+			<param name="duration">Total duration of the animations, measured in seconds.</param>
+			<param name="options">A mask of options that determines how you want the animations performed.</param>
+			<param name="animations">An action object containing the changes that the application developer wants to commit to the views. Here is where developers can modify any animatable properties of the views.</param>
+			<summary>Used for transitioning between two view controller's child view controllers.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous Transition operation.   The value of the TResult parameter is a UIKit.UICompletionHandler.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The TransitionAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		/*PROTECTED, MUSTCALLBASE*/
 		void Transition (UIViewController fromViewController, UIViewController toViewController, double duration, UIViewAnimationOptions options, [NullAllowed] Action animations, [NullAllowed] UICompletionHandler completionHandler);
 
@@ -21782,15 +21960,66 @@ namespace UIKit {
 		[Static, Export ("printerPickerControllerWithInitiallySelectedPrinter:")]
 		UIPrinterPickerController FromPrinter ([NullAllowed] UIPrinter printer);
 
-		[Async (ResultTypeName = "UIPrinterPickerCompletionResult")]
+		[Async (ResultTypeName = "UIPrinterPickerCompletionResult", XmlDocs = """
+			<param name="animated">Whether to animate the display of the picker.</param>
+			<summary>Shows a <see cref="T:UIKit.UIPrinterPickerController" /> from this app, with or without animation, depending on <paramref name="animated" />, and code to run on completion, as a <see cref="T:UIKit.UIPrinterPickerCompletionHandler" /> object, and then returns whether the object was displayed.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous Present operation.   The value of the TResult parameter is of type <c>Action&lt;UIKit.UIPrinterPickerCompletionResult&gt;</c>.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="animated">Whether to animate the display of the picker.</param>
+			<param name="result">Whether the user picked a printer.</param>
+			<summary>Shows a <see cref="T:UIKit.UIPrinterPickerController" />  from this app, with or without animation, depending on <paramref name="animated" />, returning a task that provides the picker completion result.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("presentAnimated:completionHandler:")]
 		bool Present (bool animated, [NullAllowed] UIPrinterPickerCompletionHandler completion);
 
-		[Async (ResultTypeName = "UIPrinterPickerCompletionResult")]
+		[Async (ResultTypeName = "UIPrinterPickerCompletionResult", XmlDocs = """
+			<param name="rect">To be added.</param>
+			<param name="view">To be added.</param>
+			<param name="animated">To be added.</param>
+			<summary>Asynchronously presents the picker in a popover that is anchored to <paramref name="rect" /> in <paramref name="view" />.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous PresentFromRect operation.   The value of the TResult parameter is of type <c>Action&lt;UIKit.UIPrinterPickerCompletionResult&gt;</c>.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="rect">The rectangle, in <paramref name="view" />'s coordinate space, to which to anchor the popover.</param>
+			<param name="view">The view in whose coordinate space <paramref name="rect" /> is specified.</param>
+			<param name="animated">Whether to animate the display of the picker.</param>
+			<param name="result">To be added.</param>
+			<summary>Shows a <see cref="T:UIKit.UIPrinterPickerController" /> from this app as a popover that is anchored to a <see cref="T:System.Drawing.RectangleF" /> object contained in a <see cref="T:UIKit.UIView" /> view, with or without animation, depending on <paramref name="animated" />, returning a task that provides the result.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("presentFromRect:inView:animated:completionHandler:")]
 		bool PresentFromRect (CGRect rect, UIView view, bool animated, [NullAllowed] UIPrinterPickerCompletionHandler completion);
 
-		[Async (ResultTypeName = "UIPrinterPickerCompletionResult")]
+		[Async (ResultTypeName = "UIPrinterPickerCompletionResult", XmlDocs = """
+			<param name="item">The bar button item to which to anchor the popover.</param>
+			<param name="animated">Whether to animate the display of the picker.</param>
+			<summary>Asynchronously shows a <see cref="T:UIKit.UIPrinterPickerController" /> from this app as a popover that is anchored to a <see cref="T:UIKit.UIBarButtonItem" /> item, with or without animation, depending on <paramref name="animated" />, and code to run on completion, as a <see cref="T:UIKit.UIPrinterPickerCompletionHandler" /> object, and then returns whether the object was displayed.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous PresentFromBarButtonItem operation.   The value of the TResult parameter is of type <c>Action&lt;UIKit.UIPrinterPickerCompletionResult&gt;</c>.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The PresentFromBarButtonItemAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="item">The bar button item to which to anchor the popover.</param>
+			<param name="animated">Whether to animate the display of the picker.</param>
+			<param name="result">To be added.</param>
+			<summary>Asynchronously shows a <see cref="T:UIKit.UIPrinterPickerController" /> from this app as a popover that is anchored to a <see cref="T:UIKit.UIBarButtonItem" /> item, with or without animation, depending on <paramref name="animated" />, returning a task that provides the result.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("presentFromBarButtonItem:animated:completionHandler:")]
 		bool PresentFromBarButtonItem (UIBarButtonItem item, bool animated, [NullAllowed] UIPrinterPickerCompletionHandler completion);
 
@@ -22037,15 +22266,70 @@ namespace UIKit {
 		void Dismiss (bool animated);
 
 		[Export ("presentAnimated:completionHandler:")]
-		[Async (ResultTypeName = "UIPrintInteractionResult")]
+		[Async (ResultTypeName = "UIPrintInteractionResult", XmlDocs = """
+			<param name="animated"> to animate the sheet display,  to display immediately.</param>
+			<summary>Presents an iPhone printing user interface.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous Present operation.   The value of the TResult parameter is of type <c>Action&lt;UIKit.UIPrintInteractionResult&gt;</c>.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="animated">
+			          <see langword="true" /> to animate the sheet display, <see langword="false" /> to display immediately.</param>
+			<param name="result">The result of the present operation.</param>
+			<summary>Presents an iPhone printing user interface asynchronously.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous Present operation.   The value of the TResult parameter is of type <see cref="T:UIKit.UIPrintInteractionResult" />.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		bool Present (bool animated, [NullAllowed] UIPrintInteractionCompletionHandler completion);
 
 		[Export ("presentFromBarButtonItem:animated:completionHandler:")]
-		[Async (ResultTypeName = "UIPrintInteractionResult")]
+		[Async (ResultTypeName = "UIPrintInteractionResult", XmlDocs = """
+			<param name="item">The bar button item that you need to tap for printing.</param>
+			<param name="animated">Set  to animate the printing popover view from the specified item, or  to display immediately.</param>
+			<summary>Presents an iPad printing user interface in a popover view that can be animated from a soecified bar-button item.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous PresentFromBarButtonItem operation.   The value of the TResult parameter is of type <c>Action&lt;UIKit.UIPrintInteractionResult&gt;</c>.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="item">The bar button item that the user has tapped for printing.</param>
+			<param name="animated">
+			          <see langword="true" /> to animate the printing popover view from the specified item, <see langword="false" /> to display immediately.</param>
+			<param name="result">The result of the present operation.</param>
+			<summary>Asynchronously presents the iPad printing user interface in a popover view that can be animated from a bar-button item.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous PresentFromBarButtonItem operation.   The value of the TResult parameter is of type <c>Action&lt;UIKit.UIPrintInteractionResult&gt;</c>.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		bool PresentFromBarButtonItem (UIBarButtonItem item, bool animated, [NullAllowed] UIPrintInteractionCompletionHandler completion);
 
 		[Export ("presentFromRect:inView:animated:completionHandler:")]
-		[Async (ResultTypeName = "UIPrintInteractionResult")]
+		[Async (ResultTypeName = "UIPrintInteractionResult", XmlDocs = """
+			<param name="rect">A rectangle that defines an area from which a printing popover view is animated.</param>
+			<param name="view">The view that provides the coordinate system for the specified rect.</param>
+			<param name="animated"> to animate the printing popover view from the specified item,  to display immediately.</param>
+			<summary>Presents an iPad printing user interface in a particular popover view that can be animated from any specified area in a view.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous PresentFromRectInView operation.   The value of the TResult parameter is of type UIKit.UIPrintInteractionResult.  The return values of the asynch methods , , and .</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="rect">A rectangle that defines an area from which a printing popover view is animated.</param>
+			<param name="view">The view that provides the coordinate system for the specified rect.</param>
+			<param name="animated">
+			          <see langword="true" /> to animate the printing popover view from the specified item, <see langword="false" /> to display immediately.</param>
+			<param name="result">The result of the present operation.</param>
+			<summary>Asynchronously presents the iPad printing user interface in a popover view that can be animated from any area in a view.</summary>
+			<returns>When  printing options are already displayed, the printing-options popover view is hidden. You need to call the method again to display the options.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		bool PresentFromRectInView (CGRect rect, UIView view, bool animated, [NullAllowed] UIPrintInteractionCompletionHandler completion);
 
 		[Export ("showsNumberOfCopies")]
@@ -22061,7 +22345,24 @@ namespace UIKit {
 		bool ShowsPaperOrientation { get; set; }
 
 		[MacCatalyst (13, 1)]
-		[Async (ResultTypeName = "UIPrintInteractionCompletionResult")]
+		[Async (ResultTypeName = "UIPrintInteractionCompletionResult", XmlDocs = """
+			<param name="printer">Specified printer.</param>
+			<summary>Prints directly to a specified printer.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous PrintToPrinter operation.   The value of the TResult parameter is of type <c>Action&lt;UIKit.UIPrintInteractionCompletionResult&gt;</c>.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The PrintToPrinterAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<param name="printer">Specified printer.</param>
+			<param name="result">Whether the operation succeeded or failed.</param>
+			<summary>Asynchronously prints directly to a specified printer, returning a task that provides the result.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("printToPrinter:completionHandler:")]
 		bool PrintToPrinter (UIPrinter printer, UIPrintInteractionCompletionHandler completion);
 	}
@@ -22890,7 +23191,17 @@ namespace UIKit {
 		NSObject WeakDelegate { get; set; }
 
 		[Export ("addOptionWithTitle:image:order:handler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="title">To be added.</param>
+			<param name="image">To be added.</param>
+			<param name="order">To be added.</param>
+			<summary>Asynchronously adds a menu item to the document menue.</summary>
+			<returns>A task that represents the asynchronous AddOption operation</returns>
+			<remarks>
+			          <para copied="true">The AddOptionAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void AddOption (string title, [NullAllowed] UIImage image, UIDocumentMenuOrder order, Action completionHandler);
 	}
 
@@ -23187,15 +23498,33 @@ namespace UIKit {
 	[BaseType (typeof (NSObject))]
 	interface UIFocusAnimationCoordinator {
 		[Export ("addCoordinatedAnimations:completion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="animations">The animations to run.This parameter can be .</param>
+			<summary>Adds the provided <paramref name="animations" /> to the coordinated animation, and runs a completion handler when the operation completes.</summary>
+			<returns>A task that represents the asynchronous AddCoordinatedAnimations operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void AddCoordinatedAnimations ([NullAllowed] Action animations, [NullAllowed] Action completion);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="animations">The animations to run.This parameter can be .</param>
+			<summary>Adds the provided <paramref name="animations" /> to the coordinated animation, and runs a completion handler when the main animations complete.</summary>
+			<returns>A task that represents the asynchronous AddCoordinatedFocusingAnimations operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[MacCatalyst (13, 1)]
 		[Export ("addCoordinatedFocusingAnimations:completion:")]
 		void AddCoordinatedFocusingAnimations ([NullAllowed] Action<IUIFocusAnimationContext> animations, [NullAllowed] Action completion);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="animations">The animations to run.This parameter can be .</param>
+			<summary>Adds the provided <paramref name="animations" /> to the coordinated animation, and runs a completion handler when the main animations complete.</summary>
+			<returns>A task that represents the asynchronous AddCoordinatedUnfocusingAnimations operation</returns>
+			<remarks>
+			          <para copied="true">The AddCoordinatedUnfocusingAnimationsAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[MacCatalyst (13, 1)]
 		[Export ("addCoordinatedUnfocusingAnimations:completion:")]
 		void AddCoordinatedUnfocusingAnimations ([NullAllowed] Action<IUIFocusAnimationContext> animations, [NullAllowed] Action completion);
@@ -24987,11 +25316,31 @@ namespace UIKit {
 		[Export ("additionalTrailingNavigationBarButtonItems", ArgumentSemantic.Strong)]
 		UIBarButtonItem [] AdditionalTrailingNavigationBarButtonItems { get; set; }
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="url">The URL to the document to reveal.</param>
+			<param name="importIfNeeded">Whether the document browser should import the document if the document must be imported to be revealed.</param>
+			<summary>Reveals the document at the provided URL in the browser, and imports it if <paramref name="importIfNeeded" /> is <see langword="true" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RevealDocument operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSUrl,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("revealDocumentAtURL:importIfNeeded:completion:")]
 		void RevealDocument (NSUrl url, bool importIfNeeded, [NullAllowed] Action<NSUrl, NSError> completion);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="documentUrl">The document's current location.</param>
+			<param name="neighbourUrl">The url of a document in the same file provider.</param>
+			<param name="importMode">The document import mode.</param>
+			<summary>Imports the document at <paramref name="documentUrl" /> to be ajacent to <paramref name="neighbourUrl" />.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous ImportDocument operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSUrl,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The ImportDocumentAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("importDocumentAtURL:nextToDocumentAtURL:mode:completionHandler:")]
 		void ImportDocument (NSUrl documentUrl, NSUrl neighbourUrl, UIDocumentBrowserImportMode importMode, Action<NSUrl, NSError> completion);
 

@@ -4897,12 +4897,25 @@ namespace Intents {
 		void DeleteAllInteractions ([NullAllowed] Action<NSError> completion);
 
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="identifiers">To be added.</param>
+			<summary>Deletes the interactions with the specified <paramref name="identifiers" />.</summary>
+			<returns>A task that represents the asynchronous DeleteInteractions operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("deleteInteractionsWithIdentifiers:completion:")]
 		void DeleteInteractions (string [] identifiers, [NullAllowed] Action<NSError> completion);
 
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="groupIdentifier">To be added.</param>
+			<summary>Deletes the donated interactions in the specified <paramref name="groupIdentifier" />.</summary>
+			<returns>A task that represents the asynchronous DeleteGroupedInteractions operation</returns>
+			<remarks>
+			          <para copied="true">The DeleteGroupedInteractionsAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("deleteInteractionsWithGroupIdentifier:completion:")]
 		void DeleteGroupedInteractions (string groupIdentifier, [NullAllowed] Action<NSError> completion);
 
@@ -12304,7 +12317,12 @@ namespace Intents {
 		[Export ("defaultStore", ArgumentSemantic.Strong)]
 		INRelevantShortcutStore DefaultStore { get; }
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="shortcuts">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("setRelevantShortcuts:completionHandler:")]
 		void SetRelevantShortcuts (INRelevantShortcut [] shortcuts, [NullAllowed] Action<NSError> completionHandler);
 	}
@@ -12377,7 +12395,12 @@ namespace Intents {
 		[Export ("getAllVoiceShortcutsWithCompletion:")]
 		void GetAllVoiceShortcuts (INVoiceShortcutCenterGetVoiceShortcutsHandler completionHandler);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="identifier">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("getVoiceShortcutWithIdentifier:completion:")]
 		void GetVoiceShortcut (NSUuid identifier, Action<INVoiceShortcut, NSError> completionHandler);
 

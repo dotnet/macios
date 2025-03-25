@@ -420,7 +420,12 @@ namespace ClassKit {
 		[Export ("addChildContext:")]
 		void AddChild (CLSContext childContext);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="identifierPath">The identifier path for the context to retrieve.</param>
+			<summary>Returns a task that contains the context that is represented by the provided identifier path.</summary>
+			<returns>A task that contains the context that is represented by the provided identifier path.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("descendantMatchingIdentifierPath:completion:")]
 		void FindDescendantMatching (string [] identifierPath, Action<CLSContext, NSError> completion);
 
@@ -510,11 +515,21 @@ namespace ClassKit {
 
 		// From CLSDataStore (Contexts) Category
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="predicate">The search predicate.</param>
+			<summary>Searches for a context that matches the supplied <paramref name="predicate" /> and returns a task that contains the result.</summary>
+			<returns>A task that contains the search results</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("contextsMatchingPredicate:completion:")]
 		void FindContextsMatching (NSPredicate predicate, Action<CLSContext [], NSError> completion);
 
-		[Async]
+		[Async (XmlDocs = """
+			<param name="identifierPath">The identifier paths for the contexts to find.</param>
+			<summary>Finds the contexts identifed by a set of identifier paths and returns a task that contains the reults.</summary>
+			<returns>A task that contains the search results</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("contextsMatchingIdentifierPath:completion:")]
 		void FindContextsMatching (string [] identifierPath, Action<CLSContext [], NSError> completion);
 

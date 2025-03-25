@@ -15,5 +15,5 @@ namespace AuthenticationServices {
             GC.KeepAlive (certificate);
 		}
 #endif
-    }
+	}
 }

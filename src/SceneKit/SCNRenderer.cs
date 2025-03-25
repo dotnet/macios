@@ -32,5 +32,5 @@ namespace SceneKit {
 		}
 #endif
 
-    }
+	}
 }

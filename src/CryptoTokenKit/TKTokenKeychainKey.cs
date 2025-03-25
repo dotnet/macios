@@ -10,7 +10,7 @@ namespace CryptoTokenKit {
 		public TKTokenKeychainKey (SecCertificate? certificate, NSObject objectId)
 			: this (certificate.GetHandle (), objectId)
 		{
-            GC.KeepAlive (certificate);
+			GC.KeepAlive (certificate);
 		}
-    }
+	}
 }

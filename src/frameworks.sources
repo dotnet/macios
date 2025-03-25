@@ -233,6 +233,7 @@ AUTHENTICATIONSERVICES_SOURCES = \
 	AuthenticationServices/ASAuthorization.cs \
 	AuthenticationServices/ASAuthorizationRequest.cs \
 	AuthenticationServices/PublicPrivateKeyAuthentication.cs \
+	AuthenticationServices/ASAuthorizationProviderExtensionLoginManager.cs \
 
 # AVFoundation
 
@@ -285,6 +286,7 @@ AVFOUNDATION_SOURCES = \
 	AVFoundation/AVSpeechSynthesisProviderAudioUnit.cs \
 	AVFoundation/AVSpeechUtterance.cs \
 	AVFoundation/AVTextStyleRule.cs \
+	AVFoundation/AVAssetTrack.cs \
 	AVFoundation/Events.cs \
 	AVFoundation/AudioRendererWasFlushedAutomaticallyEventArgs.cs \
 	AVFoundation/AVCaptureReactionType.rgen.cs \
@@ -722,6 +724,9 @@ COREVIDEO_SOURCES = \
 	CoreVideo/CVPixelBufferPoolSettings.cs \
 	CoreVideo/CVPixelFormatDescription.cs \
 	CoreVideo/CVTime.cs \
+
+CRYPTOTOKENKIT_SOURCES = \
+	CryptoTokenKit/TKTokenKeychainKey.cs \
 
 # CoreWlan
 
@@ -1405,6 +1410,7 @@ NETWORKEXTENSION_SOURCES = \
 	NetworkExtension/NEHotspotConfiguration.cs \
 	NetworkExtension/NEHotspotEapSettings.cs \
 	NetworkExtension/NEVpnManager.cs \
+	NetworkExtension/NEAppProxyFlow.cs \
 
 # NewsstandKit
 
@@ -1588,6 +1594,7 @@ SCENEKIT_SOURCES = \
 	SceneKit/SCNSceneLoadingOptions.cs \
 	SceneKit/SCNSceneSource.cs \
 	SceneKit/SCNSkinner.cs \
+	SceneKit/SCNRenderer.cs \
 	SceneKit/SCNTechnique.cs \
 	SceneKit/NSValue.cs \
 

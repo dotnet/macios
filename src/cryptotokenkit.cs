@@ -855,9 +855,6 @@ namespace CryptoTokenKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (IntPtr certificate, NSObject objectId);
 
-		[Wrap ("this (certificate.GetHandle (), objectId)")]
-		NativeHandle Constructor ([NullAllowed] SecCertificate certificate, NSObject objectId);
-
 		[Export ("keyType")]
 		string KeyType { get; set; }
 

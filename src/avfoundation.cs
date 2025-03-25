@@ -5699,12 +5699,6 @@ namespace AVFoundation {
 		[Export ("formatDescriptions")]
 		NSObject [] FormatDescriptionsAsObjects { get; }
 
-		/// <summary>An array of <see cref="T:CoreMedia.CMFormatDescription" />s that describe the formats of the samples in the <see cref="T:AVFoundation.AVAssetTrack" />.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Wrap ("Array.ConvertAll (FormatDescriptionsAsObjects, l => CMFormatDescription.Create (l.Handle, false))")]
-		CMFormatDescription [] FormatDescriptions { get; }
-
 		/// <summary>Whether the track is enabled.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>

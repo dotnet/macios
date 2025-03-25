@@ -348,6 +348,7 @@ public partial class Generator {
 		case "CGImage":
 		case "ImageIO.CGImageMetadata":
 			print ($"SetHandle (\"{propertyName}\", value.GetHandle ());");
+			print ($"GC.KeepAlive (value);");
 			break;
 		case "CGPoint":
 		case "CGRect":

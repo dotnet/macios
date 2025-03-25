@@ -1938,7 +1938,7 @@ namespace AuthenticationServices {
 		SecKey LoginRequestEncryptionPublicKey {
 			[Wrap ("new SecKey (this._LoginRequestEncryptionPublicKey, owns: false)")]
 			get;
-			[Wrap ("_LoginRequestEncryptionPublicKey = value.Handle")]
+			[Wrap ("_LoginRequestEncryptionPublicKey = Runtime.RetainAndAutoreleaseNativeObject (value)")]
 			set;
 		}
 
@@ -2079,9 +2079,6 @@ namespace AuthenticationServices {
 		[Protected]
 		[Export ("saveCertificate:keyType:")]
 		void _Save (IntPtr certificate, ASAuthorizationProviderExtensionKeyType keyType);
-
-		[Wrap ("_Save (certificate.GetHandle (), keyType)")]
-		void Save (SecCertificate certificate, ASAuthorizationProviderExtensionKeyType keyType);
 
 		[Protected]
 		[Export ("copyKeyForKeyType:")]

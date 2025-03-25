@@ -297,10 +297,6 @@ namespace NetworkExtension {
 		[Export ("setMetadata:")]
 		void SetMetadata (OS_nw_parameters nwparameters);
 
-		[NoTV, NoiOS, MacCatalyst (15, 0)]
-		[Wrap ("SetMetadata (parameters.GetHandle ())")]
-		void SetMetadata (NWParameters parameters);
-
 		/// <summary>Gets the flow metadata.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -318,7 +314,7 @@ namespace NetworkExtension {
 		NWInterface NetworkInterface {
 			[Wrap ("Runtime.GetINativeObject<NWInterface> (WeakNetworkInterface, false)!")]
 			get;
-			[Wrap ("WeakNetworkInterface = value.GetHandle ()")]
+			[Wrap ("WeakNetworkInterface = Runtime.RetainAndAutoreleaseNativeObject (value)")]
 			set;
 		}
 

@@ -15,12 +15,10 @@ namespace AVFoundation {
 		public enum InitMode {
 			/// <summary>Indicates a connection.</summary>
 			WithConnection,
-#if NET
 			/// <summary>Indicates no connection.</summary>
 			[SupportedOSPlatform ("ios")]
 			[SupportedOSPlatform ("macos")]
 			[SupportedOSPlatform ("maccatalyst")]
-#endif
 			WithNoConnection,
 		}
 

@@ -39,19 +39,12 @@ namespace AVFoundation {
 #endif
 
 #if !XAMCORE_5_0
-#if NET
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	public delegate /* OSStatus */ int AVAudioSourceNodeRenderHandler (ref bool isSilence, ref AudioTimeStamp timestamp, uint frameCount, ref AudioBuffers outputData);
-#else
-	[EditorBrowsable (EditorBrowsableState.Never)]
-	public delegate /* OSStatus */ int AVAudioSourceNodeRenderHandler (bool isSilence, AudioToolbox.AudioTimeStamp timestamp, uint frameCount, ref AudioBuffers outputData);
-	[EditorBrowsable (EditorBrowsableState.Never)]
-	public delegate /* OSStatus */ int AVAudioSourceNodeRenderHandler2 (ref bool isSilence, ref AudioTimeStamp timestamp, uint frameCount, ref AudioBuffers outputData);
-#endif // NET
 #endif // XAMCORE_5_0
 
 	public partial class AVAudioSourceNode {
-#if !XAMCORE_5_0 && NET
+#if !XAMCORE_5_0
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use the overload that takes a delegate that does not take a 'ref AudioBuffers' instead. Assigning a value to the 'inputData' parameter in the callback has no effect.")]
 		public AVAudioSourceNode (AVAudioSourceNodeRenderHandler renderHandler)
@@ -66,22 +59,6 @@ namespace AVFoundation {
 		{
 		}
 #endif // !XAMCORE_5_0
-
-#if !NET
-		[EditorBrowsable (EditorBrowsableState.Never)]
-		[Obsolete ("Use the overload that takes a delegate that does not take a 'ref AudioBuffers' instead. Assigning a value to the 'inputData' parameter in the callback has no effect.")]
-		public AVAudioSourceNode (AVAudioSourceNodeRenderHandler2 renderHandler)
-			: this (GetHandler (renderHandler))
-		{
-		}
-
-		[EditorBrowsable (EditorBrowsableState.Never)]
-		[Obsolete ("Use the overload that takes a delegate that does not take a 'ref AudioBuffers' instead. Assigning a value to the 'inputData' parameter in the callback has no effect.")]
-		public AVAudioSourceNode (AVAudioFormat format, AVAudioSourceNodeRenderHandler2 renderHandler)
-			: this (format, GetHandler (renderHandler))
-		{
-		}
-#endif // !NET
 
 		/// <summary>Creates an <see cref="T:AudioToolbox.AVAudioSourceNode" /> with the specified callback to render audio.</summary>
 		/// <param name="renderHandler">The callback that will be called to supply audio data.</param>
@@ -106,28 +83,8 @@ namespace AVFoundation {
 		{
 		}
 
-#if !NET
-		static AVAudioSourceNodeRenderHandlerRaw GetHandler (AVAudioSourceNodeRenderHandler renderHandler)
-		{
-			AVAudioSourceNodeRenderHandlerRaw rv = (IntPtr isSilence, IntPtr timestamp, uint frameCount, IntPtr outputData) => {
-				unsafe {
-					byte* isSilencePtr = (byte*) isSilence;
-					bool isSilenceBool = (*isSilencePtr) != 0;
-					AudioTimeStamp timestampValue = *(AudioTimeStamp*) timestamp;
-					var buffers = new AudioBuffers (outputData);
-					return renderHandler (isSilenceBool, timestampValue, frameCount, ref buffers);
-				}
-			};
-			return rv;
-		}
-#endif // !NET
-
 #if !XAMCORE_5_0
-#if NET
 		static AVAudioSourceNodeRenderHandlerRaw GetHandler (AVAudioSourceNodeRenderHandler renderHandler)
-#else
-		static AVAudioSourceNodeRenderHandlerRaw GetHandler (AVAudioSourceNodeRenderHandler2 renderHandler)
-#endif // NET
 		{
 			AVAudioSourceNodeRenderHandlerRaw rv = (IntPtr isSilence, IntPtr timestamp, uint frameCount, IntPtr outputData) => {
 				unsafe {

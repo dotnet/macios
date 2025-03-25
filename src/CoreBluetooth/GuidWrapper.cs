@@ -30,15 +30,7 @@ namespace CoreBluetooth {
 		{
 			ConnectPeripheral (peripheral, options?.Dictionary);
 		}
-#if !NET && !TVOS
-		[Obsolete ("Always throws 'NotSupportedException' (not a public API).")]
-		public void RetrievePeripherals (CBUUID [] peripheralUuids)
-			=> throw new NotSupportedException ();
 
-		[Obsolete ("Always throws 'NotSupportedException' (not a public API).")]
-		public void RetrievePeripherals (CBUUID peripheralUuid)
-			=> throw new NotSupportedException ();
-#endif
 		public void ScanForPeripherals (CBUUID []? peripheralUuids, NSDictionary? options)
 		{
 			if (peripheralUuids is null)

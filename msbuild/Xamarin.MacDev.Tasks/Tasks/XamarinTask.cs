@@ -64,8 +64,6 @@ namespace Xamarin.MacDev.Tasks {
 					return "iOS";
 				case ApplePlatform.TVOS:
 					return "tvOS";
-				case ApplePlatform.WatchOS:
-					return "watchOS";
 				case ApplePlatform.MacOSX:
 					return "macOS";
 				case ApplePlatform.MacCatalyst:

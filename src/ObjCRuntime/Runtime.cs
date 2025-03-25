@@ -2422,7 +2422,11 @@ namespace ObjCRuntime {
 #pragma warning restore RBI0014
 		}
 
-		internal static NativeHandle RetainAndAutoreleaseNSObject (NSObject? obj)
+		/// <summary>Retain and autorelease the given object, then return the object's handle.</summary>
+		/// <param name="obj">The object to retain and autorelease.</param>
+		/// <returns>The object's handle (retained and autorelease).</returns>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		public static NativeHandle RetainAndAutoreleaseNSObject (NSObject? obj)
 		{
 			if (obj is null)
 				return NativeHandle.Zero;
@@ -2433,7 +2437,12 @@ namespace ObjCRuntime {
 #pragma warning restore RBI0014
 		}
 
-		internal static NativeHandle RetainAndAutoreleaseNativeObject (INativeObject? obj)
+		/// <summary>Retain and autorelease the given object, then return the object's handle.</summary>
+		/// <param name="obj">The object to retain and autorelease.</param>
+		/// <returns>The object's handle (retained and autorelease).</returns>
+		/// <remarks>If the given object is not an `NSObject`, then the handle won't be retained/autoreleased.</remarks>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		public static NativeHandle RetainAndAutoreleaseNativeObject (INativeObject? obj)
 		{
 			if (obj is null)
 				return NativeHandle.Zero;

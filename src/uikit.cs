@@ -29754,11 +29754,11 @@ namespace UIKit {
 
 		[iOS (18, 4), MacCatalyst (18, 4)]
 		[Export ("tabBarController:sidebar:itemsForBeginningDragSession:tab:")]
-		UIDragItem[] GetItemsForBeginningDragSession (UITabBarController tabBarController, UITabBarControllerSidebar sidebar, IUIDragSession dragSession, UITab tab);
+		UIDragItem [] GetItemsForBeginningDragSession (UITabBarController tabBarController, UITabBarControllerSidebar sidebar, IUIDragSession dragSession, UITab tab);
 
 		[iOS (18, 4), MacCatalyst (18, 4)]
 		[Export ("tabBarController:sidebar:itemsForAddingToDragSession:tab:")]
-		UIDragItem[] GetItemsForAddingToDragSession (UITabBarController tabBarController, UITabBarControllerSidebar sidebar, IUIDragSession dragSession, UITab tab);
+		UIDragItem [] GetItemsForAddingToDragSession (UITabBarController tabBarController, UITabBarControllerSidebar sidebar, IUIDragSession dragSession, UITab tab);
 
 		[iOS (18, 4), MacCatalyst (18, 4)]
 		[Export ("tabBarController:sidebar:sidebarAction:group:operationForAcceptingItemsFromDropSession:")]
@@ -30652,13 +30652,12 @@ namespace UIKit {
 
 	[NoTV, NoMacCatalyst, iOS (18, 4)]
 	[BaseType (typeof (NSObject))]
-	interface UIConversationContext
-	{
+	interface UIConversationContext {
 		[Export ("threadIdentifier")]
 		string ThreadIdentifier { get; set; }
 
 		[Export ("entries", ArgumentSemantic.Copy)]
-		UIConversationEntry[] Entries { get; set; }
+		UIConversationEntry [] Entries { get; set; }
 
 		[Export ("selfIdentifiers", ArgumentSemantic.Copy)]
 		NSSet<NSString> SelfIdentifiers { get; set; }
@@ -30672,8 +30671,7 @@ namespace UIKit {
 
 	[NoTV, NoMacCatalyst, iOS (18, 4)]
 	[BaseType (typeof (NSObject))]
-	interface UIConversationEntry
-	{
+	interface UIConversationEntry {
 		[Export ("text")]
 		string Text { get; set; }
 
@@ -30695,14 +30693,12 @@ namespace UIKit {
 
 	[NoTV, NoMacCatalyst, iOS (18, 4)]
 	[BaseType (typeof (NSObject))]
-	interface UIInputSuggestion
-	{
+	interface UIInputSuggestion {
 	}
 
 	[NoTV, NoMacCatalyst, iOS (18, 4)]
 	[BaseType (typeof (UIConversationContext))]
-	interface UIMailConversationContext
-	{
+	interface UIMailConversationContext {
 		[Export ("responseSubject")]
 		string ResponseSubject { get; set; }
 
@@ -30715,8 +30711,7 @@ namespace UIKit {
 
 	[NoTV, NoMacCatalyst, iOS (18, 4)]
 	[Native]
-	public enum UIMailConversationEntryKind : long
-	{
+	public enum UIMailConversationEntryKind : long {
 		None = 0,
 		Personal = 1,
 		Promotion = 2,
@@ -30727,8 +30722,7 @@ namespace UIKit {
 
 	[NoTV, NoMacCatalyst, iOS (18, 4)]
 	[BaseType (typeof (UIConversationEntry))]
-	interface UIMailConversationEntry
-	{
+	interface UIMailConversationEntry {
 		[Export ("kind", ArgumentSemantic.Assign)]
 		UIMailConversationEntryKind Kind { get; set; }
 
@@ -30738,16 +30732,14 @@ namespace UIKit {
 
 	[NoTV, NoMacCatalyst, iOS (18, 4)]
 	[BaseType (typeof (UIConversationContext))]
-	interface UIMessageConversationContext
-	{
+	interface UIMessageConversationContext {
 		[Export ("isJunk")]
 		bool IsJunk { get; set; }
 	}
 
 	[NoTV, NoMacCatalyst, iOS (18, 4)]
 	[Native]
-	public enum UIMessageConversationEntryDataKind : long
-	{
+	public enum UIMessageConversationEntryDataKind : long {
 		Text = 0,
 		Attachment = 1,
 		Other = 2,
@@ -30755,8 +30747,7 @@ namespace UIKit {
 
 	[NoTV, NoMacCatalyst, iOS (18, 4)]
 	[BaseType (typeof (UIConversationEntry))]
-	interface UIMessageConversationEntry
-	{
+	interface UIMessageConversationEntry {
 		[Export ("dataKind", ArgumentSemantic.Assign)]
 		UIMessageConversationEntryDataKind DataKind { get; set; }
 
@@ -30766,8 +30757,7 @@ namespace UIKit {
 
 	[NoTV, NoMacCatalyst, iOS (18, 4)]
 	[BaseType (typeof (UIInputSuggestion))]
-	interface UISmartReplySuggestion
-	{
+	interface UISmartReplySuggestion {
 		[Export ("smartReply")]
 		string SmartReply { get; }
 	}

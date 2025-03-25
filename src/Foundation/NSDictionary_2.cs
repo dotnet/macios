@@ -109,7 +109,7 @@ namespace Foundation {
 		/// <summary>Create an <cref name="Dictionary`2" /> from this dictionary.</summary>
 		/// <param name="convertCallback">A callback function to convert from the type of each key and value into the type to add to the returned dictionary.</param>
 		/// <returns>Null if the collection of items is null, otherwise a new <cref name="Dictionary`2" /> from this dictionary.</returns>
-		public Dictionary<K, V> ToDictionary<K, V> (Func<TKey, TValue, (K Key, V Value)> convertCallback) where K: notnull
+		public Dictionary<K, V> ToDictionary<K, V> (Func<TKey, TValue, (K Key, V Value)> convertCallback) where K : notnull
 		{
 			var rv = new Dictionary<K, V> ();
 			foreach (var kvp in (IDictionary<TKey, TValue>) this) {

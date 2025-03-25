@@ -11799,7 +11799,7 @@ namespace AppKit {
 	delegate void NSPasteboardDetectPatternsCompletionHandler ([NullAllowed] HashSet<NSPasteboardDetectionPattern> detectedPatterns, [NullAllowed] NSError error);
 
 	delegate void NSPasteboardDetectValuesHandler ([NullAllowed] NSDictionary<NSString, NSObject> detectedValues, [NullAllowed] NSError error);
-	delegate void NSPasteboardDetectValuesCompletionHandler ([NullAllowed] Dictionary<NSPasteboardDetectionPattern, DDMatch[]> detectedValues, [NullAllowed] NSError error);
+	delegate void NSPasteboardDetectValuesCompletionHandler ([NullAllowed] Dictionary<NSPasteboardDetectionPattern, DDMatch []> detectedValues, [NullAllowed] NSError error);
 
 	delegate void NSPasteboardDetectMetadataHandler ([NullAllowed] NSDictionary<NSString, NSObject> detectedMetadata, [NullAllowed] NSError error);
 	delegate void NSPasteboardDetectMetadataCompletionHandler ([NullAllowed] Dictionary<NSPasteboardMetadataType, UTType> detectedMetadata, [NullAllowed] NSError error);

@@ -396,6 +396,14 @@ namespace CoreFoundation {
 			return new CFHTTPStream (handle, true);
 		}
 
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("macos10.11", "Use 'NSUrlSession' instead.")]
+		[ObsoletedOSPlatform ("ios9.0", "Use 'NSUrlSession' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst13.0", "Use 'NSUrlSession' instead.")]
+		[ObsoletedOSPlatform ("tvos9.0", "Use 'NSUrlSession' instead.")]
 		public static CFHTTPStream CreateForStreamedHTTPRequest (CFHTTPMessage request, NSInputStream body)
 		{
 			if (request is null)

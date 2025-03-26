@@ -134,6 +134,11 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* BOOL */ byte UIAccessibilityIsInvertColorsEnabled ();
 
+		/// <summary>Determines if the system is currently rendering with inverted colors for accessibility</summary>
+		///         <value>Returns a Boolean indicating whether inverted colors are enabled.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		static public bool IsInvertColorsEnabled {
 			get {
 				return UIAccessibilityIsInvertColorsEnabled () != 0;
@@ -144,6 +149,11 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* BOOL */ byte UIAccessibilityIsGuidedAccessEnabled ();
 
+		/// <summary>Determines whether guide access is currently enabled.</summary>
+		///         <value>Returns a Boolean indicating whether guide access is enabled.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		static public bool IsGuidedAccessEnabled {
 			get {
 				return UIAccessibilityIsGuidedAccessEnabled () != 0;
@@ -315,6 +325,9 @@ namespace UIKit {
 		static extern byte UIAccessibilityDarkerSystemColorsEnabled ();
 
 #if NET
+		/// <summary>Determines whether darker system colors are currently enabled</summary>
+		///         <value>Returns a Boolean indicating whether colors are enabled.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -343,6 +356,9 @@ namespace UIKit {
 		static extern byte UIAccessibilityIsBoldTextEnabled ();
 
 #if NET
+		/// <summary>Determines whether bold text is currently enabled</summary>
+		///         <value>Returns a Boolean indicating whether bold text is enabled.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -385,6 +401,9 @@ namespace UIKit {
 		static extern byte UIAccessibilityIsGrayscaleEnabled ();
 
 #if NET
+		/// <summary>Determines whether gray scale is currently enabled</summary>
+		///         <value>Returns a Boolean indicating whether gray scale is enabled.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -404,6 +423,9 @@ namespace UIKit {
 		static extern byte UIAccessibilityIsReduceMotionEnabled ();
 
 #if NET
+		/// <summary>Determines whether the system is running with reduced motion.</summary>
+		///         <value>Returns a Boolean indicating whether reduced motion is enabled.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -467,6 +489,9 @@ namespace UIKit {
 		static extern byte UIAccessibilityIsReduceTransparencyEnabled ();
 
 #if NET
+		/// <summary>Determines whether the system is running with reduced transparency.</summary>
+		///         <value>Returns a Boolean indicating whether reduced transparency is enabled.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -486,6 +511,9 @@ namespace UIKit {
 		static extern byte UIAccessibilityIsSwitchControlRunning ();
 
 #if NET
+		/// <summary>Determines whether the system is running with switch control enabled.</summary>
+		///         <value>Returns a Boolean indicating whether switch control is enabled.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -505,6 +533,9 @@ namespace UIKit {
 		static extern byte UIAccessibilityIsSpeakSelectionEnabled ();
 
 #if NET
+		/// <summary>Determines whether the system is running with speak selection enabled.</summary>
+		///         <value>Returns a Boolean indicating whether speak selecton is enabled.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -524,6 +555,9 @@ namespace UIKit {
 		static extern byte UIAccessibilityIsSpeakScreenEnabled ();
 
 #if NET
+		/// <summary>Determines whether the system is running with the speak screen enabled.</summary>
+		///         <value>Returns a Boolean indicating whether the speak screen is enabled.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -543,6 +577,9 @@ namespace UIKit {
 		static extern byte UIAccessibilityIsAssistiveTouchRunning ();
 
 #if NET
+		/// <summary>Whether assistive touch is active.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -605,6 +642,9 @@ namespace UIKit {
 		static extern nuint UIAccessibilityHearingDevicePairedEar ();
 
 #if NET
+		/// <summary>Retrieves the status of how a hearing device is paired to one, both, or no ears.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]

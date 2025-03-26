@@ -84,6 +84,9 @@ namespace PushKit {
 		[Field ("PKPushTypeVoIP")]
 		NSString Voip { get; }
 
+		/// <summary>Gets the WatchKit complication push type, <c>PKPushTypeComplication</c>.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use directly from watchOS instead.")]
 		[NoMac]
 		[NoMacCatalyst]

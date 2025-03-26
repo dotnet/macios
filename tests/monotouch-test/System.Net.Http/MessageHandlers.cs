@@ -144,8 +144,17 @@ namespace MonoTests.System.Net.Http {
 				nativeCookieResult = await nativeResponse.Content.ReadAsStringAsync ();
 			}, out var ex);
 
-			if (!completed || managedCookieResult.Contains ("502 Bad Gateway") || nativeCookieResult.Contains ("502 Bad Gateway") || managedCookieResult.Contains ("504 Gateway Time-out") || nativeCookieResult.Contains ("504 Gateway Time-out"))
+			if (!completed)
 				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
+			var intermittentFailures = new string [] {
+				"500 Internal Server Error",
+				"502 Bad Gateway",
+				"503 Service Temporarily Unavailable",
+				"504 Gateway Time-out",
+			};
+			if (intermittentFailures.Any (v => managedCookieResult.Contains (v) || nativeCookieResult.Contains (v)))
+				TestRuntime.IgnoreInCI ("Intermittent network failure - ignore in CI");
+
 			Assert.IsTrue (completed, "Network request completed");
 			Assert.IsNull (ex, "Exception");
 			Assert.IsNotNull (managedCookieResult, "Managed cookies result");

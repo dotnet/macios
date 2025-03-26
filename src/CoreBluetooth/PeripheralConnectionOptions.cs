@@ -35,12 +35,10 @@ using ObjCRuntime;
 
 namespace CoreBluetooth {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class PeripheralConnectionOptions : DictionaryContainer {
 #if !COREBUILD
 		public PeripheralConnectionOptions ()

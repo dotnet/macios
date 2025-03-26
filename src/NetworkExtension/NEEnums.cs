@@ -34,8 +34,11 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NEVpnIkeAuthenticationMethod : long {
+		/// <summary>In IKEv2, supports extended authentication if <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Network%20Extension%20NEVpn%20Protocol%20Ip%20Sec%20Extended%20Authentication&amp;scope=Xamarin" title="T:NetworkExtension.NEVpnProtocolIpSec.ExtendedAuthentication">T:NetworkExtension.NEVpnProtocolIpSec.ExtendedAuthentication</a></format> is <see langword="true" />.</summary>
 		None = 0,
+		/// <summary>A certificate and private key.</summary>
 		Certificate = 1,
+		/// <summary>A shared secret is used for authentication.</summary>
 		SharedSecret = 2,
 	}
 
@@ -66,12 +69,17 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native ("NEVPNIKEv2IntegrityAlgorithm")]
 	public enum NEVpnIke2IntegrityAlgorithm : long {
+		/// <summary>Indicates the SHA-1 96-bit algorithm.</summary>
 		[NoTV]
 		SHA96 = 1,
+		/// <summary>Indicates the SHA-1 160-bit algorithm.</summary>
 		[NoTV]
 		SHA160 = 2,
+		/// <summary>Indicates the SHA-2 256-bit algorithm.</summary>
 		SHA256 = 3,
+		/// <summary>Indicates the SHA-2 384-bit algorithm.</summary>
 		SHA384 = 4,
+		/// <summary>Indicates the SHA-2 512-bit algorithm.</summary>
 		SHA512 = 5,
 	}
 

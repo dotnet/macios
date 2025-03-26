@@ -31,15 +31,9 @@
 
 using System.ComponentModel;
 
-#if NET
 using Vector3 = global::System.Numerics.Vector3;
 using NMatrix3 = global::CoreGraphics.NMatrix3;
 using NMatrix4x3 = global::CoreGraphics.NMatrix4x3;
-#else
-using Vector3 = global::OpenTK.Vector3;
-using NMatrix3 = global::OpenTK.NMatrix3;
-using NMatrix4x3 = global::OpenTK.NMatrix4x3;
-#endif
 
 using AudioUnit;
 using AVKit;
@@ -72,10 +66,6 @@ using AppKit;
 using UIImage = AppKit.NSImage;
 #else
 using UIKit;
-#endif
-
-#if !NET
-using NativeHandle = System.IntPtr;
 #endif
 
 namespace AVFoundation {
@@ -162,17 +152,6 @@ namespace AVFoundation {
 		[Field ("AVMediaTypeTimecode")]
 		Timecode = 5,
 
-#if !NET
-		[NoTV]
-		[Obsoleted (PlatformName.iOS, 6, 0)]
-		[Deprecated (PlatformName.iOS, 12, 0, message: "Always 'null'.")]
-		[Obsoleted (PlatformName.MacOSX, 10, 8)]
-		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Always 'null'.")]
-		[NoMacCatalyst]
-		[Field ("AVMediaTypeTimedMetadata")] // last header where I can find this: iOS 5.1 SDK, 10.7 only on Mac
-		TimedMetadata = 6,
-#endif
-
 		/// <summary>Indicates muxed content.</summary>
 		[Field ("AVMediaTypeMuxed")]
 		Muxed = 7,
@@ -200,49 +179,6 @@ namespace AVFoundation {
 		[Field ("AVMediaTypeHaptic")]
 		Haptic = 12,
 	}
-
-#if !NET
-	[Obsolete ("Use AVMediaTypes enum values.")]
-	[BaseType (typeof (NSObject))]
-	[Static]
-	interface AVMediaType {
-		[Field ("AVMediaTypeVideo")]
-		NSString Video { get; }
-
-		[Field ("AVMediaTypeAudio")]
-		NSString Audio { get; }
-
-		[Field ("AVMediaTypeText")]
-		NSString Text { get; }
-
-		[Field ("AVMediaTypeClosedCaption")]
-		NSString ClosedCaption { get; }
-
-		[Field ("AVMediaTypeSubtitle")]
-		NSString Subtitle { get; }
-
-		[Field ("AVMediaTypeTimecode")]
-		NSString Timecode { get; }
-
-		[NoTV]
-		[Field ("AVMediaTypeTimedMetadata")] // last header where I can find this: iOS 5.1 SDK, 10.7 only on Mac
-		[Deprecated (PlatformName.iOS, 12, 0, message: "Always 'null'.")]
-		[Obsoleted (PlatformName.iOS, 6, 0, message: "Always 'null'.")]
-		[Obsoleted (PlatformName.MacOSX, 10, 8, message: "Always 'null'.")]
-		[NoMacCatalyst]
-		NSString TimedMetadata { get; }
-
-		[Field ("AVMediaTypeMuxed")]
-		NSString Muxed { get; }
-
-		[NoMac]
-		[Field ("AVMediaTypeMetadataObject")]
-		NSString MetadataObject { get; }
-
-		[Field ("AVMediaTypeMetadata")]
-		NSString Metadata { get; }
-	}
-#endif // !NET
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVMetadataGroup))]
@@ -430,68 +366,6 @@ namespace AVFoundation {
 
 	}
 
-#if !NET
-	[Obsolete ("Use AVMediaCharacteristics enum values.")]
-	[BaseType (typeof (NSObject))]
-	[Static]
-	interface AVMediaCharacteristic {
-		[Field ("AVMediaCharacteristicVisual")]
-		NSString Visual { get; }
-
-		[Field ("AVMediaCharacteristicAudible")]
-		NSString Audible { get; }
-
-		[Field ("AVMediaCharacteristicLegible")]
-		NSString Legible { get; }
-
-		[Field ("AVMediaCharacteristicFrameBased")]
-		NSString FrameBased { get; }
-
-		[Field ("AVMediaCharacteristicUsesWideGamutColorSpace")]
-		NSString UsesWideGamutColorSpace { get; }
-
-		[Field ("AVMediaCharacteristicIsMainProgramContent")]
-		NSString IsMainProgramContent { get; }
-
-		[Field ("AVMediaCharacteristicIsAuxiliaryContent")]
-		NSString IsAuxiliaryContent { get; }
-
-		[Field ("AVMediaCharacteristicContainsOnlyForcedSubtitles")]
-		NSString ContainsOnlyForcedSubtitles { get; }
-
-		[Field ("AVMediaCharacteristicTranscribesSpokenDialogForAccessibility")]
-		NSString TranscribesSpokenDialogForAccessibility { get; }
-
-		[Field ("AVMediaCharacteristicDescribesMusicAndSoundForAccessibility")]
-		NSString DescribesMusicAndSoundForAccessibility { get; }
-
-		[Field ("AVMediaCharacteristicDescribesVideoForAccessibility")]
-		NSString DescribesVideoForAccessibility { get; }
-
-		[Field ("AVMediaCharacteristicEasyToRead")]
-		NSString EasyToRead { get; }
-
-		[Field ("AVMediaCharacteristicLanguageTranslation")]
-		NSString LanguageTranslation { get; }
-
-		[Field ("AVMediaCharacteristicDubbedTranslation")]
-		NSString DubbedTranslation { get; }
-
-		[Field ("AVMediaCharacteristicVoiceOverTranslation")]
-		NSString VoiceOverTranslation { get; }
-
-		[TV (13, 0), iOS (13, 0)]
-		[Field ("AVMediaCharacteristicIsOriginalContent")]
-		NSString IsOriginalContent { get; }
-
-		[TV (13, 0), iOS (13, 0)]
-		[Field ("AVMediaCharacteristicContainsAlphaChannel")]
-		NSString ContainsAlphaChannel { get; }
-
-		// Do not add more fields here, add them to the AVMediaCharacteristics enum instead.
-	}
-#endif
-
 	[MacCatalyst (13, 1)]
 	enum AVMetadataFormat {
 		[MacCatalyst (13, 1)]
@@ -626,57 +500,6 @@ namespace AVFoundation {
 		[Field ("AVFileTypeAHAP")]
 		Ahap = 23,
 	}
-
-#if !NET
-	[BaseType (typeof (NSObject))]
-	[Static]
-	[Obsolete ("Use AVFileTypes enum values.")]
-	interface AVFileType {
-		[Field ("AVFileTypeQuickTimeMovie")]
-		NSString QuickTimeMovie { get; }
-
-		[Field ("AVFileTypeMPEG4")]
-		NSString Mpeg4 { get; }
-
-		[Field ("AVFileTypeAppleM4V")]
-		NSString AppleM4V { get; }
-		[Field ("AVFileType3GPP")]
-		NSString ThreeGpp { get; }
-
-		[Field ("AVFileTypeAppleM4A")]
-		NSString AppleM4A { get; }
-
-		[Field ("AVFileTypeCoreAudioFormat")]
-		NSString CoreAudioFormat { get; }
-
-		[Field ("AVFileTypeWAVE")]
-		NSString Wave { get; }
-
-		[Field ("AVFileTypeAIFF")]
-		NSString Aiff { get; }
-
-		[Field ("AVFileTypeAIFC")]
-		NSString Aifc { get; }
-
-		[Field ("AVFileTypeAMR")]
-		NSString Amr { get; }
-
-		[Field ("AVFileType3GPP2")]
-		NSString ThreeGpp2 { get; }
-
-		[Field ("AVFileTypeMPEGLayer3")]
-		NSString MpegLayer3 { get; }
-
-		[Field ("AVFileTypeSunAU")]
-		NSString SunAU { get; }
-
-		[Field ("AVFileTypeAC3")]
-		NSString AC3 { get; }
-
-		[Field ("AVFileTypeEnhancedAC3")]
-		NSString EnhancedAC3 { get; }
-	}
-#endif
 
 	[MacCatalyst (13, 1)]
 	[Static]
@@ -919,11 +742,7 @@ namespace AVFoundation {
 
 		[DesignatedInitializer]
 		[Export ("initWithLayout:"), Internal]
-#if NET
 		NativeHandle Constructor (IntPtr layout);
-#else
-		NativeHandle Constructor (nint /* This is really an IntPtr, but it conflicts with the default (Handle) ctor. */ layout);
-#endif
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -951,25 +770,46 @@ namespace AVFoundation {
 		[Export ("initWithFormat:packetCapacity:")]
 		NativeHandle Constructor (AVAudioFormat format, uint packetCapacity);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("packetCapacity")]
 		uint PacketCapacity { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("packetCount")]
 		uint PacketCount { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("maximumPacketSize")]
 		nint MaximumPacketSize { get; }
 
 		[Export ("data")]
 		IntPtr Data { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("packetDescriptions")]
 		AudioStreamPacketDescription PacketDescriptions { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("byteCapacity")]
 		uint ByteCapacity { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("byteLength")]
 		uint ByteLength { get; set; }
@@ -983,9 +823,18 @@ namespace AVFoundation {
 		[DesignatedInitializer]
 		NativeHandle Constructor (AVAudioNode node, nuint bus);
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("node", ArgumentSemantic.Weak)]
 		AVAudioNode Node { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bus")]
 		nuint Bus { get; }
 	}
@@ -997,20 +846,43 @@ namespace AVFoundation {
 	[BaseType (typeof (NSObject))]
 	interface AVAudioEngine {
 
+		/// <summary>Gets or sets the music sequence that is attached to the audio engine.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("musicSequence"), NullAllowed]
 		MusicSequence MusicSequence { get; set; }
 
+		/// <summary>Gets the audio engine's output node singleton.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("outputNode")]
 		AVAudioOutputNode OutputNode { get; }
 
+		/// <summary>An input node such as a built-in microphone.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>
+		///           <para>Developers who access this node must have the <c>NSMicrophoneUsageDescription</c> key to their info.plist. If this key is not in info.plist, the application will immediately exit with no exception if the developer attempts to access the <see cref="P:AVFoundation.AVAudioEngine.InputNode" />.</para>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("inputNode")]
 		AVAudioInputNode InputNode { get; }
 
+		/// <summary>Gets the optional main mixer mode singleton.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("mainMixerNode")]
 		AVAudioMixerNode MainMixerNode { get; }
 
+		/// <summary>Gets a Boolean value that tells whether the engine is running.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("running")]
 		bool Running { [Bind ("isRunning")] get; }
 
@@ -1066,10 +938,14 @@ namespace AVFoundation {
 		[Export ("outputConnectionPointsForNode:outputBus:")]
 		AVAudioConnectionPoint [] OutputConnectionPoints (AVAudioNode node, nuint bus);
 
+		/// <include file="../docs/api/AVFoundation/AVAudioEngine.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVAudioEngine.ConfigurationChangeNotification']/*" />
 		[Notification]
 		[Field ("AVAudioEngineConfigurationChangeNotification")]
 		NSString ConfigurationChangeNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("autoShutdownEnabled")]
 		bool AutoShutdownEnabled { [Bind ("isAutoShutdownEnabled")] get; set; }
@@ -1082,26 +958,44 @@ namespace AVFoundation {
 		[Export ("renderOffline:toBuffer:error:")]
 		AVAudioEngineManualRenderingStatus RenderOffline (uint numberOfFrames, AVAudioPcmBuffer buffer, [NullAllowed] out NSError outError);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("manualRenderingBlock")]
 		AVAudioEngineManualRenderingBlock ManualRenderingBlock { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("isInManualRenderingMode")]
 		bool InManualRenderingMode { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("manualRenderingMode")]
 		AVAudioEngineManualRenderingMode ManualRenderingMode { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("manualRenderingFormat")]
 		AVAudioFormat ManualRenderingFormat { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("manualRenderingMaximumFrameCount")]
 		uint ManualRenderingMaximumFrameCount { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("manualRenderingSampleTime")]
 		long ManualRenderingSampleTime { get; }
@@ -1194,11 +1088,7 @@ namespace AVFoundation {
 		AVAudioEnvironmentReverbParameters ReverbParameters { get; }
 
 		[Export ("applicableRenderingAlgorithms")]
-#if NET
 		NSNumber [] ApplicableRenderingAlgorithms { get; }
-#else
-		NSObject [] ApplicableRenderingAlgorithms ();
-#endif
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -1440,6 +1330,9 @@ namespace AVFoundation {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface AVAudio3DMixing {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("renderingAlgorithm")]
 		AVAudio3DMixingRenderingAlgorithm RenderingAlgorithm { get; set; }
@@ -1448,14 +1341,23 @@ namespace AVFoundation {
 		[Export ("rate")]
 		float Rate { get; set; } /* float, not CGFloat */
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("reverbBlend")]
 		float ReverbBlend { get; set; } /* float, not CGFloat */
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("obstruction")]
 		float Obstruction { get; set; } /* float, not CGFloat */
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("occlusion")]
 		float Occlusion { get; set; } /* float, not CGFloat */
@@ -1464,7 +1366,6 @@ namespace AVFoundation {
 		[Export ("position")]
 		Vector3 Position { get; set; }
 
-#if NET
 		[Abstract]
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -1476,24 +1377,6 @@ namespace AVFoundation {
 		[MacCatalyst (13, 1)]
 		[Export ("pointSourceInHeadMode", ArgumentSemantic.Assign)]
 		AVAudio3DMixingPointSourceInHeadMode PointSourceInHeadMode { get; set; }
-
-#else
-		[TV (13, 0), iOS (13, 0)]
-		[Export ("sourceMode", ArgumentSemantic.Assign)]
-		AVAudio3DMixingSourceMode GetSourceMode ();
-
-		[TV (13, 0), iOS (13, 0)]
-		[Export ("setSourceMode:")]
-		void SetSourceMode (AVAudio3DMixingSourceMode sourceMode);
-
-		[TV (13, 0), iOS (13, 0)]
-		[Export ("pointSourceInHeadMode", ArgumentSemantic.Assign)]
-		AVAudio3DMixingPointSourceInHeadMode GetPointSourceInHeadMode ();
-
-		[TV (13, 0), iOS (13, 0)]
-		[Export ("setPointSourceInHeadMode:")]
-		void SetPointSourceInHeadMode (AVAudio3DMixingPointSourceInHeadMode pointSourceInHeadMode);
-#endif
 	}
 
 	[MacCatalyst (13, 1)]
@@ -1502,10 +1385,7 @@ namespace AVFoundation {
 		, AVAudio3DMixing {
 
 		[MacCatalyst (13, 1)]
-#if NET
-		// Apple added a new required member in iOS 9, but that breaks our binary compat, so we can't do that in our existing code.
 		[Abstract]
-#endif
 		[Export ("destinationForMixer:bus:")]
 		[return: NullAllowed]
 		AVAudioMixingDestination DestinationForMixer (AVAudioNode mixer, nuint bus);
@@ -1531,6 +1411,9 @@ namespace AVFoundation {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface AVAudioStereoMixing {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("pan")]
 		float Pan { get; set; } /* float, not CGFloat */
@@ -1980,11 +1863,7 @@ namespace AVFoundation {
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Export ("audioPlayerEndInterruption:withOptions:")]
-#if NET
 		void EndInterruption (AVAudioPlayer player, AVAudioSessionInterruptionOptions flags);
-#else
-		void EndInterruption (AVAudioPlayer player, AVAudioSessionInterruptionFlags flags);
-#endif
 	}
 
 	[MacCatalyst (13, 1)]
@@ -2320,13 +2199,6 @@ namespace AVFoundation {
 		[MacCatalyst (13, 1)]
 		[Wrap ("SetActive (beActive, out var outError) ? null : outError")]
 		NSError SetActive (bool beActive);
-
-#if !NET
-		[NoTV, NoMac]
-		[Export ("setActive:withFlags:error:")]
-		[Deprecated (PlatformName.iOS, 6, 0, message: "Use 'SetActive (bool, AVAudioSessionSetActiveOptions, out NSError)' instead.")]
-		bool SetActive (bool beActive, AVAudioSessionFlags flags, out NSError outError);
-#endif // !NET
 
 		[NoMac]
 		[MacCatalyst (13, 1)]
@@ -3357,27 +3229,49 @@ namespace AVFoundation {
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	enum AVAudioSessionCategory {
+		/// <summary>
+		/// 	    Use this category if playing audio is not your
+		/// 	    application's main use and if your application can be used
+		/// 	    with the sound off.  This allows background music to be
+		/// 	    mixed with the audio your application produces.
+		/// 	  </summary>
 		[Field ("AVAudioSessionCategoryAmbient")]
 		Ambient,
 
+		/// <summary>
+		/// 	    This is the default audio session category.
+		/// 	  </summary>
 		[Field ("AVAudioSessionCategorySoloAmbient")]
 		SoloAmbient,
 
+		/// <summary>
+		/// 	    Use this if the main use of your application is to play back music.
+		/// 	  </summary>
 		[Field ("AVAudioSessionCategoryPlayback")]
 		Playback,
 
+		/// <summary>
+		/// 	    Used to record audio.   This will prevent background audio and messages from playing back.
+		/// 	  </summary>
 		[Field ("AVAudioSessionCategoryRecord")]
 		Record,
 
+		/// <summary>
+		/// 	    Used to perform both playback and recording at the same time, for example for live chat applications.   
+		/// 	  </summary>
 		[Field ("AVAudioSessionCategoryPlayAndRecord")]
 		PlayAndRecord,
 
+		/// <summary>
+		/// 	    Use this category when you want to use the hardware accelerated audio support to perform audio conversions.   
+		/// 	  </summary>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 10, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Field ("AVAudioSessionCategoryAudioProcessing")]
 		AudioProcessing,
 
+		/// <summary>To be added.</summary>
 		[Field ("AVAudioSessionCategoryMultiRoute")]
 		MultiRoute,
 	}
@@ -3528,26 +3422,34 @@ namespace AVFoundation {
 		void InputIsAvailableChanged (bool isInputAvailable);
 
 		[Export ("endInterruptionWithFlags:")]
-#if NET
 		void EndInterruption (AVAudioSessionInterruptionOptions flags);
-#else
-		void EndInterruption (AVAudioSessionInterruptionFlags flags);
-#endif
 	}
 
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AVAudioSessionChannelDescription {
+		/// <summary>Name for the channel, suitable to be shown to the user.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("channelName")]
 		string ChannelName { get; }
 
+		/// <summary>The unique identifier of this channel's owning port.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("owningPortUID")]
 		string OwningPortUID { get; }
 
+		/// <summary>Gets the index of this channel in the owning port's array of channels.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("channelNumber")]
 		nint ChannelNumber { get; }
 
+		/// <summary>Gets an int associated with the physical location of the channel.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("channelLabel")]
 		int /* AudioChannelLabel = UInt32 */ ChannelLabel { get; }
 	}
@@ -3591,11 +3493,7 @@ namespace AVFoundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("dataSources"), NullAllowed]
-#if NET
 		AVAudioSessionDataSourceDescription [] DataSources { get; }
-#else
-		AVAudioSessionDataSourceDescription [] DataSourceDescriptions { get; }
-#endif
 
 		/// <summary>Gets the currently selected data source for the port.</summary>
 		///         <value>
@@ -3969,21 +3867,39 @@ namespace AVFoundation {
 		[Export ("initWithHostTime:sampleTime:atRate:")]
 		NativeHandle Constructor (ulong hostTime, long sampleTime, double sampleRate);
 
+		/// <summary>Gets whether <see cref="P:AVFoundation.AVAudioTime.HostTime" /> is valid.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hostTimeValid")]
 		bool HostTimeValid { [Bind ("isHostTimeValid")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hostTime")]
 		ulong HostTime { get; }
 
+		/// <summary>Gets whether <see cref="P:AVFoundation.AVAudioTime.SampleTime" /> is valid.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sampleTimeValid")]
 		bool SampleTimeValid { [Bind ("isSampleTimeValid")] get; }
 
+		/// <summary>The time, as a number of audio samples.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sampleTime")]
 		long SampleTime { get; }
 
+		/// <summary>The sample rate at which <see cref="P:AVFoundation.AVAudioTime.SampleTime" /> is expressed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sampleRate")]
 		double SampleRate { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("audioTimeStamp")]
 		AudioTimeStamp AudioTimeStamp { get; }
 
@@ -4022,33 +3938,63 @@ namespace AVFoundation {
 		[Export ("reset")]
 		void Reset ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("inputFormat")]
 		AVAudioFormat InputFormat { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("outputFormat")]
 		AVAudioFormat OutputFormat { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("channelMap", ArgumentSemantic.Retain)]
 		NSNumber [] ChannelMap { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("magicCookie", ArgumentSemantic.Retain)]
 		NSData MagicCookie { get; set; }
 
 		[Export ("downmix")]
 		bool Downmix { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("dither")]
 		bool Dither { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sampleRateConverterQuality", ArgumentSemantic.Assign)]
 		nint SampleRateConverterQuality { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("sampleRateConverterAlgorithm", ArgumentSemantic.Retain)]
 		string SampleRateConverterAlgorithm { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("primeMethod", ArgumentSemantic.Assign)]
 		AVAudioConverterPrimeMethod PrimeMethod { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("primeInfo", ArgumentSemantic.Assign)]
 		AVAudioConverterPrimeInfo PrimeInfo { get; set; }
 
@@ -4061,27 +4007,69 @@ namespace AVFoundation {
 		// AVAudioConverter (Encoding) Category
 		// Inlined due to properties
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bitRate", ArgumentSemantic.Assign)]
 		nint BitRate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("bitRateStrategy", ArgumentSemantic.Retain)]
 		string BitRateStrategy { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("maximumOutputPacketSize")]
 		nint MaximumOutputPacketSize { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("availableEncodeBitRates")]
 		NSNumber [] AvailableEncodeBitRates { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("applicableEncodeBitRates")]
 		NSNumber [] ApplicableEncodeBitRates { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("availableEncodeSampleRates")]
 		NSNumber [] AvailableEncodeSampleRates { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("applicableEncodeSampleRates")]
 		NSNumber [] ApplicableEncodeSampleRates { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("availableEncodeChannelLayoutTags")]
 		NSNumber [] AvailableEncodeChannelLayoutTags { get; }
 	}
@@ -4172,16 +4160,6 @@ namespace AVFoundation {
 
 		[Export ("availableMetadataFormats")]
 		string [] AvailableMetadataFormats { get; }
-
-		[Deprecated (PlatformName.MacOSX, 15, 0)]
-		[Deprecated (PlatformName.iOS, 18, 0)]
-		[Deprecated (PlatformName.MacCatalyst, 18, 0)]
-		[Deprecated (PlatformName.TvOS, 18, 0)]
-#if !NET
-		[Obsolete ("Use 'GetMetadataForFormat' with enum values AVMetadataFormat.")]
-		[Wrap ("GetMetadataForFormat (new NSString (format))", IsVirtual = true)]
-		AVMetadataItem [] MetadataForFormat (string format);
-#endif
 
 		[Deprecated (PlatformName.MacOSX, 15, 0)]
 		[Deprecated (PlatformName.iOS, 18, 0)]
@@ -4402,10 +4380,7 @@ namespace AVFoundation {
 	[Protocol]
 	[MacCatalyst (13, 1)]
 	interface AVFragmentMinding {
-
-#if !MONOMAC || NET
-		[Abstract] // not kept in Mac OS because is a breaking change, in other platforms we are ok
-#endif
+		[Abstract]
 		[Export ("isAssociatedWithFragmentMinder")]
 		bool IsAssociatedWithFragmentMinder ();
 	}
@@ -4511,10 +4486,8 @@ namespace AVFoundation {
 		void DidOutputSampleBuffer (AVCaptureOutput captureOutput, CMSampleBuffer sampleBuffer, AVCaptureConnection connection);
 	}
 
-#if NET
 	// Making a class abstract has problems: https://github.com/xamarin/xamarin-macios/issues/4969, so we're not doing this yet
 	// [Abstract] // Abstract superclass.
-#endif
 	/// <summary>Base class for media samples that were captured with <see cref="T:AVFoundation.AVCaptureDataOutputSynchronizer" />.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[TV (17, 0)]
@@ -4534,21 +4507,6 @@ namespace AVFoundation {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AVCaptureSynchronizedDataCollection : INSFastEnumeration {
-#if !NET
-		[Obsolete ("Use 'GetSynchronizedData' instead.")]
-		[Wrap ("GetSynchronizedData (captureOutput)", isVirtual: true)]
-		[return: NullAllowed]
-		AVCaptureSynchronizedData From (AVCaptureOutput captureOutput);
-
-		// This is not reexposed because it is not needed you can use 'GetSynchronizedData' instead, also from docs:
-		// https://developer.apple.com/documentation/avfoundation/avcapturesynchronizeddatacollection/2873892-objectforkeyedsubscript?language=objc
-		// > This call is equivalent to the synchronizedDataForCaptureOutput: method, but allows subscript syntax.
-		[Obsolete ("Use 'GetSynchronizedData' instead.")]
-		[Export ("objectForKeyedSubscript:")]
-		[return: NullAllowed]
-		AVCaptureSynchronizedData ObjectForKeyedSubscript (AVCaptureOutput key);
-#endif
-
 		[Export ("synchronizedDataForCaptureOutput:")]
 		[return: NullAllowed]
 		AVCaptureSynchronizedData GetSynchronizedData (AVCaptureOutput captureOutput);
@@ -4672,9 +4630,7 @@ namespace AVFoundation {
 		[Export ("stopRequestingMediaData")]
 		void StopRequestingMediaData ();
 
-#if NET
 		[Abstract]
-#endif
 		[TV (14, 5), iOS (14, 5)]
 		[MacCatalyst (14, 5)]
 		[Export ("hasSufficientMediaDataForReliablePlaybackStart")]
@@ -4925,12 +4881,24 @@ namespace AVFoundation {
 		[Export ("cancelAllCGImageGeneration")]
 		void CancelAllCGImageGeneration ();
 
+		/// <summary>Represents the value associated with the constant AVAssetImageGeneratorApertureModeCleanAperture. Used with <see cref="P:AVFoundation.AVAssetImageGenerator.ApertureMode" />.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVAssetImageGeneratorApertureModeCleanAperture")]
 		NSString ApertureModeCleanAperture { get; }
 
+		/// <summary>Represents the value associated with the constant AVAssetImageGeneratorApertureModeProductionAperture. Used with <see cref="P:AVFoundation.AVAssetImageGenerator.ApertureMode" />.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVAssetImageGeneratorApertureModeProductionAperture")]
 		NSString ApertureModeProductionAperture { get; }
 
+		/// <summary>Represents the value associated with the constant AVAssetImageGeneratorApertureModeEncodedPixels. Used with <see cref="P:AVFoundation.AVAssetImageGenerator.ApertureMode" />.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVAssetImageGeneratorApertureModeEncodedPixels")]
 		NSString ApertureModeEncodedPixels { get; }
 
@@ -5143,6 +5111,12 @@ namespace AVFoundation {
 		[Export ("audioSettings"), NullAllowed]
 		NSDictionary AudioSettings { get; }
 
+		/// <summary>If not <see langword="null" />, the output's audio settings.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("AudioSettings"), NullAllowed]
 		AudioSettings Settings { get; }
 
@@ -5183,6 +5157,12 @@ namespace AVFoundation {
 		[Export ("videoSettings"), NullAllowed]
 		NSDictionary WeakVideoSettings { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakVideoSettings"), NullAllowed]
 		CVPixelBufferAttributes UncompressedVideoSettings { get; }
 
@@ -5222,9 +5202,6 @@ namespace AVFoundation {
 	[Model]
 	[Protocol]
 	interface AVAssetResourceLoaderDelegate {
-#if !NET
-		[Abstract]
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("resourceLoader:shouldWaitForLoadingOfRequestedResource:")]
 		bool ShouldWaitForLoadingOfRequestedResource (AVAssetResourceLoader resourceLoader, AVAssetResourceLoadingRequest loadingRequest);
@@ -5382,12 +5359,7 @@ namespace AVFoundation {
 
 	[TV (14, 0), iOS (14, 0)]
 	[MacCatalyst (14, 0)]
-#if NET
 	[Protocol, Model]
-#else
-	[Protocol]
-	[Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject))]
 	interface AVAssetWriterDelegate {
 		[Export ("assetWriter:didOutputSegmentData:segmentType:segmentReport:")]
@@ -5610,6 +5582,9 @@ namespace AVFoundation {
 		[Export ("metadata", ArgumentSemantic.Copy)]
 		AVMetadataItem [] Metadata { get; set; }
 
+		/// <summary>Whether this writer is ready for more samples to be appended.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("readyForMoreMediaData")]
 		bool ReadyForMoreMediaData { [Bind ("isReadyForMoreMediaData")] get; }
 
@@ -5780,6 +5755,9 @@ namespace AVFoundation {
 		[NullAllowed, Export ("sourcePixelBufferAttributes")]
 		NSDictionary SourcePixelBufferAttributes { get; }
 
+		/// <summary>The <see cref="T:CoreVideo.CVPixelBufferAttributes" /> of the pixel buffers in the <see cref="P:AVFoundation.AVAssetWriterInputPixelBufferAdaptor.PixelBufferPool" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("SourcePixelBufferAttributes")]
 		CVPixelBufferAttributes Attributes { get; }
 
@@ -6572,12 +6550,6 @@ namespace AVFoundation {
 		[Field ("AVMetadataCommonKeyAccessibilityDescription")]
 		NSString CommonKeyAccessibilityDescription { get; }
 
-#if !NET
-		[Field ("AVMetadataFormatQuickTimeUserData")]
-		[Obsolete ("Use 'AVMetadataFormat' enum values.")]
-		NSString FormatQuickTimeUserData { get; }
-#endif
-
 		/// <summary>Represents the value associated with the constant AVMetadataKeySpaceQuickTimeUserData</summary>
 		///         <value>
 		///         </value>
@@ -6975,12 +6947,6 @@ namespace AVFoundation {
 		[Field ("AVMetadata3GPUserDataKeyMediaRating")]
 		NSString K3GPUserDataKeyMediaRating { get; }
 
-#if !NET
-		[Field ("AVMetadataFormatISOUserData")]
-		[Obsolete ("Use 'AVMetadataFormat' enum values.")]
-		NSString KFormatISOUserData { get; }
-#endif
-
 		/// <summary>Represents the value associated with the constant AVMetadataKeySpaceISOUserData</summary>
 		///         <value>
 		///         </value>
@@ -7299,12 +7265,6 @@ namespace AVFoundation {
 		[Field ("AVMetadataQuickTimeMetadataKeyIsMontage")]
 		NSString QuickTimeMetadataKeyIsMontage { get; }
 
-#if !NET
-		[Field ("AVMetadataFormatiTunesMetadata")]
-		[Obsolete ("Use 'AVMetadataFormat' enum values.")]
-		NSString FormatiTunesMetadata { get; }
-#endif
-
 		/// <summary>Represents the value associated with the constant AVMetadataKeySpaceiTunes</summary>
 		///         <value>
 		///         </value>
@@ -7588,12 +7548,6 @@ namespace AVFoundation {
 		///         <remarks>To be added.</remarks>
 		[Field ("AVMetadataiTunesMetadataKeyExecProducer")]
 		NSString iTunesMetadataKeyExecProducer { get; }
-
-#if !NET
-		[Field ("AVMetadataFormatID3Metadata")]
-		[Obsolete ("Use 'AVMetadataFormat' enum values.")]
-		NSString FormatID3Metadata { get; }
-#endif
 
 		/// <summary>Represents the value associated with the constant AVMetadataKeySpaceID3</summary>
 		///         <value>
@@ -8305,12 +8259,6 @@ namespace AVFoundation {
 		[Field ("AVMetadataIcyMetadataKeyStreamURL")]
 		NSString IcyMetadataKeyStreamUrl { get; }
 
-#if !NET
-		[Field ("AVMetadataFormatHLSMetadata")]
-		[Obsolete ("Use 'AVMetadataFormat' enum values.")]
-		NSString FormatHlsMetadata { get; }
-#endif
-
 		/// <summary>Represents the value associated with the constant AVMetadataKeySpaceHslDateRange.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -8359,72 +8307,164 @@ namespace AVFoundation {
 		[MacCatalyst (13, 1)]
 		[Static]
 		interface CommonIdentifier {
+			/// <summary>Represents the value associated with the constant AVMetadataCommonIdentifierTitle</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataCommonIdentifierTitle")]
 			NSString Title { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataCommonIdentifierCreator</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataCommonIdentifierCreator")]
 			NSString Creator { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataCommonIdentifierSubject</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataCommonIdentifierSubject")]
 			NSString Subject { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataCommonIdentifierDescription</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataCommonIdentifierDescription")]
 			NSString Description { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataCommonIdentifierPublisher</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataCommonIdentifierPublisher")]
 			NSString Publisher { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataCommonIdentifierContributor</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataCommonIdentifierContributor")]
 			NSString Contributor { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataCommonIdentifierCreationDate</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataCommonIdentifierCreationDate")]
 			NSString CreationDate { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataCommonIdentifierLastModifiedDate</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataCommonIdentifierLastModifiedDate")]
 			NSString LastModifiedDate { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataCommonIdentifierType</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataCommonIdentifierType")]
 			NSString Type { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataCommonIdentifierFormat</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataCommonIdentifierFormat")]
 			NSString Format { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataCommonIdentifierAssetIdentifier</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataCommonIdentifierAssetIdentifier")]
 			NSString AssetIdentifier { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataCommonIdentifierSource</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataCommonIdentifierSource")]
 			NSString Source { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataCommonIdentifierLanguage</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataCommonIdentifierLanguage")]
 			NSString Language { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataCommonIdentifierRelation</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataCommonIdentifierRelation")]
 			NSString Relation { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataCommonIdentifierLocation</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataCommonIdentifierLocation")]
 			NSString Location { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataCommonIdentifierCopyrights</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataCommonIdentifierCopyrights")]
 			NSString Copyrights { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataCommonIdentifierAlbumName</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataCommonIdentifierAlbumName")]
 			NSString AlbumName { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataCommonIdentifierAuthor</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataCommonIdentifierAuthor")]
 			NSString Author { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataCommonIdentifierArtist</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataCommonIdentifierArtist")]
 			NSString Artist { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataCommonIdentifierArtwork</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataCommonIdentifierArtwork")]
 			NSString Artwork { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataCommonIdentifierMake</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataCommonIdentifierMake")]
 			NSString Make { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataCommonIdentifierModel</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataCommonIdentifierModel")]
 			NSString Model { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataCommonIdentifierSoftware</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataCommonIdentifierSoftware")]
 			NSString Software { get; }
 
@@ -8438,117 +8478,269 @@ namespace AVFoundation {
 		[MacCatalyst (13, 1)]
 		[Static]
 		interface QuickTime {
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataAlbum</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataAlbum")]
 			NSString UserDataAlbum { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataArranger</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataArranger")]
 			NSString UserDataArranger { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataArtist</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataArtist")]
 			NSString UserDataArtist { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataAuthor</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataAuthor")]
 			NSString UserDataAuthor { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataChapter</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataChapter")]
 			NSString UserDataChapter { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataComment</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataComment")]
 			NSString UserDataComment { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataComposer</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataComposer")]
 			NSString UserDataComposer { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataCopyright</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataCopyright")]
 			NSString UserDataCopyright { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataCreationDate</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataCreationDate")]
 			NSString UserDataCreationDate { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataDescription</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataDescription")]
 			NSString UserDataDescription { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataDirector</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataDirector")]
 			NSString UserDataDirector { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataDisclaimer</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataDisclaimer")]
 			NSString UserDataDisclaimer { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataEncodedBy</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataEncodedBy")]
 			NSString UserDataEncodedBy { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataFullName</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataFullName")]
 			NSString UserDataFullName { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataGenre</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataGenre")]
 			NSString UserDataGenre { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataHostComputer</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataHostComputer")]
 			NSString UserDataHostComputer { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataInformation</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataInformation")]
 			NSString UserDataInformation { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataKeywords</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataKeywords")]
 			NSString UserDataKeywords { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataMake</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataMake")]
 			NSString UserDataMake { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataModel</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataModel")]
 			NSString UserDataModel { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataOriginalArtist</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataOriginalArtist")]
 			NSString UserDataOriginalArtist { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataOriginalFormat</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataOriginalFormat")]
 			NSString UserDataOriginalFormat { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataOriginalSource</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataOriginalSource")]
 			NSString UserDataOriginalSource { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataPerformers</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataPerformers")]
 			NSString UserDataPerformers { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataProducer</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataProducer")]
 			NSString UserDataProducer { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataPublisher</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataPublisher")]
 			NSString UserDataPublisher { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataProduct</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataProduct")]
 			NSString UserDataProduct { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataSoftware</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataSoftware")]
 			NSString UserDataSoftware { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataSpecialPlaybackRequirements</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataSpecialPlaybackRequirements")]
 			NSString UserDataSpecialPlaybackRequirements { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataTrack</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataTrack")]
 			NSString UserDataTrack { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataWarning</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataWarning")]
 			NSString UserDataWarning { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataWriter</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataWriter")]
 			NSString UserDataWriter { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataURLLink</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataURLLink")]
 			NSString UserDataUrlLink { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataLocationISO6709</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataLocationISO6709")]
 			NSString UserDataLocationISO6709 { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataTrackName</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataTrackName")]
 			NSString UserDataTrackName { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataCredits</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataCredits")]
 			NSString UserDataCredits { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataPhonogramRights</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataPhonogramRights")]
 			NSString UserDataPhonogramRights { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeUserDataTaggedCharacteristic</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeUserDataTaggedCharacteristic")]
 			NSString UserDataTaggedCharacteristic { get; }
 
@@ -8562,13 +8754,24 @@ namespace AVFoundation {
 		[Static]
 		interface Iso {
 
+			/// <summary>To be added.</summary>
+			///         <value>To be added.</value>
+			///         <remarks>To be added.</remarks>
 			[MacCatalyst (13, 1)]
 			[Field ("AVMetadataIdentifierISOUserDataDate")]
 			NSString UserDataDate { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierISOUserDataCopyright</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierISOUserDataCopyright")]
 			NSString UserDataCopyright { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierISOUserDataTaggedCharacteristic</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierISOUserDataTaggedCharacteristic")]
 			NSString UserDataTaggedCharacteristic { get; }
 		}
@@ -8576,48 +8779,108 @@ namespace AVFoundation {
 		[MacCatalyst (13, 1)]
 		[Static]
 		interface ThreeGP {
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifier3GPUserDataCopyright</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifier3GPUserDataCopyright")]
 			NSString UserDataCopyright { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifier3GPUserDataAuthor</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifier3GPUserDataAuthor")]
 			NSString UserDataAuthor { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifier3GPUserDataPerformer</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifier3GPUserDataPerformer")]
 			NSString UserDataPerformer { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifier3GPUserDataGenre</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifier3GPUserDataGenre")]
 			NSString UserDataGenre { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifier3GPUserDataRecordingYear</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifier3GPUserDataRecordingYear")]
 			NSString UserDataRecordingYear { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifier3GPUserDataLocation</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifier3GPUserDataLocation")]
 			NSString UserDataLocation { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifier3GPUserDataTitle</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifier3GPUserDataTitle")]
 			NSString UserDataTitle { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifier3GPUserDataDescription</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifier3GPUserDataDescription")]
 			NSString UserDataDescription { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifier3GPUserDataCollection</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifier3GPUserDataCollection")]
 			NSString UserDataCollection { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifier3GPUserDataUserRating</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifier3GPUserDataUserRating")]
 			NSString UserDataUserRating { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifier3GPUserDataThumbnail</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifier3GPUserDataThumbnail")]
 			NSString UserDataThumbnail { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifier3GPUserDataAlbumAndTrack</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifier3GPUserDataAlbumAndTrack")]
 			NSString UserDataAlbumAndTrack { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifier3GPUserDataKeywordList</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifier3GPUserDataKeywordList")]
 			NSString UserDataKeywordList { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifier3GPUserDataMediaClassification</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifier3GPUserDataMediaClassification")]
 			NSString UserDataMediaClassification { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifier3GPUserDataMediaRating</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifier3GPUserDataMediaRating")]
 			NSString UserDataMediaRating { get; }
 		}
@@ -8625,137 +8888,310 @@ namespace AVFoundation {
 		[MacCatalyst (13, 1)]
 		[Static]
 		interface QuickTimeMetadata {
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataAuthor</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataAuthor")]
 			NSString Author { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataComment</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataComment")]
 			NSString Comment { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataCopyright</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataCopyright")]
 			NSString Copyright { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataCreationDate</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataCreationDate")]
 			NSString CreationDate { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataDirector</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataDirector")]
 			NSString Director { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataDisplayName</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataDisplayName")]
 			NSString DisplayName { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataInformation</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataInformation")]
 			NSString Information { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataKeywords</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataKeywords")]
 			NSString Keywords { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataProducer</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataProducer")]
 			NSString Producer { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataPublisher</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataPublisher")]
 			NSString Publisher { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataAlbum</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataAlbum")]
 			NSString Album { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataArtist</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataArtist")]
 			NSString Artist { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataArtwork</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataArtwork")]
 			NSString Artwork { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataDescription</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataDescription")]
 			NSString Description { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataSoftware</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataSoftware")]
 			NSString Software { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataYear</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataYear")]
 			NSString Year { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataGenre</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataGenre")]
 			NSString Genre { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataiXML</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataiXML")]
 			NSString iXML { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataLocationISO6709</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataLocationISO6709")]
 			NSString LocationISO6709 { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataMake</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataMake")]
 			NSString Make { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataModel</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataModel")]
 			NSString Model { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataArranger</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataArranger")]
 			NSString Arranger { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataEncodedBy</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataEncodedBy")]
 			NSString EncodedBy { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataOriginalArtist</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataOriginalArtist")]
 			NSString OriginalArtist { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataPerformer</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataPerformer")]
 			NSString Performer { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataComposer</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataComposer")]
 			NSString Composer { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataCredits</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataCredits")]
 			NSString Credits { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataPhonogramRights</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataPhonogramRights")]
 			NSString PhonogramRights { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataCameraIdentifier</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataCameraIdentifier")]
 			NSString CameraIdentifier { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataCameraFrameReadoutTime</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataCameraFrameReadoutTime")]
 			NSString CameraFrameReadoutTime { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataTitle</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataTitle")]
 			NSString Title { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataCollectionUser</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataCollectionUser")]
 			NSString CollectionUser { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataRatingUser</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataRatingUser")]
 			NSString RatingUser { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataLocationName</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataLocationName")]
 			NSString LocationName { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataLocationBody</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataLocationBody")]
 			NSString LocationBody { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataLocationNote</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataLocationNote")]
 			NSString LocationNote { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataLocationRole</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataLocationRole")]
 			NSString LocationRole { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataLocationDate</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataLocationDate")]
 			NSString LocationDate { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataDirectionFacing</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataDirectionFacing")]
 			NSString DirectionFacing { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataDirectionMotion</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataDirectionMotion")]
 			NSString DirectionMotion { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierQuickTimeMetadataPreferredAffineTransform</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierQuickTimeMetadataPreferredAffineTransform")]
 			NSString PreferredAffineTransform { get; }
 
+			/// <summary>To be added.</summary>
+			///         <value>To be added.</value>
+			///         <remarks>To be added.</remarks>
 			[MacCatalyst (13, 1)]
 			[Field ("AVMetadataIdentifierQuickTimeMetadataDetectedFace")]
 			NSString DetectedFace { get; }
 
+			/// <summary>To be added.</summary>
+			///         <value>To be added.</value>
+			///         <remarks>To be added.</remarks>
 			[MacCatalyst (13, 1)]
 			[Field ("AVMetadataIdentifierQuickTimeMetadataVideoOrientation")]
 			NSString VideoOrientation { get; }
 
+			/// <summary>To be added.</summary>
+			///         <value>To be added.</value>
+			///         <remarks>To be added.</remarks>
 			[MacCatalyst (13, 1)]
 			[Field ("AVMetadataIdentifierQuickTimeMetadataContentIdentifier")]
 			NSString ContentIdentifier { get; }
@@ -8819,147 +9255,339 @@ namespace AVFoundation {
 		[MacCatalyst (13, 1)]
 		[Static]
 		interface iTunesMetadata {
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataAlbum</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataAlbum")]
 			NSString Album { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataArtist</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataArtist")]
 			NSString Artist { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataUserComment</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataUserComment")]
 			NSString UserComment { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataCoverArt</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataCoverArt")]
 			NSString CoverArt { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataCopyright</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataCopyright")]
 			NSString Copyright { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataReleaseDate</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataReleaseDate")]
 			NSString ReleaseDate { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataEncodedBy</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataEncodedBy")]
 			NSString EncodedBy { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataPredefinedGenre</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataPredefinedGenre")]
 			NSString PredefinedGenre { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataUserGenre</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataUserGenre")]
 			NSString UserGenre { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataSongName</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataSongName")]
 			NSString SongName { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataTrackSubTitle</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataTrackSubTitle")]
 			NSString TrackSubTitle { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataEncodingTool</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataEncodingTool")]
 			NSString EncodingTool { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataComposer</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataComposer")]
 			NSString Composer { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataAlbumArtist</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataAlbumArtist")]
 			NSString AlbumArtist { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataAccountKind</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataAccountKind")]
 			NSString AccountKind { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataAppleID</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataAppleID")]
 			NSString AppleID { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataArtistID</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataArtistID")]
 			NSString ArtistID { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataSongID</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataSongID")]
 			NSString SongID { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataDiscCompilation</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataDiscCompilation")]
 			NSString DiscCompilation { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataDiscNumber</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataDiscNumber")]
 			NSString DiscNumber { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataGenreID</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataGenreID")]
 			NSString GenreID { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataGrouping</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataGrouping")]
 			NSString Grouping { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataPlaylistID</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataPlaylistID")]
 			NSString PlaylistID { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataContentRating</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataContentRating")]
 			NSString ContentRating { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataBeatsPerMin</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataBeatsPerMin")]
 			NSString BeatsPerMin { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataTrackNumber</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataTrackNumber")]
 			NSString TrackNumber { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataArtDirector</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataArtDirector")]
 			NSString ArtDirector { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataArranger</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataArranger")]
 			NSString Arranger { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataAuthor</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataAuthor")]
 			NSString Author { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataLyrics</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataLyrics")]
 			NSString Lyrics { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataAcknowledgement</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataAcknowledgement")]
 			NSString Acknowledgement { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataConductor</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataConductor")]
 			NSString Conductor { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataDescription</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataDescription")]
 			NSString Description { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataDirector</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataDirector")]
 			NSString Director { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataEQ</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataEQ")]
 			NSString EQ { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataLinerNotes</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataLinerNotes")]
 			NSString LinerNotes { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataRecordCompany</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataRecordCompany")]
 			NSString RecordCompany { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataOriginalArtist</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataOriginalArtist")]
 			NSString OriginalArtist { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataPhonogramRights</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataPhonogramRights")]
 			NSString PhonogramRights { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataProducer</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataProducer")]
 			NSString Producer { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataPerformer</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataPerformer")]
 			NSString Performer { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataPublisher</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataPublisher")]
 			NSString Publisher { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataSoundEngineer</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataSoundEngineer")]
 			NSString SoundEngineer { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataSoloist</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataSoloist")]
 			NSString Soloist { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataCredits</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataCredits")]
 			NSString Credits { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataThanks</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataThanks")]
 			NSString Thanks { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataOnlineExtras</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataOnlineExtras")]
 			NSString OnlineExtras { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifieriTunesMetadataExecProducer</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifieriTunesMetadataExecProducer")]
 			NSString ExecProducer { get; }
 		}
@@ -8967,22 +9595,45 @@ namespace AVFoundation {
 		[MacCatalyst (13, 1)]
 		[Static]
 		interface ID3Metadata {
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataAudioEncryption</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataAudioEncryption")]
 			NSString AudioEncryption { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataAttachedPicture</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataAttachedPicture")]
 			NSString AttachedPicture { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataAudioSeekPointIndex</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataAudioSeekPointIndex")]
 			NSString AudioSeekPointIndex { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataComments</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataComments")]
 			NSString Comments { get; }
 
+			/// <summary>To be added.</summary>
+			///         <value>To be added.</value>
+			///         <remarks>To be added.</remarks>
 			[MacCatalyst (13, 1)]
 			[Field ("AVMetadataIdentifierID3MetadataCommercial")]
 			NSString Commercial { get; }
 
+			/// <summary>Developers should not use this deprecated property. </summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Deprecated (PlatformName.iOS, 9, 0)]
 			[Deprecated (PlatformName.TvOS, 9, 0)]
 			[Deprecated (PlatformName.MacOSX, 10, 11)]
@@ -8991,264 +9642,612 @@ namespace AVFoundation {
 			[Field ("AVMetadataIdentifierID3MetadataCommerical")]
 			NSString Commerical { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataEncryption</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataEncryption")]
 			NSString Encryption { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataEqualization</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataEqualization")]
 			NSString Equalization { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataEqualization2</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataEqualization2")]
 			NSString Equalization2 { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataEventTimingCodes</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataEventTimingCodes")]
 			NSString EventTimingCodes { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataGeneralEncapsulatedObject</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataGeneralEncapsulatedObject")]
 			NSString GeneralEncapsulatedObject { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataGroupIdentifier</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataGroupIdentifier")]
 			NSString GroupIdentifier { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataInvolvedPeopleList_v23</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataInvolvedPeopleList_v23")]
 			NSString InvolvedPeopleList_v23 { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataLink</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataLink")]
 			NSString Link { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataMusicCDIdentifier</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataMusicCDIdentifier")]
 			NSString MusicCDIdentifier { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataMPEGLocationLookupTable</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataMPEGLocationLookupTable")]
 			NSString MpegLocationLookupTable { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataOwnership</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataOwnership")]
 			NSString Ownership { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataPrivate</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataPrivate")]
 			NSString Private { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataPlayCounter</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataPlayCounter")]
 			NSString PlayCounter { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataPopularimeter</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataPopularimeter")]
 			NSString Popularimeter { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataPositionSynchronization</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataPositionSynchronization")]
 			NSString PositionSynchronization { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataRecommendedBufferSize</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataRecommendedBufferSize")]
 			NSString RecommendedBufferSize { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataRelativeVolumeAdjustment</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataRelativeVolumeAdjustment")]
 			NSString RelativeVolumeAdjustment { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataRelativeVolumeAdjustment2</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataRelativeVolumeAdjustment2")]
 			NSString RelativeVolumeAdjustment2 { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataReverb</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataReverb")]
 			NSString Reverb { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataSeek</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataSeek")]
 			NSString Seek { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataSignature</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataSignature")]
 			NSString Signature { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataSynchronizedLyric</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataSynchronizedLyric")]
 			NSString SynchronizedLyric { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataSynchronizedTempoCodes</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataSynchronizedTempoCodes")]
 			NSString SynchronizedTempoCodes { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataAlbumTitle</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataAlbumTitle")]
 			NSString AlbumTitle { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataBeatsPerMinute</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataBeatsPerMinute")]
 			NSString BeatsPerMinute { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataComposer</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataComposer")]
 			NSString Composer { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataContentType</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataContentType")]
 			NSString ContentType { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataCopyright</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataCopyright")]
 			NSString Copyright { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataDate</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataDate")]
 			NSString Date { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataEncodingTime</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataEncodingTime")]
 			NSString EncodingTime { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataPlaylistDelay</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataPlaylistDelay")]
 			NSString PlaylistDelay { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataOriginalReleaseTime</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataOriginalReleaseTime")]
 			NSString OriginalReleaseTime { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataRecordingTime</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataRecordingTime")]
 			NSString RecordingTime { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataReleaseTime</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataReleaseTime")]
 			NSString ReleaseTime { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataTaggingTime</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataTaggingTime")]
 			NSString TaggingTime { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataEncodedBy</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataEncodedBy")]
 			NSString EncodedBy { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataLyricist</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataLyricist")]
 			NSString Lyricist { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataFileType</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataFileType")]
 			NSString FileType { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataTime</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataTime")]
 			NSString Time { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataInvolvedPeopleList_v24</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataInvolvedPeopleList_v24")]
 			NSString InvolvedPeopleList_v24 { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataContentGroupDescription</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataContentGroupDescription")]
 			NSString ContentGroupDescription { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataTitleDescription</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataTitleDescription")]
 			NSString TitleDescription { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataSubTitle</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataSubTitle")]
 			NSString SubTitle { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataInitialKey</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataInitialKey")]
 			NSString InitialKey { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataLanguage</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataLanguage")]
 			NSString Language { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataLength</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataLength")]
 			NSString Length { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataMusicianCreditsList</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataMusicianCreditsList")]
 			NSString MusicianCreditsList { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataMediaType</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataMediaType")]
 			NSString MediaType { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataMood</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataMood")]
 			NSString Mood { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataOriginalAlbumTitle</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataOriginalAlbumTitle")]
 			NSString OriginalAlbumTitle { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataOriginalFilename</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataOriginalFilename")]
 			NSString OriginalFilename { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataOriginalLyricist</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataOriginalLyricist")]
 			NSString OriginalLyricist { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataOriginalArtist</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataOriginalArtist")]
 			NSString OriginalArtist { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataOriginalReleaseYear</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataOriginalReleaseYear")]
 			NSString OriginalReleaseYear { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataFileOwner</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataFileOwner")]
 			NSString FileOwner { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataLeadPerformer</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataLeadPerformer")]
 			NSString LeadPerformer { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataBand</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataBand")]
 			NSString Band { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataConductor</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataConductor")]
 			NSString Conductor { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataModifiedBy</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataModifiedBy")]
 			NSString ModifiedBy { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataPartOfASet</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataPartOfASet")]
 			NSString PartOfASet { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataProducedNotice</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataProducedNotice")]
 			NSString ProducedNotice { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataPublisher</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataPublisher")]
 			NSString Publisher { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataTrackNumber</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataTrackNumber")]
 			NSString TrackNumber { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataRecordingDates</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataRecordingDates")]
 			NSString RecordingDates { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataInternetRadioStationName</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataInternetRadioStationName")]
 			NSString InternetRadioStationName { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataInternetRadioStationOwner</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataInternetRadioStationOwner")]
 			NSString InternetRadioStationOwner { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataSize</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataSize")]
 			NSString Size { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataAlbumSortOrder</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataAlbumSortOrder")]
 			NSString AlbumSortOrder { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataPerformerSortOrder</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataPerformerSortOrder")]
 			NSString PerformerSortOrder { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataTitleSortOrder</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataTitleSortOrder")]
 			NSString TitleSortOrder { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataInternationalStandardRecordingCode</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataInternationalStandardRecordingCode")]
 			NSString InternationalStandardRecordingCode { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataEncodedWith</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataEncodedWith")]
 			NSString EncodedWith { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataSetSubtitle</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataSetSubtitle")]
 			NSString SetSubtitle { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataYear</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataYear")]
 			NSString Year { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataUserText</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataUserText")]
 			NSString UserText { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataUniqueFileIdentifier</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataUniqueFileIdentifier")]
 			NSString UniqueFileIdentifier { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataTermsOfUse</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataTermsOfUse")]
 			NSString TermsOfUse { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataUnsynchronizedLyric</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataUnsynchronizedLyric")]
 			NSString UnsynchronizedLyric { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataCommercialInformation</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataCommercialInformation")]
 			NSString CommercialInformation { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataCopyrightInformation</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataCopyrightInformation")]
 			NSString CopyrightInformation { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataOfficialAudioFileWebpage</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataOfficialAudioFileWebpage")]
 			NSString OfficialAudioFileWebpage { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataOfficialArtistWebpage</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataOfficialArtistWebpage")]
 			NSString OfficialArtistWebpage { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataOfficialAudioSourceWebpage</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataOfficialAudioSourceWebpage")]
 			NSString OfficialAudioSourceWebpage { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataOfficialInternetRadioStationHomepage</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataOfficialInternetRadioStationHomepage")]
 			NSString OfficialInternetRadioStationHomepage { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataPayment</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataPayment")]
 			NSString Payment { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataOfficialPublisherWebpage</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataOfficialPublisherWebpage")]
 			NSString OfficialPublisherWebpage { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierID3MetadataUserURL</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierID3MetadataUserURL")]
 			NSString UserUrl { get; }
 		}
@@ -9256,9 +10255,17 @@ namespace AVFoundation {
 		[MacCatalyst (13, 1)]
 		[Static]
 		interface IcyMetadata {
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierIcyMetadataStreamTitle</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierIcyMetadataStreamTitle")]
 			NSString StreamTitle { get; }
 
+			/// <summary>Represents the value associated with the constant AVMetadataIdentifierIcyMetadataStreamURL</summary>
+			///         <value>
+			///         </value>
+			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierIcyMetadataStreamURL")]
 			NSString StreamUrl { get; }
 		}
@@ -9404,66 +10411,6 @@ namespace AVFoundation {
 
 		[Export ("time")]
 		CMTime Time { get; }
-
-#if !NET
-		[Field ("AVMetadataObjectTypeFace")]
-		NSString TypeFace { get; }
-
-		[Field ("AVMetadataObjectTypeAztecCode")]
-		NSString TypeAztecCode { get; }
-
-		[Field ("AVMetadataObjectTypeCode128Code")]
-		NSString TypeCode128Code { get; }
-
-		[Field ("AVMetadataObjectTypeCode39Code")]
-		NSString TypeCode39Code { get; }
-
-		[Field ("AVMetadataObjectTypeCode39Mod43Code")]
-		NSString TypeCode39Mod43Code { get; }
-
-		[Field ("AVMetadataObjectTypeCode93Code")]
-		NSString TypeCode93Code { get; }
-
-		[Field ("AVMetadataObjectTypeEAN13Code")]
-		NSString TypeEAN13Code { get; }
-
-		[Field ("AVMetadataObjectTypeEAN8Code")]
-		NSString TypeEAN8Code { get; }
-
-		[Field ("AVMetadataObjectTypePDF417Code")]
-		NSString TypePDF417Code { get; }
-
-		[Field ("AVMetadataObjectTypeQRCode")]
-		NSString TypeQRCode { get; }
-
-		[Field ("AVMetadataObjectTypeUPCECode")]
-		NSString TypeUPCECode { get; }
-
-		[Field ("AVMetadataObjectTypeInterleaved2of5Code")]
-		NSString TypeInterleaved2of5Code { get; }
-
-		[Field ("AVMetadataObjectTypeITF14Code")]
-		NSString TypeITF14Code { get; }
-
-		[Field ("AVMetadataObjectTypeDataMatrixCode")]
-		NSString TypeDataMatrixCode { get; }
-
-		[TV (17, 0), iOS (13, 0)]
-		[Field ("AVMetadataObjectTypeCatBody")]
-		NSString TypeCatBody { get; }
-
-		[TV (17, 0), iOS (13, 0)]
-		[Field ("AVMetadataObjectTypeDogBody")]
-		NSString TypeDogBody { get; }
-
-		[NoTV, iOS (13, 0)]
-		[Field ("AVMetadataObjectTypeHumanBody")]
-		NSString TypeHumanBody { get; }
-
-		[TV (17, 0), iOS (13, 0)]
-		[Field ("AVMetadataObjectTypeSalientObject")]
-		NSString TypeSalientObject { get; }
-#endif
 	}
 
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
@@ -10218,12 +11165,6 @@ namespace AVFoundation {
 	[BaseType (typeof (AVMovieTrack))]
 	[DisableDefaultCtor]
 	interface AVFragmentedMovieTrack {
-#if !NET
-		[NoiOS]
-		[Field ("AVFragmentedMovieTrackTimeRangeDidChangeNotification")]
-		NSString ATimeRangeDidChangeNotification { get; }
-#endif
-
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -10706,11 +11647,7 @@ namespace AVFoundation {
 		string PresetName { get; }
 
 		[Export ("supportedFileTypes")]
-#if NET
 		string [] SupportedFileTypes { get; }
-#else
-		NSObject [] SupportedFileTypes { get; }
-#endif
 
 		[NullAllowed]
 		[Export ("outputFileType", ArgumentSemantic.Copy)]
@@ -10780,49 +11717,96 @@ namespace AVFoundation {
 		[Export ("error"), NullAllowed]
 		NSError Error { get; }
 
+		/// <summary>Represents the value associated with the constant AVAssetExportPresetLowQuality</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>Quicktime preset: low quality.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetLowQuality")]
 		NSString PresetLowQuality { get; }
 
+		/// <summary>Represents the value associated with the constant AVAssetExportPresetMediumQuality</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>Quicktime preset: medium quality.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetMediumQuality")]
 		NSString PresetMediumQuality { get; }
 
+		/// <summary>Represents the value associated with the constant AVAssetExportPresetHighestQuality</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>Quicktime preset: highest quality.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHighestQuality")]
 		NSString PresetHighestQuality { get; }
 
+		/// <summary>Represents the value associated with the constant AVAssetExportPresetHEVCHighestQuality.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHEVCHighestQuality")]
 		NSString PresetHevcHighestQuality { get; }
 
+		/// <summary>Represents the value associated with the constant AVAssetExportPresetHEVC3840x2160.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHEVC3840x2160")]
 		NSString PresetHevc3840x2160 { get; }
 
+		/// <summary>Represents the value associated with the constant AVAssetExportPreset640x480</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVAssetExportPreset640x480")]
 		NSString Preset640x480 { get; }
 
+		/// <summary>Represents the value associated with the constant AVAssetExportPreset960x540</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>Represents the value associated with the constant AVAssetExportPreset960x540.</remarks>
 		[Field ("AVAssetExportPreset960x540")]
 		NSString Preset960x540 { get; }
 
+		/// <summary>Represents the value associated with the constant AVAssetExportPreset1280x720</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVAssetExportPreset1280x720")]
 		NSString Preset1280x720 { get; }
 
+		/// <summary>Represents the value associated with the constant AVAssetExportPreset1920x1080.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVAssetExportPreset1920x1080")]
 		NSString Preset1920x1080 { get; }
 
+		/// <summary>Represents the value associated with the constant AVAssetExportPreset3840x2160.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPreset3840x2160")]
 		NSString Preset3840x2160 { get; }
 
+		/// <summary>Represents the value associated with the constant AVAssetExportPresetHEVC1920x1080.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHEVC1920x1080")]
 		NSString PresetHevc1920x1080 { get; }
 
+		/// <summary>Represents the value associated with the constant AVAssetExportPresetAppleM4A</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>Audio-only, gapless playback for iTunes.</remarks>
 		[Field ("AVAssetExportPresetAppleM4A")]
 		NSString PresetAppleM4A { get; }
 
+		/// <summary>Represents the value associated with the constant AVAssetExportPresetPassthrough</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVAssetExportPresetPassthrough")]
 		NSString PresetPassthrough { get; }
 
@@ -12054,6 +13038,9 @@ namespace AVFoundation {
 		[Export ("averagePowerLevel")]
 		float AveragePowerLevel { get; } // defined as 'float'
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS, MacCatalyst (15, 0)]
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
@@ -12094,6 +13081,9 @@ namespace AVFoundation {
 		[NullAllowed, Export ("formatDescription")]
 		CMFormatDescription FormatDescription { get; }
 
+		/// <summary>Whether this input port is currently enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
@@ -12303,6 +13293,9 @@ namespace AVFoundation {
 		[Field ("AVAssetExportPresetAppleM4V1080pHD")]
 		NSString M4V1080pHD { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		[Field ("AVAssetExportPresetAppleProRes422LPCM")]
 		NSString ProRes422Lpcm { get; }
@@ -12314,10 +13307,8 @@ namespace AVFoundation {
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[TV (17, 0)]
 	[BaseType (typeof (NSObject))]
-#if NET
 	// Making a class abstract has problems (see https://github.com/xamarin/xamarin-macios/issues/4969), so not doing this (yet).
 	// [Abstract] // as per docs
-#endif
 	// Objective-C exception thrown.  Name: NSGenericException Reason: Cannot instantiate AVCaptureOutput because it is an abstract superclass.
 	[DisableDefaultCtor]
 	interface AVCaptureOutput {
@@ -12519,26 +13510,11 @@ namespace AVFoundation {
 		[Export ("alwaysDiscardsLateVideoFrames")]
 		bool AlwaysDiscardsLateVideoFrames { get; set; }
 
-#if !NET
-		[Obsolete ("Use overload accepting a 'IAVCaptureVideoDataOutputSampleBufferDelegate'.")]
 		[Export ("setSampleBufferDelegate:queue:")]
-		[PostGet ("SampleBufferDelegate")]
-		[PostGet ("SampleBufferCallbackQueue")]
-		void SetSampleBufferDelegate ([NullAllowed] AVCaptureVideoDataOutputSampleBufferDelegate sampleBufferDelegate, [NullAllowed] DispatchQueue sampleBufferCallbackQueue);
-#endif
-
-		[Export ("setSampleBufferDelegate:queue:")]
-#if NET
 		void SetSampleBufferDelegate ([NullAllowed] IAVCaptureVideoDataOutputSampleBufferDelegate sampleBufferDelegate, [NullAllowed] DispatchQueue sampleBufferCallbackQueue);
-#else
-		[Sealed]
-		void SetSampleBufferDelegateQueue ([NullAllowed] IAVCaptureVideoDataOutputSampleBufferDelegate sampleBufferDelegate, [NullAllowed] DispatchQueue sampleBufferCallbackQueue);
-#endif
 
 		// 5.0 APIs
-#if NET
 		[BindAs (typeof (CoreVideo.CVPixelFormatType []))]
-#endif
 		[Export ("availableVideoCVPixelFormatTypes")]
 		NSNumber [] AvailableVideoCVPixelFormatTypes { get; }
 
@@ -12638,18 +13614,7 @@ namespace AVFoundation {
 		DispatchQueue SampleBufferCallbackQueue { get; }
 
 		[Export ("setSampleBufferDelegate:queue:")]
-#if NET
 		void SetSampleBufferDelegate ([NullAllowed] IAVCaptureAudioDataOutputSampleBufferDelegate sampleBufferDelegate, [NullAllowed] DispatchQueue sampleBufferCallbackDispatchQueue);
-#else
-		[Sealed]
-		void SetSampleBufferDelegateQueue ([NullAllowed] IAVCaptureAudioDataOutputSampleBufferDelegate sampleBufferDelegate, [NullAllowed] DispatchQueue sampleBufferCallbackDispatchQueue);
-#endif
-
-#if !NET
-		[Obsolete ("Use overload accepting a 'IAVCaptureVideoDataOutputSampleBufferDelegate'.")]
-		[Export ("setSampleBufferDelegate:queue:")]
-		void SetSampleBufferDelegateQueue ([NullAllowed] AVCaptureAudioDataOutputSampleBufferDelegate sampleBufferDelegate, [NullAllowed] DispatchQueue sampleBufferCallbackDispatchQueue);
-#endif
 
 		[MacCatalyst (13, 1)]
 		[Export ("recommendedAudioSettingsForAssetWriterWithOutputFileType:")]
@@ -12913,8 +13878,17 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("AVCapturePhotoSettingsThumbnailFormatKeys")]
 	interface AVCapturePhotoSettingsThumbnailFormat {
+		/// <summary>Gets or sets the thumbnail codec.</summary>
+		///         <value>The thumbnail codec.</value>
+		///         <remarks>To be added.</remarks>
 		NSString Codec { get; set; }
+		/// <summary>Gets or sets the thumbnail width.</summary>
+		///         <value>The thumbnail width.</value>
+		///         <remarks>To be added.</remarks>
 		NSNumber Width { get; set; }
+		/// <summary>Gets or sets the thumbnail height.</summary>
+		///         <value>The thumbnail height.</value>
+		///         <remarks>To be added.</remarks>
 		NSNumber Height { get; set; }
 	}
 
@@ -12963,6 +13937,9 @@ namespace AVFoundation {
 		[Export ("flashMode", ArgumentSemantic.Assign)]
 		AVCaptureFlashMode FlashMode { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether automatic image stabilization will be used when capturing images.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'PhotoQualityPrioritization' instead.")]
 		[MacCatalyst (13, 1)]
@@ -12971,6 +13948,9 @@ namespace AVFoundation {
 		[Export ("autoStillImageStabilizationEnabled")]
 		bool IsAutoStillImageStabilizationEnabled { [Bind ("isAutoStillImageStabilizationEnabled")] get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the highest available resolution will be used when capturing images.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 16, 0, message: "Use 'MaxPhotoDimensions' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 16, 0, message: "Use 'MaxPhotoDimensions' instead.")]
 		[Deprecated (PlatformName.TvOS, 16, 0, message: "Use 'MaxPhotoDimensions' instead.")]
@@ -12990,6 +13970,9 @@ namespace AVFoundation {
 		[NullAllowed, Export ("previewPhotoFormat", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSObject> PreviewPhotoFormat { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether images from two built-in cameras will automatically be combined into one high quality image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'AutoVirtualDeviceFusionEnabled' instead.")]
 		[MacCatalyst (14, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AutoVirtualDeviceFusionEnabled' instead.")]
@@ -13004,6 +13987,9 @@ namespace AVFoundation {
 		[NullAllowed, Export ("rawFileType")]
 		string RawFileType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'VirtualDeviceConstituentPhotoDeliveryEnabled' instead.")]
 		[MacCatalyst (14, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'VirtualDeviceConstituentPhotoDeliveryEnabled' instead.")]
@@ -13011,6 +13997,9 @@ namespace AVFoundation {
 		[Export ("dualCameraDualPhotoDeliveryEnabled")]
 		bool DualCameraDualPhotoDeliveryEnabled { [Bind ("isDualCameraDualPhotoDeliveryEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Export ("depthDataDeliveryEnabled")]
 		bool DepthDataDeliveryEnabled { [Bind ("isDepthDataDeliveryEnabled")] get; set; }
@@ -13019,10 +14008,16 @@ namespace AVFoundation {
 		[Export ("embedsDepthDataInPhoto")]
 		bool EmbedsDepthDataInPhoto { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Export ("depthDataFiltered")]
 		bool DepthDataFiltered { [Bind ("isDepthDataFiltered")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Export ("cameraCalibrationDataDeliveryEnabled")]
 		bool CameraCalibrationDataDeliveryEnabled { [Bind ("isCameraCalibrationDataDeliveryEnabled")] get; set; }
@@ -13040,28 +14035,30 @@ namespace AVFoundation {
 		[Export ("availableEmbeddedThumbnailPhotoCodecTypes")]
 		NSString [] _GetAvailableEmbeddedThumbnailPhotoCodecTypes { get; }
 
-#if !NET
-		[Obsolete ("Use 'AvailableEmbeddedThumbnailPhotoCodecTypes' instead.")]
-		[Wrap ("Array.ConvertAll (_GetAvailableEmbeddedThumbnailPhotoCodecTypes, s => AVVideoCodecTypeExtensions.GetValue (s))", IsVirtual = false)]
-		AVVideoCodecType [] GetAvailableEmbeddedThumbnailPhotoCodecTypes { get; }
-#endif
+		/// <summary>Gets the list of supported photo codec types.</summary>
+		///         <value>Te list of supported photo codec types.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Wrap ("Array.ConvertAll (_GetAvailableEmbeddedThumbnailPhotoCodecTypes, s => AVVideoCodecTypeExtensions.GetValue (s))", IsVirtual = true)]
 		AVVideoCodecType [] AvailableEmbeddedThumbnailPhotoCodecTypes { get; }
 
-#if NET
 		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("embeddedThumbnailPhotoFormat", ArgumentSemantic.Copy)]
 		NSDictionary WeakEmbeddedThumbnailPhotoFormat { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Wrap ("WeakEmbeddedThumbnailPhotoFormat")]
 		AVCapturePhotoSettingsThumbnailFormat EmbeddedThumbnailPhotoFormat { get; set; }
-#else
-		[NullAllowed, Export ("embeddedThumbnailPhotoFormat", ArgumentSemantic.Copy)]
-		NSDictionary EmbeddedThumbnailPhotoFormat { get; set; }
-#endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Export ("portraitEffectsMatteDeliveryEnabled")]
@@ -13083,11 +14080,17 @@ namespace AVFoundation {
 		[NullAllowed, Export ("rawEmbeddedThumbnailPhotoFormat", ArgumentSemantic.Copy)]
 		NSDictionary WeakRawEmbeddedThumbnailPhotoFormat { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Wrap ("WeakRawEmbeddedThumbnailPhotoFormat")]
 		AVCapturePhotoSettingsThumbnailFormat RawEmbeddedThumbnailPhotoFormat { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Export ("autoRedEyeReductionEnabled")]
@@ -13169,6 +14172,9 @@ namespace AVFoundation {
 		[Export ("bracketedSettings")]
 		AVCaptureBracketedStillImageSettings [] BracketedSettings { get; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether lens stabilization is enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lensStabilizationEnabled")]
 		bool IsLensStabilizationEnabled { [Bind ("isLensStabilizationEnabled")] get; set; }
 	}
@@ -13384,6 +14390,9 @@ namespace AVFoundation {
 		[Export ("availableRawPhotoPixelFormatTypes")]
 		NSNumber [] AvailableRawPhotoPixelFormatTypes { get; }
 
+		/// <summary>Gets a Boolean value that tells whether image stabilization is supported for still images.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'MaxPhotoQualityPrioritization' instead.")]
 		[NoMac]
 		[MacCatalyst (13, 1)]
@@ -13402,9 +14411,7 @@ namespace AVFoundation {
 
 		[Mac (13, 0)]
 		[MacCatalyst (13, 1)]
-#if NET
 		[BindAs (typeof (AVCaptureFlashMode []))]
-#endif
 		[Export ("supportedFlashModes")]
 		NSNumber [] SupportedFlashModes { get; }
 
@@ -13418,6 +14425,9 @@ namespace AVFoundation {
 		[NullAllowed, Export ("photoSettingsForSceneMonitoring", ArgumentSemantic.Copy)]
 		AVCapturePhotoSettings PhotoSettingsForSceneMonitoring { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether high resolution capture is enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 16, 0, message: "Use 'MaxPhotoDimensions' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 16, 0, message: "Use 'MaxPhotoDimensions' instead.")]
 		[Deprecated (PlatformName.TvOS, 16, 0, message: "Use 'MaxPhotoDimensions' instead.")]
@@ -13431,26 +14441,41 @@ namespace AVFoundation {
 		[Export ("maxBracketedCapturePhotoCount")]
 		nuint MaxBracketedCapturePhotoCount { get; }
 
+		/// <summary>Gets a Boolean value that tells whether stabilization is supported while capturing bracketed images.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("lensStabilizationDuringBracketedCaptureSupported")]
 		bool IsLensStabilizationDuringBracketedCaptureSupported { [Bind ("isLensStabilizationDuringBracketedCaptureSupported")] get; }
 
+		/// <summary>Gets a Boolean value that tells whether Live Photo capture is supported.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("livePhotoCaptureSupported")]
 		bool IsLivePhotoCaptureSupported { [Bind ("isLivePhotoCaptureSupported")] get; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether Live Photo capture is enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("livePhotoCaptureEnabled")]
 		bool IsLivePhotoCaptureEnabled { [Bind ("isLivePhotoCaptureEnabled")] get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether live photo capture is suspended.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("livePhotoCaptureSuspended")]
 		bool IsLivePhotoCaptureSuspended { [Bind ("isLivePhotoCaptureSuspended")] get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether to trim Live Photos to reduce movement.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("livePhotoAutoTrimmingEnabled")]
@@ -13487,6 +14512,9 @@ namespace AVFoundation {
 		[Async]
 		void SetPreparedPhotoSettings (AVCapturePhotoSettings [] preparedPhotoSettingsArray, [NullAllowed] Action<bool, NSError> completionHandler);
 
+		/// <summary>Gets a value that tells whether the device can fuse two camera images to produce 1 higher quality image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'VirtualDeviceFusionSupported' instead.")]
 		[NoMac]
 		[MacCatalyst (14, 0)]
@@ -13497,11 +14525,17 @@ namespace AVFoundation {
 
 		// From AVCapturePhotoOutput (AVCapturePhotoOutputDepthDataDeliverySupport) Category
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Export ("depthDataDeliverySupported")]
 		bool DepthDataDeliverySupported { [Bind ("isDepthDataDeliverySupported")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Export ("depthDataDeliveryEnabled")]
@@ -13512,6 +14546,9 @@ namespace AVFoundation {
 		[Export ("availablePhotoFileTypes")]
 		NSString [] _GetAvailablePhotoFileTypes { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Wrap ("Array.ConvertAll (_GetAvailablePhotoFileTypes, s => AVFileTypesExtensions.GetValue (s))")]
 		AVFileTypes [] GetAvailablePhotoFileTypes { get; }
@@ -13522,6 +14559,9 @@ namespace AVFoundation {
 		[Export ("availableRawPhotoFileTypes")]
 		NSString [] _GetAvailableRawPhotoFileTypes { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Wrap ("Array.ConvertAll (_GetAvailableRawPhotoFileTypes, s => AVFileTypesExtensions.GetValue (s))")]
@@ -13546,6 +14586,9 @@ namespace AVFoundation {
 		[Export ("supportedRawPhotoPixelFormatTypesForFileType:")]
 		NSNumber [] GetSupportedRawPhotoPixelFormatTypesForFileType (string fileType);
 
+		/// <summary>Gets a Boolean value that tells if delivery of two formats for each capture is supported.</summary>
+		///         <value>A Boolean value that tells if delivery of two formats for each capture is supported.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'VirtualDeviceConstituentPhotoDeliverySupported' instead.")]
 		[NoMac]
 		[MacCatalyst (14, 0)]
@@ -13554,6 +14597,9 @@ namespace AVFoundation {
 		[Export ("dualCameraDualPhotoDeliverySupported")]
 		bool DualCameraDualPhotoDeliverySupported { [Bind ("isDualCameraDualPhotoDeliverySupported")] get; }
 
+		/// <summary>Gets or sets a Boolean value that tells if delivery of two formats for each capture is enabled.</summary>
+		///         <value>A Boolean value that tells if delivery of two formats for each capture is enabled.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'VirtualDeviceConstituentPhotoDeliveryEnabledDevices' instead.")]
 		[NoMac]
 		[MacCatalyst (14, 0)]
@@ -13567,21 +14613,34 @@ namespace AVFoundation {
 		[Export ("availableLivePhotoVideoCodecTypes")]
 		string [] AvailableLivePhotoVideoCodecTypes { [return: BindAs (typeof (AVVideoCodecType []))] get; }
 
+		/// <summary>Gets a Boolean value that tells whether the capture output can deliver calibration data.</summary>
+		///         <value>
+		///           <see langword="true" /> if delivery is supported. Otherwise, <see langword="false" />.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Export ("cameraCalibrationDataDeliverySupported")]
 		bool CameraCalibrationDataDeliverySupported { [Bind ("isCameraCalibrationDataDeliverySupported")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Export ("portraitEffectsMatteDeliverySupported")]
 		bool PortraitEffectsMatteDeliverySupported { [Bind ("isPortraitEffectsMatteDeliverySupported")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Export ("portraitEffectsMatteDeliveryEnabled")]
 		bool PortraitEffectsMatteDeliveryEnabled { [Bind ("isPortraitEffectsMatteDeliveryEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Export ("autoRedEyeReductionSupported")]
@@ -13900,17 +14959,9 @@ namespace AVFoundation {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // init NS_UNAVAILABLE
 	interface AVCaptureDeviceDiscoverySession {
-
-#if !NET
-		[Internal]
-		[Static]
-		[Export ("discoverySessionWithDeviceTypes:mediaType:position:")]
-		AVCaptureDeviceDiscoverySession _Create (NSArray deviceTypes, [NullAllowed] string mediaType, AVCaptureDevicePosition position);
-#else
 		[Static]
 		[Export ("discoverySessionWithDeviceTypes:mediaType:position:")]
 		AVCaptureDeviceDiscoverySession Create ([BindAs (typeof (AVCaptureDeviceType []))] NSString [] deviceTypes, [NullAllowed][BindAs (typeof (AVMediaTypes))] NSString mediaType, AVCaptureDevicePosition position);
-#endif
 
 		[Export ("devices")]
 		AVCaptureDevice [] Devices { get; }
@@ -14065,14 +15116,6 @@ namespace AVFoundation {
 		[Wrap ("GetDefaultDevice (mediaType.GetConstant ()!)")]
 		[return: NullAllowed]
 		AVCaptureDevice GetDefaultDevice (AVMediaTypes mediaType);
-
-#if !NET
-		[Obsolete ("Use 'GetDefaultDevice (AVMediaTypes)'.")]
-		[Static]
-		[Wrap ("GetDefaultDevice ((NSString) mediaType)")]
-		[return: NullAllowed]
-		AVCaptureDevice DefaultDeviceWithMediaType (string mediaType);
-#endif
 
 		[MacCatalyst (13, 1)]
 		[Static]
@@ -15020,9 +16063,7 @@ namespace AVFoundation {
 
 		[MacCatalyst (14, 0)]
 		[Export ("supportedColorSpaces")]
-#if NET
 		[BindAs (typeof (AVCaptureColorSpace []))]
-#endif
 		NSNumber [] SupportedColorSpaces { get; }
 
 		[MacCatalyst (14, 0)]
@@ -15042,6 +16083,9 @@ namespace AVFoundation {
 		[Export ("videoBinned")]
 		bool VideoBinned { [Bind ("isVideoBinned")] get; }
 
+		/// <summary>Developers should not use this deprecated property. Developers should use 'IsVideoStabilizationModeSupported (AVCaptureVideoStabilizationMode)' instead.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Export ("videoStabilizationSupported")]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'IsVideoStabilizationModeSupported (AVCaptureVideoStabilizationMode)' instead.")]
@@ -15091,6 +16135,9 @@ namespace AVFoundation {
 		bool IsVideoHdrSupported { [Bind ("isVideoHDRSupported")] get; }
 
 #if !XAMCORE_5_0
+		/// <summary>Gets whether high dynamic range video is supported and enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Obsolete ("Use the 'IsVideoHdrSupported' property instead.")]
@@ -15562,31 +16609,6 @@ namespace AVFoundation {
 		[Export ("audioOutputDeviceUniqueID"), NullAllowed]
 		string AudioOutputDeviceUniqueID { get; set; }
 
-#if !NET
-		[Obsolete ("Use 'AVPlayerWaitingReason' enum instead.")]
-		[Field ("AVPlayerWaitingToMinimizeStallsReason")]
-		NSString WaitingToMinimizeStallsReason { get; }
-
-		[Obsolete ("Use 'AVPlayerWaitingReason' enum instead.")]
-		[Field ("AVPlayerWaitingWhileEvaluatingBufferingRateReason")]
-		NSString WaitingWhileEvaluatingBufferingRateReason { get; }
-
-		[Obsolete ("Use 'AVPlayerWaitingReason' enum instead.")]
-		[Field ("AVPlayerWaitingWithNoItemToPlayReason")]
-		NSString WaitingWithNoItemToPlayReason { get; }
-
-		[Obsolete ("Use 'AVPlayerWaitingReason' enum instead.")]
-		[iOS (14, 5), TV (14, 5)]
-		[MacCatalyst (14, 5)]
-		[Field ("AVPlayerWaitingDuringInterstitialEventReason")]
-		NSString WaitingDuringInterstitialEventReason { get; }
-
-		[Obsolete ("Use 'AVPlayerWaitingReason' enum instead.")]
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
-		[Field ("AVPlayerWaitingForCoordinatedPlaybackReason")]
-		NSString AVPlayerWaitingForCoordinatedPlaybackReason { get; }
-#endif // !NET
-
 		// From AVPlayer (AVPlayerPlaybackCapabilities) Category
 
 		[NoMac]
@@ -15678,6 +16700,9 @@ namespace AVFoundation {
 		[Protected]
 		NSDictionary WeakTextMarkupAttributes { get; }
 
+		/// <summary>The <see cref="T:CoreMedia.CMTextMarkupAttributes" /> that apply to the text.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakTextMarkupAttributes")]
 		CMTextMarkupAttributes TextMarkupAttributes { get; }
 
@@ -15943,11 +16968,7 @@ namespace AVFoundation {
 
 		/// <include file="../docs/api/AVFoundation/AVPlayerItem.xml" path="/Documentation/Docs[@DocId='P:AVFoundation.AVPlayerItem.TimeJumpedNotification']/*" />
 		[Field ("AVPlayerItemTimeJumpedNotification")]
-#if !NET
-		[Notification]
-#else
 		[Notification (typeof (AVPlayerItemTimeJumpedEventArgs))]
-#endif
 		NSString TimeJumpedNotification { get; }
 
 		[Export ("seekToTime:completionHandler:")]
@@ -17286,11 +18307,7 @@ namespace AVFoundation {
 	interface AVAsynchronousKeyValueLoading {
 		[Abstract]
 		[Export ("statusOfValueForKey:error:")]
-#if NET
 		AVKeyValueStatus GetStatusOfValue (string forKey, out NSError error);
-#else
-		AVKeyValueStatus StatusOfValueForKeyerror (string key, [NullAllowed] IntPtr outError);
-#endif
 		[Abstract]
 		[Export ("loadValuesAsynchronouslyForKeys:completionHandler:")]
 		void LoadValuesAsynchronously (string [] keys, [NullAllowed] Action handler);
@@ -17328,37 +18345,80 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface AVAudioSettings {
+		/// <summary>Represents the value associated with the constant AVFormatIDKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVFormatIDKey")]
 		NSString AVFormatIDKey { get; }
 
+		/// <summary>Represents the value associated with the constant AVSampleRateKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVSampleRateKey")]
 		NSString AVSampleRateKey { get; }
 
+		/// <summary>Represents the value associated with the constant AVNumberOfChannelsKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVNumberOfChannelsKey")]
 		NSString AVNumberOfChannelsKey { get; }
 
+		/// <summary>Represents the value associated with the constant AVLinearPCMBitDepthKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVLinearPCMBitDepthKey")]
 		NSString AVLinearPCMBitDepthKey { get; }
 
+		/// <summary>Represents the value associated with the constant AVLinearPCMIsBigEndianKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVLinearPCMIsBigEndianKey")]
 		NSString AVLinearPCMIsBigEndianKey { get; }
 
+		/// <summary>Represents the value associated with the constant AVLinearPCMIsFloatKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVLinearPCMIsFloatKey")]
 		NSString AVLinearPCMIsFloatKey { get; }
 
+		/// <summary>Represents the value associated with the constant AVLinearPCMIsNonInterleaved</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVLinearPCMIsNonInterleaved")]
 		NSString AVLinearPCMIsNonInterleaved { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVAudioFileTypeKey")]
 		NSString FileTypeKey { get; }
 
+		/// <summary>Represents the value associated with the constant AVEncoderAudioQualityKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVEncoderAudioQualityKey")]
 		NSString AVEncoderAudioQualityKey { get; }
 
+		/// <summary>Represents the value associated with the constant AVEncoderBitRateKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVEncoderBitRateKey")]
 		NSString AVEncoderBitRateKey { get; }
 
+		/// <summary>Represents the value associated with the constant AVEncoderBitRatePerChannelKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVEncoderBitRatePerChannelKey")]
 		NSString AVEncoderBitRatePerChannelKey { get; }
 
@@ -17369,12 +18429,24 @@ namespace AVFoundation {
 		[Field ("AVSampleRateConverterAlgorithmKey"), Internal]
 		NSString AVSampleRateConverterAlgorithmKey { get; }
 
+		/// <summary>Represents the value associated with the constant AVEncoderBitDepthHintKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVEncoderBitDepthHintKey")]
 		NSString AVEncoderBitDepthHintKey { get; }
 
+		/// <summary>Represents the value associated with the constant AVSampleRateConverterAudioQualityKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVSampleRateConverterAudioQualityKey")]
 		NSString AVSampleRateConverterAudioQualityKey { get; }
 
+		/// <summary>Represents the value associated with the constant AVChannelLayoutKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("AVChannelLayoutKey")]
 		NSString AVChannelLayoutKey { get; }
 
@@ -17402,6 +18474,9 @@ namespace AVFoundation {
 		[Field ("AVSampleRateConverterAlgorithm_Mastering"), Internal]
 		NSString AVSampleRateConverterAlgorithm_Mastering { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("AVSampleRateConverterAlgorithm_MinimumPhase")]
 		NSString AVSampleRateConverterAlgorithm_MinimumPhase { get; }
@@ -17453,12 +18528,6 @@ namespace AVFoundation {
 		[Export ("enqueueSampleBuffer:")]
 		void Enqueue (CMSampleBuffer sampleBuffer);
 
-#if !NET
-		[Wrap ("Enqueue (sampleBuffer)", IsVirtual = true)]
-		[Obsolete ("Use the 'Enqueue' method instead.")]
-		void EnqueueSampleBuffer (CMSampleBuffer sampleBuffer);
-#endif
-
 		[Deprecated (PlatformName.MacOSX, 15, 0)]
 		[Deprecated (PlatformName.iOS, 18, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0)]
@@ -17479,12 +18548,6 @@ namespace AVFoundation {
 		[Deprecated (PlatformName.TvOS, 18, 0)]
 		[Export ("requestMediaDataWhenReadyOnQueue:usingBlock:")]
 		void RequestMediaData (DispatchQueue queue, Action handler);
-
-#if !NET
-		[Wrap ("RequestMediaData (queue, enqueuer)", IsVirtual = true)]
-		[Obsolete ("Use the 'RequestMediaData' method instead.")]
-		void RequestMediaDataWhenReadyOnQueue (DispatchQueue queue, Action enqueuer);
-#endif
 
 		[Deprecated (PlatformName.MacOSX, 15, 0)]
 		[Deprecated (PlatformName.iOS, 18, 0)]
@@ -17983,12 +19046,8 @@ namespace AVFoundation {
 		AVUrlAsset UrlAsset { get; }
 	}
 
-#if NET
 	[NoTV]
 	[MacCatalyst (13, 1)]
-#else
-	[Obsoleted (PlatformName.TvOS, 12, 0)]
-#endif
 	[Static, Internal]
 	interface AVAssetDownloadTaskKeys {
 		[MacCatalyst (13, 1)]
@@ -18020,12 +19079,8 @@ namespace AVFoundation {
 		NSString MinimumRequiredPresentationSizeKey { get; }
 	}
 
-#if NET
 	[NoTV]
 	[MacCatalyst (13, 1)]
-#else
-	[Obsoleted (PlatformName.TvOS, 12, 0)]
-#endif
 	[StrongDictionary ("AVAssetDownloadTaskKeys")]
 	interface AVAssetDownloadOptions {
 		/// <summary>To be added.</summary>
@@ -18881,6 +19936,9 @@ namespace AVFoundation {
 		[Export ("keySystem")]
 		NSString KeySystemConstant { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("AVContentKeySystemExtensions.GetValue (this.KeySystemConstant)")]
 		AVContentKeySystem KeySystem { get; }
 
@@ -18956,8 +20014,14 @@ namespace AVFoundation {
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	interface AVContentKeySessionServerPlaybackContextOptions {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSNumber [] ProtocolVersions { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSData ServerChallenge { get; }
 	}
 
@@ -19075,7 +20139,7 @@ namespace AVFoundation {
 		[Internal]
 		[Static]
 		[Export ("contentKeyResponseWithFairPlayStreamingKeyResponseData:")]
-		AVContentKeyResponse _InitWithFairPlayStreamingKeyResponseData (NSData fairPlayStreamingKeyResponseData);
+		AVContentKeyResponse _CreateWithFairPlayStreamingKeyResponseData (NSData fairPlayStreamingKeyResponseData);
 
 		[MacCatalyst (13, 1)]
 		[Static]
@@ -19087,7 +20151,7 @@ namespace AVFoundation {
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("contentKeyResponseWithAuthorizationTokenData:")]
-		AVContentKeyResponse _InitWithAuthorizationToken (NSData authorizationTokenData);
+		AVContentKeyResponse _CreateWithAuthorizationToken (NSData authorizationTokenData);
 	}
 
 	[TV (14, 5), iOS (14, 5)]
@@ -19197,6 +20261,9 @@ namespace AVFoundation {
 		[Export ("timestamp")]
 		CMTime Timestamp { get; }
 
+		/// <summary>Gets a Boolean value that tells whether the photo is in the RAW format.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("rawPhoto")]
@@ -19215,6 +20282,12 @@ namespace AVFoundation {
 		[NullAllowed, Export ("embeddedThumbnailPhotoFormat")]
 		NSDictionary WeakEmbeddedThumbnailPhotoFormat { get; }
 
+		/// <summary>Gets the format of the embedded thumbnail, if present.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Wrap ("WeakEmbeddedThumbnailPhotoFormat")]
@@ -19230,6 +20303,9 @@ namespace AVFoundation {
 		[Export ("metadata")]
 		NSDictionary WeakMetadata { get; }
 
+		/// <summary>Gets the <see cref="T:CoreGraphics.CGImageProperties" /> for the image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Wrap ("WeakMetadata")]
@@ -19247,6 +20323,12 @@ namespace AVFoundation {
 		[NullAllowed, Export ("sourceDeviceType")]
 		NSString WeakSourceDeviceType { get; }
 
+		/// <summary>Gets the device type of the device that captured the photo.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("AVCaptureDeviceTypeExtensions.GetValue (WeakSourceDeviceType!)")]
 		AVCaptureDeviceType SourceDeviceType { get; }
 
@@ -19779,11 +20861,7 @@ namespace AVFoundation {
 	interface IAVPlaybackCoordinatorPlaybackControlDelegate { }
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
-#if NET
 	[Protocol, Model]
-#else
-	[Protocol, Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject))]
 	interface AVPlaybackCoordinatorPlaybackControlDelegate {
 		[Abstract]
@@ -19940,11 +21018,7 @@ namespace AVFoundation {
 	interface IAVPlayerPlaybackCoordinatorDelegate { }
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
-#if NET
 	[Protocol, Model]
-#else
-	[Protocol, Model (AutoGeneratedName = true)]
-#endif
 	[BaseType (typeof (NSObject))]
 	interface AVPlayerPlaybackCoordinatorDelegate {
 		[Export ("playbackCoordinator:identifierForPlayerItem:")]

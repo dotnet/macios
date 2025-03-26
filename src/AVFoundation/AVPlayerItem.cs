@@ -7,8 +7,6 @@ using ObjCRuntime;
 
 namespace AVFoundation {
 	public partial class AVPlayerItem {
-
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -16,7 +14,6 @@ namespace AVFoundation {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public AVVideoApertureMode VideoApertureMode {
 			get { return AVVideoApertureModeExtensions.GetValue (_VideoApertureMode); }
 			set {

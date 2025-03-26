@@ -35,12 +35,10 @@ using ObjCRuntime;
 
 namespace AVFoundation {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AVUrlAssetOptions : DictionaryContainer {
 #if !COREBUILD
 		public AVUrlAssetOptions ()

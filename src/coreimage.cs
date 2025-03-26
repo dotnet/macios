@@ -334,11 +334,17 @@ namespace CoreImage {
 		[Export ("render:toIOSurface:bounds:colorSpace:")]
 		void Render (CIImage image, IOSurface.IOSurface surface, CGRect bounds, [NullAllowed] CGColorSpace colorSpace);
 
+		/// <summary>Gets the maximum allowed input image size.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("inputImageMaximumSize")]
 		CGSize InputImageMaximumSize { get; }
 
+		/// <summary>Gets the maximum allowed output image size.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("outputImageMaximumSize")]

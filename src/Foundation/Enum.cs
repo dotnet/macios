@@ -1050,10 +1050,15 @@ namespace Foundation {
 	[Flags]
 	[Native]
 	public enum NSLinguisticTaggerOptions : ulong {
+		/// <summary>To be added.</summary>
 		OmitWords = 1,
+		/// <summary>To be added.</summary>
 		OmitPunctuation = 2,
+		/// <summary>To be added.</summary>
 		OmitWhitespace = 4,
+		/// <summary>To be added.</summary>
 		OmitOther = 8,
+		/// <summary>To be added.</summary>
 		JoinNames = 16,
 	}
 
@@ -1097,10 +1102,15 @@ namespace Foundation {
 
 	[Native]
 	public enum NSLocaleLanguageDirection : ulong {
+		/// <summary>To be added.</summary>
 		Unknown,
+		/// <summary>To be added.</summary>
 		LeftToRight,
+		/// <summary>To be added.</summary>
 		RightToLeft,
+		/// <summary>To be added.</summary>
 		TopToBottom,
+		/// <summary>To be added.</summary>
 		BottomToTop,
 	}
 
@@ -1282,9 +1292,11 @@ namespace Foundation {
 
 	[Native]
 	public enum NSLigatureType : long {
+		/// <summary>To be added.</summary>
 		None,
 		/// <summary>To be added.</summary>
 		Default,
+		/// <summary>To be added.</summary>
 		All,
 	}
 
@@ -1567,13 +1579,21 @@ namespace Foundation {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSLengthFormatterUnit : long {
+		/// <summary>To be added.</summary>
 		Millimeter = 8,
+		/// <summary>To be added.</summary>
 		Centimeter = 9,
+		/// <summary>To be added.</summary>
 		Meter = 11,
+		/// <summary>To be added.</summary>
 		Kilometer = 14,
+		/// <summary>To be added.</summary>
 		Inch = (5 << 8) + 1,
+		/// <summary>To be added.</summary>
 		Foot = (5 << 8) + 2,
+		/// <summary>To be added.</summary>
 		Yard = (5 << 8) + 3,
+		/// <summary>To be added.</summary>
 		Mile = (5 << 8) + 4,
 	}
 
@@ -1786,9 +1806,13 @@ namespace Foundation {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSLinguisticTaggerUnit : long {
+		/// <summary>To be added.</summary>
 		Word,
+		/// <summary>To be added.</summary>
 		Sentence,
+		/// <summary>To be added.</summary>
 		Paragraph,
+		/// <summary>To be added.</summary>
 		Document,
 	}
 

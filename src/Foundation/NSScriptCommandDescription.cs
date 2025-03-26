@@ -84,10 +84,16 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string AppleEventClassCode {
 			get { return Runtime.ToFourCCString (FCCAppleEventClassCode); }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string AppleEventCode {
 			get { return Runtime.ToFourCCString (FCCAppleEventCode); }
 		}
@@ -120,6 +126,9 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string AppleEventCodeForReturnType {
 			get { return Runtime.ToFourCCString (FCCAppleEventCodeForReturnType); }
 		}
@@ -129,6 +138,9 @@ namespace Foundation {
 			return new NSScriptCommand (CreateCommandInstancePtr ());
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary Dictionary {
 			get { return description.Dictionary; }
 		}

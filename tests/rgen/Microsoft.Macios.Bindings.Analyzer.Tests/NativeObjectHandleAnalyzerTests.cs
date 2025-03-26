@@ -125,6 +125,28 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 					}
 				}
 				"""];
+
+			// if statement
+			yield return [
+				"""
+				using ObjCRuntime;
+				using CoreMedia;
+				using AVFoundation;
+
+				public unsafe partial class AVCaptureMetadataInputTest : AVCaptureInput {
+					internal AVCaptureMetadataInputTest (nint desc, global::CoreMedia.CMClock clock)
+						: base (NSObjectFlag.Empty)
+					{
+						var clock__handle__ = clock!.GetNonNullHandle (nameof (clock));
+						if (IsDirectBinding) {
+							InitializeHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_IntPtr_NativeHandle (this.Handle, Selector.GetHandle ("initWithFormatDescription:clock:"), desc, clock.Handle), "initWithFormatDescription:clock:");
+						} else {
+							InitializeHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_IntPtr_NativeHandle (this.SuperHandle, Selector.GetHandle ("initWithFormatDescription:clock:"), desc, clock.Handle), "initWithFormatDescription:clock:");
+						}
+					}
+				}
+				
+				"""];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
@@ -241,6 +263,64 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 					bool Equals(Test other) { return this.Handle == other.Handle; }
 				}
 				"""];
+			// if statement
+			yield return [
+				"""
+				using ObjCRuntime;
+				using CoreMedia;
+				using AVFoundation;
+
+				public unsafe partial class AVCaptureMetadataInputTest : AVCaptureInput {
+					internal AVCaptureMetadataInputTest (nint desc, global::CoreMedia.CMClock clock)
+						: base (NSObjectFlag.Empty)
+					{
+						var clock__handle__ = clock!.GetNonNullHandle (nameof (clock));
+						if (IsDirectBinding) {
+							InitializeHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_IntPtr_NativeHandle (this.Handle, Selector.GetHandle ("initWithFormatDescription:clock:"), desc, clock.Handle), "initWithFormatDescription:clock:");
+						} else {
+							InitializeHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_IntPtr_NativeHandle (this.SuperHandle, Selector.GetHandle ("initWithFormatDescription:clock:"), desc, clock.Handle), "initWithFormatDescription:clock:");
+						}
+						GC.KeepAlive (clock);
+					}
+				}
+				
+				"""];
+
+			// inside the if/else
+			yield return [
+				"""
+				using ObjCRuntime;
+				using Foundation;
+				using CoreMedia;
+				using AVFoundation;
+
+				public unsafe static partial class NSCoder_Extensions {
+					public static CGRect DecodeCGRect (this NSCoder This, string key)
+					{
+						global::UIKit.UIApplication.EnsureUIThread ();
+						if (key is null)
+							ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+						var nskey = CFString.CreateNative (key);
+						CGRect ret;
+						if (global::ObjCRuntime.Runtime.IsARM64CallingConvention) {
+							ret = global::ObjCRuntime.Messaging.CGRect_objc_msgSend_NativeHandle (This.Handle, Selector.GetHandle ("decodeCGRectForKey:"), nskey);
+							GC.KeepAlive (This);
+						} else if (IntPtr.Size == 8) {
+							ret = global::ObjCRuntime.Messaging.CGRect_objc_msgSend_stret_NativeHandle (This.Handle, Selector.GetHandle ("decodeCGRectForKey:"), nskey);
+							GC.KeepAlive (This);
+						} else if (Runtime.Arch == Arch.DEVICE) {
+							ret = global::ObjCRuntime.Messaging.CGRect_objc_msgSend_NativeHandle (This.Handle, Selector.GetHandle ("decodeCGRectForKey:"), nskey);
+							GC.KeepAlive (This);
+						} else {
+							ret = global::ObjCRuntime.Messaging.CGRect_objc_msgSend_stret_NativeHandle (This.Handle, Selector.GetHandle ("decodeCGRectForKey:"), nskey);
+							GC.KeepAlive (This);
+						}
+						CFString.ReleaseNative (nskey);
+						return ret!;
+					}
+				}
+				
+				"""];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
@@ -253,7 +333,9 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 		var (compilation, _) = CreateCompilation (platform, sources: inputText);
 		var diagnostics = await RunAnalyzer (new NativeObjectHandleAnalyzer (), compilation);
 		var analyzerDiagnotics = diagnostics.Where (d => d.Id == "RBI0014").ToArray ();
-		Assert.Single (analyzerDiagnotics);
+		// ensure that we have at least one error; it might be the case that we get more than one because
+		// we access the handle multiple times.
+		Assert.True (analyzerDiagnotics.Length != 0);
 	}
 
 	[Theory]

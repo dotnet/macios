@@ -42,6 +42,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using ObjCRuntime;
 using CoreFoundation;
@@ -2980,6 +2981,36 @@ namespace CoreMidi {
 			}
 			set {
 				SetInt (MidiPropertyExtensions.kMIDIPropertyAssociatedEndpoint, value);
+			}
+		}
+
+		[DllImport (Constants.CoreMidiLibrary)]
+		unsafe extern static OSStatus MIDIEndpointGetRefCons (MidiEndpointRef endpoint, IntPtr* ref1, IntPtr* ref2);
+
+		[DllImport (Constants.CoreMidiLibrary)]
+		extern static OSStatus MIDIEndpointSetRefCons (MidiEndpointRef endpoint, IntPtr ref1, IntPtr ref2);
+
+		/// <summary>Get the refcons for this endpoint.</summary>
+		/// <param name="ref1">Returns the first refcon if successful.</param>
+		/// <param name="ref2">Returns the second refcon if successful.</param>
+		/// <returns><see cref="MidiError.Ok" /> if successful, an error code otherwise.</returns>
+		public MidiError GetRefCons (out IntPtr ref1, out IntPtr ref2)
+		{
+			ref1 = IntPtr.Zero;
+			ref2 = IntPtr.Zero;
+			unsafe {
+				return (MidiError) MIDIEndpointGetRefCons (GetCheckedHandle (), (IntPtr*) Unsafe.AsRef<IntPtr> (ref ref1), (IntPtr*) Unsafe.AsRef<IntPtr> (ref ref2));
+			}
+		}
+
+		/// <summary>Set the refcons for this endpoint.</summary>
+		/// <param name="ref1">The first refcon.</param>
+		/// <param name="ref2">The second refcon.</param>
+		/// <returns><see cref="MidiError.Ok" /> if successful, an error code otherwise.</returns>
+		public MidiError SetRefCons (IntPtr ref1, IntPtr ref2)
+		{
+			unsafe {
+				return (MidiError) MIDIEndpointSetRefCons (GetCheckedHandle (), ref1, ref2);
 			}
 		}
 		// MidiEndpoint 

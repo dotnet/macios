@@ -20,24 +20,4 @@ namespace CoreBluetooth {
 		{
 		}
 	}
-
-#if !NET
-	public partial class CBCentralManager {
-
-		public new virtual CBCentralManagerState State {
-			get {
-				return (CBCentralManagerState) base.State;
-			}
-		}
-	}
-
-	public partial class CBPeripheralManager {
-
-		public virtual CBPeripheralManagerState State {
-			get {
-				return (CBPeripheralManagerState) base.State;
-			}
-		}
-	}
-#endif
 }

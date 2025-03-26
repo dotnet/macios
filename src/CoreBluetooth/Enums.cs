@@ -90,17 +90,6 @@ namespace CoreBluetooth {
 		Disconnecting,
 	}
 
-#if !NET
-	// NSInteger -> CBPeripheralManager.h
-	[Native]
-	public enum CBPeripheralManagerAuthorizationStatus : long {
-		NotDetermined,
-		Restricted,
-		Denied,
-		Authorized,
-	}
-#endif // !NET
-
 	// NSUInteger -> CBCharacteristic.h
 	/// <summary>The possible properties of a characteristic. A characteristic may have multiple properties.</summary>
 	[MacCatalyst (13, 1)]

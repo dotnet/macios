@@ -40,6 +40,7 @@ namespace ObjCBindings {
 	///
 	/// [1]: https://developer.apple.com/library/content/documentation/CoreFoundation/Conceptual/CFMemoryMgmt/Concepts/Ownership.html
 	/// </summary>
+	[Experimental ("APL0003")]
 	[AttributeUsage (AttributeTargets.ReturnValue | AttributeTargets.Parameter | AttributeTargets.Property, AllowMultiple = false)]
 	public class ForcedTypeAttribute : Attribute {
 		/// <summary>

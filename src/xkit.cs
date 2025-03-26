@@ -181,9 +181,13 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSGlyphProperty : long {
+		/// <summary>Null glyph; ignored for layout and display.</summary>
 		Null = (1 << 0),
+		/// <summary>A control character such as tab, that has associated special behavior.</summary>
 		ControlCharacter = (1 << 1),
+		/// <summary>Glyphs such as whitespace that have elastic width behavior.</summary>
 		Elastic = (1 << 2),
+		/// <summary>Glyphs with combining properties, often characters in Unicode Mn class.</summary>
 		NonBaseCharacter = (1 << 3),
 	}
 
@@ -193,44 +197,66 @@ namespace UIKit {
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum NSLayoutAttribute : long {
+		/// <summary>Indicates no attribute.</summary>
 		NoAttribute = 0,
+		/// <summary>The left-most X value of the element.</summary>
 		Left = 1,
+		/// <summary>The right-most X value of the element.</summary>
 		Right,
+		/// <summary>The top-most Y value of the element.</summary>
 		Top,
+		/// <summary>The bottom of the element.</summary>
 		Bottom,
+		/// <summary>In locales with right-to-left text, this value is equal to <see cref="F:UIKit.NSLayoutAttribute.Left" />. In locales such as Hebrew or Arabic, equal to <see cref="F:UIKit.NSLayoutAttribute.Right" />.</summary>
 		Leading,
+		/// <summary>In locales with right-to-left text, this value is equal to <see cref="F:UIKit.NSLayoutAttribute.Right" />. In locales such as Hebrew or Arabic, equal to <see cref="F:UIKit.NSLayoutAttribute.Left" />.</summary>
 		Trailing,
+		/// <summary>The size of the element along the X axis.</summary>
 		Width,
+		/// <summary>The size of the element along the Y axis.</summary>
 		Height,
+		/// <summary>The left-to-right midpoint of the element.</summary>
 		CenterX,
+		/// <summary>The top-to-bottom midpoint of the element.</summary>
 		CenterY,
+		/// <summary>The line on which text without descenders sits.</summary>
 		Baseline,
+		/// <summary>The element's last baseline.</summary>
 		[MacCatalyst (13, 1)]
 		LastBaseline = Baseline,
+		/// <summary>The element's first baseline.</summary>
 		[MacCatalyst (13, 1)]
 		FirstBaseline,
 
+		/// <summary>The left margin of the element.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		LeftMargin,
+		/// <summary>The right margin of the element.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		RightMargin,
+		/// <summary>The top margin of the element.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		TopMargin,
+		/// <summary>The margin from the bottom of the element.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		BottomMargin,
+		/// <summary>The leading edge of the element's margin.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		LeadingMargin,
+		/// <summary>The trailing margin of the element.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		TrailingMargin,
+		/// <summary>The X-center of the region bounded by the element's margins.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		CenterXWithinMargins,
+		/// <summary>The Y-center of the region bounded by the element's margins.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		CenterYWithinMargins,
@@ -244,38 +270,56 @@ namespace UIKit {
 	public enum NSLayoutFormatOptions : ulong {
 		None = 0,
 
+		/// <summary>Aligns all elements using their <see cref="F:UIKit.NSLayoutAttribute.Left" /> properties.</summary>
 		AlignAllLeft = (1 << (int) NSLayoutAttribute.Left),
+		/// <summary>Aligns all elements using their <see cref="F:UIKit.NSLayoutAttribute.Right" /> properties.</summary>
 		AlignAllRight = (1 << (int) NSLayoutAttribute.Right),
+		/// <summary>Aligns all attributes using their <see cref="F:UIKit.NSLayoutAttribute.Top" />s.</summary>
 		AlignAllTop = (1 << (int) NSLayoutAttribute.Top),
+		/// <summary>Aligns all elements using their <see cref="F:UIKit.NSLayoutAttribute.Bottom" />s.</summary>
 		AlignAllBottom = (1 << (int) NSLayoutAttribute.Bottom),
+		/// <summary>Aligns all elements using their <see cref="F:UIKit.NSLayoutAttribute.Leading" />s.</summary>
 		AlignAllLeading = (1 << (int) NSLayoutAttribute.Leading),
+		/// <summary>Aligns all attributes using their <see cref="F:UIKit.NSLayoutAttribute.Trailing" />s.</summary>
 		AlignAllTrailing = (1 << (int) NSLayoutAttribute.Trailing),
+		/// <summary>Aligns all elements using their <see cref="F:UIKit.NSLayoutAttribute.CenterX" />s.</summary>
 		AlignAllCenterX = (1 << (int) NSLayoutAttribute.CenterX),
+		/// <summary>Aligns all elements using their <see cref="F:UIKit.NSLayoutAttribute.CenterY" />s.</summary>
 		AlignAllCenterY = (1 << (int) NSLayoutAttribute.CenterY),
+		/// <summary>Aligns all elements using their <see cref="F:UIKit.NSLayoutAttribute.Baseline" />s.</summary>
 		AlignAllBaseline = (1 << (int) NSLayoutAttribute.Baseline),
+		/// <summary>Align all elements by using their last baselines.</summary>
 		[MacCatalyst (13, 1)]
 		AlignAllLastBaseline = (1 << (int) NSLayoutAttribute.LastBaseline),
+		/// <summary>Align all elements by using their first baselines.</summary>
 		[MacCatalyst (13, 1)]
 		AlignAllFirstBaseline = (1 << (int) NSLayoutAttribute.FirstBaseline),
 
+		/// <summary>Mask that can be applied to return only the alignment portion of the format options.</summary>
 		AlignmentMask = 0xFFFF,
 
 		/* choose only one of these three
 		 */
+		/// <summary>Arranges objects in the normal direction of text. In most languages this is left-to-right.</summary>
 		DirectionLeadingToTrailing = 0 << 16, // default
+		/// <summary>Arranges objects so that the first object is left-most.</summary>
 		DirectionLeftToRight = 1 << 16,
+		/// <summary>Arranges objects so that the first object is right-most.</summary>
 		DirectionRightToLeft = 2 << 16,
 
+		/// <summary>Arrange objects edge to edge.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		SpacingEdgeToEdge = 0 << 19,
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		SpacingBaselineToBaseline = 1 << 19,
+		/// <summary>A mask that selects only spacing bits of the format options.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		SpacingMask = 1 << 19,
 
+		/// <summary>Mask that can be applied to return only the directional component of the format options.</summary>
 		DirectionMask = 0x3 << 16,
 	}
 
@@ -3145,6 +3189,9 @@ namespace UIKit {
 		[Export ("data", ArgumentSemantic.Copy)]
 		NSData Data { get; }
 
+		/// <summary>The UTI of the <see cref="P:UIKit.NSDataAsset.Data" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("typeIdentifier")] // Uniform Type Identifier
 		NSString TypeIdentifier { get; }
 	}

@@ -242,46 +242,71 @@ namespace Metal {
 	/// <summary>Enumerates vertex data formats (type and number).</summary>
 	[Native]
 	public enum MTLVertexFormat : ulong {
+		/// <summary>To be added.</summary>
 		Invalid = 0,
 
+		/// <summary>To be added.</summary>
 		UChar2 = 1,
+		/// <summary>To be added.</summary>
 		UChar3 = 2,
+		/// <summary>To be added.</summary>
 		UChar4 = 3,
 
+		/// <summary>To be added.</summary>
 		Char2 = 4,
+		/// <summary>To be added.</summary>
 		Char3 = 5,
+		/// <summary>To be added.</summary>
 		Char4 = 6,
 
+		/// <summary>To be added.</summary>
 		UChar2Normalized = 7,
+		/// <summary>To be added.</summary>
 		UChar3Normalized = 8,
+		/// <summary>To be added.</summary>
 		UChar4Normalized = 9,
 
 		Char2Normalized = 10,
+		/// <summary>To be added.</summary>
 		Char3Normalized = 11,
+		/// <summary>To be added.</summary>
 		Char4Normalized = 12,
 
+		/// <summary>To be added.</summary>
 		UShort2 = 13,
+		/// <summary>To be added.</summary>
 		UShort3 = 14,
+		/// <summary>To be added.</summary>
 		UShort4 = 15,
 
 		Short2 = 16,
+		/// <summary>To be added.</summary>
 		Short3 = 17,
+		/// <summary>To be added.</summary>
 		Short4 = 18,
 
+		/// <summary>To be added.</summary>
 		UShort2Normalized = 19,
+		/// <summary>To be added.</summary>
 		UShort3Normalized = 20,
+		/// <summary>To be added.</summary>
 		UShort4Normalized = 21,
 
+		/// <summary>To be added.</summary>
 		Short2Normalized = 22,
+		/// <summary>To be added.</summary>
 		Short3Normalized = 23,
 		Short4Normalized = 24,
 
+		/// <summary>To be added.</summary>
 		Half2 = 25,
 		Half3 = 26,
 		Half4 = 27,
 
 		Float = 28,
+		/// <summary>To be added.</summary>
 		Float2 = 29,
+		/// <summary>To be added.</summary>
 		Float3 = 30,
 		Float4 = 31,
 		Int = 32,

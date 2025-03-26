@@ -349,6 +349,13 @@ if test -n "$ENABLE_GENERATOR_DIFF"; then
 	# delete files we don't care are different
 	echo "    ${BLUE}Deleting files from ${WHITE}$OUTPUT_TMP_DIR/generator${BLUE} we don't care about...${CLEAR}"
 	find "$OUTPUT_TMP_DIR/generator" '(' \
+		-name '*.AssemblyInfo.cs' -or \
+		-name '*.sourcelink.json' -or \
+		-name '*.csproj.FileListAbsolute.txt' -or \
+		-name 'SourceLink.json' -or \
+		-name 'ApiDefinition.*.csproj' -or \
+		-name 'Microsoft.*.csproj' -or \
+		-name 'Core.*.csproj' -or \
 		-name 'compiler' -or \
 		-name 'bgen' -or \
 		-name '*.dll' -or \

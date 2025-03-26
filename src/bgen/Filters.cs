@@ -96,6 +96,7 @@ public partial class Generator {
 		indent--;
 		print ("}");
 		print ("InitializeHandle (h, \"initWithCoder:\");");
+		print ("GC.KeepAlive (coder);");
 		indent--;
 		print ("}");
 		print ("");

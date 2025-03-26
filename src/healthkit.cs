@@ -80,8 +80,11 @@ namespace HealthKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKWorkoutSessionLocationType : long {
+		/// <summary>It is not known whether the workout is performed indoors or outdoors.</summary>
 		Unknown = 1,
+		/// <summary>The workout is performed indoors.</summary>
 		Indoor,
+		/// <summary>The workout is performed outdoors.</summary>
 		Outdoor,
 	}
 
@@ -4107,6 +4110,10 @@ namespace HealthKit {
 	[BaseType (typeof (HKSampleType))]
 	[DisableDefaultCtor] // NSInvalidArgumentException Reason: The -init method is not available on HKWorkoutType
 	interface HKWorkoutType {
+		/// <summary>Represents the value associated with the constant HKWorkoutTypeIdentifier</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("HKWorkoutTypeIdentifier")]
 		NSString Identifier { get; }
 	}

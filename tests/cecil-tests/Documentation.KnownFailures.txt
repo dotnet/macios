@@ -4018,6 +4018,7 @@ F:BackgroundAssets.BAErrorCode.CallFromInactiveProcessNotAllowed
 F:BackgroundAssets.BAErrorCode.DownloadAlreadyFailed
 F:BackgroundAssets.BAErrorCode.DownloadAlreadyScheduled
 F:BackgroundAssets.BAErrorCode.DownloadBackgroundActivityProhibited
+F:BackgroundAssets.BAErrorCode.DownloadDoesNotExist
 F:BackgroundAssets.BAErrorCode.DownloadEssentialDownloadNotPermitted
 F:BackgroundAssets.BAErrorCode.DownloadFailedToStart
 F:BackgroundAssets.BAErrorCode.DownloadInvalid
@@ -9281,6 +9282,7 @@ F:ObjCRuntime.Constants.ScriptingBridgeLibrary
 F:ObjCRuntime.Constants.SdkVersion
 F:ObjCRuntime.Constants.SearchKitLibrary
 F:ObjCRuntime.Constants.SecurityLibrary
+F:ObjCRuntime.Constants.SecurityUILibrary
 F:ObjCRuntime.Constants.SensitiveContentAnalysisLibrary
 F:ObjCRuntime.Constants.SensorKitLibrary
 F:ObjCRuntime.Constants.ServiceManagementLibrary
@@ -10608,6 +10610,7 @@ F:ShazamKit.SHMediaItemProperty.AppleMusicId
 F:ShazamKit.SHMediaItemProperty.AppleMusicUrl
 F:ShazamKit.SHMediaItemProperty.Artist
 F:ShazamKit.SHMediaItemProperty.ArtworkUrl
+F:ShazamKit.SHMediaItemProperty.Confidence
 F:ShazamKit.SHMediaItemProperty.CreationDate
 F:ShazamKit.SHMediaItemProperty.ExplicitContent
 F:ShazamKit.SHMediaItemProperty.FrequencySkew
@@ -35588,6 +35591,10 @@ M:Security.SslContext.Write(System.Byte[],System.IntPtr@)
 M:Security.SslStreamConnection.#ctor(System.IO.Stream)
 M:Security.SslStreamConnection.Read(System.IntPtr,System.IntPtr@)
 M:Security.SslStreamConnection.Write(System.IntPtr,System.IntPtr@)
+M:SecurityUI.SFCertificatePresentation.#ctor(Security.SecTrust)
+M:SecurityUI.SFCertificatePresentation.DismissSheet
+M:SecurityUI.SFCertificatePresentation.PresentSheet(AppKit.NSWindow,System.Action)
+M:SecurityUI.SFCertificatePresentation.PresentSheet(UIKit.UIViewController,System.Action)
 M:SensitiveContentAnalysis.SCSensitivityAnalyzer.AnalyzeImageAsync(CoreGraphics.CGImage)
 M:SensitiveContentAnalysis.SCSensitivityAnalyzer.AnalyzeImageAsync(Foundation.NSUrl)
 M:SensitiveContentAnalysis.SCSensitivityAnalyzer.AnalyzeVideoAsync(Foundation.NSUrl,Foundation.NSProgress@)
@@ -52379,6 +52386,10 @@ P:Security.SecTrustResultKey.OrganizationName
 P:Security.SecTrustResultKey.ResultValue
 P:Security.SecTrustResultKey.RevocationChecked
 P:Security.SecTrustResultKey.RevocationValidUntilDate
+P:SecurityUI.SFCertificatePresentation.HelpUrl
+P:SecurityUI.SFCertificatePresentation.Message
+P:SecurityUI.SFCertificatePresentation.Title
+P:SecurityUI.SFCertificatePresentation.Trust
 P:SensitiveContentAnalysis.SCSensitivityAnalysis.Sensitive
 P:SensorKit.SRSensorReader.Delegate
 P:SensorKit.SRSensorReader.Sensor
@@ -60575,6 +60586,7 @@ T:Security.SslStreamConnection
 T:Security.TlsCipherSuite
 T:Security.TlsCipherSuiteGroup
 T:Security.TlsProtocolVersion
+T:SecurityUI.SFCertificatePresentation
 T:SensitiveContentAnalysis.SCSensitivityAnalysisPolicy
 T:SensorKit.ISRSensorReaderDelegate
 T:SensorKit.SRAbsoluteTime

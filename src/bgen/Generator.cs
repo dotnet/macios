@@ -585,19 +585,19 @@ public partial class Generator : IMemberGatherer {
 
 		if (mi.ReturnType.IsArray && TypeManager.IsWrappedType (mi.ReturnType.GetElementType ())) {
 			returntype = NativeHandleType;
-			returnformat = "return NSArray.FromNSObjects({0}).GetHandle ();";
+			returnformat = "return Runtime.RetainAndAutoreleaseNSObject (NSArray.FromNSObjects({0}));";
+		} else if (TypeCache.INativeObject.IsAssignableFrom (mi.ReturnType)) {
+			returntype = Generator.NativeHandleType;
+			returnformat = "return Runtime.RetainAndAutoreleaseNativeObject ({0});";
 		} else if (TypeManager.IsWrappedType (mi.ReturnType)) {
 			returntype = Generator.NativeHandleType;
-			returnformat = "return {0}.GetHandle ();";
+			returnformat = "return Runtime.RetainAndAutoreleaseNSObject ({0});";
 		} else if (mi.ReturnType == TypeCache.System_String) {
 			returntype = Generator.NativeHandleType;
 			returnformat = "return NSString.CreateNative ({0}, true);";
 		} else if (GetNativeEnumToNativeExpression (mi.ReturnType, out var preExpression, out var postExpression, out var nativeType)) {
 			returntype = nativeType;
 			returnformat = "return " + preExpression + "{0}" + postExpression + ";";
-		} else if (TypeCache.INativeObject.IsAssignableFrom (mi.ReturnType)) {
-			returntype = Generator.NativeHandleType;
-			returnformat = "return {0}.GetHandle ();";
 		} else if (mi.ReturnType == TypeCache.System_Boolean) {
 			returntype = "byte";
 			returnformat = "return {0} ? (byte) 1 : (byte) 0;";
@@ -697,7 +697,7 @@ public partial class Generator : IMemberGatherer {
 					convert.Append ($"var {refname} = Runtime.GetINativeObject<{TypeManager.RenderType (nt)}> ({safe_name} is not null ? *{safe_name} : NativeHandle.Zero, false)!;");
 					pars.Add (new TrampolineParameterInfo ($"{NativeHandleType}*", safe_name));
 					postConvert.AppendLine ($"if ({safe_name} is not null)");
-					postConvert.Append ($"\t*{safe_name} = {refname}.GetHandle ();");
+					postConvert.Append ($"\t*{safe_name} = Runtime.RetainAndAutoreleaseNativeObject ({refname});");
 					invoke.Append (outOrRef);
 					invoke.Append (" ");
 					invoke.Append (refname);

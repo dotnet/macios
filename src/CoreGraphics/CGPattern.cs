@@ -36,10 +36,6 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
 
 	// untyped enum -> CGPattern.h
@@ -59,32 +55,18 @@ namespace CoreGraphics {
 	[StructLayout (LayoutKind.Sequential)]
 	struct CGPatternCallbacks {
 		internal /* unsigned int */ uint version;
-#if NET
 		internal unsafe delegate* unmanaged<IntPtr, IntPtr, void> draw;
 		internal unsafe delegate* unmanaged<IntPtr, void> release;
-#else
-		internal IntPtr draw;
-		internal IntPtr release;
-#endif
 	}
 
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CGPattern.h
 	public class CGPattern : NativeObject {
 #if !COREBUILD
-#if !NET
-		public CGPattern (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal CGPattern (NativeHandle handle, bool owns)
 			: base (handle, owns)
@@ -102,7 +84,6 @@ namespace CoreGraphics {
 			/* CGFloat */ nfloat xStep, /* CGFloat */ nfloat yStep, CGPatternTiling tiling, byte isColored,
 			/* const CGPatternCallbacks* */ CGPatternCallbacks* callbacks);
 
-#if NET
 		static CGPatternCallbacks callbacks;
 
 		static CGPattern ()
@@ -115,15 +96,6 @@ namespace CoreGraphics {
 				};
 			}
 		}
-#else
-		static DrawPatternCallback drawCallbackDelegate = DrawCallback;
-		static ReleaseInfoCallback releaseCallbackDelegate = ReleaseCallback;
-		static CGPatternCallbacks callbacks = new CGPatternCallbacks () {
-			version = 0,
-			draw = Marshal.GetFunctionPointerForDelegate (drawCallbackDelegate),
-			release = Marshal.GetFunctionPointerForDelegate (releaseCallbackDelegate),
-		};
-#endif
 		GCHandle gch;
 
 		public CGPattern (CGRect bounds, CGAffineTransform matrix, nfloat xStep, nfloat yStep, CGPatternTiling tiling, bool isColored, DrawPattern drawPattern)
@@ -138,13 +110,7 @@ namespace CoreGraphics {
 			}
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (DrawPatternCallback))]
-#endif
-#endif
 		static void DrawCallback (IntPtr voidptr, IntPtr cgcontextptr)
 		{
 			GCHandle gch = GCHandle.FromIntPtr (voidptr);
@@ -154,13 +120,7 @@ namespace CoreGraphics {
 			}
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (ReleaseInfoCallback))]
-#endif
-#endif
 		static void ReleaseCallback (IntPtr voidptr)
 		{
 			GCHandle gch = GCHandle.FromIntPtr (voidptr);

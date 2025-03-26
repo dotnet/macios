@@ -52,12 +52,10 @@ namespace CoreGraphics {
 		Lab,
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CGImageProperties : DictionaryContainer {
 #if !COREBUILD
 
@@ -306,12 +304,10 @@ namespace CoreGraphics {
 	}
 
 #if !COREBUILD
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CGImagePropertiesExif : DictionaryContainer {
 		public CGImagePropertiesExif ()
 			: base (new NSMutableDictionary ())
@@ -551,12 +547,10 @@ namespace CoreGraphics {
 		// TODO: Many more available but underlying types need to be investigated
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CGImagePropertiesTiff : DictionaryContainer {
 		public CGImagePropertiesTiff ()
 			: base (new NSMutableDictionary ())
@@ -619,12 +613,10 @@ namespace CoreGraphics {
 		// TODO: Many more available but underlying types need to be investigated
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CGImagePropertiesJfif : DictionaryContainer {
 		public CGImagePropertiesJfif ()
 			: base (new NSMutableDictionary ())
@@ -663,12 +655,10 @@ namespace CoreGraphics {
 		// TODO: Many more available but underlying types need to be investigated
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CGImagePropertiesPng : DictionaryContainer {
 		public CGImagePropertiesPng ()
 			: base (new NSMutableDictionary ())
@@ -767,12 +757,10 @@ namespace CoreGraphics {
 		// TODO: Many more available but underlying types need to be investigated
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CGImagePropertiesGps : DictionaryContainer {
 		public CGImagePropertiesGps ()
 			: base (new NSMutableDictionary ())
@@ -841,13 +829,10 @@ namespace CoreGraphics {
 		// TODO: Many more available but underlying types need to be investigated
 	}
 
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CGImagePropertiesIptc : DictionaryContainer {
 		public CGImagePropertiesIptc ()
 			: base (new NSMutableDictionary ())

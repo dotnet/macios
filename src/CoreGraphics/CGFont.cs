@@ -38,19 +38,11 @@ using CoreFoundation;
 
 using CoreText;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
-
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CGFont.h
 	public class CGFont : NativeObject {
 #if !COREBUILD

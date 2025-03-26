@@ -7,13 +7,8 @@ using ObjCRuntime;
 using Foundation;
 
 namespace CoreGraphics {
-
-#if NET
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#else
-	[MacCatalyst (13,1)]
-#endif
 	public enum CGCaptureOptions : uint {
 		/// <summary>To be added.</summary>
 		None = 0,
@@ -21,12 +16,8 @@ namespace CoreGraphics {
 		NoFill = 1 << 0,
 	}
 
-#if NET
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#else
-	[MacCatalyst (13,1)]
-#endif
 	public static class CGDisplay {
 #if !COREBUILD
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -87,14 +78,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary, EntryPoint = "CGDisplayRestoreColorSyncSettings")]
 		public static extern void RestoreColorSyncSettings ();
 
-#if NET
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.9")]
 		[ObsoletedOSPlatform ("maccatalyst13.1")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 9)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern byte CGDisplayIsCaptured (uint display);
 

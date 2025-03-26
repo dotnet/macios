@@ -76,7 +76,7 @@ public partial class NSValue : NSObject {
             // avoid potential buffer overflow since we use the older `getValue:` API to cover all platforms
             // and we can cheat here with the actual string comparison (since we are the one doing it)
             if (ObjCType == "{CGAffineTransform=dddddd}")
-                StoreValueAtAddress ((IntPtr) (void*) &result);
+                StoreValueAtAddress ((IntPtr) (void*) &result, (nuint) sizeof (CGAffineTransform));
             return result;
         }
     }

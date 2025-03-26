@@ -38,30 +38,18 @@ using Foundation;
 using ObjCRuntime;
 using CoreFoundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
-
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CGPDFDictionary.h
 	public class CGPDFDictionary : CGPDFObject {
 		// The lifetime management of CGPDFObject (and CGPDFArray, CGPDFDictionary and CGPDFStream) are tied to
 		// the containing CGPDFDocument, and not possible to handle independently, which is why this class
 		// does not subclass NativeObject (there's no way to retain/release CGPDFObject instances). It's
 		// also why this constructor doesn't have a 'bool owns' parameter: it's always owned by the containing CGPDFDocument.
-#if NET
 		internal CGPDFDictionary (NativeHandle handle)
-#else
-		public CGPDFDictionary (IntPtr handle)
-#endif
 			: base (handle)
 		{
 		}
@@ -201,28 +189,12 @@ namespace CoreGraphics {
 			return r;
 		}
 
-#if NET
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static void CGPDFDictionaryApplyFunction (/* CGPDFDictionaryRef */ IntPtr dic, delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> function, /* void* */ IntPtr info);
-#else
-		// CGPDFDictionaryApplierFunction
-		delegate void ApplierFunction (/* const char* */ IntPtr key, /* CGPDFObjectRef */ IntPtr value, /* void* */ IntPtr info);
-
-		[DllImport (Constants.CoreGraphicsLibrary)]
-		extern static void CGPDFDictionaryApplyFunction (/* CGPDFDictionaryRef */ IntPtr dic, ApplierFunction function, /* void* */ IntPtr info);
-
-		static readonly ApplierFunction applyblock_handler = ApplyBridge;
-#endif // NET
 
 		public delegate void ApplyCallback (string? key, object? value, object? info);
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (ApplierFunction))]
-#endif
-#endif // NET
 		static void ApplyBridge (IntPtr key, IntPtr pdfObject, IntPtr info)
 		{
 			var data = GCHandle.FromIntPtr (info).Target as Tuple<ApplyCallback, object?>;
@@ -239,25 +211,15 @@ namespace CoreGraphics {
 			var data = new Tuple<ApplyCallback, object?> (callback, info);
 			var gch = GCHandle.Alloc (data);
 			try {
-#if NET
 				unsafe {
 					CGPDFDictionaryApplyFunction (Handle, &ApplyBridge, GCHandle.ToIntPtr (gch));
 				}
-#else
-				CGPDFDictionaryApplyFunction (Handle, applyblock_handler, GCHandle.ToIntPtr (gch));
-#endif
 			} finally {
 				gch.Free ();
 			}
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (ApplierFunction))]
-#endif
-#endif // NET
 		static void ApplyBridge2 (IntPtr key, IntPtr pdfObject, IntPtr info)
 		{
 			var callback = GCHandle.FromIntPtr (info).Target as Action<string?, CGPDFObject>;
@@ -268,13 +230,9 @@ namespace CoreGraphics {
 		public void Apply (Action<string?, CGPDFObject> callback)
 		{
 			GCHandle gch = GCHandle.Alloc (callback);
-#if NET
 			unsafe {
 				CGPDFDictionaryApplyFunction (Handle, &ApplyBridge2, GCHandle.ToIntPtr (gch));
 			}
-#else
-			CGPDFDictionaryApplyFunction (Handle, ApplyBridge2, GCHandle.ToIntPtr (gch));
-#endif
 			gch.Free ();
 		}
 

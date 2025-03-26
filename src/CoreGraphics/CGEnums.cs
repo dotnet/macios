@@ -271,19 +271,6 @@ namespace CoreGraphics {
 		AllowsFormFieldEntry = (1 << 7),
 	}
 
-#if !NET
-	// uint32_t enum -> CGColorConverter.h
-	// this enum does not exist in the headers anymore
-	[Obsoleted (PlatformName.TvOS, 10, 0, message: "Replaced by 'CGColorConversionInfoTransformType'.")]
-	[Obsoleted (PlatformName.iOS, 10, 0, message: "Replaced by 'CGColorConversionInfoTransformType'.")]
-	[NoMac]
-	public enum CGColorConverterTransformType : uint {
-		FromSpace,
-		ToSpace,
-		ApplySpace,
-	}
-#endif
-
 	// uint32_t enum -> CGColorConversionInfo.h
 	[MacCatalyst (13, 1)]
 	public enum CGColorConversionInfoTransformType : uint {

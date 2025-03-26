@@ -34,10 +34,6 @@ using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
 
 	// untyped enum -> CGPDFPage.h
@@ -57,13 +53,6 @@ namespace CoreGraphics {
 	// CGPDFPage.h
 	public partial class CGPDFPage {
 #if !COREBUILD
-#if !NET
-		public CGPDFPage (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal CGPDFPage (NativeHandle handle, bool owns)
 			: base (handle, owns)

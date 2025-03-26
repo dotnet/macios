@@ -16,36 +16,23 @@ using CoreFoundation;
 using Foundation;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
-#if NET
 	public struct CGColorConversionInfoTriple {
-#else
-	public struct GColorConversionInfoTriple {
-#endif
 		public CGColorSpace Space;
 		public CGColorConversionInfoTransformType Transform;
 		public CGColorRenderingIntent Intent;
 	}
 
 	// CGColorConverter.h
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public partial class CGColorConversionInfo : NativeObject {
 		[Preserve (Conditional = true)]
 		internal CGColorConversionInfo (NativeHandle handle, bool owns)
@@ -60,21 +47,13 @@ namespace CoreGraphics {
 			/* CGColorSpaceRef __nullable */ IntPtr space3, /* CGColorConversionInfoTransformType */ IntPtr transform3, /* CGColorRenderingIntent */ IntPtr intent3,
 			IntPtr placeholder11, IntPtr placeholder12, IntPtr placeholder13, IntPtr placeholder14, IntPtr placeholder15, IntPtr placeholder16, IntPtr placeholder17, IntPtr placeholder18, IntPtr placeholder19);
 
-#if NET
 		public CGColorConversionInfo (CGColorConversionOptions? options, params CGColorConversionInfoTriple [] triples)
-#else
-		public CGColorConversionInfo (CGColorConversionOptions? options, params GColorConversionInfoTriple [] triples)
-#endif
 			: this (options?.Dictionary, triples)
 		{
 		}
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
-#if NET
 		static IntPtr Create (NSDictionary? options, params CGColorConversionInfoTriple [] triples)
-#else
-		static IntPtr Create (NSDictionary? options, params GColorConversionInfoTriple [] triples)
-#endif
 		{
 			// the API won't return a valid instance if no triple is given, i.e. at least one is needed. 
 			// `null` is accepted to mark the end of the list, not to make it optional
@@ -106,11 +85,7 @@ namespace CoreGraphics {
 			return result;
 		}
 
-#if NET
 		public CGColorConversionInfo (NSDictionary? options, params CGColorConversionInfoTriple [] triples)
-#else
-		public CGColorConversionInfo (NSDictionary? options, params GColorConversionInfoTriple [] triples)
-#endif
 			: base (Create (options, triples), true, verify: true)
 		{
 
@@ -137,15 +112,10 @@ namespace CoreGraphics {
 		{
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (13, 0)]
-		[TV (13, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern /* CGColorConversionInfoRef* */ IntPtr CGColorConversionInfoCreateWithOptions (/* CGColorSpaceRef* */ IntPtr src, /* CGColorSpaceRef* */ IntPtr dst, /* CFDictionaryRef _Nullable */ IntPtr options);
 
@@ -167,29 +137,19 @@ namespace CoreGraphics {
 			return result;
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (13, 0)]
-		[TV (13, 0)]
-#endif
 		public CGColorConversionInfo (CGColorSpace source, CGColorSpace destination, NSDictionary? options)
 			: base (Create (source, destination, options), true, verify: true)
 		{
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (13, 0)]
-		[TV (13, 0)]
-#endif
 		public CGColorConversionInfo (CGColorSpace source, CGColorSpace destination, CGColorConversionOptions? options) :
 			this (source, destination, options?.Dictionary)
 		{

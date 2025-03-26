@@ -20,18 +20,9 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
-
-#if NET
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#else
-	[MacCatalyst (13,1)]
-#endif
 	public sealed class CGEvent : NativeObject {
 #if !COREBUILD
 		public delegate IntPtr CGEventTapCallback (IntPtr tapProxyEvent, CGEventType eventType, IntPtr eventRef, IntPtr userInfo);
@@ -65,7 +56,6 @@ namespace CoreGraphics {
 			public IntPtr Handle => GCHandle.ToIntPtr (handle);
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
 		static IntPtr TapCallback (IntPtr tapProxyEvent, CGEventType eventType, IntPtr eventRef, IntPtr userInfo)
 		{
@@ -76,10 +66,6 @@ namespace CoreGraphics {
 
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static unsafe IntPtr CGEventTapCreate (CGEventTapLocation location, CGEventTapPlacement place, CGEventTapOptions options, CGEventMask mask, delegate* unmanaged<IntPtr, CGEventType, IntPtr, IntPtr, IntPtr> cback, IntPtr data);
-#else
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
-		extern static IntPtr CGEventTapCreate (CGEventTapLocation location, CGEventTapPlacement place, CGEventTapOptions options, CGEventMask mask, CGEventTapCallback cback, IntPtr data);
-#endif
 
 		static CFMachPort? CreateMachPortAndAddToTable (IntPtr machPort, TapData data)
 		{
@@ -109,23 +95,14 @@ namespace CoreGraphics {
 		{
 			var tapData = new TapData (cback, data);
 			IntPtr r;
-#if NET
 			unsafe {
 				r = CGEventTapCreate (location, place, options, mask, &TapCallback, tapData.Handle);
 			}
-#else
-			r = CGEventTapCreate (location, place, options, mask, cback, tapData.Handle);
-#endif
 			return CreateMachPortAndAddToTable (r, tapData);
 		}
 
-#if NET
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static unsafe IntPtr CGEventTapCreateForPSN (IntPtr processSerialNumer, CGEventTapPlacement place, CGEventTapOptions options, CGEventMask mask, delegate* unmanaged<IntPtr, CGEventType, IntPtr, IntPtr, IntPtr> cback, IntPtr data);
-#else
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
-		extern static IntPtr CGEventTapCreateForPSN (IntPtr processSerialNumer, CGEventTapPlacement place, CGEventTapOptions options, CGEventMask mask, CGEventTapCallback cback, IntPtr data);
-#endif
 
 #if !XAMCORE_5_0
 		[Obsolete ("The location parameter is not used. Consider using the overload without the location parameter.", false)]
@@ -150,16 +127,11 @@ namespace CoreGraphics {
 			var tapData = new TapData (cback, data);
 			unsafe {
 				var psnPtr = new IntPtr (&processSerialNumber);
-#if NET
 				var r = CGEventTapCreateForPSN (psnPtr, place, options, mask, &TapCallback, tapData.Handle);
-#else
-				var r = CGEventTapCreateForPSN (psnPtr, place, options, mask, cback, data);
-#endif
 				return CreateMachPortAndAddToTable (r, tapData);
 			}
 		}
 
-#if NET
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static unsafe IntPtr CGEventTapCreateForPid (int pid, CGEventTapPlacement place, CGEventTapOptions options, CGEventMask mask, delegate* unmanaged<IntPtr, CGEventType, IntPtr, IntPtr, IntPtr> cback, IntPtr data);
 
@@ -180,7 +152,6 @@ namespace CoreGraphics {
 				return CreateMachPortAndAddToTable (r, tapData);
 			}
 		}
-#endif
 
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static IntPtr CGEventCreateFromData (IntPtr allocator, IntPtr nsdataSource);
@@ -208,13 +179,6 @@ namespace CoreGraphics {
 		{
 			GC.KeepAlive (eventSource);
 		}
-
-#if !NET
-		public CGEvent (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
 
 		[Preserve (Conditional = true)]
 		internal CGEvent (NativeHandle handle, bool owns)
@@ -519,18 +483,6 @@ namespace CoreGraphics {
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static void CGEventSetTimestamp (IntPtr handle, ulong timeStampp);
 
-#if !NET
-		[Obsolete ("Use 'Timestamp' instead.")]
-		public ulong Timestampe {
-			get {
-				return CGEventGetTimestamp (Handle);
-			}
-			set {
-				CGEventSetTimestamp (Handle, value);
-			}
-		}
-#endif
-
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -586,24 +538,15 @@ namespace CoreGraphics {
 			return new String ((char*) buffer, 0, (int) actual);
 		}
 
-#if NET
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		unsafe extern static void CGEventKeyboardSetUnicodeString (IntPtr handle, nuint len, IntPtr buffer);
-#else
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
-		unsafe extern static void CGEventKeyboardSetUnicodeString (IntPtr handle, nuint len,  [MarshalAs(UnmanagedType.LPWStr)] string buffer);
-#endif
 
 		public void SetUnicodeString (string value)
 		{
 			if (value is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
-#if NET
 			using var valueStr = new TransientString (value, TransientString.Encoding.Unicode);
 			CGEventKeyboardSetUnicodeString (Handle, (nuint) value.Length, valueStr);
-#else
-			CGEventKeyboardSetUnicodeString (Handle, (nuint) value.Length, value);
-#endif
 		}
 
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
@@ -689,65 +632,47 @@ namespace CoreGraphics {
 			return result;
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		static extern byte CGPreflightListenEventAccess ();
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static bool PreflightListenEventAccess () => CGPreflightListenEventAccess () != 0;
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary, EntryPoint = "CGRequestListenEventAccess")]
 		static extern byte CGRequestListenEventAccess ();
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static bool RequestListenEventAccess () => CGRequestListenEventAccess () != 0;
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		static extern byte CGPreflightPostEventAccess ();
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static bool PreflightPostEventAccess () => CGPreflightPostEventAccess () != 0;
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		static extern byte CGRequestPostEventAccess ();
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static bool RequestPostEventAccess () => CGRequestPostEventAccess () != 0;
 #endif // !COREBUILD
 	}
 
 #if !COREBUILD
-#if NET
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public struct CGEventTapInformation {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>

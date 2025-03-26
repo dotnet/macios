@@ -50,16 +50,11 @@ namespace CoreGraphics {
 		MaxYEdge,
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public static class CGRectExtensions {
-#else
-	public static class RectangleFExtensions {
-#endif
-
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern /* CGFloat */ nfloat CGRectGetMinX (CGRect rect);
 

@@ -15,14 +15,10 @@ using Foundation;
 using ObjCRuntime;
 
 namespace CoreGraphics {
-
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[Serializable]
 	public struct CGPoint : IEquatable<CGPoint> {
 		nfloat x;
@@ -167,14 +163,7 @@ namespace CoreGraphics {
 
 		public override int GetHashCode ()
 		{
-#if NET
 			return HashCode.Combine (x, y);
-#else
-			var hash = 23;
-			hash = hash * 31 + x.GetHashCode ();
-			hash = hash * 31 + y.GetHashCode ();
-			return hash;
-#endif
 		}
 
 #if !COREBUILD
@@ -186,17 +175,9 @@ namespace CoreGraphics {
 
 		public override string? ToString ()
 		{
-#if NET
 			return CFString.FromHandle (NSStringFromCGPoint (this));
-#else
-			return String.Format ("{{X={0}, Y={1}}}",
-				x.ToString (CultureInfo.CurrentCulture),
-				y.ToString (CultureInfo.CurrentCulture)
-			);
-#endif
 		}
 
-#if NET
 #if MONOMAC
 		// <quote>When building for 64 bit systems, or building 32 bit like 64 bit, NSPoint is typedef’d to CGPoint.</quote>
 		// https://developer.apple.com/documentation/foundation/nspoint?language=objc
@@ -206,7 +187,6 @@ namespace CoreGraphics {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* NSString* */ IntPtr NSStringFromCGPoint (CGPoint point);
 #endif // MONOMAC
-#endif // !NET
 #endif // !COREBUILD
 	}
 }

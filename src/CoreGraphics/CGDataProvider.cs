@@ -36,28 +36,13 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
-
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CGDataProvider.h
 	public partial class CGDataProvider : NativeObject {
-#if !NET
-		public CGDataProvider (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal CGDataProvider (NativeHandle handle, bool owns)
 			: base (handle, owns)
@@ -150,48 +135,24 @@ namespace CoreGraphics {
 		{
 		}
 
-#if NET
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static unsafe IntPtr CGDataProviderCreateWithData (/* void* */ IntPtr info, /* const void* */ IntPtr data, /* size_t */ nint size, /* CGDataProviderReleaseDataCallback */ delegate* unmanaged<IntPtr, IntPtr, nint, void> releaseData);
-#else
-		[DllImport (Constants.CoreGraphicsLibrary)]
-		extern static IntPtr CGDataProviderCreateWithData (/* void* */ IntPtr info, /* const void* */ IntPtr data, /* size_t */ nint size, /* CGDataProviderReleaseDataCallback */ CGDataProviderReleaseDataCallback releaseData);
-#endif
 
-#if !NET
-		delegate void CGDataProviderReleaseDataCallback (IntPtr info, IntPtr data, nint size);
-		static CGDataProviderReleaseDataCallback release_gchandle_callback = ReleaseGCHandle;
-		static CGDataProviderReleaseDataCallback release_buffer_callback = ReleaseBuffer;
-		static CGDataProviderReleaseDataCallback release_func_callback = ReleaseFunc;
-#endif
-
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (CGDataProviderReleaseDataCallback))]
-#endif
 		private static void ReleaseGCHandle (IntPtr info, IntPtr data, nint size)
 		{
 			var gch = GCHandle.FromIntPtr (info);
 			gch.Free ();
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (CGDataProviderReleaseDataCallback))]
-#endif
 		private static void ReleaseBuffer (IntPtr info, IntPtr data, nint size)
 		{
 			if (data != IntPtr.Zero)
 				Marshal.FreeHGlobal (data);
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (CGDataProviderReleaseDataCallback))]
-#endif
 		private static void ReleaseFunc (IntPtr info, IntPtr data, nint size)
 		{
 			var gch = GCHandle.FromIntPtr (info);
@@ -213,13 +174,9 @@ namespace CoreGraphics {
 		{
 			if (!ownBuffer)
 				memoryBlock = Runtime.CloneMemory (memoryBlock, size);
-#if NET
 			unsafe {
 				return CGDataProviderCreateWithData (IntPtr.Zero, memoryBlock, size, &ReleaseBuffer);
 			}
-#else
-			return CGDataProviderCreateWithData (IntPtr.Zero, memoryBlock, size, release_buffer_callback);
-#endif
 		}
 
 		public CGDataProvider (IntPtr memoryBlock, int size, bool ownBuffer)
@@ -233,13 +190,9 @@ namespace CoreGraphics {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (releaseMemoryBlockCallback));
 
 			var gch = GCHandle.Alloc (releaseMemoryBlockCallback);
-#if NET
 			unsafe {
 				return CGDataProviderCreateWithData (GCHandle.ToIntPtr (gch), memoryBlock, size, &ReleaseFunc);
 			}
-#else
-			return CGDataProviderCreateWithData (GCHandle.ToIntPtr (gch), memoryBlock, size, release_func_callback);
-#endif
 		}
 
 		public CGDataProvider (IntPtr memoryBlock, int size, Action<IntPtr> releaseMemoryBlockCallback)
@@ -258,13 +211,9 @@ namespace CoreGraphics {
 
 			var gch = GCHandle.Alloc (buffer, GCHandleType.Pinned); // This requires a pinned GCHandle, because unsafe code is scoped to the current block, and the address of the byte array will be used after this function returns.
 			var ptr = gch.AddrOfPinnedObject () + offset;
-#if NET
 			unsafe {
 				return CGDataProviderCreateWithData (GCHandle.ToIntPtr (gch), ptr, count, &ReleaseGCHandle);
 			}
-#else
-			return CGDataProviderCreateWithData (GCHandle.ToIntPtr (gch), ptr, count, release_gchandle_callback);
-#endif
 		}
 
 		public CGDataProvider (byte [] buffer, int offset, int count)

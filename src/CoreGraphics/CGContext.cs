@@ -35,27 +35,13 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CGContext : NativeObject {
 #if !COREBUILD
-#if !NET
-		public CGContext (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal CGContext (NativeHandle handle, bool owns)
 			: base (handle, owns)
@@ -488,21 +474,17 @@ namespace CoreGraphics {
 			CGContextEOClip (Handle);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextResetClip (/* CGContextRef */ IntPtr c);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public void ResetClip ()
 		{
 			CGContextResetClip (Handle);
@@ -863,32 +845,22 @@ namespace CoreGraphics {
 			CGContextSetFontSize (Handle, size);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("macos10.9")]
 		[ObsoletedOSPlatform ("ios7.0")]
-#else
-		[Deprecated (PlatformName.iOS, 7, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 9)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextSelectFont (/* CGContextRef */ IntPtr c,
 			/* const char* __nullable */ IntPtr name, /* CGFloat */ nfloat size, CGTextEncoding textEncoding);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("macos10.9", "Use the 'CoreText' API instead.")]
 		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 7, 0, message: "Use the 'CoreText' API instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 9, message: "Use the 'CoreText' API instead.")]
-#endif
 		public void SelectFont (string? name, nfloat size, CGTextEncoding textEncoding)
 		{
 			using var namePtr = new TransientString (name);
@@ -909,31 +881,21 @@ namespace CoreGraphics {
 			CGContextShowGlyphsAtPositions (Handle, glyphs, positions, count);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("macos10.9")]
 		[ObsoletedOSPlatform ("ios7.0")]
-#else
-		[Deprecated (PlatformName.iOS, 7, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 9)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextShowText (/* CGContextRef */ IntPtr c, /* const char* __nullable */ IntPtr s, /* size_t */ nint length);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("macos10.9", "Use the 'CoreText' API instead.")]
 		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 7, 0, message: "Use the 'CoreText' API instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 9, message: "Use the 'CoreText' API instead.")]
-#endif
 		public void ShowText (string? str, int count)
 		{
 			if (str is null)
@@ -944,48 +906,33 @@ namespace CoreGraphics {
 			CGContextShowText (Handle, strPtr, count);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("macos10.9", "Use the 'CoreText' API instead.")]
 		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 7, 0, message: "Use the 'CoreText' API instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 9, message: "Use the 'CoreText' API instead.")]
-#endif
 		public void ShowText (string? str)
 		{
 			using var strPtr = new TransientString (str);
 			CGContextShowText (Handle, strPtr, str is null ? 0 : str.Length);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("macos10.9")]
 		[ObsoletedOSPlatform ("ios7.0")]
-#else
-		[Deprecated (PlatformName.iOS, 7, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 9)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextShowText (/* CGContextRef */ IntPtr c, /* const char* __nullable */ byte []? bytes, /* size_t */ nint length);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("macos10.9", "Use the 'CoreText' API instead.")]
 		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 7, 0, message: "Use the 'CoreText' API instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 9, message: "Use the 'CoreText' API instead.")]
-#endif
 		public void ShowText (byte []? bytes, int count)
 		{
 			if (bytes is null)
@@ -995,23 +942,17 @@ namespace CoreGraphics {
 			CGContextShowText (Handle, bytes, count);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("macos10.9", "Use the 'CoreText' API instead.")]
 		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 7, 0, message: "Use the 'CoreText' API instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 9, message: "Use the 'CoreText' API instead.")]
-#endif
 		public void ShowText (byte []? bytes)
 		{
 			CGContextShowText (Handle, bytes, bytes is null ? 0 : bytes.Length);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -1020,15 +961,10 @@ namespace CoreGraphics {
 		[ObsoletedOSPlatform ("tvos9.0", "Use the 'CoreText' API instead.")]
 		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
 		[ObsoletedOSPlatform ("maccatalyst13.1", "Use the 'CoreText' API instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 7, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 9)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextShowTextAtPoint (/* CGContextRef __nullable */ IntPtr c, /* CGFloat */ nfloat x,
 			/* CGFloat */ nfloat y, /* const char* __nullable */ IntPtr str, /* size_t */ nint length);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -1037,17 +973,12 @@ namespace CoreGraphics {
 		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
 		[ObsoletedOSPlatform ("tvos9.0", "Use the 'CoreText' API instead.")]
 		[ObsoletedOSPlatform ("maccatalyst13.1", "Use the 'CoreText' API instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 7, 0, message: "Use the 'CoreText' API instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 9, message: "Use the 'CoreText' API instead.")]
-#endif
 		public void ShowTextAtPoint (nfloat x, nfloat y, string? str, int length)
 		{
 			using var strPtr = new TransientString (str);
 			CGContextShowTextAtPoint (Handle, x, y, strPtr, length);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -1056,17 +987,12 @@ namespace CoreGraphics {
 		[ObsoletedOSPlatform ("tvos9.0", "Use the 'CoreText' API instead.")]
 		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
 		[ObsoletedOSPlatform ("maccatalyst13.1", "Use the 'CoreText' API instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 7, 0, message: "Use the 'CoreText' API instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 9, message: "Use the 'CoreText' API instead.")]
-#endif
 		public void ShowTextAtPoint (nfloat x, nfloat y, string? str)
 		{
 			using var strPtr = new TransientString (str);
 			CGContextShowTextAtPoint (Handle, x, y, strPtr, str is null ? 0 : str.Length);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -1075,10 +1001,6 @@ namespace CoreGraphics {
 		[ObsoletedOSPlatform ("tvos9.0", "Use the 'CoreText' API instead.")]
 		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
 		[ObsoletedOSPlatform ("maccatalyst13.1", "Use the 'CoreText' API instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 7, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 9)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextShowTextAtPoint (/* CGContextRef */ IntPtr c, /* CGFloat */ nfloat x, /* CGFloat */ nfloat y, /* const char* */ byte []? bytes, /* size_t */ nint length);
 
@@ -1108,48 +1030,33 @@ namespace CoreGraphics {
 			CGContextShowTextAtPoint (Handle, x, y, bytes, bytes is null ? 0 : bytes.Length);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("macos10.9")]
 		[ObsoletedOSPlatform ("ios7.0")]
-#else
-		[Deprecated (PlatformName.iOS, 7, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 9)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextShowGlyphs (/* CGContextRef __nullable */ IntPtr c,
 			/* const CGGlyph * __nullable */ ushort []? glyphs, /* size_t */ nint count);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("macos10.9", "Use the 'CoreText' API instead.")]
 		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 7, 0, message: "Use the 'CoreText' API instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 9, message: "Use the 'CoreText' API instead.")]
-#endif
 		public void ShowGlyphs (ushort []? glyphs)
 		{
 			CGContextShowGlyphs (Handle, glyphs, glyphs is null ? 0 : glyphs.Length);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("macos10.9", "Use the 'CoreText' API instead.")]
 		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 7, 0, message: "Use the 'CoreText' API instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 9, message: "Use the 'CoreText' API instead.")]
-#endif
 		public void ShowGlyphs (ushort []? glyphs, int count)
 		{
 			if (glyphs is null)
@@ -1159,32 +1066,22 @@ namespace CoreGraphics {
 			CGContextShowGlyphs (Handle, glyphs, count);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("macos10.9")]
 		[ObsoletedOSPlatform ("ios7.0")]
-#else
-		[Deprecated (PlatformName.iOS, 7, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 9)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextShowGlyphsAtPoint (/* CGContextRef */ IntPtr context, /* CGFloat */ nfloat x,
 			/* CGFloat */ nfloat y, /* const CGGlyph * __nullable */ ushort []? glyphs, /* size_t */ nint count);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("macos10.9", "Use the 'CoreText' API instead.")]
 		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 7, 0, message: "Use the 'CoreText' API instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 9, message: "Use the 'CoreText' API instead.")]
-#endif
 		public void ShowGlyphsAtPoint (nfloat x, nfloat y, ushort []? glyphs, int count)
 		{
 			if (glyphs is null)
@@ -1194,49 +1091,34 @@ namespace CoreGraphics {
 			CGContextShowGlyphsAtPoint (Handle, x, y, glyphs, count);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("macos10.9", "Use the 'CoreText' API instead.")]
 		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 7, 0, message: "Use the 'CoreText' API instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 9, message: "Use the 'CoreText' API instead.")]
-#endif
 		public void ShowGlyphsAtPoint (nfloat x, nfloat y, ushort []? glyphs)
 		{
 			CGContextShowGlyphsAtPoint (Handle, x, y, glyphs, glyphs is null ? 0 : glyphs.Length);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("macos10.9")]
 		[ObsoletedOSPlatform ("ios7.0")]
-#else
-		[Deprecated (PlatformName.iOS, 7, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 9)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGContextShowGlyphsWithAdvances (/* CGContextRef __nullable */ IntPtr c,
 			/* const CGGlyph * __nullable */ ushort []? glyphs,
 			/* const CGSize * __nullable */ CGSize []? advances, /* size_t */ nint count);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("macos10.9", "Use the 'CoreText' API instead.")]
 		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 7, 0, message: "Use the 'CoreText' API instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 9, message: "Use the 'CoreText' API instead.")]
-#endif
 		public void ShowGlyphsWithAdvances (ushort []? glyphs, CGSize []? advances, int count)
 		{
 			if (glyphs is null)
@@ -1476,14 +1358,10 @@ namespace CoreGraphics {
 			return new CGBitmapContext (Handle, false);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-#else
-		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern void CGContextDrawConicGradient (/* CGContext */ IntPtr context, /*[NullAllowed] CGGradient*/ IntPtr gradient, CGPoint center, nfloat angle);
 
@@ -1497,38 +1375,26 @@ namespace CoreGraphics {
 			GC.KeepAlive (gradient);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern byte CGContextSetEDRTargetHeadroom (/* CGContextRef __nonnull */ IntPtr context, /* float */ float headroom);
 
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern float CGContextGetEDRTargetHeadroom (/* CGContextRef __nonnull */ IntPtr context);
 
 		/// <summary>Get the EDR headroom that's used when rendering HDR content.</summary>
 		/// <returns>The EDR headroom.</returns>
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		public float GetEdrTargetHeadroom ()
 		{
 			return CGContextGetEDRTargetHeadroom (Handle);
@@ -1537,27 +1403,19 @@ namespace CoreGraphics {
 		/// <summary>Get the EDR headroom that's used when rendering HDR content.</summary>
 		/// <param name="value">The value to set. Must be greater than 1.0f.</param>
 		/// <returns>Returns true if successful, false otherwise.</returns>
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		public bool SetEdrTargetHeadroom (float value)
 		{
 			return CGContextSetEDRTargetHeadroom (Handle, value) != 0;
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern /* bool */ byte CGContextDrawImageApplyingToneMapping (/* CGContextRef __nonnull */ IntPtr context, CGRect r, /* CGImageRef */ IntPtr image, CGToneMapping method, /* CFDictionaryRef  __nullable */ IntPtr options);
 
@@ -1567,14 +1425,10 @@ namespace CoreGraphics {
 		/// <param name="method">The tone mapping method to use.</param>
 		/// <param name="options">The tone mapping options to use.</param>
 		/// <returns>Returns true if successful, otherwise false.</returns>
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		public bool DrawImageApplyingToneMapping (CGRect rect, CGImage image, CGToneMapping method, NSDictionary? options)
 		{
 			var rv = CGContextDrawImageApplyingToneMapping (Handle, rect, image.Handle, method, options.GetHandle ());
@@ -1589,14 +1443,10 @@ namespace CoreGraphics {
 		/// <param name="method">The tone mapping method to use.</param>
 		/// <param name="options">The tone mapping options to use.</param>
 		/// <returns>Returns true if successful, otherwise false.</returns>
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		public bool DrawImageApplyingToneMapping (CGRect rect, CGImage image, CGToneMapping method, CGToneMappingOptions? options)
 		{
 			var optionsDictionary = options?.Dictionary;

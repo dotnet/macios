@@ -38,12 +38,10 @@ using CoreFoundation;
 namespace CoreGraphics {
 
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CGGeometry.h
 	public struct CGVector {
 		/// <summary>X component of the vector</summary>
@@ -71,13 +69,7 @@ namespace CoreGraphics {
 
 		public override int GetHashCode ()
 		{
-#if NET
 			return HashCode.Combine (dx, dy);
-#else
-			unchecked {
-				return ((int) dx) ^ ((int) dy);
-			}
-#endif
 		}
 
 		public override bool Equals (object? other)
@@ -89,41 +81,33 @@ namespace CoreGraphics {
 
 #if MONOTOUCH
 #if !COREBUILD
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
-#endif
 		[DllImport (Constants.UIKitLibrary)]
 		extern static IntPtr NSStringFromCGVector (CGVector vector);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
-#endif
 		public override string? ToString ()
 		{
 			return CFString.FromHandle (NSStringFromCGVector (this));
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
-#endif
 		[DllImport (Constants.UIKitLibrary)]
 		extern static CGVector CGVectorFromString (IntPtr str);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
-#endif
 		static public CGVector FromString (string s)
 		{
 			// note: null is allowed

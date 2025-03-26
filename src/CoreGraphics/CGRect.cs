@@ -384,27 +384,13 @@ namespace CoreGraphics {
 
 		public override int GetHashCode ()
 		{
-#if NET
 			return HashCode.Combine (x, y, width, height);
-#else
-			var hash = 23;
-			hash = hash * 31 + x.GetHashCode ();
-			hash = hash * 31 + y.GetHashCode ();
-			hash = hash * 31 + width.GetHashCode ();
-			hash = hash * 31 + height.GetHashCode ();
-			return hash;
-#endif
 		}
 
 #if !COREBUILD
 		public override string? ToString ()
 		{
-#if NET
 			return CFString.FromHandle (NSStringFromCGRect (this));
-#else
-			return String.Format ("{{X={0},Y={1},Width={2},Height={3}}}",
-				x, y, width, height);
-#endif
 		}
 
 		public void Deconstruct (out nfloat x, out nfloat y, out nfloat width, out nfloat height)
@@ -440,7 +426,6 @@ namespace CoreGraphics {
 			return new NSDictionary (NativeDrawingMethods.CGRectCreateDictionaryRepresentation (this));
 		}
 
-#if NET
 #if MONOMAC
 		// <quote>When building for 64 bit systems, or building 32 bit like 64 bit, NSRect is typedef’d to CGRect.</quote>
 		// https://developer.apple.com/documentation/foundation/nsrect?language=objc
@@ -450,7 +435,6 @@ namespace CoreGraphics {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* NSString* */ IntPtr NSStringFromCGRect (CGRect rect);
 #endif // MONOMAC
-#endif // !NET
 #endif // !COREBUILD
 	}
 }

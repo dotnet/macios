@@ -56,10 +56,10 @@ print-dotnet-pkg-urls: dotnet-install.sh
 	$(Q) rm -f $@-found-it.stamp
 
 # We need https://github.com/dotnet/install-scripts/pull/555, which hasn't been released yet.
-# Revert to using https://dot.net/v1/dotnet-install.sh whenever https://dot.net/v1/dotnet-install.sh has been updated.
-DOTNET_DOWNLOAD_URL?=https://raw.githubusercontent.com/dotnet/install-scripts/d48e000adad7243861d799ec86c0bf7210a8fc7a/src/dotnet-install.sh
+# Revert to using https://builds.dotnet.microsoft.com/dotnet/scripts/v1/dotnet-install.sh whenever https://builds.dotnet.microsoft.com/dotnet/scripts/v1/dotnet-install.sh has been updated.
+# DOTNET_DOWNLOAD_URL?=https://raw.githubusercontent.com/dotnet/install-scripts/d48e000adad7243861d799ec86c0bf7210a8fc7a/src/dotnet-install.sh
 
-DOTNET_DOWNLOAD_URL?=https://dot.net/v1/dotnet-install.sh
+DOTNET_DOWNLOAD_URL?=https://builds.dotnet.microsoft.com/dotnet/scripts/v1/dotnet-install.sh
 
 dotnet-install.sh: Makefile
 	$(Q) $(CURL_RETRY) $(DOTNET_DOWNLOAD_URL) --output $@.tmp

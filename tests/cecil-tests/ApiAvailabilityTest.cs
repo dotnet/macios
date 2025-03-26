@@ -69,7 +69,7 @@ namespace Cecil.Tests {
 			} finally {
 				Console.WriteLine ($"There's a total of {totalWarnings} warnings.");
 			}
-			Assert.AreEqual (1013, totalWarnings, "Total warnings"); // this is just to see how the warning count changes as issues are fixed.
+			Assert.AreEqual (989, totalWarnings, "Total warnings"); // this is just to see how the warning count changes as issues are fixed.
 		}
 
 		public record ObsoletedFailure : IComparable {

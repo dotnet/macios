@@ -114,8 +114,8 @@
 		<EnableUnsafeBinaryFormatterSerialization Condition="'$(EnableUnsafeBinaryFormatterSerialization)' == ''">false</EnableUnsafeBinaryFormatterSerialization>
 		<EnableUnsafeUTF7Encoding Condition="'$(EnableUnsafeUTF7Encoding)' == ''">false</EnableUnsafeUTF7Encoding>
 		<EventSourceSupport Condition="'$(EventSourceSupport)' == ''">false</EventSourceSupport>
-		<MetricsSupport Condition="'$(MetricsSupport)' == '' And '$(Configuration)' == 'Release'">false</MetricsSupport>
-		<HttpActivityPropagationSupport Condition="'$(HttpActivityPropagationSupport)' == ''">false</HttpActivityPropagationSupport>
+		<HttpActivityPropagationSupport Condition="'$(HttpActivityPropagationSupport)' == '' and '$(Optimize)' == 'true'">false</HttpActivityPropagationSupport>
+		<MetricsSupport Condition="'$(MetricsSupport)' == '' And '$(Optimize)' == 'true'">false</MetricsSupport>
 		<InvariantGlobalization Condition="'$(InvariantGlobalization)' == ''">false</InvariantGlobalization>
 		<!-- Enable HybridGlobalization by default-->
 		<HybridGlobalization Condition="'$(InvariantGlobalization)' != 'true'">true</HybridGlobalization>

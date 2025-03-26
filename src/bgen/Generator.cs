@@ -4205,6 +4205,7 @@ public partial class Generator : IMemberGatherer {
 		return "Task<" + ttype + ">";
 	}
 
+	HashSet<string>? reported1077;
 	string GetAsyncTaskType (AsyncMethodInfo minfo)
 	{
 		if (minfo.IsSingleArgAsync)
@@ -4216,8 +4217,16 @@ public partial class Generator : IMemberGatherer {
 		if (attr.ResultType is not null)
 			return TypeManager.FormatType (minfo.type, attr.ResultType);
 
-		//Console.WriteLine ("{0}", minfo.MethodInfo.GetParameters ().Last ().ParameterType);
-		throw new BindingException (1077, true, minfo.mi);
+		var method = minfo.mi.ToString ();
+		if (reported1077 is null)
+			reported1077 = new HashSet<string> ();
+
+		if (!reported1077.Contains (method)) {
+			reported1077.Add (method);
+			exceptions.Add (ErrorHelper.CreateError (1077, method));
+		}
+
+		return "placeholder";
 	}
 
 	string GetInvokeParamList (ParameterInfo [] parameters, bool suffix = true, bool force = false)

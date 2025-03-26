@@ -2138,6 +2138,7 @@ MACOS_FRAMEWORKS =          \
 	SensitiveContentAnalysis \
 	ServiceManagement       \
 	Security                \
+	SecurityUI              \
 	SharedWithYou           \
 	SharedWithYouCore       \
 	Social                  \
@@ -2250,6 +2251,7 @@ IOS_FRAMEWORKS =         \
 	SafetyKit \
 	ScreenTime \
 	Security \
+	SecurityUI \
 	SensitiveContentAnalysis \
 	SensorKit \
 	SharedWithYou \
@@ -2320,6 +2322,7 @@ TVOS_FRAMEWORKS =           \
 	PhotosUI                \
 	ReplayKit               \
 	Security                \
+	SecurityUI              \
 	SharedWithYou           \
 	SharedWithYouCore       \
 	SystemConfiguration     \
@@ -2419,6 +2422,7 @@ MACCATALYST_FRAMEWORKS = \
 	ScreenCaptureKit \
 	ScreenTime \
 	Security \
+	SecurityUI \
 	SensitiveContentAnalysis \
 	SensorKit \
 	ServiceManagement \

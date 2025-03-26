@@ -52,6 +52,7 @@ namespace BackgroundAssets {
 		DownloadEssentialDownloadNotPermitted = 109,
 		DownloadBackgroundActivityProhibited = 111,
 		DownloadWouldExceedAllowance = 112,
+		DownloadDoesNotExist = 113,
 		SessionDownloadDisallowedByDomain = 202,
 		SessionDownloadDisallowedByAllowance = 203,
 		SessionDownloadAllowanceExceeded = 204,

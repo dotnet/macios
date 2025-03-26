@@ -1948,7 +1948,7 @@ namespace Metal {
 #endif
 	}
 
-	interface IMTLTexture { }
+	interface IMTLTexture : INativeObject { }
 
 	// Apple added several new *required* members in iOS 9,
 	// but that breaks our binary compat, so we can't do that in our existing code.

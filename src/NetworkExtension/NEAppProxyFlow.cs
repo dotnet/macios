@@ -8,7 +8,7 @@ namespace NetworkExtension {
 	public unsafe partial class NEAppProxyFlow : NSObject {
 
 
-#if MACCATALYST || MACCORE
+#if MACCATALYST || MONOMAC
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]

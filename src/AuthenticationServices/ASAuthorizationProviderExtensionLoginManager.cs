@@ -8,7 +8,7 @@ namespace AuthenticationServices {
 
 	public unsafe partial class ASAuthorizationProviderExtensionLoginManager : NSObject {
 
-#if MACCORE
+#if MONOMAC
 		public void Save (SecCertificate certificate, ASAuthorizationProviderExtensionKeyType keyType)
 		{
 			_Save (certificate.GetHandle (), keyType);

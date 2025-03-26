@@ -7759,7 +7759,7 @@ namespace UIKit {
 		UITextPosition End { get; }
 	}
 
-	interface IUITextInput { }
+	interface IUITextInput : INativeObject { }
 
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -28904,7 +28904,7 @@ namespace UIKit {
 		NSObject DefaultValue { get; }
 	}
 
-	interface IUIMutableTraits { }
+	interface IUIMutableTraits : INativeObject { }
 
 	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 #if NET

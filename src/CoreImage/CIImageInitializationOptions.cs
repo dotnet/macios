@@ -54,12 +54,10 @@ namespace CoreImage {
 	}
 
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// Keeping 'CIImageInitializationOptionsWithMetadata' to avoid breaking change
 	public class CIImageInitializationOptionsWithMetadata : CIImageInitializationOptions {
 #if !COREBUILD

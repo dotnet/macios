@@ -52,12 +52,10 @@ namespace CoreImage {
 		Linear,
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CISamplerOptions {
 		public CISamplerOptions () { }
 
@@ -84,11 +82,7 @@ namespace CoreImage {
 
 			if (AffineMatrix.HasValue) {
 				var a = AffineMatrix.Value;
-#if NET
 				using (var array = NSArray.FromObjects (a.A, a.B, a.C, a.D, a.Tx, a.Ty))
-#else
-				using (var array = NSArray.FromObjects (a.xx, a.yx, a.xy, a.yy, a.x0, a.y0))
-#endif
 					ret.SetObject (array, CISampler.AffineMatrix);
 			}
 			if (WrapMode.HasValue) {

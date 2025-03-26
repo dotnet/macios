@@ -11,8 +11,8 @@ namespace AuthenticationServices {
 #if MONOMAC
 		public void Save (SecCertificate certificate, ASAuthorizationProviderExtensionKeyType keyType)
 		{
-			_Save (certificate.GetHandle (), keyType);
-            GC.KeepAlive (certificate);
+			_Save (certificate.Handle, keyType);
+			GC.KeepAlive (certificate);
 		}
 #endif
 	}

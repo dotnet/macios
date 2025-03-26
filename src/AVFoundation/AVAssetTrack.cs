@@ -20,7 +20,7 @@ namespace AVFoundation {
 						GC.KeepAlive (obj);
 						return description;
 					}
-				) as CoreMedia.CMFormatDescription [])!;
+				))!;
 			}
 		}
 	}

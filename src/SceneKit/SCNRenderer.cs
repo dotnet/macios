@@ -24,7 +24,7 @@ namespace SceneKit {
 		public static SCNRenderer FromContext (EAGLContext context, NSDictionary? options)
 		{
 
-			// GetHandle will return IntPtr.Zero is context is null
+			// GetHandle will return IntPtr.Zero if context is null
 			// GLContext == CGLContext on macOS and EAGLContext in iOS and tvOS (using on top of file)
 			var renderer = FromContext (context.GetHandle (), options); 
 			GC.KeepAlive (context);

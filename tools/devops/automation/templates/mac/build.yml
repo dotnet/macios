@@ -45,6 +45,7 @@ steps:
 - template: agent-cleanser/v1.yml@yaml-templates # Uninstalls mono, Xamarin.Mac (if installed) plus cleanses the Provisionator Xcode cache and kills processes at the end
   parameters:
     CleanseProcesses: true
+    CleanseAgentToolsDotNet: true # workaround for a hopefully transient condition on the bots
 
 - bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/disable-codeql-arm64.sh
   displayName: 'Disable CodeQL on arm64'

@@ -652,7 +652,7 @@ namespace CoreMedia {
 		[ObsoletedOSPlatform ("ios9.0", "Use 'SourceClock' instead.")]
 		public CMClock? CopyMasterClock ()
 		{
-			var	ptr = CMTimebaseCopyMasterClock (Handle);
+			var ptr = CMTimebaseCopyMasterClock (Handle);
 			if (ptr == IntPtr.Zero)
 				return null;
 			return new CMClock (ptr, true);

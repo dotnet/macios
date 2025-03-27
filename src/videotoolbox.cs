@@ -2495,8 +2495,7 @@ namespace VideoToolbox {
 
 	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
-	interface VTFrameProcessor
-	{
+	interface VTFrameProcessor {
 		[Export ("startSessionWithConfiguration:error:")]
 		bool StartSession (IVTFrameProcessorConfiguration configuration, [NullAllowed] out NSError error);
 
@@ -2517,17 +2516,16 @@ namespace VideoToolbox {
 
 	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface VTFrameProcessorConfiguration
-	{
+	interface VTFrameProcessorConfiguration {
 		[Static, Abstract]
 		[Export ("processorSupported")]
 		bool ProcessorSupported { get; }
 
 		[Abstract]
 		[Export ("frameSupportedPixelFormats")]
-		NSNumber[] WeakFrameSupportedPixelFormats { get; }
+		NSNumber [] WeakFrameSupportedPixelFormats { get; }
 
-		CVPixelFormatType[] FrameSupportedPixelFormats {
+		CVPixelFormatType [] FrameSupportedPixelFormats {
 			[Wrap ("Array.ConvertAll (this.WeakFrameSupportedPixelFormats, (v) => (CVPixelFormatType) v.UInt32Value);")]
 			get;
 		}
@@ -2568,8 +2566,7 @@ namespace VideoToolbox {
 	[ErrorDomain ("VTFrameProcessorErrorDomain")]
 #endif
 	[Native]
-	public enum VTFrameProcessorError : long
-	{
+	public enum VTFrameProcessorError : long {
 		UnknownError = -19730,
 		UnsupportedResolution = -19731,
 		SessionNotStarted = -19732,
@@ -2588,8 +2585,7 @@ namespace VideoToolbox {
 	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface VTFrameProcessorFrame
-	{
+	interface VTFrameProcessorFrame {
 		[Export ("initWithBuffer:presentationTimeStamp:")]
 		NativeHandle Constructor (CVPixelBuffer buffer, CMTime presentationTimeStamp);
 
@@ -2603,8 +2599,7 @@ namespace VideoToolbox {
 	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface VTFrameProcessorOpticalFlow
-	{
+	interface VTFrameProcessorOpticalFlow {
 		[Export ("initWithForwardFlow:backwardFlow:")]
 		NativeHandle Constructor (CVPixelBuffer forwardFlow, CVPixelBuffer backwardFlow);
 
@@ -2617,8 +2612,7 @@ namespace VideoToolbox {
 
 	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface VTFrameProcessorParameters
-	{
+	interface VTFrameProcessorParameters {
 		[Abstract]
 		[Export ("sourceFrame")]
 		VTFrameProcessorFrame SourceFrame { get; }
@@ -2628,23 +2622,20 @@ namespace VideoToolbox {
 
 	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
 	[Native]
-	public enum VTFrameRateConversionConfigurationQualityPrioritization : long
-	{
+	public enum VTFrameRateConversionConfigurationQualityPrioritization : long {
 		Normal = 1,
 		Quality = 2,
 	}
 
 	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
 	[Native]
-	public enum VTFrameRateConversionConfigurationRevision : long
-	{
+	public enum VTFrameRateConversionConfigurationRevision : long {
 		Revision1 = 1,
 	}
 
 	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
 	[Native]
-	public enum VTFrameRateConversionParametersSubmissionMode : long
-	{
+	public enum VTFrameRateConversionParametersSubmissionMode : long {
 		Random = 1,
 		Sequential = 2,
 		SequentialReferencesUnchanged = 3,
@@ -2653,8 +2644,7 @@ namespace VideoToolbox {
 	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface VTFrameRateConversionConfiguration : VTFrameProcessorConfiguration
-	{
+	interface VTFrameRateConversionConfiguration : VTFrameProcessorConfiguration {
 		[Export ("initWithFrameWidth:frameHeight:usePrecomputedFlow:qualityPrioritization:revision:")]
 		NativeHandle Constructor (nint frameWidth, nint frameHeight, bool usePrecomputedFlow, VTFrameRateConversionConfigurationQualityPrioritization qualityPrioritization, VTFrameRateConversionConfigurationRevision revision);
 
@@ -2689,10 +2679,9 @@ namespace VideoToolbox {
 	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface VTFrameRateConversionParameters : VTFrameProcessorParameters
-	{
+	interface VTFrameRateConversionParameters : VTFrameProcessorParameters {
 		[Export ("initWithSourceFrame:nextFrame:opticalFlow:interpolationPhase:submissionMode:destinationFrames:")]
-		NativeHandle Constructor (VTFrameProcessorFrame sourceFrame, VTFrameProcessorFrame nextFrame, [NullAllowed] VTFrameProcessorOpticalFlow opticalFlow, NSNumber[] interpolationPhase, VTFrameRateConversionParametersSubmissionMode submissionMode, VTFrameProcessorFrame[] destinationFrame);
+		NativeHandle Constructor (VTFrameProcessorFrame sourceFrame, VTFrameProcessorFrame nextFrame, [NullAllowed] VTFrameProcessorOpticalFlow opticalFlow, NSNumber [] interpolationPhase, VTFrameRateConversionParametersSubmissionMode submissionMode, VTFrameProcessorFrame [] destinationFrame);
 
 		[Export ("sourceFrame")]
 		new VTFrameProcessorFrame SourceFrame { get; }
@@ -2705,34 +2694,31 @@ namespace VideoToolbox {
 
 		[BindAs (typeof (float []))]
 		[Export ("interpolationPhase")]
-		NSNumber[] InterpolationPhase { get; }
+		NSNumber [] InterpolationPhase { get; }
 
 		[Export ("submissionMode")]
 		VTFrameRateConversionParametersSubmissionMode SubmissionMode { get; }
 
 		[Export ("destinationFrames")]
-		VTFrameProcessorFrame[] DestinationFrames { get; }
+		VTFrameProcessorFrame [] DestinationFrames { get; }
 	}
 
 	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
 	[Native]
-	public enum VTMotionBlurConfigurationQualityPrioritization : long
-	{
+	public enum VTMotionBlurConfigurationQualityPrioritization : long {
 		Normal = 1,
 		Quality = 2,
 	}
 
 	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
 	[Native]
-	public enum VTMotionBlurConfigurationRevision : long
-	{
+	public enum VTMotionBlurConfigurationRevision : long {
 		Revision1 = 1,
 	}
 
 	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
 	[Native]
-	public enum VTMotionBlurParametersSubmissionMode : long
-	{
+	public enum VTMotionBlurParametersSubmissionMode : long {
 		Random = 1,
 		Sequential = 2,
 	}
@@ -2740,8 +2726,7 @@ namespace VideoToolbox {
 	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface VTMotionBlurConfiguration : VTFrameProcessorConfiguration
-	{
+	interface VTMotionBlurConfiguration : VTFrameProcessorConfiguration {
 		[Export ("initWithFrameWidth:frameHeight:usePrecomputedFlow:qualityPrioritization:revision:")]
 		NativeHandle Constructor (nint frameWidth, nint frameHeight, bool usePrecomputedFlow, VTMotionBlurConfigurationQualityPrioritization qualityPrioritization, VTMotionBlurConfigurationRevision revision);
 
@@ -2776,8 +2761,7 @@ namespace VideoToolbox {
 	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface VTMotionBlurParameters : VTFrameProcessorParameters
-	{
+	interface VTMotionBlurParameters : VTFrameProcessorParameters {
 		[Export ("initWithSourceFrame:nextFrame:previousFrame:nextOpticalFlow:previousOpticalFlow:motionBlurStrength:submissionMode:destinationFrame:")]
 		NativeHandle Constructor (VTFrameProcessorFrame sourceFrame, [NullAllowed] VTFrameProcessorFrame nextFrame, [NullAllowed] VTFrameProcessorFrame previousFrame, [NullAllowed] VTFrameProcessorOpticalFlow nextOpticalFlow, [NullAllowed] VTFrameProcessorOpticalFlow previousOpticalFlow, nint motionBlurStrength, VTMotionBlurParametersSubmissionMode submissionMode, VTFrameProcessorFrame destinationFrame);
 
@@ -2808,23 +2792,20 @@ namespace VideoToolbox {
 
 	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
 	[Native]
-	public enum VTOpticalFlowConfigurationQualityPrioritization : long
-	{
+	public enum VTOpticalFlowConfigurationQualityPrioritization : long {
 		Normal = 1,
 		Quality = 2,
 	}
 
 	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
 	[Native]
-	public enum VTOpticalFlowConfigurationRevision : long
-	{
+	public enum VTOpticalFlowConfigurationRevision : long {
 		Revision1 = 1,
 	}
 
 	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
 	[Native]
-	public enum VTOpticalFlowParametersSubmissionMode : long
-	{
+	public enum VTOpticalFlowParametersSubmissionMode : long {
 		Random = 1,
 		Sequential = 2,
 	}
@@ -2832,8 +2813,7 @@ namespace VideoToolbox {
 	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface VTOpticalFlowConfiguration : VTFrameProcessorConfiguration
-	{
+	interface VTOpticalFlowConfiguration : VTFrameProcessorConfiguration {
 		[Export ("initWithFrameWidth:frameHeight:qualityPrioritization:revision:")]
 		NativeHandle Constructor (nint frameWidth, nint frameHeight, VTOpticalFlowConfigurationQualityPrioritization qualityPrioritization, VTOpticalFlowConfigurationRevision revision);
 
@@ -2865,8 +2845,7 @@ namespace VideoToolbox {
 	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface VTOpticalFlowParameters : VTFrameProcessorParameters
-	{
+	interface VTOpticalFlowParameters : VTFrameProcessorParameters {
 		[Export ("initWithSourceFrame:nextFrame:submissionMode:destinationOpticalFlow:")]
 		NativeHandle Constructor (VTFrameProcessorFrame sourceFrame, VTFrameProcessorFrame nextFrame, VTOpticalFlowParametersSubmissionMode submissionMode, VTFrameProcessorOpticalFlow destinationOpticalFlow);
 

@@ -74,7 +74,7 @@ namespace CoreVideo {
 		/// <summary>The pixel formats of the pixel buffer.</summary>
 		/// <value></value>
 		/// <remarks>The property uses constant kCVPixelBufferPixelFormatTypeKey value to access the underlying dictionary.</remarks>
-		public CVPixelFormatType[]? PixelFormatTypes {
+		public CVPixelFormatType []? PixelFormatTypes {
 			get {
 				var obj = GetNativeValue<NSObject> (CVPixelBuffer.PixelFormatTypeKey);
 				if (obj is null) {

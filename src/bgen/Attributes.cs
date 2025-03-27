@@ -432,6 +432,7 @@ public class EventArgsAttribute : Attribute {
 	public string ArgName { get; set; }
 	public bool SkipGeneration { get; set; }
 	public bool FullName { get; set; }
+	public string XmlDocs { get; set; }
 }
 
 //

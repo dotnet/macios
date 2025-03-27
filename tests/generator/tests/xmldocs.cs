@@ -250,6 +250,13 @@ namespace XmlDocumentation {
 		[Export ("speechSynthesizer:didChangeUtteringSpeedTo:")]
 		[EventArgs ("TUtterance")]
 		void DidChangeUtteringSpeed (TClass obj, double utteringSpeed);
+
+		/// <summary>TClassDelegate.DidChangeMutteringVolume</summary>
+		[Export ("speechSynthesizer:didChangeMutteringVolumeTo:")]
+		[EventArgs ("TMutterance", XmlDocs = """
+			<summary>TClassDelegate.DidChangeMutteringVolume - EventArgs.</summary>
+			""")]
+		void DidChangeMutteringVolume (TClass obj, double mutteringVolume);
 	}
 
 	interface ITClassDelegate { }

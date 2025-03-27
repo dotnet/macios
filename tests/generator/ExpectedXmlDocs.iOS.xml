@@ -564,6 +564,16 @@
         <member name="F:XmlDocumentation.TClass.__mt_WeakDelegate_var">
             <summary>TClass.WeakDelegate</summary>
         </member>
+        <member name="E:XmlDocumentation.TClass.DidChangeMutteringVolume">
+            <summary>TClassDelegate.DidChangeMutteringVolume - EventArgs.</summary>
+        </member>
+        <member name="T:XmlDocumentation.TMutteranceEventArgs">
+            <summary>Provides data for an event based on an Objective-C protocol method.</summary>
+        </member>
+        <member name="M:XmlDocumentation.TMutteranceEventArgs.#ctor(System.Double)">
+            <summary>Create a new instance of the <see cref="T:XmlDocumentation.TMutteranceEventArgs" /> with the specified event data.</summary>
+            <param name="mutteringVolume">The value for the <see cref="P:XmlDocumentation.TMutteranceEventArgs.MutteringVolume" /> property.</param>
+        </member>
         <member name="T:XmlDocumentation.TUtteranceEventArgs">
             <summary>Provides data for an event based on an Objective-C protocol method.</summary>
         </member>
@@ -580,6 +590,12 @@
         <member name="M:XmlDocumentation.ITClassDelegate._DidChangeUtteringSpeed(XmlDocumentation.ITClassDelegate,XmlDocumentation.TClass,System.Double)">
             <summary>TClassDelegate.DidChangeUtteringSpeed</summary>
         </member>
+        <member name="M:XmlDocumentation.ITClassDelegate.DidChangeMutteringVolume(XmlDocumentation.TClass,System.Double)">
+            <summary>TClassDelegate.DidChangeMutteringVolume</summary>
+        </member>
+        <member name="M:XmlDocumentation.ITClassDelegate._DidChangeMutteringVolume(XmlDocumentation.ITClassDelegate,XmlDocumentation.TClass,System.Double)">
+            <summary>TClassDelegate.DidChangeMutteringVolume</summary>
+        </member>
         <member name="T:XmlDocumentation.TClassDelegate_Extensions">
             <summary>Extension methods to the <see cref="T:XmlDocumentation.ITClassDelegate" /> interface to support all the methods from the TClassDelegate protocol.</summary>
             <remarks>
@@ -588,6 +604,9 @@
         </member>
         <member name="M:XmlDocumentation.TClassDelegate_Extensions.DidChangeUtteringSpeed(XmlDocumentation.ITClassDelegate,XmlDocumentation.TClass,System.Double)">
             <summary>TClassDelegate.DidChangeUtteringSpeed</summary>
+        </member>
+        <member name="M:XmlDocumentation.TClassDelegate_Extensions.DidChangeMutteringVolume(XmlDocumentation.ITClassDelegate,XmlDocumentation.TClass,System.Double)">
+            <summary>TClassDelegate.DidChangeMutteringVolume</summary>
         </member>
         <member name="T:XmlDocumentation.TClassDelegate">
             <summary>TClassDelegate</summary>
@@ -651,6 +670,9 @@
                     Developers should not invoke this method directly, instead they should call <see cref="M:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)" /> as it will prevent two instances of a managed object pointing to the same native object.
                 </para>
             </remarks>
+        </member>
+        <member name="M:XmlDocumentation.TClassDelegate.DidChangeMutteringVolume(XmlDocumentation.TClass,System.Double)">
+            <summary>TClassDelegate.DidChangeMutteringVolume</summary>
         </member>
         <member name="M:XmlDocumentation.TClassDelegate.DidChangeUtteringSpeed(XmlDocumentation.TClass,System.Double)">
             <summary>TClassDelegate.DidChangeUtteringSpeed</summary>

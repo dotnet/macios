@@ -6709,6 +6709,14 @@ public partial class Generator : IMemberGatherer {
 						} else
 							prev_miname = miname;
 
+						var eventArgs = AttributeManager.GetCustomAttribute<EventArgsAttribute> (mi);
+						var xmlDocs = eventArgs?.XmlDocs;
+						if (!string.IsNullOrEmpty (xmlDocs)) {
+							var docLines = xmlDocs.Split ('\n');
+							foreach (var line in docLines)
+								print ($"/// {line}");
+						}
+
 						if (mi.ReturnType == TypeCache.System_Void) {
 							PrintObsoleteAttributes (mi);
 

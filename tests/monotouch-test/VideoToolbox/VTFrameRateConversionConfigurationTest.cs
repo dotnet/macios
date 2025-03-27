@@ -4,6 +4,7 @@
 #if __MACOS__
 
 using System;
+using System.Linq;
 
 using AVFoundation;
 using CoreFoundation;
@@ -40,18 +41,18 @@ namespace MonoTouchFixtures.VideoToolbox {
 				Assert.That (obj.SourcePixelBufferAttributes, Is.Not.Null, "SourcePixelBufferAttributes");
 				Assert.That (obj.SourcePixelBufferAttributes.Height, Is.EqualTo ((nint) 320), "SourcePixelBufferAttributes.Height");
 				Assert.That (obj.SourcePixelBufferAttributes.Width, Is.EqualTo ((nint) 320), "SourcePixelBufferAttributes.Width");
-				Assert.That (obj.SourcePixelBufferAttributes.PixelFormatTypes, Is.Not.Null, "DestinationPixelBufferAttributes.PixelFormatTypes");
+				Assert.That (obj.SourcePixelBufferAttributes.PixelFormatTypes, Is.Not.Null, "SourcePixelBufferAttributes.PixelFormatTypes");
+				Assert.That (obj.SourcePixelBufferAttributes.PixelFormatTypes?.Length, Is.EqualTo (1), "SourcePixelBufferAttributes.PixelFormatTypes.Length");
+				Assert.That (obj.SourcePixelBufferAttributes.PixelFormatTypes? [0], Is.EqualTo (CVPixelFormatType.CV64RGBAHalf), "SourcePixelBufferAttributes.PixelFormatTypes[0]");
 				Assert.That (obj.WeakSourcePixelBufferAttributes, Is.Not.Null, "WeakSourcePixelBufferAttributes");
-				TestRuntime.NSLog ($"SourcePixelBufferAttributes: {obj.SourcePixelBufferAttributes} {obj.SourcePixelBufferAttributes?.Dictionary}");
-				TestRuntime.NSLog ($"SourcePixelBufferAttributes.PixelFormatTypes: {string.Join (", ", obj.SourcePixelBufferAttributes.PixelFormatTypes?.Select (v => v.ToString ()))}");
 
 				Assert.That (obj.DestinationPixelBufferAttributes, Is.Not.Null, "DestinationPixelBufferAttributes");
 				Assert.That (obj.DestinationPixelBufferAttributes.Height, Is.EqualTo ((nint) 320), "DestinationPixelBufferAttributes.Height");
 				Assert.That (obj.DestinationPixelBufferAttributes.Width, Is.EqualTo ((nint) 320), "DestinationPixelBufferAttributes.Width");
 				Assert.That (obj.DestinationPixelBufferAttributes.PixelFormatTypes, Is.Not.Null, "DestinationPixelBufferAttributes.PixelFormatTypes");
+				Assert.That (obj.DestinationPixelBufferAttributes.PixelFormatTypes?.Length, Is.EqualTo (1), "DestinationPixelBufferAttributes.PixelFormatTypes.Length");
+				Assert.That (obj.DestinationPixelBufferAttributes.PixelFormatTypes? [0], Is.EqualTo (CVPixelFormatType.CV64RGBAHalf), "DestinationPixelBufferAttributes.PixelFormatTypes[0]");
 				Assert.That (obj.WeakDestinationPixelBufferAttributes, Is.Not.Null, "WeakDestinationPixelBufferAttributes");
-				TestRuntime.NSLog ($"DestinationPixelBufferAttributes: {obj.DestinationPixelBufferAttributes} {obj.DestinationPixelBufferAttributes?.Dictionary}");
-				TestRuntime.NSLog ($"DestinationPixelBufferAttributes.PixelFormatTypes: {string.Join (", ", obj.DestinationPixelBufferAttributes.PixelFormatTypes?.Select (v => v.ToString ()))}");
 
 				Assert.That (VTFrameRateConversionConfiguration.ProcessorSupported, Is.True, "ProcessorSupported");
 				Assert.That (VTFrameRateConversionConfiguration.SupportedRevisions, Is.Not.Null, "SupportedRevisions");

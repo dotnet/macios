@@ -23,7 +23,7 @@ namespace MonoTouchFixtures.WebKit {
 		{
 			var weak = WKWebExtensionController.WeakAllExtensionDataTypes;
 			var strong = WKWebExtensionController.AllExtensionDataTypes;
-			var strongBitCount = BitOperations.PopCount (unchecked ((ulong) strong));
+			var strongBitCount = BitOperations.PopCount (unchecked((ulong) strong));
 			Assert.That (strongBitCount, Is.EqualTo ((int) weak.Count), "Count");
 			Assert.That (strongBitCount, Is.GreaterThan (0), ">0");
 		}

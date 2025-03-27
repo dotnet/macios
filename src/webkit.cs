@@ -6092,8 +6092,7 @@ namespace WebKit {
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[Native]
 	[ErrorDomain ("WKWebExtensionErrorDomain")]
-	public enum WKWebExtensionError : long
-	{
+	public enum WKWebExtensionError : long {
 		Unknown = 1,
 		ResourceNotFound,
 		InvalidResourceCodeSignature,
@@ -6110,8 +6109,7 @@ namespace WebKit {
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface WKWebExtension
-	{
+	interface WKWebExtension {
 		[Static]
 		[Export ("extensionWithAppExtensionBundle:completionHandler:")]
 		[Async]
@@ -6123,7 +6121,7 @@ namespace WebKit {
 		void Create (NSUrl resourceBaseUrl, WKWebExtensionCreateCallback completionHandler);
 
 		[Export ("errors", ArgumentSemantic.Copy)]
-		NSError[] Errors { get; }
+		NSError [] Errors { get; }
 
 		[Export ("manifest", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSObject> Manifest { get; }
@@ -6213,8 +6211,7 @@ namespace WebKit {
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface WKWebExtensionAction
-	{
+	interface WKWebExtensionAction {
 		[NullAllowed, Export ("webExtensionContext", ArgumentSemantic.Weak)]
 		WKWebExtensionContext WebExtensionContext { get; }
 
@@ -6244,7 +6241,7 @@ namespace WebKit {
 #if IOS || MACCATALYST
 		UIMenuElement[] MenuItems { get; }
 #else
-		NSMenuItem[] MenuItems { get; }
+		NSMenuItem [] MenuItems { get; }
 #endif
 
 		[Export ("presentsPopup")]
@@ -6270,8 +6267,7 @@ namespace WebKit {
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface WKWebExtensionCommand
-	{
+	interface WKWebExtensionCommand {
 		[NullAllowed, Export ("webExtensionContext", ArgumentSemantic.Weak)]
 		WKWebExtensionContext WebExtensionContext { get; }
 
@@ -6307,8 +6303,7 @@ namespace WebKit {
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[Flags]
 	[Native]
-	public enum WKWebExtensionTabChangedProperties : ulong
-	{
+	public enum WKWebExtensionTabChangedProperties : ulong {
 		None = 0,
 		Loading = 1uL << 1,
 		Muted = 1uL << 2,
@@ -6330,8 +6325,7 @@ namespace WebKit {
 
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface WKWebExtensionTab
-	{
+	interface WKWebExtensionTab {
 		[Export ("windowForWebExtensionContext:")]
 		[return: NullAllowed]
 		IWKWebExtensionWindow GetWindow (WKWebExtensionContext context);
@@ -6456,8 +6450,7 @@ namespace WebKit {
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[ErrorDomain ("WKWebExtensionContextErrorDomain")]
 	[Native]
-	public enum WKWebExtensionContextError : long
-	{
+	public enum WKWebExtensionContextError : long {
 		Unknown = 1,
 		AlreadyLoaded,
 		NotLoaded,
@@ -6468,8 +6461,7 @@ namespace WebKit {
 
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[Native]
-	public enum WKWebExtensionContextPermissionStatus : long
-	{
+	public enum WKWebExtensionContextPermissionStatus : long {
 		DeniedExplicitly = -3,
 		DeniedImplicitly = -2,
 		RequestedImplicitly = -1,
@@ -6484,8 +6476,7 @@ namespace WebKit {
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface WKWebExtensionContext
-	{
+	interface WKWebExtensionContext {
 		[Static]
 		[Export ("contextForExtension:")]
 		WKWebExtensionContext Create (WKWebExtension extension);
@@ -6504,7 +6495,7 @@ namespace WebKit {
 		bool Loaded { [Bind ("isLoaded")] get; }
 
 		[Export ("errors", ArgumentSemantic.Copy)]
-		NSError[] Errors { get; }
+		NSError [] Errors { get; }
 
 		[Export ("baseURL", ArgumentSemantic.Copy)]
 		NSUrl BaseUrl { get; set; }
@@ -6634,7 +6625,7 @@ namespace WebKit {
 		void PerformAction ([NullAllowed] IWKWebExtensionTab tab);
 
 		[Export ("commands", ArgumentSemantic.Copy)]
-		WKWebExtensionCommand[] Commands { get; }
+		WKWebExtensionCommand [] Commands { get; }
 
 		[Export ("performCommand:")]
 		void PerformCommand (WKWebExtensionCommand command);
@@ -6658,7 +6649,7 @@ namespace WebKit {
 #if IOS || MACCATALYST
 		UIMenuElement[] GetMenuItems (IWKWebExtensionTab tab);
 #else
-		NSMenuItem[] GetMenuItems (IWKWebExtensionTab tab);
+		NSMenuItem [] GetMenuItems (IWKWebExtensionTab tab);
 #endif
 
 		[Export ("userGesturePerformedInTab:")]
@@ -6671,7 +6662,7 @@ namespace WebKit {
 		void ClearUserGesture (IWKWebExtensionTab tab);
 
 		[Export ("openWindows", ArgumentSemantic.Copy)]
-		IWKWebExtensionWindow[] OpenWindows { get; }
+		IWKWebExtensionWindow [] OpenWindows { get; }
 
 		[NullAllowed, Export ("focusedWindow", ArgumentSemantic.Weak)]
 		IWKWebExtensionWindow FocusedWindow { get; }
@@ -6698,10 +6689,10 @@ namespace WebKit {
 		void DidActivateTab (IWKWebExtensionTab activatedTab, [NullAllowed] IWKWebExtensionTab previousTab);
 
 		[Export ("didSelectTabs:")]
-		void DidSelectTabs (IWKWebExtensionTab[] selectedTabs);
+		void DidSelectTabs (IWKWebExtensionTab [] selectedTabs);
 
 		[Export ("didDeselectTabs:")]
-		void DidDeselectTabs (IWKWebExtensionTab[] deselectedTabs);
+		void DidDeselectTabs (IWKWebExtensionTab [] deselectedTabs);
 
 		[Export ("didMoveTab:fromIndex:inWindow:")]
 		void DidMoveTab (IWKWebExtensionTab movedTab, nuint index, [NullAllowed] IWKWebExtensionWindow oldWindow);
@@ -6772,10 +6763,9 @@ namespace WebKit {
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
-	interface WKWebExtensionControllerDelegate
-	{
+	interface WKWebExtensionControllerDelegate {
 		[Export ("webExtensionController:openWindowsForExtensionContext:")]
-		IWKWebExtensionWindow[] OpenWindows (WKWebExtensionController controller, WKWebExtensionContext extensionContext);
+		IWKWebExtensionWindow [] OpenWindows (WKWebExtensionController controller, WKWebExtensionContext extensionContext);
 
 		[Export ("webExtensionController:focusedWindowForExtensionContext:")]
 		[return: NullAllowed]
@@ -6819,8 +6809,7 @@ namespace WebKit {
 
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[Flags]
-	enum WKWebExtensionDataType
-	{
+	enum WKWebExtensionDataType {
 		[Field ("WKWebExtensionDataTypeLocal")]
 		Local = 1,
 
@@ -6833,16 +6822,14 @@ namespace WebKit {
 
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[Native]
-	public enum WKWebExtensionWindowType : long
-	{
+	public enum WKWebExtensionWindowType : long {
 		Normal,
 		Popup,
 	}
 
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[Native]
-	public enum WKWebExtensionWindowState : long
-	{
+	public enum WKWebExtensionWindowState : long {
 		Normal,
 		Minimized,
 		Maximized,
@@ -6855,10 +6842,9 @@ namespace WebKit {
 
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface WKWebExtensionWindow
-	{
+	interface WKWebExtensionWindow {
 		[Export ("tabsForWebExtensionContext:")]
-		IWKWebExtensionTab[] GetTabs (WKWebExtensionContext context);
+		IWKWebExtensionTab [] GetTabs (WKWebExtensionContext context);
 
 		[Export ("activeTabForWebExtensionContext:")]
 		[return: NullAllowed]
@@ -6899,13 +6885,12 @@ namespace WebKit {
 	}
 
 	delegate void WKWebExtensionControllerDataRecordCallback (WKWebExtensionDataRecord dataRecord);
-	delegate void WKWebExtensionControllerDataRecordsCallback (WKWebExtensionDataRecord[] dataRecords);
+	delegate void WKWebExtensionControllerDataRecordsCallback (WKWebExtensionDataRecord [] dataRecords);
 
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // added below to get the DesignatedInitializer attribute
-	interface WKWebExtensionController
-	{
+	interface WKWebExtensionController {
 		[DesignatedInitializer]
 		[Export ("init")]
 		NativeHandle Constructor ();
@@ -6972,11 +6957,11 @@ namespace WebKit {
 
 		[Async]
 		[Export ("removeDataOfTypes:fromDataRecords:completionHandler:")]
-		void RemoveData (NSSet<NSString> dataTypes, WKWebExtensionDataRecord[] dataRecords, Action completionHandler);
+		void RemoveData (NSSet<NSString> dataTypes, WKWebExtensionDataRecord [] dataRecords, Action completionHandler);
 
 		[Async]
 		[Wrap ("RemoveData (new NSSet<NSString> (dataTypes.ToArray ()), dataRecords, completionHandler);")]
-		void RemoveData (WKWebExtensionDataType dataTypes, WKWebExtensionDataRecord[] dataRecords, Action completionHandler);
+		void RemoveData (WKWebExtensionDataType dataTypes, WKWebExtensionDataRecord [] dataRecords, Action completionHandler);
 
 		[Export ("didOpenWindow:")]
 		void DidOpenWindow (IWKWebExtensionWindow newWindow);
@@ -6997,10 +6982,10 @@ namespace WebKit {
 		void DidActivateTab (IWKWebExtensionTab activatedTab, [NullAllowed] IWKWebExtensionTab previousTab);
 
 		[Export ("didSelectTabs:")]
-		void DidSelectTabs (IWKWebExtensionTab[] selectedTabs);
+		void DidSelectTabs (IWKWebExtensionTab [] selectedTabs);
 
 		[Export ("didDeselectTabs:")]
-		void DidDeselectTabs (IWKWebExtensionTab[] deselectedTabs);
+		void DidDeselectTabs (IWKWebExtensionTab [] deselectedTabs);
 
 		[Export ("didMoveTab:fromIndex:inWindow:")]
 		void DidMoveTab (IWKWebExtensionTab movedTab, nuint index, [NullAllowed] IWKWebExtensionWindow oldWindow);
@@ -7015,8 +7000,7 @@ namespace WebKit {
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface WKWebExtensionControllerConfiguration : NSSecureCoding, NSCopying
-	{
+	interface WKWebExtensionControllerConfiguration : NSSecureCoding, NSCopying {
 		[Static]
 		[Export ("defaultConfiguration")]
 		WKWebExtensionControllerConfiguration GetDefaultConfiguration ();
@@ -7045,8 +7029,7 @@ namespace WebKit {
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[Native]
 	[ErrorDomain ("WKWebExtensionDataRecordErrorDomain")]
-	public enum WKWebExtensionDataRecordError : long
-	{
+	public enum WKWebExtensionDataRecordError : long {
 		Unknown = 1,
 		LocalStorageFailed,
 		SessionStorageFailed,
@@ -7056,8 +7039,7 @@ namespace WebKit {
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface WKWebExtensionDataRecord
-	{
+	interface WKWebExtensionDataRecord {
 		[Export ("displayName")]
 		string DisplayName { get; }
 
@@ -7073,7 +7055,7 @@ namespace WebKit {
 		}
 
 		[Export ("errors", ArgumentSemantic.Copy)]
-		NSError[] Errors { get; }
+		NSError [] Errors { get; }
 
 		[Export ("totalSizeInBytes")]
 		nuint TotalSizeInBytes { get; }
@@ -7088,8 +7070,7 @@ namespace WebKit {
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[Native]
 	[ErrorDomain ("WKWebExtensionMessagePortErrorDomain")]
-	public enum WKWebExtensionMessagePortError : long
-	{
+	public enum WKWebExtensionMessagePortError : long {
 		Unknown = 1,
 		NotConnected,
 		MessageInvalid,
@@ -7102,8 +7083,7 @@ namespace WebKit {
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface WKWebExtensionMessagePort
-	{
+	interface WKWebExtensionMessagePort {
 		[NullAllowed, Export ("applicationIdentifier")]
 		string ApplicationIdentifier { get; }
 
@@ -7130,8 +7110,7 @@ namespace WebKit {
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface WKWebExtensionTabConfiguration
-	{
+	interface WKWebExtensionTabConfiguration {
 		[NullAllowed, Export ("window", ArgumentSemantic.Strong)]
 		IWKWebExtensionWindow Window { get; }
 
@@ -7163,8 +7142,7 @@ namespace WebKit {
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface WKWebExtensionWindowConfiguration
-	{
+	interface WKWebExtensionWindowConfiguration {
 		[Export ("windowType")]
 		WKWebExtensionWindowType WindowType { get; }
 
@@ -7175,10 +7153,10 @@ namespace WebKit {
 		CGRect Frame { get; }
 
 		[Export ("tabURLs", ArgumentSemantic.Copy)]
-		NSUrl[] TabUrls { get; }
+		NSUrl [] TabUrls { get; }
 
 		[Export ("tabs", ArgumentSemantic.Copy)]
-		IWKWebExtensionTab[] Tabs { get; }
+		IWKWebExtensionTab [] Tabs { get; }
 
 		[Export ("shouldBeFocused")]
 		bool ShouldBeFocused { get; }
@@ -7190,8 +7168,7 @@ namespace WebKit {
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[ErrorDomain ("WKWebExtensionMatchPatternErrorDomain")]
 	[Native]
-	public enum WKWebExtensionMatchPatternError : long
-	{
+	public enum WKWebExtensionMatchPatternError : long {
 		Unknown = 1,
 		InvalidScheme,
 		InvalidHost,
@@ -7201,8 +7178,7 @@ namespace WebKit {
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[Native]
 	[Flags]
-	public enum WKWebExtensionMatchPatternOptions : ulong
-	{
+	public enum WKWebExtensionMatchPatternOptions : ulong {
 		None = 0,
 		IgnoreSchemes = 1uL << 0,
 		IgnorePaths = 1uL << 1,
@@ -7212,8 +7188,7 @@ namespace WebKit {
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface WKWebExtensionMatchPattern : NSSecureCoding, NSCopying
-	{
+	interface WKWebExtensionMatchPattern : NSSecureCoding, NSCopying {
 		[Static]
 		[Export ("registerCustomURLScheme:")]
 		void RegisterCustomUrlScheme (string urlScheme);
@@ -7277,8 +7252,7 @@ namespace WebKit {
 
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[Flags]
-	enum WKWebExtensionPermission
-	{
+	enum WKWebExtensionPermission {
 		[Field ("WKWebExtensionPermissionActiveTab")]
 		ActiveTab = 1 << 0,
 

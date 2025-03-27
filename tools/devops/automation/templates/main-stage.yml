@@ -75,11 +75,6 @@ parameters:
   - name: testConfigurations
     type: object
     default: [
-      # Disabled by default #
-      # {
-      #   label: bcl,
-      #   splitByPlatforms: false,
-      # },
       {
         label: windows,
         splitByPlatforms: false,
@@ -149,12 +144,6 @@ parameters:
         testPrefix: 'simulator_tests',
       },
     ]
-
-  - name: deviceTestsConfigurations
-    type: object
-
-  - name: macTestsConfigurations
-    type: object
 
   - name: stageDisplayNamePrefix
     type: string

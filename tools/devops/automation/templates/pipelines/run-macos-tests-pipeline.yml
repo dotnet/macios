@@ -113,15 +113,9 @@ parameters:
       }
     ]
 
-
   - name: testConfigurations
     type: object
     default: [
-      # Disabled by default #
-      # {
-      #   label: bcl,
-      #   splitByPlatforms: false,
-      # },
       {
         label: windows,
         splitByPlatforms: false,

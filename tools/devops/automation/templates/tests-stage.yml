@@ -8,10 +8,6 @@ parameters:
   type: boolean
   default: true
 
-- name: runDeviceTests
-  type: boolean
-  default: false
-
 - name: runWindowsIntegration
   type: boolean
   default: true
@@ -64,11 +60,6 @@ parameters:
 - name: testConfigurations
   type: object
   default: [
-    # Disabled by default #
-    # {
-    #   label: bcl,
-    #   splitByPlatforms: false,
-    # },
     {
       label: windows,
       splitByPlatforms: false,
@@ -143,9 +134,6 @@ parameters:
       testPrefix: 'simulator_tests',
     },
   ]
-
-- name: deviceTestsConfigurations
-  type: object
 
 - name: stageDisplayNamePrefix
   type: string

@@ -176,7 +176,7 @@ steps:
 
 - task: UseDotNet@2
   inputs:
-    version: 8.x
+    version: 9.x
 
 - template: ../common/install-qa-provisioning-profiles.yml
   parameters:

@@ -55,4 +55,39 @@ UIFont boldBodyFont = UIFont.FromDescriptor (boldDescriptor, 0);
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIFontDescriptor_Class/index.html">Apple documentation for <c>UIFontDescriptor</c></related>
   </Docs>
+  <Docs DocId="P:UIKit.UIFontDescriptor.FeatureSettings">
+        <summary>Typographic and layout feature settings.</summary>
+        <value>
+        </value>
+        <remarks>
+          <para>
+	    This property is an array of UIFontFeature objects, each
+	    representing a font-specific typograph or layout feature
+	    that can be enabled in the font.  For background on Font
+	    Features, you can read
+	    https://developer.apple.com/fonts/registry
+
+	  </para>
+          <para>
+	    The following example shows how to configure the font to
+	    use proportional numbers as well as informing the
+	    rendering engine to use the 1st Character Alternatives available in this font. 
+	  </para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+UIFont CustomizeFont (UIFont font)
+{
+    var originalDescriptor = font.FontDescriptor;
+    var attributes = new UIFontAttributes (
+        new UIFontFeature (CTFontFeatureNumberSpacing.Selector.ProportionalNumbers),
+	new UIFontFeature ((CTFontFeatureCharacterAlternatives.Selector)1));
+
+    var newDesc = originalDescriptor.CreateWithAttributes (attributes);
+    return UIFont.FromDescriptor (newDesc, 80);
+}
+]]></code>
+          </example>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
 </Documentation>

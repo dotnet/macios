@@ -524,7 +524,6 @@ COREGRAPHICS_CORE_SOURCES = \
 COREGRAPHICS_SOURCES = \
 	CoreGraphics/CGBitmapContext.cs \
 	CoreGraphics/CGContextPDF.cs \
-	CoreGraphics/CGColorConverter.cs \
 	CoreGraphics/CGColorConversionInfo.cs \
 	CoreGraphics/CGDataConsumer.cs \
 	CoreGraphics/CGDataProvider.cs \

@@ -32,19 +32,13 @@ using UIKit;
 using CoreVideo;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 namespace CoreImage {
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CIAutoAdjustmentFilterOptions {
 
 		// The default value is true.
@@ -75,23 +69,20 @@ namespace CoreImage {
 		///         <remarks>Some adjustments depend on image orientation to work, providing this hint helps the auto correction software pick the best results.</remarks>
 		public CIImageOrientation? ImageOrientation;
 
-#if NET
 		/// <summary>Whether or not to automatically crop the image.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public bool? AutoAdjustCrop;
-#if NET
+
 		/// <summary>Gets or sets the automatic adjustment level.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public bool? AutoAdjustLevel;
 
 		internal NSDictionary? ToDictionary ()

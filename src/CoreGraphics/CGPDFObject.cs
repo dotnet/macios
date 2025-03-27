@@ -38,19 +38,11 @@ using ObjCRuntime;
 using CoreFoundation;
 using System.Runtime.Versioning;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
-
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CGPDFObject.h
 	public class CGPDFObject : INativeObject {
 		/// <summary>Handle (pointer) to the unmanaged object representation.</summary>
@@ -62,11 +54,7 @@ namespace CoreGraphics {
 		// the containing CGPDFDocument, and not possible to handle independently, which is why this class
 		// does not subclass NativeObject (there's no way to retain/release CGPDFObject instances). It's
 		// also why this constructor doesn't have a 'bool owns' parameter: it's always owned by the containing CGPDFDocument.
-#if NET
 		internal CGPDFObject (NativeHandle handle)
-#else
-		public CGPDFObject (NativeHandle handle)
-#endif
 		{
 			Handle = handle;
 		}

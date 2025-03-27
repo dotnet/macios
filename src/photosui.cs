@@ -176,6 +176,9 @@ namespace PhotosUI {
 	[NoMacCatalyst]
 	[Static]
 	interface PHProjectType {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("PHProjectTypeUndefined")]
 		NSString Undefined { get; }
 	}

@@ -36,10 +36,6 @@ using Foundation;
 using ObjCRuntime;
 using CoreFoundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
 
 	// untyped enum -> CGPDFStream.h
@@ -53,12 +49,10 @@ namespace CoreGraphics {
 	};
 
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CGPDFStream.h
 	public class CGPDFStream : CGPDFObject {
 		// The lifetime management of CGPDFObject (and CGPDFArray, CGPDFDictionary and CGPDFStream) are tied to

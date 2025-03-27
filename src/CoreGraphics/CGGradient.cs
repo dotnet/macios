@@ -36,10 +36,6 @@ using ObjCRuntime;
 using CoreFoundation;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
 
 	// uint32_t -> CGGradient.h
@@ -53,12 +49,10 @@ namespace CoreGraphics {
 		DrawsAfterEndLocation = (1 << 1),
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CGGradient : NativeObject {
 #if !COREBUILD
 		[Preserve (Conditional = true)]

@@ -96,6 +96,9 @@ namespace OpenGL {
 		[DllImport (Constants.OpenGLLibrary)]
 		extern static IntPtr CGLGetCurrentContext ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static CGLContext? CurrentContext {
 			get {
 				IntPtr ctx = CGLGetCurrentContext ();

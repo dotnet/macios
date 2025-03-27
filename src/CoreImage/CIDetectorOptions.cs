@@ -25,7 +25,6 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		public float? MinFeatureSize { get; set; }
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -33,7 +32,6 @@ namespace CoreImage {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public int? MaxFeatureCount { get; set; }
 
 		/// <summary>Gets or sets whether faces are tracked between frames.</summary>

@@ -36,10 +36,6 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
 
 	// untyped enum -> CGColorSpace.h
@@ -78,21 +74,12 @@ namespace CoreGraphics {
 		Xyz,
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CGColorSpace : NativeObject {
 #if !COREBUILD
-#if !NET
-		public CGColorSpace (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		static IntPtr Create (CFPropertyList propertyList)
 		{
 			if (propertyList is null)
@@ -271,133 +258,109 @@ namespace CoreGraphics {
 			return FromHandle (r, true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static CGColorSpace? CreateGenericGray ()
 		{
 			return Create (CGColorSpaceNames.GenericGray.Handle);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static CGColorSpace? CreateGenericRgb ()
 		{
 			return Create (CGColorSpaceNames.GenericRgb.Handle);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static CGColorSpace? CreateGenericCmyk ()
 		{
 			return Create (CGColorSpaceNames.GenericCmyk.Handle);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static CGColorSpace? CreateGenericRgbLinear ()
 		{
 			return Create (CGColorSpaceNames.GenericRgbLinear.Handle);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static CGColorSpace? CreateAdobeRgb1988 ()
 		{
 			return Create (CGColorSpaceNames.AdobeRgb1998.Handle);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static CGColorSpace? CreateSrgb ()
 		{
 			return Create (CGColorSpaceNames.Srgb.Handle);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static CGColorSpace? CreateGenericGrayGamma2_2 ()
 		{
 			return Create (CGColorSpaceNames.GenericGrayGamma2_2.Handle);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static CGColorSpace? CreateGenericXyz ()
 		{
 			return Create (CGColorSpaceNames.GenericXyz.Handle);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static CGColorSpace? CreateAcesCGLinear ()
 		{
 			return Create (CGColorSpaceNames.AcesCGLinear.Handle);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static CGColorSpace? CreateItuR_709 ()
 		{
 			return Create (CGColorSpaceNames.ItuR_709.Handle);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static CGColorSpace? CreateItuR_2020 ()
 		{
 			return Create (CGColorSpaceNames.ItuR_2020.Handle);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static CGColorSpace? CreateRommRgb ()
 		{
 			return Create (CGColorSpaceNames.RommRgb.Handle);
@@ -453,7 +416,6 @@ namespace CoreGraphics {
 			return table;
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -461,24 +423,16 @@ namespace CoreGraphics {
 		[ObsoletedOSPlatform ("macos10.13", "Use 'CreateIDCCData' instead.")]
 		[ObsoletedOSPlatform ("tvos11.0", "Use 'CreateIDCCData' instead.")]
 		[ObsoletedOSPlatform ("ios11.0", "Use 'CreateIDCCData' instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'CreateIDCCData' instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'CreateIDCCData' instead.")]
-		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'CreateIDCCData' instead.")]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGColorSpaceRef */ IntPtr CGColorSpaceCreateWithICCProfile (/* CFDataRef */ IntPtr data);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGColorSpaceRef */ IntPtr CGColorSpaceCreateWithICCData (/* CFTypeRef cg_nullable */ IntPtr data);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -486,28 +440,17 @@ namespace CoreGraphics {
 		[ObsoletedOSPlatform ("macos10.13", "Use 'CreateIDCCData' instead.")]
 		[ObsoletedOSPlatform ("tvos11.0", "Use 'CreateIDCCData' instead.")]
 		[ObsoletedOSPlatform ("ios11.0", "Use 'CreateIDCCData' instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'CreateIDCCData' instead.")]
-		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'CreateIDCCData' instead.")]
-		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'CreateIDCCData' instead.")]
-#endif
-#if NET
 		public static CGColorSpace? CreateIccProfile (NSData? data)
-#else
-		public static CGColorSpace? CreateICCProfile (NSData? data)
-#endif
 		{
 			IntPtr ptr = CGColorSpaceCreateWithICCProfile (data.GetHandle ());
 			GC.KeepAlive (data);
 			return FromHandle (ptr, true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static CGColorSpace? CreateIccData (NSData data)
 		{
 			CGColorSpace? result = CreateIccData (data.GetHandle ());
@@ -515,12 +458,10 @@ namespace CoreGraphics {
 			return result;
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static CGColorSpace? CreateIccData (CGDataProvider provider)
 		{
 			CGColorSpace? result = CreateIccData (provider.GetHandle ());
@@ -540,11 +481,7 @@ namespace CoreGraphics {
 			/* CGDataProviderRef __nullable */ IntPtr profile,
 			/* CGColorSpaceRef __nullable */ IntPtr alternate);
 
-#if NET
 		public static CGColorSpace? CreateIccProfile (nfloat []? range, CGDataProvider profile, CGColorSpace alternate)
-#else
-		public static CGColorSpace? CreateICCProfile (nfloat []? range, CGDataProvider profile, CGColorSpace alternate)
-#endif
 		{
 			nint nComponents = range is null ? 0 : range.Length / 2;
 			unsafe {
@@ -557,7 +494,6 @@ namespace CoreGraphics {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -565,15 +501,9 @@ namespace CoreGraphics {
 		[ObsoletedOSPlatform ("macos10.13", "Use 'GetICCData' instead.")]
 		[ObsoletedOSPlatform ("tvos11.0", "Use 'GetICCData' instead.")]
 		[ObsoletedOSPlatform ("ios11.0", "Use 'GetICCData' instead.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'GetICCData' instead.")]
-		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'GetICCData' instead.")]
-		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'GetICCData' instead.")]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CFDataRef */ IntPtr CGColorSpaceCopyICCProfile (/* CGColorSpaceRef */ IntPtr space);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -581,52 +511,36 @@ namespace CoreGraphics {
 		[ObsoletedOSPlatform ("macos10.13", "Use 'GetICCData' instead.")]
 		[ObsoletedOSPlatform ("tvos11.0", "Use 'GetICCData' instead.")]
 		[ObsoletedOSPlatform ("ios11.0", "Use 'GetICCData' instead.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'GetICCData' instead.")]
-		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'GetICCData' instead.")]
-		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'GetICCData' instead.")]
-#endif
-#if NET
 		public NSData? GetIccProfile ()
-#else
-		public NSData? GetICCProfile ()
-#endif
 		{
 			IntPtr ptr = CGColorSpaceCopyICCProfile (Handle);
 			return Runtime.GetNSObject<NSData> (ptr, true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern /* CFDataRef* */ IntPtr CGColorSpaceCopyICCData (/* CGColorSpaceRef */ IntPtr space);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public NSData? GetIccData ()
 		{
 			IntPtr ptr = CGColorSpaceCopyICCData (Handle);
 			return Runtime.GetNSObject<NSData> (ptr, true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern unsafe /* CFStringRef* */ IntPtr CGColorSpaceCopyName (/* CGColorSpaceRef */ IntPtr space);
 
-#if NET
 		/// <summary>Gets the color space name.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -634,23 +548,19 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-#endif
 		public string? Name {
 			get {
 				return CFString.FromHandle (CGColorSpaceCopyName (Handle), true);
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern byte CGColorSpaceIsWideGamutRGB (/* CGColorSpaceRef */ IntPtr space);
 
-#if NET
 		/// <summary>Gets a value that tells whether the color space supports wide gamut colors.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -658,23 +568,19 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public bool IsWideGamutRgb {
 			get {
 				return CGColorSpaceIsWideGamutRGB (Handle) != 0;
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern byte CGColorSpaceSupportsOutput (/* CGColorSpaceRef */ IntPtr space);
 
-#if NET
 		/// <summary>Gets a Boolean value that tells whether the color space supports output.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -682,37 +588,30 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public bool SupportsOutput {
 			get {
 				return CGColorSpaceSupportsOutput (Handle) != 0;
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern IntPtr CGColorSpaceCopyPropertyList (IntPtr space);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern IntPtr CGColorSpaceCreateWithPropertyList (IntPtr plist);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public CFPropertyList? ToPropertyList ()
 		{
 			var x = CGColorSpaceCopyPropertyList (Handle);
@@ -721,7 +620,6 @@ namespace CoreGraphics {
 			return new CFPropertyList (x, owns: true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("tvos13.0")]
@@ -729,17 +627,9 @@ namespace CoreGraphics {
 		[ObsoletedOSPlatform ("macos10.15.4")]
 		[ObsoletedOSPlatform ("tvos13.4")]
 		[ObsoletedOSPlatform ("ios13.4")]
-#else
-		[iOS (13, 0)]
-		[TV (13, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 15, 4)]
-		[Deprecated (PlatformName.iOS, 13, 4)]
-		[Deprecated (PlatformName.TvOS, 13, 4)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern byte CGColorSpaceIsHDR (/* CGColorSpaceRef */ IntPtr space);
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("tvos13.0")]
@@ -747,252 +637,133 @@ namespace CoreGraphics {
 		[ObsoletedOSPlatform ("macos10.15.4")]
 		[ObsoletedOSPlatform ("tvos13.4")]
 		[ObsoletedOSPlatform ("ios13.4")]
-#else
-		[iOS (13, 0)]
-		[TV (13, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 15, 4)]
-		[Deprecated (PlatformName.iOS, 13, 4)]
-		[Deprecated (PlatformName.TvOS, 13, 4)]
-#endif
 		public bool IsHdr {
 			get {
 				return CGColorSpaceIsHDR (Handle) != 0;
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("tvos14.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (14, 0)]
-		[TV (14, 0)]
-		[MacCatalyst (14, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern byte CGColorSpaceUsesExtendedRange (/* CGColorSpaceRef */ IntPtr space);
 
-#if NET
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("tvos14.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (14, 0)]
-		[TV (14, 0)]
-		[MacCatalyst (14, 0)]
-#endif
 		public bool UsesExtendedRange {
 			get {
 				return CGColorSpaceUsesExtendedRange (Handle) != 0;
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios14.1")]
 		[SupportedOSPlatform ("tvos14.2")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (14, 1)]
-		[TV (14, 2)]
-		[MacCatalyst (14, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern byte CGColorSpaceUsesITUR_2100TF (/* CGColorSpaceRef */ IntPtr space);
 
-#if NET
 		[SupportedOSPlatform ("ios14.1")]
 		[SupportedOSPlatform ("tvos14.2")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (14, 1)]
-		[TV (14, 2)]
-		[MacCatalyst (14, 0)]
-#endif
 		public bool UsesItur2100TF => CGColorSpaceUsesITUR_2100TF (Handle) != 0;
 
-#if NET
 		[SupportedOSPlatform ("ios14.1")]
 		[SupportedOSPlatform ("tvos14.2")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (14, 1)]
-		[TV (14, 2)]
-		[MacCatalyst (14, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern IntPtr CGColorSpaceCreateLinearized (/* CGColorSpaceRef */ IntPtr space);
 
-#if NET
 		[SupportedOSPlatform ("ios14.1")]
 		[SupportedOSPlatform ("tvos14.2")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (14, 1)]
-		[TV (14, 2)]
-		[MacCatalyst (14, 0)]
-#endif
 		public CGColorSpace? CreateLinearized () => Runtime.GetINativeObject<CGColorSpace> (CGColorSpaceCreateLinearized (Handle), owns: true);
 
-#if NET
 		[SupportedOSPlatform ("ios14.1")]
 		[SupportedOSPlatform ("tvos14.2")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (14, 1)]
-		[TV (14, 2)]
-		[MacCatalyst (14, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern IntPtr CGColorSpaceCreateExtended (/* CGColorSpaceRef */ IntPtr space);
 
-#if NET
 		[SupportedOSPlatform ("ios14.1")]
 		[SupportedOSPlatform ("tvos14.2")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (14, 1)]
-		[TV (14, 2)]
-		[MacCatalyst (14, 0)]
-#endif
 		public CGColorSpace? CreateExtended () => Runtime.GetINativeObject<CGColorSpace> (CGColorSpaceCreateExtended (Handle), owns: true);
 
-#if NET
 		[SupportedOSPlatform ("ios14.1")]
 		[SupportedOSPlatform ("tvos14.2")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (14, 1)]
-		[TV (14, 2)]
-		[MacCatalyst (14, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern IntPtr CGColorSpaceCreateExtendedLinearized (/* CGColorSpaceRef */ IntPtr space);
 
-#if NET
 		[SupportedOSPlatform ("ios14.1")]
 		[SupportedOSPlatform ("tvos14.2")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (14, 1)]
-		[TV (14, 2)]
-		[MacCatalyst (14, 0)]
-#endif
 		public CGColorSpace? CreateExtendedLinearized () => Runtime.GetINativeObject<CGColorSpace> (CGColorSpaceCreateExtendedLinearized (Handle), owns: true);
 
-#if NET
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[iOS (16, 0)]
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[MacCatalyst (16, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern IntPtr CGColorSpaceCreateCopyWithStandardRange (/* CGColorSpaceRef */ IntPtr s);
 
-#if NET
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-#else
-		[iOS (16, 0)]
-		[TV (16, 0)]
-		[Mac (13, 0)]
-		[MacCatalyst (16, 0)]
-#endif
 		public CGColorSpace? CreateCopyWithStandardRange () => Runtime.GetINativeObject<CGColorSpace> (CGColorSpaceCreateCopyWithStandardRange (Handle), owns: true);
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (15, 0)]
-		[TV (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern byte CGColorSpaceIsHLGBased (/* CGColorSpace */ IntPtr space);
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (15, 0)]
-		[TV (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		public bool IsHlgBased => CGColorSpaceIsHLGBased (Handle) != 0;
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (15, 0)]
-		[TV (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern byte CGColorSpaceIsPQBased (/* CGColorSpace */ IntPtr space);
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (15, 0)]
-		[TV (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		public bool IsPQBased => CGColorSpaceIsPQBased (Handle) != 0;
 
-#if NET
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
-#else
-		[Mac (15, 0)]
-		[iOS (18, 0)]
-		[TV (18, 0)]
-		[MacCatalyst (18, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGColorSpaceRef */ IntPtr CGColorSpaceCopyBaseColorSpace (/* CGColorSpaceRef */ IntPtr space);
 
 		/// <summary>Get the base color space, or a new color space without any image-specific metadata.</summary>
 		/// <returns>If the current color space is a pattern or an indexed color space, get the base color space. If the current color space contains image-specific metadata associated with the gain map, get a new color space without the metadata. Otherwise returns a null value.</returns>
-#if NET
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
-#else
-		[Mac (15, 0)]
-		[iOS (18, 0)]
-		[TV (18, 0)]
-		[MacCatalyst (18, 0)]
-#endif
 		public CGColorSpace? CopyBaseColorSpace ()
 		{
 			var h = CGColorSpaceCopyBaseColorSpace (Handle);

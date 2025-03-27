@@ -83,57 +83,108 @@ namespace ImageKit {
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frameRect);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		IIKCameraDeviceViewDelegate Delegate { get; set; }
 
 		[Export ("cameraDevice", ArgumentSemantic.Assign)]
 		ICCameraDevice CameraDevice { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hasDisplayModeTable")]
 		bool HasDisplayModeTable { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hasDisplayModeIcon")]
 		bool HasDisplayModeIcon { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("downloadAllControlLabel", ArgumentSemantic.Copy)]
 		string DownloadAllControlLabel { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("downloadSelectedControlLabel", ArgumentSemantic.Copy)]
 		string DownloadSelectedControlLabel { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("iconSize")]
 		nint IconSize { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("transferMode")]
 		IKCameraDeviceViewTransferMode TransferMode { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displaysDownloadsDirectoryControl")]
 		bool DisplaysDownloadsDirectoryControl { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("downloadsDirectory", ArgumentSemantic.Retain)]
 		NSUrl DownloadsDirectory { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displaysPostProcessApplicationControl")]
 		bool DisplaysPostProcessApplicationControl { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("postProcessApplication", ArgumentSemantic.Retain)]
 		NSUrl PostProcessApplication { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("canRotateSelectedItemsLeft")]
 		bool CanRotateSelectedItemsLeft { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("canRotateSelectedItemsRight")]
 		bool CanRotateSelectedItemsRight { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("canDeleteSelectedItems")]
 		bool CanDeleteSelectedItems { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("canDownloadSelectedItems")]
 		bool CanDownloadSelectedItems { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("selectedIndexes")]
 		NSIndexSet SelectedIndexes { get; }
 
@@ -155,6 +206,9 @@ namespace ImageKit {
 		[Export ("downloadAllItems:")]
 		void DownloadAllItems (NSObject sender);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("mode", ArgumentSemantic.Assign)]
 		IKCameraDeviceViewDisplayMode Mode { get; set; }
 
@@ -198,24 +252,45 @@ namespace ImageKit {
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frameRect);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		IIKDeviceBrowserViewDelegate Delegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displaysLocalCameras")]
 		bool DisplaysLocalCameras { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displaysNetworkCameras")]
 		bool DisplaysNetworkCameras { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displaysLocalScanners")]
 		bool DisplaysLocalScanners { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displaysNetworkScanners")]
 		bool DisplaysNetworkScanners { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("mode")]
 		IKDeviceBrowserViewDisplayMode Mode { get; set; }
 
@@ -243,6 +318,9 @@ namespace ImageKit {
 		[Export ("filterBrowserPanelWithStyleMask:")]
 		IKFilterBrowserPanel Create (IKFilterBrowserPanelStyleMask styleMask);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("filterName")]
 		string FilterName { get; }
 
@@ -263,31 +341,55 @@ namespace ImageKit {
 		void Finish (NSObject sender);
 
 		//Check - Do we need Notifications strings?
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification]
 		[Field ("IKFilterBrowserFilterSelectedNotification")]
 		NSString FilterSelectedNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification]
 		[Field ("IKFilterBrowserFilterDoubleClickNotification")]
 		NSString FilterDoubleClickNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification]
 		[Field ("IKFilterBrowserWillPreviewFilterNotification")]
 		NSString WillPreviewFilterNotification { get; }
 
 		//Dictionary Keys
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKFilterBrowserShowCategories")]
 		NSString ShowCategories { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKFilterBrowserShowPreview")]
 		NSString ShowPreview { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKFilterBrowserExcludeCategories")]
 		NSString ExcludeCategories { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKFilterBrowserExcludeFilters")]
 		NSString ExcludeFilters { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKFilterBrowserDefaultInputImage")]
 		NSString DefaultInputImage { get; }
 	}
@@ -300,6 +402,9 @@ namespace ImageKit {
 		[Export ("setPreviewState:")]
 		void SetPreviewState (bool showPreview);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("filterName")]
 		string FilterName { get; }
 	}
@@ -319,21 +424,39 @@ namespace ImageKit {
 		IKFilterUIView ProvideFilterUIView (NSDictionary configurationOptions, [NullAllowed] NSArray excludedKeys);
 
 		//UIConfiguration keys for NSDictionary
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKUISizeFlavor")]
 		NSString SizeFlavor { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKUISizeMini")]
 		NSString SizeMini { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKUISizeSmall")]
 		NSString SizeSmall { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKUISizeRegular")]
 		NSString SizeRegular { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKUImaxSize")]
 		NSString MaxSize { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKUIFlavorAllowFallback")]
 		NSString FlavorAllowFallback { get; }
 	}
@@ -346,9 +469,15 @@ namespace ImageKit {
 		[Export ("initWithFrame:filter:")]
 		NativeHandle Constructor (CGRect frame, CIFilter filter);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("filter")]
 		CIFilter Filter { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("objectController")]
 		NSObjectController ObjectController { get; }
 
@@ -359,42 +488,81 @@ namespace ImageKit {
 
 	[BaseType (typeof (NSObject))]
 	interface IKImageBrowserCell {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("imageBrowserView")]
 		IKImageBrowserView ImageBrowserView { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("representedItem")]
 		NSObject RepresentedItem { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("indexOfRepresentedItem")]
 		nint IndexOfRepresentedItem { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("frame")]
 		CGRect Frame { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("imageContainerFrame")]
 		CGRect ImageContainerFrame { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("imageFrame")]
 		CGRect ImageFrame { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("selectionFrame")]
 		CGRect SelectionFrame { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("titleFrame")]
 		CGRect TitleFrame { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("subtitleFrame")]
 		CGRect SubtitleFrame { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("imageAlignment")]
 		NSImageAlignment ImageAlignment { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isSelected")]
 		bool IsSelected { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("cellState")]
 		IKImageBrowserCellState CellState { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("opacity")]
 		nfloat Opacity { get; }
 
@@ -402,15 +570,27 @@ namespace ImageKit {
 		CALayer Layer (string layerType);
 
 		// layerType is one of the following
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserCellBackgroundLayer")]
 		NSString BackgroundLayer { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserCellForegroundLayer")]
 		NSString ForegroundLayer { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserCellSelectionLayer")]
 		NSString SelectionLayer { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserCellPlaceHolderLayer")]
 		NSString PlaceHolderLayer { get; }
 	}

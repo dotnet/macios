@@ -10,10 +10,15 @@ namespace AVKit {
 	/// <summary>Determines which user interface elements are visible in the AVPlayerView</summary>
 	[Native]
 	public enum AVPlayerViewControlsStyle : long {
+		/// <summary>Do not show any controls.</summary>
 		None,
+		/// <summary>Use inline controls.</summary>
 		Inline,
+		/// <summary>Use floating cnotrols.</summary>
 		Floating,
+		/// <summary>Use minimal controls.</summary>
 		Minimal,
+		/// <summary>Use the default style (Inline)</summary>
 		Default = Inline,
 	}
 #endif

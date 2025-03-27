@@ -475,7 +475,9 @@ namespace Foundation {
 		FileWriteVolumeReadOnly = 642,
 
 #if MONOMAC
+		/// <summary>To be added.</summary>
 		FileManagerUnmountUnknownError = 768,
+		/// <summary>To be added.</summary>
 		FileManagerUnmountBusyError = 769,
 #endif
 

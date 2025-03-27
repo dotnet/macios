@@ -589,7 +589,6 @@ namespace CoreGraphics {
 		NSString Smpte_240M_1995 { get; }
 	}
 
-#if NET
 	[NoiOS, NoTV, MacCatalyst (13, 1)]
 	[StrongDictionary ("CGSessionKeys")]
 	interface CGSessionProperties {
@@ -599,7 +598,6 @@ namespace CoreGraphics {
 		bool OnConsole { get; }
 		bool LoginDone { get; }
 	}
-#endif
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[Partial]

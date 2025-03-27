@@ -24,10 +24,6 @@ parameters:
     type: string
     default: '$(MaciosUploadPrefix)'
 
-  - name: testsLabels
-    type: string
-    default: ''
-
   - name: statusContext
     type: string
     default: ''

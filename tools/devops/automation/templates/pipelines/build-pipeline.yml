@@ -50,11 +50,6 @@ parameters:
   type: boolean
   default: false
 
-- name: testConfigurations
-  displayName: Test configurations to run
-  type: object
-  default: []
-
 resources:
   repositories:
   - repository: self
@@ -104,7 +99,5 @@ stages:
     forceInsertion: ${{ parameters.forceInsertion }}
     pushNugets: ${{ parameters.pushNugets }}
     pushNugetsToMaestro: ${{ parameters.pushNugetsToMaestro }}
-    ${{ if ne(length(parameters.testConfigurations), 0)}}:
-      testConfigurations: ${{ parameters.testConfigurations }}
     azureStorage: ${{ variables['azureStorage'] }}
     azureContainer: ${{ variables['azureContainer'] }}

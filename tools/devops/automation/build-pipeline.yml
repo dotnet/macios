@@ -36,11 +36,6 @@ parameters:
     displayName: 'Push Nugets (Maestro)'
     default: true
 
-  - name: testConfigurations
-    displayName: Test configurations to run
-    type: object
-    default: []
-
 resources:
   repositories:
     - repository: self
@@ -138,5 +133,3 @@ extends:
           forceInsertion: ${{ parameters.forceInsertion }}
           pushNugets: ${{ parameters.pushNugets }}
           pushNugetsToMaestro: ${{ parameters.pushNugetsToMaestro }}
-          ${{ if ne(length(parameters.testConfigurations), 0)}}:
-            testConfigurations: ${{ parameters.testConfigurations }}

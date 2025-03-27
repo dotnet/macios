@@ -27,11 +27,6 @@ parameters:
   type: boolean
   default: false 
 
-- name: testConfigurations
-  displayName: Test configurations to run
-  type: object
-  default: []
-
 resources:
   repositories:
   - repository: self
@@ -131,5 +126,3 @@ extends:
         forceInsertion: ${{ parameters.forceInsertion }}
         pushNugets: false
         pushNugetsToMaestro: false
-        ${{ if ne(length(parameters.testConfigurations), 0)}}:
-          testConfigurations: ${{ parameters.testConfigurations }}

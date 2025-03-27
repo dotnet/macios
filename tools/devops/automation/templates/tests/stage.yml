@@ -49,9 +49,6 @@ parameters:
   type: boolean
   default: true
 
-- name: testConfigurations
-  type: object
-
 - name: isPR
   type: boolean
 

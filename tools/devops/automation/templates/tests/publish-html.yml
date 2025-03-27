@@ -20,9 +20,6 @@ parameters:
 - name: vsdropsPrefix
   type: string
 
-- name: testConfigurations
-  type: object
-
 - name: isPR
   type: boolean
 

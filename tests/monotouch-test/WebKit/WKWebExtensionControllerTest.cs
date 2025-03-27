@@ -21,6 +21,8 @@ namespace MonoTouchFixtures.WebKit {
 		[Test]
 		public void AllExtensionDataTypes ()
 		{
+			TestRuntime.AssertXcodeVersion (16, 3);
+
 			var weak = WKWebExtensionController.WeakAllExtensionDataTypes;
 			var strong = WKWebExtensionController.AllExtensionDataTypes;
 			var strongBitCount = BitOperations.PopCount (unchecked((ulong) strong));
@@ -31,6 +33,8 @@ namespace MonoTouchFixtures.WebKit {
 		[Test]
 		public void DataRecords ()
 		{
+			TestRuntime.AssertXcodeVersion (16, 3);
+
 			using var obj = new WKWebExtensionController ();
 			var evt = new ManualResetEvent (false);
 			WKWebExtensionDataRecord? [] records = null;

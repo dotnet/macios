@@ -833,7 +833,7 @@ namespace Introspection {
 			return base.CheckResponse (value, actualType, method, ref name);
 		}
 
-		protected override bool CheckStaticResponse (bool value, Type actualType, Type declaredType, ref string name)
+		protected override bool CheckStaticResponse (bool value, Type actualType, Type declaredType, MethodBase method, ref string name)
 		{
 			switch (name) {
 			// new API in iOS9 beta 5 but is does not respond when queried - https://bugzilla.xamarin.com/show_bug.cgi?id=33431
@@ -876,7 +876,7 @@ namespace Introspection {
 				}
 				break;
 			}
-			return base.CheckStaticResponse (value, actualType, declaredType, ref name);
+			return base.CheckStaticResponse (value, actualType, declaredType, method, ref name);
 		}
 
 		static List<NSObject> do_not_dispose = new List<NSObject> ();

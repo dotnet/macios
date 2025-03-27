@@ -236,6 +236,20 @@ namespace GeneratorTests {
 
 		[Test]
 		[TestCase (Profile.iOS)]
+		public void BI1077 (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = new BGenTool ();
+			bgen.Profile = profile;
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "bi1077.cs")));
+			bgen.AssertExecuteError ("build");
+			bgen.AssertError (1077, "Async method System.Void A(BI1077.ADelegate) with more than one result parameter in the callback by neither ResultTypeName or ResultType");
+			bgen.AssertError (1077, "Async method System.Void B(BI1077.BDelegate) with more than one result parameter in the callback by neither ResultTypeName or ResultType");
+			bgen.AssertErrorCount (2);
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
 		public void BI1112_Bug37527_WrongProperty (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());

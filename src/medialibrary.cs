@@ -135,9 +135,15 @@ namespace MediaLibrary {
 		[Field ("MLiTunesiTunesUPlaylistTypeIdentifier")]
 		NSString ITunesiTunesUPlaylistTypeIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLPhotosRootGroupTypeIdentifier")]
 		NSString PhotosRootGroupTypeIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLPhotosSharedGroupTypeIdentifier")]
 		NSString PhotosSharedGroupTypeIdentifier { get; }
 
@@ -159,9 +165,15 @@ namespace MediaLibrary {
 		[Field ("MLPhotosFolderTypeIdentifier")]
 		NSString PhotosFolderTypeIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLPhotosSmartAlbumTypeIdentifier")]
 		NSString PhotosSmartAlbumTypeIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLPhotosPublishedAlbumTypeIdentifier")]
 		NSString PhotosPublishedAlbumTypeIdentifier { get; }
 
@@ -200,6 +212,9 @@ namespace MediaLibrary {
 		[Field ("MLPhotosAllYearsGroupTypeIdentifier")]
 		NSString PhotosAllYearsGroupTypeIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 15)]
 		[Field ("MLPhotosYearGroupTypeIdentifier")]
 		NSString PhotosYearGroupTypeIdentifier { get; }
@@ -216,6 +231,9 @@ namespace MediaLibrary {
 		[Field ("MLPhotosMyPhotoStreamTypeIdentifier")]
 		NSString PhotosMyPhotoStreamTypeIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLPhotosSharedPhotoStreamTypeIdentifier")]
 		NSString PhotosSharedPhotoStreamTypeIdentifier { get; }
 
@@ -255,12 +273,21 @@ namespace MediaLibrary {
 		[Field ("MLPhotosPanoramasGroupTypeIdentifier")]
 		NSString PhotosPanoramasGroupTypeIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLPhotosVideosGroupTypeIdentifier")]
 		NSString PhotosVideosGroupTypeIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLPhotosSloMoGroupTypeIdentifier")]
 		NSString PhotosSloMoGroupTypeIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLPhotosTimelapseGroupTypeIdentifier")]
 		NSString PhotosTimelapseGroupTypeIdentifier { get; }
 
@@ -270,6 +297,9 @@ namespace MediaLibrary {
 		[Field ("MLPhotosBurstGroupTypeIdentifier")]
 		NSString PhotosBurstGroupTypeIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLPhotosScreenshotGroupTypeIdentifier")]
 		NSString PhotosScreenshotGroupTypeIdentifier { get; }
 
@@ -714,27 +744,51 @@ namespace MediaLibrary {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSDictionary<NSString, NSObject> options);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("mediaSources", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, MLMediaSource> MediaSources { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaLoadSourceTypesKey")]
 		NSString MediaLoadSourceTypesKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaLoadIncludeSourcesKey")]
 		NSString MediaLoadIncludeSourcesKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaLoadExcludeSourcesKey")]
 		NSString MediaLoadExcludeSourcesKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaLoadFoldersKey")]
 		NSString MediaLoadFoldersKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaLoadAppleLoops")]
 		NSString MediaLoadAppleLoops { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaLoadMoviesFolder")]
 		NSString MediaLoadMoviesFolder { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaLoadAppFoldersKey")]
 		NSString MediaLoadAppFoldersKey { get; }
 	}
@@ -743,15 +797,27 @@ namespace MediaLibrary {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MLMediaSource {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("mediaLibrary", ArgumentSemantic.Assign)]
 		MLMediaLibrary MediaLibrary { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("mediaSourceIdentifier")]
 		NSString MediaSourceIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("attributes", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSObject> Attributes { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("rootMediaGroup", ArgumentSemantic.Retain)]
 		MLMediaGroup RootMediaGroup { get; }
 
@@ -769,39 +835,75 @@ namespace MediaLibrary {
 		[Export ("mediaObjectsForIdentifiers:")]
 		NSDictionary<NSString, MLMediaObject> MediaObjectsForIdentifiers (NSString [] mediaObjectIdentifiers);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaSourcePhotosIdentifier")]
 		NSString MediaSourcePhotosIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaSourceiPhotoIdentifier")]
 		NSString MediaSourceiPhotoIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaSourceiTunesIdentifier")]
 		NSString MediaSourceiTunesIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaSourceApertureIdentifier")]
 		NSString MediaSourceApertureIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaSourceiMovieIdentifier")]
 		NSString MediaSourceiMovieIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaSourceFinalCutIdentifier")]
 		NSString MediaSourceFinalCutIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaSourceGarageBandIdentifier")]
 		NSString MediaSourceGarageBandIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaSourceLogicIdentifier")]
 		NSString MediaSourceLogicIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaSourcePhotoBoothIdentifier")]
 		NSString MediaSourcePhotoBoothIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaSourceCustomFoldersIdentifier")]
 		NSString MediaSourceCustomFoldersIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaSourceMoviesFolderIdentifier")]
 		NSString MediaSourceMoviesFolderIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaSourceAppDefinedFoldersIdentifier")]
 		NSString MediaSourceAppDefinedFoldersIdentifier { get; }
 	}
@@ -810,39 +912,75 @@ namespace MediaLibrary {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MLMediaGroup {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("mediaLibrary", ArgumentSemantic.Assign)]
 		MLMediaLibrary MediaLibrary { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("parent", ArgumentSemantic.Assign)]
 		MLMediaGroup Parent { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("mediaSourceIdentifier")]
 		NSString MediaSourceIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("name")]
 		string Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("identifier")]
 		NSString Identifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("typeIdentifier")]
 		NSString TypeIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("attributes", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSObject> Attributes { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("childGroups", ArgumentSemantic.Copy)]
 		MLMediaGroup [] ChildGroups { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("URL", ArgumentSemantic.Copy)]
 		NSUrl Url { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("modificationDate", ArgumentSemantic.Copy)]
 		NSDate ModificationDate { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("iconImage", ArgumentSemantic.Copy)]
 		NSImage IconImage { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("mediaObjects", ArgumentSemantic.Copy)]
 		MLMediaObject [] MediaObjects { get; }
 	}
@@ -851,81 +989,159 @@ namespace MediaLibrary {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MLMediaObject {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("mediaLibrary", ArgumentSemantic.Assign)]
 		MLMediaLibrary MediaLibrary { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("identifier")]
 		NSString Identifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("mediaSourceIdentifier")]
 		NSString MediaSourceIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("attributes", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSObject> Attributes { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("mediaType", ArgumentSemantic.Assign)]
 		MLMediaType MediaType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("contentType")]
 		string ContentType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("name")]
 		string Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("URL", ArgumentSemantic.Copy)]
 		NSUrl Url { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("originalURL", ArgumentSemantic.Copy)]
 		NSUrl OriginalUrl { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fileSize")]
 		nuint FileSize { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("modificationDate", ArgumentSemantic.Copy)]
 		NSDate ModificationDate { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("thumbnailURL", ArgumentSemantic.Copy)]
 		NSUrl ThumbnailUrl { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("artworkImage", ArgumentSemantic.Copy)]
 		NSImage ArtworkImage { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaObjectDurationKey")]
 		NSString MediaObjectDurationKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaObjectArtistKey")]
 		NSString MediaObjectArtistKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaObjectAlbumKey")]
 		NSString MediaObjectAlbumKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaObjectGenreKey")]
 		NSString MediaObjectGenreKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaObjectKindKey")]
 		NSString MediaObjectKindKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaObjectTrackNumberKey")]
 		NSString MediaObjectTrackNumberKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaObjectBitRateKey")]
 		NSString MediaObjectBitRateKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaObjectSampleRateKey")]
 		NSString MediaObjectSampleRateKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaObjectChannelCountKey")]
 		NSString MediaObjectChannelCountKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaObjectResolutionStringKey")]
 		NSString MediaObjectResolutionStringKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaObjectCommentsKey")]
 		NSString MediaObjectCommentsKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaObjectKeywordsKey")]
 		NSString MediaObjectKeywordsKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("MLMediaObjectProtectedKey")]
 		NSString MediaObjectProtectedKey { get; }
 	}

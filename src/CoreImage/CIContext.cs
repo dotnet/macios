@@ -30,9 +30,7 @@ using Foundation;
 using CoreGraphics;
 using CoreFoundation;
 using ObjCRuntime;
-#if !MONOMAC
 using Metal;
-#endif
 #if HAS_OPENGLES
 using OpenGLES;
 #endif
@@ -40,12 +38,10 @@ using OpenGLES;
 #nullable enable
 
 namespace CoreImage {
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CIContextOptions : DictionaryContainer {
 
 		public CIContextOptions ()
@@ -105,7 +101,6 @@ namespace CoreImage {
 			}
 		}
 
-#if NET
 		/// <summary>Gets or sets whether to request low priority from the GPU.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -113,7 +108,6 @@ namespace CoreImage {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public bool? PriorityRequestLow {
 			get {
 				return GetBoolValue (CIContext.PriorityRequestLow);
@@ -136,7 +130,6 @@ namespace CoreImage {
 			}
 		}
 
-#if NET
 		/// <summary>If <see langword="true" />, the output should premultiply pixel values by their alpha values.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -144,7 +137,6 @@ namespace CoreImage {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public bool? OutputPremultiplied {
 			get {
 				return GetBoolValue (CIContext.OutputPremultiplied);
@@ -154,7 +146,6 @@ namespace CoreImage {
 			}
 		}
 
-#if NET
 		/// <summary>If not <see langword="null" />, <see langword="true" /> indicates that intermediate images should be cached.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -162,7 +153,6 @@ namespace CoreImage {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public bool? CacheIntermediates {
 			get {
 				return GetBoolValue (CIContext.CacheIntermediates);
@@ -172,15 +162,10 @@ namespace CoreImage {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (13, 0)]
-		[TV (13, 0)]
-#endif
 		public bool? AllowLowPower {
 			get {
 				return GetBoolValue (CIContext.AllowLowPower);
@@ -190,15 +175,10 @@ namespace CoreImage {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("tvos14.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (14, 0)]
-		[TV (14, 0)]
-#endif
 		public string? Name {
 			get {
 				return GetStringValue (CIContext.Name);
@@ -210,13 +190,10 @@ namespace CoreImage {
 	}
 
 	public partial class CIContext {
-
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public CIContext (CIContextOptions options) :
 			this (options?.Dictionary)
 		{
@@ -233,6 +210,12 @@ namespace CoreImage {
 		}
 
 #if HAS_OPENGLES
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("ios12.0")]
+		[ObsoletedOSPlatform ("tvos12.0")]
 		public static CIContext FromContext (EAGLContext eaglContext, CIContextOptions? options)
 		{
 			if (options is null)
@@ -240,6 +223,7 @@ namespace CoreImage {
 
 			return FromContext (eaglContext, options.Dictionary);
 		}
+#endif
 
 		public static CIContext FromMetalDevice (IMTLDevice device, CIContextOptions? options)
 		{
@@ -248,16 +232,11 @@ namespace CoreImage {
 
 			return FromMetalDevice (device, options.Dictionary);
 		}
-#endif
 
 #if MONOMAC
-#if NET
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.11")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 11)]
-#endif
 		public CGLayer? CreateCGLayer (CGSize size)
 		{
 			return CreateCGLayer (size, null);

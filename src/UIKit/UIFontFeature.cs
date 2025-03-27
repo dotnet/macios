@@ -29,6 +29,9 @@ namespace UIKit {
 		FontFeatureGroup fontFeature;
 		object? fontFeatureValue;
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NativeHandle INativeObject.Handle {
 			get {
 				return dictionary.Handle;
@@ -172,12 +175,22 @@ namespace UIKit {
 				fontFeatureValue = "InvalidKeyFound";
 		}
 
+		/// <summary>The FontFeatureGroup that this UIFontFeature object encapsulates.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public FontFeatureGroup FontFeature {
 			get {
 				return fontFeature;
 			}
 		}
 
+		/// <summary>The value for the FontFeature.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public object? FontFeatureValue {
 			get {
 				return fontFeatureValue;

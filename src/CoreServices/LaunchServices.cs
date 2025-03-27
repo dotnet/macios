@@ -34,21 +34,29 @@ namespace CoreServices {
 	[Flags]
 	public enum LSRoles/*Mask*/ : uint /* always 32-bit uint */
 	{
+		/// <summary>To be added.</summary>
 		None = 1,
+		/// <summary>To be added.</summary>
 		Viewer = 2,
+		/// <summary>To be added.</summary>
 		Editor = 4,
+		/// <summary>To be added.</summary>
 		Shell = 8,
+		/// <summary>To be added.</summary>
 		All = 0xffffffff,
 	}
 
 	[Flags]
 	public enum LSAcceptanceFlags : uint /* always 32-bit uint */
 	{
+		/// <summary>To be added.</summary>
 		Default = 1,
+		/// <summary>To be added.</summary>
 		AllowLoginUI = 2,
 	}
 
 	public enum LSResult {
+		/// <summary>To be added.</summary>
 		Success = 0,
 #if NET
 		[SupportedOSPlatform ("macos13.0")]
@@ -56,31 +64,57 @@ namespace CoreServices {
 		[Mac (13,0)]
 #endif
 		MalformedLocErr = -10400,
+		/// <summary>To be added.</summary>
 		AppInTrash = -10660,
+		/// <summary>To be added.</summary>
 		ExecutableIncorrectFormat = -10661,
+		/// <summary>To be added.</summary>
 		AttributeNotFound = -10662,
+		/// <summary>To be added.</summary>
 		AttributeNotSettable = -10663,
+		/// <summary>To be added.</summary>
 		IncompatibleApplicationVersion = -10664,
+		/// <summary>To be added.</summary>
 		NoRosettaEnvironment = -10665,
+		/// <summary>To be added.</summary>
 		Unknown = -10810,
+		/// <summary>To be added.</summary>
 		NotAnApplication = -10811,
+		/// <summary>To be added.</summary>
 		NotInitialized = -10812,
+		/// <summary>To be added.</summary>
 		DataUnavailable = -10813,
+		/// <summary>To be added.</summary>
 		ApplicationNotFound = -10814,
+		/// <summary>To be added.</summary>
 		UnknownType = -10815,
+		/// <summary>To be added.</summary>
 		DataTooOld = -10816,
+		/// <summary>To be added.</summary>
 		Data = -10817,
+		/// <summary>To be added.</summary>
 		LaunchInProgress = -10818,
+		/// <summary>To be added.</summary>
 		NotRegistered = -10819,
+		/// <summary>To be added.</summary>
 		AppDoesNotClaimType = -10820,
+		/// <summary>To be added.</summary>
 		AppDoesNotSupportSchemeWarning = -10821,
+		/// <summary>To be added.</summary>
 		ServerCommunication = -10822,
+		/// <summary>To be added.</summary>
 		CannotSetInfo = -10823,
+		/// <summary>To be added.</summary>
 		NoRegistrationInfo = -10824,
+		/// <summary>To be added.</summary>
 		IncompatibleSystemVersion = -10825,
+		/// <summary>To be added.</summary>
 		NoLaunchPermission = -10826,
+		/// <summary>To be added.</summary>
 		NoExecutable = -10827,
+		/// <summary>To be added.</summary>
 		NoClassicEnvironment = -10828,
+		/// <summary>To be added.</summary>
 		MultipleSessionsNotSupported = -10829,
 	}
 

@@ -80,7 +80,6 @@ stages:
     displayName: '${{ parameters.stageDisplayNamePrefix }}Simulator tests'
     testPool: $(PRBuildPool)
     statusContext: 'VSTS: simulator tests'
-    makeTarget: 'jenkins'
     vsdropsPrefix: ${{ variables.vsdropsPrefix }}
     keyringPass: $(pass--lab--mac--builder--keychain)
     gitHubToken: $(Github.Token)

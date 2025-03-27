@@ -26,10 +26,6 @@ parameters:
   type: string
   default: 'ios' # default context, since we started dealing with iOS devices.
 
-- name: makeTarget
-  type: string
-  default: 'vsts-device-tests' # target to be used to run the tests
-
 - name: uploadPrefix
   type: string
   default: '$(MaciosUploadPrefix)'
@@ -122,7 +118,7 @@ steps:
     # show environment
     env -0 | sort -z | tr '\0' '\n' || true
 
-    make -C tests ${{ parameters.makeTarget }}
+    make -C tests jenkins
 
     # We reached the end! This means we succeeded!
     set +x

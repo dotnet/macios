@@ -44,10 +44,6 @@ parameters:
 - name: xqaCertPass
   type: string
 
-- name: makeTarget
-  type: string
-  default: 'vsts-device-tests' # target to be used to run the tests
-
 - name: isPR
   type: boolean
 
@@ -265,7 +261,6 @@ steps:
     testsLabels: ${{ parameters.testsLabels }}
     vsdropsPrefix: ${{ parameters.vsdropsPrefix }}
     testPrefix: ${{ parameters.testPrefix }}
-    makeTarget: ${{ parameters.makeTarget }}
 
 # clean the bot after we use it
 - template: ../common/teardown.yml

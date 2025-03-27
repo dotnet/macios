@@ -37,10 +37,6 @@ parameters:
 - name: xqaCertPass
   type: string
 
-- name: makeTarget
-  type: string
-  default: 'vsts-device-tests' # target to be used to run the tests
-
 - name: condition
   type: boolean
   default: true
@@ -127,7 +123,6 @@ stages:
         vsdropsPrefix: ${{ parameters.vsdropsPrefix }}
         keyringPass: ${{ parameters.keyringPass }}
         testPrefix: $(TEST_PREFIX)
-        makeTarget: ${{ parameters.makeTarget }}
         gitHubToken: ${{ parameters.gitHubToken }}
         xqaCertPass: ${{ parameters.xqaCertPass }}
         XcodeChannel: ${{ parameters.XcodeChannel }}

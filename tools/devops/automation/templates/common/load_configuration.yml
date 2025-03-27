@@ -28,10 +28,6 @@ parameters:
     type: object
     default: []
 
-  - name: supportedPlatforms
-    type: object
-    default: []
-
   - name: testsLabels
     type: string
     default: ''

@@ -23,9 +23,6 @@ parameters:
 - name: testConfigurations
   type: object
 
-- name: supportedPlatforms
-  type: object
-
 - name: isPR
   type: boolean
 

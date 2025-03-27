@@ -27,9 +27,32 @@ parameters:
   type: object
   default: []
 
+# Note that this is _all_ the platforms we support (not just the enabled ones).
 - name: supportedPlatforms
   type: object
-  default: []
+  default: [
+    {
+      platform: iOS,
+      isDotNetPlatform: true,
+    },
+    {
+      platform: macOS,
+      isDotNetPlatform: true,
+    },
+    {
+      platform: tvOS,
+      isDotNetPlatform: true,
+    },
+    {
+      platform: MacCatalyst,
+      isDotNetPlatform: true,
+    },
+    {
+      # when running platform-specific test runs, we also need a special test run that executes tests that only runs when multiple platforms are enabled
+      platform: Multiple,
+      isDotNetPlatform: true,
+    }
+  ]
 
 - name: testsLabels
   type: string

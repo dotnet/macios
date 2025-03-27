@@ -27,8 +27,13 @@ namespace SecurityUI {
 		void PresentSheet (NSWindow window, [NullAllowed] Action dismissHandler);
 #endif
 
-#if !__MACOS__
+#if !__MACOS__ && !__MACCATALYST__
 		[NoMac]
+		// Apple seems to have gotten this wrong for Mac Catalyst: the headers say 'presentSheetInViewController:dismissHandler:'
+		// is available on Mac Catalyst, but at runtime, 'presentSheetInWindow:dismissHandler:' is. Note that
+		// 'presentSheetInWindow:dismissHandler:' is not possible on Mac Catalyst, because it uses 'NSWindow',
+		// which is not available on Mac Catalyst. So until further notice, just don't bind PresentSheet at all.
+		[NoMacCatalyst]
 		[Export ("presentSheetInViewController:dismissHandler:")]
 		void PresentSheet (UIViewController viewController, [NullAllowed] Action dismissHandler);
 #endif

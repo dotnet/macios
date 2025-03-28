@@ -178,6 +178,21 @@ This is the same as setting [TrimmerRootDescriptor](/dotnet/core/deploying/trimm
 
 An item group that contains metal assets.
 
+## MlaunchAdditionalArguments
+
+An item group that contains extra arguments to the `mlaunch` tool, which is used to launch apps on device and in the simulator.
+
+Note: this only applies when launching the app from the command line (`dotnet run` or `dotnet build -t:Run`, not when launching from the IDE).
+
+Note: the `mlaunch` tool is considered an internal tool, and behaviour may change at any time.
+
+## MlaunchEnvironmentVariables
+
+An item group that contains environment variables that will be set when the app is launched, either on device or in the simulator
+
+Note: this only applies when launching the app from the command line (`dotnet
+run` or `dotnet build -t:Run`, not when launching from the IDE).
+
 ## NativeReference
 
 An item group that contains any native references that should be linked into

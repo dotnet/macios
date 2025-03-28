@@ -40,6 +40,7 @@ class ClassEmitter : ICodeEmitter {
 	{
 
 		if (!disableDefaultCtor) {
+			classBlock.WriteDocumentation (Documentation.Class.DefaultInit (bindingContext.Changes.Name));
 			classBlock.AppendGeneratedCodeAttribute ();
 			classBlock.AppendDesignatedInitializer ();
 			classBlock.WriteRaw (
@@ -55,11 +56,13 @@ public {bindingContext.Changes.Name} () : base (NSObjectFlag.Empty)
 			classBlock.WriteLine ();
 		}
 
+		classBlock.WriteDocumentation (Documentation.Class.DefaultInitWithFlag (bindingContext.Changes.Name));
 		classBlock.AppendGeneratedCodeAttribute ();
 		classBlock.AppendEditorBrowsableAttribute (EditorBrowsableState.Advanced);
 		classBlock.WriteLine ($"protected {bindingContext.Changes.Name} (NSObjectFlag t) : base (t) {{}}");
 
 		classBlock.WriteLine ();
+		classBlock.WriteDocumentation (Documentation.Class.DefaultInitWithHandle (bindingContext.Changes.Name));
 		classBlock.AppendGeneratedCodeAttribute ();
 		classBlock.AppendEditorBrowsableAttribute (EditorBrowsableState.Advanced);
 		classBlock.WriteLine ($"protected internal {bindingContext.Changes.Name} (NativeHandle handle) : base (handle) {{}}");
@@ -219,7 +222,41 @@ $@"if (IsDirectBinding) {{
 
 	void EmitNotifications (in ImmutableArray<Property> properties, TabbedWriter<StringWriter> classBlock)
 	{
-		// to be implemented, do not throw or tests will fail.
+		if (properties.Length == 0)
+			return;
+
+		// default values
+		const string defaultNotificationCenter = "NSNotificationCenter.DefaultCenter";
+		const string defaultEventArgument = "Foundation.NSNotificationEventArgs";
+
+		// add a space just to make it nicer to read
+		classBlock.WriteLine ();
+
+		// create a nested static class with the notification helpers
+		using (var notificationClass = classBlock.CreateBlock ("public static partial class Notifications", true)) {
+			notificationClass.WriteLine ();
+			// generate two methods per notification
+			foreach (var notification in properties) {
+				var count = 12; // == "Notification".Length;
+				var name = $"Observe{notification.Name [..^count]}";
+				var notificationCenter = notification.ExportFieldData?.FieldData.NotificationCenter ?? defaultNotificationCenter;
+				var eventType = notification.ExportFieldData?.FieldData.Type ?? defaultEventArgument;
+				// use the raw writer which makes it easier to read in this case
+				notificationClass.WriteRaw (
+@$"public static NSObject {name} (EventHandler<{eventType}> handler)
+{{
+	return {notificationCenter}.AddObserver ({notification.Name}, notification => handler (null, new {eventType} (notification)));
+}}
+
+public static NSObject {name} (NSObject objectToObserve, EventHandler<{eventType}> handler)
+{{
+	return {notificationCenter}.AddObserver ({notification.Name}, notification => handler (null, new {eventType} (notification)), objectToObserve);
+}}
+
+"
+);
+			}
+		}
 	}
 
 	/// <summary>
@@ -314,6 +351,7 @@ $@"if (IsDirectBinding) {{
 				classBlock.AppendGeneratedCodeAttribute (optimizable: true);
 				classBlock.WriteLine ($"static readonly NativeHandle {ClassPtr} = Class.GetHandle (\"{registrationName}\");");
 				classBlock.WriteLine ();
+				classBlock.WriteDocumentation (Documentation.Class.ClassHandle (bindingContext.Changes.Name));
 				classBlock.WriteLine ($"public override NativeHandle ClassHandle => {ClassPtr};");
 				classBlock.WriteLine ();
 

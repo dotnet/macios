@@ -15,12 +15,15 @@ using Xamarin.Utils;
 
 namespace Xamarin.Linker.Steps {
 	public class ListExportedSymbols : BaseStep {
+#if !MMP && !MTOUCH
 		PInvokeWrapperGenerator state;
+#endif
 		bool is_product_assembly;
 #if !NET || LEGACY_TOOLS
 		bool skip_sdk_assemblies;
 #endif
 
+#if !MMP && !MTOUCH
 		PInvokeWrapperGenerator State {
 			get {
 #if NET && !LEGACY_TOOLS
@@ -37,6 +40,7 @@ namespace Xamarin.Linker.Steps {
 				return state;
 			}
 		}
+#endif
 
 #if NET && !LEGACY_TOOLS
 		protected override void EndProcess ()
@@ -68,17 +72,9 @@ namespace Xamarin.Linker.Steps {
 			}
 		}
 
-#if NET && !LEGACY_TOOLS
 		public ListExportedSymbols ()
 		{
 		}
-#else
-		internal ListExportedSymbols (PInvokeWrapperGenerator state, bool skip_sdk_assemblies = false)
-		{
-			this.state = state;
-			this.skip_sdk_assemblies = skip_sdk_assemblies;
-		}
-#endif
 
 		protected override void ProcessAssembly (AssemblyDefinition assembly)
 		{

@@ -71,6 +71,9 @@ namespace Security {
 				handle.Free ();
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public IntPtr ConnectionId { get; private set; }
 
 #if NET
@@ -129,6 +132,9 @@ namespace Security {
 			buffer = new byte [16384];
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public Stream InnerStream { get; private set; }
 
 		public override SslStatus Read (IntPtr data, ref nint dataLength)

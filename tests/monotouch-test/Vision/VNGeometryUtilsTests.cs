@@ -7,8 +7,6 @@
 // Copyright (c) Microsoft Corporation.
 //
 
-#if !__WATCHOS__
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -63,4 +61,3 @@ namespace MonoTouchFixtures.Vision {
 		}
 	}
 }
-#endif

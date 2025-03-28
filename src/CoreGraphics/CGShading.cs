@@ -36,29 +36,14 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
-
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CGShading.h
 	public class CGShading : NativeObject {
 #if !COREBUILD
-#if !NET
-		public CGShading (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal CGShading (NativeHandle handle, bool owns)
 			: base (handle, owns)
@@ -86,7 +71,10 @@ namespace CoreGraphics {
 			if (function is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (function));
 
-			return new CGShading (CGShadingCreateAxial (colorspace.GetCheckedHandle (), start, end, function.GetCheckedHandle (), extendStart.AsByte (), extendEnd.AsByte ()), true);
+			CGShading result = new CGShading (CGShadingCreateAxial (colorspace.GetCheckedHandle (), start, end, function.GetCheckedHandle (), extendStart.AsByte (), extendEnd.AsByte ()), true);
+			GC.KeepAlive (colorspace);
+			GC.KeepAlive (function);
+			return result;
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -102,8 +90,11 @@ namespace CoreGraphics {
 			if (function is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (function));
 
-			return new CGShading (CGShadingCreateRadial (colorspace.GetCheckedHandle (), start, startRadius, end, endRadius,
+			CGShading result = new CGShading (CGShadingCreateRadial (colorspace.GetCheckedHandle (), start, startRadius, end, endRadius,
 									 function.GetCheckedHandle (), extendStart.AsByte (), extendEnd.AsByte ()), true);
+			GC.KeepAlive (colorspace);
+			GC.KeepAlive (function);
+			return result;
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]

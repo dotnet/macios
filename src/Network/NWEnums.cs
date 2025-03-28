@@ -44,11 +44,17 @@ namespace Network {
 
 	[MacCatalyst (13, 1)]
 	public enum NWConnectionState {
+		/// <summary>To be added.</summary>
 		Invalid = 0,
+		/// <summary>To be added.</summary>
 		Waiting = 1,
+		/// <summary>To be added.</summary>
 		Preparing = 2,
+		/// <summary>To be added.</summary>
 		Ready = 3,
+		/// <summary>To be added.</summary>
 		Failed = 4,
+		/// <summary>To be added.</summary>
 		Cancelled = 5,
 	}
 
@@ -71,9 +77,13 @@ namespace Network {
 
 	[MacCatalyst (13, 1)]
 	public enum NWEndpointType {
+		/// <summary>To be added.</summary>
 		Invalid = 0,
+		/// <summary>To be added.</summary>
 		Address = 1,
+		/// <summary>To be added.</summary>
 		Host = 2,
+		/// <summary>To be added.</summary>
 		BonjourService = 3,
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -126,41 +136,61 @@ namespace Network {
 
 	[MacCatalyst (13, 1)]
 	public enum NWIPVersion {
+		/// <summary>To be added.</summary>
 		Any = 0,
+		/// <summary>To be added.</summary>
 		Version4 = 1,
+		/// <summary>To be added.</summary>
 		Version6 = 2,
 	}
 
 	[MacCatalyst (13, 1)]
 	public enum NWInterfaceType {
+		/// <summary>To be added.</summary>
 		Other = 0,
+		/// <summary>To be added.</summary>
 		Wifi = 1,
+		/// <summary>To be added.</summary>
 		Cellular = 2,
+		/// <summary>To be added.</summary>
 		Wired = 3,
+		/// <summary>To be added.</summary>
 		Loopback = 4,
 	}
 
 	[MacCatalyst (13, 1)]
 	public enum NWListenerState {
+		/// <summary>To be added.</summary>
 		Invalid = 0,
+		/// <summary>To be added.</summary>
 		Waiting = 1,
+		/// <summary>To be added.</summary>
 		Ready = 2,
+		/// <summary>To be added.</summary>
 		Failed = 3,
+		/// <summary>To be added.</summary>
 		Cancelled = 4,
 	}
 
 	[MacCatalyst (13, 1)]
 	public enum NWMultiPathService {
+		/// <summary>To be added.</summary>
 		Disabled = 0,
+		/// <summary>To be added.</summary>
 		Handover = 1,
+		/// <summary>To be added.</summary>
 		Interactive = 2,
+		/// <summary>To be added.</summary>
 		Aggregate = 3,
 	}
 
 	[MacCatalyst (13, 1)]
 	public enum NWParametersExpiredDnsBehavior {
+		/// <summary>To be added.</summary>
 		Default = 0,
+		/// <summary>To be added.</summary>
 		Allow = 1,
+		/// <summary>To be added.</summary>
 		Prohibit = 2,
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		Persistent = 3,
@@ -169,25 +199,39 @@ namespace Network {
 	// this maps to `nw_path_status_t` in Network/Headers/path.h (and not the enum from NetworkExtension)
 	[MacCatalyst (13, 1)]
 	public enum NWPathStatus {
+		/// <summary>To be added.</summary>
 		Invalid = 0,
+		/// <summary>To be added.</summary>
 		Satisfied = 1,
+		/// <summary>To be added.</summary>
 		Unsatisfied = 2,
+		/// <summary>To be added.</summary>
 		Satisfiable = 3,
 	}
 
 	public enum NWServiceClass {
+		/// <summary>To be added.</summary>
 		BestEffort = 0,
+		/// <summary>To be added.</summary>
 		Background = 1,
+		/// <summary>To be added.</summary>
 		InteractiveVideo = 2,
+		/// <summary>To be added.</summary>
 		InteractiveVoice = 3,
+		/// <summary>To be added.</summary>
 		ResponsiveData = 4,
+		/// <summary>To be added.</summary>
 		Signaling = 5,
 	}
 
 	public enum NWIPEcnFlag {
+		/// <summary>To be added.</summary>
 		NonEct = 0,
+		/// <summary>To be added.</summary>
 		Ect = 2,
+		/// <summary>To be added.</summary>
 		Ect1 = 1,
+		/// <summary>To be added.</summary>
 		Ce = 3,
 	}
 

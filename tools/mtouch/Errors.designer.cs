@@ -977,16 +977,6 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WatchOS projects must be extensions.
-        ///		.
-        /// </summary>
-        public static string MT0077 {
-            get {
-                return ResourceManager.GetString("MT0077", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Incremental builds are enabled with a deployment target &lt; 8.0 (currently {0}). This is not supported (the resulting application will not launch on iOS 9), so the deployment target will be set to 8.0.
         ///		.
         /// </summary>
@@ -1027,16 +1017,6 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Asm-only bitcode is not supported on watchOS. Use either --bitcode:marker or --bitcode:full.
-        ///		.
-        /// </summary>
-        public static string MT0083 {
-            get {
-                return ResourceManager.GetString("MT0083", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Bitcode is not supported in the simulator. Do not pass --bitcode when building for the simulator.
         ///		.
         /// </summary>
@@ -1063,26 +1043,6 @@ namespace Xamarin.Bundler {
         public static string MT0087 {
             get {
                 return ResourceManager.GetString("MT0087", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The GC must be in cooperative mode for watchOS apps. Please remove the --coop:false argument to mtouch.
-        ///		.
-        /// </summary>
-        public static string MT0088 {
-            get {
-                return ResourceManager.GetString("MT0088", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The option &apos;{0}&apos; cannot take the value &apos;{1}&apos; when cooperative mode is enabled for the GC.
-        ///		.
-        /// </summary>
-        public static string MT0089 {
-            get {
-                return ResourceManager.GetString("MT0089", resourceCulture);
             }
         }
         
@@ -1213,16 +1173,6 @@ namespace Xamarin.Bundler {
         public static string MT0109 {
             get {
                 return ResourceManager.GetString("MT0109", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Bitcode has been enabled because this version of Xamarin.iOS does not support building watchOS projects using LLVM without enabling bitcode.
-        ///		.
-        /// </summary>
-        public static string MT0111 {
-            get {
-                return ResourceManager.GetString("MT0111", resourceCulture);
             }
         }
         
@@ -1573,26 +1523,6 @@ namespace Xamarin.Bundler {
         public static string MT0142 {
             get {
                 return ResourceManager.GetString("MT0142", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please use device specific builds on WatchOS when building for Debug.
-        ///		.
-        /// </summary>
-        public static string MT0145 {
-            get {
-                return ResourceManager.GetString("MT0145", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ARM64_32 Debug mode requires --interpreter[=all], forcing it.
-        ///		.
-        /// </summary>
-        public static string MT0146 {
-            get {
-                return ResourceManager.GetString("MT0146", resourceCulture);
             }
         }
         
@@ -1952,16 +1882,6 @@ namespace Xamarin.Bundler {
         public static string MT2014 {
             get {
                 return ResourceManager.GetString("MT2014", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid HttpMessageHandler `{0}` for watchOS. The only valid value is NSUrlSessionHandler.
-        ///		.
-        /// </summary>
-        public static string MT2015 {
-            get {
-                return ResourceManager.GetString("MT2015", resourceCulture);
             }
         }
         

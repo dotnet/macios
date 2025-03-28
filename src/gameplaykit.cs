@@ -47,9 +47,12 @@ namespace GameplayKit {
 	[Flags]
 	[MacCatalyst (13, 1)]
 	public enum GKMeshGraphTriangulationMode : ulong {
+		/// <summary>To be added.</summary>
 		Vertices = 1 << 0,
+		/// <summary>To be added.</summary>
 		Centers = 1 << 1,
-		EdgeMidpoints = 1 << 2
+		/// <summary>To be added.</summary>
+		EdgeMidpoints = 1 << 2,
 	}
 
 	[Native]
@@ -62,7 +65,7 @@ namespace GameplayKit {
 		/// <summary>To be added.</summary>
 		Quadratic = 2,
 		/// <summary>To be added.</summary>
-		ReduceOverlap = 3
+		ReduceOverlap = 3,
 	}
 
 	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:GameplayKit.GKAgentDelegate" />.</summary>
@@ -1072,6 +1075,9 @@ namespace GameplayKit {
 		[Export ("numPoints")]
 		nuint NumPoints { get; }
 
+		/// <summary>Whether the <see cref="T:GameplayKit.GKPath" />'s last point connects to the first point.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("cyclical")]
 		bool Cyclical { [Bind ("isCyclical")] get; set; }
 
@@ -1639,6 +1645,9 @@ namespace GameplayKit {
 			get;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("seamless")]
 		bool Seamless { [Bind ("isSeamless")] get; }
 
@@ -1763,6 +1772,9 @@ namespace GameplayKit {
 		[Export ("displacement")]
 		double Displacement { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("distanceEnabled")]
 		bool DistanceEnabled { [Bind ("isDistanceEnabled")] get; set; }
 

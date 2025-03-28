@@ -47,6 +47,8 @@ namespace CoreVideo {
 								metalDevice.Handle,
 								textureAttributes.GetHandle (),
 								&handle);
+				GC.KeepAlive (metalDevice);
+				GC.KeepAlive (textureAttributes);
 			}
 			if (err == CVReturn.Success)
 				return handle;
@@ -71,6 +73,7 @@ namespace CoreVideo {
 							   metalDevice.Handle,
 							   IntPtr.Zero, /* change one day to support texture attribuets */
 							   &handle);
+				GC.KeepAlive (metalDevice);
 			}
 			if (err == 0)
 				return new CVMetalTextureCache (handle, true);
@@ -93,6 +96,8 @@ namespace CoreVideo {
 								metalDevice.Handle,
 								textureAttributes.GetHandle (),
 								&handle);
+				GC.KeepAlive (metalDevice);
+				GC.KeepAlive (textureAttributes);
 			}
 			if (creationErr == CVReturn.Success)
 				return new CVMetalTextureCache (handle, true);
@@ -122,6 +127,7 @@ namespace CoreVideo {
 					height: height,
 					planeIndex: planeIndex,
 					textureOut: &texture);
+				GC.KeepAlive (imageBuffer);
 			}
 			if (errorCode != 0)
 				return null;

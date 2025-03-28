@@ -218,10 +218,11 @@ stages:
         displayName: Add builds to default darc channel
         condition: and(succeeded(), eq('${{ parameters.pushNugetsToMaestro }}', 'true'))
 
-      - task: 1ES.PublishPipelineArtifact@1
-        displayName: 'Publish Artifact: maestro-binlogs'
-        inputs:
+      - template: ../common/publish-pipeline-artifact.yml
+        parameters:
+          use1ES: true
+          displayName: 'Publish Artifact: maestro-binlogs'
           path: $(Build.StagingDirectory)\maestro-binlogs
           artifact: ${{ parameters.uploadPrefix }}maestro-binlogs-$(System.JobAttempt)
-        condition: and(succeededOrFailed(), eq('${{ parameters.pushNugetsToMaestro }}', 'true'))
-        continueOnError: true
+          condition: and(succeededOrFailed(), eq('${{ parameters.pushNugetsToMaestro }}', 'true'))
+          continueOnError: true

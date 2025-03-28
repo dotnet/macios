@@ -119,7 +119,9 @@ namespace CoreText {
 		{
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
-			return CTFontManagerIsSupportedFont (url.Handle) != 0;
+			bool result = CTFontManagerIsSupportedFont (url.Handle) != 0;
+			GC.KeepAlive (url);
+			return result;
 		}
 #endif
 
@@ -136,6 +138,7 @@ namespace CoreText {
 				bool rv;
 				unsafe {
 					rv = CTFontManagerRegisterFontsForURL (fontUrl.Handle, scope, &error) != 0;
+					GC.KeepAlive (fontUrl);
 				}
 				if (rv)
 					return null;
@@ -207,6 +210,7 @@ namespace CoreText {
 				unsafe {
 					if (CTFontManagerRegisterFontsForURLs (arr.Handle, scope, &error_array) != 0)
 						return null;
+					GC.KeepAlive (arr);
 				}
 				return ArrayFromHandle<NSError> (error_array, releaseAfterUse: true);
 			}
@@ -269,6 +273,7 @@ namespace CoreText {
 				if (registrationHandler is null) {
 					unsafe {
 						CTFontManagerRegisterFontURLs (arr.Handle, scope, enabled.AsByte (), null);
+						GC.KeepAlive (arr);
 					}
 				} else {
 					unsafe {
@@ -299,6 +304,7 @@ namespace CoreText {
 				bool rv;
 				unsafe {
 					rv = CTFontManagerUnregisterFontsForURL (fontUrl.Handle, scope, &error) != 0;
+					GC.KeepAlive (fontUrl);
 				}
 				if (rv)
 					return null;
@@ -346,6 +352,7 @@ namespace CoreText {
 				unsafe {
 					if (CTFontManagerUnregisterFontsForURLs (arr.Handle, scope, &error_array) != 0)
 						return null;
+					GC.KeepAlive (arr);
 				}
 				return ArrayFromHandle<NSError> (error_array, releaseAfterUse: true);
 			}
@@ -378,6 +385,7 @@ namespace CoreText {
 			using (var arr = EnsureNonNullArray (fontUrls, nameof (fontUrls))) {
 				if (registrationHandler is null) {
 					CTFontManagerUnregisterFontURLs (arr.Handle, scope, null);
+					GC.KeepAlive (arr);
 				} else {
 #if NET
 					delegate* unmanaged<IntPtr, IntPtr, byte, byte> trampoline = &TrampolineRegistrationHandler;
@@ -387,6 +395,7 @@ namespace CoreText {
 					block.SetupBlockUnsafe (callback, registrationHandler);
 #endif
 					CTFontManagerUnregisterFontURLs (arr.Handle, scope, &block);
+					GC.KeepAlive (arr);
 				}
 			}
 		}
@@ -412,6 +421,7 @@ namespace CoreText {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
 			var arrayPtr = CTFontManagerCreateFontDescriptorsFromURL (url.Handle);
+			GC.KeepAlive (url);
 			if (arrayPtr == IntPtr.Zero)
 				return new CTFontDescriptor [0];
 
@@ -466,6 +476,7 @@ namespace CoreText {
 			try {
 				unsafe {
 					ret = CTFontManagerRegisterGraphicsFont (font.Handle, &h) != 0;
+					GC.KeepAlive (font);
 				}
 				if (ret)
 					error = null;
@@ -520,6 +531,7 @@ namespace CoreText {
 			try {
 				unsafe {
 					ret = CTFontManagerUnregisterGraphicsFont (font.Handle, &h) != 0;
+					GC.KeepAlive (font);
 				}
 				if (ret)
 					error = null;
@@ -598,6 +610,7 @@ namespace CoreText {
 			using (var arr = EnsureNonNullArray (fontDescriptors, nameof (fontDescriptors))) {
 				if (registrationHandler is null) {
 					CTFontManagerRegisterFontDescriptors (arr.Handle, scope, enabled.AsByte (), null);
+					GC.KeepAlive (arr);
 				} else {
 #if NET
 					delegate* unmanaged<IntPtr, IntPtr, byte, byte> trampoline = &TrampolineRegistrationHandler;
@@ -607,6 +620,7 @@ namespace CoreText {
 					block.SetupBlockUnsafe (callback, registrationHandler);
 #endif
 					CTFontManagerRegisterFontDescriptors (arr.Handle, scope, enabled.AsByte (), &block);
+					GC.KeepAlive (arr);
 				}
 			}
 		}
@@ -638,6 +652,7 @@ namespace CoreText {
 			using (var arr = EnsureNonNullArray (fontDescriptors, nameof (fontDescriptors))) {
 				if (registrationHandler is null) {
 					CTFontManagerUnregisterFontDescriptors (arr.Handle, scope, null);
+					GC.KeepAlive (arr);
 				} else {
 #if NET
 					delegate* unmanaged<IntPtr, IntPtr, byte, byte> trampoline = &TrampolineRegistrationHandler;
@@ -647,6 +662,7 @@ namespace CoreText {
 					block.SetupBlockUnsafe (callback, registrationHandler);
 #endif
 					CTFontManagerUnregisterFontDescriptors (arr.Handle, scope, &block);
+					GC.KeepAlive (arr);
 				}
 			}
 		}
@@ -690,6 +706,7 @@ namespace CoreText {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
 
 			var p = CTFontManagerCreateFontDescriptorFromData (data.Handle);
+			GC.KeepAlive (data);
 			if (p == IntPtr.Zero)
 				return null;
 			// Copy/Create rule - dont retain it inside the .ctor
@@ -723,6 +740,7 @@ namespace CoreText {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
 
 			var p = CTFontManagerCreateFontDescriptorsFromData (data.Handle);
+			GC.KeepAlive (data);
 			// Copy/Create rule - we must release the CFArrayRef
 			return ArrayFromHandle<CTFontDescriptor> (p, releaseAfterUse: true);
 		}
@@ -758,6 +776,8 @@ namespace CoreText {
 			using (var arr = EnsureNonNullArray (assetNames, nameof (assetNames))) {
 				if (registrationHandler is null) {
 					CTFontManagerRegisterFontsWithAssetNames (arr.Handle, bundle.GetHandle (), scope, enabled.AsByte (), null);
+					GC.KeepAlive (arr);
+					GC.KeepAlive (bundle);
 				} else {
 #if NET
 					delegate* unmanaged<IntPtr, IntPtr, byte, byte> trampoline = &TrampolineRegistrationHandler;
@@ -767,6 +787,8 @@ namespace CoreText {
 					block.SetupBlockUnsafe (callback, registrationHandler);
 #endif
 					CTFontManagerRegisterFontsWithAssetNames (arr.Handle, bundle.GetHandle (), scope, enabled.AsByte (), &block);
+					GC.KeepAlive (arr);
+					GC.KeepAlive (bundle);
 				}
 			}
 		}

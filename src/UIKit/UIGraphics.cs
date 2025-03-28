@@ -141,6 +141,11 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static CGRect UIGraphicsGetPDFContextBounds ();
 
+		/// <summary>Return the current bounds for the PDF page.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public static CGRect PDFContextBounds {
 			get {
 				return UIGraphicsGetPDFContextBounds ();
@@ -153,6 +158,7 @@ namespace UIKit {
 		public static void SetPDFContextURL (NSUrl url, CGRect rect)
 		{
 			UIGraphicsSetPDFContextURLForRect (url.Handle, rect);
+			GC.KeepAlive (url);
 		}
 
 		[DllImport (Constants.UIKitLibrary)]
@@ -161,15 +167,18 @@ namespace UIKit {
 
 		public static void BeginPDFContext (string file, CGRect bounds, NSDictionary documentInfo)
 		{
-			using (var nsstr = new NSString (file))
+			using (var nsstr = new NSString (file)) {
 				UIGraphicsBeginPDFContextToFile (nsstr.Handle, bounds, documentInfo is null ? IntPtr.Zero : documentInfo.Handle);
+				GC.KeepAlive (documentInfo);
+			}
 		}
 
 		public static void BeginPDFContext (string file, CGRect bounds, CGPDFInfo documentInfo)
 		{
 			using (var dict = documentInfo is null ? null : documentInfo.ToDictionary ())
-			using (var nsstr = new NSString (file))
+			using (var nsstr = new NSString (file)) {
 				UIGraphicsBeginPDFContextToFile (nsstr.Handle, bounds, dict is null ? IntPtr.Zero : dict.Handle);
+			}
 		}
 
 		[DllImport (Constants.UIKitLibrary)]
@@ -179,6 +188,8 @@ namespace UIKit {
 		public static void BeginPDFContext (NSMutableData data, CGRect bounds, NSDictionary documentInfo)
 		{
 			UIGraphicsBeginPDFContextToData (data.Handle, bounds, documentInfo is null ? IntPtr.Zero : documentInfo.Handle);
+			GC.KeepAlive (data);
+			GC.KeepAlive (documentInfo);
 		}
 
 		[DllImport (Constants.UIKitLibrary)]
@@ -195,6 +206,7 @@ namespace UIKit {
 		public static void BeginPDFPage (CGRect bounds, NSDictionary pageInfo)
 		{
 			UIGraphicsBeginPDFPageWithInfo (bounds, pageInfo.Handle);
+			GC.KeepAlive (pageInfo);
 		}
 
 		[DllImport (Constants.UIKitLibrary)]
@@ -243,6 +255,7 @@ namespace UIKit {
 		public static void PushContext (CGContext ctx)
 		{
 			UIGraphicsPushContext (ctx.Handle);
+			GC.KeepAlive (ctx);
 		}
 
 		public static void PopContext ()

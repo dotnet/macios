@@ -88,7 +88,6 @@ namespace Xamarin.MacDev.Tasks {
 			switch (Platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 			case ApplePlatform.MacCatalyst:
 				return Sdks.XamIOS.SdkDir;
 			case ApplePlatform.MacOSX:
@@ -103,7 +102,6 @@ namespace Xamarin.MacDev.Tasks {
 			switch (Platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 			case ApplePlatform.MacCatalyst:
 				return AppleSdkVersion.UseDefault;
 			case ApplePlatform.MacOSX:
@@ -119,7 +117,6 @@ namespace Xamarin.MacDev.Tasks {
 			switch (Platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
-			case ApplePlatform.WatchOS:
 			case ApplePlatform.MacCatalyst:
 				return "MD_MTOUCH_SDK_ROOT";
 			case ApplePlatform.MacOSX:

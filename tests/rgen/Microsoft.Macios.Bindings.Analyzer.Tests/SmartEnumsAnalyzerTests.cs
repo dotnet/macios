@@ -21,7 +21,7 @@ using ObjCBindings;
 
 namespace AVFoundation;
 
-[BindingType]
+[BindingType<SmartEnum>]
 public enum AVCaptureSystemPressureExampleLevel {
 	[Field<EnumValue> (""AVCaptureSystemPressureLevelNominal"")]
 	Nominal,
@@ -58,7 +58,7 @@ using ObjCBindings;
 
 namespace AVFoundation;
 
-[BindingType]
+[BindingType<SmartEnum>]
 public enum AVCaptureSystemPressureExampleLevel {
 	[Field<EnumValue> (""       "")]
 	Shutdown,
@@ -71,7 +71,7 @@ using ObjCBindings;
 
 namespace AVFoundation;
 
-[BindingType]
+[BindingType<SmartEnum>]
 public enum AVCaptureSystemPressureExampleLevel {
 	// empty field, this should be an error
 	[Field<EnumValue> (""Weird\""Name"")]
@@ -85,7 +85,7 @@ using ObjCBindings;
 
 namespace AVFoundation;
 
-[BindingType]
+[BindingType<SmartEnum>]
 public enum AVCaptureSystemPressureExampleLevel {
 	// empty field, this should be an error
 	[Field<EnumValue> (""class"")]
@@ -99,7 +99,7 @@ using ObjCBindings;
 
 namespace AVFoundation;
 
-[BindingType]
+[BindingType<SmartEnum>]
 public enum AVCaptureSystemPressureExampleLevel {
 	// empty field, this should be an error
 	[Field<EnumValue> (""42Values"")]
@@ -113,7 +113,7 @@ using ObjCBindings;
 
 namespace AVFoundation;
 
-[BindingType]
+[BindingType<SmartEnum>]
 public enum AVCaptureSystemPressureExampleLevel {
 	// empty field, this should be an error
 	[Field<EnumValue> (""The\nValues"")]
@@ -145,7 +145,7 @@ using ObjCBindings;
 
 namespace AVFoundation;
 
-[BindingType]
+[BindingType<SmartEnum>]
 public enum AVCaptureSystemPressureExampleLevel {
 	[Field<EnumValue> (""AVCaptureSystemPressureLevelNominal"")]
 	Nominal,
@@ -171,7 +171,7 @@ using ObjCBindings;
 
 namespace AVFoundation;
 
-[BindingType]
+[BindingType<SmartEnum>]
 public enum AVCaptureSystemPressureExampleLevel {
 	[Field<EnumValue> (""AVCaptureSystemPressureLevelNominal"")]
 	Nominal,
@@ -215,7 +215,7 @@ using ObjCBindings;
 
 namespace CustomLibrary;
 
-[BindingType]
+[BindingType<SmartEnum>]
 public enum CustomLibraryEnum {
 	[Field<EnumValue> (""None"", ""/path/to/customlibrary.framework"")]
 	None,
@@ -236,7 +236,7 @@ using ObjCBindings;
 
 namespace CustomLibrary;
 
-[BindingType]
+[BindingType<SmartEnum>]
 public enum CustomLibraryEnum {
 	[Field<EnumValue> (""None"", ""/path/to/customlibrary.framework"")]
 	None,
@@ -257,7 +257,7 @@ using ObjCBindings;
 
 namespace CustomLibrary;
 
-[BindingType]
+[BindingType<SmartEnum>]
 public enum CustomLibraryEnum {
 	[Field<EnumValue> (""None"", ""/path/to/customlibrary.framework"")]
 	None,
@@ -298,7 +298,7 @@ using ObjCBindings;
 
 namespace CustomLibrary;
 
-[BindingType]
+[BindingType<SmartEnum>]
 public enum CustomLibraryEnum {
 	None,
 	Medium,
@@ -324,7 +324,7 @@ using ObjCBindings;
 
 namespace AVFoundation;
 
-[BindingType]
+[BindingType<SmartEnum>]
 public enum AVCaptureSystemPressureExampleLevel {
 	[Field<EnumValue> (""AVCaptureSystemPressureLevelNominal"")]
 	Nominal,
@@ -364,7 +364,7 @@ using ObjCBindings;
 
 namespace AVFoundation;
 
-[BindingType]
+[BindingType<SmartEnum>]
 public enum AVCaptureSystemPressureExampleLevel {
 	// we are using the wrong enum value here, this should be an error
 	[Field<StringComparison> (""TheField"")]

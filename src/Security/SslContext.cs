@@ -82,6 +82,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static /* OSStatus */ SslStatus SSLSetProtocolVersionMax (/* SSLContextRef */ IntPtr context, SslProtocol maxVersion);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SslProtocol MaxProtocol {
 			get {
 				SslProtocol value;
@@ -101,6 +104,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static /* OSStatus */ SslStatus SSLSetProtocolVersionMin (/* SSLContextRef */ IntPtr context, SslProtocol minVersion);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SslProtocol MinProtocol {
 			get {
 				SslProtocol value;
@@ -117,6 +123,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe extern static /* OSStatus */ SslStatus SSLGetNegotiatedProtocolVersion (/* SSLContextRef */ IntPtr context, SslProtocol* protocol);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SslProtocol NegotiatedProtocol {
 			get {
 				SslProtocol value;
@@ -143,6 +152,9 @@ namespace Security {
 		extern static /* OSStatus */ SslStatus SSLSetIOFuncs (/* SSLContextRef */ IntPtr context, /* SSLReadFunc */ SslReadFunc? readFunc, /* SSLWriteFunc */ SslWriteFunc? writeFunc);
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SslConnection? Connection {
 			get {
 				if (connection is null)
@@ -214,6 +226,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe extern static /* OSStatus */ SslStatus SSLGetSessionState (/* SSLContextRef */ IntPtr context, SslSessionState* state);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SslSessionState SessionState {
 			get {
 				var value = SslSessionState.Invalid;
@@ -230,6 +245,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern unsafe static /* OSStatus */ SslStatus SSLSetPeerID (/* SSLContextRef */ IntPtr context, /* const void** */ byte* peerID, /* size_t */ nint peerIDLen);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public unsafe byte []? PeerId {
 			get {
 				nint length;
@@ -254,6 +272,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern unsafe static /* OSStatus */ SslStatus SSLGetBufferedReadSize (/* SSLContextRef */ IntPtr context, /* size_t* */ nint* bufSize);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint BufferedReadSize {
 			get {
 				nint value;
@@ -383,6 +404,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern unsafe static /* OSStatus */ SslStatus SSLGetDatagramWriteSize (/* SSLContextRef */ IntPtr context, /* size_t* */ nint* bufSize);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint DatagramWriteSize {
 			get {
 				nint value;
@@ -399,6 +423,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern unsafe static /* OSStatus */ SslStatus SSLSetMaxDatagramRecordSize (/* SSLContextRef */ IntPtr context, /* size_t */ nint maxSize);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint MaxDatagramRecordSize {
 			get {
 				nint value;
@@ -432,6 +459,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern unsafe static /* OSStatus */ SslStatus SSLSetPeerDomainName (/* SSLContextRef */ IntPtr context, /* char* */ byte* peerName, /* size_t */ nint peerNameLen);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string PeerDomainName {
 			get {
 				nint length;
@@ -510,6 +540,8 @@ namespace Security {
 
 		NSArray Bundle (SecIdentity? identity, IEnumerable<SecCertificate>? certificates)
 		{
+			// The analyzer cannot deal with arrays, we manually keep alive the whole array below
+#pragma warning disable RBI0014
 			int i = identity is null ? 0 : 1;
 			int n = certificates is null ? 0 : certificates.Count ();
 			var ptrs = new NativeHandle [n + i];
@@ -519,13 +551,18 @@ namespace Security {
 				foreach (var certificate in certificates)
 					ptrs [i++] = certificate.Handle;
 			}
-			return NSArray.FromIntPtrs (ptrs);
+			NSArray result = NSArray.FromIntPtrs (ptrs);
+			GC.KeepAlive (identity);
+			GC.KeepAlive (certificates);
+			return result;
+#pragma warning restore RBI0014
 		}
 
 		public SslStatus SetCertificate (SecIdentity identify, IEnumerable<SecCertificate> certificates)
 		{
 			using (var array = Bundle (identify, certificates)) {
 				result = SSLSetCertificate (Handle, array.Handle);
+				GC.KeepAlive (array);
 				return result;
 			}
 		}
@@ -533,6 +570,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern unsafe static /* OSStatus */ SslStatus SSLGetClientCertificateState (/* SSLContextRef */ IntPtr context, SslClientCertificateState* clientState);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SslClientCertificateState ClientCertificateState {
 			get {
 				SslClientCertificateState value;
@@ -574,6 +614,7 @@ namespace Security {
 		{
 			using (var array = Bundle (identify, certificates)) {
 				result = SSLSetEncryptionCertificate (Handle, array.Handle);
+				GC.KeepAlive (array);
 				return result;
 			}
 		}
@@ -581,6 +622,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern unsafe static /* OSStatus */ SslStatus SSLCopyPeerTrust (/* SSLContextRef */ IntPtr context, /* SecTrustRef */ IntPtr* trust);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SecTrust? PeerTrust {
 			get {
 				IntPtr value;
@@ -649,7 +693,9 @@ namespace Security {
 			if (config is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (config));
 
-			return SSLSetSessionConfig (Handle, config.Handle);
+			int result = SSLSetSessionConfig (Handle, config.Handle);
+			GC.KeepAlive (config);
+			return result;
 		}
 
 #if NET
@@ -818,7 +864,9 @@ namespace Security {
 		{
 			if (response is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (response));
-			return SSLSetOCSPResponse (Handle, response.Handle);
+			int result = SSLSetOCSPResponse (Handle, response.Handle);
+			GC.KeepAlive (response);
+			return result;
 		}
 
 #if NET

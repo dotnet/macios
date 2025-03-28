@@ -225,6 +225,8 @@ namespace OSLog {
 	[DisableDefaultCtor] // init was added only on macos 12
 	interface OSLogStore {
 
+		[Deprecated (PlatformName.MacOSX, 12, 0, "Use one of the factory methods instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 12, 0, "Use one of the factory methods instead.")]
 		[NoTV, NoiOS, MacCatalyst (15, 0)]
 		[Export ("init")]
 		NativeHandle Constructor ();

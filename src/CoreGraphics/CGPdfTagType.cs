@@ -15,15 +15,10 @@ using ObjCRuntime;
 
 namespace CoreGraphics {
 
-#if NET
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios13.0")]
 	[SupportedOSPlatform ("tvos13.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[iOS (13, 0)]
-	[TV (13, 0)]
-#endif
 	public static class CGPdfTagType_Extensions {
 
 		[DllImport (Constants.CoreGraphicsLibrary)]

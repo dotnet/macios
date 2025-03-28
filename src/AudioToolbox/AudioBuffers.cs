@@ -35,18 +35,12 @@ using Foundation;
 using ObjCRuntime;
 using System.Runtime.Versioning;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace AudioToolbox {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CoreAudio.framework - CoreAudioTypes.h
 	public class AudioBuffers : IDisposable, INativeObject {
 		IntPtr address;

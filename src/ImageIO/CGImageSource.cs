@@ -204,6 +204,8 @@ namespace ImageIO {
 
 			using (var dict = options?.ToDictionary ()) {
 				var result = CGImageSourceCreateWithURL (url.Handle, dict.GetHandle ());
+				GC.KeepAlive (url);
+				GC.KeepAlive (dict);
 				return result == IntPtr.Zero ? null : new CGImageSource (result, true);
 			}
 		}
@@ -224,6 +226,7 @@ namespace ImageIO {
 
 			using (var dict = options?.ToDictionary ()) {
 				var result = CGImageSourceCreateWithDataProvider (provider.Handle, dict.GetHandle ());
+				GC.KeepAlive (provider);
 				return result == IntPtr.Zero ? null : new CGImageSource (result, true);
 			}
 		}
@@ -244,6 +247,7 @@ namespace ImageIO {
 
 			using (var dict = options?.ToDictionary ()) {
 				var result = CGImageSourceCreateWithData (data.Handle, dict.GetHandle ());
+				GC.KeepAlive (data);
 				return result == IntPtr.Zero ? null : new CGImageSource (result, true);
 			}
 		}
@@ -281,6 +285,7 @@ namespace ImageIO {
 		public NSDictionary? CopyProperties (NSDictionary? dict)
 		{
 			var result = CGImageSourceCopyProperties (Handle, dict.GetHandle ());
+			GC.KeepAlive (dict);
 			return Runtime.GetNSObject<NSDictionary> (result, true);
 		}
 
@@ -302,6 +307,7 @@ namespace ImageIO {
 		public NSDictionary? CopyProperties (NSDictionary? dict, int imageIndex)
 		{
 			var result = CGImageSourceCopyPropertiesAtIndex (Handle, imageIndex, dict.GetHandle ());
+			GC.KeepAlive (dict);
 			return Runtime.GetNSObject<NSDictionary> (result, true);
 		}
 
@@ -373,6 +379,7 @@ namespace ImageIO {
 			if (data is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
 			CGImageSourceUpdateData (Handle, data.Handle, final ? (byte) 1 : (byte) 0);
+			GC.KeepAlive (data);
 		}
 
 		[DllImport (Constants.ImageIOLibrary)]
@@ -385,6 +392,7 @@ namespace ImageIO {
 			if (provider is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (provider));
 			CGImageSourceUpdateDataProvider (Handle, provider.Handle, final ? (byte) 1 : (byte) 0);
+			GC.KeepAlive (provider);
 		}
 
 		// note: CGImageSourceStatus is always an int (4 bytes) so it's ok to use in the pinvoke declaration

@@ -7,8 +7,6 @@
 // Copyright 2013 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
 using Foundation;
 using CoreAnimation;
@@ -37,5 +35,3 @@ namespace MonoTouchFixtures.CoreAnimation {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

@@ -18,10 +18,6 @@ using System.Runtime.Versioning;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace AudioToolbox {
 
 	// untyped enum (used as an OSStatus in the API) -> MusicPlayer.h
@@ -49,7 +45,7 @@ namespace AudioToolbox {
 		/// <summary>To be added.</summary>
 		CannotDoInCurrentContext = -10863,
 		/// <summary>To be added.</summary>
-		NoTrackDestination = -66720
+		NoTrackDestination = -66720,
 	}
 
 	// typedef UInt32 -> MusicPlayer.h
@@ -73,7 +69,7 @@ namespace AudioToolbox {
 		/// <summary>To be added.</summary>
 		Parameter = 9,
 		/// <summary>To be added.</summary>
-		AUPreset = 10
+		AUPreset = 10,
 	}
 
 	// typedef UInt32 -> MusicPlayer.h
@@ -82,7 +78,7 @@ namespace AudioToolbox {
 		/// <summary>Indicates that the input tracks will be preserved in the output.</summary>
 		PreserveTracks = 0,
 		/// <summary>Indicates that the output will contain a tempo track, a track for each SMF MIDI channel, and a track for SysEx or MetaEvents.</summary>
-		ChannelsToTracks = 1 << 0
+		ChannelsToTracks = 1 << 0,
 	}
 
 	// typedef UInt32 -> MusicPlayer.h
@@ -101,16 +97,14 @@ namespace AudioToolbox {
 		/// <summary>Indicates that the existing file should not be erased.</summary>
 		Default = 0,
 		/// <summary>Indicates that the existing file should be erased.</summary>
-		EraseFile = 1
+		EraseFile = 1,
 	}
 
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// MusicPlayer.h
 	public class MusicPlayer : DisposableObject {
 		[DllImport (Constants.AudioToolboxLibrary)]
@@ -304,6 +298,7 @@ namespace AudioToolbox {
 			set {
 				currentSequence = value;
 				MusicPlayerSetSequence (Handle, value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 #endif

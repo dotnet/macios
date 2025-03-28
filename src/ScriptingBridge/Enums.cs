@@ -27,18 +27,23 @@ namespace ScriptingBridge {
 	// AE.framework/Headers/AEDataModel.h:typedef SInt32 AESendMode;
 	[Flags]
 	public enum AESendMode : int {
+		/// <summary>To be added.</summary>
 		NoReply = 0x00000001,
+		/// <summary>To be added.</summary>
 		QueueReply = 0x00000002,
+		/// <summary>To be added.</summary>
 		WaitReply = 0x00000003,
 		DontReconnect = 0x00000080,
+		/// <summary>To be added.</summary>
 		WantReceipt = 0x00000200,
 		NeverInteract = 0x00000010,
 		CanInteract = 0x00000020,
 		AlwaysInteract = 0x00000030,
+		/// <summary>To be added.</summary>
 		CanSwitchLayer = 0x00000040,
 		DontRecord = 0x00001000,
 		DontExecute = 0x00002000,
-		ProcessNonReplyEvents = 0x00008000
+		ProcessNonReplyEvents = 0x00008000,
 	}
 
 	// LaunchServices.framework/Headers/LSOpen.h:typedef OptionBits LSLaunchFlags;
@@ -62,7 +67,7 @@ namespace ScriptingBridge {
 		LaunchNewInstance = 0x00080000,
 		LaunchAndHide = 0x00100000,
 		LaunchAndHideOthers = 0x00200000,
-		LaunchHasUntrustedContents = 0x00400000
+		LaunchHasUntrustedContents = 0x00400000,
 	}
 
 }

@@ -99,6 +99,7 @@ namespace Network {
 				block.SetupBlockUnsafe (static_PongHandler, handler);
 #endif
 				nw_ws_metadata_set_pong_handler (GetCheckedHandle (), queue.Handle, &block);
+				GC.KeepAlive (queue);
 			}
 		}
 

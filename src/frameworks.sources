@@ -264,15 +264,11 @@ AVFOUNDATION_SOURCES = \
 	AVFoundation/AVAudioSessionPortDescription.cs \
 	AVFoundation/AVAudioSinkNode.cs \
 	AVFoundation/AVAudioSourceNode.cs \
-	AVFoundation/AVCaptureConnection.cs \
-	AVFoundation/AVCaptureDeviceDiscoverySession.cs \
 	AVFoundation/AVCaptureDeviceInput.cs \
 	AVFoundation/AVCaptureFileOutput.cs \
 	AVFoundation/AVCaptureMetadataOutput.cs \
 	AVFoundation/AVCaptureSynchronizedDataCollection.cs \
-	AVFoundation/AVCaptureSynchronizedDepthData.cs \
 	AVFoundation/AVCaptureVideoPreviewLayer.cs \
-	AVFoundation/AVCompat.cs \
 	AVFoundation/AVContentKeyResponse.cs \
 	AVFoundation/AVDepthData.cs \
 	AVFoundation/AVLayerVideoGravity.cs \
@@ -290,7 +286,6 @@ AVFOUNDATION_SOURCES = \
 	AVFoundation/AVSpeechUtterance.cs \
 	AVFoundation/AVTextStyleRule.cs \
 	AVFoundation/Events.cs \
-	AVFoundation/AVPlayerLooper.cs \
 	AVFoundation/AudioRendererWasFlushedAutomaticallyEventArgs.cs \
 	AVFoundation/AVCaptureReactionType.rgen.cs \
 	AVFoundation/CMTagCollectionVideoOutputPreset.cs \
@@ -432,6 +427,7 @@ COREANIMATION_SOURCES = \
 	CoreAnimation/CAMediaTimingFunction.cs \
 	CoreAnimation/CAScrollLayer.cs \
 	CoreAnimation/CATextLayer.cs \
+	CoreAnimation/NSValue.cs \
 
 # CoreBluetooth
 
@@ -442,9 +438,7 @@ COREBLUETOOTH_CORE_SOURCES = \
 	CoreBluetooth/AdvertisementDataOptions.cs \
 
 COREBLUETOOTH_SOURCES = \
-	CoreBluetooth/CBCompat.cs \
 	CoreBluetooth/CBManager.cs \
-	CoreBluetooth/CBPeer.cs \
 	CoreBluetooth/CBUUID.cs \
 	CoreBluetooth/CoreBluetooth.cs \
 	CoreBluetooth/GuidWrapper.cs \
@@ -530,7 +524,6 @@ COREGRAPHICS_CORE_SOURCES = \
 COREGRAPHICS_SOURCES = \
 	CoreGraphics/CGBitmapContext.cs \
 	CoreGraphics/CGContextPDF.cs \
-	CoreGraphics/CGColorConverter.cs \
 	CoreGraphics/CGColorConversionInfo.cs \
 	CoreGraphics/CGDataConsumer.cs \
 	CoreGraphics/CGDataProvider.cs \
@@ -552,6 +545,7 @@ COREGRAPHICS_SOURCES = \
 	CoreGraphics/CGSession.cs \
 	CoreGraphics/CGShading.cs \
 	CoreGraphics/NativeDrawingMethods.cs \
+	CoreGraphics/NSValue.cs \
 
 # CoreHaptics
 
@@ -588,6 +582,7 @@ CORELOCATION_SOURCES = \
 	CoreLocation/CLBeaconRegion.cs \
 	CoreLocation/CLCompat.cs \
 	CoreLocation/CLLocationManager.cs \
+	CoreLocation/NSValue.cs \
 
 # CoreMedia
 
@@ -613,6 +608,7 @@ COREMEDIA_SOURCES = \
 	CoreMedia/CMCustomBlockAllocator.cs \
 	CoreMedia/CMBufferQueue.cs \
 	CoreMedia/CMMemoryPool.cs \
+	CoreMedia/NSValue.cs \
 
 # CoreMidi
 
@@ -1130,6 +1126,7 @@ MAPKIT_SOURCES = \
 	MapKit/MKPolygon.cs \
 	MapKit/MKPolyline.cs \
 	MapKit/MKUserLocation.cs \
+	MapKit/NSValue.cs \
 
 # MediaAccessibility
 
@@ -1591,6 +1588,7 @@ SCENEKIT_SOURCES = \
 	SceneKit/SCNSceneSource.cs \
 	SceneKit/SCNSkinner.cs \
 	SceneKit/SCNTechnique.cs \
+	SceneKit/NSValue.cs \
 
 # ScreenCaptureKit
 
@@ -1816,6 +1814,7 @@ UIKIT_SOURCES = \
 	UIKit/UIViewControllerTransitionCoordinatorContext.cs \
 	UIKit/UIWindow.cs \
 	UIKit/UIWindowScene.cs \
+	UIKit/NSValue.cs \
 
 # UserNotifications
 
@@ -1901,6 +1900,7 @@ WEBKIT_SOURCES = \
 
 SHARED_API_SOURCES = \
 	ObjCRuntime/ObsoleteConstants.cs \
+	MinimumVersions.cs \
 
 SHARED_CORE_SOURCES = \
 	DotNetGlobals.cs \
@@ -2018,6 +2018,7 @@ COMMON_FRAMEWORKS =         \
 	CoreVideo               \
 	CryptoTokenKit          \
 	Compression             \
+	DataDetection           \
 	DeviceCheck             \
 	Foundation              \
 	GameKit                 \

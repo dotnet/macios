@@ -56,7 +56,7 @@ namespace CoreText {
 		/// <summary>To be added.</summary>
 		EvenOdd,
 		/// <summary>To be added.</summary>
-		WindingNumber
+		WindingNumber,
 	}
 
 #if !NET
@@ -213,6 +213,7 @@ namespace CoreText {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (ctx));
 
 			CTFrameDraw (Handle, ctx.Handle);
+			GC.KeepAlive (ctx);
 		}
 	}
 }

@@ -62,7 +62,6 @@ namespace Xamarin.MacDev.Tasks {
 
 				switch (Platform) {
 				case ApplePlatform.iOS:
-				case ApplePlatform.WatchOS:
 				case ApplePlatform.TVOS:
 				case ApplePlatform.MacOSX:
 					arguments.Add (PlatformFrameworkHelper.GetMinimumVersionArgument (TargetFrameworkMoniker, SdkIsSimulator, MinimumOSVersion));

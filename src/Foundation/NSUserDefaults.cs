@@ -6,8 +6,10 @@ using ObjCRuntime;
 namespace Foundation {
 
 	public enum NSUserDefaultsType {
+		/// <summary>To be added.</summary>
 		UserName,
-		SuiteName
+		/// <summary>To be added.</summary>
+		SuiteName,
 	}
 
 	public partial class NSUserDefaults {

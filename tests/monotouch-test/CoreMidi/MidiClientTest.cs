@@ -7,7 +7,7 @@
 // Copyright 2023 Microsoft Corp. All rights reserved.
 //
 
-#if !__TVOS__ && !__WATCHOS__
+#if !__TVOS__
 using System;
 using System.Diagnostics;
 

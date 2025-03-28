@@ -67,6 +67,9 @@ namespace Metal {
 		[Export ("index")]
 		nuint Index { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("active")]
 		bool Active { [Bind ("isActive")] get; }
 
@@ -1945,7 +1948,7 @@ namespace Metal {
 #endif
 	}
 
-	interface IMTLTexture { }
+	interface IMTLTexture : INativeObject { }
 
 	// Apple added several new *required* members in iOS 9,
 	// but that breaks our binary compat, so we can't do that in our existing code.
@@ -2370,12 +2373,21 @@ namespace Metal {
 		[Export ("sampleCount")]
 		nuint SampleCount { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("alphaToCoverageEnabled")]
 		bool AlphaToCoverageEnabled { [Bind ("isAlphaToCoverageEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("alphaToOneEnabled")]
 		bool AlphaToOneEnabled { [Bind ("isAlphaToOneEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rasterizationEnabled")]
 		bool RasterizationEnabled { [Bind ("isRasterizationEnabled")] get; set; }
 
@@ -2404,6 +2416,9 @@ namespace Metal {
 		[Export ("maxTessellationFactor")]
 		nuint MaxTessellationFactor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("tessellationFactorScaleEnabled")]
 		bool IsTessellationFactorScaleEnabled { [Bind ("isTessellationFactorScaleEnabled")] get; set; }
@@ -2663,12 +2678,21 @@ namespace Metal {
 		[Export ("attributeType")]
 		MTLDataType AttributeType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("active")]
 		bool Active { [Bind ("isActive")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("patchData")]
 		bool IsPatchData { [Bind ("isPatchData")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("patchControlPointData")]
 		bool IsPatchControlPointData { [Bind ("isPatchControlPointData")] get; }
 	}
@@ -2759,16 +2783,25 @@ namespace Metal {
 		[Export ("attributeType")]
 		MTLDataType AttributeType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("active")]
 		bool Active { [Bind ("isActive")] get; }
 
 		[Export ("name")]
 		string Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("patchData")]
 		bool PatchData { [Bind ("isPatchData")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("patchControlPointData")]
 		bool PatchControlPointData { [Bind ("isPatchControlPointData")] get; }
@@ -3159,6 +3192,9 @@ namespace Metal {
 		[Export ("depthCompareFunction")]
 		MTLCompareFunction DepthCompareFunction { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("depthWriteEnabled")]
 		bool DepthWriteEnabled { [Bind ("isDepthWriteEnabled")] get; set; }
 
@@ -4026,6 +4062,9 @@ namespace Metal {
 		[Export ("pixelFormat", ArgumentSemantic.Assign)]
 		MTLPixelFormat PixelFormat { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("blendingEnabled")]
 		bool BlendingEnabled { [Bind ("isBlendingEnabled")] get; set; }
 

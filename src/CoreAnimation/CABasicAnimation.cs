@@ -19,6 +19,7 @@ namespace CoreAnimation {
 		public void SetFrom (INativeObject value)
 		{
 			_From = value.Handle;
+			GC.KeepAlive (value);
 		}
 
 		public T GetToAs<T> () where T : class, INativeObject
@@ -29,6 +30,7 @@ namespace CoreAnimation {
 		public void SetTo (INativeObject value)
 		{
 			_To = value.Handle;
+			GC.KeepAlive (value);
 		}
 
 		public T GetByAs<T> () where T : class, INativeObject
@@ -39,6 +41,7 @@ namespace CoreAnimation {
 		public void SetBy (INativeObject value)
 		{
 			_By = value.Handle;
+			GC.KeepAlive (value);
 		}
 	}
 }

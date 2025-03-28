@@ -41,7 +41,7 @@ namespace CoreBluetooth {
 		{
 			return FromBytes (new [] {
 				(byte)(servicePart >> 8),
-				(byte)servicePart
+				(byte)servicePart,
 			});
 		}
 
@@ -116,15 +116,5 @@ namespace CoreBluetooth {
 
 			return sb.ToString ();
 		}
-
-#if MONOMAC && !NET
-		// workaround for 27160443 – Trello: https://trello.com/c/oqB27JA6
-		// try new constant (10.13+) and fallback to the old/misnamed one
-		public static NSString CharacteristicValidRangeString {
-			get {
-				return CBUUIDCharacteristicValidRangeString ?? CBUUIDValidRangeString;
-			}
-		}
-#endif
 	}
 }

@@ -467,7 +467,7 @@ namespace ObjCRuntime {
 			if (AssemblyRegistration is not null) {
 				var args = new AssemblyRegistrationEventArgs {
 					Register = true,
-					AssemblyName = assembly_name
+					AssemblyName = assembly_name,
 				};
 				AssemblyRegistration (null, args);
 				return args.Register;
@@ -529,7 +529,9 @@ namespace ObjCRuntime {
 			if (rv is null)
 				return IntPtr.Zero;
 			rv.DangerousRetain ().DangerousAutorelease ();
+#pragma warning disable RBI0014
 			return rv.Handle;
+#pragma warning restore RBI0014
 		}
 
 
@@ -1314,7 +1316,9 @@ namespace ObjCRuntime {
 				if (object_map.Remove (ptr, out var existing))
 					existing.Free ();
 				object_map [ptr] = handle;
+#pragma warning disable RBI0014
 				obj.Handle = ptr;
+#pragma warning restore RBI0014
 			}
 		}
 
@@ -2385,7 +2389,8 @@ namespace ObjCRuntime {
 				(char) (byte) (value >> 24),
 				(char) (byte) (value >> 16),
 				(char) (byte) (value >> 8),
-				(char) (byte) value });
+				(char) (byte) value,
+			});
 		}
 
 		// Retain the input if it's either an NSObject or a NativeObject.
@@ -2412,19 +2417,32 @@ namespace ObjCRuntime {
 			if (obj is null)
 				return NativeHandle.Zero;
 			obj.DangerousRetain ();
+#pragma warning disable RBI0014
 			return obj.GetHandle ();
+#pragma warning restore RBI0014
 		}
 
-		internal static NativeHandle RetainAndAutoreleaseNSObject (NSObject? obj)
+		/// <summary>Retain and autorelease the given object, then return the object's handle.</summary>
+		/// <param name="obj">The object to retain and autorelease.</param>
+		/// <returns>The object's handle (retained and autorelease).</returns>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		public static NativeHandle RetainAndAutoreleaseNSObject (NSObject? obj)
 		{
 			if (obj is null)
 				return NativeHandle.Zero;
 			obj.DangerousRetain ();
 			obj.DangerousAutorelease ();
+#pragma warning disable RBI0014
 			return obj.GetHandle ();
+#pragma warning restore RBI0014
 		}
 
-		internal static NativeHandle RetainAndAutoreleaseNativeObject (INativeObject? obj)
+		/// <summary>Retain and autorelease the given object, then return the object's handle.</summary>
+		/// <param name="obj">The object to retain and autorelease.</param>
+		/// <returns>The object's handle (retained and autorelease).</returns>
+		/// <remarks>If the given object is not an `NSObject`, then the handle won't be retained/autoreleased.</remarks>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		public static NativeHandle RetainAndAutoreleaseNativeObject (INativeObject? obj)
 		{
 			if (obj is null)
 				return NativeHandle.Zero;
@@ -2632,20 +2650,6 @@ namespace ObjCRuntime {
 			}
 			return @delegate;
 		}
-
-		// Throws an ArgumentNullException if 'obj' is null.
-		// This method is particularly helpful when calling another constructor from a constructor, where you can't add any statements before calling the other constructor:
-		//
-		//     Foo (object obj)
-		//         : base (Runtime.ThrowOnNull (obj, nameof (obj)).Handle)
-		//     {
-		//     }
-		//
-		internal static T ThrowOnNull<T> (T obj, string name, string? message = null) where T : class
-		{
-			return obj ?? throw new ArgumentNullException (name, message);
-		}
-
 
 		enum NXByteOrder /* unspecified in header, means most likely int */ {
 			Unknown,

@@ -140,7 +140,7 @@ IOS_DOTNET_CORE_SOURCES += $(IOS_DOTNET_EXTRA_SOURCES)
 
 IOS_DOTNET_SOURCES += $(IOS_DOTNET_EXTRA_SOURCES) $(IOS_DOTNET_HTTP_SOURCES)
 
-IOS_GENERATOR_DEFINES = -d:IOS
+IOS_GENERATOR_DEFINES = -d:IOS -d:__IOS__
 IOS_GENERATOR_FLAGS = -inline-selectors -process-enums $(IOS_GENERATOR_WARNASERROR) $(IOS_GENERATOR_DEFINES)
 IOS_DEFINES = -define:IPHONE -define:IOS -define:MONOTOUCH -d:__IOS__ -d:SYSTEM_NET_HTTP
 
@@ -195,20 +195,12 @@ MACOS_DOTNET_SOURCES += \
 	$(MACOS_DOTNET_BUILD_DIR)/AssemblyInfo.cs \
 	$(SHARED_DESIGNER_CS) \
 
-MAC_CFNETWORK_SOURCES = \
-	CFNetwork/Content.cs \
-	CFNetwork/MessageHandler.cs \
-	CFNetwork/WebRequestStream.cs \
-	CFNetwork/WebResponseStream.cs \
-	CFNetwork/WorkerThread.cs
-
 MAC_HTTP_SOURCES = \
 	Foundation/NSUrlSessionHandler.cs \
 	System.Net.Http/CFContentStream.cs \
 	System.Net.Http/CFNetworkHandler.cs \
 
 MACOS_DOTNET_SOURCES += \
-	$(MAC_CFNETWORK_SOURCES) \
 	$(MAC_HTTP_SOURCES) \
 
 $(MACOS_DOTNET_BUILD_DIR)/Constants.cs: Constants.mac.cs.in Makefile $(TOP)/Make.config.inc | $(MACOS_DOTNET_BUILD_DIR)
@@ -241,7 +233,7 @@ $(MACOS_DOTNET_BUILD_DIR)/AssemblyInfo.cs: $(TOP)/src/AssemblyInfo.cs.in | $(MAC
 TVOS_DEFINES = -define:IPHONE -define:MONOTOUCH -d:TVOS -d:__TVOS__ -d:SYSTEM_NET_HTTP
 
 TVOS_CORE_DEFINES=$(TVOS_DEFINES) -d:COREBUILD
-TVOS_GENERATOR_DEFINES = -d:TVOS
+TVOS_GENERATOR_DEFINES = -d:TVOS -d:__TVOS__
 TVOS_GENERATOR_FLAGS = $(TVOS_GENERATOR_DEFINES) -inline-selectors
 
 TVOS_DOTNET_EXTRA_CORE_SOURCES = \
@@ -300,7 +292,7 @@ $(TVOS_DOTNET_BUILD_DIR)/AssemblyInfo.cs: $(TOP)/src/AssemblyInfo.cs.in $(TOP)/M
 MACCATALYST_DEFINES = -define:IPHONE -define:IOS -define:MONOTOUCH -d:__IOS__ -d:__MACCATALYST__ -d:SYSTEM_NET_HTTP
 
 MACCATALYST_CORE_DEFINES=$(MACCATALYST_DEFINES) -d:COREBUILD
-MACCATALYST_GENERATOR_DEFINES = -d:__MACCATALYST__ -d:IOS
+MACCATALYST_GENERATOR_DEFINES = -d:MACCATALYST -d:__MACCATALYST__ -d:IOS -d:__IOS__
 MACCATALYST_GENERATOR_FLAGS = $(MACCATALYST_GENERATOR_DEFINES) -inline-selectors
 
 MACCATALYST_DOTNET_EXTRA_CORE_SOURCES = \
@@ -547,7 +539,7 @@ endif
 
 rsp:: $($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp
 
-$($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp: Makefile | $($(2)_DOTNET_BUILD_DIR)
+$($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp: Makefile frameworks.sources | $($(2)_DOTNET_BUILD_DIR)
 	$$(Q) rm -f $$@
 	$$(Q) echo \
 		$(DOTNET_FLAGS) \

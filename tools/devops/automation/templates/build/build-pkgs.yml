@@ -56,20 +56,22 @@ steps:
           name: workload_file
           displayName: 'Generate "WorkloadRollback.json"'
 
-        - task: 1ES.PublishPipelineArtifact@1
-          displayName: 'Publish WorkloadRollback.json'
-          inputs:
+        - template: ../common/publish-pipeline-artifact.yml
+          parameters:
+            use1ES: true
+            displayName: 'Publish WorkloadRollback.json'
             path: $(Build.SourcesDirectory)/WorkloadRollback.json
             artifact: '${{ parameters.uploadPrefix }}WorkloadRollback'
-          continueOnError: true
+            continueOnError: true
 
         # upload each of the pkgs into the pipeline artifacts
-        - task: 1ES.PublishPipelineArtifact@1
-          displayName: 'Publish Build Artifacts'
-          inputs:
+        - template: ../common/publish-pipeline-artifact.yml
+          parameters:
+            use1ES: true
+            displayName: 'Publish Build Artifacts'
             path: $(Build.SourcesDirectory)/package
             artifact: '${{ parameters.uploadPrefix }}not-signed-package'
-          continueOnError: true
+            continueOnError: true
 
         - bash: |
             set -x
@@ -81,19 +83,21 @@ steps:
           continueOnError: true  # not a terrible blocking issue
           timeoutInMinutes: 60
 
-        - task: 1ES.PublishPipelineArtifact@1
-          displayName: 'Publish test libraries dependencies'
-          inputs:
+        - template: ../common/publish-pipeline-artifact.yml
+          parameters:
+            use1ES: true
+            displayName: 'Publish test libraries dependencies'
             path: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tests/package-test-libraries.zip
             artifact: '${{ parameters.uploadPrefix }}package-test-libraries'
-          continueOnError: true
+            continueOnError: true
 
-        - task: 1ES.PublishPipelineArtifact@1
-          displayName: 'Publish Build.props'
-          inputs:
+        - template: ../common/publish-pipeline-artifact.yml
+          parameters:
+            use1ES: true
+            displayName: 'Publish Build.props'
             path: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/Build.props
             artifact: '${{ parameters.uploadPrefix }}Build.props'
-          continueOnError: true
+            continueOnError: true
 
         - ${{ if eq(parameters.uploadBinlogs, true) }}:
             # Copy all the binlogs to a separate directory, keeping directory structure.
@@ -106,10 +110,11 @@ steps:
               condition: succeededOrFailed()
 
             # Publish all the binlogs we collected in the previous step
-            - task: 1ES.PublishPipelineArtifact@1
-              displayName: 'Publish Artifact: All binlogs'
-              inputs:
+            - template: ../common/publish-pipeline-artifact.yml
+              parameters:
+                use1ES: true
+                displayName: 'Publish Artifact: All binlogs'
                 path: $(Build.ArtifactStagingDirectory)/all-binlogs
                 artifact: '${{ parameters.uploadPrefix }}all-binlogs-$(Build.BuildId)-$(System.StageAttempt)-$(System.JobAttempt)'
-              continueOnError: true
-              condition: succeededOrFailed()
+                continueOnError: true
+                condition: succeededOrFailed()

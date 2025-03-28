@@ -34,31 +34,25 @@ using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
 
 	// untyped enum -> CGPDFPage.h
 	public enum CGPDFBox {
+		/// <summary>To be added.</summary>
 		Media = 0,
+		/// <summary>To be added.</summary>
 		Crop = 1,
+		/// <summary>To be added.</summary>
 		Bleed = 2,
+		/// <summary>To be added.</summary>
 		Trim = 3,
-		Art = 4
+		/// <summary>To be added.</summary>
+		Art = 4,
 	}
 
 	// CGPDFPage.h
 	public partial class CGPDFPage {
 #if !COREBUILD
-#if !NET
-		public CGPDFPage (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal CGPDFPage (NativeHandle handle, bool owns)
 			: base (handle, owns)
@@ -68,6 +62,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGPDFDocumentRef */ IntPtr CGPDFPageGetDocument (/* CGPDFPageRef */ IntPtr page);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGPDFDocument Document {
 			get {
 				return new CGPDFDocument (CGPDFPageGetDocument (Handle), false);
@@ -77,6 +74,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* size_t */ nint CGPDFPageGetPageNumber (/* CGPDFPageRef */ IntPtr page);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint PageNumber {
 			get {
 				return CGPDFPageGetPageNumber (Handle);
@@ -94,6 +94,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* int */ int CGPDFPageGetRotationAngle (/* CGPDFPageRef */ IntPtr page);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int RotationAngle {
 			get {
 				return CGPDFPageGetRotationAngle (Handle);
@@ -111,6 +114,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGPDFDictionaryRef */ IntPtr CGPDFPageGetDictionary (/* CGPDFPageRef */ IntPtr page);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGPDFDictionary Dictionary {
 			get {
 				return new CGPDFDictionary (CGPDFPageGetDictionary (Handle));

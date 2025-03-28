@@ -21,7 +21,7 @@ namespace TVMLKit {
 		None,
 		Plain,
 		LinearGradientTopToBottom,
-		LinearGradientLeftToRight
+		LinearGradientLeftToRight,
 	}
 
 	[Deprecated (PlatformName.TvOS, 18, 0, message: "Use SwiftUI or UIKit instead.")]
@@ -41,7 +41,7 @@ namespace TVMLKit {
 		Undefined,
 		Top,
 		Center,
-		Bottom
+		Bottom,
 	}
 
 	[Deprecated (PlatformName.TvOS, 18, 0, message: "Use SwiftUI or UIKit instead.")]
@@ -74,7 +74,7 @@ namespace TVMLKit {
 		Select,
 		HoldSelect,
 		Highlight,
-		Change
+		Change,
 	}
 
 	[Deprecated (PlatformName.TvOS, 18, 0, message: "Use SwiftUI or UIKit instead.")]
@@ -97,7 +97,7 @@ namespace TVMLKit {
 	[Native]
 	public enum TVElementResettableProperty : long {
 		UpdateType,
-		AutoHighlightIdentifier
+		AutoHighlightIdentifier,
 	}
 
 	[Deprecated (PlatformName.TvOS, 18, 0, message: "Use SwiftUI or UIKit instead.")]
@@ -106,7 +106,7 @@ namespace TVMLKit {
 		Image,
 		Fullscreen,
 		Decoration,
-		Hero
+		Hero,
 	}
 
 	[Deprecated (PlatformName.TvOS, 18, 0, message: "Use SwiftUI or UIKit instead.")]
@@ -116,7 +116,7 @@ namespace TVMLKit {
 		Unknown = 1,
 		InternetUnavailable,
 		FailedToLaunch,
-		Last
+		Last,
 	}
 
 	[Deprecated (PlatformName.TvOS, 18, 0, message: "Use SwiftUI or UIKit instead.")]
@@ -129,7 +129,7 @@ namespace TVMLKit {
 		Color,
 		Url,
 		Transform,
-		EdgeInsets
+		EdgeInsets,
 	}
 
 	[Deprecated (PlatformName.TvOS, 18, 0, message: "Use SwiftUI or UIKit instead.")]
@@ -139,7 +139,7 @@ namespace TVMLKit {
 		Title,
 		Subtitle,
 		Description,
-		Decoration
+		Decoration,
 	}
 
 	[Deprecated (PlatformName.TvOS, 18, 0, message: "Use SwiftUI or UIKit instead.")]

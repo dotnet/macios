@@ -58,6 +58,9 @@ namespace VideoToolbox {
 			IntPtr handle;
 			unsafe {
 				error = VTRAWProcessingSessionCreate (IntPtr.Zero, formatDescription.GetNonNullHandle (nameof (formatDescription)), outputPixelBufferAttributes.GetHandle (), processingSessionOptions.GetHandle (), &handle);
+				GC.KeepAlive (formatDescription);
+				GC.KeepAlive (outputPixelBufferAttributes);
+				GC.KeepAlive (processingSessionOptions);
 			}
 			if (handle != IntPtr.Zero && error == VTStatus.Ok)
 				return new VTRawProcessingSession (handle, owns: true);
@@ -156,7 +159,10 @@ namespace VideoToolbox {
 		{
 			delegate* unmanaged<IntPtr, VTStatus, IntPtr, void> trampoline = &VTRawProcessingOutputHandlerCallback;
 			using var block = new BlockLiteral (trampoline, handler, typeof (VTRawProcessingSession), nameof (VTRawProcessingOutputHandlerCallback));
-			return VTRAWProcessingSessionProcessFrame (GetCheckedHandle (), inputPixelBuffer.GetNonNullHandle (nameof (inputPixelBuffer)), frameOptions.GetHandle (), &block);
+			VTStatus status = VTRAWProcessingSessionProcessFrame (GetCheckedHandle (), inputPixelBuffer.GetNonNullHandle (nameof (inputPixelBuffer)), frameOptions.GetHandle (), &block);
+			GC.KeepAlive (inputPixelBuffer);
+			GC.KeepAlive (frameOptions);
+			return status;
 		}
 #endif
 
@@ -230,7 +236,9 @@ namespace VideoToolbox {
 		/// <returns>An error code if the operation was unsuccessful, otherwise <see cref="VTStatus.Ok" />.</returns>
 		public VTStatus SetProcessingParameters (NSDictionary processingParameters)
 		{
-			return VTRAWProcessingSessionSetProcessingParameters (GetCheckedHandle (), processingParameters.GetNonNullHandle (nameof (processingParameters)));
+			VTStatus status = VTRAWProcessingSessionSetProcessingParameters (GetCheckedHandle (), processingParameters.GetNonNullHandle (nameof (processingParameters)));
+			GC.KeepAlive (processingParameters);
+			return status;
 		}
 
 		/// <summary>Set RAW Processing parameters.</summary>

@@ -270,7 +270,6 @@ namespace MonoTouchFixtures.Foundation {
 			}
 		}
 
-#if !__WATCHOS__ // FIXME: this test can probably be fixed to run on WatchOS by testing something other than UIView
 		[Test]
 		public void ObserverTest ()
 		{
@@ -293,7 +292,6 @@ namespace MonoTouchFixtures.Foundation {
 			}
 			Assert.IsTrue (observed, "observed");
 		}
-#endif // !__WATCHOS__
 
 		[Test]
 		[Timeout (5000)]

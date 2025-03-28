@@ -6,7 +6,4 @@ using Microsoft.CodeAnalysis;
 
 namespace Microsoft.Macios.Transformer.Workers;
 
-interface ITransformer<T> : IWorker<T>, IErrorWorker<T> where T : struct {
-
-	T CreateMessage (SyntaxTree treeNode, ISymbol symbol);
-}
+interface ITransformer<T> : IWorker<T>, IErrorWorker<T> where T : struct { }

@@ -41,8 +41,9 @@ namespace CoreFoundation {
 		}
 
 		public DispatchBlock (DispatchBlock dispatchBlock, DispatchBlockFlags flags, DispatchQualityOfService qosClass, int relative_priority)
-			: base (dispatch_block_create_with_qos_class ((nuint) (ulong) flags, qosClass, relative_priority, Runtime.ThrowOnNull (dispatchBlock, nameof (dispatchBlock)).GetCheckedHandle ()), true)
+			: base (dispatch_block_create_with_qos_class ((nuint) (ulong) flags, qosClass, relative_priority, dispatchBlock.GetNonNullHandle (nameof (dispatchBlock))), true)
 		{
+			GC.KeepAlive (dispatchBlock);
 		}
 
 		public static DispatchBlock Create (Action action, DispatchBlockFlags flags = DispatchBlockFlags.None)
@@ -142,6 +143,8 @@ namespace CoreFoundation {
 			if (notification is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (notification));
 			dispatch_block_notify (GetCheckedHandle (), queue.GetCheckedHandle (), notification.GetCheckedHandle ());
+			GC.KeepAlive (queue);
+			GC.KeepAlive (notification);
 		}
 
 		[DllImport (Constants.libcLibrary)]
@@ -152,6 +155,9 @@ namespace CoreFoundation {
 			return dispatch_block_testcancel (GetCheckedHandle ());
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool Cancelled {
 			get { return TestCancel () != 0; }
 		}
@@ -180,7 +186,9 @@ namespace CoreFoundation {
 			unsafe {
 				var handle = (BlockLiteral*) (IntPtr) block.GetCheckedHandle ();
 				var del = handle->GetDelegateForBlock<DispatchBlockCallback> ();
-				return new Action (() => del ((IntPtr) block.GetCheckedHandle ()));
+				var result = new Action (() => del ((IntPtr) block.GetCheckedHandle ()));
+				GC.KeepAlive (block);
+				return result;
 			}
 		}
 
@@ -193,12 +201,19 @@ namespace CoreFoundation {
 	[Flags]
 	[Native]
 	public enum DispatchBlockFlags : ulong {
+		/// <summary>To be added.</summary>
 		None,
+		/// <summary>To be added.</summary>
 		Barrier = 1,
+		/// <summary>To be added.</summary>
 		Detached = 2,
+		/// <summary>To be added.</summary>
 		AssignCurrent = 4,
+		/// <summary>To be added.</summary>
 		NoQosClass = 8,
+		/// <summary>To be added.</summary>
 		InheritQosClass = 16,
+		/// <summary>To be added.</summary>
 		EnforceQosClass = 32,
 	}
 #endif // !COREBUILD

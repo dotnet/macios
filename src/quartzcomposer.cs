@@ -49,126 +49,246 @@ namespace QuartzComposer {
 		[Export ("compositionWithData:")]
 		QCComposition GetComposition (NSData data);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("protocols")]
 		string [] Protocols { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("attributes")]
 		NSDictionary Attributes { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("inputKeys")]
 		string [] InputKeys { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("outputKeys")]
 		string [] OutputKeys { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("identifier")]
 		string Identifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionAttributeNameKey")]
 		NSString AttributeNameKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionAttributeDescriptionKey")]
 		NSString AttributeDescriptionKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionAttributeCopyrightKey")]
 		NSString AttributeCopyrightKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionAttributeBuiltInKey")]
 		NSString AttributeBuiltInKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionAttributeIsTimeDependentKey")]
 		NSString AttributeIsTimeDependentKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionAttributeHasConsumersKey")]
 		NSString AttributeHasConsumersKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionAttributeCategoryKey")]
 		NSString AttributeCategoryKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionCategoryDistortion")]
 		NSString CategoryDistortion { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionCategoryStylize")]
 		NSString CategoryStylize { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionCategoryUtility")]
 		NSString CategoryUtility { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionInputImageKey")]
 		NSString InputImageKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionInputSourceImageKey")]
 		NSString InputSourceImageKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionInputDestinationImageKey")]
 		NSString InputDestinationImageKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' instead.")]
 		[Field ("QCCompositionInputRSSFeedURLKey")]
 		NSString InputRSSFeedURLKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' instead.")]
 		[Field ("QCCompositionInputRSSArticleDurationKey")]
 		NSString InputRSSArticleDurationKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionInputPreviewModeKey")]
 		NSString InputPreviewModeKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionInputXKey")]
 		NSString InputXKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionInputYKey")]
 		NSString InputYKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionInputScreenImageKey")]
 		NSString InputScreenImageKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionInputAudioPeakKey")]
 		NSString InputAudioPeakKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionInputAudioSpectrumKey")]
 		NSString InputAudioSpectrumKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionInputTrackPositionKey")]
 		NSString InputTrackPositionKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionInputTrackInfoKey")]
 		NSString InputTrackInfoKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionInputTrackSignalKey")]
 		NSString InputTrackSignalKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionInputPrimaryColorKey")]
 		NSString InputPrimaryColorKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionInputSecondaryColorKey")]
 		NSString InputSecondaryColorKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionInputPaceKey")]
 		NSString InputPaceKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionOutputImageKey")]
 		NSString OutputImageKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionOutputWebPageURLKey")]
 		NSString OutputWebPageURLKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionProtocolGraphicAnimation")]
 		NSString ProtocolGraphicAnimation { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionProtocolGraphicTransition")]
 		NSString ProtocolGraphicTransition { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionProtocolImageFilter")]
 		NSString ProtocolImageFilter { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionProtocolScreenSaver")]
 		NSString ProtocolScreenSaver { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' instead.")]
 		[Field ("QCCompositionProtocolRSSVisualizer")]
 		NSString ProtocolRSSVisualizer { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("QCCompositionProtocolMusicVisualizer")]
 		NSString ProtocolMusicVisualizer { get; }
 	}
@@ -193,6 +313,9 @@ namespace QuartzComposer {
 		[Export ("initWithComposition:")]
 		NativeHandle Constructor (QCComposition composition);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("composition")]
 		QCComposition Composition { get; }
 
@@ -202,6 +325,9 @@ namespace QuartzComposer {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // crash when used (e.g. description) meant to be used thru sharedCompositionRepository
 	interface QCCompositionRepository {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("sharedCompositionRepository")]
 		QCCompositionRepository SharedCompositionRepository { get; }
@@ -212,6 +338,9 @@ namespace QuartzComposer {
 		[Export ("compositionsWithProtocols:andAttributes:")]
 		QCComposition [] GetCompositions (NSArray protocols, NSDictionary attributes);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allCompositions")]
 		QCComposition [] AllCompositions { get; }
 

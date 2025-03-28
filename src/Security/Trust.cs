@@ -76,6 +76,7 @@ namespace Security {
 
 			using (SecCertificate cert = new SecCertificate (certificate)) {
 				Initialize (cert.Handle, policy);
+				GC.KeepAlive (cert);
 			}
 		}
 
@@ -86,6 +87,7 @@ namespace Security {
 
 			using (SecCertificate cert = new SecCertificate (certificate)) {
 				Initialize (cert.Handle, policy);
+				GC.KeepAlive (cert);
 			}
 		}
 
@@ -117,6 +119,7 @@ namespace Security {
 		{
 			using (var certs = CFArray.FromNativeObjects (array)) {
 				Initialize (certs.Handle, policy);
+				GC.KeepAlive (certs);
 			}
 		}
 
@@ -126,6 +129,7 @@ namespace Security {
 			SecStatusCode result;
 			unsafe {
 				result = SecTrustCreateWithCertificates (certHandle, policy.GetHandle (), &handle);
+				GC.KeepAlive (policy);
 			}
 			if (result != SecStatusCode.Success)
 				throw new ArgumentException (result.ToString ());
@@ -176,6 +180,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static nint /* CFIndex */ SecTrustGetCertificateCount (IntPtr /* SecTrustRef */ trust);
 
+		/// <summary>Return the number of certificates used for evaluation.</summary>
+		///         <value>The number of certificates.</value>
+		///         <remarks>There can be more and different certificates than the one provided to the constructor.</remarks>
 		public int Count {
 			get {
 				if (Handle == IntPtr.Zero)
@@ -352,7 +359,9 @@ namespace Security {
 #endif
 		public bool SetExceptions (NSData data)
 		{
-			return SecTrustSetExceptions (GetCheckedHandle (), data.GetHandle ()) != 0;
+			bool result = SecTrustSetExceptions (GetCheckedHandle (), data.GetHandle ()) != 0;
+			GC.KeepAlive (data);
+			return result;
 		}
 
 		[DllImport (Constants.SecurityLibrary)]
@@ -370,7 +379,8 @@ namespace Security {
 		{
 			// CFDateRef amd NSDate are toll-freee bridged
 			using (NSDate d = (NSDate) date) {
-				return SecTrustSetVerifyDate (GetCheckedHandle (), d.Handle);
+				SecStatusCode statusCode = SecTrustSetVerifyDate (GetCheckedHandle (), d.Handle);
+				return statusCode;
 			}
 		}
 
@@ -406,7 +416,9 @@ namespace Security {
 			if (array is null)
 				return SecTrustSetAnchorCertificates (Handle, IntPtr.Zero);
 			using (var certs = CFArray.FromNativeObjects (array)) {
-				return SecTrustSetAnchorCertificates (Handle, certs.Handle);
+				SecStatusCode statusCode = SecTrustSetAnchorCertificates (Handle, certs.Handle);
+				GC.KeepAlive (certs);
+				return statusCode;
 			}
 		}
 

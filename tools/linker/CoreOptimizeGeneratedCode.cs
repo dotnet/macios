@@ -56,10 +56,6 @@ namespace Xamarin.Linker {
 		bool InlineIntPtrSize { get; set; }
 #endif
 
-		public bool IsDualBuild {
-			get { return LinkContext.App.IsDualBuild; }
-		}
-
 		public bool Device {
 			get { return LinkContext.App.IsDeviceBuild; }
 		}
@@ -689,10 +685,8 @@ namespace Xamarin.Linker {
 			// TODO: we could make this an option "optimize for size vs optimize for speed" in the future
 			if (Optimizations.InlineIntPtrSize.HasValue) {
 				inlineIntPtrSize = Optimizations.InlineIntPtrSize.Value;
-			} else if (!IsDualBuild) {
-				inlineIntPtrSize = true;
 			} else {
-				inlineIntPtrSize = (Profile.Current as BaseProfile).ProductAssembly == assembly.Name.Name;
+				inlineIntPtrSize = true;
 			}
 			if (inlineIntPtrSize)
 				Driver.Log (4, "Optimization 'inline-intptr-size' enabled for assembly '{0}'.", assembly.Name);

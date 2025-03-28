@@ -17,18 +17,11 @@ using Foundation;
 using ObjCRuntime;
 using CoreFoundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CGPDFScanner : NativeObject {
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -54,14 +47,9 @@ namespace CoreGraphics {
 			info = userInfo;
 			gch = GCHandle.Alloc (this);
 			InitializeHandle (CGPDFScannerCreate (cs.Handle, table.Handle, GCHandle.ToIntPtr (gch)));
+			GC.KeepAlive (cs);
+			GC.KeepAlive (table);
 		}
-
-#if !NET
-		public CGPDFScanner (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
 
 		[Preserve (Conditional = true)]
 		internal CGPDFScanner (NativeHandle handle, bool owns)
@@ -69,6 +57,9 @@ namespace CoreGraphics {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public object? UserInfo {
 			get { return info; }
 		}
@@ -225,25 +216,17 @@ namespace CoreGraphics {
 			return rv;
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("tvos16.0")]
-#else
-		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGPDFScannerStop (/* CGPDFScannerRef */ IntPtr scanner);
 
-#if NET
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("tvos16.0")]
-#else
-		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-#endif
 		public void Stop ()
 		{
 			CGPDFScannerStop (Handle);

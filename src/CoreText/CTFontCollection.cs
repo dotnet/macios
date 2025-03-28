@@ -145,7 +145,10 @@ namespace CoreText {
 		static IntPtr Create (CTFontDescriptor []? queryDescriptors, CTFontCollectionOptions? options)
 		{
 			using var descriptors = queryDescriptors is null ? null : CFArray.FromNativeObjects (queryDescriptors);
-			return CTFontCollectionCreateWithFontDescriptors (descriptors.GetHandle (), options.GetHandle ());
+			IntPtr result = CTFontCollectionCreateWithFontDescriptors (descriptors.GetHandle (), options.GetHandle ());
+			GC.KeepAlive (descriptors);
+			GC.KeepAlive (options);
+			return result;
 		}
 		public CTFontCollection (CTFontDescriptor []? queryDescriptors, CTFontCollectionOptions? options)
 			: base (Create (queryDescriptors, options), true, true)
@@ -158,6 +161,8 @@ namespace CoreText {
 		{
 			using var descriptors = queryDescriptors is null ? null : CFArray.FromNativeObjects (queryDescriptors);
 			var h = CTFontCollectionCreateCopyWithFontDescriptors (Handle, descriptors.GetHandle (), options.GetHandle ());
+			GC.KeepAlive (descriptors);
+			GC.KeepAlive (options);
 			if (h == IntPtr.Zero)
 				return null;
 			return new CTFontCollection (h, true);

@@ -36,26 +36,23 @@ using ObjCRuntime;
 using CoreFoundation;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
 
 	// uint32_t -> CGGradient.h
 	[Flags]
 	public enum CGGradientDrawingOptions : uint {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>The fill will draw before the start location.</summary>
 		DrawsBeforeStartLocation = (1 << 0),
-		DrawsAfterEndLocation = (1 << 1)
+		/// <summary>The fill will extend beyond the end location.</summary>
+		DrawsAfterEndLocation = (1 << 1),
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CGGradient : NativeObject {
 #if !COREBUILD
 		[Preserve (Conditional = true)]
@@ -96,7 +93,9 @@ namespace CoreGraphics {
 
 			unsafe {
 				fixed (nfloat* componentsPtr = components, locationsPtr = locations) {
-					return CGGradientCreateWithColorComponents (colorspace.GetCheckedHandle (), componentsPtr, locationsPtr, components.Length / (colorspace.Components + 1));
+					IntPtr result = CGGradientCreateWithColorComponents (colorspace.GetCheckedHandle (), componentsPtr, locationsPtr, components.Length / (colorspace.Components + 1));
+					GC.KeepAlive (colorspace);
+					return result;
 				}
 			}
 		}
@@ -117,7 +116,9 @@ namespace CoreGraphics {
 
 			unsafe {
 				fixed (nfloat* componentsPtr = components) {
-					return CGGradientCreateWithColorComponents (colorspace.GetCheckedHandle (), componentsPtr, null, components.Length / (colorspace.Components + 1));
+					IntPtr result = CGGradientCreateWithColorComponents (colorspace.GetCheckedHandle (), componentsPtr, null, components.Length / (colorspace.Components + 1));
+					GC.KeepAlive (colorspace);
+					return result;
 				}
 			}
 		}
@@ -142,7 +143,9 @@ namespace CoreGraphics {
 			using (var array = CFArray.FromNativeObjects (colors)) {
 				unsafe {
 					fixed (nfloat* locationsPtr = locations) {
-						return CGGradientCreateWithColors (colorspace.GetHandle (), array.Handle, locationsPtr);
+						IntPtr result = CGGradientCreateWithColors (colorspace.GetHandle (), array.Handle, locationsPtr);
+						GC.KeepAlive (colorspace);
+						return result;
 					}
 				}
 			}
@@ -160,7 +163,9 @@ namespace CoreGraphics {
 
 			using (var array = CFArray.FromNativeObjects (colors)) {
 				unsafe {
-					return CGGradientCreateWithColors (colorspace.GetHandle (), array.Handle, null);
+					IntPtr result = CGGradientCreateWithColors (colorspace.GetHandle (), array.Handle, null);
+					GC.KeepAlive (colorspace);
+					return result;
 				}
 			}
 		}

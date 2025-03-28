@@ -38,12 +38,10 @@ using System.Runtime.Versioning;
 
 namespace AudioToolbox {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public static class AudioFormatAvailability {
 		public static AudioValueRange []? GetAvailableEncodeBitRates (AudioFormatType format)
 		{

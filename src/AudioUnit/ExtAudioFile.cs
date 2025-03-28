@@ -261,7 +261,9 @@ namespace AudioUnit {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			return OpenUrl (url.Handle, out error);
+			ExtAudioFile? audioFile = OpenUrl (url.Handle, out error);
+			GC.KeepAlive (url);
+			return audioFile;
 		}
 
 		public static ExtAudioFile? OpenUrl (CFUrl url, out ExtAudioFileError error)
@@ -269,7 +271,9 @@ namespace AudioUnit {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			return OpenUrl (url.Handle, out error);
+			ExtAudioFile? audioFile = OpenUrl (url.Handle, out error);
+			GC.KeepAlive (url);
+			return audioFile;
 		}
 
 		public static ExtAudioFile OpenUrl (CFUrl url)
@@ -279,6 +283,7 @@ namespace AudioUnit {
 
 			ExtAudioFileError err;
 			var audioFile = OpenUrl (url.Handle, out err);
+			GC.KeepAlive (url);
 
 			if (err != ExtAudioFileError.OK) // if (err != 0)  <- to keep old implementation
 				throw new ArgumentException (String.Format ("Error code:{0}", err));
@@ -310,7 +315,9 @@ namespace AudioUnit {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			return CreateWithUrl (url.Handle, fileType, inStreamDesc, fileFlags, out error);
+			ExtAudioFile? audioFile = CreateWithUrl (url.Handle, fileType, inStreamDesc, fileFlags, out error);
+			GC.KeepAlive (url);
+			return audioFile;
 		}
 
 		public static ExtAudioFile? CreateWithUrl (CFUrl url, AudioFileType fileType, AudioStreamBasicDescription inStreamDesc, AudioFileFlags flag, out ExtAudioFileError error)
@@ -318,7 +325,9 @@ namespace AudioUnit {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			return CreateWithUrl (url.Handle, fileType, inStreamDesc, flag, out error);
+			ExtAudioFile? audioFile = CreateWithUrl (url.Handle, fileType, inStreamDesc, flag, out error);
+			GC.KeepAlive (url);
+			return audioFile;
 		}
 
 		public static ExtAudioFile CreateWithUrl (CFUrl url,
@@ -332,6 +341,7 @@ namespace AudioUnit {
 
 			ExtAudioFileError err;
 			var audioFile = CreateWithUrl (url.Handle, fileType, inStreamDesc, flag, out err);
+			GC.KeepAlive (url);
 
 			if (err != ExtAudioFileError.OK) // if (err != 0)  <- to keep old implementation
 				throw new ArgumentException (String.Format ("Error code:{0}", err));

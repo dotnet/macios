@@ -39,9 +39,13 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NEDnsProxyManagerError : long {
+		/// <summary>To be added.</summary>
 		Invalid = 1,
+		/// <summary>To be added.</summary>
 		Disabled = 2,
+		/// <summary>To be added.</summary>
 		Stale = 3,
+		/// <summary>To be added.</summary>
 		CannotBeRemoved = 4,
 	}
 
@@ -50,19 +54,28 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NEFilterAction : long {
+		/// <summary>To be added.</summary>
 		Invalid = 0,
+		/// <summary>To be added.</summary>
 		Allow = 1,
+		/// <summary>To be added.</summary>
 		Drop = 2,
+		/// <summary>To be added.</summary>
 		Remediate = 3,
+		/// <summary>To be added.</summary>
 		FilterData = 4,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NEVpnIkev2TlsVersion : long {
+		/// <summary>To be added.</summary>
 		Default = 0,
+		/// <summary>To be added.</summary>
 		Tls1_0 = 1,
+		/// <summary>To be added.</summary>
 		Tls1_1 = 2,
+		/// <summary>To be added.</summary>
 		Tls1_2 = 3,
 	}
 
@@ -71,9 +84,13 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NEHotspotConfigurationEapType : long {
+		/// <summary>To be added.</summary>
 		Tls = 13,
+		/// <summary>To be added.</summary>
 		Ttls = 21,
+		/// <summary>To be added.</summary>
 		Peap = 25,
+		/// <summary>To be added.</summary>
 		Fast = 43,
 	}
 
@@ -82,10 +99,15 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NEHotspotConfigurationTtlsInnerAuthenticationType : long {
+		/// <summary>To be added.</summary>
 		Pap = 0,
+		/// <summary>To be added.</summary>
 		Chap = 1,
+		/// <summary>To be added.</summary>
 		MSChap = 2,
+		/// <summary>To be added.</summary>
 		MSChapv2 = 3,
+		/// <summary>To be added.</summary>
 		Eap = 4,
 	}
 
@@ -94,8 +116,11 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NEHotspotConfigurationEapTlsVersion : long {
+		/// <summary>To be added.</summary>
 		Tls1_0 = 0,
+		/// <summary>To be added.</summary>
 		Tls1_1 = 1,
+		/// <summary>To be added.</summary>
 		Tls1_2 = 2,
 	}
 
@@ -106,20 +131,35 @@ namespace NetworkExtension {
 	[Native]
 	[ErrorDomain ("NEHotspotConfigurationErrorDomain")]
 	public enum NEHotspotConfigurationError : long {
+		/// <summary>To be added.</summary>
 		Invalid = 0,
+		/// <summary>To be added.</summary>
 		InvalidSsid = 1,
+		/// <summary>To be added.</summary>
 		InvalidWpaPassphrase = 2,
+		/// <summary>To be added.</summary>
 		InvalidWepPassphrase = 3,
+		/// <summary>To be added.</summary>
 		InvalidEapSettings = 4,
+		/// <summary>To be added.</summary>
 		InvalidHS20Settings = 5,
+		/// <summary>To be added.</summary>
 		InvalidHS20DomainName = 6,
+		/// <summary>To be added.</summary>
 		UserDenied = 7,
+		/// <summary>To be added.</summary>
 		Internal = 8,
+		/// <summary>To be added.</summary>
 		Pending = 9,
+		/// <summary>To be added.</summary>
 		SystemConfiguration = 10,
+		/// <summary>To be added.</summary>
 		Unknown = 11,
+		/// <summary>To be added.</summary>
 		JoinOnceNotSupported = 12,
+		/// <summary>To be added.</summary>
 		AlreadyAssociated = 13,
+		/// <summary>To be added.</summary>
 		ApplicationIsNotInForeground = 14,
 		InvalidSsidPrefix = 15,
 		UserUnauthorized = 16,
@@ -261,6 +301,9 @@ namespace NetworkExtension {
 		[Wrap ("SetMetadata (parameters.GetHandle ())")]
 		void SetMetadata (NWParameters parameters);
 
+		/// <summary>Gets the flow metadata.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("metaData")]
 		NEFlowMetaData MetaData { get; }
 
@@ -366,6 +409,9 @@ namespace NetworkExtension {
 		[Async]
 		void WriteData (NSData data, Action<NSError> completionHandler);
 
+		/// <summary>Gets a description of the remote endpoint.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Call 'RemoveFlowEndpoint' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Call 'RemoveFlowEndpoint' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Call 'RemoveFlowEndpoint' instead.")]
@@ -402,6 +448,12 @@ namespace NetworkExtension {
 		[Async]
 		void WriteDatagrams (NSData [] datagrams, NWEndpoint [] remoteEndpoints, Action<NSError> completionHandler);
 
+		/// <summary>Gets a description of the local endpoint.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'LocalFlowEndpoint' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'LocalFlowEndpoint' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'LocalFlowEndpoint' instead.")]
@@ -444,17 +496,35 @@ namespace NetworkExtension {
 		[Export ("initWithSigningIdentifier:designatedRequirement:")]
 		NativeHandle Constructor (string signingIdentifier, string designatedRequirement);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS, MacCatalyst (15, 0)]
 		[Export ("matchDesignatedRequirement")]
 		string MatchDesignatedRequirement { get; }
 
+		/// <summary>Gets or sets the path to the app that matches the rule.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("matchPath")]
 		string MatchPath { get; set; }
 
+		/// <summary>Gets the siging identifer of the app that the rule matched.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("matchSigningIdentifier")]
 		string MatchSigningIdentifier { get; }
 
+		/// <summary>Gets a list of domains for which VPN connection is allowed.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>If this array is empty, then any domain is allowed.</remarks>
 		[NullAllowed, Export ("matchDomains", ArgumentSemantic.Copy)]
 		string [] MatchDomains { get; set; }
 
@@ -470,18 +540,42 @@ namespace NetworkExtension {
 		[Export ("initWithServers:")]
 		NativeHandle Constructor (string [] servers);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("servers")]
 		string [] Servers { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("searchDomains", ArgumentSemantic.Copy)]
 		string [] SearchDomains { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("domainName")]
 		string DomainName { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("matchDomains", ArgumentSemantic.Copy)]
 		string [] MatchDomains { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("matchDomainsNoSearch")]
 		bool MatchDomainsNoSearch { get; set; }
 
@@ -506,9 +600,21 @@ namespace NetworkExtension {
 	[BaseType (typeof (NEFilterProvider))]
 	[DisableDefaultCtor] // no valid handle when `init` is called
 	interface NEFilterControlProvider {
+		/// <summary>Gets or sets a dictionary of remediation strings.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("remediationMap", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSDictionary<NSString, NSObject>> RemediationMap { get; set; }
 
+		/// <summary>Gets or sets a dictionary of strings to append to URLs.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("URLAppendStringMap", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSString> UrlAppendStringMap { get; set; }
 
@@ -640,17 +746,41 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NEFilterFlow : NSSecureCoding, NSCopying {
+		/// <summary>Gets the URL for the flow.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("URL")]
 		NSUrl Url { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("sourceAppUniqueIdentifier")]
 		NSData SourceAppUniqueIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("sourceAppIdentifier")]
 		string SourceAppIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("sourceAppVersion")]
 		string SourceAppVersion { get; }
@@ -684,6 +814,9 @@ namespace NetworkExtension {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NEFilterManager {
+		/// <summary>Gets the shared filter manager instance.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("sharedManager")]
 		NEFilterManager SharedManager { get; }
@@ -700,16 +833,32 @@ namespace NetworkExtension {
 		[Async]
 		void SaveToPreferences (Action<NSError> completionHandler);
 
+		/// <summary>Gets or sets a localized description of the filter.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("localizedDescription")]
 		string LocalizedDescription { get; set; }
 
+		/// <summary>Gets or sets an object that contains settings for the filter.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("providerConfiguration", ArgumentSemantic.Strong)]
 		NEFilterProviderConfiguration ProviderConfiguration { get; set; }
 
+		/// <summary>Get or sets a Boolean value that enables and disables the filter.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
+		/// <include file="../docs/api/NetworkExtension/NEFilterManager.xml" path="/Documentation/Docs[@DocId='P:NetworkExtension.NEFilterManager.ConfigurationDidChangeNotification']/*" />
 		[Field ("NEFilterConfigurationDidChangeNotification")]
 		[Notification]
 		NSString ConfigurationDidChangeNotification { get; }
@@ -791,10 +940,16 @@ namespace NetworkExtension {
 		[Export ("handleReport:")]
 		void HandleReport (NEFilterReport report);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("filterConfiguration")]
 		NEFilterProviderConfiguration FilterConfiguration { get; }
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 #endif
@@ -802,6 +957,9 @@ namespace NetworkExtension {
 		NSString RemediationMapRemediationButtonTexts { get; }
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 #endif
@@ -816,28 +974,70 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NEFilterProviderConfiguration : NSSecureCoding, NSCopying {
+		/// <summary>Gets or sets a Boolean value that controls whether data that originates from WebKit browser objects should be filtered.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Not supported on the platform.")]
 		[Export ("filterBrowsers")]
 		bool FilterBrowsers { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether data that originates from sockets should be filtered.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("filterSockets")]
 		bool FilterSockets { get; set; }
 
+		/// <summary>Gets or sets a dictionary of vendor-specific settings.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("vendorConfiguration", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSObject> VendorConfiguration { get; set; }
 
+		/// <summary>Gets or sets the configuration server address.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("serverAddress")]
 		string ServerAddress { get; set; }
 
+		/// <summary>Gets or sets the user name.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("username")]
 		string Username { get; set; }
 
+		/// <summary>Gets or sets the name of the administering organization.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("organization")]
 		string Organization { get; set; }
 
+		/// <summary>Gets or sets the persistent reference to the password that is stored in the keychain.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("passwordReference", ArgumentSemantic.Copy)]
 		NSData PasswordReference { get; set; }
 
+		/// <summary>Gets or sets the persistent reference to a private key and certificate in the keychain.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("identityReference", ArgumentSemantic.Copy)]
 		NSData IdentityReference { get; set; }
 
@@ -885,6 +1085,9 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NEFilterVerdict : NSSecureCoding, NSCopying {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("shouldReport")]
 		bool ShouldReport { get; set; }
@@ -897,9 +1100,15 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NEFlowMetaData : NSCopying, NSSecureCoding {
+		/// <summary>Gets the version-specific signing identifier for the source app.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceAppUniqueIdentifier")]
 		NSData SourceAppUniqueIdentifier { get; }
 
+		/// <summary>Gets the signing identifier for the source app.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceAppSigningIdentifier")]
 		string SourceAppSigningIdentifier { get; }
 
@@ -939,6 +1148,12 @@ namespace NetworkExtension {
 		[Export ("logoff:")]
 		bool Logoff (NEHotspotNetwork network);
 
+		/// <summary>Gets the list of supported network interfaces.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Static, NullAllowed]
 		[Export ("supportedNetworkInterfaces")]
 		NEHotspotNetwork [] SupportedNetworkInterfaces { get; }
@@ -950,6 +1165,9 @@ namespace NetworkExtension {
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	interface NEHotspotHelperOptionInternal {
+		/// <summary>The name of the network handled by the application.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kNEHotspotHelperOptionDisplayName")]
 		NSString DisplayName { get; }
 	}
@@ -973,12 +1191,27 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NEHotspotHelperCommand {
+		/// <summary>Gets the helper command type.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("commandType")]
 		NEHotspotHelperCommandType CommandType { get; }
 
+		/// <summary>Gets the associated network.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("network")]
 		NEHotspotNetwork Network { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>Gets a list of the associated networks.</remarks>
 		[NullAllowed, Export ("networkList")]
 		NEHotspotNetwork [] NetworkList { get; }
 
@@ -1026,24 +1259,45 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NEHotspotNetwork {
+		/// <summary>Gets the network SSID.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("SSID")]
 		string Ssid { get; }
 
+		/// <summary>Gets the BSSID for the network.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("BSSID")]
 		string Bssid { get; }
 
+		/// <summary>Gets a value in [0.0, 1.0] that indicates the recent network strength.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("signalStrength")]
 		double SignalStrength { get; }
 
+		/// <summary>Gets a Boolean value that tells whether the network is secure.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("secure")]
 		bool Secure { [Bind ("isSecure")] get; }
 
+		/// <summary>Gets a Boolean value that tells whether the network was automatically joined.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("autoJoined")]
 		bool AutoJoined { [Bind ("didAutoJoin")] get; }
 
+		/// <summary>Gets a Boolean value that tells whether the network was very recently joined.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("justJoined")]
 		bool JustJoined { [Bind ("didJustJoin")] get; }
 
+		/// <summary>Gets a Boolean value that tells whether the hotspot helper is the chosen one for the network.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("chosenHelper")]
 		bool ChosenHelper { [Bind ("isChosenHelper")] get; }
 
@@ -1072,15 +1326,30 @@ namespace NetworkExtension {
 		[Export ("initWithDestinationAddress:subnetMask:")]
 		NativeHandle Constructor (string address, string subnetMask);
 
+		/// <summary>Gets the destination address.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("destinationAddress")]
 		string DestinationAddress { get; }
 
+		/// <summary>Gets the destination subnet mask.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("destinationSubnetMask")]
 		string DestinationSubnetMask { get; }
 
+		/// <summary>Gets or sets the next-hop gateway address.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("gatewayAddress")]
 		string GatewayAddress { get; set; }
 
+		/// <summary>Gets the default route.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("defaultRoute")]
 		NEIPv4Route DefaultRoute { get; }
@@ -1093,15 +1362,30 @@ namespace NetworkExtension {
 		[Export ("initWithDestinationAddress:networkPrefixLength:")]
 		NativeHandle Constructor (string address, NSNumber networkPrefixLength);
 
+		/// <summary>Gets the destination address.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("destinationAddress")]
 		string DestinationAddress { get; }
 
+		/// <summary>Gets the prefix length of the destination network.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("destinationNetworkPrefixLength")]
 		NSNumber DestinationNetworkPrefixLength { get; }
 
+		/// <summary>Gets or sets the next-hop gateway address.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("gatewayAddress")]
 		string GatewayAddress { get; set; }
 
+		/// <summary>Gets the default route.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("defaultRoute")]
 		NEIPv6Route DefaultRoute { get; }
@@ -1114,15 +1398,33 @@ namespace NetworkExtension {
 		[Export ("initWithAddresses:subnetMasks:")]
 		NativeHandle Constructor (string [] addresses, string [] subnetMasks);
 
+		/// <summary>Gets the list of addresses to assign to the TUN interface.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("addresses")]
 		string [] Addresses { get; }
 
+		/// <summary>Gets the list of subnet masks for the corresponding addresses.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("subnetMasks")]
 		string [] SubnetMasks { get; }
 
+		/// <summary>Gets or sets the list of addresses that will be routed to TUN interface.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("includedRoutes", ArgumentSemantic.Copy)]
 		NEIPv4Route [] IncludedRoutes { get; set; }
 
+		/// <summary>Gets or sets the list of addresses that will be routed to the physical device.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("excludedRoutes", ArgumentSemantic.Copy)]
 		NEIPv4Route [] ExcludedRoutes { get; set; }
 
@@ -1140,15 +1442,33 @@ namespace NetworkExtension {
 		[Export ("initWithAddresses:networkPrefixLengths:")]
 		NativeHandle Constructor (string [] addresses, NSNumber [] networkPrefixLengths);
 
+		/// <summary>Gets the addresses that are assigned to the TUN interface.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("addresses")]
 		string [] Addresses { get; }
 
+		/// <summary>Gets the list of prefix lengths for each corresponding address.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("networkPrefixLengths")]
 		NSNumber [] NetworkPrefixLengths { get; }
 
+		/// <summary>Gets or sets the list of addresses that will be routed to TUN interface.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("includedRoutes", ArgumentSemantic.Copy)]
 		NEIPv6Route [] IncludedRoutes { get; set; }
 
+		/// <summary>Gets or sets the list of addresses that will be routed to the physical device.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("excludedRoutes", ArgumentSemantic.Copy)]
 		NEIPv6Route [] ExcludedRoutes { get; set; }
 	}
@@ -1178,6 +1498,12 @@ namespace NetworkExtension {
 		[Export ("createUDPSessionToEndpoint:fromEndpoint:")]
 		NWUdpSession CreateUdpSessionToEndpoint (NWEndpoint remoteEndpoint, [NullAllowed] NWHostEndpoint localEndpoint);
 
+		/// <summary>Gets the default connection path for new connections.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWPathMonitor' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWPathMonitor' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWPathMonitor' instead.")]
@@ -1204,33 +1530,81 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NEProxySettings : NSSecureCoding, NSCopying {
+		/// <summary>Gets or sets a Boolean value that controls whether proxies can be auto-configured.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("autoProxyConfigurationEnabled")]
 		bool AutoProxyConfigurationEnabled { get; set; }
 
+		/// <summary>Gets or sets the URL to the Proxy Auto Configuration script.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("proxyAutoConfigurationURL", ArgumentSemantic.Copy)]
 		NSUrl ProxyAutoConfigurationUrl { get; set; }
 
+		/// <summary>Gets or sets the Proxy Auto Configuration source code, in JavaScript.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("proxyAutoConfigurationJavaScript")]
 		string ProxyAutoConfigurationJavaScript { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the settings are enabled for the HTTP protocol.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("HTTPEnabled")]
 		bool HttpEnabled { get; set; }
 
+		/// <summary>Gets or sets the server that contains the settings for static HTTP server proxyies.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("HTTPServer", ArgumentSemantic.Copy)]
 		NEProxyServer HttpServer { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the settings are enabled for the HTTPS protocol.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("HTTPSEnabled")]
 		bool HttpsEnabled { get; set; }
 
+		/// <summary>Gets or sets the server that contains the settings for static HTTPS server proxyies.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("HTTPSServer", ArgumentSemantic.Copy)]
 		NEProxyServer HttpsServer { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether single label host names are exempt from the proxy settings.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("excludeSimpleHostnames")]
 		bool ExcludeSimpleHostnames { get; set; }
 
+		/// <summary>Gets or sets a list of domain name patterns for which matching domains re exempt from the proxy settings.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("exceptionList", ArgumentSemantic.Copy)]
 		string [] ExceptionList { get; set; }
 
+		/// <summary>Gets or sets a list of domains for which the proxy settings are applied.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("matchDomains", ArgumentSemantic.Copy)]
 		string [] MatchDomains { get; set; }
 	}
@@ -1242,18 +1616,39 @@ namespace NetworkExtension {
 		[Export ("initWithAddress:port:")]
 		NativeHandle Constructor (string address, nint port);
 
+		/// <summary>Gets the address that was specified when the proxy server was created.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("address")]
 		string Address { get; }
 
+		/// <summary>Gets the port that was specified when the proxy server was created.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("port")]
 		nint Port { get; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether authentication is needed on the server.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("authenticationRequired")]
 		bool AuthenticationRequired { get; set; }
 
+		/// <summary>Gets or sets the user name.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("username")]
 		string Username { get; set; }
 
+		/// <summary>Gets or sets the password.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("password")]
 		string Password { get; set; }
 	}
@@ -1265,12 +1660,27 @@ namespace NetworkExtension {
 		[Export ("initWithTunnelRemoteAddress:")]
 		NativeHandle Constructor (string address);
 
+		/// <summary>Gets the remote address that was provided when the network tunnel object was created.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("tunnelRemoteAddress")]
 		string TunnelRemoteAddress { get; }
 
+		/// <summary>Gets or sets the DNS settings for the tunnel.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("DNSSettings", ArgumentSemantic.Copy)]
 		NEDnsSettings DnsSettings { get; set; }
 
+		/// <summary>Gets or sets the proxy settings for the tunnel.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("proxySettings", ArgumentSemantic.Copy)]
 		NEProxySettings ProxySettings { get; set; }
 	}
@@ -1287,17 +1697,32 @@ namespace NetworkExtension {
 		[Async]
 		void SetTunnelNetworkSettings ([NullAllowed] NETunnelNetworkSettings tunnelNetworkSettings, [NullAllowed] Action<NSError> completionHandler);
 
+		/// <summary>Gets the tunnel configuration.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("protocolConfiguration")]
 		NEVpnProtocol ProtocolConfiguration { get; }
 
+		/// <summary>Gets the rules that control which apps will use the tunneling session.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[NullAllowed, Export ("appRules")]
 		NEAppRule [] AppRules { get; }
 
+		/// <summary>Gets the routing method.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Export ("routingMethod")]
 		NETunnelProviderRoutingMethod RoutingMethod { get; }
 
+		/// <summary>Gets or sets a Boolean value that tells the system that the tunnel is being reestablished.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("reasserting")]
 		bool Reasserting { get; set; }
 	}
@@ -1322,6 +1747,12 @@ namespace NetworkExtension {
 
 		// CopyAppRules was incorrectly bound to AppRules and it is only available on macOS
 #if NET || MONOMAC || __MACCATALYST__
+		/// <summary>Gets a copy of the rules that control which apps can use the tunnel.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoTV, NoiOS, MacCatalyst (15, 0)]
 		[Export ("appRules", ArgumentSemantic.Copy)]
 		NEAppRule [] AppRules { get; set; }
@@ -1331,6 +1762,9 @@ namespace NetworkExtension {
 		NEAppRule [] AppRules { [Wrap ("CopyAppRules ()!", IsVirtual = true)] get; }
 #endif
 
+		/// <summary>Gets or sets the routing method.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Export ("routingMethod")]
 		NETunnelProviderRoutingMethod RoutingMethod { get; }
@@ -1371,17 +1805,35 @@ namespace NetworkExtension {
 	[DisableDefaultCtor] // Assertion failed: (0), function -[NEVPNManager init], file /SourceCache/NetworkExtension_Sim/NetworkExtension-168.1.8/Framework/NEVPNManager.m, line 41.
 	interface NEVpnManager {
 
+		/// <summary>Gets or sets the rules that control when on-demand connections will occur.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("onDemandRules", ArgumentSemantic.Copy)]
 		NEOnDemandRule [] OnDemandRules { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether on-demand connections are allowed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("onDemandEnabled")]
 		bool OnDemandEnabled { [Bind ("isOnDemandEnabled")] get; set; }
 
+		/// <summary>Gets or sets the localized description of the VPN manager.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("localizedDescription")]
 		string LocalizedDescription { get; set; }
 
+		/// <summary>Developers should not use this deprecated property. Developers should use 'ProtocolConfiguration' instead.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[NullAllowed]
 		[Export ("protocol", ArgumentSemantic.Retain)]
@@ -1390,17 +1842,32 @@ namespace NetworkExtension {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ProtocolConfiguration' instead.")]
 		NEVpnProtocol Protocol { get; set; }
 
+		/// <summary>Gets or sets the protocol configuration for the VPN tunnel.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("protocolConfiguration", ArgumentSemantic.Retain)]
 		NEVpnProtocol ProtocolConfiguration { get; set; }
 
+		/// <summary>Gets the VPN connection.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("connection")]
 		NEVpnConnection Connection { get; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the VPN configuration is valid.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
+		/// <summary>Gets the shared VPN manager instance.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("sharedManager")]
 		NEVpnManager SharedManager { get; }
 
@@ -1428,6 +1895,7 @@ namespace NetworkExtension {
 		NSString ErrorDomain { get; }
 #endif
 
+		/// <include file="../docs/api/NetworkExtension/NEVpnManager.xml" path="/Documentation/Docs[@DocId='P:NetworkExtension.NEVpnManager.ConfigurationChangeNotification']/*" />
 		[Notification]
 		[Field ("NEVPNConfigurationChangeNotification")]
 		NSString ConfigurationChangeNotification { get; }
@@ -1437,10 +1905,19 @@ namespace NetworkExtension {
 	[BaseType (typeof (NSObject), Name = "NEVPNConnection")]
 	interface NEVpnConnection {
 
+		/// <summary>Gets the date and time when the VPN connected.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("connectedDate")]
 		NSDate ConnectedDate { get; }
 
+		/// <summary>Gets the VPN connection status.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("status")]
 		NEVpnStatus Status { get; }
 
@@ -1459,10 +1936,14 @@ namespace NetworkExtension {
 		[Export ("stopVPNTunnel")]
 		void StopVpnTunnel ();
 
+		/// <summary>Gets the VPN manager.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("manager")]
 		NEVpnManager Manager { get; }
 
+		/// <include file="../docs/api/NetworkExtension/NEVpnConnection.xml" path="/Documentation/Docs[@DocId='P:NetworkExtension.NEVpnConnection.StatusDidChangeNotification']/*" />
 		[Notification]
 		[Field ("NEVPNStatusDidChangeNotification")]
 		NSString StatusDidChangeNotification { get; }
@@ -1489,35 +1970,80 @@ namespace NetworkExtension {
 	[BaseType (typeof (NSObject), Name = "NEVPNProtocol")]
 	interface NEVpnProtocol : NSCopying, NSSecureCoding {
 
+		/// <summary>Gets or sets the tunneling server address.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("serverAddress")]
 		string ServerAddress { get; set; }
 
+		/// <summary>Gets or sets the user name.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("username")]
 		string Username { get; set; }
 
+		/// <summary>Gets or sets a reference to the keychain item for the password.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("passwordReference", ArgumentSemantic.Copy)]
 		NSData PasswordReference { get; set; }
 
+		/// <summary>Gets or sets a reference to the keychain item for the PKCS12 tunneling credential.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("identityReference", ArgumentSemantic.Copy)]
 		NSData IdentityReference { get; set; }
 
+		/// <summary>Gets or sets the private key and certificate data for the tunnel as PKCS12 formatted data.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("identityData", ArgumentSemantic.Copy)]
 		NSData IdentityData { get; set; }
 
+		/// <summary>Gets or sets the password for the PKCS12 data in the IdentityData property</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("identityDataPassword")]
 		string IdentityDataPassword { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether the VPN should disconnect when the device sleeps.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("disconnectOnSleep")]
 		bool DisconnectOnSleep { get; set; }
 
+		/// <summary>Gets or sets the proxy settings for HTTPS and HTTP connections through the VPN tunnel.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("proxySettings", ArgumentSemantic.Copy)]
 		NEProxySettings ProxySettings { get; set; }
@@ -1559,20 +2085,44 @@ namespace NetworkExtension {
 	[BaseType (typeof (NEVpnProtocol), Name = "NEVPNProtocolIPSec")]
 	interface NEVpnProtocolIpSec {
 
+		/// <summary>Gets or sets the method for IPSec server authentication.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("authenticationMethod")]
 		NEVpnIkeAuthenticationMethod AuthenticationMethod { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether to use extended negotiation.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("useExtendedAuthentication")]
 		bool UseExtendedAuthentication { get; set; }
 
+		/// <summary>Gets or sets a reference to the IKE shared secret in the keychain.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("sharedSecretReference", ArgumentSemantic.Copy)]
 		NSData SharedSecretReference { get; set; }
 
+		/// <summary>Gets or sets the local device for authentication.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("localIdentifier")]
 		string LocalIdentifier { get; set; }
 
+		/// <summary>Gets or sets the identifier IPSec server.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("remoteIdentifier")]
 		string RemoteIdentifier { get; set; }
@@ -1582,15 +2132,27 @@ namespace NetworkExtension {
 	[BaseType (typeof (NSObject), Name = "NEVPNIKEv2SecurityAssociationParameters")]
 	interface NEVpnIke2SecurityAssociationParameters : NSSecureCoding, NSCopying {
 
+		/// <summary>Gets or sets the encryption algorithm for the Security Association.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("encryptionAlgorithm")]
 		NEVpnIke2EncryptionAlgorithm EncryptionAlgorithm { get; set; }
 
+		/// <summary>Gets or sets the integrity algorithm for the Security Association.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("integrityAlgorithm")]
 		NEVpnIke2IntegrityAlgorithm IntegrityAlgorithm { get; set; }
 
+		/// <summary>Gets or sets the Security Association's Diffie Hellman group.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("diffieHellmanGroup")]
 		NEVpnIke2DiffieHellman DiffieHellmanGroup { get; set; }
 
+		/// <summary>Gets or sets the Security Association's lifetime, in mintues.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lifetimeMinutes")]
 		int LifetimeMinutes { get; set; } /* int32_t */
 	}
@@ -1599,55 +2161,103 @@ namespace NetworkExtension {
 	[BaseType (typeof (NEVpnProtocolIpSec), Name = "NEVPNProtocolIKEv2")]
 	interface NEVpnProtocolIke2 {
 
+		/// <summary>Gets or sets the rate at which the IKEv2 client will attempt to detect dead peers.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("deadPeerDetectionRate")]
 		NEVpnIke2DeadPeerDetectionRate DeadPeerDetectionRate { get; set; }
 
+		/// <summary>Gets or sets the common name of issuer of the server certificate.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("serverCertificateIssuerCommonName")]
 		string ServerCertificateIssuerCommonName { get; set; }
 
+		/// <summary>Gets or sets the common name of the server certificate.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("serverCertificateCommonName")]
 		string ServerCertificateCommonName { get; set; }
 
+		/// <summary>Gets the security association parameters for the initial negotiation with the IKEv2 server.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("IKESecurityAssociationParameters")]
 		NEVpnIke2SecurityAssociationParameters IKESecurityAssociationParameters { get; }
 
+		/// <summary>Gets the security association parameters for child IPSec security associations that will be negotiated with the IKEv2 server.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("childSecurityAssociationParameters")]
 		NEVpnIke2SecurityAssociationParameters ChildSecurityAssociationParameters { get; }
 
+		/// <summary>Gets or sets the certificate type.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("certificateType")]
 		NEVpnIke2CertificateType CertificateType { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that controls whether to use the internal subnets that are sent by the IKEv2 server.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("useConfigurationAttributeInternalIPSubnet")]
 		bool UseConfigurationAttributeInternalIPSubnet { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that enables and disables MOBIKE.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("disableMOBIKE")]
 		bool DisableMobike { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that enables and disables redirects by IKEv2.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("disableRedirect")]
 		bool DisableRedirect { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that enables and disables Perfect Forward Secrecy.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("enablePFS")]
 		bool EnablePfs { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that enables and disables revocation checking.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("enableRevocationCheck")]
 		bool EnableRevocationCheck { get; set; }
 
+		/// <summary>Gets or sets a Boolean value that enables or disables strict revocation checks.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("strictRevocationCheck")]
 		bool StrictRevocationCheck { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("minimumTLSVersion", ArgumentSemantic.Assign)]
 		NEVpnIkev2TlsVersion MinimumTlsVersion { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("maximumTLSVersion", ArgumentSemantic.Assign)]
 		NEVpnIkev2TlsVersion MaximumTlsVersion { get; set; }
@@ -1673,24 +2283,54 @@ namespace NetworkExtension {
 	[BaseType (typeof (NSObject))]
 	interface NEOnDemandRule : NSSecureCoding, NSCopying {
 
+		/// <summary>Gets the action for the rule</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("action")]
 		NEOnDemandRuleAction Action { get; }
 
+		/// <summary>Gets or sets the DNS search domains to match.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("DNSSearchDomainMatch")]
 		string [] DnsSearchDomainMatch { get; set; }
 
+		/// <summary>Gets or sets the DNS server addresses to match.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("DNSServerAddressMatch")]
 		string [] DnsServerAddressMatch { get; set; }
 
+		/// <summary>Gets or sets the interface type to match.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("interfaceTypeMatch")]
 		NEOnDemandRuleInterfaceType InterfaceTypeMatch { get; set; }
 
+		/// <summary>Gets or sets the SSID to match.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("SSIDMatch")]
 		string [] SsidMatch { get; set; }
 
+		/// <summary>Gets or sets the URL at which to probe for an expected resource when the rule matches.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("probeURL", ArgumentSemantic.Copy)]
 		NSUrl ProbeUrl { get; set; }
@@ -1715,6 +2355,12 @@ namespace NetworkExtension {
 	[BaseType (typeof (NEOnDemandRule))]
 	interface NEOnDemandRuleEvaluateConnection {
 
+		/// <summary>Gets or sets the connection rules.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("connectionRules", ArgumentSemantic.Copy)]
 		NEEvaluateConnectionRule [] ConnectionRules { get; set; }
@@ -1727,16 +2373,34 @@ namespace NetworkExtension {
 		[Export ("initWithMatchDomains:andAction:")]
 		NativeHandle Constructor (string [] domains, NEEvaluateConnectionRuleAction action);
 
+		/// <summary>Gets the action to run when the network connection properties satisfy the rule for a new connection.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("action")]
 		NEEvaluateConnectionRuleAction Action { get; }
 
+		/// <summary>The domains for which to run the rule.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("matchDomains")]
 		string [] MatchDomains { get; }
 
+		/// <summary>Gets an array of DNS server names to use for resolving the destination hostname when evaluating connectivity, if the rule is <see cref="F:NetworkExtension.NEEvaluateConnectionRuleAction.ConnectIfNeeded" /></summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("useDNSServers", ArgumentSemantic.Copy)]
 		string [] UseDnsServers { get; set; }
 
+		/// <summary>A URL for which to start a VPN if a non-success HTTP code is returned, if the rule is <see cref="F:NetworkExtension.NEEvaluateConnectionRuleAction.ConnectIfNeeded" />.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("probeURL", ArgumentSemantic.Copy)]
 		NSUrl ProbeUrl { get; set; }
@@ -1768,6 +2432,9 @@ namespace NetworkExtension {
 		[Export ("endpointWithHostname:port:")]
 		NWHostEndpoint Create (string hostname, string port);
 
+		/// <summary>Gets the host name.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWEndpoint.Hostname' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWEndpoint.Hostname' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWEndpoint.Hostname' instead.")]
@@ -1775,6 +2442,9 @@ namespace NetworkExtension {
 		[Export ("hostname")]
 		string Hostname { get; }
 
+		/// <summary>Gets the port.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWEndpoint.PortNumber' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWEndpoint.PortNumber' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWEndpoint.PortNumber' instead.")]
@@ -1800,6 +2470,9 @@ namespace NetworkExtension {
 		[Export ("endpointWithName:type:domain:")]
 		NWBonjourServiceEndpoint Create (string name, string type, string domain);
 
+		/// <summary>Gets the service name of the Bonjour endpoint.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWEndpoint.BonjourServiceName' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWEndpoint.BonjourServiceName' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWEndpoint.BonjourServiceName' instead.")]
@@ -1807,6 +2480,9 @@ namespace NetworkExtension {
 		[Export ("name")]
 		string Name { get; }
 
+		/// <summary>Gets the type of the Bonjour service.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWEndpoint.BonjourServiceType' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWEndpoint.BonjourServiceType' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWEndpoint.BonjourServiceType' instead.")]
@@ -1815,6 +2491,9 @@ namespace NetworkExtension {
 		[Export ("type")]
 		string Type { get; }
 
+		/// <summary>Gets the Bonjour domain of the endpoint.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWEndpoint.BonjourServiceDomain' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWEndpoint.BonjourServiceDomain' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWEndpoint.BonjourServiceDomain' instead.")]
@@ -1832,6 +2511,9 @@ namespace NetworkExtension {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NWPath {
+		/// <summary>Gets a value that describes the status of the path, such as whether it is ready to be used or is invalid.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWPath.Status' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWPath.Status' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWPath.Status' instead.")]
@@ -1839,6 +2521,9 @@ namespace NetworkExtension {
 		[Export ("status")]
 		NWPathStatus Status { get; }
 
+		/// <summary>Gets a Boolean value that tells whether the path uses an expensive interface, such as a cellular network.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWPath.IsExpensive' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWPath.IsExpensive' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWPath.IsExpensive' instead.")]
@@ -1877,6 +2562,9 @@ namespace NetworkExtension {
 		[Export ("initWithUpgradeForConnection:")]
 		NativeHandle Constructor (NWTcpConnection connection);
 
+		/// <summary>Gets the state of the connection.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.SetStateChangedHandler' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.SetStateChangedHandler' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.SetStateChangedHandler' instead.")]
@@ -1884,6 +2572,9 @@ namespace NetworkExtension {
 		[Export ("state")]
 		NWTcpConnectionState State { get; }
 
+		/// <summary>Gets the TXT record of the connection.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.SetViabilityChangedHandler' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.SetViabilityChangedHandler' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.SetViabilityChangedHandler' instead.")]
@@ -1891,6 +2582,9 @@ namespace NetworkExtension {
 		[Export ("viable")]
 		bool Viable { [Bind ("isViable")] get; }
 
+		/// <summary>Gets a Boolean value that tells whether new connections to the remote endpoint have a better path available to them..</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.SetBetterPathAvailableHandler' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.SetBetterPathAvailableHandler' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.SetBetterPathAvailableHandler' instead.")]
@@ -1898,6 +2592,9 @@ namespace NetworkExtension {
 		[Export ("hasBetterPath")]
 		bool HasBetterPath { get; }
 
+		/// <summary>Gets the remote endpoint of the connection.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.Endpoint' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.Endpoint' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.Endpoint' instead.")]
@@ -1905,6 +2602,12 @@ namespace NetworkExtension {
 		[Export ("endpoint")]
 		NWEndpoint Endpoint { get; }
 
+		/// <summary>Gets the path through which the connection was made.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.CurrentPath' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.CurrentPath' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.CurrentPath' instead.")]
@@ -1912,6 +2615,12 @@ namespace NetworkExtension {
 		[NullAllowed, Export ("connectedPath")]
 		NWPath ConnectedPath { get; }
 
+		/// <summary>Gets the address from which the connectio was made.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWPath.EffectiveLocalEndpoint' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWPath.EffectiveLocalEndpoint' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWPath.EffectiveLocalEndpoint' instead.")]
@@ -1919,6 +2628,12 @@ namespace NetworkExtension {
 		[NullAllowed, Export ("localAddress")]
 		NWEndpoint LocalAddress { get; }
 
+		/// <summary>Gets the remote endpoint to which the connection was made.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWPath.EffectiveRemoteEndpoint' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWPath.EffectiveRemoteEndpoint' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWPath.EffectiveRemoteEndpoint' instead.")]
@@ -1926,6 +2641,12 @@ namespace NetworkExtension {
 		[NullAllowed, Export ("remoteAddress")]
 		NWEndpoint RemoteAddress { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWEndpoint.TxtRecord' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWEndpoint.TxtRecord' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWEndpoint.TxtRecord' instead.")]
@@ -1933,6 +2654,12 @@ namespace NetworkExtension {
 		[NullAllowed, Export ("txtRecord")]
 		NSData TxtRecord { get; }
 
+		/// <summary>Gets the error that caused the connection to fail, if it failed.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.SetStateChangedHandler' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.SetStateChangedHandler' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.SetStateChangedHandler' instead.")]
@@ -2029,6 +2756,12 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "NWTLSParameters")]
 	interface NWTlsParameters {
+		/// <summary>Gets the session identifier of the TCP connection.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Security.SecProtocolOptions.SetTlsResumptionEnabled' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Security.SecProtocolOptions.SetTlsResumptionEnabled' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Security.SecProtocolOptions.SetTlsResumptionEnabled' instead.")]
@@ -2036,6 +2769,12 @@ namespace NetworkExtension {
 		[NullAllowed, Export ("TLSSessionID", ArgumentSemantic.Copy)]
 		NSData TlsSessionID { get; set; }
 
+		/// <summary>Gets or sets an array of cipher suites to use for TLS.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Security.SecProtocolOptions.AddTlsCipherSuite' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Security.SecProtocolOptions.AddTlsCipherSuite' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Security.SecProtocolOptions.AddTlsCipherSuite' instead.")]
@@ -2043,6 +2782,9 @@ namespace NetworkExtension {
 		[NullAllowed, Export ("SSLCipherSuites", ArgumentSemantic.Copy)]
 		NSSet<NSNumber> SslCipherSuites { get; set; }
 
+		/// <summary>Gets or sets the minimum allowed SSL protocol version.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Security.SecProtocolOptions.SetTlsMinVersion' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Security.SecProtocolOptions.SetTlsMinVersion' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Security.SecProtocolOptions.SetTlsMinVersion' instead.")]
@@ -2050,6 +2792,9 @@ namespace NetworkExtension {
 		[Export ("minimumSSLProtocolVersion", ArgumentSemantic.Assign)]
 		nuint MinimumSslProtocolVersion { get; set; }
 
+		/// <summary>Gets or sets the maximum allowed SSL protocol version.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Security.SecProtocolOptions.SetTlsMaxVersion' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Security.SecProtocolOptions.SetTlsMaxVersion' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Security.SecProtocolOptions.SetTlsMaxVersion' instead.")]
@@ -2072,6 +2817,9 @@ namespace NetworkExtension {
 		[Export ("initWithUpgradeForSession:")]
 		NativeHandle Constructor (NWUdpSession session);
 
+		/// <summary>Gets the UDP session state.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.SetStateChangedHandler' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.SetStateChangedHandler' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.SetStateChangedHandler' instead.")]
@@ -2079,6 +2827,9 @@ namespace NetworkExtension {
 		[Export ("state")]
 		NWUdpSessionState State { get; }
 
+		/// <summary>Gets the endpoint that was used to create the UDP session.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.Endpoint' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.Endpoint' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.Endpoint' instead.")]
@@ -2086,6 +2837,12 @@ namespace NetworkExtension {
 		[Export ("endpoint")]
 		NWEndpoint Endpoint { get; }
 
+		/// <summary>Gets the current remote endpoint.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.CurrentPath' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.CurrentPath' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.CurrentPath' instead.")]
@@ -2093,6 +2850,9 @@ namespace NetworkExtension {
 		[NullAllowed, Export ("resolvedEndpoint")]
 		NWEndpoint ResolvedEndpoint { get; }
 
+		/// <summary>Gets a Boolean value that tells whether the session can transfer data.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.SetViabilityChangedHandler' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.SetViabilityChangedHandler' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.SetViabilityChangedHandler' instead.")]
@@ -2100,6 +2860,9 @@ namespace NetworkExtension {
 		[Export ("viable")]
 		bool Viable { [Bind ("isViable")] get; }
 
+		/// <summary>Get a Boolean value that tells whether new UDP sessions have a better path available to them.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.SetBetterPathAvailableHandler' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.SetBetterPathAvailableHandler' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.SetBetterPathAvailableHandler' instead.")]
@@ -2107,6 +2870,12 @@ namespace NetworkExtension {
 		[Export ("hasBetterPath")]
 		bool HasBetterPath { get; }
 
+		/// <summary>Gets the current path to the resolved endpoint.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.CurrentPath' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.CurrentPath' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.CurrentPath' instead.")]
@@ -2121,6 +2890,9 @@ namespace NetworkExtension {
 		[Export ("tryNextResolvedEndpoint")]
 		void TryNextResolvedEndpoint ();
 
+		/// <summary>Gets the maximum write length, in bytes, of datagrams.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.MaximumDatagramSize' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.MaximumDatagramSize' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.MaximumDatagramSize' instead.")]
@@ -2168,14 +2940,32 @@ namespace NetworkExtension {
 	[BaseType (typeof (NEFilterFlow))]
 	interface NEFilterBrowserFlow {
 
+		/// <summary>The HTTP request.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("request")]
 		NSUrlRequest Request { get; }
 
+		/// <summary>The HTTP response.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("response")]
 		[NullAllowed]
 		NSUrlResponse Response { get; }
 
+		/// <summary>Gets the URL of the page for which the flow was created.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("parentURL")]
 		[NullAllowed]
 		NSUrl ParentUrl { get; }
@@ -2188,6 +2978,12 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NEFilterFlow))]
 	interface NEFilterSocketFlow {
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>Gets the remote endpoint of the socket.</remarks>
 		[NullAllowed]
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'RemoteFlowEndpoint' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'RemoteFlowEndpoint' instead.")]
@@ -2195,6 +2991,12 @@ namespace NetworkExtension {
 		[Export ("remoteEndpoint")]
 		NWEndpoint RemoteEndpoint { get; }
 
+		/// <summary>Gets the local endpoint of the socket.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'LocalFlowEndpoint' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'LocalFlowEndpoint' instead.")]
@@ -2202,6 +3004,9 @@ namespace NetworkExtension {
 		[Export ("localEndpoint")]
 		NWEndpoint LocalEndpoint { get; }
 
+		/// <summary>Gets or sets the socket protocol family.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("socketFamily")]
 		int SocketFamily {
 			get;
@@ -2211,6 +3016,9 @@ namespace NetworkExtension {
 #endif
 		}
 
+		/// <summary>Gets or sets the socket type.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("socketType")]
 		int SocketType {
 			get;
@@ -2220,6 +3028,9 @@ namespace NetworkExtension {
 #endif
 		}
 
+		/// <summary>Gets or sets the socket protocol.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("socketProtocol")]
 		int SocketProtocol {
 			get;
@@ -2250,9 +3061,18 @@ namespace NetworkExtension {
 	[BaseType (typeof (NSObject))]
 	interface NEFilterReport : NSSecureCoding, NSCopying {
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("flow")]
 		NEFilterFlow Flow { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("action")]
 		NEFilterAction Action { get; }
 
@@ -2279,18 +3099,42 @@ namespace NetworkExtension {
 		[Export ("initWithTunnelRemoteAddress:")]
 		NativeHandle Constructor (string address);
 
+		/// <summary>Gets or sets the IPv4 network tunnel settings.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("IPv4Settings", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		NEIPv4Settings IPv4Settings { get; set; }
 
+		/// <summary>Gets or sets the IPv6 network tunnel settings.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("IPv6Settings", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		NEIPv6Settings IPv6Settings { get; set; }
 
+		/// <summary>Gets or sets the overhead for storing tunneling protocol headers.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("tunnelOverheadBytes", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		NSNumber TunnelOverheadBytes { get; set; }
 
+		/// <summary>Gets or sets the Maximum Transmission Unit (MTU) size for the TUN interface, in bytes.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("MTU", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		NSNumber Mtu { get; set; }
@@ -2330,6 +3174,9 @@ namespace NetworkExtension {
 		[Export ("cancelTunnelWithError:")]
 		void CancelTunnel ([NullAllowed] NSError error);
 
+		/// <summary>Gets the packet flow that receives IP packets and injects IP packets into the network.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("packetFlow")]
 		NEPacketTunnelFlow PacketFlow { get; }
 
@@ -2355,9 +3202,21 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NEVpnProtocol))]
 	interface NETunnelProviderProtocol {
+		/// <summary>Gets or sets a dictionary of developer-specified configuration values.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("providerConfiguration", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSObject> ProviderConfiguration { get; set; }
 
+		/// <summary>Gets or sets the bundle identifier for this configuration's tunnel provider extension.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("providerBundleIdentifier")]
 		string ProviderBundleIdentifier { get; set; }
 	}
@@ -2381,12 +3240,24 @@ namespace NetworkExtension {
 		[Export ("initWithData:protocolFamily:")]
 		NativeHandle Constructor (NSData data, /* sa_family_t */ byte protocolFamily);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("data", ArgumentSemantic.Copy)]
 		NSData Data { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("protocolFamily")]
 		byte ProtocolFamily { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[NullAllowed, Export ("metadata")]
 		NEFlowMetaData Metadata { get; }
@@ -2405,10 +3276,14 @@ namespace NetworkExtension {
 	[BaseType (typeof (NSObject), Name = "NEDNSProxyManager")]
 	interface NEDnsProxyManager {
 
+		/// <include file="../docs/api/NetworkExtension/NEDnsProxyManager.xml" path="/Documentation/Docs[@DocId='P:NetworkExtension.NEDnsProxyManager.ProxyConfigurationDidChangeNotification']/*" />
 		[Notification]
 		[Field ("NEDNSProxyConfigurationDidChangeNotification")]
 		NSString ProxyConfigurationDidChangeNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("sharedManager")]
 		NEDnsProxyManager SharedManager { get; }
@@ -2425,12 +3300,27 @@ namespace NetworkExtension {
 		[Export ("saveToPreferencesWithCompletionHandler:")]
 		void SaveToPreferences (Action<NSError> completionHandler);
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("localizedDescription")]
 		string LocalizedDescription { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("providerProtocol", ArgumentSemantic.Strong)]
 		NEDnsProxyProviderProtocol ProviderProtocol { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 	}
@@ -2456,6 +3346,12 @@ namespace NetworkExtension {
 		[Export ("handleNewFlow:")]
 		bool HandleNewFlow (NEAppProxyFlow flow);
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("systemDNSSettings")]
 		NEDnsSettings [] SystemDnsSettings { get; }
 
@@ -2478,9 +3374,21 @@ namespace NetworkExtension {
 	[BaseType (typeof (NEVpnProtocol), Name = "NEDNSProxyProviderProtocol")]
 	interface NEDnsProxyProviderProtocol {
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("providerConfiguration", ArgumentSemantic.Copy)]
 		NSDictionary ProviderConfiguration { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("providerBundleIdentifier")]
 		string ProviderBundleIdentifier { get; set; }
 	}
@@ -2491,18 +3399,33 @@ namespace NetworkExtension {
 	[BaseType (typeof (NSObject))]
 	interface NEHotspotHS20Settings : NSCopying, NSSecureCoding {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("domainName")]
 		string DomainName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("roamingEnabled")]
 		bool RoamingEnabled { [Bind ("isRoamingEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("roamingConsortiumOIs", ArgumentSemantic.Copy)]
 		string [] RoamingConsortiumOIs { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("naiRealmNames", ArgumentSemantic.Copy)]
 		string [] NaiRealmNames { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("MCCAndMNCs", ArgumentSemantic.Copy)]
 		string [] MccAndMncs { get; set; }
 
@@ -2520,24 +3443,45 @@ namespace NetworkExtension {
 		[Export ("supportedEAPTypes", ArgumentSemantic.Copy)]
 		IntPtr _SupportedEapTypes { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("username")]
 		string Username { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("outerIdentity")]
 		string OuterIdentity { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("ttlsInnerAuthenticationType", ArgumentSemantic.Assign)]
 		NEHotspotConfigurationTtlsInnerAuthenticationType TtlsInnerAuthenticationType { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("password")]
 		string Password { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("trustedServerNames", ArgumentSemantic.Copy)]
 		string [] TrustedServerNames { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("tlsClientCertificateRequired")]
 		bool TlsClientCertificateRequired { [Bind ("isTLSClientCertificateRequired")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("preferredTLSVersion", ArgumentSemantic.Assign)]
 		NEHotspotConfigurationEapTlsVersion PreferredTlsVersion { get; set; }
 
@@ -2556,12 +3500,21 @@ namespace NetworkExtension {
 	[BaseType (typeof (NSObject))]
 	interface NEHotspotConfiguration : NSCopying, NSSecureCoding {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("SSID")]
 		string Ssid { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("joinOnce")]
 		bool JoinOnce { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lifeTimeInDays", ArgumentSemantic.Copy)]
 		NSNumber LifeTimeInDays { get; set; }
 
@@ -2611,6 +3564,9 @@ namespace NetworkExtension {
 	[BaseType (typeof (NSObject))]
 	interface NEHotspotConfigurationManager {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("sharedManager", ArgumentSemantic.Strong)]
 		NEHotspotConfigurationManager SharedManager { get; }

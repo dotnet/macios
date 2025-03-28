@@ -51,14 +51,16 @@ namespace CoreFoundation {
 	public enum CFStreamEventType : ulong {
 		/// <summary>No event occurred.</summary>
 		None = 0,
+		/// <summary>The stream was successfully opened.</summary>
 		OpenCompleted = 1,
 		/// <summary>The stream can now be read.</summary>
 		HasBytesAvailable = 2,
+		/// <summary>The stream now be written to.</summary>
 		CanAcceptBytes = 4,
 		/// <summary>An error occurred on the steeam.</summary>
 		ErrorOccurred = 8,
 		/// <summary>The end of the stream has been reached.</summary>
-		EndEncountered = 16
+		EndEncountered = 16,
 	}
 
 	// NSStream.h
@@ -154,6 +156,7 @@ namespace CoreFoundation {
 	public enum CFStreamStatus : long {
 		/// <summary>To be added.</summary>
 		NotOpen = 0,
+		/// <summary>To be added.</summary>
 		Opening,
 		/// <summary>To be added.</summary>
 		Open,
@@ -166,7 +169,7 @@ namespace CoreFoundation {
 		/// <summary>To be added.</summary>
 		Closed,
 		/// <summary>To be added.</summary>
-		Error
+		Error,
 	}
 
 	[SupportedOSPlatform ("ios")]
@@ -177,7 +180,8 @@ namespace CoreFoundation {
 		GCHandle gch;
 		CFRunLoop? loop;
 		NSString? loopMode;
-		bool open, closed;
+		bool open;
+		bool closed;
 
 		#region Stream Constructors
 
@@ -353,6 +357,7 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (request));
 
 			var handle = CFReadStreamCreateForHTTPRequest (IntPtr.Zero, request.Handle);
+			GC.KeepAlive (request);
 			return new CFHTTPStream (handle, true);
 		}
 
@@ -386,9 +391,19 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (body));
 
 			var handle = CFReadStreamCreateForStreamedHTTPRequest (IntPtr.Zero, request.Handle, body.Handle);
+			GC.KeepAlive (request);
+			GC.KeepAlive (body);
 			return new CFHTTPStream (handle, true);
 		}
 
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("macos10.11", "Use 'NSUrlSession' instead.")]
+		[ObsoletedOSPlatform ("ios9.0", "Use 'NSUrlSession' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst13.0", "Use 'NSUrlSession' instead.")]
+		[ObsoletedOSPlatform ("tvos9.0", "Use 'NSUrlSession' instead.")]
 		public static CFHTTPStream CreateForStreamedHTTPRequest (CFHTTPMessage request, NSInputStream body)
 		{
 			if (request is null)
@@ -397,6 +412,8 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (body));
 
 			var handle = CFReadStreamCreateForStreamedHTTPRequest (IntPtr.Zero, request.Handle, body.Handle);
+			GC.KeepAlive (request);
+			GC.KeepAlive (body);
 			return new CFHTTPStream (handle, true);
 		}
 
@@ -502,6 +519,9 @@ namespace CoreFoundation {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		public class StreamEventArgs : EventArgs {
+			/// <summary>To be added.</summary>
+			///         <value>To be added.</value>
+			///         <remarks>To be added.</remarks>
 			public CFStreamEventType EventType {
 				get;
 				private set;
@@ -692,6 +712,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* dispatch_queue_t */ IntPtr CFWriteStreamCopyDispatchQueue (/* CFWriteStreamRef */ IntPtr stream);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -702,9 +725,13 @@ namespace CoreFoundation {
 			}
 			set {
 				CFReadStreamSetDispatchQueue (Handle, value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -715,6 +742,7 @@ namespace CoreFoundation {
 			}
 			set {
 				CFWriteStreamSetDispatchQueue (Handle, value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 	}

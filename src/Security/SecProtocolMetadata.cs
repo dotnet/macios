@@ -44,11 +44,17 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr sec_protocol_metadata_get_negotiated_protocol (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? NegotiatedProtocol => Marshal.PtrToStringAnsi (sec_protocol_metadata_get_negotiated_protocol (GetCheckedHandle ()));
 
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr sec_protocol_metadata_copy_peer_public_key (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public DispatchData? PeerPublicKey => CreateDispatchData (sec_protocol_metadata_copy_peer_public_key (GetCheckedHandle ()));
 
 #if NET
@@ -68,6 +74,9 @@ namespace Security {
 		extern static SslProtocol sec_protocol_metadata_get_negotiated_protocol_version (IntPtr handle);
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -146,6 +155,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static byte sec_protocol_metadata_get_early_data_accepted (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool EarlyDataAccepted => sec_protocol_metadata_get_early_data_accepted (GetCheckedHandle ()) != 0;
 
 		[DllImport (Constants.SecurityLibrary)]
@@ -157,7 +169,10 @@ namespace Security {
 				return metadataB is null;
 			else if (metadataB is null)
 				return false; // This was tested in a native app. We do copy the behaviour.
-			return sec_protocol_metadata_challenge_parameters_are_equal (metadataA.GetCheckedHandle (), metadataB.GetCheckedHandle ()) != 0;
+			bool result = sec_protocol_metadata_challenge_parameters_are_equal (metadataA.GetCheckedHandle (), metadataB.GetCheckedHandle ()) != 0;
+			GC.KeepAlive (metadataA);
+			GC.KeepAlive (metadataB);
+			return result;
 		}
 
 		[DllImport (Constants.SecurityLibrary)]
@@ -169,7 +184,10 @@ namespace Security {
 				return metadataB is null;
 			else if (metadataB is null)
 				return false; // This was tested in a native app. We do copy the behaviour.
-			return sec_protocol_metadata_peers_are_equal (metadataA.GetCheckedHandle (), metadataB.GetCheckedHandle ()) != 0;
+			bool result = sec_protocol_metadata_peers_are_equal (metadataA.GetCheckedHandle (), metadataB.GetCheckedHandle ()) != 0;
+			GC.KeepAlive (metadataA);
+			GC.KeepAlive (metadataB);
+			return result;
 		}
 
 #if !NET

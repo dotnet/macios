@@ -28,12 +28,10 @@ using EventKit;
 #if MONOMAC
 using AppKit;
 #else
-#if !__TVOS__ && !__WATCHOS__
+#if !__TVOS__
 using AddressBook;
 #endif
-#if !__WATCHOS__
 using MediaPlayer;
-#endif
 using UIKit;
 #endif
 using ObjCRuntime;
@@ -78,9 +76,7 @@ partial class TestRuntime {
 
 	public static string GetiOSBuildVersion ()
 	{
-#if __WATCHOS__
-		throw new Exception ("Can't get iOS Build version on watchOS.");
-#elif MONOMAC
+#if MONOMAC
 		throw new Exception ("Can't get iOS Build version on OSX.");
 #else
 		return CFString.FromHandle (IntPtr_objc_msgSend (UIDevice.CurrentDevice.Handle, Selector.GetHandle ("buildVersion")))!;
@@ -128,8 +124,6 @@ partial class TestRuntime {
 			return ApplePlatform.TVOS;
 #elif __MACOS__
 			return ApplePlatform.MacOSX;
-#elif __WATCHOS__
-			return ApplePlatform.WatchOS;
 #else
 #error Unknown platform
 #endif
@@ -357,35 +351,30 @@ partial class TestRuntime {
 			iOS = new { Major = 11, Minor = 0, Build = "15A5278" },
 			tvOS = new { Major = 11, Minor = 0, Build = "?" },
 			macOS = new { Major = 10, Minor = 13, Build = "?" },
-			watchOS = new { Major = 4, Minor = 0, Build = "?" },
 		};
 		var nineb2 = new {
 			Xcode = new { Major = 9, Minor = 0, Beta = 2 },
 			iOS = new { Major = 11, Minor = 0, Build = "15A5304" },
 			tvOS = new { Major = 11, Minor = 0, Build = "?" },
 			macOS = new { Major = 10, Minor = 13, Build = "?" },
-			watchOS = new { Major = 4, Minor = 0, Build = "?" },
 		};
 		var nineb3 = new {
 			Xcode = new { Major = 9, Minor = 0, Beta = 3 },
 			iOS = new { Major = 11, Minor = 0, Build = "15A5318" },
 			tvOS = new { Major = 11, Minor = 0, Build = "?" },
 			macOS = new { Major = 10, Minor = 13, Build = "?" },
-			watchOS = new { Major = 4, Minor = 0, Build = "?" },
 		};
 		var elevenb5 = new {
 			Xcode = new { Major = 11, Minor = 0, Beta = 5 },
 			iOS = new { Major = 13, Minor = 0, Build = "17A5547" },
 			tvOS = new { Major = 13, Minor = 0, Build = "?" },
 			macOS = new { Major = 10, Minor = 15, Build = "?" },
-			watchOS = new { Major = 6, Minor = 0, Build = "?" },
 		};
 		var elevenb6 = new {
 			Xcode = new { Major = 11, Minor = 0, Beta = 6 },
 			iOS = new { Major = 13, Minor = 0, Build = "17A5565b" },
 			tvOS = new { Major = 13, Minor = 0, Build = "?" },
 			macOS = new { Major = 10, Minor = 15, Build = "?" },
-			watchOS = new { Major = 6, Minor = 0, Build = "?" },
 		};
 
 		var twelvedot2b2 = new {
@@ -393,7 +382,6 @@ partial class TestRuntime {
 			iOS = new { Major = 14, Minor = 2, Build = "18B5061" },
 			tvOS = new { Major = 14, Minor = 2, Build = "18K5036" },
 			macOS = new { Major = 11, Minor = 0, Build = "?" },
-			watchOS = new { Major = 7, Minor = 1, Build = "18R5561" },
 		};
 
 		var twelvedot2b3 = new {
@@ -401,7 +389,6 @@ partial class TestRuntime {
 			iOS = new { Major = 14, Minor = 2, Build = "18B5072" },
 			tvOS = new { Major = 14, Minor = 2, Build = "18K5047" },
 			macOS = new { Major = 11, Minor = 0, Build = "20A5395" },
-			watchOS = new { Major = 7, Minor = 1, Build = "18R5572" },
 		};
 
 		var versions = new [] {
@@ -470,9 +457,7 @@ partial class TestRuntime {
 		case 16:
 			switch (minor) {
 			case 0:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (11, 0);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (18, 0);
 #elif __IOS__
 				return CheckiOSSystemVersion (18, 0);
@@ -482,9 +467,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ($"Missing platform case for Xcode {major}.{minor}");
 #endif
 			case 1:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (11, 1);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (18, 1);
 #elif __IOS__
 				return CheckiOSSystemVersion (18, 1);
@@ -494,9 +477,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ($"Missing platform case for Xcode {major}.{minor}");
 #endif
 			case 2:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (11, 2);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (18, 2);
 #elif __IOS__
 				return CheckiOSSystemVersion (18, 2);
@@ -511,9 +492,7 @@ partial class TestRuntime {
 		case 15:
 			switch (minor) {
 			case 0:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (10, 0);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (17, 0);
 #elif __IOS__
 				return CheckiOSSystemVersion (17, 0);
@@ -524,9 +503,7 @@ partial class TestRuntime {
 #endif
 			case 1:
 			case 2:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (10, 2);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (17, 2);
 #elif __IOS__
 				return CheckiOSSystemVersion (17, 2);
@@ -536,9 +513,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ($"Missing platform case for Xcode {major}.{minor}");
 #endif
 			case 3:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (10, 4);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (17, 4);
 #elif __IOS__
 				return CheckiOSSystemVersion (17, 4);
@@ -548,9 +523,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ($"Missing platform case for Xcode {major}.{minor}");
 #endif
 			case 4:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (10, 5);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (17, 5);
 #elif __IOS__
 				return CheckiOSSystemVersion (17, 5);
@@ -565,9 +538,7 @@ partial class TestRuntime {
 		case 14:
 			switch (minor) {
 			case 0:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (9, 0);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (16, 0);
 #elif __IOS__
 				return CheckiOSSystemVersion (16, 0);
@@ -577,9 +548,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ($"Missing platform case for Xcode {major}.{minor}");
 #endif
 			case 1:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (9, 1);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (16, 1);
 #elif __IOS__
 				return CheckiOSSystemVersion (16, 1);
@@ -589,9 +558,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ($"Missing platform case for Xcode {major}.{minor}");
 #endif
 			case 2:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (9, 1);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (16, 1);
 #elif __IOS__
 				return CheckiOSSystemVersion (16, 2);
@@ -601,9 +568,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ($"Missing platform case for Xcode {major}.{minor}");
 #endif
 			case 3:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (9, 4);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (16, 4);
 #elif __IOS__
 				return CheckiOSSystemVersion (16, 4);
@@ -618,9 +583,7 @@ partial class TestRuntime {
 		case 13:
 			switch (minor) {
 			case 0:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (8, 0);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (15, 0);
 #elif __IOS__
 				return CheckiOSSystemVersion (15, 0);
@@ -630,9 +593,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ();
 #endif
 			case 1:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (8, 1);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (15, 1);
 #elif __IOS__
 				return CheckiOSSystemVersion (15, 1);
@@ -642,9 +603,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ();
 #endif
 			case 2:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (8, 3);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (15, 2);
 #elif __IOS__
 				return CheckiOSSystemVersion (15, 2);
@@ -654,9 +613,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ();
 #endif
 			case 3:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (8, 5);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (15, 4);
 #elif __IOS__
 				return CheckiOSSystemVersion (15, 4);
@@ -671,9 +628,7 @@ partial class TestRuntime {
 		case 12:
 			switch (minor) {
 			case 0:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (7, 0);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (14, 0);
 #elif __IOS__
 				return CheckiOSSystemVersion (14, 0);
@@ -683,9 +638,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ();
 #endif
 			case 1:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (7, 0);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (14, 0);
 #elif __IOS__
 				return CheckiOSSystemVersion (14, 1);
@@ -695,9 +648,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ();
 #endif
 			case 2:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (7, 1);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (14, 2);
 #elif __IOS__
 				return CheckiOSSystemVersion (14, 2);
@@ -707,9 +658,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ();
 #endif
 			case 3:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (7, 2);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (14, 3);
 #elif __IOS__
 				return CheckiOSSystemVersion (14, 3);
@@ -717,9 +666,7 @@ partial class TestRuntime {
 				return CheckMacSystemVersion (11, 1, 0);
 #endif
 			case 5:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (7, 4);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (14, 5);
 #elif __IOS__
 				return CheckiOSSystemVersion (14, 5);
@@ -734,9 +681,7 @@ partial class TestRuntime {
 		case 11:
 			switch (minor) {
 			case 0:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (6, 0);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (13, 0);
 #elif __IOS__
 				return CheckiOSSystemVersion (13, 0);
@@ -746,9 +691,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ();
 #endif
 			case 1:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (6, 0);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (13, 0);
 #elif __IOS__
 				return CheckiOSSystemVersion (13, 1);
@@ -758,9 +701,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ();
 #endif
 			case 2:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (6, 1);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (13, 2);
 #elif MONOMAC
 				return CheckMacSystemVersion (10, 15, 1);
@@ -770,9 +711,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ();
 #endif
 			case 3:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (6, 1, 1);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (13, 3);
 #elif __IOS__
 				return CheckiOSSystemVersion (13, 3);
@@ -782,9 +721,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ();
 #endif
 			case 4:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (6, 2);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (13, 4);
 #elif __IOS__
 				return CheckiOSSystemVersion (13, 4);
@@ -794,9 +731,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ();
 #endif
 			case 5:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (6, 2);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (13, 4);
 #elif __IOS__
 				return CheckiOSSystemVersion (13, 5);
@@ -806,9 +741,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ();
 #endif
 			case 6:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (6, 2);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (13, 4);
 #elif __IOS__
 				return CheckiOSSystemVersion (13, 6);
@@ -823,9 +756,7 @@ partial class TestRuntime {
 		case 10:
 			switch (minor) {
 			case 0:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (5, 0);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (12, 0);
 #elif __IOS__
 				return CheckiOSSystemVersion (12, 0);
@@ -835,9 +766,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ();
 #endif
 			case 1:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (5, 1);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (12, 1);
 #elif __IOS__
 				return CheckiOSSystemVersion (12, 1);
@@ -847,9 +776,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ();
 #endif
 			case 2:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (5, 2);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (12, 2);
 #elif __IOS__
 				return CheckiOSSystemVersion (12, 2);
@@ -864,9 +791,7 @@ partial class TestRuntime {
 		case 9:
 			switch (minor) {
 			case 0:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (4, 0);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (11, 0);
 #elif __IOS__
 				return CheckiOSSystemVersion (11, 0);
@@ -876,9 +801,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ();
 #endif
 			case 2:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (4, 2);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (11, 2);
 #elif __IOS__
 				return CheckiOSSystemVersion (11, 2);
@@ -888,9 +811,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ();
 #endif
 			case 3:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (4, 3);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (11, 3);
 #elif __IOS__
 				return CheckiOSSystemVersion (11, 3);
@@ -905,9 +826,7 @@ partial class TestRuntime {
 		case 8:
 			switch (minor) {
 			case 0:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (3, 0);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (10, 0);
 #elif __IOS__
 				return CheckiOSSystemVersion (10, 0);
@@ -917,9 +836,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ();
 #endif
 			case 1:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (3, 1);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (10, 0);
 #elif __IOS__
 				return CheckiOSSystemVersion (10, 1);
@@ -929,9 +846,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ();
 #endif
 			case 2:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (3, 1);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (10, 1);
 #elif __IOS__
 				return CheckiOSSystemVersion (10, 2);
@@ -941,9 +856,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ();
 #endif
 			case 3:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (3, 2);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (10, 2);
 #elif __IOS__
 				return CheckiOSSystemVersion (10, 3);
@@ -958,9 +871,7 @@ partial class TestRuntime {
 		case 7:
 			switch (minor) {
 			case 0:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (2, 0);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (9, 0);
 #elif __IOS__
 				return CheckiOSSystemVersion (9, 0);
@@ -970,9 +881,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ();
 #endif
 			case 1:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (2, 0);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (9, 0);
 #elif __IOS__
 				return CheckiOSSystemVersion (9, 1);
@@ -982,9 +891,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ();
 #endif
 			case 2:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (2, 1);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (9, 1);
 #elif __IOS__
 				return CheckiOSSystemVersion (9, 2);
@@ -994,9 +901,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ();
 #endif
 			case 3:
-#if __WATCHOS__
-				return CheckWatchOSSystemVersion (2, 2);
-#elif __TVOS__
+#if __TVOS__
 				return ChecktvOSSystemVersion (9, 2);
 #elif __IOS__
 				return CheckiOSSystemVersion (9, 3);
@@ -1022,7 +927,7 @@ partial class TestRuntime {
 			default:
 				throw new NotImplementedException ();
 			}
-#elif __TVOS__ || __WATCHOS__
+#elif __TVOS__
 			return true;
 #elif MONOMAC
 			switch (minor) {
@@ -1050,7 +955,7 @@ partial class TestRuntime {
 			default:
 				throw new NotImplementedException ();
 			}
-#elif __TVOS__ || __WATCHOS__
+#elif __TVOS__
 			return true;
 #elif MONOMAC
 			switch (minor) {
@@ -1077,7 +982,7 @@ partial class TestRuntime {
 			default:
 				throw new NotImplementedException ();
 			}
-#elif __TVOS__ || __WATCHOS__
+#elif __TVOS__
 			return true;
 #elif MONOMAC
 			switch (minor) {
@@ -1106,8 +1011,6 @@ partial class TestRuntime {
 			return CheckMacSystemVersion (major, minor, build, throwIfOtherPlatform);
 		case ApplePlatform.TVOS:
 			return ChecktvOSSystemVersion (major, minor, throwIfOtherPlatform);
-		case ApplePlatform.WatchOS:
-			return CheckWatchOSSystemVersion (major, minor, throwIfOtherPlatform);
 		case ApplePlatform.MacCatalyst:
 			return CheckMacCatalystSystemVersion (major, minor, throwIfOtherPlatform);
 		default:
@@ -1126,9 +1029,6 @@ partial class TestRuntime {
 			break;
 		case ApplePlatform.TVOS:
 			AsserttvOSSystemVersion (major, minor, throwIfOtherPlatform);
-			break;
-		case ApplePlatform.WatchOS:
-			AssertWatchOSSystemVersion (major, minor, throwIfOtherPlatform);
 			break;
 		case ApplePlatform.MacCatalyst:
 			AssertMacCatalystSystemVersion (major, minor, build, throwIfOtherPlatform);
@@ -1213,46 +1113,6 @@ partial class TestRuntime {
 			NUnit.Framework.Assert.Ignore ($"This test requires tvOS {major}.{minor}");
 	}
 
-	// This method returns true if:
-	// system version >= specified version
-	// AND
-	// sdk version >= specified version
-	static bool CheckWatchOSSystemVersion (int major, int minor, bool throwIfOtherPlatform = true)
-	{
-#if __WATCHOS__
-		return WatchKit.WKInterfaceDevice.CurrentDevice.CheckSystemVersion (major, minor);
-#else
-		if (throwIfOtherPlatform)
-			throw new Exception ("Can't get watchOS System version on iOS/tvOS.");
-		// This is both iOS and tvOS
-		return true;
-#endif
-	}
-
-	// This method returns true if:
-	// system version >= specified version
-	// AND
-	// sdk version >= specified version
-	static bool CheckWatchOSSystemVersion (int major, int minor, int build, bool throwIfOtherPlatform = true)
-	{
-#if __WATCHOS__
-		return WatchKit.WKInterfaceDevice.CurrentDevice.CheckSystemVersion (major, minor, build);
-#else
-		if (throwIfOtherPlatform)
-			throw new Exception ("Can't get watchOS System version on iOS/tvOS.");
-		// This is both iOS and tvOS
-		return true;
-#endif
-	}
-
-	static void AssertWatchOSSystemVersion (int major, int minor, bool throwIfOtherPlatform = true)
-	{
-		if (CheckWatchOSSystemVersion (major, minor, throwIfOtherPlatform))
-			return;
-
-		NUnit.Framework.Assert.Ignore ($"This test requires watchOS {major}.{minor}");
-	}
-
 	static bool CheckMacSystemVersion (int major, int minor, int build = 0, bool throwIfOtherPlatform = true)
 	{
 #if MONOMAC
@@ -1289,9 +1149,7 @@ partial class TestRuntime {
 
 	public static bool CheckSDKVersion (int major, int minor)
 	{
-#if __WATCHOS__
-		throw new Exception ("Can't get iOS SDK version on WatchOS.");
-#elif !MONOMAC && !__MACCATALYST__
+#if !MONOMAC && !__MACCATALYST__
 		if (Runtime.Arch == Arch.SIMULATOR || !UIDevice.CurrentDevice.CheckSystemVersion (6, 0)) {
 			// dyld_get_program_sdk_version was introduced with iOS 6.0, so don't do the SDK check on older deviecs.
 			return true; // dyld_get_program_sdk_version doesn't return what we're looking for on the mac.
@@ -1381,7 +1239,7 @@ partial class TestRuntime {
 		}
 	}
 
-#if !MONOMAC && !__TVOS__ && !__WATCHOS__
+#if !MONOMAC && !__TVOS__
 	public static void RequestCameraPermission (NSString mediaTypeToken, bool assert_granted = false)
 	{
 #if __MACCATALYST__
@@ -1407,7 +1265,7 @@ partial class TestRuntime {
 			break;
 		}
 	}
-#endif // !!MONOMAC && !__TVOS__ && !__WATCHOS__
+#endif // !!MONOMAC && !__TVOS__
 
 #if !__TVOS__
 	public static void CheckContactsPermission (bool assert_granted = false)
@@ -1448,7 +1306,7 @@ partial class TestRuntime {
 
 #endif // !__TVOS__
 
-#if !MONOMAC && !__TVOS__ && !__WATCHOS__
+#if !MONOMAC && !__TVOS__
 	public static void CheckAddressBookPermission (bool assert_granted = false)
 	{
 #if __MACCATALYST__
@@ -1470,9 +1328,8 @@ partial class TestRuntime {
 		}
 	}
 #pragma warning restore CA1422
-#endif // !MONOMAC && !__TVOS__ && !__WATCHOS__
+#endif // !MONOMAC && !__TVOS__
 
-#if !__WATCHOS__
 	public static void RequestMicrophonePermission (bool assert_granted = false)
 	{
 #if MONOMAC
@@ -1528,9 +1385,8 @@ partial class TestRuntime {
 
 #endif // !MONOMAC && !__TVOS__
 	}
-#endif // !__WATCHOS__
 
-#if !MONOMAC && !__TVOS__ && !__WATCHOS__
+#if !MONOMAC && !__TVOS__
 	public static void RequestMediaLibraryPermission (bool assert_granted = false)
 	{
 		if (!CheckXcodeVersion (7, 3)) {
@@ -1778,11 +1634,7 @@ partial class TestRuntime {
 		if (error is null)
 			return;
 
-#if __WATCHOS__
-		if (error.Domain != NSError.NSUrlErrorDomain)
-#else
 		if (error.Domain != NSError.NSUrlErrorDomain && error.Domain != NSError.CFNetworkErrorDomain)
-#endif
 			return;
 
 		foreach (var e in errors) {

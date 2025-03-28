@@ -40,22 +40,21 @@ namespace CoreGraphics {
 
 	// untyped enum -> CGGeometry.h
 	public enum CGRectEdge : uint {
+		/// <summary>To be added.</summary>
 		MinXEdge,
+		/// <summary>To be added.</summary>
 		MinYEdge,
+		/// <summary>To be added.</summary>
 		MaxXEdge,
+		/// <summary>To be added.</summary>
 		MaxYEdge,
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public static class CGRectExtensions {
-#else
-	public static class RectangleFExtensions {
-#endif
-
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern /* CGFloat */ nfloat CGRectGetMinX (CGRect rect);
 

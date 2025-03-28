@@ -69,7 +69,7 @@
 		<Rule Id="SA1129"  Action="None" />          <!-- Do not use default value type constructor -->
 		<Rule Id="SA1130"  Action="None" />          <!-- Use lambda syntax -->
 		<Rule Id="SA1131"  Action="None" />          <!-- Use readable conditions -->
-		<Rule Id="SA1132"  Action="None" />          <!-- Do not combine fields -->
+		<Rule Id="SA1132"  Action="Warning" />       <!-- Do not combine fields -->
 		<Rule Id="SA1133"  Action="None" />          <!-- Do not combine attributes -->
 		<Rule Id="SA1134"  Action="None" />          <!-- Attributes should not share line -->
 		<Rule Id="SA1135"  Action="None" />          <!-- Using directives should be qualified -->
@@ -135,7 +135,7 @@
 		<Rule Id="SA1410"  Action="None" />          <!-- Remove delegate parenthesis when possible -->
 		<Rule Id="SA1411"  Action="None" />          <!-- Attribute constructor should not use unnecessary parenthesis -->
 		<Rule Id="SA1412"  Action="None" />          <!-- Store files as UTF-8 with byte order mark -->
-		<Rule Id="SA1413"  Action="None" />          <!-- Use trailing comma in multi-line initializers -->
+		<Rule Id="SA1413"  Action="Warning" />       <!-- Use trailing comma in multi-line initializers -->
 	</Rules>
 
 	<Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers.LayoutRules">

@@ -2,9 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-#if !__WATCHOS__
 using System.Drawing;
-#endif
 using System.Linq;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;

@@ -446,6 +446,7 @@ namespace AudioUnit {
 			AudioUnitStatus err;
 			unsafe {
 				err = AudioComponentInstanceNew (component.GetCheckedHandle (), &handle);
+				GC.KeepAlive (component);
 			}
 			if (err != 0)
 				throw new AudioUnitException (err);
@@ -644,11 +645,13 @@ namespace AudioUnit {
 			var auc = new AudioUnitConnection {
 				SourceAudioUnit = sourceAudioUnit.GetHandle (),
 				SourceOutputNumber = sourceOutputNumber,
-				DestInputNumber = destInputNumber
+				DestInputNumber = destInputNumber,
 			};
 
 			unsafe {
-				return AudioUnitSetProperty (Handle, AudioUnitPropertyIDType.MakeConnection, AudioUnitScopeType.Input, 0, &auc, Marshal.SizeOf<AudioUnitConnection> ());
+				AudioUnitStatus status = AudioUnitSetProperty (Handle, AudioUnitPropertyIDType.MakeConnection, AudioUnitScopeType.Input, 0, &auc, Marshal.SizeOf<AudioUnitConnection> ());
+				GC.KeepAlive (sourceAudioUnit);
+				return status;
 			}
 		}
 
@@ -1196,7 +1199,9 @@ namespace AudioUnit {
 
 			var audioFilehandle = audioFile.Handle;
 			unsafe {
-				return AudioUnitSetProperty (GetCheckedHandle (), AudioUnitPropertyIDType.ScheduledFileIDs, AudioUnitScopeType.Global, 0, &audioFilehandle, Marshal.SizeOf<NativeHandle> ());
+				AudioUnitStatus status = AudioUnitSetProperty (GetCheckedHandle (), AudioUnitPropertyIDType.ScheduledFileIDs, AudioUnitScopeType.Global, 0, &audioFilehandle, Marshal.SizeOf<NativeHandle> ());
+				GC.KeepAlive (audioFile);
+				return status;
 			}
 		}
 
@@ -1214,8 +1219,11 @@ namespace AudioUnit {
 			for (int i = 0; i < count; i++)
 				handles [i] = audioFiles [i].Handle;
 
-			fixed (IntPtr* ptr = handles)
-				return AudioUnitSetProperty (GetCheckedHandle (), AudioUnitPropertyIDType.ScheduledFileIDs, AudioUnitScopeType.Global, 0, (IntPtr) ptr, IntPtr.Size * count);
+			fixed (IntPtr* ptr = handles) {
+				AudioUnitStatus status = AudioUnitSetProperty (GetCheckedHandle (), AudioUnitPropertyIDType.ScheduledFileIDs, AudioUnitScopeType.Global, 0, (IntPtr) ptr, IntPtr.Size * count);
+				GC.KeepAlive (audioFiles);
+				return status;
+			}
 		}
 
 #endif // !COREBUILD
@@ -1464,7 +1472,9 @@ namespace AudioUnit {
 		///         <remarks>To be added.</remarks>
 		public AURenderEventType EventType;
 
-		internal byte reserved1, reserved2, reserved3;
+		internal byte reserved1;
+		internal byte reserved2;
+		internal byte reserved3;
 
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>

@@ -31,18 +31,23 @@ using System.Runtime.Versioning;
 #nullable enable
 
 namespace AVFoundation {
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVEdgeWidths {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat /* CGFloat */ Left;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat /* CGFloat */ Top;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat /* CGFloat */ Right;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat /* CGFloat */ Bottom;
 
 		public AVEdgeWidths (nfloat left, nfloat top, nfloat right, nfloat bottom)

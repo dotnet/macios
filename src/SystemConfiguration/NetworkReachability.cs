@@ -52,7 +52,7 @@ namespace SystemConfiguration {
 #endif
 		IsWWAN = 1 << 18,
 		/// <summary>The connection will happen automatically (alias for ConnectionOnTraffic).</summary>
-		ConnectionAutomatic = ConnectionOnTraffic
+		ConnectionAutomatic = ConnectionOnTraffic,
 	}
 
 	// http://developer.apple.com/library/ios/#documentation/SystemConfiguration/Reference/SCNetworkReachabilityRef/Reference/reference.html
@@ -607,7 +607,9 @@ namespace SystemConfiguration {
 
 			var modeHandle = CFString.CreateNative (mode);
 			try {
-				return SCNetworkReachabilityScheduleWithRunLoop (Handle, runLoop.Handle, modeHandle) != 0;
+				bool result = SCNetworkReachabilityScheduleWithRunLoop (Handle, runLoop.Handle, modeHandle) != 0;
+				GC.KeepAlive (runLoop);
+				return result;
 			} finally {
 				CFString.ReleaseNative (modeHandle);
 			}
@@ -661,7 +663,9 @@ namespace SystemConfiguration {
 
 			var modeHandle = CFString.CreateNative (mode);
 			try {
-				return SCNetworkReachabilityUnscheduleFromRunLoop (Handle, runLoop.Handle, modeHandle) != 0;
+				bool result = SCNetworkReachabilityUnscheduleFromRunLoop (Handle, runLoop.Handle, modeHandle) != 0;
+				GC.KeepAlive (runLoop);
+				return result;
 			} finally {
 				CFString.ReleaseNative (modeHandle);
 			}
@@ -709,7 +713,9 @@ namespace SystemConfiguration {
 #endif
 		public bool SetDispatchQueue (DispatchQueue queue)
 		{
-			return SCNetworkReachabilitySetDispatchQueue (Handle, queue.GetHandle ()) != 0;
+			bool result = SCNetworkReachabilitySetDispatchQueue (Handle, queue.GetHandle ()) != 0;
+			GC.KeepAlive (queue);
+			return result;
 		}
 	}
 }

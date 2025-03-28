@@ -123,7 +123,6 @@ extern const char *xamarin_executable_name;
 extern NSString *xamarin_custom_bundle_name;
 #endif
 extern const char *xamarin_arch_name;
-extern bool xamarin_is_gc_coop;
 extern enum MarshalObjectiveCExceptionMode xamarin_marshal_objectivec_exception_mode;
 extern enum MarshalManagedExceptionMode xamarin_marshal_managed_exception_mode;
 extern enum XamarinLaunchMode xamarin_launch_mode;
@@ -147,8 +146,6 @@ void xamarin_set_is_unified (bool value);  /* Public API */
 bool xamarin_get_is_unified ();  /* Public API */
 
 int xamarin_get_launch_mode ();
-
-int xamarin_watchextension_main (int argc, char **argv);
 
 #ifndef MONOTOUCH
 void xamarin_set_is_mkbundle (bool value); /* Not Public API, exact semantics is not defined yet */

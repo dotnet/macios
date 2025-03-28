@@ -7,29 +7,25 @@ using ObjCRuntime;
 using Foundation;
 
 namespace CoreGraphics {
-
-#if NET
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#else
-	[MacCatalyst (13,1)]
-#endif
 	public enum CGCaptureOptions : uint {
+		/// <summary>To be added.</summary>
 		None = 0,
-		NoFill = 1 << 0
+		/// <summary>To be added.</summary>
+		NoFill = 1 << 0,
 	}
 
-#if NET
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#else
-	[MacCatalyst (13,1)]
-#endif
 	public static class CGDisplay {
 #if !COREBUILD
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern uint CGMainDisplayID ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static int MainDisplayID {
 			get {
 				return (int) CGMainDisplayID ();
@@ -82,14 +78,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary, EntryPoint = "CGDisplayRestoreColorSyncSettings")]
 		public static extern void RestoreColorSyncSettings ();
 
-#if NET
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.9")]
 		[ObsoletedOSPlatform ("maccatalyst13.1")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 9)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern byte CGDisplayIsCaptured (uint display);
 
@@ -187,6 +179,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern int CGShieldingWindowLevel ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static int ShieldingWindowLevel {
 			get { return CGShieldingWindowLevel (); }
 		}

@@ -15,19 +15,11 @@ using Foundation;
 using ObjCRuntime;
 using CoreFoundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
-
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CGPDFContentStream.h
 	public class CGPDFContentStream : NativeObject {
 
@@ -44,13 +36,6 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGPDFContentStreamRelease (/* CGPDFContentStreamRef */ IntPtr cs);
 
-#if !NET
-		public CGPDFContentStream (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal CGPDFContentStream (NativeHandle handle, bool owns)
 			: base (handle, owns)
@@ -58,8 +43,9 @@ namespace CoreGraphics {
 		}
 
 		public CGPDFContentStream (CGPDFPage page)
-			: base (CGPDFContentStreamCreateWithPage (Runtime.ThrowOnNull (page, nameof (page)).Handle), true)
+			: base (CGPDFContentStreamCreateWithPage (page.GetNonNullHandle (nameof (page))), true)
 		{
+			GC.KeepAlive (page);
 		}
 
 		static IntPtr Create (CGPDFStream stream, NSDictionary? streamResources = null, CGPDFContentStream? parent = null)
@@ -67,7 +53,11 @@ namespace CoreGraphics {
 			if (stream is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (stream));
 
-			return CGPDFContentStreamCreateWithStream (stream.Handle, streamResources.GetHandle (), parent.GetHandle ());
+			IntPtr result = CGPDFContentStreamCreateWithStream (stream.Handle, streamResources.GetHandle (), parent.GetHandle ());
+			GC.KeepAlive (stream);
+			GC.KeepAlive (streamResources);
+			GC.KeepAlive (parent);
+			return result;
 		}
 
 		public CGPDFContentStream (CGPDFStream stream, NSDictionary? streamResources = null, CGPDFContentStream? parent = null)

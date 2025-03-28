@@ -17,6 +17,12 @@ using AVFoundation;
 namespace AVKit {
 #if !MONOMAC
 	partial class AVPlayerViewController {
+		/// <summary>Defines how the video is shown within its bounds.</summary>
+		///         <value>The video gravity for the video, the default value is <see cref="F:AVFoundation.AVLayerVideoGravity.ResizeAspect" /></value>
+		///         <remarks>
+		///           <para>
+		///           </para>
+		///         </remarks>
 		public AVLayerVideoGravity VideoGravity {
 			get {
 				return AVPlayerLayer.KeyToEnum (WeakVideoGravity);

@@ -21,6 +21,8 @@ namespace UIKit {
 	public struct UIOffset {
 
 		// API match for UIOffsetZero field/constant
+		/// <summary>A static identity offset of 0,0.</summary>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIOffsetZero")] // fake (but helps testing and could also help documentation)
 		public static readonly UIOffset Zero;
 
@@ -29,7 +31,11 @@ namespace UIKit {
 			Horizontal = horizontal;
 			Vertical = vertical;
 		}
+		/// <summary>The horizontal offset.</summary>
+		///         <remarks>To be added.</remarks>
 		public /* CGFloat */ nfloat Horizontal;
+		/// <summary>The vertical offset.</summary>
+		///         <remarks>To be added.</remarks>
 		public /* CGFloat */ nfloat Vertical;
 
 		public override bool Equals (object obj)

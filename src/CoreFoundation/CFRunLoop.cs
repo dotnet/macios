@@ -52,7 +52,7 @@ namespace CoreFoundation {
 		/// <summary>The number of seconds specified in the call to <see cref="M:CoreFoundation.CFRunLoop.RunInMode(Foundation.NSString,System.Double,System.Boolean)" /> elapsed.</summary>
 		TimedOut = 3,
 		/// <summary>An event from a source was handled, and the developer specified that a single source should be processed on the call to <see cref="M:CoreFoundation.CFRunLoop.RunInMode(Foundation.NSString,System.Double,System.Boolean)" /></summary>
-		HandledSource = 4
+		HandledSource = 4,
 	}
 
 	// CFRunLoop.h
@@ -290,7 +290,9 @@ namespace CoreFoundation {
 			if (mode is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
 
-			return CFRunLoopRunInMode (mode.Handle, seconds, returnAfterSourceHandled ? (byte) 1 : (byte) 0);
+			CFRunLoopExitReason result = CFRunLoopRunInMode (mode.Handle, seconds, returnAfterSourceHandled ? (byte) 1 : (byte) 0);
+			GC.KeepAlive (mode);
+			return result;
 		}
 
 		public CFRunLoopExitReason RunInMode (string mode, double seconds, bool returnAfterSourceHandled)
@@ -309,6 +311,8 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
 
 			CFRunLoopAddSource (Handle, source.Handle, mode.Handle);
+			GC.KeepAlive (source);
+			GC.KeepAlive (mode);
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]
@@ -321,7 +325,10 @@ namespace CoreFoundation {
 			if (mode is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
 
-			return CFRunLoopContainsSource (Handle, source.Handle, mode.Handle) != 0;
+			bool result = CFRunLoopContainsSource (Handle, source.Handle, mode.Handle) != 0;
+			GC.KeepAlive (source);
+			GC.KeepAlive (mode);
+			return result;
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]
@@ -335,6 +342,8 @@ namespace CoreFoundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
 
 			CFRunLoopRemoveSource (Handle, source.Handle, mode.Handle);
+			GC.KeepAlive (source);
+			GC.KeepAlive (mode);
 		}
 
 		[Preserve (Conditional = true)]

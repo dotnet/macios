@@ -5,7 +5,6 @@
   <PropertyGroup>
     <TargetPlatformIdentifier Condition="'$(TargetPlatformIdentifier)' == 'ios'">iOS</TargetPlatformIdentifier>
     <TargetPlatformIdentifier Condition="'$(TargetPlatformIdentifier)' == 'tvos'">tvOS</TargetPlatformIdentifier>
-    <TargetPlatformIdentifier Condition="'$(TargetPlatformIdentifier)' == 'watchos'">watchOS</TargetPlatformIdentifier>
     <TargetPlatformIdentifier Condition="'$(TargetPlatformIdentifier)' == 'macos'">macOS</TargetPlatformIdentifier>
     <TargetPlatformIdentifier Condition="'$(TargetPlatformIdentifier)' == 'maccatalyst'">MacCatalyst</TargetPlatformIdentifier>
   </PropertyGroup>

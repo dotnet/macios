@@ -35,21 +35,9 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
-
 	// CGDataConsumer.h
 	public partial class CGDataConsumer : NativeObject {
-#if !NET
-		public CGDataConsumer (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal CGDataConsumer (NativeHandle handle, bool owns)
 			: base (handle, owns)
@@ -80,7 +68,9 @@ namespace CoreGraphics {
 			// not it's a __nullable parameter but it would return nil (see unit tests) and create an invalid instance
 			if (data is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
-			return CGDataConsumerCreateWithCFData (data.Handle);
+			IntPtr result = CGDataConsumerCreateWithCFData (data.Handle);
+			GC.KeepAlive (data);
+			return result;
 		}
 
 		public CGDataConsumer (NSMutableData data)
@@ -96,7 +86,9 @@ namespace CoreGraphics {
 			// not it's a __nullable parameter but it would return nil (see unit tests) and create an invalid instance
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
-			return CGDataConsumerCreateWithURL (url.Handle);
+			IntPtr result = CGDataConsumerCreateWithURL (url.Handle);
+			GC.KeepAlive (url);
+			return result;
 		}
 
 		public CGDataConsumer (NSUrl url)

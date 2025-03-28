@@ -96,6 +96,9 @@ namespace OpenGL {
 		[DllImport (Constants.OpenGLLibrary)]
 		extern static IntPtr CGLGetCurrentContext ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static CGLContext? CurrentContext {
 			get {
 				IntPtr ctx = CGLGetCurrentContext ();
@@ -107,6 +110,7 @@ namespace OpenGL {
 
 			set {
 				var retValue = CGLSetCurrentContext (value.GetHandle ());
+				GC.KeepAlive (value);
 				if (retValue != CGLErrorCode.NoError)
 					throw new Exception ("Error setting the Current Context");
 			}

@@ -57,9 +57,6 @@ namespace Xamarin.MacDev.Tasks {
 			PString value, os;
 
 			switch (Platform) {
-			case ApplePlatform.WatchOS:
-				targetOperatingSystem = "watchOS";
-				break;
 			case ApplePlatform.TVOS:
 				targetOperatingSystem = "tvOS";
 				break;

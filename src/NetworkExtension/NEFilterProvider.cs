@@ -16,6 +16,9 @@ namespace NetworkExtension {
 		static NSString? _RemediationURLOrganization;
 		static NSString? _RemediationURLUsername;
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NSString RemediationUrlFlowUrl {
 			get {
 				if (_RemediationURLFlowURL is null)
@@ -24,6 +27,9 @@ namespace NetworkExtension {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NSString RemediationUrlFlowUrlHostname {
 			get {
 				if (_RemediationURLFlowURLHostname is null)
@@ -32,6 +38,9 @@ namespace NetworkExtension {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NSString RemediationUrlOrganization {
 			get {
 				if (_RemediationURLOrganization is null)
@@ -40,6 +49,9 @@ namespace NetworkExtension {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NSString RemediationUrlUsername {
 			get {
 				if (_RemediationURLUsername is null)

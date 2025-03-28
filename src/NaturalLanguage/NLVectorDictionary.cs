@@ -33,6 +33,7 @@ namespace NaturalLanguage {
 					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
 
 				var a = CFDictionary.GetValue (Dictionary.Handle, key.Handle);
+				GC.KeepAlive (key);
 				return NSArray.ArrayFromHandle<float> (a, input => {
 					return new NSNumber (input).FloatValue;
 				});

@@ -11,7 +11,7 @@ using ObjCBindings;
 
 namespace AVFoundation {
 
-	[BindingTypeAttribute]
+	[BindingType<SmartEnum>]
 	[SupportedOSPlatform ("ios17.0")]
 	[SupportedOSPlatform ("tvos17.0")]
 	[SupportedOSPlatform ("maccatalyst17.0")]
@@ -61,6 +61,7 @@ namespace AVFoundation {
 		{
 			var constant = reactionType.GetConstant ();
 			var image = AVCaptureReactionSystemImageNameForType (constant.GetHandle ());
+			GC.KeepAlive (constant);
 			return CFString.FromHandle (image, false)!;
 		}
 	}

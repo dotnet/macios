@@ -4,7 +4,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Microsoft.CodeAnalysis;
-using Microsoft.Macios.Generator.Extensions;
 
 namespace Microsoft.Macios.Generator.DataModel;
 
@@ -22,7 +21,7 @@ readonly struct DelegateParameter : IEquatable<DelegateParameter> {
 	/// <summary>
 	/// Type of the parameter.
 	/// </summary>
-	public string Type { get; }
+	public TypeInfo Type { get; }
 
 	/// <summary>
 	/// Parameter name
@@ -45,52 +44,24 @@ readonly struct DelegateParameter : IEquatable<DelegateParameter> {
 	public bool IsThis { get; init; }
 
 	/// <summary>
-	/// True if the parameter is nullable.:w
-	/// </summary>
-	public bool IsNullable { get; init; }
-
-	/// <summary>
-	/// True if the parameter type is blittable.
-	/// </summary>
-	public bool IsBlittable { get; }
-
-	/// <summary>
-	/// Returns if the parameter type is a smart enum.
-	/// </summary>
-	public bool IsSmartEnum { get; init; }
-
-	/// <summary>
-	/// Returns if the parameter is an array type.
-	/// </summary>
-	public bool IsArray { get; init; }
-
-	/// <summary>
 	/// The reference type used.
 	/// </summary>
 	public ReferenceKind ReferenceKind { get; init; }
 
-	public DelegateParameter (int position, string type, string name, bool isBlittable)
+	public DelegateParameter (int position, TypeInfo type, string name)
 	{
 		Position = position;
-		Type = type;
 		Name = name;
-		IsBlittable = isBlittable;
+		Type = type;
 	}
 
 	public static bool TryCreate (IParameterSymbol symbol,
 		[NotNullWhen (true)] out DelegateParameter? parameter)
 	{
-		var type = symbol.Type is IArrayTypeSymbol arrayTypeSymbol
-			? arrayTypeSymbol.ElementType.ToDisplayString ()
-			: symbol.Type.ToDisplayString ().Trim ('?', '[', ']');
-
-		parameter = new (symbol.Ordinal, type, symbol.Name, symbol.Type.IsBlittable ()) {
+		parameter = new (symbol.Ordinal, new (symbol.Type), symbol.Name) {
 			IsOptional = symbol.IsOptional,
 			IsParams = symbol.IsParams,
 			IsThis = symbol.IsThis,
-			IsNullable = symbol.NullableAnnotation == NullableAnnotation.Annotated,
-			IsSmartEnum = symbol.Type.IsSmartEnum (),
-			IsArray = symbol.Type is IArrayTypeSymbol,
 			ReferenceKind = symbol.RefKind.ToReferenceKind (),
 		};
 		return true;
@@ -111,14 +82,6 @@ readonly struct DelegateParameter : IEquatable<DelegateParameter> {
 			return false;
 		if (IsThis != other.IsThis)
 			return false;
-		if (IsNullable != other.IsNullable)
-			return false;
-		if (IsBlittable != other.IsBlittable)
-			return false;
-		if (IsSmartEnum != other.IsSmartEnum)
-			return false;
-		if (IsArray != other.IsArray)
-			return false;
 		return ReferenceKind == other.ReferenceKind;
 	}
 
@@ -138,9 +101,6 @@ readonly struct DelegateParameter : IEquatable<DelegateParameter> {
 		hashCode.Add (IsOptional);
 		hashCode.Add (IsParams);
 		hashCode.Add (IsThis);
-		hashCode.Add (IsNullable);
-		hashCode.Add (IsSmartEnum);
-		hashCode.Add (IsArray);
 		hashCode.Add ((int) ReferenceKind);
 		return hashCode.ToHashCode ();
 	}
@@ -165,10 +125,6 @@ readonly struct DelegateParameter : IEquatable<DelegateParameter> {
 		sb.Append ($"IsOptional: {IsOptional}, ");
 		sb.Append ($"IsParams: {IsParams}, ");
 		sb.Append ($"IsThis: {IsThis}, ");
-		sb.Append ($"IsNullable: {IsNullable}, ");
-		sb.Append ($"IsBlittable: {IsBlittable}, ");
-		sb.Append ($"IsSmartEnum: {IsSmartEnum}, ");
-		sb.Append ($"IsArray: {IsArray}, ");
 		sb.Append ($"ReferenceKind: {ReferenceKind} ");
 		return sb.ToString ();
 	}

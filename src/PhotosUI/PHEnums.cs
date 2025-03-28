@@ -8,9 +8,12 @@ namespace PhotosUI {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHLivePhotoViewPlaybackStyle : long {
+		/// <summary>This is an invalid value. Do not use.</summary>
 		Undefined = 0,
+		/// <summary>Indicates that the full Live Photo, with sound, will be played.</summary>
 		Full,
-		Hint
+		/// <summary>Indicates that a short teaser, without sound, will be played.</summary>
+		Hint,
 	}
 
 #if MONOMAC
@@ -19,7 +22,9 @@ namespace PhotosUI {
 	[NoMacCatalyst]
 	[Native]
 	public enum PHLivePhotoViewContentMode : long {
+		/// <summary>To be added.</summary>
 		AspectFit,
+		/// <summary>To be added.</summary>
 		AspectFill,
 	}
 #else
@@ -29,8 +34,11 @@ namespace PhotosUI {
 	[Native]
 	[Flags] // NS_OPTIONS
 	public enum PHLivePhotoBadgeOptions : ulong {
+		/// <summary>Indicates no badge.</summary>
 		None = 0,
+		/// <summary>Indicates a badge that will be placed over animated content.</summary>
 		OverContent = 1 << 0,
+		/// <summary>Indicates a badge for assets for which Live Photo content is disabled.</summary>
 		LiveOff = 1 << 1,
 	}
 #endif
@@ -38,18 +46,25 @@ namespace PhotosUI {
 	[NoTV]
 	[NoMacCatalyst]
 	public enum PHProjectCategory {
+		/// <summary>To be added.</summary>
 		[Field ("PHProjectCategoryBook")]
 		Book,
+		/// <summary>To be added.</summary>
 		[Field ("PHProjectCategoryCalendar")]
 		Calendar,
+		/// <summary>To be added.</summary>
 		[Field ("PHProjectCategoryCard")]
 		Card,
+		/// <summary>To be added.</summary>
 		[Field ("PHProjectCategoryPrints")]
 		Prints,
+		/// <summary>To be added.</summary>
 		[Field ("PHProjectCategorySlideshow")]
 		Slideshow,
+		/// <summary>To be added.</summary>
 		[Field ("PHProjectCategoryWallDecor")]
 		WallDecor,
+		/// <summary>To be added.</summary>
 		[Field ("PHProjectCategoryOther")]
 		Other,
 		[NoMacCatalyst]

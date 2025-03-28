@@ -28,6 +28,9 @@ namespace CloudKit {
 #endif
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	public class CKModifyBadgeOperation : CKOperation {
+		/// <summary>The handle for this class.</summary>
+		///         <value>The pointer to the Objective-C class.</value>
+		///         <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
 		public override NativeHandle ClassHandle { get => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms); }
 
 		public CKModifyBadgeOperation () : base (NSObjectFlag.Empty)
@@ -51,6 +54,9 @@ namespace CloudKit {
 			throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual nuint BadgeValue {
 			get {
 				throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
@@ -60,6 +66,12 @@ namespace CloudKit {
 			}
 		}
 
+		/// <summary>Gets or sets the action that is run after the operation completes.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		public unsafe virtual global::System.Action<NSError>? Completed {
 			get {
 				throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);

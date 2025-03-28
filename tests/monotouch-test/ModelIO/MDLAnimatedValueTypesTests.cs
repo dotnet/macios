@@ -8,8 +8,6 @@
 // Copyright 2017 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
 using System.Linq;
 using CoreGraphics;
@@ -739,4 +737,3 @@ namespace MonoTouchFixtures.ModelIO {
 		}
 	}
 }
-#endif

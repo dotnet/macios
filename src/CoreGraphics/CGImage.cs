@@ -35,127 +35,148 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
 
 #if MONOMAC || __MACCATALYST__
 	// uint32_t -> CGWindow.h (OSX SDK only)
-#if NET
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#else
-	[MacCatalyst (13,1)]
-#endif
 	[Flags]
 	public enum CGWindowImageOption : uint {
+		/// <summary>To be added.</summary>
 		Default = 0,
+		/// <summary>To be added.</summary>
 		BoundsIgnoreFraming = (1 << 0),
+		/// <summary>To be added.</summary>
 		ShouldBeOpaque = (1 << 1),
+		/// <summary>To be added.</summary>
 		OnlyShadows = (1 << 2),
 		BestResolution = (1 << 3),
 		NominalResolution = (1 << 4),
 	}
 
 	// uint32_t -> CGWindow.h (OSX SDK only)
-#if NET
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#else
-	[MacCatalyst (13,1)]
-#endif
 	[Flags]
 	public enum CGWindowListOption : uint {
+		/// <summary>To be added.</summary>
 		All = 0,
+		/// <summary>To be added.</summary>
 		OnScreenOnly = (1 << 0),
+		/// <summary>To be added.</summary>
 		OnScreenAboveWindow = (1 << 1),
+		/// <summary>To be added.</summary>
 		OnScreenBelowWindow = (1 << 2),
+		/// <summary>To be added.</summary>
 		IncludingWindow = (1 << 3),
-		ExcludeDesktopElements = (1 << 4)
+		/// <summary>To be added.</summary>
+		ExcludeDesktopElements = (1 << 4),
 	}
 #endif
 
 	// uint32_t -> CGImage.h
 	public enum CGImageAlphaInfo : uint {
+		/// <summary>Used for CMYK processing, 32-bits per pixel, 8-bits per channel (CMYK).</summary>
 		None,
+		/// <summary>Premultipled values for RGB, alpha comes last, 32-bit per pixel, 8-bits per channel (RGBA).</summary>
 		PremultipliedLast,
+		/// <summary>Premultipled values for RGB, alpha channel comes first using 32-bits per pixel and 8 bits per channel (ARGB)</summary>
 		PremultipliedFirst,
+		/// <summary>Alpha comes last, 32-bit per pixel, 8-bits per channel (RGBA).</summary>
 		Last,
+		/// <summary>Alpha channel comes first using 32-bits per pixel and 8 bits per channel (ARGB).</summary>
 		First,
+		/// <summary>There is no alpha channel, 32-bits per pixel, 8 bits per channel, with the lower channel ignored (RGBx).</summary>
 		NoneSkipLast,
+		/// <summary>There is no alpha channel, 32-bits per pixel, 8 bits per channel, with the topmost channel ignored (xRGB).</summary>
 		NoneSkipFirst,
-		Only
+		/// <summary>No color data, only alpha channel data.</summary>
+		Only,
 	}
 
 	public enum CGImagePixelFormatInfo : uint {
+		/// <summary>To be added.</summary>
 		Packed = 0,
+		/// <summary>To be added.</summary>
 		Rgb555 = 1 << 16,
+		/// <summary>To be added.</summary>
 		Rgb565 = 2 << 16,
+		/// <summary>To be added.</summary>
 		Rgb101010 = 3 << 16,
+		/// <summary>To be added.</summary>
 		RgbCif10 = 4 << 16,
+		/// <summary>To be added.</summary>
 		Mask = 0xF0000,
 	}
 
 	// uint32_t -> CGImage.h
 	[Flags]
 	public enum CGBitmapFlags : uint {
+		/// <summary>Used for CMYK processing, 32-bits per pixel, 8-bits per channel (CMYK). </summary>
 		None,
+		/// <summary>Premultipled values for RGB, alpha comes last, 32-bit per pixel, 8-bits per channel (RGBA).  </summary>
 		PremultipliedLast,
+		/// <summary>Premultipled values for RGB, alpha channel comes first using 32-bits per pixel and 8 bits per channel (ARGB) </summary>
 		PremultipliedFirst,
+		/// <summary>Last	Alpha comes last, 32-bit per pixel, 8-bits per channel (RGBA).</summary>
 		Last,
+		/// <summary>Alpha channel comes first using 32-bits per pixel and 8 bits per channel (ARGB).</summary>
 		First,
+		/// <summary>There is no alpha channel, 32-bits per pixel, 8 bits per channel, with the lower channel ignored (RGBx). </summary>
 		NoneSkipLast,
+		/// <summary>There is no alpha channel, 32-bits per pixel, 8 bits per channel, with the topmost channel ignored (xRGB). </summary>
 		NoneSkipFirst,
+		/// <summary>No color data, only alpha channel data. </summary>
 		Only,
 
+		/// <summary>The image has an alpha channel.</summary>
 		AlphaInfoMask = 0x1F,
+		/// <summary>To be added.</summary>
 		FloatInfoMask = 0xf00,
+		/// <summary>The components of the bitmap are floating point values.</summary>
 		FloatComponents = (1 << 8),
 
+		/// <summary>Mask for extracting the byte ordering from the result.</summary>
 		ByteOrderMask = 0x7000,
+		/// <summary>The default byte order.</summary>
 		ByteOrderDefault = (0 << 12),
+		/// <summary>16-bit little endian format.</summary>
 		ByteOrder16Little = (1 << 12),
+		/// <summary>32-bit little endian format.</summary>
 		ByteOrder32Little = (2 << 12),
+		/// <summary>16-bit big endian format.</summary>
 		ByteOrder16Big = (3 << 12),
-		ByteOrder32Big = (4 << 12)
+		/// <summary>32-big big endian format.</summary>
+		ByteOrder32Big = (4 << 12),
 	}
 
 	[Flags]
 	public enum CGImageByteOrderInfo : uint {
+		/// <summary>To be added.</summary>
 		ByteOrderMask = 0x7000,
+		/// <summary>To be added.</summary>
 		ByteOrderDefault = (0 << 12),
+		/// <summary>To be added.</summary>
 		ByteOrder16Little = (1 << 12),
+		/// <summary>To be added.</summary>
 		ByteOrder32Little = (2 << 12),
+		/// <summary>To be added.</summary>
 		ByteOrder16Big = (3 << 12),
+		/// <summary>To be added.</summary>
 		ByteOrder32Big = (4 << 12),
 	}
 
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CGImage.h
 	public class CGImage : NativeObject {
 #if !COREBUILD
-#if !NET
-		public CGImage (NativeHandle handle)
-			: base (handle, false, verify: false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal CGImage (NativeHandle handle, bool owns)
-#if NET
 			: base (handle, owns)
-#else
-			: base (handle, owns, verify: false)
-#endif
 		{
 		}
 
@@ -198,9 +219,12 @@ namespace CoreGraphics {
 
 			unsafe {
 				fixed (nfloat* decodePtr = decode) {
-					return CGImageCreate (width, height, bitsPerComponent, bitsPerPixel, bytesPerRow,
+					IntPtr result = CGImageCreate (width, height, bitsPerComponent, bitsPerPixel, bytesPerRow,
 						colorSpace.GetHandle (), bitmapFlags, provider.GetHandle (),
 						decodePtr, shouldInterpolate.AsByte (), intent);
+					GC.KeepAlive (colorSpace);
+					GC.KeepAlive (provider);
+					return result;
 				}
 			}
 		}
@@ -229,9 +253,12 @@ namespace CoreGraphics {
 
 			unsafe {
 				fixed (nfloat* decodePtr = decode) {
-					return CGImageCreate (width, height, bitsPerComponent, bitsPerPixel, bytesPerRow,
+					IntPtr result = CGImageCreate (width, height, bitsPerComponent, bitsPerPixel, bytesPerRow,
 						colorSpace.GetHandle (), (CGBitmapFlags) alphaInfo, provider.GetHandle (),
 						decodePtr, shouldInterpolate.AsByte (), intent);
+					GC.KeepAlive (colorSpace);
+					GC.KeepAlive (provider);
+					return result;
 				}
 			}
 		}
@@ -251,48 +278,32 @@ namespace CoreGraphics {
 		}
 
 #if MONOMAC || __MACCATALYST__
-#if NET
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("maccatalyst18.0", "Use ScreenCaptureKit instead.")]
 		[UnsupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos15.0", "Use ScreenCaptureKit instead.")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[MacCatalyst (13,1)]
-		[Deprecated (PlatformName.MacCatalyst, 17, 0, message: "Use ScreenCaptureKit instead.")]
-		[Deprecated (PlatformName.MacOSX, 14, 0, message: "Use ScreenCaptureKit instead.")]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern IntPtr CGWindowListCreateImage (CGRect screenBounds, CGWindowListOption windowOption, uint windowID, CGWindowImageOption imageOption);
 
-#if NET
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("maccatalyst18.0", "Use ScreenCaptureKit instead.")]
 		[UnsupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos15.0", "Use ScreenCaptureKit instead.")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[MacCatalyst (13,1)]
-#endif
 		public static CGImage? ScreenImage (int windownumber, CGRect bounds)
 		{
 			return ScreenImage (windownumber, bounds, CGWindowListOption.IncludingWindow, CGWindowImageOption.Default);
 		}
 
-#if NET
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("maccatalyst18.0", "Use ScreenCaptureKit instead.")]
 		[UnsupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos15.0", "Use ScreenCaptureKit instead.")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[MacCatalyst (13,1)]
-		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use ScreenCaptureKit instead.")]
-		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use ScreenCaptureKit instead.")]
-#endif
 		public static CGImage? ScreenImage (int windownumber, CGRect bounds, CGWindowListOption windowOption,
 			CGWindowImageOption imageOption)
 		{
@@ -301,6 +312,7 @@ namespace CoreGraphics {
 			return FromHandle (imageRef, true);
 		}
 #else
+		/// <include file="../../docs/api/CoreGraphics/CGImage.xml" path="/Documentation/Docs[@DocId='P:CoreGraphics.CGImage.ScreenImage']/*" />
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
@@ -321,6 +333,7 @@ namespace CoreGraphics {
 			unsafe {
 				fixed (nfloat* decodePtr = decode) {
 					var handle = CGImageCreateWithJPEGDataProvider (provider.GetHandle (), decodePtr, shouldInterpolate.AsByte (), intent);
+					GC.KeepAlive (provider);
 					return FromHandle (handle, true);
 				}
 			}
@@ -335,6 +348,7 @@ namespace CoreGraphics {
 			unsafe {
 				fixed (nfloat* decodePtr = decode) {
 					var handle = CGImageCreateWithPNGDataProvider (provider.GetHandle (), decodePtr, shouldInterpolate.AsByte (), intent);
+					GC.KeepAlive (provider);
 					return FromHandle (handle, true);
 				}
 			}
@@ -359,6 +373,7 @@ namespace CoreGraphics {
 				fixed (nfloat* decodePtr = decode) {
 
 					var handle = CGImageMaskCreate (width, height, bitsPerComponent, bitsPerPixel, bytesPerRow, provider.GetHandle (), decodePtr, shouldInterpolate.AsByte ());
+					GC.KeepAlive (provider);
 					return FromHandle (handle, true);
 				}
 			}
@@ -395,6 +410,7 @@ namespace CoreGraphics {
 		public CGImage? WithColorSpace (CGColorSpace? cs)
 		{
 			var h = CGImageCreateCopyWithColorSpace (Handle, cs.GetHandle ());
+			GC.KeepAlive (cs);
 			return FromHandle (h, true);
 		}
 
@@ -414,12 +430,19 @@ namespace CoreGraphics {
 		{
 			if (mask is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mask));
-			return FromHandle (CGImageCreateWithMask (Handle, mask.Handle), true);
+			CGImage? result = FromHandle (CGImageCreateWithMask (Handle, mask.Handle), true);
+			GC.KeepAlive (mask);
+			return result;
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static byte CGImageIsMask (/* CGImageRef */ IntPtr image);
 
+		/// <summary>Whether this image is a mask or a bitmap.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public bool IsMask {
 			get {
 				return CGImageIsMask (Handle) != 0;
@@ -429,6 +452,11 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* size_t */ nint CGImageGetWidth (/* CGImageRef */ IntPtr image);
 
+		/// <summary>The image width in pixels.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public nint Width {
 			get {
 				return CGImageGetWidth (Handle);
@@ -439,6 +467,11 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* size_t */ nint CGImageGetHeight (/* CGImageRef */ IntPtr image);
 
+		/// <summary>The image height in pixels.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public nint Height {
 			get {
 				return CGImageGetHeight (Handle);
@@ -448,6 +481,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* size_t */ nint CGImageGetBitsPerComponent (/* CGImageRef */ IntPtr image);
 
+		/// <summary>Bits per component</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The number of bits used per component in the image.</remarks>
 		public nint BitsPerComponent {
 			get {
 				return CGImageGetBitsPerComponent (Handle);
@@ -457,6 +494,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* size_t */ nint CGImageGetBitsPerPixel (/* CGImageRef */ IntPtr image);
 
+		/// <summary>The number of bits per pixel.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The number of bits used per pixel.</remarks>
 		public nint BitsPerPixel {
 			get {
 				return CGImageGetBitsPerPixel (Handle);
@@ -466,6 +507,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* size_t */ nint CGImageGetBytesPerRow (/* CGImageRef */ IntPtr image);
 
+		/// <summary>The number of bytes per row in the image.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The number of bytes used per row.</remarks>
 		public nint BytesPerRow {
 			get {
 				return CGImageGetBytesPerRow (Handle);
@@ -475,6 +520,11 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGColorSpaceRef */ IntPtr CGImageGetColorSpace (/* CGImageRef */ IntPtr image);
 
+		/// <summary>The image colorspace.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public CGColorSpace? ColorSpace {
 			get {
 				var h = CGImageGetColorSpace (Handle);
@@ -485,6 +535,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGImageAlphaInfo CGImageGetAlphaInfo (/* CGImageRef */ IntPtr image);
 
+		/// <summary>The bitmap configuration.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The configuration of the image</remarks>
 		public CGImageAlphaInfo AlphaInfo {
 			get {
 				return CGImageGetAlphaInfo (Handle);
@@ -494,6 +548,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGDataProviderRef */ IntPtr CGImageGetDataProvider (/* CGImageRef */ IntPtr image);
 
+		/// <summary>Returns the image's data provider.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGDataProvider DataProvider {
 			get {
 				return new CGDataProvider (CGImageGetDataProvider (Handle), false);
@@ -503,6 +560,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static /* CGFloat* */ nfloat* CGImageGetDecode (/* CGImageRef */ IntPtr image);
 
+		/// <summary>Returns an array of values that consist of upper and lower limits, into which the corresponding image pixel data are linearly interpolated for decoding.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public unsafe nfloat* Decode {
 			get {
 				return CGImageGetDecode (Handle);
@@ -512,6 +572,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static byte CGImageGetShouldInterpolate (/* CGImageRef */ IntPtr image);
 
+		/// <summary>Whether interpolation is enabled for this image.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>If the value is true, then Quartz will perform edge smoothing on the image.</remarks>
 		public bool ShouldInterpolate {
 			get {
 				return CGImageGetShouldInterpolate (Handle) != 0;
@@ -521,6 +585,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGColorRenderingIntent CGImageGetRenderingIntent (/* CGImageRef */ IntPtr image);
 
+		/// <summary>The rendering intent.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The intent determines how to handle colors that are outside of the requested colorspace.</remarks>
 		public CGColorRenderingIntent RenderingIntent {
 			get {
 				return CGImageGetRenderingIntent (Handle);
@@ -530,28 +598,31 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGBitmapFlags CGImageGetBitmapInfo (/* CGImageRef */ IntPtr image);
 
+		/// <summary>The bitmap configuration.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>The configuration of the image.</remarks>
 		public CGBitmapFlags BitmapInfo {
 			get {
 				return CGImageGetBitmapInfo (Handle);
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern IntPtr /* CFStringRef */ CGImageGetUTType (/* __nullable CGImageRef* */ IntPtr image);
 
 		// we return an NSString, instead of a string, as all our UTType constants are NSString (see mobilecoreservices.cs)
-#if NET
+		/// <summary>Gets the image's universal type identifier.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public NSString? UTType {
 			get {
 				var h = CGImageGetUTType (Handle);
@@ -559,48 +630,42 @@ namespace CoreGraphics {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern CGImagePixelFormatInfo CGImageGetPixelFormatInfo (/* __nullable CGImageRef */ IntPtr handle);
 
-#if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public CGImagePixelFormatInfo PixelFormatInfo => CGImageGetPixelFormatInfo (Handle);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern CGImageByteOrderInfo CGImageGetByteOrderInfo (/* __nullable CGImageRef */ IntPtr handle);
 
-#if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public CGImageByteOrderInfo ByteOrderInfo => CGImageGetByteOrderInfo (Handle);
 
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe static extern /* CGImageRef __nullable */ IntPtr CGImageCreateWithContentHeadroom (
 			/* float */ float headroom,
@@ -630,14 +695,10 @@ namespace CoreGraphics {
 		/// <param name="shouldInterpolate">Whether image is interpolated or not.</param>
 		/// <param name="intent">The rendering intent for the new image.</param>
 		/// <returns>A new CGImage instance.</returns>
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		public CGImage (float headroom, int width, int height, int bitsPerComponent, int bitsPerPixel, int bytesPerRow,
 				CGColorSpace? colorSpace, CGBitmapFlags bitmapFlags, CGDataProvider? provider,
 				nfloat []? decode, bool shouldInterpolate, CGColorRenderingIntent intent)
@@ -645,14 +706,10 @@ namespace CoreGraphics {
 		{
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		static IntPtr Create (float headroom, int width, int height, int bitsPerComponent, int bitsPerPixel, int bytesPerRow,
 				CGColorSpace? colorSpace, CGBitmapFlags bitmapFlags, CGDataProvider? provider,
 				nfloat []? decode, bool shouldInterpolate, CGColorRenderingIntent intent)
@@ -672,21 +729,20 @@ namespace CoreGraphics {
 
 			unsafe {
 				fixed (nfloat* decodePtr = decode) {
-					return CGImageCreateWithContentHeadroom (headroom, width, height, bitsPerComponent, bitsPerPixel, bytesPerRow,
+					IntPtr result = CGImageCreateWithContentHeadroom (headroom, width, height, bitsPerComponent, bitsPerPixel, bytesPerRow,
 						colorSpace.GetHandle (), bitmapFlags, provider.GetHandle (),
 						decodePtr, shouldInterpolate.AsByte (), intent);
+					GC.KeepAlive (colorSpace);
+					GC.KeepAlive (provider);
+					return result;
 				}
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe static extern /* CGImageRef __nullable */ IntPtr CGImageCreateCopyWithContentHeadroom (
 			/* float */ float headroom,
@@ -694,14 +750,10 @@ namespace CoreGraphics {
 
 		/// <summary>Create a copy of the current image, adding or replacing the current image's headroom.</summary>
 		/// <param name="headroom">Must be either equal to 0 or greater or equal to 1.0.</param>
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		public CGImage? Copy (float headroom)
 		{
 			if (headroom != 0.0f && headroom < 1.0f)
@@ -712,82 +764,54 @@ namespace CoreGraphics {
 		}
 
 		/// <summary>Get the default content headroom for HDR images.</summary>
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		public static float DefaultHdrImageContentHeadroom {
 			get => CoreGraphicsFields.DefaultHdrImageContentHeadroom;
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern float CGImageGetContentHeadroom (/* __nullable CGImageRef */ IntPtr handle);
 
 		/// <summary>Get the content headroom for this image.</summary>
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		public float ContentHeadroom => CGImageGetContentHeadroom (Handle);
 
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern /* bool */ byte CGImageShouldToneMap (/* __nullable CGImageRef */ IntPtr handle);
 
 		/// <summary>Get whether this image should be tone mapped when rendered.</summary>
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		public bool ShouldToneMap => CGImageShouldToneMap (Handle) != 0;
 
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern /* bool */ byte CGImageContainsImageSpecificToneMappingMetadata (/* __nullable CGImageRef */ IntPtr handle);
 
 		/// <summary>Get whether this image has image-specific tone mapping metadata.</summary>
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-#else
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		public bool ContainsImageSpecificToneMappingMetadata => CGImageContainsImageSpecificToneMappingMetadata (Handle) != 0;
 #endif // !COREBUILD
 	}

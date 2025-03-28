@@ -58,7 +58,33 @@ namespace AddressBook {
 			Info = info;
 		}
 
+		/// <summary>
+		///           The <see cref="T:AddressBook.ABAddressBook" />
+		///           which raised the
+		///           <see cref="E:AddressBook.ABAddressBook.ExternalChange" />
+		///           event.
+		///         </summary>
+		///         <value>
+		///           A <see cref="T:AddressBook.ABAddressBook" /> which raised the
+		///           <see cref="E:AddressBook.ABAddressBook.ExternalChange" />
+		///           event.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public ABAddressBook AddressBook { get; private set; }
+		/// <summary>
+		///           Additional informationa about the
+		///           <see cref="E:AddressBook.ABAddressBook.ExternalChange" />
+		///           event.
+		///         </summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSDictionary" /> containing
+		///           additional information about the
+		///           <see cref="E:AddressBook.ABAddressBook.ExternalChange" />
+		///           event.  This may be <see langword="null" />.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSDictionary? Info { get; private set; }
 	}
 
@@ -121,6 +147,16 @@ namespace AddressBook {
 	[UnsupportedOSPlatform ("tvos")]
 	public class ABAddressBook : NativeObject, IEnumerable<ABRecord> {
 
+		/// <summary>
+		///           Identifies the error domain under which address book errors are grouped.
+		///         </summary>
+		///         <remarks>
+		///           When an <see cref="T:CoreFoundation.CFException" /> is
+		///           thrown from a <see cref="T:AddressBook.ABAddressBook" />
+		///           method, the
+		///           <see cref="P:CoreFoundation.CFException.Domain" /> property
+		///           will be equal to <c>ErrorDomain</c>.
+		///         </remarks>
 		public static readonly NSString ErrorDomain;
 
 		GCHandle sender;
@@ -222,6 +258,18 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static byte ABAddressBookHasUnsavedChanges (IntPtr addressBook);
+		/// <summary>
+		///           Indicates whether or not this instance has changes which haven't been
+		///           saved to the global address book.
+		///         </summary>
+		///         <value>
+		///           <see langword="true" /> if the current instance has unsaved changes;
+		///           otherwise, <see langword="false" />.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
+		///         <altmember cref="M:AddressBook.ABAddressBook.Save" />
+		///         <altmember cref="M:AddressBook.ABAddressBook.Revert" />
 		public bool HasUnsavedChanges {
 			get {
 				return ABAddressBookHasUnsavedChanges (GetCheckedHandle ()) != 0;
@@ -254,8 +302,9 @@ namespace AddressBook {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (record));
 
 			IntPtr error;
+			NativeHandle recordHandle = record.Handle;
 			unsafe {
-				if (ABAddressBookAddRecord (GetCheckedHandle (), record.Handle, &error) == 0)
+				if (ABAddressBookAddRecord (GetCheckedHandle (), recordHandle, &error) == 0)
 					throw CFException.FromCFError (error);
 			}
 			record.AddressBook = this;
@@ -269,8 +318,9 @@ namespace AddressBook {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (record));
 
 			IntPtr error;
+			NativeHandle recordHandle = record.Handle;
 			unsafe {
-				if (ABAddressBookRemoveRecord (GetCheckedHandle (), record.Handle, &error) == 0)
+				if (ABAddressBookRemoveRecord (GetCheckedHandle (), recordHandle, &error) == 0)
 					throw CFException.FromCFError (error);
 			}
 			record.AddressBook = null;
@@ -278,6 +328,17 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static nint ABAddressBookGetPersonCount (IntPtr addressBook);
+		/// <summary>
+		///           Gets the number of <see cref="T:AddressBook.ABPerson" />
+		///           records in the address book.
+		///         </summary>
+		///         <value>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> containing the number of
+		///           <see cref="T:AddressBook.ABPerson" />
+		///           records in the address book.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public nint PeopleCount {
 			get {
 				return ABAddressBookGetPersonCount (GetCheckedHandle ());
@@ -300,6 +361,7 @@ namespace AddressBook {
 			if (source is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 			var cfArrayRef = ABAddressBookCopyArrayOfAllPeopleInSource (GetCheckedHandle (), source.Handle);
+			GC.KeepAlive (source);
 			return NSArray.ArrayFromHandle (cfArrayRef, l => new ABPerson (l, this));
 		}
 
@@ -311,11 +373,22 @@ namespace AddressBook {
 			if (source is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 			var cfArrayRef = ABAddressBookCopyArrayOfAllPeopleInSourceWithSortOrdering (GetCheckedHandle (), source.Handle, sortOrdering);
+			GC.KeepAlive (source);
 			return NSArray.ArrayFromHandle (cfArrayRef, l => new ABPerson (l, this));
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static nint ABAddressBookGetGroupCount (IntPtr addressBook);
+		/// <summary>
+		///           Gets the number of groups in the address book.
+		///         </summary>
+		///         <value>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> containing the number of
+		///           <see cref="T:AddressBook.ABGroup" /> records
+		///           in the address book.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public nint GroupCount {
 			get {
 				return ABAddressBookGetGroupCount (GetCheckedHandle ());
@@ -339,6 +412,7 @@ namespace AddressBook {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 
 			var cfArrayRef = ABAddressBookCopyArrayOfAllGroupsInSource (GetCheckedHandle (), source.Handle);
+			GC.KeepAlive (source);
 			return NSArray.ArrayFromHandle (cfArrayRef, l => new ABGroup (l, this));
 		}
 
@@ -349,7 +423,9 @@ namespace AddressBook {
 			if (label is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (label));
 
-			return CFString.FromHandle (ABAddressBookCopyLocalizedLabel (label.Handle));
+			string? result = CFString.FromHandle (ABAddressBookCopyLocalizedLabel (label.Handle));
+			GC.KeepAlive (label);
+			return result;
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]

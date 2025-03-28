@@ -40,7 +40,7 @@ using UIKit;
 #endif
 using Constants = global::ObjCRuntime.Constants;
 
-#if !__WATCHOS__ && !__MACOS__
+#if !__MACOS__
 using MonoTouch.Dialog;
 #endif
 
@@ -136,7 +136,6 @@ namespace MonoTouch.NUnit.UI {
 		static extern void exit (int code);
 		protected virtual void TerminateWithSuccess ()
 		{
-			// For WatchOS we're terminating the extension, not the watchos app itself.
 			Console.WriteLine ("Exiting test run with success");
 			FlushConsole ();
 			exit (0);
@@ -437,7 +436,7 @@ namespace MonoTouch.NUnit.UI {
 		// returns true if test run should still start
 		bool ShowConnectionErrorAlert (string hostname, int port, Exception ex)
 		{
-#if __TVOS__ || __WATCHOS__ || __MACOS__
+#if __TVOS__ || __MACOS__
 			return true;
 #else
 			// Don't show any alerts if we're running automated.
@@ -698,18 +697,7 @@ namespace MonoTouch.NUnit.UI {
 #endif
 	}
 
-#if __WATCHOS__
-	public class WatchOSRunner : BaseTouchRunner {
-		protected override void WriteDeviceInformation (TextWriter writer)
-		{
-			var device = WatchKit.WKInterfaceDevice.CurrentDevice;
-			writer.WriteLine ("[{0}:\t{1} v{2}]", device.Model, device.SystemName, device.SystemVersion);
-			writer.WriteLine ("[Device Name:\t{0}]", device.Name);
-		}
-	}
-#endif
-
-#if !__WATCHOS__ && !__MACOS__
+#if !__MACOS__
 	public class ConsoleRunner : BaseTouchRunner {
 		protected override void WriteDeviceInformation (TextWriter writer)
 		{

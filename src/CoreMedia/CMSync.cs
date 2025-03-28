@@ -34,6 +34,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* CMClockRef */ IntPtr CMClockGetHostTimeClock ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static CMClock HostTimeClock {
 			get {
 				return new CMClock (CMClockGetHostTimeClock (), false);
@@ -43,6 +46,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static CMTime CMClockGetTime (/* CMClockRef */ IntPtr clock);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CMTime CurrentTime {
 			get {
 				return CMClockGetTime (Handle);
@@ -88,7 +94,9 @@ namespace CoreMedia {
 			if (otherClock is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (otherClock));
 
-			return CMClockMightDrift (Handle, otherClock.Handle) != 0;
+			bool result = CMClockMightDrift (Handle, otherClock.Handle) != 0;
+			GC.KeepAlive (otherClock);
+			return result;
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]
@@ -139,6 +147,7 @@ namespace CoreMedia {
 			IntPtr handle;
 			unsafe {
 				error = CMTimebaseCreateWithMasterClock (IntPtr.Zero, masterClock.Handle, &handle);
+				GC.KeepAlive (masterClock);
 			}
 			if (error != CMTimebaseError.None)
 				ObjCRuntime.ThrowHelper.ThrowArgumentException (error.ToString ());
@@ -170,6 +179,7 @@ namespace CoreMedia {
 			IntPtr handle;
 			unsafe {
 				error = CMTimebaseCreateWithMasterTimebase (IntPtr.Zero, masterTimebase.Handle, &handle);
+				GC.KeepAlive (masterTimebase);
 			}
 			if (error != CMTimebaseError.None)
 				ObjCRuntime.ThrowHelper.ThrowArgumentException (error.ToString ());
@@ -197,6 +207,8 @@ namespace CoreMedia {
 			IntPtr handle;
 			unsafe {
 				error = CMTimebaseCreateWithSourceClock (allocator.GetHandle (), sourceClock.Handle, &handle);
+				GC.KeepAlive (allocator);
+				GC.KeepAlive (sourceClock);
 			}
 			if (error != CMTimebaseError.None)
 				ObjCRuntime.ThrowHelper.ThrowArgumentException (error.ToString ());
@@ -228,6 +240,8 @@ namespace CoreMedia {
 			IntPtr handle;
 			unsafe {
 				error = CMTimebaseCreateWithSourceTimebase (allocator.GetHandle (), sourceTimebase.Handle, &handle);
+				GC.KeepAlive (allocator);
+				GC.KeepAlive (sourceTimebase);
 			}
 			if (error != CMTimebaseError.None)
 				ObjCRuntime.ThrowHelper.ThrowArgumentException (error.ToString ());
@@ -246,6 +260,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* Float64 */ double CMTimebaseGetEffectiveRate (/* CMTimebaseRef */ IntPtr timebase);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double EffectiveRate {
 			get {
 				return CMTimebaseGetEffectiveRate (Handle);
@@ -258,6 +275,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* OSStatus */ CMTimebaseError CMTimebaseSetRate (/* CMTimebaseRef */ IntPtr timebase, /* Float64 */ double rate);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double Rate {
 			get {
 				return CMTimebaseGetRate (Handle);
@@ -275,6 +295,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* OSStatus */ CMTimebaseError CMTimebaseSetTime (/* CMTimebaseRef */ IntPtr timebase, CMTime time);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public new CMTime Time {
 			get {
 				return CMTimebaseGetTime (Handle);
@@ -442,6 +465,8 @@ namespace CoreMedia {
 			return CMTimebaseNotificationBarrier (Handle);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public const double VeryLongTimeInterval = 256.0 * 365.0 * 24.0 * 60.0 * 60.0;
 
 #if !COREBUILD
@@ -456,8 +481,11 @@ namespace CoreMedia {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (runloop));
 
 			// NSRunloop and CFRunloop[Ref] are NOT toll free bridged types
-			using (var cf = runloop.GetCFRunLoop ())
-				return CMTimebaseAddTimer (Handle, timer.Handle, cf.Handle);
+			using (var cf = runloop.GetCFRunLoop ()) {
+				CMTimebaseError result = CMTimebaseAddTimer (Handle, timer.Handle, cf.Handle);
+				GC.KeepAlive (timer);
+				return result;
+			}
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]
@@ -468,7 +496,9 @@ namespace CoreMedia {
 			if (timer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (timer));
 
-			return CMTimebaseRemoveTimer (Handle, timer.Handle);
+			CMTimebaseError result = CMTimebaseRemoveTimer (Handle, timer.Handle);
+			GC.KeepAlive (timer);
+			return result;
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]
@@ -479,7 +509,9 @@ namespace CoreMedia {
 			if (timer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (timer));
 
-			return CMTimebaseSetTimerNextFireTime (Handle, timer.Handle, fireTime, 0);
+			CMTimebaseError result = CMTimebaseSetTimerNextFireTime (Handle, timer.Handle, fireTime, 0);
+			GC.KeepAlive (timer);
+			return result;
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]
@@ -490,7 +522,9 @@ namespace CoreMedia {
 			if (timer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (timer));
 
-			return CMTimebaseSetTimerToFireImmediately (Handle, timer.Handle);
+			CMTimebaseError result = CMTimebaseSetTimerToFireImmediately (Handle, timer.Handle);
+			GC.KeepAlive (timer);
+			return result;
 		}
 
 		[SupportedOSPlatform ("tvos")]
@@ -516,7 +550,9 @@ namespace CoreMedia {
 			if (newMasterTimebase is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (newMasterTimebase));
 
-			return CMTimebaseSetMasterTimebase (Handle, newMasterTimebase.Handle);
+			var result = CMTimebaseSetMasterTimebase (Handle, newMasterTimebase.Handle);
+			GC.KeepAlive (newMasterTimebase);
+			return result;
 		}
 
 		[SupportedOSPlatform ("tvos")]
@@ -543,7 +579,9 @@ namespace CoreMedia {
 			if (newMasterClock is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (newMasterClock));
 
-			return CMTimebaseSetMasterClock (Handle, newMasterClock.Handle);
+			var result = CMTimebaseSetMasterClock (Handle, newMasterClock.Handle);
+			GC.KeepAlive (newMasterClock);
+			return result;
 		}
 #endif
 
@@ -687,6 +725,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static CMTime CMSyncGetTime (/* CMClockOrTimebaseRef */ IntPtr clockOrTimebase);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CMTime Time {
 			get {
 				return CMSyncGetTime (Handle);
@@ -704,7 +745,10 @@ namespace CoreMedia {
 			if (clockOrTimebaseB is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (clockOrTimebaseB));
 
-			return CMSyncGetRelativeRate (clockOrTimebaseA.Handle, clockOrTimebaseB.Handle);
+			double result = CMSyncGetRelativeRate (clockOrTimebaseA.Handle, clockOrTimebaseB.Handle);
+			GC.KeepAlive (clockOrTimebaseA);
+			GC.KeepAlive (clockOrTimebaseB);
+			return result;
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]
@@ -727,12 +771,15 @@ namespace CoreMedia {
 			timeA = default;
 			timeB = default;
 			unsafe {
-				return CMSyncGetRelativeRateAndAnchorTime (
+				CMSyncError result = CMSyncGetRelativeRateAndAnchorTime (
 					clockOrTimebaseA.Handle,
 					clockOrTimebaseB.Handle,
 					(double*) Unsafe.AsPointer<double> (ref relativeRate),
 					(CMTime*) Unsafe.AsPointer<CMTime> (ref timeA),
 					(CMTime*) Unsafe.AsPointer<CMTime> (ref timeB));
+				GC.KeepAlive (clockOrTimebaseA);
+				GC.KeepAlive (clockOrTimebaseB);
+				return result;
 			}
 		}
 
@@ -746,7 +793,10 @@ namespace CoreMedia {
 			if (to is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (to));
 
-			return CMSyncConvertTime (time, from.Handle, to.Handle);
+			CMTime result = CMSyncConvertTime (time, from.Handle, to.Handle);
+			GC.KeepAlive (from);
+			GC.KeepAlive (to);
+			return result;
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]
@@ -760,7 +810,10 @@ namespace CoreMedia {
 			if (clockOrTimebaseB is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (clockOrTimebaseB));
 
-			return CMSyncMightDrift (clockOrTimebaseA.Handle, clockOrTimebaseB.Handle) != 0;
+			bool result = CMSyncMightDrift (clockOrTimebaseA.Handle, clockOrTimebaseB.Handle) != 0;
+			GC.KeepAlive (clockOrTimebaseA);
+			GC.KeepAlive (clockOrTimebaseB);
+			return result;
 		}
 
 		[SupportedOSPlatform ("tvos15.0")]
@@ -788,6 +841,7 @@ namespace CoreMedia {
 			}
 			set {
 				CMTimebaseSetSourceTimebase (Handle, value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 
@@ -816,6 +870,7 @@ namespace CoreMedia {
 			}
 			set {
 				CMTimebaseSetSourceClock (Handle, value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 

@@ -18,17 +18,7 @@ using Foundation;
 using CoreFoundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
-// CFHTTPMessage is in CFNetwork.framework, no idea why it ended up in CoreServices when it was bound.
-#if NET
 namespace CFNetwork {
-#else
-namespace CoreServices {
-#endif
-
 	public partial class CFHTTPMessage : CFType {
 		[Preserve (Conditional = true)]
 		internal CFHTTPMessage (NativeHandle handle, bool owns)
@@ -49,8 +39,10 @@ namespace CoreServices {
 
 			if (version.Major == 3 && version.Minor == 0) {
 				// HTTP 3.0 requires OS X 10.16 or later.
+#pragma warning disable CA1416 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'CFHTTPMessage._HTTPVersion3_0.get' is only supported on: 'ios' 14.0 and later, 'tvos' 14.0 and later.
 				if (_HTTPVersion3_0 != IntPtr.Zero)
 					return _HTTPVersion3_0;
+#pragma warning restore CA1416
 				else if (_HTTPVersion2_0 != IntPtr.Zero)
 					return _HTTPVersion2_0;
 				else
@@ -95,6 +87,8 @@ namespace CoreServices {
 
 			var handle = CFHTTPMessageCreateRequest (
 				IntPtr.Zero, method.Handle, url.Handle, GetVersion (version));
+			GC.KeepAlive (method);
+			GC.KeepAlive (url);
 			return new CFHTTPMessage (handle, true);
 		}
 
@@ -242,7 +236,7 @@ namespace CoreServices {
 		enum CFStreamErrorHTTPAuthentication {
 			TypeUnsupported = -1000,
 			BadUserName = -1001,
-			BadPassword = -1002
+			BadPassword = -1002,
 		}
 
 		AuthenticationException GetException (CFStreamErrorHTTPAuthentication code)
@@ -283,6 +277,7 @@ namespace CoreServices {
 				CFStreamError error;
 				unsafe {
 					ok = CFHTTPMessageApplyCredentials (Handle, auth.Handle, username, password, &error);
+					GC.KeepAlive (auth);
 				}
 				if (ok == 0)
 					throw GetException ((CFStreamErrorHTTPAuthentication) error.code);
@@ -299,20 +294,17 @@ namespace CoreServices {
 			Negotiate,
 			NTLM,
 			Digest,
-#if NET
+#if !XAMCORE_5_0
 			[SupportedOSPlatform ("macos")]
 			[SupportedOSPlatform ("ios")]
 			[SupportedOSPlatform ("tvos")]
-			[UnsupportedOSPlatform ("maccatalyst")]
+			[SupportedOSPlatform ("maccatalyst")]
 			[ObsoletedOSPlatform ("tvos12.0", "Not available anymore.")]
 			[ObsoletedOSPlatform ("macos10.14", "Not available anymore.")]
 			[ObsoletedOSPlatform ("ios12.0", "Not available anymore.")]
-#else
-			[Deprecated (PlatformName.iOS, 12, 0, message: "Not available anymore.")]
-			[Deprecated (PlatformName.TvOS, 12, 0, message: "Not available anymore.")]
-			[Deprecated (PlatformName.MacOSX, 10, 14, message: "Not available anymore.")]
-#endif
+			[ObsoletedOSPlatform ("maccatalyst13.1", "Not available anymore.")]
 			OAuth1,
+#endif
 		}
 
 		internal static IntPtr GetAuthScheme (AuthenticationScheme scheme)
@@ -328,10 +320,6 @@ namespace CoreServices {
 				return _AuthenticationSchemeNTLM;
 			case AuthenticationScheme.Digest:
 				return _AuthenticationSchemeDigest;
-			case AuthenticationScheme.OAuth1:
-				if (_AuthenticationSchemeOAuth1 == IntPtr.Zero)
-					throw new NotSupportedException ("Requires iOS 7.0 or macOS 10.9 and lower than iOS 12 or macOS 10.14");
-				return _AuthenticationSchemeOAuth1;
 			default:
 				throw new ArgumentException ();
 			}
@@ -355,9 +343,13 @@ namespace CoreServices {
 			if (password is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (password));
 
-			return CFHTTPMessageAddAuthentication (
+			bool result = CFHTTPMessageAddAuthentication (
 				Handle, failureResponse.GetHandle (), username.Handle,
 				password.Handle, GetAuthScheme (scheme), forProxy ? (byte) 1 : (byte) 0) != 0;
+			GC.KeepAlive (failureResponse);
+			GC.KeepAlive (username);
+			GC.KeepAlive (password);
+			return result;
 		}
 
 		[DllImport (Constants.CFNetworkLibrary)]
@@ -391,6 +383,8 @@ namespace CoreServices {
 				unsafe {
 					ok = CFHTTPMessageApplyCredentialDictionary (
 						Handle, auth.Handle, dict.Handle, &error);
+					GC.KeepAlive (auth);
+					GC.KeepAlive (dict);
 				}
 				if (ok != 0)
 					return;

@@ -167,12 +167,19 @@ namespace FileProvider {
 	[ErrorDomain ("NSFileProviderErrorDomain")]
 	[Native ("NSFileProviderErrorCode")]
 	enum NSFileProviderError : long {
+		/// <summary>To be added.</summary>
 		NotAuthenticated = -1000,
+		/// <summary>To be added.</summary>
 		FilenameCollision = -1001,
+		/// <summary>To be added.</summary>
 		SyncAnchorExpired = -1002,
+		/// <summary>To be added.</summary>
 		PageExpired = SyncAnchorExpired,
+		/// <summary>To be added.</summary>
 		InsufficientQuota = -1003,
+		/// <summary>To be added.</summary>
 		ServerUnreachable = -1004,
+		/// <summary>To be added.</summary>
 		NoSuchItem = -1005,
 		VersionOutOfDate = -1006,
 		DirectoryNotEmpty = -1007,
@@ -208,12 +215,18 @@ namespace FileProvider {
 	[Static]
 	interface NSFileProviderErrorKeys {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'NSFileProviderErrorItemKey' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSFileProviderErrorItemKey' instead.")]
 		[Field ("NSFileProviderErrorCollidingItemKey")]
 		NSString CollidingItemKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileProviderErrorNonExistentItemIdentifierKey")]
 		NSString NonExistentItemIdentifierKey { get; }
 
@@ -227,6 +240,9 @@ namespace FileProvider {
 	[Static]
 	interface NSFileProviderFavoriteRank {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileProviderFavoriteRankUnranked")]
 		ulong Unranked { get; }
 	}
@@ -236,9 +252,15 @@ namespace FileProvider {
 	[Static]
 	interface NSFileProviderItemIdentifier {
 
+		/// <summary>Gets the persistent name of the root directory in the shared hierarchy.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileProviderRootContainerItemIdentifier")]
 		NSString RootContainer { get; }
 
+		/// <summary>Gets the persistent name of the documents and directories.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFileProviderWorkingSetContainerItemIdentifier")]
 		NSString WorkingSetContainer { get; }
 
@@ -252,11 +274,17 @@ namespace FileProvider {
 	[Native]
 	[Flags]
 	enum NSFileProviderItemCapabilities : ulong {
+		/// <summary>To be added.</summary>
 		Reading = 1 << 0,
+		/// <summary>To be added.</summary>
 		Writing = 1 << 1,
+		/// <summary>To be added.</summary>
 		Reparenting = 1 << 2,
+		/// <summary>To be added.</summary>
 		Renaming = 1 << 3,
+		/// <summary>To be added.</summary>
 		Trashing = 1 << 4,
+		/// <summary>To be added.</summary>
 		Deleting = 1 << 5,
 		[NoiOS]
 		[NoTV]
@@ -266,7 +294,9 @@ namespace FileProvider {
 		[NoTV]
 		[NoMacCatalyst]
 		ExcludingFromSync = 1 << 7,
+		/// <summary>To be added.</summary>
 		AddingSubItems = Writing,
+		/// <summary>To be added.</summary>
 		ContentEnumerating = Reading,
 #if !NET
 		[Obsolete ("This enum value is not constant across OS and versions.")]
@@ -310,6 +340,9 @@ namespace FileProvider {
 		[Field ("NSFileProviderInitialPageSortedByName")]
 		IntPtr _InitialPageSortedByName { get; }
 
+		/// <summary>Gets the first page in name order.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("Runtime.GetNSObject<NSData> (_InitialPageSortedByName)")]
 		NSData InitialPageSortedByName { get; }
@@ -318,6 +351,9 @@ namespace FileProvider {
 		[Field ("NSFileProviderInitialPageSortedByDate")]
 		IntPtr _InitialPageSortedByDate { get; }
 
+		/// <summary>Gets the first page in date order.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("Runtime.GetNSObject<NSData> (_InitialPageSortedByDate)")]
 		NSData InitialPageSortedByDate { get; }
@@ -342,12 +378,21 @@ namespace FileProvider {
 		[Export ("initWithDisplayName:userInfo:volumeURL:")]
 		NativeHandle Constructor (string displayName, NSDictionary userInfo, [NullAllowed] NSUrl volumeUrl);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("identifier")]
 		string Identifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displayName")]
 		string DisplayName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Export ("pathRelativeToDocumentStorage")]
 		string PathRelativeToDocumentStorage { get; }
@@ -627,6 +672,9 @@ namespace FileProvider {
 	[DisableDefaultCtor]
 	interface NSFileProviderManager {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Static]
 		[Export ("defaultManager", ArgumentSemantic.Strong)]
@@ -640,10 +688,16 @@ namespace FileProvider {
 		[Export ("registerURLSessionTask:forItemWithIdentifier:completionHandler:")]
 		void Register (NSUrlSessionTask task, string identifier, Action<NSError> completion);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Export ("providerIdentifier")]
 		string ProviderIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Export ("documentStorageURL")]
 		NSUrl DocumentStorageUrl { get; }

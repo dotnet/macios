@@ -1,7 +1,5 @@
 // Unit test for Vision.GetCameraRelativePosition
 
-#if !__WATCHOS__
-
 #if MONOMAC
 using AppKit;
 #else
@@ -72,4 +70,3 @@ namespace MonoTouchFixtures.Vision {
 		}
 	}
 }
-#endif

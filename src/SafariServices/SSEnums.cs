@@ -22,7 +22,8 @@ namespace SafariServices {
 	[Native ("SSReadingListErrorCode")]
 	[ErrorDomain ("SSReadingListErrorDomain")]
 	public enum SSReadingListError : long {
-		UrlSchemeNotAllowed = 1
+		/// <summary>To be added.</summary>
+		UrlSchemeNotAllowed = 1,
 	}
 
 	[NoMac]
@@ -32,10 +33,14 @@ namespace SafariServices {
 	[Native]
 	[ErrorDomain ("SFContentBlockerErrorDomain")]
 	public enum SFContentBlockerErrorCode : long {
+		/// <summary>To be added.</summary>
 		Ok = 0,
+		/// <summary>To be added.</summary>
 		NoExtensionFound = 1,
+		/// <summary>To be added.</summary>
 		NoAttachmentFound = 2,
-		LoadingInterrupted = 3
+		/// <summary>To be added.</summary>
+		LoadingInterrupted = 3,
 	}
 
 	/// <summary>Enumerates errors that that Safari can encounter when working with content blockers or app extensions.</summary>
@@ -43,18 +48,25 @@ namespace SafariServices {
 	[Native]
 	[ErrorDomain ("SFErrorDomain")]
 	public enum SFErrorCode : long {
+		/// <summary>No error occurred.</summary>
 		Ok = 0,
+		/// <summary>No blocker or extension was found for the specified bundle ID, or the specified extension is owned by someone else.</summary>
 		NoExtensionFound = 1,
+		/// <summary>The blocker returned an extension item that did not contain an attachment.</summary>
 		NoAttachmentFound = 2,
-		LoadingInterrupted = 3
+		/// <summary>An error occurred that prevented the blocker or extension from loading.</summary>
+		LoadingInterrupted = 3,
 	}
 
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SFSafariViewControllerDismissButtonStyle : long {
+		/// <summary>To be added.</summary>
 		Done,
+		/// <summary>To be added.</summary>
 		Close,
+		/// <summary>To be added.</summary>
 		Cancel,
 	}
 
@@ -65,6 +77,7 @@ namespace SafariServices {
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ASWebAuthenticationSessionErrorCode' instead.")]
 	public enum SFAuthenticationError : long {
+		/// <summary>To be added.</summary>
 		CanceledLogin = 1,
 	}
 

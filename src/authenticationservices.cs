@@ -35,8 +35,11 @@ namespace AuthenticationServices {
 	[Native]
 	[ErrorDomain ("ASCredentialIdentityStoreErrorDomain")]
 	public enum ASCredentialIdentityStoreErrorCode : long {
+		/// <summary>To be added.</summary>
 		InternalError = 0,
+		/// <summary>To be added.</summary>
 		StoreDisabled = 1,
+		/// <summary>To be added.</summary>
 		StoreBusy = 2,
 	}
 
@@ -46,9 +49,13 @@ namespace AuthenticationServices {
 	[Native]
 	[ErrorDomain ("ASExtensionErrorDomain")]
 	public enum ASExtensionErrorCode : long {
+		/// <summary>A general failure.</summary>
 		Failed = 0,
+		/// <summary>The user initiated the cancellation of the authentication request.</summary>
 		UserCanceled = 1,
+		/// <summary>Additional user interaction is required.</summary>
 		UserInteractionRequired = 100,
+		/// <summary>The identity could not be found.</summary>
 		CredentialIdentityNotFound = 101,
 		MatchedExcludedCredential = 102,
 	}
@@ -74,7 +81,9 @@ namespace AuthenticationServices {
 	[NoTV]
 	[Native]
 	public enum ASCredentialServiceIdentifierType : long {
+		/// <summary>The identifier specifies a domain.</summary>
 		Domain,
+		/// <summary>The identifier specifies a URL.</summary>
 		Url,
 	}
 
@@ -83,6 +92,7 @@ namespace AuthenticationServices {
 	[Native]
 	[ErrorDomain ("ASWebAuthenticationSessionErrorDomain")]
 	public enum ASWebAuthenticationSessionErrorCode : long {
+		/// <summary>The login was cancelled.</summary>
 		CanceledLogin = 1,
 		PresentationContextNotProvided = 2,
 		PresentationContextInvalid = 3,
@@ -198,6 +208,9 @@ namespace AuthenticationServices {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASCredentialIdentityStore {
+		/// <summary>The singleton shared credential identity store.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("sharedStore")]
 		ASCredentialIdentityStore SharedStore { get; }
@@ -258,9 +271,15 @@ namespace AuthenticationServices {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASCredentialIdentityStoreState {
+		/// <summary>Gets whether the credential identity store is enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; }
 
+		/// <summary>Gets whether the credential identity store can be incrementally updated.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("supportsIncrementalUpdates")]
 		bool SupportsIncrementalUpdates { get; }
 	}
@@ -313,9 +332,15 @@ namespace AuthenticationServices {
 		[Export ("initWithIdentifier:type:")]
 		NativeHandle Constructor (string identifier, ASCredentialServiceIdentifierType type);
 
+		/// <summary>Gets the service identifier.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("identifier")]
 		string Identifier { get; }
 
+		/// <summary>Gets the <see cref="T:AuthenticationServices.ASCredentialServiceIdentifierType" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("type")]
 		ASCredentialServiceIdentifierType Type { get; }
 	}
@@ -334,15 +359,27 @@ namespace AuthenticationServices {
 		[Export ("identityWithServiceIdentifier:user:recordIdentifier:")]
 		ASPasswordCredentialIdentity Create (ASCredentialServiceIdentifier serviceIdentifier, string user, [NullAllowed] string recordIdentifier);
 
+		/// <summary>Gets the <see cref="T:AuthenticationServices.ASCredentialServiceIdentifier" /> that provides a hint as to when the credential should be displayed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("serviceIdentifier", ArgumentSemantic.Strong)]
 		new ASCredentialServiceIdentifier ServiceIdentifier { get; }
 
+		/// <summary>A user-meaningful name to help identify the credential.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("user")]
 		new string User { get; }
 
+		/// <summary>Gets the string associating this identity to a record in the developer's database. (May be <see langword="null" />.)</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("recordIdentifier")]
 		new string RecordIdentifier { get; }
 
+		/// <summary>Gets or sets the priority for the credential identity.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rank")]
 		new nint Rank { get; set; }
 	}
@@ -352,6 +389,9 @@ namespace AuthenticationServices {
 	[NoTV]
 	[BaseType (typeof (UIViewController))]
 	interface ASCredentialProviderViewController {
+		/// <summary>The <see cref="T:AuthenticationServices.ASCredentialProviderExtensionContext" /> of the provider.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("extensionContext", ArgumentSemantic.Strong)]
 		ASCredentialProviderExtensionContext ExtensionContext { get; }
 
@@ -414,9 +454,15 @@ namespace AuthenticationServices {
 		[Export ("credentialWithUser:password:")]
 		ASPasswordCredential Create (string user, string password);
 
+		/// <summary>The identifier associated with the password.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("user")]
 		string User { get; }
 
+		/// <summary>The password associated with the user.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("password")]
 		string Password { get; }
 	}

@@ -1,10 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System;
-using System.Security.Cryptography;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.DataModel;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -18,15 +15,15 @@ static partial class BindingSyntaxFactory {
 		bool isSuper = false, bool isStret = false)
 	{
 		if (property.IsProperty) {
-			// the getter and the setter depend of the accessors that have been set for the property, we do not want
-			// to calculate things that we won't use. The export data used will also depend if the getter/setter has a
+			// The getter and the setter depend on the accessors that have been set for the property, we do not want
+			// to calculate things that we won't use. The export data used will also depend on if the getter/setter has a
 			// export attribute attached
 			var getter = property.GetAccessor (AccessorKind.Getter);
 			string? getterMsgSend = null;
 			if (getter is not null) {
 				var getterExportData = getter.Value.ExportPropertyData ?? property.ExportPropertyData;
 				if (getterExportData is not null) {
-					getterMsgSend = GetObjCMessageSendMethodName (getterExportData.Value, property.ReturnType, [],
+					getterMsgSend = GetObjCMessageSendMethodName (getterExportData.Value, property.BindAs?.Type ?? property.ReturnType, [],
 						isSuper, isStret);
 				}
 			}
@@ -34,10 +31,15 @@ static partial class BindingSyntaxFactory {
 			var setter = property.GetAccessor (AccessorKind.Setter);
 			string? setterMsgSend = null;
 			if (setter is not null) {
+				// the setter also depends on if we have a bindas attribute or not. If present, the parameter of the
+				// setter will be that indicated by the bind as attribute
+				var valueParameter = property.BindAs is null
+					? property.ValueParameter
+					: new Parameter (0, property.BindAs.Value.Type, "value");
 				var setterExportData = setter.Value.ExportPropertyData ?? property.ExportPropertyData;
 				if (setterExportData is not null) {
 					setterMsgSend = GetObjCMessageSendMethodName (setterExportData.Value, TypeInfo.Void,
-						[property.ValueParameter], isSuper, isStret);
+						[valueParameter], isSuper, isStret);
 				}
 			}
 
@@ -57,12 +59,16 @@ static partial class BindingSyntaxFactory {
 
 		var getterSend = GetterInvocation (MessagingInvocation (sendMethod, selector, []), property);
 		var getterSuperSend = GetterInvocation (MessagingInvocation (superSendMethod, selector, []), property);
+		// if we cannot get the methods, throw a runtime exception 
+		if (getterSend is null || getterSuperSend is null) {
+			return (ThrowNotImplementedException (), ThrowNotImplementedException ());
+		}
 		// the invocations depend on the property requiring a temp return variable or not
 		if (property.UseTempReturn) {
 			// get the getter invocation and assign it to the return variable 
 			return (
-				Send: ExpressionStatement (AssignVariable (property.ReturnType.ReturnVariableName, getterSend)),
-				SendSuper: ExpressionStatement (AssignVariable (property.ReturnType.ReturnVariableName, getterSuperSend))
+				Send: ExpressionStatement (AssignVariable (Nomenclator.GetReturnVariableName (property.ReturnType), getterSend)),
+				SendSuper: ExpressionStatement (AssignVariable (Nomenclator.GetReturnVariableName (property.ReturnType), getterSuperSend))
 			);
 		}
 		// this is the simplest case, we just need to call the method and return the result, for that we
@@ -75,35 +81,54 @@ static partial class BindingSyntaxFactory {
 #pragma warning disable format
 		// helper internal function that returns the expression based on the property return type and uses the passed
 		// message send expression
-		ExpressionSyntax GetterInvocation (InvocationExpressionSyntax objMsgSend, in Property property)
-			=> property.ReturnType switch {
+		ExpressionSyntax? GetterInvocation (InvocationExpressionSyntax objMsgSend, in Property property)
+			=> property switch {
+				// bind from NSNumber: NSNumber.ToInt32 (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (class_ptr, Selector.GetHandle ("selector"));
+				{ BindAs.Type.FullyQualifiedName: "Foundation.NSNumber", ReturnType.IsArray: false } => 
+					NSNumberFromHandle (property.ReturnType, [Argument (objMsgSend)]),
+				
+				// bind from NSNumber array: NSArray.ArrayFromHandleFunc <int> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (class_ptr, Selector.GetHandle ("selector"), NSNumber.ToInt32, false))
+				{ BindAs.Type.FullyQualifiedName: "Foundation.NSNumber", ReturnType.IsArray: true } => 
+					NSArrayFromHandleFunc (property.ReturnType.FullyQualifiedName, [Argument (objMsgSend), Argument(NSNumberFromHandle (property.ReturnType)!), BoolArgument (false)]),
+				
+				// bind from NSValue: NSValue.ToCGPoint (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle (\"myProperty\")))
+				{ BindAs.Type.FullyQualifiedName: "Foundation.NSValue", ReturnType.IsArray: false } => 
+					NSValueFromHandle (property.ReturnType, [Argument (objMsgSend)]),
+				
+				// bind from NSValue array: NSArray.ArrayFromHandleFunc<CoreGraphics.CGPoint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle (\"myProperty\")), NSValue.ToCGPoint, false)
+				{ BindAs.Type.FullyQualifiedName: "Foundation.NSValue", ReturnType.IsArray: true } => 
+					NSArrayFromHandleFunc (property.ReturnType.FullyQualifiedName, [Argument (objMsgSend), Argument(NSValueFromHandle (property.ReturnType)!), BoolArgument (false)]),
+
+				// bind from NSString to a SmartEnum: "global::AVFoundation.AVCaptureSystemPressureLevelExtensions.GetNullableValue (arg1)
+				{ BindAs.Type.FullyQualifiedName: "Foundation.NSString", ReturnType.IsSmartEnum: true} =>
+					SmartEnumGetValue (property.ReturnType, [Argument (objMsgSend)]),
 				
 				// string[]? => CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (class_ptr, Selector.GetHandle ("selector")), false);
-				{ IsArray: true, Name: "string", IsNullable: true } =>
+				{ ReturnType.IsArray: true, ReturnType.Name: "string", ReturnType.IsNullable: true } =>
 					StringArrayFromHandle ([Argument (objMsgSend), BoolArgument (false)]),
 
 				// string[] => CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (class_ptr, Selector.GetHandle ("selector")), false)!;
-				{ IsArray: true, Name: "string", IsNullable: false } =>
+				{ ReturnType.IsArray: true, ReturnType.Name: "string", ReturnType.IsNullable: false } =>
 					SuppressNullableWarning (StringArrayFromHandle ([Argument (objMsgSend), BoolArgument (false)])),
 				
 				// NSObject[] => CFArray.ArrayFromHandle<Foundation.NSMetadataItem> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("results")))!;
-				{ IsArray: true, ArrayElementTypeIsWrapped: true } => 
+				{ ReturnType.IsArray: true, ReturnType.ArrayElementTypeIsWrapped: true } => 
 					GetNSArrayFromHandle (property.ReturnType.FullyQualifiedName, [Argument (objMsgSend)], suppressNullableWarning: !property.ReturnType.IsNullable),
 				
 				// Runtime.GetNSObject<Foundation.NSObject> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("delegate")));
-				{ IsArray: false, IsNSObject: true } => 
+				{ ReturnType.IsArray: false, ReturnType.IsNSObject: true } => 
 					GetNSObject (property.ReturnType.FullyQualifiedName, [Argument (objMsgSend)], suppressNullableWarning: !property.ReturnType.IsNullable),
 
 				// string => CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("tunnelRemoteAddress")), false);
-				{ SpecialType: SpecialType.System_String, IsNullable: true } =>
+				{ ReturnType.SpecialType: SpecialType.System_String, ReturnType.IsNullable: true } =>
 					StringFromHandle ([Argument (objMsgSend), BoolArgument (false)]),
 
 				// string => CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("tunnelRemoteAddress")), false)!;
-				{ SpecialType: SpecialType.System_String, IsNullable: false } =>
+				{ ReturnType.SpecialType: SpecialType.System_String, ReturnType.IsNullable: false } =>
 					SuppressNullableWarning (StringFromHandle ([Argument (objMsgSend), BoolArgument (false)])),
 
 				// bool => global::ObjCRuntime.Messaging.bool_objc_msgSend (this.Handle, Selector.GetHandle ("canDraw")) != 0;
-				{ SpecialType: SpecialType.System_Boolean } => ByteToBool (objMsgSend),
+				{ ReturnType.SpecialType: SpecialType.System_Boolean } => ByteToBool (objMsgSend),
 				
 				// general case, just return the result of the send message
 				_ => objMsgSend,

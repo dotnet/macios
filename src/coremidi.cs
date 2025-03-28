@@ -181,7 +181,7 @@ namespace CoreMidi {
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		DeltaClockstampTicksPerQuarterNote = 0x3,
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-		TicksSinceLastEvent = 0x4
+		TicksSinceLastEvent = 0x4,
 	}
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -206,7 +206,7 @@ namespace CoreMidi {
 	public enum MidiUmpFunctionBlockMidi1Info {
 		NotMidi1 = 0,
 		UnrestrictedBandwidth = 1,
-		RestrictedBandwidth = 2
+		RestrictedBandwidth = 2,
 	}
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -215,7 +215,7 @@ namespace CoreMidi {
 		Unknown = 0,
 		Receiver = 1,
 		Sender = 2,
-		SenderReceiver = 3
+		SenderReceiver = 3,
 	}
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -224,7 +224,7 @@ namespace CoreMidi {
 		Unknown = 0,
 		Input = 1,
 		Output = 2,
-		Bidirectional = 3
+		Bidirectional = 3,
 	}
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -233,7 +233,7 @@ namespace CoreMidi {
 		Complete = 0x00,
 		Start = 0x01,
 		Continuing = 0x02,
-		End = 0x03
+		End = 0x03,
 	}
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]

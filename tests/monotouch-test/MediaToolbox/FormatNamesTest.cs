@@ -1,6 +1,3 @@
-
-#if !__WATCHOS__
-
 using System;
 using CoreMedia;
 using Foundation;
@@ -56,5 +53,3 @@ namespace MonoTouchFixtures.MediaToolbox {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

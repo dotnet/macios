@@ -24,6 +24,9 @@ namespace CloudKit {
 #endif
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	public unsafe partial class CKMarkNotificationsReadOperation : CKOperation {
+		/// <summary>The handle for this class.</summary>
+		///         <value>The pointer to the Objective-C class.</value>
+		///         <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
 		public override NativeHandle ClassHandle { get => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms); }
 
 		protected CKMarkNotificationsReadOperation (NSObjectFlag t) : base (t)
@@ -42,6 +45,9 @@ namespace CloudKit {
 			throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
 		}
 
+		/// <summary>Gets or sets the handler that is run after the operation completes.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public unsafe virtual CKMarkNotificationsReadHandler? Completed {
 			get {
 				throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
@@ -51,6 +57,12 @@ namespace CloudKit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		public virtual CKNotificationID []? NotificationIds {
 			get {
 				throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);

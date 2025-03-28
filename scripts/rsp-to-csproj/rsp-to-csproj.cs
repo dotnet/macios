@@ -192,6 +192,9 @@ foreach (var a in arguments) {
 	case "analyzerconfig":
 		items.Add (new ("EditorConfigFiles", GetFullPath (value)));
 		break;
+	case "fullpaths":
+		properties.Add (new ("GenerateFullPaths", value));
+		break;
 	default:
 		ReportError ($"Didn't understand argument '{a}'");
 		break;

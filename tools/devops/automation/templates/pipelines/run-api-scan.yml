@@ -69,6 +69,7 @@ stages:
               commit: HEAD
               statusContext: 'VSTS: simulator tests' 
               uploadArtifacts: true
+              use1ES: false
 
   - template: ../governance/stage.yml
     parameters:

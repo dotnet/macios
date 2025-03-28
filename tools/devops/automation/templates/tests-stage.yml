@@ -67,6 +67,7 @@ stages:
         commit: ${{ parameters.commit }}
         statusContext: 'VSTS: simulator tests' 
         uploadArtifacts: true
+        use1ES: false
 
 # always run simulator tests
 - template: ./tests/stage.yml

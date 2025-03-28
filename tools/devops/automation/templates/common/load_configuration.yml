@@ -10,7 +10,6 @@ parameters:
 
   - name: use1ES
     type: boolean
-    default: false
 
   - name: repositoryAlias
     type: string

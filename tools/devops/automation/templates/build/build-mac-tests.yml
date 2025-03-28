@@ -30,6 +30,9 @@ parameters:
   type: string
   default: '$(MaciosUploadPrefix)'
 
+- name: use1ES
+  type: boolean
+
 steps:
 - template: build.yml
   parameters:
@@ -40,6 +43,7 @@ steps:
     keyringPass: ${{ parameters.keyringPass }}
     gitHubToken: ${{ parameters.gitHubToken }}
     xqaCertPass: ${{ parameters.xqaCertPass }}
+    use1ES: ${{ parameters.use1ES }}
     buildSteps:
 
     - bash: |
@@ -72,7 +76,7 @@ steps:
       # Publish all the binlogs we collected in the previous step
       - template: ../common/publish-pipeline-artifact.yml
         parameters:
-          use1ES: true
+          use1ES: ${{ parameters.use1ES }}
           displayName: 'Publish Artifact: All binlogs'
           path: $(Build.ArtifactStagingDirectory)/mactests-binlogs
           artifact: '${{ parameters.uploadPrefix }}mactests-binlogs-$(Build.BuildId)-$(System.StageAttempt)-$(System.JobAttempt)'

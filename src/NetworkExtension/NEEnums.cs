@@ -23,11 +23,17 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NEVpnStatus : long {
+		/// <summary>The VPN configuration is invalid or disabled.</summary>
 		Invalid = 0,
+		/// <summary>The VPN is disconnected.</summary>
 		Disconnected = 1,
+		/// <summary>The VPN is in the process of attempting to connect.</summary>
 		Connecting = 2,
+		/// <summary>The VPN is connected.</summary>
 		Connected = 3,
+		/// <summary>The VPN is in the process of reconnecting.</summary>
 		Reasserting = 4,
+		/// <summary>The VPN is in the process of attempting to disconnect.</summary>
 		Disconnecting = 5,
 	}
 
@@ -306,9 +312,13 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NWPathStatus : long {
+		/// <summary>Indicates that the path is not valid.</summary>
 		Invalid = 0,
+		/// <summary>Indicates that the path is ready for use.</summary>
 		Satisfied = 1,
+		/// <summary>The path cannot be used.</summary>
 		Unsatisfied = 2,
+		/// <summary>Indicates that the path is able to be used if, for example, a VPN becomes available or cellular data is enabled.</summary>
 		Satisfiable = 3,
 	}
 
@@ -319,11 +329,17 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NWTcpConnectionState : long {
+		/// <summary>Indicates that the connection is invalid.</summary>
 		Invalid = 0,
+		/// <summary>Indicates that a connection is being established.</summary>
 		Connecting = 1,
+		/// <summary>Indicates that better connection conditions are being waited for.</summary>
 		Waiting = 2,
+		/// <summary>Indicates that the connection is working.</summary>
 		Connected = 3,
+		/// <summary>Indicates that the connection was active, but was disconnected and that the developer should cancel the connection.</summary>
 		Disconnected = 4,
+		/// <summary>Indicates that the connection was canceled by the client.</summary>
 		Cancelled = 5,
 	}
 
@@ -334,11 +350,17 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NWUdpSessionState : long {
+		/// <summary>Indicates that the session is invalid or hasn't been initialized.</summary>
 		Invalid = 0,
+		/// <summary>Indicates that the session is waiting for better connection conditions.</summary>
 		Waiting = 1,
+		/// <summary>Indicates that the session is attempting to resolve a remote endpoint.</summary>
 		Preparing = 2,
+		/// <summary>Indicate that data may be written and read.</summary>
 		Ready = 3,
+		/// <summary>Indicates that none of the endpoints can be resolved.</summary>
 		Failed = 4,
+		/// <summary>Indicates that the session was cancelled.</summary>
 		Cancelled = 5,
 	}
 

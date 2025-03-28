@@ -26,15 +26,21 @@ using ObjCRuntime;
 namespace MediaLibrary {
 	[Native]
 	public enum MLMediaSourceType : ulong {
+		/// <summary>To be added.</summary>
 		Audio = 1 << 0,
+		/// <summary>To be added.</summary>
 		Image = 1 << 1,
+		/// <summary>To be added.</summary>
 		Movie = 1 << 2,
 	}
 
 	[Native]
 	public enum MLMediaType : ulong {
+		/// <summary>To be added.</summary>
 		Audio = 1 << 0,
+		/// <summary>To be added.</summary>
 		Image = 1 << 1,
+		/// <summary>To be added.</summary>
 		Movie = 1 << 2,
 	}
 }

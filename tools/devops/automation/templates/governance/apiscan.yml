@@ -113,17 +113,10 @@ steps:
     GdnBreakOutputSuppressionFile: $(Build.ArtifactStagingDirectory)\GuardianSuppressions\falsepositives.gdnsuppress
     GdnBreakOutputSuppressionSet: falsepositives
 
-- ${{ if eq(parameters.use1ES, true) }}:
-  - task: 1ES.PublishPipelineArtifact@1
+- template: ../common/publish-pipeline-artifact.yml
+  parameters:
+    use1ES: ${{ parameters.use1ES }}
     displayName: Publish Artifact for Guardian Supressions
-    inputs:
-      path: $(Build.ArtifactStagingDirectory)\GuardianSuppressions
-      artifact: Guardian Suppressions APIScan $(PLATFORM) $(VERSION)
-    condition: failed()
-- ${{ else }}:
-  - task: PublishPipelineArtifact@1
-    displayName: Publish Artifact for Guardian Supressions
-    inputs:
-      targetPath: $(Build.ArtifactStagingDirectory)\GuardianSuppressions
-      artifactName: Guardian Suppressions APIScan $(PLATFORM) $(VERSION)
+    path: $(Build.ArtifactStagingDirectory)\GuardianSuppressions
+    artifact: Guardian Suppressions APIScan $(PLATFORM) $(VERSION)
     condition: failed()

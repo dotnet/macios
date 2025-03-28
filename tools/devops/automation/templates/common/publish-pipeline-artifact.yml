@@ -18,14 +18,15 @@ parameters:
   default: false
 
 - name: condition
-  type: boolean
-  default: always()
+  type: string
+  default: ""
 
 steps:
 - ${{ if eq(parameters.use1ES, true) }}:
   - task: 1ES.PublishPipelineArtifact@1
     displayName: ${{ parameters.displayName }}
-    condition: ${{ parameters.condition }}
+    ${{ if ne(parameters.condition, '') }}:
+      condition: ${{ parameters.condition }}
     inputs:
       path: ${{ parameters.path }}
       artifact: ${{ parameters.artifact }}
@@ -33,7 +34,8 @@ steps:
 - ${{ else }}:
   - task: PublishPipelineArtifact@1
     displayName: ${{ parameters.displayName }}
-    condition: ${{ parameters.condition }}
+    ${{ if ne(parameters.condition, '') }}:
+      condition: ${{ parameters.condition }}
     inputs:
       targetPath: ${{ parameters.path }}
       artifactName: ${{ parameters.artifact }}

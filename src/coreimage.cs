@@ -58,10 +58,6 @@ using Color = AppKit.NSColor;
 using UIImage = AppKit.NSImage;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreImage {
 
 	/// <summary>A Core Image color, including both color values and a reference to a color space.</summary>
@@ -731,21 +727,10 @@ namespace CoreImage {
 		[return: NullAllowed]
 		NSUrl FilterLocalizedReferenceDocumentation (string filterName);
 
-#if MONOMAC && !NET
-		[Static]
-		[Export ("registerFilterName:constructor:classAttributes:")]
-		void RegisterFilterName (string name, NSObject constructorObject, NSDictionary classAttributes);
-#else
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("registerFilterName:constructor:classAttributes:")]
-#if NET
 		void RegisterFilterName (string name, ICIFilterConstructor constructorObject, NSDictionary<NSString, NSObject> classAttributes);
-#else
-		[Advice ("The 'constructorObject' argument must implement 'ICIFilterConstructor'.")]
-		void RegisterFilterName (string name, NSObject constructorObject, NSDictionary<NSString, NSObject> classAttributes);
-#endif
-#endif
 
 		[NoiOS]
 		[NoMacCatalyst]
@@ -2298,12 +2283,6 @@ namespace CoreImage {
 		[Export ("imageWithCVImageBuffer:")]
 		CIImage FromImageBuffer (CVImageBuffer imageBuffer);
 
-#if MONOMAC && !NET
-		[EditorBrowsable (EditorBrowsableState.Advanced)]
-		[Static]
-		[Export ("imageWithCVImageBuffer:options:")]
-		CIImage FromImageBuffer (CVImageBuffer imageBuffer, [NullAllowed] NSDictionary dict);
-#else
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Static]
 		[MacCatalyst (13, 1)]
@@ -2316,7 +2295,6 @@ namespace CoreImage {
 		[MacCatalyst (13, 1)]
 		[Export ("imageWithCVImageBuffer:options:")]
 		CIImage FromImageBuffer (CVImageBuffer imageBuffer, [NullAllowed] NSDictionary<NSString, NSObject> dict);
-#endif
 
 		[Static]
 		[MacCatalyst (13, 1)]
@@ -2459,10 +2437,6 @@ namespace CoreImage {
 		[Export ("initWithCVImageBuffer:")]
 		NativeHandle Constructor (CVImageBuffer imageBuffer);
 
-#if MONOMAC && !NET
-		[Export ("initWithCVImageBuffer:options:")]
-		NativeHandle Constructor (CVImageBuffer imageBuffer, [NullAllowed] NSDictionary dict);
-#else
 		[MacCatalyst (13, 1)]
 		[Export ("initWithCVImageBuffer:options:")]
 		NativeHandle Constructor (CVImageBuffer imageBuffer, [NullAllowed] NSDictionary<NSString, NSObject> dict);
@@ -2472,7 +2446,6 @@ namespace CoreImage {
 		[Sealed]
 		[Export ("initWithCVImageBuffer:options:")]
 		NativeHandle Constructor (CVImageBuffer imageBuffer, [NullAllowed] NSDictionary dict);
-#endif
 
 		[MacCatalyst (13, 1)]
 		[Wrap ("this (imageBuffer, options.GetDictionary ())")]
@@ -3165,9 +3138,7 @@ namespace CoreImage {
 		[NullAllowed, Export ("metalTexture")]
 		IMTLTexture MetalTexture { get; }
 
-#if NET
-		[Abstract] // @required but it was added in Xcode9
-#endif
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("surface")]
 		IOSurface.IOSurface Surface { get; }
@@ -3228,9 +3199,7 @@ namespace CoreImage {
 		[NullAllowed, Export ("metalCommandBuffer")]
 		IMTLCommandBuffer MetalCommandBuffer { get; }
 
-#if NET
-		[Abstract] // @required but it was added in Xcode9
-#endif
+		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("surface")]
 		IOSurface.IOSurface Surface { get; }
@@ -3401,24 +3370,10 @@ namespace CoreImage {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // does not work in iOS 11 beta 4
 	interface CIImageAccumulator {
-#if !NET
-		[Obsolete ("The default initializer does not work in recent iOS version (11b4).")]
-		[Export ("init")]
-		NativeHandle Constructor ();
-#endif
-
 		[Static]
 		[Export ("imageAccumulatorWithExtent:format:")]
 		[return: NullAllowed]
 		CIImageAccumulator FromRectangle (CGRect rect, CIFormat format);
-
-#if MONOMAC && !NET
-		[Obsolete ("Use the overload acceping a 'CIFormat' enum instead of an 'int'.")]
-		[Static]
-		[Wrap ("FromRectangle (rect, (CIFormat) ciImageFormat)")]
-		[return: NullAllowed]
-		CIImageAccumulator FromRectangle (CGRect rect, int ciImageFormat);
-#endif
 
 		[Static]
 		[Export ("imageAccumulatorWithExtent:format:colorSpace:")]
@@ -3427,12 +3382,6 @@ namespace CoreImage {
 
 		[Export ("initWithExtent:format:")]
 		NativeHandle Constructor (CGRect rectangle, CIFormat format);
-
-#if MONOMAC && !NET
-		[Obsolete ("Use the overload acceping a 'CIFormat' enum instead of an 'int'.")]
-		[Wrap ("this (rectangle, (CIFormat) ciImageFormat)")]
-		NativeHandle Constructor (CGRect rectangle, int ciImageFormat);
-#endif
 
 		[Export ("initWithExtent:format:colorSpace:")]
 		NativeHandle Constructor (CGRect extent, CIFormat format, CGColorSpace colorSpace);
@@ -3966,25 +3915,49 @@ namespace CoreImage {
 	[BaseType (typeof (CIFeature))]
 	partial interface CIQRCodeFeature : NSSecureCoding, NSCopying {
 
+		/// <summary>Gets the bounds of the feature.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bounds", ArgumentSemantic.Assign)]
 		CGRect Bounds { get; }
 
+		/// <summary>Gets the top left corner of the rectangle that contains the feature.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("topLeft", ArgumentSemantic.Assign)]
 		CGPoint TopLeft { get; }
 
+		/// <summary>Gets the top right corner of the rectangle that contains the feature.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("topRight", ArgumentSemantic.Assign)]
 		CGPoint TopRight { get; }
 
+		/// <summary>Gets the bottom left corner of the rectangle that contains the feature.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bottomLeft", ArgumentSemantic.Assign)]
 		CGPoint BottomLeft { get; }
 
+		/// <summary>Gets the bottom right corner of the rectangle that contains the feature.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bottomRight", ArgumentSemantic.Assign)]
 		CGPoint BottomRight { get; }
 
+		/// <summary>Gets the message contained in the detected QR code.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("messageString")]
 		[NullAllowed]
 		string MessageString { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("symbolDescriptor")]
 		CIQRCodeDescriptor SymbolDescriptor { get; }
@@ -4072,12 +4045,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIAccordionFoldTransition : CIAccordionFoldTransitionProtocol {
-
-#if !NET
-		[Obsolete ("Use 'FoldCount' instead.")]
-		[CoreImageFilterProperty ("inputNumberOfFolds")]
-		int NumberOfFolds { get; set; }
-#endif
 	}
 
 	/// <summary>An abstract <see cref="T:CoreImage.CIFilter" /> that composites two images.</summary>
@@ -4108,13 +4075,6 @@ namespace CoreImage {
 	[Abstract]
 	[BaseType (typeof (CIFilter))]
 	interface CIAffineFilter : CIFilterProtocol {
-
-#if !NET
-		[NoMac]
-		[Obsolete ("Not every subclass expose this property.")]
-		[CoreImageFilterProperty ("inputTransform")]
-		CGAffineTransform Transform { get; set; }
-#endif
 	}
 
 	/// <include file="../docs/api/CoreImage/CIAffineClamp.xml" path="/Documentation/Docs[@DocId='T:CoreImage.CIAffineClamp']/*" />
@@ -4201,13 +4161,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIAreaHistogram : CIAreaHistogramProtocol {
-
-#if !NET
-		[Obsolete ("Use 'InputCount' instead.")]
-		[CoreImageFilterProperty ("inputCount")]
-		float Count { get; set; }
-#endif
-
 		/// <summary>Gets or sets the region in the source image for which to produce a histogram.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -4316,17 +4269,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CICodeGenerator))]
 	interface CIAztecCodeGenerator : CIAztecCodeGeneratorProtocol {
-
-#if !NET
-		[Obsolete ("Use 'InputCompactStyle' instead.")]
-		[CoreImageFilterProperty ("inputCompactStyle")]
-		bool CompactStyle { get; set; }
-
-		[Obsolete ("Use 'InputLayers' instead.")]
-		[CoreImageFilterProperty ("inputLayers")]
-		int Layers { get; set; }
-#endif
-
 		[CoreImageFilterProperty ("outputCGImage")]
 		CGImage OutputCGImage { get; }
 	}
@@ -4373,13 +4315,6 @@ namespace CoreImage {
 	[CoreImageFilter (DefaultCtorVisibility = MethodAttributes.Public, StringCtorVisibility = MethodAttributes.Public)]
 	[BaseType (typeof (CIBlendFilter))]
 	interface CIBlendWithMask : CIBlendWithMaskProtocol {
-
-#if !NET
-		// renamed for API compatibility
-		[Obsolete ("Use 'MaskImage' instead.")]
-		[CoreImageFilterProperty ("inputMaskImage")]
-		CIImage Mask { get; set; }
-#endif
 	}
 
 	/// <include file="../docs/api/CoreImage/CIBloom.xml" path="/Documentation/Docs[@DocId='T:CoreImage.CIBloom']/*" />
@@ -4409,12 +4344,6 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputRadius")]
 		float Radius { get; set; }
-
-#if !NET
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 	}
 
 	[iOS (14, 0)]
@@ -4483,12 +4412,6 @@ namespace CoreImage {
 	[CoreImageFilter]
 	[BaseType (typeof (CIFilter))]
 	interface CICheckerboardGenerator : CICheckerboardGeneratorProtocol {
-
-#if !NET
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 	}
 
 	[iOS (14, 0)]
@@ -4522,18 +4445,18 @@ namespace CoreImage {
 	[BaseType (typeof (CIFilter))]
 	interface CIScreenFilter {
 
+		/// <summary>Gets or sets the sharpness of the halftone pattern. 1 is sharp. 0 is maximally blurry.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputSharpness")]
 		float Sharpness { get; set; }
-
-#if !NET
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 
 		[CoreImageFilterProperty ("inputCenter")]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets the size of the halftone pattern elements.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputWidth")]
 		float Width { get; set; }
 	}
@@ -4572,12 +4495,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CICircularWrap : CICircularWrapProtocol {
-
-#if !NET
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 	}
 
 	/// <summary>Produce a color half-tone image built from cyan, magenta, yellow, and black 'inks'.</summary>
@@ -4585,17 +4502,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter), Name = "CICMYKHalftone")]
 	interface CICmykHalftone : CICmykHalftoneProtocol {
-
-#if !NET
-		// renamed for API compatibility
-		[Obsolete ("Use 'Sharpness' instead.")]
-		[CoreImageFilterProperty ("inputSharpness")]
-		float InputSharpness { get; set; }
-
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 	}
 
 	/// <summary>Generates a Code 128 barcode.</summary>
@@ -4642,18 +4548,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIColorClamp : CIColorClampProtocol {
-
-#if !NET
-		// here the prefix was not removed, edited to keep API compatibility
-		[Obsolete ("Use 'MinComponents' instead.")]
-		[CoreImageFilterProperty ("inputMinComponents")]
-		CIVector InputMinComponents { get; set; }
-
-		// here the prefix was not removed, edited to keep API compatibility
-		[Obsolete ("Use 'MaxComponents' instead.")]
-		[CoreImageFilterProperty ("inputMaxComponents")]
-		CIVector InputMaxComponents { get; set; }
-#endif
 	}
 
 	/// <include file="../docs/api/CoreImage/CIColorControls.xml" path="/Documentation/Docs[@DocId='T:CoreImage.CIColorControls']/*" />
@@ -4874,12 +4768,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CICrystallize : CICrystallizeProtocol {
-
-#if !NET
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 	}
 
 	/// <include file="../docs/api/CoreImage/CIDarkenBlendMode.xml" path="/Documentation/Docs[@DocId='T:CoreImage.CIDarkenBlendMode']/*" />
@@ -4905,16 +4793,6 @@ namespace CoreImage {
 	[CoreImageFilter]
 	[BaseType (typeof (CITransitionFilter))]
 	interface CIDisintegrateWithMaskTransition : CIDisintegrateWithMaskTransitionProtocol {
-
-#if !NET
-		[Obsolete ("Use 'MaskImage' instead.")]
-		[CoreImageFilterProperty ("inputMaskImage")]
-		CIImage Mask { get; set; }
-
-		[Obsolete ("Use 'InputShadowOffset' instead.")]
-		[CoreImageFilterProperty ("inputShadowOffset")]
-		CIVector ShadowOffset { get; set; }
-#endif
 	}
 
 	[iOS (14, 0)]
@@ -5002,16 +4880,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIDroste : CIDrosteProtocol {
-
-#if !NET
-		[Obsolete ("use 'InputInsetPoint0' instead.")]
-		[CoreImageFilterProperty ("inputInsetPoint0")]
-		CIVector InsetPoint0 { get; set; }
-
-		[Obsolete ("use 'InputInsetPoint0' instead.")]
-		[CoreImageFilterProperty ("inputInsetPoint1")]
-		CIVector InsetPoint1 { get; set; }
-#endif
 	}
 
 	/// <summary>Creates a colorized edge-detection effect.</summary>
@@ -5036,12 +4904,6 @@ namespace CoreImage {
 
 		[CoreImageFilterProperty ("inputAngle")]
 		float Angle { get; set; }
-
-#if !NET
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 
 		[CoreImageFilterProperty ("inputCenter")]
 		CGPoint InputCenter { get; set; }
@@ -5078,26 +4940,6 @@ namespace CoreImage {
 	[CoreImageFilter]
 	[BaseType (typeof (CITransitionFilter))]
 	interface CIFlashTransition : CIFlashTransitionProtocol {
-
-#if !NET
-		// for some reason we prefixed all Striation* with Max - API compatibility
-		[Obsolete ("Use 'StriationContrast' instead.")]
-		[CoreImageFilterProperty ("inputStriationContrast")]
-		float MaxStriationContrast { get; set; }
-
-		[Obsolete ("Use 'InputExtent' instead.")]
-		[CoreImageFilterProperty ("inputExtent")]
-		CIVector Extent { get; set; }
-
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-
-		// for some reason we prefixed all Striation* with Max - API compatibility
-		[Obsolete ("Use 'StriationStrength' instead.")]
-		[CoreImageFilterProperty ("inputStriationStrength")]
-		float MaxStriationStrength { get; set; }
-#endif
 	}
 
 	/// <include file="../docs/api/CoreImage/CIFourfoldReflectedTile.xml" path="/Documentation/Docs[@DocId='T:CoreImage.CIFourfoldReflectedTile']/*" />
@@ -5134,12 +4976,6 @@ namespace CoreImage {
 	[CoreImageFilter]
 	[BaseType (typeof (CIFilter))]
 	interface CIGaussianGradient : CIGaussianGradientProtocol {
-
-#if !NET
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 	}
 
 	[iOS (14, 0)]
@@ -5170,12 +5006,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIGlassDistortion : CIGlassDistortionProtocol {
-
-#if !NET
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 	}
 
 	[iOS (14, 0)]
@@ -5210,16 +5040,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIGlassLozenge : CIGlassLozengeProtocol {
-
-#if !NET
-		[Obsolete ("Use 'InputPoint1' instead.")]
-		[CoreImageFilterProperty ("inputPoint1")]
-		CIVector Point1 { get; set; }
-
-		[Obsolete ("Use 'InputPoint0' instead.")]
-		[CoreImageFilterProperty ("inputPoint0")]
-		CIVector Point0 { get; set; }
-#endif
 	}
 
 	/// <include file="../docs/api/CoreImage/CIGlideReflectedTile.xml" path="/Documentation/Docs[@DocId='T:CoreImage.CIGlideReflectedTile']/*" />
@@ -5258,12 +5078,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIHexagonalPixellate : CIHexagonalPixellateProtocol {
-
-#if !NET
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 	}
 
 	/// <include file="../docs/api/CoreImage/CIHighlightShadowAdjust.xml" path="/Documentation/Docs[@DocId='T:CoreImage.CIHighlightShadowAdjust']/*" />
@@ -5377,16 +5191,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIKaleidoscope : CIKaleidoscopeProtocol {
-
-#if !NET
-		[Obsolete ("Use 'InputCount' instead.")]
-		[CoreImageFilterProperty ("inputCount")]
-		float Count { get; set; }
-
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 	}
 
 	/// <include file="../docs/api/CoreImage/CILanczosScaleTransform.xml" path="/Documentation/Docs[@DocId='T:CoreImage.CILanczosScaleTransform']/*" />
@@ -5400,12 +5204,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CILenticularHaloGenerator : CILenticularHaloGeneratorProtocol {
-
-#if !NET
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 	}
 
 	/// <include file="../docs/api/CoreImage/CILightenBlendMode.xml" path="/Documentation/Docs[@DocId='T:CoreImage.CILightenBlendMode']/*" />
@@ -5442,12 +5240,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CILightTunnel : CILightTunnelProtocol {
-
-#if !NET
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 	}
 
 	/// <summary>Darkens the image based on the colors of the background image.</summary>
@@ -5468,16 +5260,6 @@ namespace CoreImage {
 	[CoreImageFilter (DefaultCtorVisibility = MethodAttributes.Public, StringCtorVisibility = MethodAttributes.Public)]
 	[BaseType (typeof (CIFilter))]
 	interface CILinearGradient : CILinearGradientProtocol {
-
-#if !NET
-		[Obsolete ("Use 'InputPoint1' instead.")]
-		[CoreImageFilterProperty ("inputPoint1")]
-		CIVector Point1 { get; set; }
-
-		[Obsolete ("Use 'InputPoint0' instead.")]
-		[CoreImageFilterProperty ("inputPoint0")]
-		CIVector Point0 { get; set; }
-#endif
 	}
 
 	/// <include file="../docs/api/CoreImage/CILinearToSRGBToneCurve.xml" path="/Documentation/Docs[@DocId='T:CoreImage.CILinearToSRGBToneCurve']/*" />
@@ -5547,11 +5329,6 @@ namespace CoreImage {
 	[CoreImageFilter]
 	[BaseType (typeof (CITransitionFilter))]
 	interface CIModTransition : CIModTransitionProtocol {
-
-#if !NET
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 	}
 
 	/// <summary>Applies a blur that simulates the motion of a camera during capture.</summary>
@@ -5598,11 +5375,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CITransitionFilter))]
 	interface CIPageCurlTransition : CIPageCurlTransitionProtocol {
-
-#if !NET
-		[CoreImageFilterProperty ("inputExtent")]
-		CIVector Extent { get; set; }
-#endif
 	}
 
 	/// <summary>Animates a page curl transition, with a shadow, between images.</summary>
@@ -5610,21 +5382,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIPageCurlWithShadowTransition : CIPageCurlWithShadowTransitionProtocol {
-
-#if !NET
-		// prefixed for API compatibility
-		[Obsolete ("Use 'Time' instead.")]
-		[CoreImageFilterProperty ("inputTime")]
-		float InputTime { get; set; }
-
-		[Obsolete ("Use 'InputShadowExtent' instead.")]
-		[CoreImageFilterProperty ("inputShadowExtent")]
-		CIVector ShadowExtent { get; set; }
-
-		[Obsolete ("Use 'InputExtent' instead.")]
-		[CoreImageFilterProperty ("inputExtent")]
-		CIVector Extent { get; set; }
-#endif
 	}
 
 	/// <summary>Warps an image into a parallelogram and then tiles the result.</summary>
@@ -5639,32 +5396,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CICodeGenerator), Name = "CIPDF417BarcodeGenerator")]
 	interface CIPdf417BarcodeGenerator : CIPdf417BarcodeGeneratorProtocol {
-#if !NET
-		[Obsolete ("Use 'InputCorrectionLevel' instead.")]
-		[CoreImageFilterProperty ("inputCorrectionLevel")]
-		int CorrectionLevel { get; set; }
-
-		[Obsolete ("Use 'InputAlwaysSpecifyCompaction' instead.")]
-		[CoreImageFilterProperty ("inputAlwaysSpecifyCompaction")]
-		bool AlwaysSpecifyCompaction { get; set; }
-
-		[Obsolete ("Use 'InputCompactStyle' instead.")]
-		[CoreImageFilterProperty ("inputCompactStyle")]
-		bool CompactStyle { get; set; }
-
-		[Obsolete ("Use 'InputCompactStyle' instead.")]
-		[CoreImageFilterProperty ("inputDataColumns")]
-		int DataColumns { get; set; }
-
-		[Obsolete ("Use 'InputCompactionMode' instead.")]
-		[CoreImageFilterProperty ("inputCompactionMode")]
-		int CompactionMode { get; set; }
-
-		[Obsolete ("Use 'InputRows' instead.")]
-		[CoreImageFilterProperty ("inputRows")]
-		int Rows { get; set; }
-#endif
-
 		[CoreImageFilterProperty ("outputCGImage")]
 		CGImage OutputCGImage { get; }
 	}
@@ -5680,47 +5411,12 @@ namespace CoreImage {
 	[CoreImageFilter]
 	[BaseType (typeof (CIFilter))]
 	interface CIPerspectiveTile : CIPerspectiveTileProtocol {
-#if !NET
-		[Obsolete ("Use 'InputBottomLeft' instead.")]
-		[CoreImageFilterProperty ("inputBottomLeft")]
-		CIVector BottomLeft { get; set; }
-
-		[Obsolete ("Use 'InputTopRight' instead.")]
-		[CoreImageFilterProperty ("inputTopRight")]
-		CIVector TopRight { get; set; }
-
-		[Obsolete ("Use 'InputTopLeft' instead.")]
-		[CoreImageFilterProperty ("inputTopLeft")]
-		CIVector TopLeft { get; set; }
-
-		[Obsolete ("Use 'InputBottomRight' instead.")]
-		[CoreImageFilterProperty ("inputBottomRight")]
-		CIVector BottomRight { get; set; }
-#endif
 	}
 
 	/// <include file="../docs/api/CoreImage/CIPerspectiveTransform.xml" path="/Documentation/Docs[@DocId='T:CoreImage.CIPerspectiveTransform']/*" />
 	[CoreImageFilter (DefaultCtorVisibility = MethodAttributes.Public, StringCtorVisibility = MethodAttributes.Public)]
 	[BaseType (typeof (CIFilter))]
 	interface CIPerspectiveTransform : CIPerspectiveTransformProtocol {
-#if !NET
-		[Obsolete ("Use 'InputBottomLeft' instead.")]
-		[CoreImageFilterProperty ("inputBottomLeft")]
-		CIVector BottomLeft { get; set; }
-
-		[Obsolete ("Use 'InputTopRight' instead.")]
-		[CoreImageFilterProperty ("inputTopRight")]
-		CIVector TopRight { get; set; }
-
-		[Obsolete ("Use 'InputTopLeft' instead.")]
-		[CoreImageFilterProperty ("inputTopLeft")]
-		CIVector TopLeft { get; set; }
-
-		[Obsolete ("Use 'InputBottomRight' instead.")]
-		[CoreImageFilterProperty ("inputBottomRight")]
-		CIVector BottomRight { get; set; }
-#endif
-
 		[CoreImageFilterProperty ("outputTransform")]
 		CGAffineTransform OutputTransform { get; }
 	}
@@ -5730,11 +5426,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIPerspectiveTransform))]
 	interface CIPerspectiveTransformWithExtent : CIPerspectiveTransformWithExtentProtocol {
-#if !NET
-		[Obsolete ("Use 'InputExtent' instead.")]
-		[CoreImageFilterProperty ("inputExtent")]
-		CIVector Extent { get; set; }
-#endif
 	}
 
 	/// <summary>The base class for photo effect filters.</summary>
@@ -5848,11 +5539,6 @@ namespace CoreImage {
 	[CoreImageFilter]
 	[BaseType (typeof (CIFilter))]
 	interface CIPixellate : CIPixellateProtocol {
-#if !NET
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 	}
 
 	/// <summary>Creates an effect mimicking artistic pointillization.</summary>
@@ -5860,11 +5546,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIPointillize : CIPointillizeProtocol {
-#if !NET
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 	}
 
 	/// <include file="../docs/api/CoreImage/CIQRCodeGenerator.xml" path="/Documentation/Docs[@DocId='T:CoreImage.CIQRCodeGenerator']/*" />
@@ -5881,12 +5562,6 @@ namespace CoreImage {
 	[CoreImageFilter]
 	[BaseType (typeof (CIFilter))]
 	interface CIRadialGradient : CIRadialGradientProtocol {
-
-#if !NET
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 	}
 
 	/// <include file="../docs/api/CoreImage/CIRandomGenerator.xml" path="/Documentation/Docs[@DocId='T:CoreImage.CIRandomGenerator']/*" />
@@ -5900,15 +5575,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CITransitionFilter))]
 	interface CIRippleTransition : CIRippleTransitionProtocol {
-#if !NET
-		[Obsolete ("Use 'InputExtent' instead.")]
-		[CoreImageFilterProperty ("inputExtent")]
-		CIVector Extent { get; set; }
-
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 	}
 
 	[iOS (14, 0)]
@@ -5923,12 +5589,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIRowAverage : CIRowAverageProtocol {
-
-#if !NET
-		[Obsolete ("Use 'InputExtent' instead.")]
-		[CoreImageFilterProperty ("inputExtent")]
-		CIVector Extent { get; set; }
-#endif
 	}
 
 	/// <include file="../docs/api/CoreImage/CISaturationBlendMode.xml" path="/Documentation/Docs[@DocId='T:CoreImage.CISaturationBlendMode']/*" />
@@ -5979,15 +5639,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CILinearGradient))]
 	interface CISmoothLinearGradient : CISmoothLinearGradientProtocol {
-#if !NET
-		[Obsolete ("Use 'InputPoint1' instead.")]
-		[CoreImageFilterProperty ("inputPoint1")]
-		CIVector Point1 { get; set; }
-
-		[Obsolete ("Use 'InputPoint0' instead.")]
-		[CoreImageFilterProperty ("inputPoint0")]
-		CIVector Point0 { get; set; }
-#endif
 	}
 
 	/// <include file="../docs/api/CoreImage/CISoftLightBlendMode.xml" path="/Documentation/Docs[@DocId='T:CoreImage.CISoftLightBlendMode']/*" />
@@ -6045,11 +5696,6 @@ namespace CoreImage {
 	[CoreImageFilter]
 	[BaseType (typeof (CIFilter))]
 	interface CIStarShineGenerator : CIStarShineGeneratorProtocol {
-#if !NET
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 	}
 
 	/// <include file="../docs/api/CoreImage/CIStraightenFilter.xml" path="/Documentation/Docs[@DocId='T:CoreImage.CIStraightenFilter']/*" />
@@ -6086,23 +5732,12 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIStretchCrop : CIStretchCropProtocol {
-
-#if !NET
-		[Obsolete ("Use 'InputSize' instead.")]
-		[CoreImageFilterProperty ("inputSize")]
-		CIVector Size { get; set; }
-#endif
 	}
 
 	/// <include file="../docs/api/CoreImage/CIStripesGenerator.xml" path="/Documentation/Docs[@DocId='T:CoreImage.CIStripesGenerator']/*" />
 	[CoreImageFilter]
 	[BaseType (typeof (CIFilter))]
 	interface CIStripesGenerator : CIStripesGeneratorProtocol {
-#if !NET
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 	}
 
 	/// <summary>Subtracts the background image pixels from those in the <see cref="P:CoreImage.CIFilter.Image" />.</summary>
@@ -6143,28 +5778,6 @@ namespace CoreImage {
 	[CoreImageFilter]
 	[BaseType (typeof (CIFilter))]
 	interface CIToneCurve : CIToneCurveProtocol {
-#if !NET
-		[Obsolete ("Use 'InputPoint0' instead.")]
-		[CoreImageFilterProperty ("inputPoint0")]
-		CIVector Point0 { get; set; }
-
-		[Obsolete ("Use 'InputPoint1' instead.")]
-		[CoreImageFilterProperty ("inputPoint1")]
-		CIVector Point1 { get; set; }
-
-		[Obsolete ("Use 'InputPoint2' instead.")]
-		[CoreImageFilterProperty ("inputPoint2")]
-		CIVector Point2 { get; set; }
-
-		[Obsolete ("Use 'InputPoint3' instead.")]
-		[CoreImageFilterProperty ("inputPoint3")]
-		CIVector Point3 { get; set; }
-
-		[Obsolete ("Use 'InputPoint4' instead.")]
-		[CoreImageFilterProperty ("inputPoint4")]
-		CIVector Point4 { get; set; }
-#endif
-
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[CoreImageFilterProperty ("inputExtrapolate")]
 		bool Extrapolate { get; set; }
@@ -6202,12 +5815,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CITorusLensDistortion : CITorusLensDistortionProtocol {
-
-#if !NET
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 	}
 
 	/// <include file="../docs/api/CoreImage/CITriangleKaleidoscope.xml" path="/Documentation/Docs[@DocId='T:CoreImage.CITriangleKaleidoscope']/*" />
@@ -6215,11 +5822,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CITriangleKaleidoscope : CITriangleKaleidoscopeProtocol {
-#if !NET
-		[Obsolete ("Use 'InputPoint' instead.")]
-		[CoreImageFilterProperty ("inputPoint")]
-		CIVector Point { get; set; }
-#endif
 	}
 
 	/// <summary>Tiles the image with a triangular region of the input image.</summary>
@@ -6291,12 +5893,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIVignetteEffect : CIVignetteEffectProtocol {
-
-#if !NET
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 	}
 
 	[iOS (14, 0)]
@@ -6342,11 +5938,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIZoomBlur : CIZoomBlurProtocol {
-#if !NET
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 	}
 
 	/// <summary>Simulates a blurred depth of field and applies a saturation effect to the 'in-focus' region.</summary>
@@ -6354,18 +5945,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIDepthOfField : CIDepthOfFieldProtocol {
-
-#if !NET
-		// renamed 1 vs 0 for API compatibility
-		[Obsolete ("Use 'InputPoint0' instead.")]
-		[CoreImageFilterProperty ("inputPoint0")]
-		CIVector Point1 { get; set; }
-
-		// renamed 2 vs 1 for API compatibility
-		[Obsolete ("Use 'InputPoint1' instead.")]
-		[CoreImageFilterProperty ("inputPoint1")]
-		CIVector Point2 { get; set; }
-#endif
 	}
 
 	/// <summary>Creates an artificial sun and light-ray effect.</summary>
@@ -6373,11 +5952,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CISunbeamsGenerator : CISunbeamsGeneratorProtocol {
-#if !NET
-		[Obsolete ("Use 'InputCenter' instead.")]
-		[CoreImageFilterProperty ("inputCenter")]
-		CIVector Center { get; set; }
-#endif
 	}
 
 	/// <summary>The CIFaceBalance CoreImage filter</summary>
@@ -6445,20 +6019,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CINinePartStretched : CINinePartStretchedProtocol {
-
-#if !NET
-		[Obsolete ("Use 'InputGrowAmount' instead.")]
-		[CoreImageFilterProperty ("inputGrowAmount")]
-		CIVector GrowAmount { get; set; }
-
-		[Obsolete ("Use 'InputBreakpoint0' instead.")]
-		[CoreImageFilterProperty ("inputBreakpoint0")]
-		CIVector Breakpoint0 { get; set; }
-
-		[Obsolete ("Use 'InputBreakpoint1' instead.")]
-		[CoreImageFilterProperty ("inputBreakpoint1")]
-		CIVector Breakpoint1 { get; set; }
-#endif
 	}
 
 	[iOS (14, 0)]
@@ -6495,20 +6055,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CINinePartTiled : CINinePartTiledProtocol {
-
-#if !NET
-		[Obsolete ("Use 'InputGrowAmount' instead.")]
-		[CoreImageFilterProperty ("inputGrowAmount")]
-		CIVector GrowAmount { get; set; }
-
-		[Obsolete ("Use 'InputBreakpoint0' instead.")]
-		[CoreImageFilterProperty ("inputBreakpoint0")]
-		CIVector Breakpoint0 { get; set; }
-
-		[Obsolete ("Use 'InputBreakpoint1' instead.")]
-		[CoreImageFilterProperty ("inputBreakpoint1")]
-		CIVector Breakpoint1 { get; set; }
-#endif
 	}
 
 	[CoreImageFilter]
@@ -6589,16 +6135,6 @@ namespace CoreImage {
 	// It's possible to add ours but it can bite us back in the future if Apple introduce the same with different properties.
 	[BaseType (typeof (CIFilter))]
 	interface CIBicubicScaleTransform : CIBicubicScaleTransformProtocol {
-
-#if !NET
-		[Obsolete ("Use 'ParameterB' instead.")]
-		[CoreImageFilterProperty ("inputB")]
-		float B { get; set; }
-
-		[Obsolete ("Use 'ParameterC' instead.")]
-		[CoreImageFilterProperty ("inputC")]
-		float C { get; set; }
-#endif
 	}
 
 	[CoreImageFilter]
@@ -6771,6 +6307,9 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIMorphology {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputRadius")]
 		float Radius { get; set; }
 	}
@@ -6816,15 +6355,27 @@ namespace CoreImage {
 	[BaseType (typeof (CIBarcodeDescriptor))]
 	interface CIQRCodeDescriptor {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("errorCorrectedPayload")]
 		NSData ErrorCorrectedPayload { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("symbolVersion")]
 		nint SymbolVersion { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("maskPattern")]
 		byte /* uint8_t */ MaskPattern { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("errorCorrectionLevel")]
 		CIQRCodeErrorCorrectionLevel ErrorCorrectionLevel { get; }
 
@@ -6880,15 +6431,27 @@ namespace CoreImage {
 	[BaseType (typeof (CIBarcodeDescriptor), Name = "CIPDF417CodeDescriptor")]
 	interface CIPdf417CodeDescriptor {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("errorCorrectedPayload")]
 		NSData ErrorCorrectedPayload { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isCompact")]
 		bool IsCompact { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rowCount")]
 		nint RowCount { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("columnCount")]
 		nint ColumnCount { get; }
 
@@ -7647,16 +7210,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIReductionFilter))]
 	interface CIKMeans : CIKMeansProtocol {
-
-#if !NET
-		[Obsolete ("Use 'InputCount' instead.")]
-		[CoreImageFilterProperty ("inputCount")]
-		float Count { get; set; }
-
-		[Obsolete ("Use 'InputPasses' instead.")]
-		[CoreImageFilterProperty ("inputPasses")]
-		int Passes { get; set; }
-#endif
 	}
 
 	[CoreImageFilter]
@@ -7666,17 +7219,6 @@ namespace CoreImage {
 	[BaseType (typeof (CIFilter))]
 	[Abstract]
 	interface CIMorphologyRectangle {
-
-#if !NET
-		[Obsolete ("Use 'InputHeight' instead.")]
-		[CoreImageFilterProperty ("inputHeight")]
-		int Height { get; set; }
-
-		[Obsolete ("Use 'InputWidth' instead.")]
-		[CoreImageFilterProperty ("inputWidth")]
-		int Width { get; set; }
-#endif
-
 		[CoreImageFilterProperty ("inputHeight")]
 		float InputHeight { get; set; }
 
@@ -7726,24 +7268,6 @@ namespace CoreImage {
 
 		[CoreImageFilterProperty ("inputFocalLength")]
 		float FocalLength { get; set; }
-
-#if !NET
-		[Obsolete ("Use 'InputTopRight' instead.")]
-		[CoreImageFilterProperty ("inputTopRight")]
-		CIVector TopRight { get; set; }
-
-		[Obsolete ("Use 'InputBottomRight' instead.")]
-		[CoreImageFilterProperty ("inputBottomRight")]
-		CIVector BottomRight { get; set; }
-
-		[Obsolete ("Use 'InputTopLeft' instead.")]
-		[CoreImageFilterProperty ("inputTopLeft")]
-		CIVector TopLeft { get; set; }
-
-		[Obsolete ("Use 'InputBottomLeft' instead.")]
-		[CoreImageFilterProperty ("inputBottomLeft")]
-		CIVector BottomLeft { get; set; }
-#endif
 
 		[CoreImageFilterProperty ("inputTopRight")]
 		CGPoint InputTopRight { get; set; }
@@ -7826,12 +7350,6 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIRoundedRectangleGenerator : CIRoundedRectangleGeneratorProtocol {
-
-#if !NET
-		[Obsolete ("Use 'InputExtent' instead.")]
-		[CoreImageFilterProperty ("inputExtent")]
-		CIVector Extent { get; set; }
-#endif
 	}
 
 	#region Protocols

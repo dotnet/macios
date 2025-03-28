@@ -77,4 +77,4 @@ stages:
       repositoryAlias: self
       commit: HEAD
       dependsOn: configure_build
-      use1ES: false
+      use1ES: true

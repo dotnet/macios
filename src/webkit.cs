@@ -4540,15 +4540,21 @@ namespace WebKit {
 		[Export ("request", ArgumentSemantic.Copy)]
 		NSUrlRequest Request { get; }
 
-		[NoiOS]
-		[NoMacCatalyst]
 		[Export ("modifierFlags")]
+		[iOS (18, 4), MacCatalyst (18, 4)]
+#if __IOS__ || __MACCATALYST_
+		UIKeyModifierFlags ModifierFlags { get; }
+#else
 		NSEventModifierMask ModifierFlags { get; }
+#endif
 
-		[NoiOS]
-		[NoMacCatalyst]
 		[Export ("buttonNumber")]
+		[iOS (18, 4), MacCatalyst (18, 4)]
+#if __IOS__ || __MACCATALYST_
+		UIEventButtonMask ButtonNumber { get; }
+#else
 		nint ButtonNumber { get; }
+#endif
 
 		[iOS (14, 5)]
 		[MacCatalyst (14, 5)]
@@ -4614,7 +4620,13 @@ namespace WebKit {
 		[MacCatalyst (14, 5)]
 		[Export ("webView:navigationResponse:didBecomeDownload:")]
 		void NavigationResponseDidBecomeDownload (WKWebView webView, WKNavigationResponse navigationResponse, WKDownload download);
+
+		[iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4), NoTV]
+		[Export ("webView:shouldGoToBackForwardListItem:willUseInstantBack:completionHandler:")]
+		void ShouldGoToBackForwardListItem (WKWebView webView, WKBackForwardListItem backForwardListItem, bool willUseInstantBack, WKNavigationDelegateShouldGoToBackForwardListItemCallback completionHandler);
 	}
+
+	delegate void WKNavigationDelegateShouldGoToBackForwardListItemCallback (bool shouldGoToItem);
 
 	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:WebKit.WKNavigationDelegate" />.</summary>
 	///     <remarks>
@@ -4986,14 +4998,13 @@ namespace WebKit {
 		NWProxyConfig [] ProxyConfigurations { get; set; }
 	}
 
-	[NoiOS, NoTV]
-	[NoMacCatalyst]
+	[iOS (18, 4), NoTV]
+	[MacCatalyst (18, 4)]
 	[BaseType (typeof (NSObject))]
 	interface WKOpenPanelParameters {
 		[Export ("allowsMultipleSelection")]
 		bool AllowsMultipleSelection { get; }
 
-		[NoMacCatalyst]
 		[Export ("allowsDirectories")]
 		bool AllowsDirectories { get; }
 	}
@@ -5033,8 +5044,8 @@ namespace WebKit {
 		void RunJavaScriptTextInputPanel (WKWebView webView, string prompt, [NullAllowed] string defaultText, WKFrameInfo frame, WKUIDelegateRunJavaScriptTextInputPanelCallback completionHandler);
 #endif
 
-		[NoiOS, NoTV]
-		[NoMacCatalyst]
+		[iOS (18, 4), NoTV]
+		[MacCatalyst (18, 4)]
 		[Export ("webView:runOpenPanelWithParameters:initiatedByFrame:completionHandler:")]
 		void RunOpenPanel (WKWebView webView, WKOpenPanelParameters parameters, WKFrameInfo frame, Action<NSUrl []> completionHandler);
 
@@ -5099,7 +5110,7 @@ namespace WebKit {
 		void RequestMediaCapturePermission (WKWebView webView, WKSecurityOrigin origin, WKFrameInfo frame, WKMediaCaptureType type, Action<WKPermissionDecision> decisionHandler);
 
 		[Async]
-		[NoMac, iOS (16, 0), MacCatalyst (16, 0)] // headers say 13, is not true since the enum is from 16
+		[NoMac, iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("webView:showLockdownModeFirstUseMessage:completionHandler:")]
 		void ShowLockDownMode (WKWebView webView, string firstUseMessage, Action<WKDialogResult> completionHandler);
 
@@ -5620,7 +5631,7 @@ namespace WebKit {
 	///     <remarks>
 	///       <para>If evaluation was successful, <paramref name="error" /> will be <see langword="null" />. If an error occurred, <paramref name="result" /> will be <see langword="null" />.</para>
 	///     </remarks>
-	delegate void WKJavascriptEvaluationResult (NSObject result, NSError error);
+	delegate void WKJavascriptEvaluationResult ([NullAllowed] NSObject result, [NullAllowed] NSError error);
 
 	/// <summary>Properties configuring a <see cref="T:WebKit.WKWebView" />.</summary>
 	///     
@@ -5747,6 +5758,10 @@ namespace WebKit {
 #else
 		UIWritingToolsBehavior WritingToolsBehavior { get; set; }
 #endif
+
+		[iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4), NoTV]
+		[Export ("webExtensionController", ArgumentSemantic.Strong), NullAllowed]
+		WKWebExtensionController WebExtensionController { get; set; }
 	}
 
 	/// <summary>A pool of content processes.</summary>
@@ -6072,5 +6087,1218 @@ namespace WebKit {
 		AutomaticFallbackToHttp,
 		UserMediatedFallbackToHttp,
 		ErrorOnFailure,
+	}
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[Native]
+	[ErrorDomain ("WKWebExtensionErrorDomain")]
+	public enum WKWebExtensionError : long {
+		Unknown = 1,
+		ResourceNotFound,
+		InvalidResourceCodeSignature,
+		InvalidManifest,
+		UnsupportedManifestVersion,
+		InvalidManifestEntry,
+		InvalidDeclarativeNetRequestEntry,
+		InvalidBackgroundPersistence,
+		InvalidArchive,
+	}
+
+	delegate void WKWebExtensionCreateCallback ([NullAllowed] WKWebExtension extension, [NullAllowed] NSError error);
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface WKWebExtension {
+		[Static]
+		[Export ("extensionWithAppExtensionBundle:completionHandler:")]
+		[Async]
+		void Create (NSBundle appExtensionBundle, WKWebExtensionCreateCallback completionHandler);
+
+		[Static]
+		[Export ("extensionWithResourceBaseURL:completionHandler:")]
+		[Async]
+		void Create (NSUrl resourceBaseUrl, WKWebExtensionCreateCallback completionHandler);
+
+		[Export ("errors", ArgumentSemantic.Copy)]
+		NSError [] Errors { get; }
+
+		[Export ("manifest", ArgumentSemantic.Copy)]
+		NSDictionary<NSString, NSObject> Manifest { get; }
+
+		[Export ("manifestVersion")]
+		double ManifestVersion { get; }
+
+		[Export ("supportsManifestVersion:")]
+		bool SupportsManifestVersion (double manifestVersion);
+
+		[NullAllowed, Export ("defaultLocale", ArgumentSemantic.Copy)]
+		NSLocale DefaultLocale { get; }
+
+		[NullAllowed, Export ("displayName")]
+		string DisplayName { get; }
+
+		[NullAllowed, Export ("displayShortName")]
+		string DisplayShortName { get; }
+
+		[NullAllowed, Export ("displayVersion")]
+		string DisplayVersion { get; }
+
+		[NullAllowed, Export ("displayDescription")]
+		string DisplayDescription { get; }
+
+		[NullAllowed, Export ("displayActionLabel")]
+		string DisplayActionLabel { get; }
+
+		[NullAllowed, Export ("version")]
+		string Version { get; }
+
+		[Export ("iconForSize:")]
+		[return: NullAllowed]
+		UIImage GetIcon (CGSize size);
+
+		[Export ("actionIconForSize:")]
+		[return: NullAllowed]
+		UIImage GetActionIcon (CGSize size);
+
+		[Export ("requestedPermissions", ArgumentSemantic.Copy)]
+		NSSet<NSString> WeakRequestedPermissions { get; }
+
+		WKWebExtensionPermission RequestedPermissions {
+			[Wrap ("WKWebExtensionPermissionExtensions.ToFlags (WeakRequestedPermissions);")]
+			get;
+		}
+
+		[Export ("optionalPermissions", ArgumentSemantic.Copy)]
+		NSSet<NSString> WeakOptionalPermissions { get; }
+
+		WKWebExtensionPermission OptionalPermissions {
+			[Wrap ("WKWebExtensionPermissionExtensions.ToFlags (WeakOptionalPermissions);")]
+			get;
+		}
+
+		[Export ("requestedPermissionMatchPatterns", ArgumentSemantic.Copy)]
+		NSSet<WKWebExtensionMatchPattern> RequestedPermissionMatchPatterns { get; }
+
+		[Export ("optionalPermissionMatchPatterns", ArgumentSemantic.Copy)]
+		NSSet<WKWebExtensionMatchPattern> OptionalPermissionMatchPatterns { get; }
+
+		[Export ("allRequestedMatchPatterns", ArgumentSemantic.Copy)]
+		NSSet<WKWebExtensionMatchPattern> AllRequestedMatchPatterns { get; }
+
+		[Export ("hasBackgroundContent")]
+		bool HasBackgroundContent { get; }
+
+		[Export ("hasPersistentBackgroundContent")]
+		bool HasPersistentBackgroundContent { get; }
+
+		[Export ("hasInjectedContent")]
+		bool HasInjectedContent { get; }
+
+		[Export ("hasOptionsPage")]
+		bool HasOptionsPage { get; }
+
+		[Export ("hasOverrideNewTabPage")]
+		bool HasOverrideNewTabPage { get; }
+
+		[Export ("hasCommands")]
+		bool HasCommands { get; }
+
+		[Export ("hasContentModificationRules")]
+		bool HasContentModificationRules { get; }
+	}
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface WKWebExtensionAction {
+		[NullAllowed, Export ("webExtensionContext", ArgumentSemantic.Weak)]
+		WKWebExtensionContext WebExtensionContext { get; }
+
+		[NullAllowed, Export ("associatedTab", ArgumentSemantic.Weak)]
+		IWKWebExtensionTab AssociatedTab { get; }
+
+		[Export ("iconForSize:")]
+		[return: NullAllowed]
+		UIImage GetIcon (CGSize size);
+
+		[Export ("label")]
+		string Label { get; }
+
+		[Export ("badgeText")]
+		string BadgeText { get; }
+
+		[Export ("hasUnreadBadgeText")]
+		bool HasUnreadBadgeText { get; set; }
+
+		[NullAllowed, Export ("inspectionName")]
+		string InspectionName { get; set; }
+
+		[Export ("enabled")]
+		bool Enabled { [Bind ("isEnabled")] get; }
+
+		[Export ("menuItems", ArgumentSemantic.Copy)]
+#if IOS || MACCATALYST
+		UIMenuElement[] MenuItems { get; }
+#else
+		NSMenuItem [] MenuItems { get; }
+#endif
+
+		[Export ("presentsPopup")]
+		bool PresentsPopup { get; }
+
+#if !MONOMAC
+		[NullAllowed, Export ("popupViewController")]
+		UIViewController PopupViewController { get; }
+#endif
+
+#if MONOMAC
+		[Export ("popupPopover"), NullAllowed]
+		NSPopover PopupPopover { get; }
+#endif
+
+		[NullAllowed, Export ("popupWebView")]
+		WKWebView PopupWebView { get; }
+
+		[Export ("closePopup")]
+		void ClosePopup ();
+	}
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface WKWebExtensionCommand {
+		[NullAllowed, Export ("webExtensionContext", ArgumentSemantic.Weak)]
+		WKWebExtensionContext WebExtensionContext { get; }
+
+		[Export ("identifier")]
+		string Identifier { get; }
+
+		[Export ("title")]
+		string Title { get; }
+
+		[NullAllowed, Export ("activationKey")]
+		string ActivationKey { get; set; }
+
+		[Export ("modifierFlags", ArgumentSemantic.Assign)]
+#if __IOS__ || __MACCATALYST_
+		UIKeyModifierFlags ModifierFlags { get; set; }
+#else
+		NSEventModifierMask ModifierFlags { get; set; }
+#endif
+
+		[Export ("menuItem", ArgumentSemantic.Copy)]
+#if __IOS__ || __MACCATALYST_
+		UIMenuElement MenuItem { get; }
+#else
+		NSMenuItem MenuItem { get; }
+#endif
+
+#if IOS || MACCATALYST
+		[NullAllowed, Export ("keyCommand", ArgumentSemantic.Copy)]
+		UIKeyCommand KeyCommand { get; }
+#endif
+	}
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[Flags]
+	[Native]
+	public enum WKWebExtensionTabChangedProperties : ulong {
+		None = 0,
+		Loading = 1uL << 1,
+		Muted = 1uL << 2,
+		Pinned = 1uL << 3,
+		PlayingAudio = 1uL << 4,
+		ReaderMode = 1uL << 5,
+		Size = 1uL << 6,
+		Title = 1uL << 7,
+		Url = 1uL << 8,
+		ZoomFactor = 1uL << 9,
+	}
+
+	interface IWKWebExtensionTab { }
+
+	delegate void WKWebExtensionTabCallback ([NullAllowed] NSError error);
+	delegate void WKWebExtensionTabDetectLocaleCallback ([NullAllowed] NSLocale locale, [NullAllowed] NSError error);
+	delegate void WKWebExtensionTabDuplicateCallback ([NullAllowed] IWKWebExtensionTab duplicatedTab, [NullAllowed] NSError error);
+	delegate void WKWebExtensionTabTakeSnapshotCallback ([NullAllowed] UIImage webpageImage, [NullAllowed] NSError error);
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface WKWebExtensionTab {
+		[Export ("windowForWebExtensionContext:")]
+		[return: NullAllowed]
+		IWKWebExtensionWindow GetWindow (WKWebExtensionContext context);
+
+		[Export ("indexInWindowForWebExtensionContext:")]
+		nuint GetIndexInWindow (WKWebExtensionContext context);
+
+		[Export ("parentTabForWebExtensionContext:")]
+		[return: NullAllowed]
+		IWKWebExtensionTab GetParentTab (WKWebExtensionContext context);
+
+		[Async]
+		[Export ("setParentTab:forWebExtensionContext:completionHandler:")]
+		void SetParentTab ([NullAllowed] IWKWebExtensionTab parentTab, WKWebExtensionContext context, WKWebExtensionTabCallback completionHandler);
+
+		[Export ("webViewForWebExtensionContext:")]
+		[return: NullAllowed]
+		WKWebView GetWebView (WKWebExtensionContext context);
+
+		[Export ("titleForWebExtensionContext:")]
+		[return: NullAllowed]
+		string GetTitle (WKWebExtensionContext context);
+
+		[Export ("isPinnedForWebExtensionContext:")]
+		bool IsPinned (WKWebExtensionContext context);
+
+		[Async]
+		[Export ("setPinned:forWebExtensionContext:completionHandler:")]
+		void SetPinned (bool pinned, WKWebExtensionContext context, WKWebExtensionTabCallback completionHandler);
+
+		[Export ("isReaderModeAvailableForWebExtensionContext:")]
+		bool IsReaderModeAvailable (WKWebExtensionContext context);
+
+		[Export ("isReaderModeActiveForWebExtensionContext:")]
+		bool IsReaderModeActive (WKWebExtensionContext context);
+
+		[Async]
+		[Export ("setReaderModeActive:forWebExtensionContext:completionHandler:")]
+		void SetReaderModeActive (bool active, WKWebExtensionContext context, WKWebExtensionTabCallback completionHandler);
+
+		[Export ("isPlayingAudioForWebExtensionContext:")]
+		bool IsPlayingAudio (WKWebExtensionContext context);
+
+		[Export ("isMutedForWebExtensionContext:")]
+		bool IsMuted (WKWebExtensionContext context);
+
+		[Async]
+		[Export ("setMuted:forWebExtensionContext:completionHandler:")]
+		void SetMuted (bool muted, WKWebExtensionContext context, WKWebExtensionTabCallback completionHandler);
+
+		[Export ("sizeForWebExtensionContext:")]
+		CGSize GetSize (WKWebExtensionContext context);
+
+		[Export ("zoomFactorForWebExtensionContext:")]
+		double GetZoomFactor (WKWebExtensionContext context);
+
+		[Async]
+		[Export ("setZoomFactor:forWebExtensionContext:completionHandler:")]
+		void SetZoomFactor (double zoomFactor, WKWebExtensionContext context, WKWebExtensionTabCallback completionHandler);
+
+		[Export ("urlForWebExtensionContext:")]
+		[return: NullAllowed]
+		NSUrl GetUrl (WKWebExtensionContext context);
+
+		[Export ("pendingURLForWebExtensionContext:")]
+		[return: NullAllowed]
+		NSUrl GetPendingUrl (WKWebExtensionContext context);
+
+		[Export ("isLoadingCompleteForWebExtensionContext:")]
+		bool IsLoadingComplete (WKWebExtensionContext context);
+
+		[Async]
+		[Export ("detectWebpageLocaleForWebExtensionContext:completionHandler:")]
+		void DetectWebpageLocale (WKWebExtensionContext context, WKWebExtensionTabDetectLocaleCallback completionHandler);
+
+		[Async]
+		[Export ("takeSnapshotUsingConfiguration:forWebExtensionContext:completionHandler:")]
+		void TakeSnapshot (WKSnapshotConfiguration configuration, WKWebExtensionContext context, WKWebExtensionTabTakeSnapshotCallback completionHandler);
+
+		[Async]
+		[Export ("loadURL:forWebExtensionContext:completionHandler:")]
+		void LoadUrl (NSUrl url, WKWebExtensionContext context, WKWebExtensionTabCallback completionHandler);
+
+		[Async]
+		[Export ("reloadFromOrigin:forWebExtensionContext:completionHandler:")]
+		void ReloadFromOrigin (bool fromOrigin, WKWebExtensionContext context, WKWebExtensionTabCallback completionHandler);
+
+		[Async]
+		[Export ("goBackForWebExtensionContext:completionHandler:")]
+		void GoBack (WKWebExtensionContext context, WKWebExtensionTabCallback completionHandler);
+
+		[Async]
+		[Export ("goForwardForWebExtensionContext:completionHandler:")]
+		void GoForward (WKWebExtensionContext context, WKWebExtensionTabCallback completionHandler);
+
+		[Async]
+		[Export ("activateForWebExtensionContext:completionHandler:")]
+		void Activate (WKWebExtensionContext context, WKWebExtensionTabCallback completionHandler);
+
+		[Export ("isSelectedForWebExtensionContext:")]
+		bool IsSelected (WKWebExtensionContext context);
+
+		[Async]
+		[Export ("setSelected:forWebExtensionContext:completionHandler:")]
+		void SetSelected (bool selected, WKWebExtensionContext context, WKWebExtensionTabCallback completionHandler);
+
+		[Async]
+		[Export ("duplicateUsingConfiguration:forWebExtensionContext:completionHandler:")]
+		void Duplicate (WKWebExtensionTabConfiguration configuration, WKWebExtensionContext context, WKWebExtensionTabDuplicateCallback completionHandler);
+
+		[Async]
+		[Export ("closeForWebExtensionContext:completionHandler:")]
+		void Close (WKWebExtensionContext context, WKWebExtensionTabCallback completionHandler);
+
+		[Export ("shouldGrantPermissionsOnUserGestureForWebExtensionContext:")]
+		bool ShouldGrantPermissionsOnUserGesture (WKWebExtensionContext context);
+
+		[Export ("shouldBypassPermissionsForWebExtensionContext:")]
+		bool ShouldBypassPermissions (WKWebExtensionContext context);
+	}
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[ErrorDomain ("WKWebExtensionContextErrorDomain")]
+	[Native]
+	public enum WKWebExtensionContextError : long {
+		Unknown = 1,
+		AlreadyLoaded,
+		NotLoaded,
+		BaseUrlAlreadyInUse,
+		NoBackgroundContent,
+		BackgroundContentFailedToLoad,
+	}
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[Native]
+	public enum WKWebExtensionContextPermissionStatus : long {
+		DeniedExplicitly = -3,
+		DeniedImplicitly = -2,
+		RequestedImplicitly = -1,
+		Unknown = 0,
+		RequestedExplicitly = 1,
+		GrantedImplicitly = 2,
+		GrantedExplicitly = 3,
+	}
+
+	delegate void WKWebExtensionContextCallback ([NullAllowed] NSError error);
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface WKWebExtensionContext {
+		[Static]
+		[Export ("contextForExtension:")]
+		WKWebExtensionContext Create (WKWebExtension extension);
+
+		[Export ("initForExtension:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (WKWebExtension extension);
+
+		[Export ("webExtension", ArgumentSemantic.Strong)]
+		WKWebExtension WebExtension { get; }
+
+		[NullAllowed, Export ("webExtensionController", ArgumentSemantic.Weak)]
+		WKWebExtensionController WebExtensionController { get; }
+
+		[Export ("loaded")]
+		bool Loaded { [Bind ("isLoaded")] get; }
+
+		[Export ("errors", ArgumentSemantic.Copy)]
+		NSError [] Errors { get; }
+
+		[Export ("baseURL", ArgumentSemantic.Copy)]
+		NSUrl BaseUrl { get; set; }
+
+		[Export ("uniqueIdentifier")]
+		string UniqueIdentifier { get; set; }
+
+		[Export ("inspectable")]
+		bool Inspectable { [Bind ("isInspectable")] get; set; }
+
+		[NullAllowed, Export ("inspectionName")]
+		string InspectionName { get; set; }
+
+		[NullAllowed, Export ("unsupportedAPIs", ArgumentSemantic.Copy)]
+		NSSet<NSString> UnsupportedAPIs { get; set; }
+
+		[NullAllowed, Export ("webViewConfiguration", ArgumentSemantic.Copy)]
+		WKWebViewConfiguration WebViewConfiguration { get; }
+
+		[NullAllowed, Export ("optionsPageURL", ArgumentSemantic.Copy)]
+		NSUrl OptionsPageUrl { get; }
+
+		[NullAllowed, Export ("overrideNewTabPageURL", ArgumentSemantic.Copy)]
+		NSUrl OverrideNewTabPageUrl { get; }
+
+		[Export ("grantedPermissions", ArgumentSemantic.Copy)]
+		NSDictionary<NSString, NSDate> GrantedPermissions { get; set; }
+
+		[Export ("grantedPermissionMatchPatterns", ArgumentSemantic.Copy)]
+		NSDictionary<WKWebExtensionMatchPattern, NSDate> GrantedPermissionMatchPatterns { get; set; }
+
+		[Export ("deniedPermissions", ArgumentSemantic.Copy)]
+		NSDictionary<NSString, NSDate> DeniedPermissions { get; set; }
+
+		[Export ("deniedPermissionMatchPatterns", ArgumentSemantic.Copy)]
+		NSDictionary<WKWebExtensionMatchPattern, NSDate> DeniedPermissionMatchPatterns { get; set; }
+
+		[Export ("hasRequestedOptionalAccessToAllHosts")]
+		bool HasRequestedOptionalAccessToAllHosts { get; set; }
+
+		[Export ("hasAccessToPrivateData")]
+		bool HasAccessToPrivateData { get; set; }
+
+		[Export ("currentPermissions", ArgumentSemantic.Copy)]
+		NSSet<NSString> WeakCurrentPermissions { get; }
+
+		WKWebExtensionPermission CurrentPermission {
+			[Wrap ("WKWebExtensionPermissionExtensions.ToFlags (WeakCurrentPermissions);")]
+			get;
+		}
+
+		[Export ("currentPermissionMatchPatterns", ArgumentSemantic.Copy)]
+		NSSet<WKWebExtensionMatchPattern> CurrentPermissionMatchPatterns { get; }
+
+		[Export ("hasPermission:")]
+		bool HasPermission (string permission);
+
+		[Export ("hasPermission:inTab:")]
+		bool HasPermission (string permission, [NullAllowed] IWKWebExtensionTab tab);
+
+		[Export ("hasAccessToURL:")]
+		bool HasAccessToUrl (NSUrl url);
+
+		[Export ("hasAccessToURL:inTab:")]
+		bool HasAccessToUrl (NSUrl url, [NullAllowed] IWKWebExtensionTab tab);
+
+		[Export ("hasAccessToAllURLs")]
+		bool HasAccessToAllUrls { get; }
+
+		[Export ("hasAccessToAllHosts")]
+		bool HasAccessToAllHosts { get; }
+
+		[Export ("hasInjectedContent")]
+		bool HasInjectedContent { get; }
+
+		[Export ("hasInjectedContentForURL:")]
+		bool HasInjectedContentForUrl (NSUrl url);
+
+		[Export ("hasContentModificationRules")]
+		bool HasContentModificationRules { get; }
+
+		[Export ("permissionStatusForPermission:")]
+		WKWebExtensionContextPermissionStatus GetPermissionStatus (string permission);
+
+		[Export ("permissionStatusForPermission:inTab:")]
+		WKWebExtensionContextPermissionStatus GetPermissionStatus (string permission, [NullAllowed] IWKWebExtensionTab tab);
+
+		[Export ("setPermissionStatus:forPermission:")]
+		void SetPermissionStatus (WKWebExtensionContextPermissionStatus status, string permission);
+
+		[Export ("setPermissionStatus:forPermission:expirationDate:")]
+		void SetPermissionStatus (WKWebExtensionContextPermissionStatus status, string permission, [NullAllowed] NSDate expirationDate);
+
+		[Export ("permissionStatusForURL:")]
+		WKWebExtensionContextPermissionStatus GetPermissionStatus (NSUrl url);
+
+		[Export ("permissionStatusForURL:inTab:")]
+		WKWebExtensionContextPermissionStatus GetPermissionStatus (NSUrl url, [NullAllowed] IWKWebExtensionTab tab);
+
+		[Export ("setPermissionStatus:forURL:")]
+		void SetPermissionStatus (WKWebExtensionContextPermissionStatus status, NSUrl url);
+
+		[Export ("setPermissionStatus:forURL:expirationDate:")]
+		void SetPermissionStatus (WKWebExtensionContextPermissionStatus status, NSUrl url, [NullAllowed] NSDate expirationDate);
+
+		[Export ("permissionStatusForMatchPattern:")]
+		WKWebExtensionContextPermissionStatus GetPermissionStatus (WKWebExtensionMatchPattern pattern);
+
+		[Export ("permissionStatusForMatchPattern:inTab:")]
+		WKWebExtensionContextPermissionStatus GetPermissionStatus (WKWebExtensionMatchPattern pattern, [NullAllowed] IWKWebExtensionTab tab);
+
+		[Export ("setPermissionStatus:forMatchPattern:")]
+		void SetPermissionStatus (WKWebExtensionContextPermissionStatus status, WKWebExtensionMatchPattern pattern);
+
+		[Export ("setPermissionStatus:forMatchPattern:expirationDate:")]
+		void SetPermissionStatus (WKWebExtensionContextPermissionStatus status, WKWebExtensionMatchPattern pattern, [NullAllowed] NSDate expirationDate);
+
+		[Async]
+		[Export ("loadBackgroundContentWithCompletionHandler:")]
+		void LoadBackgroundContent (WKWebExtensionContextCallback completionHandler);
+
+		[Export ("actionForTab:")]
+		[return: NullAllowed]
+		WKWebExtensionAction GetAction ([NullAllowed] IWKWebExtensionTab tab);
+
+		[Export ("performActionForTab:")]
+		void PerformAction ([NullAllowed] IWKWebExtensionTab tab);
+
+		[Export ("commands", ArgumentSemantic.Copy)]
+		WKWebExtensionCommand [] Commands { get; }
+
+		[Export ("performCommand:")]
+		void PerformCommand (WKWebExtensionCommand command);
+
+#if IOS || MACCATALYST
+		[NoMac]
+		[Export ("performCommandForKeyCommand:")]
+		bool PerformCommand (UIKeyCommand keyCommand);
+#endif
+
+#if MONOMAC
+		[Export ("performCommandForEvent:")]
+		bool PerformCommand (NSEvent @event);
+
+		[Export ("commandForEvent:")]
+		[return: NullAllowed]
+		WKWebExtensionCommand GetCommand (NSEvent @event);
+#endif
+
+		[Export ("menuItemsForTab:")]
+#if IOS || MACCATALYST
+		UIMenuElement[] GetMenuItems (IWKWebExtensionTab tab);
+#else
+		NSMenuItem [] GetMenuItems (IWKWebExtensionTab tab);
+#endif
+
+		[Export ("userGesturePerformedInTab:")]
+		void UserGesturePerformed (IWKWebExtensionTab tab);
+
+		[Export ("hasActiveUserGestureInTab:")]
+		bool HasActiveUserGesture (IWKWebExtensionTab tab);
+
+		[Export ("clearUserGestureInTab:")]
+		void ClearUserGesture (IWKWebExtensionTab tab);
+
+		[Export ("openWindows", ArgumentSemantic.Copy)]
+		IWKWebExtensionWindow [] OpenWindows { get; }
+
+		[NullAllowed, Export ("focusedWindow", ArgumentSemantic.Weak)]
+		IWKWebExtensionWindow FocusedWindow { get; }
+
+		[Export ("openTabs", ArgumentSemantic.Copy)]
+		NSSet<IWKWebExtensionTab> OpenTabs { get; }
+
+		[Export ("didOpenWindow:")]
+		void DidOpenWindow (IWKWebExtensionWindow newWindow);
+
+		[Export ("didCloseWindow:")]
+		void DidCloseWindow (IWKWebExtensionWindow closedWindow);
+
+		[Export ("didFocusWindow:")]
+		void DidFocusWindow ([NullAllowed] IWKWebExtensionWindow focusedWindow);
+
+		[Export ("didOpenTab:")]
+		void DidOpenTab (IWKWebExtensionTab newTab);
+
+		[Export ("didCloseTab:windowIsClosing:")]
+		void DidCloseTab (IWKWebExtensionTab closedTab, bool windowIsClosing);
+
+		[Export ("didActivateTab:previousActiveTab:")]
+		void DidActivateTab (IWKWebExtensionTab activatedTab, [NullAllowed] IWKWebExtensionTab previousTab);
+
+		[Export ("didSelectTabs:")]
+		void DidSelectTabs (IWKWebExtensionTab [] selectedTabs);
+
+		[Export ("didDeselectTabs:")]
+		void DidDeselectTabs (IWKWebExtensionTab [] deselectedTabs);
+
+		[Export ("didMoveTab:fromIndex:inWindow:")]
+		void DidMoveTab (IWKWebExtensionTab movedTab, nuint index, [NullAllowed] IWKWebExtensionWindow oldWindow);
+
+		[Export ("didReplaceTab:withTab:")]
+		void DidReplaceTab (IWKWebExtensionTab oldTab, IWKWebExtensionTab newTab);
+
+		[Export ("didChangeTabProperties:forTab:")]
+		void DidChangeTabProperties (WKWebExtensionTabChangedProperties properties, IWKWebExtensionTab changedTab);
+
+		[Notification]
+		[Field ("WKWebExtensionContextErrorsDidUpdateNotification")]
+		NSString ErrorsDidUpdateNotification { get; }
+
+		[Notification]
+		[Field ("WKWebExtensionContextPermissionsWereGrantedNotification")]
+		NSString PermissionsWereGrantedNotification { get; }
+
+		[Notification]
+		[Field ("WKWebExtensionContextPermissionsWereDeniedNotification")]
+		NSString PermissionsWereDeniedNotification { get; }
+
+		[Notification]
+		[Field ("WKWebExtensionContextGrantedPermissionsWereRemovedNotification")]
+		NSString GrantedPermissionsWereRemovedNotification { get; }
+
+		[Notification]
+		[Field ("WKWebExtensionContextDeniedPermissionsWereRemovedNotification")]
+		NSString DeniedPermissionsWereRemovedNotification { get; }
+
+		[Notification]
+		[Field ("WKWebExtensionContextPermissionMatchPatternsWereGrantedNotification")]
+		NSString PermissionMatchPatternsWereGrantedNotification { get; }
+
+		[Notification]
+		[Field ("WKWebExtensionContextPermissionMatchPatternsWereDeniedNotification")]
+		NSString PermissionMatchPatternsWereDeniedNotification { get; }
+
+		[Notification]
+		[Field ("WKWebExtensionContextGrantedPermissionMatchPatternsWereRemovedNotification")]
+		NSString GrantedPermissionMatchPatternsWereRemovedNotification { get; }
+
+		[Notification]
+		[Field ("WKWebExtensionContextDeniedPermissionMatchPatternsWereRemovedNotification")]
+		NSString DeniedPermissionMatchPatternsWereRemovedNotification { get; }
+
+		[Notification]
+		[Field ("WKWebExtensionContextNotificationUserInfoKeyPermissions")]
+		NSString NotificationUserInfoKeyPermissions { get; }
+
+		[Notification]
+		[Field ("WKWebExtensionContextNotificationUserInfoKeyMatchPatterns")]
+		NSString NotificationUserInfoKeyMatchPatterns { get; }
+	}
+
+	delegate void WKWebExtensionControllerDelegateOpenNewWindowCallback ([NullAllowed] IWKWebExtensionWindow newWindow, [NullAllowed] NSError error);
+	delegate void WKWebExtensionControllerDelegateOpenNewTabCallback ([NullAllowed] IWKWebExtensionTab newWindow, [NullAllowed] NSError error);
+	delegate void WKWebExtensionControllerDelegateOpenOptionsCallback ([NullAllowed] NSError error);
+	delegate void WKWebExtensionControllerDelegatePromptForPermissionsCallback (NSSet<NSString> allowedPermissions, [NullAllowed] NSDate expirationDate);
+	delegate void WKWebExtensionControllerDelegatePromptForPermissionsToAccessUrlsCallback (NSSet<NSUrl> allowedUrls, [NullAllowed] NSDate expirationDate);
+	delegate void WKWebExtensionControllerDelegatePromptForPermissionMatchPatternsCallback (NSSet<WKWebExtensionMatchPattern> allowedMatchPatterns, [NullAllowed] NSDate expirationDate);
+	delegate void WKWebExtensionControllerDelegatePresentPopupForActionCallback ([NullAllowed] NSError error);
+	delegate void WKWebExtensionControllerDelegateSendMessageCallback ([NullAllowed] NSObject replyMessage, [NullAllowed] NSError error);
+	delegate void WKWebExtensionControllerDelegateConnectCallback ([NullAllowed] NSError error);
+
+	interface IWKWebExtensionControllerDelegate { }
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+	interface WKWebExtensionControllerDelegate {
+		[Export ("webExtensionController:openWindowsForExtensionContext:")]
+		IWKWebExtensionWindow [] OpenWindows (WKWebExtensionController controller, WKWebExtensionContext extensionContext);
+
+		[Export ("webExtensionController:focusedWindowForExtensionContext:")]
+		[return: NullAllowed]
+		IWKWebExtensionWindow GetFocusedWindow (WKWebExtensionController controller, WKWebExtensionContext extensionContext);
+
+		[Async]
+		[Export ("webExtensionController:openNewWindowUsingConfiguration:forExtensionContext:completionHandler:")]
+		void OpenNewWindow (WKWebExtensionController controller, WKWebExtensionWindowConfiguration configuration, WKWebExtensionContext extensionContext, WKWebExtensionControllerDelegateOpenNewWindowCallback completionHandler);
+
+		[Async]
+		[Export ("webExtensionController:openNewTabUsingConfiguration:forExtensionContext:completionHandler:")]
+		void OpenNewTab (WKWebExtensionController controller, WKWebExtensionTabConfiguration configuration, WKWebExtensionContext extensionContext, WKWebExtensionControllerDelegateOpenNewTabCallback completionHandler);
+
+		[Async]
+		[Export ("webExtensionController:openOptionsPageForExtensionContext:completionHandler:")]
+		void OpenOptions (WKWebExtensionController controller, WKWebExtensionContext extensionContext, WKWebExtensionControllerDelegateOpenOptionsCallback completionHandler);
+
+		[Export ("webExtensionController:promptForPermissions:inTab:forExtensionContext:completionHandler:")]
+		void PromptForPermissions (WKWebExtensionController controller, NSSet<NSString> permissions, [NullAllowed] IWKWebExtensionTab tab, WKWebExtensionContext extensionContext, WKWebExtensionControllerDelegatePromptForPermissionsCallback completionHandler);
+
+		[Export ("webExtensionController:promptForPermissionToAccessURLs:inTab:forExtensionContext:completionHandler:")]
+		void PromptForPermissionsToAccessUrls (WKWebExtensionController controller, NSSet<NSUrl> urls, [NullAllowed] IWKWebExtensionTab tab, WKWebExtensionContext extensionContext, WKWebExtensionControllerDelegatePromptForPermissionsToAccessUrlsCallback completionHandler);
+
+		[Export ("webExtensionController:promptForPermissionMatchPatterns:inTab:forExtensionContext:completionHandler:")]
+		void PromptForPermissionMatchPatterns (WKWebExtensionController controller, NSSet<WKWebExtensionMatchPattern> matchPatterns, [NullAllowed] IWKWebExtensionTab tab, WKWebExtensionContext extensionContext, WKWebExtensionControllerDelegatePromptForPermissionMatchPatternsCallback completionHandler);
+
+		[Export ("webExtensionController:didUpdateAction:forExtensionContext:")]
+		void DidUpdateAction (WKWebExtensionController controller, WKWebExtensionAction action, WKWebExtensionContext context);
+
+		[Export ("webExtensionController:presentPopupForAction:forExtensionContext:completionHandler:")]
+		void PresentPopupForAction (WKWebExtensionController controller, WKWebExtensionAction action, WKWebExtensionContext context, WKWebExtensionControllerDelegatePresentPopupForActionCallback completionHandler);
+
+		[Async]
+		[Export ("webExtensionController:sendMessage:toApplicationWithIdentifier:forExtensionContext:replyHandler:")]
+		void SendMessage (WKWebExtensionController controller, NSObject message, [NullAllowed] string applicationIdentifier, WKWebExtensionContext extensionContext, WKWebExtensionControllerDelegateSendMessageCallback replyHandler);
+
+		[Async]
+		[Export ("webExtensionController:connectUsingMessagePort:forExtensionContext:completionHandler:")]
+		void Connect (WKWebExtensionController controller, WKWebExtensionMessagePort port, WKWebExtensionContext extensionContext, WKWebExtensionControllerDelegateConnectCallback completionHandler);
+	}
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[Flags]
+	enum WKWebExtensionDataType {
+		[Field ("WKWebExtensionDataTypeLocal")]
+		Local = 1,
+
+		[Field ("WKWebExtensionDataTypeSession")]
+		Session = 2,
+
+		[Field ("WKWebExtensionDataTypeSynchronized")]
+		Synchronized = 4,
+	}
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[Native]
+	public enum WKWebExtensionWindowType : long {
+		Normal,
+		Popup,
+	}
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[Native]
+	public enum WKWebExtensionWindowState : long {
+		Normal,
+		Minimized,
+		Maximized,
+		Fullscreen,
+	}
+
+	delegate void WKWebExtensionWindowCallback ([NullAllowed] NSError error);
+
+	interface IWKWebExtensionWindow { }
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface WKWebExtensionWindow {
+		[Export ("tabsForWebExtensionContext:")]
+		IWKWebExtensionTab [] GetTabs (WKWebExtensionContext context);
+
+		[Export ("activeTabForWebExtensionContext:")]
+		[return: NullAllowed]
+		IWKWebExtensionTab ActiveTab (WKWebExtensionContext context);
+
+		[Export ("windowTypeForWebExtensionContext:")]
+		WKWebExtensionWindowType GetWindowType (WKWebExtensionContext context);
+
+		[Export ("windowStateForWebExtensionContext:")]
+		WKWebExtensionWindowState GetWindowState (WKWebExtensionContext context);
+
+		[Async]
+		[Export ("setWindowState:forWebExtensionContext:completionHandler:")]
+		void SetWindowState (WKWebExtensionWindowState state, WKWebExtensionContext context, WKWebExtensionWindowCallback completionHandler);
+
+		[Export ("isPrivateForWebExtensionContext:")]
+		bool IsPrivate (WKWebExtensionContext context);
+
+#if MONOMAC
+		[Export ("screenFrameForWebExtensionContext:")]
+		CGRect GetScreenFrame (WKWebExtensionContext context);
+#endif
+
+		[Export ("frameForWebExtensionContext:")]
+		CGRect GetFrame (WKWebExtensionContext context);
+
+		[Async]
+		[Export ("setFrame:forWebExtensionContext:completionHandler:")]
+		void SetFrame (CGRect frame, WKWebExtensionContext context, WKWebExtensionWindowCallback completionHandler);
+
+		[Async]
+		[Export ("focusForWebExtensionContext:completionHandler:")]
+		void Focus (WKWebExtensionContext context, WKWebExtensionWindowCallback completionHandler);
+
+		[Async]
+		[Export ("closeForWebExtensionContext:completionHandler:")]
+		void Close (WKWebExtensionContext context, WKWebExtensionWindowCallback completionHandler);
+	}
+
+	delegate void WKWebExtensionControllerDataRecordCallback (WKWebExtensionDataRecord dataRecord);
+	delegate void WKWebExtensionControllerDataRecordsCallback (WKWebExtensionDataRecord [] dataRecords);
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor] // added below to get the DesignatedInitializer attribute
+	interface WKWebExtensionController {
+		[DesignatedInitializer]
+		[Export ("init")]
+		NativeHandle Constructor ();
+
+		[Export ("initWithConfiguration:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (WKWebExtensionControllerConfiguration configuration);
+
+		[Wrap ("WeakDelegate")]
+		[NullAllowed]
+		IWKWebExtensionControllerDelegate Delegate { get; set; }
+
+		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
+		NSObject WeakDelegate { get; set; }
+
+		[Export ("configuration", ArgumentSemantic.Copy)]
+		WKWebExtensionControllerConfiguration Configuration { get; }
+
+		[Export ("loadExtensionContext:error:")]
+		bool LoadExtensionContext (WKWebExtensionContext extensionContext, [NullAllowed] out NSError error);
+
+		[Export ("unloadExtensionContext:error:")]
+		bool UnloadExtensionContext (WKWebExtensionContext extensionContext, [NullAllowed] out NSError error);
+
+		[Export ("extensionContextForExtension:")]
+		[return: NullAllowed]
+		WKWebExtensionContext GetExtensionContext (WKWebExtension extension);
+
+		[Export ("extensionContextForURL:")]
+		[return: NullAllowed]
+		WKWebExtensionContext GetExtensionContext (NSUrl url);
+
+		[Export ("extensions", ArgumentSemantic.Copy)]
+		NSSet<WKWebExtension> Extensions { get; }
+
+		[Export ("extensionContexts", ArgumentSemantic.Copy)]
+		NSSet<WKWebExtensionContext> ExtensionContexts { get; }
+
+		[Static]
+		[Export ("allExtensionDataTypes", ArgumentSemantic.Copy)]
+		NSSet<NSString> WeakAllExtensionDataTypes { get; }
+
+		[Static]
+		WKWebExtensionDataType AllExtensionDataTypes {
+			[Wrap ("WKWebExtensionDataTypeExtensions.ToFlags (WeakAllExtensionDataTypes);")]
+			get;
+		}
+
+		[Async]
+		[Export ("fetchDataRecordsOfTypes:completionHandler:")]
+		void FetchDataRecords (NSSet<NSString> dataTypes, WKWebExtensionControllerDataRecordsCallback completionHandler);
+
+		[Async]
+		[Wrap ("FetchDataRecords (new NSSet<NSString> (dataTypes.ToArray ()), completionHandler);")]
+		void FetchDataRecords (WKWebExtensionDataType dataTypes, WKWebExtensionControllerDataRecordsCallback completionHandler);
+
+		[Async]
+		[Export ("fetchDataRecordOfTypes:forExtensionContext:completionHandler:")]
+		void FetchDataRecord (NSSet<NSString> dataTypes, WKWebExtensionContext extensionContext, WKWebExtensionControllerDataRecordCallback completionHandler);
+
+		[Async]
+		[Wrap ("FetchDataRecord (new NSSet<NSString> (dataTypes.ToArray ()), extensionContext, completionHandler);")]
+		void FetchDataRecord (WKWebExtensionDataType dataTypes, WKWebExtensionContext extensionContext, WKWebExtensionControllerDataRecordCallback completionHandler);
+
+		[Async]
+		[Export ("removeDataOfTypes:fromDataRecords:completionHandler:")]
+		void RemoveData (NSSet<NSString> dataTypes, WKWebExtensionDataRecord [] dataRecords, Action completionHandler);
+
+		[Async]
+		[Wrap ("RemoveData (new NSSet<NSString> (dataTypes.ToArray ()), dataRecords, completionHandler);")]
+		void RemoveData (WKWebExtensionDataType dataTypes, WKWebExtensionDataRecord [] dataRecords, Action completionHandler);
+
+		[Export ("didOpenWindow:")]
+		void DidOpenWindow (IWKWebExtensionWindow newWindow);
+
+		[Export ("didCloseWindow:")]
+		void DidCloseWindow (IWKWebExtensionWindow closedWindow);
+
+		[Export ("didFocusWindow:")]
+		void DidFocusWindow ([NullAllowed] IWKWebExtensionWindow focusedWindow);
+
+		[Export ("didOpenTab:")]
+		void DidOpenTab (IWKWebExtensionTab newTab);
+
+		[Export ("didCloseTab:windowIsClosing:")]
+		void DidCloseTab (IWKWebExtensionTab closedTab, bool windowIsClosing);
+
+		[Export ("didActivateTab:previousActiveTab:")]
+		void DidActivateTab (IWKWebExtensionTab activatedTab, [NullAllowed] IWKWebExtensionTab previousTab);
+
+		[Export ("didSelectTabs:")]
+		void DidSelectTabs (IWKWebExtensionTab [] selectedTabs);
+
+		[Export ("didDeselectTabs:")]
+		void DidDeselectTabs (IWKWebExtensionTab [] deselectedTabs);
+
+		[Export ("didMoveTab:fromIndex:inWindow:")]
+		void DidMoveTab (IWKWebExtensionTab movedTab, nuint index, [NullAllowed] IWKWebExtensionWindow oldWindow);
+
+		[Export ("didReplaceTab:withTab:")]
+		void DidReplaceTab (IWKWebExtensionTab oldTab, IWKWebExtensionTab newTab);
+
+		[Export ("didChangeTabProperties:forTab:")]
+		void DidChangeTabProperties (WKWebExtensionTabChangedProperties properties, IWKWebExtensionTab changedTab);
+	}
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface WKWebExtensionControllerConfiguration : NSSecureCoding, NSCopying {
+		[Static]
+		[Export ("defaultConfiguration")]
+		WKWebExtensionControllerConfiguration GetDefaultConfiguration ();
+
+		[Static]
+		[Export ("nonPersistentConfiguration")]
+		WKWebExtensionControllerConfiguration GetNonPersistentConfiguration ();
+
+		[Static]
+		[Export ("configurationWithIdentifier:")]
+		WKWebExtensionControllerConfiguration Create (NSUuid identifier);
+
+		[Export ("persistent")]
+		bool Persistent { [Bind ("isPersistent")] get; }
+
+		[NullAllowed, Export ("identifier", ArgumentSemantic.Copy)]
+		NSUuid Identifier { get; }
+
+		[NullAllowed, Export ("webViewConfiguration", ArgumentSemantic.Copy)]
+		WKWebViewConfiguration WebViewConfiguration { get; set; }
+
+		[NullAllowed, Export ("defaultWebsiteDataStore", ArgumentSemantic.Retain)]
+		WKWebsiteDataStore DefaultWebsiteDataStore { get; set; }
+	}
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[Native]
+	[ErrorDomain ("WKWebExtensionDataRecordErrorDomain")]
+	public enum WKWebExtensionDataRecordError : long {
+		Unknown = 1,
+		LocalStorageFailed,
+		SessionStorageFailed,
+		SynchronizedStorageFailed,
+	}
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface WKWebExtensionDataRecord {
+		[Export ("displayName")]
+		string DisplayName { get; }
+
+		[Export ("uniqueIdentifier")]
+		string UniqueIdentifier { get; }
+
+		[Export ("containedDataTypes", ArgumentSemantic.Copy)]
+		NSSet<NSString> WeakContainedDataTypes { get; }
+
+		WKWebExtensionDataType ContainedDataTypes {
+			[Wrap ("WKWebExtensionDataTypeExtensions.ToFlags (WeakContainedDataTypes);")]
+			get;
+		}
+
+		[Export ("errors", ArgumentSemantic.Copy)]
+		NSError [] Errors { get; }
+
+		[Export ("totalSizeInBytes")]
+		nuint TotalSizeInBytes { get; }
+
+		[Export ("sizeInBytesOfTypes:")]
+		nuint GetSizeInBytes (NSSet<NSString> dataTypes);
+
+		[Wrap ("GetSizeInBytes (new NSSet<NSString> (dataTypes.ToArray ()));")]
+		nuint GetSizeInBytes (WKWebExtensionDataType dataTypes);
+	}
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[Native]
+	[ErrorDomain ("WKWebExtensionMessagePortErrorDomain")]
+	public enum WKWebExtensionMessagePortError : long {
+		Unknown = 1,
+		NotConnected,
+		MessageInvalid,
+	}
+
+	delegate void WKWebExtensionMessagePortMessageHandlerCallback ([NullAllowed] NSObject message, [NullAllowed] NSError error);
+	delegate void WKWebExtensionMessagePortDisconnectHandlerCallback ([NullAllowed] NSError error);
+	delegate void WKWebExtensionMessagePortSendMessageCallback ([NullAllowed] NSError error);
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface WKWebExtensionMessagePort {
+		[NullAllowed, Export ("applicationIdentifier")]
+		string ApplicationIdentifier { get; }
+
+		[NullAllowed, Export ("messageHandler", ArgumentSemantic.Copy)]
+		WKWebExtensionMessagePortMessageHandlerCallback MessageHandler { get; set; }
+
+		[NullAllowed, Export ("disconnectHandler", ArgumentSemantic.Copy)]
+		WKWebExtensionMessagePortDisconnectHandlerCallback DisconnectHandler { get; set; }
+
+		[Export ("disconnected")]
+		bool Disconnected { [Bind ("isDisconnected")] get; }
+
+		[Async]
+		[Export ("sendMessage:completionHandler:")]
+		void SendMessage ([NullAllowed] NSObject message, [NullAllowed] WKWebExtensionMessagePortSendMessageCallback completionHandler);
+
+		[Export ("disconnect")]
+		void Disconnect ();
+
+		[Export ("disconnectWithError:")]
+		void Disconnect ([NullAllowed] NSError error);
+	}
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface WKWebExtensionTabConfiguration {
+		[NullAllowed, Export ("window", ArgumentSemantic.Strong)]
+		IWKWebExtensionWindow Window { get; }
+
+		[Export ("index")]
+		nuint Index { get; }
+
+		[NullAllowed, Export ("parentTab", ArgumentSemantic.Strong)]
+		IWKWebExtensionTab ParentTab { get; }
+
+		[NullAllowed, Export ("url", ArgumentSemantic.Copy)]
+		NSUrl Url { get; }
+
+		[Export ("shouldBeActive")]
+		bool ShouldBeActive { get; }
+
+		[Export ("shouldAddToSelection")]
+		bool ShouldAddToSelection { get; }
+
+		[Export ("shouldBePinned")]
+		bool ShouldBePinned { get; }
+
+		[Export ("shouldBeMuted")]
+		bool ShouldBeMuted { get; }
+
+		[Export ("shouldReaderModeBeActive")]
+		bool ShouldReaderModeBeActive { get; }
+	}
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface WKWebExtensionWindowConfiguration {
+		[Export ("windowType")]
+		WKWebExtensionWindowType WindowType { get; }
+
+		[Export ("windowState")]
+		WKWebExtensionWindowState WindowState { get; }
+
+		[Export ("frame")]
+		CGRect Frame { get; }
+
+		[Export ("tabURLs", ArgumentSemantic.Copy)]
+		NSUrl [] TabUrls { get; }
+
+		[Export ("tabs", ArgumentSemantic.Copy)]
+		IWKWebExtensionTab [] Tabs { get; }
+
+		[Export ("shouldBeFocused")]
+		bool ShouldBeFocused { get; }
+
+		[Export ("shouldBePrivate")]
+		bool ShouldBePrivate { get; }
+	}
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[ErrorDomain ("WKWebExtensionMatchPatternErrorDomain")]
+	[Native]
+	public enum WKWebExtensionMatchPatternError : long {
+		Unknown = 1,
+		InvalidScheme,
+		InvalidHost,
+		InvalidPath,
+	}
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[Native]
+	[Flags]
+	public enum WKWebExtensionMatchPatternOptions : ulong {
+		None = 0,
+		IgnoreSchemes = 1uL << 0,
+		IgnorePaths = 1uL << 1,
+		MatchBidirectionally = 1uL << 2,
+	}
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface WKWebExtensionMatchPattern : NSSecureCoding, NSCopying {
+		[Static]
+		[Export ("registerCustomURLScheme:")]
+		void RegisterCustomUrlScheme (string urlScheme);
+
+		[Static]
+		[Export ("allURLsMatchPattern")]
+		WKWebExtensionMatchPattern GetAllUrlsMatchPattern ();
+
+		[Static]
+		[Export ("allHostsAndSchemesMatchPattern")]
+		WKWebExtensionMatchPattern GetAllHostsAndSchemesMatchPattern ();
+
+		[Static]
+		[Export ("matchPatternWithString:")]
+		[return: NullAllowed]
+		WKWebExtensionMatchPattern Create (string @string);
+
+		[Static]
+		[Export ("matchPatternWithScheme:host:path:")]
+		[return: NullAllowed]
+		WKWebExtensionMatchPattern Create (string scheme, string host, string path);
+
+		[Export ("initWithString:error:")]
+		[Internal]
+		NativeHandle _InitWithString (string @string, [NullAllowed] out NSError error);
+
+		[Export ("initWithScheme:host:path:error:")]
+		[Internal]
+		NativeHandle _InitWithScheme (string scheme, string host, string path, [NullAllowed] out NSError error);
+
+		[Export ("string")]
+		string String { get; }
+
+		[NullAllowed, Export ("scheme")]
+		string Scheme { get; }
+
+		[NullAllowed, Export ("host")]
+		string Host { get; }
+
+		[NullAllowed, Export ("path")]
+		string Path { get; }
+
+		[Export ("matchesAllURLs")]
+		bool MatchesAllUrls { get; }
+
+		[Export ("matchesAllHosts")]
+		bool MatchesAllHosts { get; }
+
+		[Export ("matchesURL:")]
+		bool MatchesUrl ([NullAllowed] NSUrl url);
+
+		[Export ("matchesURL:options:")]
+		bool MatchesUrl ([NullAllowed] NSUrl url, WKWebExtensionMatchPatternOptions options);
+
+		[Export ("matchesPattern:")]
+		bool MatchesPattern ([NullAllowed] WKWebExtensionMatchPattern pattern);
+
+		[Export ("matchesPattern:options:")]
+		bool MatchesPattern ([NullAllowed] WKWebExtensionMatchPattern pattern, WKWebExtensionMatchPatternOptions options);
+	}
+
+	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
+	[Flags]
+	enum WKWebExtensionPermission {
+		[Field ("WKWebExtensionPermissionActiveTab")]
+		ActiveTab = 1 << 0,
+
+		[Field ("WKWebExtensionPermissionAlarms")]
+		Alarms = 1 << 1,
+
+		[Field ("WKWebExtensionPermissionClipboardWrite")]
+		ClipboardWrite = 1 << 2,
+
+		[Field ("WKWebExtensionPermissionContextMenus")]
+		ContextMenus = 1 << 3,
+
+		[Field ("WKWebExtensionPermissionCookies")]
+		Cookies = 1 << 4,
+
+		[Field ("WKWebExtensionPermissionDeclarativeNetRequest")]
+		DeclarativeNetRequest = 1 << 5,
+
+		[Field ("WKWebExtensionPermissionDeclarativeNetRequestFeedback")]
+		DeclarativeNetRequestFeedback = 1 << 6,
+
+		[Field ("WKWebExtensionPermissionDeclarativeNetRequestWithHostAccess")]
+		DeclarativeNetRequestWithHostAccess = 1 << 7,
+
+		[Field ("WKWebExtensionPermissionMenus")]
+		Menus = 1 << 8,
+
+		[Field ("WKWebExtensionPermissionNativeMessaging")]
+		NativeMessaging = 1 << 9,
+
+		[Field ("WKWebExtensionPermissionScripting")]
+		Scripting = 1 << 10,
+
+		[Field ("WKWebExtensionPermissionStorage")]
+		Storage = 1 << 11,
+
+		[Field ("WKWebExtensionPermissionTabs")]
+		Tabs = 1 << 12,
+
+		[Field ("WKWebExtensionPermissionUnlimitedStorage")]
+		UnlimitedStorage = 1 << 13,
+
+		[Field ("WKWebExtensionPermissionWebNavigation")]
+		WebNavigation = 1 << 14,
+
+		[Field ("WKWebExtensionPermissionWebRequest")]
+		WebRequest = 1 << 15,
 	}
 }

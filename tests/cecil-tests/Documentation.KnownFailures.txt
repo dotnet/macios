@@ -16343,6 +16343,7 @@ M:AuthenticationServices.ASAuthorizationProviderExtensionLoginConfiguration.SetC
 M:AuthenticationServices.ASAuthorizationProviderExtensionLoginConfiguration.SetCustomRefreshRequestHeaderClaims(Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject},Foundation.NSError@)
 M:AuthenticationServices.ASAuthorizationProviderExtensionLoginManager._CopyKey(AuthenticationServices.ASAuthorizationProviderExtensionKeyType)
 M:AuthenticationServices.ASAuthorizationProviderExtensionLoginManager._Save(System.IntPtr,AuthenticationServices.ASAuthorizationProviderExtensionKeyType)
+M:AuthenticationServices.ASAuthorizationProviderExtensionLoginManager.#ctor
 M:AuthenticationServices.ASAuthorizationProviderExtensionLoginManager.BeginKeyRotation(AuthenticationServices.ASAuthorizationProviderExtensionKeyType)
 M:AuthenticationServices.ASAuthorizationProviderExtensionLoginManager.CompleteKeyRotation(AuthenticationServices.ASAuthorizationProviderExtensionKeyType)
 M:AuthenticationServices.ASAuthorizationProviderExtensionLoginManager.CopyIdentity(AuthenticationServices.ASAuthorizationProviderExtensionKeyType)
@@ -31743,6 +31744,7 @@ M:NetworkExtension.INWTcpConnectionAuthenticationDelegate.EvaluateTrustAsync(Net
 M:NetworkExtension.INWTcpConnectionAuthenticationDelegate.ProvideIdentity(NetworkExtension.NWTcpConnection,System.Action{Security.SecIdentity,Foundation.NSArray})
 M:NetworkExtension.INWTcpConnectionAuthenticationDelegate.ShouldEvaluateTrust(NetworkExtension.NWTcpConnection)
 M:NetworkExtension.INWTcpConnectionAuthenticationDelegate.ShouldProvideIdentity(NetworkExtension.NWTcpConnection)
+M:NetworkExtension.NEAppProxyFlow.#ctor
 M:NetworkExtension.NEAppProxyFlow.CloseRead(Foundation.NSError)
 M:NetworkExtension.NEAppProxyFlow.CloseWrite(Foundation.NSError)
 M:NetworkExtension.NEAppProxyFlow.OpenWithLocalEndpoint(NetworkExtension.NWHostEndpoint,System.Action{Foundation.NSError})
@@ -33879,7 +33881,6 @@ M:SceneKit.SCNQuaternion.#ctor(CoreGraphics.RMatrix3@)
 M:SceneKit.SCNQuaternion.#ctor(System.Numerics.Quaternion)
 M:SceneKit.SCNReferenceNode.EncodeTo(Foundation.NSCoder)
 M:SceneKit.SCNRenderer.Dispose(System.Boolean)
-M:SceneKit.SCNRenderer.FromContext(OpenGL.CGLContext,Foundation.NSDictionary)
 M:SceneKit.SCNRenderer.FromContext(OpenGLES.EAGLContext,Foundation.NSDictionary)
 M:SceneKit.SCNRenderer.HitTest(CoreGraphics.CGPoint,SceneKit.SCNHitTestOptions)
 M:SceneKit.SCNRenderer.PrepareAsync(Foundation.NSObject[])

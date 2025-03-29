@@ -31,7 +31,7 @@ namespace SceneKit {
 
 			// GetHandle will return IntPtr.Zero if context is null
 			// GLContext == CGLContext on macOS and EAGLContext in iOS and tvOS (using on top of file)
-			var renderer = FromContext (context.GetHandle (), options); 
+			var renderer = FromContext (context.GetHandle (), options);
 			GC.KeepAlive (context);
 			return renderer;
 		}

@@ -6,10 +6,9 @@ using ObjCRuntime;
 
 namespace NetworkExtension {
 
-	public unsafe partial class NEAppProxyFlow : NSObject {
+	public unsafe partial class NEAppProxyFlow {
 
-
-#if MACCATALYST || MONOMAC
+#if __MACCATALYST__ || MONOMAC
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]

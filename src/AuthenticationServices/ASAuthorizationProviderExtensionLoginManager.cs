@@ -6,7 +6,7 @@ using Security;
 #nullable enable
 namespace AuthenticationServices {
 
-	public unsafe partial class ASAuthorizationProviderExtensionLoginManager : NSObject {
+	public unsafe partial class ASAuthorizationProviderExtensionLoginManager {
 
 #if MONOMAC
 		public void Save (SecCertificate certificate, ASAuthorizationProviderExtensionKeyType keyType)

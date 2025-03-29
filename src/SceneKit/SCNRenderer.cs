@@ -3,11 +3,16 @@ using System.Runtime.Versioning;
 using Foundation;
 using ObjCRuntime;
 
+#if MONOMAC
+using GLContext = global::OpenGL.CGLContext;
+#else
+
 #if HAS_OPENGLES
 using OpenGLES;
-using EAGLContext = global::OpenGLES.EAGLContext;
+using GLContext = global::OpenGLES.EAGLContext;
 #else
-using EAGLContext = global::Foundation.NSObject; // won't be used -> but must compile
+using GLContext = global::Foundation.NSObject; // won't be used -> but must compile
+#endif
 #endif
 
 #nullable enable
@@ -15,13 +20,13 @@ using EAGLContext = global::Foundation.NSObject; // won't be used -> but must co
 namespace SceneKit {
 	public partial class SCNRenderer {
 
-#if HAS_OPENGLES
+#if !__MACCATALYST__
 
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-		public static SCNRenderer FromContext (EAGLContext context, NSDictionary? options)
+		public static SCNRenderer FromContext (GLContext context, NSDictionary? options)
 		{
 
 			// GetHandle will return IntPtr.Zero if context is null

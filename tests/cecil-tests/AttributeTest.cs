@@ -294,6 +294,7 @@ namespace Cecil.Tests {
 
 					// The signature is slightly different between platforms for this member, this is expected
 					"SceneKit.SCNRenderer.FromContext (OpenGLES.EAGLContext, Foundation.NSDictionary)",
+					"SceneKit.SCNRenderer.FromContext (OpenGL.CGLContext, Foundation.NSDictionary)",
 
 					// For historical reasons, MPMediaItem and MPMediaEntity are wildly different between platforms (https://github.com/xamarin/xamarin-macios/issues/17291).
 					"MediaPlayer.MPMediaEntity.EncodeTo (Foundation.NSCoder)",

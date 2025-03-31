@@ -146,6 +146,7 @@ stages:
               commit: ${{ parameters.commit }}
               statusContext: 'VSTS: simulator tests' 
               uploadArtifacts: true
+              use1ES: false
 
   - ${{ each config in parameters.macTestsConfigurations }}:
       - template: ../mac/stage.yml

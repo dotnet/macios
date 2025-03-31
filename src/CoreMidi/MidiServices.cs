@@ -193,11 +193,9 @@ namespace CoreMidi {
 #endif // !COREBUILD
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class MidiObject
 #if !COREBUILD
 	: IDisposable
@@ -443,11 +441,9 @@ namespace CoreMidi {
 #endif // !COREBUILD
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class MidiException : Exception {
 		internal MidiException (MidiError code) : base (code == MidiError.NotPermitted ? "NotPermitted, does your app Info.plist include the 'audio' key in the UIBackgroundModes section?" : code.ToString ())
 		{
@@ -464,33 +460,23 @@ namespace CoreMidi {
 
 	delegate void MidiNotifyProc (IntPtr message, IntPtr context);
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class MidiClient : MidiObject {
 #if !COREBUILD
 		[DllImport (Constants.CoreMidiLibrary)]
-#if NET
 		unsafe extern static int /* OSStatus = SInt32 */ MIDIClientCreate (IntPtr str, delegate* unmanaged<IntPtr, IntPtr, void> callback, IntPtr context, MidiObjectRef* handle);
-#else
-		unsafe extern static int /* OSStatus = SInt32 */ MIDIClientCreate (IntPtr str, MidiNotifyProc callback, IntPtr context, MidiObjectRef* handle);
-#endif
 
 		[DllImport (Constants.CoreMidiLibrary)]
 		extern static int /* OSStatus = SInt32 */ MIDIClientDispose (MidiObjectRef handle);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos11.0")]
 		[ObsoletedOSPlatform ("ios14.0")]
-#else
-		[Deprecated (PlatformName.iOS, 14, 0)]
-		[Deprecated (PlatformName.MacOSX, 11, 0)]
-#endif
+		[ObsoletedOSPlatform ("maccatalyst14.0")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe extern static int /* OSStatus = SInt32 */ MIDISourceCreate (MidiObjectRef handle, IntPtr name, MidiObjectRef* endpoint);
 
@@ -514,11 +500,7 @@ namespace CoreMidi {
 				int code = 0;
 				MidiObjectRef tempHandle;
 				unsafe {
-#if NET
 					code = MIDIClientCreate (nsstr.Handle, &ClientCallback, GCHandle.ToIntPtr (gch), &tempHandle);
-#else
-					code = MIDIClientCreate (nsstr.Handle, static_MidiNotifyProc, GCHandle.ToIntPtr (gch), &tempHandle);
-#endif
 				}
 				handle = tempHandle;
 				if (code != 0) {
@@ -541,16 +523,12 @@ namespace CoreMidi {
 			return Name;
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos11.0")]
 		[ObsoletedOSPlatform ("ios14.0")]
-#else
-		[Deprecated (PlatformName.iOS, 14, 0)]
-		[Deprecated (PlatformName.MacOSX, 11, 0)]
-#endif
+		[ObsoletedOSPlatform ("maccatalyst14.0")]
 		public MidiEndpoint? CreateVirtualSource (string name, out MidiError statusCode)
 		{
 			using (var nsstr = new NSString (name)) {
@@ -568,16 +546,12 @@ namespace CoreMidi {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos11.0")]
 		[ObsoletedOSPlatform ("ios14.0")]
-#else
-		[Deprecated (PlatformName.iOS, 14, 0)]
-		[Deprecated (PlatformName.MacOSX, 11, 0)]
-#endif
+		[ObsoletedOSPlatform ("maccatalyst14.0")]
 		public MidiEndpoint? CreateVirtualDestination (string name, out MidiError status)
 		{
 			var m = new MidiEndpoint (this, name, out status);
@@ -605,23 +579,8 @@ namespace CoreMidi {
 		public event EventHandler? ThruConnectionsChanged;
 		public event EventHandler? SerialPortOwnerChanged;
 		public event EventHandler<IOErrorEventArgs>? IOError;
-#if !NET
-		static MidiNotifyProc? _static_MidiNotifyProc;
-		static MidiNotifyProc static_MidiNotifyProc {
-			get {
-				if (_static_MidiNotifyProc is null)
-					_static_MidiNotifyProc = new MidiNotifyProc (ClientCallback);
-				return _static_MidiNotifyProc;
-			}
-		}
-#endif
-#if NET
+
 		[UnmanagedCallersOnly]
-#else
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (MidiNotifyProc))]
-#endif
-#endif // if NET
 		static void ClientCallback (IntPtr message, IntPtr context)
 		{
 			GCHandle gch = GCHandle.FromIntPtr (context);
@@ -727,11 +686,9 @@ namespace CoreMidi {
 	// We do not pack this structure since we do not really actually marshal it,
 	// we manually encode it and decode it using Marshal.{Read|Write}
 	//
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class MidiPacket
 #if !COREBUILD
 		: IDisposable
@@ -924,31 +881,20 @@ namespace CoreMidi {
 
 	delegate void MidiReadProc (IntPtr packetList, IntPtr context, IntPtr srcPtr);
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class MidiPort : MidiObject {
 #if !COREBUILD
-
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos11.0")]
 		[ObsoletedOSPlatform ("ios14.0")]
-#else
-		[Deprecated (PlatformName.iOS, 14, 0)]
-		[Deprecated (PlatformName.MacOSX, 11, 0)]
-#endif
-#if NET
+		[ObsoletedOSPlatform ("maccatalyst14.0")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		extern unsafe static int /* OSStatus = SInt32 */ MIDIInputPortCreate (MidiClientRef client, IntPtr /* CFStringRef */ portName, delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> readProc, IntPtr context, MidiPortRef* midiPort);
-#else
-		[DllImport (Constants.CoreMidiLibrary)]
-		unsafe extern static int /* OSStatus = SInt32 */ MIDIInputPortCreate (MidiClientRef client, IntPtr /* CFStringRef */ portName, MidiReadProc readProc, IntPtr context, MidiPortRef* midiPort);
-#endif
+
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe extern static int /* OSStatus = SInt32 */ MIDIOutputPortCreate (MidiClientRef client, IntPtr /* CFStringRef */ portName, MidiPortRef* midiPort);
 
@@ -968,11 +914,7 @@ namespace CoreMidi {
 				NativeHandle nsstrHandle = nsstr.Handle;
 				if (input) {
 					unsafe {
-#if NET
 						code = MIDIInputPortCreate (client.handle, nsstrHandle, &Read, GCHandle.ToIntPtr (gch), &tempHandle);
-#else
-						code = MIDIInputPortCreate (client.handle, nsstrHandle, static_MidiReadProc, GCHandle.ToIntPtr (gch), &tempHandle);
-#endif
 					}
 				} else {
 					unsafe {
@@ -1024,23 +966,7 @@ namespace CoreMidi {
 
 		public event EventHandler<MidiPacketsEventArgs>? MessageReceived;
 
-#if !NET
-		static MidiReadProc? _static_MidiReadProc;
-		static MidiReadProc static_MidiReadProc {
-			get {
-				if (_static_MidiReadProc is null)
-					_static_MidiReadProc = new MidiReadProc (Read);
-				return _static_MidiReadProc;
-			}
-		}
-#endif
-#if NET
 		[UnmanagedCallersOnly]
-#else
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (MidiReadProc))]
-#endif
-#endif // if NET
 		static void Read (IntPtr packetList, IntPtr context, IntPtr srcPtr)
 		{
 			GCHandle gch = GCHandle.FromIntPtr (context);
@@ -1083,29 +1009,21 @@ namespace CoreMidi {
 			return (input ? "[input:" : "[output:") + Client + ":" + PortName + "]";
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos11.0")]
 		[ObsoletedOSPlatform ("ios14.0")]
-#else
-		[Deprecated (PlatformName.iOS, 14, 0)]
-		[Deprecated (PlatformName.MacOSX, 11, 0)]
-#endif
+		[ObsoletedOSPlatform ("maccatalyst14.0")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		extern static MidiError /* OSStatus = SInt32 */ MIDISend (MidiPortRef port, MidiEndpointRef endpoint, IntPtr packets);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos11.0")]
 		[ObsoletedOSPlatform ("ios14.0")]
-#else
-		[Deprecated (PlatformName.iOS, 14, 0)]
-		[Deprecated (PlatformName.MacOSX, 11, 0)]
-#endif
+		[ObsoletedOSPlatform ("maccatalyst14.0")]
 		public MidiError Send (MidiEndpoint endpoint, MidiPacket [] packets)
 		{
 			if (endpoint is null)
@@ -1121,11 +1039,9 @@ namespace CoreMidi {
 #endif // !COREBUILD
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class MidiEntity : MidiObject {
 #if !COREBUILD
 		internal MidiEntity (MidiEntityRef handle) : base (handle)
@@ -1658,14 +1574,10 @@ namespace CoreMidi {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoTV, iOS (14, 0), MacCatalyst (14, 0)]
-#endif
 		public MidiProtocolId ProtocolId {
 			get {
 				return (MidiProtocolId) GetInt (MidiPropertyExtensions.kMIDIPropertyProtocolID);
@@ -1675,14 +1587,10 @@ namespace CoreMidi {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[SupportedOSPlatform ("macos14.0")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
-#endif
 		public ushort UmpActiveGroupBitmap {
 			get {
 				return (ushort) GetInt (MidiPropertyExtensions.kMIDIPropertyUMPActiveGroupBitmap);
@@ -1692,14 +1600,10 @@ namespace CoreMidi {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[SupportedOSPlatform ("macos14.0")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
-#endif
 		public bool UmpCanTransmitGroupless {
 			get {
 				return GetInt (MidiPropertyExtensions.kMIDIPropertyUMPCanTransmitGroupless) == 1;
@@ -1711,11 +1615,9 @@ namespace CoreMidi {
 #endif // !COREBUILD
 	} // MidiEntity
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class MidiDevice : MidiObject {
 #if !COREBUILD
 		[DllImport (Constants.CoreMidiLibrary)]
@@ -1724,16 +1626,12 @@ namespace CoreMidi {
 		[DllImport (Constants.CoreMidiLibrary)]
 		extern static MidiEntityRef MIDIDeviceGetEntity (MidiDeviceRef handle, nint item);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos11.0")]
 		[ObsoletedOSPlatform ("ios14.0")]
-#else
-		[Deprecated (PlatformName.iOS, 14, 0)]
-		[Deprecated (PlatformName.MacOSX, 11, 0)]
-#endif
+		[ObsoletedOSPlatform ("maccatalyst14.0")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		extern static int MIDIDeviceAddEntity (MidiDeviceRef device, /* CFString */ IntPtr name, byte embedded, nuint numSourceEndpoints, nuint numDestinationEndpoints, MidiEntityRef newEntity);
 
@@ -1747,14 +1645,12 @@ namespace CoreMidi {
 			return new MidiEntity (h);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("ios14.0")]
-#else
-		[Deprecated (PlatformName.iOS, 14, 0)]
-#endif
+		[ObsoletedOSPlatform ("maccatalyst14.0")]
+		[ObsoletedOSPlatform ("macos11.0")]
 		public int Add (string name, bool embedded, nuint numSourceEndpoints, nuint numDestinationEndpoints, MidiEntity newEntity)
 		{
 			if (handle == MidiObject.InvalidRef)
@@ -1842,7 +1738,6 @@ namespace CoreMidi {
 		}
 
 #if !XAMCORE_5_0 || __MACOS__
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -1850,7 +1745,6 @@ namespace CoreMidi {
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-#endif
 #if !__MACOS__
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("This API does not do anything on this platform.")]
@@ -1874,7 +1768,6 @@ namespace CoreMidi {
 #endif // !XAMCORE_5_0 || __MACOS__
 
 #if !XAMCORE_5_0 || __MACOS__
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -1882,7 +1775,6 @@ namespace CoreMidi {
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-#endif
 #if !__MACOS__
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("This API does not do anything on this platform.")]
@@ -1906,13 +1798,9 @@ namespace CoreMidi {
 		}
 #endif // !XAMCORE_5_0 || __MACOS__
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (13, 0)]
-#endif
 		public string? NameConfigurationDictionary {
 			get {
 				return GetString (MidiPropertyExtensions.kMIDIPropertyNameConfigurationDictionary);
@@ -2385,14 +2273,10 @@ namespace CoreMidi {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoTV, iOS (14, 0), MacCatalyst (14, 0)]
-#endif
 		public MidiProtocolId ProtocolId {
 			get {
 				return (MidiProtocolId) GetInt (MidiPropertyExtensions.kMIDIPropertyProtocolID);
@@ -2412,11 +2296,9 @@ namespace CoreMidi {
 #endif // !COREBUILD
 	} // MidiDevice
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class MidiDeviceList : MidiObject {
 
 #if !COREBUILD
@@ -2476,11 +2358,9 @@ namespace CoreMidi {
 #endif // !COREBUILD
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class MidiEndpoint : MidiObject {
 #if !COREBUILD
 		GCHandle gch;
@@ -2488,37 +2368,24 @@ namespace CoreMidi {
 		[DllImport (Constants.CoreMidiLibrary)]
 		extern static int /* OSStatus = SInt32 */ MIDIEndpointDispose (MidiEndpointRef handle);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos11.0")]
 		[ObsoletedOSPlatform ("ios14.0")]
-#else
-		[Deprecated (PlatformName.iOS, 14, 0)]
-		[Deprecated (PlatformName.MacOSX, 11, 0)]
-#endif
-#if NET
+		[ObsoletedOSPlatform ("maccatalyst14.0")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		extern unsafe static MidiError /* OSStatus = SInt32 */ MIDIDestinationCreate (MidiClientRef client, IntPtr /* CFStringRef */ name, delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> readProc, IntPtr context, MidiEndpointRef* midiEndpoint);
-#else
-		[DllImport (Constants.CoreMidiLibrary)]
-		extern static MidiError /* OSStatus = SInt32 */ MIDIDestinationCreate (MidiClientRef client, IntPtr /* CFStringRef */ name, MidiReadProc readProc, IntPtr context, out MidiEndpointRef midiEndpoint);
-#endif
 
 		[DllImport (Constants.CoreMidiLibrary)]
 		extern static int /* OSStatus = SInt32 */ MIDIFlushOutput (MidiEndpointRef handle);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos11.0")]
 		[ObsoletedOSPlatform ("ios14.0")]
-#else
-		[Deprecated (PlatformName.iOS, 14, 0)]
-		[Deprecated (PlatformName.MacOSX, 11, 0)]
-#endif
+		[ObsoletedOSPlatform ("maccatalyst14.0")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		extern static MidiError /* OSStatus = SInt32 */ MIDIReceived (MidiEndpointRef handle, IntPtr /* MIDIPacketList* */ packetList);
 
@@ -2579,15 +2446,11 @@ namespace CoreMidi {
 		{
 			using (var nsstr = new NSString (name)) {
 				GCHandle gch = GCHandle.Alloc (this);
-#if NET
 				unsafe {
 					MidiEndpointRef tempHandle;
 					code = MIDIDestinationCreate (client.handle, nsstr.Handle, &Read, GCHandle.ToIntPtr (gch), &tempHandle);
 					handle = tempHandle;
 				}
-#else
-				code = MIDIDestinationCreate (client.handle, nsstr.Handle, static_MidiReadProc, GCHandle.ToIntPtr (gch), out handle);
-#endif
 				EndpointName = name;
 			}
 		}
@@ -2599,24 +2462,8 @@ namespace CoreMidi {
 		}
 
 		public event EventHandler<MidiPacketsEventArgs>? MessageReceived;
-#if !NET
-		static MidiReadProc? _static_MidiReadProc;
-		static MidiReadProc static_MidiReadProc {
-			get {
-				if (_static_MidiReadProc is null)
-					_static_MidiReadProc = new MidiReadProc (Read);
-				return _static_MidiReadProc;
-			}
-		}
-#endif
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (MidiReadProc))]
-#endif
-#endif // if NET
 		static void Read (IntPtr packetList, IntPtr context, IntPtr srcPtr)
 		{
 			GCHandle gch = GCHandle.FromIntPtr (context);
@@ -2633,16 +2480,12 @@ namespace CoreMidi {
 			MIDIFlushOutput (handle);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos11.0")]
 		[ObsoletedOSPlatform ("ios14.0")]
-#else
-		[Deprecated (PlatformName.iOS, 14, 0)]
-		[Deprecated (PlatformName.MacOSX, 11, 0)]
-#endif
+		[ObsoletedOSPlatform ("maccatalyst14.0")]
 		public MidiError Received (MidiPacket [] packets)
 		{
 			if (packets is null)
@@ -2887,14 +2730,10 @@ namespace CoreMidi {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoTV, iOS (14, 0), MacCatalyst (14, 0)]
-#endif
 		public MidiProtocolId ProtocolId {
 			get {
 				return (MidiProtocolId) GetInt (MidiPropertyExtensions.kMIDIPropertyProtocolID);
@@ -2904,14 +2743,10 @@ namespace CoreMidi {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[SupportedOSPlatform ("macos14.0")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
-#endif
 		public ushort UmpActiveGroupBitmap {
 			get {
 				return (ushort) GetInt (MidiPropertyExtensions.kMIDIPropertyUMPActiveGroupBitmap);
@@ -2921,14 +2756,10 @@ namespace CoreMidi {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[SupportedOSPlatform ("macos14.0")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
-#endif
 		public bool UmpCanTransmitGroupless {
 			get {
 				return GetInt (MidiPropertyExtensions.kMIDIPropertyUMPCanTransmitGroupless) == 1;
@@ -2938,14 +2769,10 @@ namespace CoreMidi {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoTV, Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 		public int AssociatedEndpoint {
 			get {
 				return GetInt (MidiPropertyExtensions.kMIDIPropertyAssociatedEndpoint);
@@ -2968,11 +2795,9 @@ namespace CoreMidi {
 		SerialPortOwnerChanged,
 		IOError,
 #if !MONOMAC
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
-#endif
 		InternalStart = 0x1000,
 #endif
 	}
@@ -2980,11 +2805,9 @@ namespace CoreMidi {
 	//
 	// The notification EventArgs
 	//
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class ObjectAddedOrRemovedEventArgs : EventArgs {
 		public ObjectAddedOrRemovedEventArgs (MidiObject? parent, MidiObject? child)
 		{
@@ -3005,11 +2828,9 @@ namespace CoreMidi {
 		public MidiObject? Child { get; private set; }
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class ObjectPropertyChangedEventArgs : EventArgs {
 		public ObjectPropertyChangedEventArgs (MidiObject? midiObject, string? propertyName)
 		{
@@ -3030,11 +2851,9 @@ namespace CoreMidi {
 		public string? PropertyName { get; private set; }
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class IOErrorEventArgs : EventArgs {
 		public IOErrorEventArgs (MidiDevice device, int errorCode)
 		{
@@ -3055,11 +2874,9 @@ namespace CoreMidi {
 		public int ErrorCode { get; set; }
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class MidiPacketsEventArgs : EventArgs
 #if !COREBUILD
 		, IDisposable

@@ -1866,6 +1866,19 @@ namespace CoreMidi {
 				SetInt (MidiPropertyExtensions.kMIDIPropertyUMPCanTransmitGroupless, value ? 1 : 0);
 			}
 		}
+
+		[DllImport (Constants.CoreMidiLibrary)]
+		extern static OSStatus MIDIEntityAddOrRemoveEndpoints (MidiEntityRef entity, nuint numSourceEndpoints, nuint numDestinationEndpoints);
+
+		/// <summary>Sets the number of endpoints for this entity.</summary>
+		/// <param name="numberOfSourceEndpoints">The number of source endpoints this entity will have.</param>
+		/// <param name="numberOfDestinationEndpoints">The number of destination endpoints this entity will have.</param>
+		/// <returns><see cref="MidiError.Ok" /> if successful, an error code otherwise.</returns>
+		public MidiError AddOrRemoveEndpoints (nuint numberOfSourceEndpoints, nuint numberOfDestinationEndpoints)
+		{
+			return (MidiError) MIDIEntityAddOrRemoveEndpoints (GetCheckedHandle (), numberOfSourceEndpoints, numberOfDestinationEndpoints);
+		}
+
 #endif // !COREBUILD
 	} // MidiEntity
 

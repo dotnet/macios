@@ -7,7 +7,6 @@
 !missing-pinvoke! MIDIDeviceCreate is not bound
 !missing-pinvoke! MIDIDeviceDispose is not bound
 !missing-pinvoke! MIDIDeviceRemoveEntity is not bound
-!missing-pinvoke! MIDIEntityAddOrRemoveEndpoints is not bound
 !missing-pinvoke! MIDIGetDriverDeviceList is not bound
 !missing-pinvoke! MIDIGetDriverIORunLoop is not bound
 !missing-pinvoke! MIDISendSysex is not bound

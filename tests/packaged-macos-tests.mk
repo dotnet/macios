@@ -23,6 +23,12 @@ LAUNCH_WITH_TIMEOUT=$(RUN_WITH_TIMEOUT_EXEC) 300
 # Some tests need a bit more time... (introspection, monotouch-test)
 LAUNCH_WITH_TIMEOUT_LONGER=$(RUN_WITH_TIMEOUT_EXEC) 600
 
+arm64-debug:
+	@echo IS_ARM64=$(IS_ARM64)
+	@echo IS_APPLE_SILICON=$(IS_APPLE_SILICON)
+	-arch
+	-sysctl -n sysctl.proc_translated
+
 ### .NET dependency projects
 
 # We have library projects that are used in multiple test projects.
@@ -33,7 +39,7 @@ LAUNCH_WITH_TIMEOUT_LONGER=$(RUN_WITH_TIMEOUT_EXEC) 600
 # so that when the test projects need them, they're already built.
 
 define DotNetDependentProject
-.stamp-dotnet-dependency-$(2)-$(1): Makefile
+.stamp-dotnet-dependency-$(2)-$(1): Makefile arm64-debug
 	$$(Q) $$(MAKE) -C "$(1)/dotnet/$(2)" build
 	$$(Q) touch $$@
 

@@ -233,8 +233,32 @@ namespace CoreMidi {
 #endif // !COREBUILD
 	}
 
+	/// <summary>This class consists of functions that customize the global state of the MIDI system.</summary>
 	public static class MidiSetup {
 #if !COREBUILD
+		[DllImport (Constants.CoreMidiLibrary)]
+		unsafe extern static OSStatus MIDISetupAddDevice (MidiDeviceRef device);
+
+		/// <summary>Add a device to the current MIDI setup.</summary>
+		/// <param name="device">The device to add to the current MIDI setup.</param>
+		/// <returns>A status code that describes the result of the operation. This will be <see cref="MidiError.Ok" /> in case of success.</returns>
+		public static MidiError AddDevice (MidiDevice device)
+		{
+			return (MidiError) MIDISetupAddDevice (device.GetCheckedHandle ());
+		}
+
+
+		[DllImport (Constants.CoreMidiLibrary)]
+		unsafe extern static OSStatus MIDISetupRemoveDevice (MidiDeviceRef device);
+
+		/// <summary>Remove a device from the current MIDI setup.</summary>
+		/// <param name="device">The device to remove from the current MIDI setup.</param>
+		/// <returns>A status code that describes the result of the operation. This will be <see cref="MidiError.Ok" /> in case of success.</returns>
+		public static MidiError RemoveDevice (MidiDevice device)
+		{
+			return (MidiError) MIDISetupRemoveDevice (device.GetCheckedHandle ());
+		}
+
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe extern static OSStatus MIDISetupAddExternalDevice (MidiDeviceRef device);
 

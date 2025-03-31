@@ -1,3 +1,5 @@
+#if MONOMAC
+
 using System;
 using System.Runtime.Versioning;
 using Foundation;
@@ -8,12 +10,11 @@ namespace AuthenticationServices {
 
 	public unsafe partial class ASAuthorizationProviderExtensionLoginManager {
 
-#if MONOMAC
 		public void Save (SecCertificate certificate, ASAuthorizationProviderExtensionKeyType keyType)
 		{
 			_Save (certificate.Handle, keyType);
 			GC.KeepAlive (certificate);
 		}
-#endif
 	}
 }
+#endif // #if MONOMAC

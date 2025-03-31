@@ -25,6 +25,8 @@ using NativeHandle = System.IntPtr;
 
 namespace UIKit {
 	public class UIKitThreadAccessException : Exception {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public UIKitThreadAccessException () : base ("UIKit Consistency error: you are calling a UIKit method that can only be invoked from the UI thread.")
 		{
 		}
@@ -85,6 +87,7 @@ namespace UIKit {
 			mainThread = Thread.CurrentThread;
 		}
 
+		/// <include file="../../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='M:UIKit.UIApplication.Main(System.String[],System.String,System.String)']/*" />
 		[Obsolete ("Use the overload with 'Type' instead of 'String' parameters for type safety.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static void Main (string []? args, string? principalClassName, string? delegateClassName)
@@ -95,6 +98,7 @@ namespace UIKit {
 			UIApplicationMain (args?.Length ?? 0, args, p, d);
 		}
 
+		/// <include file="../../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='M:UIKit.UIApplication.Main(System.String[],System.Type,System.Type)']/*" />
 		public static void Main (string []? args, Type? principalClass, Type? delegateClass)
 		{
 			using var p = new TransientCFString (principalClass is null ? null : new Class (principalClass).Name);
@@ -103,12 +107,31 @@ namespace UIKit {
 			UIApplicationMain (args?.Length ?? 0, args, p, d);
 		}
 
+		/// <param name="args">Command line parameters from the Main program.</param>
+		///         <summary>Launches the main application loop with the given command line parameters.</summary>
+		///         <remarks>This launches the main application loop, assumes that the main application class is UIApplication, and uses the UIApplicationDelegate instance specified in the main NIB file for this program.</remarks>
 		public static void Main (string []? args)
 		{
 			Initialize ();
 			UIApplicationMain (args?.Length ?? 0, args, IntPtr.Zero, IntPtr.Zero);
 		}
 
+		/// <summary>Assertion to ensure that this call is being done from the UIKit thread.</summary>
+		///         <remarks>
+		///           <para>
+		///             This method is used internally by MonoTouch to ensure that
+		///             accesses done to UIKit classes and methods are only
+		///             performed from the UIKit thread.  This is necessary because
+		///             the UIKit API is not thread-safe and accessing it from
+		///             multiple threads will corrupt the application state and will
+		///             likely lead to a crash that is hard to identify.
+		///           </para>
+		///           <para>
+		///             MonoTouch only performs the thread checks in debug builds.
+		///             Release builds have this feature disabled.
+		///
+		///           </para>
+		///         </remarks>
 		public static void EnsureUIThread ()
 		{
 			// note: some extensions, like keyboards, won't call Main (and set mainThread)

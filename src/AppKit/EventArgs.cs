@@ -35,13 +35,20 @@ using Foundation;
 
 namespace AppKit {
 	public enum NSFontCollectionAction {
+		/// <summary>To be added.</summary>
 		Unknown,
+		/// <summary>To be added.</summary>
 		Shown,
+		/// <summary>To be added.</summary>
 		Hidden,
+		/// <summary>To be added.</summary>
 		Renamed,
 	}
 
 	public partial class NSFontCollectionChangedEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSFontCollectionAction Action {
 			get {
 				if (_Action == NSFontCollection.ActionWasShown) {
@@ -56,18 +63,27 @@ namespace AppKit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSFontCollectionVisibility Visibility {
 			get { return (NSFontCollectionVisibility) (int) _Visibility; }
 		}
 	}
 
 	public enum NSPopoverCloseReason {
+		/// <summary>To be added.</summary>
 		Unknown,
+		/// <summary>To be added.</summary>
 		Standard,
+		/// <summary>To be added.</summary>
 		DetachToWindow,
 	}
 
 	public partial class NSPopoverCloseEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSPopoverCloseReason Reason {
 			get {
 				if (_Reason == NSPopover.CloseReasonStandard) {

@@ -92,10 +92,16 @@ namespace AVFoundation {
 	[SupportedOSPlatform ("tvos")]
 	public class AVVideoSettingsUncompressed : CVPixelBufferAttributes {
 #if !COREBUILD
+		/// <summary>Default constructor.</summary>
+		///         <remarks>
+		///         </remarks>
 		public AVVideoSettingsUncompressed ()
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVVideoSettingsUncompressed (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -172,11 +178,16 @@ namespace AVFoundation {
 	[SupportedOSPlatform ("tvos")]
 	public class AVVideoSettingsCompressed : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVVideoSettingsCompressed ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVVideoSettingsCompressed (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -446,11 +457,16 @@ namespace AVFoundation {
 	[SupportedOSPlatform ("tvos")]
 	public class AVVideoCodecSettings : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVVideoCodecSettings ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVVideoCodecSettings (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -636,11 +652,16 @@ namespace AVFoundation {
 	[SupportedOSPlatform ("tvos")]
 	public class AVVideoPixelAspectRatioSettings : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVVideoPixelAspectRatioSettings ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVVideoPixelAspectRatioSettings (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -680,11 +701,16 @@ namespace AVFoundation {
 	[SupportedOSPlatform ("tvos")]
 	public class AVVideoCleanApertureSettings : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVVideoCleanApertureSettings ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVVideoCleanApertureSettings (NSDictionary dictionary)
 			: base (dictionary)
 		{

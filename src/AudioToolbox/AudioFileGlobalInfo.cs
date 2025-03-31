@@ -79,6 +79,10 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <param name="fileType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string? GetFileTypeName (AudioFileType fileType)
 		{
 			if (!TryGetGlobalInfo (AudioFileGlobalProperty.FileTypeName, fileType, out var ptr))
@@ -87,6 +91,10 @@ namespace AudioToolbox {
 			return CFString.FromHandle (ptr);
 		}
 
+		/// <param name="fileType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioFormatType []? GetAvailableFormats (AudioFileType fileType)
 		{
 			if (!TryGetGlobalInfoSize (AudioFileGlobalProperty.AvailableFormatIDs, fileType, out var size))
@@ -98,6 +106,11 @@ namespace AudioToolbox {
 			return data;
 		}
 
+		/// <param name="fileType">To be added.</param>
+		///         <param name="formatType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioStreamBasicDescription []? GetAvailableStreamDescriptions (AudioFileType fileType, AudioFormatType formatType)
 		{
 			AudioFileTypeAndFormatID input;
@@ -169,6 +182,10 @@ namespace AudioToolbox {
 		}
 		*/
 
+		/// <param name="fileType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string? []? GetExtensions (AudioFileType fileType)
 		{
 			if (!TryGetGlobalInfo (AudioFileGlobalProperty.ExtensionsForType, fileType, out var ptr))
@@ -177,6 +194,10 @@ namespace AudioToolbox {
 			return NSArray.ArrayFromHandleFunc (ptr, l => CFString.FromHandle (l));
 		}
 
+		/// <param name="fileType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string? []? GetUTIs (AudioFileType fileType)
 		{
 			if (!TryGetGlobalInfo (AudioFileGlobalProperty.UTIsForType, fileType, out var ptr))

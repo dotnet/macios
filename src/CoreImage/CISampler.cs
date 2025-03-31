@@ -57,6 +57,8 @@ namespace CoreImage {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CISamplerOptions {
+		/// <summary>Creates a new default sampler options argument.</summary>
+		///         <remarks>To be added.</remarks>
 		public CISamplerOptions () { }
 
 		/// <summary>Gets or sets the matrix to use for affine transformations.</summary>

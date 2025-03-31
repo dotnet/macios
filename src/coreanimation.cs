@@ -1872,9 +1872,19 @@ namespace CoreAnimation {
 #endif
 	)]
 	interface CAAnimation : CAAction, CAMediaTiming, NSSecureCoding, NSMutableCopying, SCNAnimationProtocol {
+		/// <summary>Creates a new animation, you will use the derived classes static method instead.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("animation"), Static]
 		CAAnimation CreateAnimation ();
 
+		/// <param name="key">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>The default value used for the given object.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("defaultValueForKey:")]
 		[return: NullAllowed]
@@ -1923,6 +1933,9 @@ namespace CoreAnimation {
 		[Export ("willChangeValueForKey:")]
 		void WillChangeValueForKey (string key);
 
+		/// <param name="key">To be added.</param>
+		///         <summary>As part of key-value observing, indicates that the value represented by <paramref name="key" /> has changed.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("didChangeValueForKey:")]
 		void DidChangeValueForKey (string key);
 
@@ -2042,6 +2055,10 @@ namespace CoreAnimation {
 
 		#region SceneKitAdditions
 
+		/// <param name="animation">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("animationWithSCNAnimation:")]
@@ -2152,6 +2169,13 @@ namespace CoreAnimation {
 	/// <include file="../docs/api/CoreAnimation/CABasicAnimation.xml" path="/Documentation/Docs[@DocId='T:CoreAnimation.CABasicAnimation']/*" />
 	[BaseType (typeof (CAPropertyAnimation))]
 	interface CABasicAnimation {
+		/// <param name="path">
+		///           <para>A string representing the keypath for the animation.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Creates an animation from the given key path.</summary>
+		///         <returns>The new animation.</returns>
+		///         <remarks>See the base class FromKeyPath for information on the values for the key path.</remarks>
 		[Static, New, Export ("animationWithKeyPath:")]
 		CABasicAnimation FromKeyPath ([NullAllowed] string path);
 
@@ -2264,6 +2288,13 @@ namespace CoreAnimation {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CAKeyframeAnimation_class/index.html">Apple documentation for <c>CAKeyframeAnimation</c></related>
 	[BaseType (typeof (CAPropertyAnimation), Name = "CAKeyframeAnimation")]
 	interface CAKeyFrameAnimation {
+		/// <param name="path">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("animationWithKeyPath:")]
 		CAKeyFrameAnimation FromKeyPath ([NullAllowed] string path);
 
@@ -2374,6 +2405,9 @@ namespace CoreAnimation {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CATransition_class/index.html">Apple documentation for <c>CATransition</c></related>
 	[BaseType (typeof (CAAnimation))]
 	interface CATransition {
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("animation"), Static, New]
 		CATransition CreateAnimation ();
 
@@ -2726,6 +2760,10 @@ namespace CoreAnimation {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CAValueFunction_class/index.html">Apple documentation for <c>CAValueFunction</c></related>
 	[BaseType (typeof (NSObject))]
 	interface CAValueFunction : NSSecureCoding {
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("functionWithName:"), Static]
 		[return: NullAllowed]
 		CAValueFunction FromName (string name);

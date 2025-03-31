@@ -54,11 +54,16 @@ namespace AudioUnit {
 		const string ElementNameKey = "element-name";
 		const string ExternalFileRefs = "file-references";
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public ClassInfoDictionary ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public ClassInfoDictionary (NSDictionary? dictionary)
 			: base (dictionary)
 		{

@@ -214,6 +214,9 @@ namespace Foundation {
 		}
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public long MaxInputInMemory { get; set; } = long.MaxValue;
 
 		void RemoveInflightData (NSUrlSessionTask task, bool cancel = true)
@@ -256,6 +259,9 @@ namespace Foundation {
 
 		bool disableCaching;
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool DisableCaching {
 			get {
 				return disableCaching;
@@ -268,6 +274,9 @@ namespace Foundation {
 
 		bool allowAutoRedirect;
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool AllowAutoRedirect {
 			get {
 				return allowAutoRedirect;
@@ -292,6 +301,9 @@ namespace Foundation {
 
 		ICredentials? credentials;
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ICredentials? Credentials {
 			get {
 				return credentials;

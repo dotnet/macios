@@ -6,6 +6,10 @@ using Foundation;
 
 namespace BusinessChat {
 	public partial class BCChatAction {
+		/// <param name="businessIdentifier">To be added.</param>
+		///         <param name="intentParameters">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void OpenTranscript (string businessIdentifier, Dictionary<BCParameterName, string> intentParameters)
 		{
 			var keys = new NSString [intentParameters.Keys.Count];

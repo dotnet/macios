@@ -57,6 +57,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFErrorRef */ IntPtr CFReadStreamCopyError (/* CFReadStreamRef */ IntPtr stream);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override CFException? GetError ()
 		{
 			var error = CFReadStreamCopyError (Handle);
@@ -68,6 +71,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* Boolean */ byte CFReadStreamOpen (/* CFReadStreamRef */ IntPtr stream);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected override bool DoOpen ()
 		{
 			return CFReadStreamOpen (Handle) != 0;
@@ -76,6 +82,8 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static void CFReadStreamClose (/* CFReadStreamRef */ IntPtr stream);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected override void DoClose ()
 		{
 			CFReadStreamClose (Handle);
@@ -84,6 +92,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFStreamStatus -> CFIndex */ nint CFReadStreamGetStatus (/* CFReadStreamRef */ IntPtr stream);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected override CFStreamStatus DoGetStatus ()
 		{
 			return (CFStreamStatus) (long) CFReadStreamGetStatus (Handle);
@@ -92,6 +103,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* Boolean */ byte CFReadStreamHasBytesAvailable (/* CFReadStreamRef */ IntPtr stream);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool HasBytesAvailable ()
 		{
 			return CFReadStreamHasBytesAvailable (Handle) != 0;
@@ -100,6 +114,10 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static void CFReadStreamScheduleWithRunLoop (/* CFReadStreamRef */ IntPtr stream, /* CFRunLoopRef */ IntPtr runLoop, /* CFStringRef */ IntPtr runLoopMode);
 
+		/// <param name="loop">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected override void ScheduleWithRunLoop (CFRunLoop loop, NSString? mode)
 		{
 			if (loop is null)
@@ -114,6 +132,10 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static void CFReadStreamUnscheduleFromRunLoop (/* CFReadStreamRef */ IntPtr stream, /* CFRunLoopRef */ IntPtr runLoop, /* CFStringRef */ IntPtr runLoopMode);
 
+		/// <param name="loop">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected override void UnscheduleFromRunLoop (CFRunLoop loop, NSString? mode)
 		{
 			if (loop is null)
@@ -147,6 +169,10 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFIndex */ nint CFReadStreamRead (/* CFReadStreamRef */ IntPtr handle, /* UInt8* */ IntPtr buffer, /* CFIndex */ nint count);
 
+		/// <param name="buffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public nint Read (byte [] buffer)
 		{
 			if (buffer is null)

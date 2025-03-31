@@ -35,6 +35,9 @@ parameters:
   - name: macOSName
     type: string
 
+  - name: use1ES
+    type: boolean
+
 jobs:
   # This job performs the build of the nuget pkgs and the framework pkgs. There are two interesting dependencies in this job:
   - job: build
@@ -81,3 +84,4 @@ jobs:
           keyringPass: ${{ parameters.keyringPass }}
           gitHubToken: ${{ parameters.gitHubToken }}
           xqaCertPass: ${{ parameters.xqaCertPass }}
+          use1ES: ${{ parameters.use1ES }}

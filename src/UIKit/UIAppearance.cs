@@ -22,6 +22,10 @@ using NativeHandle = System.IntPtr;
 
 namespace UIKit {
 	public partial class UIAppearance {
+		/// <param name="other">To be added.</param>
+		///         <summary>Whether this is equivalent to <paramref name="other" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object other)
 		{
 			UIAppearance ao = other as UIAppearance;
@@ -30,6 +34,9 @@ namespace UIKit {
 			return ao.Handle == Handle;
 		}
 
+		/// <summary>Generates a hash code for the current instance.</summary>
+		///         <returns>A int containing the hash code for this instance.</returns>
+		///         <remarks>The algorithm used to generate the hash code is unspecified.</remarks>
 		public override int GetHashCode ()
 		{
 			return Handle.GetHashCode ();

@@ -17,6 +17,10 @@ using Foundation;
 namespace ObjCRuntime {
 	[AttributeUsage (AttributeTargets.Parameter, AllowMultiple = false)]
 	public sealed class BlockProxyAttribute : Attribute {
+		/// <param name="t">Proxy type.</param>
+		///         <summary>Specifies the type that is used to proxy blocks into managed delegates.</summary>
+		///         <remarks>
+		///         </remarks>
 		public BlockProxyAttribute (Type t) { Type = t; }
 		/// <summary>The type that is used to proxy an Objective-C block into this managed parameter.</summary>
 		///         <value>
@@ -28,6 +32,10 @@ namespace ObjCRuntime {
 
 	[AttributeUsage (AttributeTargets.ReturnValue, AllowMultiple = false)]
 	public sealed class DelegateProxyAttribute : Attribute {
+		/// <param name="delegateType">The delegate type</param>
+		///         <summary>Specifies the delegate type that is used to proxy managed delegates into Objective-C blocks.</summary>
+		///         <remarks>
+		///         </remarks>
 		public DelegateProxyAttribute (Type delegateType)
 		{
 			DelegateType = delegateType;

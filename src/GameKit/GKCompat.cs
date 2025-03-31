@@ -63,21 +63,42 @@ namespace GameKit {
 	[Unavailable (PlatformName.TvOS)]
 #endif
 	public static class GKPeerPickerControllerDelegate_Extensions {
+		/// <param name="This">The instance on which this extension method operates.</param>
+		///         <param name="picker">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void ConnectionTypeSelected (this IGKPeerPickerControllerDelegate This, GKPeerPickerController picker, GKPeerPickerConnectionType type)
 		{
 			throw new PlatformNotSupportedException (Constants.TypeUnavailable);
 		}
 
+		/// <param name="This">The instance on which this extension method operates.</param>
+		///         <param name="picker">To be added.</param>
+		///         <param name="forType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static GKSession GetSession (this IGKPeerPickerControllerDelegate This, GKPeerPickerController picker, GKPeerPickerConnectionType forType)
 		{
 			throw new PlatformNotSupportedException (Constants.TypeUnavailable);
 		}
 
+		/// <param name="This">The instance on which this extension method operates.</param>
+		///         <param name="picker">To be added.</param>
+		///         <param name="peerId">To be added.</param>
+		///         <param name="toSession">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void PeerConnected (this IGKPeerPickerControllerDelegate This, GKPeerPickerController picker, string peerId, GKSession toSession)
 		{
 			throw new PlatformNotSupportedException (Constants.TypeUnavailable);
 		}
 
+		/// <param name="This">The instance on which this extension method operates.</param>
+		///         <param name="picker">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void ControllerCancelled (this IGKPeerPickerControllerDelegate This, GKPeerPickerController picker)
 		{
 			throw new PlatformNotSupportedException (Constants.TypeUnavailable);

@@ -75,8 +75,13 @@ namespace AudioUnit {
 		static NSString networkClientK = new NSString ("network.client");
 		static NSString exceptionK = new NSString ("temporary-exception.files.all.read-write");
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public ResourceUsageInfo () : base () { }
 
+		/// <param name="dic">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public ResourceUsageInfo (NSDictionary dic) : base (dic) { }
 
 		/// <summary>To be added.</summary>
@@ -157,8 +162,13 @@ namespace AudioUnit {
 		static NSString resourceUsageK = new NSString ("resourceUsage");
 		static NSString tagsK = new NSString ("tags");
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioComponentInfo () : base () { }
 
+		/// <param name="dic">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioComponentInfo (NSDictionary dic) : base (dic) { }
 
 		/// <summary>To be added.</summary>
@@ -291,11 +301,19 @@ namespace AudioUnit {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnit CreateAudioUnit ()
 		{
 			return new AudioUnit (this);
 		}
 
+		/// <param name="cmp">To be added.</param>
+		///         <param name="cd">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponent? FindNextComponent (AudioComponent? cmp, ref AudioComponentDescription cd)
 		{
 			var handle = cmp.GetHandle ();
@@ -307,47 +325,79 @@ namespace AudioUnit {
 			return result;
 		}
 
+		/// <param name="cd">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponent? FindComponent (ref AudioComponentDescription cd)
 		{
 			return FindNextComponent (null, ref cd);
 		}
 
+		/// <param name="output">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponent? FindComponent (AudioTypeOutput output)
 		{
 			var cd = AudioComponentDescription.CreateOutput (output);
 			return FindComponent (ref cd);
 		}
 
+		/// <param name="musicDevice">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponent? FindComponent (AudioTypeMusicDevice musicDevice)
 		{
 			var cd = AudioComponentDescription.CreateMusicDevice (musicDevice);
 			return FindComponent (ref cd);
 		}
 
+		/// <param name="conveter">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponent? FindComponent (AudioTypeConverter conveter)
 		{
 			var cd = AudioComponentDescription.CreateConverter (conveter);
 			return FindComponent (ref cd);
 		}
 
+		/// <param name="effect">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponent? FindComponent (AudioTypeEffect effect)
 		{
 			var cd = AudioComponentDescription.CreateEffect (effect);
 			return FindComponent (ref cd);
 		}
 
+		/// <param name="mixer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponent? FindComponent (AudioTypeMixer mixer)
 		{
 			var cd = AudioComponentDescription.CreateMixer (mixer);
 			return FindComponent (ref cd);
 		}
 
+		/// <param name="panner">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponent? FindComponent (AudioTypePanner panner)
 		{
 			var cd = AudioComponentDescription.CreatePanner (panner);
 			return FindComponent (ref cd);
 		}
 
+		/// <param name="generator">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioComponent? FindComponent (AudioTypeGenerator generator)
 		{
 			var cd = AudioComponentDescription.CreateGenerator (generator);

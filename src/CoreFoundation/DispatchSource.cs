@@ -114,6 +114,11 @@ namespace CoreFoundation {
 		[DllImport (Constants.libcLibrary)]
 		extern static IntPtr dispatch_source_testcancel (dispatch_source_t source);
 
+		/// <param name="handler">Code to invoke when a new event is available.</param>
+		///         <summary>Specified a handler to execute when events are received on the dispatch source.</summary>
+		///         <remarks>
+		///           <para />
+		///         </remarks>
 		public void SetEventHandler (Action handler)
 		{
 			if (handler is null) {
@@ -143,16 +148,21 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>Suspends the dispatch source.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Suspend ()
 		{
 			dispatch_suspend (GetCheckedHandle ());
 		}
 
+		/// <summary>Resumes the dispatch source.</summary>
+		///         <remarks>When this is called on a suspended or newly created source, there may be a brief delay before the source is ready to receive events from the underlying system handle. During this delay, the event handler will not be invoked, and events will be missed.</remarks>
 		public void Resume ()
 		{
 			dispatch_resume (GetCheckedHandle ());
 		}
 
+		/// <include file="../../docs/api/CoreFoundation/DispatchSource.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.DispatchSource.SetRegistrationHandler(System.Action)']/*" />
 		public void SetRegistrationHandler (Action handler)
 		{
 			if (handler is null)
@@ -180,6 +190,12 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <param name="handler">Code to invoke on the target queue.   This handler is invoked only once.</param>
+		///         <summary>Provides a cancellation handler</summary>
+		///         <remarks>
+		///           <para>
+		///           </para>
+		///         </remarks>
 		public void SetCancelHandler (Action handler)
 		{
 			if (handler is null)
@@ -207,11 +223,13 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <include file="../../docs/api/CoreFoundation/DispatchSource.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.DispatchSource.Cancel']/*" />
 		public void Cancel ()
 		{
 			dispatch_source_cancel (GetCheckedHandle ());
 		}
 
+		/// <include file="../../docs/api/CoreFoundation/DispatchSource.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.DispatchSource.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			// Do not call the Cancel method here
@@ -240,6 +258,12 @@ namespace CoreFoundation {
 			internal Data () { }
 			internal Data (IntPtr handle, bool owns) : base (handle, owns) { }
 
+			/// <param name="value">Data to be posted to the event source.</param>
+			///         <summary>Posts the specific value and triggers the event handler on the target queue.</summary>
+			///         <remarks>
+			///           <para>Applications can post data onto a <see cref="T:CoreFoundation.DispatchSource.Data" /> by calling the <see cref="M:CoreFoundation.DispatchSource.Data.MergeData(System.IntPtr)" /> method.   The data is surfaced is then available in to the handler in the <see cref="P:CoreFoundation.DispatchSource.Data.PendingData" /> property.   </para>
+			///           <para />
+			///         </remarks>
 			public void MergeData (IntPtr value)
 			{
 				dispatch_source_merge_data (Handle, value);
@@ -266,9 +290,19 @@ namespace CoreFoundation {
 		public class DataAdd : Data {
 			static IntPtr type_data_add;
 
+			/// <param name="handle">To be added.</param>
+			///         <param name="owns">To be added.</param>
+			///         <summary>Creates a DataOr DispatchSource from an unmanaged pointer.</summary>
+			///         <remarks>To be added.</remarks>
 			public DataAdd (IntPtr handle, bool owns) : base (handle, owns) { }
+			/// <param name="handle">To be added.</param>
+			///         <summary>Creates a DataOr DispatchSource from an unmanaged pointer.</summary>
+			///         <remarks>To be added.</remarks>
 			public DataAdd (IntPtr handle) : base (handle, false) { }
 
+			/// <param name="queue">The target queue for this dispatch source object.   Pass null to use the default target queue (the default priority global concurrent queue).</param>
+			///         <summary>Creates a DataAdd source that delivers events on the specified queue.</summary>
+			///         <remarks>To be added.</remarks>
 			public DataAdd (DispatchQueue? queue = null)
 			{
 				if (type_data_add == IntPtr.Zero)
@@ -292,9 +326,19 @@ namespace CoreFoundation {
 		public class DataOr : Data {
 			static IntPtr type_data_or;
 
+			/// <param name="handle">To be added.</param>
+			///         <param name="owns">To be added.</param>
+			///         <summary>Creates a DataOr DispatchSource from an unmanaged pointer.</summary>
+			///         <remarks>To be added.</remarks>
 			public DataOr (IntPtr handle, bool owns) : base (handle, owns) { }
+			/// <param name="handle">To be added.</param>
+			///         <summary>Creates a DataOr DispatchSource from an unmanaged pointer.</summary>
+			///         <remarks>To be added.</remarks>
 			public DataOr (IntPtr handle) : base (handle, false) { }
 
+			/// <param name="queue">The target queue for this dispatch source object.   Pass null to use the default target queue (the default priority global concurrent queue).</param>
+			///         <summary>Creates a DataOr source that delivers events on the specified queue.</summary>
+			///         <remarks>To be added.</remarks>
 			public DataOr (DispatchQueue? queue = null)
 			{
 				if (type_data_or == IntPtr.Zero)
@@ -337,9 +381,21 @@ namespace CoreFoundation {
 		public class MachSend : Mach {
 			static IntPtr type_mach_send;
 
+			/// <param name="handle">To be added.</param>
+			///         <param name="owns">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public MachSend (IntPtr handle, bool owns) : base (handle, owns) { }
+			/// <param name="handle">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public MachSend (IntPtr handle) : base (handle, false) { }
 
+			/// <param name="machPort">The mach port</param>
+			///         <param name="sendDead">If set to true, this will also post a notification when the port’s corresponding receive right has been destroyed.</param>
+			///         <param name="queue">The target queue for this dispatch source object.   Pass null to use the default target queue (the default priority global concurrent queue).</param>
+			///         <summary>Creates a dispatch source that monitors the specified mach port for send right state changes.</summary>
+			///         <remarks>You can use the <see cref="P:CoreFoundation.DispatchSource.MachSend.SendRightsDestroyed" /> property to determine whether the handler was invoked due to the corresponding receive right being destroyed, or if it is a regular state change.</remarks>
 			public MachSend (int machPort, bool sendDead = false, DispatchQueue? queue = null)
 			{
 				if (type_mach_send == IntPtr.Zero)
@@ -373,9 +429,22 @@ namespace CoreFoundation {
 		public class MachReceive : DispatchSource {
 			static IntPtr type_mach_recv;
 
+			/// <param name="handle">To be added.</param>
+			///         <param name="owns">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public MachReceive (IntPtr handle, bool owns) : base (handle, owns) { }
+			/// <param name="handle">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public MachReceive (IntPtr handle) : base (handle, false) { }
 
+			/// <param name="machPort">Mach port to monitor for incoming data.</param>
+			///         <param name="queue">The target queue for this dispatch source object.   Pass null to use the default target queue (the default priority global concurrent queue).</param>
+			///         <summary>Creates a dispatch source that monitors the specified mach port for message availability.</summary>
+			///         <remarks>
+			///           <para />
+			///         </remarks>
 			public MachReceive (int machPort, DispatchQueue? queue = null)
 			{
 				if (type_mach_recv == IntPtr.Zero)
@@ -398,9 +467,23 @@ namespace CoreFoundation {
 		[SupportedOSPlatform ("tvos")]
 		public class MemoryPressure : DispatchSource {
 			static IntPtr type_memorypressure;
+			/// <param name="handle">To be added.</param>
+			///         <param name="owns">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public MemoryPressure (IntPtr handle, bool owns) : base (handle, owns) { }
+			/// <param name="handle">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public MemoryPressure (IntPtr handle) : base (handle, false) { }
 
+			/// <param name="monitorFlags">Memory pressure flags to monitor.   The default just monitors memory pressure warnings and the return to normal.</param>
+			///         <param name="queue">The target queue for this dispatch source object.   Pass null to use the default target queue (the default priority global concurrent queue).</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>
+			///           <para>
+			///           </para>
+			///         </remarks>
 			public MemoryPressure (MemoryPressureFlags monitorFlags = MemoryPressureFlags.Normal | MemoryPressureFlags.Warn, DispatchQueue? queue = null)
 			{
 				if (type_memorypressure == IntPtr.Zero)
@@ -474,8 +557,19 @@ namespace CoreFoundation {
 		[SupportedOSPlatform ("tvos")]
 		public class ReadMonitor : DispatchSource {
 			static IntPtr type_read;
+			/// <param name="handle">To be added.</param>
+			///         <param name="owns">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public ReadMonitor (IntPtr handle, bool owns) : base (handle, owns) { }
+			/// <param name="handle">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public ReadMonitor (IntPtr handle) : base (handle, false) { }
+			/// <param name="fileDescriptor">To be added.</param>
+			///         <param name="queue">The target queue for this dispatch source object.   Pass null to use the default target queue (the default priority global concurrent queue).</param>
+			///         <summary>Creates a file descriptor read monitor.</summary>
+			///         <remarks>To be added.</remarks>
 			public ReadMonitor (int fileDescriptor, DispatchQueue? queue = null)
 			{
 
@@ -525,8 +619,21 @@ namespace CoreFoundation {
 		[SupportedOSPlatform ("tvos")]
 		public class SignalMonitor : DispatchSource {
 			static IntPtr type_signal;
+			/// <param name="handle">To be added.</param>
+			///         <param name="owns">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public SignalMonitor (IntPtr handle, bool owns) : base (handle, owns) { }
+			/// <param name="handle">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public SignalMonitor (IntPtr handle) : base (handle, false) { }
+			/// <param name="signalNumber">Signal to monitor</param>
+			///         <param name="queue">The target queue for this dispatch source object.   Pass null to use the default target queue (the default priority global concurrent queue).</param>
+			///         <summary>Creates a process signal monitor</summary>
+			///         <remarks>
+			///           <para />
+			///         </remarks>
 			public SignalMonitor (int signalNumber, DispatchQueue? queue = null)
 			{
 				if (type_signal == IntPtr.Zero)
@@ -566,10 +673,24 @@ namespace CoreFoundation {
 		[SupportedOSPlatform ("tvos")]
 		public class Timer : DispatchSource {
 			static IntPtr type_timer;
+			/// <param name="handle">To be added.</param>
+			///         <param name="owns">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public Timer (IntPtr handle, bool owns) : base (handle, owns) { }
+			/// <param name="handle">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public Timer (IntPtr handle) : base (handle, false) { }
+			/// <param name="queue">The target queue for this dispatch source object.   Pass null to use the default target queue (the default priority global concurrent queue).</param>
+			///         <summary>Creates a timer dispatch source that will be invoked at periodic intervals.</summary>
+			///         <remarks>To be added.</remarks>
 			public Timer (DispatchQueue? queue = null) : this (false, queue) { }
 
+			/// <param name="strict">To be added.</param>
+			///         <param name="queue">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public Timer (bool strict = false, DispatchQueue? queue = null)
 			{
 				if (type_timer == IntPtr.Zero)
@@ -597,6 +718,16 @@ namespace CoreFoundation {
 			[DllImport (Constants.libcLibrary)]
 			extern static void dispatch_source_set_timer (dispatch_source_t source, /* dispathc_time_t */ulong start, long interval, long leeway);
 
+			/// <param name="time">Initial time for the timer to be fired.   If the value is zero, then the timer is based on mach_absolute_time.</param>
+			///         <param name="nanosecondInterval">Interval in nanosecond at which the timer will be fired after the initial time.</param>
+			///         <param name="nanosecondLeeway">Upper limit of the allowed delay (as the system might put the system to sleep).</param>
+			///         <summary>Configures the paramters to the timer.</summary>
+			///         <remarks>
+			///           <para>Once this method returns, any pending source data accumulated for the previous timer parameters has been cleared; the next fire of the timer will occur at <paramref name="time" />, and every interval <paramref name="nanosecondInterval" /> thereafter until the timer source is canceled.</para>
+			///           <para />
+			///           <para />
+			///           <para />
+			///         </remarks>
 			public void SetTimer (DispatchTime time, long nanosecondInterval, long nanosecondLeeway)
 			{
 				dispatch_source_set_timer (GetCheckedHandle (), time.Nanoseconds, nanosecondInterval, nanosecondLeeway);
@@ -613,9 +744,21 @@ namespace CoreFoundation {
 			// If different than -1, we opened the descriptor and must close it.
 			int fd;
 
+			/// <param name="handle">To be added.</param>
+			///         <param name="owns">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public VnodeMonitor (IntPtr handle, bool owns) : base (handle, owns) { }
+			/// <param name="handle">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public VnodeMonitor (IntPtr handle) : base (handle, false) { }
 
+			/// <param name="fileDescriptor">Unix file descriptor to monitor</param>
+			///         <param name="vnodeKind">The kind of monitoring to perform.</param>
+			///         <param name="queue">The target queue for this dispatch source object.   Pass null to use the default target queue (the default priority global concurrent queue).</param>
+			///         <summary>Creates a VNode monitor for the specified file descriptor to monitor the specified set of events on it.</summary>
+			///         <remarks>To be added.</remarks>
 			public VnodeMonitor (int fileDescriptor, VnodeMonitorKind vnodeKind, DispatchQueue? queue = null)
 			{
 				if (type_vnode == IntPtr.Zero)
@@ -695,7 +838,14 @@ namespace CoreFoundation {
 		[SupportedOSPlatform ("tvos")]
 		public class WriteMonitor : DispatchSource {
 			static IntPtr type_write;
+			/// <param name="handle">To be added.</param>
+			///         <param name="owns">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public WriteMonitor (IntPtr handle, bool owns) : base (handle, owns) { }
+			/// <param name="handle">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public WriteMonitor (IntPtr handle) : base (handle, false) { }
 
 			public WriteMonitor (int fileDescriptor, DispatchQueue? queue = null)

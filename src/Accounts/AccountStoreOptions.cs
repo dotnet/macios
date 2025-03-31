@@ -53,11 +53,16 @@ namespace Accounts {
 #endif
 	public class AccountStoreOptions : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AccountStoreOptions ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AccountStoreOptions (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -76,6 +81,11 @@ namespace Accounts {
 			}
 		}
 
+		/// <param name="audience">Target audience.</param>
+		///         <param name="permissions">One or more requested permission.</param>
+		///         <summary>Sets message posting permissions.</summary>
+		///         <remarks>
+		///         </remarks>
 		public void SetPermissions (ACFacebookAudience audience, params string [] permissions)
 		{
 			if (permissions is null)

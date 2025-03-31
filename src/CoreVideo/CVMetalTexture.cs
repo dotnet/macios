@@ -61,6 +61,12 @@ namespace CoreVideo {
 			}
 		}
 
+		/// <param name="lowerLeft">To be added.</param>
+		///         <param name="lowerRight">To be added.</param>
+		///         <param name="upperRight">To be added.</param>
+		///         <param name="upperLeft">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void GetCleanTexCoords (out float [] lowerLeft, out float [] lowerRight, out float [] upperRight, out float [] upperLeft)
 		{
 			lowerLeft = new float [2];

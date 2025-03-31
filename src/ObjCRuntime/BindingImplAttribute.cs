@@ -9,6 +9,10 @@ namespace ObjCRuntime {
 
 	[AttributeUsage (AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Constructor | AttributeTargets.Field | AttributeTargets.Class, AllowMultiple = false)]
 	public class BindingImplAttribute : Attribute {
+		/// <param name="options">The binding implementation options.</param>
+		///         <summary>Initializes a new BindingImpl attribute.</summary>
+		///         <remarks>
+		///         </remarks>
 		public BindingImplAttribute (BindingImplOptions options)
 		{
 			Options = options;

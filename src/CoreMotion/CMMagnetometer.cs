@@ -31,6 +31,9 @@ namespace CoreMotion {
 		///         <remarks>To be added.</remarks>
 		public double Z;
 
+		/// <summary>String representation of the magnetometer reading.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return string.Format ("({0},{1},{2})", X, Y, Z);

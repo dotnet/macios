@@ -780,6 +780,11 @@ namespace ObjCRuntime {
 			return Registrar.ComputeSignature (method, isBlockSignature);
 		}
 
+		/// <param name="a">The assembly to process.</param>
+		///         <summary>Registers all of the classes in the specified assembly.</summary>
+		///         <remarks>
+		///           <para>This iterates over all the types that derive from NSObject in the specified assembly and registers them with the runtime.</para>
+		///         </remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static void RegisterAssembly (Assembly a)
 		{
@@ -1789,6 +1794,13 @@ namespace ObjCRuntime {
 			return null;
 		}
 
+		/// <param name="ptr">A pointer to an unmanaged NSObject or any class that derives from the Objective-C NSObject class.</param>
+		///         <summary>Looks up an existing wrapper object for an unmanaged IntPtr.</summary>
+		///         <returns>If a managed wrapper exists for the specified IntPtr, that wrapper is returned, otherwise null.</returns>
+		///         <remarks>
+		///           <para>
+		///           </para>
+		///         </remarks>
 		public static NSObject? TryGetNSObject (IntPtr ptr)
 		{
 			return TryGetNSObject (ptr, evenInFinalizerQueue: false);
@@ -1846,6 +1858,12 @@ namespace ObjCRuntime {
 		}
 #endif
 
+		/// <param name="ptr">A pointer to an unmanaged NSObject or any class that derives from the Objective-C NSObject class.</param>
+		///         <summary>Wraps an unmanaged IntPtr into a fully typed NSObject, or returns an existing wrapper object if one already exists.</summary>
+		///         <returns>An instance of a class that derives from Foundation.NSObject.</returns>
+		///         <remarks>
+		///           <para>The runtime create an instance of the most derived class.</para>
+		///         </remarks>
 		public static NSObject? GetNSObject (IntPtr ptr)
 		{
 			return GetNSObject (ptr, MissingCtorResolution.ThrowConstructor1NotFound);
@@ -1875,6 +1893,14 @@ namespace ObjCRuntime {
 			return o;
 		}
 
+		/// <typeparam name="T">Type to wrap the native object as.</typeparam>
+		///         <param name="ptr">A pointer to an unmanaged NSObject or any class that derives from the Objective-C NSObject class.</param>
+		///         <summary>Wraps an unmanaged IntPtr into a fully typed NSObject, or returns an existing wrapper object if one already exists.</summary>
+		///         <returns>An instance of the T class.</returns>
+		///         <remarks>
+		///           <para>Returns an instance of the T class even if the native object is not in the class hierarchy of T (no type checks).</para>
+		///           <para>This method will fail if there already is a managed wrapper of a different (and incompatible) type for the native object.</para>
+		///         </remarks>
 		static public T? GetNSObject<T> (IntPtr ptr) where T : NSObject
 		{
 			return GetNSObject<T> (ptr, IntPtr.Zero, default (RuntimeMethodHandle));
@@ -1923,6 +1949,17 @@ namespace ObjCRuntime {
 			return ConstructNSObject<T> (ptr, target_type, MissingCtorResolution.ThrowConstructor1NotFound, sel, method_handle);
 		}
 
+		/// <typeparam name="T">Type to wrap the native object as.</typeparam>
+		///         <param name="ptr">A pointer to an unmanaged NSObject or any class that derives from the Objective-C NSObject class.</param>
+		///         <param name="owns">Pass true if the caller has a reference to the native object, and wants to give it to the managed wrapper instance. Otherwise pass false (and the native object will be retained).</param>
+		///         <summary>Wraps an unmanaged IntPtr into a fully typed NSObject, or returns an existing wrapper object if one already exists.</summary>
+		///         <returns>An instance of the T class.</returns>
+		///         <remarks>
+		///           <para>Returns an instance of the T class even if the native object is not in the class hierarchy of T (no type checks).</para>
+		///           <para>
+		///           </para>
+		///           <para>This method will fail if there already is a managed wrapper of a different (and incompatible) type for the native object.</para>
+		///         </remarks>
 		static public T? GetNSObject<T> (IntPtr ptr, bool owns) where T : NSObject
 		{
 			var obj = GetNSObject<T> (ptr);
@@ -2044,6 +2081,12 @@ namespace ObjCRuntime {
 			return implementation!;
 		}
 
+		/// <param name="ptr">To be added.</param>
+		///         <param name="owns">To be added.</param>
+		///         <param name="target_type">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static INativeObject? GetINativeObject (IntPtr ptr, bool owns, Type target_type)
 		{
 			return GetINativeObject (ptr, owns, target_type, null);
@@ -2098,6 +2141,14 @@ namespace ObjCRuntime {
 		}
 
 		// this method is identical in behavior to the non-generic one.
+		/// <typeparam name="T">The type of the object to return. This can also be an interface corresponding to an Objective-C protocol.</typeparam>
+		///         <param name="ptr">A pointer to a native object.</param>
+		///         <param name="owns">Pass true if the caller has a reference to the native object, and wants to give it to the managed wrapper instance. Otherwise pass false (and the native object will be retained).</param>
+		///         <summary>Wraps an native IntPtr with a managed object of the specified type.</summary>
+		///         <returns>An instance of a class implementing the specified type.</returns>
+		///         <remarks>
+		///           <para>Returns an instance of the specified type even if the native object is not in the class hierarchy of type (there are no type checks).</para>
+		///         </remarks>
 		public static T? GetINativeObject<T> (IntPtr ptr, bool owns) where T : class, INativeObject
 		{
 			return GetINativeObject<T> (ptr, false, owns);
@@ -2235,6 +2286,12 @@ namespace ObjCRuntime {
 		[DllImport ("__Internal")]
 		extern static uint xamarin_find_protocol_wrapper_type (uint token_ref);
 
+		/// <param name="protocol">Name of the Objective-C protocol.</param>
+		///         <summary>Returns the handle of the Objective-C protocol descriptor for the given protocol name.</summary>
+		///         <returns>The protocol handle for the given protocol name.</returns>
+		///         <remarks>
+		///           <para>This is the equivalent of the objc_getProtocol function call.</para>
+		///         </remarks>
 		public static IntPtr GetProtocol (string protocol)
 		{
 			return Protocol.objc_getProtocol (protocol);
@@ -2322,6 +2379,14 @@ namespace ObjCRuntime {
 			return xamarin_is_user_type (cls) != 0;
 		}
 
+		/// <param name="type">Connect to the selector on this type.</param>
+		///         <param name="method">Method that will be called when Objective-C sends a message to the specified selector.</param>
+		///         <param name="selector">Selector to connect to.</param>
+		///         <summary>This call allows the specified method in this method to respond to message invocations on the specified selector.</summary>
+		///         <remarks>
+		///           <para>The method must be declared on an NSObject-derived class.</para>
+		///           <para>Developers can use this method to dynamically reconfigure which methods on a class should respond to which Objective-C selectors.</para>
+		///         </remarks>
 		public static void ConnectMethod (Type type, MethodInfo method, Selector selector)
 		{
 			if (selector is null)
@@ -2330,6 +2395,14 @@ namespace ObjCRuntime {
 			ConnectMethod (type, method, new ExportAttribute (selector.Name));
 		}
 
+		/// <param name="type">Connect to the selector on this type.</param>
+		///         <param name="method">Method that will be called when Objective-C sends a message to the specified selector.</param>
+		///         <param name="export">An export attribute that specifies the selector to connect to.</param>
+		///         <summary>This call allows the specified method in this method to respond to message invocations on the specified selector.</summary>
+		///         <remarks>
+		///           <para>The method must be declared on an NSObject-derived class.</para>
+		///           <para>Developers can use this method to dynamically reconfigure which methods on a class should respond to which Objective-C selectors.</para>
+		///         </remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static void ConnectMethod (Type type, MethodInfo method, ExportAttribute export)
 		{
@@ -2348,6 +2421,13 @@ namespace ObjCRuntime {
 			Registrar.RegisterMethod (type, method, export);
 		}
 
+		/// <param name="method">Method that will be called when Objective-C sends a message to the specified selector.</param>
+		///         <param name="selector">Selector to connect to.</param>
+		///         <summary>This call allows the specified method in this method to respond to message invocations on the specified selector.</summary>
+		///         <remarks>
+		///           <para>The method must be declared on an NSObject-derived class.</para>
+		///           <para>Developers can use this method to dynamically reconfigure which methods on a class should respond to which Objective-C selectors.</para>
+		///         </remarks>
 		public static void ConnectMethod (MethodInfo method, Selector selector)
 		{
 			if (method is null)
@@ -2618,6 +2698,11 @@ namespace ObjCRuntime {
 			GC.Collect ();
 		}
 
+		/// <param name="block">The block to release.</param>
+		///         <summary>Calls _Block_release on the specified block on the main thread.</summary>
+		///         <remarks>
+		///           <para>Developers should not call this method, it's called by generated binding code.</para>
+		///         </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 #if MONOMAC && !NET
 		public static void ReleaseBlockOnMainThread (IntPtr block)

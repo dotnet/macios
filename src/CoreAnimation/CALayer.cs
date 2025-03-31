@@ -42,6 +42,11 @@ namespace CoreAnimation {
 	public partial class CALayer {
 		const string selInitWithLayer = "initWithLayer:";
 
+		/// <param name="other">Source layer to copy</param>
+		///         <summary>This method must be implemented by derived classes to make a copy of the original layer.</summary>
+		///         <remarks>
+		/// 	  See the class summary for an example of how to use this constructor.
+		/// 	</remarks>
 		[Export ("initWithLayer:")]
 		public CALayer (CALayer other)
 		{
@@ -65,6 +70,9 @@ namespace CoreAnimation {
 			MarkDirty (true);
 		}
 
+		/// <param name="other">The other layer to copy infromation from.</param>
+		///         <summary>This method should be overwritten to provide cloning capabilities for the layer.</summary>
+		///         <remarks>You can either override this method and clone the information that you need from the original layer, or perform the copy in your initWithLayer: constructor (see the class description for details and a sample). </remarks>
 		public virtual void Clone (CALayer other)
 		{
 			// Subclasses must copy any instance values that they care from other
@@ -115,11 +123,18 @@ namespace CoreAnimation {
 			}
 		}
 
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public T? GetContentsAs<T> () where T : NSObject
 		{
 			return Runtime.GetNSObject<T> (_Contents);
 		}
 
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetContents (NSObject value)
 		{
 			_Contents = value.GetHandle ();

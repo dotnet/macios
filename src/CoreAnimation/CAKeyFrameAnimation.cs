@@ -8,11 +8,29 @@ using CoreGraphics;
 
 namespace CoreAnimation {
 	public partial class CAKeyFrameAnimation {
+		/// <typeparam name="T">Generic type to get teh values as.</typeparam>
+		///         <summary>Returns the elements of the key frame animation as an
+		/// 	array of strongly typed values of NSObject or CoreGraphics objects.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public T [] GetValuesAs<T> () where T : class, INativeObject
 		{
 			return NSArray.FromArrayNative<T> (_Values);
 		}
 
+		/// <param name="value">Values to set, they can be CoreGraphics
+		/// 	objects, or subclasses of an NSObject.</param>
+		///         <summary>Sets the values fo the key frame animation to the
+		/// 	values specified in the array.</summary>
+		///         <remarks>
+		///           <para>
+		/// 	    To pass number, create instances of <see cref="T:Foundation.NSNumber" /> with the value,
+		/// 	    to pass other values, use <see cref="T:Foundation.NSValue" />, or pass the
+		/// 	    CoreGraphics data types directly to it.
+		/// 	  </para>
+		///         </remarks>
 		public void SetValues (INativeObject [] value)
 		{
 			_Values = NSArray.FromNSObjects (value);

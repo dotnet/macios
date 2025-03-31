@@ -194,6 +194,16 @@ namespace ImageIO {
 		{
 		}
 
+		/// <summary>Type identifier for the ImageIO.CGImageDestination type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
+		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[bool isCGImageDestination = (CFType.GetTypeID (foo.Handle) == CGImageDestination.GetTypeID ());]]></code>
+		///           </example>
+		///         </remarks>
 		[DllImport (Constants.ImageIOLibrary, EntryPoint = "CGImageDestinationGetTypeID")]
 		public extern static /* CFTypeID */ nint GetTypeID ();
 
@@ -215,6 +225,13 @@ namespace ImageIO {
 			/* CGDataConsumerRef __nonnull */ IntPtr consumer, /* CFStringRef __nonnull */ IntPtr type,
 			/* size_t */ nint count, /* CFDictionaryRef __nullable */ IntPtr options);
 
+		/// <param name="consumer">To be added.</param>
+		///         <param name="typeIdentifier">To be added.</param>
+		///         <param name="imageCount">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CGImageDestination? Create (CGDataConsumer consumer, string typeIdentifier, int imageCount, CGImageDestinationOptions? options = null)
 		{
 			if (consumer is null)

@@ -1,0 +1,76 @@
+<Documentation>
+  <Docs DocId="M:CoreGraphics.CGContext.GetCTM">
+        <summary>Retrieves the current Context Transformation Matrix.</summary>
+        <returns>The <see cref="T:CoreGraphics.CGAffineTransform" /> currently being used by the <see cref="T:CoreGraphics.CGContext" />.</returns>
+        <remarks>
+          <para>The <see cref="T:CoreGraphics.CGContext" /> has, as part of its drawing state, a <see cref="T:CoreGraphics.CGAffineTransform" /> called the Context Transformation Matrix (CTM).</para>
+          <para>By default, the CTM's X and Y axes increase to the right and downward, as indicated by the red rays in the following image. </para>
+          <para>A common transform is to locate the origin in the lower left-hand corner, with X and Y increasing to the right and upward, as shown with the green rays in the following image (note that, for visibility, the rays are set to originate at (5,5) rather than (0,0)). This is done with <c>ScaleCTM(1,-1)</c> and  <c>TranslateCTM(0, -Bounds.Height)</c> (see example below).</para>
+          <para>More complex transforms are, possible, as illustrated by the blue rays, which illustrate a transform that is both translated and rotated. Note that manipulation of the CTM is stateful and order-dependent: the final transform is translated and rotated relative to the CTM used to the draw the 2nd-to-last green rays.</para>
+          <para>
+            <img href="~/CoreGraphics/_images/CGContext.CTM.png" alt="Graphic illustrating the transforms created by the following code." />
+          </para>
+          <para>The following example shows the manipulation of the CTM to create the example image.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+public override void Draw (RectangleF rect)
+{
+	base.Draw (rect);
+
+	using (var ctxt = UIGraphics.GetCurrentContext ()) {
+		DrawRay (ctxt, new PointF (5, 5), new PointF (105, 5), UIColor.Red.CGColor);
+		DrawRay (ctxt, new PointF (5, 5), new PointF (5, 105), UIColor.Red.CGColor);
+		ctxt.ScaleCTM (1, -1);
+		ctxt.TranslateCTM (0, -Bounds.Height);
+		DrawRay (ctxt, new PointF (5, 5), new PointF (105, 5), UIColor.Green.CGColor);
+		DrawRay (ctxt, new PointF (5, 5), new PointF (5, 105), UIColor.Green.CGColor);
+
+		var cos = .707f;
+		var sin = -.707f;
+		var xform = new CGAffineTransform (cos, sin, -sin, cos, Bounds.Width / 2, 100);
+
+		ctxt.ConcatCTM (xform);
+		DrawRay (ctxt, new PointF (0, 0), new PointF (100, 0), UIColor.Blue.CGColor);
+		DrawRay (ctxt, new PointF (0, 0), new PointF (0, 100), UIColor.Blue.CGColor);
+
+	}
+}              
+              ]]></code>
+          </example>
+        </remarks>
+        <altmember cref="M:CoreGraphics.CGContext.ConcatCTM" />
+        <altmember cref="M:CoreGraphics.CGContext.RotateCTM" />
+        <altmember cref="M:CoreGraphics.CGContext.ScaleCTM" />
+        <altmember cref="M:CoreGraphics.CGContext.TranslateCTM" />
+      </Docs>
+  <Docs DocId="M:CoreGraphics.CGContext.AddLines(CoreGraphics.CGPoint[])">
+        <param name="points">An array of two or more <see cref="T:System.Drawing.PointF" />s. Straight segments are added between sequential points.</param>
+        <summary>Adds the given lines to the current path.</summary>
+        <remarks>
+          <para>Lines are added to the current path, with the first line segment beginning at <paramref name="points" />[0]. A line is not added from the <see cref="M:CoreGraphics.CGContext.GetPathCurrentPoint" />. In the following example, the current location of the <see cref="T:CoreGraphics.CGContext" /> is {20,20} after the call to <see cref="M:CoreGraphics.CGContext.MoveTo(System.nfloat,System.nfloat)" />, but as shown in the image, only two line segments are added.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+using (var ctxt = UIGraphics.GetCurrentContext ()) {
+	var startingPoint = new PointF (20, 20);
+	ctxt.MoveTo (startingPoint.X, startingPoint.Y);
+	ctxt.SetStrokeColor (UIColor.Red.CGColor);
+	var sz = new SizeF (2, 2);
+	Func<PointF,PointF> offset = (PointF pt) => new PointF (pt.X - 1, pt.Y - 1);
+	ctxt.AddEllipseInRect (new RectangleF (offset (startingPoint), sz));
+
+	ctxt.AddLines (new PointF[] {
+		new PointF (30, 30),
+		new PointF (60, 30),
+		new PointF (40, 40)
+	});
+
+	ctxt.StrokePath ();
+}              
+              ]]></code>
+          </example>
+          <para>
+            <img href="~/CoreGraphics/_images/CGContext.AddLines.png" alt="Graphic illustrating the curve created by calling this method" />
+          </para>
+        </remarks>
+      </Docs>
+</Documentation>

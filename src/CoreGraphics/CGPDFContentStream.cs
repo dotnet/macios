@@ -42,6 +42,9 @@ namespace CoreGraphics {
 		{
 		}
 
+		/// <param name="page">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGPDFContentStream (CGPDFPage page)
 			: base (CGPDFContentStreamCreateWithPage (page.GetNonNullHandle (nameof (page))), true)
 		{
@@ -60,6 +63,11 @@ namespace CoreGraphics {
 			return result;
 		}
 
+		/// <param name="stream">To be added.</param>
+		///         <param name="streamResources">To be added.</param>
+		///         <param name="parent">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGPDFContentStream (CGPDFStream stream, NSDictionary? streamResources = null, CGPDFContentStream? parent = null)
 			: base (Create (stream, streamResources, parent), true)
 		{

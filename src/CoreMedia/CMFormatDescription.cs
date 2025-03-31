@@ -43,6 +43,9 @@ namespace CoreMedia {
 
 #if !COREBUILD
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary? GetExtensions ()
 		{
 			var cfDictRef = CMFormatDescriptionGetExtensions (Handle);
@@ -52,6 +55,10 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* CFPropertyListRef */ IntPtr CMFormatDescriptionGetExtension (/* CMFormatDescriptionRef */ IntPtr desc, /* CFStringRef */ IntPtr extensionkey);
 
+		/// <param name="extensionKey">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSObject? GetExtension (string extensionKey)
 		{
 			var extensionKeyHandle = CFString.CreateNative (extensionKey);
@@ -168,6 +175,16 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* CFTypeID */ nint CMFormatDescriptionGetTypeID ();
 
+		/// <summary>Type identifier for the CoreMedia.CMFormatDescription type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
+		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[bool isCMFormatDescription = (CFType.GetTypeID (foo.Handle) == CMFormatDescription.GetTypeID ());]]></code>
+		///           </example>
+		///         </remarks>
 		public static nint GetTypeID ()
 		{
 			return CMFormatDescriptionGetTypeID ();
@@ -176,6 +193,21 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		unsafe extern static /* OSStatus */ CMFormatDescriptionError CMFormatDescriptionCreate (/* CFAllocatorRef */ IntPtr allocator, CMMediaType mediaType, /* FourCharCode */ uint mediaSubtype, /* CFDictionaryRef */ IntPtr extensions, /* CMFormatDescriptionRef* */ IntPtr* descOut);
 
+		/// <param name="mediaType">media type that we want to create a wrapper for</param>
+		///         <param name="mediaSubtype">The media subtype</param>
+		///         <param name="error">Errors, if any, are returned here.</param>
+		///         <summary>Creates a CMFormatDescription (or a subclass of it) based on a native handle and to have it wrapped in a specific type.</summary>
+		///         <returns>
+		///           <para>The return can be either a CMFormatDescription a <see cref="T:CoreMedia.CMAudioFormatDescription" /> or a <see cref="T:CoreMedia.CMVideoFormatDescription" /> depending on the mediaType parameter that you passed.</para>
+		///           <para>
+		///           </para>
+		///           <para />
+		///         </returns>
+		///         <remarks>
+		///           <para>In general, the <see cref="M:CoreMedia.CMFormatDescription.Create(System.IntPtr)" /> is a better option as it probes for the underlying type and creates the correct subclass of <see cref="T:CoreMedia.CMFormatDescription" /></para>
+		///           <para>
+		///           </para>
+		///         </remarks>
 		public static CMFormatDescription? Create (CMMediaType mediaType, uint mediaSubtype, out CMFormatDescriptionError error)
 		{
 			IntPtr handle;
@@ -188,11 +220,24 @@ namespace CoreMedia {
 			return Create (mediaType, handle, true);
 		}
 
+		/// <param name="handle">The native handle to a CMFormatDescription or a subclass of it.</param>
+		///         <param name="owns">True if the handle is already owned by maanged code, false otherwise (and in this case, the code will manually call retain on the object).</param>
+		///         <summary>Creates a CMFormatDescription (or a subclass of it) based on a native handle.</summary>
+		///         <returns>
+		///           <para>The return can be either a CMFormatDescription a <see cref="T:CoreMedia.CMAudioFormatDescription" /> or a <see cref="T:CoreMedia.CMVideoFormatDescription" />, you can use the C# <see langword="is" /> expression to find out which subclass to cast the result to if you need access to the audio or video specific elements.</para>
+		///           <para>
+		///           </para>
+		///         </returns>
+		///         <remarks>This is mostly used to support the binding infrastructure.</remarks>
 		public static CMFormatDescription? Create (IntPtr handle, bool owns)
 		{
 			return Create (CMFormatDescriptionGetMediaType (handle), handle, owns);
 		}
 
+		/// <param name="handle">The native handle to a CMFormatDescription or a subclass of it.</param>
+		///         <summary>Creates a CMFormatDescription (or a subclass of it) based on a native handle.</summary>
+		///         <returns>The return can be either a CMFormatDescription a <see cref="T:CoreMedia.CMAudioFormatDescription" /> or a <see cref="T:CoreMedia.CMVideoFormatDescription" />, you can use the C# <see langword="is" /> expression to find out which subclass to cast the result to if you need access to the audio or video specific elements.</returns>
+		///         <remarks>This is the recommended way of surfacing an unmanaged format description, as this will create the proper wrapper with a strong type for the audio or video versions of it.</remarks>
 		public static CMFormatDescription? Create (IntPtr handle)
 		{
 			return Create (handle, false);
@@ -401,6 +446,10 @@ namespace CoreMedia {
 			return handle;
 		}
 
+		/// <param name="codecType">To be added.</param>
+		///         <param name="size">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMVideoFormatDescription (CMVideoCodecType codecType, CMVideoDimensions size)
 			: base (CreateCMVideoFormatDescription (codecType, size), true)
 		{
@@ -421,6 +470,11 @@ namespace CoreMedia {
 			/* CVImageBufferRef */ IntPtr imageBuffer,
 			/* CMVideoFormatDescriptionRef* */ IntPtr* outDesc);
 
+		/// <param name="imageBuffer">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CMVideoFormatDescription? CreateForImageBuffer (CVImageBuffer imageBuffer, out CMFormatDescriptionError error)
 		{
 			if (imageBuffer is null)
@@ -450,6 +504,12 @@ namespace CoreMedia {
 			/* int */ int NALUnitHeaderLength,
 			/* CMFormatDescriptionRef* */ IntPtr* formatDescriptionOut);
 
+		/// <param name="parameterSets">To be added.</param>
+		///         <param name="nalUnitHeaderLength">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -537,6 +597,10 @@ namespace CoreMedia {
 			return arr;
 		}
 
+		/// <param name="originIsAtTopLeft">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGRect GetCleanAperture (bool originIsAtTopLeft)
 		{
 			return CMVideoFormatDescriptionGetCleanAperture (Handle, originIsAtTopLeft.AsByte ());

@@ -54,6 +54,11 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public AudioCodecManufacturer Manufacturer;
 
+		/// <param name="type">To be added.</param>
+		///         <param name="subType">To be added.</param>
+		///         <param name="manufacturer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioClassDescription (AudioCodecComponentType type, AudioFormatType subType, AudioCodecManufacturer manufacturer)
 		{
 			Type = type;

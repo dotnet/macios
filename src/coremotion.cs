@@ -751,6 +751,10 @@ namespace CoreMotion {
 		[Export ("isRelativeAltitudeAvailable")]
 		bool IsRelativeAltitudeAvailable { get; }
 
+		/// <param name="queue">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>Requests periodic updates of altitude-adjustment data.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("startRelativeAltitudeUpdatesToQueue:withHandler:")]
 		[Async]
 		void StartRelativeAltitudeUpdates (NSOperationQueue queue, Action<CMAltitudeData, NSError> handler);

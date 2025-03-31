@@ -686,6 +686,16 @@ namespace Accelerate {
 									int []? post_bias,     //Must be an array of 4 int32_t's. NULL is okay.
 									vImageFlags flags);
 
+		/// <param name="src">Source image data..</param>
+		///         <param name="dest">Target image data.</param>
+		///         <param name="matrix">To be added.</param>
+		///         <param name="divisor">To be added.</param>
+		///         <param name="pre_bias">To be added.</param>
+		///         <param name="post_bias">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static vImageError MatrixMultiplyARGB8888 (ref vImageBuffer src,
 								   ref vImageBuffer dest,
 								   short [] matrix, // matrix is [4*4],

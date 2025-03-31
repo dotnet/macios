@@ -69,6 +69,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGDataProviderRef */ IntPtr CGDataProviderCreateWithFilename (/* const char* */ IntPtr filename);
 
+		/// <param name="file">File name.</param>
+		///         <summary>Creates a CGDataProvider from an on-disk file.</summary>
+		///         <returns>An initialized CGDataProvider.</returns>
+		///         <remarks>To be added.</remarks>
 		static public CGDataProvider? FromFile (string file)
 		{
 			if (file is null)
@@ -94,6 +98,10 @@ namespace CoreGraphics {
 			return handle;
 		}
 
+		/// <param name="file">The file to load data from.</param>
+		///         <summary>Exposes the contents of the file as a CGDataProvider.</summary>
+		///         <remarks>
+		///         </remarks>
 		public CGDataProvider (string file)
 			: base (Create (file), true)
 		{

@@ -30,22 +30,43 @@ namespace CoreFoundation {
 		{
 		}
 
+		/// <param name="action">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public DispatchBlock (Action action, DispatchBlockFlags flags = DispatchBlockFlags.None)
 			: base (create (action, flags), true)
 		{
 		}
 
+		/// <param name="action">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <param name="qosClass">To be added.</param>
+		///         <param name="relative_priority">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public DispatchBlock (Action action, DispatchBlockFlags flags, DispatchQualityOfService qosClass, int relative_priority)
 			: base (create (flags, qosClass, relative_priority, action), true)
 		{
 		}
 
+		/// <param name="dispatchBlock">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <param name="qosClass">To be added.</param>
+		///         <param name="relative_priority">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public DispatchBlock (DispatchBlock dispatchBlock, DispatchBlockFlags flags, DispatchQualityOfService qosClass, int relative_priority)
 			: base (dispatch_block_create_with_qos_class ((nuint) (ulong) flags, qosClass, relative_priority, dispatchBlock.GetNonNullHandle (nameof (dispatchBlock))), true)
 		{
 			GC.KeepAlive (dispatchBlock);
 		}
 
+		/// <param name="action">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static DispatchBlock Create (Action action, DispatchBlockFlags flags = DispatchBlockFlags.None)
 		{
 			if (action is null)
@@ -53,6 +74,13 @@ namespace CoreFoundation {
 			return new DispatchBlock (action, flags);
 		}
 
+		/// <param name="action">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <param name="qosClass">To be added.</param>
+		///         <param name="relative_priority">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static DispatchBlock Create (Action action, DispatchBlockFlags flags, DispatchQualityOfService qosClass, int relative_priority)
 		{
 			if (action is null)
@@ -60,6 +88,13 @@ namespace CoreFoundation {
 			return new DispatchBlock (action, flags, qosClass, relative_priority);
 		}
 
+		/// <param name="block">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <param name="qosClass">To be added.</param>
+		///         <param name="relative_priority">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static DispatchBlock Create (DispatchBlock block, DispatchBlockFlags flags, DispatchQualityOfService qosClass, int relative_priority)
 		{
 			if (block is null)
@@ -67,16 +102,26 @@ namespace CoreFoundation {
 			return block.Create (flags, qosClass, relative_priority);
 		}
 
+		/// <param name="flags">To be added.</param>
+		///         <param name="qosClass">To be added.</param>
+		///         <param name="relative_priority">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public DispatchBlock Create (DispatchBlockFlags flags, DispatchQualityOfService qosClass, int relative_priority)
 		{
 			return new DispatchBlock (dispatch_block_create_with_qos_class ((nuint) (ulong) flags, qosClass, relative_priority, GetCheckedHandle ()), true);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal override void Retain ()
 		{
 			Handle = BlockLiteral._Block_copy (GetCheckedHandle ());
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal override void Release ()
 		{
 			BlockLiteral._Block_release (GetCheckedHandle ());

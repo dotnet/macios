@@ -14,6 +14,10 @@ using System;
 namespace ObjCRuntime {
 	[AttributeUsage (AttributeTargets.Class)]
 	public class CategoryAttribute : Attribute {
+		/// <param name="type">The Objective-C type to extend.   This must be a subclass of NSObject (or NSObject itself).</param>
+		///         <summary>The type that this category extends.</summary>
+		///         <remarks>
+		///         </remarks>
 		public CategoryAttribute (Type type)
 		{
 			Type = type;

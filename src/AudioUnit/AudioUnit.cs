@@ -172,6 +172,10 @@ namespace AudioUnit {
 		///         <remarks>To be added.</remarks>
 		public const byte DefaultBankLSB = 0x00;
 
+		/// <param name="fileUrl">To be added.</param>
+		///         <param name="instrumentType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SamplerInstrumentData (CFUrl fileUrl, InstrumentType instrumentType)
 		{
 			if (fileUrl is null)
@@ -454,6 +458,9 @@ namespace AudioUnit {
 			return handle;
 		}
 
+		/// <param name="component">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioUnit (AudioComponent component)
 			: this (Create (component), true)
 		{
@@ -473,6 +480,12 @@ namespace AudioUnit {
 		///         <remarks>To be added.</remarks>
 		public bool IsPlaying { get { return _isPlaying; } }
 
+		/// <param name="audioFormat">To be added.</param>
+		///         <param name="scope">To be added.</param>
+		///         <param name="audioUnitElement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe AudioUnitStatus SetFormat (AudioToolbox.AudioStreamBasicDescription audioFormat, AudioUnitScopeType scope, uint audioUnitElement = 0)
 		{
 			return (AudioUnitStatus) AudioUnitSetProperty (Handle,
@@ -483,6 +496,11 @@ namespace AudioUnit {
 							   (uint) Marshal.SizeOf<AudioToolbox.AudioStreamBasicDescription> ());
 		}
 
+		/// <param name="scope">To be added.</param>
+		///         <param name="audioUnitElement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public uint GetCurrentDevice (AudioUnitScopeType scope, uint audioUnitElement = 0)
 		{
 			uint device = 0;
@@ -506,6 +524,9 @@ namespace AudioUnit {
 		[Obsolete ("This API is not available on iOS.")]
 #endif
 #if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -541,6 +562,12 @@ namespace AudioUnit {
 #endif
 		}
 #endif
+		/// <param name="inputDevice">To be added.</param>
+		///         <param name="scope">To be added.</param>
+		///         <param name="audioUnitElement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe AudioUnitStatus SetCurrentDevice (uint inputDevice, AudioUnitScopeType scope, uint audioUnitElement = 0)
 		{
 			return AudioUnitSetProperty (Handle,
@@ -551,6 +578,11 @@ namespace AudioUnit {
 						(uint) sizeof (uint));
 		}
 
+		/// <param name="scope">To be added.</param>
+		///         <param name="audioUnitElement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioStreamBasicDescription GetAudioFormat (AudioUnitScopeType scope, uint audioUnitElement = 0)
 		{
 			var audioFormat = new AudioStreamBasicDescription ();
@@ -571,6 +603,11 @@ namespace AudioUnit {
 			return audioFormat;
 		}
 
+		/// <param name="scope">To be added.</param>
+		///         <param name="audioUnitElement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public ClassInfoDictionary? GetClassInfo (AudioUnitScopeType scope = AudioUnitScopeType.Global, uint audioUnitElement = 0)
 		{
 			IntPtr ptr = new IntPtr ();
@@ -591,6 +628,12 @@ namespace AudioUnit {
 			return new ClassInfoDictionary (Runtime.GetNSObject<NSDictionary> (ptr, true));
 		}
 
+		/// <param name="preset">To be added.</param>
+		///         <param name="scope">To be added.</param>
+		///         <param name="audioUnitElement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus SetClassInfo (ClassInfoDictionary preset, AudioUnitScopeType scope = AudioUnitScopeType.Global, uint audioUnitElement = 0)
 		{
 			var ptr = preset.Dictionary.Handle;
@@ -600,6 +643,11 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <param name="scope">To be added.</param>
+		///         <param name="audioUnitElement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe AudioUnitParameterInfo []? GetParameterList (AudioUnitScopeType scope = AudioUnitScopeType.Global, uint audioUnitElement = 0)
 		{
 			uint size;
@@ -628,6 +676,12 @@ namespace AudioUnit {
 			return info;
 		}
 
+		/// <param name="instrumentData">To be added.</param>
+		///         <param name="scope">To be added.</param>
+		///         <param name="audioUnitElement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus LoadInstrument (SamplerInstrumentData instrumentData, AudioUnitScopeType scope = AudioUnitScopeType.Global, uint audioUnitElement = 0)
 		{
 			if (instrumentData is null)
@@ -1292,6 +1346,11 @@ namespace AudioUnit {
 			current = (AURenderEvent*) (IntPtr) handle;
 		}
 
+		/// <summary>Releases the resources used by the AURenderEventEnumerator object.</summary>
+		///         <remarks>
+		///           <para>The Dispose method releases the resources used by the AURenderEventEnumerator class.</para>
+		///           <para>Calling the Dispose method when the application is finished using the AURenderEventEnumerator ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.  For more information on releasing resources see ``Cleaning up Unmananaged Resources'' at https://msdn.microsoft.com/en-us/library/498928w2.aspx</para>
+		///         </remarks>
 		public void Dispose ()
 		{
 			Handle = NativeHandle.Zero;
@@ -1435,6 +1494,9 @@ namespace AudioUnit {
 		/// <summary>The token that represents a parameter or parameter recording observer delegate.</summary>
 		///         <remarks>To be added.</remarks>
 		public IntPtr ObserverToken;
+		/// <param name="observerToken">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AUParameterObserverToken (IntPtr observerToken)
 		{
 			ObserverToken = observerToken;

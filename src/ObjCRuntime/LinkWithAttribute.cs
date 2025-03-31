@@ -62,6 +62,12 @@ namespace ObjCRuntime {
 
 	[AttributeUsage (AttributeTargets.Assembly, AllowMultiple = true)]
 	public sealed class LinkWithAttribute : Attribute {
+		/// <param name="libraryName">The name of the native library. For example: libMyLibrary.a</param>
+		///         <param name="target">The target platform (or platforms) that this library is built for.</param>
+		///         <param name="linkerFlags">Additional linker flags that are required for linking the native library to an application.</param>
+		///         <summary>Creates a new LinkWithAttribute for the specified native library targetting the specified platform(s).</summary>
+		///         <remarks>
+		///         </remarks>
 		public LinkWithAttribute (string libraryName, LinkTarget target, string linkerFlags)
 		{
 			LibraryName = libraryName;
@@ -69,17 +75,29 @@ namespace ObjCRuntime {
 			LinkTarget = target;
 		}
 
+		/// <param name="libraryName">The name of the native library. For example: libMyLibrary.a</param>
+		///         <param name="target">The target platform (or platforms) that this library is built for.</param>
+		///         <summary>Creates a new LinkWithAttribute for the specified native library targetting the specified platform(s).</summary>
+		///         <remarks>
+		///         </remarks>
 		public LinkWithAttribute (string libraryName, LinkTarget target)
 		{
 			LibraryName = libraryName;
 			LinkTarget = target;
 		}
 
+		/// <param name="libraryName">The name of the native library. For example: libMyLibrary.a</param>
+		///         <summary>Creates a new LinkWithAttribute for the specified native library.</summary>
+		///         <remarks>
+		///         </remarks>
 		public LinkWithAttribute (string libraryName)
 		{
 			LibraryName = libraryName;
 		}
 
+		/// <summary>Creates a new LinkWithAttribute to specify custom build/linker flags for the managed assembly.</summary>
+		///         <remarks>
+		///         </remarks>
 		public LinkWithAttribute ()
 		{
 		}

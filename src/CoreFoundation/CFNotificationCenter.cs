@@ -127,8 +127,9 @@ namespace CoreFoundation {
 
 		Dictionary<string, List<CFNotificationObserverToken>> listeners = new Dictionary<string, List<CFNotificationObserverToken>> ();
 		const string NullNotificationName = "NullNotificationName";
+		/// <include file="../../docs/api/CoreFoundation/CFNotificationCenter.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.CFNotificationCenter.AddObserver(System.String,ObjCRuntime.INativeObject,System.Action{System.String,Foundation.NSDictionary},CoreFoundation.CFNotificationSuspensionBehavior)']/*" />
 		public CFNotificationObserverToken AddObserver (string name, INativeObject objectToObserve, Action<string, NSDictionary?> notificationHandler,
-								CFNotificationSuspensionBehavior suspensionBehavior = CFNotificationSuspensionBehavior.DeliverImmediately)
+									CFNotificationSuspensionBehavior suspensionBehavior = CFNotificationSuspensionBehavior.DeliverImmediately)
 		{
 			if (darwinnc is not null && darwinnc.Handle == Handle && name is null) {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name), "When using the Darwin Notification Center, the value passed must not be null");
@@ -212,6 +213,13 @@ namespace CoreFoundation {
 			center.notification (CFString.FromHandle (name), Runtime.GetNSObject<NSDictionary> (userInfo));
 		}
 
+		/// <param name="notification">To be added.</param>
+		///         <param name="objectToObserve">To be added.</param>
+		///         <param name="userInfo">To be added.</param>
+		///         <param name="deliverImmediately">To be added.</param>
+		///         <param name="postOnAllSessions">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void PostNotification (string notification, INativeObject objectToObserve, NSDictionary? userInfo = null, bool deliverImmediately = false, bool postOnAllSessions = false)
 		{
 			// The name of the notification to post.This value must not be NULL.
@@ -230,6 +238,10 @@ namespace CoreFoundation {
 			CFString.ReleaseNative (strHandle);
 		}
 
+		/// <param name="token">Token returned by <see cref="M:CoreFoundation.CFNotificationCenter.AddObserver(System.String,ObjCRuntime.INativeObject,System.Action{System.String,Foundation.NSDictionary},CoreFoundation.CFNotificationSuspensionBehavior)" />.</param>
+		///         <summary>Removes the specified observer.</summary>
+		///         <remarks>
+		///         </remarks>
 		public void RemoveObserver (CFNotificationObserverToken token)
 		{
 			if (token is null)
@@ -259,6 +271,8 @@ namespace CoreFoundation {
 			token.nameHandle = IntPtr.Zero;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void RemoveEveryObserver ()
 		{
 			lock (listeners) {

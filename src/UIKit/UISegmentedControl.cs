@@ -19,6 +19,10 @@ using UIKit;
 
 namespace UIKit {
 	public partial class UISegmentedControl {
+		/// <param name="args">Array of strings or UIImage objects to use in the control.</param>
+		///         <summary>Creates a UISegmentedControl by passing an array containing strings or <see cref="T:UIKit.UIImage" /> objects.</summary>
+		///         <remarks>
+		///         </remarks>
 		public UISegmentedControl (params object [] args) : this (FromObjects (args))
 		{
 		}
@@ -56,10 +60,16 @@ namespace UIKit {
 			return NSArray.FromNSObjects (nsargs);
 		}
 
+		/// <param name="images">To be added.</param>
+		///         <summary>Creates a new segmented control with the images in the provided array.</summary>
+		///         <remarks>To be added.</remarks>
 		public UISegmentedControl (params UIImage [] images) : this (FromNSObjects (images))
 		{
 		}
 
+		/// <param name="strings">To be added.</param>
+		///         <summary>Creates a new segmented control with the titles in the provided array.</summary>
+		///         <remarks>To be added.</remarks>
 		public UISegmentedControl (params NSString [] strings) : this (FromNSObjects (strings))
 		{
 		}
@@ -74,6 +84,9 @@ namespace UIKit {
 			return NSArray.FromNSObjects (items);
 		}
 
+		/// <param name="strings">To be added.</param>
+		///         <summary>Creates a new segmented control with the titles in the provided array.</summary>
+		///         <remarks>To be added.</remarks>
 		public UISegmentedControl (params string [] strings) : this (FromStrings (strings))
 		{
 		}

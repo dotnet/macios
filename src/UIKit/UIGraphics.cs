@@ -33,22 +33,52 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static void UIGraphicsPopContext ();
 
+		/// <param name="rect">To be added.</param>
+		///         <param name="blendMode">To be added.</param>
+		///         <summary>Fills <paramref name="rect" /> with the current fill color, using <paramref name="blendMode" />.</summary>
+		///         <remarks>
+		///           <para>Developers can call this method from any thread.</para>
+		///         </remarks>
 		[DllImport (Constants.UIKitLibrary, EntryPoint = "UIRectFillUsingBlendMode")]
 		public extern static void RectFillUsingBlendMode (CGRect rect, CGBlendMode blendMode);
 
+		/// <param name="rect">The region to fill.</param>
+		///         <summary>Fills a rectangle with the current color on the current context.</summary>
+		///         <remarks>
+		///           <para>Developers can call this method from any thread.</para>
+		///         </remarks>
 		[DllImport (Constants.UIKitLibrary, EntryPoint = "UIRectFill")]
 		public extern static void RectFill (CGRect rect);
 
+		/// <param name="rect">To be added.</param>
+		///         <param name="blendMode">To be added.</param>
+		///         <summary>Draws a frame inside the specified rectangle and blending it with <paramref name="blendMode" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[DllImport (Constants.UIKitLibrary, EntryPoint = "UIRectFrameUsingBlendMode")]
 		public extern static void RectFrameUsingBlendMode (CGRect rect, CGBlendMode blendMode);
 
+		/// <param name="rect">Region where the frame will be drawn.</param>
+		///         <summary>Draws a frame inside the specified rectangle.</summary>
+		///         <remarks>.</remarks>
 		[DllImport (Constants.UIKitLibrary, EntryPoint = "UIRectFrame")]
 		public extern static void RectFrame (CGRect rect);
 
+		/// <param name="rect">New clipping path.</param>
+		///         <summary>Intersects the current clipping path with the specified rectangle.</summary>
+		///         <remarks>
+		///         </remarks>
 		[DllImport (Constants.UIKitLibrary, EntryPoint = "UIRectClip")]
 		public extern static void RectClip (CGRect rect);
 
 #if NET
+		/// <param name="size">Size of the image context.</param>
+		///         <summary>Pushes a new image context and makes it the current graphics context.</summary>
+		///         <remarks>
+		///           <para>UIKit keeps a stack of image context, this method creates a new image context, makes it the default and places it at the top of the graphic context stacks.</para>
+		///           <para>To restore the previous graphics context, call the <see cref="M:UIKit.UIGraphics.EndImageContext" /> method.</para>
+		///           <para>You can get the current context by calling the <see cref="M:UIKit.UIGraphics.GetImageFromCurrentImageContext" /> method.</para>
+		///           <para>Developers can call this method from any thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -107,6 +137,13 @@ namespace UIKit {
 		static extern IntPtr UIGraphicsGetImageFromCurrentImageContext ();
 
 #if NET
+		/// <summary>Pops the current image context.</summary>
+		///         <remarks>
+		///           <para>UIKit keeps a stack of image context, this method pops the current image context, and makes the new context at the top of the stack, the new default context.</para>
+		///           <para>If the current context was not created using the <see cref="M:UIKit.UIGraphics.BeginImageContextWithOptions(CoreGraphics.CGSize,System.Boolean,System.nfloat)" />
+		/// 	  or <see cref="M:UIKit.UIGraphics.BeginImageContext(CoreGraphics.CGSize)" />
+		/// 	  this method does nothing.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -123,6 +160,10 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static void UIGraphicsAddPDFContextDestinationAtPoint (IntPtr str, CGPoint point);
 
+		/// <param name="str">Name of destination point.</param>
+		///         <param name="point">A point in the current context.</param>
+		///         <summary>Adds a PDF destination with the given name at the given position.</summary>
+		///         <remarks>Only valid if the current graphics context is a PDF context</remarks>
 		public static void AddPDFContextDestination (string str, CGPoint point)
 		{
 			using (var nsstr = new NSString (str))
@@ -132,6 +173,10 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static void UIGraphicsSetPDFContextDestinationForRect (IntPtr str, CGRect rect);
 
+		/// <param name="str">To be added.</param>
+		///         <param name="rect">To be added.</param>
+		///         <summary>Sets the PDF destination with the given name at the given position.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void SetPDFContextDestination (string str, CGRect rect)
 		{
 			using (var nsstr = new NSString (str))
@@ -155,6 +200,11 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static void UIGraphicsSetPDFContextURLForRect (IntPtr url, CGRect rect);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="rect">To be added.</param>
+		///         <summary>Links the url to the specified rectangle on the PDF page.</summary>
+		///         <remarks>
+		///         </remarks>
 		public static void SetPDFContextURL (NSUrl url, CGRect rect)
 		{
 			UIGraphicsSetPDFContextURLForRect (url.Handle, rect);
@@ -165,6 +215,16 @@ namespace UIKit {
 		extern static void UIGraphicsBeginPDFContextToFile (/* NSString* */ IntPtr path, CGRect bounds,
 			/* NSDictionary * __nullable */ IntPtr documentInfo);
 
+		/// <param name="file">To be added.</param>
+		///         <param name="bounds">To be added.</param>
+		///         <param name="documentInfo">To be added.</param>
+		///         <summary>Pushes a new PDF rendering context and make it the current graphics context.</summary>
+		///         <remarks>
+		///           <para>UIKit keeps a stack of image context, this method creates a new image context, makes it the default and places it at the top of the graphic context stacks.</para>
+		///           <para>To restore the previous graphics context, call the <see cref="M:UIKit.UIGraphics.EndImageContext" /> method.</para>
+		///           <para>You can get the current context by calling the <see cref="M:UIKit.UIGraphics.GetImageFromCurrentImageContext" /> method.</para>
+		///           <para>This function can only be invoked from the UI thread.</para>
+		///         </remarks>
 		public static void BeginPDFContext (string file, CGRect bounds, NSDictionary documentInfo)
 		{
 			using (var nsstr = new NSString (file)) {
@@ -173,6 +233,16 @@ namespace UIKit {
 			}
 		}
 
+		/// <param name="file">To be added.</param>
+		///         <param name="bounds">To be added.</param>
+		///         <param name="documentInfo">To be added.</param>
+		///         <summary>Pushes a new PDF rendering context and make it the current graphics context.</summary>
+		///         <remarks>
+		///           <para>UIKit keeps a stack of image context, this method creates a new image context, makes it the default and places it at the top of the graphic context stacks.</para>
+		///           <para>To restore the previous graphics context, call the <see cref="M:UIKit.UIGraphics.EndImageContext" /> method.</para>
+		///           <para>You can get the current context by calling the <see cref="M:UIKit.UIGraphics.GetImageFromCurrentImageContext" /> method.</para>
+		///           <para>This function can only be invoked from the UI thread.</para>
+		///         </remarks>
 		public static void BeginPDFContext (string file, CGRect bounds, CGPDFInfo documentInfo)
 		{
 			using (var dict = documentInfo is null ? null : documentInfo.ToDictionary ())
@@ -185,6 +255,16 @@ namespace UIKit {
 		extern static void UIGraphicsBeginPDFContextToData (/* NSMutableData* */ IntPtr data, CGRect bounds,
 			/* NSDictionary * __nullable */ IntPtr documentInfo);
 
+		/// <param name="data">To be added.</param>
+		///         <param name="bounds">To be added.</param>
+		///         <param name="documentInfo">To be added.</param>
+		///         <summary>Pushes a new PDF rendering context and make it the current graphics context.</summary>
+		///         <remarks>
+		///           <para>UIKit keeps a stack of image context, this method creates a new image context, makes it the default and places it at the top of the graphic context stacks.</para>
+		///           <para>To restore the previous graphics context, call the <see cref="M:UIKit.UIGraphics.EndImageContext" /> method.</para>
+		///           <para>You can get the current context by calling the <see cref="M:UIKit.UIGraphics.GetImageFromCurrentImageContext" /> method.</para>
+		///           <para>This function can only be invoked from the UI thread.</para>
+		///         </remarks>
 		public static void BeginPDFContext (NSMutableData data, CGRect bounds, NSDictionary documentInfo)
 		{
 			UIGraphicsBeginPDFContextToData (data.Handle, bounds, documentInfo is null ? IntPtr.Zero : documentInfo.Handle);
@@ -195,6 +275,8 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static void UIGraphicsBeginPDFPage ();
 
+		/// <summary>Starts a new page using the bounds from the initial PDF context.</summary>
+		///         <remarks>Does nothing if the current context is not a PDF context</remarks>
 		public static void BeginPDFPage ()
 		{
 			UIGraphicsBeginPDFPage ();
@@ -203,6 +285,10 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static void UIGraphicsBeginPDFPageWithInfo (CGRect bounds, IntPtr info);
 
+		/// <param name="bounds">To be added.</param>
+		///         <param name="pageInfo">To be added.</param>
+		///         <summary>Starts a new page using the bounds from the initial PDF context.</summary>
+		///         <remarks>Does nothing if the current context is not a PDF context</remarks>
 		public static void BeginPDFPage (CGRect bounds, NSDictionary pageInfo)
 		{
 			UIGraphicsBeginPDFPageWithInfo (bounds, pageInfo.Handle);
@@ -218,12 +304,23 @@ namespace UIKit {
 		}
 
 #if !XAMCORE_5_0
+		/// <summary>Closes the PDF context and pops it from the stack.</summary>
+		///         <remarks>
+		///           <para>UIKit keeps a stack of contexts, this method pops the current PDF context, and makes the new context at the top of the stack, the new default context.</para>
+		///           <para>If the current context was not a PDF context this method does nothing.</para>
+		///         </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use 'EndPDFContext' instead.")]
 		public static void EndPDFContent () => EndPDFContext ();
 #endif
 
 #if NET
+		/// <summary>Returns the contents of the current context as an image.</summary>
+		///         <returns>An image, or null on error</returns>
+		///         <remarks>
+		///           <para>This method is only valid if the current context (the context at the top of the stack) is an image context.</para>
+		///           <para>Developers can call this method from any thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -242,6 +339,13 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Returns the current graphics context</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///           <para>This returns the current graphics context (the context at the top of the stack).   This is only valid after you have pushed a new graphics context with one of the methods in this class.</para>
+		///           <para>Developers can call this method from any thread.</para>
+		///         </remarks>
 		public static CGContext GetCurrentContext ()
 		{
 			var ctx = UIGraphicsGetCurrentContext ();
@@ -252,12 +356,21 @@ namespace UIKit {
 			return new CGContext (ctx, false);
 		}
 
+		/// <param name="ctx">To be added.</param>
+		///         <summary>Manually pushes a CGContext into the UIKit graphics context stack.</summary>
+		///         <remarks>
+		///           <para>Developers can call this method from any thread.</para>
+		///         </remarks>
 		public static void PushContext (CGContext ctx)
 		{
 			UIGraphicsPushContext (ctx.Handle);
 			GC.KeepAlive (ctx);
 		}
 
+		/// <summary>Pops the top context and sets the previous context as the default context.</summary>
+		///         <remarks>
+		///           <para>Developers can call this method from any thread.</para>
+		///         </remarks>
 		public static void PopContext ()
 		{
 			UIGraphicsPopContext ();

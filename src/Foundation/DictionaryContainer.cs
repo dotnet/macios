@@ -53,11 +53,13 @@ namespace Foundation {
 	[SupportedOSPlatform ("tvos")]
 	public abstract class DictionaryContainer {
 #if !COREBUILD
+		/// <include file="../../docs/api/Foundation/DictionaryContainer.xml" path="/Documentation/Docs[@DocId='M:Foundation.DictionaryContainer.#ctor']/*" />
 		protected DictionaryContainer ()
 		{
 			Dictionary = new NSMutableDictionary ();
 		}
 
+		/// <include file="../../docs/api/Foundation/DictionaryContainer.xml" path="/Documentation/Docs[@DocId='M:Foundation.DictionaryContainer.#ctor(Foundation.NSDictionary)']/*" />
 		protected DictionaryContainer (NSDictionary? dictionary)
 		{
 			Dictionary = dictionary ?? new NSMutableDictionary ();
@@ -68,6 +70,11 @@ namespace Foundation {
 		///         <remarks>To be added.</remarks>
 		public NSDictionary Dictionary { get; private set; }
 
+		/// <typeparam name="T">The type of values stored in the array identified by <paramref name="key" />.</typeparam>
+		///         <param name="key">The identifier of the array.</param>
+		///         <summary>Retrieves the array of type <c>T</c> associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected T []? GetArray<T> (NSString key) where T : NSObject
 		{
 			if (key is null)
@@ -88,6 +95,10 @@ namespace Foundation {
 			return NSArray.ArrayFromHandleFunc<T> (value, creator);
 		}
 
+		/// <param name="key">The identifier of the int.</param>
+		///         <summary>Returns the nullable int associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected int? GetInt32Value (NSString key)
 		{
 			if (key is null)
@@ -100,6 +111,10 @@ namespace Foundation {
 			return ((NSNumber) value).Int32Value;
 		}
 
+		/// <param name="key">The identifier of the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20UInt%2032&amp;scope=Xamarin" title="T:System.UInt32">T:System.UInt32</a></format>.</param>
+		///         <summary>Returns the nullable <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20UInt%2032&amp;scope=Xamarin" title="T:System.UInt32">T:System.UInt32</a></format> associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected uint? GetUInt32Value (NSString key)
 		{
 			if (key is null)

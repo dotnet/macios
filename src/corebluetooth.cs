@@ -189,9 +189,19 @@ namespace CoreBluetooth {
 		[Export ("scanForPeripheralsWithServices:options:"), Internal]
 		void ScanForPeripherals ([NullAllowed] NSArray serviceUUIDs, [NullAllowed] NSDictionary options);
 
+		/// <summary>Tells the manager to stop scanning for peripherals.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopScan")]
 		void StopScan ();
 
+		/// <param name="peripheral">Peripheral to connect to.</param>
+		///         <param name="options">
+		///           <para>Options to configure the peripheral connection, the keys include OptionAllowDuplicatesKey and OptionNotifyOnDisconnectionKey which should contain NSNumbers.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Connects to the specified peripheral (weakly typed parameter version).</summary>
+		///         <remarks>
+		///         </remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("connectPeripheral:options:")]
 		void ConnectPeripheral (CBPeripheral peripheral, [NullAllowed] NSDictionary options);
@@ -199,6 +209,9 @@ namespace CoreBluetooth {
 		[Wrap ("ConnectPeripheral (peripheral, options.GetDictionary ())")]
 		void ConnectPeripheral (CBPeripheral peripheral, [NullAllowed] CBConnectPeripheralOptions options);
 
+		/// <param name="peripheral">To be added.</param>
+		///         <summary>Cancels an active or pending connection to the specified <paramref name="peripheral" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancelPeripheralConnection:")]
 		void CancelPeripheralConnection (CBPeripheral peripheral);
 
@@ -248,10 +261,18 @@ namespace CoreBluetooth {
 		[MacCatalyst (13, 1)]
 		NSString RestoredStateScanOptionsKey { get; }
 
+		/// <param name="identifiers">To be added.</param>
+		///         <summary>Returns all peripherals that are identified by the specified <paramref name="identifiers" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("retrievePeripheralsWithIdentifiers:")]
 		CBPeripheral [] RetrievePeripheralsWithIdentifiers ([Params] NSUuid [] identifiers);
 
+		/// <param name="serviceUUIDs">To be added.</param>
+		///         <summary>Returns all connected peripherals that have services that are identified by the specified <paramref name="serviceUUIDs" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("retrieveConnectedPeripheralsWithServices:")]
 		CBPeripheral [] RetrieveConnectedPeripherals ([Params] CBUUID [] serviceUUIDs);
@@ -958,15 +979,27 @@ namespace CoreBluetooth {
 		[Export ("data")]
 		NSData Data { get; }
 
+		/// <param name="theString">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[MarshalNativeExceptions]
 		[Export ("UUIDWithString:")]
 		CBUUID FromString (string theString);
 
+		/// <param name="theData">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("UUIDWithData:")]
 		CBUUID FromData (NSData theData);
 
+		/// <param name="theUUID">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
 		[Deprecated (PlatformName.iOS, 9, 0)]
 		[Deprecated (PlatformName.TvOS, 9, 0)]
@@ -976,6 +1009,10 @@ namespace CoreBluetooth {
 		[Export ("UUIDWithCFUUID:")]
 		CBUUID FromCFUUID (IntPtr theUUID);
 
+		/// <param name="theUUID">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[MacCatalyst (13, 1)]
 		[Export ("UUIDWithNSUUID:")]

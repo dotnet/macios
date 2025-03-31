@@ -139,6 +139,9 @@ namespace GameController {
 			/* __nullable */ GCMicroGamepadSnapshotData* snapshotData);
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]

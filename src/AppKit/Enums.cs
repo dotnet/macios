@@ -211,9 +211,13 @@ namespace AppKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSRectEdge : ulong {
+		/// <summary>To be added.</summary>
 		MinXEdge,
+		/// <summary>To be added.</summary>
 		MinYEdge,
+		/// <summary>To be added.</summary>
 		MaxXEdge,
+		/// <summary>To be added.</summary>
 		MaxYEdge,
 	}
 
@@ -1762,17 +1766,24 @@ namespace AppKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSToolbarDisplayMode : ulong {
+		/// <summary>To be added.</summary>
 		Default,
+		/// <summary>To be added.</summary>
 		IconAndLabel,
+		/// <summary>To be added.</summary>
 		Icon,
+		/// <summary>To be added.</summary>
 		Label,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSToolbarSizeMode : ulong {
+		/// <summary>To be added.</summary>
 		Default,
+		/// <summary>To be added.</summary>
 		Regular,
+		/// <summary>To be added.</summary>
 		Small,
 	}
 
@@ -2067,7 +2078,9 @@ namespace AppKit {
 #endif
 	[Native]
 	public enum NSCollectionViewDropOperation : long {
+		/// <summary>To be added.</summary>
 		On = 0,
+		/// <summary>To be added.</summary>
 		Before = 1,
 	}
 
@@ -2082,9 +2095,13 @@ namespace AppKit {
 #endif
 	[Native]
 	public enum NSCollectionViewItemHighlightState : long {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		ForSelection = 1,
+		/// <summary>To be added.</summary>
 		ForDeselection = 2,
+		/// <summary>To be added.</summary>
 		AsDropTarget = 3,
 	}
 
@@ -2100,25 +2117,40 @@ namespace AppKit {
 	[Native]
 	[Flags]
 	public enum NSCollectionViewScrollPosition : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Top = 1 << 0,
+		/// <summary>To be added.</summary>
 		CenteredVertically = 1 << 1,
+		/// <summary>To be added.</summary>
 		Bottom = 1 << 2,
+		/// <summary>To be added.</summary>
 		NearestHorizontalEdge = 1 << 9,
+		/// <summary>To be added.</summary>
 		Left = 1 << 3,
+		/// <summary>To be added.</summary>
 		CenteredHorizontally = 1 << 4,
+		/// <summary>To be added.</summary>
 		Right = 1 << 5,
+		/// <summary>To be added.</summary>
 		LeadingEdge = 1 << 6,
+		/// <summary>To be added.</summary>
 		TrailingEdge = 1 << 7,
+		/// <summary>To be added.</summary>
 		NearestVerticalEdge = 1 << 8,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSCollectionElementCategory : long {
+		/// <summary>To be added.</summary>
 		Item,
+		/// <summary>To be added.</summary>
 		SupplementaryView,
+		/// <summary>To be added.</summary>
 		DecorationView,
+		/// <summary>To be added.</summary>
 		InterItemGap,
 	}
 
@@ -2135,7 +2167,9 @@ namespace AppKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSCollectionViewScrollDirection : long {
+		/// <summary>To be added.</summary>
 		Vertical,
+		/// <summary>To be added.</summary>
 		Horizontal,
 	}
 

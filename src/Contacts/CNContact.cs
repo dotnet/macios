@@ -17,12 +17,20 @@ namespace Contacts {
 
 	public partial class CNContact {
 
+		/// <param name="options">To be added.</param>
+		///         <summary>Whether the key described in <paramref name="options" /> is available for this <see cref="T:Contacts.CNContact" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public virtual bool IsKeyAvailable (CNContactOptions options)
 		{
 			var key = ContactOptionsToNSString (options);
 			return IsKeyAvailable (key);
 		}
 
+		/// <param name="options">To be added.</param>
+		///         <summary>Gets the localized version of the key described in <paramref name="options" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string LocalizeProperty (CNContactOptions options)
 		{
 			var key = ContactOptionsToNSString (options);
@@ -83,6 +91,11 @@ namespace Contacts {
 			}
 		}
 
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <param name="keyDescriptors">To be added.</param>
+		///         <summary>Whether the keys described in <paramref name="keyDescriptors" /> are available.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool AreKeysAvailable<T> (T [] keyDescriptors)
 			where T : INSObjectProtocol, INSSecureCoding, INSCopying
 		{
@@ -90,6 +103,10 @@ namespace Contacts {
 				return AreKeysAvailable (array);
 		}
 
+		/// <param name="options">To be added.</param>
+		///         <summary>Whether the keys specified in <paramref name="options" /> are available.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool AreKeysAvailable (CNContactOptions options)
 		{
 			using (var array = new NSMutableArray ()) {

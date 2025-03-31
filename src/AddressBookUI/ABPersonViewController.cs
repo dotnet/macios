@@ -22,6 +22,12 @@ namespace AddressBookUI {
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
 	public class ABPersonViewPerformDefaultActionEventArgs : EventArgs {
+		/// <param name="person">To be added.</param>
+		///         <param name="property">To be added.</param>
+		///         <param name="identifier">To be added.</param>
+		///         <summary>Initializes a new instance of the ABPersonViewPerformDefaultActionEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public ABPersonViewPerformDefaultActionEventArgs (ABPerson person, ABPersonProperty property, int? identifier)
 		{
 			Person = person;
@@ -123,6 +129,10 @@ namespace AddressBookUI {
 			}
 		}
 
+		/// <param name="property">To be added.</param>
+		///         <param name="identifier">To be added.</param>
+		///         <summary>Highlights the item indexed by <paramref name="identifier" /> in the specified <paramref name="property" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetHighlightedItemForProperty (ABPersonProperty property, int? identifier)
 		{
 			SetHighlightedItemForProperty (
@@ -130,6 +140,9 @@ namespace AddressBookUI {
 					identifier ?? ABRecord.InvalidPropertyId);
 		}
 
+		/// <param name="property">To be added.</param>
+		///         <summary>Highlights the specified <paramref name="property" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetHighlightedProperty (ABPersonProperty property)
 		{
 			SetHighlightedItemForProperty (
@@ -147,6 +160,9 @@ namespace AddressBookUI {
 			return d;
 		}
 
+		/// <param name="e">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal virtual void OnPerformDefaultAction (ABPersonViewPerformDefaultActionEventArgs e)
 		{
 			var h = EnsureEventDelegate ().performDefaultAction;

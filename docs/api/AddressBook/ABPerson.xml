@@ -1,0 +1,153 @@
+<Documentation>
+  <Docs DocId="M:AddressBook.ABPerson.System#IComparable#CompareTo(System.Object)">
+        <param name="o">
+          The <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Object&amp;scope=Xamarin" title="T:System.Object">T:System.Object</a></format> to compare
+          to this instance.
+        </param>
+        <summary>
+          Compares this instance with the specified
+          <see cref="T:AddressBook.ABPerson" /> and returns an
+          integer that indicates whether this instance precedes, follows,
+          or appears in the same position in the sort order as
+          <paramref name="o" />.
+        </summary>
+        <returns>
+          <para>
+            A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> that indicates
+            whether this instance precedes, follows,
+            or appears in the same position in the sort order as
+            <paramref name="o" />.
+          </para>
+          <list type="table">
+            <listheader>
+              <term>Value</term>
+              <description>Condition</description>
+            </listheader>
+            <item>
+              <term>Less than zero</term>
+              <description>
+                This instance precedes <paramref name="o" />.
+              </description>
+            </item>
+            <item>
+              <term>Zero</term>
+              <description>
+                This instance has the same position in the sort order as
+                <paramref name="o" />.
+              </description>
+            </item>
+            <item>
+              <term>Greater than zero</term>
+              <description>
+                This instance follows <paramref name="o" />.
+              </description>
+            </item>
+          </list>
+        </returns>
+        <remarks>
+        </remarks>
+      </Docs>
+  <Docs DocId="M:AddressBook.ABPerson.CompareTo(AddressBook.ABPerson)">
+        <param name="other">
+          The <see cref="T:AddressBook.ABPerson" /> to compare
+          to this instance.
+        </param>
+        <summary>
+          Compares this instance with the specified
+          <see cref="T:AddressBook.ABPerson" /> and returns an
+          integer that indicates whether this instance precedes, follows,
+          or appears in the same position in the sort order as
+          <paramref name="other" />.
+        </summary>
+        <returns>
+          <para>
+            A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> that indicates
+            whether this instance precedes, follows,
+            or appears in the same position in the sort order as
+            <paramref name="other" />.
+          </para>
+          <list type="table">
+            <listheader>
+              <term>Value</term>
+              <description>Condition</description>
+            </listheader>
+            <item>
+              <term>Less than zero</term>
+              <description>
+                This instance precedes <paramref name="other" />.
+              </description>
+            </item>
+            <item>
+              <term>Zero</term>
+              <description>
+                This instance has the same position in the sort order as
+                <paramref name="other" />.
+              </description>
+            </item>
+            <item>
+              <term>Greater than zero</term>
+              <description>
+                This instance follows <paramref name="other" />.
+              </description>
+            </item>
+          </list>
+        </returns>
+        <remarks>
+        </remarks>
+      </Docs>
+  <Docs DocId="M:AddressBook.ABPerson.CompareTo(AddressBook.ABPerson,AddressBook.ABPersonSortBy)">
+        <param name="other">
+          The <see cref="T:AddressBook.ABPerson" /> to compare
+          to this instance.
+        </param>
+        <param name="ordering">
+          A <see cref="T:AddressBook.ABPersonSortBy" /> which
+          is used to specify whether ordering should be done by
+          <see cref="F:AddressBook.ABPersonSortBy.FirstName" />
+          or
+          <see cref="F:AddressBook.ABPersonSortBy.LastName" />.
+        </param>
+        <summary>
+          Compares this instance with the specified
+          <see cref="T:AddressBook.ABPerson" /> and returns an
+          integer that indicates whether this instance precedes, follows,
+          or appears in the same position in the sort order as
+          <paramref name="other" /> (as controlled by <paramref name="ordering" />).
+        </summary>
+        <returns>
+          <para>
+            A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> that indicates
+            whether this instance precedes, follows,
+            or appears in the same position in the sort order as
+            <paramref name="other" />.
+          </para>
+          <list type="table">
+            <listheader>
+              <term>Value</term>
+              <description>Condition</description>
+            </listheader>
+            <item>
+              <term>Less than zero</term>
+              <description>
+                This instance precedes <paramref name="other" />.
+              </description>
+            </item>
+            <item>
+              <term>Zero</term>
+              <description>
+                This instance has the same position in the sort order as
+                <paramref name="other" />.
+              </description>
+            </item>
+            <item>
+              <term>Greater than zero</term>
+              <description>
+                This instance follows <paramref name="other" />.
+              </description>
+            </item>
+          </list>
+        </returns>
+        <remarks>
+        </remarks>
+      </Docs>
+</Documentation>

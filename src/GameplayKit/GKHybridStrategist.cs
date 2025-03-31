@@ -24,11 +24,16 @@ namespace GameplayKit {
 	public class GKHybridStrategist : NSObject, IGKStrategist {
 		/// <summary>Do not use</summary>
 		public override NativeHandle ClassHandle => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
+		/// <summary>Default constructor, initializes a new instance of this class.</summary>
+		///         <remarks />
 		public GKHybridStrategist () : base (NSObjectFlag.Empty) => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
 		/// <summary>Do not use</summary>
 		protected GKHybridStrategist (NSObjectFlag t) : base (t) => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
 		/// <summary>Do not use</summary>
 		protected internal GKHybridStrategist (NativeHandle handle) : base (handle) => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public virtual IGKGameModelUpdate GetBestMoveForActivePlayer () => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

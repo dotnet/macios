@@ -17,9 +17,21 @@ using ObjCRuntime;
 namespace UIKit {
 
 	public class UITextAttributes {
+		/// <summary>The font to use to render the text.</summary>
+		///         <remarks>
+		///         </remarks>
 		public UIFont Font;
+		/// <summary>The color to use for the text.</summary>
+		///         <remarks>
+		///         </remarks>
 		public UIColor TextColor;
+		/// <summary>If you set the TextShadowOffset, the color to use for the shadow of the text.</summary>
+		///         <remarks>
+		///         </remarks>
 		public UIColor TextShadowColor;
+		/// <summary>The offset describing the distance between the text and its shadow.</summary>
+		///         <remarks>
+		///         </remarks>
 		public UIOffset TextShadowOffset;
 
 		public UITextAttributes ()

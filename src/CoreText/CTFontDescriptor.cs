@@ -544,6 +544,19 @@ namespace CoreText {
 			return result;
 		}
 
+		/// <param name="attributes">Font attributes to use for the font descriptor.</param>
+		///         <summary>Creates a font descriptor from a set of attributes.</summary>
+		///         <remarks>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// var attributes = new CTFontDescriptorAttributes () {
+		/// 	FamilyName = "Times New Roman"
+		/// };
+		///
+		/// var fontDescriptor = new CTFontDescriptor (attributes);
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		public CTFontDescriptor (CTFontDescriptorAttributes attributes)
 			: base (Create (attributes), true, true)
 		{

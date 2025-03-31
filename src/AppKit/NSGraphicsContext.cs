@@ -46,6 +46,9 @@ namespace AppKit {
 			return result;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual CGContext GraphicsPort {
 			get { return new CGContext (GraphicsPortHandle, false); }
 		}

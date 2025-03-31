@@ -17,11 +17,21 @@ using Foundation;
 namespace UIKit {
 
 	public class UIFontAttributes : DictionaryContainer {
+		/// <summary>Creates an empty UIFontAttributes.</summary>
+		///         <remarks>
+		///         </remarks>
 		public UIFontAttributes () { }
 
 #if !COREBUILD
+		/// <param name="dictionary">Dictionary containing UIFontAttributes.</param>
+		///         <summary>Creates a UIFontAttributes from a weakly typed NSDictionary.</summary>
+		///         <remarks>
+		///         </remarks>
 		public UIFontAttributes (NSDictionary dictionary) : base (dictionary) { }
 
+		/// <param name="features">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public UIFontAttributes (params UIFontFeature [] features)
 		{
 			FeatureSettings = features;
@@ -387,6 +397,13 @@ namespace UIKit {
 			}
 		}
 
+		/// <param name="mandatoryKeys">The list of mandatory keys that you desire on the font descriptor.</param>
+		///         <summary>Retrieve a UIFontDescriptor with an explicit set of features.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public UIFontDescriptor [] GetMatchingFontDescriptors (params UIFontDescriptorAttribute [] mandatoryKeys)
 		{
 			var n = mandatoryKeys.Length;
@@ -637,7 +654,12 @@ namespace UIKit {
 	}
 
 	public class UIFontTraits : DictionaryContainer {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public UIFontTraits () { }
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public UIFontTraits (NSDictionary dictionary) : base (dictionary) { }
 
 		/// <summary>The symbolic traits, if any, of the UIFont.</summary>

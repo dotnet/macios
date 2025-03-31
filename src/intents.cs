@@ -67,7 +67,9 @@ namespace Intents {
 	[Native]
 	[Flags]
 	public enum INCallCapabilityOptions : ulong {
+		/// <summary>The device can make audio calls.</summary>
 		AudioCall = (1 << 0),
+		/// <summary>The device can make video calls.</summary>
 		VideoCall = (1 << 1),
 	}
 
@@ -105,17 +107,25 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INCancelWorkoutIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should not use this deprecated field. Developers should use 'HandleInApp' instead.</summary>
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'HandleInApp' instead.")] // yup just iOS
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'HandleInApp' instead.")]
 		ContinueInApp,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate they failed to find a matching workout.</summary>
 		FailureNoMatchingWorkout,
+		/// <summary>Developers should use this code to indicate to the system that the intent needs further processing inside the app.</summary>
 		[Advice ("The numerical value for this constant was different in iOS 11 and earlier iOS versions (it was 7, which is now defined as 'Success').")]
 		[MacCatalyst (13, 1)]
 		HandleInApp,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		[Advice ("The numerical value for this constant was different in iOS 11 and earlier iOS versions (it was 6, which is now defined as 'HandleInApp').")]
 		[MacCatalyst (13, 1)]
 		Success,
@@ -129,8 +139,11 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INCarAirCirculationMode : long {
+		/// <summary>The circulation mode is not determined.</summary>
 		Unknown = 0,
+		/// <summary>Air is brought in from outside.</summary>
 		FreshAir,
+		/// <summary>The car recirculates internal air.</summary>
 		RecirculateAir,
 	}
 
@@ -142,15 +155,25 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INCarAudioSource : long {
+		/// <summary>The input source is not determined.</summary>
 		Unknown = 0,
+		/// <summary>CarPlay audio.</summary>
 		CarPlay,
+		/// <summary>An attached iPod.</summary>
 		iPod,
+		/// <summary>A radio station.</summary>
 		Radio,
+		/// <summary>A bluetooth audio stream.</summary>
 		Bluetooth,
+		/// <summary>An auxiliary jack.</summary>
 		Aux,
+		/// <summary>An audio stream provided over a USB connection.</summary>
 		Usb,
+		/// <summary>A removable memory card.</summary>
 		MemoryCard,
+		/// <summary>A removable optical disk (e.g., a CD).</summary>
 		OpticalDrive,
+		/// <summary>An external drive.</summary>
 		HardDrive,
 	}
 
@@ -162,9 +185,13 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INCarDefroster : long {
+		/// <summary>An undetermined defroster location.</summary>
 		Unknown = 0,
+		/// <summary>The defroster for the front windshield.</summary>
 		Front,
+		/// <summary>The defroster for the rear window.</summary>
 		Rear,
+		/// <summary>All defroster locations.</summary>
 		All,
 	}
 
@@ -176,18 +203,31 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INCarSeat : long {
+		/// <summary>An undetermined position.</summary>
 		Unknown = 0,
+		/// <summary>The seat in which the driver sits.</summary>
 		Driver,
+		/// <summary>The front seat in which the passenger sits.</summary>
 		Passenger,
+		/// <summary>The seat in the front left.</summary>
 		FrontLeft,
+		/// <summary>The seat in the front right.</summary>
 		FrontRight,
+		/// <summary>The first row of seats.</summary>
 		Front,
+		/// <summary>The left seat in the 2nd row.</summary>
 		RearLeft,
+		/// <summary>The right seat in the 2nd row.</summary>
 		RearRight,
+		/// <summary>The 2nd row of seats.</summary>
 		Rear,
+		/// <summary>The left seat in the third row.</summary>
 		ThirdRowLeft,
+		/// <summary>The right seat in the third row.</summary>
 		ThirdRowRight,
+		/// <summary>The third row of seats.</summary>
 		ThirdRow,
+		/// <summary>All seats in the car.</summary>
 		All,
 	}
 
@@ -197,8 +237,11 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INConditionalOperator : long {
+		/// <summary>All attributes must be present. A logical AND.</summary>
 		All = 0,
+		/// <summary>One or more of the attributes must be present. A logical OR</summary>
 		Any,
+		/// <summary>None of the attributes must be present.</summary>
 		None,
 	}
 
@@ -208,17 +251,25 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INEndWorkoutIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should not use this deprecated field. Developers should use 'HandleInApp' instead.</summary>
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'HandleInApp' instead.")] // yup just iOS
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'HandleInApp' instead.")]
 		ContinueInApp,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate they failed to find a matching workout.</summary>
 		FailureNoMatchingWorkout,
+		/// <summary>Developers should use this code to indicate to the system that the intent needs further processing inside the app.</summary>
 		[Advice ("The numerical value for this constant was different in iOS 11 and earlier iOS versions (it was 7, which is now defined as 'Success').")]
 		[MacCatalyst (13, 1)]
 		HandleInApp,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		[Advice ("The numerical value for this constant was different in iOS 11 and earlier iOS versions (it was 6, which is now defined as 'HandleInApp').")]
 		[MacCatalyst (13, 1)]
 		Success,
@@ -266,15 +317,23 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INGetRideStatusIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should not use this deprecated field. </summary>
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate that the companion app must verify the user's credentals.</summary>
 		FailureRequiringAppLaunchMustVerifyCredentials,
+		/// <summary>Developers should use this code to indicate that the required service is temporarily unavailable and continuation requires the companion app.</summary>
 		FailureRequiringAppLaunchServiceTemporarilyUnavailable,
 	}
 
@@ -404,18 +463,29 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INListRideOptionsIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should not use this deprecated field. </summary>
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate that the companion app must verify the user's credentals.</summary>
 		FailureRequiringAppLaunchMustVerifyCredentials,
+		/// <summary>Developers should use this code to indicate a failure because the ride service is not available in the requested area.</summary>
 		FailureRequiringAppLaunchNoServiceInArea,
+		/// <summary>Developers should use this code to indicate that the required service is temporarily unavailable and continuation requires the companion app.</summary>
 		FailureRequiringAppLaunchServiceTemporarilyUnavailable,
+		/// <summary>Developers should use this code to indicate a failure because the previous ride has not been completed.</summary>
 		FailureRequiringAppLaunchPreviousRideNeedsCompletion,
+		/// <summary>Developers should use this code to indicate a failure because feedback on the previous ride has not been completed.</summary>
 		[MacCatalyst (13, 1)]
 		FailurePreviousRideNeedsFeedback,
 	}
@@ -426,11 +496,17 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INMessageAttribute : long {
+		/// <summary>The attribute cannot be determined.</summary>
 		Unknown = 0,
+		/// <summary>Indicates that the message should be marked as read.</summary>
 		Read,
+		/// <summary>Indicates that the message should be shown as unread.</summary>
 		Unread,
+		/// <summary>The message is flagged for later attention.</summary>
 		Flagged,
+		/// <summary>The message is not flagged for later attention.</summary>
 		Unflagged,
+		/// <summary>Indicates that the message should be marked as having been played.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		Played,
@@ -443,10 +519,15 @@ namespace Intents {
 	[Native]
 	[Flags]
 	public enum INMessageAttributeOptions : ulong {
+		/// <summary>The message is marked as read.</summary>
 		Read = (1 << 0),
+		/// <summary>The message should be shown as unread.</summary>
 		Unread = (1 << 1),
+		/// <summary>The message is flagged.</summary>
 		Flagged = (1 << 2),
+		/// <summary>The message is not flagged.</summary>
 		Unflagged = (1 << 3),
+		/// <summary>The message is marked as played.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		Played = (1UL << 4),
@@ -458,17 +539,25 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INPauseWorkoutIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should not use this deprecated field. Developers should use 'HandleInApp' instead.</summary>
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'HandleInApp' instead.")] // yup just iOS
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'HandleInApp' instead.")]
 		ContinueInApp,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate they failed to find a matching workout.</summary>
 		FailureNoMatchingWorkout,
+		/// <summary>Developers should use this code to indicate to the system that the intent needs further processing inside the app.</summary>
 		[Advice ("The numerical value for this constant was different in iOS 11 and earlier iOS versions (it was 7, which is now defined as 'Success').")]
 		[MacCatalyst (13, 1)]
 		HandleInApp,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		[Advice ("The numerical value for this constant was different in iOS 11 and earlier iOS versions (it was 6, which is now defined as 'HandleInApp').")]
 		[MacCatalyst (13, 1)]
 		Success,
@@ -479,14 +568,23 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INPaymentMethodType : long {
+		/// <summary>The payment method's category is not known.</summary>
 		Unknown = 0,
+		/// <summary>Payment from a checking account.</summary>
 		Checking,
+		/// <summary>Payment from a savings account.</summary>
 		Savings,
+		/// <summary>Payment from a brokerage account.</summary>
 		Brokerage,
+		/// <summary>Payment from a debit card.</summary>
 		Debit,
+		/// <summary>Payment from a credit card.</summary>
 		Credit,
+		/// <summary>Payment from a prepaid card or account.</summary>
 		Prepaid,
+		/// <summary>Payment using a store card.</summary>
 		Store,
+		/// <summary>Payment from Apple Pay.</summary>
 		ApplePay,
 	}
 
@@ -496,11 +594,17 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INPaymentStatus : long {
+		/// <summary>The status of the payment is not known.</summary>
 		Unknown = 0,
+		/// <summary>Indicates that the request is still being processed.</summary>
 		Pending,
+		/// <summary>Indicates that the payment succeeded.</summary>
 		Completed,
+		/// <summary>Indicates that the request has been canceled successfully.</summary>
 		Canceled,
+		/// <summary>Indicates that the payment failed.</summary>
 		Failed,
+		/// <summary>Indicates that the payment has not been made.</summary>
 		Unpaid,
 	}
 
@@ -509,9 +613,12 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INPersonSuggestionType : long {
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		None = 0,
+		/// <summary>Indicates the person's social media information, not their actual name, should be used.</summary>
 		SocialProfile = 1,
+		/// <summary>Indicates the person's instant messaging information, not their actual name, should be used.</summary>
 		InstantMessageAddress,
 	}
 
@@ -524,38 +631,67 @@ namespace Intents {
 	[Native]
 	[Flags]
 	public enum INPhotoAttributeOptions : ulong {
+		/// <summary>The media is a photograph.</summary>
 		Photo = (1 << 0),
+		/// <summary>The media is a video.</summary>
 		Video = (1 << 1),
+		/// <summary>The photo is stored in the GIF format.</summary>
 		Gif = (1 << 2),
+		/// <summary>The photo was taken with an artificial flash.</summary>
 		Flash = (1 << 3),
+		/// <summary>The photo's longer edge should be along the X axis.</summary>
 		LandscapeOrientation = (1 << 4),
+		/// <summary>The photo's longer edge should be along the Y axis.</summary>
 		PortraitOrientation = (1 << 5),
+		/// <summary>The user has indicated the photo is a favorite.</summary>
 		Favorite = (1 << 6),
+		/// <summary>The photo is of the photographer.</summary>
 		Selfie = (1 << 7),
+		/// <summary>The photo was taken with the front-facing camera.</summary>
 		FrontFacingCamera = (1 << 8),
+		/// <summary>The image is a screenshot. </summary>
 		Screenshot = (1 << 9),
+		/// <summary>Indicates a photo taken in a burst.</summary>
 		BurstPhoto = (1 << 10),
+		/// <summary>The photo was constructed via the High-Dynamic Range process.</summary>
 		HdrPhoto = (1 << 11),
+		/// <summary>The photo has a square aspect ratio.</summary>
 		SquarePhoto = (1 << 12),
+		/// <summary>The photo was taken with the panoramic process.</summary>
 		PanoramaPhoto = (1 << 13),
+		/// <summary>The media is a video recorded in the timelapse mode.</summary>
 		TimeLapseVideo = (1 << 14),
+		/// <summary>The media is a video recorded in slow motion.</summary>
 		SlowMotionVideo = (1 << 15),
+		/// <summary>The Noir image effect.</summary>
 		NoirFilter = (1 << 16),
+		/// <summary>The Chrome image effect.</summary>
 		ChromeFilter = (1 << 17),
+		/// <summary>The Instant image effect.</summary>
 		InstantFilter = (1 << 18),
+		/// <summary>The Tonal image effect.</summary>
 		TonalFilter = (1 << 19),
+		/// <summary>The Transfer image effect.</summary>
 		TransferFilter = (1 << 20),
+		/// <summary>The Monochrome image effect.</summary>
 		MonoFilter = (1 << 21),
+		/// <summary>The Fade image effect.</summary>
 		FadeFilter = (1 << 22),
+		/// <summary>The Process image effect.</summary>
 		ProcessFilter = (1 << 23),
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		PortraitPhoto = (1uL << 24),
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		LivePhoto = (1uL << 25),
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		LoopPhoto = (1uL << 26),
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		BouncePhoto = (1uL << 27),
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		LongExposurePhoto = (1uL << 28),
 	}
@@ -568,11 +704,17 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INRadioType : long {
+		/// <summary>The form of the radio has not been set or could not be resolved.</summary>
 		Unknown = 0,
+		/// <summary>Transmitted by amplitude modulation.</summary>
 		AM,
+		/// <summary>Transmitted by frequency modulation.</summary>
 		FM,
+		/// <summary>High definition radia.</summary>
 		HD,
+		/// <summary>Transmitted via satellite.</summary>
 		Satellite,
+		/// <summary>Digital audio Bluetooth.</summary>
 		Dab,
 	}
 
@@ -584,8 +726,11 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INRelativeReference : long {
+		/// <summary>A relative change that has not been set or could not be resolved.</summary>
 		Unknown = 0,
+		/// <summary>The next value or setting.</summary>
 		Next,
+		/// <summary>The previous value or setting.</summary>
 		Previous,
 	}
 
@@ -597,10 +742,15 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INRelativeSetting : long {
+		/// <summary>A relative setting that could not be resolved.</summary>
 		Unknown = 0,
+		/// <summary>The lowest available setting.</summary>
 		Lowest,
+		/// <summary>Indicates a decreased setting.</summary>
 		Lower,
+		/// <summary>Indicates an increased setting.</summary>
 		Higher,
+		/// <summary>The highest available setting.</summary>
 		Highest,
 	}
 
@@ -610,20 +760,33 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INRequestPaymentIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate a failure in verifying credentials.</summary>
 		FailureCredentialsUnverified,
+		/// <summary>Developers should use this code to indicate a failure because the payment is too small.</summary>
 		FailurePaymentsAmountBelowMinimum,
+		/// <summary>Developers should use this code to indicate a failure because the payment exceeds the allowed maximum.</summary>
 		FailurePaymentsAmountAboveMaximum,
+		/// <summary>Developers should use this code to indicate a failure because the requested currency is not supported.</summary>
 		FailurePaymentsCurrencyUnsupported,
+		/// <summary>Developers should use this code to indicate a failure because no bank account is configured.</summary>
 		FailureNoBankAccount,
+		/// <summary>Developers should use this code to indicate a failure because the user is not eligible to either send or recieve funds via money transfer.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		FailureNotEligible,
+		/// <summary>To be added.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		FailureTermsAndConditionsAcceptanceRequired,
@@ -635,17 +798,27 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INRequestRideIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should not use this deprecated field. </summary>
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate that the companion app must verify the user's credentals.</summary>
 		FailureRequiringAppLaunchMustVerifyCredentials,
+		/// <summary>Developers should use this code to indicate a failure because the ride service is not available in the requested area.</summary>
 		FailureRequiringAppLaunchNoServiceInArea,
+		/// <summary>Developers should use this code to indicate that the required service is temporarily unavailable and continuation requires the companion app.</summary>
 		FailureRequiringAppLaunchServiceTemporarilyUnavailable,
+		/// <summary>Developers should use this code to indicate a failure because the previous ride has not been completed.</summary>
 		FailureRequiringAppLaunchPreviousRideNeedsCompletion,
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -670,17 +843,25 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INResumeWorkoutIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should not use this deprecated field. Developers should use 'HandleInApp' instead.</summary>
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'HandleInApp' instead.")] // yup just iOS
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'HandleInApp' instead.")]
 		ContinueInApp,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate they failed to find a matching workout.</summary>
 		FailureNoMatchingWorkout,
+		/// <summary>Developers should use this code to indicate to the system that the intent needs further processing inside the app.</summary>
 		[Advice ("The numerical value for this constant was different in iOS 11 and earlier iOS versions (it was 7, which is now defined as 'Success').")]
 		[MacCatalyst (13, 1)]
 		HandleInApp,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		[Advice ("The numerical value for this constant was different in iOS 11 and earlier iOS versions (it was 6, which is now defined as 'HandleInApp').")]
 		[MacCatalyst (13, 1)]
 		Success,
@@ -692,12 +873,19 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INRidePhase : long {
+		/// <summary>The status of the ride is not known.</summary>
 		Unknown = 0,
+		/// <summary>The ride request has been received but is not yet <see cref="F:Intents.INRidePhase.Confirmed" />.</summary>
 		Received,
+		/// <summary>The ride is accepted and confirmed.</summary>
 		Confirmed,
+		/// <summary>The ride is currently in progress.</summary>
 		Ongoing,
+		/// <summary>The ride has ended.</summary>
 		Completed,
+		/// <summary>The vehicle is anticipated to arrive shortly.</summary>
 		ApproachingPickup,
+		/// <summary>The ride is currently picking up the passenger(s).</summary>
 		Pickup,
 	}
 
@@ -709,11 +897,17 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INSaveProfileInCarIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
 	}
 
@@ -725,15 +919,23 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INSearchCallHistoryIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate to the system that the intent needs further processing inside the app.</summary>
 		ContinueInApp,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further configuration must be done in the app before the intent can succeed.</summary>
 		[MacCatalyst (13, 1)]
 		FailureAppConfigurationRequired,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		[MacCatalyst (13, 1)]
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		[MacCatalyst (13, 1)]
 		Success,
 	}
@@ -744,13 +946,21 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INSearchForMessagesIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate that they could not search for the message because the service is not available.</summary>
 		FailureMessageServiceNotAvailable,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent because too many results were returned.</summary>
 		[MacCatalyst (13, 1)]
 		FailureMessageTooManyResults,
 		[iOS (17, 0), MacCatalyst (17, 0)]
@@ -765,11 +975,17 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INSearchForPhotosIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate to the system that the intent needs further processing inside the app.</summary>
 		ContinueInApp,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further configuration must be done in the app before the intent can succeed.</summary>
 		[MacCatalyst (13, 1)]
 		FailureAppConfigurationRequired,
 	}
@@ -779,12 +995,19 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INSendMessageIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate that the messaging service is not currently available.</summary>
 		FailureMessageServiceNotAvailable,
 		FailureRequiringInAppAuthentication,
 	}
@@ -795,20 +1018,34 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INSendPaymentIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate a failure in verifying credentials.</summary>
 		FailureCredentialsUnverified,
+		/// <summary>Developers should use this code to indicate a failure because the payment is too small.</summary>
 		FailurePaymentsAmountBelowMinimum,
+		/// <summary>Developers should use this code to indicate a failure because the payment exceeds the allowed maximum.</summary>
 		FailurePaymentsAmountAboveMaximum,
+		/// <summary>Developers should use this code to indicate a failure because the requested currency is not supported.</summary>
 		FailurePaymentsCurrencyUnsupported,
+		/// <summary>Developers should use this code to indicate that the payment could not be made due to insufficient funds.</summary>
 		FailureInsufficientFunds,
+		/// <summary>Developers should use this code to indicate a failure because no bank account is configured.</summary>
 		FailureNoBankAccount,
+		/// <summary>Developers should use this code to indicate they failed to process the intent because the user is not eligible to perform the transaction.</summary>
 		[MacCatalyst (13, 1)]
 		FailureNotEligible,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		FailureTermsAndConditionsAcceptanceRequired,
 	}
@@ -821,11 +1058,17 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INSetAudioSourceInCarIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
 	}
 
@@ -837,11 +1080,17 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INSetClimateSettingsInCarIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
 	}
 
@@ -853,11 +1102,17 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INSetDefrosterSettingsInCarIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
 	}
 
@@ -867,13 +1122,21 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INSetMessageAttributeIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate they failed to find the requested message.</summary>
 		FailureMessageNotFound,
+		/// <summary>Developers should use this code to indicate they failed to set the requested attribute.</summary>
 		FailureMessageAttributeNotSet,
 	}
 
@@ -885,11 +1148,17 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INSetProfileInCarIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
 	}
 
@@ -901,12 +1170,19 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INSetRadioStationIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate that the user does not have a subscription to the requested channel.</summary>
 		FailureNotSubscribed,
 	}
 
@@ -918,11 +1194,17 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INSetSeatSettingsInCarIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
 	}
 
@@ -948,17 +1230,26 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'INStartCallIntentResponseCode' instead.")]
 	[Native]
 	public enum INStartAudioCallIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate to the system that the intent needs further processing inside the app.</summary>
 		ContinueInApp,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further configuration must be done in the app before the intent can succeed.</summary>
 		[MacCatalyst (13, 1)]
 		FailureAppConfigurationRequired,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent because the calling service was not available.</summary>
 		[MacCatalyst (13, 1)]
 		FailureCallingServiceNotAvailable,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent because the contact was not supported by the associated app.</summary>
 		[MacCatalyst (13, 1)]
 		FailureContactNotSupportedByApp,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent because the number was not valid.</summary>
 		[MacCatalyst (13, 1)]
 		FailureNoValidNumber,
 	}
@@ -971,11 +1262,17 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INStartPhotoPlaybackIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate to the system that the intent needs further processing inside the app.</summary>
 		ContinueInApp,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further configuration must be done in the app before the intent can succeed.</summary>
 		[MacCatalyst (13, 1)]
 		FailureAppConfigurationRequired,
 	}
@@ -988,17 +1285,26 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'INStartCallIntentResponseCode' instead.")]
 	[Native]
 	public enum INStartVideoCallIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate to the system that the intent needs further processing inside the app.</summary>
 		ContinueInApp,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further configuration must be done in the app before the intent can succeed.</summary>
 		[MacCatalyst (13, 1)]
 		FailureAppConfigurationRequired,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent because the calling service was not available.</summary>
 		[MacCatalyst (13, 1)]
 		FailureCallingServiceNotAvailable,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent because the contact was not supported by the associated app.</summary>
 		[MacCatalyst (13, 1)]
 		FailureContactNotSupportedByApp,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent because the number was not valid.</summary>
 		[MacCatalyst (13, 1)]
 		FailureInvalidNumber,
 	}
@@ -1009,16 +1315,25 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INStartWorkoutIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready = 1,
+		/// <summary>Developers should use this code to indicate to the system that the intent needs further processing inside the app.</summary>
 		ContinueInApp = 2,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure = 3,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch = 4,
+		/// <summary>Developers should use this code to indicate they could not locate an ongoing workout.</summary>
 		FailureOngoingWorkout = 5,
+		/// <summary>Developers should use this code to indicate they failed to find a matching workout.</summary>
 		FailureNoMatchingWorkout = 6,
+		/// <summary>Developers should use this code to indicate to the system that the intent needs further processing inside the app.</summary>
 		[Advice ("The numerical value for this constant was different in iOS 11 and earlier iOS versions (it was 7, which is now defined as 'Success').")]
 		[MacCatalyst (13, 1)]
 		HandleInApp = 7,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		[Advice ("The numerical value for this constant was different in iOS 11 and earlier iOS versions (it was 6, which is now defined as 'HandleInApp').")]
 		[MacCatalyst (13, 1)]
 		Success = 8,
@@ -1079,16 +1394,27 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INWorkoutGoalUnitType : long {
+		/// <summary>The workout goal's form is indeterminate.</summary>
 		Unknown = 0,
+		/// <summary>The workout goal is a distance in inches.</summary>
 		Inch,
+		/// <summary>The workout goal is a distance measured in meters.</summary>
 		Meter,
+		/// <summary>The workout goal is a distance in feet.</summary>
 		Foot,
+		/// <summary>The workout goal is a distance measured in miles.</summary>
 		Mile,
+		/// <summary>The workout goal is a distance measured in yards.</summary>
 		Yard,
+		/// <summary>The workout goal is a time measured in seconds.</summary>
 		Second,
+		/// <summary>The workout goal is a time measured in minutes.</summary>
 		Minute,
+		/// <summary>The workout goal is a time in hours.</summary>
 		Hour,
+		/// <summary>The workout goal is an energy measured in joules.</summary>
 		Joule,
+		/// <summary>The workout goal is an energy measured in kilocalories.</summary>
 		KiloCalorie,
 	}
 
@@ -1098,8 +1424,11 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INWorkoutLocationType : long {
+		/// <summary>The location is indeterminate.</summary>
 		Unknown = 0,
+		/// <summary>The workout is outdoors.</summary>
 		Outdoor,
+		/// <summary>The workout is indoors.</summary>
 		Indoor,
 	}
 
@@ -1108,8 +1437,11 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INPersonHandleType : long {
+		/// <summary>The category of the handle to the person is not known.</summary>
 		Unknown = 0,
+		/// <summary>The person's email address.</summary>
 		EmailAddress,
+		/// <summary>The phone number for the contact.</summary>
 		PhoneNumber,
 	}
 
@@ -1163,14 +1495,21 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INAmountType : long {
+		/// <summary>The type of the amount is unknown.</summary>
 		Unknown = 0,
+		/// <summary>The minimum amount that must be paid to keep the account in good standing.</summary>
 		MinimumDue,
+		/// <summary>The amount due.</summary>
 		AmountDue,
+		/// <summary>The current balance of the account.</summary>
 		CurrentBalance,
+		/// <summary>The maximum amount that may be transferred.</summary>
 		[MacCatalyst (13, 1)]
 		MaximumTransferAmount,
+		/// <summary>The minimum amount that may be transferred.</summary>
 		[MacCatalyst (13, 1)]
 		MinimumTransferAmount,
+		/// <summary>The amount in the account.</summary>
 		[MacCatalyst (13, 1)]
 		StatementBalance,
 	}
@@ -1183,28 +1522,51 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INBillType : long {
+		/// <summary>A bill of an indeterminate or unknown type.</summary>
 		Unknown = 0,
+		/// <summary>A bill for auto insurance.</summary>
 		AutoInsurance,
+		/// <summary>A bill for a cable provider.</summary>
 		Cable,
+		/// <summary>A bill for a car lease.</summary>
 		CarLease,
+		/// <summary>A bill for a car loan.</summary>
 		CarLoan,
+		/// <summary>A bill for a credit card.</summary>
 		CreditCard,
+		/// <summary>A bill for electricity.</summary>
 		Electricity,
+		/// <summary>A bill for gas.</summary>
 		Gas,
+		/// <summary>A bill for waste removal.</summary>
 		GarbageAndRecycling,
+		/// <summary>A bill for health insurance.</summary>
 		HealthInsurance,
+		/// <summary>A bill for home insurance.</summary>
 		HomeInsurance,
+		/// <summary>A bill for internet access.</summary>
 		Internet,
+		/// <summary>A bill for life insurance.</summary>
 		LifeInsurance,
+		/// <summary>A bill for a mortgage.</summary>
 		Mortgage,
+		/// <summary>A bill for a music streaming service.</summary>
 		MusicStreaming,
+		/// <summary>A phone bill.</summary>
 		Phone,
+		/// <summary>A rent bill.</summary>
 		Rent,
+		/// <summary>A bill for sewer use.</summary>
 		Sewer,
+		/// <summary>A bill for a student loan.</summary>
 		StudentLoan,
+		/// <summary>A fine for a traffic ticket.</summary>
 		TrafficTicket,
+		/// <summary>A bill for tuition.</summary>
 		Tuition,
+		/// <summary>A general utility bill.</summary>
 		Utilities,
+		/// <summary>A bill for water.</summary>
 		Water,
 	}
 
@@ -1215,7 +1577,9 @@ namespace Intents {
 	[Native]
 	[Flags]
 	public enum INCarSignalOptions : ulong {
+		/// <summary>Beeping its horn or the like.</summary>
 		Audible = (1 << 0),
+		/// <summary>Flashing its lights or other technique.</summary>
 		Visible = (1 << 1),
 	}
 
@@ -1225,11 +1589,17 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INGetCarLockStatusIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
 	}
 
@@ -1239,11 +1609,17 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INGetCarPowerLevelStatusIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
 	}
 
@@ -1255,13 +1631,21 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INPayBillIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate a failure in verifying credentials.</summary>
 		FailureCredentialsUnverified,
+		/// <summary>Developers should use this code to indicate that the payment could not be made due to insufficient funds.</summary>
 		FailureInsufficientFunds,
 	}
 
@@ -1273,13 +1657,21 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INSearchForBillsIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate a failure in verifying credentials.</summary>
 		FailureCredentialsUnverified,
+		/// <summary>Developers should use this code to indicate they failed to find the requested bill.</summary>
 		FailureBillNotFound,
 	}
 
@@ -1289,11 +1681,17 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INSetCarLockStatusIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
 	}
 
@@ -1302,11 +1700,17 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INAddTasksIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
 	}
 
@@ -1317,12 +1721,19 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INAppendToNoteIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and a password is required to access the note.</summary>
 		FailureCannotUpdatePasswordProtectedNote,
 	}
 
@@ -1331,9 +1742,13 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INBalanceType : long {
+		/// <summary>Indicates that the units of the balance are not known.</summary>
 		Unknown = 0,
+		/// <summary>Indicates that a balance is in monetary units.</summary>
 		Money,
+		/// <summary>Indicates that a balance is in points.</summary>
 		Points,
+		/// <summary>Indicates that a balance is in miles.</summary>
 		Miles,
 	}
 
@@ -1342,8 +1757,11 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INCallCapability : long {
+		/// <summary>Indicates that the capability is not known.</summary>
 		Unknown = 0,
+		/// <summary>Indicates audio calls.</summary>
 		AudioCall,
+		/// <summary>Indicates video calls.</summary>
 		VideoCall,
 	}
 
@@ -1352,10 +1770,15 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INCallDestinationType : long {
+		/// <summary>Indicates that the call destination type is unknown.</summary>
 		Unknown = 0,
+		/// <summary>Indicates that the call destination is an ordinary number.</summary>
 		Normal,
+		/// <summary>Indicates that the call destination is an emergency number.</summary>
 		Emergency,
+		/// <summary>Indicates that the call destination is a voicemail.</summary>
 		Voicemail,
+		/// <summary>Indicates that the call destination is a redial of an earlier call.</summary>
 		Redial,
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -1368,10 +1791,15 @@ namespace Intents {
 	[Native]
 	[Flags]
 	public enum INCallRecordTypeOptions : ulong {
+		/// <summary>Indicates that outgoing calls should be searched.</summary>
 		Outgoing = (1 << 0),
+		/// <summary>Indicates that missed calls should be searched.</summary>
 		Missed = (1 << 1),
+		/// <summary>Indicates that received calls should be searched.</summary>
 		Received = (1 << 2),
+		/// <summary>Indicates that the most recent call by the user should be searched.</summary>
 		Latest = (1 << 3),
+		/// <summary>Indicates that voicemails should be searched.</summary>
 		Voicemail = (1 << 4),
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -1389,9 +1817,13 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INCancelRideIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
 	}
 
@@ -1400,11 +1832,17 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INCreateNoteIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
 	}
 
@@ -1413,11 +1851,17 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INCreateTaskListIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
 	}
 
@@ -1426,9 +1870,13 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INDateSearchType : long {
+		/// <summary>Indicates an unknown search criteria.</summary>
 		Unknown = 0,
+		/// <summary>Indicates a search by due date.</summary>
 		ByDueDate,
+		/// <summary>Indicates a search by modification date.</summary>
 		ByModifiedDate,
+		/// <summary>Indicates a search by creation date.</summary>
 		ByCreatedDate,
 	}
 
@@ -1439,13 +1887,21 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INGetVisualCodeIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate to the system that the intent needs further processing inside the app.</summary>
 		ContinueInApp,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further configuration must be done in the app before the intent can succeed.</summary>
 		FailureAppConfigurationRequired,
 	}
 
@@ -1454,7 +1910,9 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INLocationSearchType : long {
+		/// <summary>Indicates an unknown location search type.</summary>
 		Unknown = 0,
+		/// <summary>Indicates a search by location-based triggers.</summary>
 		ByLocationTrigger,
 	}
 
@@ -1464,49 +1922,75 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INMessageType : long {
+		/// <summary>Inidcates unspecified content.</summary>
 		Unspecified = 0,
+		/// <summary>Indicates text.</summary>
 		Text,
+		/// <summary>Indicates audio content.</summary>
 		Audio,
+		/// <summary>Indicates digital touch content.</summary>
 		DigitalTouch,
+		/// <summary>Indicates handwriting.</summary>
 		Handwriting,
+		/// <summary>Indicates a sticker.</summary>
 		Sticker,
+		/// <summary>Indicates "liked" tap-back data.</summary>
 		[Deprecated (PlatformName.iOS, 18, 1, message: "Use 'INMessageReaction' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 1, message: "Use 'INMessageReaction' instead.")]
 		TapbackLiked,
+		/// <summary>Indicates "disliked" tap-back data.</summary>
 		[Deprecated (PlatformName.iOS, 18, 1, message: "Use 'INMessageReaction' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 1, message: "Use 'INMessageReaction' instead.")]
 		TapbackDisliked,
+		/// <summary>Indicates "emphasized" tap-back data.</summary>
 		[Deprecated (PlatformName.iOS, 18, 1, message: "Use 'INMessageReaction' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 1, message: "Use 'INMessageReaction' instead.")]
 		TapbackEmphasized,
+		/// <summary>Indicates "loved" tap-back data.</summary>
 		[Deprecated (PlatformName.iOS, 18, 1, message: "Use 'INMessageReaction' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 1, message: "Use 'INMessageReaction' instead.")]
 		TapbackLoved,
+		/// <summary>Indicates "questioned" tap-back data..</summary>
 		[Deprecated (PlatformName.iOS, 18, 1, message: "Use 'INMessageReaction' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 1, message: "Use 'INMessageReaction' instead.")]
 		TapbackQuestioned,
+		/// <summary>Indicates "laughed" tap-back data.</summary>
 		[Deprecated (PlatformName.iOS, 18, 1, message: "Use 'INMessageReaction' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 1, message: "Use 'INMessageReaction' instead.")]
 		TapbackLaughed,
+		/// <summary>Indicates media with calendar data.</summary>
 		MediaCalendar,
+		/// <summary>Indicates media with location data.</summary>
 		MediaLocation,
+		/// <summary>Indicates media with card data.</summary>
 		MediaAddressCard,
+		/// <summary>Indicates media with image data.</summary>
 		MediaImage,
+		/// <summary>Indicates media with video data.</summary>
 		MediaVideo,
+		/// <summary>Indicates media with PassKit data.</summary>
 		MediaPass,
+		/// <summary>Indicates media with audio data.</summary>
 		MediaAudio,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		PaymentSent,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		PaymentRequest,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		PaymentNote,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		Animoji,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		ActivitySnippet,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		File,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		Link,
 		[iOS (17, 0), MacCatalyst (17, 0)]
@@ -1522,8 +2006,11 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INNoteContentType : long {
+		/// <summary>Indicates that the content type is not known.</summary>
 		Unknown = 0,
+		/// <summary>Indicates text content.</summary>
 		Text,
+		/// <summary>Indicates image content.</summary>
 		Image,
 	}
 
@@ -1532,9 +2019,13 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INNotebookItemType : long {
+		/// <summary>Indicates that what the search that operates over is not known.</summary>
 		Unknown = 0,
+		/// <summary>Indicates a search that operates over notes.</summary>
 		Note,
+		/// <summary>Indicates a search that operates over task lists.</summary>
 		TaskList,
+		/// <summary>Indicates a search that operates over tasks.</summary>
 		Task,
 	}
 
@@ -1543,12 +2034,19 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INRecurrenceFrequency : long {
+		/// <summary>Indicates an unknown frequency.</summary>
 		Unknown = 0,
+		/// <summary>Indicates a repetition every minute.</summary>
 		Minute,
+		/// <summary>Indicates an hourly repetition.</summary>
 		Hourly,
+		/// <summary>Indicates a daily repetition.</summary>
 		Daily,
+		/// <summary>Indicates a weekly repetition.</summary>
 		Weekly,
+		/// <summary>Indicates a monthly repetition.</summary>
 		Monthly,
+		/// <summary>Indicates an annual repetition.</summary>
 		Yearly,
 	}
 
@@ -1557,8 +2055,11 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INRequestPaymentCurrencyAmountUnsupportedReason : long {
+		/// <summary>The amount was too low.</summary>
 		AmountBelowMinimum = 1,
+		/// <summary>The amount was too high.</summary>
 		AmountAboveMaximum,
+		/// <summary>The currency was not supported.</summary>
 		CurrencyUnsupported,
 	}
 
@@ -1567,8 +2068,11 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INRequestPaymentPayerUnsupportedReason : long {
+		/// <summary>The payer's credentials were unverified.</summary>
 		CredentialsUnverified = 1,
+		/// <summary>The payer had no account.</summary>
 		NoAccount,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		NoValidHandle,
 	}
@@ -1578,7 +2082,9 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INRideFeedbackTypeOptions : ulong {
+		/// <summary>Indicates that the user must rate the driver.</summary>
 		Rate = (1 << 0),
+		/// <summary>Indicates that the user must specify a tip.</summary>
 		Tip = (1 << 1),
 	}
 
@@ -1587,15 +2093,25 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INSearchForAccountsIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate a failure in verifying credentials.</summary>
 		FailureCredentialsUnverified,
+		/// <summary>Developers should use this code to indicate a failure in finding the account.</summary>
 		FailureAccountNotFound,
+		/// <summary>To be added.</summary>
 		FailureTermsAndConditionsAcceptanceRequired,
+		/// <summary>To be added.</summary>
 		FailureNotEligible,
 	}
 
@@ -1604,11 +2120,17 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INSearchForNotebookItemsIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
 	}
 
@@ -1617,11 +2139,17 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INSendMessageRecipientUnsupportedReason : long {
+		/// <summary>Indicates that the recipient had no account.</summary>
 		NoAccount = 1,
+		/// <summary>Indicates that the recipient is offline.</summary>
 		Offline,
+		/// <summary>Indicates that the recipient was not enabled in the messaging service.</summary>
 		MessagingServiceNotEnabledForRecipient,
+		/// <summary>To be added.</summary>
 		NoValidHandle,
+		/// <summary>To be added.</summary>
 		RequestedHandleInvalid,
+		/// <summary>To be added.</summary>
 		NoHandleForLabel,
 		[Mac (14, 0), MacCatalyst (17, 0)]
 		RequiringInAppAuthentication,
@@ -1632,8 +2160,11 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INSendPaymentCurrencyAmountUnsupportedReason : long {
+		/// <summary>Indicates that the amount was too low.</summary>
 		AmountBelowMinimum = 1,
+		/// <summary>Indicates that the amount was too high.</summary>
 		AmountAboveMaximum,
+		/// <summary>Indicates that the currency was not supported.</summary>
 		CurrencyUnsupported,
 	}
 
@@ -1642,9 +2173,13 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INSendPaymentPayeeUnsupportedReason : long {
+		/// <summary>Indicates that the payee's credentials were unverified.</summary>
 		CredentialsUnverified = 1,
+		/// <summary>Indicates that the user lacks sufficient funds for the payment.</summary>
 		InsufficientFunds,
+		/// <summary>Indicates that the payee has no account.</summary>
 		NoAccount,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		NoValidHandle,
 	}
@@ -1654,9 +2189,13 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INSendRideFeedbackIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
 	}
 
@@ -1665,11 +2204,17 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INSetTaskAttributeIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
 	}
 
@@ -1678,8 +2223,11 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INSortType : long {
+		/// <summary>Indicates that the sort type is unknown.</summary>
 		Unknown = 0,
+		/// <summary>Indicates that the results are presented in the order in which they were received.</summary>
 		AsIs,
+		/// <summary>Indicates that the results are sorted by date.</summary>
 		ByDate,
 	}
 
@@ -1688,8 +2236,11 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INSpatialEvent : long {
+		/// <summary>Indicates that the trigger condition is not known.</summary>
 		Unknown = 0,
+		/// <summary>Indicates a trigger that is fired when arriving at the location.</summary>
 		Arrive,
+		/// <summary>Indicates a trigger that is fired when departing from the location.</summary>
 		Depart,
 	}
 
@@ -1698,8 +2249,11 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INTaskStatus : long {
+		/// <summary>Indicates that it is not known whether the task is complete.</summary>
 		Unknown = 0,
+		/// <summary>Indicates that the task is not yet complete.</summary>
 		NotCompleted,
+		/// <summary>Indicates that the task is complete.</summary>
 		Completed,
 	}
 
@@ -1707,8 +2261,11 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INTaskType : long {
+		/// <summary>To be added.</summary>
 		Unknown = 0,
+		/// <summary>To be added.</summary>
 		NotCompletable,
+		/// <summary>To be added.</summary>
 		Completable,
 	}
 
@@ -1719,13 +2276,21 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INTransferMoneyIntentResponseCode : long {
+		/// <summary>Indicates that no explicit response code was provided.</summary>
 		Unspecified = 0,
+		/// <summary>Developers should return this during the confirmation phase, indicating the extension's ability to handle the intent.</summary>
 		Ready,
+		/// <summary>Developers should use this code to indicate they have not finished processing.</summary>
 		InProgress,
+		/// <summary>Developers should use this response code to indicate that the extension successfully processed the intent.</summary>
 		Success,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent.</summary>
 		Failure,
+		/// <summary>Developers should use this code to indicate that they failed to process the intent and further processing must be done in the app.</summary>
 		FailureRequiringAppLaunch,
+		/// <summary>Developers should use this code to indicate a failure in verifying credentials.</summary>
 		FailureCredentialsUnverified,
+		/// <summary>Developers should use this code to indicate that the transfer could not be made due to insufficient funds.</summary>
 		FailureInsufficientFunds,
 	}
 
@@ -1736,14 +2301,21 @@ namespace Intents {
 	[Deprecated (PlatformName.MacCatalyst, 15, 0)]
 	[Native]
 	public enum INVisualCodeType : long {
+		/// <summary>The code semantics are not known.</summary>
 		Unknown = 0,
+		/// <summary>The code represents a contact.</summary>
 		Contact,
+		/// <summary>The code represents a request for payment.</summary>
 		RequestPayment,
+		/// <summary>The code makes a payment.</summary>
 		SendPayment,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		Transit,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		Bus,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		Subway,
 	}
@@ -1849,11 +2421,17 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INDailyRoutineSituation : long {
+		/// <summary>To be added.</summary>
 		Morning,
+		/// <summary>To be added.</summary>
 		Evening,
+		/// <summary>To be added.</summary>
 		Home,
+		/// <summary>To be added.</summary>
 		Work,
+		/// <summary>To be added.</summary>
 		School,
+		/// <summary>To be added.</summary>
 		Gym,
 		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
@@ -1873,7 +2451,9 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INUpcomingMediaPredictionMode : long {
+		/// <summary>To be added.</summary>
 		Default = 0,
+		/// <summary>To be added.</summary>
 		OnlyPredictSuggestedIntents = 1,
 	}
 
@@ -1881,7 +2461,9 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INRelevantShortcutRole : long {
+		/// <summary>To be added.</summary>
 		Action,
+		/// <summary>To be added.</summary>
 		Information,
 	}
 
@@ -2349,106 +2931,131 @@ namespace Intents {
 		[Field (null)]
 		None = -1,
 
+		/// <summary>Start an audio call.</summary>
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'StartCall' instead.")]
 		[Unavailable (PlatformName.MacOSX)]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'StartCall' instead.")]
 		[Field ("INStartAudioCallIntentIdentifier")]
 		StartAudioCall,
 
+		/// <summary>Start a video call.</summary>
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'StartCall' instead.")]
 		[Unavailable (PlatformName.MacOSX)]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'StartCall' instead.")]
 		[Field ("INStartVideoCallIntentIdentifier")]
 		StartVideoCall,
 
+		/// <summary>Search the device call log.</summary>
 		[Unavailable (PlatformName.MacOSX)]
 		[Field ("INSearchCallHistoryIntentIdentifier")]
 		SearchCallHistory,
 
+		/// <summary>Set the playback device in a car.</summary>
 		[Unavailable (PlatformName.MacOSX)]
 		[Field ("INSetAudioSourceInCarIntentIdentifier")]
 		SetAudioSourceInCar,
 
+		/// <summary>Set the climate controls in a car.</summary>
 		[Unavailable (PlatformName.MacOSX)]
 		[Field ("INSetClimateSettingsInCarIntentIdentifier")]
 		SetClimateSettingsInCar,
 
+		/// <summary>Set the defroster settings in a car.</summary>
 		[Unavailable (PlatformName.MacOSX)]
 		[Field ("INSetDefrosterSettingsInCarIntentIdentifier")]
 		SetDefrosterSettingsInCar,
 
+		/// <summary>Set the seat configuration in a car.</summary>
 		[Unavailable (PlatformName.MacOSX)]
 		[Field ("INSetSeatSettingsInCarIntentIdentifier")]
 		SetSeatSettingsInCar,
 
+		/// <summary>Select a user configuration in a car.</summary>
 		[Unavailable (PlatformName.MacOSX)]
 		[Field ("INSetProfileInCarIntentIdentifier")]
 		SetProfileInCar,
 
+		/// <summary>Save a list of user preferences.</summary>
 		[Unavailable (PlatformName.MacOSX)]
 		[Field ("INSaveProfileInCarIntentIdentifier")]
 		SaveProfileInCar,
 
+		/// <summary>Start a workout.</summary>
 		[Unavailable (PlatformName.MacOSX)]
 		[Field ("INStartWorkoutIntentIdentifier")]
 		StartWorkout,
 
+		/// <summary>Pause an active workout.</summary>
 		[Unavailable (PlatformName.MacOSX)]
 		[Field ("INPauseWorkoutIntentIdentifier")]
 		PauseWorkout,
 
+		/// <summary>Complete an active workout.</summary>
 		[Unavailable (PlatformName.MacOSX)]
 		[Field ("INEndWorkoutIntentIdentifier")]
 		EndWorkout,
 
+		/// <summary>Cancel an active workout.</summary>
 		[Unavailable (PlatformName.MacOSX)]
 		[Field ("INCancelWorkoutIntentIdentifier")]
 		CancelWorkout,
 
+		/// <summary>Resume a paused workout.</summary>
 		[Unavailable (PlatformName.MacOSX)]
 		[Field ("INResumeWorkoutIntentIdentifier")]
 		ResumeWorkout,
 
+		/// <summary>Set a radio station in a car.</summary>
 		[Unavailable (PlatformName.MacOSX)]
 		[Field ("INSetRadioStationIntentIdentifier")]
 		SetRadioStation,
 
+		/// <summary>Send a text or messaging-app message.</summary>
 		[Unavailable (PlatformName.MacOSX)]
 		[Field ("INSendMessageIntentIdentifier")]
 		SendMessage,
 
+		/// <summary>Search messages on the device.</summary>
 		[Unavailable (PlatformName.MacOSX)]
 		[Field ("INSearchForMessagesIntentIdentifier")]
 		SearchForMessages,
 
+		/// <summary>Change the metadata associated with a message.</summary>
 		[Unavailable (PlatformName.MacOSX)]
 		[Field ("INSetMessageAttributeIntentIdentifier")]
 		SetMessageAttribute,
 
+		/// <summary>Send money.</summary>
 		[Unavailable (PlatformName.MacOSX)]
 		[Field ("INSendPaymentIntentIdentifier")]
 		SendPayment,
 
+		/// <summary>Request money.</summary>
 		[Unavailable (PlatformName.MacOSX)]
 		[Field ("INRequestPaymentIntentIdentifier")]
 		RequestPayment,
 
+		/// <summary>Search for photos.</summary>
 		[Unavailable (PlatformName.MacOSX)]
 		[Field ("INSearchForPhotosIntentIdentifier")]
 		SearchForPhotos,
 
+		/// <summary>Start a slideshow.</summary>
 		[Unavailable (PlatformName.MacOSX)]
 		[Field ("INStartPhotoPlaybackIntentIdentifier")]
 		StartPhotoPlayback,
 
+		/// <summary>Retrieve a list of available options for a ride.</summary>
 		[Unavailable (PlatformName.MacOSX)]
 		[Field ("INListRideOptionsIntentIdentifier")]
 		ListRideOptions,
 
+		/// <summary>Request a ride.</summary>
 		[Unavailable (PlatformName.MacOSX)]
 		[Field ("INRequestRideIntentIdentifier")]
 		RequestRide,
 
+		/// <summary>Retrieve the current status of a ride.</summary>
 		[Unavailable (PlatformName.MacOSX)]
 		[Field ("INGetRideStatusIntentIdentifier")]
 		GetRideStatus,
@@ -2471,33 +3078,43 @@ namespace Intents {
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	enum INPersonHandleLabel {
+		/// <summary>Indicates that no label is specified.</summary>
 		[Field (null)]
 		None,
 
+		/// <summary>Indicates a handle for the user's home.</summary>
 		[Field ("INPersonHandleLabelHome")]
 		Home,
 
+		/// <summary>Indicates a handle for the user's work.</summary>
 		[Field ("INPersonHandleLabelWork")]
 		Work,
 
+		/// <summary>Indicates a handle for the user's iPhone.</summary>
 		[Field ("INPersonHandleLabeliPhone")]
 		iPhone,
 
+		/// <summary>Indicates a handle for one of the user's mobile devices.</summary>
 		[Field ("INPersonHandleLabelMobile")]
 		Mobile,
 
+		/// <summary>Indicates the primary handle for the user.</summary>
 		[Field ("INPersonHandleLabelMain")]
 		Main,
 
+		/// <summary>Indicates a handle for the user's home fax.</summary>
 		[Field ("INPersonHandleLabelHomeFax")]
 		HomeFax,
 
+		/// <summary>Indicates a handle for the user's work fax.</summary>
 		[Field ("INPersonHandleLabelWorkFax")]
 		WorkFax,
 
+		/// <summary>Indicates a handle for the user's pager.</summary>
 		[Field ("INPersonHandleLabelPager")]
 		Pager,
 
+		/// <summary>Indicates a handle for a miscellaneous category.</summary>
 		[Field ("INPersonHandleLabelOther")]
 		Other,
 
@@ -2511,59 +3128,71 @@ namespace Intents {
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	enum INPersonRelationship {
+		/// <summary>A relationship is not known.</summary>
 		[Field (null)]
 		None,
 
+		/// <summary>Indicates a father.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("INPersonRelationshipFather")]
 		Father,
 
+		/// <summary>Indicates a mother.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("INPersonRelationshipMother")]
 		Mother,
 
+		/// <summary>Indicates a parent.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("INPersonRelationshipParent")]
 		Parent,
 
+		/// <summary>Indicates a brother.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("INPersonRelationshipBrother")]
 		Brother,
 
+		/// <summary>Indicates a sister.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("INPersonRelationshipSister")]
 		Sister,
 
+		/// <summary>Indicates a child.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("INPersonRelationshipChild")]
 		Child,
 
+		/// <summary>Indicates a friend.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("INPersonRelationshipFriend")]
 		Friend,
 
+		/// <summary>Indicates a spouse.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("INPersonRelationshipSpouse")]
 		Spouse,
 
+		/// <summary>Indicates a partner.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("INPersonRelationshipPartner")]
 		Partner,
 
+		/// <summary>Indicates an assistant.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("INPersonRelationshipAssistant")]
 		Assistant,
 
+		/// <summary>Indicates a manager.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("INPersonRelationshipManager")]
@@ -2585,68 +3214,89 @@ namespace Intents {
 	[Unavailable (PlatformName.MacOSX)]
 	[MacCatalyst (13, 1)]
 	enum INWorkoutNameIdentifier {
+		/// <summary>Indicates an outdoor run.</summary>
 		[Field ("INWorkoutNameIdentifierRun")]
 		Run,
 
+		/// <summary>Indicates not much of a workout.</summary>
 		[Field ("INWorkoutNameIdentifierSit")]
 		Sit,
 
+		/// <summary>Indicates a step-walking workout.</summary>
 		[Field ("INWorkoutNameIdentifierSteps")]
 		Steps,
 
+		/// <summary>Indicates a workout that's somewhat better than <see cref="F:Intents.INWorkoutNameIdentifier.Sit" />.</summary>
 		[Field ("INWorkoutNameIdentifierStand")]
 		Stand,
 
+		/// <summary>Indicates a general movement workout.</summary>
 		[Field ("INWorkoutNameIdentifierMove")]
 		Move,
 
+		/// <summary>Indicates an outdoor walk.</summary>
 		[Field ("INWorkoutNameIdentifierWalk")]
 		Walk,
 
+		/// <summary>Indicates a yoga workout.</summary>
 		[Field ("INWorkoutNameIdentifierYoga")]
 		Yoga,
 
+		/// <summary>Indicates a dance workout.</summary>
 		[Field ("INWorkoutNameIdentifierDance")]
 		Dance,
 
+		/// <summary>Indicates a cross-training workout.</summary>
 		[Field ("INWorkoutNameIdentifierCrosstraining")]
 		Crosstraining,
 
+		/// <summary>Indicates a elliptical workout.</summary>
 		[Field ("INWorkoutNameIdentifierElliptical")]
 		Elliptical,
 
+		/// <summary>Indicates a rowing workout.</summary>
 		[Field ("INWorkoutNameIdentifierRower")]
 		Rower,
 
+		/// <summary>Indicates an outdoor cycling workout.</summary>
 		[Field ("INWorkoutNameIdentifierCycle")]
 		Cycle,
 
+		/// <summary>Indicates a stair-walking workout.</summary>
 		[Field ("INWorkoutNameIdentifierStairs")]
 		Stairs,
 
+		/// <summary>Indicates an unknown workout.</summary>
 		[Field ("INWorkoutNameIdentifierOther")]
 		Other,
 
+		/// <summary>Indicates an indoor run.</summary>
 		[Field ("INWorkoutNameIdentifierIndoorrun")]
 		Indoorrun,
 
+		/// <summary>Indicates an indoor cycling workout.</summary>
 		[Field ("INWorkoutNameIdentifierIndoorcycle")]
 		Indoorcycle,
 
+		/// <summary>Indicates an indoor walking workout.</summary>
 		[Field ("INWorkoutNameIdentifierIndoorwalk")]
 		Indoorwalk,
 
+		/// <summary>Indicates a workout of general exercise.</summary>
 		[Field ("INWorkoutNameIdentifierExercise")]
 		Exercise,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("INWorkoutNameIdentifierHike")]
 		Hike,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("INWorkoutNameIdentifierHighIntensityIntervalTraining")]
 		HighIntensityIntervalTraining,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("INWorkoutNameIdentifierSwim")]
 		Swim,
@@ -4114,6 +4764,9 @@ namespace Intents {
 		[NullAllowed, Export ("identifier")]
 		NSString IdentifierString { get; }
 
+		/// <summary>Gets the <see cref="T:Intents.INIntentIdentifier" /> that uniquely identifies the intent instance, or <see langword="null" /> if there is no identifier.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Unavailable (PlatformName.MacOSX)]
 		[NoTV]
 		[MacCatalyst (13, 1)]
@@ -4820,6 +5473,12 @@ namespace Intents {
 		[Export ("label"), NullAllowed, Protected]
 		NSString WeakLabel { get; }
 
+		/// <summary>Gets a disambiguating label for the user.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("INPersonHandleLabelExtensions.GetValue (WeakLabel)")]
 		INPersonHandleLabel Label { get; }
@@ -5528,6 +6187,9 @@ namespace Intents {
 		[Export ("bookingIdentifier")]
 		string BookingIdentifier { get; set; }
 
+		/// <summary>Gets or sets whether the reservation is satisfiable.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bookingAvailable")]
 		bool BookingAvailable { [Bind ("isBookingAvailable")] get; set; }
 
@@ -5733,12 +6395,21 @@ namespace Intents {
 		[NullAllowed, Export ("completionUserActivity", ArgumentSemantic.Strong)]
 		NSUserActivity CompletionUserActivity { get; set; }
 
+		/// <summary>Gets whether the ride was completed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("completed")]
 		bool Completed { [Bind ("isCompleted")] get; }
 
+		/// <summary>Indicates that the ride has been canceled successfully.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("canceled")]
 		bool Canceled { [Bind ("isCanceled")] get; }
 
+		/// <summary>Gets whether the pickup failed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("missedPickup")]
 		bool MissedPickup { [Bind ("isMissedPickup")] get; }
 
@@ -5749,6 +6420,9 @@ namespace Intents {
 		[Export ("feedbackType", ArgumentSemantic.Assign)]
 		INRideFeedbackTypeOptions FeedbackType { get; }
 
+		/// <summary>Gets whether there is an outstanding charge on the ride.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("outstanding")]
 		bool Outstanding { [Bind ("isOutstanding")] get; }
 
@@ -10064,6 +10738,9 @@ namespace Intents {
 		[Export ("parameterClass")]
 		Class ParameterClass { get; }
 
+		/// <summary>Gets the type that the parameter represents.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Class.Lookup (ParameterClass)")]
 		Type ParameterType { get; }
 

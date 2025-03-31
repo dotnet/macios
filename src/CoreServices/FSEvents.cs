@@ -120,6 +120,9 @@ namespace CoreServices {
 		public FSEventStreamEventFlags Flags { get; internal set; }
 		public ulong FileId { get; internal set; }
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("[FSEvent: Id={0}, Path={1}, Flags={2}, FileId={3}]", Id, Path, Flags, FileId);
@@ -132,6 +135,10 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern IntPtr FSEventsCopyUUIDForDevice (ulong device);
 
+		/// <param name="device">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static Guid GetUuidForDevice (ulong device)
 		{
 			if (device <= 0) {
@@ -160,6 +167,11 @@ namespace CoreServices {
 		static extern ulong FSEventsGetLastEventIdForDeviceBeforeTime (
 			ulong device, double timeInSecondsSinceEpoch);
 
+		/// <param name="device">To be added.</param>
+		///         <param name="timeInSecondsSinceEpoch">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static ulong GetLastEventIdForDeviceBeforeTime (ulong device, double timeInSecondsSinceEpoch)
 		{
 			return FSEventsGetLastEventIdForDeviceBeforeTime (device, timeInSecondsSinceEpoch);
@@ -168,6 +180,11 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern byte FSEventsPurgeEventsForDeviceUpToEventId (ulong device, ulong eventId);
 
+		/// <param name="device">To be added.</param>
+		///         <param name="eventId">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool PurgeEventsForDeviceUpToEventId (ulong device, ulong eventId)
 		{
 			return FSEventsPurgeEventsForDeviceUpToEventId (device, eventId) != 0;
@@ -390,6 +407,13 @@ namespace CoreServices {
 			InitializeHandle (handle);
 		}
 
+		/// <param name="allocator">To be added.</param>
+		///         <param name="pathsToWatch">To be added.</param>
+		///         <param name="sinceWhenId">To be added.</param>
+		///         <param name="latency">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public FSEventStream (CFAllocator? allocator, NSArray pathsToWatch,
 			ulong sinceWhenId, TimeSpan latency, FSEventStreamCreateFlags flags)
 			: this (new () {
@@ -402,6 +426,11 @@ namespace CoreServices {
 		{
 		}
 
+		/// <param name="pathsToWatch">To be added.</param>
+		///         <param name="latency">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public FSEventStream (string [] pathsToWatch, TimeSpan latency, FSEventStreamCreateFlags flags)
 			: this (new () {
 				PathsToWatch = pathsToWatch ?? throw new ArgumentNullException (nameof (pathsToWatch)),

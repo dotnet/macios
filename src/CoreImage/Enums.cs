@@ -138,8 +138,11 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CIRenderDestinationAlphaMode : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Premultiplied = 1,
+		/// <summary>To be added.</summary>
 		Unpremultiplied = 2,
 	}
 }

@@ -145,6 +145,9 @@ namespace AppKit {
 			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.13")]
 		[UnsupportedOSPlatform ("maccatalyst")]
@@ -155,6 +158,9 @@ namespace AppKit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.13")]
 		[UnsupportedOSPlatform ("maccatalyst")]

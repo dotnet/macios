@@ -617,10 +617,18 @@ namespace GameController {
 		[Static, Export ("controllers")]
 		GCController [] Controllers { get; }
 
+		/// <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Starts discovery of nearby wireless controllers, and runs the provided completion handler when all discoverable controllers are discovered.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("startWirelessControllerDiscoveryWithCompletionHandler:")]
 		[Async]
 		void StartWirelessControllerDiscovery ([NullAllowed] Action completionHandler);
 
+		/// <summary>Stops discovering nearby wireless controllers.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("stopWirelessControllerDiscovery")]
 		void StopWirelessControllerDiscovery ();
 

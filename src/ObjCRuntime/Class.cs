@@ -84,6 +84,11 @@ namespace ObjCRuntime {
 			}
 		}
 
+		/// <param name="name">The name of the Objective-C class.</param>
+		///         <summary>Creates a class from a name.</summary>
+		///         <remarks>
+		///           <para>Xamarin.iOS will look up the class in the Objective-C runtime and return the instance or throw an ArgumentException if the class could not be found.</para>
+		///         </remarks>
 		public Class (string name)
 		{
 			this.handle = objc_getClass (name);
@@ -92,6 +97,11 @@ namespace ObjCRuntime {
 				ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (name), $"Unknown class {name}");
 		}
 
+		/// <param name="type">A managed type.</param>
+		///         <summary>Creates a class from the specified Type.</summary>
+		///         <remarks>
+		///           <para>This will trigger the class registration with the Xamarin.iOS runtime.</para>
+		///         </remarks>
 		public Class (Type type)
 		{
 			this.handle = GetHandle (type);
@@ -141,6 +151,11 @@ namespace ObjCRuntime {
 			}
 		}
 
+		/// <param name="name">The name of the class to lookup.</param>
+		///         <summary>Returns the unmanaged handle to the Objective-C Class.</summary>
+		///         <returns>The unmanaged handle for the specified Objective-C class.</returns>
+		///         <remarks>
+		///         </remarks>
 		public static NativeHandle GetHandle (string name)
 		{
 			return objc_getClass (name);
@@ -169,11 +184,31 @@ namespace ObjCRuntime {
 		// class (it will be faster than GetHandle, but it will
 		// not compile unless the class in question actually exists
 		// as an ObjectiveC class in the binary).
+		/// <param name="name">Type for an NSObject-derived class</param>
+		///         <summary>Gets the Objective-C handle to the given type.</summary>
+		///         <returns>The Objective-C handle to the object.</returns>
+		///         <remarks>
+		///           <para>
+		///       This method looks up the Objective-C handle for the specified type. This method is special-cased by the AOT compiler to become an inlined, static reference to the type. This is significantly faster that calling <see cref="M:ObjCRuntime.Selector.GetHandle(System.String)" />, but it also means that the class must exist in the executable (or in a framework the executable is linked with).
+		///     </para>
+		///         </remarks>
 		public static NativeHandle GetHandleIntrinsic (string name)
 		{
 			return objc_getClass (name);
 		}
 
+		/// <param name="type">Type for an NSObject-derived class</param>
+		///         <summary>Gets the Objective-C handle of the given type.</summary>
+		///         <returns>The Objective-C handle to the object.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    This method looks up the Objective-C handle for the specified type, or registers the specified type with the Objective-C runtime if it was not previously registered.
+		/// 	  </para>
+		///           <para>
+		/// 	    The class must be derived from NSObject.   If the class is flagged with the [Register] attribute, the name specified in this Register attribute is the name that will be used for looking up or register the class.
+		///
+		/// 	  </para>
+		///         </remarks>
 		public static NativeHandle GetHandle (Type type)
 		{
 			return GetClassHandle (type, true, out _);

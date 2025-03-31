@@ -1656,24 +1656,45 @@ namespace SceneKit {
 	[Deprecated (PlatformName.MacOSX, 10, 10)]
 	[Static]
 	interface SCNLightAttribute {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightAttenuationStartKey")]
 		NSString AttenuationStartKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightAttenuationEndKey")]
 		NSString AttenuationEndKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightAttenuationFalloffExponentKey")]
 		NSString AttenuationFalloffExponentKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightSpotInnerAngleKey")]
 		NSString SpotInnerAngleKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightSpotOuterAngleKey")]
 		NSString SpotOuterAngleKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightShadowNearClippingKey")]
 		NSString ShadowNearClippingKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SCNLightShadowFarClippingKey")]
 		NSString ShadowFarClippingKey { get; }
 	}

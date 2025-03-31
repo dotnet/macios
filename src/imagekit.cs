@@ -42,38 +42,49 @@ using NativeHandle = System.IntPtr;
 namespace ImageKit {
 
 	enum IKToolMode { // Constants introduced in 10.5 and 10.6
+		/// <summary>To be added.</summary>
 		[Field ("IKToolModeAnnotate")]
 		Annotate,
 
+		/// <summary>To be added.</summary>
 		[Field ("IKToolModeCrop")]
 		Crop,
 
+		/// <summary>To be added.</summary>
 		[Field ("IKToolModeMove")]
 		Move,
 
+		/// <summary>To be added.</summary>
 		[Field ("IKToolModeNone")]
 		None,
 
+		/// <summary>To be added.</summary>
 		[Field ("IKToolModeRotate")]
 		Rotate,
 
+		/// <summary>To be added.</summary>
 		[Field ("IKToolModeSelect")]
 		Select,
 
+		/// <summary>To be added.</summary>
 		[Field ("IKToolModeSelectEllipse")]
 		SelectEllipse,
 
+		/// <summary>To be added.</summary>
 		[Field ("IKToolModeSelectLasso")]
 		SelectLasso,
 
+		/// <summary>To be added.</summary>
 		[Field ("IKToolModeSelectRect")]
 		SelectRect,
 	}
 
 	enum IKOverlayType { // Constants introduced in 10.5
+		/// <summary>To be added.</summary>
 		[Field ("IKOverlayTypeBackground")]
 		Background,
 
+		/// <summary>To be added.</summary>
 		[Field ("IKOverlayTypeImage")]
 		Image,
 	}
@@ -603,31 +614,55 @@ namespace ImageKit {
 		NativeHandle Constructor (CGRect frame);
 
 		//Having a weak and strong datasource seems to work.
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("dataSource", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDataSource { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDataSource")]
 		IIKImageBrowserDataSource DataSource { get; set; }
 
 		[Export ("reloadData")]
 		void ReloadData ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		IIKImageBrowserDelegate Delegate { get; set; }
 
 		//@category IKImageBrowserView (IKAppearance)
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("cellsStyleMask")]
 		IKCellsStyle CellsStyleMask { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("constrainsToOriginalSize")]
 		bool ConstrainsToOriginalSize { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("backgroundLayer")]
 		CALayer BackgroundLayer { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("foregroundLayer")]
 		CALayer ForegroundLayer { get; set; }
 
@@ -638,18 +673,30 @@ namespace ImageKit {
 		IKImageBrowserCell GetCellAt (nint itemIndex);
 
 		//@category IKImageBrowserView (IKBrowsing)
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("zoomValue")]
 		float ZoomValue { get; set; } /* float, not CGFloat */
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("contentResizingMask")]
 		NSViewResizingMask ContentResizingMask { get; set; }
 
 		[Export ("scrollIndexToVisible:")]
 		void ScrollIndexToVisible (nint index);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("cellSize")]
 		CGSize CellSize { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("intercellSpacing")]
 		CGSize IntercellSpacing { get; set; }
 
@@ -674,31 +721,55 @@ namespace ImageKit {
 		[Export ("rectOfRow:")]
 		CGRect GetRectOfRow (nint rowIndex);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("numberOfRows")]
 		nint RowCount { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("numberOfColumns")]
 		nint ColumnCount { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("canControlQuickLookPanel")]
 		bool CanControlQuickLookPanel { get; set; }
 
 		//@category IKImageBrowserView (IKSelectionReorderingAndGrouping)
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("selectionIndexes")]
 		NSIndexSet SelectionIndexes { get; }
 
 		[Export ("setSelectionIndexes:byExtendingSelection:")]
 		void SelectItemsAt (NSIndexSet indexes, bool extendSelection);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allowsMultipleSelection")]
 		bool AllowsMultipleSelection { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allowsEmptySelection")]
 		bool AllowsEmptySelection { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allowsReordering")]
 		bool AllowsReordering { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("animates")]
 		bool Animates { get; set; }
 
@@ -712,6 +783,9 @@ namespace ImageKit {
 		bool IsGroupExpanded (nint index);
 
 		//@category IKImageBrowserView (IKDragNDrop)
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("draggingDestinationDelegate", ArgumentSemantic.Weak)]
 		INSDraggingDestination DraggingDestinationDelegate { get; set; }
 
@@ -721,6 +795,9 @@ namespace ImageKit {
 		[Export ("dropOperation")]
 		IKImageBrowserDropOperation DropOperation ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("allowsDroppingOnItems")]
 		bool AllowsDroppingOnItems { get; set; }
 
@@ -728,21 +805,39 @@ namespace ImageKit {
 		void SetDropIndex (nint index, IKImageBrowserDropOperation operation);
 
 		// Keys for the view options, set with base.setValue
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserBackgroundColorKey")]
 		NSString BackgroundColorKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserSelectionColorKey")]
 		NSString SelectionColorKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserCellsOutlineColorKey")]
 		NSString CellsOutlineColorKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserCellsTitleAttributesKey")]
 		NSString CellsTitleAttributesKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserCellsHighlightedTitleAttributesKey")]
 		NSString CellsHighlightedTitleAttributesKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserCellsSubtitleAttributesKey")]
 		NSString CellsSubtitleAttributesKey { get; }
 	}
@@ -777,21 +872,39 @@ namespace ImageKit {
 		NSDictionary GetGroup (IKImageBrowserView aBrowser, nint index);
 
 		// Keys for Dictionary returned by GetGroup
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserGroupRangeKey")]
 		NSString GroupRangeKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserGroupBackgroundColorKey")]
 		NSString GroupBackgroundColorKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserGroupTitleKey")]
 		NSString GroupTitleKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserGroupStyleKey")]
 		NSString GroupStyleKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserGroupHeaderLayer")]
 		NSString GroupHeaderLayer { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserGroupFooterLayer")]
 		NSString GroupFooterLayer { get; }
 	}
@@ -800,73 +913,139 @@ namespace ImageKit {
 	[Model]
 	[Protocol (IsInformal = true)]
 	interface IKImageBrowserItem {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("imageUID")]
 		string ImageUID { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("imageRepresentationType")]
 		NSString ImageRepresentationType { get; }
 
 		//possible strings returned by ImageRepresentationType
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserPathRepresentationType")]
 		NSString PathRepresentationType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserNSURLRepresentationType")]
 		NSString NSURLRepresentationType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserNSImageRepresentationType")]
 		NSString NSImageRepresentationType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserCGImageRepresentationType")]
 		NSString CGImageRepresentationType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserCGImageSourceRepresentationType")]
 		NSString CGImageSourceRepresentationType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserNSDataRepresentationType")]
 		NSString NSDataRepresentationType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserNSBitmapImageRepresentationType")]
 		NSString NSBitmapImageRepresentationType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserQTMovieRepresentationType")]
 		NSString QTMovieRepresentationType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserQTMoviePathRepresentationType")]
 		NSString QTMoviePathRepresentationType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserQCCompositionRepresentationType")]
 		NSString QCCompositionRepresentationType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserQCCompositionPathRepresentationType")]
 		NSString QCCompositionPathRepresentationType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserQuickLookPathRepresentationType")]
 		NSString QuickLookPathRepresentationType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserIconRefPathRepresentationType")]
 		NSString IconRefPathRepresentationType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserIconRefRepresentationType")]
 		NSString IconRefRepresentationType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKImageBrowserPDFPageRepresentationType")]
 		NSString PDFPageRepresentationType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("imageRepresentation")]
 		NSObject ImageRepresentation { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("imageVersion")]
 		nint ImageVersion { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("imageTitle")]
 		string ImageTitle { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("imageSubtitle")]
 		string ImageSubtitle { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isSelectable")]
 		bool IsSelectable { get; }
 	}
@@ -895,14 +1074,23 @@ namespace ImageKit {
 	[BaseType (typeof (NSPanel))]
 	[DisableDefaultCtor] // crash when disposed, sharedImageEditPanel must be used
 	interface IKImageEditPanel {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("sharedImageEditPanel")]
 		IKImageEditPanel SharedPanel { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("dataSource", ArgumentSemantic.Assign), NullAllowed]
 		IIKImageEditPanelDataSource DataSource { get; set; }
 
 #if !XAMCORE_5_0
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'FilterArray' property instead.")]
 		[Wrap ("FilterArray", IsVirtual = true)]
 		NSArray filterArray { get; }
@@ -921,6 +1109,9 @@ namespace ImageKit {
 	[Model]
 	[Protocol]
 	interface IKImageEditPanelDataSource {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("image")]
 		CGImage Image { get; }
@@ -932,15 +1123,27 @@ namespace ImageKit {
 		[Export ("thumbnailWithMaximumSize:")]
 		CGImage GetThumbnail (CGSize maximumSize);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("imageProperties")]
 		NSDictionary ImageProperties { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hasAdjustMode")]
 		bool HasAdjustMode { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hasEffectsMode")]
 		bool HasEffectsMode { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hasDetailsMode")]
 		bool HasDetailsMode { get; }
 	}
@@ -951,42 +1154,81 @@ namespace ImageKit {
 		NativeHandle Constructor (CGRect frameRect);
 
 		//There is no protocol for this delegate.  used to respond to messages in the responder chain
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject Delegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("zoomFactor")]
 		nfloat ZoomFactor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rotationAngle")]
 		nfloat RotationAngle { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("currentToolMode")]
 		string CurrentToolMode { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("autoresizes")]
 		bool Autoresizes { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hasHorizontalScroller")]
 		bool HasHorizontalScroller { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hasVerticalScroller")]
 		bool HasVerticalScroller { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("autohidesScrollers")]
 		bool AutohidesScrollers { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("supportsDragAndDrop")]
 		bool SupportsDragAndDrop { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("editable")]
 		bool Editable { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("doubleClickOpensImageEditPanel")]
 		bool DoubleClickOpensImageEditPanel { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("imageCorrection", ArgumentSemantic.Assign)]
 		CIFilter ImageCorrection { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("backgroundColor", ArgumentSemantic.Assign)]
 		NSColor BackgroundColor { get; set; }
 
@@ -1001,12 +1243,21 @@ namespace ImageKit {
 		[Export ("setImageWithURL:")]
 		void SetImageWithURL (NSUrl url);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("image")]
 		CGImage Image { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("imageSize")]
 		CGSize ImageSize { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("imageProperties")]
 		NSDictionary ImageProperties { get; }
 
@@ -1073,6 +1324,9 @@ namespace ImageKit {
 
 	[BaseType (typeof (NSPanel))]
 	interface IKPictureTaker {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("pictureTaker")]
 		IKPictureTaker SharedPictureTaker { get; }
@@ -1090,70 +1344,130 @@ namespace ImageKit {
 		[Export ("popUpRecentsMenuForView:withDelegate:didEndSelector:contextInfo:")]
 		void PopUpRecentsMenu (NSView aView, NSObject aDelegate, Selector didEndSelector, IntPtr contextInfo);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("inputImage")]
 		NSImage InputImage { get; set; }
 
 		[Export ("outputImage")]
 		NSImage GetOutputImage ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("mirroring")]
 		bool Mirroring { get; set; }
 
 		//Use with NSKeyValueCoding to customize the pictureTaker panel
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKPictureTakerAllowsVideoCaptureKey")]
 		NSString AllowsVideoCaptureKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKPictureTakerAllowsFileChoosingKey")]
 		NSString AllowsFileChoosingKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKPictureTakerShowRecentPictureKey")]
 		NSString ShowRecentPictureKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKPictureTakerUpdateRecentPictureKey")]
 		NSString UpdateRecentPictureKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKPictureTakerAllowsEditingKey")]
 		NSString AllowsEditingKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKPictureTakerShowEffectsKey")]
 		NSString ShowEffectsKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKPictureTakerInformationalTextKey")]
 		NSString InformationalTextKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKPictureTakerImageTransformsKey")]
 		NSString ImageTransformsKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKPictureTakerOutputImageMaxSizeKey")]
 		NSString OutputImageMaxSizeKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKPictureTakerCropAreaSizeKey")]
 		NSString CropAreaSizeKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKPictureTakerShowAddressBookPictureKey")]
 		NSString ShowAddressBookPictureKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKPictureTakerShowEmptyPictureKey")]
 		NSString ShowEmptyPictureKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKPictureTakerRemainOpenAfterValidateKey")]
 		NSString RemainOpenAfterValidateKey { get; }
 	}
 
 	[BaseType (typeof (NSObject), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (IKSaveOptionsDelegate) })]
 	interface IKSaveOptions {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("imageProperties")]
 		NSDictionary ImageProperties { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("imageUTType")]
 		string ImageUTType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("userSelection")]
 		NSDictionary UserSelection { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		IIKSaveOptionsDelegate Delegate { get; set; }
 
@@ -1185,45 +1499,84 @@ namespace ImageKit {
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frameRect);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		IIKScannerDeviceViewDelegate Delegate { get; set; }
 
 		[Export ("scannerDevice", ArgumentSemantic.Assign)]
 		ICScannerDevice ScannerDevice { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("mode")]
 		IKScannerDeviceViewDisplayMode DisplayMode { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hasDisplayModeSimple")]
 		bool HasDisplayModeSimple { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hasDisplayModeAdvanced")]
 		bool HasDisplayModeAdvanced { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("transferMode")]
 		IKScannerDeviceViewTransferMode TransferMode { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scanControlLabel", ArgumentSemantic.Copy)]
 		string ScanControlLabel { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("overviewControlLabel", ArgumentSemantic.Copy)]
 		string OverviewControlLabel { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displaysDownloadsDirectoryControl")]
 		bool DisplaysDownloadsDirectoryControl { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("downloadsDirectory", ArgumentSemantic.Retain)]
 		NSUrl DownloadsDirectory { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("documentName", ArgumentSemantic.Copy)]
 		string DocumentName { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displaysPostProcessApplicationControl")]
 		bool DisplaysPostProcessApplicationControl { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("postProcessApplication", ArgumentSemantic.Retain)]
 		NSUrl PostProcessApplication { get; set; }
 	}
@@ -1249,11 +1602,17 @@ namespace ImageKit {
 
 	[BaseType (typeof (NSObject))]
 	interface IKSlideshow {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("sharedSlideshow")]
 		IKSlideshow SharedSlideshow { get; }
 
 #if !XAMCORE_5_0
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'AutoPlayDelay' property instead.")]
 		[Wrap ("AutoPlayDelay", IsVirtual = true)]
 		double autoPlayDelay { get; set; }
@@ -1274,6 +1633,9 @@ namespace ImageKit {
 		[Export ("reloadSlideshowItemAtIndex:")]
 		void ReloadSlideshowItem (nint index);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("indexOfCurrentSlideshowItem")]
 		nint IndexOfCurrentSlideshowItem { get; }
 
@@ -1285,48 +1647,93 @@ namespace ImageKit {
 		[Export ("exportSlideshowItem:toApplication:")]
 		void ExportSlideshowItemtoApplication (NSObject item, string applicationBundleIdentifier);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKSlideshowModeImages")]
 		NSString ModeImages { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKSlideshowModePDF")]
 		NSString ModePDF { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKSlideshowModeOther")]
 		NSString ModeOther { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKSlideshowWrapAround")]
 		NSString WrapAround { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKSlideshowStartPaused")]
 		NSString StartPaused { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKSlideshowStartIndex")]
 		NSString StartIndex { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKSlideshowScreen")]
 		NSString Screen { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKSlideshowAudioFile")]
 		NSString AudioFile { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKSlideshowPDFDisplayBox")]
 		NSString PDFDisplayBox { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKSlideshowPDFDisplayMode")]
 		NSString PDFDisplayMode { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IKSlideshowPDFDisplaysAsBook")]
 		NSString PDFDisplaysAsBook { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IK_iPhotoBundleIdentifier")]
 		NSString IPhotoBundleIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IK_ApertureBundleIdentifier")]
 		NSString ApertureBundleIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IK_MailBundleIdentifier")]
 		NSString MailBundleIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("IK_PhotosBundleIdentifier")]
 		NSString PhotosBundleIdentifier { get; }
 	}
@@ -1337,6 +1744,9 @@ namespace ImageKit {
 	[Model]
 	[Protocol]
 	interface IKSlideshowDataSource {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("numberOfSlideshowItems")]
 		nint ItemCount { get; }

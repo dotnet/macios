@@ -16,12 +16,19 @@ using System.Diagnostics;
 namespace ObjCRuntime {
 	[AttributeUsage (AttributeTargets.Enum)]
 	public sealed class NativeAttribute : Attribute {
+		/// <summary>Initializes a new Native attribute.</summary>
+		///         <remarks>
+		///         </remarks>
 		public NativeAttribute ()
 		{
 		}
 
 		// use in case where the managed name is different from the native name
 		// Extrospection tests will use this to find the matching type to compare
+		/// <param name="name">The name of the corresponding native enum (in case it doesn't match the managed enum's name).</param>
+		///         <summary>Initializes a new Native attribute.</summary>
+		///         <remarks>
+		///         </remarks>
 		public NativeAttribute (string name)
 		{
 			NativeName = name;

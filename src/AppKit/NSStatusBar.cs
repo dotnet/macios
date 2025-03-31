@@ -15,7 +15,9 @@ using System;
 
 namespace AppKit {
 	public enum NSStatusItemLength {
+		/// <summary>To be added.</summary>
 		Variable = -1,
+		/// <summary>To be added.</summary>
 		Square = -2,
 	}
 

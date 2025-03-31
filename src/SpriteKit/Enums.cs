@@ -302,8 +302,11 @@ namespace SpriteKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKNodeFocusBehavior : long {
+		/// <summary>The <see cref="T:SpriteKit.SKNode" /> is not focusable.</summary>
 		None = 0,
+		/// <summary>The <see cref="T:SpriteKit.SKNode" /> is not focusable. It prevents nodes it obscures from being focused.</summary>
 		Occluding,
+		/// <summary>The <see cref="T:SpriteKit.SKNode" /> is focusable. It prevents nodes it obscures from being focused.</summary>
 		Focusable,
 	}
 }

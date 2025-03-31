@@ -89,6 +89,22 @@ namespace CoreGraphics {
 		}
 
 		// Identity
+		/// <summary>Returns the identity affine transformation.</summary>
+		///         <returns>The identity matrix.</returns>
+		///         <remarks>
+		///           <para>
+		/// Sets up an identity transformation, like this:
+		/// </para>
+		///           <para>
+		/// | 1 0 0 |
+		/// </para>
+		///           <para>
+		/// | 0 1 0 |
+		/// </para>
+		///           <para>
+		/// | 0 0 1 |
+		/// </para>
+		///         </remarks>
 		public static CGAffineTransform MakeIdentity ()
 		{
 			return new CGAffineTransform (1, 0, 0, 1, 0, 0);
@@ -117,6 +133,11 @@ namespace CoreGraphics {
 		//
 		// Operations
 		//
+		/// <param name="a">The first affine.</param>
+		///         <param name="b">The second affine.</param>
+		///         <summary>Multiplies the two affine transformations and returns the result.</summary>
+		///         <returns>The multiplied affine.</returns>
+		///         <remarks>Use affine multiplication to compose multiple affine tranformations into a single affine.</remarks>
 		public static CGAffineTransform Multiply (CGAffineTransform a, CGAffineTransform b)
 		{
 			return new CGAffineTransform (a.A * b.A + a.B * b.C,
@@ -127,6 +148,9 @@ namespace CoreGraphics {
 							  a.Tx * b.B + a.Ty * b.D + b.Ty);
 		}
 
+		/// <param name="b">The affine used to multiply the current affine by.</param>
+		///         <summary>Multiplies the current affine transformation by the specified affine transformation.</summary>
+		///         <remarks>Use affine multiplication to compose multiple affine tranformations into a single affine.</remarks>
 		public void Multiply (CGAffineTransform b)
 		{
 			var a = this;

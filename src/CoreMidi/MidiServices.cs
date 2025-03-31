@@ -206,6 +206,56 @@ namespace CoreMidi {
 				return null;
 			return new MidiDevice (h);
 		}
+
+		[DllImport (Constants.CoreMidiLibrary)]
+		unsafe extern static OSStatus MIDIExternalDeviceCreate (IntPtr /* CFStringRef */ name, IntPtr /* CFStringRef */ manufacturer, IntPtr /* CFStringRef */ model, MidiDeviceRef* outDevice);
+
+		/// <summary>Create a new external MIDI device.</summary>
+		/// <param name="name">The name for the new device.</param>
+		/// <param name="manufacturer">The manufacturer for the new device.</param>
+		/// <param name="model">The model for the new device.</param>
+		/// <param name="status">A status code that describes the result of creating the new external device. This will be <see cref="MidiError.Ok" /> in case of success.</param>
+		/// <returns>A newly created external <see cref="MidiDevice" /> instance, null otherwise.</returns>
+		public static MidiDevice? CreateExternalDevice (string name, string manufacturer, string model, out MidiError status)
+		{
+			using var namePtr = new TransientCFString (name);
+			using var manufacturerPtr = new TransientCFString (manufacturer);
+			using var modelPtr = new TransientCFString (model);
+
+			var handle = default (MidiDeviceRef);
+			unsafe {
+				status = (MidiError) MIDIExternalDeviceCreate (namePtr, manufacturerPtr, modelPtr, &handle);
+			}
+			if (status != MidiError.Ok)
+				return null;
+			return new MidiDevice (handle);
+		}
+#endif // !COREBUILD
+	}
+
+	public static class MidiSetup {
+#if !COREBUILD
+		[DllImport (Constants.CoreMidiLibrary)]
+		unsafe extern static OSStatus MIDISetupAddExternalDevice (MidiDeviceRef device);
+
+		/// <summary>Remove a device from the current MIDI setup.</summary>
+		/// <param name="device">The device to remove from the current MIDI setup.</param>
+		/// <returns>A status code that describes the result of the operation. This will be <see cref="MidiError.Ok" /> in case of success.</returns>
+		public static MidiError AddExternalDevice (MidiDevice device)
+		{
+			return (MidiError) MIDISetupAddExternalDevice (device.GetCheckedHandle ());
+		}
+
+		[DllImport (Constants.CoreMidiLibrary)]
+		unsafe extern static OSStatus MIDISetupRemoveExternalDevice (MidiDeviceRef device);
+
+		/// <summary>Remove a device from the current MIDI setup.</summary>
+		/// <param name="device">The device to remove from the current MIDI setup.</param>
+		/// <returns>A status code that describes the result of the operation. This will be <see cref="MidiError.Ok" /> in case of success.</returns>
+		public static MidiError RemoveExternalDevice (MidiDevice device)
+		{
+			return (MidiError) MIDISetupRemoveExternalDevice (device.GetCheckedHandle ());
+		}
 #endif // !COREBUILD
 	}
 

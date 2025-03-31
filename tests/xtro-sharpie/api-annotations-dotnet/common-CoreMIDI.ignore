@@ -1,2 +1,5 @@
 # https://github.com/dotnet/macios/issues/4452#issuecomment-660220392
 !missing-pinvoke! MIDIEventListForEachEvent is not bound
+
+# There's no need to bind this P/Invoke, we bind/use 'MIDIClientCreate' which provide the exact same capabilities.
+!missing-pinvoke! MIDIClientCreateWithBlock is not bound

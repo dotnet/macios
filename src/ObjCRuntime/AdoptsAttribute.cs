@@ -37,6 +37,11 @@ namespace ObjCRuntime {
 #if !COREBUILD
 		IntPtr handle;
 
+		/// <param name="protocolType">The name of the protocol you are adopting.</param>
+		///         <summary>
+		///         </summary>
+		///         <remarks>
+		///         </remarks>
 		public AdoptsAttribute (string protocolType)
 		{
 			ProtocolType = protocolType;

@@ -17,12 +17,10 @@ using MidiEndpointRef = System.Int32;
 using MidiEntityRef = System.Int32;
 
 namespace CoreMidi {
-#if NET
 	[SupportedOSPlatform ("ios18.0")]
 	[SupportedOSPlatform ("maccatalyst18.0")]
 	[SupportedOSPlatform ("macos15.0")]
 	[SupportedOSPlatform ("tvos18.0")]
-#endif
 	[NativeName ("MIDI2DeviceManufacturer")]
 	public struct Midi2DeviceManufacturer {
 		// Byte sysExIDByte[3]; // 1-byte SysEx IDs are padded with trailing zeroes
@@ -47,12 +45,10 @@ namespace CoreMidi {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios18.0")]
 	[SupportedOSPlatform ("maccatalyst18.0")]
 	[SupportedOSPlatform ("macos15.0")]
 	[SupportedOSPlatform ("tvos18.0")]
-#endif
 	[NativeName ("MIDI2DeviceRevisionLevel")]
 	public struct Midi2DeviceRevisionLevel {
 		// Byte revisionLevel[4];
@@ -79,14 +75,10 @@ namespace CoreMidi {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios18.0")]
 	[SupportedOSPlatform ("maccatalyst18.0")]
 	[SupportedOSPlatform ("macos15.0")]
 	[SupportedOSPlatform ("tvos18.0")]
-#else
-	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 	[NativeName ("MIDICIProfileIDStandard")]
 	public struct MidiCIProfileIdStandard {
 		public byte /* MIDIUInteger7 */ ProfileIdByte1;
@@ -96,14 +88,10 @@ namespace CoreMidi {
 		public byte /* MIDIUInteger7 */ ProfileLevel;
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios18.0")]
 	[SupportedOSPlatform ("maccatalyst18.0")]
 	[SupportedOSPlatform ("macos15.0")]
 	[SupportedOSPlatform ("tvos18.0")]
-#else
-	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 	[NativeName ("MIDICIProfileIDManufacturerSpecific")]
 	public struct MidiCIProfileIdManufacturerSpecific {
 		public byte /* MIDIUInteger7 */ SysExId1;
@@ -113,14 +101,10 @@ namespace CoreMidi {
 		public byte /* MIDIUInteger7 */ Info2;
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios18.0")]
 	[SupportedOSPlatform ("maccatalyst18.0")]
 	[SupportedOSPlatform ("macos15.0")]
 	[SupportedOSPlatform ("tvos18.0")]
-#else
-	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 	[NativeName ("MIDICIProfileID")]
 	public struct MidiCIProfileId {
 		// This is a union between MidiCIProfileIdStandard and MidiCIProfileIdManufacturerSpecific, each with the same size (5 bytes)

@@ -459,6 +459,10 @@ namespace AudioToolbox {
 		IntPtr ptr;
 		readonly bool owns;
 
+		/// <param name="ptr">To be added.</param>
+		///         <param name="owns">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioFileMarkerList (IntPtr ptr, bool owns)
 		{
 			this.ptr = ptr;
@@ -510,11 +514,17 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <summary>Releases the resources used by the AudioFileMarkerList object.</summary>
+		///         <remarks>
+		///           <para>The Dispose method releases the resources used by the AudioFileMarkerList class.</para>
+		///           <para>Calling the Dispose method when the application is finished using the AudioFileMarkerList ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.  For more information on releasing resources see ``Cleaning up Unmananaged Resources'' at https://msdn.microsoft.com/en-us/library/498928w2.aspx</para>
+		///         </remarks>
 		public void Dispose ()
 		{
 			Dispose (true);
 		}
 
+		/// <include file="../../docs/api/AudioToolbox/AudioFileMarkerList.xml" path="/Documentation/Docs[@DocId='M:AudioToolbox.AudioFileMarkerList.Dispose(System.Boolean)']/*" />
 		protected virtual void Dispose (bool disposing)
 		{
 			if (!owns || ptr == IntPtr.Zero)
@@ -566,6 +576,9 @@ namespace AudioToolbox {
 		//	AudioFileMarker		mMarkers[1]; // this is a variable length array of mNumberMarkers elements
 		// }
 
+		/// <param name="ptr">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioFileRegion (IntPtr ptr)
 		{
 			this.ptr = ptr;
@@ -651,6 +664,10 @@ namespace AudioToolbox {
 		IntPtr ptr;
 		readonly bool owns;
 
+		/// <param name="ptr">To be added.</param>
+		///         <param name="owns">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioFileRegionList (IntPtr ptr, bool owns)
 		{
 			this.ptr = ptr;
@@ -707,11 +724,17 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <summary>Releases the resources used by the AudioFileRegionList object.</summary>
+		///         <remarks>
+		///           <para>The Dispose method releases the resources used by the AudioFileRegionList class.</para>
+		///           <para>Calling the Dispose method when the application is finished using the AudioFileRegionList ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.  For more information on releasing resources see ``Cleaning up Unmananaged Resources'' at https://msdn.microsoft.com/en-us/library/498928w2.aspx</para>
+		///         </remarks>
 		public void Dispose ()
 		{
 			Dispose (true);
 		}
 
+		/// <include file="../../docs/api/AudioToolbox/AudioFileRegionList.xml" path="/Documentation/Docs[@DocId='M:AudioToolbox.AudioFileRegionList.Dispose(System.Boolean)']/*" />
 		protected virtual void Dispose (bool disposing)
 		{
 			if (!owns || ptr == IntPtr.Zero)
@@ -746,6 +769,7 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern static OSStatus AudioFileClose (AudioFileID handle);
 
+		/// <include file="../../docs/api/AudioToolbox/AudioFile.xml" path="/Documentation/Docs[@DocId='M:AudioToolbox.AudioFile.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero && Owns)
@@ -765,6 +789,14 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static OSStatus AudioFileCreateWithURL (IntPtr cfurlref_infile, AudioFileType inFileType, AudioStreamBasicDescription* inFormat, AudioFileFlags inFlags, AudioFileID* file_id);
 
+		/// <param name="url">The url of the file to create</param>
+		///         <param name="fileType">The file type for the created file</param>
+		///         <param name="format">Description of the data that is going to be passed to the AudioFile object</param>
+		///         <param name="inFlags">Creation flags.</param>
+		///         <summary>Creates a new audio file.</summary>
+		///         <returns>The initialized audio file, or null if there is an error creating the file</returns>
+		///         <remarks>
+		///         </remarks>
 		public static AudioFile? Create (string url, AudioFileType fileType, AudioStreamBasicDescription format, AudioFileFlags inFlags)
 		{
 			if (url is null)
@@ -774,6 +806,14 @@ namespace AudioToolbox {
 				return Create (cfurl, fileType, format, inFlags);
 		}
 
+		/// <param name="url">The url of the file to create</param>
+		///         <param name="fileType">The file type for the created file</param>
+		///         <param name="format">Description of the data that is going to be passed to the AudioFile object</param>
+		///         <param name="inFlags">Creation flags.</param>
+		///         <summary>Creates a new audio file.</summary>
+		///         <returns>The initialized audio file, or null if there is an error creating the file</returns>
+		///         <remarks>
+		///         </remarks>
 		public static AudioFile? Create (CFUrl url, AudioFileType fileType, AudioStreamBasicDescription format, AudioFileFlags inFlags)
 		{
 			if (url is null)
@@ -791,6 +831,14 @@ namespace AudioToolbox {
 			return null;
 		}
 
+		/// <param name="url">The url of the file to create</param>
+		///         <param name="fileType">The file type for the created file</param>
+		///         <param name="format">Description of the data that is going to be passed to the AudioFile object</param>
+		///         <param name="inFlags">Creation flags.</param>
+		///         <summary>Creates a new audio file.</summary>
+		///         <returns>The initialized audio file, or null if there is an error creating the file</returns>
+		///         <remarks>
+		///         </remarks>
 		public static AudioFile? Create (NSUrl url, AudioFileType fileType, AudioStreamBasicDescription format, AudioFileFlags inFlags)
 		{
 			if (url is null)
@@ -812,42 +860,88 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static AudioFileError AudioFileOpenURL (IntPtr cfurlref_infile, byte permissions, AudioFileType fileTypeHint, IntPtr* file_id);
 
+		/// <param name="url">An url to a local file name.</param>
+		///         <param name="fileTypeHint">A hint indicating the file format expected, this is necessary for audio files where the operating system can not probe the type by looking at the file signature or file extension (for example AC3.   Pass zero to auto detect the format.</param>
+		///         <summary>Opens an audio file for reading.</summary>
+		///         <returns>An instance of AudioFile on success, or null on error.</returns>
+		///         <remarks>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</remarks>
 		public static AudioFile? OpenRead (string url, AudioFileType fileTypeHint = 0)
 		{
 			return Open (url, AudioFilePermission.Read, fileTypeHint);
 		}
 
+		/// <param name="url">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <param name="fileTypeHint">To be added.</param>
+		///         <summary>Opens an audio file for reading.</summary>
+		///         <returns>An instance of AudioFile on success, or null on error.</returns>
+		///         <remarks>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</remarks>
 		public static AudioFile? OpenRead (string url, out AudioFileError error, AudioFileType fileTypeHint = 0)
 		{
 			return Open (url, AudioFilePermission.Read, out error, fileTypeHint);
 		}
 
+		/// <param name="url">Url pointing to the file to read.</param>
+		///         <param name="fileTypeHint">A hint indicating the file format expected, this is necessary for audio files where the operating system can not probe the type by looking at the file signature or file extension (for example AC3.   Pass zero to auto detect the format.</param>
+		///         <summary>Opens the specified audio file for reading, frames will be decoded from the native format to raw audio data.</summary>
+		///         <returns>An instance of AudioFile on success, or null on error.</returns>
+		///         <remarks>Once you have opened the file for reading, you can use the various Read methods to decode the audio packets contained in the file.</remarks>
 		public static AudioFile? OpenRead (CFUrl url, AudioFileType fileTypeHint = 0)
 		{
 			return Open (url, AudioFilePermission.Read, fileTypeHint);
 		}
 
+		/// <param name="url">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <param name="fileTypeHint">To be added.</param>
+		///         <summary>Opens an audio file for reading.</summary>
+		///         <returns>An instance of AudioFile on success, or null on error.</returns>
+		///         <remarks>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</remarks>
 		public static AudioFile? OpenRead (CFUrl url, out AudioFileError error, AudioFileType fileTypeHint = 0)
 		{
 			return Open (url, AudioFilePermission.Read, out error, fileTypeHint);
 		}
 
+		/// <param name="url">Url pointing to the file to read.</param>
+		///         <param name="fileTypeHint">A hint indicating the file format expected, this is necessary for audio files where the operating system can not probe the type by looking at the file signature or file extension (for example AC3.   Pass zero to auto detect the format.</param>
+		///         <summary>Opens the specified audio file for reading, frames will be decoded from the native format to raw audio data.</summary>
+		///         <returns>An instance of AudioFile on success, or null on error.</returns>
+		///         <remarks>Once you have opened the file for reading, you can use the various Read methods to decode the audio packets contained in the file.</remarks>
 		public static AudioFile? OpenRead (NSUrl url, AudioFileType fileTypeHint = 0)
 		{
 			return Open (url, AudioFilePermission.Read, fileTypeHint);
 		}
 
+		/// <param name="url">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <param name="fileTypeHint">To be added.</param>
+		///         <summary>Opens an audio file for reading.</summary>
+		///         <returns>An instance of AudioFile on success, or null on error.</returns>
+		///         <remarks>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</remarks>
 		public static AudioFile? OpenRead (NSUrl url, out AudioFileError error, AudioFileType fileTypeHint = 0)
 		{
 			return Open (url, AudioFilePermission.Read, out error, fileTypeHint);
 		}
 
+		/// <param name="url">To be added.</param>
+		///         <param name="permissions">To be added.</param>
+		///         <param name="fileTypeHint">A hint for the decoder.</param>
+		///         <summary>Opens an audio file.</summary>
+		///         <returns>An instance of AudioFile on success, null on failure.</returns>
+		///         <remarks>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</remarks>
 		public static AudioFile? Open (string url, AudioFilePermission permissions, AudioFileType fileTypeHint = 0)
 		{
 			AudioFileError error;
 			return Open (url, permissions, out error, fileTypeHint);
 		}
 
+		/// <param name="url">To be added.</param>
+		///         <param name="permissions">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <param name="fileTypeHint">To be added.</param>
+		///         <summary>Opens an audio file.</summary>
+		///         <returns>An instance of AudioFile on success, null on failure.</returns>
+		///         <remarks>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</remarks>
 		public static AudioFile? Open (string url, AudioFilePermission permissions, out AudioFileError error, AudioFileType fileTypeHint = 0)
 		{
 			if (url is null)
@@ -857,12 +951,25 @@ namespace AudioToolbox {
 				return Open (cfurl, permissions, out error, fileTypeHint);
 		}
 
+		/// <param name="url">The url to a local file name.</param>
+		///         <param name="permissions">The permissions used for the file (reading, writing or both).</param>
+		///         <param name="fileTypeHint">A hint for the decoder.</param>
+		///         <summary>Opens an audio file.</summary>
+		///         <returns>An instance of AudioFile on success, null on failure.</returns>
+		///         <remarks>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</remarks>
 		public static AudioFile? Open (CFUrl url, AudioFilePermission permissions, AudioFileType fileTypeHint = 0)
 		{
 			AudioFileError error;
 			return Open (url, permissions, out error, fileTypeHint);
 		}
 
+		/// <param name="url">To be added.</param>
+		///         <param name="permissions">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <param name="fileTypeHint">To be added.</param>
+		///         <summary>Opens an audio file.</summary>
+		///         <returns>An instance of AudioFile on success, null on failure.</returns>
+		///         <remarks>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</remarks>
 		public static AudioFile? Open (CFUrl url, AudioFilePermission permissions, out AudioFileError error, AudioFileType fileTypeHint = 0)
 		{
 			if (url is null)
@@ -873,12 +980,25 @@ namespace AudioToolbox {
 			return audioFile;
 		}
 
+		/// <param name="url">To be added.</param>
+		///         <param name="permissions">To be added.</param>
+		///         <param name="fileTypeHint">To be added.</param>
+		///         <summary>Opens an audio file.</summary>
+		///         <returns>An instance of AudioFile on success, null on failure.</returns>
+		///         <remarks>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</remarks>
 		public static AudioFile? Open (NSUrl url, AudioFilePermission permissions, AudioFileType fileTypeHint = 0)
 		{
 			AudioFileError error;
 			return Open (url, permissions, out error, fileTypeHint);
 		}
 
+		/// <param name="url">To be added.</param>
+		///         <param name="permissions">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <param name="fileTypeHint">To be added.</param>
+		///         <summary>Opens an audio file.</summary>
+		///         <returns>An instance of AudioFile on success, null on failure.</returns>
+		///         <remarks>The hint is necessary as sometimes it is not possible to determine the file type merely based on the contents of the file.</remarks>
 		public static AudioFile? Open (NSUrl url, AudioFilePermission permissions, out AudioFileError error, AudioFileType fileTypeHint = 0)
 		{
 			if (url is null)
@@ -903,6 +1023,9 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern static OSStatus AudioFileOptimize (AudioFileID handle);
 
+		/// <summary>Optimizes the audio file, thus preparing it to receive audio data.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Optimize ()
 		{
 			return AudioFileOptimize (Handle) == 0;
@@ -911,6 +1034,14 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static OSStatus AudioFileReadBytes (AudioFileID inAudioFile, byte useCache, long startingByte, int* numBytes, IntPtr outBuffer);
 
+		/// <param name="startingByte">To be added.</param>
+		///         <param name="buffer">To be added.</param>
+		///         <param name="offset">To be added.</param>
+		///         <param name="count">To be added.</param>
+		///         <param name="useCache">To be added.</param>
+		///         <summary>Reads <paramref name="count" /> bytes from <paramref name="buffer" />, starting at <paramref name="startingByte" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public int Read (long startingByte, byte [] buffer, int offset, int count, bool useCache)
 		{
 			if (offset < 0)
@@ -2244,6 +2375,13 @@ namespace AudioToolbox {
 			return result;
 		}
 
+		/// <param name="position">Position in the audio stream that the data should be read from.</param>
+		///         <param name="requestCount">Number of bytes to read.</param>
+		///         <param name="buffer">Pointer to the buffer where the data should be stored.</param>
+		///         <param name="actualCount">On return, set this value to the number of bytes actually read.</param>
+		///         <summary>Callback invoked to read encoded audio data.</summary>
+		///         <returns>true on success, false on failure.</returns>
+		///         <remarks>This method is called by the AudioSource when more data is requested.</remarks>
 		public abstract bool Read (long position, int requestCount, IntPtr buffer, out int actualCount);
 
 		[UnmanagedCallersOnly]
@@ -2256,6 +2394,13 @@ namespace AudioToolbox {
 			*actualCount = localCount;
 			return result;
 		}
+		/// <param name="position">Position where the data should be stored.</param>
+		///         <param name="requestCount">Number of bytes to write.</param>
+		///         <param name="buffer">Pointer to the buffer that contains the data to be written.</param>
+		///         <param name="actualCount">Set this value to indicate the number of bytes actually written.</param>
+		///         <summary>Callback used to write audio data into the audio stream.</summary>
+		///         <returns>True on success, false on failure.</returns>
+		///         <remarks>This method is called by the AudioSource when it has encoded the data and it need to write it out.</remarks>
 		public abstract bool Write (long position, int requestCount, IntPtr buffer, out int actualCount);
 
 		[UnmanagedCallersOnly]

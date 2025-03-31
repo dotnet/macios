@@ -89,6 +89,11 @@ namespace CoreVideo {
 		}
 #endif
 
+		/// <param name="other">Object to compare with.</param>
+		///         <summary>Determines whether two CVTime objects are equal.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>Two CVTime structures are considered to be equal if their TimeValue, TimeScale and Flags fields are the same.</remarks>
 		public override bool Equals (object? other)
 		{
 			if (!(other is CVTime))
@@ -99,6 +104,11 @@ namespace CoreVideo {
 			return (TimeValue == b.TimeValue) && (TimeScale == b.TimeScale) && (TimeFlags == b.TimeFlags);
 		}
 
+		/// <summary>Returns the hashcode for this object.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (TimeValue, TimeScale, Flags);
@@ -106,13 +116,27 @@ namespace CoreVideo {
 
 		// CVHostTime.h
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[DllImport (Constants.CoreVideoLibrary, EntryPoint = "CVGetCurrentHostTime")]
 		public static extern /* uint64_t */ ulong GetCurrentHostTime ();
 
 
+		/// <summary>Returns the system's clock frequency.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///           <para>
+		/// 	    The value 1,000,000,000 would represent a nanosecond (10^-9).
+		/// 	  </para>
+		///         </remarks>
 		[DllImport (Constants.CoreVideoLibrary, EntryPoint = "CVGetHostClockFrequency")]
 		public static extern /* double */ double GetHostClockFrequency ();
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[DllImport (Constants.CoreVideoLibrary, EntryPoint = "CVGetHostClockMinimumTimeDelta")]
 		public static extern /* uint32_t */ uint GetHostClockMinimumTimeDelta ();
 	}

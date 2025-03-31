@@ -398,6 +398,8 @@ namespace CoreLocation {
 		[Export ("stopUpdatingHeading")]
 		void StopUpdatingHeading ();
 
+		/// <summary>Removes the heading calibration view from the display.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("dismissHeadingCalibrationDisplay")]
@@ -506,6 +508,13 @@ namespace CoreLocation {
 		[Export ("stopMonitoringSignificantLocationChanges")]
 		void StopMonitoringSignificantLocationChanges ();
 
+		/// <param name="region">Region to monitor</param>
+		///         <param name="desiredAccuracy">Accuracy in meters.</param>
+		///         <summary>Starts monitoring the region.</summary>
+		///         <remarks>
+		///           <para>An application may monitor up to 20 uniquely-named (defined by <see cref="P:CoreLocation.CLRegion.Identifier" />) regions. The speed with which region notifications are delivered is dependent on network connectivity.</para>
+		///           <para>Region entry/exit notifications typically arrive within 3-5 minutes. Regions of less than 400m radius work better on iPhone 4S and later devices. (Notification speed seems fastest on devices with M7 coprocessors.)</para>
+		///         </remarks>
 		[NoTV]
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 6, 0)]
@@ -541,6 +550,12 @@ namespace CoreLocation {
 		[Static]
 		CLAuthorizationStatus Status { get; }
 
+		/// <param name="region">The region to be monitored.</param>
+		///         <summary>Begins monitoring <paramref name="region" /> for entry and exit.</summary>
+		///         <remarks>
+		///           <para>An application may monitor up to 20 uniquely-named (defined by <see cref="P:CoreLocation.CLRegion.Identifier" />) regions. The speed with which region notifications are delivered is dependent on network connectivity.</para>
+		///           <para>Region entry/exit notifications typically arrive within 3-5 minutes. Regions of less than 400m radius work better on iPhone 4S and later devices. (Notification speed seems fastest on devices with M7 coprocessors.)</para>
+		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.iOS, 17, 0, message: "Use 'void AddCondition (CLCondition condition, string identifier)' instead.")]
@@ -605,6 +620,7 @@ namespace CoreLocation {
 		[Field ("CLTimeIntervalMax")]
 		double MaxTimeInterval { get; }
 
+		/// <include file="../docs/api/CoreLocation/CLLocationManager.xml" path="/Documentation/Docs[@DocId='M:CoreLocation.CLLocationManager.IsMonitoringAvailable(ObjCRuntime.Class)']/*" />
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Static, Export ("isMonitoringAvailableForClass:")]
@@ -626,6 +642,11 @@ namespace CoreLocation {
 		[Export ("rangedBeaconConstraints", ArgumentSemantic.Copy)]
 		NSSet<CLBeaconIdentityConstraint> RangedBeaconConstraints { get; }
 
+		/// <param name="region">The region whose state is being queried.</param>
+		///         <summary>Asynchronously requests information on the state of the <paramref name="region" />.</summary>
+		///         <remarks>
+		///           <para>Application developers must have assigned the <see cref="P:CoreLocation.CLLocationManager.Delegate" /> property to an object that implements <see cref="M:CoreLocation.CLLocationManagerDelegate.DidDetermineState(CoreLocation.CLLocationManager,CoreLocation.CLRegionState,CoreLocation.CLRegion)" /> prior to calling this method. The <see cref="M:CoreLocation.CLLocationManagerDelegate.DidDetermineState(CoreLocation.CLLocationManager,CoreLocation.CLRegionState,CoreLocation.CLRegion)" /> method will be called at some point subsequently.</para>
+		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.iOS, 17, 0, message: "Use the class 'CLMonitor' instead.")]
@@ -669,10 +690,14 @@ namespace CoreLocation {
 		[Export ("isRangingAvailable")]
 		bool IsRangingAvailable { get; }
 
+		/// <summary>Displays an interface to the user that requests authorization to use location services any time that the app is in the foreground.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("requestWhenInUseAuthorization")]
 		void RequestWhenInUseAuthorization ();
 
+		/// <summary>Displays an interface to the user that requests authorization to use location services any time that the app is running.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("requestAlwaysAuthorization")]
@@ -704,6 +729,8 @@ namespace CoreLocation {
 		[Export ("showsBackgroundLocationIndicator")]
 		bool ShowsBackgroundLocationIndicator { get; set; }
 
+		/// <summary>Requests the current location.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("requestLocation")]
 		void RequestLocation ();

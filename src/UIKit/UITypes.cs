@@ -24,12 +24,23 @@ namespace UIKit {
 	public struct UIEdgeInsets {
 
 		// API match for UIEdgeInsetsZero field/constant
+		/// <summary>An instance with all of the UIEdgeInsets parameters set to zero.</summary>
+		///         <remarks>
+		///         </remarks>
 		[Field ("UIEdgeInsetsZero")] // fake (but helps testing and could also help documentation)
 		public static readonly UIEdgeInsets Zero;
 
+		/// <summary>Top value.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Top;
+		/// <summary>Left value.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Left;
+		/// <summary>Bottom value.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Bottom;
+		/// <summary>Right value.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Right;
 
 #if !COREBUILD
@@ -116,7 +127,11 @@ namespace UIKit {
 	[StructLayout (LayoutKind.Sequential)]
 	public struct UIFloatRange : IEquatable<UIFloatRange> {
 
+		/// <summary>The minimum value in the interval.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Minimum;
+		/// <summary>The maximum value in the interval.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Maximum;
 
 		public UIFloatRange (nfloat minimum, nfloat maximum)
@@ -128,6 +143,9 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static byte UIFloatRangeIsInfinite (UIFloatRange range);
 
+		/// <summary>Gets whether the range is infinitely large.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsInfinite {
 			get {
 				return UIFloatRangeIsInfinite (this) != 0;
@@ -152,9 +170,13 @@ namespace UIKit {
 			return HashCode.Combine (Minimum, Maximum);
 		}
 
+		/// <summary>Gets a <see cref="T:UIKit.UIFloatRange" /> that has no magnitude.</summary>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIFloatRangeZero")] // fake (but helps testing and could also help documentation)
 		public static UIFloatRange Zero;
 
+		/// <summary>An infinitely large range.</summary>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIFloatRangeInfinite")] // fake (but helps testing and could also help documentation)
 		public static UIFloatRange Infinite = new UIFloatRange (nfloat.NegativeInfinity, nfloat.PositiveInfinity);
 	}

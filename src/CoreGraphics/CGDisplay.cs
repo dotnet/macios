@@ -32,12 +32,19 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[DllImport (Constants.CoreGraphicsLibrary, EntryPoint = "CGDisplayModeGetTypeID")]
 		public static extern nint GetTypeID ();
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern CGRect CGDisplayBounds (uint display);
 
+		/// <param name="display">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CGRect GetBounds (int display)
 		{
 			return CGDisplayBounds ((uint) display);
@@ -46,6 +53,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern nuint CGDisplayPixelsWide (uint display);
 
+		/// <param name="display">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static nint GetWidth (int display)
 		{
 			return (nint) CGDisplayPixelsWide ((uint) display);
@@ -54,6 +65,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern nuint CGDisplayPixelsHigh (uint display);
 
+		/// <param name="display">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static nint GetHeight (int display)
 		{
 			return (nint) CGDisplayPixelsHigh ((uint) display);
@@ -62,6 +77,19 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern int CGSetDisplayTransferByFormula (uint display, float redMin, float redMax, float redGamma, float greenMin, float greenMax, float greenGamma, float blueMin, float blueMax, float blueGamma);
 
+		/// <param name="display">To be added.</param>
+		///         <param name="redMin">To be added.</param>
+		///         <param name="redMax">To be added.</param>
+		///         <param name="redGamma">To be added.</param>
+		///         <param name="greenMin">To be added.</param>
+		///         <param name="greenMax">To be added.</param>
+		///         <param name="greenGamma">To be added.</param>
+		///         <param name="blueMin">To be added.</param>
+		///         <param name="blueMax">To be added.</param>
+		///         <param name="blueGamma">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static int SetDisplayTransfer (int display, float redMin, float redMax, float redGamma, float greenMin, float greenMax, float greenGamma, float blueMin, float blueMax, float blueGamma)
 		{
 			return CGSetDisplayTransferByFormula ((uint) display, redMin, redMax, redGamma, greenMin, greenMax, greenGamma, blueMin, blueMax, blueGamma);
@@ -70,11 +98,17 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern uint CGDisplayGammaTableCapacity (uint display);
 
+		/// <param name="display">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static int GetGammaTableCapacity (int display)
 		{
 			return (int) CGDisplayGammaTableCapacity ((uint) display);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[DllImport (Constants.CoreGraphicsLibrary, EntryPoint = "CGDisplayRestoreColorSyncSettings")]
 		public static extern void RestoreColorSyncSettings ();
 
@@ -85,6 +119,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern byte CGDisplayIsCaptured (uint display);
 
+		/// <param name="display">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.9")]
@@ -97,6 +135,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern int CGDisplayCapture (uint display);
 
+		/// <param name="display">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static int Capture (int display)
 		{
 			return CGDisplayCapture ((uint) display);
@@ -105,6 +147,11 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern int CGDisplayCaptureWithOptions (uint display, CGCaptureOptions options);
 
+		/// <param name="display">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static int Capture (int display, CGCaptureOptions options)
 		{
 			return CGDisplayCaptureWithOptions ((uint) display, options);
@@ -113,11 +160,18 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern int CGDisplayRelease (uint display);
 
+		/// <param name="display">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static int Release (int display)
 		{
 			return CGDisplayRelease ((uint) display);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[DllImport (Constants.CoreGraphicsLibrary, EntryPoint = "CGCaptureAllDisplays")]
 		public static extern int CaptureAllDisplays ();
 
@@ -125,12 +179,19 @@ namespace CoreGraphics {
 		static extern int CaptureAllDisplays (CGCaptureOptions options);
 
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[DllImport (Constants.CoreGraphicsLibrary, EntryPoint = "CGReleaseAllDisplays")]
 		public static extern int ReleaseAllDisplays ();
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern int CGDisplayHideCursor (uint display);
 
+		/// <param name="display">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static int HideCursor (int display)
 		{
 			return CGDisplayHideCursor ((uint) display);
@@ -139,6 +200,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern int CGDisplayShowCursor (uint display);
 
+		/// <param name="display">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static int ShowCursor (int display)
 		{
 			return CGDisplayShowCursor ((uint) display);
@@ -147,6 +212,11 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern int CGDisplayMoveCursorToPoint (uint display, CGPoint point);
 
+		/// <param name="display">To be added.</param>
+		///         <param name="point">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static int MoveCursor (int display, CGPoint point)
 		{
 			return CGDisplayMoveCursorToPoint ((uint) display, point);
@@ -155,6 +225,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern uint CGDisplayIDToOpenGLDisplayMask (uint display);
 
+		/// <param name="display">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static int GetOpenGLDisplayMask (int display)
 		{
 			return (int) CGDisplayIDToOpenGLDisplayMask ((uint) display);
@@ -163,6 +237,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern uint CGOpenGLDisplayMaskToDisplayID (uint mask);
 
+		/// <param name="displayMask">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static int GetDisplayID (int displayMask)
 		{
 			return (int) CGOpenGLDisplayMaskToDisplayID ((uint) displayMask);
@@ -171,6 +249,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern uint CGShieldingWindowID (uint display);
 
+		/// <param name="display">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static int GetShieldingWindowID (int display)
 		{
 			return (int) CGShieldingWindowID ((uint) display);

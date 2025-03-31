@@ -33,11 +33,14 @@ namespace CloudKit {
 		///         <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
 		public override NativeHandle ClassHandle { get => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms); }
 
+		/// <summary>Default constructor, initializes a new instance of this class.</summary>
+		///         <remarks>To be added.</remarks>
 		public CKModifyBadgeOperation () : base (NSObjectFlag.Empty)
 		{
 			throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
 		}
 
+		/// <include file="../../docs/api/CloudKit/CKModifyBadgeOperation.xml" path="/Documentation/Docs[@DocId='M:CloudKit.CKModifyBadgeOperation.#ctor(Foundation.NSObjectFlag)']/*" />
 		protected CKModifyBadgeOperation (NSObjectFlag t) : base (t)
 		{
 			throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);

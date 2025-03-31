@@ -22,9 +22,18 @@ namespace FinderSync {
 		[Export ("directoryURLs", ArgumentSemantic.Copy)]
 		NSSet DirectoryUrls { get; set; }
 
+		/// <param name="image">To be added.</param>
+		///         <param name="label">To be added.</param>
+		///         <param name="badgeID">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setBadgeImage:label:forBadgeIdentifier:")]
 		void SetBadgeImage (NSImage image, [NullAllowed] string label, string badgeID);
 
+		/// <param name="badgeID">To be added.</param>
+		///         <param name="url">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setBadgeIdentifier:forURL:")]
 		void SetBadgeIdentifier (string badgeID, NSUrl url);
 
@@ -40,17 +49,35 @@ namespace FinderSync {
 		[NullAllowed, Export ("selectedItemURLs")]
 		NSUrl [] SelectedItemURLs { get; }
 
+		/// <param name="itemUrl">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("lastUsedDateForItemWithURL:")]
 		[return: NullAllowed]
 		NSDate GetLastUsedDate (NSUrl itemUrl);
 
+		/// <param name="lastUsedDate">To be added.</param>
+		///         <param name="itemUrl">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async, Export ("setLastUsedDate:forItemWithURL:completion:")]
 		void SetLastUsedDate (NSDate lastUsedDate, NSUrl itemUrl, Action<NSError> completion);
 
+		/// <param name="itemUrl">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("tagDataForItemWithURL:")]
 		[return: NullAllowed]
 		NSData GetTagData (NSUrl itemUrl);
 
+		/// <param name="tagData">To be added.</param>
+		///         <param name="itemUrl">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("setTagData:forItemWithURL:completion:")]
 		void SetTagData ([NullAllowed] NSData tagData, NSUrl itemUrl, Action<NSError> completion);
@@ -62,6 +89,8 @@ namespace FinderSync {
 		[Export ("extensionEnabled")]
 		bool ExtensionEnabled { [Bind ("isExtensionEnabled")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("showExtensionManagementInterface")]
 		void ShowExtensionManagementInterface ();

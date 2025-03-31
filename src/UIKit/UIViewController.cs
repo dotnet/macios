@@ -45,11 +45,33 @@ namespace UIKit {
 			}
 		}
 
+		/// <param name="view">The subview to add.</param>
+		///         <summary>This is an alias for <see cref="M:UIKit.UIView.AddSubview(UIKit.UIView)" />, but uses the Add pattern as it allows C# 3.0 constructs to add subviews after creating the object.</summary>
+		///         <remarks>
+		///           <para>
+		///             This method is equivalent to calling <see cref="M:UIKit.UIView.AddSubview(UIKit.UIView)" /> on this <see cref="T:UIKit.UIViewController" />'s <see cref="P:UIKit.UIViewController.View" /> and is present to enable C# 3.0 to add subviews at creation time.
+		///           </para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		///   var myView = new MyViewController (new RectangleF (0, 0, 320, 320)){
+		///     new ImageGallery (region [0]),
+		///     new ImageGallery (region [1]),
+		///     new UILabel (new RectangleF (10, 10, 200, 200)){
+		///       Text = "Images from our Trip"
+		///     }
+		///   };
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		public void Add (UIView view)
 		{
 			View?.AddSubview (view);
 		}
 
+		/// <summary>Returns an enumerator that lists all of the child <see cref="T:UIKit.UIView" />s</summary>
+		///         <returns>An <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Collections%20IEnumerator&amp;scope=Xamarin" title="T:System.Collections.IEnumerator">T:System.Collections.IEnumerator</a></format> of the <see cref="T:UIKit.UIView" />s that are children of this <see cref="T:UIKit.UIViewController" />.</returns>
+		///         <remarks>
+		///         </remarks>
 		public IEnumerator GetEnumerator ()
 		{
 			var subviews = View?.Subviews;

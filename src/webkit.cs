@@ -4631,6 +4631,9 @@ namespace WebKit {
 	[BaseType (typeof (NSObject))]
 	interface WKNavigationResponse {
 
+		/// <summary>Gets a value that indicates whether the response resulted from a request that was sent by the main frame.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("forMainFrame")]
 		bool IsForMainFrame { [Bind ("isForMainFrame")] get; }
 
@@ -4848,34 +4851,64 @@ namespace WebKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface WKWebsiteDataType {
+		/// <summary>Gets an NSString that signifies a disk cache.</summary>
+		///         <value>The NSString object for "WKWebsiteDataTypeDiskCache".</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("WKWebsiteDataTypeDiskCache", "WebKit")]
 		NSString DiskCache { get; }
 
+		/// <summary>Gets an NSString that signifies an in-memory cache.</summary>
+		///         <value>The NSString object for "WKWebsiteDataTypeMemoryCache".</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("WKWebsiteDataTypeMemoryCache", "WebKit")]
 		NSString MemoryCache { get; }
 
+		/// <summary>Gets an NSString that signifies an offline HTML cache for a web app.</summary>
+		///         <value>The NSString object for "WKWebsiteDataTypeOfflineWebApplicationCache".</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("WKWebsiteDataTypeOfflineWebApplicationCache", "WebKit")]
 		NSString OfflineWebApplicationCache { get; }
 
+		/// <summary>Gets an NSString that signifies cookie data.</summary>
+		///         <value>The NSString object for "WKWebsiteDataTypeCookies".</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("WKWebsiteDataTypeCookies", "WebKit")]
 		NSString Cookies { get; }
 
+		/// <summary>Gets an NSString that signifies HTML storage for a session.</summary>
+		///         <value>The NSString object for "WKWebsiteDataTypeSessionStorage".</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("WKWebsiteDataTypeSessionStorage")]
 		NSString SessionStorage { get; }
 
+		/// <summary>Gets an NSString that signifies local HTML storage.</summary>
+		///         <value>The NSString object for "WKWebsiteDataTypeLocalStorage".</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("WKWebsiteDataTypeLocalStorage", "WebKit")]
 		NSString LocalStorage { get; }
 
+		/// <summary>Gets an NSString that signifies a WebSQL databse.</summary>
+		///         <value>The NSString object for "WKWebsiteDataTypeWebSQLDatabases".</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("WKWebsiteDataTypeWebSQLDatabases", "WebKit")]
 		NSString WebSQLDatabases { get; }
 
+		/// <summary>Gets an NSString that signifies IndexedDB databases.</summary>
+		///         <value>The NSString object for "WKWebsiteDataTypeIndexedDBDatabases".</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("WKWebsiteDataTypeIndexedDBDatabases", "WebKit")]
 		NSString IndexedDBDatabases { get; }
 
+		/// <summary>Gets an NSString that signifies a fetch cache.</summary>
+		///         <value>The NSString object for "WKWebsiteDataTypeFetchCache".</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("WKWebsiteDataTypeFetchCache")]
 		NSString FetchCache { get; }
 
+		/// <summary>Gets an NSString that signifies service worker registrations.</summary>
+		///         <value>The NSString object for "WKWebsiteDataTypeServiceWorkerRegistrations".</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("WKWebsiteDataTypeServiceWorkerRegistrations")]
 		NSString ServiceWorkerRegistrations { get; }
@@ -4937,6 +4970,9 @@ namespace WebKit {
 		[Export ("nonPersistentDataStore")]
 		WKWebsiteDataStore NonPersistentDataStore { get; }
 
+		/// <summary>Gets a Boolean value that tells whether the store is persistent.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("persistent")]
 		bool Persistent { [Bind ("isPersistent")] get; }
 
@@ -5202,6 +5238,9 @@ namespace WebKit {
 		[Export ("injectionTime")]
 		WKUserScriptInjectionTime InjectionTime { get; }
 
+		/// <summary>Gets a value that indicates whether the script is for the main frame only.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("forMainFrameOnly")]
 		bool IsForMainFrameOnly { [Bind ("isForMainFrameOnly")] get; }
 	}
@@ -5825,15 +5864,27 @@ namespace WebKit {
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'TBD' instead.")]
 	interface WKPreviewActionItemIdentifier {
+		/// <summary>Gets the string that identifies the action that opens the item.</summary>
+		///         <value>The string that identifies the action that opens the item.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("WKPreviewActionItemIdentifierOpen")]
 		NSString Open { get; }
 
+		/// <summary>Gets the string that identifies the action that adds the item to the user's reading list.</summary>
+		///         <value>The string that identifies the action that adds the item to the user's reading list.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("WKPreviewActionItemIdentifierAddToReadingList")]
 		NSString AddToReadingList { get; }
 
+		/// <summary>Gets the string that identifies the action that copies the item.</summary>
+		///         <value>The string that identifies the action that copies the item.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("WKPreviewActionItemIdentifierCopy")]
 		NSString Copy { get; }
 
+		/// <summary>Gets the string that identifies the action that shares the item.</summary>
+		///         <value>The string that identifies the action that shares the item.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("WKPreviewActionItemIdentifierShare")]
 		NSString Share { get; }
 	}

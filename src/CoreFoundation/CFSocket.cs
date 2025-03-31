@@ -101,6 +101,9 @@ namespace CoreFoundation {
 			this.handle = handle;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return string.Format ("[CFSocketNativeHandle {0}]", handle);
@@ -120,6 +123,9 @@ namespace CoreFoundation {
 			private set;
 		}
 
+		/// <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CFSocketException (CFSocketError error)
 		{
 			this.Error = error;
@@ -299,6 +305,7 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <include file="../../docs/api/CoreFoundation/CFSocket.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.CFSocket.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != NativeHandle.Zero)
@@ -357,16 +364,33 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static IntPtr CFSocketCreateRunLoopSource (IntPtr allocator, IntPtr socket, nint order);
 
+		/// <summary>Creates a socket for the address family family INET, socket type STREAM, and protocol TCP.</summary>
+		///         <remarks>
+		///           <para>This constructor throws a <see cref="T:CoreFoundation.CFSocketException" /> if there is an error trying to create the socket.</para>
+		///           <para>
+		///           </para>
+		///         </remarks>
 		public CFSocket ()
 			: this (0, 0, 0)
 		{
 		}
 
+		/// <param name="family">Family type for the socket.</param>
+		///         <param name="type">Socket type to create.</param>
+		///         <param name="proto">Protocol type for the socket.</param>
+		///         <summary>Creates a socket by specifying an address family, scoket type and protocol type dispatched on the <see cref="P:CoreFoundation.CFRunLoop.Current" />.</summary>
+		///         <remarks>This constructor throws a <see cref="T:CoreFoundation.CFSocketException" /> if there is an error trying to create the socket.</remarks>
 		public CFSocket (AddressFamily family, SocketType type, ProtocolType proto)
 			: this (family, type, proto, CFRunLoop.Current)
 		{
 		}
 
+		/// <param name="family">Family type for the socket.</param>
+		///         <param name="type">Socket type to create.</param>
+		///         <param name="proto">Protocol type for the socket.</param>
+		///         <param name="loop">The run loop to which this CFSocket will be added as a source.</param>
+		///         <summary>Creates a socket by specifying an address family, socket type and protocol type with a specified run loop to dispatch on.</summary>
+		///         <remarks>This constructor throws a <see cref="T:CoreFoundation.CFSocketException" /> if there is an error trying to create the socket.</remarks>
 		public CFSocket (AddressFamily family, SocketType type, ProtocolType proto, CFRunLoop loop)
 			: this (CFSocketSignature.AddressFamilyToInt (family),
 				CFSocketSignature.SocketTypeToInt (type),
@@ -440,6 +464,14 @@ namespace CoreFoundation {
 																	   delegate* unmanaged<IntPtr, nuint, IntPtr, IntPtr, IntPtr, void> callout,
 																	   CFSocketContext* context, double timeout);
 
+		/// <param name="family">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <param name="proto">To be added.</param>
+		///         <param name="endpoint">To be added.</param>
+		///         <param name="timeout">Time to wait for the operation to complete.   If the value is negative, no wait takes place, and instead the operation takes place in the background.</param>
+		///         <summary>Creates a connected socket by specifying an address family, socket type, protocol type as well as the endpoint to connect to.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CFSocket CreateConnectedToSocketSignature (AddressFamily family, SocketType type,
 																 ProtocolType proto, IPEndPoint endpoint,
 																 double timeout)
@@ -461,11 +493,18 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static nint CFSocketSetAddress (IntPtr handle, IntPtr address);
 
+		/// <param name="address">To be added.</param>
+		///         <param name="port">To be added.</param>
+		///         <summary>Sets the listening address for this socket (equivalent to the BSD bind call).</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetAddress (IPAddress address, int port)
 		{
 			SetAddress (new IPEndPoint (address, port));
 		}
 
+		/// <param name="endpoint">To be added.</param>
+		///         <summary>Sets the listening address for this socket (equivalent to the BSD bind call).</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetAddress (IPEndPoint endpoint)
 		{
 			EnableCallBacks (CFSocketCallBackType.AcceptCallBack);
@@ -503,6 +542,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static CFSocketFlags CFSocketGetSocketFlags (IntPtr handle);
 
+		/// <summary>Returns the set of CFSocket-specific flags.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CFSocketFlags GetSocketFlags ()
 		{
 			return CFSocketGetSocketFlags (Handle);
@@ -511,6 +553,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static void CFSocketSetSocketFlags (IntPtr handle, nuint /* CFOptionFlags */ flags);
 
+		/// <param name="flags">To be added.</param>
+		///         <summary>Sets the CFSocket-specific flags.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetSocketFlags (CFSocketFlags flags)
 		{
 			CFSocketSetSocketFlags (Handle, (nuint) (ulong) flags);
@@ -519,6 +564,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static void CFSocketDisableCallBacks (IntPtr handle, nuint /* CFOptionFlags */ types);
 
+		/// <param name="types">To be added.</param>
+		///         <summary>Disables a set of events from being raised.</summary>
+		///         <remarks>To be added.</remarks>
 		public void DisableCallBacks (CFSocketCallBackType types)
 		{
 			CFSocketDisableCallBacks (Handle, (nuint) (ulong) types);
@@ -527,6 +575,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static void CFSocketEnableCallBacks (IntPtr handle, nuint /* CFOptionFlags */ types);
 
+		/// <param name="types">To be added.</param>
+		///         <summary>Enables a set of events to be raised.</summary>
+		///         <remarks>To be added.</remarks>
 		public void EnableCallBacks (CFSocketCallBackType types)
 		{
 			CFSocketEnableCallBacks (Handle, (nuint) (ulong) types);
@@ -535,6 +586,10 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static nint CFSocketSendData (IntPtr handle, IntPtr address, IntPtr data, double timeout);
 
+		/// <param name="data">To be added.</param>
+		///         <param name="timeout">Time to wait for the operation to complete.  </param>
+		///         <summary>Sends data over the socket.</summary>
+		///         <remarks>This method raises an exception <see cref="T:CoreFoundation.CFSocketException" /> if the sending buffer is full, or the timeout expires before the data is sent.</remarks>
 		public void SendData (byte [] data, double timeout)
 		{
 			using (var buffer = new CFDataBuffer (data)) {

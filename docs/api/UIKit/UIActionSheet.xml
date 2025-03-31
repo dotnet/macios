@@ -38,7 +38,18 @@ protected void HandleBtnActionSheetWithOtherButtonsTouchUpInside (object sender,
       <para>The Objective-C style requires the user to create a new class derived from <see cref="T:UIKit.UIActionSheetDelegate" /> class and assign it to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20Delegate&amp;scope=Xamarin" title="P:UIKit.Delegate">P:UIKit.Delegate</a></format> property.   Alternatively, for low-level control, by creating a class derived from <see cref="T:Foundation.NSObject" /> which has every entry point properly decorated with an [Export] attribute.   The instance of this object can then be assigned to the <see cref="P:UIKit.UIActionSheet.WeakDelegate" /> property.   
 </para>
     </remarks>
-    
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIActionSheet_Class/index.html">Apple documentation for <c>UIActionSheet</c></related>
   </Docs>
+  <Docs DocId="M:UIKit.UIActionSheet.#ctor(System.String,UIKit.IUIActionSheetDelegate,System.String,System.String,System.String[])">
+        <param name="title">A title to be displayed in the title area of the action sheet.</param>
+        <param name="del">A delegate that will respond to taps in the action sheet.</param>
+        <param name="cancelTitle">The title of the Cancel button. This will be displayed in a black button.</param>
+        <param name="destroy">The title of the destructive button. This will be displayed in a red button.</param>
+        <param name="other">An array of <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> to use for other buttons in the <see cref="T:UIKit.UIActionSheet" />.</param>
+        <summary>Initializes a <see cref="T:UIKit.UIActionSheet" /> instance.</summary>
+        <remarks>
+          <para>Pass <see langword="null" /> to <paramref name="title" /> if there is no text to display in the title area.</para>
+          <para>If the action sheet is being presented on an iPad, then the <paramref name="cancelTitle" /> should be set to <see langword="null" />.</para>
+        </remarks>
+      </Docs>
 </Documentation>

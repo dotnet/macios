@@ -37,6 +37,9 @@ namespace Foundation {
 		AttributeTargets.Interface | AttributeTargets.Delegate,
 		Inherited = false, AllowMultiple = true)]
 	public class AdviceAttribute : Attribute {
+		/// <param name="message">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AdviceAttribute (string message)
 		{
 			Message = message;

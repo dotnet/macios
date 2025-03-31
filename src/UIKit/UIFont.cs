@@ -47,6 +47,11 @@ namespace UIKit {
 	}
 
 	public partial class UIFont {
+		/// <summary>Returns a string representation of the value of the current instance.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			return String.Format ("{0} {1}", Name, PointSize);
@@ -312,7 +317,8 @@ namespace UIKit {
 		// ref: https://bugzilla.xamarin.com/show_bug.cgi?id=25511
 
 #if NET
-		[SupportedOSPlatform ("ios")]
+		/// <include file="../../docs/api/UIKit/UIFont.xml" path="/Documentation/Docs[@DocId='M:UIKit.UIFont.GetPreferredFontForTextStyle(Foundation.NSString)']/*" />
+	[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 #endif
@@ -323,6 +329,13 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <param name="uiFontTextStyle">The style for which to get the preferred font.</param>
+		///         <summary>Weakly-typed version of an API used to retrieve the user's desired font size.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -333,6 +346,14 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <param name="uiFontTextStyle">The style for which to get the preferred font.</param>
+		///         <param name="traitCollection">The trait collection for which to get the preferred font.</param>
+		///         <summary>Weakly-typed version of an API used to retrieve the user's desired font size.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -344,6 +365,14 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <param name="uiFontTextStyle">The style for which to get the preferred font.</param>
+		///         <param name="traitCollection">The trait collection for which to get the preferred font.</param>
+		///         <summary>Gets the <see cref="T:UIKit.UIFont" /> that is preferred by the system for <paramref name="uiFontTextStyle" /> and <paramref name="traitCollection" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -432,12 +461,22 @@ namespace UIKit {
 			return !(f1 == f2);
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>Used to compare <see cref="T:UIKit.UIFont" /> objects.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public override bool Equals (object obj)
 		{
 			UIFont font = (obj as UIFont);
 			return this == font;
 		}
 
+		/// <summary>Generates a hash code for the current instance.</summary>
+		///         <returns>A int containing the hash code for this instance.</returns>
+		///         <remarks>The algorithm used to generate the hash code is unspecified.</remarks>
 		public override int GetHashCode ()
 		{
 			return GetNativeHash ().GetHashCode ();

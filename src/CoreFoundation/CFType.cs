@@ -18,12 +18,20 @@ namespace CoreFoundation {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CFType : NativeObject, ICFType {
+		/// <param name="typeRef">Handle to a CoreFoundation object.</param>
+		///         <summary>Returns the CoreFoundation type for the specified object.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		[DllImport (Constants.CoreFoundationLibrary, EntryPoint = "CFGetTypeID")]
 		public static extern nint GetTypeID (IntPtr typeRef);
 
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static IntPtr CFCopyDescription (IntPtr ptr);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		internal CFType ()
 		{
 		}
@@ -34,6 +42,12 @@ namespace CoreFoundation {
 		{
 		}
 
+		/// <param name="handle">Handle to the native CoreFoundation object.</param>
+		///         <summary>Returns a textual representation of the specified object.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public string? GetDescription (IntPtr handle)
 		{
 			if (handle == IntPtr.Zero)
@@ -45,6 +59,12 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static byte CFEqual (/*CFTypeRef*/ IntPtr cf1, /*CFTypeRef*/ IntPtr cf2);
 
+		/// <param name="cf1">To be added.</param>
+		///         <param name="cf2">To be added.</param>
+		///         <summary>Compares two handles of native objects for equality.</summary>
+		///         <returns>true if the types are the same.</returns>
+		///         <remarks>
+		///         </remarks>
 		public static bool Equal (IntPtr cf1, IntPtr cf2)
 		{
 			// CFEqual is not happy (but crashy) when it receive null

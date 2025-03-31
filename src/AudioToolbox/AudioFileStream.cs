@@ -128,6 +128,11 @@ namespace AudioToolbox {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class PropertyFoundEventArgs : EventArgs {
+		/// <param name="propertyID">To be added.</param>
+		///         <param name="ioFlags">To be added.</param>
+		///         <summary>Initializes a new instance of the PropertyFoundEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public PropertyFoundEventArgs (AudioFileStreamProperty propertyID, AudioFileStreamPropertyFlag ioFlags)
 		{
 			Property = propertyID;
@@ -143,6 +148,9 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public AudioFileStreamPropertyFlag Flags { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("AudioFileStreamProperty ({0})", Property);
@@ -154,6 +162,12 @@ namespace AudioToolbox {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class PacketReceivedEventArgs : EventArgs {
+		/// <param name="numberOfBytes">To be added.</param>
+		///         <param name="inputData">To be added.</param>
+		///         <param name="packetDescriptions">To be added.</param>
+		///         <summary>Initializes a new instance of the PacketReceivedEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public PacketReceivedEventArgs (int numberOfBytes, IntPtr inputData, AudioStreamPacketDescription []? packetDescriptions)
 		{
 			this.Bytes = numberOfBytes;
@@ -173,6 +187,9 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public AudioStreamPacketDescription []? PacketDescriptions { get; private set; }
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("Packet (Bytes={0} InputData={1} PacketDescriptions={2}", Bytes, InputData, PacketDescriptions?.Length ?? -1);
@@ -192,17 +209,29 @@ namespace AudioToolbox {
 			Dispose (false);
 		}
 
+		/// <summary>Releases the resources used by the AudioFileStream object.</summary>
+		///         <remarks>
+		///           <para>The Dispose method releases the resources used by the AudioFileStream class.</para>
+		///           <para>Calling the Dispose method when the application is finished using the AudioFileStream ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.  For more information on releasing resources see ``Cleaning up Unmananaged Resources'' at https://msdn.microsoft.com/en-us/library/498928w2.aspx</para>
+		///         </remarks>
 		public void Dispose ()
 		{
 			Dispose (true);
 			GC.SuppressFinalize (this);
 		}
 
+		/// <summary>Closes (and disposes the audio stream).</summary>
+		///         <remarks>
+		///           <para>
+		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	  </para>
+		///         </remarks>
 		public void Close ()
 		{
 			Dispose ();
 		}
 
+		/// <include file="../../docs/api/AudioToolbox/AudioFileStream.xml" path="/Documentation/Docs[@DocId='M:AudioToolbox.AudioFileStream.Dispose(System.Boolean)']/*" />
 		protected virtual void Dispose (bool disposing)
 		{
 			if (disposing) {
@@ -247,6 +276,11 @@ namespace AudioToolbox {
 		/// <summary>This event is raised when a packet has been decoded.</summary>
 		///         <remarks>To be added.</remarks>
 		public EventHandler<PacketReceivedEventArgs>? PacketDecoded;
+		/// <param name="numberOfBytes">The number of bytes available in the decoded packet.</param>
+		///         <param name="inputData">Pointer to the decoded data.</param>
+		///         <param name="packetDescriptions">A description of the packets decoded.</param>
+		///         <summary>Invoked when a packet has been decoded.</summary>
+		///         <remarks>The default implementation raises the PacketDecoded event.</remarks>
 		protected virtual void OnPacketDecoded (int numberOfBytes, IntPtr inputData, AudioStreamPacketDescription []? packetDescriptions)
 		{
 			var p = PacketDecoded;
@@ -257,6 +291,10 @@ namespace AudioToolbox {
 		/// <summary>This event is raised when a property has been found on the decoded data.</summary>
 		///         <remarks>The most interesting property that is raised is AudioFileStreamProperty.ReadyToProducePackets;   When this property is parsed there is enough information to create the output queue.   The MagicCookie and the StreamBasicDescription contain the information necessary to create a working instance of the OutputAudioQueue.</remarks>
 		public EventHandler<PropertyFoundEventArgs>? PropertyFound;
+		/// <param name="propertyID">The property that has been found.</param>
+		///         <param name="ioFlags" />
+		///         <summary>Invoked when a propety is found.</summary>
+		///         <remarks>The default implementation merely raises the PropetyFound event.</remarks>
 		protected virtual void OnPropertyFound (AudioFileStreamProperty propertyID, ref AudioFileStreamPropertyFlag ioFlags)
 		{
 			var p = PropertyFound;
@@ -278,6 +316,9 @@ namespace AudioToolbox {
 			*ioFlags = localFlags;
 		}
 
+		/// <param name="fileTypeHint">Hint about the audio file type.</param>
+		///         <summary>Creates a new instance of this object.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioFileStream (AudioFileType fileTypeHint)
 		{
 			IntPtr h;
@@ -300,6 +341,17 @@ namespace AudioToolbox {
 			IntPtr inData,
 			UInt32 inFlags);
 
+		/// <param name="size">The number of bytes to parse from the provided block.</param>
+		///         <param name="data">A pointer to the audio data to decode.</param>
+		///         <param name="discontinuity">True if this invocation to ParseBytes is contiguous to the previous one, false otherwise.</param>
+		///         <summary>Parse and decode the block of data provided.</summary>
+		///         <returns>Parse status.</returns>
+		///         <remarks>
+		///           <para>The OnPacketDecoded/OnProperty found methods are invoked as data is parsed.   If you have not subclassed this class, you can alternatively hook up to the PacketDecoded and PropertyFound events to receive parsing notifications.</para>
+		///           <para>
+		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	  </para>
+		///         </remarks>
 		public AudioFileStreamStatus ParseBytes (int size, IntPtr data, bool discontinuity)
 		{
 			if (data == IntPtr.Zero)
@@ -307,6 +359,22 @@ namespace AudioToolbox {
 			return LastError = AudioFileStreamParseBytes (handle, size, data, discontinuity ? (uint) 1 : (uint) 0);
 		}
 
+		/// <param name="bytes">The buffer that contains the audio data to decode.</param>
+		///         <param name="discontinuity">True if this invocation to ParseBytes is contiguous to the previous one, false otherwise.</param>
+		///         <summary>Parse and decode the array of bytes provided.</summary>
+		///         <returns>Parsing status.</returns>
+		///         <remarks>
+		///           <para> 
+		/// 	    The OnPacketDecoded/OnProperty found methods are
+		/// 	    invoked as data is parsed.  If you have not subclassed
+		/// 	    this class, you can alternatively hook up to the
+		/// 	    PacketDecoded and PropertyFound events to receive parsing
+		/// 	    notifications.  
+		/// 	  </para>
+		///           <para>
+		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	  </para>
+		///         </remarks>
 		public AudioFileStreamStatus ParseBytes (byte [] bytes, bool discontinuity)
 		{
 			if (bytes is null)
@@ -318,6 +386,18 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <param name="bytes">Buffer containing the data.</param>
+		///         <param name="offset">First byte withing the array that contains the data to decode.</param>
+		///         <param name="count">Number of bytes to parse.</param>
+		///         <param name="discontinuity">True if this invocation to ParseBytes is contiguous to the previous one, false otherwise.</param>
+		///         <summary>Parses and decode a portion of the array of bytes provided.</summary>
+		///         <returns>The status from parsing the buffer.</returns>
+		///         <remarks>
+		///           <para>The OnPacketDecoded/OnProperty found methods are invoked as data is parsed.   If you have not subclassed this class, you can alternatively hook up to the PacketDecoded and PropertyFound events to receive parsing notifications.</para>
+		///           <para>
+		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	  </para>
+		///         </remarks>
 		public AudioFileStreamStatus ParseBytes (byte [] bytes, int offset, int count, bool discontinuity)
 		{
 			if (bytes is null)
@@ -342,6 +422,17 @@ namespace AudioToolbox {
 									long* outDataByteOffset,
 									int* ioFlags);
 
+		/// <param name="packetOffset">The offset of the packet to map.</param>
+		///         <param name="dataByteOffset">Upon return, the data byte offset in the audio file stream. </param>
+		///         <param name="isEstimate">On return, the value will be true if the byte offset is an estimate.</param>
+		///         <summary>Maps the absolute file offset for the specified packetOffset.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///           <para>
+		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	  </para>
+		///         </remarks>
 		public AudioFileStreamStatus Seek (long packetOffset, out long dataByteOffset, out bool isEstimate)
 		{
 			int v = 0;
@@ -388,6 +479,16 @@ namespace AudioToolbox {
 			int* ioPropertyDataSize,
 			IntPtr outPropertyData);
 
+		/// <param name="property">Property ID to fetch.</param>
+		///         <param name="dataSize">The expected size of the property (must match the underlying assumption for the size).</param>
+		///         <param name="outPropertyData">Must point to a buffer that can hold dataSize bytes.</param>
+		///         <summary>Low-level routine used to fetch arbitrary property values from the underlying AudioFileStream object.</summary>
+		///         <returns>True on success.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    This updates the <see cref="P:AudioToolbox.AudioFileStream.LastError" /> property.
+		/// 	  </para>
+		///         </remarks>
 		public bool GetProperty (AudioFileStreamProperty property, ref int dataSize, IntPtr outPropertyData)
 		{
 			if (outPropertyData == IntPtr.Zero)

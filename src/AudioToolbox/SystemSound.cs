@@ -67,6 +67,9 @@ namespace AudioToolbox {
 			this.ownsHandle = ownsHandle;
 		}
 
+		/// <param name="soundId">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SystemSound (uint soundId) : this (soundId, false) { }
 
 

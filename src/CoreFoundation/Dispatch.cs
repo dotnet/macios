@@ -97,11 +97,15 @@ namespace CoreFoundation {
 		[DllImport (Constants.libcLibrary)]
 		extern static IntPtr dispatch_retain (IntPtr o);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal override void Retain ()
 		{
 			dispatch_retain (Handle);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal override void Release ()
 		{
 			dispatch_release (Handle);
@@ -110,6 +114,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.libcLibrary)]
 		extern static void dispatch_set_target_queue (/* dispatch_object_t */ IntPtr queue, /* dispatch_queue_t */ IntPtr target);
 
+		/// <param name="queue">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetTargetQueue (DispatchQueue queue)
 		{
 			// note: null is allowed because DISPATCH_TARGET_QUEUE_DEFAULT is defined as NULL (dispatch/queue.h)
@@ -124,6 +131,8 @@ namespace CoreFoundation {
 		[DllImport (Constants.libcLibrary)]
 		internal extern static void dispatch_suspend (IntPtr o);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
@@ -728,18 +737,31 @@ namespace CoreFoundation {
 		///         </remarks>
 		public static readonly DispatchTime Forever = new DispatchTime (ulong.MaxValue);
 
+		/// <param name="nanoseconds">The number of nanosecods.   If the value is positive, the returned milestone is relative.  If the number of nanoseconds is negative, then the milestone is an absolute wall clock time.</param>
+		///         <summary>Creates new DispatchTime instance from nanoseconds</summary>
+		///         <remarks>
+		///         </remarks>
 		public DispatchTime (ulong nanoseconds)
 			: this ()
 		{
 			Nanoseconds = nanoseconds;
 		}
 
+		/// <param name="when">Reference dispatch time.</param>
+		///         <param name="deltaNanoseconds">Nanoseconds to add to the dispatch time.</param>
+		///         <summary>Creates a new dispatch time instance based on an existing dispatch time and a nanosecond delta.</summary>
+		///         <remarks>
+		///         </remarks>
 		public DispatchTime (DispatchTime when, long deltaNanoseconds)
 			: this ()
 		{
 			Nanoseconds = dispatch_time (when.Nanoseconds, deltaNanoseconds);
 		}
 
+		/// <param name="when">Reference dispatch time.</param>
+		///         <param name="delta">Timespan to add to the dispatch time.</param>
+		///         <summary>Creates a new dispatch time instance based on an existing dispatch time and a the specified delta.</summary>
+		///         <remarks>To be added.</remarks>
 		public DispatchTime (DispatchTime when, TimeSpan delta) : this ()
 		{
 			Nanoseconds = dispatch_time (when.Nanoseconds, delta.Ticks * 100);
@@ -786,11 +808,18 @@ namespace CoreFoundation {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public DispatchGroup ()
 			: base (dispatch_group_create (), true)
 		{
 		}
 
+		/// <summary>Creates a new dispatch group.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public static DispatchGroup? Create ()
 		{
 			var ptr = dispatch_group_create ();
@@ -800,6 +829,10 @@ namespace CoreFoundation {
 			return new DispatchGroup (ptr, true);
 		}
 
+		/// <param name="queue">The dispatch queue to which the block will be submitted for asynchronous invocation.</param>
+		///         <param name="action">The action to invoke asynchronously.</param>
+		///         <summary>Submits a block to a dispatch queue and associates the block with the given dispatch group.</summary>
+		///         <remarks>Submits a block to a dispatch queue and associates the block with the given dispatch group. The dispatch group may be used to wait for the completion of the blocks it references.</remarks>
 		public void DispatchAsync (DispatchQueue queue, Action action)
 		{
 			if (queue is null)
@@ -813,6 +846,10 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <param name="queue">To be added.</param>
+		///         <param name="block">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Notify (DispatchQueue queue, DispatchBlock block)
 		{
 			if (queue is null)
@@ -824,6 +861,18 @@ namespace CoreFoundation {
 			GC.KeepAlive (block);
 		}
 
+		/// <param name="queue">The dispatch queue to which the block will be submitted for asynchronous invocation.</param>
+		///         <param name="action">The action to invoke when the group completes.</param>
+		///         <summary>Schedule a block to be submitted to a queue when all the blocks associated with a group have completed.</summary>
+		///         <remarks>
+		///           <para>This function schedules a notification block to be submitted to the specified queue once all blocks associated with the dispatch group have completed.</para>
+		///           <para>
+		///           </para>
+		///           <para>If no blocks are associated with the dispatch group (i.e. the group is empty) then the notification block will be submitted immediately.</para>
+		///           <para>
+		///           </para>
+		///           <para>The group will be empty at the time the notification block is submitted to the target queue. </para>
+		///         </remarks>
 		public void Notify (DispatchQueue queue, Action action)
 		{
 			if (queue is null)
@@ -836,21 +885,30 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>Explicitly sets that a code block is beeing managed by the group.</summary>
+		///         <remarks>It can be used to manually manage dispatch group tasks by incrementing the current count of outstanding tasks in the group.</remarks>
 		public void Enter ()
 		{
 			dispatch_group_enter (GetCheckedHandle ());
 		}
 
+		/// <summary>Releases a code block association with the group.</summary>
+		///         <remarks>It can be used to manually manage dispatch group tasks by decrementing the current count of outstanding tasks in the group.</remarks>
 		public void Leave ()
 		{
 			dispatch_group_leave (GetCheckedHandle ());
 		}
 
+		/// <include file="../../docs/api/CoreFoundation/DispatchGroup.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.DispatchGroup.Wait(CoreFoundation.DispatchTime)']/*" />
 		public bool Wait (DispatchTime timeout)
 		{
 			return dispatch_group_wait (GetCheckedHandle (), timeout.Nanoseconds) == 0;
 		}
 
+		/// <param name="timeout">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Wait (TimeSpan timeout)
 		{
 			return Wait (new DispatchTime (DispatchTime.Now, timeout));

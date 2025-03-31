@@ -9833,6 +9833,9 @@ namespace AppKit {
 		[Export ("removeRepresentation:")]
 		void RemoveRepresentation (NSImageRep imageRep);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isValid")]
 		bool IsValid { get; }
 
@@ -9962,6 +9965,9 @@ namespace AppKit {
 		[Export ("alignmentRect")]
 		CGRect AlignmentRect { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("template")]
 		bool Template { [Bind ("isTemplate")] get; set; }
 
@@ -10041,454 +10047,571 @@ namespace AppKit {
 
 	[MacCatalyst (13, 1)]
 	public enum NSImageName {
+		/// <summary>To be added.</summary>
 		[Field ("NSImageNameQuickLookTemplate")]
 		QuickLookTemplate,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSImageNameBluetoothTemplate")]
 		BluetoothTemplate,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameIChatTheaterTemplate")]
 		IChatTheaterTemplate,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSImageNameSlideshowTemplate")]
 		SlideshowTemplate,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSImageNameActionTemplate")]
 		ActionTemplate,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameSmartBadgeTemplate")]
 		SmartBadgeTemplate,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSImageNamePathTemplate")]
 		PathTemplate,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameInvalidDataFreestandingTemplate")]
 		InvalidDataFreestandingTemplate,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSImageNameLockLockedTemplate")]
 		LockLockedTemplate,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSImageNameLockUnlockedTemplate")]
 		LockUnlockedTemplate,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSImageNameGoRightTemplate")]
 		GoRightTemplate,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSImageNameGoLeftTemplate")]
 		GoLeftTemplate,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameRightFacingTriangleTemplate")]
 		RightFacingTriangleTemplate,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameLeftFacingTriangleTemplate")]
 		LeftFacingTriangleTemplate,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSImageNameAddTemplate")]
 		AddTemplate,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSImageNameRemoveTemplate")]
 		RemoveTemplate,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameRevealFreestandingTemplate")]
 		RevealFreestandingTemplate,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameFollowLinkFreestandingTemplate")]
 		FollowLinkFreestandingTemplate,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameEnterFullScreenTemplate")]
 		EnterFullScreenTemplate,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameExitFullScreenTemplate")]
 		ExitFullScreenTemplate,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSImageNameStopProgressTemplate")]
 		StopProgressTemplate,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameStopProgressFreestandingTemplate")]
 		StopProgressFreestandingTemplate,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSImageNameRefreshTemplate")]
 		RefreshTemplate,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameRefreshFreestandingTemplate")]
 		RefreshFreestandingTemplate,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameFolder")]
 		Folder,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameTrashEmpty")]
 		TrashEmpty,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameTrashFull")]
 		TrashFull,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSImageNameHomeTemplate")]
 		HomeTemplate,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSImageNameBookmarksTemplate")]
 		BookmarksTemplate,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameCaution")]
 		Caution,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameStatusAvailable")]
 		StatusAvailable,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameStatusPartiallyAvailable")]
 		StatusPartiallyAvailable,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameStatusUnavailable")]
 		StatusUnavailable,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameStatusNone")]
 		StatusNone,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameApplicationIcon")]
 		ApplicationIcon,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameMenuOnStateTemplate")]
 		MenuOnStateTemplate,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameMenuMixedStateTemplate")]
 		MenuMixedStateTemplate,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameUserGuest")]
 		UserGuest,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameMobileMe")]
 		MobileMe,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSImageNameShareTemplate")]
 		ShareTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarAddDetailTemplate")]
 		TouchBarAddDetailTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarAddTemplate")]
 		TouchBarAddTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarAlarmTemplate")]
 		TouchBarAlarmTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarAudioInputMuteTemplate")]
 		TouchBarAudioInputMuteTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarAudioInputTemplate")]
 		TouchBarAudioInputTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarAudioOutputMuteTemplate")]
 		TouchBarAudioOutputMuteTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarAudioOutputVolumeHighTemplate")]
 		TouchBarAudioOutputVolumeHighTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarAudioOutputVolumeLowTemplate")]
 		TouchBarAudioOutputVolumeLowTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarAudioOutputVolumeMediumTemplate")]
 		TouchBarAudioOutputVolumeMediumTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarAudioOutputVolumeOffTemplate")]
 		TouchBarAudioOutputVolumeOffTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarBookmarksTemplate")]
 		TouchBarBookmarksTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarColorPickerFill")]
 		TouchBarColorPickerFill,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarColorPickerFont")]
 		TouchBarColorPickerFont,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarColorPickerStroke")]
 		TouchBarColorPickerStroke,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarCommunicationAudioTemplate")]
 		TouchBarCommunicationAudioTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarCommunicationVideoTemplate")]
 		TouchBarCommunicationVideoTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarComposeTemplate")]
 		TouchBarComposeTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarDeleteTemplate")]
 		TouchBarDeleteTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarDownloadTemplate")]
 		TouchBarDownloadTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarEnterFullScreenTemplate")]
 		TouchBarEnterFullScreenTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarExitFullScreenTemplate")]
 		TouchBarExitFullScreenTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarFastForwardTemplate")]
 		TouchBarFastForwardTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarFolderCopyToTemplate")]
 		TouchBarFolderCopyToTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarFolderMoveToTemplate")]
 		TouchBarFolderMoveToTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarFolderTemplate")]
 		TouchBarFolderTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarGetInfoTemplate")]
 		TouchBarGetInfoTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarGoBackTemplate")]
 		TouchBarGoBackTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarGoDownTemplate")]
 		TouchBarGoDownTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarGoForwardTemplate")]
 		TouchBarGoForwardTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarGoUpTemplate")]
 		TouchBarGoUpTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarHistoryTemplate")]
 		TouchBarHistoryTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarIconViewTemplate")]
 		TouchBarIconViewTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarListViewTemplate")]
 		TouchBarListViewTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarMailTemplate")]
 		TouchBarMailTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarNewFolderTemplate")]
 		TouchBarNewFolderTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarNewMessageTemplate")]
 		TouchBarNewMessageTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarOpenInBrowserTemplate")]
 		TouchBarOpenInBrowserTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarPauseTemplate")]
 		TouchBarPauseTemplate,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSImageNameTouchBarPlayheadTemplate")]
 		TouchBarPlayheadTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarPlayPauseTemplate")]
 		TouchBarPlayPauseTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarPlayTemplate")]
 		TouchBarPlayTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarQuickLookTemplate")]
 		TouchBarQuickLookTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarRecordStartTemplate")]
 		TouchBarRecordStartTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarRecordStopTemplate")]
 		TouchBarRecordStopTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarRefreshTemplate")]
 		TouchBarRefreshTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarRewindTemplate")]
 		TouchBarRewindTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarRotateLeftTemplate")]
 		TouchBarRotateLeftTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarRotateRightTemplate")]
 		TouchBarRotateRightTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarSearchTemplate")]
 		TouchBarSearchTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarShareTemplate")]
 		TouchBarShareTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarSidebarTemplate")]
 		TouchBarSidebarTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarSkipAhead15SecondsTemplate")]
 		TouchBarSkipAhead15SecondsTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarSkipAhead30SecondsTemplate")]
 		TouchBarSkipAhead30SecondsTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarSkipAheadTemplate")]
 		TouchBarSkipAheadTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarSkipBack15SecondsTemplate")]
 		TouchBarSkipBack15SecondsTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarSkipBack30SecondsTemplate")]
 		TouchBarSkipBack30SecondsTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarSkipBackTemplate")]
 		TouchBarSkipBackTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarSkipToEndTemplate")]
 		TouchBarSkipToEndTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarSkipToStartTemplate")]
 		TouchBarSkipToStartTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarSlideshowTemplate")]
 		TouchBarSlideshowTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarTagIconTemplate")]
 		TouchBarTagIconTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarTextBoldTemplate")]
 		TouchBarTextBoldTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarTextBoxTemplate")]
 		TouchBarTextBoxTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarTextCenterAlignTemplate")]
 		TouchBarTextCenterAlignTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarTextItalicTemplate")]
 		TouchBarTextItalicTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarTextJustifiedAlignTemplate")]
 		TouchBarTextJustifiedAlignTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarTextLeftAlignTemplate")]
 		TouchBarTextLeftAlignTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarTextListTemplate")]
 		TouchBarTextListTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarTextRightAlignTemplate")]
 		TouchBarTextRightAlignTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarTextStrikethroughTemplate")]
 		TouchBarTextStrikethroughTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarTextUnderlineTemplate")]
 		TouchBarTextUnderlineTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarUserAddTemplate")]
 		TouchBarUserAddTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarUserGroupTemplate")]
 		TouchBarUserGroupTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarUserTemplate")]
 		TouchBarUserTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarVolumeDownTemplate")]
 		TouchBarVolumeDownTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarVolumeUpTemplate")]
 		TouchBarVolumeUpTemplate,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarRemoveTemplate")]
 		TouchBarRemoveTemplate,
@@ -20229,9 +20352,15 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSToolbarDelegate Delegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("visible")]
 		bool Visible { [Bind ("isVisible")] get; set; }
 
@@ -20262,15 +20391,27 @@ namespace AppKit {
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Ignored by system.")]
 		NSString NSToolbarSeparatorItemIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSToolbarSpaceItemIdentifier")]
 		NSString NSToolbarSpaceItemIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSToolbarFlexibleSpaceItemIdentifier")]
 		NSString NSToolbarFlexibleSpaceItemIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSToolbarShowColorsItemIdentifier")]
 		NSString NSToolbarShowColorsItemIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSToolbarShowFontsItemIdentifier")]
 		NSString NSToolbarShowFontsItemIdentifier { get; }
 
@@ -20279,6 +20420,9 @@ namespace AppKit {
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Ignored by system.")]
 		NSString NSToolbarCustomizeToolbarItemIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSToolbarPrintItemIdentifier")]
 		NSString NSToolbarPrintItemIdentifier { get; }
 
@@ -20286,10 +20430,16 @@ namespace AppKit {
 		[Export ("allowsExtensionItems")]
 		bool AllowsExtensionItems { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSToolbarToggleSidebarItemIdentifier")]
 		NSString NSToolbarToggleSidebarItemIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSToolbarCloudSharingItemIdentifier")]
 		NSString NSToolbarCloudSharingItemIdentifier { get; }
@@ -20456,6 +20606,9 @@ namespace AppKit {
 		nint Tag { get; set; }
 #pragma warning restore 0108
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
@@ -20668,6 +20821,9 @@ namespace AppKit {
 		[Export ("itemForIdentifier:")]
 		NSTouchBarItem GetItemForIdentifier (string identifier);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("visible")]
 		bool Visible { [Bind ("isVisible")] get; }
 
@@ -20719,52 +20875,66 @@ namespace AppKit {
 		[Export ("customizationLabel")]
 		string CustomizationLabel { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("visible")]
 		bool Visible { [Bind ("isVisible")] get; }
 	}
 
 	[MacCatalyst (13, 1)]
 	public enum NSTouchBarItemIdentifier {
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTouchBarItemIdentifierFixedSpaceSmall")]
 		FixedSpaceSmall,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTouchBarItemIdentifierFixedSpaceLarge")]
 		FixedSpaceLarge,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTouchBarItemIdentifierFlexibleSpace")]
 		FlexibleSpace,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTouchBarItemIdentifierOtherItemsProxy")]
 		OtherItemsProxy,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSTouchBarItemIdentifierCharacterPicker")]
 		CharacterPicker,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSTouchBarItemIdentifierTextColorPicker")]
 		TextColorPicker,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSTouchBarItemIdentifierTextStyle")]
 		TextStyle,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSTouchBarItemIdentifierTextAlignment")]
 		TextAlignment,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSTouchBarItemIdentifierTextList")]
 		TextList,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSTouchBarItemIdentifierTextFormat")]
 		TextFormat,
 
+		/// <summary>To be added.</summary>
 		[NoMacCatalyst]
 		[Field ("NSTouchBarItemIdentifierCandidateList")]
 		CandidateList,
@@ -24423,15 +24593,24 @@ namespace AppKit {
 	}
 
 	partial interface NSToolbarItemEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("item")]
 		NSToolbarItem Item { get; }
 	}
 
 	partial interface NSToolbar {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSToolbarItemEventArgs))]
 		[Field ("NSToolbarWillAddItemNotification")]
 		NSString NSToolbarWillAddItemNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSToolbarItemEventArgs))]
 		[Field ("NSToolbarDidRemoveItemNotification")]
 		NSString NSToolbarDidRemoveItemNotification { get; }
@@ -27294,6 +27473,9 @@ namespace AppKit {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		INSSharingServicePickerTouchBarItemDelegate Delegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
@@ -27320,13 +27502,22 @@ namespace AppKit {
 		[Export ("behavior", ArgumentSemantic.Copy)]
 		NSSliderAccessoryBehavior Behavior { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSSliderAccessoryWidthDefault")]
 		double DefaultWidth { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSSliderAccessoryWidthWide")]
 		double WidthWide { get; }

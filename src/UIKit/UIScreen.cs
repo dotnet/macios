@@ -20,6 +20,10 @@ using CoreGraphics;
 namespace UIKit {
 	public partial class UIScreen {
 
+		/// <param name="action">Delegate method to invoke when the screen needs to be updated.</param>
+		///         <summary>Registers a method to be invoked whenever the display screen needs to be updated.</summary>
+		///         <returns>The active display link that can be configured, read from and scheduled to deliver events.</returns>
+		///         <remarks>To be added.</remarks>
 		public CoreAnimation.CADisplayLink CreateDisplayLink (Action action)
 		{
 			if (action is null)
@@ -28,6 +32,21 @@ namespace UIKit {
 			return CreateDisplayLink (d, NSActionDispatcher.Selector);
 		}
 
+		/// <summary>Captures a screenshot of the entire screen.</summary>
+		///         <returns>A screenshot as a <see cref="T:UIKit.UIImage" />.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    This API will only capture UIKit and Quartz drawing,
+		/// 	    because it uses the screen's CALayer's RenderInContext
+		/// 	    method to perform the screenshot.  It will not capture
+		/// 	    OpenGL ES or video content.
+		/// 	  </para>
+		///           <para>
+		/// 	    If you want to capture an OpenGL ES or video content use
+		/// 	    the <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Capture" />
+		/// 	    method.
+		/// 	  </para>
+		///         </remarks>
 		public UIImage Capture ()
 		{
 			if (SystemVersion.CheckiOS (7, 0)) {

@@ -7,21 +7,47 @@ using System.Collections.Generic;
 
 namespace ObjCRuntime {
 	public class RuntimeException : Exception {
+		/// <param name="message">The error message that explains the reason for the exception.</param>
+		///         <param name="args">An object array that contains zero or more objects to format the error message.</param>
+		///         <summary>Initializes a new RuntimeException with the specified error message, optionally specifying any format arguments to format the error message.</summary>
+		///         <remarks>
+		///         </remarks>
 		public RuntimeException (string message, params object? [] args)
 			: base (string.Format (message, args))
 		{
 		}
 
+		/// <param name="code">The error code for the condition that triggered the exception.</param>
+		///         <param name="message">The error message that explains the reason for the exception.</param>
+		///         <param name="args">An object array that contains zero or more objects to format the error message.</param>
+		///         <summary>Initializes a new RuntimeException with the specified error code, error message, and optionally specifying any format arguments to format the error message.</summary>
+		///         <remarks>
+		///         </remarks>
 		public RuntimeException (int code, string message, params object? [] args) :
 			this (code, false, null, message, args)
 		{
 		}
 
+		/// <param name="code">The error code for the condition that triggered the exception.</param>
+		///         <param name="error">If this is an error or a warning.</param>
+		///         <param name="message">The error message that explains the reason for the exception.</param>
+		///         <param name="args">An object array that contains zero or more objects to format the error message.</param>
+		///         <summary>Initializes a new RuntimeException with the specified error code, error message, and optionally specifying any format arguments to format the error message.</summary>
+		///         <remarks>
+		///         </remarks>
 		public RuntimeException (int code, bool error, string message, params object? [] args) :
 			this (code, error, null, message, args)
 		{
 		}
 
+		/// <param name="code">The error code for the condition that triggered the exception.</param>
+		///         <param name="error">If this is an error or a warning.</param>
+		///         <param name="innerException">The exception that is the cause of the current exception.</param>
+		///         <param name="message">The error message that explains the reason for the exception.</param>
+		///         <param name="args">An object array that contains zero or more objects to format the error message.</param>
+		///         <summary>Initializes a new RuntimeException with the specified error code, inner exception, error message, and optionally specifying any format arguments to format the error message.</summary>
+		///         <remarks>
+		///         </remarks>
 		public RuntimeException (int code, bool error, Exception? innerException, string message, params object? [] args) :
 			base (String.Format (message, args), innerException)
 		{

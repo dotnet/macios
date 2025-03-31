@@ -29,6 +29,7 @@ namespace CloudKit {
 		///         <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
 		public override NativeHandle ClassHandle { get => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms); }
 
+		/// <include file="../../docs/api/CloudKit/CKMarkNotificationsReadOperation.xml" path="/Documentation/Docs[@DocId='M:CloudKit.CKMarkNotificationsReadOperation.#ctor(Foundation.NSObjectFlag)']/*" />
 		protected CKMarkNotificationsReadOperation (NSObjectFlag t) : base (t)
 		{
 			throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
@@ -39,6 +40,9 @@ namespace CloudKit {
 			throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
 		}
 
+		/// <param name="notificationIds">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CKMarkNotificationsReadOperation (CKNotificationID [] notificationIds)
 			: base (NSObjectFlag.Empty)
 		{

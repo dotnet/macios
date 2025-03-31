@@ -46,6 +46,9 @@ namespace AppKit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public new NSButtonCell Cell {
 			get { return (NSButtonCell) base.Cell; }
 			set { base.Cell = value; }

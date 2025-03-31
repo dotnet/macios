@@ -29,6 +29,11 @@ namespace UIKit {
 		}
 #endif
 
+		/// <param name="n">notification and its payload.</param>
+		///         <summary>Deprecated: helper method to extract the animation duration from a notification.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>Use the <see cref="T:UIKit.UIKeyboard.Notifications" /> strongly typed methods instead.</remarks>
 		public static double AnimationDurationFromNotification (NSNotification n)
 		{
 			if (n is null || n.UserInfo is null)
@@ -39,6 +44,11 @@ namespace UIKit {
 			return val.DoubleValue;
 		}
 
+		/// <param name="n">notification and its payload.</param>
+		///         <summary>Deprecated: helper method to extract the animation curve from a notification.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>Use the <see cref="T:UIKit.UIKeyboard.Notifications" /> strongly typed methods instead.</remarks>
 		public static uint AnimationCurveFromNotification (NSNotification n)
 		{
 			if (n is null || n.UserInfo is null)
@@ -77,11 +87,21 @@ namespace UIKit {
 		}
 #endif
 
+		/// <param name="n">notification and its payload.</param>
+		///         <summary>Deprecated: helper method to extract the keyboard's starting frame from a notification</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>Use the <see cref="T:UIKit.UIKeyboard.Notifications" /> strongly typed methods instead.</remarks>
 		static public CGRect FrameBeginFromNotification (NSNotification n)
 		{
 			return RectangleFFrom (FrameBeginUserInfoKey, n);
 		}
 
+		/// <param name="n">notification and its payload.</param>
+		///         <summary>Deprecated: helper method to extract the keyboard's ending frame from a notification</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>Use the <see cref="T:UIKit.UIKeyboard.Notifications" /> strongly typed methods instead.</remarks>
 		static public CGRect FrameEndFromNotification (NSNotification n)
 		{
 			return RectangleFFrom (FrameEndUserInfoKey, n);

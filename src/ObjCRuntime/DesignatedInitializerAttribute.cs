@@ -14,6 +14,9 @@ namespace ObjCRuntime {
 	// not only constructors
 	[AttributeUsage (AttributeTargets.Constructor | AttributeTargets.Method)]
 	public class DesignatedInitializerAttribute : Attribute {
+		/// <summary>Initializes new DesignatedInitializer attribute.</summary>
+		///         <remarks>
+		///         </remarks>
 		public DesignatedInitializerAttribute ()
 		{
 		}

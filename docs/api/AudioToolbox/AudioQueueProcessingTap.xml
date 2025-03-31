@@ -1,0 +1,37 @@
+<Documentation>
+  <Docs DocId="M:AudioToolbox.AudioQueueProcessingTap.Dispose(System.Boolean)">
+        <param name="disposing">
+          <para>If set to <see langword="true" />, the method is invoked directly and will dispose managed and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
+        </param>
+        <summary>Releases the resources used by the AudioQueueProcessingTap object.</summary>
+        <remarks>
+          <para>This Dispose method releases the resources used by the AudioQueueProcessingTap class.</para>
+          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
+          <para>Calling the Dispose method when the application is finished using the AudioQueueProcessingTap ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
+          <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at https://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
+        </remarks>
+      </Docs>
+  <Docs DocId="M:AudioToolbox.AudioQueueProcessingTap.GetSourceAudio(System.UInt32,AudioToolbox.AudioTimeStamp@,AudioToolbox.AudioQueueProcessingTapFlags@,System.UInt32@,AudioToolbox.AudioBuffers)">
+        <param name="numberOfFrames">Number of frames requires by the Tap processor.</param>
+        <param name="timeStamp">For input queues, the timestamp is returned.  For output queues, it must contain the timestamp.</param>
+        <param name="flags">Flags</param>
+        <param name="parentNumberOfFrames">Returns the number of provided frames.</param>
+        <param name="data">The AudioBuffers that contain the source data.</param>
+        <summary>Deprecated: Retrieve source audio.</summary>
+        <returns>
+        </returns>
+        <remarks>
+          <para>
+	    Memory management for the AudioBuffers is as follows.  If
+	    the AudioBuffer Data field contains IntPtr.Zero, the
+	    AudioQueue will allocate the buffers and release them
+	    after the tap processor has executed.  If the value is
+	    not-null, it must point to a block of memory large enough
+	    to hold the requested number of frames.
+	  </para>
+          <para>
+	    This method should only be called from the AudioProcessingTap callback.
+	  </para>
+        </remarks>
+      </Docs>
+</Documentation>

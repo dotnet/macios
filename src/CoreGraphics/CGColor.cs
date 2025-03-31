@@ -124,6 +124,9 @@ namespace CoreGraphics {
 
 		}
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGColor (string name)
 			: base (Create (name), true)
 		{

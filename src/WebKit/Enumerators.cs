@@ -12,6 +12,9 @@ using ObjCRuntime;
 namespace WebKit {
 
 	public interface IIndexedContainer<T> {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		int Count { get; }
 		T this [int index] { get; }
 	}

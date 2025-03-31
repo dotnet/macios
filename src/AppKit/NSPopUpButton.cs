@@ -37,6 +37,9 @@ using Foundation;
 namespace AppKit {
 
 	public partial class NSPopUpButton {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public new NSPopUpButtonCell Cell {
 			get { return (NSPopUpButtonCell) base.Cell; }
 			set { base.Cell = value; }

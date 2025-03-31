@@ -575,12 +575,28 @@ namespace AudioToolbox {
 		}
 #endif
 
+		/// <param name="sourceFormat">Input audio format.</param>
+		///         <param name="destinationFormat">Output audio format.</param>
+		///         <summary>Creates a new audio converter instance based on specified audio formats.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public static AudioConverter? Create (AudioStreamBasicDescription sourceFormat, AudioStreamBasicDescription destinationFormat)
 		{
 			AudioConverterError res;
 			return Create (sourceFormat, destinationFormat, out res);
 		}
 
+		/// <param name="sourceFormat">The format of the source audio.</param>
+		///         <param name="destinationFormat">The destination audio format.</param>
+		///         <param name="error">
+		///         </param>
+		///         <summary>Creates a new audio converter instance using a specified codec.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public static AudioConverter? Create (AudioStreamBasicDescription sourceFormat, AudioStreamBasicDescription destinationFormat, out AudioConverterError error)
 		{
 			IntPtr ptr = new IntPtr ();
@@ -593,6 +609,14 @@ namespace AudioToolbox {
 			return new AudioConverter (ptr, true);
 		}
 
+		/// <param name="sourceFormat">Input audio format.</param>
+		///         <param name="destinationFormat">Output audio format.</param>
+		///         <param name="descriptions">A list of codec to be used.</param>
+		///         <summary>Creates a new audio converter instance using a specified codec.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public static AudioConverter? Create (AudioStreamBasicDescription sourceFormat, AudioStreamBasicDescription destinationFormat, AudioClassDescription [] descriptions)
 		{
 			if (descriptions is null)
@@ -667,6 +691,7 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <include file="../../docs/api/AudioToolbox/AudioConverter.xml" path="/Documentation/Docs[@DocId='M:AudioToolbox.AudioConverter.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero && Owns)
@@ -680,6 +705,13 @@ namespace AudioToolbox {
 			base.Dispose (disposing);
 		}
 
+		/// <param name="input">The input audio data.</param>
+		///         <param name="output">The output audio data.</param>
+		///         <summary>Converts audio data from one linear PCM format to another.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public AudioConverterError ConvertBuffer (byte [] input, byte [] output)
 		{
 			if (input is null)
@@ -697,6 +729,14 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <param name="numberPCMFrames">The number of linear PCM frames to convert.</param>
+		///         <param name="inputData">The input audio data.</param>
+		///         <param name="outputData">The output audio data.</param>
+		///         <summary>Converts audio data from one linear PCM format to another where both use the same sample rate.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public AudioConverterError ConvertComplexBuffer (int numberPCMFrames, AudioBuffers inputData, AudioBuffers outputData)
 		{
 			if (inputData is null)
@@ -707,6 +747,13 @@ namespace AudioToolbox {
 			return AudioConverterConvertComplexBuffer (Handle, numberPCMFrames, (IntPtr) inputData, (IntPtr) outputData);
 		}
 
+		/// <param name="outputDataPacketSize">To be added.</param>
+		///         <param name="outputData">To be added.</param>
+		///         <param name="packetDescription">To be added.</param>
+		///         <param name="newInputDataHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioConverterError FillComplexBuffer (ref int outputDataPacketSize,
 			AudioBuffers outputData, AudioStreamPacketDescription [] packetDescription, AudioConverterComplexInputData newInputDataHandler)
 		{
@@ -719,6 +766,19 @@ namespace AudioToolbox {
 			return FillComplexBuffer (ref outputDataPacketSize, outputData, packetDescription, new Tuple<AudioConverter, AudioConverterComplexInputData?> (this, newInputDataHandler));
 		}
 
+		/// <param name="outputDataPacketSize">The capacity of converted output data expressed in packets</param>
+		///         <param name="outputData">The converted output data.</param>
+		///         <param name="packetDescription">An array of packet descriptions.</param>
+		///         <summary>Converts audio data supporting non-interleaved and packetized formats.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///           <para>The
+		/// 	  <see cref="E:AudioToolbox.AudioConverter.InputData" />
+		/// 	  event is invoked to supply the input data for the
+		/// 	  conversion.
+		/// 	  </para>
+		///         </remarks>
 		public AudioConverterError FillComplexBuffer (ref int outputDataPacketSize,
 			AudioBuffers outputData, AudioStreamPacketDescription [] packetDescription)
 		{
@@ -873,6 +933,11 @@ namespace AudioToolbox {
 			Prepare (0, IntPtr.Zero, completionCallback);
 		}
 
+		/// <summary>Resets an audio converter.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public AudioConverterError Reset ()
 		{
 			return AudioConverterReset (Handle);

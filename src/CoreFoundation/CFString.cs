@@ -81,12 +81,20 @@ namespace CoreFoundation {
 			get { return (long) len; }
 		}
 
+		/// <param name="loc">To be added.</param>
+		///         <param name="len">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CFRange (int loc, int len)
 		{
 			this.loc = loc;
 			this.len = len;
 		}
 
+		/// <param name="l">To be added.</param>
+		///         <param name="len">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CFRange (long l, long len)
 		{
 			this.loc = (nint) l;
@@ -99,6 +107,9 @@ namespace CoreFoundation {
 			this.len = len;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return string.Format ("CFRange [Location: {0} Length: {1}]", loc, len);
@@ -127,6 +138,8 @@ namespace CoreFoundation {
 #if !COREBUILD
 		internal string? str;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected CFString () { }
 
 		[DllImport (Constants.CoreFoundationLibrary, CharSet = CharSet.Unicode)]
@@ -156,6 +169,9 @@ namespace CoreFoundation {
 				CFObject.CFRelease (handle);
 		}
 
+		/// <param name="str">To be added.</param>
+		///         <summary>Creates a CFString from a C# string.</summary>
+		///         <remarks>To be added.</remarks>
 		public CFString (string str)
 		{
 			if (str is null)
@@ -166,6 +182,16 @@ namespace CoreFoundation {
 			this.str = str;
 		}
 
+		/// <summary>Type identifier for the CoreFoundation.CFString type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
+		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[bool isCFString = (CFType.GetTypeID (foo.Handle) == CFString.GetTypeID ());]]></code>
+		///           </example>
+		///         </remarks>
 		[DllImport (Constants.CoreFoundationLibrary, EntryPoint = "CFStringGetTypeID")]
 		public extern static nint GetTypeID ();
 

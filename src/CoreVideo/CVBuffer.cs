@@ -72,6 +72,8 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static void CVBufferRemoveAllAttachments (/* CVBufferRef */ IntPtr buffer);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void RemoveAllAttachments ()
 		{
 			CVBufferRemoveAllAttachments (Handle);
@@ -80,6 +82,9 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static void CVBufferRemoveAttachment (/* CVBufferRef */ IntPtr buffer, /* CFStringRef */ IntPtr key);
 
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void RemoveAttachment (NSString key)
 		{
 			if (key is null)
@@ -134,6 +139,12 @@ namespace CoreVideo {
 		}
 
 		// any CF object can be attached
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <param name="key">To be added.</param>
+		///         <param name="attachmentMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public T? GetAttachment<T> (NSString key, out CVAttachmentMode attachmentMode) where T : class, INativeObject
 		{
 			if (key is null)
@@ -183,6 +194,10 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static /* CFDictionaryRef */ IntPtr CVBufferCopyAttachments (/* CVBufferRef */ IntPtr buffer, CVAttachmentMode attachmentMode);
 
+		/// <param name="attachmentMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary? GetAttachments (CVAttachmentMode attachmentMode)
 		{
 			if (!SystemVersion.IsAtLeastXcode13)
@@ -192,6 +207,12 @@ namespace CoreVideo {
 
 		// There is some API that needs a more strongly typed version of a NSDictionary
 		// and there is no easy way to downcast from NSDictionary to NSDictionary<TKey, TValue>
+		/// <typeparam name="TKey">To be added.</typeparam>
+		///         <typeparam name="TValue">To be added.</typeparam>
+		///         <param name="attachmentMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary<TKey, TValue>? GetAttachments<TKey, TValue> (CVAttachmentMode attachmentMode)
 			where TKey : class, INativeObject
 			where TValue : class, INativeObject
@@ -204,6 +225,9 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static void CVBufferPropagateAttachments (/* CVBufferRef */ IntPtr sourceBuffer, /* CVBufferRef */ IntPtr destinationBuffer);
 
+		/// <param name="destinationBuffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void PropogateAttachments (CVBuffer destinationBuffer)
 		{
 			if (destinationBuffer is null)
@@ -216,6 +240,11 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static void CVBufferSetAttachment (/* CVBufferRef */ IntPtr buffer, /* CFStringRef */ IntPtr key, /* CFTypeRef */ IntPtr @value, CVAttachmentMode attachmentMode);
 
+		/// <param name="key">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <param name="attachmentMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetAttachment (NSString key, INativeObject @value, CVAttachmentMode attachmentMode)
 		{
 			if (key is null)
@@ -230,6 +259,10 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static void CVBufferSetAttachments (/* CVBufferRef */ IntPtr buffer, /* CFDictionaryRef */ IntPtr theAttachments, CVAttachmentMode attachmentMode);
 
+		/// <param name="theAttachments">To be added.</param>
+		///         <param name="attachmentMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetAttachments (NSDictionary theAttachments, CVAttachmentMode attachmentMode)
 		{
 			if (theAttachments is null)

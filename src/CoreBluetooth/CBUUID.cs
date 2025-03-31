@@ -25,6 +25,12 @@ namespace CoreBluetooth {
 		const ulong highServiceBits = 0xfb349b5f80000080UL;
 		const ulong lowServiceMask = 0x0010000000000000UL;
 
+		/// <param name="bytes">Array of 2, 4 or 16 bytes containing the universal unique identifier.</param>
+		///         <summary>Creates a new CBUIID from the specified array of bytes.</summary>
+		///         <returns>New instance;   Throws an exception if the bytes array is null or is not 2, 4 or 16 bytes.</returns>
+		///         <remarks>
+		/// 	  Creates a CBUUID from the specified array of bytes.
+		/// 	</remarks>
 		public static CBUUID FromBytes (byte [] bytes)
 		{
 			if (bytes is null) {
@@ -37,6 +43,18 @@ namespace CoreBluetooth {
 				return CBUUID.FromData (data);
 		}
 
+		/// <param name="servicePart">16-bit service part.</param>
+		///         <summary>Creates a new CBUUID for a commonly used CoreBluetooth service.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///           <para>
+		/// 	    While CBUUID objects are 128-bit long, many common services are created just by specifying using 16 bits.
+		/// 	  </para>
+		///           <para>
+		/// 	    For example, if the service part is (ushort)1234, then the CBUUID becomes: (CBUUID)00001234-0000-1000-8000-00805f9b34fb.
+		/// 	  </para>
+		///         </remarks>
 		public static CBUUID FromPartial (ushort servicePart)
 		{
 			return FromBytes (new [] {
@@ -47,6 +65,11 @@ namespace CoreBluetooth {
 
 		// allow roundtripping CBUUID.FromString (uuid.ToString ());
 		// without string operations, ref: bug #7986
+		/// <summary>Returns a string representation of the value of the current instance.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			return ToString (false);
@@ -68,6 +91,10 @@ namespace CoreBluetooth {
 		}
 
 		// to satisfy IEquatable<T>
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe bool Equals (CBUUID? obj)
 		{
 			return base.Equals (obj);
@@ -75,6 +102,10 @@ namespace CoreBluetooth {
 
 		// base class Equals is good enough
 		// this fixes a compiler warning: CS0660: `CoreBluetooth.CBUUID' defines operator == or operator != but does not override Object.Equals(object o)
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object obj)
 		{
 			return base.Equals (obj);
@@ -82,11 +113,20 @@ namespace CoreBluetooth {
 
 		// base class GetHashCode is good enough
 		// this fixes a compiler warning: CS0661: `CoreBluetooth.CBUUID' defines operator == or operator != but does not override Object.GetHashCode()
+		/// <summary>Generates a hash code for the current instance.</summary>
+		///         <returns>A int containing the hash code for this instance.</returns>
+		///         <remarks>The algorithm used to generate the hash code is unspecified.</remarks>
 		public override int GetHashCode ()
 		{
 			return base.GetHashCode ();
 		}
 
+		/// <param name="fullUuid">If true, this renders 16-bit UUIS as a 128-bit constant, otherwise they are rendered as a 16-bit one.   128-bit UUIDS are always rendered as 128-bit values.</param>
+		///         <summary>Returns a string representation of the value of the current instance.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public unsafe string ToString (bool fullUuid)
 		{
 			NSData d = Data;

@@ -486,9 +486,16 @@ namespace AuthenticationServices {
 		[Export ("initWithURL:callback:completionHandler:")]
 		NativeHandle Constructor (NSUrl url, ASWebAuthenticationSessionCallback callback, ASWebAuthenticationSessionCompletionHandler completionHandler);
 
+		/// <summary>Begins the Safari-based logon, returning <see langword="true" /> if the session started successfully.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("start")]
 		bool Start ();
 
+		/// <summary>Developers can call this method to cancel the authentication session and dismiss the associated <see cref="T:UIKit.UIViewController" />.</summary>
+		///         <remarks>
+		///           <para>After the initial call to this method, subsequent calls have no effect.</para>
+		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("cancel")]

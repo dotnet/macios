@@ -41,11 +41,16 @@ namespace AVFoundation {
 	[SupportedOSPlatform ("tvos")]
 	public class AVUrlAssetOptions : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVUrlAssetOptions ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVUrlAssetOptions (NSDictionary dictionary)
 			: base (dictionary)
 		{

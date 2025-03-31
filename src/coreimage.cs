@@ -295,6 +295,9 @@ namespace CoreImage {
 		[Export ("initWithOptions:")]
 		NativeHandle Constructor ([NullAllowed] NSDictionary options);
 
+		/// <summary>Creates a new <see cref="T:CoreImage.CIContext" /> with default options.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("context")]
 		CIContext Create ();
@@ -360,11 +363,26 @@ namespace CoreImage {
 		[Export ("drawImage:inRect:fromRect:")]
 		void DrawImage (CIImage image, CGRect inRectangle, CGRect fromRectangle);
 
+		/// <param name="image">To be added.</param>
+		///         <param name="fromRectangle">To be added.</param>
+		///         <summary>Creates a new <see cref="T:CoreGraphics.CGImage" /> from the <paramref name="fromRectangle" /> region of <paramref name="image" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("createCGImage:fromRect:")]
 		[return: Release ()]
 		[return: NullAllowed]
 		CGImage CreateCGImage (CIImage image, CGRect fromRectangle);
 
+		/// <param name="image">To be added.</param>
+		///         <param name="fromRect">To be added.</param>
+		///         <param name="ciImageFormat">To be added.</param>
+		///         <param name="colorSpace">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("createCGImage:fromRect:format:colorSpace:")]
 		[return: Release ()]
 		[return: NullAllowed]
@@ -395,6 +413,8 @@ namespace CoreImage {
 		[Export ("reclaimResources")]
 		void ReclaimResources ();
 
+		/// <summary>Frees data in the cache and runs the garbage collector.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("clearCaches")]
 		void ClearCaches ();
@@ -1163,85 +1183,170 @@ namespace CoreImage {
 	[StrongDictionary ("CIRawFilterKeys")]
 	interface CIRawFilterOptions {
 
+		/// <summary>
+		///           <see langword="true" /> if draft mode shoud be allowed. (Switching this key is an expensive operation.)</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		bool AllowDraftMode { get; set; }
 
+		/// <summary>The key of the current decoder (see <see cref="P:CoreImage.CIRawFilterOptions.SupportedDecoderVersions" />).</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		string Version { get; set; }
 
+		/// <summary>A dictionary whose keys are version identifiers of valid decoders.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		NSDictionary [] SupportedDecoderVersions { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		float BaselineExposure { get; set; }
 
+		/// <summary>Amount of boost (contrast enhancement), ranging from 0.0 (no boost) to 1.0 (full boost).</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		float Boost { get; set; }
 
+		/// <summary>Amount of boost (contrast enhancement), ranging from 0.0 (no boost) to 1.0 (full boost) to be applied in shadow regions.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		float BoostShadowAmount { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		bool DisableGamutMap { get; set; }
 
+		/// <summary>Current neutral X value of the chromaticity.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		float NeutralChromaticityX { get; set; }
 
+		/// <summary>Current neutral Y value of the chromaticity.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		float NeutralChromaticityY { get; set; }
 
+		/// <summary>The neutral color temperature. (Set using <see cref="P:CoreImage.CIRawFilterOptions.NeutralTint" />.)</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		float NeutralTemperature { get; set; }
 
+		/// <summary>The neutral tint. Setting this value also modifies <see cref="P:CoreImage.CIRawFilterOptions.NeutralTemperature" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		float NeutralTint { get; set; }
 
+		/// <summary>Used to set the neutral (X,Y) position in the unrotated output image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///           <para>Developers should not rely on reading this value: it is specified as "undefined" for reading.</para>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		CIVector NeutralLocation { get; set; }
 
+		/// <summary>The desired scale factor for drawing the image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		float ScaleFactor { get; set; }
 
+		/// <summary>If <see langword="true" />, the image's embedded orientation data will be ignored.</summary>
+		///         <value>The default value is <see langword="false" />.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		bool IgnoreImageOrientation { get; set; }
 
+		/// <summary>The EXIF image orientation value (in the range 1..8).</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		int ImageOrientation { get; set; }
 
+		/// <summary>
+		///           <see langword="true" /> if sharpening should be applied.</summary>
+		///         <value>The default value is <see langword="true" />.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		bool EnableSharpening { get; set; }
 
+		/// <summary>If <see langword="true" />, chromatic noise tracking using ISO and exposure is active.</summary>
+		///         <value>The default value is <see langword="true" />.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		bool EnableChromaticNoiseTracking { get; set; }
 
+		/// <summary>Amount of noise reduction to apply, ranging from 0.0 (no reduction) to 1.0 (maximum).</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		double NoiseReductionAmount { get; set; }
 
+		/// <summary>If <see langword="true" />, correction will be applied for known lenses.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		bool EnableVendorLensCorrection { get; set; }
 
+		/// <summary>Amount of noise reduction to apply to luminance data, ranging from 0.0 (no reduction) to 1.0 (maximum).</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		double LuminanceNoiseReductionAmount { get; set; }
 
+		/// <summary>Amount of noise reduction to apply to color data, ranging from 0.0 (no reduction) to 1.0 (maximum).</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		double ColorNoiseReductionAmount { get; set; }
 
+		/// <summary>Amount of sharpening to apply during noise reduction, in the range 0.0 (no sharpening) to 1.0 (maximum).</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		double NoiseReductionSharpnessAmount { get; set; }
 
+		/// <summary>Amount of contrast enhancement to apply during noise reduction, in the range 0.0 (no contrast enhancement) to 1.0 (maximum).</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		double NoiseReductionContrastAmount { get; set; }
 
+		/// <summary>Amount of detail enhancement to apply during noise reduction, in the range 0.0 (no detail enhancement) to 1.0 (maximum).</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIInputNoiseReductionDetailAmountKey")]
 		double NoiseReductionDetailAmount { get; set; }
 
+		/// <summary>The <see cref="T:CoreImage.CIFilter" /> applied to the image when, during RAW processing, it is in the linear color space.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		CIFilter LinearSpaceFilter { get; set; }
 
+		/// <summary>The full native size of the original image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		CIVector OutputNativeSize { get; set; }
 
+		/// <summary>The set of input keys that are available for use on the input image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		NSSet ActiveKeys { get; }
 	}
@@ -1884,15 +1989,27 @@ namespace CoreImage {
 	[Static]
 	[MacCatalyst (13, 1)]
 	interface CIUIParameterSet {
+		/// <summary>Basic  user interface set.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIUISetBasic", "+CoreImage")]
 		NSString Basic { get; }
 
+		/// <summary>Intermediate user interface set.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIUISetIntermediate", "+CoreImage")]
 		NSString Intermediate { get; }
 
+		/// <summary>Advanced user interface set.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIUISetAdvanced", "+CoreImage")]
 		NSString Advanced { get; }
 
+		/// <summary>Development user interface set.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCIUISetDevelopment", "+CoreImage")]
 		NSString Development { get; }
 	}
@@ -3892,18 +4009,33 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFeature))]
 	interface CIRectangleFeature {
+		/// <summary>Gets the rectangle, in image space, that bounds the detected rectangle.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bounds", ArgumentSemantic.UnsafeUnretained)]
 		CGRect Bounds { get; }
 
+		/// <summary>Gets the top left corner of the possibly skewed and rotated rectangle in the image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("topLeft", ArgumentSemantic.UnsafeUnretained)]
 		CGPoint TopLeft { get; }
 
+		/// <summary>Gets the top right corner of the possibly skewed and rotated rectangle in the image..</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("topRight", ArgumentSemantic.UnsafeUnretained)]
 		CGPoint TopRight { get; }
 
+		/// <summary>Gets the bottom left corner of the possibly skewed and rotated rectangle in the image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bottomLeft", ArgumentSemantic.UnsafeUnretained)]
 		CGPoint BottomLeft { get; }
 
+		/// <summary>Gets the bottom right corner of the possibly skewed and rotated rectangle in the image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bottomRight", ArgumentSemantic.UnsafeUnretained)]
 		CGPoint BottomRight { get; }
 	}
@@ -3969,21 +4101,39 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFeature))]
 	interface CITextFeature {
+		/// <summary>Gets the bounds of the feature.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bounds")]
 		CGRect Bounds { get; }
 
+		/// <summary>Gets the top left corner of the rectangle that contains the feature.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("topLeft")]
 		CGPoint TopLeft { get; }
 
+		/// <summary>Gets the top right corner of the rectangle that contains the feature.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("topRight")]
 		CGPoint TopRight { get; }
 
+		/// <summary>Gets the bottom left corner of the rectangle that contains the feature.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bottomLeft")]
 		CGPoint BottomLeft { get; }
 
+		/// <summary>Gets the bottom right corner of the rectangle that contains the feature.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bottomRight")]
 		CGPoint BottomRight { get; }
 
+		/// <summary>Gets an array that contains the subfeatures.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("subFeatures")]
 		[NullAllowed]
 		CIFeature [] SubFeatures { get; }
@@ -4189,6 +4339,9 @@ namespace CoreImage {
 		[CoreImageFilterProperty ("inputImage")]
 		CIImage InputImage { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputExtent")]
 		CIVector Extent { get; set; }
 	}
@@ -4902,12 +5055,18 @@ namespace CoreImage {
 	[BaseType (typeof (CIFilter))]
 	interface CITileFilter {
 
+		/// <summary>Gets or sets the angle, in radians, of the tile pattern.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputAngle")]
 		float Angle { get; set; }
 
 		[CoreImageFilterProperty ("inputCenter")]
 		CGPoint InputCenter { get; set; }
 
+		/// <summary>Gets or sets the length of the sides of the tiles in the pattern.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputWidth")]
 		float Width { get; set; }
 	}
@@ -5752,18 +5911,33 @@ namespace CoreImage {
 	[BaseType (typeof (CITransitionFilter))]
 	interface CISwipeTransition {
 
+		/// <summary>Gets or sets the color of the swipe boundary.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputColor")]
 		CIColor Color { get; set; }
 
+		/// <summary>Gets or sets the width of the swipe boundary.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputWidth")]
 		float Width { get; set; }
 
+		/// <summary>Gets or sets the opacity of the swipe.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputOpacity")]
 		float Opacity { get; set; }
 
+		/// <summary>Gets or sets the angle of the swipe.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputAngle")]
 		float Angle { get; set; }
 
+		/// <summary>Gets or sets the extent of the image to transform.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[CoreImageFilterProperty ("inputExtent")]
 		CIVector Extent { get; set; }
 	}
@@ -6841,30 +7015,63 @@ namespace CoreImage {
 		[Export ("initWithBitmapData:width:height:bytesPerRow:format:")]
 		NativeHandle Constructor (IntPtr data, nuint width, nuint height, nuint bytesPerRow, CIFormat format);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("width")]
 		nuint Width { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("height")]
 		nuint Height { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("alphaMode", ArgumentSemantic.Assign)]
 		CIRenderDestinationAlphaMode AlphaMode { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("flipped")]
 		bool Flipped { [Bind ("isFlipped")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("dithered")]
 		bool Dithered { [Bind ("isDithered")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("clamped")]
 		bool Clamped { [Bind ("isClamped")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("colorSpace", ArgumentSemantic.Assign)]
 		CGColorSpace ColorSpace { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("blendKernel", ArgumentSemantic.Retain)]
 		CIBlendKernel BlendKernel { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("blendsInDestinationColorSpace")]
 		bool BlendsInDestinationColorSpace { get; set; }
 	}
@@ -6875,12 +7082,21 @@ namespace CoreImage {
 	[DisableDefaultCtor] // no docs, but only returned from CIRenderTask.WaitUntilCompleted. Handle is null if created thru `init`
 	interface CIRenderInfo {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("kernelExecutionTime")]
 		double KernelExecutionTime { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("passCount")]
 		nint PassCount { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("pixelsProcessed")]
 		nint PixelsProcessed { get; }
 

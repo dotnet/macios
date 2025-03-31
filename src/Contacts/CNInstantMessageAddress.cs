@@ -47,6 +47,10 @@ namespace Contacts {
 
 	public partial class CNInstantMessageAddress {
 
+		/// <param name="property">To be added.</param>
+		///         <summary>Returns the localized property name for <paramref name="property" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string LocalizeProperty (CNInstantMessageAddressOption property)
 		{
 			switch (property) {
@@ -59,6 +63,10 @@ namespace Contacts {
 			}
 		}
 
+		/// <param name="serviceOption">To be added.</param>
+		///         <summary>Returns the localized string for the specified <paramref name="serviceOption" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string LocalizeService (CNInstantMessageServiceOption serviceOption)
 		{
 			var srvc = ServiceOptionsToNSString (serviceOption);

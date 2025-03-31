@@ -18,6 +18,9 @@ namespace AppKit {
 	public partial class NSSegmentedControl {
 		NSActionDispatcher? dispatcher;
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public new NSSegmentedCell Cell {
 			get { return (NSSegmentedCell) base.Cell; }
 			set { base.Cell = value; }

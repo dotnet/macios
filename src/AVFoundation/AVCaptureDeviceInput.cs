@@ -38,6 +38,10 @@ using ObjCRuntime;
 
 namespace AVFoundation {
 	public partial class AVCaptureDeviceInput {
+		/// <param name="device">To be added.</param>
+		///         <summary>Factory method to create an <see cref="T:AVFoundation.AVCaptureDeviceInput" /> for the <paramref name="device" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		static public AVCaptureDeviceInput? FromDevice (AVCaptureDevice device)
 		{
 			return FromDevice (device, out var error);

@@ -1,0 +1,9 @@
+<Documentation>
+  <Docs DocId="M:CoreFoundation.CFNetwork.GetProxiesForAutoConfigurationScript(Foundation.NSString,System.Uri)">
+        <param name="proxyAutoConfigurationScript">JavaScript source to be executed to obtain a list of proxies to use.</param>
+        <param name="targetUri">To be added.</param>
+        <summary>Executes the provided javascript source to determine a list of proxies to use for connecting to the target URL.</summary>
+        <returns>Returns an array of <see cref="T:CoreFoundation.CFProxy" /> objects suitable to use for connecting to <paramref name="targetUri" />.</returns>
+        <remarks>This method serves as a convenience wrapper for <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:CoreFoundation.CFNetwork.GetProxiesForAutoConfigureationScript(Foundation.NSString proxyAutoConfigurationScript, Uri targetUri)&amp;scope=Xamarin" title="M:CoreFoundation.CFNetwork.GetProxiesForAutoConfigureationScript(Foundation.NSString proxyAutoConfigurationScript, Uri targetUri)">M:CoreFoundation.CFNetwork.GetProxiesForAutoConfigureationScript(Foundation.NSString proxyAutoConfigurationScript, Uri targetUri)</a></format>.</remarks>
+      </Docs>
+</Documentation>

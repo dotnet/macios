@@ -17,6 +17,10 @@ namespace AVFoundation {
 
 	public partial class AVContentKeyResponse {
 
+		/// <param name="fairPlayStreamingKeyResponseData">The Fair Play key data from which to create a response.</param>
+		///         <summary>Creates and returns a new response object from the provided key data.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AVContentKeyResponse Create (NSData fairPlayStreamingKeyResponseData) => Create (fairPlayStreamingKeyResponseData, AVContentKeyResponseDataType.FairPlayStreamingKeyResponseData);
 
 		public static AVContentKeyResponse Create (NSData data, AVContentKeyResponseDataType dataType = AVContentKeyResponseDataType.FairPlayStreamingKeyResponseData)

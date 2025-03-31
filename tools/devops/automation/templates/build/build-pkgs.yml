@@ -35,6 +35,9 @@ parameters:
     type: string
     default: '$(MaciosUploadPrefix)'
 
+  - name: use1ES
+    type: boolean
+
 steps:
   - template: build.yml
     parameters:
@@ -45,6 +48,7 @@ steps:
       keyringPass: ${{ parameters.keyringPass }}
       gitHubToken: ${{ parameters.gitHubToken }}
       xqaCertPass: ${{ parameters.xqaCertPass }}
+      use1ES: ${{ parameters.use1ES }}
       buildSteps:
         # build nugets
         - bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/build-nugets.sh
@@ -58,7 +62,7 @@ steps:
 
         - template: ../common/publish-pipeline-artifact.yml
           parameters:
-            use1ES: true
+            use1ES: ${{ parameters.use1ES }}
             displayName: 'Publish WorkloadRollback.json'
             path: $(Build.SourcesDirectory)/WorkloadRollback.json
             artifact: '${{ parameters.uploadPrefix }}WorkloadRollback'
@@ -67,7 +71,7 @@ steps:
         # upload each of the pkgs into the pipeline artifacts
         - template: ../common/publish-pipeline-artifact.yml
           parameters:
-            use1ES: true
+            use1ES: ${{ parameters.use1ES }}
             displayName: 'Publish Build Artifacts'
             path: $(Build.SourcesDirectory)/package
             artifact: '${{ parameters.uploadPrefix }}not-signed-package'
@@ -85,7 +89,7 @@ steps:
 
         - template: ../common/publish-pipeline-artifact.yml
           parameters:
-            use1ES: true
+            use1ES: ${{ parameters.use1ES }}
             displayName: 'Publish test libraries dependencies'
             path: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tests/package-test-libraries.zip
             artifact: '${{ parameters.uploadPrefix }}package-test-libraries'
@@ -93,7 +97,7 @@ steps:
 
         - template: ../common/publish-pipeline-artifact.yml
           parameters:
-            use1ES: true
+            use1ES: ${{ parameters.use1ES }}
             displayName: 'Publish Build.props'
             path: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/Build.props
             artifact: '${{ parameters.uploadPrefix }}Build.props'
@@ -112,7 +116,7 @@ steps:
             # Publish all the binlogs we collected in the previous step
             - template: ../common/publish-pipeline-artifact.yml
               parameters:
-                use1ES: true
+                use1ES: ${{ parameters.use1ES }}
                 displayName: 'Publish Artifact: All binlogs'
                 path: $(Build.ArtifactStagingDirectory)/all-binlogs
                 artifact: '${{ parameters.uploadPrefix }}all-binlogs-$(Build.BuildId)-$(System.StageAttempt)-$(System.JobAttempt)'

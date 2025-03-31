@@ -2661,6 +2661,10 @@ namespace Contacts {
 		[Export ("localizedStringForKey:")]
 		string LocalizeProperty (NSString property);
 
+		/// <param name="option">To be added.</param>
+		///         <summary>The localized name for the property as modified by the option that is specified in <paramref name="option" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("LocalizeProperty (option.GetConstant ()!)")]
 		string LocalizeProperty (CNPostalAddressKeyOption option);
@@ -2844,6 +2848,10 @@ namespace Contacts {
 		[Export ("localizedStringForKey:")]
 		string LocalizeProperty (NSString key);
 
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("LocalizeProperty (key.GetConstant ()!)")]
 		string LocalizeProperty (CNPostalAddressKeyOption key);

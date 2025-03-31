@@ -1,28 +1,52 @@
 <Documentation>
   <Docs DocId="P:AddressBook.ABMultiValue`1.IsReadOnly">
-        <summary>
+    <summary>
           Gets a value indicating whether the
           <see cref="T:AddressBook.ABMultiValue`1" />
           is read-only.
         </summary>
-        <value>
-          <see langword="true" /> if the current instance and
+    <value>
+      <see langword="true" /> if the current instance and
           <see cref="T:AddressBook.ABMultiValueEntry`1" /> instances
           within the current collection can be changed; otherwise,
           <see langword="false" />.
         </value>
-        <remarks>
-          <para>
+    <remarks>
+      <para>
             Use
             <see cref="M:AddressBook.ABMultiValue`1.ToMutableMultiValue" />
             to get an instance where
             <see cref="P:AddressBook.ABMultiValue`1.IsReadOnly" /> is
             <see langword="false" />.
           </para>
+    </remarks>
+    <altmember cref="M:AddressBook.ABMultiValue`1.ToMutableMultiValue" />
+    <altmember cref="T:AddressBook.ABMutableDateMultiValue" />
+    <altmember cref="T:AddressBook.ABMutableDictionaryMultiValue" />
+    <altmember cref="T:AddressBook.ABMutableStringMultiValue" />
+  </Docs>
+  <Docs DocId="M:AddressBook.ABMultiValue`1.GetIndexForIdentifier(System.Int32)">
+        <param name="identifier">
+          A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> containing the
+          <see cref="P:AddressBook.ABMultiValueEntry`1.Identifier" />
+          to lookup.
+        </param>
+        <summary>
+          Gets the index within this collection of the
+          <see cref="T:AddressBook.ABMultiValueEntry`1" />
+          entry having an
+          <see cref="P:AddressBook.ABMultiValueEntry`1.Identifier" />
+          value equal to <paramref name="identifier" />.
+        </summary>
+        <returns>
+          A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> containing the index within
+          the collection of the
+          <see cref="T:AddressBook.ABMultiValueEntry`1" />
+          entry having an
+          <see cref="P:AddressBook.ABMultiValueEntry`1.Identifier" />
+          value equal to <paramref name="identifier" />.
+        </returns>
+        <remarks>
         </remarks>
-        <altmember cref="M:AddressBook.ABMultiValue`1.ToMutableMultiValue" />
-        <altmember cref="T:AddressBook.ABMutableDateMultiValue" />
-        <altmember cref="T:AddressBook.ABMutableDictionaryMultiValue" />
-        <altmember cref="T:AddressBook.ABMutableStringMultiValue" />
       </Docs>
 </Documentation>

@@ -31,6 +31,13 @@ namespace HomeKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the HomeKit.IHMHomeManagerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the HomeKit.IHMHomeManagerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IHMHomeManagerDelegate Delegate { get; set; }
 
@@ -133,12 +140,25 @@ namespace HomeKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the HomeKit.IHMAccessoryDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the HomeKit.IHMAccessoryDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IHMAccessoryDelegate Delegate { get; set; }
 
+		/// <summary>Gets a value that tells whether the accessory can be reached.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("reachable")]
 		bool Reachable { [Bind ("isReachable")] get; }
 
+		/// <summary>Gets a value that tells whether the accessory is bridged.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bridged")]
 		bool Bridged { [Bind ("isBridged")] get; }
 
@@ -163,6 +183,9 @@ namespace HomeKit {
 		[Export ("profiles", ArgumentSemantic.Copy)]
 		HMAccessoryProfile [] Profiles { get; }
 
+		/// <summary>Gets a value that tells whether the accessory is blocked.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("blocked")]
 		bool Blocked { [Bind ("isBlocked")] get; }
 
@@ -989,6 +1012,9 @@ namespace HomeKit {
 		[Export ("serviceType", ArgumentSemantic.Copy)]
 		NSString WeakServiceType { get; }
 
+		/// <summary>Gets the type of service.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("HMServiceTypeExtensions.GetValue (WeakServiceType)")]
 		HMServiceType ServiceType { get; }
 
@@ -1014,6 +1040,9 @@ namespace HomeKit {
 		[Export ("updateAssociatedServiceType:completionHandler:")]
 		void UpdateAssociatedServiceType ([NullAllowed] string serviceType, Action<NSError> completion);
 
+		/// <summary>If <see langword="true" />, the <see cref="T:HomeKit.HMService" /> may interact with the end-user.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Export ("userInteractive")]
 		bool UserInteractive { [Bind ("isUserInteractive")] get; }
@@ -1026,6 +1055,9 @@ namespace HomeKit {
 		[Export ("uniqueIdentifier", ArgumentSemantic.Copy)]
 		NSUuid UniqueIdentifier { get; }
 
+		/// <summary>Whether this <see cref="T:HomeKit.HMService" /> is the primary service among a set of linked services.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Export ("primaryService")]
 		bool PrimaryService { [Bind ("isPrimaryService")] get; }
@@ -1137,6 +1169,9 @@ namespace HomeKit {
 		[Export ("name")]
 		string Name { get; }
 
+		/// <summary>Gets a value that tells whether the trigger is enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; }
 
@@ -1958,6 +1993,9 @@ namespace HomeKit {
 		[Export ("presenceUserType")]
 		HMPresenceEventUserType PresenceUserType { get; [NotImplemented] set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Field ("HMPresenceKeyPath")]
 		NSString KeyPath { get; }
@@ -1991,6 +2029,9 @@ namespace HomeKit {
 		[Export ("significantEvent", ArgumentSemantic.Strong)]
 		NSString WeakSignificantEvent { get; [NotImplemented] set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		HMSignificantEvent SignificantEvent {
 			[Wrap ("HMSignificantEventExtensions.GetValue (WeakSignificantEvent)")]
 			get;
@@ -2020,6 +2061,9 @@ namespace HomeKit {
 		NSString WeakSignificantEvent { get; set; }
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Override]
 #endif
 		HMSignificantEvent SignificantEvent {

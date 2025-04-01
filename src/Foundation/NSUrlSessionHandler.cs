@@ -155,6 +155,7 @@ namespace Foundation {
 			allowsCellularAccess = configuration.AllowsCellularAccess;
 			AllowAutoRedirect = true;
 
+#if !NET10_0_OR_GREATER
 #pragma warning disable SYSLIB0014
 			// SYSLIB0014: 'ServicePointManager' is obsolete: 'WebRequest, HttpWebRequest, ServicePoint, and WebClient are obsolete. Use HttpClient instead. Settings on ServicePointManager no longer affect SslStream or HttpClient.' (https://aka.ms/dotnet-warnings/SYSLIB0014)
 			// https://github.com/xamarin/xamarin-macios/issues/20764
@@ -170,6 +171,7 @@ namespace Foundation {
 				configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_2;
 			else if ((sp & (SecurityProtocolType) 12288) != 0) // Tls13 value not yet in monno
 				configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_3;
+#endif // NET10_0_OR_GREATER
 
 			session = NSUrlSession.FromConfiguration (configuration, (INSUrlSessionDelegate) new NSUrlSessionHandlerDelegate (this), null);
 			inflightRequests = new Dictionary<NSUrlSessionTask, InflightData> ();

@@ -1,4 +1,3 @@
-#if !WATCH
 using System;
 using System.Runtime.InteropServices;
 using Foundation;
@@ -10,6 +9,9 @@ using ObjCRuntime;
 namespace MapKit {
 
 	public partial class MKMultiPoint {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public unsafe MKMapPoint [] Points {
 			get {
 				var source = (MKMapPoint*) _Points;
@@ -33,4 +35,3 @@ namespace MapKit {
 		}
 	}
 }
-#endif // !WATCH

@@ -35,28 +35,14 @@ using System.Threading;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreFoundation {
 
 	public partial class DispatchData : DispatchObject {
 #if !COREBUILD
 		[Preserve (Conditional = true)]
-#if NET
 		internal DispatchData (NativeHandle handle, bool owns) : base (handle, owns)
-#else
-		public DispatchData (NativeHandle handle, bool owns) : base (handle, owns)
-#endif
 		{
 		}
-
-#if !NET
-		public DispatchData (NativeHandle handle) : base (handle, false)
-		{
-		}
-#endif
 
 		[DllImport (Constants.libcLibrary)]
 		extern static IntPtr dispatch_data_create (IntPtr buffer, nuint size, IntPtr dispatchQueue, IntPtr destructor);
@@ -65,6 +51,10 @@ namespace CoreFoundation {
 		// This constructor will do it for now, but we should support a constructor
 		// that allows custom releasing of the buffer
 		//
+		/// <param name="buffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static DispatchData FromByteBuffer (byte [] buffer)
 		{
 			if (buffer is null)
@@ -75,6 +65,12 @@ namespace CoreFoundation {
 			return new DispatchData (dd, owns: true);
 		}
 
+		/// <param name="buffer">To be added.</param>
+		///         <param name="start">To be added.</param>
+		///         <param name="length">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static DispatchData FromByteBuffer (byte [] buffer, int start, int length)
 		{
 			if (buffer is null)
@@ -120,6 +116,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.libcLibrary)]
 		extern static nuint dispatch_data_get_size (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nuint Size => dispatch_data_get_size (Handle);
 
 		[DllImport (Constants.libcLibrary)]
@@ -138,6 +137,11 @@ namespace CoreFoundation {
 		[DllImport (Constants.libcLibrary)]
 		extern static IntPtr dispatch_data_create_concat (IntPtr h1, IntPtr h2);
 
+		/// <param name="data1">To be added.</param>
+		///         <param name="data2">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static DispatchData Concat (DispatchData data1, DispatchData data2)
 		{
 			if (data1 is null)
@@ -145,7 +149,10 @@ namespace CoreFoundation {
 			if (data2 is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data2));
 
-			return new DispatchData (dispatch_data_create_concat (data1.Handle, data2.Handle), owns: true);
+			var data = new DispatchData (dispatch_data_create_concat (data1.Handle, data2.Handle), owns: true);
+			GC.KeepAlive (data1);
+			GC.KeepAlive (data2);
+			return data;
 		}
 
 		[DllImport (Constants.libcLibrary)]

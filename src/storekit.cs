@@ -24,9 +24,6 @@ using UIWindowScene = Foundation.NSObject;
 #else
 using UIKit;
 #endif
-#if WATCH
-using UIViewController = Foundation.NSObject;
-#endif
 using System;
 
 #if !NET
@@ -53,7 +50,7 @@ namespace StoreKit {
 	}
 
 	[ErrorDomain ("SKANErrorDomain")]
-	[NoWatch, NoTV, NoMac, iOS (15, 4), MacCatalyst (17, 0)]
+	[NoTV, NoMac, iOS (15, 4), MacCatalyst (17, 0)]
 	[Native]
 	public enum SKANError : long {
 		ImpressionMissingRequiredValue = 0,
@@ -73,8 +70,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.iOS, 16, 0)]
 	[Deprecated (PlatformName.MacOSX, 13, 0)]
 	[Deprecated (PlatformName.TvOS, 16, 0)]
-	[Deprecated (PlatformName.WatchOS, 9, 0)]
-	[Watch (6, 2)]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 16, 0)]
 	[BaseType (typeof (NSObject))]
@@ -84,18 +79,21 @@ namespace StoreKit {
 		[Export ("state")]
 		SKDownloadState State { get; }
 #if MONOMAC
-		[NoiOS][NoTV][NoWatch][NoMacCatalyst]
+		[NoiOS]
+		[NoTV]
+		[NoMacCatalyst]
 		[Obsolete ("Use 'State' instead.")]
 		[Wrap ("State", IsVirtual = true)]
-		SKDownloadState DownloadState { get;  }
+		SKDownloadState DownloadState { get; }
 
-		[NoiOS][NoTV][NoWatch][NoMacCatalyst]
-		[Deprecated (PlatformName.MacOSX, 10,15, message: "Use 'ExpectedContentLength' instead.")]
+		[NoiOS]
+		[NoTV]
+		[NoMacCatalyst]
+		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'ExpectedContentLength' instead.")]
 		[Export ("contentLength", ArgumentSemantic.Copy)]
 		NSNumber ContentLength { get; }
 #else
 		[NoMac]
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'State' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'State' instead.")]
@@ -103,7 +101,6 @@ namespace StoreKit {
 		SKDownloadState DownloadState { get; }
 
 		[NoMac]
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'ExpectedContentLength' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ExpectedContentLength' instead.")]
@@ -136,7 +133,6 @@ namespace StoreKit {
 		[Export ("timeRemaining")]
 		double TimeRemaining { get; }
 
-		[NoWatch]
 		[NoTV]
 		[NoiOS]
 		[MacCatalyst (13, 1)]
@@ -145,7 +141,6 @@ namespace StoreKit {
 		[Static]
 		NSUrl GetContentUrlForProduct (string productId);
 
-		[NoWatch]
 		[NoTV]
 		[NoiOS]
 		[MacCatalyst (13, 1)]
@@ -153,6 +148,10 @@ namespace StoreKit {
 		[Static]
 		void DeleteContentForProduct (string productId);
 
+		/// <summary>Represents the value associated with the constant SKDownloadTimeRemainingUnknown</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SKDownloadTimeRemainingUnknown")]
 		double TimeRemainingUnknown { get; }
@@ -166,8 +165,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires Swift */ )]
-	[Watch (6, 2)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 #if NET
@@ -179,7 +176,6 @@ namespace StoreKit {
 		SKPayment CreateFrom (SKProduct product);
 
 		[NoMac]
-		[NoWatch]
 		[Static]
 		[Export ("paymentWithProductIdentifier:")]
 		[Deprecated (PlatformName.iOS, 5, 0, message: "Use 'FromProduct (SKProduct)'' after fetching the list of available products from 'SKProductRequest' instead.")]
@@ -216,8 +212,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires Swift */ )]
-	[Watch (6, 2)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SKPayment))]
 #if NET
@@ -228,7 +222,6 @@ namespace StoreKit {
 		[Export ("paymentWithProduct:")]
 		SKMutablePayment PaymentWithProduct (SKProduct product);
 
-		[NoWatch]
 		[Static]
 		[Export ("paymentWithProductIdentifier:")]
 		[Deprecated (PlatformName.iOS, 5, 0, message: "Use 'PaymentWithProduct (SKProduct)' after fetching the list of available products from 'SKProductRequest' instead.")]
@@ -268,8 +261,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires Swift */ )]
-	[Watch (6, 2)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SKPaymentQueue {
@@ -309,7 +300,6 @@ namespace StoreKit {
 		[Deprecated (PlatformName.iOS, 16, 0)]
 		[Deprecated (PlatformName.MacOSX, 13, 0)]
 		[Deprecated (PlatformName.TvOS, 16, 0)]
-		[Deprecated (PlatformName.WatchOS, 9, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 16, 0)]
 		[Export ("startDownloads:")]
 		void StartDownloads (SKDownload [] downloads);
@@ -317,7 +307,6 @@ namespace StoreKit {
 		[Deprecated (PlatformName.iOS, 16, 0)]
 		[Deprecated (PlatformName.MacOSX, 13, 0)]
 		[Deprecated (PlatformName.TvOS, 16, 0)]
-		[Deprecated (PlatformName.WatchOS, 9, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 16, 0)]
 		[Export ("pauseDownloads:")]
 		void PauseDownloads (SKDownload [] downloads);
@@ -325,7 +314,6 @@ namespace StoreKit {
 		[Deprecated (PlatformName.iOS, 16, 0)]
 		[Deprecated (PlatformName.MacOSX, 13, 0)]
 		[Deprecated (PlatformName.TvOS, 16, 0)]
-		[Deprecated (PlatformName.WatchOS, 9, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 16, 0)]
 		[Export ("resumeDownloads:")]
 		void ResumeDownloads (SKDownload [] downloads);
@@ -333,7 +321,6 @@ namespace StoreKit {
 		[Deprecated (PlatformName.iOS, 16, 0)]
 		[Deprecated (PlatformName.MacOSX, 13, 0)]
 		[Deprecated (PlatformName.TvOS, 16, 0)]
-		[Deprecated (PlatformName.WatchOS, 9, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 16, 0)]
 		[Export ("cancelDownloads:")]
 		void CancelDownloads (SKDownload [] downloads);
@@ -356,17 +343,17 @@ namespace StoreKit {
 		[NullAllowed, Export ("storefront")]
 		SKStorefront Storefront { get; }
 
-		[NoWatch, NoTV, NoMac, iOS (13, 4)]
+		[NoTV, NoMac, iOS (13, 4)]
 		[NoMacCatalyst]
 		[Export ("showPriceConsentIfNeeded")]
 		void ShowPriceConsentIfNeeded ();
 
-		[NoWatch, NoTV, NoMac, iOS (14, 0)]
+		[NoTV, NoMac, iOS (14, 0)]
 		[NoMacCatalyst]
 		[Export ("presentCodeRedemptionSheet")]
 		void PresentCodeRedemptionSheet ();
 
-		[Watch (7, 0), TV (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("transactionObservers")]
 		ISKPaymentTransactionObserver [] TransactionObservers { get; }
@@ -376,8 +363,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires Swift */ )]
-	[Watch (6, 2)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SKProduct {
@@ -397,8 +382,10 @@ namespace StoreKit {
 		string ProductIdentifier { get; }
 
 #if MONOMAC
-		[NoWatch][NoiOS][NoTV][NoMacCatalyst]
-		[Deprecated (PlatformName.MacOSX, 10,15, message: "Use 'IsDownloadable' instead.")]
+		[NoiOS]
+		[NoTV]
+		[NoMacCatalyst]
+		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'IsDownloadable' instead.")]
 		[Export ("downloadable")]
 		bool Downloadable { get; }
 #elif !NET
@@ -415,7 +402,6 @@ namespace StoreKit {
 		bool IsDownloadable { get; }
 
 		[NoiOS]
-		[NoWatch]
 #if NET
 		[NoTV]
 #else
@@ -457,7 +443,7 @@ namespace StoreKit {
 		[Export ("discounts")]
 		SKProductDiscount [] Discounts { get; }
 
-		[Watch (7, 0), TV (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("isFamilyShareable")]
 		bool IsFamilyShareable { get; }
@@ -465,7 +451,6 @@ namespace StoreKit {
 
 	interface ISKPaymentTransactionObserver { }
 
-	[Watch (6, 2)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -474,7 +459,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires Swift */ )]
 	interface SKPaymentTransactionObserver {
 
 		[Export ("paymentQueue:updatedTransactions:")]
@@ -493,12 +477,10 @@ namespace StoreKit {
 		[Deprecated (PlatformName.iOS, 16, 0)]
 		[Deprecated (PlatformName.MacOSX, 13, 0)]
 		[Deprecated (PlatformName.TvOS, 16, 0)]
-		[Deprecated (PlatformName.WatchOS, 9, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 16, 0)]
 		[Export ("paymentQueue:updatedDownloads:")]
 		void UpdatedDownloads (SKPaymentQueue queue, SKDownload [] downloads);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("paymentQueue:shouldAddStorePayment:forProduct:")]
 		bool ShouldAddStorePayment (SKPaymentQueue queue, SKPayment payment, SKProduct product);
@@ -509,7 +491,7 @@ namespace StoreKit {
 		[Export ("paymentQueueDidChangeStorefront:")]
 		void DidChangeStorefront (SKPaymentQueue queue);
 
-		[Watch (7, 0), TV (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("paymentQueue:didRevokeEntitlementsForProductIdentifiers:")]
 		void DidRevokeEntitlements (SKPaymentQueue queue, string [] productIdentifiers);
@@ -519,8 +501,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires Swift */ )]
-	[Watch (6, 2)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SKPaymentTransaction {
@@ -544,7 +524,6 @@ namespace StoreKit {
 		string TransactionIdentifier { get; }
 
 		[NoMac]
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'NSBundle.AppStoreReceiptUrl' instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'NSBundle.AppStoreReceiptUrl' instead.")]
 		[MacCatalyst (13, 1)]
@@ -559,7 +538,6 @@ namespace StoreKit {
 		[Deprecated (PlatformName.iOS, 16, 0)]
 		[Deprecated (PlatformName.MacOSX, 13, 0)]
 		[Deprecated (PlatformName.TvOS, 16, 0)]
-		[Deprecated (PlatformName.WatchOS, 9, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 16, 0)]
 		[Export ("downloads")]
 		SKDownload [] Downloads { get; }
@@ -569,8 +547,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires Swift */ )]
-	[Watch (6, 2)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (SKRequestDelegate) })]
 	interface SKRequest {
@@ -578,6 +554,13 @@ namespace StoreKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the StoreKit.ISKRequestDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the StoreKit.ISKRequestDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		ISKRequestDelegate Delegate { get; set; }
 
@@ -594,8 +577,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires Swift */ )]
-	[Watch (6, 2)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -612,8 +593,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires Swift */ )]
-	[Watch (6, 2)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SKRequest))]
 	interface SKReceiptRefreshRequest {
@@ -627,6 +606,9 @@ namespace StoreKit {
 		[Export ("receiptProperties")]
 		NSDictionary WeakReceiptProperties { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Wrap ("WeakReceiptProperties")]
 		SKReceiptProperties ReceiptProperties { get; }
@@ -636,8 +618,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires Swift */ )]
-	[Watch (6, 2)]
 	[MacCatalyst (13, 1)]
 	[Static, Internal]
 	interface _SKReceiptProperty {
@@ -651,14 +631,12 @@ namespace StoreKit {
 		NSString IsVolumePurchase { get; }
 	}
 
-	[Watch (6, 2)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SKRequest), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (SKProductsRequestDelegate) })]
 	[Deprecated (PlatformName.iOS, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires Swift */ )]
 	interface SKProductsRequest {
 		[Export ("initWithProductIdentifiers:")]
 		NativeHandle Constructor (NSSet productIdentifiersStringSet);
@@ -668,6 +646,13 @@ namespace StoreKit {
 		[New]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the StoreKit.ISKProductsRequestDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the StoreKit.ISKProductsRequestDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[New]
 		ISKProductsRequestDelegate Delegate { get; set; }
@@ -677,8 +662,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires Swift */ )]
-	[Watch (6, 2)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SKProductsResponse {
@@ -695,8 +678,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires Swift */ )]
-	[Watch (6, 2)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SKRequestDelegate))]
 	[Model]
@@ -711,7 +692,7 @@ namespace StoreKit {
 	/// <summary>A subclass of <see cref="T:UIKit.UIViewController" /> that presents a store allowing the application user to purchase an item from the App Store.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/StoreKit/Reference/SKITunesProductViewController_Ref/index.html">Apple documentation for <c>SKStoreProductViewController</c></related>
-	[NoTV, NoWatch]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIViewController),
 		   Delegates = new string [] { "WeakDelegate" },
@@ -727,6 +708,13 @@ namespace StoreKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the StoreKit.ISKStoreProductViewControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the StoreKit.ISKStoreProductViewControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		ISKStoreProductViewControllerDelegate Delegate { get; set; }
 
@@ -763,7 +751,7 @@ namespace StoreKit {
 	/// <summary>A delegate object that allows the application developer to customize the behavior of a <see cref="T:StoreKit.SKStoreProductViewController" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/StoreKit/Reference/SKITunesProductViewControllerDelegate_ProtocolRef/index.html">Apple documentation for <c>SKStoreProductViewControllerDelegate</c></related>
-	[NoTV, NoWatch]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -773,7 +761,6 @@ namespace StoreKit {
 		void Finished (SKStoreProductViewController controller);
 	}
 
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SKStoreProductParameterKey")]
 	interface StoreProductParameters {
@@ -786,104 +773,154 @@ namespace StoreKit {
 		[Export ("ProviderToken")]
 		string ProviderToken { get; set; }
 
+		/// <summary>Gets or sets the ad network's cryptograpic signature. Used for attribution.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("AdNetworkAttributionSignature")]
 		string AdNetworkAttributionSignature { get; set; }
 
+		/// <summary>Gets or sets the ad network campaign.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("AdNetworkCampaignIdentifier")]
 		uint AdNetworkCampaignIdentifier { get; set; }
 
+		/// <summary>Gets or sets the ad network's unique ID.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("AdNetworkIdentifier")]
 		string AdNetworkIdentifier { get; set; }
 
+		/// <summary>Gets or sets a cryptographic nonce value.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("AdNetworkNonce")]
 		NSUuid AdNetworkNonce { get; set; }
 
+		/// <summary>Gets or sets a key for the time of the ad impression.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("AdNetworkTimestamp")]
 		uint AdNetworkTimestamp { get; set; }
 
-		[NoWatch, NoMac, TV (14, 0), iOS (14, 0)]
+		[NoMac, TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("AdNetworkSourceAppStoreIdentifier")]
 		string AdNetworkSourceAppStoreIdentifier { get; set; }
 
-		[NoWatch, NoMac, TV (14, 0), iOS (14, 0)]
+		[NoMac, TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("AdNetworkVersion")]
 		string AdNetworkVersion { get; set; }
 	}
 
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface SKStoreProductParameterKey {
+		/// <summary>Represents the value associated with the constant SKStoreProductParameterITunesItemIdentifier</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("SKStoreProductParameterITunesItemIdentifier")]
 		NSString ITunesItemIdentifier { get; }
 
+		/// <summary>Represents the value associated with the constant SKStoreProductParameterProductIdentifier.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SKStoreProductParameterProductIdentifier")]
 		NSString ProductIdentifier { get; }
 
+		/// <summary>Represents the value associated with the constant SKStoreProductParameterAffiliateToken</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SKStoreProductParameterAffiliateToken")]
 		NSString AffiliateToken { get; }
 
+		/// <summary>Represents the value associated with the constant SKStoreProductParameterCampaignToken</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SKStoreProductParameterCampaignToken")]
 		NSString CampaignToken { get; }
 
+		/// <summary>TRepresents the value associated with the constant SKStoreProductParameterProviderToken.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SKStoreProductParameterProviderToken")]
 		NSString ProviderToken { get; }
 
+		/// <summary>Represents the value associated with the constant SKStoreProductParameterAdvertisingPartnerToken.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("SKStoreProductParameterAdvertisingPartnerToken")]
 		NSString AdvertisingPartnerToken { get; }
 
+		/// <summary>Represents the value associated with the constant SKStoreProductParameterAdNetworkAttributionSignature.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("SKStoreProductParameterAdNetworkAttributionSignature")]
 		NSString AdNetworkAttributionSignature { get; }
 
+		/// <summary>Represents the value associated with the constant SKStoreProductParameterAdNetworkCampaignIdentifier.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("SKStoreProductParameterAdNetworkCampaignIdentifier")]
 		NSString AdNetworkCampaignIdentifier { get; }
 
-		[NoMac, iOS (16, 0), MacCatalyst (16, 0), NoWatch, TV (17, 0)]
+		[NoMac, iOS (16, 1), MacCatalyst (16, 1), TV (16, 1)]
 		[Field ("SKStoreProductParameterAdNetworkSourceIdentifier")]
 		NSString AdNetworkSourceIdentifier { get; }
 
+		/// <summary>Represents the value associated with the constant SKStoreProductParameterAdNetworkIdentifier.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("SKStoreProductParameterAdNetworkIdentifier")]
 		NSString AdNetworkIdentifier { get; }
 
+		/// <summary>Represents the value associated with the constant SKStoreProductParameterAdNetworkNonce.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("SKStoreProductParameterAdNetworkNonce")]
 		NSString AdNetworkNonce { get; }
 
+		/// <summary>Represents the value associated with the constant SKStoreProductParameterAdNetworkTimestamp.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("SKStoreProductParameterAdNetworkTimestamp")]
 		NSString AdNetworkTimestamp { get; }
 
-		[NoWatch, NoMac, TV (14, 0), iOS (14, 0)]
+		[NoMac, TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Field ("SKStoreProductParameterAdNetworkSourceAppStoreIdentifier")]
 		NSString AdNetworkSourceAppStoreIdentifier { get; }
 
-		[NoWatch, NoMac, TV (14, 0), iOS (14, 0)]
+		[NoMac, TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Field ("SKStoreProductParameterAdNetworkVersion")]
 		NSString AdNetworkVersion { get; }
@@ -898,9 +935,7 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires SwiftUI */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires SwiftUI */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires SwiftUI */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires SwiftUI */ )]
 	[NoMac]
-	[NoWatch]
 	[NoTV] // __TVOS_PROHIBITED
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIViewController))]
@@ -932,9 +967,7 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires SwiftUI */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires SwiftUI */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires SwiftUI */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires SwiftUI */ )]
 	[NoMac]
-	[NoWatch]
 	[NoTV] // __TVOS_PROHIBITED on the only member + SKCloudServiceSetupViewController is not in tvOS
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
@@ -949,9 +982,8 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires Swift */ )]
 	[NoMac]
-	[NoWatch, NoTV]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SKCloudServiceSetupOptionsKeys")]
 	interface SKCloudServiceSetupOptions {
@@ -963,20 +995,32 @@ namespace StoreKit {
 		NSString _Action { get; set; }
 
 		// Headers comment: Identifier of the iTunes Store item the user is trying to access which requires cloud service setup (NSNumber).
+		/// <summary>Gets or sets the identifier for the item for which access is being requested.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		nint ITunesItemIdentifier { get; set; }
 
+		/// <summary>Gets or sets the affiliate token.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		string AffiliateToken { get; set; }
 
+		/// <summary>Gets or sets the campaign token.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		string CampaignToken { get; set; }
 
+		/// <summary>Gets or sets the setup message identifier.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		string MessageIdentifier { get; set; }
 	}
 
 	[NoMac]
-	[NoWatch, NoTV]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[Internal, Static]
 	interface SKCloudServiceSetupOptionsKeys {
@@ -1001,9 +1045,10 @@ namespace StoreKit {
 
 	/// <summary>Enumerates Cloud Service setup actions.</summary>
 	[NoMac]
-	[NoWatch, NoTV]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	enum SKCloudServiceSetupAction {
+		/// <summary>Indicates a subscription action in a setup view.</summary>
 		[Field ("SKCloudServiceSetupActionSubscribe")]
 		Subscribe,
 	}
@@ -1012,15 +1057,18 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
 	[NoMac]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	enum SKCloudServiceSetupMessageIdentifier {
+		/// <summary>Indicates a message for joining.</summary>
 		[Field ("SKCloudServiceSetupMessageIdentifierJoin")]
 		Join,
+		/// <summary>Indicates a message for connecting.</summary>
 		[Field ("SKCloudServiceSetupMessageIdentifierConnect")]
 		Connect,
+		/// <summary>Indicates a message for adding music</summary>
 		[Field ("SKCloudServiceSetupMessageIdentifierAddMusic")]
 		AddMusic,
+		/// <summary>Indicates a message for playing.</summary>
 		[Field ("SKCloudServiceSetupMessageIdentifierPlayMusic")]
 		PlayMusic,
 	}
@@ -1029,8 +1077,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires Swift */ )]
-	[Watch (7, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SKCloudServiceController {
@@ -1066,14 +1112,17 @@ namespace StoreKit {
 		[Export ("requestUserTokenForDeveloperToken:completionHandler:")]
 		void RequestUserToken (string developerToken, Action<NSString, NSError> completionHandler);
 
+		/// <include file="../docs/api/StoreKit/SKCloudServiceController.xml" path="/Documentation/Docs[@DocId='P:StoreKit.SKCloudServiceController.StorefrontIdentifierDidChangeNotification']/*" />
 		[Notification]
 		[Field ("SKStorefrontIdentifierDidChangeNotification")]
 		NSString StorefrontIdentifierDidChangeNotification { get; }
 
+		/// <include file="../docs/api/StoreKit/SKCloudServiceController.xml" path="/Documentation/Docs[@DocId='P:StoreKit.SKCloudServiceController.CloudServiceCapabilitiesDidChangeNotification']/*" />
 		[Notification]
 		[Field ("SKCloudServiceCapabilitiesDidChangeNotification")]
 		NSString CloudServiceCapabilitiesDidChangeNotification { get; }
 
+		/// <include file="../docs/api/StoreKit/SKCloudServiceController.xml" path="/Documentation/Docs[@DocId='P:StoreKit.SKCloudServiceController.StorefrontCountryCodeDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("SKStorefrontCountryCodeDidChangeNotification")]
@@ -1086,7 +1135,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[NoWatch]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // static Default property is the only documented way to get the controller
 	interface SKProductStorePromotionController {
@@ -1116,9 +1164,7 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires Swift */ )]
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // Not specified but very likely
@@ -1134,20 +1180,18 @@ namespace StoreKit {
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use the 'AppStore.RequestReview (UIWindowScene)' API instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use the 'AppStore.RequestReview (NSViewController)' API instead.")]
 		[Introduced (PlatformName.MacCatalyst, 14, 0)]
-		[NoWatch, NoTV, iOS (14, 0), NoMac]
+		[NoTV, iOS (14, 0), NoMac]
 		[Static]
 		[Export ("requestReviewInScene:")]
 		void RequestReview (UIWindowScene windowScene);
 	}
 
-	[Watch (6, 2)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Deprecated (PlatformName.iOS, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires Swift */ )]
 	interface SKProductSubscriptionPeriod {
 
 		[Export ("numberOfUnits")]
@@ -1161,8 +1205,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires Swift */ )]
-	[Watch (6, 2)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SKProductDiscount {
@@ -1191,7 +1233,7 @@ namespace StoreKit {
 		SKProductDiscountType Type { get; }
 	}
 
-	[NoTV, NoMac, NoWatch]
+	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -1204,14 +1246,14 @@ namespace StoreKit {
 		void RegisterAppForAdNetworkAttribution ();
 
 		[Deprecated (PlatformName.iOS, 15, 4, message: "Use 'UpdatePostback' instead.")]
-		[NoWatch, NoTV, NoMac, iOS (14, 0)]
+		[NoTV, NoMac, iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 15, 4, message: "Use 'UpdatePostback' instead.")]
 		[Static]
 		[Export ("updateConversionValue:")]
 		void UpdateConversionValue (nint conversionValue);
 
-		[NoWatch, NoTV, NoMac]
+		[NoTV, NoMac]
 		[iOS (14, 5)]
 		[MacCatalyst (14, 5)]
 		[Static]
@@ -1219,7 +1261,7 @@ namespace StoreKit {
 		[Export ("startImpression:completionHandler:")]
 		void StartImpression (SKAdImpression impression, [NullAllowed] Action<NSError?> completion);
 
-		[NoWatch, NoTV, NoMac]
+		[NoTV, NoMac]
 		[iOS (14, 5)]
 		[MacCatalyst (14, 5)]
 		[Static]
@@ -1227,19 +1269,19 @@ namespace StoreKit {
 		[Export ("endImpression:completionHandler:")]
 		void EndImpression (SKAdImpression impression, [NullAllowed] Action<NSError?> completion);
 
-		[NoWatch, NoTV, NoMac, iOS (15, 4), MacCatalyst (15, 4)]
+		[NoTV, NoMac, iOS (15, 4), MacCatalyst (15, 4)]
 		[Static]
 		[Async]
 		[Export ("updatePostbackConversionValue:completionHandler:")]
 		void UpdatePostback (nint conversionValue, [NullAllowed] Action<NSError?> completion);
 
-		[NoMac, iOS (16, 1), MacCatalyst (16, 1), NoWatch, NoTV]
+		[NoMac, iOS (16, 1), MacCatalyst (16, 1), NoTV]
 		[Static]
 		[Async]
 		[Export ("updatePostbackConversionValue:coarseValue:completionHandler:")]
 		void UpdatePostback (nint conversionValue, [BindAs (typeof (SKAdNetworkCoarseConversionValue))] NSString coarseValue, [NullAllowed] Action<NSError?> completion);
 
-		[NoMac, iOS (16, 1), MacCatalyst (16, 1), NoWatch, NoTV]
+		[NoMac, iOS (16, 1), MacCatalyst (16, 1), NoTV]
 		[Static]
 		[Async]
 		[Export ("updatePostbackConversionValue:coarseValue:lockWindow:completionHandler:")]
@@ -1250,8 +1292,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires Swift */ )]
-	[Watch (6, 2)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -1279,12 +1319,12 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires Swift */ )]
-	[Watch (6, 2)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKProductDiscountType : long {
+		/// <summary>To be added.</summary>
 		Introductory,
+		/// <summary>To be added.</summary>
 		Subscription,
 	}
 
@@ -1292,10 +1332,8 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires Swift */ )]
 	[iOS (13, 0)]
 	[TV (13, 0)]
-	[Watch (6, 2)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // no `init` but non-null properties
@@ -1314,8 +1352,7 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[Deprecated (PlatformName.WatchOS, 11, 0 /* Apple's replacement requires Swift */ )]
-	[Watch (6, 2), iOS (13, 0)]
+	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 #if NET
 	[Protocol, Model]
@@ -1328,7 +1365,7 @@ namespace StoreKit {
 		[Export ("paymentQueue:shouldContinueTransaction:inStorefront:")]
 		bool ShouldContinueTransaction (SKPaymentQueue paymentQueue, SKPaymentTransaction transaction, SKStorefront newStorefront);
 
-		[NoWatch, NoMac, NoTV, iOS (13, 4)]
+		[NoMac, NoTV, iOS (13, 4)]
 		[MacCatalyst (13, 1)]
 		[Export ("paymentQueueShouldShowPriceConsent:")]
 		bool ShouldShowPriceConsent (SKPaymentQueue paymentQueue);
@@ -1338,13 +1375,11 @@ namespace StoreKit {
 	// in Xcode 11 GM is was added - but only for macOS ?!?
 	// https://feedbackassistant.apple.com/feedback/7017660 - https://github.com/xamarin/maccore/issues/1913
 
-	[NoWatch]
 	[NoiOS]
 	[NoTV]
 	[NoMacCatalyst]
 	delegate void SKArcadeServiceRegisterHandler (NSData randomFromFP, uint /* uint32_t */ randomFromFPLength, NSData cmacOfAppPid, uint /* uint32_t */ cmacOfAppPidLength, NSError error);
 
-	[NoWatch]
 	[NoiOS]
 	[NoTV]
 	[NoMacCatalyst]
@@ -1352,7 +1387,6 @@ namespace StoreKit {
 
 	[iOS (13, 0)]
 	[TV (13, 0)]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // all static members so far
@@ -1374,7 +1408,7 @@ namespace StoreKit {
 	}
 
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -1389,13 +1423,13 @@ namespace StoreKit {
 		CGRect EndFrame { get; }
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface SKOverlayConfiguration { }
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (SKOverlayConfiguration))]
 	[DisableDefaultCtor]
@@ -1442,7 +1476,7 @@ namespace StoreKit {
 		void SetAdImpression (SKAdImpression impression);
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (SKOverlayConfiguration))]
 	[DisableDefaultCtor]
@@ -1480,7 +1514,7 @@ namespace StoreKit {
 
 	interface ISKOverlayDelegate { }
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 #if NET
 	[Protocol, Model]
@@ -1505,7 +1539,7 @@ namespace StoreKit {
 		void DidFinishDismissal (SKOverlay overlay, SKOverlayTransitionContext transitionContext);
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -1532,7 +1566,7 @@ namespace StoreKit {
 		SKOverlayConfiguration Configuration { get; }
 	}
 
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[iOS (14, 5)]
 	[MacCatalyst (14, 5)]
 	[BaseType (typeof (NSObject))]
@@ -1555,7 +1589,7 @@ namespace StoreKit {
 		[Export ("adCampaignIdentifier", ArgumentSemantic.Strong)]
 		NSNumber AdCampaignIdentifier { get; set; }
 
-		[NoMac, iOS (16, 0), MacCatalyst (16, 0), NoWatch, NoTV]
+		[NoMac, iOS (16, 1), MacCatalyst (16, 1), NoTV]
 		[Export ("sourceIdentifier", ArgumentSemantic.Strong)]
 		NSNumber SourceIdentifier { get; set; }
 

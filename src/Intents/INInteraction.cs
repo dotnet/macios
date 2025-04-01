@@ -7,20 +7,19 @@
 // Copyright 2017 Xamarin Inc. All rights reserved.
 //
 
-#if IOS || WATCH
+#if IOS
 using System;
 using Foundation;
 using ObjCRuntime;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Intents {
 	public partial class INInteraction {
 
 		public T GetParameterValue<T> (INParameter parameter) where T : NSObject
 		{
-			return Runtime.GetNSObject<T> (_GetParameterValue (parameter));
+			return Runtime.GetNSObject<T> (_GetParameterValue (parameter))!;
 		}
 	}
 }

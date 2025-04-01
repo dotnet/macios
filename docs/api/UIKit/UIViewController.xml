@@ -350,7 +350,106 @@ class MyUIViewController : UIViewController {
     <related type="article" href="https://docs.xamarin.com/ios/Guides/User_Interface/MonoTouch.Dialog">Introduction to MonoTouch.Dialog</related>
     <related type="article" href="https://docs.xamarin.com/index.php?title=ios/Guides/Getting_Started/Hello%2C_iPad___Universal_Apps">iPad + Universal (iPhone + iPad) Apps</related>
     <related type="article" href="https://docs.xamarin.com/ios/Guides/User_Interface/Introduction_to_Storyboards">Introduction to Storyboards</related>
-    
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIViewController_Class/index.html">Apple documentation for <c>UIViewController</c></related>
   </Docs>
+  <Docs DocId="P:UIKit.UIViewController.IsBeingPresented">
+        <summary>
+          <see langword="true" /> if the current <see cref="T:UIKit.UIViewController" /> is in the process of being presented.</summary>
+        <value>
+          <see langword="true" /> only if called during the execution of <see cref="M:UIKit.UIViewController.ViewWillAppear(System.Boolean)" /> or <see cref="M:UIKit.UIViewController.ViewDidAppear(System.Boolean)" />.</value>
+        <remarks>
+          <para>The presentation process is bookended by the functions <see cref="M:UIKit.UIViewController.ViewWillAppear(System.Boolean)" /> and <see cref="M:UIKit.UIViewController.ViewDidAppear(System.Boolean)" />. While those are executing, this property will return <see langword="true" />, at all other times, it will return <see langword="false" />.</para>
+        </remarks>
+        <altmember cref="M:UIKit.UIViewController.ViewWillAppear" />
+        <altmember cref="M:UIKit.UIViewController.ViewDidAppear" />
+        <altmember cref="P:UIKit.UIViewController.IsMovingToParentViewController" />
+      </Docs>
+  <Docs DocId="P:UIKit.UIViewController.IsMovingToParentViewController">
+        <summary>
+          <see langword="true" /> if the current <see cref="T:UIKit.UIViewController" /> is in the process of being added to a parent <see cref="T:UIKit.UIViewController" />.</summary>
+        <value>
+          <see langword="true" /> only if called during the execution of <see cref="M:UIKit.UIViewController.ViewWillAppear(System.Boolean)" /> or <see cref="M:UIKit.UIViewController.ViewDidAppear(System.Boolean)" />.</value>
+        <remarks>
+          <para>The process of adding a <see cref="T:UIKit.UIViewController" /> to a parent <see cref="T:UIKit.UIViewController" /> is bookended by the functions <see cref="M:UIKit.UIViewController.ViewWillAppear(System.Boolean)" /> and <see cref="M:UIKit.UIViewController.ViewDidAppear(System.Boolean)" />. While those are executing, this property will return <see langword="true" />, at all other times, it will return <see langword="false" />.</para>
+        </remarks>
+        <altmember cref="M:UIKit.UIViewController.ViewDidAppear" />
+        <altmember cref="M:UIKit.UIViewController.ViewDidDisappear" />
+        <altmember cref="P:UIKit.UIViewController.IsBeingPresented" />
+      </Docs>
+  <Docs DocId="P:UIKit.UIViewController.IsMovingFromParentViewController">
+        <summary>
+          <see langword="true" /> if the current <see cref="T:UIKit.UIViewController" /> is in the process of being removed from its parent <see cref="T:UIKit.UIViewController" />.</summary>
+        <value>
+          <see langword="true" /> only if called during the execution of <see cref="M:UIKit.UIViewController.ViewWillDisappear(System.Boolean)" /> or <see cref="M:UIKit.UIViewController.ViewDidDisappear(System.Boolean)" />.</value>
+        <remarks>
+          <para>The process of removing a <see cref="T:UIKit.UIViewController" /> from its parent <see cref="T:UIKit.UIViewController" /> is bookended by the functions <see cref="M:UIKit.UIViewController.ViewWillDisappear(System.Boolean)" /> and <see cref="M:UIKit.UIViewController.ViewDidDisappear(System.Boolean)" />. While those are executing, this property will return <see langword="true" />, at all other times, it will return <see langword="false" />.</para>
+        </remarks>
+        <altmember cref="M:UIKit.UIViewController.ViewWillDisappear" />
+        <altmember cref="M:UIKit.UIViewController.ViewDidDisappear" />
+        <altmember cref="M:UIKit.UIViewController.RemoveFromParentViewController" />
+      </Docs>
+  <Docs DocId="P:UIKit.UIViewController.ShowDetailTargetDidChangeNotification">
+        <summary>Notification constant for ShowDetailTargetDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIViewController.Notifications" />.<see cref="M:UIKit.UIViewController.Notifications.ObserveShowDetailTargetDidChange*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = UIViewController.Notifications.ObserveShowDetailTargetDidChange ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = UIViewController.Notifications.ObserveShowDetailTargetDidChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIViewController.ShowDetailTargetDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIViewController", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIViewController", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIViewController.ShowDetailTargetDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
 </Documentation>

@@ -17,6 +17,8 @@ using SecKeychain = Xamarin.MacDev.Keychain;
 
 namespace Xamarin.MacDev.Tasks {
 	public class DetectSigningIdentity : XamarinTask, ITaskCallback, ICancelableTask {
+		CodeSignIdentity detectedIdentity;
+
 		const string AutomaticProvision = "Automatic";
 		const string AutomaticAdHocProvision = "Automatic:AdHoc";
 		const string AutomaticAppStoreProvision = "Automatic:AppStore";
@@ -37,7 +39,6 @@ namespace Xamarin.MacDev.Tasks {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return IPhoneCertificate.DevelopmentPrefixes;
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -53,7 +54,6 @@ namespace Xamarin.MacDev.Tasks {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return Array.Empty<string> ();
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -69,7 +69,6 @@ namespace Xamarin.MacDev.Tasks {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return IPhoneCertificate.DistributionPrefixes;
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -85,7 +84,6 @@ namespace Xamarin.MacDev.Tasks {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return "application-identifier";
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -151,7 +149,7 @@ namespace Xamarin.MacDev.Tasks {
 		public bool RequireProvisioningProfile {
 			get {
 				// RequireProvisioningProfile:
-				// * iOS, tvOS, watchOS: required if building for device or if a custom (.NET: non-empty) entitlement file is used
+				// * iOS, tvOS: required if building for device or if a custom (.NET: non-empty) entitlement file is used
 				// * macOS, Mac Catalyst: requirerd if a provisioning profile is specified
 				// * Default logic is overridable by setting the "CodesignRequireProvisioningProfile=true|false" property
 
@@ -160,7 +158,6 @@ namespace Xamarin.MacDev.Tasks {
 						switch (Platform) {
 						case ApplePlatform.iOS:
 						case ApplePlatform.TVOS:
-						case ApplePlatform.WatchOS:
 							requireProvisioningProfile = !SdkIsSimulator || HasEntitlements;
 							break;
 						case ApplePlatform.MacCatalyst:
@@ -284,8 +281,17 @@ namespace Xamarin.MacDev.Tasks {
 			Log.LogMessage (MessageImportance.High, MSBStrings.M0125);
 			if (codesignCommonName is not null || !string.IsNullOrEmpty (DetectedCodeSigningKey))
 				Log.LogMessage (MessageImportance.High, "  Code Signing Key: \"{0}\" ({1})", codesignCommonName, DetectedCodeSigningKey);
-			if (provisioningProfileName is not null)
-				Log.LogMessage (MessageImportance.High, "  Provisioning Profile: \"{0}\" ({1})", provisioningProfileName, DetectedProvisioningProfile);
+			if (provisioningProfileName is not null) {
+				var profileEntitlements = detectedIdentity.Profile?.Entitlements;
+				var entitlements = profileEntitlements?.ToXml ().TrimEnd ().Replace ("\n", "\n      ");
+				if (string.IsNullOrEmpty (entitlements)) {
+					Log.LogMessage (MessageImportance.High, "  Provisioning Profile: \"{0}\" ({1}) - no entitlements", provisioningProfileName, DetectedProvisioningProfile);
+				} else {
+					Log.LogMessage (MessageImportance.High, "  Provisioning Profile: \"{0}\" ({1}) - {2} entitlements", provisioningProfileName, DetectedProvisioningProfile, profileEntitlements?.Count ?? 0);
+					Log.LogMessage (MessageImportance.Low, $"    Entitlements granted by the provisioning profile:");
+					Log.LogMessage (MessageImportance.Low, $"      {entitlements}");
+				}
+			}
 			Log.LogMessage (MessageImportance.High, "  Bundle Id: {0}", BundleIdentifier);
 			Log.LogMessage (MessageImportance.High, "  App Id: {0}", DetectedAppId);
 		}
@@ -547,15 +553,15 @@ namespace Xamarin.MacDev.Tasks {
 			IList<X509Certificate2> certs;
 			List<CodeSignIdentity> pairs;
 
+			detectedIdentity = identity;
+
 			switch (SdkPlatform) {
 			case "AppleTVSimulator":
 			case "AppleTVOS":
 				platform = MobileProvisionPlatform.tvOS;
 				break;
 			case "iPhoneSimulator":
-			case "WatchSimulator":
 			case "iPhoneOS":
-			case "WatchOS":
 				platform = MobileProvisionPlatform.iOS;
 				break;
 			case "MacOSX":
@@ -602,7 +608,7 @@ namespace Xamarin.MacDev.Tasks {
 					return !Log.HasLoggedErrors;
 				}
 			} else {
-				// Framework is either iOS, tvOS or watchOS
+				// Framework is either iOS or tvOS
 				if (SdkIsSimulator) {
 					if (AppleSdkSettings.XcodeVersion.Major >= 8 && RequireProvisioningProfile) {
 						// Note: Starting with Xcode 8.0, we need to codesign iOS Simulator builds that enable Entitlements

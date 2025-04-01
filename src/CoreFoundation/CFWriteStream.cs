@@ -37,24 +37,14 @@ using Foundation;
 using ObjCRuntime;
 using System.Runtime.Versioning;
 
-#if NET
 using CFIndex = System.IntPtr;
-#else
-using CFIndex = System.nint;
-#endif
-
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
 
 namespace CoreFoundation {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CFWriteStream : CFStream {
 		[Preserve (Conditional = true)]
 		internal CFWriteStream (NativeHandle handle, bool owns)
@@ -65,6 +55,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFErrorRef */ IntPtr CFWriteStreamCopyError (/* CFWriteStreamRef */ IntPtr stream);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override CFException? GetError ()
 		{
 			var error = CFWriteStreamCopyError (Handle);
@@ -76,6 +69,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* Boolean */ byte CFWriteStreamOpen (/* CFWriteStreamRef */ IntPtr stream);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected override bool DoOpen ()
 		{
 			return CFWriteStreamOpen (Handle) != 0;
@@ -84,6 +80,8 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static void CFWriteStreamClose (/* CFWriteStreamRef */ IntPtr stream);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected override void DoClose ()
 		{
 			CFWriteStreamClose (Handle);
@@ -92,6 +90,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFStreamStatus */ nint CFWriteStreamGetStatus (/* CFWriteStreamRef */ IntPtr stream);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected override CFStreamStatus DoGetStatus ()
 		{
 			return (CFStreamStatus) (long) CFWriteStreamGetStatus (Handle);
@@ -100,6 +101,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* Boolean */ byte CFWriteStreamCanAcceptBytes (/* CFWriteStreamRef */ IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool CanAcceptBytes ()
 		{
 			return CFWriteStreamCanAcceptBytes (Handle) != 0;
@@ -108,6 +112,10 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		static extern nint CFWriteStreamWrite (IntPtr handle, IntPtr buffer, nint count);
 
+		/// <param name="buffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public int Write (byte [] buffer)
 		{
 			if (buffer is null)
@@ -131,41 +139,31 @@ namespace CoreFoundation {
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]
-#if NET8_0_OR_GREATER
 		unsafe static extern /* Boolean */ byte CFWriteStreamSetClient (/* CFWriteStreamRef */ IntPtr stream, /* CFOptionFlags */ nint streamEvents,
 			/* CFWriteStreamClientCallBack */ delegate* unmanaged<IntPtr, nint, IntPtr, void> clientCB, /* CFStreamClientContext* */ IntPtr clientContext);
-#else
-		[return: MarshalAs (UnmanagedType.I1)]
-		static extern /* Boolean */ bool CFWriteStreamSetClient (/* CFWriteStreamRef */ IntPtr stream, /* CFOptionFlags */ nint streamEvents,
-			/* CFWriteStreamClientCallBack */ CFStreamCallback? clientCB, /* CFStreamClientContext* */ IntPtr clientContext);
-#endif
 
 #if !XAMCORE_5_0
-#if NET8_0_OR_GREATER
 		[Obsolete ("Use the other overload.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
-#endif
 		protected override bool DoSetClient (CFStreamCallback? callback, CFIndex eventTypes,
 											 IntPtr context)
 		{
-#if NET8_0_OR_GREATER
 			throw new InvalidOperationException ($"Use the other overload.");
-#else
-			return CFWriteStreamSetClient (Handle, (nint) eventTypes, callback, context);
-#endif
 		}
 #endif // !XAMCORE_5_0
 
-#if NET8_0_OR_GREATER
 		unsafe protected override byte DoSetClient (delegate* unmanaged<IntPtr, nint, IntPtr, void> callback, CFIndex eventTypes, IntPtr context)
 		{
 			return CFWriteStreamSetClient (Handle, (nint) eventTypes, callback, context);
 		}
-#endif
 
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static void CFWriteStreamScheduleWithRunLoop (/* CFWriteStreamRef */ IntPtr stream, /* CFRunLoopRef */ IntPtr runLoop, /* CFStringRef */ IntPtr runLoopMode);
 
+		/// <param name="loop">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected override void ScheduleWithRunLoop (CFRunLoop loop, NSString? mode)
 		{
 			if (loop is null)
@@ -173,11 +171,17 @@ namespace CoreFoundation {
 			if (mode is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
 			CFWriteStreamScheduleWithRunLoop (Handle, loop.Handle, mode.Handle);
+			GC.KeepAlive (loop);
+			GC.KeepAlive (mode);
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static void CFWriteStreamUnscheduleFromRunLoop (/* CFWriteStreamRef */ IntPtr stream, /* CFRunLoopRef */ IntPtr runLoop, /* CFStringRef */ IntPtr runLoopMode);
 
+		/// <param name="loop">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected override void UnscheduleFromRunLoop (CFRunLoop loop, NSString? mode)
 		{
 			if (loop is null)
@@ -185,26 +189,42 @@ namespace CoreFoundation {
 			if (mode is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
 			CFWriteStreamUnscheduleFromRunLoop (Handle, loop.Handle, mode.Handle);
+			GC.KeepAlive (loop);
+			GC.KeepAlive (mode);
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFTypeRef */ IntPtr CFWriteStreamCopyProperty (/* CFWriteStreamRef */ IntPtr stream, /* CFStringRef */ IntPtr propertyName);
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected override IntPtr DoGetProperty (NSString name)
 		{
 			if (name is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name));
-			return CFWriteStreamCopyProperty (Handle, name.Handle);
+			IntPtr result = CFWriteStreamCopyProperty (Handle, name.Handle);
+			GC.KeepAlive (name);
+			return result;
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* Boolean */ byte CFWriteStreamSetProperty (/* CFWriteStreamRef */ IntPtr stream, /* CFStringRef */ IntPtr propertyName, /* CFTypeRef */ IntPtr value);
 
+		/// <param name="name">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected override bool DoSetProperty (NSString name, INativeObject? value)
 		{
 			if (name is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name));
-			return CFWriteStreamSetProperty (Handle, name.Handle, value.GetHandle ()) != 0;
+			bool result = CFWriteStreamSetProperty (Handle, name.Handle, value.GetHandle ()) != 0;
+			GC.KeepAlive (name);
+			GC.KeepAlive (value);
+			return result;
 		}
 	}
 }

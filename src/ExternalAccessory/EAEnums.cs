@@ -15,8 +15,11 @@ namespace ExternalAccessory {
 	[Native]
 	[Flags]
 	public enum EAWiFiUnconfiguredAccessoryProperties : ulong {
+		/// <summary>To be added.</summary>
 		SupportsAirPlay = (1 << 0),
+		/// <summary>To be added.</summary>
 		SupportsAirPrint = (1 << 1),
+		/// <summary>To be added.</summary>
 		SupportsHomeKit = (1 << 2), // iOS 8 beta 5
 	}
 
@@ -25,9 +28,13 @@ namespace ExternalAccessory {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum EAWiFiUnconfiguredAccessoryBrowserState : long {
+		/// <summary>To be added.</summary>
 		WiFiUnavailable = 0,
+		/// <summary>To be added.</summary>
 		Stopped,
+		/// <summary>To be added.</summary>
 		Searching,
+		/// <summary>To be added.</summary>
 		Configuring,
 	}
 
@@ -37,8 +44,11 @@ namespace ExternalAccessory {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum EAWiFiUnconfiguredAccessoryConfigurationStatus : long {
+		/// <summary>To be added.</summary>
 		Success,
+		/// <summary>To be added.</summary>
 		UserCancelledConfiguration,
+		/// <summary>To be added.</summary>
 		Failed,
 	}
 
@@ -47,9 +57,13 @@ namespace ExternalAccessory {
 	[Native ("EABluetoothAccessoryPickerErrorCode")]
 	[ErrorDomain ("EABluetoothAccessoryPickerErrorDomain")]
 	public enum EABluetoothAccessoryPickerError : long {
+		/// <summary>To be added.</summary>
 		AlreadyConnected,
+		/// <summary>To be added.</summary>
 		NotFound,
+		/// <summary>To be added.</summary>
 		Cancelled,
-		Failed
+		/// <summary>To be added.</summary>
+		Failed,
 	}
 }

@@ -7,8 +7,6 @@
 // Copyright 2013 Xamarin Inc.
 //
 
-#if !__WATCHOS__
-
 using System;
 using Foundation;
 using JavaScriptCore;
@@ -109,5 +107,3 @@ namespace MonoTouchFixtures.JavascriptCore {
 #endif
 	}
 }
-
-#endif // !__WATCHOS__

@@ -51,13 +51,11 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Watch (6, 0)]
 #endif
 	public class NWConnection : NativeObject {
 		[Preserve (Conditional = true)]
 #if NET
-		internal NWConnection (NativeHandle handle, bool owns) : base (handle, owns) {}
+		internal NWConnection (NativeHandle handle, bool owns) : base (handle, owns) { }
 #else
 		public NWConnection (NativeHandle handle, bool owns) : base (handle, owns) { }
 #endif
@@ -72,11 +70,16 @@ namespace Network {
 			if (parameters is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (parameters));
 			InitializeHandle (nw_connection_create (endpoint.Handle, parameters.Handle));
+			GC.KeepAlive (endpoint);
+			GC.KeepAlive (parameters);
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
 		static extern nw_endpoint_t nw_connection_copy_endpoint (nw_connection_t connection);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWEndpoint? Endpoint {
 			get {
 				var x = nw_connection_copy_endpoint (GetCheckedHandle ());
@@ -89,6 +92,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern nw_parameters_t nw_connection_copy_parameters (nw_connection_t connection);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWParameters? Parameters {
 			get {
 				var x = nw_connection_copy_parameters (GetCheckedHandle ());
@@ -254,6 +260,7 @@ namespace Network {
 			if (queue is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (queue));
 			nw_connection_set_queue (GetCheckedHandle (), queue.Handle);
+			GC.KeepAlive (queue);
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -524,6 +531,7 @@ namespace Network {
 						contentContext: contentContext,
 						isComplete: isComplete.AsByte (),
 						callback: callback);
+			GC.KeepAlive (buffer);
 		}
 
 		public void Send (byte [] buffer, NWContentContext context, bool isComplete, Action<NWError?> callback)
@@ -561,6 +569,7 @@ namespace Network {
 				block.SetupBlockUnsafe (static_SendCompletion, callback);
 #endif
 				LowLevelSend (GetCheckedHandle (), buffer, context.Handle, isComplete, &block);
+				GC.KeepAlive (context);
 			}
 		}
 
@@ -570,6 +579,7 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
 
 			LowLevelSend (GetCheckedHandle (), buffer, context.Handle, isComplete, (BlockLiteral*) NWConnectionConstants._SendIdempotentContent);
+			GC.KeepAlive (context);
 		}
 
 		public void SendIdempotent (byte [] buffer, NWContentContext context, bool isComplete)
@@ -590,11 +600,17 @@ namespace Network {
 			return TransientString.ToStringAndFree (ptr)!;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string Description => nw_connection_copy_description (GetCheckedHandle ());
 
 		[DllImport (Constants.NetworkLibrary)]
 		extern static IntPtr nw_connection_copy_current_path (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWPath? CurrentPath {
 			get {
 				var x = nw_connection_copy_current_path (GetCheckedHandle ());
@@ -615,6 +631,7 @@ namespace Network {
 			var x = nw_connection_copy_protocol_metadata (GetCheckedHandle (), definition.Handle);
 			if (x == IntPtr.Zero)
 				return null;
+			GC.KeepAlive (definition);
 			return new NWProtocolMetadata (x, owns: true);
 		}
 
@@ -624,12 +641,16 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (definition));
 
 			var x = nw_connection_copy_protocol_metadata (GetCheckedHandle (), definition.Handle);
+			GC.KeepAlive (definition);
 			return Runtime.GetINativeObject<T> (x, owns: true);
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
 		extern static /* uint32_t */ uint nw_connection_get_maximum_datagram_size (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public uint MaximumDatagramSize => nw_connection_get_maximum_datagram_size (GetCheckedHandle ());
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -699,6 +720,7 @@ namespace Network {
 				block.SetupBlockUnsafe (static_GetEstablishmentReportHandler, handler);
 #endif
 				nw_connection_access_establishment_report (GetCheckedHandle (), queue.Handle, &block);
+				GC.KeepAlive (queue);
 			}
 		}
 	}

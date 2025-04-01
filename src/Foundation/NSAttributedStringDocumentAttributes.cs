@@ -35,6 +35,9 @@ using XColor = UIKit.UIColor;
 namespace Foundation {
 	public partial class NSAttributedStringDocumentAttributes : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSString? WeakDocumentType {
 			get {
 				return GetNSStringValue (NSAttributedStringDocumentAttributeKey.DocumentTypeDocumentAttribute);
@@ -45,6 +48,9 @@ namespace Foundation {
 		}
 
 #if !XAMCORE_5_0
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use 'CharacterEncoding' instead.")]
 		public NSStringEncoding? StringEncoding {
@@ -58,6 +64,9 @@ namespace Foundation {
 #endif // !XAMCORE_5_0
 
 #if !XAMCORE_5_0
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDocumentType DocumentType {
 			get {
 
@@ -69,6 +78,9 @@ namespace Foundation {
 		}
 #endif // !XAMCORE_5_0
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary? WeakDefaultAttributes {
 			get {
 				return GetNativeValue<NSDictionary> (NSAttributedStringDocumentAttributeKey.DefaultAttributesDocumentAttribute);
@@ -91,6 +103,9 @@ namespace Foundation {
 			}
 		}
 #else
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool ReadOnly {
 			get {
 				var value = GetInt32Value (NSAttributedStringDocumentAttributeKey.ReadOnlyDocumentAttribute);
@@ -104,7 +119,7 @@ namespace Foundation {
 		}
 #endif // XAMCORE_5_0 || __MACOS__
 
-#if !TVOS && !WATCH
+#if !TVOS
 		// documentation is unclear if an NSString or an NSUrl should be used...
 		// but providing an `NSString` throws a `NSInvalidArgumentException Reason: (null) is not a file URL`
 #if NET
@@ -123,10 +138,13 @@ namespace Foundation {
 				SetNativeValue (NSAttributedStringDocumentReadingOptionKey.ReadAccessUrlDocumentOption, value);
 			}
 		}
-#endif // !TVOS && !WATCH
+#endif // !TVOS
 
 #if __MACOS__
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
@@ -144,6 +162,9 @@ namespace Foundation {
 
 #if __MACOS__
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
@@ -161,6 +182,9 @@ namespace Foundation {
 
 #if __MACOS__
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
@@ -178,6 +202,9 @@ namespace Foundation {
 
 #if __MACOS__
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
@@ -195,6 +222,9 @@ namespace Foundation {
 
 #if __MACOS__
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]

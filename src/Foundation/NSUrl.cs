@@ -107,6 +107,9 @@ namespace Foundation {
 			return SetResourceValue (value, nsUrlResourceKey, out error);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int Port {
 			get {
 				return (int) (this.PortNumber ?? -1);

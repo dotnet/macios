@@ -4,7 +4,7 @@ using ObjCBindings;
 
 namespace AVFoundation;
 
-[BindingType]
+[BindingType<SmartEnum>]
 public enum AVCaptureDeviceType {
 
 	[Field<EnumValue> ("AVCaptureDeviceTypeBuiltInMicrophone")]

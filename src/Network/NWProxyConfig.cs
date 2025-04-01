@@ -24,12 +24,12 @@ namespace Network {
 	[SupportedOSPlatform ("ios17.0")]
 	[SupportedOSPlatform ("maccatalyst17.0")]
 #else
-	[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 #endif
 	public class NWProxyConfig : NativeObject {
 		[Preserve (Conditional = true)]
 #if NET
-		internal NWProxyConfig (NativeHandle handle, bool owns) : base (handle, owns) {}
+		internal NWProxyConfig (NativeHandle handle, bool owns) : base (handle, owns) { }
 #else
 		public NWProxyConfig (NativeHandle handle, bool owns) : base (handle, owns) { }
 #endif
@@ -43,6 +43,8 @@ namespace Network {
 			if (firstHop is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (firstHop));
 			var handle = nw_proxy_config_create_relay (firstHop.GetCheckedHandle (), secondHop.GetHandle ());
+			GC.KeepAlive (firstHop);
+			GC.KeepAlive (secondHop);
 			if (handle == NativeHandle.Zero)
 				return default;
 			return new NWProxyConfig (handle, owns: true);
@@ -65,6 +67,7 @@ namespace Network {
 			unsafe {
 				fixed (byte* gatewayKeyConfigPointer = gatewayKeyConfig) {
 					var handle = nw_proxy_config_create_oblivious_http (hop.GetCheckedHandle (), resourcePathPtr, gatewayKeyConfigPointer, (nuint) gatewayKeyConfig.Length);
+					GC.KeepAlive (hop);
 					if (handle == NativeHandle.Zero)
 						return default;
 					return new NWProxyConfig (handle, owns: true);
@@ -81,6 +84,8 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (proxyEndpoint));
 
 			var handle = nw_proxy_config_create_http_connect (proxyEndpoint.GetCheckedHandle (), options.GetHandle ());
+			GC.KeepAlive (proxyEndpoint);
+			GC.KeepAlive (options);
 			if (handle == NativeHandle.Zero)
 				return default;
 			return new NWProxyConfig (handle, true);
@@ -94,6 +99,7 @@ namespace Network {
 			if (endpoint is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (endpoint));
 			var handle = nw_proxy_config_create_socksv5 (endpoint.GetCheckedHandle ());
+			GC.KeepAlive (endpoint);
 			if (handle == NativeHandle.Zero)
 				return default;
 			return new NWProxyConfig (handle, true);

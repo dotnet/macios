@@ -30,17 +30,19 @@ namespace AVFoundation {
 			return handleToLayout;
 		}
 
+		/// <param name="layout">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public AVAudioChannelLayout (AudioChannelLayout layout)
-#if NET
 			: this (CreateLayoutPtr (layout, out var handleToLayout))
-#else
-			: this ((nint) CreateLayoutPtr (layout, out var handleToLayout))
-#endif
 		{
 			Marshal.FreeHGlobal (handleToLayout);
 		}
 
+		/// <summary>The underlying <see cref="T:AudioToolbox.AudioChannelLayout" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioChannelLayout? Layout {
 			get {
 				return AudioChannelLayout.FromHandle (_Layout);

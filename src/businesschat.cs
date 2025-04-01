@@ -45,6 +45,10 @@ namespace BusinessChat {
 	[DisableDefaultCtor]
 	interface BCChatAction {
 
+		/// <param name="businessIdentifier">To be added.</param>
+		///         <param name="intentParameters">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("openTranscript:intentParameters:")]

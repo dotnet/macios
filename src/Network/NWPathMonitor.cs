@@ -29,8 +29,6 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Watch (6, 0)]
 #endif
 	public class NWPathMonitor : NativeObject {
 		[Preserve (Conditional = true)]
@@ -80,6 +78,7 @@ namespace Network {
 			if (queue is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (queue));
 			nw_path_monitor_set_queue (GetCheckedHandle (), queue.Handle);
+			GC.KeepAlive (queue);
 		}
 
 #if !NET
@@ -168,7 +167,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
@@ -182,7 +180,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
@@ -197,7 +194,6 @@ namespace Network {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
 #else
-		[NoWatch]
 		[NoTV]
 		[NoiOS]
 		[Mac (13,0)]
@@ -211,7 +207,6 @@ namespace Network {
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 #else
-		[NoWatch]
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]

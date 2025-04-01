@@ -34,7 +34,6 @@ namespace Network {
 #else
 	[TV (13, 0)]
 	[iOS (13, 0)]
-	[Watch (6, 0)]
 #endif
 	public class NWWebSocketMetadata : NWProtocolMetadata {
 
@@ -100,6 +99,7 @@ namespace Network {
 				block.SetupBlockUnsafe (static_PongHandler, handler);
 #endif
 				nw_ws_metadata_set_pong_handler (GetCheckedHandle (), queue.Handle, &block);
+				GC.KeepAlive (queue);
 			}
 		}
 

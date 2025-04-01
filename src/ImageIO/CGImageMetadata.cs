@@ -30,6 +30,9 @@ namespace ImageIO {
 #endif
 	public partial class CGImageMetadataEnumerateOptions {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool Recursive { get; set; }
 
 		internal NSMutableDictionary ToDictionary ()
@@ -70,11 +73,25 @@ namespace ImageIO {
 		static extern /* CGImageMetadataRef __nullable */ IntPtr CGImageMetadataCreateFromXMPData (
 			/* CFDataRef __nonnull */ IntPtr data);
 
+		/// <param name="data">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGImageMetadata (NSData data)
-			: base (CGImageMetadataCreateFromXMPData (Runtime.ThrowOnNull (data, nameof (data)).Handle), true, verify: true)
+			: base (CGImageMetadataCreateFromXMPData (data.GetNonNullHandle (nameof (data))), true, verify: true)
 		{
+			GC.KeepAlive (data);
 		}
 
+		/// <summary>Type identifier for the ImageIO.CGImageMetadata type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
+		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[bool isCGImageMetadata = (CFType.GetTypeID (foo.Handle) == CGImageMetadata.GetTypeID ());]]></code>
+		///           </example>
+		///         </remarks>
 		[DllImport (Constants.ImageIOLibrary, EntryPoint = "CGImageMetadataGetTypeID")]
 		public extern static /* CFTypeID */ nint GetTypeID ();
 
@@ -90,6 +107,8 @@ namespace ImageIO {
 			if (path is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
 			var result = CGImageMetadataCopyStringValueWithPath (Handle, parent.GetHandle (), path.Handle);
+			GC.KeepAlive (parent);
+			GC.KeepAlive (path);
 			return Runtime.GetNSObject<NSString> (result, true);
 		}
 
@@ -114,6 +133,8 @@ namespace ImageIO {
 			if (path is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
 			IntPtr result = CGImageMetadataCopyTagWithPath (Handle, parent.GetHandle (), path.Handle);
+			GC.KeepAlive (parent);
+			GC.KeepAlive (path);
 			return (result == IntPtr.Zero) ? null : new CGImageMetadataTag (result, true);
 		}
 
@@ -153,6 +174,8 @@ namespace ImageIO {
 				block_handler.SetupBlockUnsafe (static_action, block);
 #endif
 				CGImageMetadataEnumerateTagsUsingBlock (Handle, rootPath.GetHandle (), o.GetHandle (), &block_handler);
+				GC.KeepAlive (rootPath);
+				GC.KeepAlive (o);
 			}
 		}
 
@@ -180,6 +203,8 @@ namespace ImageIO {
 			if (propertyName is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (propertyName));
 			IntPtr result = CGImageMetadataCopyTagMatchingImageProperty (Handle, dictionaryName.Handle, propertyName.Handle);
+			GC.KeepAlive (dictionaryName);
+			GC.KeepAlive (propertyName);
 			return result == IntPtr.Zero ? null : new CGImageMetadataTag (result, true);
 		}
 	}

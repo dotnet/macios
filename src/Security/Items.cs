@@ -51,19 +51,28 @@ using NativeHandle = System.IntPtr;
 namespace Security {
 
 	public enum SecKind {
+		/// <summary>The SecRecord stores an internet password.</summary>
 		InternetPassword,
+		/// <summary>The SecRecord stores a password.</summary>
 		GenericPassword,
+		/// <summary>The SecRecord represents a certificate.</summary>
 		Certificate,
+		/// <summary>The SecRecord represents a cryptographic key.</summary>
 		Key,
-		Identity
+		/// <summary>The SecRecord represents an identity</summary>
+		Identity,
 	}
 
 	// manually mapped to KeysAccessible
 	public enum SecAccessible {
+		/// <summary>Invalid value.</summary>
 		Invalid = -1,
+		/// <summary>The data is only available when the device is unlocked.</summary>
 		WhenUnlocked,
+		/// <summary>The data is only available after the first time the device has been unlocked after booting.</summary>
 		AfterFirstUnlock,
 #if NET
+		/// <summary>Always available.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -75,9 +84,12 @@ namespace Security {
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'AfterFirstUnlock' or a better suited option instead.")]
 #endif
 		Always,
+		/// <summary>Limits access to the item to this device and the device being unlocked.</summary>
 		WhenUnlockedThisDeviceOnly,
+		/// <summary>The data is only available after the first time the device has been unlocked after booting.</summary>
 		AfterFirstUnlockThisDeviceOnly,
 #if NET
+		/// <summary>Always available.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -89,26 +101,96 @@ namespace Security {
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'AfterFirstUnlockThisDeviceOnly' or a better suited option instead.")]
 #endif
 		AlwaysThisDeviceOnly,
-		WhenPasscodeSetThisDeviceOnly
+		/// <summary>Limits access to the item to both this device and requires a passcode to be set and the data is only available if the device is currently unlocked.</summary>
+		WhenPasscodeSetThisDeviceOnly,
 	}
 
 	public enum SecProtocol {
+		/// <summary>Invalid</summary>
 		Invalid = -1,
-		Ftp, FtpAccount, Http, Irc, Nntp, Pop3, Smtp, Socks, Imap, Ldap, AppleTalk, Afp, Telnet, Ssh,
-		Ftps, Https, HttpProxy, HttpsProxy, FtpProxy, Smb, Rtsp, RtspProxy, Daap, Eppc, Ipp,
-		Nntps, Ldaps, Telnets, Imaps, Ircs, Pop3s,
+		/// <summary>FTP service</summary>
+		Ftp,
+		/// <summary>FTP account</summary>
+		FtpAccount,
+		/// <summary>HTTP server</summary>
+		Http,
+		/// <summary>Internet Relay Chat</summary>
+		Irc,
+		/// <summary>NTTP</summary>
+		Nntp,
+		/// <summary>Post office protocol for email.</summary>
+		Pop3,
+		/// <summary>Simple Mail Transfer Protocol service.</summary>
+		Smtp,
+		/// <summary>SOCKS proxy</summary>
+		Socks,
+		/// <summary>IMAP protocol</summary>
+		Imap,
+		/// <summary>LDAP</summary>
+		Ldap,
+		/// <summary>AppleTalk service</summary>
+		AppleTalk,
+		/// <summary>To be added.</summary>
+		Afp,
+		/// <summary>Telnet service</summary>
+		Telnet,
+		/// <summary>Secure Shell</summary>
+		Ssh,
+		/// <summary>FTP over SSL/TLS.</summary>
+		Ftps,
+		/// <summary>HTTP over SSL/TLS.</summary>
+		Https,
+		/// <summary>HTTP Proxy</summary>
+		HttpProxy,
+		/// <summary>HTTP Proxy over SSL/TLS</summary>
+		HttpsProxy,
+		/// <summary>FTP proxy</summary>
+		FtpProxy,
+		/// <summary>CIFS/SMB file sharing or print share.</summary>
+		Smb,
+		/// <summary>RTSP</summary>
+		Rtsp,
+		/// <summary>RTSP Proxy</summary>
+		RtspProxy,
+		/// <summary>To be added.</summary>
+		Daap,
+		/// <summary>To be added.</summary>
+		Eppc,
+		/// <summary>To be added.</summary>
+		Ipp,
+		/// <summary>NTTP over SSL/TLS.</summary>
+		Nntps,
+		/// <summary>Ldap over SSL/TLS.</summary>
+		Ldaps,
+		/// <summary>Telnet over SSL/TLS.</summary>
+		Telnets,
+		/// <summary>Imap over SSL/TLS.</summary>
+		Imaps,
+		/// <summary>IRC over SSL/TLS.</summary>
+		Ircs,
+		/// <summary>POP3 over SSL/TLS</summary>
+		Pop3s,
 	}
 
 	public enum SecAuthenticationType {
+		/// <summary>Invalid authentication setting</summary>
 		Invalid = -1,
 		Any = 0,
+		/// <summary>NTLM authentication</summary>
 		Ntlm = 1835824238,
+		/// <summary>Microsoft Network authentication</summary>
 		Msn = 1634628461,
+		/// <summary>Distributed Password Authentication</summary>
 		Dpa = 1633775716,
+		/// <summary>Remote password authentication.</summary>
 		Rpa = 1633775730,
+		/// <summary>HTTP Basic authentication.</summary>
 		HttpBasic = 1886680168,
+		/// <summary>HTTP Digest authentication</summary>
 		HttpDigest = 1685353576,
+		/// <summary>HTTP Form authentication.</summary>
 		HtmlForm = 1836216166,
+		/// <summary>Default authentication type</summary>
 		Default = 1953261156,
 	}
 
@@ -125,6 +207,9 @@ namespace Security {
 			Handle = handle;
 		}
 
+		/// <summary>Handle (pointer) to the unmanaged object representation.</summary>
+		///         <value>A pointer</value>
+		///         <remarks>This IntPtr is a handle to the underlying unmanaged representation for this object.</remarks>
 		public NativeHandle Handle { get; internal set; }
 
 		static NSNumber? SetLimit (NSMutableDictionary dict, int max)
@@ -137,10 +222,13 @@ namespace Security {
 				val = SecMatchLimit.MatchLimitOne;
 			else {
 				n = NSNumber.FromInt32 (max);
+#pragma warning disable RBI0014
 				val = n.Handle;
+#pragma warning restore RBI0014
 			}
 
 			dict.LowlevelSetObject (val, SecItem.MatchLimit);
+			GC.KeepAlive (n);
 			return n;
 		}
 
@@ -310,11 +398,11 @@ namespace Security {
 		extern static SecStatusCode SecKeychainAddGenericPassword (
 			IntPtr keychain,
 			int serviceNameLength,
-			byte[]? serviceName,
+			byte []? serviceName,
 			int accountNameLength,
-			byte[]? accountName,
+			byte []? accountName,
 			int passwordLength,
-			byte[] passwordData,
+			byte [] passwordData,
 			IntPtr itemRef);
 
 #if NET
@@ -342,18 +430,18 @@ namespace Security {
 		extern static SecStatusCode SecKeychainAddInternetPassword (
 			IntPtr keychain,
 			int serverNameLength,
-			byte[]? serverName,
+			byte []? serverName,
 			int securityDomainLength,
-			byte[]? securityDomain,
+			byte []? securityDomain,
 			int accountNameLength,
-			byte[]? accountName,
+			byte []? accountName,
 			int pathLength,
-			byte[]? path,
+			byte []? path,
 			short port,
 			IntPtr protocol,
 			IntPtr authenticationType,
 			int passwordLength,
-			byte[] passwordData,
+			byte [] passwordData,
 			IntPtr itemRef);
 
 #if NET
@@ -390,30 +478,30 @@ namespace Security {
 		public static SecStatusCode AddInternetPassword (
 			string serverName,
 			string accountName,
-			byte[] password,
+			byte [] password,
 			SecProtocol protocolType = SecProtocol.Http,
 			short port = 0,
 			string? path = null,
 			SecAuthenticationType authenticationType = SecAuthenticationType.Default,
 			string? securityDomain = null)
 		{
-			byte[]? serverNameBytes = null;
-			byte[]? securityDomainBytes = null;
-			byte[]? accountNameBytes = null;
-			byte[]? pathBytes = null;
-			
+			byte []? serverNameBytes = null;
+			byte []? securityDomainBytes = null;
+			byte []? accountNameBytes = null;
+			byte []? pathBytes = null;
+
 			if (!String.IsNullOrEmpty (serverName))
 				serverNameBytes = System.Text.Encoding.UTF8.GetBytes (serverName);
-			
+
 			if (!String.IsNullOrEmpty (securityDomain))
 				securityDomainBytes = System.Text.Encoding.UTF8.GetBytes (securityDomain);
-			
+
 			if (!String.IsNullOrEmpty (accountName))
 				accountNameBytes = System.Text.Encoding.UTF8.GetBytes (accountName);
-			
+
 			if (!String.IsNullOrEmpty (path))
 				pathBytes = System.Text.Encoding.UTF8.GetBytes (path);
-			
+
 			return SecKeychainAddInternetPassword (
 				IntPtr.Zero,
 				serverNameBytes?.Length ?? 0,
@@ -431,12 +519,12 @@ namespace Security {
 				password!,
 				IntPtr.Zero);
 		}
-		
-		
-		public static SecStatusCode FindInternetPassword(
+
+
+		public static SecStatusCode FindInternetPassword (
 			string serverName,
 			string accountName,
-			out byte[]? password,
+			out byte []? password,
 			SecProtocol protocolType = SecProtocol.Http,
 			short port = 0,
 			string? path = null,
@@ -444,36 +532,36 @@ namespace Security {
 			string? securityDomain = null)
 		{
 			password = null;
-			
-			byte[]? serverBytes = null;
-			byte[]? securityDomainBytes = null;
-			byte[]? accountNameBytes = null;
-			byte[]? pathBytes = null;
+
+			byte []? serverBytes = null;
+			byte []? securityDomainBytes = null;
+			byte []? accountNameBytes = null;
+			byte []? pathBytes = null;
 
 			IntPtr passwordPtr = IntPtr.Zero;
-			
+
 			try {
 				if (!String.IsNullOrEmpty (serverName))
 					serverBytes = System.Text.Encoding.UTF8.GetBytes (serverName);
-				
+
 				if (!String.IsNullOrEmpty (securityDomain))
 					securityDomainBytes = System.Text.Encoding.UTF8.GetBytes (securityDomain);
-				
+
 				if (!String.IsNullOrEmpty (accountName))
 					accountNameBytes = System.Text.Encoding.UTF8.GetBytes (accountName);
-				
-				if (!String.IsNullOrEmpty(path))
+
+				if (!String.IsNullOrEmpty (path))
 					pathBytes = System.Text.Encoding.UTF8.GetBytes (path);
-				
+
 				int passwordLength = 0;
-				
+
 				SecStatusCode code;
 				unsafe {
 					fixed (byte* serverBytesPtr = serverBytes) {
 						fixed (byte* securityDomainBytesPtr = securityDomainBytes) {
 							fixed (byte* accountNameBytesPtr = accountNameBytes) {
 								fixed (byte* pathBytesPtr = pathBytes) {
-									code = SecKeychainFindInternetPassword(
+									code = SecKeychainFindInternetPassword (
 										IntPtr.Zero,
 										serverBytes?.Length ?? 0,
 										serverBytesPtr,
@@ -484,8 +572,8 @@ namespace Security {
 										pathBytes?.Length ?? 0,
 										pathBytesPtr,
 										port,
-										SecProtocolKeys.FromSecProtocol(protocolType),
-										KeysAuthenticationType.FromSecAuthenticationType(authenticationType),
+										SecProtocolKeys.FromSecProtocol (protocolType),
+										KeysAuthenticationType.FromSecAuthenticationType (authenticationType),
 										&passwordLength,
 										&passwordPtr,
 										IntPtr.Zero);
@@ -494,32 +582,32 @@ namespace Security {
 						}
 					}
 				}
-				
+
 				if (code == SecStatusCode.Success && passwordLength > 0) {
-					password = new byte[passwordLength];
-					Marshal.Copy(passwordPtr, password, 0, passwordLength);
+					password = new byte [passwordLength];
+					Marshal.Copy (passwordPtr, password, 0, passwordLength);
 				}
-				
+
 				return code;
-				
+
 			} finally {
 				if (passwordPtr != IntPtr.Zero)
-					SecKeychainItemFreeContent(IntPtr.Zero, passwordPtr);
+					SecKeychainItemFreeContent (IntPtr.Zero, passwordPtr);
 			}
 		}
 
-		public static SecStatusCode AddGenericPassword (string serviceName, string accountName, byte[] password)
+		public static SecStatusCode AddGenericPassword (string serviceName, string accountName, byte [] password)
 		{
-			byte[]? serviceNameBytes = null;
-			byte[]? accountNameBytes = null;
-			
+			byte []? serviceNameBytes = null;
+			byte []? accountNameBytes = null;
+
 			if (!String.IsNullOrEmpty (serviceName))
 				serviceNameBytes = System.Text.Encoding.UTF8.GetBytes (serviceName);
 
 			if (!String.IsNullOrEmpty (accountName))
 				accountNameBytes = System.Text.Encoding.UTF8.GetBytes (accountName);
 
-			return SecKeychainAddGenericPassword(
+			return SecKeychainAddGenericPassword (
 				IntPtr.Zero,
 				serviceNameBytes?.Length ?? 0,
 				serviceNameBytes,
@@ -531,30 +619,30 @@ namespace Security {
 				);
 		}
 
-		public static SecStatusCode FindGenericPassword (string serviceName, string accountName, out byte[]? password)
+		public static SecStatusCode FindGenericPassword (string serviceName, string accountName, out byte []? password)
 		{
 			password = null;
 
-			byte[]? serviceNameBytes = null;
-			byte[]? accountNameBytes = null;
-			
+			byte []? serviceNameBytes = null;
+			byte []? accountNameBytes = null;
+
 			IntPtr passwordPtr = IntPtr.Zero;
-			
+
 			try {
-				
+
 				if (!String.IsNullOrEmpty (serviceName))
 					serviceNameBytes = System.Text.Encoding.UTF8.GetBytes (serviceName);
-				
+
 				if (!String.IsNullOrEmpty (accountName))
 					accountNameBytes = System.Text.Encoding.UTF8.GetBytes (accountName);
-				
+
 				int passwordLength = 0;
-				
+
 				SecStatusCode code;
 				unsafe {
 					fixed (byte* serviceNameBytesPtr = serviceNameBytes) {
 						fixed (byte* accountNameBytesPtr = accountNameBytes) {
-							code = SecKeychainFindGenericPassword(
+							code = SecKeychainFindGenericPassword (
 								IntPtr.Zero,
 								serviceNameBytes?.Length ?? 0,
 								serviceNameBytesPtr,
@@ -567,17 +655,17 @@ namespace Security {
 						}
 					}
 				}
-				
-				if (code == SecStatusCode.Success && passwordLength > 0){
-					password = new byte[passwordLength];
-					Marshal.Copy(passwordPtr, password, 0, passwordLength);
+
+				if (code == SecStatusCode.Success && passwordLength > 0) {
+					password = new byte [passwordLength];
+					Marshal.Copy (passwordPtr, password, 0, passwordLength);
 				}
-				
+
 				return code;
-				
+
 			} finally {
 				if (passwordPtr != IntPtr.Zero)
-					SecKeychainItemFreeContent(IntPtr.Zero, passwordPtr);
+					SecKeychainItemFreeContent (IntPtr.Zero, passwordPtr);
 			}
 		}
 #else
@@ -711,8 +799,6 @@ namespace Security {
 		{
 			var kind = SecClass.FromSecKind (secKind);
 #if MONOMAC
-			queryDict = NSMutableDictionary.LowlevelFromObjectAndKey (kind, SecClass.SecClassKey);
-#elif WATCH
 			queryDict = NSMutableDictionary.LowlevelFromObjectAndKey (kind, SecClass.SecClassKey);
 #else
 			// Apple changed/fixed this in iOS7 (not the only change, see comments above)
@@ -852,6 +938,9 @@ namespace Security {
 		//
 		// Attributes
 		//
+		/// <summary>When should the keychain information be accessed.</summary>
+		///         <value />
+		///         <remarks>Applications should use the most restrictive possible value for this property.</remarks>
 		public SecAccessible Accessible {
 			get {
 				return KeysAccessible.ToSecAccessible (Fetch (SecAttributeKey.Accessible));
@@ -862,6 +951,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool Synchronizable {
 			get {
 				return FetchBool (SecAttributeKey.Synchronizable, false);
@@ -871,6 +963,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool SynchronizableAny {
 			get {
 				return FetchBool (SecAttributeKey.SynchronizableAny, false);
@@ -882,6 +977,9 @@ namespace Security {
 
 #if !MONOMAC
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -897,6 +995,9 @@ namespace Security {
 		}
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
@@ -913,6 +1014,9 @@ namespace Security {
 		}
 #endif
 
+		/// <summary>Creation date for this item.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public NSDate? CreationDate {
 			get {
 				return (NSDate?) FetchObject (SecAttributeKey.CreationDate);
@@ -925,6 +1029,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDate? ModificationDate {
 			get {
 				return (NSDate?) FetchObject (SecAttributeKey.ModificationDate);
@@ -937,6 +1044,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>User visible description of this item.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public string? Description {
 			get {
 				return FetchString (SecAttributeKey.Description);
@@ -947,6 +1057,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>Used editable comment for this record.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public string? Comment {
 			get {
 				return FetchString (SecAttributeKey.Comment);
@@ -957,6 +1070,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>Creator key, a 32-bit value</summary>
+		///         <value />
+		///         <remarks>A 32 bit value used to flag the entry with the creator key.</remarks>
 		public int Creator {
 			get {
 				return FetchInt (SecAttributeKey.Creator);
@@ -967,6 +1083,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>Item's type.   32-bit value.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public int CreatorType {
 			get {
 				return FetchInt (SecAttributeKey.Type);
@@ -977,6 +1096,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>User visible label for this item.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public string? Label {
 			get {
 				return FetchString (SecAttributeKeys.LabelKey.Handle);
@@ -987,6 +1109,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>If set, the item is not displayed to the user.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public bool Invisible {
 			get {
 				return Fetch (SecAttributeKey.IsInvisible) == CFBoolean.TrueHandle;
@@ -997,6 +1122,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>Whether there is a valid password associated.</summary>
+		///         <value />
+		///         <remarks>You can set this flag if you want to force the user to enter the password every time he needs to use the item.</remarks>
 		public bool IsNegative {
 			get {
 				return Fetch (SecAttributeKey.IsNegative) == CFBoolean.TrueHandle;
@@ -1007,6 +1135,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>Accout name.</summary>
+		///         <value />
+		///         <remarks>Used by GenericPassword and InternetPassword kinds.</remarks>
 		public string? Account {
 			get {
 				return FetchString (SecAttributeKey.Account);
@@ -1017,6 +1148,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>Service associated with an InternetPassword.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public string? Service {
 			get {
 				return FetchString (SecAttributeKey.Service);
@@ -1028,6 +1162,11 @@ namespace Security {
 		}
 
 #if !MONOMAC
+		/// <summary>User facing description of the kind of authentication that the application is trying to perform</summary>
+		///         <value>
+		///           <para />
+		///         </value>
+		///         <remarks>Set this value to a string that will be displayed to the user when the authentication takes place for the item to give the user some context for the request.</remarks>
 		public string? UseOperationPrompt {
 			get {
 				return FetchString (SecItem.UseOperationPrompt);
@@ -1038,6 +1177,11 @@ namespace Security {
 		}
 
 #if NET
+		/// <summary>Developers should not use this deprecated property. Developers should use AuthenticationUI property</summary>
+		///         <value>
+		///           <para />
+		///         </value>
+		///         <remarks>Setting this value will return an error condition if the item requires a user interface to authenticate.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
@@ -1056,6 +1200,9 @@ namespace Security {
 		}
 #endif
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -1071,8 +1218,11 @@ namespace Security {
 			}
 		}
 
-#if !WATCH && !TVOS
+#if !TVOS
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -1086,6 +1236,7 @@ namespace Security {
 				if (value is null)
 					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
 				SetValue (value.Handle, SecItem.UseAuthenticationContext);
+				GC.KeepAlive (value);
 			}
 		}
 #endif
@@ -1093,6 +1244,9 @@ namespace Security {
 		// Must store the _secAccessControl here, since we have no way of inspecting its values if
 		// it is ever returned from a dictionary, so return what we cached.
 		SecAccessControl? _secAccessControl;
+		/// <summary>Access control for the item.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SecAccessControl? AccessControl {
 			get {
 				return _secAccessControl;
@@ -1102,9 +1256,13 @@ namespace Security {
 					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
 				_secAccessControl = value;
 				SetValue (value.Handle, SecAttributeKeys.AccessControlKey.Handle);
+				GC.KeepAlive (value);
 			}
 		}
 
+		/// <summary>Generic password's NSData storage.</summary>
+		///         <value>Items of kind GenericPassword use this field to store item-specific data.</value>
+		///         <remarks>To be added.</remarks>
 		public NSData? Generic {
 			get {
 				return Fetch<NSData> (SecAttributeKey.Generic);
@@ -1117,6 +1275,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>Security domain for InternetPassword items.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? SecurityDomain {
 			get {
 				return FetchString (SecAttributeKey.SecurityDomain);
@@ -1127,6 +1288,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>Server component for an InternetPassword</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Server {
 			get {
 				return FetchString (SecAttributeKey.Server);
@@ -1137,6 +1301,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>Protocol component of an InternetPassword.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public SecProtocol Protocol {
 			get {
 				return SecProtocolKeys.ToSecProtocol (Fetch (SecAttributeKey.Protocol));
@@ -1147,6 +1314,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>The authentication type.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public SecAuthenticationType AuthenticationType {
 			get {
 				var at = Fetch (SecAttributeKey.AuthenticationType);
@@ -1161,6 +1331,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>Port component of an InternetPassword</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public int Port {
 			get {
 				return FetchInt (SecAttributeKey.Port);
@@ -1171,6 +1344,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>Path component of an InternetPassword.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public string? Path {
 			get {
 				return FetchString (SecAttributeKey.Path);
@@ -1182,6 +1358,9 @@ namespace Security {
 		}
 
 		// read only
+		/// <summary>X.500 Subject name stored as an NSData.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public string? Subject {
 			get {
 				return FetchString (SecAttributeKey.Subject);
@@ -1189,6 +1368,9 @@ namespace Security {
 		}
 
 		// read only
+		/// <summary>X.500 Issuer certificate name as an NSData block.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public NSData? Issuer {
 			get {
 				return Fetch<NSData> (SecAttributeKey.Issuer);
@@ -1196,6 +1378,9 @@ namespace Security {
 		}
 
 		// read only
+		/// <summary>Serial number for the certificate.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public NSData? SerialNumber {
 			get {
 				return Fetch<NSData> (SecAttributeKey.SerialNumber);
@@ -1203,6 +1388,9 @@ namespace Security {
 		}
 
 		// read only
+		/// <summary>SubjectKeyID of the certificate.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public NSData? SubjectKeyID {
 			get {
 				return Fetch<NSData> (SecAttributeKey.SubjectKeyID);
@@ -1210,6 +1398,9 @@ namespace Security {
 		}
 
 		// read only
+		/// <summary>Public key hash</summary>
+		///         <value />
+		///         <remarks>The public key hash, used by certificates.</remarks>
 		public NSData? PublicKeyHash {
 			get {
 				return Fetch<NSData> (SecAttributeKey.PublicKeyHash);
@@ -1217,6 +1408,9 @@ namespace Security {
 		}
 
 		// read only
+		/// <summary>A certificate type.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public NSNumber? CertificateType {
 			get {
 				return Fetch<NSNumber> (SecAttributeKey.CertificateType);
@@ -1224,12 +1418,18 @@ namespace Security {
 		}
 
 		// read only
+		/// <summary>The encoding used for the certificate.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public NSNumber? CertificateEncoding {
 			get {
 				return Fetch<NSNumber> (SecAttributeKey.CertificateEncoding);
 			}
 		}
 
+		/// <summary>The key class.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public SecKeyClass KeyClass {
 			get {
 				var k = Fetch (SecAttributeKey.KeyClass);
@@ -1246,6 +1446,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>An application-level tag, used to identify this key.</summary>
+		///         <value />
+		///         <remarks>Intended for your program to use as an identifier that you can lookup.</remarks>
 		public string? ApplicationLabel {
 			get {
 				return FetchString (SecAttributeKey.ApplicationLabel);
@@ -1256,6 +1459,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsPermanent {
 			get {
 				return Fetch (SecAttributeKeys.IsPermanentKey.Handle) == CFBoolean.TrueHandle;
@@ -1266,6 +1472,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsSensitive {
 			get {
 				return Fetch (SecAttributeKey.IsSensitive) == CFBoolean.TrueHandle;
@@ -1276,6 +1485,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsExtractable {
 			get {
 				return Fetch (SecAttributeKey.IsExtractable) == CFBoolean.TrueHandle;
@@ -1286,6 +1498,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>To store your application data.</summary>
+		///         <value />
+		///         <remarks>You can use this to store application-level binary data in the form of an NSData source.</remarks>
 		public NSData? ApplicationTag {
 			get {
 				return Fetch<NSData> (SecAttributeKeys.ApplicationTagKey.Handle);
@@ -1298,6 +1513,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>The key type.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public SecKeyType KeyType {
 			get {
 				var k = Fetch (SecKeyGenerationAttributeKeys.KeyTypeKey.Handle);
@@ -1315,6 +1533,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>Bitsize for the key, contrast this with EffectiveKeySize.</summary>
+		///         <value />
+		///         <remarks>This determines the number of bits in the key.   This can contain padding, contrast this with EffectiveKeySize.</remarks>
 		public int KeySizeInBits {
 			get {
 				return FetchInt (SecKeyGenerationAttributeKeys.KeySizeInBitsKey.Handle);
@@ -1325,6 +1546,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>Number of effective bits on the key.</summary>
+		///         <value />
+		///         <remarks>The number of effective bits on the key.   Contrast this with the KeySize that might be larger, but contains padding.</remarks>
 		public int EffectiveKeySize {
 			get {
 				return FetchInt (SecAttributeKeys.EffectiveKeySizeKey.Handle);
@@ -1335,6 +1559,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>Whether this cryptographic key can be used to encrypt data.</summary>
+		///         <value />
+		///         <remarks>For keys, this determines whether the key can be used to encrypt data.</remarks>
 		public bool CanEncrypt {
 			get {
 				return Fetch (SecAttributeKeys.CanEncryptKey.Handle) == CFBoolean.TrueHandle;
@@ -1345,6 +1572,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>Whether this cryptographic key can be used to decrypt data.</summary>
+		///         <value />
+		///         <remarks>For keys, whether this can be used to decrypt data.</remarks>
 		public bool CanDecrypt {
 			get {
 				return Fetch (SecAttributeKeys.CanDecryptKey.Handle) == CFBoolean.TrueHandle;
@@ -1355,6 +1585,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>Whether this key can be used to derive another key.</summary>
+		///         <value />
+		///         <remarks>For keys, whether this can be used to derive another key.</remarks>
 		public bool CanDerive {
 			get {
 				return Fetch (SecAttributeKeys.CanDeriveKey.Handle) == CFBoolean.TrueHandle;
@@ -1365,6 +1598,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>Whether this key can be used to sign data.</summary>
+		///         <value />
+		///         <remarks>For keys, whether this can be used to sign.</remarks>
 		public bool CanSign {
 			get {
 				return Fetch (SecAttributeKeys.CanSignKey.Handle) == CFBoolean.TrueHandle;
@@ -1375,6 +1611,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>Whether this key can be used to verify a digital signature.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public bool CanVerify {
 			get {
 				return Fetch (SecAttributeKeys.CanVerifyKey.Handle) == CFBoolean.TrueHandle;
@@ -1385,6 +1624,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>Whether this key can be used to wrap another key.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public bool CanWrap {
 			get {
 				return Fetch (SecKeyGenerationAttributeKeys.CanWrapKey.Handle) == CFBoolean.TrueHandle;
@@ -1395,6 +1637,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>Whether this key can be used to unwrap another key.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public bool CanUnwrap {
 			get {
 				return Fetch (SecAttributeKeys.CanUnwrapKey.Handle) == CFBoolean.TrueHandle;
@@ -1405,6 +1650,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>Access group name. </summary>
+		///         <value />
+		///         <remarks>Access groups are used to share information between applications that share the same access group.    Applications that wish to do this, need to register the access group on their keychain-access-group entitlement.   This value must be set when the item is added to the keychain for the second application to be able to look it up.</remarks>
 		public string? AccessGroup {
 			get {
 				return FetchString (SecAttributeKey.AccessGroup);
@@ -1416,6 +1664,9 @@ namespace Security {
 		}
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
@@ -1438,7 +1689,6 @@ namespace Security {
 #else
 		[iOS (13, 0)]
 		[TV (13, 0)]
-		[Watch (6, 0)]
 #endif
 		public bool UseDataProtectionKeychain {
 			get {
@@ -1453,6 +1703,9 @@ namespace Security {
 		// Matches
 		//
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SecPolicy? MatchPolicy {
 			get {
 				var pol = Fetch (SecItem.MatchPolicy);
@@ -1463,9 +1716,13 @@ namespace Security {
 				if (value is null)
 					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
 				SetValue (value.Handle, SecItem.MatchPolicy);
+				GC.KeepAlive (value);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SecKeyChain? []? MatchItemList {
 			get {
 				return NSArray.ArrayFromHandle<SecKeyChain> (Fetch (SecItem.MatchItemList));
@@ -1479,6 +1736,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSData? []? MatchIssuers {
 			get {
 				return NSArray.ArrayFromHandle<NSData> (Fetch (SecItem.MatchIssuers));
@@ -1491,6 +1751,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? MatchEmailAddressIfPresent {
 			get {
 				return FetchString (SecItem.MatchEmailAddressIfPresent);
@@ -1501,6 +1764,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? MatchSubjectContains {
 			get {
 				return FetchString (SecItem.MatchSubjectContains);
@@ -1511,6 +1777,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>Whether matches should be case insensitive</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public bool MatchCaseInsensitive {
 			get {
 				return Fetch (SecItem.MatchCaseInsensitive) == CFBoolean.TrueHandle;
@@ -1521,6 +1790,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool MatchTrustedOnly {
 			get {
 				return Fetch (SecItem.MatchTrustedOnly) == CFBoolean.TrueHandle;
@@ -1531,6 +1803,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDate? MatchValidOnDate {
 			get {
 				return Runtime.GetNSObject<NSDate> (Fetch (SecItem.MatchValidOnDate));
@@ -1543,6 +1818,9 @@ namespace Security {
 			}
 		}
 
+		/// <summary>The value data to store.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSData? ValueData {
 			get {
 				return Fetch<NSData> (SecItem.ValueData);
@@ -1564,6 +1842,7 @@ namespace Security {
 		public void SetValueRef (INativeObject value)
 		{
 			SetValue (value.GetHandle (), SecItem.ValueRef);
+			GC.KeepAlive (value);
 		}
 
 		public void SetCertificate (SecCertificate cert) => SetValueRef (cert);
@@ -1856,6 +2135,9 @@ namespace Security {
 		SecAccessControl? _secAccessControl;
 
 #if NET
+		/// <summary>Gets or sets the access control for the new key.</summary>
+		///         <value>The access control for the new key.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -1875,6 +2157,9 @@ namespace Security {
 	}
 
 	public partial class SecKeyGenerationParameters : DictionaryContainer {
+		/// <summary>Gets or sets the type of key to create.</summary>
+		///         <value>The type of key to create.</value>
+		///         <remarks>To be added.</remarks>
 		public SecKeyType KeyType {
 			get {
 				var type = GetNSStringValue (SecKeyGenerationAttributeKeys.KeyTypeKey);
@@ -1895,6 +2180,9 @@ namespace Security {
 		SecAccessControl? _secAccessControl;
 
 #if NET
+		/// <summary>Gets or sets the access control for the new key.</summary>
+		///         <value>The access control for the new key.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -1914,6 +2202,9 @@ namespace Security {
 		}
 
 #if NET
+		/// <summary>Gets or sets the token ID.</summary>
+		///         <value>The token ID.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]

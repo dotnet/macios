@@ -7,7 +7,7 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__ && !__MACOS__
+#if !__MACOS__
 
 using System;
 using System.Collections.Generic;
@@ -53,4 +53,4 @@ namespace DontLink.UIKit {
 	}
 }
 
-#endif // !__WATCHOS__
+#endif // !__MACOS__

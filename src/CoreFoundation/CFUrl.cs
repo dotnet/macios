@@ -35,27 +35,24 @@ using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreFoundation {
 
 	// CFURLPathStyle -> CFIndex -> CFURL.h
 	[Native]
 	public enum CFUrlPathStyle : long {
+		/// <summary>As a POSIX filename.   Path elements are separated with a slash character.</summary>
 		POSIX = 0,
+		/// <summary>As an Apple HFS filename.   Path elements are separated with a colon.</summary>
 		HFS = 1,
-		Windows = 2
+		/// <summary>Window style filename.</summary>
+		Windows = 2,
 	};
 
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CFURL.h
 	public class CFUrl : NativeObject {
 #if !COREBUILD
@@ -71,6 +68,10 @@ namespace CoreFoundation {
 		{
 		}
 
+		/// <param name="filename">To be added.</param>
+		///         <summary>Creates a CFUrl from a pathname.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		static public CFUrl? FromFile (string filename)
 		{
 			if (filename is null)
@@ -91,6 +92,11 @@ namespace CoreFoundation {
 			/* CFStringRef */ IntPtr URLString,
 			/* CFStringRef */ IntPtr baseURL);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="baseurl">To be added.</param>
+		///         <summary>Creates a CFUrl from a string and a base URL. </summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		static public CFUrl? FromUrlString (string url, CFUrl? baseurl)
 		{
 			if (url is null)
@@ -106,6 +112,7 @@ namespace CoreFoundation {
 		internal static CFUrl? FromStringHandle (IntPtr cfstringHandle, CFUrl? baseurl)
 		{
 			var handle = CFURLCreateWithString (IntPtr.Zero, cfstringHandle, baseurl.GetHandle ());
+			GC.KeepAlive (baseurl);
 			if (handle == IntPtr.Zero)
 				return null;
 			return new CFUrl (handle, true);
@@ -114,6 +121,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFStringRef */ IntPtr CFURLGetString (/* CFURLRef */ IntPtr anURL);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string? ToString ()
 		{
 			return CFString.FromHandle (CFURLGetString (Handle));
@@ -123,6 +133,9 @@ namespace CoreFoundation {
 		extern static /* CFStringRef */ IntPtr CFURLCopyFileSystemPath (/* CFURLRef */ IntPtr anURL,
 			/* CFURLPathStyle */ nint style);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? FileSystemPath {
 			get {
 				return GetFileSystemPath (Handle);
@@ -134,27 +147,36 @@ namespace CoreFoundation {
 			return CFString.FromHandle (CFURLCopyFileSystemPath (hcfurl, 0), true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* Boolean */ byte CFURLIsFileReferenceURL (/* CFURLRef */IntPtr url);
 
-#if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public bool IsFileReference {
 			get {
 				return CFURLIsFileReferenceURL (Handle) != 0;
 			}
 		}
 
+		/// <summary>Type identifier for the CoreFoundation.CFUrl type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
+		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[bool isCFUrl = (CFType.GetTypeID (foo.Handle) == CFUrl.GetTypeID ());]]></code>
+		///           </example>
+		///         </remarks>
 		[DllImport (Constants.CoreFoundationLibrary, EntryPoint = "CFURLGetTypeID")]
 		public extern static /* CFTypeID */ nint GetTypeID ();
 #endif // !COREBUILD

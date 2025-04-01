@@ -21,18 +21,18 @@ using Foundation;
 using CoreFoundation;
 using System.Collections.Generic;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreFoundation {
 
 	[Native] // CFIndex
 	public enum CFNotificationSuspensionBehavior : long {
+		/// <summary>The notifications will be dropped while the application is in the background.</summary>
 		Drop = 1,
+		/// <summary>Only the last one of the notifications posted while the application was in the background is posted.</summary>
 		Coalesce = 2,
+		/// <summary>Notifications are kept around in a queue, and they are all delivered serially when the application returns to the foreground.   Some notifications might be dropped if the queue overflows.</summary>
 		Hold = 3,
-		DeliverImmediately = 4
+		/// <summary>The notifications are delivered immediately.  Any pending notifications that might be queued are delivered first.</summary>
+		DeliverImmediately = 4,
 	}
 
 	//
@@ -70,6 +70,24 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static CFNotificationCenterRef CFNotificationCenterGetDarwinNotifyCenter ();
 
+		/// <summary>Returns the operating system global notification center.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <para>
+		/// 	    This is an operating system global notification center,
+		/// 	    and can be used to send messages between applications
+		/// 	    running on the same machine.  There is no notion of user
+		/// 	    session in the Darwin notification center, so all the
+		/// 	    notifications are global.
+		///
+		/// 	  </para>
+		///           <para>
+		/// 	    The main thread loop must be running in one of the common
+		/// 	    modes (RunLoopDefault for example) for these notifications
+		/// 	    to be delivered.
+		/// 	  </para>
+		///         </remarks>
 		static public CFNotificationCenter Darwin {
 			get {
 				return darwinnc ?? (darwinnc = new CFNotificationCenter (CFNotificationCenterGetDarwinNotifyCenter (), false));
@@ -82,6 +100,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static CFNotificationCenterRef CFNotificationCenterGetDistributedCenter ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		static public CFNotificationCenter Distributed {
 			get {
 				return distributednc ?? (distributednc = new CFNotificationCenter (CFNotificationCenterGetDistributedCenter (), false));
@@ -92,6 +113,12 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static CFNotificationCenterRef CFNotificationCenterGetLocalCenter ();
 
+		/// <summary>Returns the application local notification center.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		/// 	  This is an application local notification center.   Can be used to post notifications inside an application.
+		/// 	</remarks>
 		static public CFNotificationCenter Local {
 			get {
 				return localnc ?? (localnc = new CFNotificationCenter (CFNotificationCenterGetLocalCenter (), false));
@@ -100,8 +127,9 @@ namespace CoreFoundation {
 
 		Dictionary<string, List<CFNotificationObserverToken>> listeners = new Dictionary<string, List<CFNotificationObserverToken>> ();
 		const string NullNotificationName = "NullNotificationName";
+		/// <include file="../../docs/api/CoreFoundation/CFNotificationCenter.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.CFNotificationCenter.AddObserver(System.String,ObjCRuntime.INativeObject,System.Action{System.String,Foundation.NSDictionary},CoreFoundation.CFNotificationSuspensionBehavior)']/*" />
 		public CFNotificationObserverToken AddObserver (string name, INativeObject objectToObserve, Action<string, NSDictionary?> notificationHandler,
-								CFNotificationSuspensionBehavior suspensionBehavior = CFNotificationSuspensionBehavior.DeliverImmediately)
+									CFNotificationSuspensionBehavior suspensionBehavior = CFNotificationSuspensionBehavior.DeliverImmediately)
 		{
 			if (darwinnc is not null && darwinnc.Handle == Handle && name is null) {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name), "When using the Darwin Notification Center, the value passed must not be null");
@@ -113,8 +141,9 @@ namespace CoreFoundation {
 				centerHandle = Handle,
 				nameHandle = strHandle,
 				observedObject = objectToObserve.GetHandle (),
-				listener = notificationHandler
+				listener = notificationHandler,
 			};
+			GC.KeepAlive (objectToObserve);
 
 			//
 			// To allow callbacks to add observers, we duplicate the list of listeners on AddObserver
@@ -126,7 +155,6 @@ namespace CoreFoundation {
 			lock (listeners) {
 				if (!listeners.TryGetValue (name, out listenersForName)) {
 					listenersForName = new List<CFNotificationObserverToken> (1);
-#if NET
 					unsafe {
 						CFNotificationCenterAddObserver (center: Handle,
 									 observer: Handle,
@@ -135,14 +163,6 @@ namespace CoreFoundation {
 									 obj: token.observedObject,
 									 suspensionBehavior: (IntPtr) suspensionBehavior);
 					}
-#else
-					CFNotificationCenterAddObserver (center: Handle,
-									 observer: Handle,
-									 callback: NotificationCallback,
-									 name: strHandle,
-									 obj: token.observedObject,
-									 suspensionBehavior: (IntPtr) suspensionBehavior);
-#endif
 				} else
 					listenersForName = new List<CFNotificationObserverToken> (listenersForName);
 				listenersForName.Add (token);
@@ -174,15 +194,7 @@ namespace CoreFoundation {
 			}
 		}
 
-#if !NET
-		delegate void CFNotificationCallback (CFNotificationCenterRef center, IntPtr observer, IntPtr name, IntPtr obj, IntPtr userInfo);
-#endif
-
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallback (typeof (CFNotificationCallback))]
-#endif
 		static void NotificationCallback (CFNotificationCenterRef centerPtr, IntPtr observer, IntPtr name, IntPtr obj, IntPtr userInfo)
 		{
 			CFNotificationCenter center;
@@ -201,6 +213,13 @@ namespace CoreFoundation {
 			center.notification (CFString.FromHandle (name), Runtime.GetNSObject<NSDictionary> (userInfo));
 		}
 
+		/// <param name="notification">To be added.</param>
+		///         <param name="objectToObserve">To be added.</param>
+		///         <param name="userInfo">To be added.</param>
+		///         <param name="deliverImmediately">To be added.</param>
+		///         <param name="postOnAllSessions">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void PostNotification (string notification, INativeObject objectToObserve, NSDictionary? userInfo = null, bool deliverImmediately = false, bool postOnAllSessions = false)
 		{
 			// The name of the notification to post.This value must not be NULL.
@@ -214,9 +233,15 @@ namespace CoreFoundation {
 				obj: objectToObserve.GetHandle (),
 				userInfo: userInfo.GetHandle (),
 				options: (deliverImmediately ? 1 : 0) | (postOnAllSessions ? 2 : 0));
+			GC.KeepAlive (objectToObserve);
+			GC.KeepAlive (userInfo);
 			CFString.ReleaseNative (strHandle);
 		}
 
+		/// <param name="token">Token returned by <see cref="M:CoreFoundation.CFNotificationCenter.AddObserver(System.String,ObjCRuntime.INativeObject,System.Action{System.String,Foundation.NSDictionary},CoreFoundation.CFNotificationSuspensionBehavior)" />.</param>
+		///         <summary>Removes the specified observer.</summary>
+		///         <remarks>
+		///         </remarks>
 		public void RemoveObserver (CFNotificationObserverToken token)
 		{
 			if (token is null)
@@ -246,6 +271,8 @@ namespace CoreFoundation {
 			token.nameHandle = IntPtr.Zero;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void RemoveEveryObserver ()
 		{
 			lock (listeners) {
@@ -262,17 +289,10 @@ namespace CoreFoundation {
 		}
 
 
-#if NET
 		[DllImport (Constants.CoreFoundationLibrary)]
 		static extern unsafe void CFNotificationCenterAddObserver (CFNotificationCenterRef center, IntPtr observer,
 									   delegate* unmanaged<CFNotificationCenterRef, IntPtr, IntPtr, IntPtr, IntPtr, void> callback, IntPtr name, IntPtr obj,
 									   /* CFNotificationSuspensionBehavior */ IntPtr suspensionBehavior);
-#else
-		[DllImport (Constants.CoreFoundationLibrary)]
-		static extern unsafe void CFNotificationCenterAddObserver (CFNotificationCenterRef center, IntPtr observer,
-									   CFNotificationCallback callback, IntPtr name, IntPtr obj,
-									   /* CFNotificationSuspensionBehavior */ IntPtr suspensionBehavior);
-#endif
 
 		[DllImport (Constants.CoreFoundationLibrary)]
 		static extern unsafe void CFNotificationCenterPostNotificationWithOptions (CFNotificationCenterRef center, IntPtr name, IntPtr obj, IntPtr userInfo, int options);

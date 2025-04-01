@@ -13,7 +13,6 @@ using Foundation;
 using ObjCRuntime;
 
 #nullable enable
-#if !WATCH
 
 namespace UIKit {
 
@@ -58,7 +57,7 @@ namespace UIKit {
 			var descriptor = (BlockLiteral*) block;
 			var del = (UIConfigurationColorTransformerHandler) (descriptor->Target);
 			var retval = del is null ? null : del (Runtime.GetNSObject<UIColor> (color)!);
-			return retval.GetHandle ();
+			return Runtime.RetainAndAutoreleaseNSObject (retval);
 		}
 	} /* class SDUIConfigurationColorTransformerHandler */
 
@@ -84,8 +83,9 @@ namespace UIKit {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		UIColor Invoke (UIColor color)
 		{
-			return Runtime.GetNSObject<UIColor> (invoker (BlockPointer, color.GetHandle ()))!;
+			var result = Runtime.GetNSObject<UIColor> (invoker (BlockPointer, color.GetHandle ()))!;
+			GC.KeepAlive (color);
+			return result;
 		}
 	} /* class NIDUIConfigurationColorTransformerHandler */
 }
-#endif // WATCH

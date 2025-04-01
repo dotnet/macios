@@ -37,7 +37,6 @@ namespace Network {
 #else
 	[TV (13, 0)]
 	[iOS (13, 0)]
-	[Watch (6, 0)]
 #endif
 	public class NWEstablishmentReport : NativeObject {
 
@@ -99,7 +98,7 @@ namespace Network {
 			unsafe {
 #if NET
 				delegate* unmanaged<IntPtr, NWReportResolutionSource, nuint, int, nw_endpoint_t, nw_endpoint_t, void> trampoline = &TrampolineResolutionEnumeratorHandler;
-				using var block = new BlockLiteral (trampoline, handler, typeof (NWEstablishmentReport),nameof (TrampolineResolutionEnumeratorHandler));
+				using var block = new BlockLiteral (trampoline, handler, typeof (NWEstablishmentReport), nameof (TrampolineResolutionEnumeratorHandler));
 #else
 				using var block = new BlockLiteral ();
 				block.SetupBlockUnsafe (static_ResolutionEnumeratorHandler, handler);
@@ -162,7 +161,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
@@ -193,7 +191,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]

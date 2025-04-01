@@ -35,6 +35,9 @@ parameters:
   - name: macOSName
     type: string
 
+  - name: use1ES
+    type: boolean
+
 jobs:
   # This job performs the build of the nuget pkgs and the framework pkgs. There are two interesting dependencies in this job:
   - job: build
@@ -46,12 +49,6 @@ jobs:
       INCLUDE_DOTNET_MACCATALYST: $[ stageDependencies.configure_build.configure.outputs['configure_platforms.INCLUDE_DOTNET_MACCATALYST'] ]
       INCLUDE_DOTNET_MACOS: $[ stageDependencies.configure_build.configure.outputs['configure_platforms.INCLUDE_DOTNET_MACOS'] ]
       INCLUDE_DOTNET_TVOS: $[ stageDependencies.configure_build.configure.outputs['configure_platforms.INCLUDE_DOTNET_TVOS'] ]
-      ${{ if eq(parameters.pool, 'automatic') }}:
-        AgentPoolComputed: $[ stageDependencies.configure_build.AgentPoolSelector.outputs['setAgentPool.AgentPoolComputed'] ]
-      ${{ if eq(parameters.pool, 'ci') }}:
-        AgentPoolComputed: $(CIBuildPool)
-      ${{ if eq(parameters.pool, 'pr') }}:
-        AgentPoolComputed: $(PRBuildPool)
       # add all the variables that have been parsed by the configuration step. Could we have a less verbose way??
       #
       # build-package
@@ -71,7 +68,7 @@ jobs:
       RUN_MAC_TESTS: $[ stageDependencies.configure_build.configure.outputs['decisions.RUN_MAC_TESTS'] ]
     pool:
       os: macOS
-      name: $(AgentPoolComputed)
+      name: ${{ parameters.pool }}
       demands:
         - Agent.OS -equals Darwin
         - macOS.Name -equals ${{ parameters.macOSName }}
@@ -87,3 +84,4 @@ jobs:
           keyringPass: ${{ parameters.keyringPass }}
           gitHubToken: ${{ parameters.gitHubToken }}
           xqaCertPass: ${{ parameters.xqaCertPass }}
+          use1ES: ${{ parameters.use1ES }}

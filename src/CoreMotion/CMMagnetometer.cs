@@ -21,10 +21,19 @@ namespace CoreMotion {
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct CMMagneticField {
+		/// <summary>X component of the magnetic field, measured in microteslas.</summary>
+		///         <remarks>To be added.</remarks>
 		public double X;
+		/// <summary>Y component of the magnetic field, measured in microteslas.</summary>
+		///         <remarks>To be added.</remarks>
 		public double Y;
+		/// <summary>Z component of the magnetic field, measured in microteslas.</summary>
+		///         <remarks>To be added.</remarks>
 		public double Z;
 
+		/// <summary>String representation of the magnetometer reading.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return string.Format ("({0},{1},{2})", X, Y, Z);

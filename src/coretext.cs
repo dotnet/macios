@@ -18,15 +18,27 @@ namespace CoreText {
 	/// <summary>A class whose static properties can be used as keys for the <see cref="T:Foundation.NSDictionary" /> used by <see cref="T:CoreText.CTFontFeatures" />.</summary>
 	[Static]
 	interface CTFontFeatureKey {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureTypeIdentifierKey")]
 		NSString Identifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureTypeNameKey")]
 		NSString Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureTypeExclusiveKey")]
 		NSString Exclusive { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureTypeSelectorsKey")]
 		NSString Selectors { get; }
 	}
@@ -34,24 +46,36 @@ namespace CoreText {
 	/// <summary>A class whose static properties can be used as keys for the <see cref="T:Foundation.NSDictionary" /> used by <see cref="T:CoreText.CTFontFeatureSelectors" />.</summary>
 	[Static]
 	interface CTFontFeatureSelectorKey {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureSelectorIdentifierKey")]
 		NSString Identifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureSelectorNameKey")]
 		NSString Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureSelectorDefaultKey")]
 		NSString Default { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontFeatureSelectorSettingKey")]
 		NSString Setting { get; }
 
-		[iOS (13, 0), TV (13, 0), Watch (6, 0)]
+		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCTFontFeatureSampleTextKey")]
 		NSString SampleText { get; }
 
-		[iOS (13, 0), TV (13, 0), Watch (6, 0)]
+		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCTFontFeatureTooltipTextKey")]
 		NSString TooltipText { get; }
@@ -61,21 +85,39 @@ namespace CoreText {
 	[Static]
 	interface CTFontVariationAxisKey {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontVariationAxisIdentifierKey")]
 		NSString Identifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontVariationAxisMinimumValueKey")]
 		NSString MinimumValue { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontVariationAxisMaximumValueKey")]
 		NSString MaximumValue { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontVariationAxisDefaultValueKey")]
 		NSString DefaultValue { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("kCTFontVariationAxisNameKey")]
 		NSString Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCTFontVariationAxisHiddenKey")]
 		NSString Hidden { get; }
@@ -87,23 +129,17 @@ namespace CoreText {
 
 		[Deprecated (PlatformName.iOS, 6, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
+		[Deprecated (PlatformName.MacOSX, 10, 8)]
+		[Deprecated (PlatformName.TvOS, 9, 0)]
 		[Field ("kCTTypesetterOptionDisableBidiProcessing")]
-#if !NET
-		[Internal]
-		NSString _DisableBidiProcessing { get; }
-#else
 		NSString DisableBidiProcessing { get; }
-#endif
 
 		[Field ("kCTTypesetterOptionForcedEmbeddingLevel")]
-#if !NET
-		[Internal]
-		NSString _ForceEmbeddingLevel { get; }
-#else
 		NSString ForceEmbeddingLevel { get; }
-#endif
 
-		[Watch (5, 0)]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("kCTTypesetterOptionAllowUnboundedLayout")]
 		NSString AllowUnboundedLayout { get; }
@@ -114,20 +150,20 @@ namespace CoreText {
 		[Field ("kCTFontManagerErrorFontURLsKey")]
 		NSString FontUrlsKey { get; }
 
-		[NoWatch, NoTV, NoMac, iOS (13, 0)]
+		[NoTV, NoMac, iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCTFontManagerErrorFontDescriptorsKey")]
 		NSString FontDescriptorsKey { get; }
 
-		[NoWatch, NoTV, NoMac, iOS (13, 0)]
+		[NoTV, NoMac, iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCTFontManagerErrorFontAssetNameKey")]
 		NSString FontAssetNameKey { get; }
 	}
 
-#if NET
 	[Internal]
-	[Static][Partial]
+	[Static]
+	[Partial]
 	interface CTBaselineClassID {
 		[Field ("kCTBaselineClassRoman")]
 		NSString Roman { get; }
@@ -149,7 +185,8 @@ namespace CoreText {
 	}
 
 	[Internal]
-	[Static][Partial]
+	[Static]
+	[Partial]
 	interface CTBaselineFontID {
 		[Field ("kCTBaselineReferenceFont")]
 		NSString Reference { get; }
@@ -227,7 +264,7 @@ namespace CoreText {
 		[Field ("kCTFontEnabledAttribute")]
 		NSString Enabled { get; }
 
-		[iOS (13, 0), NoTV, NoWatch, MacCatalyst (13, 1), NoMac]
+		[iOS (13, 0), NoTV, MacCatalyst (13, 1), NoMac]
 		[Field ("kCTFontRegistrationUserInfoAttribute")]
 		NSString RegistrationUserInfo { get; }
 	}
@@ -275,7 +312,8 @@ namespace CoreText {
 	}
 
 	[Internal]
-	[Static][Partial]
+	[Static]
+	[Partial]
 	interface CTFontNameKeyId {
 		[Field ("kCTFontCopyrightNameKey")]
 		NSString Copyright { get; }
@@ -338,7 +376,6 @@ namespace CoreText {
 		[Field ("kCTFontCollectionRemoveDuplicatesOption")]
 		NSString RemoveDuplicates { get; }
 	}
-#endif
 
 	[Internal]
 	[Static]
@@ -384,7 +421,6 @@ namespace CoreText {
 	[Static]
 	[Partial]
 	interface CTStringAttributeKey {
-#if NET
 		[Field ("kCTFontAttributeName")]
 		NSString Font { get; }
 
@@ -454,18 +490,17 @@ namespace CoreText {
 		[Field ("kCTRubyAnnotationAttributeName")]
 		NSString RubyAnnotation { get; }
 
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("kCTAdaptiveImageProviderAttributeName")]
 		NSString AdaptiveImageProvider { get; }
-#endif
 
-		[Watch (6, 0), TV (13, 0), iOS (13, 0)]
+		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCTTrackingAttributeName")]
 		NSString TrackingAttributeName { get; }
 	}
 
-	[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface CTAdaptiveImageProviding {
 		[Abstract]

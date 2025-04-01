@@ -7,7 +7,7 @@
 // Copyright 2012,2015 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 
 using System;
 using Foundation;
@@ -30,4 +30,4 @@ namespace MonoTouchFixtures.AdSupport {
 	}
 }
 
-#endif // !__WATCHOS__
+#endif // !MONOMAC

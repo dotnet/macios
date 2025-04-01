@@ -25,63 +25,83 @@ namespace CarPlay {
 	interface NSUnitAngle : NSUnit { }
 
 	/// <summary>Enumerates the styles for a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Car%20Play%20CPAlert&amp;scope=Xamarin" title="T:CarPlay.CPAlert">T:CarPlay.CPAlert</a></format> object's action button.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[Native]
 	enum CPAlertActionStyle : ulong {
+		/// <summary>The default style.</summary>
 		Default = 0,
+		/// <summary>The style used when providing a cancel action for the alert.</summary>
 		Cancel,
+		/// <summary>The style used when the action is destructive, such as deleting data.</summary>
 		Destructive,
 	}
 
 	/// <summary>Enumerates the kinds of <see cref="T:CarPlay.CPBarButton" />.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[Native]
 	enum CPBarButtonType : ulong {
+		/// <summary>The button displays text.</summary>
 		Text,
+		/// <summary>The button displays an image.</summary>
 		Image,
 	}
 
 	/// <summary>Enumerates the directions of panning the navigation map.</summary>
-	[Flags, NoWatch, NoTV, NoMac]
+	[Flags, NoTV, NoMac]
 	[Native]
 	enum CPPanDirection : long {
+		/// <summary>No pan.</summary>
 		None = 0,
+		/// <summary>Towards the left side of the map.</summary>
 		Left = 1L << 0,
+		/// <summary>Towards the right side of the map.</summary>
 		Right = 1L << 1,
+		/// <summary>Towards the top of the map.</summary>
 		Up = 1L << 2,
+		/// <summary>Towards the bottom of the map.</summary>
 		Down = 1L << 3,
 	}
 
 	/// <summary>Enumerates the reasons why a navigation alert was dismissed.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[Native]
 	enum CPNavigationAlertDismissalContext : ulong {
+		/// <summary>The alert had expired.</summary>
 		Timeout = 0,
+		/// <summary>The user dismissed the alert.</summary>
 		UserDismissed,
+		/// <summary>The system was responsible for dismissing the alert.</summary>
 		SystemDismissed,
 	}
 
 	/// <summary>Enumerates the reasons why the current trip has been paused.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[Native]
 	enum CPTripPauseReason : ulong {
+		/// <summary>The car has arrived at the trip destinatioj.</summary>
 		Arrived = 1,
+		/// <summary>The data for the trip is still loading.</summary>
 		Loading = 2,
+		/// <summary>The system is trying to locate the car.</summary>
 		Locating = 3,
+		/// <summary>The system is currently rerouting the trip.</summary>
 		Rerouting = 4,
+		/// <summary>The car is not on the trip route.</summary>
 		ProceedToRoute = 5,
 	}
 
 	/// <summary>Flagging enumeration that describes how the UI might be limited.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[Flags]
 	[Native]
 	enum CPLimitableUserInterface : ulong {
+		/// <summary>The keyboard may be limited.</summary>
 		Keyboard = 1uL << 0,
+		/// <summary>The length of lists may be limited.</summary>
 		Lists = 1uL << 1,
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (13, 0)]
+	[NoTV, NoMac, iOS (13, 0)]
 	[Flags]
 	[Native]
 	enum CPContentStyle : ulong {
@@ -89,48 +109,59 @@ namespace CarPlay {
 		Dark = 1uL << 1,
 	}
 
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[Flags]
 	[Native]
 	enum CPManeuverDisplayStyle : long {
+		/// <summary>To be added.</summary>
 		Default,
+		/// <summary>To be added.</summary>
 		LeadingSymbol,
+		/// <summary>To be added.</summary>
 		TrailingSymbol,
+		/// <summary>To be added.</summary>
 		SymbolOnly,
+		/// <summary>To be added.</summary>
 		InstructionOnly,
 	}
 
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[Native]
 	enum CPTimeRemainingColor : ulong {
+		/// <summary>To be added.</summary>
 		Default = 0,
+		/// <summary>To be added.</summary>
 		Green,
+		/// <summary>To be added.</summary>
 		Orange,
+		/// <summary>To be added.</summary>
 		Red,
 	}
 
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[Native]
 	enum CPTripEstimateStyle : ulong {
+		/// <summary>To be added.</summary>
 		Light = 0,
+		/// <summary>To be added.</summary>
 		Dark,
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[Native]
 	public enum CPBarButtonStyle : long {
 		None,
 		Rounded,
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[Native]
 	public enum CPInformationTemplateLayout : long {
 		Leading = 0,
 		TwoColumn,
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[Native]
 	public enum CPListItemAccessoryType : long {
 		None = 0,
@@ -138,14 +169,14 @@ namespace CarPlay {
 		Cloud,
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[Native]
 	public enum CPListItemPlayingIndicatorLocation : long {
 		Leading = 0,
 		Trailing,
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[Native]
 	public enum CPMessageLeadingItem : long {
 		None = 0,
@@ -153,14 +184,14 @@ namespace CarPlay {
 		Star,
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[Native]
 	public enum CPMessageTrailingItem : long {
 		None,
 		Mute,
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[Native]
 	public enum CPTextButtonStyle : long {
 		Normal = 0,
@@ -168,14 +199,14 @@ namespace CarPlay {
 		Confirm,
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
 	[Native]
 	public enum CPAssistantCellPosition : long {
 		Top = 0,
 		Bottom,
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
 	[Native]
 	public enum CPAssistantCellVisibility : long {
 		Off = 0,
@@ -183,14 +214,14 @@ namespace CarPlay {
 		Always,
 	}
 
-	[iOS (15, 0), MacCatalyst (15, 0), NoMac, NoTV, NoWatch]
+	[iOS (15, 0), MacCatalyst (15, 0), NoMac, NoTV]
 	[Native]
 	public enum CPAssistantCellActionType : long {
 		PlayMedia = 0,
 		StartCall,
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (15, 4), MacCatalyst (15, 4)]
+	[NoTV, NoMac, iOS (15, 4), MacCatalyst (15, 4)]
 	[Native]
 	public enum CPInstrumentClusterSetting : ulong {
 		Unspecified,
@@ -199,7 +230,7 @@ namespace CarPlay {
 		UserPreference,
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
+	[NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[Native]
 	public enum CPLaneStatus : long {
 		NotGood = 0,
@@ -207,7 +238,7 @@ namespace CarPlay {
 		Preferred,
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
+	[NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[Native]
 	public enum CPManeuverType : ulong {
 		NoTurn = 0,
@@ -266,21 +297,21 @@ namespace CarPlay {
 		ChangeHighwayRight = 53,
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
+	[NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[Native]
 	public enum CPJunctionType : ulong {
 		Intersection = 0,
 		Roundabout = 1,
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
+	[NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[Native]
 	public enum CPTrafficSide : ulong {
 		Right = 0,
 		Left = 1,
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
+	[NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[Native]
 	public enum CPManeuverState : long {
 		Continue = 0,
@@ -290,7 +321,7 @@ namespace CarPlay {
 	}
 
 	/// <summary>An action that is displayed on a button in an alert.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPAlertAction : NSSecureCoding {
@@ -298,7 +329,7 @@ namespace CarPlay {
 		[Export ("initWithTitle:style:handler:")]
 		NativeHandle Constructor (string title, CPAlertActionStyle style, Action<CPAlertAction> handler);
 
-		[NoWatch, NoTV, NoMac, iOS (16, 0)]
+		[NoTV, NoMac, iOS (16, 0)]
 		[Export ("initWithTitle:color:handler:")]
 		NativeHandle Constructor (string title, UIColor color, Action<CPAlertAction> handler);
 
@@ -312,7 +343,7 @@ namespace CarPlay {
 		Action<CPAlertAction> Handler { get; }
 
 		[NullAllowed]
-		[NoWatch, NoTV, NoMac, iOS (16, 0)]
+		[NoTV, NoMac, iOS (16, 0)]
 		[Export ("color", ArgumentSemantic.Copy)]
 		UIColor Color { get; }
 	}
@@ -320,7 +351,7 @@ namespace CarPlay {
 	delegate void CPBarButtonHandler (CPBarButton button);
 
 	/// <summary>A button in the navigation bar.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPBarButton : NSSecureCoding {
@@ -330,6 +361,9 @@ namespace CarPlay {
 		[Export ("initWithType:handler:")]
 		NativeHandle Constructor (CPBarButtonType type, [NullAllowed] Action<CPBarButton> handler);
 
+		/// <summary>Gets or sets whether the button is enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
@@ -360,7 +394,7 @@ namespace CarPlay {
 	/// <summary>Interface defining necessary methods for the <see cref="T:CarPlay.ICPBarButtonProviding" /> protocol.</summary>
 	interface ICPBarButtonProviding { }
 
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[Protocol]
 	interface CPBarButtonProviding {
 
@@ -380,7 +414,7 @@ namespace CarPlay {
 	}
 
 	/// <summary>A menu item displayed in a <see cref="T:CarPlay.CPGridTemplate" />.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPGridButton : NSSecureCoding {
@@ -389,6 +423,9 @@ namespace CarPlay {
 		[DesignatedInitializer]
 		NativeHandle Constructor (string [] titleVariants, UIImage image, [NullAllowed] Action<CPGridButton> handler);
 
+		/// <summary>Gets or sets whether the button is enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
@@ -401,7 +438,7 @@ namespace CarPlay {
 
 	/// <summary>
 	///       <see cref="T:CarPlay.CPTemplate" /> subclass that displays a menu in grid form.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (CPTemplate))]
 	[DisableDefaultCtor]
 	interface CPGridTemplate : CPBarButtonProviding {
@@ -429,11 +466,18 @@ namespace CarPlay {
 	}
 
 	/// <summary>A system-created controller object (similar, but not derived from, <see cref="T:UIKit.UIViewController" />).</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPInterfaceController {
 
+		/// <summary>An instance of the CarPlay.ICPInterfaceControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the CarPlay.ICPInterfaceControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		ICPInterfaceControllerDelegate Delegate { get; set; }
@@ -537,7 +581,7 @@ namespace CarPlay {
 	interface ICPInterfaceControllerDelegate { }
 
 	/// <summary>Default implementation of <see cref="T:CarPlay.ICPInterfaceControllerDelegate" />, the delegate object for <see cref="T:CarPlay.CPInterfaceController" /> objects.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 #if NET
 	[Protocol, Model]
 #else
@@ -566,7 +610,7 @@ namespace CarPlay {
 	[Introduced (PlatformName.iOS, 12, 0)]
 	[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'CPTemplateApplicationSceneDelegate' instead.")]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'CPTemplateApplicationSceneDelegate' instead.")]
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 #if NET
 	[Protocol, Model]
 #else
@@ -591,7 +635,7 @@ namespace CarPlay {
 	}
 
 	/// <summary>A line in a <see cref="T:CarPlay.CPListTemplate" />.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPListItem : CPSelectableListItem, NSSecureCoding {
@@ -668,7 +712,7 @@ namespace CarPlay {
 	}
 
 	/// <summary>Organizational element within a <see cref="T:CarPlay.CPListTemplate" />.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPListSection : NSSecureCoding {
@@ -702,6 +746,9 @@ namespace CarPlay {
 		string SectionIndexTitle { get; }
 
 #if !XAMCORE_5_0
+		/// <summary>The contents of the section.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("true ? throw new InvalidOperationException (Constants.BrokenBinding) : new NSArray ()", IsVirtual = true)]
 		[Obsolete ("Use 'Items2 : ICPListTemplateItem []' instead.")]
 		CPListItem [] Items { get; }
@@ -744,7 +791,7 @@ namespace CarPlay {
 
 	/// <summary>
 	///       <see cref="T:CarPlay.CPTemplate" /> that presents a hierarchical menu of choices.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (CPTemplate))]
 	[DisableDefaultCtor]
 	interface CPListTemplate : CPBarButtonProviding {
@@ -756,6 +803,13 @@ namespace CarPlay {
 		[Export ("initWithTitle:sections:assistantCellConfiguration:")]
 		NativeHandle Constructor ([NullAllowed] string title, CPListSection [] sections, [NullAllowed] CPAssistantCellConfiguration assistantCellConfiguration);
 
+		/// <summary>An instance of the CarPlay.ICPListTemplateDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the CarPlay.ICPListTemplateDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'CPListItem.Handler' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'CPListItem.Handler' instead.")]
 		[Wrap ("WeakDelegate")]
@@ -811,6 +865,11 @@ namespace CarPlay {
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("assistantCellConfiguration", ArgumentSemantic.Strong)]
 		CPAssistantCellConfiguration AssistantCellConfiguration { get; set; }
+
+		[NullAllowed]
+		[iOS (18, 4), MacCatalyst (18, 4)]
+		[Export ("showsSpinnerWhileEmpty", ArgumentSemantic.Assign)]
+		bool ShowsSpinnerWhileEmpty { get; set; }
 	}
 
 	/// <summary>Delegate object for <see cref="T:CarPlay.CPListTemplate" /> objects.</summary>
@@ -818,7 +877,7 @@ namespace CarPlay {
 
 	/// <summary>Abstract implementation of <see cref="T:CarPlay.ICPListTemplateDelegate" />, the delegate object for <see cref="T:CarPlay.CPListTemplate" /> objects.</summary>
 	[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'CPListItem.Handler' instead.")]
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'CPListItem.Handler' instead.")]
 #if NET
 	[Protocol, Model]
@@ -834,7 +893,7 @@ namespace CarPlay {
 	}
 
 	/// <summary>A step in a <see cref="T:CarPlay.CPTrip" />.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	interface CPManeuver : NSCopying, NSSecureCoding {
 
@@ -935,7 +994,7 @@ namespace CarPlay {
 	}
 
 	/// <summary>A button displayed on the <see cref="T:CarPlay.CPMapTemplate" />.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPMapButton : NSSecureCoding {
@@ -944,9 +1003,15 @@ namespace CarPlay {
 		[DesignatedInitializer]
 		NativeHandle Constructor ([NullAllowed] Action<CPMapButton> handler);
 
+		/// <summary>Gets or sets whether the button is enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
+		/// <summary>Gets or sets whether the button is visible.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hidden")]
 		bool Hidden { [Bind ("isHidden")] get; set; }
 
@@ -959,7 +1024,7 @@ namespace CarPlay {
 
 	/// <summary>
 	///       <see cref="T:CarPlay.CPTemplate" /> subclass that displays a map.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (CPTemplate))]
 	[DisableDefaultCtor]
 	interface CPMapTemplate : CPBarButtonProviding {
@@ -997,6 +1062,9 @@ namespace CarPlay {
 		[Export ("hidesButtonsWithNavigationBar")]
 		bool HidesButtonsWithNavigationBar { get; set; }
 
+		/// <summary>Gets or sets the delegate object for the map.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakMapDelegate")]
 		[NullAllowed]
 		ICPMapTemplateDelegate MapDelegate { get; set; }
@@ -1010,6 +1078,9 @@ namespace CarPlay {
 		[Export ("dismissPanningInterfaceAnimated:")]
 		void DismissPanningInterface (bool animated);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("panningInterfaceVisible")]
 		bool PanningInterfaceVisible { [Bind ("isPanningInterfaceVisible")] get; }
 
@@ -1032,7 +1103,7 @@ namespace CarPlay {
 	interface ICPMapTemplateDelegate { }
 
 	/// <summary>Default implementation of <see cref="T:CarPlay.ICPMapTemplateDelegate" />, providing the delegate object for <see cref="T:CarPlay.CPMapTemplate" /> objects.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 #if NET
 	[Protocol, Model]
 #else
@@ -1107,7 +1178,7 @@ namespace CarPlay {
 	}
 
 	/// <summary>A banner displayed with high-priority.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPNavigationAlert : NSSecureCoding {
@@ -1149,7 +1220,7 @@ namespace CarPlay {
 	}
 
 	/// <summary>A session that may involve planning, updating, and executing a trip.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPNavigationSession {
@@ -1203,10 +1274,17 @@ namespace CarPlay {
 
 	/// <summary>
 	///       <see cref="T:CarPlay.CPTemplate" /> subclass showing the destination search results.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (CPTemplate))]
 	interface CPSearchTemplate {
 
+		/// <summary>An instance of the CarPlay.ICPSearchTemplateDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the CarPlay.ICPSearchTemplateDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		ICPSearchTemplateDelegate Delegate { get; set; }
@@ -1220,7 +1298,7 @@ namespace CarPlay {
 	delegate void CPSearchTemplateDelegateUpdateHandler (CPListItem [] searchResults);
 
 	/// <summary>Delegate object for the <see cref="T:CarPlay.CPSearchTemplate" /> class.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 #if NET
 	[Protocol, Model]
 #else
@@ -1242,7 +1320,7 @@ namespace CarPlay {
 	}
 
 	/// <summary>Class that responds to user-interface configuration changes.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPSessionConfiguration {
@@ -1258,6 +1336,13 @@ namespace CarPlay {
 		[Export ("contentStyle")]
 		CPContentStyle ContentStyle { get; }
 
+		/// <summary>An instance of the CarPlay.ICPSessionConfigurationDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the CarPlay.ICPSessionConfigurationDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		ICPSessionConfigurationDelegate Delegate { get; set; }
@@ -1270,7 +1355,7 @@ namespace CarPlay {
 	interface ICPSessionConfigurationDelegate { }
 
 	/// <summary>Abstract implementation of <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=I:Carlay.ICPSessionConfigurationDelegate&amp;scope=Xamarin" title="I:Carlay.ICPSessionConfigurationDelegate">I:Carlay.ICPSessionConfigurationDelegate</a></format>.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 #if NET
 	[Protocol, Model]
 #else
@@ -1292,7 +1377,7 @@ namespace CarPlay {
 
 	/// <summary>Abstract base class for CarPlay user interface templates.</summary>
 	[Abstract]
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	interface CPTemplate : NSSecureCoding {
 		[NullAllowed, Export ("userInfo", ArgumentSemantic.Strong)]
@@ -1318,7 +1403,7 @@ namespace CarPlay {
 	}
 
 	/// <summary>A possible route for the trip.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPRouteChoice : NSCopying, NSSecureCoding {
@@ -1343,7 +1428,7 @@ namespace CarPlay {
 	}
 
 	/// <summary>A journey from <see cref="P:CarPlay.CPTrip.Origin" /> to <see cref="P:CarPlay.CPTrip.Destination" />.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPTrip : NSSecureCoding {
@@ -1369,7 +1454,7 @@ namespace CarPlay {
 		string [] DestinationNameVariants { get; set; }
 	}
 
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	interface CPVoiceControlState : NSSecureCoding {
 
@@ -1391,7 +1476,7 @@ namespace CarPlay {
 
 	/// <summary>
 	///       <see cref="T:CarPlay.CPTemplate" /> subclass for displaying the voice control indicator.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (CPTemplate))]
 	[DisableDefaultCtor]
 	interface CPVoiceControlTemplate {
@@ -1409,7 +1494,7 @@ namespace CarPlay {
 		string ActiveStateIdentifier { get; }
 	}
 
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPImageSet : NSSecureCoding {
@@ -1426,7 +1511,7 @@ namespace CarPlay {
 
 	interface ICPTemplateApplicationSceneDelegate { }
 
-	[NoWatch, NoTV, NoMac, iOS (13, 0)]
+	[NoTV, NoMac, iOS (13, 0)]
 #if NET
 	[Protocol, Model]
 #else
@@ -1459,7 +1544,7 @@ namespace CarPlay {
 		void ContentStyleDidChange (UIUserInterfaceStyle contentStyle);
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (13, 0)]
+	[NoTV, NoMac, iOS (13, 0)]
 	[BaseType (typeof (UIScene))]
 	interface CPTemplateApplicationScene {
 		[Export ("initWithSession:connectionOptions:")]
@@ -1487,7 +1572,7 @@ namespace CarPlay {
 		NSString SessionRoleApplication { get; }
 	}
 
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (UIWindow))]
 	interface CPWindow {
 
@@ -1503,7 +1588,7 @@ namespace CarPlay {
 	}
 
 	/// <summary>Estimates of time and distance requirements for requested navigation.</summary>
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPTravelEstimates : NSSecureCoding {
@@ -1528,7 +1613,7 @@ namespace CarPlay {
 		double TimeRemaining { get; }
 	}
 
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
 	interface CPTripPreviewTextConfiguration : NSSecureCoding {
 
@@ -1545,7 +1630,7 @@ namespace CarPlay {
 		string OverviewButtonTitle { get; }
 	}
 
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (CPTemplate))]
 	[DisableDefaultCtor]
 	interface CPActionSheetTemplate {
@@ -1563,7 +1648,7 @@ namespace CarPlay {
 		CPAlertAction [] Actions { get; }
 	}
 
-	[NoWatch, NoTV, NoMac]
+	[NoTV, NoMac]
 	[BaseType (typeof (CPTemplate))]
 	[DisableDefaultCtor]
 	interface CPAlertTemplate {
@@ -1583,7 +1668,7 @@ namespace CarPlay {
 		nuint MaximumActionCount { get; }
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (13, 4)]
+	[NoTV, NoMac, iOS (13, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPDashboardButton : NSSecureCoding {
@@ -1602,7 +1687,7 @@ namespace CarPlay {
 		string [] SubtitleVariants { get; }
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (13, 4)]
+	[NoTV, NoMac, iOS (13, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPDashboardController {
@@ -1613,7 +1698,7 @@ namespace CarPlay {
 
 	interface ICPTemplateApplicationDashboardSceneDelegate { }
 
-	[NoWatch, NoTV, NoMac, iOS (13, 4)]
+	[NoTV, NoMac, iOS (13, 4)]
 #if NET
 	[Protocol, Model]
 #else
@@ -1629,7 +1714,7 @@ namespace CarPlay {
 		void DidDisconnectDashboardController (CPTemplateApplicationDashboardScene templateApplicationDashboardScene, CPDashboardController dashboardController, UIWindow window);
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (13, 4)]
+	[NoTV, NoMac, iOS (13, 4)]
 	[BaseType (typeof (UIScene))]
 	interface CPTemplateApplicationDashboardScene {
 
@@ -1654,7 +1739,7 @@ namespace CarPlay {
 		UIWindow DashboardWindow { get; }
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPButton {
@@ -1675,7 +1760,7 @@ namespace CarPlay {
 		CGSize MaximumImageSize { get; }
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (NSObject))]
 	interface CPContact : NSSecureCoding {
 		[Export ("initWithName:image:")]
@@ -1697,7 +1782,7 @@ namespace CarPlay {
 		string InformativeText { get; set; }
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (CPButton))]
 	[DisableDefaultCtor]
 	interface CPContactCallButton {
@@ -1709,7 +1794,7 @@ namespace CarPlay {
 		NativeHandle Constructor ([NullAllowed] Action<CPButton> handler);
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (CPButton))]
 	[DisableDefaultCtor]
 	interface CPContactDirectionsButton {
@@ -1721,7 +1806,7 @@ namespace CarPlay {
 		NativeHandle Constructor ([NullAllowed] Action<CPButton> handler);
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (CPTemplate))]
 	[DisableDefaultCtor]
 	interface CPContactTemplate : CPBarButtonProviding {
@@ -1733,7 +1818,7 @@ namespace CarPlay {
 		CPContact Contact { get; set; }
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPInformationItem : NSSecureCoding {
@@ -1748,7 +1833,7 @@ namespace CarPlay {
 		string Detail { get; }
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (CPTemplate))]
 	[DisableDefaultCtor]
 	interface CPInformationTemplate : CPBarButtonProviding {
@@ -1771,7 +1856,7 @@ namespace CarPlay {
 
 	delegate void CPListImageRowItemHandler (CPListImageRowItem item, nint index, [BlockCallback] Action completionBlock);
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPListImageRowItem : CPSelectableListItem {
@@ -1806,7 +1891,7 @@ namespace CarPlay {
 		new string Text { get; set; }
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPTextButton {
@@ -1821,7 +1906,7 @@ namespace CarPlay {
 		CPTextButtonStyle TextStyle { get; set; }
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (CPBarButton))]
 	interface CPMessageComposeBarButton {
 		[Static]
@@ -1833,7 +1918,7 @@ namespace CarPlay {
 		NativeHandle Constructor (UIImage image);
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (NSObject))]
 	interface CPMessageListItem : CPListTemplateItem {
 		[Internal]
@@ -1869,7 +1954,7 @@ namespace CarPlay {
 		new string Text { get; set; }
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPMessageListItemLeadingConfiguration {
@@ -1886,7 +1971,7 @@ namespace CarPlay {
 		NativeHandle Constructor (CPMessageLeadingItem leadingItem, [NullAllowed] UIImage leadingImage, bool unread);
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPMessageListItemTrailingConfiguration {
@@ -1900,7 +1985,7 @@ namespace CarPlay {
 		NativeHandle Constructor (CPMessageTrailingItem trailingItem, [NullAllowed] UIImage trailingImage);
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPNowPlayingButton : NSSecureCoding {
@@ -1917,7 +2002,7 @@ namespace CarPlay {
 		CGSize MaximumImageSize { get; }
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (CPNowPlayingButton))]
 	[DisableDefaultCtor]
 	interface CPNowPlayingImageButton {
@@ -1931,7 +2016,7 @@ namespace CarPlay {
 		UIImage Image { get; }
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPPointOfInterest : NSSecureCoding {
@@ -1993,7 +2078,7 @@ namespace CarPlay {
 
 	interface ICPPointOfInterestTemplateDelegate { }
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 #if NET
 	[Protocol, Model]
 #else
@@ -2009,7 +2094,7 @@ namespace CarPlay {
 		void DidSelectPointOfInterest (CPPointOfInterestTemplate pointOfInterestTemplate, CPPointOfInterest pointOfInterest);
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (CPTemplate))]
 	[DisableDefaultCtor]
 	interface CPPointOfInterestTemplate : CPBarButtonProviding {
@@ -2039,7 +2124,7 @@ namespace CarPlay {
 
 	interface ICPTabBarTemplateDelegate { }
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 #if NET
 	[Protocol, Model]
 #else
@@ -2053,7 +2138,7 @@ namespace CarPlay {
 	}
 
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (CPTemplate))]
 	[DisableDefaultCtor]
 	interface CPTabBarTemplate {
@@ -2091,7 +2176,7 @@ namespace CarPlay {
 
 	interface ICPNowPlayingTemplateObserver { }
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[Protocol]
 	interface CPNowPlayingTemplateObserver {
 		[Export ("nowPlayingTemplateUpNextButtonTapped:")]
@@ -2101,7 +2186,7 @@ namespace CarPlay {
 		void AlbumArtistButtonTapped (CPNowPlayingTemplate nowPlayingTemplate);
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (CPTemplate))]
 	[DisableDefaultCtor]
 	interface CPNowPlayingTemplate {
@@ -2129,9 +2214,13 @@ namespace CarPlay {
 
 		[Export ("updateNowPlayingButtons:")]
 		void UpdateNowPlayingButtons (CPNowPlayingButton [] nowPlayingButtons);
+
+		[iOS (18, 4), MacCatalyst (18, 4)]
+		[Export ("nowPlayingMode", ArgumentSemantic.Strong), NullAllowed]
+		CPNowPlayingMode NowPlayingMode { get; set; }
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (CPButton))]
 	[DisableDefaultCtor]
 	interface CPContactMessageButton {
@@ -2146,35 +2235,35 @@ namespace CarPlay {
 		string PhoneOrEmail { get; }
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (CPNowPlayingButton))]
 	interface CPNowPlayingShuffleButton {
 		[Export ("initWithHandler:")]
 		NativeHandle Constructor ([NullAllowed] Action<CPNowPlayingButton> handler);
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (CPNowPlayingButton))]
 	interface CPNowPlayingAddToLibraryButton {
 		[Export ("initWithHandler:")]
 		NativeHandle Constructor ([NullAllowed] Action<CPNowPlayingButton> handler);
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (CPNowPlayingButton))]
 	interface CPNowPlayingMoreButton {
 		[Export ("initWithHandler:")]
 		NativeHandle Constructor ([NullAllowed] Action<CPNowPlayingButton> handler);
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (CPNowPlayingButton))]
 	interface CPNowPlayingPlaybackRateButton {
 		[Export ("initWithHandler:")]
 		NativeHandle Constructor ([NullAllowed] Action<CPNowPlayingButton> handler);
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (CPNowPlayingButton))]
 	interface CPNowPlayingRepeatButton {
 		[Export ("initWithHandler:")]
@@ -2183,7 +2272,7 @@ namespace CarPlay {
 
 	interface ICPListTemplateItem { }
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[Protocol]
 	interface CPListTemplateItem {
 		[Abstract]
@@ -2206,7 +2295,7 @@ namespace CarPlay {
 
 	delegate void CPSelectableListItemHandler (ICPSelectableListItem item, [BlockCallback] Action completionBlock);
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[Protocol]
 	interface CPSelectableListItem : CPListTemplateItem {
 		[Abstract]
@@ -2214,7 +2303,7 @@ namespace CarPlay {
 		CPSelectableListItemHandler Handler { get; set; }
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (14, 0)]
+	[NoTV, NoMac, iOS (14, 0)]
 	[BaseType (typeof (CPInformationItem))]
 	[DisableDefaultCtor]
 	interface CPInformationRatingItem {
@@ -2229,7 +2318,7 @@ namespace CarPlay {
 		NSNumber MaximumRating { get; }
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPAssistantCellConfiguration : NSSecureCoding {
@@ -2246,7 +2335,7 @@ namespace CarPlay {
 		CPAssistantCellActionType AssistantAction { get; }
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (15, 4), MacCatalyst (15, 4)]
+	[NoTV, NoMac, iOS (15, 4), MacCatalyst (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPInstrumentClusterController {
@@ -2276,7 +2365,7 @@ namespace CarPlay {
 
 	interface ICPInstrumentClusterControllerDelegate { }
 
-	[NoWatch, NoTV, NoMac, iOS (15, 4), MacCatalyst (15, 4)]
+	[NoTV, NoMac, iOS (15, 4), MacCatalyst (15, 4)]
 #if NET
 	[Protocol, Model]
 #else
@@ -2308,7 +2397,7 @@ namespace CarPlay {
 
 	interface ICPTemplateApplicationInstrumentClusterSceneDelegate { }
 
-	[NoWatch, NoTV, NoMac, iOS (15, 4), MacCatalyst (15, 4)]
+	[NoTV, NoMac, iOS (15, 4), MacCatalyst (15, 4)]
 #if NET
 	[Protocol, Model]
 #else
@@ -2327,7 +2416,7 @@ namespace CarPlay {
 		void ContentStyleDidChange (UIUserInterfaceStyle contentStyle);
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (15, 4), MacCatalyst (15, 4)]
+	[NoTV, NoMac, iOS (15, 4), MacCatalyst (15, 4)]
 	[BaseType (typeof (UIScene))]
 	[DisableDefaultCtor]
 	interface CPTemplateApplicationInstrumentClusterScene {
@@ -2353,7 +2442,7 @@ namespace CarPlay {
 		UIUserInterfaceStyle ContentStyle { get; }
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (17, 4)]
+	[NoTV, NoMac, iOS (17, 4)]
 	[NoMacCatalyst] // We don't expose CarPlay on Mac Catalyst for the moment // [MacCatalyst (17, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -2405,7 +2494,7 @@ namespace CarPlay {
 		NSMeasurement<NSUnitAngle> [] Angles { get; }
 	}
 
-	[NoWatch, NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
+	[NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[BaseType (typeof (NSObject))]
 	interface CPLaneGuidance : NSCopying, NSSecureCoding {
 
@@ -2417,7 +2506,7 @@ namespace CarPlay {
 	}
 
 	// @interface CPRouteInformation : NSObject
-	[NoWatch, NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
+	[NoTV, NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPRouteInformation {
@@ -2445,4 +2534,113 @@ namespace CarPlay {
 		CPTravelEstimates ManeuverTravelEstimates { get; }
 	}
 
+	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CPNowPlayingMode : NSSecureCoding {
+		[Static]
+		[Export ("defaultNowPlayingMode")]
+		CPNowPlayingMode DefaultNowPlayingMode { get; }
+	}
+
+	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
+	[BaseType (typeof (CPNowPlayingMode))]
+	interface CPNowPlayingModeSports : NSSecureCoding {
+		[Export ("initWithLeftTeam:rightTeam:eventStatus:backgroundArtwork:")]
+		NativeHandle Constructor (CPNowPlayingSportsTeam leftTeam, CPNowPlayingSportsTeam rightTeam, [NullAllowed] CPNowPlayingSportsEventStatus eventStatus, [NullAllowed] UIImage backgroundArtwork);
+
+		[Export ("leftTeam", ArgumentSemantic.Strong)]
+		CPNowPlayingSportsTeam LeftTeam { get; }
+
+		[Export ("rightTeam", ArgumentSemantic.Strong)]
+		CPNowPlayingSportsTeam RightTeam { get; }
+
+		[NullAllowed, Export ("eventStatus", ArgumentSemantic.Strong)]
+		CPNowPlayingSportsEventStatus EventStatus { get; }
+
+		[NullAllowed, Export ("backgroundArtwork", ArgumentSemantic.Copy)]
+		UIImage BackgroundArtwork { get; }
+	}
+
+	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CPNowPlayingSportsTeam : NSSecureCoding {
+		[Export ("initWithName:logo:teamStandings:eventScore:possessionIndicator:favorite:")]
+		NativeHandle Constructor (string name, CPNowPlayingSportsTeamLogo logo, [NullAllowed] string teamStandings, string eventScore, [NullAllowed] UIImage possessionIndicator, bool favorite);
+
+		[Export ("name")]
+		string Name { get; }
+
+		[Export ("logo", ArgumentSemantic.Copy)]
+		CPNowPlayingSportsTeamLogo Logo { get; }
+
+		[NullAllowed, Export ("teamStandings")]
+		string TeamStandings { get; }
+
+		[Export ("eventScore")]
+		string EventScore { get; }
+
+		[NullAllowed, Export ("possessionIndicator", ArgumentSemantic.Copy)]
+		UIImage PossessionIndicator { get; }
+
+		[Export ("favorite")]
+		bool Favorite { [Bind ("isFavorite")] get; }
+	}
+
+	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CPNowPlayingSportsEventStatus : NSSecureCoding {
+		[Export ("initWithEventStatusText:eventStatusImage:eventClock:")]
+		NativeHandle Constructor ([NullAllowed] string [] eventStatusText, [NullAllowed] UIImage eventStatusImage, [NullAllowed] CPNowPlayingSportsClock eventClock);
+
+		[NullAllowed, Export ("eventStatusText", ArgumentSemantic.Copy)]
+		string [] EventStatusText { get; }
+
+		[NullAllowed, Export ("eventClock", ArgumentSemantic.Copy)]
+		CPNowPlayingSportsClock EventClock { get; }
+
+		[NullAllowed, Export ("eventStatusImage", ArgumentSemantic.Copy)]
+		UIImage EventStatusImage { get; }
+	}
+
+	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CPNowPlayingSportsClock : INSSecureCoding {
+		[Internal]
+		[Export ("initWithElapsedTime:paused:")]
+		NativeHandle _InitWithElapsedTime (double elapsedTime, bool paused);
+
+		[Internal]
+		[Export ("initWithTimeRemaining:paused:")]
+		NativeHandle _InitWithRemainingTime (double timeRemaining, bool paused);
+
+		[Export ("timeValue")]
+		double TimeValue { get; }
+
+		[Export ("paused")]
+		bool Paused { [Bind ("isPaused")] get; }
+
+		[Export ("countsUp")]
+		bool CountsUp { get; }
+	}
+
+	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CPNowPlayingSportsTeamLogo : INSSecureCoding {
+		[Export ("initWithTeamLogo:")]
+		NativeHandle Constructor (UIImage teamLogo);
+
+		[Export ("initWithTeamInitials:")]
+		NativeHandle Constructor (string teamInitials);
+
+		[NullAllowed, Export ("logo", ArgumentSemantic.Copy)]
+		UIImage Logo { get; }
+
+		[NullAllowed, Export ("initials")]
+		string Initials { get; }
+	}
 }

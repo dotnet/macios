@@ -7,19 +7,21 @@ using CoreFoundation;
 
 namespace Network {
 
-	[Watch (6, 0)]
 	[MacCatalyst (13, 1)]
 	public enum NWErrorDomain {
+		/// <summary>To be added.</summary>
 		Invalid = 0,
+		/// <summary>To be added.</summary>
 		[Field ("kNWErrorDomainPOSIX")]
 		Posix = 1,
+		/// <summary>To be added.</summary>
 		[Field ("kNWErrorDomainDNS")]
 		Dns = 2,
+		/// <summary>To be added.</summary>
 		[Field ("kNWErrorDomainTLS")]
 		Tls = 3,
 	}
 
-	[Watch (6, 0)]
 	[MacCatalyst (13, 1)]
 	[Static]
 	[Internal]
@@ -34,7 +36,6 @@ namespace Network {
 		IntPtr _DefaultStream { get; }
 	}
 
-	[Watch (6, 0)]
 	[MacCatalyst (13, 1)]
 	[Static]
 	[Internal]
@@ -44,7 +45,6 @@ namespace Network {
 		IntPtr _SendIdempotentContent { get; }
 	}
 
-	[Watch (6, 0)]
 	[MacCatalyst (13, 1)]
 	[Static]
 	[Internal]
@@ -57,7 +57,7 @@ namespace Network {
 
 	}
 
-	[Watch (7, 0), TV (14, 0), iOS (14, 0)]
+	[TV (14, 0), iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[Static]
 	[Internal]
@@ -69,7 +69,6 @@ namespace Network {
 
 	[iOS (14, 2)]
 	[TV (14, 2)]
-	[Watch (7, 1)]
 	[MacCatalyst (14, 2)]
 	// untyped `nw_path_unsatisfied_reason_t` enum
 	enum NWPathUnsatisfiedReason {

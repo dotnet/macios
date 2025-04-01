@@ -7,7 +7,7 @@
 // Copyright 2022 Microsoft Corporation.
 //
 
-#if !__WATCHOS__ && !__TVOS__
+#if !__TVOS__
 
 using System;
 using Foundation;
@@ -48,4 +48,4 @@ namespace MonoTouchFixtures.SharedWithYouCore {
 	}
 }
 
-#endif // !__WATCHOS__ && !__TVOS__
+#endif // !__TVOS__

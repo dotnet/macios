@@ -1,5 +1,3 @@
-
-#if !WATCH // no header
 using System;
 using System.Runtime.InteropServices;
 using CoreFoundation;
@@ -18,6 +16,11 @@ using CoreGraphics;
 
 namespace UIKit {
 	public partial class UITableView {
+		/// <summary>A MonoTouch-specific feature that uses a <see cref="T:UIKit.UITableViewSource" /> subclass to act as both <see cref="P:UIKit.UITableView.Delegate" /> or <see cref="P:UIKit.UITableView.DataSource" />.</summary>
+		///         <value>A class that can behave as both <see cref="P:UIKit.UITableView.Delegate" /> and <see cref="P:UIKit.UITableView.DataSource" /> for the table view.</value>
+		///         <remarks>
+		///           <para>MonoTouch provides the <see cref="T:UIKit.UITableViewSource" /> class as an alternative to implementing both <see cref="T:UIKit.UITableViewDataSource" /> and <see cref="T:UIKit.UITableViewDelegate" />. If a subclass of <see cref="T:UIKit.UITableViewSource" /> is created and assigned to this property, the <see cref="P:UIKit.UITableView.DataSource" /> and <see cref="P:UIKit.UITableView.Delegate" /> properties should not be set.</para>
+		///         </remarks>
 		public UITableViewSource Source {
 			get {
 				var d = WeakDelegate as UITableViewSource;
@@ -88,4 +91,3 @@ namespace UIKit {
 		}
 	}
 }
-#endif // !WATCH

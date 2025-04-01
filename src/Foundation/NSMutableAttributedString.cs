@@ -27,8 +27,6 @@
 //
 //
 
-#if !WATCH // This file needs some work before it can get included in WatchOS
-
 using System;
 #if !MONOMAC
 using UIKit;
@@ -54,6 +52,7 @@ namespace Foundation {
 				throw new ArgumentNullException ("attributes");
 
 			LowLevelSetAttributes (attributes.Handle, range);
+			GC.KeepAlive (attributes);
 		}
 
 		public void SetAttributes (CTStringAttributes attrs, NSRange range)
@@ -103,5 +102,3 @@ namespace Foundation {
 #endif
 	}
 }
-
-#endif // !WATCH

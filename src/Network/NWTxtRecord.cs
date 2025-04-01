@@ -36,7 +36,6 @@ namespace Network {
 #else
 	[TV (13, 0)]
 	[iOS (13, 0)]
-	[Watch (6, 0)]
 #endif
 	public class NWTxtRecord : NativeObject {
 		[Preserve (Conditional = true)]
@@ -135,7 +134,9 @@ namespace Network {
 		{
 			if (other is null)
 				return false;
-			return nw_txt_record_is_equal (GetCheckedHandle (), other.GetCheckedHandle ()) != 0;
+			bool result = nw_txt_record_is_equal (GetCheckedHandle (), other.GetCheckedHandle ()) != 0;
+			GC.KeepAlive (other);
+			return result;
 		}
 
 		[DllImport (Constants.NetworkLibrary)]

@@ -6,7 +6,9 @@ using ObjCRuntime;
 namespace OpenGLES {
 	public partial class EAGLContext {
 		public enum PresentationMode {
+			/// <summary>To be added.</summary>
 			AtTime = 0,
+			/// <summary>To be added.</summary>
 			AfterMinimumDuration = 1,
 		}
 

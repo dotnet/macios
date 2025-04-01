@@ -4,21 +4,9 @@ parameters:
   type: string
   default: 'latest'
 
-- name: pool
-  type: string
-  default: automatic
-  values:
-  - pr
-  - ci
-  - automatic
-
 - name: runTests
   type: boolean
   default: true
-
-- name: runDeviceTests
-  type: boolean
-  default: false
 
 - name: runWindowsIntegration
   type: boolean
@@ -41,114 +29,6 @@ parameters:
 - name: macOSName
   type: string
 
-# Ideally we should read/get the list of platforms from somewhere else, instead of hardcoding them here.
-# Note that this is _all_ the platforms we support (not just the enabled ones).
-- name: supportedPlatforms
-  type: object
-  default: [
-    {
-      platform: iOS,
-      isDotNetPlatform: true,
-    },
-    {
-      platform: macOS,
-      isDotNetPlatform: true,
-    },
-    {
-      platform: tvOS,
-      isDotNetPlatform: true,
-    },
-    {
-      platform: MacCatalyst,
-      isDotNetPlatform: true,
-    },
-    {
-      # when running platform-specific test runs, we also need a special test run that executes tests that only runs when multiple platforms are enabled
-      platform: Multiple,
-      isDotNetPlatform: true,
-    }
-  ]
-
-- name: testConfigurations
-  type: object
-  default: [
-    # Disabled by default #
-    # {
-    #   label: bcl,
-    #   splitByPlatforms: false,
-    # },
-    {
-      label: cecil,
-      splitByPlatforms: false,
-      testPrefix: 'simulator_tests',
-    },
-    {
-      label: dotnettests,
-      splitByPlatforms: true,
-      needsMultiplePlatforms: true,
-      testPrefix: 'simulator_tests',
-    },
-    {
-      label: fsharp,
-      splitByPlatforms: false,
-      testPrefix: 'simulator_tests',
-    },
-    {
-      label: framework,
-      splitByPlatforms: false,
-      testPrefix: 'simulator_tests',
-    },
-    {
-      label: generator,
-      splitByPlatforms: false,
-      testPrefix: 'simulator_tests',
-    },
-    {
-      label: interdependent-binding-projects,
-      splitByPlatforms: false,
-      testPrefix: 'simulator_tests',
-    },
-    {
-      label: introspection,
-      splitByPlatforms: false,
-      testPrefix: 'simulator_tests',
-    },
-    {
-      label: linker,
-      splitByPlatforms: false,
-      testPrefix: 'simulator_tests',
-    },
-    {
-      label: mmp,
-      splitByPlatforms: false,
-      testPrefix: 'simulator_tests',
-    },
-    {
-      label: monotouch,
-      splitByPlatforms: true,
-      needsMultiplePlatforms: false,
-      testPrefix: 'simulator_tests',
-    },
-    {
-      label: msbuild,
-      splitByPlatforms: false,
-      testPrefix: 'simulator_tests',
-    },
-    {
-      label: xcframework,
-      splitByPlatforms: false,
-      testPrefix: 'simulator_tests',
-    },
-    {
-      label: xtro,
-      splitByPlatforms: false,
-      testPrefix: 'simulator_tests',
-    },
-  ]
-
-- name: deviceTestsConfigurations
-  type: object
-
 - name: stageDisplayNamePrefix
   type: string
   default: ''
@@ -170,21 +50,6 @@ stages:
     condition: eq(dependencies.${{ parameters.dependsOn }}.result, '${{ parameters.dependsOnResult }}')
   jobs:
   
-  - ${{ if eq(parameters.pool, 'automatic') }}:
-    - job: AgentPoolSelector       # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=azure-devops&tabs=yaml
-      pool:                        # Consider using an agentless (server) job here, but would need to host selection logic as an Azure function: https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema#server
-        vmImage: ubuntu-latest
-      steps:
-      - checkout: none             # https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema#checkout
-
-      # Selects appropriate agent pool based on trigger type (PR or CI); manually triggered builds target the PR pool
-      - template: azure-devops-pools/agent-pool-selector.yml@yaml-templates
-        parameters:
-          agentPoolPR: $(PRBuildPool)
-          agentPoolPRUrl: $(PRBuildPoolUrl)
-          agentPoolCI: $(CIBuildPool)
-          agentPoolCIUrl: $(CIBuildPoolUrl)
-
   - job: configure
     displayName: 'Configure build'
     pool:
@@ -200,11 +65,9 @@ stages:
       parameters: 
         repositoryAlias: ${{ parameters.repositoryAlias }}
         commit: ${{ parameters.commit }}
-        testConfigurations: ${{ parameters.testConfigurations }}
-        supportedPlatforms: ${{ parameters.supportedPlatforms }}
-        testsLabels: '--label=skip-all-tests,run-ios-tests,run-ios-simulator-tests,run-tvos-tests,run-mac-tests,run-maccatalyst-tests,run-system-permission-tests'
         statusContext: 'VSTS: simulator tests' 
         uploadArtifacts: true
+        use1ES: false
 
 # always run simulator tests
 - template: ./tests/stage.yml
@@ -214,13 +77,10 @@ stages:
     isPR: ${{ parameters.isPR }}
     repositoryAlias: ${{ parameters.repositoryAlias }}
     commit: ${{ parameters.commit }}
-    testConfigurations: ${{ parameters.testConfigurations }}
-    supportedPlatforms: ${{ parameters.supportedPlatforms }}
     stageName: 'simulator_tests'
     displayName: '${{ parameters.stageDisplayNamePrefix }}Simulator tests'
-    testPool: '' # use the default
+    testPool: $(PRBuildPool)
     statusContext: 'VSTS: simulator tests'
-    makeTarget: 'jenkins'
     vsdropsPrefix: ${{ variables.vsdropsPrefix }}
     keyringPass: $(pass--lab--mac--builder--keychain)
     gitHubToken: $(Github.Token)
@@ -235,8 +95,6 @@ stages:
     statusContext: 'VSTS: test results'
     vsdropsPrefix: ${{ variables.vsdropsPrefix }}
     condition: ${{ parameters.runTests }}
-    testConfigurations: ${{ parameters.testConfigurations }}
-    supportedPlatforms: ${{ parameters.supportedPlatforms }}
     isPR: ${{ parameters.isPR }}
     repositoryAlias: ${{ parameters.repositoryAlias }}
     commit: ${{ parameters.commit }}

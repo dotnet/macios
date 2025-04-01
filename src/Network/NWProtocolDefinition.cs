@@ -29,13 +29,11 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Watch (6, 0)]
 #endif
 	public class NWProtocolDefinition : NativeObject {
 		[Preserve (Conditional = true)]
 #if NET
-		internal NWProtocolDefinition (NativeHandle handle, bool owns) : base (handle, owns) {}
+		internal NWProtocolDefinition (NativeHandle handle, bool owns) : base (handle, owns) { }
 #else
 		public NWProtocolDefinition (NativeHandle handle, bool owns) : base (handle, owns) { }
 #endif
@@ -49,7 +47,9 @@ namespace Network {
 				return false;
 			if (!(other is NWProtocolDefinition otherDefinition))
 				return false;
-			return nw_protocol_definition_is_equal (GetCheckedHandle (), otherDefinition.Handle) != 0;
+			bool result = nw_protocol_definition_is_equal (GetCheckedHandle (), otherDefinition.Handle) != 0;
+			GC.KeepAlive (otherDefinition);
+			return result;
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -183,7 +183,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
@@ -197,7 +196,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]

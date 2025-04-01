@@ -112,11 +112,6 @@ namespace Introspection {
 			case "MonoMac.Growl":
 			case "Growl":
 				return true;
-			case "QTKit":
-				// QTKit is gone in 10.15.
-				if (Mac.CheckSystemVersion (10, 15))
-					return true;
-				break;
 			}
 
 			return base.Skip (type);
@@ -194,36 +189,6 @@ namespace Introspection {
 			case "newWindowForTab:": // "This method can be implemented in the responder chain", optional but not protocol directly on NSResponder
 				switch (type.Name) {
 				case "NSViewController":
-					return true;
-				}
-				break;
-			case "startup:": // tested on mac os x with a swift project, selector does respond
-				switch (type.Name) {
-				case "ChipDeviceController":
-					return true;
-				}
-				break;
-			case "readAttributeFabricIdWithResponseHandler:": // tested on mac os x with a swift project, selector does respond
-				switch (type.Name) {
-				case "ChipGeneralCommissioning":
-					return true;
-				}
-				break;
-			case "removeAllFabrics:": // tested on mac os x with a swift project, selector does respond
-				switch (type.Name) {
-				case "ChipOperationalCredentials":
-					return true;
-				}
-				break;
-			case "removeFabric:nodeId:vendorId:responseHandler:": // tested on mac os x with a swift project, selector does respond
-				switch (type.Name) {
-				case "ChipOperationalCredentials":
-					return true;
-				}
-				break;
-			case "setFabric:responseHandler:": // tested on mac os x with a swift project, selector does respond
-				switch (type.Name) {
-				case "ChipOperationalCredentials":
 					return true;
 				}
 				break;
@@ -1227,7 +1192,7 @@ namespace Introspection {
 			return base.CheckResponse (value, actualType, method, ref name);
 		}
 
-		protected override bool CheckStaticResponse (bool value, Type actualType, Type declaredType, ref string name)
+		protected override bool CheckStaticResponse (bool value, Type actualType, Type declaredType, MethodBase method, ref string name)
 		{
 			switch (name) {
 			// 10.7 exceptions
@@ -1249,7 +1214,7 @@ namespace Introspection {
 			case "metadataItemsFromArray:filteredAndSortedAccordingToPreferredLanguages:":
 				return true;
 			}
-			return base.CheckStaticResponse (value, actualType, declaredType, ref name);
+			return base.CheckStaticResponse (value, actualType, declaredType, method, ref name);
 		}
 
 		protected override bool SkipInit (string selector, MethodBase m)

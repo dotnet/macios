@@ -5,7 +5,6 @@ parameters:
 
 - name: testsLabels
   type: string
-  default: '--label=run-ios-tests,run-non-monotouch-tests,run-monotouch-tests,run-mscorlib-tests' # default context, since we started dealing with iOS devices.
 
 - name: label
   type: string
@@ -27,10 +26,6 @@ parameters:
   type: string
   default: 'ios' # default context, since we started dealing with iOS devices.
 
-- name: makeTarget
-  type: string
-  default: 'vsts-device-tests' # target to be used to run the tests
-
 - name: uploadPrefix
   type: string
   default: '$(MaciosUploadPrefix)'
@@ -50,17 +45,12 @@ steps:
     fi
   displayName: Install powershell
 
-- bash: |
-    set -e
-    # don't do "set -x" here, because the duplicate vso output might confuse Azure DevOps
-    echo "Running tests on $AGENT_NAME"
-    echo "##vso[task.setvariable variable=TESTS_BOT;isOutput=true]$AGENT_NAME"
-    echo "##vso[task.setvariable variable=TESTS_LABEL;isOutput=true]${{ parameters.label }}"
-    echo "##vso[task.setvariable variable=TESTS_PLATFORM;isOutput=true]${{ parameters.testPlatform }}"
-    echo "##vso[task.setvariable variable=TESTS_ATTEMPT;isOutput=true]$SYSTEM_JOBATTEMPT"
-    # assume something is going to fail
-    echo "##vso[task.setvariable variable=TESTS_JOBSTATUS;isOutput=true]Failed"
+- pwsh: '& "$(Build.SourcesDirectory)/$Env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/initialize-test-output-variables.ps1"'
   displayName: Set output variables
+  env:
+    TESTS_LABEL: ${{ parameters.label }}
+    TESTS_PLATFORM: ${{ parameters.testPlatform }}
+    LABEL_WITH_PLATFORM: ${{ parameters.labelWithPlatform }}
 
 - pwsh: |
     Write-Host "##vso[task.setvariable variable=TESTS_USE_SYSTEM]true"
@@ -128,7 +118,7 @@ steps:
     # show environment
     env -0 | sort -z | tr '\0' '\n' || true
 
-    make -C tests ${{ parameters.makeTarget }}
+    make -C tests jenkins
 
     # We reached the end! This means we succeeded!
     set +x

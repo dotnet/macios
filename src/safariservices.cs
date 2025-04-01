@@ -47,6 +47,9 @@ namespace SafariServices {
 	[Introduced (PlatformName.MacCatalyst, 13, 4)]
 	[BaseType (typeof (NSObject))]
 	interface SFContentBlockerState {
+		/// <summary>Gets a value that tells whether or not the associated content blocker extension is enabled.</summary>
+		///         <value>A value that tells whether or not the associated content blocker extension is enabled.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; }
 	}
@@ -85,6 +88,12 @@ namespace SafariServices {
 	[DisableDefaultCtor] // NSGenericException Misuse of SSReadingList interface. Use class method defaultReadingList.
 	partial interface SSReadingList {
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Static, Export ("defaultReadingList")]
 		SSReadingList DefaultReadingList { get; }
@@ -129,27 +138,59 @@ namespace SafariServices {
 		[Export ("initWithURL:")]
 		NativeHandle Constructor (NSUrl url);
 
+		/// <summary>An object that can respond to the delegate protocol for this type</summary>
+		///         <value>The instance that will respond to events and data requests.</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+		///         </remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("delegate", ArgumentSemantic.Assign)]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the SafariServices.ISFSafariViewControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the SafariServices.ISFSafariViewControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		ISFSafariViewControllerDelegate Delegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("preferredBarTintColor", ArgumentSemantic.Assign)]
 		UIColor PreferredBarTintColor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("preferredControlTintColor", ArgumentSemantic.Assign)]
 		UIColor PreferredControlTintColor { get; set; }
 
+		/// <summary>Gets the configuration that was used when creating this view controller.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("configuration", ArgumentSemantic.Copy)]
 		SFSafariViewControllerConfiguration Configuration { get; }
 
+		/// <summary>Gets or sets a value that controls the style of the dismiss button.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("dismissButtonStyle", ArgumentSemantic.Assign)]
 		SFSafariViewControllerDismissButtonStyle DismissButtonStyle { get; set; }
@@ -205,19 +246,25 @@ namespace SafariServices {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SFSafariViewControllerConfiguration : NSCopying {
+		/// <summary>Gets or sets a Boolean value that controls whether the view controller will enter Reader mode if it is available.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("entersReaderIfAvailable")]
 		bool EntersReaderIfAvailable { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("barCollapsingEnabled")]
 		bool BarCollapsingEnabled { get; set; }
 
 		[NullAllowed]
-		[iOS (15, 0), MacCatalyst (15, 0), NoMac, NoTV, NoWatch]
+		[iOS (15, 0), MacCatalyst (15, 0), NoMac, NoTV]
 		[Export ("activityButton", ArgumentSemantic.Copy)]
 		SFSafariViewControllerActivityButton ActivityButton { get; set; }
 
 		[NullAllowed]
-		[NoWatch, NoTV, iOS (15, 2), MacCatalyst (15, 2), NoMac]
+		[NoTV, iOS (15, 2), MacCatalyst (15, 2), NoMac]
 		[Export ("eventAttribution", ArgumentSemantic.Copy)]
 		UIEventAttribution EventAttribution { get; set; }
 	}
@@ -250,7 +297,6 @@ namespace SafariServices {
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -292,7 +338,6 @@ namespace SafariServices {
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -318,7 +363,6 @@ namespace SafariServices {
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[NoMacCatalyst]
 	[Protocol]
 	interface SFSafariExtensionHandling {
@@ -363,7 +407,6 @@ namespace SafariServices {
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -377,28 +420,38 @@ namespace SafariServices {
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	interface SFSafariPageProperties {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("url")]
 		NSUrl Url { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("title")]
 		string Title { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("usesPrivateBrowsing")]
 		bool UsesPrivateBrowsing { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("active")]
 		bool Active { [Bind ("isActive")] get; }
 	}
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -428,7 +481,6 @@ namespace SafariServices {
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -455,7 +507,6 @@ namespace SafariServices {
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -482,7 +533,6 @@ namespace SafariServices {
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[NoMacCatalyst]
 	[BaseType (typeof (NSViewController))]
 	interface SFSafariExtensionViewController {
@@ -495,7 +545,6 @@ namespace SafariServices {
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	interface SFSafariExtensionHandler : NSExtensionRequestHandling, SFSafariExtensionHandling {
@@ -521,7 +570,6 @@ namespace SafariServices {
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -541,7 +589,7 @@ namespace SafariServices {
 	}
 
 	[Static]
-	[iOS (15, 0), MacCatalyst (15, 0), NoTV, NoWatch]
+	[iOS (15, 0), MacCatalyst (15, 0), NoTV]
 	[DisableDefaultCtor]
 	interface SFExtension {
 		[Field ("SFExtensionMessageKey")]
@@ -552,7 +600,7 @@ namespace SafariServices {
 		NSString ProfileKey { get; }
 	}
 
-	[iOS (15, 0), MacCatalyst (15, 0), NoMac, NoTV, NoWatch]
+	[iOS (15, 0), MacCatalyst (15, 0), NoMac, NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SFSafariViewControllerActivityButton : NSCopying, NSSecureCoding {
@@ -567,7 +615,7 @@ namespace SafariServices {
 		string ExtensionIdentifier { get; }
 	}
 
-	[iOS (15, 0), MacCatalyst (15, 0), NoMac, NoTV, NoWatch]
+	[iOS (15, 0), MacCatalyst (15, 0), NoMac, NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SFSafariViewControllerPrewarmingToken /* Privately conforms to NSCoding and NSSecureCoding */
@@ -576,7 +624,7 @@ namespace SafariServices {
 		void Invalidate ();
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoMac, NoTV, NoWatch]
+	[iOS (16, 0), MacCatalyst (16, 0), NoMac, NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SFSafariViewControllerDataStore {
@@ -592,7 +640,7 @@ namespace SafariServices {
 	delegate void SFAddToHomeScreenActivityItemGetWebAppManifestCallback ([NullAllowed] BEWebAppManifest appManifest);
 	delegate void SFAddToHomeScreenActivityItemGetHomeScreenWebAppInfoCallback ([NullAllowed] SFAddToHomeScreenInfo appManifest);
 
-	[iOS (17, 4), MacCatalyst (17, 4), NoMac, NoTV, NoWatch]
+	[iOS (17, 4), MacCatalyst (17, 4), NoMac, NoTV]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface SFAddToHomeScreenActivityItem {
 

@@ -50,9 +50,15 @@ namespace Foundation {
 			this.Handle = handle;
 		}
 
+		/// <summary>Handle (pointer) to the unmanaged object representation.</summary>
+		///         <value>A pointer</value>
+		///         <remarks>This IntPtr is a handle to the underlying unmanaged representation for this object.</remarks>
 		public NativeHandle Handle { get; private set; }
 
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Name {
 			get {
 				return CFString.FromHandle (NSZoneName (Handle));
@@ -68,6 +74,8 @@ namespace Foundation {
 		}
 
 		// note: Copy(NSZone) and MutableCopy(NSZone) with a nil pointer == default
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly NSZone Default = new NSZone (NSDefaultMallocZone (), false);
 #endif
 	}

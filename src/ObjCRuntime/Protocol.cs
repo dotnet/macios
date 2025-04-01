@@ -20,6 +20,16 @@ namespace ObjCRuntime {
 #if !COREBUILD
 		NativeHandle handle;
 
+		/// <param name="name">Name of the protocol.</param>
+		///         <summary>Creates an instance of Protocol by looking up the protocol by name.</summary>
+		///         <remarks>
+		///           <para>
+		/// 	    This method throws an ArgumentException if the protocol specified by <paramref name="name" /> does not exist. 
+		/// 	  </para>
+		///           <para>
+		/// 	    The <see cref="M:ObjCRuntime.Protocol.GetHandle(System.String)" /> method performs a similar role, except it only returns the low-level handle to the protocol. 
+		/// 	  </para>
+		///         </remarks>
 		public Protocol (string name)
 		{
 			this.handle = objc_getProtocol (name);
@@ -28,6 +38,10 @@ namespace ObjCRuntime {
 				throw new ArgumentException (String.Format ("'{0}' is an unknown protocol", name));
 		}
 
+		/// <param name="type">The managed type (which must represent an Objective-C protocol).</param>
+		///         <summary>Creates an instance of the Protocol class for the specified managed type (which must represent an Objective-C protocol).</summary>
+		///         <remarks>
+		///         </remarks>
 		public Protocol (Type type)
 		{
 			this.handle = Runtime.GetProtocolForType (type);
@@ -45,10 +59,20 @@ namespace ObjCRuntime {
 			this.handle = handle;
 		}
 
+		/// <summary>Handle (pointer) to the unmanaged object representation.</summary>
+		///         <value>A pointer</value>
+		///         <remarks>
+		///           <para>This IntPtr is a handle to the underlying unmanaged representation for this object.</para>
+		///         </remarks>
 		public NativeHandle Handle {
 			get { return this.handle; }
 		}
 
+		/// <summary>Name of the protocol.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string? Name {
 			get {
 				IntPtr ptr = protocol_getName (Handle);
@@ -56,6 +80,11 @@ namespace ObjCRuntime {
 			}
 		}
 
+		/// <param name="name">Name of the protocol.</param>
+		///         <summary>Returns the handle to the Objective-C protocol.</summary>
+		///         <returns>IntPtr.Zero if the protocol is not known, or a handle to the protocol.</returns>
+		///         <remarks>
+		///         </remarks>
 		public static IntPtr GetHandle (string name)
 		{
 			return objc_getProtocol (name);

@@ -47,6 +47,7 @@ namespace VideoToolbox {
 				ret = VTCreateCGImageFromCVPixelBuffer (pixelBuffer.GetCheckedHandle (),
 				IntPtr.Zero, // no options as of 9.0/10.11 - always pass NULL
 				&imagePtr);
+				GC.KeepAlive (pixelBuffer);
 			}
 
 			image = Runtime.GetINativeObject<CGImage> (imagePtr, true); // This is already retained CM_RETURNS_RETAINED_PARAMETER
@@ -62,7 +63,6 @@ namespace VideoToolbox {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
 #else
-		[NoWatch]
 		[NoTV]
 		[NoiOS]
 #endif
@@ -75,7 +75,6 @@ namespace VideoToolbox {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
 #else
-		[NoWatch]
 		[NoTV]
 		[NoiOS]
 #endif
@@ -90,7 +89,7 @@ namespace VideoToolbox {
 		[SupportedOSPlatform ("macos15.0")]
 		[UnsupportedOSPlatform ("tvos")]
 #else
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
+		[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
 #endif
 		[DllImport (Constants.VideoToolboxLibrary)]
 		unsafe static extern VTStatus VTCopyVideoDecoderExtensionProperties (
@@ -108,13 +107,14 @@ namespace VideoToolbox {
 		[SupportedOSPlatform ("macos15.0")]
 		[UnsupportedOSPlatform ("tvos")]
 #else
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
+		[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
 #endif
 		public static NSDictionary? CopyVideoDecoderExtensionProperties (CMFormatDescription formatDescription, out VTStatus error)
 		{
 			IntPtr handle;
 			unsafe {
 				error = VTCopyVideoDecoderExtensionProperties (formatDescription.GetNonNullHandle (nameof (formatDescription)), &handle);
+				GC.KeepAlive (formatDescription);
 			}
 			return Runtime.GetNSObject<NSDictionary> (handle, owns: true);
 		}
@@ -127,7 +127,7 @@ namespace VideoToolbox {
 		[SupportedOSPlatform ("macos15.0")]
 		[UnsupportedOSPlatform ("tvos")]
 #else
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
+		[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
 #endif
 		[DllImport (Constants.VideoToolboxLibrary)]
 		unsafe static extern VTStatus VTCopyRAWProcessorExtensionProperties (
@@ -145,13 +145,14 @@ namespace VideoToolbox {
 		[SupportedOSPlatform ("macos15.0")]
 		[UnsupportedOSPlatform ("tvos")]
 #else
-		[NoWatch, NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
+		[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
 #endif
 		public static NSDictionary? CopyRawProcessorExtensionProperties (CMFormatDescription formatDescription, out VTStatus error)
 		{
 			IntPtr handle;
 			unsafe {
 				error = VTCopyRAWProcessorExtensionProperties (formatDescription.GetNonNullHandle (nameof (formatDescription)), &handle);
+				GC.KeepAlive (formatDescription);
 			}
 			return Runtime.GetNSObject<NSDictionary> (handle, owns: true);
 		}

@@ -16,15 +16,6 @@ namespace MonoTouchFixtures.AVFoundation {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class AVAudioSourceNodeTest {
-#if __WATCHOS__
-		[SetUp]
-		public void SetUp ()
-		{
-			// Looks like this test broke in the watchOS simulator, so just skip it there.
-			TestRuntime.AssertNotSimulator ();
-		}
-#endif
-
 		[Test]
 		public void SourceNodeCallback ()
 		{
@@ -68,7 +59,6 @@ namespace MonoTouchFixtures.AVFoundation {
 		void SourceNodeCallbackTest (TaskCompletionSource<bool> callbackEvent, Func<AVAudioSourceNode> createSourceNode)
 		{
 			TestRuntime.AssertNotVirtualMachine ();
-			TestRuntime.AssertNotSimulator (); // broke in Xcode 16.2 beta 2 https://github.com/xamarin/maccore/issues/2956
 
 #if __MACOS__
 			var defaultCaptureDevice = AVCaptureDevice.GetDefaultDevice (AVMediaTypes.Audio);
@@ -81,14 +71,12 @@ namespace MonoTouchFixtures.AVFoundation {
 
 			session.SetCategory (AVAudioSessionCategory.PlayAndRecord, AVAudioSessionCategoryOptions.DefaultToSpeaker, out var categoryError);
 			Assert.IsNull (categoryError, "Category Error");
-#if !__WATCHOS__
 			session.SetPreferredSampleRate (48000, out var sampleRateError);
 			Assert.IsNull (sampleRateError, "Sample Rate Error");
 			if (session.MaximumInputNumberOfChannels == 0)
 				Assert.Ignore ("The current system doesn't support any input channels");
 			session.SetPreferredInputNumberOfChannels (1, out var inputChannelCountError);
 			Assert.IsNull (inputChannelCountError, "Input Channel Count Error");
-#endif // !__WATCHOS__
 			session.SetActive (true);
 #endif // __MACOS__
 

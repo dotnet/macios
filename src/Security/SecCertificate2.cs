@@ -32,13 +32,11 @@ namespace Security {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Watch (5, 0)]
 #endif
 	public class SecCertificate2 : NativeObject {
 		[Preserve (Conditional = true)]
 #if NET
-		internal SecCertificate2 (NativeHandle handle, bool owns) : base (handle, owns) {}
+		internal SecCertificate2 (NativeHandle handle, bool owns) : base (handle, owns) { }
 #else
 		public SecCertificate2 (NativeHandle handle, bool owns) : base (handle, owns) { }
 #endif
@@ -51,11 +49,15 @@ namespace Security {
 			if (certificate is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (certificate));
 			InitializeHandle (sec_certificate_create (certificate.Handle));
+			GC.KeepAlive (certificate);
 		}
 
 		[DllImport (Constants.SecurityLibrary)]
 		extern static /* SecCertificateRef */ IntPtr sec_certificate_copy_ref (/* OS_sec_certificate */ IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SecCertificate Certificate => new SecCertificate (sec_certificate_copy_ref (GetCheckedHandle ()), owns: true);
 	}
 }

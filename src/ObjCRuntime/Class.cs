@@ -38,6 +38,19 @@ namespace ObjCRuntime {
 #if !COREBUILD
 		NativeHandle handle;
 
+		/// <summary>Determines whether Xamarin.iOS will check in the NSObject constructor if the corresponding native object was successfully created (the default value is true).</summary>
+		///         <remarks>
+		///           <para>
+		///       Traditionally Xamarin.iOS has allowed managed objects to be
+		///       created without a native peer. The behavior has however been
+		///       inconsistent between types, and in the case of types from
+		///       third-party libraries it would result in instances that would,
+		///       if used, most likely crash the process with a stack overflow.
+		///     </para>
+		///           <para>
+		///       With this check the behavior will be consistent among all types.
+		///     </para>
+		///         </remarks>
 		public static bool ThrowOnInitFailure = true;
 
 		// We use the last significant bit of the IntPtr to store if this is a custom class or not.
@@ -71,6 +84,11 @@ namespace ObjCRuntime {
 			}
 		}
 
+		/// <param name="name">The name of the Objective-C class.</param>
+		///         <summary>Creates a class from a name.</summary>
+		///         <remarks>
+		///           <para>Xamarin.iOS will look up the class in the Objective-C runtime and return the instance or throw an ArgumentException if the class could not be found.</para>
+		///         </remarks>
 		public Class (string name)
 		{
 			this.handle = objc_getClass (name);
@@ -79,6 +97,11 @@ namespace ObjCRuntime {
 				ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (name), $"Unknown class {name}");
 		}
 
+		/// <param name="type">A managed type.</param>
+		///         <summary>Creates a class from the specified Type.</summary>
+		///         <remarks>
+		///           <para>This will trigger the class registration with the Xamarin.iOS runtime.</para>
+		///         </remarks>
 		public Class (Type type)
 		{
 			this.handle = GetHandle (type);
@@ -100,14 +123,27 @@ namespace ObjCRuntime {
 			this.handle = handle;
 		}
 
+		/// <summary>Handle (pointer) to the unmanaged object representation.</summary>
+		///         <value>A pointer</value>
+		///         <remarks>
+		///           <para>This IntPtr is a handle to the underlying unmanaged representation for this object.</para>
+		///         </remarks>
 		public NativeHandle Handle {
 			get { return this.handle; }
 		}
 
+		/// <summary>The Objective-C handle to the super class for this class.</summary>
+		///         <value />
+		///         <remarks>
+		///         </remarks>
 		public NativeHandle SuperClass {
 			get { return class_getSuperclass (Handle); }
 		}
 
+		/// <summary>The Objective-C name for this class.</summary>
+		///         <value />
+		///         <remarks>
+		///         </remarks>
 		public string? Name {
 			get {
 				var ptr = class_getName (Handle);
@@ -115,6 +151,11 @@ namespace ObjCRuntime {
 			}
 		}
 
+		/// <param name="name">The name of the class to lookup.</param>
+		///         <summary>Returns the unmanaged handle to the Objective-C Class.</summary>
+		///         <returns>The unmanaged handle for the specified Objective-C class.</returns>
+		///         <remarks>
+		///         </remarks>
 		public static NativeHandle GetHandle (string name)
 		{
 			return objc_getClass (name);
@@ -143,11 +184,31 @@ namespace ObjCRuntime {
 		// class (it will be faster than GetHandle, but it will
 		// not compile unless the class in question actually exists
 		// as an ObjectiveC class in the binary).
+		/// <param name="name">Type for an NSObject-derived class</param>
+		///         <summary>Gets the Objective-C handle to the given type.</summary>
+		///         <returns>The Objective-C handle to the object.</returns>
+		///         <remarks>
+		///           <para>
+		///       This method looks up the Objective-C handle for the specified type. This method is special-cased by the AOT compiler to become an inlined, static reference to the type. This is significantly faster that calling <see cref="M:ObjCRuntime.Selector.GetHandle(System.String)" />, but it also means that the class must exist in the executable (or in a framework the executable is linked with).
+		///     </para>
+		///         </remarks>
 		public static NativeHandle GetHandleIntrinsic (string name)
 		{
 			return objc_getClass (name);
 		}
 
+		/// <param name="type">Type for an NSObject-derived class</param>
+		///         <summary>Gets the Objective-C handle of the given type.</summary>
+		///         <returns>The Objective-C handle to the object.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    This method looks up the Objective-C handle for the specified type, or registers the specified type with the Objective-C runtime if it was not previously registered.
+		/// 	  </para>
+		///           <para>
+		/// 	    The class must be derived from NSObject.   If the class is flagged with the [Register] attribute, the name specified in this Register attribute is the name that will be used for looking up or register the class.
+		///
+		/// 	  </para>
+		///         </remarks>
 		public static NativeHandle GetHandle (Type type)
 		{
 			return GetClassHandle (type, true, out _);
@@ -537,7 +598,7 @@ namespace ObjCRuntime {
 		//
 		// IL2026: Using member 'System.Reflection.Module.ResolveMethod(Int32)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. Trimming changes metadata tokens.
 		// IL2026: Using member 'System.Reflection.Module.ResolveType(Int32)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. Trimming changes metadata tokens.
-		[UnconditionalSuppressMessage("", "IL2026", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
+		[UnconditionalSuppressMessage ("", "IL2026", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 #endif
 		static MemberInfo? ResolveTokenNonManagedStatic (Assembly assembly, Module? module, uint token)
 		{
@@ -753,6 +814,17 @@ namespace ObjCRuntime {
 			return uint.MaxValue;
 		}
 
+		static internal Class [] FromTypes (params Type [] types)
+		{
+			if (types is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (types));
+
+			var classes = new Class [types.Length];
+			for (var i = 0; i < types.Length; i++)
+				classes [i] = new Class (types [i]);
+			return classes;
+		}
+
 		/*
 		Type must have been previously registered.
 		*/
@@ -852,6 +924,16 @@ namespace ObjCRuntime {
 			}
 			cls = object_getClass (obj);
 			return true;
+		}
+
+		[DllImport (Messaging.LIBOBJC_DYLIB)]
+		unsafe extern static int objc_getClassList (IntPtr* buffer, int bufferCount);
+
+		/// <summary>Gets the total number of registered Objective-C classes in the process.</summary>
+		/// <remarks>A side-effect of counting all the registered Objective-C classes, is that all stub (unrealized) classes are also realized and can be used afterwards.</remarks>
+		internal unsafe static int GetClassCount ()
+		{
+			return objc_getClassList (null, 0);
 		}
 
 		[DllImport (Messaging.LIBOBJC_DYLIB)]

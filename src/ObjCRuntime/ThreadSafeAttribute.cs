@@ -30,16 +30,27 @@ namespace ObjCRuntime {
 
 	public sealed class ThreadSafeAttribute : Attribute {
 
+		/// <summary>Initializes a new ThreadSafe attribute.</summary>
+		///         <remarks>
+		///         </remarks>
 		public ThreadSafeAttribute ()
 		{
 			Safe = true;
 		}
 
+		/// <param name="safe">If the API is thread-safe or not.</param>
+		///         <summary>Initializes a new ThreadSafe attribute.</summary>
+		///         <remarks>
+		///         </remarks>
 		public ThreadSafeAttribute (bool safe)
 		{
 			Safe = safe;
 		}
 
+		/// <summary>If the API is thread-safe or not.</summary>
+		///         <value>If the API is thread-safe or not.</value>
+		///         <remarks>
+		///         </remarks>
 		public bool Safe { get; private set; }
 	}
 }

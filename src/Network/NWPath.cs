@@ -28,13 +28,11 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Watch (6, 0)]
 #endif
 	public class NWPath : NativeObject {
 		[Preserve (Conditional = true)]
 #if NET
-		internal NWPath (NativeHandle handle, bool owns) : base (handle, owns) {}
+		internal NWPath (NativeHandle handle, bool owns) : base (handle, owns) { }
 #else
 		public NWPath (NativeHandle handle, bool owns) : base (handle, owns) { }
 #endif
@@ -42,26 +40,41 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static NWPathStatus nw_path_get_status (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWPathStatus Status => nw_path_get_status (GetCheckedHandle ());
 
 		[DllImport (Constants.NetworkLibrary)]
 		extern static byte nw_path_is_expensive (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsExpensive => nw_path_is_expensive (GetCheckedHandle ()) != 0;
 
 		[DllImport (Constants.NetworkLibrary)]
 		extern static byte nw_path_has_ipv4 (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool HasIPV4 => nw_path_has_ipv4 (GetCheckedHandle ()) != 0;
 
 		[DllImport (Constants.NetworkLibrary)]
 		extern static byte nw_path_has_ipv6 (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool HasIPV6 => nw_path_has_ipv6 (GetCheckedHandle ()) != 0;
 
 		[DllImport (Constants.NetworkLibrary)]
 		extern static byte nw_path_has_dns (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool HasDns => nw_path_has_dns (GetCheckedHandle ()) != 0;
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -72,6 +85,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static IntPtr nw_path_copy_effective_local_endpoint (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWEndpoint? EffectiveLocalEndpoint {
 			get {
 				var x = nw_path_copy_effective_local_endpoint (GetCheckedHandle ());
@@ -84,6 +100,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static IntPtr nw_path_copy_effective_remote_endpoint (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWEndpoint? EffectiveRemoteEndpoint {
 			get {
 				var x = nw_path_copy_effective_remote_endpoint (GetCheckedHandle ());
@@ -101,7 +120,9 @@ namespace Network {
 			if (other is null)
 				return false;
 
-			return nw_path_is_equal (GetCheckedHandle (), other.Handle) != 0;
+			bool result = nw_path_is_equal (GetCheckedHandle (), other.Handle) != 0;
+			GC.KeepAlive (other);
+			return result;
 		}
 
 		// Returning 'byte' since 'bool' isn't blittable
@@ -270,7 +291,6 @@ namespace Network {
 #else
 		[iOS (14, 2)]
 		[TV (14, 2)]
-		[Watch (7, 1)]
 		[MacCatalyst (14, 2)]
 #endif
 		[DllImport (Constants.NetworkLibrary)]
@@ -284,7 +304,6 @@ namespace Network {
 #else
 		[iOS (14, 2)]
 		[TV (14, 2)]
-		[Watch (7, 1)]
 		[MacCatalyst (14, 2)]
 #endif
 		public NWPathUnsatisfiedReason GetUnsatisfiedReason ()

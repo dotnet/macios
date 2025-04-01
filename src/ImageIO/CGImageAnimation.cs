@@ -19,50 +19,47 @@ using ObjCRuntime;
 namespace ImageIO {
 
 #if NET
-    [SupportedOSPlatform ("ios")]
-    [SupportedOSPlatform ("maccatalyst")]
-    [SupportedOSPlatform ("macos")]
-    [SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("tvos")]
 #endif
 	public static class CGImageAnimation {
 
 		public delegate void CGImageSourceAnimationHandler (nint index, CGImage image, out bool stop);
 
 #if NET
-        [SupportedOSPlatform ("macos")]
-        [SupportedOSPlatform ("ios13.0")]
-        [SupportedOSPlatform ("tvos13.0")]
-        [SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 #else
 		[Introduced (PlatformName.iOS, 13, 0, PlatformArchitecture.All)]
 		[Introduced (PlatformName.TvOS, 13, 0, PlatformArchitecture.All)]
-		[Introduced (PlatformName.WatchOS, 6, 0, PlatformArchitecture.All)]
 #endif
 		[DllImport (Constants.ImageIOLibrary)]
 		unsafe static extern /* OSStatus */ CGImageAnimationStatus CGAnimateImageAtURLWithBlock ( /* CFURLRef */ IntPtr url, /* CFDictionaryRef _iio_Nullable */ IntPtr options, /* CGImageSourceAnimationHandler */ BlockLiteral* block);
 
 #if NET
-        [SupportedOSPlatform ("macos")]
-        [SupportedOSPlatform ("ios13.0")]
-        [SupportedOSPlatform ("tvos13.0")]
-        [SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 #else
 		[Introduced (PlatformName.iOS, 13, 0, PlatformArchitecture.All)]
 		[Introduced (PlatformName.TvOS, 13, 0, PlatformArchitecture.All)]
-		[Introduced (PlatformName.WatchOS, 6, 0, PlatformArchitecture.All)]
 #endif
 		[DllImport (Constants.ImageIOLibrary)]
 		unsafe static extern /* OSStatus */ CGImageAnimationStatus CGAnimateImageDataWithBlock ( /* CFDataRef _Nonnull */ IntPtr data, /* CFDictionaryRef _Nullable */ IntPtr options, /* CGImageSourceAnimationHandler _Nonnull */ BlockLiteral* block);
 
 #if NET
-        [SupportedOSPlatform ("macos")]
-        [SupportedOSPlatform ("ios13.0")]
-        [SupportedOSPlatform ("tvos13.0")]
-        [SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 #else
 		[Introduced (PlatformName.iOS, 13, 0, PlatformArchitecture.All)]
 		[Introduced (PlatformName.TvOS, 13, 0, PlatformArchitecture.All)]
-		[Introduced (PlatformName.WatchOS, 6, 0, PlatformArchitecture.All)]
 #endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static CGImageAnimationStatus AnimateImage (NSUrl url, CGImageAnimationOptions options, CGImageSourceAnimationHandler handler)
@@ -80,19 +77,21 @@ namespace ImageIO {
 				using var block = new BlockLiteral ();
 				block.SetupBlockUnsafe (SDCGImageSourceAnimationBlock.Handler, handler);
 #endif
-				return CGAnimateImageAtURLWithBlock (url.Handle, options.GetHandle (), &block);
+				CGImageAnimationStatus status = CGAnimateImageAtURLWithBlock (url.Handle, options.GetHandle (), &block);
+				GC.KeepAlive (url);
+				GC.KeepAlive (options);
+				return status;
 			}
 		}
 
 #if NET
-        [SupportedOSPlatform ("macos")]
-        [SupportedOSPlatform ("ios13.0")]
-        [SupportedOSPlatform ("tvos13.0")]
-        [SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 #else
 		[Introduced (PlatformName.iOS, 13, 0, PlatformArchitecture.All)]
 		[Introduced (PlatformName.TvOS, 13, 0, PlatformArchitecture.All)]
-		[Introduced (PlatformName.WatchOS, 6, 0, PlatformArchitecture.All)]
 #endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static CGImageAnimationStatus AnimateImage (NSData data, CGImageAnimationOptions options, CGImageSourceAnimationHandler handler)
@@ -110,7 +109,10 @@ namespace ImageIO {
 				using var block = new BlockLiteral ();
 				block.SetupBlockUnsafe (SDCGImageSourceAnimationBlock.Handler, handler);
 #endif
-				return CGAnimateImageDataWithBlock (data.Handle, options.GetHandle (), &block);
+				CGImageAnimationStatus status = CGAnimateImageDataWithBlock (data.Handle, options.GetHandle (), &block);
+				GC.KeepAlive (data);
+				GC.KeepAlive (options);
+				return status;
 			}
 		}
 

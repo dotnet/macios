@@ -32,13 +32,11 @@ namespace Security {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Watch (5, 0)]
 #endif
 	public class SecTrust2 : NativeObject {
 		[Preserve (Conditional = true)]
 #if NET
-		internal SecTrust2 (NativeHandle handle, bool owns) : base (handle, owns) {}
+		internal SecTrust2 (NativeHandle handle, bool owns) : base (handle, owns) { }
 #else
 		public SecTrust2 (NativeHandle handle, bool owns) : base (handle, owns) { }
 #endif
@@ -52,11 +50,15 @@ namespace Security {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (trust));
 
 			Handle = sec_trust_create (trust.Handle);
+			GC.KeepAlive (trust);
 		}
 
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr sec_trust_copy_ref (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SecTrust Trust => new SecTrust (sec_trust_copy_ref (GetCheckedHandle ()), owns: true);
 	}
 }

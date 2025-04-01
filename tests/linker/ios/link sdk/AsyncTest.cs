@@ -20,18 +20,15 @@ namespace LinkSdk {
 		[Test]
 		public void Bug12221 ()
 		{
-#if __WATCHOS__
-			Assert.Ignore ("WatchOS doesn't support BSD sockets, which our network stack currently requires.");
-#endif
 			try {
 				LoadCategories ().GetAwaiter ().GetResult ();
-			} catch (TaskCanceledException tce) {
+			} catch (TaskCanceledException) {
 				TestRuntime.IgnoreInCI ("Ignore any download timeouts");
 				throw;
 			} catch (HttpRequestException hre) {
 				TestRuntime.IgnoreInCIIfForbidden (hre); // Ignore any 403 errors.
 				throw;
-			} catch (IOException ie) {
+			} catch (IOException) {
 				/*
 				 *  LinkSdk.AsyncTests
 				 *  	[FAIL] Bug12221 : System.Net.Http.HttpRequestException : The SSL connection could not be established, see inner exception.

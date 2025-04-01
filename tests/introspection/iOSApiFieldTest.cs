@@ -68,10 +68,6 @@ namespace Introspection {
 			case "IOSurface":
 				// Available in the simulator starting with iOS 11
 				return TestRuntime.IsSimulatorOrDesktop && !TestRuntime.CheckXcodeVersion (9, 0);
-			case "iAd":
-				// largely removed in xcode 13, including ADClient.ErrorDomain
-				// since using this code leads to rejections it's totally removed (so no version check)
-				return true;
 			case "NewsstandKit":
 				// largely removed in xcode 15
 				return true;
@@ -176,6 +172,10 @@ namespace Introspection {
 			// Xcode 12.2 Beta 1 does not ship this but it is available in Xcode 12.0...
 			case "HKMetadataKeyBarometricPressure":
 				return true;
+			case "kCMSampleAttachmentKey_HDR10PlusPerFrameData":
+				if (TestRuntime.IsSimulator)
+					return !TestRuntime.CheckXcodeVersion (14, 1); // not available in the iOS 16.0 simulator, but it is in the iOS 16.1 simulator
+				goto default;
 			default:
 				return false;
 			}

@@ -33,7 +33,9 @@ namespace MetalPerformanceShaders {
 			if (imageBatch is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (imageBatch));
 
-			return MPSImageBatchIncrementReadCount (imageBatch.Handle, amount);
+			nuint count = MPSImageBatchIncrementReadCount (imageBatch.Handle, amount);
+			GC.KeepAlive (imageBatch);
+			return count;
 		}
 
 		[DllImport (Constants.MetalPerformanceShadersLibrary)]
@@ -48,6 +50,8 @@ namespace MetalPerformanceShaders {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (commandBuffer));
 
 			MPSImageBatchSynchronize (imageBatch.Handle, commandBuffer.Handle);
+			GC.KeepAlive (imageBatch);
+			GC.KeepAlive (commandBuffer);
 		}
 
 #if NET
@@ -71,7 +75,9 @@ namespace MetalPerformanceShaders {
 			if (imageBatch is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (imageBatch));
 
-			return MPSImageBatchResourceSize (imageBatch.Handle);
+			nuint size = MPSImageBatchResourceSize (imageBatch.Handle);
+			GC.KeepAlive (imageBatch);
+			return size;
 		}
 
 		// TODO: Disabled due to 'MPSImageBatchIterate' is not in the native library rdar://47282304.

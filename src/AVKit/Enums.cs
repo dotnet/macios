@@ -10,11 +10,16 @@ namespace AVKit {
 	/// <summary>Determines which user interface elements are visible in the AVPlayerView</summary>
 	[Native]
 	public enum AVPlayerViewControlsStyle : long {
+		/// <summary>Do not show any controls.</summary>
 		None,
+		/// <summary>Use inline controls.</summary>
 		Inline,
+		/// <summary>Use floating cnotrols.</summary>
 		Floating,
+		/// <summary>Use minimal controls.</summary>
 		Minimal,
-		Default = Inline
+		/// <summary>Use the default style (Inline)</summary>
+		Default = Inline,
 	}
 #endif
 
@@ -23,14 +28,16 @@ namespace AVKit {
 	[TV (13, 0)]
 #if NET
 	[NoMac]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 #endif
 	[Native]
 	[ErrorDomain ("AVKitErrorDomain")]
 	public enum AVKitError : long {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Unknown = -1000,
+		/// <summary>To be added.</summary>
 		PictureInPictureStartFailed = -1001,
 		ContentRatingUnknown = -1100,
 		ContentDisallowedByPasscode = -1101,
@@ -38,7 +45,6 @@ namespace AVKit {
 		RecordingFailed = -1200,
 	}
 
-	[NoWatch]
 	[NoTV]
 	[NoMac]
 	[iOS (13, 0)]
@@ -51,7 +57,6 @@ namespace AVKit {
 	}
 
 	[NoiOS]
-	[NoWatch]
 	[NoTV]
 	[NoMacCatalyst]
 	[Native]

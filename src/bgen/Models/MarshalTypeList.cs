@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-#if NET
 using System.Diagnostics.CodeAnalysis;
-#endif
 
 #nullable enable
 
@@ -66,6 +64,8 @@ public class MarshalTypeList : List<MarshalType> {
 			Add (new MarshalType (typeCache.CMFormatDescription!, create: "CMFormatDescription.Create (", closingCreate: ", %OWNS%)!"));
 			Add (typeCache.CMAudioFormatDescription);
 			Add (typeCache.CMVideoFormatDescription);
+			Add (typeCache.CMTaggedBufferGroup);
+			Add (typeCache.CMTagCollection);
 		}
 		if (frameworks.HaveAudioUnit)
 			Add (typeCache.AudioUnit);
@@ -92,11 +92,7 @@ public class MarshalTypeList : List<MarshalType> {
 			base.Add (type);
 	}
 
-#if NET
 	public bool TryGetMarshalType (Type t, [NotNullWhen (true)] out MarshalType? res)
-#else
-	public bool TryGetMarshalType (Type t, out MarshalType? res)
-#endif
 	{
 		res = null;
 		// quick out for common (and easy to detect) cases

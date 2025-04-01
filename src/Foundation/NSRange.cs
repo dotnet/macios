@@ -35,9 +35,15 @@ namespace Foundation {
 	[SupportedOSPlatform ("tvos")]
 #endif
 	public struct NSRange : IEquatable<NSRange> {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nint Location;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nint Length;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly nint NotFound = nint.MaxValue;
 
 		public NSRange (nint start, nint len)

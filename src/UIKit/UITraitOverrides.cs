@@ -7,8 +7,6 @@
 // Copyright 2023 Microsoft Corp. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
 
 using Foundation;
@@ -76,6 +74,7 @@ namespace UIKit {
 #else
 			var ret = global::ObjCRuntime.Messaging.bool_objc_msgSend_IntPtr (this.Handle, Selector.GetHandle ("containsTrait:"), trait__handle__);
 #endif
+			GC.KeepAlive (trait);
 			return ret != 0;
 		}
 
@@ -93,9 +92,8 @@ namespace UIKit {
 #else
 			global::ObjCRuntime.Messaging.void_objc_msgSend_IntPtr (this.Handle, Selector.GetHandle ("removeTrait:"), trait__handle__);
 #endif
+			GC.KeepAlive (trait);
 		}
 #endif // !XAMCORE_5_0
 	}
 }
-
-#endif // !__WATCHOS__

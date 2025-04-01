@@ -143,6 +143,8 @@ public class BaseTypeAttribute : Attribute {
 	// too many objects, but two cases in particular that users keep
 	// trampling on: UIAlertView and UIActionSheet
 	public string KeepRefUntil { get; set; }
+
+	public bool IsStubClass { get; set; }
 }
 
 //
@@ -654,17 +656,7 @@ public class AppearanceAttribute : Attribute {
 // }
 [AttributeUsage (AttributeTargets.Interface, AllowMultiple = false)]
 public class CategoryAttribute : Attribute {
-#if !NET
-	public bool AllowStaticMembers;
-#endif
 	public CategoryAttribute () { }
-#if !NET
-	[Obsolete ("Inline the static members in this category in the category's class (and remove this obsolete once fixed)")]
-	public CategoryAttribute (bool allowStaticMembers)
-	{
-		AllowStaticMembers = allowStaticMembers;
-	}
-#endif
 }
 
 //
@@ -882,7 +874,6 @@ public class BackingFieldTypeAttribute : Attribute {
 public class NoMethodAttribute : Attribute {
 }
 
-#if NET
 public enum AvailabilityKind {
 	Introduced,
 	Deprecated,
@@ -934,9 +925,6 @@ public abstract class AvailabilityBaseAttribute : Attribute {
 			break;
 		case PlatformName.TvOS:
 			builder.AppendLine ("#if __TVOS__");
-			break;
-		case PlatformName.WatchOS:
-			builder.AppendLine ("#if __WATCHOS__");
 			break;
 		case PlatformName.MacOSX:
 			builder.AppendLine ("#if __MACOS__");
@@ -1089,6 +1077,7 @@ public class UnavailableAttribute : AvailabilityBaseAttribute {
 	}
 }
 
+[AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
 public sealed class TVAttribute : IntroducedAttribute {
 	public TVAttribute (byte major, byte minor)
 		: base (PlatformName.TvOS, (int) major, (int) minor)
@@ -1101,6 +1090,9 @@ public sealed class TVAttribute : IntroducedAttribute {
 	}
 }
 
+#if !XAMCORE_5_0
+[Obsolete ("Do not use, watchOS is not supported in .NET")]
+[AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
 public sealed class WatchAttribute : IntroducedAttribute {
 	public WatchAttribute (byte major, byte minor)
 		: base (PlatformName.WatchOS, (int) major, (int) minor)
@@ -1112,7 +1104,9 @@ public sealed class WatchAttribute : IntroducedAttribute {
 	{
 	}
 }
+#endif // XAMCORE_5_0
 
+[AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
 public sealed class MacCatalystAttribute : IntroducedAttribute {
 	public MacCatalystAttribute (byte major, byte minor)
 		: base (PlatformName.MacCatalyst, (int) major, (int) minor)
@@ -1125,6 +1119,7 @@ public sealed class MacCatalystAttribute : IntroducedAttribute {
 	}
 }
 
+[AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
 public sealed class NoMacAttribute : UnavailableAttribute {
 	public NoMacAttribute ()
 		: base (PlatformName.MacOSX)
@@ -1132,6 +1127,7 @@ public sealed class NoMacAttribute : UnavailableAttribute {
 	}
 }
 
+[AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
 public sealed class NoiOSAttribute : UnavailableAttribute {
 	public NoiOSAttribute ()
 		: base (PlatformName.iOS)
@@ -1139,13 +1135,18 @@ public sealed class NoiOSAttribute : UnavailableAttribute {
 	}
 }
 
+#if !XAMCORE_5_0
+[Obsolete ("Do not use, watchOS is not supported in .NET")]
+[AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
 public sealed class NoWatchAttribute : UnavailableAttribute {
 	public NoWatchAttribute ()
 		: base (PlatformName.WatchOS)
 	{
 	}
 }
+#endif // XAMCORE_5_0
 
+[AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
 public sealed class NoTVAttribute : UnavailableAttribute {
 	public NoTVAttribute ()
 		: base (PlatformName.TvOS)
@@ -1153,6 +1154,7 @@ public sealed class NoTVAttribute : UnavailableAttribute {
 	}
 }
 
+[AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
 public sealed class NoMacCatalystAttribute : UnavailableAttribute {
 	public NoMacCatalystAttribute ()
 		: base (PlatformName.MacCatalyst)
@@ -1225,4 +1227,3 @@ enum Platform : ulong {
 	TV_10_0 = 0x30000000000a0000,
 	TV_11_0 = 0x30000000000b0000,
 }
-#endif // NET

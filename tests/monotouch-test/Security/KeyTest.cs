@@ -511,9 +511,9 @@ namespace MonoTouchFixtures.Security {
 									Assert.That (data.ToArray (), Is.EqualTo (plain.ToArray ()), "roundtrip");
 								}
 
-#if __MACCATALYST__ || __IOS__ || __TVOS__ || __WATCHOS__
+#if __MACCATALYST__ || __IOS__ || __TVOS__
 								var badDecrypt = !TestRuntime.CheckXcodeVersion (15, 0);
-#elif __IOS__ || __TVOS__ || __WATCHOS__
+#elif __IOS__ || __TVOS__
 								var badDecrypt = !TestRuntime.CheckXcodeVersion (16, 0);
 #else
 								var badDecrypt = true;

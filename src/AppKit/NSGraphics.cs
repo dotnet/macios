@@ -38,13 +38,19 @@ using NativeHandle = System.IntPtr;
 #nullable enable
 
 namespace AppKit {
-#if NET
 	[SupportedOSPlatform ("macos")]
-#endif
 	public static class NSGraphics {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly float White = 1;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly float Black = 0;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly float LightGray = (float) 2 / 3.0f;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly float DarkGray = (float) 1 / 3.0f;
 
 		[DllImport (Constants.AppKitLibrary)]
@@ -62,6 +68,7 @@ namespace AppKit {
 			NSWindowDepth rv;
 			unsafe {
 				rv = NSBestDepth (colorspace.Handle, bitsPerSample, bitsPerPixel, (byte) (planar ? 1 : 0), &exactMatchValue);
+				GC.KeepAlive (colorspace);
 			}
 			exactMatch = exactMatchValue != 0;
 			return rv;
@@ -77,6 +84,7 @@ namespace AppKit {
 			NSWindowDepth rv;
 			unsafe {
 				rv = NSBestDepth (colorspace.Handle, bitsPerSample, bitsPerPixel, (byte) (planar ? 1 : 0), &exactMatchValue);
+				GC.KeepAlive (colorspace);
 			}
 			exactMatch = exactMatchValue != 0;
 			return rv;
@@ -111,12 +119,17 @@ namespace AppKit {
 		{
 			if (colorspaceName is null)
 				throw new ArgumentNullException ("colorspaceName");
-			return NSNumberOfColorComponents (colorspaceName.Handle);
+			nint result = NSNumberOfColorComponents (colorspaceName.Handle);
+			GC.KeepAlive (colorspaceName);
+			return result;
 		}
 
 		[DllImport (Constants.AppKitLibrary)]
 		extern static IntPtr NSAvailableWindowDepths ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NSWindowDepth [] AvailableWindowDepths {
 			get {
 				IntPtr depPtr = NSAvailableWindowDepths ();
@@ -179,24 +192,18 @@ namespace AppKit {
 			NSFrameRectWithWidthUsingOperation (rect, frameWidth, (nuint) (ulong) operation);
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("macos14.0", "Use 'NSCursor.DisappearingItemCursor' instead."	)]
-#else
-		[Deprecated (PlatformName.MacOSX, 14, 0, message: "Use 'NSCursor.DisappearingItemCursor' instead.")]
-#endif
+		[ObsoletedOSPlatform ("macos14.0", "Use 'NSCursor.DisappearingItemCursor' instead.")]
 		[DllImport (Constants.AppKitLibrary, EntryPoint = "NSShowAnimationEffect")]
 		extern static void NSShowAnimationEffect (nuint animationEffect, CGPoint centerLocation, CGSize size, NativeHandle animationDelegate, NativeHandle didEndSelector, IntPtr contextInfo);
 
-#if NET
 		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("macos14.0", "Use 'NSCursor.DisappearingItemCursor' instead."	)]
-#else
-		[Deprecated (PlatformName.MacOSX, 14, 0, message: "Use 'NSCursor.DisappearingItemCursor' instead.")]
-#endif
+		[ObsoletedOSPlatform ("macos14.0", "Use 'NSCursor.DisappearingItemCursor' instead.")]
 		public static void ShowAnimationEffect (NSAnimationEffect animationEffect, CGPoint centerLocation, CGSize size, NSObject animationDelegate, Selector didEndSelector, IntPtr contextInfo)
 		{
 			NSShowAnimationEffect ((nuint) (ulong) animationEffect, centerLocation, size, animationDelegate.GetHandle (), didEndSelector.Handle, contextInfo);
+			GC.KeepAlive (animationDelegate);
+			GC.KeepAlive (didEndSelector);
 		}
 
 		public static void ShowAnimationEffect (NSAnimationEffect animationEffect, CGPoint centerLocation, CGSize size, Action endedCallback)
@@ -250,21 +257,13 @@ namespace AppKit {
 		[DllImport (Constants.AppKitLibrary, EntryPoint = "NSDrawWindowBackground")]
 		public extern static void DrawWindowBackground (CGRect aRect);
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.11", "Not usually necessary, 'NSAnimationContext.RunAnimation' can be used instead and not suffer from performance issues.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Not usually necessary, 'NSAnimationContext.RunAnimation' can be used instead and not suffer from performance issues.")]
-#endif
 		[DllImport (Constants.AppKitLibrary, EntryPoint = "NSDisableScreenUpdates")]
 		public extern static void DisableScreenUpdates ();
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.11", "Not usually necessary, 'NSAnimationContext.RunAnimation' can be used instead and not suffer from performance issues.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Not usually necessary, 'NSAnimationContext.RunAnimation' can be used instead and not suffer from performance issues.")]
-#endif
 		[DllImport (Constants.AppKitLibrary, EntryPoint = "NSEnableScreenUpdates")]
 		public extern static void EnableScreenUpdates ();
 

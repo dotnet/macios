@@ -19,20 +19,12 @@ using Foundation;
 using CoreFoundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreMedia {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#else
-	[Watch (6, 0)]
-#endif
 	public class CMBlockBuffer : NativeObject, ICMAttachmentBearer {
 		CMCustomBlockAllocator? customAllocator;
 
@@ -45,6 +37,12 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		unsafe extern static /* OSStatus */ CMBlockBufferError CMBlockBufferCreateEmpty (/* CFAllocatorRef */ IntPtr allocator, /* uint32_t */ uint subBlockCapacity, CMBlockBufferFlags flags, /* CMBlockBufferRef* */ IntPtr* output);
 
+		/// <param name="subBlockCapacity">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CMBlockBuffer? CreateEmpty (uint subBlockCapacity, CMBlockBufferFlags flags, out CMBlockBufferError error)
 		{
 			IntPtr buffer;
@@ -76,6 +74,7 @@ namespace CoreMedia {
 			IntPtr buffer;
 			unsafe {
 				error = CMBlockBufferCreateWithBufferReference (IntPtr.Zero, targetBuffer.GetHandle (), offsetToData, dataLength, flags, &buffer);
+				GC.KeepAlive (targetBuffer);
 			}
 			if (error != CMBlockBufferError.None)
 				return null;
@@ -99,12 +98,17 @@ namespace CoreMedia {
 					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (targetBuffer));
 			}
 
-			return CMBlockBufferAppendBufferReference (GetCheckedHandle (), targetBuffer.GetHandle (), offsetToData, dataLength, flags);
+			CMBlockBufferError error = CMBlockBufferAppendBufferReference (GetCheckedHandle (), targetBuffer.GetHandle (), offsetToData, dataLength, flags);
+			GC.KeepAlive (targetBuffer);
+			return error;
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* OSStatus */ CMBlockBufferError CMBlockBufferAssureBlockMemory (/* CMBlockBufferRef */ IntPtr buffer);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CMBlockBufferError AssureBlockMemory ()
 		{
 			return CMBlockBufferAssureBlockMemory (GetCheckedHandle ());
@@ -207,6 +211,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* size_t */ nuint CMBlockBufferGetDataLength (/* CMBlockBufferRef */ IntPtr theBuffer);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nuint DataLength {
 			get {
 				return CMBlockBufferGetDataLength (Handle);
@@ -227,6 +234,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* Boolean */ byte CMBlockBufferIsEmpty (/* CMBlockBufferRef */ IntPtr theBuffer);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsEmpty {
 			get {
 				return CMBlockBufferIsEmpty (GetCheckedHandle ()) != 0;
@@ -296,9 +306,11 @@ namespace CoreMedia {
 			unsafe {
 				if (customBlockSource is null) {
 					error = CMBlockBufferCreateContiguous (IntPtr.Zero, sourceBuffer.Handle, IntPtr.Zero, null, offsetToData, dataLength, flags, &buffer);
+					GC.KeepAlive (sourceBuffer);
 				} else {
 					fixed (CMCustomBlockAllocator.CMBlockBufferCustomBlockSource* cblock = &customBlockSource.Cblock) {
 						error = CMBlockBufferCreateContiguous (IntPtr.Zero, sourceBuffer.Handle, IntPtr.Zero, cblock, offsetToData, dataLength, flags, &buffer);
+						GC.KeepAlive (sourceBuffer);
 					}
 				}
 			}

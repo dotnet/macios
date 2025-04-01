@@ -7,8 +7,6 @@
 // Copyright 2014 Xamarin Inc. All rights reserved.
 //
 
-#if !WATCH
-
 using System;
 using System.Runtime.InteropServices;
 
@@ -34,8 +32,7 @@ namespace SceneKit {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
 
 			SCNExportJavaScriptModule (context.Handle);
+			GC.KeepAlive (context);
 		}
 	}
 }
-
-#endif

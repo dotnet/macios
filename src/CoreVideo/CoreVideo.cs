@@ -36,105 +36,148 @@ using ObjCRuntime;
 namespace CoreVideo {
 
 	// CVPixelBuffer.h
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public struct CVPlanarComponentInfo {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public /* int32_t */ int Offset;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public /* uint32_t */ uint RowBytes;
 	}
 
 	// CVPixelBuffer.h
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public struct CVPlanarPixelBufferInfo {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CVPlanarComponentInfo [] ComponentInfo;
 	}
 
 	// CVPixelBuffer.h
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public struct CVPlanarPixelBufferInfo_YCbCrPlanar {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CVPlanarComponentInfo ComponentInfoY;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CVPlanarComponentInfo ComponentInfoCb;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CVPlanarComponentInfo ComponentInfoCr;
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public struct CVPlanarPixelBufferInfo_YCbCrBiPlanar {
+		/// <summary>A descriptor for the Y buffer.</summary>
+		///         <remarks>To be added.</remarks>
 		public CVPlanarComponentInfo ComponentInfoY;
+		/// <summary>A descriptor for the Cb/CR buffer.</summary>
+		///         <remarks>To be added.</remarks>
 		public CVPlanarComponentInfo ComponentInfoCbCr;
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public struct CVTimeStamp {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public UInt32 Version;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Int32 VideoTimeScale;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Int64 VideoTime;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public UInt64 HostTime;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public double RateScalar;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Int64 VideoRefreshPeriod;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CVSMPTETime SMPTETime;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public UInt64 Flags;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public UInt64 Reserved;
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public struct CVSMPTETime {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Int16 Subframes;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Int16 SubframeDivisor;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public UInt32 Counter;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public UInt32 Type;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public UInt32 Flags;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Int16 Hours;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Int16 Minutes;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Int16 Seconds;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Int16 Frames;
 	}
 
 #if !XAMCORE_5_0
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public struct CVFillExtendedPixelsCallBackData {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nint /* CFIndex */ Version;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CVFillExtendedPixelsCallBack FillCallBack;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public IntPtr UserInfo;
 	}
 
 	public delegate bool CVFillExtendedPixelsCallBack (IntPtr pixelBuffer, IntPtr refCon);
 #endif // !XAMCORE_5_0
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -154,10 +197,10 @@ namespace CoreVideo {
 			if (FillCallBack is null)
 				throw new InvalidOperationException ($"The callback is null.");
 			var rv = FillCallBack (buffer.GetCheckedHandle (), UserInfo);
+			GC.KeepAlive (buffer);
 			return rv != 0;
 		}
 #endif
 	}
-#endif
 
 }

@@ -7,8 +7,6 @@
 // Copyright 2014 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 #nullable enable
 
 using System;
@@ -1343,4 +1341,3 @@ namespace MonoTouchFixtures.SceneKit {
 		static extern SCNMatrix4 SCNMatrix4Invert (SCNMatrix4 a);
 	}
 }
-#endif // !__WATCHOS__

@@ -179,7 +179,7 @@ namespace VideoToolbox {
 			VTVideoEncoderSpecification? encoderSpecification, // hardware acceleration is default behavior on iOS. no opt-in required.
 				NSDictionary? sourceImageBufferAttributes, // Undocumented options, probably always null
 #if NET
-		        delegate* unmanaged</* void* CM_NULLABLE */ IntPtr, /* void* CM_NULLABLE */ IntPtr, /* OSStatus */ VTStatus, VTEncodeInfoFlags, /* CMSampleBufferRef CM_NULLABLE */ IntPtr, void> staticCback)
+				delegate* unmanaged</* void* CM_NULLABLE */ IntPtr, /* void* CM_NULLABLE */ IntPtr, /* OSStatus */ VTStatus, VTEncodeInfoFlags, /* CMSampleBufferRef CM_NULLABLE */ IntPtr, void> staticCback)
 #else
 				CompressionOutputCallback? staticCback)
 #endif
@@ -196,10 +196,12 @@ namespace VideoToolbox {
 				callbackHandle.IsAllocated ? (staticCback) : null,
 				GCHandle.ToIntPtr (callbackHandle),
 				&ret);
+			GC.KeepAlive (encoderSpecification);
+			GC.KeepAlive (sourceImageBufferAttributes);
 
 			if (result == VTStatus.Ok && ret != IntPtr.Zero)
 				return new VTCompressionSession (ret, true) {
-					callbackHandle = callbackHandle
+					callbackHandle = callbackHandle,
 				};
 
 			if (callbackHandle.IsAllocated)
@@ -260,7 +262,9 @@ namespace VideoToolbox {
 			if (sourceFrame is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (sourceFrame));
 
-			return EncodeFrame (imageBuffer, presentationTimestamp, duration, frameProperties, sourceFrame.GetCheckedHandle (), out infoFlags);
+			VTStatus status = EncodeFrame (imageBuffer, presentationTimestamp, duration, frameProperties, sourceFrame.GetCheckedHandle (), out infoFlags);
+			GC.KeepAlive (sourceFrame);
+			return status;
 		}
 
 		public VTStatus EncodeFrame (CVImageBuffer imageBuffer, CMTime presentationTimestamp, CMTime duration,
@@ -271,9 +275,12 @@ namespace VideoToolbox {
 
 			infoFlags = default;
 			unsafe {
-				return VTCompressionSessionEncodeFrame (GetCheckedHandle (), imageBuffer.Handle, presentationTimestamp, duration,
+				VTStatus status = VTCompressionSessionEncodeFrame (GetCheckedHandle (), imageBuffer.Handle, presentationTimestamp, duration,
 					frameProperties.GetHandle (),
 					sourceFrame, (VTEncodeInfoFlags*) Unsafe.AsPointer<VTEncodeInfoFlags> (ref infoFlags));
+				GC.KeepAlive (imageBuffer);
+				GC.KeepAlive (frameProperties);
+				return status;
 			}
 		}
 
@@ -311,7 +318,9 @@ namespace VideoToolbox {
 			if (sourceFrame is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (sourceFrame));
 
-			return EncodeFrame (imageBuffer, presentationTimestamp, duration, frameProperties, sourceFrame.GetCheckedHandle (), out infoFlags, outputHandler);
+			VTStatus status = EncodeFrame (imageBuffer, presentationTimestamp, duration, frameProperties, sourceFrame.GetCheckedHandle (), out infoFlags, outputHandler);
+			GC.KeepAlive (sourceFrame);
+			return status;
 		}
 
 		public VTStatus EncodeFrame (CVImageBuffer imageBuffer, CMTime presentationTimestamp, CMTime duration,
@@ -327,10 +336,13 @@ namespace VideoToolbox {
 			block.SetupBlockUnsafe (compressionOutputHandlerTrampoline, outputHandler);
 
 			try {
-				return VTCompressionSessionEncodeFrameWithOutputHandler (GetCheckedHandle (),
+				VTStatus status = VTCompressionSessionEncodeFrameWithOutputHandler (GetCheckedHandle (),
 					imageBuffer.Handle, presentationTimestamp, duration,
 					frameProperties.GetHandle (),
 					out infoFlags, ref block);
+				GC.KeepAlive (imageBuffer);
+				GC.KeepAlive (frameProperties);
+				return status;
 			} finally {
 				block.CleanupBlock ();
 			}
@@ -445,14 +457,13 @@ namespace VideoToolbox {
 			return VTSessionSetProperties (GetCheckedHandle (), options.Dictionary.Handle);
 		}
 
-#if !__WATCHOS__
 #if NET
 		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 #else
-		[iOS (17, 0), TV (17, 0), Mac (14, 0), NoWatch]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0)]
 #endif
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static /* Boolean */ byte VTIsStereoMVHEVCEncodeSupported ();
@@ -465,12 +476,11 @@ namespace VideoToolbox {
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 #else
-		[iOS (17, 0), TV (17, 0), Mac (14, 0), NoWatch]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0)]
 #endif
 		public static bool IsStereoMvHevcEncodeSupported ()
 		{
 			return VTIsStereoMVHEVCEncodeSupported () != 0;
 		}
-#endif // !__WATCHOS__
 	}
 }

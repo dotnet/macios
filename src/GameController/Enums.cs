@@ -19,12 +19,15 @@ namespace GameController {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GCController.GetMicroGamepadController()' instead.")]
 	[Native]
 	public enum GCExtendedGamepadSnapshotDataVersion : long {
+		/// <summary>To be added.</summary>
 		Version1 = 0x0100,
+		/// <summary>To be added.</summary>
 		Version2 = 0x0101,
 	}
 
 	[Native]
 	public enum GCMicroGamepadSnapshotDataVersion : long {
+		/// <summary>To be added.</summary>
 		Version1 = 0x0100,
 	}
 
@@ -60,14 +63,19 @@ namespace GameController {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum GCControllerPlayerIndex : long {
+		/// <summary>The index that represents the condition where the player index is not set. (<c>-1</c>)</summary>
 		Unset = -1,
+		/// <summary>The index for the first player. (<c>0</c>)</summary>
 		Index1 = 0,
+		/// <summary>The index for the second player. (<c>1</c>)</summary>
 		Index2,
+		/// <summary>The index for the third player. (<c>2</c>)</summary>
 		Index3,
+		/// <summary>The index for the fourth player. (<c>3</c>)</summary>
 		Index4,
 	}
 
-	[iOS (16, 0), Mac (13, 0), NoWatch, TV (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0), Mac (13, 0), TV (16, 0), MacCatalyst (16, 0)]
 	[Native]
 	public enum GCDevicePhysicalInputElementChange : long {
 		UnknownChange = -1,

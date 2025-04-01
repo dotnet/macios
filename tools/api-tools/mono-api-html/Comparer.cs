@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Linq;
 
 namespace Mono.ApiTools {
@@ -37,11 +38,103 @@ namespace Mono.ApiTools {
 		protected List<XElement> removed;
 		protected ApiChanges modified;
 
+		public abstract string GroupName { get; }
+		public abstract string ElementName { get; }
+
 		public Comparer (State state)
 		{
 			State = state;
 			removed = new List<XElement> ();
 			modified = new ApiChanges (state);
+		}
+
+		protected void WriteAttributes (XElement element)
+		{
+			foreach (var attribute in element.EnumerateAttributes ())
+				Indent ().WriteLine (RenderAttribute (attribute));
+		}
+
+		protected string RenderAttribute (XElement attribute)
+		{
+			var sb = new StringBuilder ();
+			sb.Append ("[");
+			sb.Append (attribute.GetAttribute ("name"));
+			sb.Append ("(");
+			var args = attribute.Element ("arguments");
+			if (args is not null) {
+				var arguments = args.Elements ("argument").ToArray ();
+				foreach (var arg in arguments) {
+					var value = arg.GetAttribute ("value");
+					var isString = arg.GetAttribute ("type") == "System.String";
+					if (isString)
+						sb.Append ('"');
+					sb.Append (value);
+					if (isString)
+						sb.Append ('"');
+					if (arg != arguments.Last ())
+						sb.Append (", ");
+				}
+			}
+			var props = attribute.Element ("properties");
+			if (props is not null) {
+				var properties = props.Elements ("property").ToArray ();
+				foreach (var prop in properties) {
+					sb.Append (prop.GetAttribute ("name"));
+					sb.Append (" = ");
+					sb.Append (prop.GetAttribute ("value"));
+					if (prop != properties.Last ())
+						sb.Append (", ");
+				}
+			}
+			sb.Append (")]");
+			return sb.ToString ();
+		}
+
+		protected void RenderAttributes (XElement source, XElement target, ApiChange diff)
+		{
+			var srcAttributes = source.EnumerateAttributes ().Select (RenderAttribute).OrderBy (v => v).ToArray ();
+			var tgtAttributes = target.EnumerateAttributes ().Select (RenderAttribute).OrderBy (v => v).ToArray ();
+			if (srcAttributes.SequenceEqual (tgtAttributes))
+				return;
+
+			var added = tgtAttributes.Except (srcAttributes).ToList ();
+			var removed = srcAttributes.Except (tgtAttributes).ToList ();
+			var modified = new List<(string Source, string Target)> ();
+
+			for (var i = added.Count - 1; i >= 0; i--) {
+				var addedType = added [i].Substring (0, added [i].IndexOf ('('));
+				var removedOfSameTypeIndex = removed.FindIndex ((v) => v.StartsWith (addedType));
+				if (removedOfSameTypeIndex == -1)
+					continue;
+
+				modified.Add ((removed [removedOfSameTypeIndex], added [i]));
+				added.RemoveAt (i);
+				removed.RemoveAt (removedOfSameTypeIndex);
+			}
+
+			if (added.Any ()) {
+				foreach (var a in added) {
+					var breaking = a.StartsWith ("[System.Diagnostics.CodeAnalysis.ExperimentalAttribute");
+					diff.AppendAdded (a + "\n", breaking);
+				}
+			}
+			if (modified.Any ()) {
+				foreach (var a in modified) {
+					diff.AppendModified (a.Source + "\n", a.Target + "\n", false);
+				}
+			}
+			if (removed.Any ()) {
+				foreach (var a in removed) {
+					diff.AppendRemoved (a + "\n", false);
+				}
+			}
+		}
+
+		protected virtual bool IsBreakingRemoval (XElement e)
+		{
+			if (e.IsExperimental ())
+				return false;
+			return true;
 		}
 
 		public State State { get; }

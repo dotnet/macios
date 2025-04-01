@@ -43,35 +43,57 @@ namespace Foundation {
 		string? selector;
 		ArgumentSemantic semantic;
 
+		/// <summary>Use this method to expose a C# method, property or constructor as a method that can be invoked from Objective-C.</summary>
+		///         <remarks>Use this method to expose a C# method, property or constructor as a method that can be invoked from Objective-C.   The name is derived from the actual method or property.</remarks>
 		protected ExportAttribute () { }
 
+		/// <param name="selector">The selector name.</param>
+		///         <summary>Exports the given method or property to Objective-C land with the specified method name.</summary>
+		///         <remarks>Use this method to expose a C# method, property or constructor as a method that can be invoked from Objective-C.</remarks>
 		public ExportAttribute (string? selector)
 		{
 			this.selector = selector;
 			this.semantic = ArgumentSemantic.None;
 		}
 
+		/// <param name="selector">The selector name.</param>
+		///         <param name="semantic">The semantics of the setter (Assign, Copy or Retain).</param>
+		///         <summary>Use this method to expose a C# method, property or constructor as a method that can be invoked from Objective-C.</summary>
+		///         <remarks>Use this method to expose a C# method, property or constructor as a method that can be invoked from Objective-C.</remarks>
 		public ExportAttribute (string? selector, ArgumentSemantic semantic)
 		{
 			this.selector = selector;
 			this.semantic = semantic;
 		}
 
+		/// <summary>The name of the C# selector if specified, or null if it is derived from the property name or method.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public string? Selector {
 			get { return this.selector; }
 			set { this.selector = value; }
 		}
 
+		/// <summary>The semantics for object ownership on setter properties or methods.</summary>
+		///         <value>The assignment ownership semantics for setting the value.</value>
+		///         <remarks>To be added.</remarks>
 		public ArgumentSemantic ArgumentSemantic {
 			get { return this.semantic; }
 			set { this.semantic = value; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsVariadic {
 			get;
 			set;
 		}
 
+		/// <param name="prop">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public ExportAttribute ToGetter (PropertyInfo prop)
 		{
 			if (string.IsNullOrEmpty (Selector))
@@ -79,6 +101,10 @@ namespace Foundation {
 			return new ExportAttribute (selector, semantic);
 		}
 
+		/// <param name="prop">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public ExportAttribute ToSetter (PropertyInfo prop)
 		{
 			if (string.IsNullOrEmpty (Selector))

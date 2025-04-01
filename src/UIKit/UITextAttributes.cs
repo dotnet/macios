@@ -17,22 +17,34 @@ using ObjCRuntime;
 namespace UIKit {
 
 	public class UITextAttributes {
+		/// <summary>The font to use to render the text.</summary>
+		///         <remarks>
+		///         </remarks>
 		public UIFont Font;
+		/// <summary>The color to use for the text.</summary>
+		///         <remarks>
+		///         </remarks>
 		public UIColor TextColor;
+		/// <summary>If you set the TextShadowOffset, the color to use for the shadow of the text.</summary>
+		///         <remarks>
+		///         </remarks>
 		public UIColor TextShadowColor;
+		/// <summary>The offset describing the distance between the text and its shadow.</summary>
+		///         <remarks>
+		///         </remarks>
 		public UIOffset TextShadowOffset;
 
 		public UITextAttributes ()
 		{
 		}
-		
+
 		internal UITextAttributes (NSDictionary dict)
 		{
 			if (dict is null)
 				return;
-			
+
 			NSObject val;
-			
+
 			if (dict.TryGetValue (UITextAttributesConstants.Font, out val))
 				Font = val as UIFont;
 			if (dict.TryGetValue (UITextAttributesConstants.TextColor, out val))
@@ -45,7 +57,7 @@ namespace UIKit {
 					TextShadowOffset = value.UIOffsetValue;
 			}
 		}
-		
+
 		internal NSDictionary ToDictionary ()
 		{
 			int n = 0;
@@ -67,27 +79,27 @@ namespace UIKit {
 			var keys = new NSObject [n];
 			var values = new NSObject [n];
 			n = 0;
-			if (font is not null){
+			if (font is not null) {
 				keys [n] = UITextAttributesConstants.Font;
 				values [n] = font;
 				n++;
 			}
-			if (text_color is not null){
+			if (text_color is not null) {
 				keys [n] = UITextAttributesConstants.TextColor;
 				values [n] = text_color;
 				n++;
 			}
-			if (text_shadow_color is not null){
+			if (text_shadow_color is not null) {
 				keys [n] = UITextAttributesConstants.TextShadowColor;
 				values [n] = text_shadow_color;
 				n++;
 			}
-			if (text_shadow_offset.Horizontal != 0 || text_shadow_offset.Vertical != 0){
+			if (text_shadow_offset.Horizontal != 0 || text_shadow_offset.Vertical != 0) {
 				keys [n] = UITextAttributesConstants.TextShadowOffset;
 				values [n] = NSValue.FromUIOffset (text_shadow_offset);
 			}
 			using (NSArray avalues = NSArray.FromObjects (values),
-			       akeys = NSArray.FromObjects (keys)){
+				   akeys = NSArray.FromObjects (keys)) {
 				return NSDictionary.FromObjectsAndKeysInternal (avalues, akeys);
 			}
 		}

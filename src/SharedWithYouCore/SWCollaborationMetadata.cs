@@ -12,18 +12,17 @@ using System;
 using Foundation;
 using ObjCRuntime;
 
-#if !TVOS && !WATCH
+#if !TVOS
 
 namespace SharedWithYouCore {
 
 #if NET
-	[UnsupportedOSPlatform ("watchos")]
 	[UnsupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos13.0")]
 	[SupportedOSPlatform ("ios16.0")]
 	[SupportedOSPlatform ("maccatalyst16.0")]
 #else
-	[NoWatch, NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 #endif
 	public enum SWIdentifierType {
 		Local,
@@ -35,7 +34,6 @@ namespace SharedWithYouCore {
 			InitializeHandle (_InitWithLocalIdentifier (localIdentifier), "initWithLocalIdentifier:");
 
 #if NET
-		[UnsupportedOSPlatform ("watchos")]
 		[UnsupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.1")]

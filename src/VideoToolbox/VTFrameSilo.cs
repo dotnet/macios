@@ -63,6 +63,7 @@ namespace VideoToolbox {
 				timeRange ?? CMTimeRange.InvalidRange,
 				IntPtr.Zero,
 				&ret);
+				GC.KeepAlive (fileUrl);
 			}
 
 			if (status != VTStatus.Ok)
@@ -81,7 +82,9 @@ namespace VideoToolbox {
 			if (sampleBuffer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (sampleBuffer));
 
-			return VTFrameSiloAddSampleBuffer (Handle, sampleBuffer.Handle);
+			VTStatus status = VTFrameSiloAddSampleBuffer (Handle, sampleBuffer.Handle);
+			GC.KeepAlive (sampleBuffer);
+			return status;
 		}
 
 		[DllImport (Constants.VideoToolboxLibrary)]

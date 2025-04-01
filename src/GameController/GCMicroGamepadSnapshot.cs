@@ -2,8 +2,6 @@
 
 #nullable enable
 
-#if !WATCHOS
-
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -32,16 +30,28 @@ namespace GameController {
 	public struct GCMicroGamepadSnapShotDataV100 {
 
 		// Standard information
+		/// <summary>The micro gamepad version.</summary>
+		///         <remarks>To be added.</remarks>
 		public ushort /* uint16_t */ Version; // 0x0100
+		/// <summary>The size of the snapshot, in bytes.</summary>
+		///         <remarks>To be added.</remarks>
 		public ushort /* uint16_t */ Size;    // sizeof(GCMicroGamepadSnapShotDataV100) or larger
 
 		// Standard gamepad data
 		// Axes in the range [-1.0, 1.0]
+		/// <summary>The <c>X</c>v alue of the D-pad input when the snapshot was taken.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ DPadX;
+		/// <summary>The <c>Y</c> value of the D-pad input when the snapshot was taken.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ DPadY;
 
 		// Buttons in the range [0.0, 1.0]
+		/// <summary>The value of ButtonA when the snapshot was taken.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ ButtonA;
+		/// <summary>The value of ButtonX when the snapshot was taken.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ ButtonX;
 
 #if NET
@@ -91,16 +101,28 @@ namespace GameController {
 	public struct GCMicroGamepadSnapshotData {
 
 		// Standard information
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public ushort /* uint16_t */ Version;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public ushort /* uint16_t */ Size;
 
 		// Standard gamepad data
 		// Axes in the range [-1.0, 1.0]
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ DPadX;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ DPadY;
 
 		// Buttons in the range [0.0, 1.0]
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ ButtonA;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float /* float_t = float */ ButtonX;
 
 #if NET
@@ -117,6 +139,9 @@ namespace GameController {
 			/* __nullable */ GCMicroGamepadSnapshotData* snapshotData);
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -172,7 +197,9 @@ namespace GameController {
 		{
 			snapshotData = default;
 			unsafe {
-				return GCMicroGamepadSnapShotDataV100FromNSData ((GCMicroGamepadSnapShotDataV100*) Unsafe.AsPointer<GCMicroGamepadSnapShotDataV100> (ref snapshotData), data.GetHandle ()) != 0;
+				bool result = GCMicroGamepadSnapShotDataV100FromNSData ((GCMicroGamepadSnapShotDataV100*) Unsafe.AsPointer<GCMicroGamepadSnapShotDataV100> (ref snapshotData), data.GetHandle ()) != 0;
+				GC.KeepAlive (data);
+				return result;
 			}
 		}
 
@@ -205,11 +232,11 @@ namespace GameController {
 		{
 			snapshotData = default;
 			unsafe {
-				return GCMicroGamepadSnapshotDataFromNSData ((GCMicroGamepadSnapshotData*) Unsafe.AsPointer<GCMicroGamepadSnapshotData> (ref snapshotData), data.GetHandle ()) != 0;
+				bool result = GCMicroGamepadSnapshotDataFromNSData ((GCMicroGamepadSnapshotData*) Unsafe.AsPointer<GCMicroGamepadSnapshotData> (ref snapshotData), data.GetHandle ()) != 0;
+				GC.KeepAlive (data);
+				return result;
 			}
 		}
 
 	}
 }
-
-#endif

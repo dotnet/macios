@@ -10,6 +10,9 @@ using System;
 
 namespace CoreWlan {
 	public unsafe partial class CWInterface {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CWChannel []? SupportedWlanChannels {
 			get {
 				NSSet? channels = _SupportedWlanChannels;
@@ -17,6 +20,9 @@ namespace CoreWlan {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CWNetwork []? CachedScanResults {
 			get {
 				NSSet? results = _CachedScanResults;
@@ -24,6 +30,9 @@ namespace CoreWlan {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static string []? InterfaceNames {
 			get {
 				NSSet? interfaceNames = _InterfaceNames;
@@ -33,12 +42,22 @@ namespace CoreWlan {
 			}
 		}
 
+		/// <param name="ssid">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CWNetwork []? ScanForNetworksWithSsid (NSData ssid, out NSError error)
 		{
 			NSSet? networks = _ScanForNetworksWithSsid (ssid, out error);
 			return networks?.ToArray<CWNetwork> ();
 		}
 
+		/// <param name="networkName">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CWNetwork []? ScanForNetworksWithName (string networkName, out NSError error)
 		{
 			NSSet? networks = _ScanForNetworksWithName (networkName, out error);
@@ -46,6 +65,12 @@ namespace CoreWlan {
 		}
 
 #if NET
+		/// <param name="ssid">To be added.</param>
+		///         <param name="includeHidden">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 #endif
@@ -56,6 +81,12 @@ namespace CoreWlan {
 		}
 
 #if NET
+		/// <param name="networkName">To be added.</param>
+		///         <param name="includeHidden">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 #endif

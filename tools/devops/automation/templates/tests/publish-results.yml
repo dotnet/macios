@@ -20,12 +20,6 @@ parameters:
   type: boolean
   default: true
 
-- name: testConfigurations
-  type: object
-
-- name: supportedPlatforms
-  type: object
-
 - name: isPR
   type: boolean
 
@@ -49,6 +43,7 @@ stages:
     - build_macos_tests
   - configure_build
   - simulator_tests
+  - windows_integration
   condition: and(succeededOrFailed(), ${{ parameters.condition }})
 
   jobs:
@@ -91,7 +86,6 @@ stages:
         isPR: ${{ parameters.isPR }}
         repositoryAlias: ${{ parameters.repositoryAlias }}
         commit: ${{ parameters.commit }}
-        testConfigurations: ${{ parameters.testConfigurations }}
         statusContext: ${{ parameters.statusContext }}
         vsdropsPrefix: ${{ parameters.vsdropsPrefix }}
 

@@ -17,10 +17,6 @@ using System.Runtime.Versioning;
 
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Foundation {
 #if false // https://github.com/xamarin/xamarin-macios/issues/15577
 	public delegate bool NSOrderedCollectionDifferenceEquivalenceTest<TValue> (TValue? first, TValue? second);
@@ -67,12 +63,16 @@ namespace Foundation {
 			IntPtr buf = Marshal.AllocHGlobal ((IntPtr) (count * IntPtr.Size));
 			for (nint i = 0; i < count; i++) {
 				var item = items [i];
+				// The analyzer cannot deal with arrays, we manually keep alive the whole array below
+#pragma warning disable RBI0014
 				IntPtr h = item is null ? NSNull.Null.Handle : item.Handle;
 				Marshal.WriteIntPtr (buf, (int) (i * IntPtr.Size), h);
+#pragma warning restore RBI0014
 			}
 			IntPtr ret = NSArray.FromObjects (buf, count);
 			var arr = Runtime.GetNSObject<NSArray<TKey>> (ret)!;
 			Marshal.FreeHGlobal (buf);
+			GC.KeepAlive (items);
 			return arr;
 		}
 
@@ -105,27 +105,15 @@ namespace Foundation {
 
 #if false // https://github.com/xamarin/xamarin-macios/issues/15577
 
-#if !NET
-		[Watch (6,0), TV (13,0), iOS (13,0)]
-#else
 		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
-#endif
 		public NSOrderedCollectionDifference<TKey>? GetDifference (TKey[] other, NSOrderedCollectionDifferenceCalculationOptions options)
 			=> Runtime.GetNSObject <NSOrderedCollectionDifference<TKey>> (_GetDifference (NSArray.FromNSObjects (other), options));
 
-#if !NET
-		[Watch (6,0), TV (13,0), iOS (13,0)]
-#else
 		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
-#endif
 		public NSOrderedCollectionDifference<TKey>? GetDifference (TKey[] other)
 			=> Runtime.GetNSObject <NSOrderedCollectionDifference<TKey>> (_GetDifference (NSArray.FromNSObjects (other)));
 
-#if !NET
-		[Watch (6,0), TV (13,0), iOS (13,0)]
-#else
 		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
-#endif
 		public TKey[]? GetArrayByApplyingDifference (NSOrderedCollectionDifference difference)
 			=> NSArray.ArrayFromHandle<TKey> (_GetArrayByApplyingDifference (difference));
 		static readonly NSOrderedCollectionDifferenceEquivalenceTestProxy static_DiffEqualityGeneric = DiffEqualityHandlerGeneric;
@@ -142,11 +130,7 @@ namespace Foundation {
 			return false;
 		}
 
-#if !NET
-		[Watch (6,0), TV (13,0), iOS (13,0)]
-#else
 		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
-#endif
 		public NSOrderedCollectionDifference<TKey>? GetDifferenceFromArray (NSArray<TKey> other, NSOrderedCollectionDifferenceCalculationOptions options, NSOrderedCollectionDifferenceEquivalenceTest<TKey> equivalenceTest) 
 		{
 			if (equivalenceTest is null)

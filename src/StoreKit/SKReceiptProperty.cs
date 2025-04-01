@@ -32,6 +32,9 @@ namespace StoreKit {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsExpired {
 			get {
 				return GetInt32Value (_SKReceiptProperty.IsExpired) != 0;
@@ -41,6 +44,9 @@ namespace StoreKit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsRevoked {
 			get {
 				return GetInt32Value (_SKReceiptProperty.IsRevoked) != 0;
@@ -50,6 +56,9 @@ namespace StoreKit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsVolumePurchase {
 			get {
 				return GetInt32Value (_SKReceiptProperty.IsVolumePurchase) != 0;

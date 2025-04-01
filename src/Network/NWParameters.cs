@@ -32,13 +32,11 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Watch (6, 0)]
 #endif
 	public class NWParameters : NativeObject {
 		[Preserve (Conditional = true)]
 #if NET
-		internal NWParameters (NativeHandle handle, bool owns) : base (handle, owns) {}
+		internal NWParameters (NativeHandle handle, bool owns) : base (handle, owns) { }
 #else
 		public NWParameters (NativeHandle handle, bool owns) : base (handle, owns) { }
 #endif
@@ -53,7 +51,6 @@ namespace Network {
 		[TV (16, 0)]
 		[Mac (13, 0)]
 		[iOS (16, 0)]
-		[Watch (9, 0)]
 #endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_parameters nw_parameters_create_application_service ();
@@ -67,7 +64,6 @@ namespace Network {
 		[TV (16, 0)]
 		[Mac (13, 0)]
 		[iOS (16, 0)]
-		[Watch (9, 0)]
 #endif
 		public static NWParameters CreateApplicationService () => new NWParameters (nw_parameters_create_application_service (), true);
 
@@ -222,12 +218,11 @@ namespace Network {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
 #else
-		[NoWatch]
 		[NoTV]
 		[NoiOS]
 #endif
 		[DllImport (Constants.NetworkLibrary)]
-		unsafe static extern IntPtr nw_parameters_create_custom_ip (byte custom_ip_protocol_number, BlockLiteral *configure_ip);
+		unsafe static extern IntPtr nw_parameters_create_custom_ip (byte custom_ip_protocol_number, BlockLiteral* configure_ip);
 
 #if NET
 		[SupportedOSPlatform ("macos")]
@@ -235,7 +230,6 @@ namespace Network {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
 #else
-		[NoWatch]
 		[NoTV]
 		[NoiOS]
 #endif
@@ -276,6 +270,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern NWMultiPathService nw_parameters_get_multipath_service (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWMultiPathService MultipathService {
 			get => nw_parameters_get_multipath_service (GetCheckedHandle ());
 			set => nw_parameters_set_multipath_service (GetCheckedHandle (), value);
@@ -284,6 +281,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern IntPtr nw_parameters_copy_default_protocol_stack (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWProtocolStack ProtocolStack => new NWProtocolStack (nw_parameters_copy_default_protocol_stack (GetCheckedHandle ()), owns: true);
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -292,6 +292,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_parameters_get_local_only (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool LocalOnly {
 			get => nw_parameters_get_local_only (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_local_only (GetCheckedHandle (), value.AsByte ());
@@ -303,6 +306,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_parameters_get_prefer_no_proxy (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool PreferNoProxy {
 			get => nw_parameters_get_prefer_no_proxy (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_prefer_no_proxy (GetCheckedHandle (), value.AsByte ());
@@ -314,6 +320,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern NWParametersExpiredDnsBehavior nw_parameters_get_expired_dns_behavior (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWParametersExpiredDnsBehavior ExpiredDnsBehavior {
 			get => nw_parameters_get_expired_dns_behavior (GetCheckedHandle ());
 			set => nw_parameters_set_expired_dns_behavior (GetCheckedHandle (), value);
@@ -325,6 +334,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern IntPtr nw_parameters_copy_required_interface (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWInterface? RequiredInterface {
 			get {
 				var iface = nw_parameters_copy_required_interface (GetCheckedHandle ());
@@ -336,6 +348,7 @@ namespace Network {
 			}
 			set {
 				nw_parameters_require_interface (GetCheckedHandle (), value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 
@@ -348,6 +361,7 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (iface));
 
 			nw_parameters_prohibit_interface (GetCheckedHandle (), iface.Handle);
+			GC.KeepAlive (iface);
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -364,6 +378,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern NWInterfaceType nw_parameters_get_required_interface_type (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWInterfaceType RequiredInterfaceType {
 			get => nw_parameters_get_required_interface_type (GetCheckedHandle ());
 			set => nw_parameters_set_required_interface_type (GetCheckedHandle (), value);
@@ -463,6 +480,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_prohibit_expensive (IntPtr handle, byte prohibit_expensive);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool ProhibitExpensive {
 			get => nw_parameters_get_prohibit_expensive (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_prohibit_expensive (GetCheckedHandle (), value.AsByte ());
@@ -474,6 +494,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_reuse_local_address (IntPtr handle, byte reuse_local_address);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool ReuseLocalAddress {
 			get => nw_parameters_get_reuse_local_address (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_reuse_local_address (GetCheckedHandle (), value.AsByte ());
@@ -485,6 +508,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_fast_open_enabled (IntPtr handle, byte fast_open_enabled);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool FastOpenEnabled {
 			get => nw_parameters_get_fast_open_enabled (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_fast_open_enabled (GetCheckedHandle (), value.AsByte ());
@@ -496,6 +522,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_service_class (IntPtr handle, NWServiceClass service_class);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWServiceClass ServiceClass {
 			get => nw_parameters_get_service_class (GetCheckedHandle ());
 			set => nw_parameters_set_service_class (GetCheckedHandle (), value);
@@ -507,6 +536,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_local_endpoint (IntPtr handle, IntPtr endpoint);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NWEndpoint? LocalEndpoint {
 			get {
 				var x = nw_parameters_copy_local_endpoint (GetCheckedHandle ());
@@ -518,6 +550,7 @@ namespace Network {
 
 			set {
 				nw_parameters_set_local_endpoint (GetCheckedHandle (), value.GetHandle ());
+				GC.KeepAlive (value);
 			}
 		}
 
@@ -528,6 +561,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_parameters_get_include_peer_to_peer (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IncludePeerToPeer {
 			get => nw_parameters_get_include_peer_to_peer (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_include_peer_to_peer (GetCheckedHandle (), value.AsByte ());
@@ -577,7 +613,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
@@ -591,7 +626,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
@@ -605,7 +639,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
@@ -621,7 +654,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
@@ -635,13 +667,15 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 #endif
 		public void SetPrivacyContext (NWPrivacyContext privacyContext)
-			=> nw_parameters_set_privacy_context (GetCheckedHandle (), privacyContext.Handle);
+		{
+			nw_parameters_set_privacy_context (GetCheckedHandle (), privacyContext.Handle);
+			GC.KeepAlive (privacyContext);
+		}
 
 #if NET
 		[SupportedOSPlatform ("tvos15.0")]
@@ -649,7 +683,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
@@ -663,7 +696,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
@@ -691,7 +723,6 @@ namespace Network {
 		[TV (16, 0)]
 		[Mac (13, 0)]
 		[iOS (16, 0)]
-		[Watch (9, 0)]
 #endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_parameters_requires_dnssec_validation (OS_nw_parameters parameters);
@@ -705,7 +736,6 @@ namespace Network {
 		[TV (16, 0)]
 		[Mac (13, 0)]
 		[iOS (16, 0)]
-		[Watch (9, 0)]
 #endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_requires_dnssec_validation (OS_nw_parameters parameters, byte requires_dnssec_validation);
@@ -719,7 +749,6 @@ namespace Network {
 		[TV (16, 0)]
 		[Mac (13, 0)]
 		[iOS (16, 0)]
-		[Watch (9, 0)]
 #endif
 		public bool RequiresDnssecValidation {
 			get => nw_parameters_requires_dnssec_validation (GetCheckedHandle ()) != 0;

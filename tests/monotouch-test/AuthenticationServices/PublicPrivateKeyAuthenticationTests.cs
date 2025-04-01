@@ -5,7 +5,7 @@
 //	TJ Lambert (antlambe@microsoft.com)
 //
 
-#if !__TVOS__ && !__WATCHOS__
+#if !__TVOS__
 
 using System;
 using Foundation;

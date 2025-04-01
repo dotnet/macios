@@ -36,49 +36,52 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 using CoreGraphics;
-#if !WATCH
 using CoreMedia;
-#endif // !WATCH
 #endif
 
 #if HAS_UIKIT
 using UIKit;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 namespace Foundation {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public abstract class DictionaryContainer {
 #if !COREBUILD
+		/// <include file="../../docs/api/Foundation/DictionaryContainer.xml" path="/Documentation/Docs[@DocId='M:Foundation.DictionaryContainer.#ctor']/*" />
 		protected DictionaryContainer ()
 		{
 			Dictionary = new NSMutableDictionary ();
 		}
 
+		/// <include file="../../docs/api/Foundation/DictionaryContainer.xml" path="/Documentation/Docs[@DocId='M:Foundation.DictionaryContainer.#ctor(Foundation.NSDictionary)']/*" />
 		protected DictionaryContainer (NSDictionary? dictionary)
 		{
 			Dictionary = dictionary ?? new NSMutableDictionary ();
 		}
 
+		/// <summary>Gets the wrapped <see cref="T:Foundation.NSDictionary" />.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary Dictionary { get; private set; }
 
+		/// <typeparam name="T">The type of values stored in the array identified by <paramref name="key" />.</typeparam>
+		///         <param name="key">The identifier of the array.</param>
+		///         <summary>Retrieves the array of type <c>T</c> associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected T []? GetArray<T> (NSString key) where T : NSObject
 		{
 			if (key is null)
 				throw new ArgumentNullException (nameof (key));
 
 			var value = CFDictionary.GetValue (Dictionary.Handle, key.Handle);
+			GC.KeepAlive (key);
 			return NSArray.ArrayFromHandle<T> (value);
 		}
 
@@ -88,9 +91,14 @@ namespace Foundation {
 				throw new ArgumentNullException (nameof (key));
 
 			var value = CFDictionary.GetValue (Dictionary.Handle, key.Handle);
+			GC.KeepAlive (key);
 			return NSArray.ArrayFromHandleFunc<T> (value, creator);
 		}
 
+		/// <param name="key">The identifier of the int.</param>
+		///         <summary>Returns the nullable int associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected int? GetInt32Value (NSString key)
 		{
 			if (key is null)
@@ -103,6 +111,10 @@ namespace Foundation {
 			return ((NSNumber) value).Int32Value;
 		}
 
+		/// <param name="key">The identifier of the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20UInt%2032&amp;scope=Xamarin" title="T:System.UInt32">T:System.UInt32</a></format>.</param>
+		///         <summary>Returns the nullable <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20UInt%2032&amp;scope=Xamarin" title="T:System.UInt32">T:System.UInt32</a></format> associated with <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected uint? GetUInt32Value (NSString key)
 		{
 			if (key is null)
@@ -204,6 +216,7 @@ namespace Foundation {
 				throw new ArgumentNullException (nameof (key));
 
 			var value = CFDictionary.GetValue (Dictionary.Handle, key.Handle);
+			GC.KeepAlive (key);
 			if (value == IntPtr.Zero)
 				return null;
 
@@ -215,7 +228,9 @@ namespace Foundation {
 			if (key is null)
 				throw new ArgumentNullException (nameof (key));
 
-			return Runtime.GetINativeObject<T> (Dictionary.LowlevelObjectForKey (key.Handle), false);
+			T? result = Runtime.GetINativeObject<T> (Dictionary.LowlevelObjectForKey (key.Handle), false);
+			GC.KeepAlive (key);
+			return result;
 		}
 
 		protected string []? GetStringArrayValue (NSString key)
@@ -224,6 +239,7 @@ namespace Foundation {
 				throw new ArgumentNullException (nameof (key));
 
 			var array = Dictionary.LowlevelObjectForKey (key.Handle);
+			GC.KeepAlive (key);
 			return CFArray.StringArrayFromHandle (array)!;
 		}
 
@@ -249,11 +265,7 @@ namespace Foundation {
 			return value as NSDictionary<TKey, TValue>;
 		}
 
-#if NET
 		protected T? GetStrongDictionary<[DynamicallyAccessedMembers (DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] T> (NSString key)
-#else
-		protected T? GetStrongDictionary<T> (NSString key)
-#endif
 			where T : DictionaryContainer
 		{
 			return GetStrongDictionary (key, dict =>
@@ -292,7 +304,9 @@ namespace Foundation {
 			if (!Dictionary.TryGetValue (key, out value))
 				return null;
 
-			return CFString.FromHandle (value.Handle);
+			var result = CFString.FromHandle (value.Handle);
+			GC.KeepAlive (value);
+			return result;
 		}
 
 		protected string? GetStringValue (string key)
@@ -338,7 +352,6 @@ namespace Foundation {
 			return value;
 		}
 
-#if !WATCH
 		protected CMTime? GetCMTimeValue (NSString key)
 		{
 			var dictValue = GetNSDictionary (key);
@@ -350,7 +363,6 @@ namespace Foundation {
 
 			return value;
 		}
-#endif // !WATCH
 
 #if HAS_UIKIT
 		protected UIEdgeInsets? GetUIEdgeInsets (NSString key)
@@ -403,16 +415,22 @@ namespace Foundation {
 
 		protected void SetArrayValue (NSString key, INativeObject []? values)
 		{
-			if (NullCheckAndRemoveKey (key, values is null))
-				CFMutableDictionary.SetValue (Dictionary.Handle, key.Handle, CFArray.FromNativeObjects (values!).Handle);
+			if (NullCheckAndRemoveKey (key, values is null)) {
+				var array = CFArray.FromNativeObjects (values!);
+				CFMutableDictionary.SetValue (Dictionary.Handle, key.Handle, array.Handle);
+				GC.KeepAlive (key);
+				GC.KeepAlive (array);
+			}
 		}
 
 		#region Sets CFBoolean value
 
 		protected void SetBooleanValue (NSString key, bool? value)
 		{
-			if (NullCheckAndRemoveKey (key, !value.HasValue))
+			if (NullCheckAndRemoveKey (key, !value.HasValue)) {
 				CFMutableDictionary.SetValue (Dictionary.Handle, key.Handle, value!.Value ? CFBoolean.TrueHandle : CFBoolean.FalseHandle);
+				GC.KeepAlive (key);
+			}
 		}
 
 		#endregion
@@ -482,8 +500,11 @@ namespace Foundation {
 
 		protected void SetNativeValue (NSString key, INativeObject? value, bool removeNullValue = true)
 		{
-			if (NullCheckAndRemoveKey (key, removeNullValue && value is null))
+			if (NullCheckAndRemoveKey (key, removeNullValue && value is null)) {
 				CFMutableDictionary.SetValue (Dictionary.Handle, key.Handle, value.GetHandle ());
+				GC.KeepAlive (key);
+				GC.KeepAlive (value);
+			}
 		}
 
 		#endregion
@@ -516,13 +537,11 @@ namespace Foundation {
 				Dictionary [key] = value!.Value.ToDictionary ();
 		}
 
-#if !WATCH
 		protected void SetCMTimeValue (NSString key, CMTime? value)
 		{
 			if (NullCheckAndRemoveKey (key, !value.HasValue))
 				Dictionary [key] = value!.Value.ToDictionary ();
 		}
-#endif //!WATCH
 
 #if HAS_UIKIT
 		protected void SetUIEdgeInsets (NSString key, UIEdgeInsets? value)

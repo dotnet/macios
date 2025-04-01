@@ -29,21 +29,30 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static void UIImageWriteToSavedPhotosAlbum (/* UIImage */ IntPtr image, /* id */ IntPtr obj, /* SEL */ IntPtr selector, /*vcoid* */ IntPtr ctx);
 
-		public void SaveToPhotosAlbum (SaveStatus status)
+		/// <include file="../../docs/api/UIKit/UIImage.xml" path="/Documentation/Docs[@DocId='M:UIKit.UIImage.SaveToPhotosAlbum(UIKit.UIImage.SaveStatus)']/*" />
+	public void SaveToPhotosAlbum (SaveStatus status)
 		{
 			UIImageStatusDispatcher? dis = null;
-			UIApplication.EnsureUIThread ();			
+			UIApplication.EnsureUIThread ();
 
 			if (status is not null)
 				dis = new UIImageStatusDispatcher (status);
-			
+
 			UIImageWriteToSavedPhotosAlbum (Handle, dis is not null ? dis.Handle : IntPtr.Zero, dis is not null ? Selector.GetHandle (UIImageStatusDispatcher.callbackSelector) : IntPtr.Zero, IntPtr.Zero);
+			GC.KeepAlive (dis);
 		}
 #endif
 
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* NSData */ IntPtr UIImagePNGRepresentation (/* UIImage */ IntPtr image);
 
+		/// <summary>Encodes the image into a <see cref="T:Foundation.NSData" /> byte blob using the PNG encoding.</summary>
+		///         <returns>The encoded image in an NSData wrapper or null if there was an error.</returns>
+		///         <remarks>
+		///           <para>
+		///           </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public NSData? AsPNG ()
 		{
 			using (var pool = new NSAutoreleasePool ())
@@ -53,6 +62,13 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* NSData */ IntPtr UIImageJPEGRepresentation (/* UIImage */ IntPtr image, /* CGFloat */ nfloat compressionQuality);
 
+		/// <summary>Encodes the image with minimal compression (maximum quality) into a <see cref="T:Foundation.NSData" /> byte blob using the JPEG encoding.</summary>
+		///         <returns>The encoded image in an NSData wrapper or null if there was an error.</returns>
+		///         <remarks>
+		///           <para>
+		///           </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public NSData? AsJPEG ()
 		{
 			using (var pool = new NSAutoreleasePool ())
@@ -77,6 +93,14 @@ namespace UIKit {
 			return scaledImage;
 		}
 
+		/// <param name="newSize">The desired size for the scaled image.</param>
+		///         <summary>Scales the image up or down.</summary>
+		///         <returns>The scaled image.</returns>
+		///         <remarks>
+		///           <para>
+		///           </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public UIImage Scale (CGSize newSize)
 		{
 			UIGraphics.BeginImageContext (newSize);
@@ -90,6 +114,14 @@ namespace UIKit {
 		}
 
 		// required because of GetCallingAssembly (if we ever inline across assemblies)
+		/// <param name="assembly">The resource is looked up in this assembly.   If the value is null, the resource is looked up in the assembly that calls this method.</param>
+		///         <param name="name">The name of the embedded resource</param>
+		///         <summary>Loads an image from a resource embedded in the assembly.</summary>
+		///         <returns>The image loaded from the specified assembly.</returns>
+		///         <remarks>
+		///           <para>If the passed parameter for assembly is null, then the resource is looked up in the calling assembly using <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Reflection%20Assembly%20Get%20Calling%20Assembly&amp;scope=Xamarin" title="M:System.Reflection.Assembly.GetCallingAssembly*">M:System.Reflection.Assembly.GetCallingAssembly*</a></format>.</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[MethodImpl (MethodImplOptions.NoInlining)]
 		public static UIImage? FromResource (Assembly assembly, string name)
 		{
@@ -102,7 +134,7 @@ namespace UIKit {
 				throw new ArgumentException (String.Format ("No resource named `{0}' found", name));
 
 			byte [] buffer = new byte [stream.Length];
-			stream.Read (buffer, 0, buffer.Length);
+			stream.ReadExactly (buffer, 0, buffer.Length);
 			unsafe {
 				fixed (byte* p = buffer) {
 					var data = NSData.FromBytes ((IntPtr) p, (uint) stream.Length);
@@ -115,7 +147,7 @@ namespace UIKit {
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 #else
-		[Watch (10, 0), TV (17, 0), iOS (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 #endif
 		[DllImport (Constants.UIKitLibrary)]
 		static extern /* NSData */ IntPtr UIImageHEICRepresentation (/* UIImage */ IntPtr image);
@@ -125,7 +157,7 @@ namespace UIKit {
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 #else
-		[Watch (10, 0), TV (17, 0), iOS (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 #endif
 		public NSData? HeicRepresentation
 			=> Runtime.GetNSObject<NSData> (UIImageHEICRepresentation (Handle));
@@ -155,7 +187,7 @@ namespace UIKit {
 	internal class UIImageStatusDispatcher : NSObject {
 		public const string callbackSelector = "Xamarin_Internal__image:didFinishSavingWithError:contextInfo:";
 		UIImage.SaveStatus status;
-		
+
 		public UIImageStatusDispatcher (UIImage.SaveStatus status)
 		{
 			IsDirectBinding = false;

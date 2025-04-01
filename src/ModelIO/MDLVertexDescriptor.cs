@@ -17,7 +17,9 @@ namespace ModelIO {
 		{
 			if (descriptor is null)
 				throw new ArgumentException (nameof (descriptor));
-			return Runtime.GetNSObject<MDLVertexDescriptor> (MTKModelIOVertexDescriptorFromMetal (descriptor.Handle));
+			MDLVertexDescriptor? result = Runtime.GetNSObject<MDLVertexDescriptor> (MTKModelIOVertexDescriptorFromMetal (descriptor.Handle));
+			GC.KeepAlive (descriptor);
+			return result;
 		}
 
 #if NET
@@ -43,6 +45,7 @@ namespace ModelIO {
 			MDLVertexDescriptor? vd;
 			unsafe {
 				vd = Runtime.GetNSObject<MDLVertexDescriptor> (MTKModelIOVertexDescriptorFromMetalWithError (descriptor.Handle, &err));
+				GC.KeepAlive (descriptor);
 			}
 			error = Runtime.GetNSObject<NSError> (err);
 			return vd;

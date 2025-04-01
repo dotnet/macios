@@ -1,5 +1,3 @@
-#if !__WATCHOS__
-
 using System;
 using Foundation;
 using ObjCRuntime;
@@ -54,5 +52,3 @@ namespace MonoTouchFixtures.MetalPerformanceShaders {
 		}
 	}
 }
-
-#endif

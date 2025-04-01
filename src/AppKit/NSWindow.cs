@@ -37,6 +37,8 @@ namespace AppKit {
 	public partial class NSWindow {
 
 		// Automatically set ReleaseWhenClosed=false in every constructor.
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Set 'TrackReleasedWhenClosed' and call 'ReleaseWhenClosed()' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static bool DisableReleasedWhenClosedInConstructor;
@@ -141,6 +143,9 @@ namespace AppKit {
 		}
 
 		// note: if needed override the protected Get|Set methods
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string FrameAutosaveName {
 			get { return GetFrameAutosaveName (); }
 			// ignore return value (bool)

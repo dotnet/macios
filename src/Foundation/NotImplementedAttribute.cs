@@ -23,6 +23,9 @@ namespace Foundation {
 	public class NotImplementedAttribute : Attribute {
 		public NotImplementedAttribute () { }
 		public NotImplementedAttribute (string message) { Message = message; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Message { get; set; }
 	}
 }

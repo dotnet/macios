@@ -35,6 +35,20 @@ namespace Foundation {
 				return _FromIndex ((IntPtr) ptr, indexes.Length);
 		}
 
+		/// <param name="indexes">
+		///
+		///
+		///
+		/// Array of indexes to make the index-path.
+		///
+		///
+		///
+		///   	   </param>
+		///         <summary>Creates an <see cref="T:Foundation.NSIndexPath" /> with the indexes specified in the provided array of integers.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public unsafe static NSIndexPath Create (params int [] indexes)
 		{
 			if (indexes is null)
@@ -44,6 +58,20 @@ namespace Foundation {
 				return _FromIndex ((IntPtr) ptr, indexes.Length);
 		}
 
+		/// <param name="indexes">
+		///
+		///
+		///
+		/// Array of indexes to make the index-path.
+		///
+		///
+		///
+		///   	   </param>
+		///         <summary>Creates an <see cref="T:Foundation.NSIndexPath" /> with the indexes specified in the provided array of unsigned integers.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public unsafe static NSIndexPath Create (params uint [] indexes)
 		{
 			if (indexes is null)
@@ -53,6 +81,11 @@ namespace Foundation {
 				return _FromIndex ((IntPtr) ptr, indexes.Length);
 		}
 
+		/// <summary>Copies the objects contained in the index-path to an array (not required for use with iOS <see cref="T:UIKit.UITableView" />).</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public unsafe nuint [] GetIndexes ()
 		{
 			var ret = new nuint [Length];
@@ -62,6 +95,10 @@ namespace Foundation {
 		}
 
 #if NET
+		/// <param name="range">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]

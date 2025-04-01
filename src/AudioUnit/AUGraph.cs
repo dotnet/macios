@@ -50,15 +50,23 @@ using NativeHandle = System.IntPtr;
 namespace AudioUnit {
 	public enum AUGraphError // Implictly cast to OSType
 	{
+		/// <summary>To be added.</summary>
 		OK = 0,
+		/// <summary>To be added.</summary>
 		NodeNotFound = -10860,
+		/// <summary>To be added.</summary>
 		InvalidConnection = -10861,
+		/// <summary>To be added.</summary>
 		OutputNodeError = -10862,
+		/// <summary>To be added.</summary>
 		CannotDoInCurrentContext = -10863,
+		/// <summary>To be added.</summary>
 		InvalidAudioUnit = -10864,
 
 		// Values returned & shared with other error enums
+		/// <summary>To be added.</summary>
 		FormatNotSupported = -10868,
+		/// <summary>To be added.</summary>
 		InvalidElement = -10877,
 	}
 
@@ -98,11 +106,18 @@ namespace AudioUnit {
 			return handle;
 		}
 
+		/// <summary>Creates a new AudioUnit graph.</summary>
+		///         <remarks>
+		///         </remarks>
 		public AUGraph ()
 			: this (Create (), true)
 		{
 		}
 
+		/// <param name="errorCode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AUGraph? Create (out int errorCode)
 		{
 			IntPtr handle;
@@ -116,6 +131,9 @@ namespace AudioUnit {
 			return new AUGraph (handle, true);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsInitialized {
 			get {
 				byte b;
@@ -125,6 +143,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsOpen {
 			get {
 				byte b;
@@ -134,6 +155,9 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsRunning {
 			get {
 				byte b;
@@ -175,7 +199,7 @@ namespace AudioUnit {
 #if NET
 			unsafe {
 				if (graphUserCallbacks.Count == 0)
-					error = (AudioUnitStatus)AUGraphRemoveRenderNotify (Handle, &renderCallback, GCHandle.ToIntPtr (gcHandle));
+					error = (AudioUnitStatus) AUGraphRemoveRenderNotify (Handle, &renderCallback, GCHandle.ToIntPtr (gcHandle));
 			}
 #else
 			if (graphUserCallbacks.Count == 0)
@@ -201,7 +225,7 @@ namespace AudioUnit {
 
 #if NET
 		[UnmanagedCallersOnly]
-		static unsafe AudioUnitStatus renderCallback(IntPtr inRefCon,
+		static unsafe AudioUnitStatus renderCallback (IntPtr inRefCon,
 					AudioUnitRenderActionFlags* _ioActionFlags,
 					AudioTimeStamp* _inTimeStamp,
 					uint _inBusNumber,
@@ -530,14 +554,14 @@ namespace AudioUnit {
 
 		[DllImport (Constants.AudioToolboxLibrary)]
 #if NET
-		static unsafe extern int AUGraphAddRenderNotify (IntPtr inGraph, delegate* unmanaged<IntPtr, AudioUnitRenderActionFlags*, AudioTimeStamp*, uint, uint, IntPtr, AudioUnitStatus> inCallback, IntPtr inRefCon );
+		static unsafe extern int AUGraphAddRenderNotify (IntPtr inGraph, delegate* unmanaged<IntPtr, AudioUnitRenderActionFlags*, AudioTimeStamp*, uint, uint, IntPtr, AudioUnitStatus> inCallback, IntPtr inRefCon);
 #else
 		static extern int AUGraphAddRenderNotify (IntPtr inGraph, CallbackShared inCallback, IntPtr inRefCon);
 #endif
 
 #if NET
 		[DllImport (Constants.AudioToolboxLibrary)]
-		static unsafe extern int AUGraphRemoveRenderNotify (IntPtr inGraph, delegate* unmanaged<IntPtr, AudioUnitRenderActionFlags*, AudioTimeStamp*, uint, uint, IntPtr, AudioUnitStatus> inCallback, IntPtr inRefCon );
+		static unsafe extern int AUGraphRemoveRenderNotify (IntPtr inGraph, delegate* unmanaged<IntPtr, AudioUnitRenderActionFlags*, AudioTimeStamp*, uint, uint, IntPtr, AudioUnitStatus> inCallback, IntPtr inRefCon);
 #else
 		[DllImport (Constants.AudioToolboxLibrary)]
 		static extern int AUGraphRemoveRenderNotify (IntPtr inGraph, CallbackShared inCallback, IntPtr inRefCon);

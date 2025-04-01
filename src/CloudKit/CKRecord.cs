@@ -10,7 +10,7 @@ namespace CloudKit {
 	public partial class CKRecord {
 		public NSObject? this [string key] {
 			get { return _ObjectForKey (key); }
-			set { _SetObject (value.GetHandle (), key); }
+			set { _SetObject (value.GetHandle (), key); GC.KeepAlive (value); }
 		}
 	}
 }

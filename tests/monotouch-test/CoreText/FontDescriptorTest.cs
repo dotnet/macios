@@ -48,7 +48,7 @@ namespace MonoTouchFixtures.CoreText {
 			}
 		}
 
-#if __TVOS__ || __WATCHOS__
+#if __TVOS__
 		[Ignore ("No font with ligatures are available on the platform")] // more details in https://bugzilla.xamarin.com/show_bug.cgi?id=58929
 #endif
 		[Test]

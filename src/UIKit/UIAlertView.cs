@@ -16,8 +16,15 @@ using Foundation;
 
 namespace UIKit {
 	public partial class UIAlertView {
+		/// <param name="title">To be added.</param>
+		///         <param name="message">To be added.</param>
+		///         <param name="del">To be added.</param>
+		///         <param name="cancelButtonTitle">To be added.</param>
+		///         <param name="otherButtons">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public UIAlertView (string title, string message, IUIAlertViewDelegate del, string cancelButtonTitle, params string [] otherButtons)
-			: this (title, message, del, cancelButtonTitle, otherButtons is null || otherButtons.Length == 0 ? IntPtr.Zero : new NSString (otherButtons [0]).Handle, IntPtr.Zero, IntPtr.Zero)
+			: this (title, message, del, cancelButtonTitle, otherButtons is null || otherButtons.Length == 0 ? IntPtr.Zero : new NSString (otherButtons [0]).DangerousRetain().DangerousAutorelease().Handle, IntPtr.Zero, IntPtr.Zero)
 		{
 			if (otherButtons is null)
 				return;

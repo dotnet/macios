@@ -17,6 +17,10 @@ using Foundation;
 namespace HealthKit {
 #pragma warning disable CS0618 // Type or member is obsolete
 	public partial class HKQuantityType {
+		/// <param name="kind">To be added.</param>
+		///         <summary>Creates and returns a quantity type for the specified identifier.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static HKQuantityType? Create (HKQuantityTypeIdentifier kind)
 		{
 			return HKObjectType.GetQuantityType (kind.GetConstant ());
@@ -45,8 +49,6 @@ namespace HealthKit {
 	}
 #pragma warning restore CS0618 // Type or member is obsolete
 
-
-#if !WATCH
 	public partial class HKDocumentType {
 		public static HKDocumentType? Create (HKDocumentTypeIdentifier kind)
 		{
@@ -56,5 +58,4 @@ namespace HealthKit {
 			return null;
 		}
 	}
-#endif
 }

@@ -36,7 +36,7 @@ using System.Net;
 #if NET
 using CFNetwork;
 using CoreFoundation;
-using CF=CoreFoundation;
+using CF = CoreFoundation;
 #else
 using CoreServices;
 using CoreFoundation;
@@ -92,6 +92,8 @@ namespace System.Net.Http {
 
 		Dictionary<IntPtr, StreamBucket> streamBuckets;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CFNetworkHandler ()
 		{
 			allowAutoRedirect = true;
@@ -106,6 +108,9 @@ namespace System.Net.Http {
 					"Properties can only be modified before sending the first request.");
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool AllowAutoRedirect {
 			get {
 				return allowAutoRedirect;
@@ -116,6 +121,9 @@ namespace System.Net.Http {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CookieContainer CookieContainer {
 			get {
 				return cookies ?? (cookies = new CookieContainer ());
@@ -126,6 +134,9 @@ namespace System.Net.Http {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool UseSystemProxy {
 			get {
 				return useSystemProxy;
@@ -138,6 +149,9 @@ namespace System.Net.Http {
 
 		// TODO: Add more properties
 
+		/// <param name="disposing">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected override void Dispose (bool disposing)
 		{
 			// TODO: CloseStream remaining stream buckets if there are any
@@ -309,10 +323,12 @@ namespace System.Net.Http {
 		void CloseStream (CFHTTPStream stream)
 		{
 			lock (streamBuckets) {
-				if (streamBuckets.TryGetValue (stream.Handle, out var bucket)) {
+				var streamHandle = stream.Handle;
+				if (streamBuckets.TryGetValue (streamHandle, out var bucket)) {
 					bucket.Close ();
-					streamBuckets.Remove (stream.Handle);
+					streamBuckets.Remove (streamHandle);
 				}
+				GC.KeepAlive (stream);
 			}
 			stream.Close ();
 		}

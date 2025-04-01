@@ -9,15 +9,15 @@ using System;
 
 using AppKit;
 
-namespace Foundation
-{
+namespace Foundation {
 	public enum NSAppleEventDescriptorType {
+		/// <summary>To be added.</summary>
 		Record,
+		/// <summary>To be added.</summary>
 		List,
 	}
 
-	public partial class NSAppleEventDescriptor
-	{
+	public partial class NSAppleEventDescriptor {
 		public NSAppleEventDescriptor (NSAppleEventDescriptorType type)
 		{
 			switch (type) {

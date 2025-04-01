@@ -37,6 +37,9 @@ namespace PassKit {
 	[Obsolete ("This class is removed.")]
 	public unsafe partial class PKDisbursementVoucher : NSObject {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public override NativeHandle ClassHandle => throw new InvalidOperationException (Constants.RemovedFromPassKit);
 
 		protected PKDisbursementVoucher (NSObjectFlag t) : base (t)
@@ -49,7 +52,13 @@ namespace PassKit {
 			throw new InvalidOperationException (Constants.RemovedFromPassKit);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual NSData Data => throw new InvalidOperationException (Constants.RemovedFromPassKit);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual NSUrl RedemptionUrl => throw new InvalidOperationException (Constants.RemovedFromPassKit);
 	} /* class PKDisbursementVoucher */
 
@@ -64,6 +73,9 @@ namespace PassKit {
 	[Obsolete ("This class is removed.")]
 	public unsafe partial class PKDisbursementAuthorizationController : NSObject {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public override NativeHandle ClassHandle { get { throw new InvalidOperationException (Constants.RemovedFromPassKit); } }
 
 		protected PKDisbursementAuthorizationController (NSObjectFlag t) : base (t)
@@ -87,23 +99,32 @@ namespace PassKit {
 			throw new InvalidOperationException (Constants.RemovedFromPassKit);
 		}
 
-		public unsafe virtual Task<Tuple<bool,NSError>> AuthorizeDisbursementAsync ()
+		public unsafe virtual Task<Tuple<bool, NSError>> AuthorizeDisbursementAsync ()
 		{
 			throw new InvalidOperationException (Constants.RemovedFromPassKit);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public IPKDisbursementAuthorizationControllerDelegate Delegate {
 			get {
 				throw new InvalidOperationException (Constants.RemovedFromPassKit);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static bool SupportsDisbursements {
 			get {
 				throw new InvalidOperationException (Constants.RemovedFromPassKit);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual NSObject? WeakDelegate {
 			get {
 				throw new InvalidOperationException (Constants.RemovedFromPassKit);
@@ -125,8 +146,7 @@ namespace PassKit {
 #endif // NET
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("This class is removed.")]
-	public partial interface IPKDisbursementAuthorizationControllerDelegate : INativeObject, IDisposable
-	{
+	public partial interface IPKDisbursementAuthorizationControllerDelegate : INativeObject, IDisposable {
 		void DidAuthorize (PKDisbursementAuthorizationController controller, PKDisbursementVoucher disbursementVoucher);
 		void DidFinish (PKDisbursementAuthorizationController controller);
 	}
@@ -172,6 +192,9 @@ namespace PassKit {
 		// Apple just removed this protocol from their headers in Xcode 15 (beta 1).
 		// It's also not found on their documentation site, so I'm assuming it's done on purpose.
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[UnsupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -185,6 +208,9 @@ namespace PassKit {
 		}
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[UnsupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -198,6 +224,9 @@ namespace PassKit {
 		}
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[UnsupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]

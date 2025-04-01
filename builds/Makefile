@@ -55,7 +55,7 @@ print-dotnet-pkg-urls: dotnet-install.sh
 	$(Q) if ! test -f $@-found-it.stamp; then echo "No working urls were found."; exit 1; fi
 	$(Q) rm -f $@-found-it.stamp
 
-DOTNET_DOWNLOAD_URL?=https://dot.net/v1/dotnet-install.sh
+DOTNET_DOWNLOAD_URL?=https://builds.dotnet.microsoft.com/dotnet/scripts/v1/dotnet-install.sh
 
 dotnet-install.sh: Makefile
 	$(Q) $(CURL_RETRY) $(DOTNET_DOWNLOAD_URL) --output $@.tmp

@@ -33,7 +33,7 @@ using Foundation;
 using CoreGraphics;
 #if MONOMAC
 using AppKit;
-using UIWindowSceneActivationConfiguration=Foundation.NSObject;
+using UIWindowSceneActivationConfiguration = Foundation.NSObject;
 #else
 using UIKit;
 #endif
@@ -61,12 +61,25 @@ namespace QuickLook {
 		[Export ("dataSource", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakDataSource { get; set; }
 
+		/// <summary>Gets or sets the data source that contains the items to preview.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDataSource")]
 		IQLPreviewControllerDataSource DataSource { get; set; }
 
 		[Export ("delegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the QuickLook.IQLPreviewControllerDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the QuickLook.IQLPreviewControllerDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IQLPreviewControllerDelegate Delegate { get; set; }
 
@@ -219,7 +232,7 @@ namespace QuickLook {
 	delegate CGPDFDocument QLPreviewReplyUIDocumentCreationHandler (QLPreviewReply reply, out NSError error);
 
 	[NoMac]
-	[NoWatch, NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface QLPreviewReply {
 		[Export ("stringEncoding")]
@@ -246,7 +259,7 @@ namespace QuickLook {
 	}
 
 	[NoMac]
-	[NoWatch, NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface QLPreviewReplyAttachment {
@@ -261,7 +274,7 @@ namespace QuickLook {
 	}
 
 	[NoMac]
-	[NoWatch, NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface QLFilePreviewRequest {
@@ -270,13 +283,12 @@ namespace QuickLook {
 	}
 
 	[NoMac]
-	[NoWatch, NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface QLPreviewProvider : NSExtensionRequestHandling {
 	}
 
-	[NoWatch]
 	[NoTV]
 	[NoMac] // availability not mentioned in the header files
 	[iOS (15, 0), MacCatalyst (15, 0)]
@@ -316,7 +328,9 @@ namespace QuickLook {
 	}
 #else
 	[Static]
-	[NoiOS][NoMacCatalyst][NoWatch][NoTV]
+	[NoiOS]
+	[NoMacCatalyst]
+	[NoTV]
 	interface QLThumbnailImage {
 		[Internal, Field ("kQLThumbnailOptionScaleFactorKey")]
 		NSString OptionScaleFactorKey { get; }

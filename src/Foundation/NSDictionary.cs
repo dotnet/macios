@@ -178,14 +178,23 @@ namespace Foundation {
 				array.SetValue (e.Entry, i++);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		int ICollection.Count {
 			get { return (int) Count; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool ICollection.IsSynchronized {
 			get { return false; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		object ICollection.SyncRoot {
 			get { return this; }
 		}
@@ -270,10 +279,16 @@ namespace Foundation {
 			throw new NotSupportedException ();
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool IDictionary.IsFixedSize {
 			get { return true; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		bool IDictionary.IsReadOnly {
 			get { return true; }
 		}
@@ -290,10 +305,16 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		ICollection IDictionary.Keys {
 			get { return Keys; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		ICollection IDictionary.Values {
 			get { return Values; }
 		}
@@ -329,6 +350,7 @@ namespace Foundation {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
 
 			var ptr = _ObjectForKey (key.Handle);
+			GC.KeepAlive (key);
 			if (ptr == IntPtr.Zero)
 				return false;
 

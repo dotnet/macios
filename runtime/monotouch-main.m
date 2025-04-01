@@ -241,7 +241,7 @@ xamarin_main (int argc, char *argv[], enum XamarinLaunchMode launch_mode)
 	// This is not an exact number (it will most likely be lower, since there
 	// are other arguments besides --app-arg), but it's a guaranteed and bound
 	// upper limit.
-	const char *managed_argv [argc + 2];
+	const char **managed_argv = (const char **) alloca (sizeof (char *) * (unsigned long) (argc + 2));
 	int managed_argc = 0;
 
 	xamarin_launch_mode = launch_mode;

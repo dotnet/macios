@@ -51,6 +51,13 @@ namespace Introspection {
 					return true;
 			}
 
+			switch (type.Namespace) {
+			case "SafetyKit":
+				if (TestRuntime.IsSimulator)
+					return !TestRuntime.CheckXcodeVersion (15, 0); // doesn't seem to be available in the iOS simulator until iOS 17+
+				break;
+			}
+
 			switch (type.FullName) {
 			case "MetalPerformanceShaders.MPSCommandBuffer":
 				// The reflectable type metadata contains no selectors.
@@ -663,12 +670,20 @@ namespace Introspection {
 				case "functionCount":
 				case "setFunctionCount:":
 					return true;
+#if __TVOS__
+				case "intersectionFunctionTableDescriptor":
+					return !TestRuntime.CheckXcodeVersion (14, 1);
+#endif
 				}
 				break;
 			case "MTLResourceStatePassDescriptor":
 				switch (selectorName) {
 				case "sampleBufferAttachments":
 					return true;
+#if __TVOS__
+				case "resourceStatePassDescriptor":
+					return !TestRuntime.CheckXcodeVersion (14, 1);
+#endif
 				}
 				break;
 			case "MTLResourceStatePassSampleBufferAttachmentDescriptor":
@@ -687,8 +702,44 @@ namespace Introspection {
 				case "functionCount":
 				case "setFunctionCount:":
 					return true;
+#if __TVOS__
+				case "visibleFunctionTableDescriptor":
+					return !TestRuntime.CheckXcodeVersion (14, 1);
+#endif
 				}
 				break;
+#if __TVOS__
+			case "MTLRenderPipelineReflection":
+				switch (selectorName) {
+				case "meshBindings":
+				case "objectBindings":
+					return !TestRuntime.CheckXcodeVersion (14, 1);
+				}
+				break;
+			case "MTLAccelerationStructureBoundingBoxGeometryDescriptor":
+			case "MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor":
+			case "MTLAccelerationStructureMotionTriangleGeometryDescriptor":
+			case "MTLAccelerationStructureTriangleGeometryDescriptor":
+			case "MTLInstanceAccelerationStructureDescriptor":
+			case "MTLPrimitiveAccelerationStructureDescriptor":
+				switch (selectorName) {
+				case "descriptor":
+					return !TestRuntime.CheckXcodeVersion (14, 1);
+				}
+				break;
+			case "MTLAccelerationStructurePassDescriptor":
+				switch (selectorName) {
+				case "accelerationStructurePassDescriptor":
+					return !TestRuntime.CheckXcodeVersion (14, 1);
+				}
+				break;
+			case "MTLMotionKeyframeData":
+				switch (selectorName) {
+				case "data":
+					return !TestRuntime.CheckXcodeVersion (14, 1);
+				}
+				break;
+#endif
 			case "AVPlayerLooper": // This API got introduced in Xcode 8.0 binding but is not currently present nor in Xcode 8.3 or Xcode 9.0 needs research
 				switch (selectorName) {
 				case "isLoopingEnabled":
@@ -1068,6 +1119,12 @@ namespace Introspection {
 				}
 				break;
 #endif
+			case "CMWaterSubmersionManager":
+				switch (selectorName) {
+				case "maximumDepth":
+					return !TestRuntime.CheckXcodeVersion (15, 0); // it's not in iOS 16, but maybe iOS 17?
+				}
+				break;
 			}
 
 			// old binding mistake
@@ -1079,37 +1136,74 @@ namespace Introspection {
 			if (value)
 				return true;
 
-			var mname = method.Name;
-			// properties getter and setter will be methods in the _Extensions type
-			if (method.IsSpecialName)
-				mname = mname.Replace ("get_", "Get").Replace ("set_", "Set");
+			if (CheckForInlinedProtocolMember (actualType, method))
+				return true;
 
+			name = actualType.FullName + " : " + name;
+			return false;
+		}
+
+		static bool CheckForInlinedProtocolMember (Type actualType, MethodBase method)
+		{
 			// it's possible that the selector was inlined for an OPTIONAL protocol member
 			// we do not want those reported (too many false positives) and we have other tests to find such mistakes
 			foreach (var intf in actualType.GetInterfaces ()) {
 				if (intf.GetCustomAttributes<ProtocolAttribute> () is null)
 					continue;
+
+				// First check the actual interface
+				if (IsMethodImplemented (intf, intf, method, false))
+					return true;
+
+				// Then check any _Extensions class
 				var ext = Type.GetType (intf.Namespace + "." + intf.Name.Remove (0, 1) + "_Extensions, " + intf.Assembly.FullName);
-				if (ext is null)
-					continue;
-				foreach (var m in ext.GetMethods ()) {
-					if (mname != m.Name)
-						continue;
-					var parameters = method.GetParameters ();
-					var ext_params = m.GetParameters ();
-					// first parameters is `this XXX This`
-					if (parameters.Length == ext_params.Length - 1) {
-						bool match = true;
-						for (int i = 1; i < ext_params.Length; i++) {
-							match |= (parameters [i - 1].ParameterType == ext_params [i].ParameterType);
-						}
-						if (match)
-							return true;
-					}
-				}
+				if (IsMethodImplemented (intf, ext, method, true))
+					return true;
 			}
 
-			name = actualType.FullName + " : " + name;
+			return false;
+		}
+
+		static bool IsMethodImplemented (Type iface, Type type, MethodBase method, bool isExtensionMethod)
+		{
+			if (type is null)
+				return false;
+
+			// properties getter and setter will be methods in the _Extensions type
+			var mname = method.Name;
+			if (method.IsSpecialName)
+				mname = mname.Replace ("get_", "Get").Replace ("set_", "Set");
+
+			foreach (var m in type.GetMethods ()) {
+				if (method.Name != m.Name) {
+					if (method.IsSpecialName) {
+						if (mname != m.Name)
+							continue;
+					} else {
+						continue;
+					}
+				}
+				var parametersA = method.GetParameters ();
+				var parametersB = m.GetParameters ();
+				var match = true;
+				if (isExtensionMethod) {
+					// first parameters is `this XXX This`
+					if (parametersA.Length != parametersB.Length - 1)
+						continue;
+					match &= parametersB [0].ParameterType == iface;
+					for (var i = 1; i < parametersB.Length; i++) {
+						match &= parametersA [i - 1].ParameterType == parametersB [i].ParameterType;
+					}
+				} else {
+					if (parametersA.Length != parametersB.Length)
+						continue;
+					for (var i = 0; i < parametersA.Length; i++)
+						match &= parametersA [i].ParameterType == parametersB [i].ParameterType;
+				}
+				if (match)
+					return true;
+			}
+
 			return false;
 		}
 
@@ -1341,9 +1435,12 @@ namespace Introspection {
 		}
 
 		// funny, this is how I envisioned the instance version... before hitting run :|
-		protected virtual bool CheckStaticResponse (bool value, Type actualType, Type declaredType, ref string name)
+		protected virtual bool CheckStaticResponse (bool value, Type actualType, Type declaredType, MethodBase method, ref string name)
 		{
 			if (value)
+				return true;
+
+			if (CheckForInlinedProtocolMember (actualType, method))
 				return true;
 
 			name = actualType.FullName + " : " + name;
@@ -1383,7 +1480,7 @@ namespace Introspection {
 								continue;
 
 							bool result = bool_objc_msgSend_IntPtr (class_ptr, responds_handle, Selector.GetHandle (name));
-							bool response = CheckStaticResponse (result, t, m.DeclaringType, ref name);
+							bool response = CheckStaticResponse (result, t, m.DeclaringType, m, ref name);
 							if (!response)
 								ReportError (name);
 							n++;

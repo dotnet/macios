@@ -21152,6 +21152,10 @@ namespace AVFoundation {
 
 		[Export ("optimizesAuxiliaryContentConfigurations")]
 		bool OptimizesAuxiliaryContentConfigurations { get; set; }
+
+		[iOS (18, 4), TV (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Export ("setInterstitialMediaSelectionCriteria:forMediaCharacteristic:")]
+		void SetInterstitialMediaSelectionCriteria (AVPlayerMediaSelectionCriteria [] criteria, [BindAs (typeof (AVMediaCharacteristics))] NSString mediaCharacteristic);
 	}
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]

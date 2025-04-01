@@ -116,6 +116,7 @@ namespace Foundation {
 		static IntPtr be = Dlfcn.dlopen (Constants.BrowserEngineKitLibrary, 1);
 		static IntPtr ce = Dlfcn.dlopen (Constants.CoreHapticsLibrary, 1);
 		static IntPtr da = Dlfcn.dlopen (Constants.DataDetectionLibrary, 1);
+		static IntPtr su = Dlfcn.dlopen (Constants.SecurityUILibrary, 1);
 
 #if !NET
 		[Obsolete ("Use PlatformAssembly for easier code sharing across platforms.")]

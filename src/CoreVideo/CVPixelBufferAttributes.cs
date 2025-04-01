@@ -76,6 +76,33 @@ namespace CoreVideo {
 			}
 		}
 
+		/// <summary>The pixel formats of the pixel buffer.</summary>
+		/// <value></value>
+		/// <remarks>The property uses constant kCVPixelBufferPixelFormatTypeKey value to access the underlying dictionary.</remarks>
+		public CVPixelFormatType []? PixelFormatTypes {
+			get {
+				var obj = GetNativeValue<NSObject> (CVPixelBuffer.PixelFormatTypeKey);
+				if (obj is null) {
+					return null;
+				} else if (obj is NSNumber number) {
+					return new CVPixelFormatType [] { (CVPixelFormatType) number.UInt32Value };
+				} else if (obj is NSArray array) {
+					return Array.ConvertAll (array.ToArray (), (v) => (CVPixelFormatType) ((NSNumber) v).UInt32Value);
+				} else {
+					throw new InvalidOperationException ($"Unable to convert object of type {obj.GetType ()} into an array of CVPixelFormatType.");
+				}
+			}
+			set {
+				if (value is null) {
+					SetNumberValue (CVPixelBuffer.PixelFormatTypeKey, (uint?) null);
+				} else if (value.Length == 1) {
+					SetNumberValue (CVPixelBuffer.PixelFormatTypeKey, (uint?) value [0]);
+				} else {
+					SetArrayValue (CVPixelBuffer.PixelFormatTypeKey, Array.ConvertAll (value, (v) => new NSNumber ((uint) v)));
+				}
+			}
+		}
+
 		/// <summary>The allocator used for the pixel buffer.</summary>
 		///         <value>
 		///         </value>

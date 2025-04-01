@@ -3415,6 +3415,10 @@ namespace Intents {
 	[Protocol]
 	interface INBookRestaurantReservationIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INBookRestaurantReservationIntentResponse" /> appropriate to the <see cref="T:Intents.INBookRestaurantReservationIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleBookRestaurantReservation:completion:")]
 		void HandleBookRestaurantReservation (INBookRestaurantReservationIntent intent, Action<INBookRestaurantReservationIntentResponse> completion);
@@ -3601,6 +3605,10 @@ namespace Intents {
 	[Protocol]
 	interface INCancelWorkoutIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INCancelWorkoutIntentResponse" /> appropriate to the <see cref="T:Intents.INCancelWorkoutIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleCancelWorkout:completion:")]
 		void HandleCancelWorkout (INCancelWorkoutIntent intent, Action<INCancelWorkoutIntentResponse> completion);
@@ -4279,6 +4287,10 @@ namespace Intents {
 	[Protocol]
 	interface INEndWorkoutIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INEndWorkoutIntentResponse" /> appropriate to the <see cref="T:Intents.INEndWorkoutIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleEndWorkout:completion:")]
 		void HandleEndWorkout (INEndWorkoutIntent intent, Action<INEndWorkoutIntentResponse> completion);
@@ -4318,6 +4330,10 @@ namespace Intents {
 	[Protocol]
 	interface INIntentHandlerProviding {
 
+		/// <param name="intent">The <see cref="T:Intents.INIntent" /> received by the system.</param>
+		/// <summary>Developers override this method to return the handler object if <paramref name="intent" /> is one their extension can respond to.</summary>
+		/// <returns>The developer's handler object or <see langword="null" /> if <paramref name="intent" /> is not handled by the extension.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handlerForIntent:")]
 		[return: NullAllowed]
@@ -4353,6 +4369,10 @@ namespace Intents {
 	[Protocol]
 	interface INGetAvailableRestaurantReservationBookingDefaultsIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetAvailableRestaurantReservationBookingDefaultsIntentResponse" /> appropriate to the <see cref="T:Intents.INGetAvailableRestaurantReservationBookingDefaultsIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetAvailableRestaurantReservationBookingDefaults:completion:")]
 		void HandleAvailableRestaurantReservationBookingDefaults (INGetAvailableRestaurantReservationBookingDefaultsIntent intent, Action<INGetAvailableRestaurantReservationBookingDefaultsIntentResponse> completion);
@@ -4439,6 +4459,10 @@ namespace Intents {
 	[Protocol]
 	interface INGetAvailableRestaurantReservationBookingsIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetAvailableRestaurantReservationBookingsIntentResponse" /> appropriate to the <see cref="T:Intents.INGetAvailableRestaurantReservationBookingsIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetAvailableRestaurantReservationBookings:completion:")]
 		void HandleAvailableRestaurantReservationBookings (INGetAvailableRestaurantReservationBookingsIntent intent, Action<INGetAvailableRestaurantReservationBookingsIntentResponse> completion);
@@ -4514,6 +4538,10 @@ namespace Intents {
 	[Protocol]
 	interface INGetRestaurantGuestIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetRestaurantGuestIntentResponse" /> appropriate to the <see cref="T:Intents.INGetRestaurantGuestIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetRestaurantGuest:completion:")]
 		void HandleRestaurantGuest (INGetRestaurantGuestIntent intent, Action<INGetRestaurantGuestIntentResponse> completion);
@@ -4567,14 +4595,25 @@ namespace Intents {
 	[Protocol]
 	interface INGetRideStatusIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetRideStatusIntentResponse" /> appropriate to the <see cref="T:Intents.INGetRideStatusIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetRideStatus:completion:")]
 		void HandleRideStatus (INGetRideStatusIntent intent, Action<INGetRideStatusIntentResponse> completion);
 
+		/// <param name="intent">To be added.</param>
+		/// <param name="observer">To be added.</param>
+		/// <summary>Developers may call this method to begin sending updates about the ride status.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("startSendingUpdatesForGetRideStatus:toObserver:")]
 		void StartSendingUpdates (INGetRideStatusIntent intent, IINGetRideStatusIntentResponseObserver observer);
 
+		/// <param name="intent">To be added.</param>
+		/// <summary>Developers may call this method to end the sending of updates about the ride status.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("stopSendingUpdatesForGetRideStatus:")]
 		void StopSendingUpdates (INGetRideStatusIntent intent);
@@ -4592,6 +4631,9 @@ namespace Intents {
 	[Protocol]
 	interface INGetRideStatusIntentResponseObserver {
 
+		/// <param name="response">To be added.</param>
+		/// <summary>Developers may override this method to respond to changes in the ride's status.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("getRideStatusResponseDidUpdate:")]
 		void DidUpdateRideStatus (INGetRideStatusIntentResponse response);
@@ -4655,6 +4697,10 @@ namespace Intents {
 	[Protocol]
 	interface INGetUserCurrentRestaurantReservationBookingsIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetUserCurrentRestaurantReservationBookingsIntentResponse" /> appropriate to the <see cref="T:Intents.INGetUserCurrentRestaurantReservationBookingsIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetUserCurrentRestaurantReservationBookings:completion:")]
 		void HandleUserCurrentRestaurantReservationBookings (INGetUserCurrentRestaurantReservationBookingsIntent intent, Action<INGetUserCurrentRestaurantReservationBookingsIntentResponse> completion);
@@ -5023,6 +5069,10 @@ namespace Intents {
 	[Protocol]
 	interface INListRideOptionsIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INListRideOptionsIntentResponse" /> appropriate to the <see cref="T:Intents.INListRideOptionsIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleListRideOptions:completion:")]
 		void HandleListRideOptions (INListRideOptionsIntent intent, Action<INListRideOptionsIntentResponse> completion);
@@ -5350,6 +5400,10 @@ namespace Intents {
 	[Protocol]
 	interface INPauseWorkoutIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INPauseWorkoutIntentResponse" /> appropriate to the <see cref="T:Intents.INPauseWorkoutIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handlePauseWorkout:completion:")]
 		void HandlePauseWorkout (INPauseWorkoutIntent intent, Action<INPauseWorkoutIntentResponse> completion);
@@ -5954,6 +6008,10 @@ namespace Intents {
 	[Protocol]
 	interface INRequestPaymentIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INRequestPaymentIntentResponse" /> appropriate to the <see cref="T:Intents.INRequestPaymentIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleRequestPayment:completion:")]
 		void HandleRequestPayment (INRequestPaymentIntent intent, Action<INRequestPaymentIntentResponse> completion);
@@ -6070,6 +6128,10 @@ namespace Intents {
 	[Protocol]
 	interface INRequestRideIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INRequestRideIntentResponse" /> appropriate to the <see cref="T:Intents.INRequestRideIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleRequestRide:completion:")]
 		void HandleRequestRide (INRequestRideIntent intent, Action<INRequestRideIntentResponse> completion);
@@ -6456,6 +6518,10 @@ namespace Intents {
 	[Protocol]
 	interface INResumeWorkoutIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INResumeWorkoutIntentResponse" /> appropriate to the <see cref="T:Intents.INResumeWorkoutIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleResumeWorkout:completion:")]
 		void HandleResumeWorkout (INResumeWorkoutIntent intent, Action<INResumeWorkoutIntentResponse> completion);
@@ -6814,6 +6880,10 @@ namespace Intents {
 	[Protocol]
 	interface INSaveProfileInCarIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSaveProfileInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSaveProfileInCarIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSaveProfileInCar:completion:")]
 		void HandleSaveProfileInCar (INSaveProfileInCarIntent intent, Action<INSaveProfileInCarIntentResponse> completion);
@@ -6922,6 +6992,10 @@ namespace Intents {
 	[Protocol]
 	interface INSearchCallHistoryIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSearchCallHistoryIntentResponse" /> appropriate to the <see cref="T:Intents.INSearchCallHistoryIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSearchCallHistory:completion:")]
 		void HandleSearchCallHistory (INSearchCallHistoryIntent intent, Action<INSearchCallHistoryIntentResponse> completion);
@@ -7094,6 +7168,10 @@ namespace Intents {
 	[Protocol]
 	interface INSearchForMessagesIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSearchForMessagesIntentResponse" /> appropriate to the <see cref="T:Intents.INSearchForMessagesIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSearchForMessages:completion:")]
 		void HandleSearchForMessages (INSearchForMessagesIntent intent, Action<INSearchForMessagesIntentResponse> completion);
@@ -7221,6 +7299,10 @@ namespace Intents {
 	[Protocol]
 	interface INSearchForPhotosIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSearchForPhotosIntentResponse" /> appropriate to the <see cref="T:Intents.INSearchForPhotosIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSearchForPhotos:completion:")]
 		void HandleSearchForPhotos (INSearchForPhotosIntent intent, Action<INSearchForPhotosIntentResponse> completion);
@@ -7380,6 +7462,10 @@ namespace Intents {
 	[Protocol]
 	interface INSendMessageIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSendMessageIntentResponse" /> appropriate to the <see cref="T:Intents.INSendMessageIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSendMessage:completion:")]
 		void HandleSendMessage (INSendMessageIntent intent, Action<INSendMessageIntentResponse> completion);
@@ -7497,6 +7583,10 @@ namespace Intents {
 	[Protocol]
 	interface INSendPaymentIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSendPaymentIntentResponse" /> appropriate to the <see cref="T:Intents.INSendPaymentIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSendPayment:completion:")]
 		void HandleSendPayment (INSendPaymentIntent intent, Action<INSendPaymentIntentResponse> completion);
@@ -7598,6 +7688,10 @@ namespace Intents {
 	[Protocol]
 	interface INSetAudioSourceInCarIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetAudioSourceInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSetAudioSourceInCarIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetAudioSourceInCar:completion:")]
 		void HandleSetAudioSourceInCar (INSetAudioSourceInCarIntent intent, Action<INSetAudioSourceInCarIntentResponse> completion);
@@ -7715,6 +7809,10 @@ namespace Intents {
 	[Protocol]
 	interface INSetClimateSettingsInCarIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetClimateSettingsInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSetClimateSettingsInCarIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetClimateSettingsInCar:completion:")]
 		void HandleSetClimateSettingsInCar (INSetClimateSettingsInCarIntent intent, Action<INSetClimateSettingsInCarIntentResponse> completion);
@@ -7871,6 +7969,10 @@ namespace Intents {
 	[Protocol]
 	interface INSetDefrosterSettingsInCarIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetDefrosterSettingsInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSetDefrosterSettingsInCarIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetDefrosterSettingsInCar:completion:")]
 		void HandleSetDefrosterSettingsInCar (INSetDefrosterSettingsInCarIntent intent, Action<INSetDefrosterSettingsInCarIntentResponse> completion);
@@ -7948,6 +8050,10 @@ namespace Intents {
 	[Protocol]
 	interface INSetMessageAttributeIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetMessageAttributeIntentResponse" /> appropriate to the <see cref="T:Intents.INSetMessageAttributeIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetMessageAttribute:completion:")]
 		void HandleSetMessageAttribute (INSetMessageAttributeIntent intent, Action<INSetMessageAttributeIntentResponse> completion);
@@ -8038,6 +8144,10 @@ namespace Intents {
 	[Protocol]
 	interface INSetProfileInCarIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetProfileInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSetProfileInCarIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetProfileInCar:completion:")]
 		void HandleSetProfileInCar (INSetProfileInCarIntent intent, Action<INSetProfileInCarIntentResponse> completion);
@@ -8138,6 +8248,10 @@ namespace Intents {
 	[Protocol]
 	interface INSetRadioStationIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetRadioStationIntentResponse" /> appropriate to the <see cref="T:Intents.INSetRadioStationIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetRadioStation:completion:")]
 		void HandleSetRadioStation (INSetRadioStationIntent intent, Action<INSetRadioStationIntentResponse> completion);
@@ -8259,6 +8373,10 @@ namespace Intents {
 	[Protocol]
 	interface INSetSeatSettingsInCarIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetSeatSettingsInCarIntentResponse" /> appropriate to the <see cref="T:Intents.INSetSeatSettingsInCarIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetSeatSettingsInCar:completion:")]
 		void HandleSetSeatSettingsInCar (INSetSeatSettingsInCarIntent intent, Action<INSetSeatSettingsInCarIntentResponse> completion);
@@ -8391,10 +8509,16 @@ namespace Intents {
 	[Protocol]
 	interface INSpeakable {
 
+		/// <summary>Siri's interpretation of the utterance.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("spokenPhrase")]
 		string SpokenPhrase { get; }
 
+		/// <summary>Developers can use this to clarify how a name is pronounced.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("pronunciationHint")]
 		string PronunciationHint { get; }
@@ -8409,6 +8533,9 @@ namespace Intents {
 		[NullAllowed, Export ("alternativeSpeakableMatches")]
 		IINSpeakable [] AlternativeSpeakableMatches { get; }
 
+		/// <summary>The unique identifier of this pronunciation hint.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'VocabularyIdentifier' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'VocabularyIdentifier' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'VocabularyIdentifier' instead.")]
@@ -8527,6 +8654,10 @@ namespace Intents {
 	[Protocol]
 	interface INStartAudioCallIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INStartAudioCallIntentResponse" /> appropriate to the <see cref="T:Intents.INStartAudioCallIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleStartAudioCall:completion:")]
 		void HandleStartAudioCall (INStartAudioCallIntent intent, Action<INStartAudioCallIntentResponse> completion);
@@ -8622,6 +8753,10 @@ namespace Intents {
 	[Protocol]
 	interface INStartPhotoPlaybackIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INStartPhotoPlaybackIntentResponse" /> appropriate to the <see cref="T:Intents.INStartPhotoPlaybackIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleStartPhotoPlayback:completion:")]
 		void HandleStartPhotoPlayback (INStartPhotoPlaybackIntent intent, Action<INStartPhotoPlaybackIntentResponse> completion);
@@ -8709,6 +8844,10 @@ namespace Intents {
 	[Protocol]
 	interface INStartVideoCallIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INStartVideoCallIntentResponse" /> appropriate to the <see cref="T:Intents.INStartVideoCallIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleStartVideoCall:completion:")]
 		void HandleStartVideoCall (INStartVideoCallIntent intent, Action<INStartVideoCallIntentResponse> completion);
@@ -8782,6 +8921,10 @@ namespace Intents {
 	[Protocol]
 	interface INStartWorkoutIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INStartWorkoutIntentResponse" /> appropriate to the <see cref="T:Intents.INStartWorkoutIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleStartWorkout:completion:")]
 		void HandleStartWorkout (INStartWorkoutIntent intent, Action<INStartWorkoutIntentResponse> completion);
@@ -9116,6 +9259,9 @@ namespace Intents {
 	[BaseType (typeof (NSUserActivity))]
 	interface NSUserActivity_IntentsAdditions {
 
+		/// <summary>Retrieves the <see cref="T:Intents.INInteraction" /> associated with <c>this</c><see cref="T:Foundation.NSUserActivity" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[return: NullAllowed]
 		[Export ("interaction")]
@@ -9168,6 +9314,10 @@ namespace Intents {
 	[Protocol]
 	interface INActivateCarSignalIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INActivateCarSignalIntentResponse" /> appropriate to the <see cref="T:Intents.INActivateCarSignalIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleActivateCarSignal:completion:")]
 		void HandleActivateCarSignal (INActivateCarSignalIntent intent, Action<INActivateCarSignalIntentResponse> completion);
@@ -9436,6 +9586,10 @@ namespace Intents {
 	[Protocol]
 	interface INGetCarLockStatusIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetCarLockStatusIntentResponse" /> appropriate to the <see cref="T:Intents.INGetCarLockStatusIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetCarLockStatus:completion:")]
 		void HandleGetCarLockStatus (INGetCarLockStatusIntent intent, Action<INGetCarLockStatusIntentResponse> completion);
@@ -9494,6 +9648,10 @@ namespace Intents {
 	[Protocol]
 	interface INGetCarPowerLevelStatusIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetCarPowerLevelStatusIntentResponse" /> appropriate to the <see cref="T:Intents.INGetCarPowerLevelStatusIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetCarPowerLevelStatus:completion:")]
 		void HandleGetCarPowerLevelStatus (INGetCarPowerLevelStatusIntent intent, Action<INGetCarPowerLevelStatusIntentResponse> completion);
@@ -10119,6 +10277,10 @@ namespace Intents {
 	[Protocol]
 	interface INSetCarLockStatusIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetCarLockStatusIntentResponse" /> appropriate to the <see cref="T:Intents.INSetCarLockStatusIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetCarLockStatus:completion:")]
 		void HandleSetCarLockStatus (INSetCarLockStatusIntent intent, Action<INSetCarLockStatusIntentResponse> completion);
@@ -10267,6 +10429,10 @@ namespace Intents {
 	[Protocol]
 	interface INAddTasksIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INAddTasksIntentResponse" /> appropriate to the <see cref="T:Intents.INAddTasksIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleAddTasks:completion:")]
 		void HandleAddTasks (INAddTasksIntent intent, Action<INAddTasksIntentResponse> completion);
@@ -10374,6 +10540,10 @@ namespace Intents {
 	[Protocol]
 	interface INAppendToNoteIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INAppendToNoteIntentResponse" /> appropriate to the <see cref="T:Intents.INAppendToNoteIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleAppendToNote:completion:")]
 		void HandleAppendToNote (INAppendToNoteIntent intent, Action<INAppendToNoteIntentResponse> completion);
@@ -10695,6 +10865,10 @@ namespace Intents {
 	[Protocol]
 	interface INCancelRideIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INCancelRideIntentResponse" /> appropriate to the <see cref="T:Intents.INCancelRideIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleCancelRide:completion:")]
 		void HandleCancelRide (INCancelRideIntent intent, Action<INCancelRideIntentResponse> completion);
@@ -10755,6 +10929,10 @@ namespace Intents {
 	[Protocol]
 	interface INCreateNoteIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INCreateNoteIntentResponse" /> appropriate to the <see cref="T:Intents.INCreateNoteIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleCreateNote:completion:")]
 		void HandleCreateNote (INCreateNoteIntent intent, Action<INCreateNoteIntentResponse> completion);
@@ -10837,6 +11015,10 @@ namespace Intents {
 	[Protocol]
 	interface INCreateTaskListIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INAddTasksIntentResponse" /> appropriate to the <see cref="T:Intents.INAddTasksIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleCreateTaskList:completion:")]
 		void HandleCreateTaskList (INCreateTaskListIntent intent, Action<INCreateTaskListIntentResponse> completion);
@@ -10962,6 +11144,10 @@ namespace Intents {
 	[Protocol]
 	interface INGetVisualCodeIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INGetVisualCodeIntentResponse" /> appropriate to the <see cref="T:Intents.INGetVisualCodeIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleGetVisualCode:completion:")]
 		void HandleGetVisualCode (INGetVisualCodeIntent intent, Action<INGetVisualCodeIntentResponse> completion);
@@ -11519,6 +11705,10 @@ namespace Intents {
 	[Protocol]
 	interface INSearchForAccountsIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSearchForAccountsIntentResponse" /> appropriate to the <see cref="T:Intents.INSearchForAccountsIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSearchForAccounts:completion:")]
 		void HandleSearchForAccounts (INSearchForAccountsIntent intent, Action<INSearchForAccountsIntentResponse> completion);
@@ -11645,6 +11835,10 @@ namespace Intents {
 	[Protocol]
 	interface INSearchForNotebookItemsIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSearchForNotebookItemsIntentResponse" /> appropriate to the <see cref="T:Intents.INSearchForNotebookItemsIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSearchForNotebookItems:completion:")]
 		void HandleSearchForNotebookItems (INSearchForNotebookItemsIntent intent, Action<INSearchForNotebookItemsIntentResponse> completion);
@@ -11953,6 +12147,10 @@ namespace Intents {
 	[Protocol]
 	interface INSendRideFeedbackIntentHandling {
 
+		/// <param name="sendRideFeedbackintent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSendRideFeedbackIntentResponse" /> appropriate to the <see cref="T:Intents.INSendRideFeedbackIntent" /> <paramref name="sendRideFeedbackintent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSendRideFeedback:completion:")]
 		void HandleSendRideFeedback (INSendRideFeedbackIntent sendRideFeedbackintent, Action<INSendRideFeedbackIntentResponse> completion);
@@ -12026,6 +12224,10 @@ namespace Intents {
 	[Protocol]
 	interface INSetTaskAttributeIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INSetTaskAttributeIntentResponse" /> appropriate to the <see cref="T:Intents.INSetTaskAttributeIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleSetTaskAttribute:completion:")]
 		void HandleSetTaskAttribute (INSetTaskAttributeIntent intent, Action<INSetTaskAttributeIntentResponse> completion);
@@ -12521,6 +12723,10 @@ namespace Intents {
 	[Protocol]
 	interface INTransferMoneyIntentHandling {
 
+		/// <param name="intent">Specifies the user's intention.</param>
+		/// <param name="completion">Completion method that must be called by the override.</param>
+		/// <summary>Developers must override this method and invoke the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Action`%201&amp;scope=Xamarin" title="T:System.Action`1">T:System.Action`1</a></format> with an <see cref="T:Intents.INTransferMoneyIntentResponse" /> appropriate to the <see cref="T:Intents.INTransferMoneyIntent" /> <paramref name="intent" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleTransferMoney:completion:")]
 		void HandleTransferMoney (INTransferMoneyIntent intent, Action<INTransferMoneyIntentResponse> completion);
@@ -12823,6 +13029,10 @@ namespace Intents {
 	[Protocol]
 	interface INPlayMediaIntentHandling {
 
+		/// <param name="intent">To be added.</param>
+		/// <param name="completion">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handlePlayMedia:completion:")]
 		void HandlePlayMedia (INPlayMediaIntent intent, Action<INPlayMediaIntentResponse> completion);

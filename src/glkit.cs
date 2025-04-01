@@ -1187,6 +1187,10 @@ namespace GLKit {
 	[Model]
 	[Protocol]
 	interface GLKViewDelegate {
+		/// <param name="view">To be added.</param>
+		/// <param name="rect">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("glkView:drawInRect:"), EventArgs ("GLKViewDraw")]
 		void DrawInRect (GLKView view, CGRect rect);
@@ -1310,6 +1314,9 @@ namespace GLKit {
 	[Model]
 	[Protocol]
 	interface GLKViewControllerDelegate {
+		/// <param name="controller">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("glkViewControllerUpdate:")]
 		void Update (GLKViewController controller);

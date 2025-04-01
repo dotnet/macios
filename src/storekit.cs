@@ -461,6 +461,10 @@ namespace StoreKit {
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
 	interface SKPaymentTransactionObserver {
 
+		/// <param name="queue">To be added.</param>
+		/// <param name="transactions">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("paymentQueue:updatedTransactions:")]
 		[Abstract]
 		void UpdatedTransactions (SKPaymentQueue queue, SKPaymentTransaction [] transactions);
@@ -714,6 +718,10 @@ namespace StoreKit {
 	[Model]
 	[Protocol]
 	interface SKProductsRequestDelegate {
+		/// <param name="request">To be added.</param>
+		/// <param name="response">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("productsRequest:didReceiveResponse:")]
 		[Abstract]
 		[EventArgs ("SKProductsRequestResponse")]

@@ -409,6 +409,10 @@ namespace CallKit {
 	[BaseType (typeof (NSObject))]
 	interface CXCallDirectoryExtensionContextDelegate {
 
+		/// <param name="extensionContext">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("requestFailedForExtensionContext:withError:")]
 		void RequestFailed (CXCallDirectoryExtensionContext extensionContext, NSError error);
@@ -475,6 +479,10 @@ namespace CallKit {
 	[BaseType (typeof (NSObject))]
 	interface CXCallObserverDelegate {
 
+		/// <param name="callObserver">The object on which this method operates.</param>
+		/// <param name="call">The new call.</param>
+		/// <summary>Method that is called when the call changes.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("callObserver:callChanged:")]
 		void CallChanged (CXCallObserver callObserver, CXCall call);
@@ -578,6 +586,9 @@ namespace CallKit {
 	[BaseType (typeof (NSObject))]
 	interface CXProviderDelegate {
 
+		/// <param name="provider">The provider to which the provider delegate belongs.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("providerDidReset:")]
 		void DidReset (CXProvider provider);

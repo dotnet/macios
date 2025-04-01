@@ -124,6 +124,11 @@ namespace IdentityLookup {
 	[Protocol]
 	interface ILMessageFilterQueryHandling {
 
+		/// <param name="queryRequest">The query for the message.</param>
+		/// <param name="context">The app extension context for deferring requests.</param>
+		/// <param name="completion">A handler that is run after the operation completes.</param>
+		/// <summary>Evaluates the specified request in the provided context, and runs a handler when the operation is complete.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleQueryRequest:context:completion:")]
 		void HandleQueryRequest (ILMessageFilterQueryRequest queryRequest, ILMessageFilterExtensionContext context, Action<ILMessageFilterQueryResponse> completion);

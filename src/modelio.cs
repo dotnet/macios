@@ -1716,6 +1716,9 @@ namespace ModelIO {
 		[Export ("fillData:offset:")]
 		void FillData (NSData data, nuint offset);
 
+		/// <summary>Gets a mesh buffer map that provides read-only access to the data in the buffer.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("map")]
 		MDLMeshBufferMap Map { get; }
@@ -1755,6 +1758,11 @@ namespace ModelIO {
 		[Export ("newZone:")]
 		IMDLMeshBufferZone CreateZone (nuint capacity);
 
+		/// <param name="sizes">To be added.</param>
+		/// <param name="types">To be added.</param>
+		/// <summary>Creates a new zone that is large enough to contain buffers from the list of sizes and corresponding types.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newZoneForBuffersWithSize:andType:")]
 		IMDLMeshBufferZone CreateZone (NSNumber [] sizes, NSNumber [] types);
@@ -1763,6 +1771,11 @@ namespace ModelIO {
 		[Export ("newBuffer:type:")]
 		IMDLMeshBuffer CreateBuffer (nuint length, MDLMeshBufferType type);
 
+		/// <param name="data">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <summary>Creates a new buffer from the specified data, of the specified type, in the default zone of the implementor.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newBufferWithData:type:")]
 		IMDLMeshBuffer CreateBuffer (NSData data, MDLMeshBufferType type);
@@ -1772,6 +1785,12 @@ namespace ModelIO {
 		[return: NullAllowed]
 		IMDLMeshBuffer CreateBuffer ([NullAllowed] IMDLMeshBufferZone zone, nuint length, MDLMeshBufferType type);
 
+		/// <param name="zone">To be added.</param>
+		/// <param name="data">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <summary>Creates a new buffer from the specified data, of the specified type, in the specified zone.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newBufferFromZone:data:type:")]
 		[return: NullAllowed]
@@ -1858,6 +1877,9 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLNamed {
+		/// <summary>Gets or sets the descriptive name of the named object.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("name")]
 		string Name { get; set; }
@@ -2096,10 +2118,16 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLObjectContainerComponent : MDLComponent, INSFastEnumeration {
+		/// <param name="object">To be added.</param>
+		/// <summary>Adds <paramref name="object" /> to the list of objects that are contained by this IMDLObjectContainerComponent.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("addObject:")]
 		void AddObject (MDLObject @object);
 
+		/// <param name="object">To be added.</param>
+		/// <summary>Removes <paramref name="object" /> from the list of objects that are contained by this IMDLObjectContainerComponent.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("removeObject:")]
 		void RemoveObject (MDLObject @object);
@@ -2118,6 +2146,9 @@ namespace ModelIO {
 		[Export ("count")]
 		nuint Count { get; }
 
+		/// <summary>Gets the list of objects that belong to this IMDLObjectContainerComponent.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("objects", ArgumentSemantic.Retain)]
 		MDLObject [] Objects { get; }
@@ -3167,6 +3198,9 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLTransformComponent : MDLComponent {
+		/// <summary>Gets or sets the matrix of the transform at the earliest specified time.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("matrix", ArgumentSemantic.Assign)]
 		Matrix4 Matrix {
@@ -3183,10 +3217,16 @@ namespace ModelIO {
 		[Export ("resetsTransform")]
 		bool ResetsTransform { get; set; }
 
+		/// <summary>Gets the first specified time in the transformation.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("minimumTime")]
 		double MinimumTime { get; }
 
+		/// <summary>Gets the last specified time in the transformation.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("maximumTime")]
 		double MaximumTime { get; }
@@ -4470,10 +4510,18 @@ namespace ModelIO {
 	[Protocol]
 	interface MDLAssetResolver {
 
+		/// <param name="name">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("canResolveAssetNamed:")]
 		bool CanResolveAsset (string name);
 
+		/// <param name="name">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("resolveAssetNamed:")]
 		NSUrl ResolveAsset (string name);
@@ -4542,20 +4590,34 @@ namespace ModelIO {
 	[Protocol]
 	interface MDLTransformOp {
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("name")]
 		string Name { get; }
 
+		/// <param name="atTime">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("float4x4AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NMatrix4 GetNMatrix4 (double atTime);
 
+		/// <param name="atTime">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("double4x4AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NMatrix4d GetNMatrix4d (double atTime);
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("IsInverseOp")]
 		bool IsInverseOp { get; }

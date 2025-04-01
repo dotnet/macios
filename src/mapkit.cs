@@ -54,6 +54,9 @@ namespace MapKit {
 	[Protocol]
 	[MacCatalyst (13, 1)]
 	interface MKAnnotation {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Export ("coordinate")]
 		[Abstract]
 		CLLocationCoordinate2D Coordinate { get; }
@@ -89,6 +92,9 @@ namespace MapKit {
 		// a readonly 'coordinate' property, so there's no need to re-declare it here
 		// (in fact it causes numerous build problems).
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("boundingMapRect")]
 		MKMapRect BoundingMapRect { get; }
@@ -1244,10 +1250,18 @@ namespace MapKit {
 	[Model]
 	[Protocol]
 	interface MKReverseGeocoderDelegate {
+		/// <param name="geocoder">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("reverseGeocoder:didFailWithError:")]
 		void FailedWithError (MKReverseGeocoder geocoder, NSError error);
 
+		/// <param name="geocoder">To be added.</param>
+		/// <param name="placemark">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("reverseGeocoder:didFindPlacemark:")]
 		void FoundWithPlacemark (MKReverseGeocoder geocoder, MKPlacemark placemark);
@@ -2395,10 +2409,16 @@ namespace MapKit {
 	[Category]
 	[BaseType (typeof (NSUserActivity))]
 	interface NSUserActivity_MKMapItem {
+		/// <summary>Gets the mapkit item.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("mapItem")]
 		MKMapItem GetMapItem ();
 
+		/// <param name="item">The new mapkit item.</param>
+		/// <summary>Sets the mapkit item to <paramref name="item" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("setMapItem:")]
 		void SetMapItem (MKMapItem item);

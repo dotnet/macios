@@ -88,6 +88,10 @@ namespace Messages {
 	[MacCatalyst (14, 0)]
 	[Protocol]
 	interface MSMessagesAppTranscriptPresentation {
+		/// <param name="size">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("contentSizeThatFits:")]
 		CGSize GetContentSizeThatFits (CGSize size);
@@ -419,6 +423,10 @@ namespace Messages {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface MSStickerBrowserViewDataSource {
+		/// <param name="stickerBrowserView">To be added.</param>
+		/// <summary>The number of <see cref="T:Messages.MSSticker" /> objects held by this data source.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("numberOfStickersInStickerBrowserView:")]
 		nint GetNumberOfStickers (MSStickerBrowserView stickerBrowserView);

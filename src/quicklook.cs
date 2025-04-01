@@ -123,6 +123,10 @@ namespace QuickLook {
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	interface QLPreviewControllerDataSource {
+		/// <param name="controller">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("numberOfPreviewItemsInPreviewController:")]
 		nint PreviewItemCount (QLPreviewController controller);

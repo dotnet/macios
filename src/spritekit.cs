@@ -392,6 +392,10 @@ namespace SpriteKit {
 	[Category, BaseType (typeof (NSEvent))]
 	partial interface SKNodeEvent_NSEvent {
 
+		/// <param name="node">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("locationInNode:")]
 		CGPoint LocationInNode (SKNode node);
 	}
@@ -402,9 +406,17 @@ namespace SpriteKit {
 	[Category, BaseType (typeof (UITouch))]
 	partial interface SKNodeTouches_UITouch {
 
+		/// <param name="node">To be added.</param>
+		/// <summary>The current position of <c>this</c> in the coordinate system of <paramref name="node" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("locationInNode:")]
 		CGPoint LocationInNode (SKNode node);
 
+		/// <param name="node">To be added.</param>
+		/// <summary>The previous location of <c>this</c> in the coordinate system of <paramref name="node" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("previousLocationInNode:")]
 		CGPoint PreviousLocationInNode (SKNode node);
 	}
@@ -3379,10 +3391,16 @@ namespace SpriteKit {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface SKWarpable {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("warpGeometry", ArgumentSemantic.Assign)]
 		SKWarpGeometry WarpGeometry { get; set; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("subdivisionLevels")]
 		nint SubdivisionLevels { get; set; }

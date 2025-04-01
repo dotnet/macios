@@ -484,6 +484,10 @@ namespace WebKit {
 #endif
 	[BaseType (typeof (NSObject), Name = "DOMNodeFilter")]
 	interface DomNodeFilter {
+		/// <param name="n">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("acceptNode:")]
 		[Abstract]
 		short AcceptNode (DomNode n);
@@ -1181,14 +1185,28 @@ namespace WebKit {
 	[Protocol]
 	[Model]
 	partial interface DomEventTarget : NSCopying {
+		/// <param name="type">To be added.</param>
+		/// <param name="listener">To be added.</param>
+		/// <param name="useCapture">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("addEventListener:listener:useCapture:")]
 		[Abstract]
 		void AddEventListener (string type, IDomEventListener listener, bool useCapture);
 
+		/// <param name="type">To be added.</param>
+		/// <param name="listener">To be added.</param>
+		/// <param name="useCapture">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("removeEventListener:listener:useCapture:")]
 		[Abstract]
 		void RemoveEventListener (string type, IDomEventListener listener, bool useCapture);
 
+		/// <param name="evt">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dispatchEvent:")]
 		[Abstract]
 		bool DispatchEvent (DomEvent evt);
@@ -1434,6 +1452,9 @@ namespace WebKit {
 	[Model]
 	[Protocol]
 	partial interface DomEventListener {
+		/// <param name="evt">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("handleEvent:")]
 		void HandleEvent (DomEvent evt);
@@ -1911,18 +1932,32 @@ namespace WebKit {
 	[Model]
 	[Protocol]
 	partial interface WebDocumentRepresentation {
+		/// <param name="dataSource">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setDataSource:")]
 		void SetDataSource (WebDataSource dataSource);
 
+		/// <param name="data">To be added.</param>
+		/// <param name="dataSource">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("receivedData:withDataSource:")]
 		void ReceivedData (NSData data, WebDataSource dataSource);
 
+		/// <param name="error">To be added.</param>
+		/// <param name="dataSource">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("receivedError:withDataSource:")]
 		void ReceivedError (NSError error, WebDataSource dataSource);
 
+		/// <param name="dataSource">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("finishedLoadingWithDataSource:")]
 		void FinishedLoading (WebDataSource dataSource);
@@ -1988,6 +2023,10 @@ namespace WebKit {
 	[Model]
 	[Protocol (FormalSince = "10.11")]
 	partial interface WebDownloadDelegate {
+		/// <param name="download">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("downloadWindowForAuthenticationSheet:"), DelegateName ("WebDownloadRequest"), DefaultValue (null)]
 		NSWindow OnDownloadWindowForSheet (WebDownload download);
 	}
@@ -2073,48 +2112,117 @@ namespace WebKit {
 	[Protocol (FormalSince = "10.11")]
 	[BaseType (typeof (NSObject))]
 	partial interface WebFrameLoadDelegate {
+		/// <param name="sender">To be added.</param>
+		/// <param name="forFrame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:didStartProvisionalLoadForFrame:"), EventArgs ("WebFrame")]
 		void StartedProvisionalLoad (WebView sender, WebFrame forFrame);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="forFrame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:didReceiveServerRedirectForProvisionalLoadForFrame:"), EventArgs ("WebFrame")]
 		void ReceivedServerRedirectForProvisionalLoad (WebView sender, WebFrame forFrame);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <param name="forFrame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:didFailProvisionalLoadWithError:forFrame:"), EventArgs ("WebFrameError")]
 		void FailedProvisionalLoad (WebView sender, NSError error, WebFrame forFrame);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="forFrame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:didCommitLoadForFrame:"), EventArgs ("WebFrame")]
 		void CommitedLoad (WebView sender, WebFrame forFrame);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="title">To be added.</param>
+		/// <param name="forFrame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:didReceiveTitle:forFrame:"), EventArgs ("WebFrameTitle")]
 		void ReceivedTitle (WebView sender, string title, WebFrame forFrame);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="image">To be added.</param>
+		/// <param name="forFrame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:didReceiveIcon:forFrame:"), EventArgs ("WebFrameImage")]
 		void ReceivedIcon (WebView sender, NSImage image, WebFrame forFrame);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="forFrame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:didFinishLoadForFrame:"), EventArgs ("WebFrame")]
 		void FinishedLoad (WebView sender, WebFrame forFrame);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <param name="forFrame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:didFailLoadWithError:forFrame:"), EventArgs ("WebFrameError")]
 		void FailedLoadWithError (WebView sender, NSError error, WebFrame forFrame);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="forFrame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:didChangeLocationWithinPageForFrame:"), EventArgs ("WebFrame")]
 		void ChangedLocationWithinPage (WebView sender, WebFrame forFrame);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="toUrl">To be added.</param>
+		/// <param name="secondsDelay">To be added.</param>
+		/// <param name="fireDate">To be added.</param>
+		/// <param name="forFrame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:willPerformClientRedirectToURL:delay:fireDate:forFrame:"), EventArgs ("WebFrameClientRedirect")]
 		void WillPerformClientRedirect (WebView sender, NSUrl toUrl, double secondsDelay, NSDate fireDate, WebFrame forFrame);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="forFrame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:didCancelClientRedirectForFrame:"), EventArgs ("WebFrame")]
 		void CanceledClientRedirect (WebView sender, WebFrame forFrame);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="forFrame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:willCloseFrame:"), EventArgs ("WebFrame")]
 		void WillCloseFrame (WebView sender, WebFrame forFrame);
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="windowObject">To be added.</param>
+		/// <param name="forFrame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:didClearWindowObject:forFrame:"), EventArgs ("WebFrameScriptFrame")]
 		void ClearedWindowObject (WebView webView, WebScriptObject windowObject, WebFrame forFrame);
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="windowScriptObject">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:windowScriptObjectAvailable:"), EventArgs ("WebFrameScriptObject")]
 		void WindowScriptObjectAvailable (WebView webView, WebScriptObject windowScriptObject);
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="context">To be added.</param>
+		/// <param name="frame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:didCreateJavaScriptContext:forFrame:"), EventArgs ("WebFrameJavaScriptContext")]
 		void DidCreateJavaScriptContext (WebView webView, JSContext context, WebFrame frame);
 	}
@@ -2267,15 +2375,41 @@ namespace WebKit {
 	[Model]
 	[Protocol (FormalSince = "10.11")]
 	partial interface WebPolicyDelegate {
+		/// <param name="webView">To be added.</param>
+		/// <param name="actionInformation">To be added.</param>
+		/// <param name="request">To be added.</param>
+		/// <param name="frame">To be added.</param>
+		/// <param name="decisionToken">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:decidePolicyForNavigationAction:request:frame:decisionListener:"), EventArgs ("WebNavigationPolicy")]
 		void DecidePolicyForNavigation (WebView webView, NSDictionary actionInformation, NSUrlRequest request, WebFrame frame, NSObject decisionToken);
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="actionInformation">To be added.</param>
+		/// <param name="request">To be added.</param>
+		/// <param name="newFrameName">To be added.</param>
+		/// <param name="decisionToken">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:decidePolicyForNewWindowAction:request:newFrameName:decisionListener:"), EventArgs ("WebNewWindowPolicy")]
 		void DecidePolicyForNewWindow (WebView webView, NSDictionary actionInformation, NSUrlRequest request, string newFrameName, NSObject decisionToken);
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="mimeType">To be added.</param>
+		/// <param name="request">To be added.</param>
+		/// <param name="frame">To be added.</param>
+		/// <param name="decisionToken">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:decidePolicyForMIMEType:request:frame:decisionListener:"), EventArgs ("WebMimeTypePolicy")]
 		void DecidePolicyForMimeType (WebView webView, string mimeType, NSUrlRequest request, WebFrame frame, NSObject decisionToken);
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <param name="frame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:unableToImplementPolicyWithError:frame:"), EventArgs ("WebFailureToImplementPolicy")]
 		void UnableToImplementPolicy (WebView webView, NSError error, WebFrame frame);
 
@@ -2472,30 +2606,78 @@ namespace WebKit {
 	[Model]
 	[Protocol (FormalSince = "10.11")]
 	partial interface WebResourceLoadDelegate {
+		/// <param name="sender">To be added.</param>
+		/// <param name="request">To be added.</param>
+		/// <param name="dataSource">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:identifierForInitialRequest:fromDataSource:"), DelegateName ("WebResourceIdentifierRequest"), DefaultValue (null)]
 		NSObject OnIdentifierForInitialRequest (WebView sender, NSUrlRequest request, WebDataSource dataSource);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="identifier">To be added.</param>
+		/// <param name="request">To be added.</param>
+		/// <param name="redirectResponse">To be added.</param>
+		/// <param name="dataSource">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:resource:willSendRequest:redirectResponse:fromDataSource:"), DelegateName ("WebResourceOnRequestSend"), DefaultValueFromArgument ("request")]
 		NSUrlRequest OnSendRequest (WebView sender, NSObject identifier, NSUrlRequest request, NSUrlResponse redirectResponse, WebDataSource dataSource);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="identifier">To be added.</param>
+		/// <param name="challenge">To be added.</param>
+		/// <param name="dataSource">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:resource:didReceiveAuthenticationChallenge:fromDataSource:"), EventArgs ("WebResourceAuthenticationChallenge")]
 		void OnReceivedAuthenticationChallenge (WebView sender, NSObject identifier, NSUrlAuthenticationChallenge challenge, WebDataSource dataSource);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="identifier">To be added.</param>
+		/// <param name="challenge">To be added.</param>
+		/// <param name="dataSource">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:resource:didCancelAuthenticationChallenge:fromDataSource:"), EventArgs ("WebResourceCancelledChallenge")]
 		void OnCancelledAuthenticationChallenge (WebView sender, NSObject identifier, NSUrlAuthenticationChallenge challenge, WebDataSource dataSource);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="identifier">To be added.</param>
+		/// <param name="responseReceived">To be added.</param>
+		/// <param name="dataSource">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:resource:didReceiveResponse:fromDataSource:"), EventArgs ("WebResourceReceivedResponse")]
 		void OnReceivedResponse (WebView sender, NSObject identifier, NSUrlResponse responseReceived, WebDataSource dataSource);
 
 		[Export ("webView:resource:didReceiveContentLength:fromDataSource:"), EventArgs ("WebResourceReceivedContentLength")]
 		void OnReceivedContentLength (WebView sender, NSObject identifier, nint length, WebDataSource dataSource);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="identifier">To be added.</param>
+		/// <param name="dataSource">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:resource:didFinishLoadingFromDataSource:"), EventArgs ("WebResourceCompleted")]
 		void OnFinishedLoading (WebView sender, NSObject identifier, WebDataSource dataSource);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="identifier">To be added.</param>
+		/// <param name="withError">To be added.</param>
+		/// <param name="dataSource">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:resource:didFailLoadingWithError:fromDataSource:"), EventArgs ("WebResourceError")]
 		void OnFailedLoading (WebView sender, NSObject identifier, NSError withError, WebDataSource dataSource);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <param name="dataSource">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:plugInFailedWithError:dataSource:"), EventArgs ("WebResourcePluginError")]
 		void OnPlugInFailed (WebView sender, NSError error, WebDataSource dataSource);
 	}
@@ -2508,84 +2690,202 @@ namespace WebKit {
 	[Model]
 	[Protocol (FormalSince = "10.11")]
 	partial interface WebUIDelegate {
+		/// <param name="sender">To be added.</param>
+		/// <param name="request">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:createWebViewWithRequest:"), DelegateName ("CreateWebViewFromRequest"), DefaultValue (null)]
 		WebView UICreateWebView (WebView sender, NSUrlRequest request);
 
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webViewShow:")]
 		void UIShow (WebView sender);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="request">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:createWebViewModalDialogWithRequest:"), DelegateName ("WebViewCreate"), DefaultValue (null)]
 		WebView UICreateModalDialog (WebView sender, NSUrlRequest request);
 
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webViewRunModal:")]
 		void UIRunModal (WebView sender);
 
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webViewClose:")]
 		void UIClose (WebView sender);
 
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webViewFocus:")]
 		void UIFocus (WebView sender);
 
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webViewUnfocus:")]
 		void UIUnfocus (WebView sender);
 
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("webViewFirstResponder:"), DelegateName ("WebViewGetResponder"), DefaultValue (null)]
 		NSResponder UIGetFirstResponder (WebView sender);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="newResponder">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:makeFirstResponder:"), EventArgs ("WebViewResponder")]
 		void UIMakeFirstResponder (WebView sender, NSResponder newResponder);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="text">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:setStatusText:"), EventArgs ("WebViewStatusText")]
 		void UISetStatusText (WebView sender, string text);
 
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("webViewStatusText:"), DelegateName ("WebViewGetString"), DefaultValue (null)]
 		string UIGetStatusText (WebView sender);
 
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("webViewAreToolbarsVisible:"), DelegateName ("WebViewGetBool"), DefaultValue (null)]
 		bool UIAreToolbarsVisible (WebView sender);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="visible">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:setToolbarsVisible:"), EventArgs ("WebViewToolBars")]
 		void UISetToolbarsVisible (WebView sender, bool visible);
 
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("webViewIsStatusBarVisible:"), DelegateName ("WebViewGetBool"), DefaultValue (false)]
 		bool UIIsStatusBarVisible (WebView sender);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="visible">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:setStatusBarVisible:"), EventArgs ("WebViewStatusBar")]
 		void UISetStatusBarVisible (WebView sender, bool visible);
 
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("webViewIsResizable:"), DelegateName ("WebViewGetBool"), DefaultValue (null)]
 		bool UIIsResizable (WebView sender);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="resizable">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:setResizable:"), EventArgs ("WebViewResizable")]
 		void UISetResizable (WebView sender, bool resizable);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="newFrame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:setFrame:"), EventArgs ("WebViewFrame")]
 		void UISetFrame (WebView sender, CGRect newFrame);
 
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("webViewFrame:"), DelegateName ("WebViewGetRectangle"), DefaultValue (null)]
 		CGRect UIGetFrame (WebView sender);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="withMessage">To be added.</param>
+		/// <param name="initiatedByFrame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:runJavaScriptAlertPanelWithMessage:initiatedByFrame:"), EventArgs ("WebViewJavaScriptFrame")]
 		void UIRunJavaScriptAlertPanelMessage (WebView sender, string withMessage, WebFrame initiatedByFrame);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="withMessage">To be added.</param>
+		/// <param name="initiatedByFrame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:runJavaScriptConfirmPanelWithMessage:initiatedByFrame:"), DelegateName ("WebViewConfirmationPanel"), DefaultValue (null)]
 		bool UIRunJavaScriptConfirmationPanel (WebView sender, string withMessage, WebFrame initiatedByFrame);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="prompt">To be added.</param>
+		/// <param name="defaultText">To be added.</param>
+		/// <param name="initiatedByFrame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:runJavaScriptTextInputPanelWithPrompt:defaultText:initiatedByFrame:"), DelegateName ("WebViewPromptPanel"), DefaultValue (null)]
 		string UIRunJavaScriptTextInputPanelWithFrame (WebView sender, string prompt, string defaultText, WebFrame initiatedByFrame);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="message">To be added.</param>
+		/// <param name="initiatedByFrame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:runBeforeUnloadConfirmPanelWithMessage:initiatedByFrame:"), DelegateName ("WebViewJavaScriptFrame"), DefaultValue (null)]
 		bool UIRunBeforeUnload (WebView sender, string message, WebFrame initiatedByFrame);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="resultListener">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:runOpenPanelForFileButtonWithResultListener:"), EventArgs ("WebViewRunOpenPanel")]
 		void UIRunOpenPanelForFileButton (WebView sender, IWebOpenPanelResultListener resultListener);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="elementInformation">To be added.</param>
+		/// <param name="modifierFlags">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:mouseDidMoveOverElement:modifierFlags:"), EventArgs ("WebViewMouseMoved")]
 		void UIMouseDidMoveOverElement (WebView sender, NSDictionary elementInformation, NSEventModifierMask modifierFlags);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="forElement">To be added.</param>
+		/// <param name="defaultMenuItems">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:contextMenuItemsForElement:defaultMenuItems:"), DelegateName ("WebViewGetContextMenuItems"), DefaultValue (null)]
 		NSMenuItem [] UIGetContextMenuItems (WebView sender, NSDictionary forElement, NSMenuItem [] defaultMenuItems);
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="validatedUserInterfaceItem">To be added.</param>
+		/// <param name="defaultValidation">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:validateUserInterfaceItem:defaultValidation:"), DelegateName ("WebViewValidateUserInterface"), DefaultValueFromArgument ("defaultValidation")]
 		bool UIValidateUserInterfaceItem (WebView webView, NSObject validatedUserInterfaceItem, bool defaultValidation);
 
@@ -2611,6 +2911,11 @@ namespace WebKit {
 		void UIWillPerformDragDestination (WebView webView, WebDragDestinationAction action, NSDraggingInfo draggingInfo);
 #endif
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="point">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:dragSourceActionMaskForPoint:"), DelegateName ("DragSourceGetActionMask"), DefaultValue (0)]
 #if NET
 		WebDragSourceAction UIDragSourceActionMask (WebView webView, CGPoint point);
@@ -2618,36 +2923,85 @@ namespace WebKit {
 		NSEventModifierMask UIDragSourceActionMask (WebView webView, CGPoint point);
 #endif
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="action">To be added.</param>
+		/// <param name="sourcePoint">To be added.</param>
+		/// <param name="pasteboard">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:willPerformDragSourceAction:fromPoint:withPasteboard:"), EventArgs ("WebViewPerformDrag")]
 		void UIWillPerformDragSource (WebView webView, WebDragSourceAction action, CGPoint sourcePoint, NSPasteboard pasteboard);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="frameView">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:printFrameView:"), EventArgs ("WebViewPrint")]
 		void UIPrintFrameView (WebView sender, WebFrameView frameView);
 
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("webViewHeaderHeight:"), DelegateName ("WebViewGetFloat"), DefaultValue (null)]
 		float UIGetHeaderHeight (WebView sender); /* float, not CGFloat */
 
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("webViewFooterHeight:"), DelegateName ("WebViewGetFloat"), DefaultValue (null)]
 		float UIGetFooterHeight (WebView sender); /* float, not CGFloat */
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="rect">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:drawHeaderInRect:"), EventArgs ("WebViewHeader")]
 		void UIDrawHeaderInRect (WebView sender, CGRect rect);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="rect">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:drawFooterInRect:"), EventArgs ("WebViewFooter")]
 		void UIDrawFooterInRect (WebView sender, CGRect rect);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="message">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:runJavaScriptAlertPanelWithMessage:"), EventArgs ("WebViewJavaScript")]
 		void UIRunJavaScriptAlertPanel (WebView sender, string message);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="message">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:runJavaScriptConfirmPanelWithMessage:"), DelegateName ("WebViewPrompt"), DefaultValue (null)]
 		bool UIRunJavaScriptConfirmPanel (WebView sender, string message);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="prompt">To be added.</param>
+		/// <param name="defaultText">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:runJavaScriptTextInputPanelWithPrompt:defaultText:"), DelegateName ("WebViewJavaScriptInput"), DefaultValue (null)]
 		string UIRunJavaScriptTextInputPanel (WebView sender, string prompt, string defaultText);
 
+		/// <param name="sender">To be added.</param>
+		/// <param name="frame">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:setContentRect:"), EventArgs ("WebViewContent")]
 		void UISetContentRect (WebView sender, CGRect frame);
 
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("webViewContentRect:"), DelegateName ("WebViewGetRectangle"), DefaultValue (null)]
 		CGRect UIGetContentRect (WebView sender);
 	}
@@ -4926,6 +5280,10 @@ namespace WebKit {
 	[BaseType (typeof (NSObject))]
 	interface WKScriptMessageHandler {
 
+		/// <param name="userContentController">To be added.</param>
+		/// <param name="message">To be added.</param>
+		/// <summary>Method that is called after a message is received from a script.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("userContentController:didReceiveScriptMessage:")]
 		[Abstract]
 		void DidReceiveScriptMessage (WKUserContentController userContentController, WKScriptMessage message);
@@ -4971,10 +5329,18 @@ namespace WebKit {
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "WKURLSchemeHandler")]
 	interface WKUrlSchemeHandler {
+		/// <param name="webView">The web view that is making the request.</param>
+		/// <param name="urlSchemeTask">The task for which to load data.</param>
+		/// <summary>Starts a URL scheme task that processes a URL and loads data for the specified <paramref name="webView" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("webView:startURLSchemeTask:")]
 		void StartUrlSchemeTask (WKWebView webView, IWKUrlSchemeTask urlSchemeTask);
 
+		/// <param name="webView">The web view that is making the request.</param>
+		/// <param name="urlSchemeTask">The task for which to stop loading data.</param>
+		/// <summary>Stops a URL scheme task that processes a URL and loads data for the specified <paramref name="webView" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("webView:stopURLSchemeTask:")]
 		void StopUrlSchemeTask (WKWebView webView, IWKUrlSchemeTask urlSchemeTask);
@@ -4986,22 +5352,36 @@ namespace WebKit {
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "WKURLSchemeTask")]
 	interface WKUrlSchemeTask {
+		/// <summary>Gets the request.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("request", ArgumentSemantic.Copy)]
 		NSUrlRequest Request { get; }
 
+		/// <param name="response">The response that was received.</param>
+		/// <summary>Method that is called to indicate that the task received a response.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("didReceiveResponse:")]
 		void DidReceiveResponse (NSUrlResponse response);
 
+		/// <param name="data">The data that was received.</param>
+		/// <summary>Method that is called to indicate that the task received the data.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("didReceiveData:")]
 		void DidReceiveData (NSData data);
 
+		/// <summary>Method that is called to indicate that the task is finished.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("didFinish")]
 		void DidFinish ();
 
+		/// <param name="error">The error that occurred.</param>
+		/// <summary>Method that is called to indicate failure.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("didFailWithError:")]
 		void DidFailWithError (NSError error);
@@ -5292,6 +5672,12 @@ namespace WebKit {
 		void RunJavaScriptTextInputPanel (WKWebView webView, string prompt, [NullAllowed] string defaultText, WKFrameInfo frame, WKUIDelegateRunJavaScriptTextInputPanelCallback completionHandler);
 #endif
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="parameters">To be added.</param>
+		/// <param name="frame">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[iOS (18, 4), NoTV]
 		[MacCatalyst (18, 4)]
 		[Export ("webView:runOpenPanelWithParameters:initiatedByFrame:completionHandler:")]
@@ -6165,6 +6551,9 @@ namespace WebKit {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface WKPreviewActionItem : UIPreviewActionItem {
+		/// <summary>Gets the unique identifier of the preview action type.</summary>
+		/// <value>The unique identifier of the preview action type.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("identifier", ArgumentSemantic.Copy)]
 		NSString Identifier { get; }

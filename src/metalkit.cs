@@ -180,10 +180,17 @@ namespace MetalKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface MTKViewDelegate {
+		/// <param name="view">To be added.</param>
+		/// <param name="size">To be added.</param>
+		/// <summary>Method to redraw the view when its layout is changed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("mtkView:drawableSizeWillChange:")]
 		void DrawableSizeWillChange (MTKView view, CGSize size);
 
+		/// <param name="view">To be added.</param>
+		/// <summary>Method to draw the contents of the view.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("drawInMTKView:")]
 		void Draw (MTKView view);

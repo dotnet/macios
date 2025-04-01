@@ -252,10 +252,17 @@ namespace CoreML {
 	[Protocol]
 	interface MLFeatureProvider {
 
+		/// <summary>The names of the feature, as defined by the <see cref="T:CoreML.MLModel" />.</summary>
+		/// <value>The <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:Monotouch.Foundation.NSSet&amp;scope=Xamarin" title="T:Monotouch.Foundation.NSSet">T:Monotouch.Foundation.NSSet</a></format> of feature names.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("featureNames")]
 		NSSet<NSString> FeatureNames { get; }
 
+		/// <param name="featureName">The feature whose value will be returned.</param>
+		/// <summary>Retrieves the value of the <paramref name="featureName" />.</summary>
+		/// <returns>The value of the <paramref name="featureName" />.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("featureValueForName:")]
 		[return: NullAllowed]
@@ -1020,15 +1027,31 @@ namespace CoreML {
 		//[Export ("initWithParameterDictionary:error:")]
 		//NativeHandle Constructor (NSDictionary<NSString, NSObject> parameters, [NullAllowed] out NSError error);
 
+		/// <param name="weights">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Sets the internal weights of the layer.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setWeightData:error:")]
 		bool SetWeightData (NSData [] weights, [NullAllowed] out NSError error);
 
+		/// <param name="inputShapes">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Retrieves the output data shape, as an array of numbers describing the dimensions of the output tensor.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("outputShapesForInputShapes:error:")]
 		[return: NullAllowed]
 		NSArray [] GetOutputShapes (NSArray [] inputShapes, [NullAllowed] out NSError error);
 
+		/// <param name="inputs">To be added.</param>
+		/// <param name="outputs">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Sets <paramref name="outputs" /> based on <paramref name="inputs" /> using the CPU to do the calculations.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("evaluateOnCPUWithInputs:outputs:error:")]
 		bool EvaluateOnCpu (MLMultiArray [] inputs, MLMultiArray [] outputs, [NullAllowed] out NSError error);
@@ -1077,6 +1100,9 @@ namespace CoreML {
 	[Protocol]
 	interface MLBatchProvider {
 
+		/// <summary>The number of <see cref="T:CoreML.IMLFeatureProvider" /> objects in the current batch.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("count")]
 		nint Count { get; }

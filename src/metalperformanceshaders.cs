@@ -9575,6 +9575,9 @@ namespace MetalPerformanceShaders {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MPSHandle : NSCoding {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[NullAllowed, Export ("label")]
 		string Label { get; }
@@ -9704,6 +9707,9 @@ namespace MetalPerformanceShaders {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MPSNNPadding : NSSecureCoding {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("paddingMethod")]
 		MPSNNPaddingMethod PaddingMethod { get; }
@@ -9739,10 +9745,16 @@ namespace MetalPerformanceShaders {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MPSImageSizeEncodingState {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("sourceWidth")]
 		nuint SourceWidth { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("sourceHeight")]
 		nuint SourceHeight { get; }
@@ -9754,6 +9766,12 @@ namespace MetalPerformanceShaders {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MPSImageAllocator : NSSecureCoding {
+		/// <param name="cmdBuf">To be added.</param>
+		/// <param name="descriptor">To be added.</param>
+		/// <param name="kernel">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("imageForCommandBuffer:imageDescriptor:kernel:")]
 		MPSImage GetImage (IMTLCommandBuffer cmdBuf, MPSImageDescriptor descriptor, MPSKernel kernel);
@@ -9799,6 +9817,11 @@ namespace MetalPerformanceShaders {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MPSImageTransformProvider : NSCoding {
+		/// <param name="image">To be added.</param>
+		/// <param name="handle">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("transformForSourceImage:handle:")]
 		MPSScaleTransform GetTransform (MPSImage image, [NullAllowed] IMPSHandle handle);
@@ -9807,6 +9830,9 @@ namespace MetalPerformanceShaders {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MPSDeviceProvider {
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("mpsMTLDevice")]
 		IMTLDevice GetMTLDevice ();
@@ -14051,6 +14077,9 @@ namespace MetalPerformanceShaders {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MPSNNTrainableNode {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("trainingStyle", ArgumentSemantic.Assign)]
 		MPSNNTrainingStyle TrainingStyle { get; set; }

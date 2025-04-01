@@ -1298,10 +1298,16 @@ namespace CoreAnimation {
 	[Protocol]
 	[MacCatalyst (13, 1)]
 	interface CAMetalDrawable : MTLDrawable {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("texture")]
 		IMTLTexture Texture { get; }
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("layer")]
 		CAMetalLayer Layer { get; }

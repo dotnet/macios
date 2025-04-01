@@ -379,6 +379,14 @@ namespace Photos {
 	[BaseType (typeof (PHAsset))]
 	interface PHAssetContentEditingInputExtensions {
 
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("requestContentEditingInputWithOptions:completionHandler:")]
 		nuint RequestContentEditingInput ([NullAllowed] PHContentEditingInputRequestOptions options, PHContentEditingHandler completionHandler);
 
@@ -1272,6 +1280,9 @@ namespace Photos {
 	[BaseType (typeof (NSObject))]
 	interface PHPhotoLibraryChangeObserver {
 
+		/// <param name="changeInstance">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("photoLibraryDidChange:")]
 		void PhotoLibraryDidChange (PHChange changeInstance);
@@ -1388,6 +1399,10 @@ namespace Photos {
 		[Export ("cloudIdentifierMappingsForLocalIdentifiers:")]
 		NSDictionary<NSString, PHCloudIdentifierMapping> GetCloudIdentifierMappings (string [] localIdentifiers);
 
+		/// <param name="cloudIdentifiers">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]
@@ -1395,6 +1410,10 @@ namespace Photos {
 		[Export ("localIdentifiersForCloudIdentifiers:")]
 		string [] GetLocalIdentifiers (PHCloudIdentifier [] cloudIdentifiers);
 
+		/// <param name="localIdentifiers">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[NoiOS]
 		[NoMacCatalyst]
@@ -1657,18 +1676,30 @@ namespace Photos {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface PHLivePhotoFrame {
+		/// <summary>Gets the image that will be processed.</summary>
+		/// <value>The image that will be processed.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("image")]
 		CIImage Image { get; }
 
+		/// <summary>Gets the time, in seconds from the beginning of the Live Photo, when the image appears.</summary>
+		/// <value>The time, in seconds from the beginning of the Live Photo, when the image appears.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("time")]
 		CMTime Time { get; }
 
+		/// <summary>Gets a value that tells whether the image is a still photo or a video frame.</summary>
+		/// <value>A value that tells whether the image is a still photo or a video frame.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("type")]
 		PHLivePhotoFrameType Type { get; }
 
+		/// <summary>Gets the relative scale of <see cref="T:Photos.IPHLivePhotoFrame" /> compared to the Live Photo.</summary>
+		/// <value>The relative scale of <see cref="T:Photos.IPHLivePhotoFrame" /> compared to the Live Photo.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("renderScale")]
 		nfloat RenderScale { get; }

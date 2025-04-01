@@ -1325,6 +1325,10 @@ namespace ARKit {
 	[NoTV, NoMac]
 	[Protocol]
 	interface ARTrackable {
+		/// <summary>Whether the ARKit-calculated transform matches the real-world position and rotation.</summary>
+		/// <value>
+		///           <see langword="true" /> if the transform accurately represents the real-world position and rotation of the detected object.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("isTracked")]
 		bool IsTracked { get; }

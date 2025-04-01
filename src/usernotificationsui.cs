@@ -55,6 +55,9 @@ namespace UserNotificationsUI {
 	[Protocol]
 	interface UNNotificationContentExtension {
 
+		/// <param name="notification">The notification that was sent.</param>
+		/// <summary>Method that is called when the application is sent a notification.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("didReceiveNotification:")]
 		void DidReceiveNotification (UNNotification notification);
@@ -93,25 +96,39 @@ namespace UserNotificationsUI {
 	[BaseType (typeof (NSExtensionContext))]
 	interface NSExtensionContext_UNNotificationContentExtension {
 
+		/// <summary>Method that is called when the user starts playable notification content.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mediaPlayingStarted")]
 		void MediaPlayingStarted ();
 
+		/// <summary>Method that is called when the user pauses playable notification content.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("mediaPlayingPaused")]
 		void MediaPlayingPaused ();
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Export ("performNotificationDefaultAction")]
 		void PerformNotificationDefaultAction ();
 
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Export ("dismissNotificationContentExtension")]
 		void DismissNotificationContentExtension ();
 
 		// property, but we have to add the two methods since it is a category.
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Export ("notificationActions")]
 		UNNotificationAction [] GetNotificationActions ();
 
+		/// <param name="actions">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
 		[Export ("setNotificationActions:")]
 		void SetNotificationActions (UNNotificationAction [] actions);

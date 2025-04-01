@@ -124,15 +124,28 @@ namespace NotificationCenter {
 	[Category]
 	[BaseType (typeof (NSExtensionContext))]
 	interface NSExtensionContext_NCWidgetAdditions {
+		/// <summary>Returns the largest available display mode for the widget.</summary>
+		/// <returns>The largest available display mode for the widget.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("widgetLargestAvailableDisplayMode")]
 		NCWidgetDisplayMode GetWidgetLargestAvailableDisplayMode ();
 
+		/// <param name="mode">The display mode to set.</param>
+		/// <summary>Sets the largest available display mode for the widget.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setWidgetLargestAvailableDisplayMode:")]
 		void SetWidgetLargestAvailableDisplayMode (NCWidgetDisplayMode mode);
 
+		/// <summary>Returns the current display mode for the widget.</summary>
+		/// <returns>The current display mode for the widget.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("widgetActiveDisplayMode")]
 		NCWidgetDisplayMode GetWidgetActiveDisplayMode ();
 
+		/// <param name="displayMode">The display mode to query.</param>
+		/// <summary>Returns the maximum size of the widget for the specified display mode.</summary>
+		/// <returns>The maximum size of the widget for the specified display mode.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("widgetMaximumSizeForDisplayMode:")]
 		CGSize GetWidgetMaximumSize (NCWidgetDisplayMode displayMode);
 	}

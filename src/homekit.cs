@@ -391,9 +391,17 @@ namespace HomeKit {
 	[BaseType (typeof (NSObject))]
 	partial interface HMAccessoryBrowserDelegate {
 
+		/// <param name="browser">To be added.</param>
+		/// <param name="accessory">To be added.</param>
+		/// <summary>The <paramref name="browser" /> found <paramref name="accessory" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("accessoryBrowser:didFindNewAccessory:"), EventArgs ("HMAccessoryBrowser")]
 		void DidFindNewAccessory (HMAccessoryBrowser browser, HMAccessory accessory);
 
+		/// <param name="browser">To be added.</param>
+		/// <param name="accessory">To be added.</param>
+		/// <summary>The <paramref name="browser" /> removed <paramref name="accessory" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("accessoryBrowser:didRemoveNewAccessory:"), EventArgs ("HMAccessoryBrowser")]
 		void DidRemoveNewAccessory (HMAccessoryBrowser browser, HMAccessory accessory);
 	}

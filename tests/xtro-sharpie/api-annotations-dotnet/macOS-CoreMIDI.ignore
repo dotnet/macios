@@ -7,8 +7,6 @@
 !missing-field! kMIDIDriverPropertyUsesSerial not bound
 
 # old apis that have been ignored, please refer to issue https://github.com/dotnet/macios/issues/4452
-!missing-pinvoke! MIDIDeviceCreate is not bound
-!missing-pinvoke! MIDIDeviceDispose is not bound
 !missing-pinvoke! MIDIGetDriverDeviceList is not bound
 !missing-pinvoke! MIDIGetDriverIORunLoop is not bound
 !missing-pinvoke! MIDISendSysex is not bound

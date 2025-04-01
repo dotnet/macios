@@ -42,6 +42,30 @@ namespace ObjCRuntime {
 #error Unknown platform
 #endif
 
+		[SupportedOSPlatformGuard ("ios13.0")]
+		[SupportedOSPlatformGuard ("maccatalyst13.0")]
+		[SupportedOSPlatformGuard ("macos10.15")]
+		[SupportedOSPlatformGuard ("tvos13.0")]
+		internal static bool IsAtLeastXcode11 {
+			get {
+				if (is_at_least_xcode_11 is null) {
+#if __MACOS__
+					is_at_least_xcode_11 = true;
+#elif __MACCATALYST__
+					is_at_least_xcode_11 = true;
+#elif __IOS__
+					is_at_least_xcode_11 = OperatingSystem.IsIOSVersionAtLeast (13, 0);
+#elif __TVOS__
+					is_at_least_xcode_11 = OperatingSystem.IsTvOSVersionAtLeast (13, 0);
+#else
+#error Unknown platform
+#endif
+				}
+				return is_at_least_xcode_11.Value;
+			}
+		}
+		static bool? is_at_least_xcode_11;
+
 		[SupportedOSPlatformGuard ("ios14.0")]
 		[SupportedOSPlatformGuard ("maccatalyst14.0")]
 		[SupportedOSPlatformGuard ("macos11.0")]

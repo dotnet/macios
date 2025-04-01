@@ -50,6 +50,8 @@ using System.IO;
 using System.Text;
 using System.ComponentModel;
 using System.Reflection;
+using System.Xml;
+
 using ObjCBindings;
 using ObjCRuntime;
 using Foundation;
@@ -4496,6 +4498,32 @@ public partial class Generator : IMemberGatherer {
 
 		if (minfo.is_extension_method) {
 			WriteDocumentation ((MemberInfo) GetProperty (minfo.Method) ?? minfo.Method);
+		} else if (minfo.is_category_extension) {
+			// If the method has xml docs, it's unlikely it'll have for the 'This' parameter we add to the method signature.
+			// So in that case, inject docs for the 'This' parameter.
+			var injectParamNode = new Func<XmlNode, XmlNode> (node => {
+				var children = node.ChildNodes.Cast<XmlNode> ();
+				XmlNode? firstParamDocs = null;
+				foreach (var p in children) {
+					if (p.Name != "param")
+						continue;
+					// if the method already has a 'param' doc for 'This', then we don't add any
+					if (p.Attributes ["name"].Value == "This")
+						return p;
+					if (firstParamDocs is null)
+						firstParamDocs = p;
+				}
+				// if the method has parameters, but doesn't have any 'param' docs, then we don't add any 'param' doc for 'This'.
+				if (minfo.Method.GetParameters ().Length > 0 && firstParamDocs is null)
+					return node;
+				// we're good for injection
+				var thisParamDoc = node.OwnerDocument.CreateElement ("param");
+				thisParamDoc.SetAttribute ("name", "This");
+				thisParamDoc.InnerText = "The instance on which this method operates.";
+				node.InsertBefore (thisParamDoc, firstParamDocs);
+				return node;
+			});
+			WriteDocumentation (minfo.Method, transformNode: injectParamNode);
 		} else {
 			WriteDocumentation (minfo.Method);
 		}
@@ -5419,9 +5447,9 @@ public partial class Generator : IMemberGatherer {
 		print ($"[Experimental (\"{e.DiagnosticId}\")]");
 	}
 
-	void WriteDocumentation (MemberInfo info)
+	void WriteDocumentation (MemberInfo info, Func<XmlNode, XmlNode>? transformNode = null)
 	{
-		DocumentationManager.WriteDocumentation (sw, indent, info);
+		DocumentationManager.WriteDocumentation (sw, indent, info, transformNode);
 	}
 
 	public bool TryComputeLibraryName (string attributeLibraryName, Type type, out string library_name, out string library_path)

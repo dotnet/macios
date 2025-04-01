@@ -106,7 +106,7 @@ ifdef INCLUDE_MACCATALYST
 endif
 	$$(Q) if test -e ".$$@-failure.stamp"; then cat ".$$@-failure.stamp"; rm ".$$@-failure.stamp"; exit 1; fi
 
-exec-$(1):
+exec-$(1): arm64-debug
 	$$(Q) rm -f ".$$@-failure.stamp"
 ifdef INCLUDE_MAC
 	$$(Q) $$(MAKE) -f packaged-macos-tests.mk exec-mac-dotnet-x64-$(1)           || echo "exec-mac-dotnet-x64-$(1) failed"           >> ".$$@-failure.stamp"

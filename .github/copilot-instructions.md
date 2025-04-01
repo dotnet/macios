@@ -58,21 +58,7 @@ public string RequiredProperty { get; set; } = "";
 public ITaskItem [] RequiredItemGroup { get; set; } = [];
 ```
 
-If you see a `string.IsNullOrEmpty()` check:
-
-```csharp
-if (!string.IsNullOrEmpty (NonRequiredProperty)) {
-    // Code here
-}
-```
-
-Convert this to:
-
-```csharp
-if (NonRequiredProperty is { Length: > 0 }) {
-    // Code here
-}
-```
+If you see a `string.IsNullOrEmpty()` check, don't change it.
 
 ## Formatting
 

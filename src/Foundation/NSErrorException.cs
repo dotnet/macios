@@ -43,22 +43,45 @@ namespace Foundation {
 			this.error = error;
 		}
 
+		/// <summary>The underlying NSError that is being wrapped.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSError Error {
 			get { return error; }
 		}
 
+		/// <summary>The NSError's Domain property.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string Domain {
 			get { return error.Domain; }
 		}
 
+		/// <summary>The NSError.Code property</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public nint Code {
 			get { return error.Code; }
 		}
 
+		/// <summary>The NSError's UserInfo.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSDictionary UserInfo {
 			get { return error.UserInfo; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public override string Message {
 			get {
 				return error.Description;

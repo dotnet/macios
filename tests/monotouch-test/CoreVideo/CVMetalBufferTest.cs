@@ -2,8 +2,6 @@
 // Unit tests for CVMetalBuffer
 //
 
-#if !__WATCHOS__
-
 using System;
 using System.Collections.Generic;
 
@@ -51,4 +49,3 @@ namespace MonoTouchFixtures.CoreVideo {
 #endif // !MONOMAC
 	}
 }
-#endif

@@ -1,4 +1,4 @@
-#if !TVOS && !WATCH
+#if !TVOS
 // 
 // MidiThruConnection.cs
 //
@@ -21,11 +21,9 @@ using System.Runtime.Versioning;
 
 namespace CoreMidi {
 #if !COREBUILD
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class MidiThruConnection : IDisposable {
 		MidiThruConnectionRef handle;
 		const MidiThruConnectionRef InvalidRef = 0;
@@ -35,6 +33,9 @@ namespace CoreMidi {
 			this.handle = handle;
 		}
 
+		/// <summary>Handle (pointer) to the unmanaged object representation.</summary>
+		///         <value>A pointer</value>
+		///         <remarks>This IntPtr is a handle to the underlying unmanaged representation for this object.</remarks>
 		public MidiThruConnectionRef Handle {
 			get { return handle; }
 		}

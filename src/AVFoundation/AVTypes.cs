@@ -1,15 +1,8 @@
 using System;
-#if !NO_SYSTEM_DRAWING
-using System.Drawing;
-#endif
 using System.Runtime.InteropServices;
 
 #if !COREBUILD
-#if NET
 using Vector3 = global::System.Numerics.Vector3;
-#else
-using Vector3 = global::OpenTK.Vector3;
-#endif // NET
 #endif // !COREBUILD
 using CoreGraphics;
 using ObjCRuntime;
@@ -18,16 +11,18 @@ using ObjCRuntime;
 
 namespace AVFoundation {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVAudio3DVectorOrientation {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Vector3 Forward;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public Vector3 Up;
 
 		public AVAudio3DVectorOrientation (Vector3 forward, Vector3 up)
@@ -36,6 +31,9 @@ namespace AVFoundation {
 			Up = up;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("({0}:{1})", Forward, Up);
@@ -50,6 +48,10 @@ namespace AVFoundation {
 			return !left.Equals (right);
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? obj)
 		{
 			if (!(obj is AVAudio3DVectorOrientation))
@@ -58,11 +60,18 @@ namespace AVFoundation {
 			return this.Equals ((AVAudio3DVectorOrientation) obj);
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (AVAudio3DVectorOrientation other)
 		{
 			return Forward == other.Forward && Up == other.Up;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (Forward, Up);
@@ -70,19 +79,26 @@ namespace AVFoundation {
 #endif
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVAudio3DAngularOrientation {
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float Yaw;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float Pitch;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float Roll;
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("(Yaw={0},Pitch={1},Roll={2})", Yaw, Pitch, Roll);
@@ -102,6 +118,10 @@ namespace AVFoundation {
 
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? obj)
 		{
 			if (!(obj is AVAudio3DAngularOrientation))
@@ -110,29 +130,45 @@ namespace AVFoundation {
 			return this.Equals ((AVAudio3DAngularOrientation) obj);
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (AVAudio3DAngularOrientation other)
 		{
 			return this == other;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (Yaw, Pitch, Roll);
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVCaptureWhiteBalanceGains {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float RedGain;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float GreenGain;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float BlueGain;
 
+		/// <param name="redGain">To be added.</param>
+		///         <param name="greenGain">To be added.</param>
+		///         <param name="blueGain">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVCaptureWhiteBalanceGains (float redGain, float greenGain, float blueGain)
 		{
 			RedGain = redGain;
@@ -140,6 +176,9 @@ namespace AVFoundation {
 			BlueGain = blueGain;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("(RedGain={0},GreenGain={1},BlueGain={2})", RedGain, GreenGain, BlueGain);
@@ -159,6 +198,10 @@ namespace AVFoundation {
 				left.BlueGain != right.BlueGain);
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? obj)
 		{
 			if (!(obj is AVCaptureWhiteBalanceGains))
@@ -167,34 +210,50 @@ namespace AVFoundation {
 			return this.Equals ((AVCaptureWhiteBalanceGains) obj);
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (AVCaptureWhiteBalanceGains other)
 		{
 			return this == other;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (RedGain, GreenGain, BlueGain);
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVCaptureWhiteBalanceChromaticityValues {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float X;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float Y;
 
+		/// <param name="x">To be added.</param>
+		///         <param name="y">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVCaptureWhiteBalanceChromaticityValues (float x, float y)
 		{
 			X = x;
 			Y = y;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("({0},{1})", X, Y);
@@ -210,6 +269,10 @@ namespace AVFoundation {
 			return left.X != right.X || left.Y != right.Y;
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? obj)
 		{
 			if (!(obj is AVCaptureWhiteBalanceChromaticityValues))
@@ -218,33 +281,49 @@ namespace AVFoundation {
 			return this.Equals ((AVCaptureWhiteBalanceChromaticityValues) obj);
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (AVCaptureWhiteBalanceChromaticityValues other)
 		{
 			return this == other;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (X, Y);
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVCaptureWhiteBalanceTemperatureAndTintValues {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float Temperature;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public float Tint;
 
+		/// <param name="temperature">To be added.</param>
+		///         <param name="tint">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVCaptureWhiteBalanceTemperatureAndTintValues (float temperature, float tint)
 		{
 			Temperature = temperature;
 			Tint = tint;
 		}
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("(Temperature={0},Tint={1})", Temperature, Tint);
@@ -261,6 +340,10 @@ namespace AVFoundation {
 
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? obj)
 		{
 			if (!(obj is AVCaptureWhiteBalanceTemperatureAndTintValues))
@@ -269,11 +352,18 @@ namespace AVFoundation {
 			return this.Equals ((AVCaptureWhiteBalanceTemperatureAndTintValues) obj);
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (AVCaptureWhiteBalanceTemperatureAndTintValues other)
 		{
 			return this == other;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (Temperature, Tint);
@@ -285,36 +375,30 @@ namespace AVFoundation {
 	}
 #endif
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
-#if !WATCH
 	public static class AVUtilities {
 
 		[DllImport (Constants.AVFoundationLibrary)]
 		static extern /* CGRect */ CGRect AVMakeRectWithAspectRatioInsideRect (/* CGSize */ CGSize aspectRatio, /* CGRect */ CGRect boundingRect);
 
+		/// <param name="self">To be added.</param>
+		///         <param name="aspectRatio">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CGRect WithAspectRatio (this CGRect self, CGSize aspectRatio)
 		{
 			return AVMakeRectWithAspectRatioInsideRect (aspectRatio, self);
 		}
 	}
-#endif
 
-#if NET
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios15.0")]
 	[SupportedOSPlatform ("tvos15.0")]
-#else
-	[iOS (15, 0)]
-	[Watch (8, 0)]
-	[TV (15, 0)]
-	[MacCatalyst (15, 0)]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVSampleCursorSyncInfo {
 #if XAMCORE_5_0
@@ -337,18 +421,31 @@ namespace AVFoundation {
 			set => isDroppable = value.AsByte ();
 		}
 #else
+		/// <summary>
+		///           <see langword="true" /> if the sample is an Instantaneous Decoder Refresh sample and the developer can rely on it, by itself, to resynchronize a decoder.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool IsFullSync;
 
+		/// <summary>
+		///           <see langword="true" /> if the sample is not Instantaneous Decoder Refresh sample.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool IsPartialSync;
 
+		/// <summary>
+		///           <see langword="true" /> if the sample can be dropped.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool IsDroppable;
 #endif
 	}
 
 #if !XAMCORE_5_0
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("ios15.0")]
+	[SupportedOSPlatform ("tvos15.0")]
 	[StructLayout (LayoutKind.Sequential)]
 	[NativeName ("AVSampleCursorSyncInfo")]
 #if COREBUILD
@@ -384,17 +481,10 @@ namespace AVFoundation {
 	}
 #endif // !XAMCORE_5_0
 
-#if NET
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios15.0")]
 	[SupportedOSPlatform ("tvos15.0")]
-#else
-	[iOS (15, 0)]
-	[Watch (8, 0)]
-	[TV (15, 0)]
-	[MacCatalyst (15, 0)]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVSampleCursorDependencyInfo {
 #if XAMCORE_5_0
@@ -435,27 +525,49 @@ namespace AVFoundation {
 			set => hasRedundantCoding = value.AsByte ();
 		}
 #else
+		/// <summary>
+		///           <see langword="true" /> if and only if the sample indicates whether other samples in the sequence depend on the sample.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool IndicatesWhetherItHasDependentSamples;
 
+		/// <summary>
+		///           <see langword="true" /> if and only if the sample has dependent samples.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool HasDependentSamples;
 
+		/// <summary>
+		///           <see langword="true" /> if and only if the sample indicates whether it depends on other samples in the sequence.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool IndicatesWhetherItDependsOnOthers;
 
+		/// <summary>
+		///           <see langword="true" /> if and only if the sample depends on other samples in the sequence.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool DependsOnOthers;
 
+		/// <summary>
+		///           <see langword="true" /> if and only if the sample indicates whether it has redundant coding.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool IndicatesWhetherItHasRedundantCoding;
 
+		/// <summary>
+		///           <see langword="true" /> if and only if the sample has redundant coding.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool HasRedundantCoding;
 #endif
 	}
 
 #if !XAMCORE_5_0
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("ios15.0")]
+	[SupportedOSPlatform ("tvos15.0")]
 	[StructLayout (LayoutKind.Sequential)]
 	[NativeName ("AVSampleCursorDependencyInfo")]
 #if COREBUILD
@@ -513,36 +625,28 @@ namespace AVFoundation {
 	}
 #endif // !XAMCORE_5_0
 
-#if NET
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios15.0")]
 	[SupportedOSPlatform ("tvos15.0")]
-#else
-	[iOS (15, 0)]
-	[Watch (8, 0)]
-	[TV (15, 0)]
-	[MacCatalyst (15, 0)]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVSampleCursorStorageRange {
+		/// <summary>The location of the first byte.</summary>
+		///         <remarks>To be added.</remarks>
 		public long Offset;
+		/// <summary>The number of bytes in the sample or chunk.</summary>
+		///         <remarks>To be added.</remarks>
 		public long Length;
 	}
 
-#if NET
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios15.0")]
 	[SupportedOSPlatform ("tvos15.0")]
-#else
-	[iOS (15, 0)]
-	[Watch (8, 0)]
-	[TV (15, 0)]
-	[MacCatalyst (15, 0)]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVSampleCursorChunkInfo {
+		/// <summary>The number of samples present.</summary>
+		///         <remarks>To be added.</remarks>
 		public long SampleCount;
 
 #if XAMCORE_5_0
@@ -565,12 +669,21 @@ namespace AVFoundation {
 			set => hasUniformFormatDescriptions = value.AsByte ();
 		}
 #else
+		/// <summary>
+		///           <see langword="true" /> if and only if every chunk has the same sample size.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool HasUniformSampleSizes;
 
+		/// <summary>
+		///           <see langword="true" /> if and only if every chunk has the same duration.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool HasUniformSampleDurations;
 
+		/// <summary>
+		///           <see langword="true" /> if and only if every chunk has the same format description.</summary>
+		///         <remarks>To be added.</remarks>
 		[MarshalAs (UnmanagedType.I1)]
 		public bool HasUniformFormatDescriptions;
 
@@ -586,6 +699,10 @@ namespace AVFoundation {
 	}
 
 #if !XAMCORE_5_0
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("ios15.0")]
+	[SupportedOSPlatform ("tvos15.0")]
 	[StructLayout (LayoutKind.Sequential)]
 	[NativeName ("AVSampleCursorChunkInfo")]
 #if COREBUILD
@@ -623,17 +740,10 @@ namespace AVFoundation {
 	}
 #endif // !XAMCORE_5_0
 
-#if NET
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios15.0")]
 	[SupportedOSPlatform ("tvos15.0")]
-#else
-	[iOS (15, 0)]
-	[Watch (8, 0)]
-	[TV (15, 0)]
-	[MacCatalyst (15, 0)]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVSampleCursorAudioDependencyInfo {
 #if XAMCORE_5_0 || (__IOS__ && !__MACCATALYST__) || __TVOS__
@@ -652,6 +762,10 @@ namespace AVFoundation {
 	}
 
 #if !XAMCORE_5_0 && !(__IOS__ && !__MACCATALYST__) && !__TVOS__
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("ios15.0")]
+	[SupportedOSPlatform ("tvos15.0")]
 	[StructLayout (LayoutKind.Sequential)]
 	[NativeName ("AVSampleCursorAudioDependencyInfo")]
 #if COREBUILD
@@ -674,37 +788,24 @@ namespace AVFoundation {
 	}
 #endif // !XAMCORE_5_0 && !__IOS__ && !__TVOS__
 
-#if MONOMAC
-
-#if NET
+#if !__TVOS__
 	[SupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
-	[UnsupportedOSPlatform ("ios")]
-	[UnsupportedOSPlatform ("maccatalyst")]
-#else
-	[NoWatch]
-	[NoTV]
-	[NoiOS]
-	[NoMacCatalyst]
-#endif
+	[SupportedOSPlatform ("ios18.0")]
+	[SupportedOSPlatform ("maccatalyst18.0")]
 	[Native]
 	public enum AVCaptionUnitsType : long {
 		Unspecified = 0,
 		Cells,
 		Percent,
 	}
+#endif // __TVOS__
 
-#if NET
+#if !__TVOS__
 	[SupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
-	[UnsupportedOSPlatform ("ios")]
-	[UnsupportedOSPlatform ("maccatalyst")]
-#else
-	[NoWatch]
-	[NoTV]
-	[NoiOS]
-	[NoMacCatalyst]
-#endif
+	[SupportedOSPlatform ("ios18.0")]
+	[SupportedOSPlatform ("maccatalyst18.0")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVCaptionDimension {
 		public nfloat Value;
@@ -719,20 +820,15 @@ namespace AVFoundation {
 		static extern AVCaptionDimension AVCaptionDimensionMake (nfloat dimension, /* AVCaptionUnitsType */ nuint units);
 
 		public static AVCaptionDimension Create (nfloat dimension, AVCaptionUnitsType units)
-			=> AVCaptionDimensionMake (dimension, (nuint) (long)units);
+			=> AVCaptionDimensionMake (dimension, (nuint) (long) units);
 	}
+#endif // __TVOS__
 
-#if NET
+#if !__TVOS__
 	[SupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
-	[UnsupportedOSPlatform ("ios")]
-	[UnsupportedOSPlatform ("maccatalyst")]
-#else
-	[NoWatch]
-	[NoTV]
-	[NoiOS]
-	[NoMacCatalyst]
-#endif
+	[SupportedOSPlatform ("ios18.0")]
+	[SupportedOSPlatform ("maccatalyst18.0")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVCaptionPoint {
 		public AVCaptionDimension X;
@@ -742,20 +838,15 @@ namespace AVFoundation {
 		static extern AVCaptionPoint AVCaptionPointMake (AVCaptionDimension x, AVCaptionDimension y);
 
 		public static AVCaptionPoint Create (AVCaptionDimension x, AVCaptionDimension y)
-			=> AVCaptionPointMake (x,y);
+			=> AVCaptionPointMake (x, y);
 	}
+#endif // __TVOS__
 
-#if NET
+#if !__TVOS__
 	[SupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
-	[UnsupportedOSPlatform ("ios")]
-	[UnsupportedOSPlatform ("maccatalyst")]
-#else
-	[NoWatch]
-	[NoTV]
-	[NoiOS]
-	[NoMacCatalyst]
-#endif
+	[SupportedOSPlatform ("ios18.0")]
+	[SupportedOSPlatform ("maccatalyst18.0")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVCaptionSize {
 		public AVCaptionDimension Width;
@@ -767,7 +858,5 @@ namespace AVFoundation {
 		public static AVCaptionSize Create (AVCaptionDimension width, AVCaptionDimension height)
 			=> AVCaptionSizeMake (width, height);
 	}
-
-#endif
-
+#endif // __TVOS__
 }

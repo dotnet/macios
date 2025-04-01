@@ -33,9 +33,7 @@ using ObjCRuntime;
 using Foundation;
 using CoreFoundation;
 using CoreGraphics;
-#if !WATCH
 using CoreText;
-#endif
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable
@@ -54,6 +52,11 @@ namespace UIKit {
 		{
 		}
 
+		/// <summary>Foreground Color for the text</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public UIColor ForegroundColor {
 			get {
 				return Dictionary [UIStringAttributeKey.ForegroundColor] as UIColor;
@@ -63,6 +66,11 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Background Color for the text.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public UIColor BackgroundColor {
 			get {
 				return Dictionary [UIStringAttributeKey.BackgroundColor] as UIColor;
@@ -72,6 +80,11 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Font to use for the text.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public UIFont Font {
 			get {
 				return Dictionary [UIStringAttributeKey.Font] as UIFont;
@@ -81,6 +94,10 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Kerning value used for the text</summary>
+		///         <value>This value is measured in points, and the value zero is used to mean no kerning.</value>
+		///         <remarks>
+		///         </remarks>
 		public float? KerningAdjustment {
 			get {
 				return GetFloatValue (UIStringAttributeKey.KerningAdjustment);
@@ -90,6 +107,11 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>The style of ligatures to use.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSLigatureType? Ligature {
 			get {
 				var value = GetInt32Value (UIStringAttributeKey.Ligature);
@@ -100,6 +122,11 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Used to specify a custom paragraph style.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSParagraphStyle ParagraphStyle {
 			get {
 				return Dictionary [UIStringAttributeKey.ParagraphStyle] as NSParagraphStyle;
@@ -109,6 +136,11 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Strikethrough style.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSUnderlineStyle? StrikethroughStyle {
 			get {
 				var value = GetInt32Value (UIStringAttributeKey.StrikethroughStyle);
@@ -119,6 +151,11 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Stroke Color.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public UIColor StrokeColor {
 			get {
 				return Dictionary [UIStringAttributeKey.StrokeColor] as UIColor;
@@ -128,6 +165,10 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>The stroke width for drawing the text</summary>
+		///         <value>Expressed as percentage of the font size.   Positive values stroke the text, negative values stroke and fill the text.</value>
+		///         <remarks>
+		///         </remarks>
 		public float? StrokeWidth {
 			get {
 				return GetFloatValue (UIStringAttributeKey.StrokeWidth);
@@ -137,7 +178,11 @@ namespace UIKit {
 			}
 		}
 
-#if !WATCH
+		/// <summary>Shadow to use for the text.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSShadow Shadow {
 			get {
 				return Dictionary [UIStringAttributeKey.Shadow] as NSShadow;
@@ -146,8 +191,12 @@ namespace UIKit {
 				SetNativeValue (UIStringAttributeKey.Shadow, value);
 			}
 		}
-#endif // !WATCH
 
+		/// <summary>Underline style for the text.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSUnderlineStyle? UnderlineStyle {
 			get {
 				var value = GetInt32Value (UIStringAttributeKey.UnderlineStyle);
@@ -159,6 +208,9 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <summary>A reference to the text effect that does not prevent garbage collection of the underlying resource.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -173,6 +225,9 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <summary>The NSTextEffect applied to the string.</summary>
+		///         <value>The default value is <see langword="null" />.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -195,8 +250,10 @@ namespace UIKit {
 			}
 		}
 
-#if !WATCH
 #if NET
+		/// <summary>The NSTextAttachment, if any.</summary>
+		///         <value>The default value is <see langword="null" />.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -209,9 +266,11 @@ namespace UIKit {
 				SetNativeValue (UIStringAttributeKey.Attachment, value);
 			}
 		}
-#endif // !WATCH
 
 #if NET
+		/// <summary>The destination URL of a hyperlink.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -226,6 +285,9 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <summary>The distance from the bottom of the bounding box of the glyphs of the string to their baseline.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -240,6 +302,9 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <summary>The color to be used for the strikethrough stroke.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -254,6 +319,9 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <summary>The color of the underline stroke.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -269,6 +337,9 @@ namespace UIKit {
 
 
 #if NET
+		/// <summary>The amount of skew to apply to glyphs.</summary>
+		///         <value>The default value of 0 indicates no skew.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -283,6 +354,9 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <summary>The log of the expansion factor to be applied to glyphs.</summary>
+		///         <value>The default value is 0, indicating no expansion.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -297,6 +371,9 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <summary>An array indicating the writing-direction overrides.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]

@@ -7,8 +7,6 @@
 // Copyright 2014 Xamarin Inc
 //
 
-#if !WATCH
-
 using System;
 using Foundation;
 using ObjCRuntime;
@@ -22,6 +20,10 @@ namespace UIKit {
 	public partial class UIAccessibilityCustomAction {
 		object action;
 
+		/// <param name="name">To be added.</param>
+		///         <param name="probe">To be added.</param>
+		///         <summary>Creates a <see cref="T:UIKit.UIAccessibilityCustomAction" /> withthe specified <paramref name="name" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public UIAccessibilityCustomAction (string name, Func<UIAccessibilityCustomAction, bool> probe) : this (name, FuncBoolDispatcher.Selector, new FuncBoolDispatcher (probe))
 		{
 
@@ -60,5 +62,3 @@ namespace UIKit {
 
 	}
 }
-
-#endif // !WATCH

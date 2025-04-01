@@ -143,6 +143,7 @@ namespace Security {
 		void Initialize (NSData data)
 		{
 			var handle = SecCertificateCreateWithData (IntPtr.Zero, data.Handle);
+			GC.KeepAlive (data);
 			if (handle == IntPtr.Zero)
 				throw new ArgumentException ("Not a valid DER-encoded X.509 certificate");
 			InitializeHandle (handle);
@@ -151,6 +152,11 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr SecCertificateCopySubjectSummary (IntPtr cert);
 
+		/// <summary>Human readable summary of the certificate.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string? SubjectSummary {
 			get {
 				return CFString.FromHandle (SecCertificateCopySubjectSummary (GetCheckedHandle ()), releaseHandle: true);
@@ -160,6 +166,10 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static /* CFDataRef */ IntPtr SecCertificateCopyData (/* SecCertificateRef */ IntPtr cert);
 
+		/// <summary>Returns a Distinguished Encoding Rules (DER) representation of the certificate.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>Throws an exception if the original certificate was invalid.</remarks>
 		public NSData DerData {
 			get {
 				IntPtr data = SecCertificateCopyData (GetCheckedHandle ());
@@ -273,7 +283,6 @@ namespace Security {
 #else
 		[Deprecated (PlatformName.iOS, 12, 0)]
 		[Deprecated (PlatformName.TvOS, 12, 0)]
-		[Deprecated (PlatformName.WatchOS, 5, 0)]
 #endif
 		[DllImport (Constants.SecurityLibrary)]
 		static extern /* __nullable SecKeyRef */ IntPtr SecCertificateCopyPublicKey (IntPtr /* SecCertificateRef */ certificate);
@@ -288,7 +297,6 @@ namespace Security {
 #else
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'GetKey' instead.")]
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'GetKey' instead.")]
-		[Deprecated (PlatformName.WatchOS, 5, 0, message: "Use 'GetKey' instead.")]
 #endif
 		public SecKey? GetPublicKey ()
 		{
@@ -303,8 +311,6 @@ namespace Security {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[Watch (5, 0)]
 #endif
 		[DllImport (Constants.SecurityLibrary)]
 		static extern IntPtr /* SecKeyRef* */ SecCertificateCopyKey (IntPtr /* SecKeyRef* */ key);
@@ -314,8 +320,6 @@ namespace Security {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[Watch (5, 0)]
 #endif
 		public SecKey? GetKey ()
 		{
@@ -438,7 +442,6 @@ namespace Security {
 #else
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'GetSerialNumber' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'GetSerialNumber' instead.")]
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'GetSerialNumber' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'GetSerialNumber' instead.")]
 #endif
 		[DllImport (Constants.SecurityLibrary)]
@@ -455,7 +458,6 @@ namespace Security {
 #else
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'GetSerialNumber(out NSError)' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'GetSerialNumber(out NSError)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 4, 0, message: "Use 'GetSerialNumber(out NSError)' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'GetSerialNumber(out NSError)' instead.")]
 #endif
 		public NSData? GetSerialNumber ()
@@ -500,7 +502,7 @@ namespace Security {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 #else
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 #endif
 		[DllImport (Constants.SecurityLibrary)]
 		static extern /* CFDateRef */ IntPtr SecCertificateCopyNotValidBeforeDate (/* SecCertificateRef */ IntPtr certificate);
@@ -513,7 +515,7 @@ namespace Security {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 #else
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 #endif
 		public NSDate? NotValidBeforeDate {
 			get {
@@ -528,7 +530,7 @@ namespace Security {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 #else
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 #endif
 		[DllImport (Constants.SecurityLibrary)]
 		static extern /* CFDateRef */ IntPtr SecCertificateCopyNotValidAfterDate (/* SecCertificateRef */ IntPtr certificate);
@@ -541,7 +543,7 @@ namespace Security {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 #else
-		[Watch (11, 0), TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 #endif
 		public NSDate? NotValidAfterDate {
 			get {
@@ -574,6 +576,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe extern static /* OSStatus */ SecStatusCode SecIdentityCopyCertificate (/* SecIdentityRef */ IntPtr identityRef,  /* SecCertificateRef* */ IntPtr* certificateRef);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SecCertificate Certificate {
 			get {
 				SecStatusCode result;
@@ -739,7 +744,6 @@ namespace Security {
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'SecKeyCreateRandomKey' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use 'SecKeyCreateRandomKey' instead.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'SecKeyCreateRandomKey' instead.")]
-		[Deprecated (PlatformName.WatchOS, 8, 0, message: "Use 'SecKeyCreateRandomKey' instead.")]
 #endif
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe extern static SecStatusCode SecKeyGeneratePair (IntPtr dictHandle, IntPtr* pubKey, IntPtr* privKey);
@@ -760,7 +764,6 @@ namespace Security {
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'CreateRandomKey' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use 'CreateRandomKey' instead.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'CreateRandomKey' instead.")]
-		[Deprecated (PlatformName.WatchOS, 8, 0, message: "Use 'CreateRandomKey' instead.")]
 #endif
 		public static SecStatusCode GenerateKeyPair (NSDictionary parameters, out SecKey? publicKey, out SecKey? privateKey)
 		{
@@ -772,6 +775,7 @@ namespace Security {
 			SecStatusCode res;
 			unsafe {
 				res = SecKeyGeneratePair (parameters.Handle, &pub, &priv);
+				GC.KeepAlive (parameters);
 			}
 			if (res == SecStatusCode.Success) {
 				publicKey = new SecKey (pub, true);
@@ -825,6 +829,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static /* size_t */ nint SecKeyGetBlockSize (IntPtr handle);
 
+		/// <summary>Gets the block size of the key.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int BlockSize {
 			get {
 				return (int) SecKeyGetBlockSize (GetCheckedHandle ());
@@ -843,7 +850,6 @@ namespace Security {
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'SecKeyCreateSignature' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use 'SecKeyCreateSignature' instead.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'SecKeyCreateSignature' instead.")]
-		[Deprecated (PlatformName.WatchOS, 8, 0, message: "Use 'SecKeyCreateSignature' instead.")]
 #endif
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe extern static SecStatusCode SecKeyRawSign (IntPtr handle, SecPadding padding, IntPtr dataToSign, nint dataToSignLen, IntPtr sig, nint* sigLen);
@@ -860,7 +866,6 @@ namespace Security {
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'CreateSignature' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use 'CreateSignature' instead.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'CreateSignature' instead.")]
-		[Deprecated (PlatformName.WatchOS, 8, 0, message: "Use 'CreateSignature' instead.")]
 #endif
 		public SecStatusCode RawSign (SecPadding padding, IntPtr dataToSign, int dataToSignLen, out byte [] result)
 		{
@@ -903,7 +908,6 @@ namespace Security {
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'SecKeyVerifySignature' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use 'SecKeyVerifySignature' instead.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'SecKeyVerifySignature' instead.")]
-		[Deprecated (PlatformName.WatchOS, 8, 0, message: "Use 'SecKeyVerifySignature' instead.")]
 #endif
 		[DllImport (Constants.SecurityLibrary)]
 		extern static SecStatusCode SecKeyRawVerify (IntPtr handle, SecPadding padding, IntPtr signedData, nint signedLen, IntPtr sign, nint signLen);
@@ -920,7 +924,6 @@ namespace Security {
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'VerifySignature' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use 'VerifySignature' instead.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'VerifySignature' instead.")]
-		[Deprecated (PlatformName.WatchOS, 8, 0, message: "Use 'VerifySignature' instead.")]
 #endif
 		public unsafe SecStatusCode RawVerify (SecPadding padding, IntPtr signedData, int signedDataLen, IntPtr signature, int signatureLen)
 		{
@@ -958,7 +961,6 @@ namespace Security {
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'SecKeyCreateEncryptedData' instead.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'SecKeyCreateEncryptedData' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use 'SecKeyCreateEncryptedData' instead.")]
-		[Deprecated (PlatformName.WatchOS, 8, 0, message: "Use 'SecKeyCreateEncryptedData' instead.")]
 #endif
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe extern static SecStatusCode SecKeyEncrypt (IntPtr handle, SecPadding padding, IntPtr plainText, nint plainTextLen, IntPtr cipherText, nint* cipherTextLengh);
@@ -975,7 +977,6 @@ namespace Security {
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'CreateEncryptedData' instead.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'CreateEncryptedData' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use 'CreateEncryptedData' instead.")]
-		[Deprecated (PlatformName.WatchOS, 8, 0, message: "Use 'CreateEncryptedData' instead.")]
 #endif
 		public unsafe SecStatusCode Encrypt (SecPadding padding, IntPtr plainText, nint plainTextLen, IntPtr cipherText, ref nint cipherTextLen)
 		{
@@ -1015,7 +1016,6 @@ namespace Security {
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'SecKeyCreateDecryptedData' instead.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'SecKeyCreateDecryptedData' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use 'SecKeyCreateDecryptedData' instead.")]
-		[Deprecated (PlatformName.WatchOS, 8, 0, message: "Use 'SecKeyCreateDecryptedData' instead.")]
 #endif
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe extern static SecStatusCode SecKeyDecrypt (IntPtr handle, SecPadding padding, IntPtr cipherTextLen, nint cipherLen, IntPtr plainText, nint* plainTextLen);
@@ -1032,7 +1032,6 @@ namespace Security {
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use 'CreateDecryptedData' instead.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use 'CreateDecryptedData' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use 'CreateDecryptedData' instead.")]
-		[Deprecated (PlatformName.WatchOS, 8, 0, message: "Use 'CreateDecryptedData' instead.")]
 #endif
 		public unsafe SecStatusCode Decrypt (SecPadding padding, IntPtr cipherText, nint cipherTextLen, IntPtr plainText, ref nint plainTextLen)
 		{
@@ -1089,6 +1088,7 @@ namespace Security {
 			IntPtr key;
 			unsafe {
 				key = SecKeyCreateRandomKey (parameters.Handle, &err);
+				GC.KeepAlive (parameters);
 			}
 			error = Runtime.GetNSObject<NSError> (err);
 			return key == IntPtr.Zero ? null : new SecKey (key, true);
@@ -1154,6 +1154,8 @@ namespace Security {
 			IntPtr key;
 			unsafe {
 				key = SecKeyCreateWithData (keyData.Handle, parameters.Handle, &err);
+				GC.KeepAlive (keyData);
+				GC.KeepAlive (parameters);
 			}
 			error = Runtime.GetNSObject<NSError> (err);
 			return key == IntPtr.Zero ? null : new SecKey (key, true);
@@ -1304,6 +1306,7 @@ namespace Security {
 			IntPtr err;
 			unsafe {
 				data = SecKeyCreateSignature (Handle, algorithm.GetConstant ().GetHandle (), dataToSign.Handle, &err);
+				GC.KeepAlive (dataToSign);
 			}
 			error = Runtime.GetNSObject<NSError> (err);
 			return Runtime.GetNSObject<NSData> (data, true);
@@ -1335,6 +1338,8 @@ namespace Security {
 			IntPtr err;
 			unsafe {
 				result = SecKeyVerifySignature (Handle, algorithm.GetConstant ().GetHandle (), signedData.Handle, signature.Handle, &err) != 0;
+				GC.KeepAlive (signedData);
+				GC.KeepAlive (signature);
 			}
 			error = Runtime.GetNSObject<NSError> (err);
 			return result;
@@ -1364,6 +1369,7 @@ namespace Security {
 			IntPtr err;
 			unsafe {
 				data = SecKeyCreateEncryptedData (Handle, algorithm.GetConstant ().GetHandle (), plaintext.Handle, &err);
+				GC.KeepAlive (plaintext);
 			}
 			error = Runtime.GetNSObject<NSError> (err);
 			return Runtime.GetNSObject<NSData> (data, true);
@@ -1393,6 +1399,7 @@ namespace Security {
 			IntPtr err;
 			unsafe {
 				data = SecKeyCreateDecryptedData (Handle, algorithm.GetConstant ().GetHandle (), ciphertext.Handle, &err);
+				GC.KeepAlive (ciphertext);
 			}
 			error = Runtime.GetNSObject<NSError> (err);
 			return Runtime.GetNSObject<NSData> (data, true);
@@ -1424,6 +1431,8 @@ namespace Security {
 			IntPtr err;
 			unsafe {
 				data = SecKeyCopyKeyExchangeResult (Handle, algorithm.GetConstant ().GetHandle (), publicKey.Handle, parameters.Handle, &err);
+				GC.KeepAlive (publicKey);
+				GC.KeepAlive (parameters);
 			}
 			error = Runtime.GetNSObject<NSError> (err);
 			return Runtime.GetNSObject<NSData> (data, true);

@@ -18,15 +18,16 @@ namespace AppKit {
 	public partial class NSSegmentedControl {
 		NSActionDispatcher? dispatcher;
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public new NSSegmentedCell Cell {
 			get { return (NSSegmentedCell) base.Cell; }
 			set { base.Cell = value; }
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
 		public static NSSegmentedControl FromLabels (string [] labels, NSSegmentSwitchTracking trackingMode, Action action)
 		{
 			var dispatcher = new NSActionDispatcher (action);
@@ -35,10 +36,8 @@ namespace AppKit {
 			return control;
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-#endif
 		public static NSSegmentedControl FromImages (NSImage [] images, NSSegmentSwitchTracking trackingMode, Action action)
 		{
 			var dispatcher = new NSActionDispatcher (action);

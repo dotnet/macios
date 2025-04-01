@@ -37,37 +37,54 @@ using Foundation;
 using CoreFoundation;
 using CoreGraphics;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreText {
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTLine.h
 	public enum CTLineTruncation : uint {
+		/// <summary>To be added.</summary>
 		Start = 0,
+		/// <summary>To be added.</summary>
 		End = 1,
-		Middle = 2
+		/// <summary>To be added.</summary>
+		Middle = 2,
 	}
 
 	// defined as CFOptionFlags (unsigned long [long] = nuint) - /System/Library/Frameworks/CoreText.framework/Headers/CTLine.h
 	[Native]
 	[Flags]
 	public enum CTLineBoundsOptions : ulong {
+		/// <summary>Use this option to exclude the typographic leading from the bounds computation (the space between baselines of different lines of text).</summary>
 		ExcludeTypographicLeading = 1 << 0,
+		/// <summary>Does not take into account kerning or leading information when computing bounds for</summary>
 		ExcludeTypographicShifts = 1 << 1,
+		/// <summary>
+		/// 	    Hanging Punctuation is a way of typesetting
+		/// 	    punctuation marks and bullet points, most commonly quotation
+		/// 	    marks and hyphens, so that they do not disrupt the "flow" of
+		/// 	    a body of text or "break" the margin of alignment.  It is so
+		/// 	    called because the punctuation appears to ‘hang’ in the
+		/// 	    margin of the text, and is not incorporated into the block
+		/// 	    or column of text. It is commonly used when text is fully justified.
+		/// 	  </summary>
 		UseHangingPunctuation = 1 << 2,
+		/// <summary>The bounds of every glyph.   These are typographically not very interesting as they do not take into account the finer details of typography, this returns the bounding box for the actual text rendered.</summary>
 		UseGlyphPathBounds = 1 << 3,
+		/// <summary>
+		///
+		/// 	  This uses the optical bounds.  Some fonts include
+		/// 	  information about the optical perception of the font, and it
+		/// 	  might not align perfectly with the bounding box of the text.
+		///
+		/// 	</summary>
 		UseOpticalBounds = 1 << 4,
+		/// <summary>To be added.</summary>
 		IncludeLanguageExtents = 1 << 5, // iOS8 and Mac 10.11
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTLine : NativeObject {
 		[Preserve (Conditional = true)]
 		internal CTLine (NativeHandle handle, bool owns)
@@ -79,8 +96,9 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTLineCreateWithAttributedString (IntPtr @string);
 		public CTLine (NSAttributedString value)
-			: base (CTLineCreateWithAttributedString (Runtime.ThrowOnNull (value, nameof (value)).Handle), true, true)
+			: base (CTLineCreateWithAttributedString (value.GetNonNullHandle (nameof (value))), true, true)
 		{
+			GC.KeepAlive (value);
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
@@ -88,6 +106,7 @@ namespace CoreText {
 		public CTLine? GetTruncatedLine (double width, CTLineTruncation truncationType, CTLine? truncationToken)
 		{
 			var h = CTLineCreateTruncatedLine (Handle, width, truncationType, truncationToken.GetHandle ());
+			GC.KeepAlive (truncationToken);
 			if (h == IntPtr.Zero)
 				return null;
 			return new CTLine (h, true);
@@ -107,6 +126,9 @@ namespace CoreText {
 		#region Line Access
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern nint CTLineGetGlyphCount (IntPtr line);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint GlyphCount {
 			get { return CTLineGetGlyphCount (Handle); }
 		}
@@ -125,6 +147,9 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern NSRange CTLineGetStringRange (IntPtr line);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSRange StringRange {
 			get { return CTLineGetStringRange (Handle); }
 		}
@@ -143,6 +168,7 @@ namespace CoreText {
 			if (context is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
 			CTLineDraw (Handle, context.Handle);
+			GC.KeepAlive (context);
 		}
 		#endregion
 
@@ -153,7 +179,9 @@ namespace CoreText {
 
 		public CGRect GetImageBounds (CGContext? context)
 		{
-			return CTLineGetImageBounds (Handle, context.GetHandle ());
+			CGRect bounds = CTLineGetImageBounds (Handle, context.GetHandle ());
+			GC.KeepAlive (context);
+			return bounds;
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
@@ -180,6 +208,9 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern double CTLineGetTrailingWhitespaceWidth (IntPtr line);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double TrailingWhitespaceWidth {
 			get { return CTLineGetTrailingWhitespaceWidth (Handle); }
 		}
@@ -208,26 +239,15 @@ namespace CoreText {
 		}
 
 		public delegate void CaretEdgeEnumerator (double offset, nint charIndex, bool leadingEdge, ref bool stop);
-#if !NET
-		unsafe delegate void CaretEdgeEnumeratorProxy (IntPtr block, double offset, nint charIndex, byte leadingEdge, byte* stop);
-#endif
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern void CTLineEnumerateCaretOffsets (IntPtr line, BlockLiteral* blockEnumerator);
 
-#if !NET
-		static unsafe readonly CaretEdgeEnumeratorProxy static_enumerate = TrampolineEnumerate;
-
-		[MonoPInvokeCallback (typeof (CaretEdgeEnumeratorProxy))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		unsafe static void TrampolineEnumerate (IntPtr blockPtr, double offset, nint charIndex, byte leadingEdge, byte* stopPointer)
 		{
 			var del = BlockLiteral.GetTarget<CaretEdgeEnumerator> (blockPtr);
@@ -238,12 +258,10 @@ namespace CoreText {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void EnumerateCaretOffsets (CaretEdgeEnumerator enumerator)
 		{
@@ -251,13 +269,8 @@ namespace CoreText {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (enumerator));
 
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, double, nint, byte, byte*, void> trampoline = &TrampolineEnumerate;
 				using var block = new BlockLiteral (trampoline, enumerator, typeof (CTLine), nameof (TrampolineEnumerate));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_enumerate, enumerator);
-#endif
 				CTLineEnumerateCaretOffsets (Handle, &block);
 			}
 		}

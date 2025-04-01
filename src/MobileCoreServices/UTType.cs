@@ -265,8 +265,6 @@ namespace MobileCoreServices {
 		[ObsoletedOSPlatform ("tvos14.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
 		[ObsoletedOSPlatform ("macos11.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
 		[ObsoletedOSPlatform ("ios14.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
-#else
-		[Watch (5, 0)]
 #endif
 		public static bool Equals (NSString uti1, NSString uti2)
 		{
@@ -274,7 +272,10 @@ namespace MobileCoreServices {
 				return uti2 is null;
 			else if (uti2 is null)
 				return false;
-			return UTTypeEqual (uti1.Handle, uti2.Handle) != 0;
+			bool result = UTTypeEqual (uti1.Handle, uti2.Handle) != 0;
+			GC.KeepAlive (uti1);
+			GC.KeepAlive (uti2);
+			return result;
 		}
 	}
 }

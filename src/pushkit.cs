@@ -11,7 +11,6 @@ namespace PushKit {
 	/// <summary>Holds the <see cref="P:PushKit.PKPushCredentials.Token" /> that holds the user's credentials.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/PushKit/Reference/PKPushCredentials_Class/index.html">Apple documentation for <c>PKPushCredentials</c></related>
-	[Watch (6, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -26,7 +25,6 @@ namespace PushKit {
 	/// <summary>Contains a dictionary of data for a push operation.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/PushKit/Reference/PKPushPayload_Class/index.html">Apple documentation for <c>PKPushPayload</c></related>
-	[Watch (6, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -41,11 +39,17 @@ namespace PushKit {
 	/// <summary>Allows the developer to register for remote pushes.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/PushKit/Reference/PKPushRegistry_Class/index.html">Apple documentation for <c>PKPushRegistry</c></related>
-	[Watch (6, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PKPushRegistry {
+		/// <summary>An instance of the PushKit.IPKPushRegistryDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the PushKit.IPKPushRegistryDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IPKPushRegistryDelegate Delegate { get; set; }
 
@@ -71,21 +75,28 @@ namespace PushKit {
 	[Static]
 	interface PKPushType {
 
+		/// <summary>Represents the value associated with the constant PKPushTypeVoIP</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Introduced (PlatformName.MacCatalyst, 14, 0)]
-		[Watch (9, 0)]
 		[NoMac]
 		[Field ("PKPushTypeVoIP")]
 		NSString Voip { get; }
 
+		/// <summary>Gets the WatchKit complication push type, <c>PKPushTypeComplication</c>.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use directly from watchOS instead.")]
-		[Watch (6, 0)]
 		[NoMac]
 		[NoMacCatalyst]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use directly from watchOS instead.")]
 		[Field ("PKPushTypeComplication")]
 		NSString Complication { get; }
 
-		[NoWatch]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("PKPushTypeFileProvider")]
 		NSString FileProvider { get; }
@@ -102,7 +113,6 @@ namespace PushKit {
 	/// <summary>Completion handler for registering a push operation.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/PushKit/Reference/PKPushRegistryDelegate_Protocol/index.html">Apple documentation for <c>PKPushRegistryDelegate</c></related>
-	[Watch (6, 0)]
 	[MacCatalyst (13, 1)]
 	[Model]
 	[Protocol]
@@ -112,7 +122,6 @@ namespace PushKit {
 		[Export ("pushRegistry:didUpdatePushCredentials:forType:"), EventArgs ("PKPushRegistryUpdated"), EventName ("CredentialsUpdated")]
 		void DidUpdatePushCredentials (PKPushRegistry registry, PKPushCredentials credentials, string type);
 
-		[NoWatch]
 		[NoMac]
 #if !NET
 		[Abstract] // now optional in iOS 11

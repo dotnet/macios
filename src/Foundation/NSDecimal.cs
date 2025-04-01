@@ -51,15 +51,33 @@ namespace Foundation {
 #endif
 	{
 		// unsigned int
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public int fields;
 		// unsigned short [8]
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public short m1;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public short m2;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public short m3;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public short m4;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public short m5;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public short m6;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public short m7;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public short m8;
 
 #if !COREBUILD

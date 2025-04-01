@@ -57,11 +57,16 @@ XIOS_RID = ios-arm64
 $(XIOS_PCH): .stamp-check-sharpie
 	$(SHARPIE) sdk-db --xcode $(XCODE) -s iphoneos$(IOS_SDK_VERSION) -a $(XIOS_ARCH) \
 	-modules false \
+	-exclude BrowserEngineCore \
 	-exclude FactoryOTAWifiUtils \
 	-exclude FactoryOTALogger \
 	-exclude FactoryOTANetworkUtils \
 	-exclude AssetsLibrary \
+	-exclude BrowserKit \
+	-exclude LockedCameraCapture \
+	-exclude Matter \
 	-exclude _CoreNFC_UIKit \
+	-exclude TranslationUIProvider \
 	-i ThreadNetwork/THClient.h \
 	$(CORETELEPHONY_HEADERS) \
 
@@ -72,6 +77,11 @@ XTVOS_RID = tvos-arm64
 $(XTVOS_PCH): .stamp-check-sharpie
 	$(SHARPIE) sdk-db --xcode $(XCODE) -s appletvos$(TVOS_SDK_VERSION) -a $(XTVOS_ARCH) \
 		-modules false \
+		-exclude BrowserEngineCore \
+		-exclude BrowserKit \
+		-exclude LockedCameraCapture \
+		-exclude Matter \
+		-exclude TranslationUIProvider \
 
 XMACOS_ARCH = x86_64
 XMACOS_PCH = macosx$(MACOS_SDK_VERSION)-$(XMACOS_ARCH).pch
@@ -81,8 +91,13 @@ $(XMACOS_PCH): .stamp-check-sharpie
 	$(SHARPIE) sdk-db --xcode $(XCODE) -s macosx$(MACOS_SDK_VERSION) -a $(XMACOS_ARCH) \
 		-modules false \
 		-exclude AccessorySetupKit \
+		-exclude BrowserEngineCore \
+		-exclude BrowserKit \
 		-exclude JavaNativeFoundation \
+		-exclude LockedCameraCapture \
+		-exclude Matter \
 		-exclude ParavirtualizedGraphics \
+		-exclude TranslationUIProvider \
 		$(CORETELEPHONY_HEADERS) \
 
 XMACCATALYST_ARCH = x86_64
@@ -96,6 +111,8 @@ $(XMACCATALYST_PCH): .stamp-check-sharpie
 	-exclude AccessorySetupKit \
 	-exclude AGL \
 	-exclude AudioVideoBridging \
+	-exclude BrowserEngineCore \
+	-exclude BrowserKit \
 	-exclude AssetsLibrary \
 	-exclude CalendarStore \
 	-exclude Carbon \
@@ -110,11 +127,14 @@ $(XMACCATALYST_PCH): .stamp-check-sharpie
 	-exclude IOBluetoothUI \
 	-exclude JavaNativeFoundation \
 	-exclude LDAP \
+	-exclude LockedCameraCapture \
+	-exclude Matter \
 	-exclude Python \
 	-exclude Quartz \
 	-exclude QuickLookUI \
 	-exclude SecurityInterface \
 	-exclude Virtualization \
+	-exclude TranslationUIProvider \
 	-i HomeKit/HomeKit.h \
 	$(CORETELEPHONY_HEADERS) \
 
@@ -178,12 +198,13 @@ endif
 
 gen-all: gen-ios gen-tvos gen-macos gen-maccatalyst
 
-dotnet-wrench:
-	$(MAKE) -j8 dotnet-classify
-
 report-dotnet/index.html: $(XTRO_REPORT) .stamp-dotnet-classify
 	$(Q) rm -rf report-dotnet
 	$(Q_GEN) $(XTRO_REPORT_EXEC) $(DOTNET_ANNOTATIONS_DIR) report-dotnet
+
+report-dotnet/report.zip: report-dotnet/index.html
+	$(Q) rm -f "$@"
+	$(Q) cd report-dotnet && zip -r9 report.zip . -x report.zip
 
 dotnet-report: report-dotnet/index.html
 
@@ -229,3 +250,6 @@ $(U2TODO): $(wildcard u2todo/*.cs u2todo/*.csproj xtro-sharpie/Filter.cs)
 
 unclassified2todo: $(U2TODO)
 	cd $(DOTNET_ANNOTATIONS_DIR) && $(DOTNET) exec $(abspath $(U2TODO))
+
+run-tests run-unit-tests:
+	$(Q) $(MAKE) -C UnitTests $@

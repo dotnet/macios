@@ -60,9 +60,9 @@
     <DotNetFeedUrl>https://dotnetbuilds.blob.core.windows.net/public</DotNetFeedUrl>
   </PropertyGroup>
   <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('windows'))">
-    <DotNetInstallScriptUrl>https://dot.net/v1/dotnet-install.ps1</DotNetInstallScriptUrl>
+    <DotNetInstallScriptUrl>https://builds.dotnet.microsoft.com/dotnet/scripts/v1/dotnet-install.ps1</DotNetInstallScriptUrl>
     <!-- the main url often doesn't work, so have a backup url (the main url redirects to this one, and main url has a cache timeout of 1 year, so it should be fairly safe) -->
-    <DotNetInstallScriptBackupUrl>https://dotnet.microsoft.com/download/dotnet/scripts/v1/dotnet-install.ps1</DotNetInstallScriptBackupUrl>
+    <DotNetInstallScriptBackupUrl>https://builds.dotnet.microsoft.com/dotnet/scripts/v1/dotnet-install.ps1</DotNetInstallScriptBackupUrl>
     <DotNetInstallScriptName>dotnet-install.ps1</DotNetInstallScriptName>
     <DotNetInstallScriptPath>$(DotNetOutputPath)$(DotNetInstallScriptName)</DotNetInstallScriptPath>
     <DotNetInstallCommand>&amp; '$(DotNetInstallScriptPath)' -Version $(MicrosoftDotnetSdkInternalPackageVersion) -InstallDir '$(DotNetDirectory)' -Verbose</DotNetInstallCommand>
@@ -70,9 +70,9 @@
     <DotNetInstallCommand>powershell -ExecutionPolicy ByPass -NoProfile -Command &quot;$(DotNetInstallCommand)&quot;</DotNetInstallCommand>
   </PropertyGroup>
   <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('osx'))">
-    <DotNetInstallScriptUrl>https://dot.net/v1/dotnet-install.sh</DotNetInstallScriptUrl>
+    <DotNetInstallScriptUrl>https://builds.dotnet.microsoft.com/dotnet/scripts/v1/dotnet-install.sh</DotNetInstallScriptUrl>
     <!-- the main url often doesn't work, so have a backup url (the main url redirects to this one, and main url has a cache timeout of 1 year, so it should be fairly safe) -->
-    <DotNetInstallScriptBackupUrl>https://dotnet.microsoft.com/download/dotnet/scripts/v1/dotnet-install.sh</DotNetInstallScriptBackupUrl>
+    <DotNetInstallScriptBackupUrl>https://builds.dotnet.microsoft.com/dotnet/scripts/v1/dotnet-install.sh</DotNetInstallScriptBackupUrl>
     <DotNetInstallScriptName>dotnet-install.sh</DotNetInstallScriptName>
     <DotNetInstallScriptPath>$(DotNetOutputPath)$(DotNetInstallScriptName)</DotNetInstallScriptPath>
     <DotNetInstallCommand>bash '$(DotNetInstallScriptPath)' --version $(MicrosoftDotnetSdkInternalPackageVersion) --install-dir '$(DotNetDirectory)' --verbose</DotNetInstallCommand>
@@ -110,11 +110,7 @@
       <_WorkloadSource Include="$(PackageOutputPath)" />
     </ItemGroup>
     <Copy SourceFiles="$(MacIosRootDirectory)NuGet.config" DestinationFolder="$(DotNetTempDirectory)" />
-    <Exec
-      Command="&quot;$(DotNetToolPath)&quot; workload install ios tvos maccatalyst macos --verbosity diag --temp-dir &quot;$(DotNetTempDirectory)&quot; --configfile &quot;$(DotNetTempDirectory)NuGet.config&quot; --from-rollback-file &quot;$(RollbackFile)&quot; --source $(RollbackSource) --skip-sign-check $(NuGetSourceList)"
-      WorkingDirectory="$(MacIosRootDirectory)"
-      IgnoreStandardErrorWarningFormat="true"
-    />
+    <Exec Command="&quot;$(DotNetToolPath)&quot; workload install ios tvos maccatalyst macos --verbosity diag --temp-dir &quot;$(DotNetTempDirectory)&quot; --configfile &quot;$(DotNetTempDirectory)NuGet.config&quot; --from-rollback-file &quot;$(RollbackFile)&quot; --source $(RollbackSource) --skip-sign-check $(NuGetSourceList)" WorkingDirectory="$(MacIosRootDirectory)" />
 
   </Target>
 
@@ -148,10 +144,7 @@
       Inputs="$(_Inputs)"
       Outputs="$(DotNetDirectory).stamp">
     <RemoveDir Directories="$(DotNetDirectory)" />
-    <Exec
-      Command="$(DotNetInstallCommand)"
-      IgnoreStandardErrorWarningFormat="true"
-    />
+    <Exec Command="$(DotNetInstallCommand)" />
     <Touch Files="$(DotNetDirectory).stamp" AlwaysCreate="true" />
 
     <!-- This is used by iOS pair to mac because pair to mac can't

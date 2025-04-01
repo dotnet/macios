@@ -7,8 +7,6 @@
 // Copyright 2012-2014 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using Foundation;
 using AudioToolbox;
 using ObjCRuntime;
@@ -93,5 +91,3 @@ namespace MonoTouchFixtures.AudioToolbox {
 #endif
 	}
 }
-
-#endif // !__WATCHOS__

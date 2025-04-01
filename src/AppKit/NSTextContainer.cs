@@ -23,26 +23,20 @@ namespace AppKit {
 				Handle = InitWithSize (size);
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
-#endif
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("tvos")]
 		public static NSTextContainer FromSize (CGSize size)
 		{
 			return new NSTextContainer (size, false);
 		}
 
-#if NET
-		[SupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
-		[ObsoletedOSPlatform ("macos10.11", "Use NSTextContainer.FromSize instead.")]
-#else
-		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use NSTextContainer.FromSize instead.")]
-#endif
+		[UnsupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("macos", "Use NSTextContainer.FromSize instead.")]
 		public static NSTextContainer FromContainerSize (CGSize containerSize)
 		{
 			return new NSTextContainer (containerSize, true);

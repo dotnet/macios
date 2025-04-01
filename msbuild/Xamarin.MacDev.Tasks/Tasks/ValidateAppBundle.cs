@@ -335,9 +335,6 @@ namespace Xamarin.MacDev.Tasks {
 					AppleDeviceFamily.IPad,
 				};
 				break;
-			case ApplePlatform.WatchOS:
-				validFamilies = new AppleDeviceFamily [] { AppleDeviceFamily.Watch };
-				break;
 			case ApplePlatform.TVOS:
 				validFamilies = new AppleDeviceFamily [] { AppleDeviceFamily.TV };
 				break;

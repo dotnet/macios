@@ -17,10 +17,8 @@ using System.Net;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Foundation
-{
-	public partial class NSHost : IEquatable<NSHost>, IEnumerable<IPAddress>
-	{
+namespace Foundation {
+	public partial class NSHost : IEquatable<NSHost>, IEnumerable<IPAddress> {
 		static NSHost? CheckNull (NSHost? host)
 		{
 			if (host is null)
@@ -33,6 +31,9 @@ namespace Foundation
 			return host;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NSHost? Current {
 			get { return CheckNull (_Current); }
 		}
@@ -112,7 +113,7 @@ namespace Foundation
 			return new IPHostEntry {
 				HostName = Name!,
 				AddressList = Addresses,
-				Aliases = Names
+				Aliases = Names,
 			};
 		}
 
@@ -123,6 +124,9 @@ namespace Foundation
 			return FromAddress (address.ToString ());
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public IPAddress? Address {
 			get {
 				var address = _Address;
@@ -132,6 +136,9 @@ namespace Foundation
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public IPAddress [] Addresses {
 			get {
 				var addrs = new IPAddress [_Addresses.Length];
@@ -143,7 +150,7 @@ namespace Foundation
 
 		public override int GetHashCode ()
 		{
-			return (int)_Hash;
+			return (int) _Hash;
 		}
 
 		public override bool Equals (object? obj)

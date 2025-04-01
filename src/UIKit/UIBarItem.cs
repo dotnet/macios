@@ -7,8 +7,6 @@
 // Copyright 2011, 2015 Xamarin Inc.
 //
 
-#if !WATCH
-
 using System;
 using ObjCRuntime;
 using Foundation;
@@ -24,6 +22,10 @@ namespace UIKit {
 			_SetTitleTextAttributes (dict, state);
 		}
 
+		/// <param name="state">The state for which text attributes are to be set for the title.</param>
+		///         <summary>The text attributes of the title of the UIBarItem.</summary>
+		///         <returns>The <see cref="T:UIKit.UITextAttributes" /></returns>
+		///         <remarks>To be added.</remarks>
 		public TextAttributes GetTitleTextAttributes (UIControlState state)
 		{
 			using (var d = _GetTitleTextAttributes (state)) {
@@ -40,6 +42,10 @@ namespace UIKit {
 				_SetTitleTextAttributes (dict, state);
 			}
 
+			/// <param name="state">To be added.</param>
+			///         <summary>The attributes applies to the title text of the UIBarItem.</summary>
+			///         <returns>To be added.</returns>
+			///         <remarks>To be added.</remarks>
 			public virtual TextAttributes GetTitleTextAttributes (UIControlState state)
 			{
 				using (var d = _GetTitleTextAttributes (state)) {
@@ -49,5 +55,3 @@ namespace UIKit {
 		}
 	}
 }
-
-#endif // !WATCH

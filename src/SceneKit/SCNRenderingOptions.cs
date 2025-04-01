@@ -1,4 +1,4 @@
-#if !WATCH && !__MACCATALYST__
+#if !__MACCATALYST__
 
 using System;
 using ObjCRuntime;
@@ -7,6 +7,9 @@ using ObjCRuntime;
 
 namespace SceneKit {
 	public partial class SCNRenderingOptions {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SCNRenderingApi? RenderingApi {
 			get {
 				var val = GetNUIntValue (SCNRenderingOptionsKeys.RenderingApiKey);

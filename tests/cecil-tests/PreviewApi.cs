@@ -18,6 +18,7 @@ namespace Cecil.Tests {
 	public class PreviewApi {
 		[TestCase ("CryptoTokenKit", "APL0001", "10.0")]
 		// [TestCase ("FSKit", "APL0002", "11.0")]
+		[TestCase ("ObjCBindings", "APL0003", "99.0")]
 		public void EverythingInNamespace (string ns, string expectedDiagnosticId, string stableInDotNetVersion)
 		{
 			// Verify that all types in the given namespace have an Experimental attribute.

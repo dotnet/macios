@@ -79,7 +79,9 @@ namespace Foundation {
 			if (obj is null)
 				throw new ArgumentNullException (nameof (obj));
 
-			return _Contains (obj.Handle);
+			bool result = _Contains (obj.Handle);
+			GC.KeepAlive (obj);
+			return result;
 		}
 
 		public nint IndexOf (TKey obj)
@@ -87,7 +89,9 @@ namespace Foundation {
 			if (obj is null)
 				throw new ArgumentNullException (nameof (obj));
 
-			return _IndexOf (obj.Handle);
+			nint result = _IndexOf (obj.Handle);
+			GC.KeepAlive (obj);
+			return result;
 		}
 
 		public TKey? FirstObject ()
@@ -210,7 +214,7 @@ namespace Foundation {
 #if false // https://github.com/xamarin/xamarin-macios/issues/15577
 
 #if !NET
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+		[TV (13,0), iOS (13,0)]
 #else
 		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
 #endif
@@ -218,7 +222,7 @@ namespace Foundation {
 			=> new NSOrderedCollectionDifference<TKey> (_GetDifference (other, options));
 
 #if !NET
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+		[TV (13,0), iOS (13,0)]
 #else
 		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
 #endif
@@ -226,7 +230,7 @@ namespace Foundation {
 			=> new NSOrderedCollectionDifference<TKey> (_GetDifference (other));
 
 #if !NET
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+		[TV (13,0), iOS (13,0)]
 #else
 		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
 #endif
@@ -251,7 +255,7 @@ namespace Foundation {
 		}
 
 #if !NET
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+		[TV (13,0), iOS (13,0)]
 #else
 		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
 #endif

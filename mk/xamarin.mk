@@ -1,22 +1,5 @@
-
-ifneq ($(MONO_BUILD_FROM_SOURCE),)
-# The mono hash/branch + some other variables are specified in mono.mk, which is included from Make.config.
-# Here we only keep what makes sense to disable when not building from source.
-MONO_VERSION   := $(shell cd $(MONO_PATH) 2> /dev/null && git rev-parse HEAD 2> /dev/null)
-MONO_BRANCH    := $(shell cd $(MONO_PATH) 2> /dev/null && git symbolic-ref --short HEAD 2> /dev/null)
-endif
-
 ifdef ENABLE_XAMARIN
-NEEDED_MACCORE_VERSION := 5805eb9adacd8f2aeb2852ffbc78b24fb4a43866
-NEEDED_MACCORE_BRANCH := main
-
-MACCORE_DIRECTORY := maccore
-MACCORE_MODULE    := git@github.com:xamarin/maccore.git
-MACCORE_VERSION   := $(shell cd $(MACCORE_PATH) 2> /dev/null && git rev-parse HEAD 2> /dev/null)
-MACCORE_BRANCH    := $(shell cd $(MACCORE_PATH) 2> /dev/null && git symbolic-ref --short HEAD 2> /dev/null)
-
-
-NEEDED_ADR_VERSION := d466eac70a9b1bba94c18c63e34e590c66f6d044
+NEEDED_ADR_VERSION := 3152ecab9dc1d58130f345f40088c60cf58a3908
 NEEDED_ADR_BRANCH := main
 
 ADR_DIRECTORY := macios-adr
@@ -99,23 +82,12 @@ DEPENDENCY_DIRECTORIES += $($(2)_PATH)
 
 endef
 
-ifneq ($(MONO_BUILD_FROM_SOURCE),)
-$(MONO_PATH):
-	$(Q) git clone --recursive $(MONO_MODULE) $(MONO_PATH)
-	$(Q) $(MAKE) reset-mono
-
-$(eval $(call CheckVersionTemplate,mono,MONO))
-endif
-
 ifdef ENABLE_XAMARIN
 $(MACCORE_PATH):
-	$(Q) git clone --recursive $(MACCORE_MODULE) $(MACCORE_PATH)
-	$(Q) $(MAKE) reset-maccore
 
 $(ADR_PATH):
 	$(Q) git clone --recursive $(ADR_MODULE) $(ADR_PATH)
 	$(Q) $(MAKE) reset-adr
 
-$(eval $(call CheckVersionTemplate,maccore,MACCORE))
 $(eval $(call CheckVersionTemplate,macios-adr,ADR))
 endif

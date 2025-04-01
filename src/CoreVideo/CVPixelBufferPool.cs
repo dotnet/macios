@@ -16,21 +16,15 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 namespace CoreVideo {
 
 	// CVPixelBufferPool.h
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public partial class CVPixelBufferPool : NativeObject {
 #if !COREBUILD
 		[Preserve (Conditional = true)]
@@ -58,6 +52,11 @@ namespace CoreVideo {
 
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static nint CVPixelBufferPoolGetTypeID ();
+		/// <summary>CoreFoundation TypeID for the CVPixelBufferPool.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public nint TypeID {
 			get {
 				return CVPixelBufferPoolGetTypeID ();
@@ -69,6 +68,10 @@ namespace CoreVideo {
 			/* CVPixelBufferPoolRef __nonnull */ IntPtr pool);
 
 		// TODO: Return type is CVPixelBufferAttributes but need different name when this one is not WeakXXXX
+		/// <summary>Loosely typed NSDictionary containing all of the PixelBuffer attributes in the pool, it is easier to use the strogly typed Settings property.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///         </remarks>
 		public NSDictionary? PixelBufferAttributes {
 			get {
 				return Runtime.GetNSObject<NSDictionary> (CVPixelBufferPoolGetPixelBufferAttributes (Handle));
@@ -79,12 +82,22 @@ namespace CoreVideo {
 		extern static /* CFDictionaryRef __nullable */ IntPtr CVPixelBufferPoolGetAttributes (
 			/* CVPixelBufferPoolRef __nonnull */ IntPtr pool);
 
+		/// <summary>Returns the attributes of the object, you should use the Settings property instead that returns a strongly-typed version of this instead. </summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSDictionary? Attributes {
 			get {
 				return Runtime.GetNSObject<NSDictionary> (CVPixelBufferPoolGetAttributes (Handle));
 			}
 		}
 
+		/// <summary>The settings in use for the PixelBufferPool.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public CVPixelBufferPoolSettings? Settings {
 			get {
 				var attr = Attributes;
@@ -98,6 +111,10 @@ namespace CoreVideo {
 			/* CVPixelBufferPoolRef __nonnull */ IntPtr pixelBufferPool,
 			/* CVPixelBufferRef  __nullable * __nonnull */ IntPtr* pixelBufferOut);
 
+		/// <summary>Creates a new CVPixelBuffer in the pool.</summary>
+		///         <returns>The newly allocated CVPixelBuffer.</returns>
+		///         <remarks>
+		///         </remarks>
 		public CVPixelBuffer CreatePixelBuffer ()
 		{
 			CVReturn ret;
@@ -119,6 +136,12 @@ namespace CoreVideo {
 			/* CFDictionaryRef __nullable */ IntPtr auxAttributes,
 			/* CVPixelBufferRef  __nullable * __nonnull */ IntPtr* pixelBufferOut);
 
+		/// <param name="allocationSettings">Allocation settings for creating this CVPixelBuffer.</param>
+		///         <param name="error">Return error code</param>
+		///         <summary>Creates a new CVPixelBuffer in the pool.</summary>
+		///         <returns>The newly allocated CVPixelBuffer.</returns>
+		///         <remarks>
+		///         </remarks>
 		public CVPixelBuffer? CreatePixelBuffer (CVPixelBufferPoolAllocationSettings? allocationSettings, out CVReturn error)
 		{
 			IntPtr pb;
@@ -143,6 +166,8 @@ namespace CoreVideo {
 			IntPtr handle;
 			unsafe {
 				ret = CVPixelBufferPoolCreate (IntPtr.Zero, poolAttributes.GetHandle (), pixelBufferAttributes.GetHandle (), &handle);
+				GC.KeepAlive (poolAttributes);
+				GC.KeepAlive (pixelBufferAttributes);
 			}
 
 			if (ret != CVReturn.Success)
@@ -151,34 +176,41 @@ namespace CoreVideo {
 			return handle;
 		}
 
+		/// <param name="poolAttributes">Loosely typed set of configuration parameters for the CVPixelBufferPool.</param>
+		///         <param name="pixelBufferAttributes">Configuration parameters for creating the CVPixelBuffers in the pool.</param>
+		///         <summary>Creates a CVPixelBufferPool with the specified parameters (weak types).</summary>
+		///         <remarks>It is best to use the strongly typed constructor.</remarks>
 		[Advice ("Use overload with CVPixelBufferPoolSettings")]
 		public CVPixelBufferPool (NSDictionary? poolAttributes, NSDictionary? pixelBufferAttributes)
 			: base (Create (poolAttributes, pixelBufferAttributes), true)
 		{
 		}
 
+		/// <param name="settings">Configuration parameters for the CVPixelBufferPool</param>
+		///         <param name="pixelBufferAttributes">Configuration parameters for creating the CVPixelBuffers in the pool.</param>
+		///         <summary>Creates a CVPixelBufferPool with the specified parameters.</summary>
+		///         <remarks>
+		///         </remarks>
 		public CVPixelBufferPool (CVPixelBufferPoolSettings? settings, CVPixelBufferAttributes? pixelBufferAttributes)
 			: this (settings?.GetDictionary (), pixelBufferAttributes?.GetDictionary ())
 		{
 		}
 
-
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.CoreVideoLibrary)]
 		static extern void CVPixelBufferPoolFlush (/* CVPixelBufferPoolRef __nonnull */ IntPtr pool,
 			CVPixelBufferPoolFlushFlags options);
 
-#if NET
+		/// <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public void Flush (CVPixelBufferPoolFlushFlags options)
 		{
 			CVPixelBufferPoolFlush (Handle, options);

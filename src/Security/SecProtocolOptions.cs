@@ -31,8 +31,6 @@ namespace Security {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Watch (5, 0)]
 #endif
 	public class SecProtocolOptions : NativeObject {
 #if !COREBUILD
@@ -49,12 +47,12 @@ namespace Security {
 			if (identity is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (identity));
 			sec_protocol_options_set_local_identity (GetCheckedHandle (), identity.GetCheckedHandle ());
+			GC.KeepAlive (identity);
 		}
 
 #if !NET
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'AddTlsCipherSuite (TlsCipherSuite)' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'AddTlsCipherSuite (TlsCipherSuite)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'AddTlsCipherSuite (TlsCipherSuite)' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'AddTlsCipherSuite (TlsCipherSuite)' instead.")]
 		[DllImport (Constants.SecurityLibrary)]
 		static extern void sec_protocol_options_add_tls_ciphersuite (sec_protocol_options_t handle, SslCipherSuite cipherSuite);
@@ -63,7 +61,6 @@ namespace Security {
 #if !NET
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'AddTlsCipherSuite (TlsCipherSuite)' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'AddTlsCipherSuite (TlsCipherSuite)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'AddTlsCipherSuite (TlsCipherSuite)' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'AddTlsCipherSuite (TlsCipherSuite)' instead.")]
 		[Unavailable (PlatformName.MacCatalyst)]
 		public void AddTlsCipherSuite (SslCipherSuite cipherSuite) => sec_protocol_options_add_tls_ciphersuite (GetCheckedHandle (), cipherSuite);
@@ -75,7 +72,6 @@ namespace Security {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -88,7 +84,6 @@ namespace Security {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -105,7 +100,6 @@ namespace Security {
 #else
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'AddTlsCipherSuiteGroup (TlsCipherSuiteGroup)' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'AddTlsCipherSuiteGroup (TlsCipherSuiteGroup)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'AddTlsCipherSuiteGroup (TlsCipherSuiteGroup)' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'AddTlsCipherSuiteGroup (TlsCipherSuiteGroup)' instead.")]
 #endif
 		[DllImport (Constants.SecurityLibrary)]
@@ -122,7 +116,6 @@ namespace Security {
 #else
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'AddTlsCipherSuiteGroup (TlsCipherSuiteGroup)' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'AddTlsCipherSuiteGroup (TlsCipherSuiteGroup)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'AddTlsCipherSuiteGroup (TlsCipherSuiteGroup)' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'AddTlsCipherSuiteGroup (TlsCipherSuiteGroup)' instead.")]
 #endif
 		public void AddTlsCipherSuiteGroup (SslCipherSuiteGroup cipherSuiteGroup) => sec_protocol_options_add_tls_ciphersuite_group (GetCheckedHandle (), cipherSuiteGroup);
@@ -133,7 +126,6 @@ namespace Security {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -146,7 +138,6 @@ namespace Security {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -164,7 +155,6 @@ namespace Security {
 #else
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'SetTlsMinVersion (TlsProtocolVersion)' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'SetTlsMinVersion (TlsProtocolVersion)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'SetTlsMinVersion (TlsProtocolVersion)' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'SetTlsMinVersion (TlsProtocolVersion)' instead.")]
 #endif
 		[DllImport (Constants.SecurityLibrary)]
@@ -182,7 +172,6 @@ namespace Security {
 #else
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'SetTlsMinVersion (TlsProtocolVersion)' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'SetTlsMinVersion (TlsProtocolVersion)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'SetTlsMinVersion (TlsProtocolVersion)' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'SetTlsMinVersion (TlsProtocolVersion)' instead.")]
 		[Unavailable (PlatformName.MacCatalyst)]
 #endif
@@ -194,7 +183,6 @@ namespace Security {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -207,7 +195,6 @@ namespace Security {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -225,7 +212,6 @@ namespace Security {
 #else
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'SetTlsMaxVersion (TlsProtocolVersion)' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'SetTlsMaxVersion (TlsProtocolVersion)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'SetTlsMaxVersion (TlsProtocolVersion)' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'SetTlsMaxVersion (TlsProtocolVersion)' instead.")]
 #endif
 		[DllImport (Constants.SecurityLibrary)]
@@ -243,7 +229,6 @@ namespace Security {
 #else
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'SetTlsMaxVersion (TlsProtocolVersion)' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'SetTlsMaxVersion (TlsProtocolVersion)' instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use 'SetTlsMaxVersion (TlsProtocolVersion)' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'SetTlsMaxVersion (TlsProtocolVersion)' instead.")]
 		[Unavailable (PlatformName.MacCatalyst)]
 #endif
@@ -255,7 +240,6 @@ namespace Security {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -268,7 +252,6 @@ namespace Security {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -281,7 +264,6 @@ namespace Security {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -294,7 +276,6 @@ namespace Security {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -306,7 +287,6 @@ namespace Security {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -319,7 +299,6 @@ namespace Security {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -331,7 +310,6 @@ namespace Security {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -344,7 +322,6 @@ namespace Security {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -356,7 +333,6 @@ namespace Security {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -369,7 +345,6 @@ namespace Security {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -409,7 +384,6 @@ namespace Security {
 #else
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use non-DHE cipher suites instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use non-DHE cipher suites instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use non-DHE cipher suites instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use non-DHE cipher suites instead.")]
 #endif
 		[DllImport (Constants.SecurityLibrary)]
@@ -427,7 +401,6 @@ namespace Security {
 #else
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use non-DHE cipher suites instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use non-DHE cipher suites instead.")]
-		[Deprecated (PlatformName.WatchOS, 6, 0, message: "Use non-DHE cipher suites instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use non-DHE cipher suites instead.")]
 #endif
 		public void SetTlsDiffieHellmanParameters (DispatchData parameters)
@@ -435,6 +408,7 @@ namespace Security {
 			if (parameters is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (parameters));
 			sec_protocol_options_set_tls_diffie_hellman_parameters (GetCheckedHandle (), parameters.Handle);
+			GC.KeepAlive (parameters);
 		}
 
 		[DllImport (Constants.SecurityLibrary)]
@@ -445,6 +419,7 @@ namespace Security {
 			if (parameters is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (parameters));
 			sec_protocol_options_set_tls_diffie_hellman_parameters (GetCheckedHandle (), parameters.Handle);
+			GC.KeepAlive (parameters);
 		}
 
 		[DllImport (Constants.SecurityLibrary)]
@@ -507,6 +482,7 @@ namespace Security {
 				block.SetupBlockUnsafe (Trampolines.SDSecProtocolKeyUpdate.Handler, keyUpdate);
 #endif
 				sec_protocol_options_set_key_update_block (Handle, &block, keyUpdateQueue.Handle);
+				GC.KeepAlive (keyUpdateQueue);
 			}
 		}
 
@@ -516,7 +492,6 @@ namespace Security {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -530,7 +505,6 @@ namespace Security {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -538,7 +512,9 @@ namespace Security {
 		{
 			if (other is null)
 				return false;
-			return sec_protocol_options_are_equal (GetCheckedHandle (), other.Handle) != 0;
+			bool result = sec_protocol_options_are_equal (GetCheckedHandle (), other.Handle) != 0;
+			GC.KeepAlive (other);
+			return result;
 		}
 
 #if NET
@@ -547,7 +523,6 @@ namespace Security {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -557,7 +532,10 @@ namespace Security {
 				return (optionsB is null);
 			else if (optionsB is null)
 				return false;
-			return sec_protocol_options_are_equal (optionsA.Handle, optionsB.Handle) != 0;
+			bool result = sec_protocol_options_are_equal (optionsA.Handle, optionsB.Handle) != 0;
+			GC.KeepAlive (optionsA);
+			GC.KeepAlive (optionsB);
+			return result;
 		}
 
 #if NET
@@ -566,7 +544,6 @@ namespace Security {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -579,7 +556,6 @@ namespace Security {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (6, 0)]
 		[TV (13, 0)]
 		[iOS (13, 0)]
 #endif
@@ -588,6 +564,7 @@ namespace Security {
 			if (pskIdentityHint is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (pskIdentityHint));
 			sec_protocol_options_set_tls_pre_shared_key_identity_hint (GetCheckedHandle (), pskIdentityHint.Handle);
+			GC.KeepAlive (pskIdentityHint);
 		}
 #endif
 
@@ -613,6 +590,7 @@ namespace Security {
 				delegate* unmanaged<IntPtr, NativeHandle, NativeHandle, void> trampoline = &Trampolines.SDSecProtocolChallenge.Invoke;
 				using var block = new BlockLiteral (trampoline, challenge, typeof (Trampolines.SDSecProtocolChallenge), nameof (Trampolines.SDSecProtocolChallenge.Invoke));
 				sec_protocol_options_set_challenge_block (GetCheckedHandle (), &block, queue.GetNonNullHandle (nameof (queue)));
+				GC.KeepAlive (queue);
 			}
 		}
 
@@ -636,6 +614,7 @@ namespace Security {
 				delegate* unmanaged<IntPtr, NativeHandle, NativeHandle, NativeHandle, void> trampoline = &Trampolines.SDSecProtocolVerify.Invoke;
 				using var block = new BlockLiteral (trampoline, verify, typeof (Trampolines.SDSecProtocolVerify), nameof (Trampolines.SDSecProtocolVerify.Invoke));
 				sec_protocol_options_set_verify_block (GetCheckedHandle (), &block, queue.GetNonNullHandle (nameof (queue)));
+				GC.KeepAlive (queue);
 			}
 		}
 
@@ -659,6 +638,7 @@ namespace Security {
 				delegate* unmanaged<IntPtr, NativeHandle, NativeHandle, NativeHandle, void> trampoline = &Trampolines.SDSecProtocolPreSharedKeySelection.Invoke;
 				using var block = new BlockLiteral (trampoline, selection, typeof (Trampolines.SDSecProtocolPreSharedKeySelection), nameof (Trampolines.SDSecProtocolPreSharedKeySelection.Invoke));
 				sec_protocol_options_set_pre_shared_key_selection_block (GetCheckedHandle (), &block, queue.GetNonNullHandle (nameof (queue)));
+				GC.KeepAlive (queue);
 			}
 		}
 #endif // !COREBUILD

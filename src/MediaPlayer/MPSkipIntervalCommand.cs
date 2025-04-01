@@ -15,15 +15,20 @@ using ObjCRuntime;
 
 namespace MediaPlayer {
 	public partial class MPSkipIntervalCommand {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double []? PreferredIntervals {
 			get {
 				NSArray a = _PreferredIntervals;
 				if ((a is null) || (a.Count == 0))
 					return null;
 
-				return NSArray.ArrayFromHandle<double> (a.Handle, input => {
+				double []? result = NSArray.ArrayFromHandle<double> (a.Handle, input => {
 					return new NSNumber (input).DoubleValue;
 				});
+				GC.KeepAlive (a);
+				return result;
 			}
 			set {
 				if (value is null)

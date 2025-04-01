@@ -1,4 +1,3 @@
-#if !__WATCHOS__
 using System;
 using NUnit.Framework;
 using Foundation;
@@ -35,4 +34,3 @@ namespace MonoTouchFixtures.CloudKit {
 		}
 	}
 }
-#endif

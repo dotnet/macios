@@ -1,0 +1,24 @@
+<Documentation>
+  <Docs DocId="M:CoreFoundation.CFStream.CreatePairWithPeerSocketSignature(System.Net.Sockets.AddressFamily,System.Net.Sockets.SocketType,System.Net.Sockets.ProtocolType,System.Net.IPEndPoint,CoreFoundation.CFReadStream@,CoreFoundation.CFWriteStream@)">
+        <param name="family">Address family to use.</param>
+        <param name="type">Desired socket type.</param>
+        <param name="proto">Desired protocol type.</param>
+        <param name="endpoint">Endpoint to connect to.</param>
+        <param name="readStream">On return, contains a stream that can
+	be used to read from that end point.</param>
+        <param name="writeStream">On return, contains a stream that
+	can be used to write to the end point.</param>
+        <summary>Creates a reading and a writing CFStream to an
+        endpoint that are configured to use a specific socket address
+        family, a socket type and a protocol.</summary>
+        <remarks>
+          <para>
+	    Use this method when you need more control over the type
+	    of connection that you need.   Unlike the other methods in
+	    CFStream which default to TCP/IP streams (which sets protocol to
+	    Internet, socket type to stream and protocol to TCP) with
+	    this method you can specify those parameter individually.
+	  </para>
+        </remarks>
+      </Docs>
+</Documentation>

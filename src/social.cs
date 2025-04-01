@@ -38,24 +38,40 @@ namespace Social {
 	///     <remarks>These constants are used typically when interacting with low-level Objective-C APIs.   In general, you can just use the higher level APIs that use strongly typed enumerations of type <see cref="T:Social.SLServiceKind" />.</remarks>
 	[Static]
 	interface SLServiceType {
+		/// <summary>Developers should not use this deprecated property. Developers should use Facebook SDK instead.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use Facebook SDK instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use Facebook SDK instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use Facebook SDK instead.")]
 		[Field ("SLServiceTypeFacebook")]
 		NSString Facebook { get; }
 
+		/// <summary>Represents the value associated with the constant SLServiceTypeTwitter</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use Twitter SDK instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use Twitter SDK instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use Twitter SDK instead.")]
 		[Field ("SLServiceTypeTwitter")]
 		NSString Twitter { get; }
 
+		/// <summary>Represents the value associated with the constant SLServiceTypeSinaWeibo</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use Sina Weibo SDK instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use Sina Weibo SDK instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use Sina Weibo SDK instead.")]
 		[Field ("SLServiceTypeSinaWeibo")]
 		NSString SinaWeibo { get; }
 
+		/// <summary>Represents the value associated with the constant SLServiceTypeTencentWeibo</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use Tencent Weibo SDK instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use Tencent Weibo SDK instead.")]
 		[Field ("SLServiceTypeTencentWeibo")]
@@ -63,11 +79,54 @@ namespace Social {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use Tencent Weibo SDK instead.")]
 		NSString TencentWeibo { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use LinkedIn SDK instead.")]
 		[Field ("SLServiceTypeLinkedIn")]
 		[NoiOS]
 		[NoMacCatalyst]
 		NSString LinkedIn { get; }
+	}
+
+	/// <summary>Enumeration with the various kinds of social services that can be used.</summary>
+	/// <remarks>This enumeration is used to map into the underlying set of services offered by the social framework.   It is intended to assist code completion while developing and take the gueswork out of using the framework in some entry points that take an NSString as a parameter.</remarks>
+	enum SLServiceKind {
+		/// <summary>Facebook services</summary>
+		[Deprecated (PlatformName.iOS, 11, 0, message: "Use Facebook SDK instead.")]
+		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use Facebook SDK instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use Facebook SDK instead.")]
+		[Field ("SLServiceTypeFacebook")]
+		Facebook,
+
+		/// <summary>Twitter service.</summary>
+		[Deprecated (PlatformName.iOS, 11, 0, message: "Use Twitter SDK instead.")]
+		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use Twitter SDK instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use Twitter SDK instead.")]
+		[Field ("SLServiceTypeTwitter")]
+		Twitter,
+
+		/// <summary>SinaWeibo service</summary>
+		[Deprecated (PlatformName.iOS, 11, 0, message: "Use Sina Weibo SDK instead.")]
+		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use Sina Weibo SDK instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use Sina Weibo SDK instead.")]
+		[Field ("SLServiceTypeSinaWeibo")]
+		SinaWeibo,
+
+		/// <summary>TencentWeibo service.</summary>
+		[Deprecated (PlatformName.iOS, 11, 0, message: "Use Tencent Weibo SDK instead.")]
+		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use Tencent Weibo SDK instead.")]
+		[Field ("SLServiceTypeTencentWeibo")]
+		[MacCatalyst (13, 1)]
+		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use Tencent Weibo SDK instead.")]
+		TencentWeibo,
+
+		/// <summary>To be added.</summary>
+		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use LinkedIn SDK instead.")]
+		[Field ("SLServiceTypeLinkedIn")]
+		[NoiOS]
+		[NoMacCatalyst]
+		LinkedIn,
 	}
 
 	/// <summary>A request made to a social service.</summary>
@@ -80,6 +139,10 @@ namespace Social {
 		[Static]
 		[Export ("requestForServiceType:requestMethod:URL:parameters:")]
 		SLRequest Create (NSString serviceType, SLRequestMethod requestMethod, NSUrl url, [NullAllowed] NSDictionary parameters);
+
+		[Static]
+		[Wrap ("Create (serviceKind.GetConstant ()!, method, url, parameters)")]
+		SLRequest Create (SLServiceKind serviceKind, SLRequestMethod method, NSUrl url, [NullAllowed] NSDictionary parameters);
 
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use the non-Apple SDK relating to your account type instead.")]
 		[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use the non-Apple SDK relating to your account type instead.")]
@@ -232,19 +295,19 @@ namespace Social {
 #if NET
 		// Inlined manually from UITextViewDelegate/NSTextViewDelegate, because the one from the *Delegate type
 		// has different availability attributes depending on the platform.
-		[iOS (18, 0), MacCatalyst (18, 0), Mac (15, 0), MacCatalyst (18, 0), NoTV]
+		[iOS (18, 0), MacCatalyst (18, 0), Mac (15, 0), NoTV]
 		[Export ("textViewWritingToolsWillBegin:")]
 		new void WritingToolsWillBegin (SocialTextView textView);
 
 		// Inlined manually from UITextViewDelegate/NSTextViewDelegate, because the one from the *Delegate type
 		// has different availability attributes depending on the platform.
-		[iOS (18, 0), MacCatalyst (18, 0), Mac (15, 0), MacCatalyst (18, 0), NoTV]
+		[iOS (18, 0), MacCatalyst (18, 0), Mac (15, 0), NoTV]
 		[Export ("textViewWritingToolsDidEnd:")]
 		new void WritingToolsDidEnd (SocialTextView textView);
 
 		// Inlined manually from UITextViewDelegate/NSTextViewDelegate, because the one from the *Delegate type
 		// has different availability attributes depending on the platform.
-		[iOS (18, 0), MacCatalyst (18, 0), Mac (15, 0), MacCatalyst (18, 0), NoTV]
+		[iOS (18, 0), MacCatalyst (18, 0), Mac (15, 0), NoTV]
 		[Export ("textView:writingToolsIgnoredRangesInEnclosingRange:")]
 		new NSValue [] GetWritingToolsIgnoredRangesInEnclosingRange (SocialTextView textView, NSRange enclosingRange);
 #endif

@@ -28,7 +28,9 @@ namespace PdfKit {
 			if (value is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
 
-			return _SetValue (value.Handle, key.GetConstant ()!);
+			bool result = _SetValue (value.Handle, key.GetConstant ()!);
+			GC.KeepAlive (value);
+			return result;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -54,11 +56,17 @@ namespace PdfKit {
 			return Runtime.GetINativeObject<T> (_GetValue (key.GetConstant ()!), true)!;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public PdfAnnotationKey AnnotationType {
 			get { return PdfAnnotationKeyExtensions.GetValue (Type!); }
 			set { Type = value.GetConstant ()!; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]

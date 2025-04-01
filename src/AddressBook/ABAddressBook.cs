@@ -45,24 +45,65 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace AddressBook {
-#if NET
-	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public class ExternalChangeEventArgs : EventArgs {
+		/// <param name="addressBook">
+		///           The <see cref="T:AddressBook.ABAddressBook" />
+		///           instance raising the
+		///           <see cref="E:AddressBook.ABAddressBook.ExternalChange" />
+		///           event.
+		///         </param>
+		///         <param name="info">
+		///           A <see cref="T:Foundation.NSDictionary" /> containing
+		///           additional information about the event.
+		///         </param>
+		///         <summary>Initializes a new instance of the ExternalChangeEventArgs class.</summary>
+		///         <remarks>
+		///           This constructor initializes the
+		///           <see cref="P:AddressBook.ExternalChangeEventArgs.AddressBook" />
+		///           property of the new instance using with <paramref name="addressBook" />,
+		///           and initializes the
+		///           <see cref="P:AddressBook.ExternalChangeEventArgs.Info" />
+		///           property of the new instance using <paramref name="info" />.
+		///         </remarks>
 		public ExternalChangeEventArgs (ABAddressBook addressBook, NSDictionary? info)
 		{
 			AddressBook = addressBook;
 			Info = info;
 		}
 
+		/// <summary>
+		///           The <see cref="T:AddressBook.ABAddressBook" />
+		///           which raised the
+		///           <see cref="E:AddressBook.ABAddressBook.ExternalChange" />
+		///           event.
+		///         </summary>
+		///         <value>
+		///           A <see cref="T:AddressBook.ABAddressBook" /> which raised the
+		///           <see cref="E:AddressBook.ABAddressBook.ExternalChange" />
+		///           event.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public ABAddressBook AddressBook { get; private set; }
+		/// <summary>
+		///           Additional informationa about the
+		///           <see cref="E:AddressBook.ABAddressBook.ExternalChange" />
+		///           event.
+		///         </summary>
+		///         <value>
+		///           A <see cref="T:Foundation.NSDictionary" /> containing
+		///           additional information about the
+		///           <see cref="E:AddressBook.ABAddressBook.ExternalChange" />
+		///           event.  This may be <see langword="null" />.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSDictionary? Info { get; private set; }
 	}
 
@@ -78,6 +119,12 @@ namespace AddressBook {
 	// Note that the above comment was removed from iOS 6.0+ documentation (and were not part of OSX docs AFAIK).
 	// It make sense since it's not possible to call those functions, from 6.0+ they will return NULL on devices,
 	// unless the application has been authorized to access the address book.
+	[SupportedOSPlatform ("ios")]
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	static class InitConstants {
 		public static void Init () { }
 
@@ -85,7 +132,7 @@ namespace AddressBook {
 		{
 #if __MACCATALYST__
 			// avoid TypeLoadException if used before macOS 11.x
-			if (!SystemVersion.CheckiOS (14,0))
+			if (!SystemVersion.CheckiOS (14, 0))
 				return;
 #endif
 			// ensure we can init. This is needed before iOS6 (as per doc).
@@ -111,18 +158,24 @@ namespace AddressBook {
 		}
 	}
 
-#if NET
-	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public class ABAddressBook : NativeObject, IEnumerable<ABRecord> {
 
+		/// <summary>
+		///           Identifies the error domain under which address book errors are grouped.
+		///         </summary>
+		///         <remarks>
+		///           When an <see cref="T:CoreFoundation.CFException" /> is
+		///           thrown from a <see cref="T:AddressBook.ABAddressBook" />
+		///           method, the
+		///           <see cref="P:CoreFoundation.CFException.Domain" /> property
+		///           will be equal to <c>ErrorDomain</c>.
+		///         </remarks>
 		public static readonly NSString ErrorDomain;
 
 		GCHandle sender;
@@ -130,14 +183,21 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		internal extern static IntPtr ABAddressBookCreate ();
 
-#if NET
+		/// <summary>Developers should not use this deprecated constructor. Developers should use the static Create method instead</summary>
+		///         <remarks>
+		///           <para>
+		///             Changes made to the <c>ABAddressBook</c> instance are visible to
+		///             other applications only after
+		///             <see cref="M:AddressBook.ABAddressBook.Save" /> is called.
+		///           </para>
+		///         </remarks>
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("ios")]
-		[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-		[ObsoletedOSPlatform ("ios6.0", "Use the static Create method instead.")]
-#else
-		[Deprecated (PlatformName.iOS, 6, 0, message: "Use the static Create method instead")]
-#endif
+		[ObsoletedOSPlatform ("ios", "Use the static Create method instead")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use the static Create method instead")]
+		[UnsupportedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("tvos")]
 		public ABAddressBook ()
 			: this (ABAddressBookCreate (), true)
 		{
@@ -146,6 +206,10 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		unsafe extern static IntPtr ABAddressBookCreateWithOptions (IntPtr dictionary, IntPtr* cfError);
 
+		/// <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static ABAddressBook? Create (out NSError? error)
 		{
 			IntPtr e;
@@ -173,6 +237,7 @@ namespace AddressBook {
 			ErrorDomain = Dlfcn.GetStringConstant (Libraries.AddressBook.Handle, "ABAddressBookErrorDomain")!;
 		}
 
+		/// <include file="../../docs/api/AddressBook/ABAddressBook.xml" path="/Documentation/Docs[@DocId='M:AddressBook.ABAddressBook.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			if (sender.IsAllocated)
@@ -183,6 +248,12 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static nint ABAddressBookGetAuthorizationStatus ();
 
+		/// <summary>What permissions the user has allowed the app.</summary>
+		///         <returns>The current authorization status of the app.</returns>
+		///         <remarks>
+		///           <para>This method checks the application's current authorization status, which can change due to the user interacting with the permissions dialog (see <see cref="T:AddressBook.ABAddressBook" />) or the system's Privacy settings.</para>
+		///         </remarks>
+		///         <altmember cref="M:AddressBook.ABAddressBok.RequestAccess" />
 		public static ABAuthorizationStatus GetAuthorizationStatus ()
 		{
 			return (ABAuthorizationStatus) (long) ABAddressBookGetAuthorizationStatus ();
@@ -191,6 +262,7 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		unsafe extern static void ABAddressBookRequestAccessWithCompletion (IntPtr addressbook, BlockLiteral* completion);
 
+		/// <include file="../../docs/api/AddressBook/ABAddressBook.xml" path="/Documentation/Docs[@DocId='M:AddressBook.ABAddressBook.RequestAccess(System.Action{System.Boolean,Foundation.NSError})']/*" />
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void RequestAccess (Action<bool, NSError?> onCompleted)
 		{
@@ -226,6 +298,18 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static byte ABAddressBookHasUnsavedChanges (IntPtr addressBook);
+		/// <summary>
+		///           Indicates whether or not this instance has changes which haven't been
+		///           saved to the global address book.
+		///         </summary>
+		///         <value>
+		///           <see langword="true" /> if the current instance has unsaved changes;
+		///           otherwise, <see langword="false" />.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
+		///         <altmember cref="M:AddressBook.ABAddressBook.Save" />
+		///         <altmember cref="M:AddressBook.ABAddressBook.Revert" />
 		public bool HasUnsavedChanges {
 			get {
 				return ABAddressBookHasUnsavedChanges (GetCheckedHandle ()) != 0;
@@ -234,6 +318,15 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		unsafe extern static byte ABAddressBookSave (IntPtr addressBook, IntPtr* error);
+		/// <summary>
+		///           Saves unsaved changes made to the current instance to the
+		///           global Address Book database.
+		///         </summary>
+		///         <remarks>
+		///         </remarks>
+		///         <exception cref="T:CoreFoundation.CFException">
+		///           The record couldn't be removed from the address book.
+		///         </exception>
 		public void Save ()
 		{
 			IntPtr error;
@@ -245,6 +338,11 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static void ABAddressBookRevert (IntPtr addressBook);
+		/// <summary>
+		///           Discards unsaved changes to the address book.
+		///         </summary>
+		///         <remarks>
+		///         </remarks>
 		public void Revert ()
 		{
 			ABAddressBookRevert (GetCheckedHandle ());
@@ -252,14 +350,27 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		unsafe extern static byte ABAddressBookAddRecord (IntPtr addressBook, IntPtr record, IntPtr* error);
+		/// <param name="record">
+		///           A <see cref="T:AddressBook.ABRecord" /> containing
+		///           the record to add to the address book.
+		///         </param>
+		///         <summary>
+		///           Adds a record to the address book.
+		///         </summary>
+		///         <remarks>
+		///         </remarks>
+		///         <exception cref="T:CoreFoundation.CFException">
+		///           The record couldn't be added to the address book.
+		///         </exception>
 		public void Add (ABRecord record)
 		{
 			if (record is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (record));
 
 			IntPtr error;
+			NativeHandle recordHandle = record.Handle;
 			unsafe {
-				if (ABAddressBookAddRecord (GetCheckedHandle (), record.Handle, &error) == 0)
+				if (ABAddressBookAddRecord (GetCheckedHandle (), recordHandle, &error) == 0)
 					throw CFException.FromCFError (error);
 			}
 			record.AddressBook = this;
@@ -267,14 +378,27 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		unsafe extern static byte ABAddressBookRemoveRecord (IntPtr addressBook, IntPtr record, IntPtr* error);
+		/// <param name="record">
+		///           A <see cref="T:AddressBook.ABRecord" /> containing
+		///           the record to remove from the address book.
+		///         </param>
+		///         <summary>
+		///           Removes a record from the address book.
+		///         </summary>
+		///         <remarks>
+		///         </remarks>
+		///         <exception cref="T:CoreFoundation.CFException">
+		///           The record couldn't be removed from the address book.
+		///         </exception>
 		public void Remove (ABRecord record)
 		{
 			if (record is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (record));
 
 			IntPtr error;
+			NativeHandle recordHandle = record.Handle;
 			unsafe {
-				if (ABAddressBookRemoveRecord (GetCheckedHandle (), record.Handle, &error) == 0)
+				if (ABAddressBookRemoveRecord (GetCheckedHandle (), recordHandle, &error) == 0)
 					throw CFException.FromCFError (error);
 			}
 			record.AddressBook = null;
@@ -282,6 +406,17 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static nint ABAddressBookGetPersonCount (IntPtr addressBook);
+		/// <summary>
+		///           Gets the number of <see cref="T:AddressBook.ABPerson" />
+		///           records in the address book.
+		///         </summary>
+		///         <value>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> containing the number of
+		///           <see cref="T:AddressBook.ABPerson" />
+		///           records in the address book.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public nint PeopleCount {
 			get {
 				return ABAddressBookGetPersonCount (GetCheckedHandle ());
@@ -290,6 +425,15 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABAddressBookCopyArrayOfAllPeople (IntPtr addressBook);
+		/// <summary>
+		///           Gets all people in the address book.
+		///         </summary>
+		///         <returns>
+		///           A <see cref="T:AddressBook.ABPerson" /> array containing
+		///           all people in the address book.
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public ABPerson [] GetPeople ()
 		{
 			var cfArrayRef = ABAddressBookCopyArrayOfAllPeople (GetCheckedHandle ());
@@ -299,27 +443,48 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABAddressBookCopyArrayOfAllPeopleInSource (IntPtr addressBook, IntPtr source);
 
+		/// <param name="source">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public ABPerson [] GetPeople (ABRecord source)
 		{
 			if (source is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 			var cfArrayRef = ABAddressBookCopyArrayOfAllPeopleInSource (GetCheckedHandle (), source.Handle);
+			GC.KeepAlive (source);
 			return NSArray.ArrayFromHandle (cfArrayRef, l => new ABPerson (l, this));
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABAddressBookCopyArrayOfAllPeopleInSourceWithSortOrdering (IntPtr addressBook, IntPtr source, ABPersonSortBy sortOrdering);
 
+		/// <param name="source">To be added.</param>
+		///         <param name="sortOrdering">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public ABPerson [] GetPeople (ABRecord source, ABPersonSortBy sortOrdering)
 		{
 			if (source is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 			var cfArrayRef = ABAddressBookCopyArrayOfAllPeopleInSourceWithSortOrdering (GetCheckedHandle (), source.Handle, sortOrdering);
+			GC.KeepAlive (source);
 			return NSArray.ArrayFromHandle (cfArrayRef, l => new ABPerson (l, this));
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static nint ABAddressBookGetGroupCount (IntPtr addressBook);
+		/// <summary>
+		///           Gets the number of groups in the address book.
+		///         </summary>
+		///         <value>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> containing the number of
+		///           <see cref="T:AddressBook.ABGroup" /> records
+		///           in the address book.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public nint GroupCount {
 			get {
 				return ABAddressBookGetGroupCount (GetCheckedHandle ());
@@ -328,6 +493,15 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABAddressBookCopyArrayOfAllGroups (IntPtr addressBook);
+		/// <summary>
+		///           Gets all groups in the address book.
+		///         </summary>
+		///         <returns>
+		///           A <see cref="T:AddressBook.ABGroup" /> array containing
+		///           all groups in the address book.
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public ABGroup [] GetGroups ()
 		{
 			var cfArrayRef = ABAddressBookCopyArrayOfAllGroups (GetCheckedHandle ());
@@ -337,23 +511,48 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABAddressBookCopyArrayOfAllGroupsInSource (IntPtr addressBook, IntPtr source);
 
+		/// <param name="source">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public ABGroup [] GetGroups (ABRecord source)
 		{
 			if (source is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 
 			var cfArrayRef = ABAddressBookCopyArrayOfAllGroupsInSource (GetCheckedHandle (), source.Handle);
+			GC.KeepAlive (source);
 			return NSArray.ArrayFromHandle (cfArrayRef, l => new ABGroup (l, this));
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABAddressBookCopyLocalizedLabel (IntPtr label);
+		/// <param name="label">
+		///           A <see cref="T:Foundation.NSString" /> containing
+		///           the label to localize.
+		///         </param>
+		///         <summary>
+		///           Localize a record-property label into the current UI language.
+		///         </summary>
+		///         <returns>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing the localized
+		///           version of the record-property label <paramref name="label" />.
+		///         </returns>
+		///         <remarks>
+		///           <para>
+		///             <paramref name="label" /> should be a field from one of the
+		///             <c>ABPerson*Label</c> types, e.g.
+		///             <see cref="P:AddressBook.ABPersonPhoneLabel.iPhone" />.
+		///           </para>
+		///         </remarks>
 		public static string? LocalizedLabel (NSString label)
 		{
 			if (label is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (label));
 
-			return CFString.FromHandle (ABAddressBookCopyLocalizedLabel (label.Handle));
+			string? result = CFString.FromHandle (ABAddressBookCopyLocalizedLabel (label.Handle));
+			GC.KeepAlive (label);
+			return result;
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
@@ -393,6 +592,23 @@ namespace AddressBook {
 
 		EventHandler<ExternalChangeEventArgs>? externalChange;
 
+		/// <param name="e">
+		///           A <see cref="T:AddressBook.ExternalChangeEventArgs" />
+		///           instance containing information about the external change.
+		///         </param>
+		///         <summary>
+		///           Raises the
+		///           <see cref="E:AddressBook.ABAddressBook.ExternalChange" />
+		///           event.
+		///         </summary>
+		///         <remarks>
+		///           <block subset="none" type="overrides">
+		///             Call <c>base.OnExternalChange(e)</c> in order to raise
+		///             the
+		///             <see cref="E:AddressBook.ABAddressBook.ExternalChange" />
+		///             event.
+		///           </block>
+		///         </remarks>
 		protected virtual void OnExternalChange (ExternalChangeEventArgs e)
 		{
 			GetCheckedHandle ();
@@ -434,11 +650,32 @@ namespace AddressBook {
 			}
 		}
 
+		/// <summary>
+		///           Returns an enumerator that iterates through all records and groups
+		///           in the address book.
+		///         </summary>
+		///         <returns>
+		///           An <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Collections%20IEnumerator&amp;scope=Xamarin" title="T:System.Collections.IEnumerator">T:System.Collections.IEnumerator</a></format>
+		///           which will return all records and groups in the address book.
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return GetEnumerator ();
 		}
 
+		/// <summary>
+		///           Returns an enumerator that iterates through all records and groups
+		///           in the address book.
+		///         </summary>
+		///         <returns>
+		///           An
+		///           <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Collections%20Generic%20IEnumerator{%20Address%20Book%20ABRecord}&amp;scope=Xamarin" title="T:System.Collections.Generic.IEnumerator{AddressBook.ABRecord}">T:System.Collections.Generic.IEnumerator{AddressBook.ABRecord}</a></format>
+		///           which will return all records and groups in the address book.
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public IEnumerator<ABRecord> GetEnumerator ()
 		{
 			GetCheckedHandle ();
@@ -450,6 +687,21 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABAddressBookGetGroupWithRecordID (IntPtr addressBook, int /* ABRecordID */ recordId);
+		/// <param name="recordId">
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> containing the record ID.
+		///         </param>
+		///         <summary>
+		///           Returns the <see cref="T:AddressBook.ABGroup" />
+		///           with the given record ID.
+		///         </summary>
+		///         <returns>
+		///           A <see cref="T:AddressBook.ABGroup" /> where
+		///           <see cref="P:AddressBook.ABRecord.Id" /> is
+		///           equal to <paramref name="recordId" />, or
+		///           <see langword="null" /> if there is no such group.
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public ABGroup? GetGroup (int recordId)
 		{
 			var h = ABAddressBookGetGroupWithRecordID (Handle, recordId);
@@ -460,6 +712,21 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABAddressBookGetPersonWithRecordID (IntPtr addressBook, int /* ABRecordID */ recordId);
+		/// <param name="recordId">
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> containing the record ID.
+		///         </param>
+		///         <summary>
+		///           Returns the <see cref="T:AddressBook.ABPerson" />
+		///           with the given record ID.
+		///         </summary>
+		///         <returns>
+		///           A <see cref="T:AddressBook.ABPerson" /> where
+		///           <see cref="P:AddressBook.ABRecord.Id" /> is
+		///           equal to <paramref name="recordId" />, or
+		///           <see langword="null" /> if there is no such group.
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public ABPerson? GetPerson (int recordId)
 		{
 			var h = ABAddressBookGetPersonWithRecordID (Handle, recordId);
@@ -470,6 +737,21 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABAddressBookCopyPeopleWithName (IntPtr addressBook, IntPtr name);
+		/// <param name="name">
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing the name of the person
+		///           to search for.
+		///         </param>
+		///         <summary>
+		///           Gets all <see cref="T:AddressBook.ABPerson" /> array
+		///           containing all records with a matching name.
+		///         </summary>
+		///         <returns>
+		///           A <see cref="T:AddressBook.ABPerson" /> array
+		///           containing all records where <paramref name="name" />
+		///           matches the records composite name.
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public ABPerson [] GetPeopleWithName (string name)
 		{
 			var nameHandle = CFString.CreateNative (name);
@@ -486,6 +768,11 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr /* CFArrayRef */ ABAddressBookCopyArrayOfAllSources (IntPtr /* ABAddressBookRef */ addressBook);
+		/// <summary>Returns all of the addresbook sources available on the system.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public ABSource []? GetAllSources ()
 		{
 			var cfArrayRef = ABAddressBookCopyArrayOfAllSources (GetCheckedHandle ());
@@ -494,6 +781,11 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr /* ABRecordRef */ ABAddressBookCopyDefaultSource (IntPtr /* ABAddressBookRef */ addressBook);
+		/// <summary>Returns the default addressbook source for the system.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public ABSource? GetDefaultSource ()
 		{
 			var h = ABAddressBookCopyDefaultSource (GetCheckedHandle ());
@@ -504,6 +796,12 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr /* ABRecordRef */ ABAddressBookGetSourceWithRecordID (IntPtr /* ABAddressBookRef */ addressBook, int /* ABRecordID */ sourceID);
+		/// <param name="sourceID">To be added.</param>
+		///         <summary>Returns a specific addressbook source</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public ABSource? GetSource (int sourceID)
 		{
 			var h = ABAddressBookGetSourceWithRecordID (GetCheckedHandle (), sourceID);

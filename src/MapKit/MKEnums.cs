@@ -20,26 +20,34 @@ using ObjCRuntime;
 namespace MapKit {
 
 	// NSUInteger -> MKDirectionsTypes.h
-	[NoWatch]
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum MKDirectionsTransportType : ulong {
+		/// <summary>Routing for automobiles.</summary>
 		Automobile = 1 << 0,
+		/// <summary>Routing for walking.</summary>
 		Walking = 1 << 1,
+		/// <summary>Routing for public transport.</summary>
 		Transit = 1 << 2,
+		/// <summary>The routing type is not specified.</summary>
 		Any = 0x0FFFFFFF,
 	}
 
 	// NSUInteger -> MKTypes.h
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKMapType : ulong {
+		/// <summary>Standard cartographic imagery.</summary>
 		Standard = 0,
+		/// <summary>Photos taken from space.</summary>
 		Satellite,
+		/// <summary>A combination of satellite and cartographic imagery.</summary>
 		Hybrid,
+		/// <summary>A flyover using satellite images.</summary>
 		SatelliteFlyover,
+		/// <summary>A flyover that combines satellite and cartographic imagery.</summary>
 		HybridFlyover,
+		/// <summary>A muted map that emphasized developer data.</summary>
 		[MacCatalyst (13, 1)]
 		MutedStandard,
 	}
@@ -48,9 +56,13 @@ namespace MapKit {
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum MKDistanceFormatterUnits : ulong {
+		/// <summary>To be added.</summary>
 		Default,
+		/// <summary>To be added.</summary>
 		Metric,
+		/// <summary>To be added.</summary>
 		Imperial,
+		/// <summary>To be added.</summary>
 		ImperialWithYards,
 	}
 
@@ -58,30 +70,38 @@ namespace MapKit {
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum MKDistanceFormatterUnitStyle : ulong {
+		/// <summary>To be added.</summary>
 		Default = 0,
+		/// <summary>To be added.</summary>
 		Abbreviated,
+		/// <summary>To be added.</summary>
 		Full,
 	}
 
 	// NSInteger -> MKMapView.h
-	[Watch (10, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKOverlayLevel : long {
+		/// <summary>The overlay should render above roads, but below labels, points of interest, and annotation views.</summary>
 		AboveRoads = 0,
+		/// <summary>The overlay should render above all map content except for annotation views.</summary>
 		AboveLabels,
 	}
 
 	// NSUInteger -> MKTypes.h
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[Native]
 	[ErrorDomain ("MKErrorDomain")]
 	public enum MKErrorCode : ulong {
+		/// <summary>To be added.</summary>
 		Unknown = 1,
+		/// <summary>To be added.</summary>
 		ServerFailure,
+		/// <summary>To be added.</summary>
 		LoadingThrottled,
+		/// <summary>To be added.</summary>
 		PlacemarkNotFound,
+		/// <summary>To be added.</summary>
 		DirectionsNotFound,
 		DecodingFailed,
 	}
@@ -89,42 +109,55 @@ namespace MapKit {
 	// NSUInteger -> MKTypes.h
 	/// <summary>An enumeration of valid states for a dragged <see cref="T:MapKit.MKAnnotationView" />.</summary>
 	[NoTV]
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKAnnotationViewDragState : ulong {
-		None, Starting, Dragging, Canceling, Ending
+		/// <summary>To be added.</summary>
+		None,
+		/// <summary>To be added.</summary>
+		Starting,
+		/// <summary>To be added.</summary>
+		Dragging,
+		/// <summary>To be added.</summary>
+		Canceling,
+		/// <summary>To be added.</summary>
+		Ending,
 	}
 
 	// NSUInteger -> MKTypes.h
 	/// <summary>Color for map pins.</summary>
 	[NoTV]
-	[NoWatch]
 	[Native]
 	[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'MKPinAnnotationView.PinTintColor' instead.")]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'MKPinAnnotationView.PinTintColor' instead.")]
 	[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'MKPinAnnotationView.PinTintColor' instead.")]
 	public enum MKPinAnnotationColor : ulong {
-		Red, Green, Purple
+		/// <summary>To be added.</summary>
+		Red,
+		/// <summary>To be added.</summary>
+		Green,
+		/// <summary>To be added.</summary>
+		Purple,
 	}
 
 	// NSUInteger -> MKTypes.h
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKUserTrackingMode : ulong {
+		/// <summary>To be added.</summary>
 		None,
+		/// <summary>To be added.</summary>
 		Follow,
 #if !XAMCORE_5_0 && !(IOS || MACCATALYST)
 		[Obsolete ("This is only available on iOS and MacCatalyst.")]
 		FollowWithHeading,
 #elif IOS || MACCATALYST
+		/// <summary>To be added.</summary>
 		FollowWithHeading,
 #endif
 	}
 
-	[NoWatch]
 	[Native]
 	[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'MKLocalSearchCompleterResultType' instead.")]
 	[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'MKLocalSearchCompleterResultType' instead.")]
@@ -132,15 +165,18 @@ namespace MapKit {
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'MKLocalSearchCompleterResultType' instead.")]
 	public enum MKSearchCompletionFilterType : long {
+		/// <summary>Include related search queries in the completion results, in addition to place names.</summary>
 		AndQueries = 0,
-		Only
+		/// <summary>Only include place names in the completion results.</summary>
+		Only,
 	}
 
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKAnnotationViewCollisionMode : long {
+		/// <summary>Indicates that the entire frame rectangle should be used for collision detection.</summary>
 		Rectangle,
+		/// <summary>Indicates that a circle inscribed within the frame rectangle should be used for collision detection.</summary>
 		Circle,
 		[TV (14, 0)]
 		[iOS (14, 0)]
@@ -148,48 +184,51 @@ namespace MapKit {
 		None,
 	}
 
-	[NoWatch]
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKScaleViewAlignment : long {
+		/// <summary>To be added.</summary>
 		Leading,
+		/// <summary>To be added.</summary>
 		Trailing,
 	}
 
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKFeatureVisibility : long {
+		/// <summary>Indicates that the title text is shown or hidden in response to the map state.</summary>
 		Adaptive,
+		/// <summary>Indicates that the title text is hidden.</summary>
 		Hidden,
+		/// <summary>Indicates that the title text is always visible.</summary>
 		Visible,
 	}
 
 	[Flags]
-	[TV (13, 0), NoWatch, iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKLocalSearchCompleterResultType : ulong {
 		Address = 1 << 0,
 		PointOfInterest = 1 << 1,
 		Query = 1 << 2,
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		PhysicalFeature = 1 << 3,
 	}
 
 	[Flags]
-	[TV (13, 0), NoWatch, iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKLocalSearchResultType : ulong {
 		Address = 1 << 0,
 		PointOfInterest = 1 << 1,
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		PhysicalFeature = 1 << 2,
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Native]
 	public enum MKDirectionsRoutePreference : long {
 		Any = 0,
@@ -197,7 +236,7 @@ namespace MapKit {
 	}
 
 	[Flags]
-	[NoMac, iOS (16, 0), MacCatalyst (16, 0), NoWatch, NoTV]
+	[NoMac, iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[Native]
 	public enum MKMapFeatureOptions : long {
 		PointsOfInterest = 1 << (int) MKMapFeatureType.PointOfInterest,
@@ -205,7 +244,7 @@ namespace MapKit {
 		PhysicalFeatures = 1 << (int) MKMapFeatureType.PhysicalFeature,
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, NoTV]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[Native]
 	public enum MKLookAroundBadgePosition : long {
 		TopLeading = 0,
@@ -213,14 +252,14 @@ namespace MapKit {
 		BottomTrailing,
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Native]
 	public enum MKMapElevationStyle : long {
 		Flat = 0,
 		Realistic,
 	}
 
-	[NoMac, iOS (16, 0), MacCatalyst (16, 0), NoWatch, NoTV]
+	[NoMac, iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[Native]
 	public enum MKMapFeatureType : long {
 		PointOfInterest = 0,
@@ -228,15 +267,14 @@ namespace MapKit {
 		PhysicalFeature,
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Native]
 	public enum MKStandardMapEmphasisStyle : long {
 		Default = 0,
 		Muted,
 	}
 
-#if !WATCH
-	[TV (13, 0), NoWatch, iOS (13, 0)]
+	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	public enum MKPointOfInterestCategory {
 
@@ -360,138 +398,136 @@ namespace MapKit {
 		[Field ("MKPointOfInterestCategoryZoo")]
 		Zoo,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryAnimalService")]
 		AnimalService,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryAutomotiveRepair")]
 		AutomotiveRepair,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryBaseball")]
 		Baseball,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryBasketball")]
 		Basketball,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryBeauty")]
 		Beauty,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryBowling")]
 		Bowling,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryCastle")]
 		Castle,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryConventionCenter")]
 		ConventionCenter,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryDistillery")]
 		Distillery,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryFairground")]
 		Fairground,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryFishing")]
 		Fishing,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryFortress")]
 		Fortress,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryGolf")]
 		Golf,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryGoKart")]
 		GoKart,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryHiking")]
 		Hiking,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryKayaking")]
 		Kayaking,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryLandmark")]
 		Landmark,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryMailbox")]
 		Mailbox,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryMiniGolf")]
 		MiniGolf,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryMusicVenue")]
 		MusicVenue,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryNationalMonument")]
 		NationalMonument,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryPlanetarium")]
 		Planetarium,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryRockClimbing")]
 		RockClimbing,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryRVPark")]
 		RVPark,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategorySkatePark")]
 		SkatePark,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategorySkating")]
 		Skating,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategorySkiing")]
 		Skiing,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategorySoccer")]
 		Soccer,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategorySpa")]
 		Spa,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategorySurfing")]
 		Surfing,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategorySwimming")]
 		Swimming,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryTennis")]
 		Tennis,
 
-		[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryVolleyball")]
 		Volleyball,
 	}
-
-#endif
 }

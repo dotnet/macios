@@ -12,6 +12,11 @@ namespace ObjCRuntime {
 
 	public interface INativeObject {
 #if !COREBUILD
+		/// <summary>Handle (pointer) to the unmanaged object representation.</summary>
+		///         <value>A pointer</value>
+		///         <remarks>
+		///           <para>This IntPtr is a handle to the underlying unmanaged representation for this object.</para>
+		///         </remarks>
 		NativeHandle Handle {
 			get;
 		}
@@ -21,7 +26,7 @@ namespace ObjCRuntime {
 		// The method will be implemented via custom linker step if the managed static registrar is used
 		// for classes which have an (NativeHandle, bool) or (IntPtr, bool) constructor.
 		// This method will be made public when the managed static registrar is used.
-		[MethodImpl(MethodImplOptions.NoInlining)]
+		[MethodImpl (MethodImplOptions.NoInlining)]
 		internal static virtual INativeObject? _Xamarin_ConstructINativeObject (NativeHandle handle, bool owns) => null;
 #endif
 	}
@@ -29,6 +34,7 @@ namespace ObjCRuntime {
 #if !COREBUILD
 	public static class NativeObjectExtensions {
 
+#pragma warning disable RBI0014
 		// help to avoid the (too common pattern)
 		// 	var p = x is null ? IntPtr.Zero : x.Handle;
 		static public NativeHandle GetHandle (this INativeObject? self)
@@ -55,6 +61,7 @@ namespace ObjCRuntime {
 			return h;
 		}
 #endif
+#pragma warning restore RBI0014
 
 		internal static void CallWithPointerToFirstElementAndCount<T> (T [] array, string arrayVariableName, Action<IntPtr, nuint> callback)
 			where T : INativeObject

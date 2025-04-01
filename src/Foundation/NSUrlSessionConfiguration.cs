@@ -24,6 +24,9 @@ namespace Foundation {
 
 		public SessionConfigurationType SessionType { get; private set; } = SessionConfigurationType.Default;
 
+		/// <summary>A copy of the default session configuration.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NSUrlSessionConfiguration DefaultSessionConfiguration {
 			get {
 				var config = NSUrlSessionConfiguration._DefaultSessionConfiguration;
@@ -32,6 +35,9 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>A session configuration that uses no persistent storage for caches, cookies, or credentials.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static NSUrlSessionConfiguration EphemeralSessionConfiguration {
 			get {
 				var config = NSUrlSessionConfiguration._EphemeralSessionConfiguration;
@@ -71,7 +77,7 @@ namespace Foundation {
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 #else
-		[TV (17, 0), Watch (10, 0), iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 #endif
 		public NWProxyConfig [] ProxyConfigurations {
 			get => NSArray.ArrayFromHandleFunc (_ProxyConfigurations, handle => new NWProxyConfig (handle, owns: false));

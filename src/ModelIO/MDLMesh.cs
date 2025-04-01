@@ -30,7 +30,9 @@ namespace ModelIO {
 	partial class MDLMesh {
 
 		public enum MDLMeshVectorType {
+			/// <summary>To be added.</summary>
 			Dimensions,
+			/// <summary>To be added.</summary>
 			Extent,
 		}
 
@@ -189,90 +191,135 @@ namespace ModelIO {
 			return new MDLMesh (mesh, submeshIndex, subdivisionLevels, allocator);
 		}
 
+		/// <summary>Gets the visual anisotropy of the surface, if present. This data is associated with the <see cref="P:ModelIO.MDLVertexAttributes.Anisotropy" /> key.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? AnisotropyVertexData {
 			get {
 				return GetVertexAttributeDataForAttribute (MDLVertexAttributes.Anisotropy);
 			}
 		}
 
+		/// <summary>Gets the binormal data at each vertex. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.Binormal" /> key.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? BinormalVertexData {
 			get {
 				return GetVertexAttributeDataForAttribute (MDLVertexAttributes.Binormal);
 			}
 		}
 
+		/// <summary>Gets the bitangent vectors for each vertex. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.Bitangent" /> key.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? BitangentVertexData {
 			get {
 				return GetVertexAttributeDataForAttribute (MDLVertexAttributes.Bitangent);
 			}
 		}
 
+		/// <summary>Gets color data for each vertex. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.Color" /> key.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? ColorVertexData {
 			get {
 				return GetVertexAttributeDataForAttribute (MDLVertexAttributes.Color);
 			}
 		}
 
+		/// <summary>Gets data that describe which edges that should not be modified when subdividing the surface. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.EdgeCrease" /> key.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? EdgeCreaseVertexData {
 			get {
 				return GetVertexAttributeDataForAttribute (MDLVertexAttributes.EdgeCrease);
 			}
 		}
 
+		/// <summary>Gets bone and joint indices. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.JointIndices" /> key.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? JointIndicesVertexData {
 			get {
 				return GetVertexAttributeDataForAttribute (MDLVertexAttributes.JointIndices);
 			}
 		}
 
+		/// <summary>Gets bone and joint weight information that is used to render a mesh that is associated with a skeleton. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.JointWeights" /> key.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? JointWeightsVertexData {
 			get {
 				return GetVertexAttributeDataForAttribute (MDLVertexAttributes.JointWeights);
 			}
 		}
 
+		/// <summary>Gets normal vectors for the mesh vertices. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.Normal" /> key.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? NormalVertexData {
 			get {
 				return GetVertexAttributeDataForAttribute (MDLVertexAttributes.Normal);
 			}
 		}
 
+		/// <summary>Gets occlusion data for the mesh vertices. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.OcclusionValue" /> key.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? OcclusionValueVertexData {
 			get {
 				return GetVertexAttributeDataForAttribute (MDLVertexAttributes.OcclusionValue);
 			}
 		}
 
+		/// <summary>Gets the positions of the mesh vertices. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.Position" /> key.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? PositionVertexData {
 			get {
 				return GetVertexAttributeDataForAttribute (MDLVertexAttributes.Position);
 			}
 		}
 
+		/// <summary>Gets the U basis vectors that are used for shading. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.ShadingBasisU" /> key.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? ShadingBasisUVertexData {
 			get {
 				return GetVertexAttributeDataForAttribute (MDLVertexAttributes.ShadingBasisU);
 			}
 		}
 
+		/// <summary>Gets the V basis vectors that are used for shading. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.ShadingBasisV" /> key.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? ShadingBasisVVertexData {
 			get {
 				return GetVertexAttributeDataForAttribute (MDLVertexAttributes.ShadingBasisV);
 			}
 		}
 
+		/// <summary>Gets the data that decide which neighboring vertices are used for subdivision calculations. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.SubdivisionStencil" /> key.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? SubdivisionStencilVertexData {
 			get {
 				return GetVertexAttributeDataForAttribute (MDLVertexAttributes.SubdivisionStencil);
 			}
 		}
 
+		/// <summary>Gets the vertex tangent data. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.Tangent" /> key.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? TangentVertexData {
 			get {
 				return GetVertexAttributeDataForAttribute (MDLVertexAttributes.Tangent);
 			}
 		}
 
+		/// <summary>Gets the coordinate system for texture operations on vertices. These data are associated with the <see cref="P:ModelIO.MDLVertexAttributes.TextureCoordinate" /> key.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public MDLVertexAttributeData? TextureCoordinateVertexData {
 			get {
 				return GetVertexAttributeDataForAttribute (MDLVertexAttributes.TextureCoordinate);

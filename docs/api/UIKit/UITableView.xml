@@ -47,9 +47,143 @@
           </description><description><c>Highlighted == <see langword="false" />; Selected == <see langword="true" /></c></description></item></list><para><img href="~/UIKit/_images/UIKit.UITableView.HighlightAndSelect.png" alt="Sequence diagram showing the method calls associated with highlighting and selecting in a UITableView" /></para><para>Deselecting a <see cref="T:UIKit.UITableViewCell" /> follows a similar sequence:</para><list type="table"><listheader><term>User Action</term><description>UITableViewDelegate (UITableViewSource) Methods</description><description>UITableViewCell Properties</description></listheader><item><term>Nothing touched while some <see cref="T:UIKit.UITableViewCell" /> is highlighted.</term><description /><description><c>Highlighted == <see langword="false" />; Selected == <see langword="true" /></c></description></item><item><term>Finger taps cell (Deselect gesture)</term><description><see cref="M:UIKit.UITableViewDelegate.WillDeselectRow(UIKit.UITableView,Foundation.NSIndexPath)" /> is called. If it returns <see langword="null" />, processing stops. Otherwise, whatever <see cref="T:Foundation.NSIndexPath" /> is returned will be deselected. 
           </description><description /></item><item><term /><description><see cref="M:UIKit.UITableViewDelegate.RowDeselected(UIKit.UITableView,Foundation.NSIndexPath)" /> is called.
           </description><description><c>Highlighted == <see langword="false" />; Selected == <see langword="false" /></c></description></item></list><block subset="none" type="note"><para>UITableView caches <see cref="T:UIKit.UITableViewCell" /> objects only for visible rows, but caches the heights of rows, headers and footers for the entire table. It is possible to create custom <see cref="T:UIKit.UITableViewCell" /> objects with varying heights and custom layouts.</para><para>UITableView overrides <see cref="M:UIKit.UIView.LayoutSubviews" /> so that it calls <see cref="M:UIKit.UITableView.ReloadData" /> only when you create a new instance or when you assign a new <see cref="P:UIKit.UITableView.Source" /> (or <see cref="P:UIKit.UITableView.DataSource" />).Reloading the table view clears current state (including the current selection). However if you explicitly call <see cref="M:UIKit.UITableView.ReloadData" /> it clears this state and any subsequent direct or indirect call to <see cref="M:UIKit.UIView.LayoutSubviews" /> does not trigger a reload.</para></block></remarks>
-    
     <related type="article" href="https://docs.xamarin.com/guides/ios/user_interface/tables">Working with Tables and Cells</related>
     <related type="recipe" href="https://docs.xamarin.com/recipes/ios/content_controls/tables">Tables and UITableViewController</related>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UITableView_Class/index.html">Apple documentation for <c>UITableView</c></related>
   </Docs>
+  <Docs DocId="M:UIKit.UITableView.RegisterClassForHeaderFooterViewReuse(System.Type,Foundation.NSString)">
+        <param name="cellType">The type of a UIView to create when the specified reuseIdentifier is passed to DequeueReusableCell.</param>
+        <param name="reuseIdentifier">The reuse identifier.</param>
+        <summary>Registers a type to provide UIViews for headers or footers for a specific reuseIdentifier.</summary>
+        <remarks>
+          <para>
+              You can use this method to register the type of a class
+              that should be instantiated if the UITableView needs to
+              create a new header or footer in response to a request in
+              DequeueReusableHeaderFooterView for the specified reuseIdentifier.
+              
+            </para>
+          <para>
+              Registering types with reuse identifiers helps reduce the
+              amount of code that you have to write in your GetFooterView or GetHeaderView methods.
+              It means that your code only needs to
+              call DequeueReusableHeaderFooterView with the reuse identifier, and
+              if there is no available cell, the UITableView will
+              create an instance of the specified type and return it.
+              
+            </para>
+          <para> 
+              The type that you register must provide a constructor
+              that takes an IntPtr constructor and needs to chain to
+              the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:UIKit.UIView(IntPtr)&amp;scope=Xamarin" title="C:UIKit.UIView(IntPtr)">C:UIKit.UIView(IntPtr)</a></format>
+              constructor.
+            </para>
+        </remarks>
+      </Docs>
+  <Docs DocId="M:UIKit.UITableView.RegisterClassForCellReuse(System.Type,Foundation.NSString)">
+        <param name="cellType">The type of a UITableViewCell to create when the specified reuseIdentifier is passed to DequeueReusableCell.</param>
+        <param name="reuseIdentifier">The reuse identifier.</param>
+        <summary>Registers a type to provide UITableViewCells for a specific reuseIdentifier.</summary>
+        <remarks>
+          <para>
+              Mono can use this method to register the type of a class
+              that should be instantiated if the UITableView needs to
+              create a new cell in response to a request in
+              DequeueReusableCell for the specified reuseIdentifier.
+              
+            </para>
+          <para>
+              Registering types with cell identifiers helps reduce the
+              amount of code that you have to write in your GetCell
+              method.  It means that your GetCell method only needs to
+              call DequeueReusableCell with the reuse identifier, and
+              if there is no available cell, the UITableView will
+              create an instance of the specified type and return it.
+              
+            </para>
+          <para> 
+              The type that you register must provide a constructor
+              that takes an IntPtr constructor and needs to chain to
+              the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:UIKit.UITableViewCell(IntPtr)&amp;scope=Xamarin" title="C:UIKit.UITableViewCell(IntPtr)">C:UIKit.UITableViewCell(IntPtr)</a></format>
+              constructor.
+              
+            </para>
+        </remarks>
+      </Docs>
+  <Docs DocId="P:UIKit.UITableView.SelectionDidChangeNotification">
+        <summary>Notification constant for SelectionDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UITableView.Notifications" />.<see cref="M:UIKit.UITableView.Notifications.ObserveSelectionDidChange*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = UITableView.Notifications.ObserveSelectionDidChange ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = UITableView.Notifications.ObserveSelectionDidChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UITableView.SelectionDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification UITableView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UITableView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UITableView.SelectionDidChangeNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="M:UIKit.UITableView.DequeueReusableCell(Foundation.NSString)">
+        <param name="identifier">A string identifying the cell type being requested.</param>
+        <summary>Returns a reusable table view cell that was created with the given ReuseIdentifier.</summary>
+        <returns>A <see cref="T:UIKit.UITableViewCell" /> associated with the <paramref name="identifier" />, or <see langword="null" /> if there is no cells in the queue with that particular <paramref name="identifier" />.</returns>
+        <remarks>
+          <para>The cell reuse cache is important for efficiency and application developers should use it for dynamic tables. </para>
+          <para>Application developers targeting iOS 6 and later should use <see cref="M:UIKit.UITableView.RegisterClassForCellReuse(System.Type,System.String)" /> or <see cref="M:UIKit.UITableView.RegisterNibForCellReuse(UIKit.UINib,System.String)" />. Once a <see cref="T:UIKit.UITableViewCell" /> class is registered, calls to <see cref="M:UIKit.UITableView.DequeueReusableCell(System.String,Foundation.NSIndexPath)" /> will return a newly-instantiated object as necessary, rather than returning <see langword="null" />.</para>
+          <para>Application developers should prefer the use of <see cref="T:UIKit.UITableView.DequeueReusableCell(Foundation.NSString,Foundation.NSIndexPath)" />, which returns a <see cref="T:UIKit.UITableViewCell" /> that is properly sized for the index path.</para>
+        </remarks>
+        <altmember cref="M:UIKit.UITableView.RegisterClassForCellReuse" />
+        <altmember cref="M:UIKit.UITableView.RegisterNibForCellReuse" />
+      </Docs>
 </Documentation>

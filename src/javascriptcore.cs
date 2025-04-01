@@ -433,21 +433,45 @@ namespace JavaScriptCore {
 	[Static]
 	interface JSPropertyDescriptorKeys {
 
+		/// <summary>Represents the value associated with the constant JSPropertyDescriptorWritableKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("JSPropertyDescriptorWritableKey")]
 		NSString Writable { get; }
 
+		/// <summary>Represents the value associated with the constant JSPropertyDescriptorEnumerableKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("JSPropertyDescriptorEnumerableKey")]
 		NSString Enumerable { get; }
 
+		/// <summary>Represents the value associated with the constant JSPropertyDescriptorConfigurableKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("JSPropertyDescriptorConfigurableKey")]
 		NSString Configurable { get; }
 
+		/// <summary>Represents the value associated with the constant JSPropertyDescriptorValueKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("JSPropertyDescriptorValueKey")]
 		NSString Value { get; }
 
+		/// <summary>Represents the value associated with the constant JSPropertyDescriptorGetKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("JSPropertyDescriptorGetKey")]
 		NSString Get { get; }
 
+		/// <summary>Represents the value associated with the constant JSPropertyDescriptorSetKey</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Field ("JSPropertyDescriptorSetKey")]
 		NSString Set { get; }
 	}

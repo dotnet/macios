@@ -116,9 +116,15 @@ namespace ReplayKit {
 		[NullAllowed]
 		IRPScreenRecorderDelegate Delegate { get; set; }
 
+		/// <summary>Gets a Boolean that tells whether the screen is being recording.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("recording", ArgumentSemantic.Assign)]
 		bool Recording { [Bind ("isRecording")] get; }
 
+		/// <summary>Gets or sets a Boolean value that enables or disables the microphone.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("microphoneEnabled", ArgumentSemantic.Assign)]
@@ -129,9 +135,15 @@ namespace ReplayKit {
 			set;
 		}
 
+		/// <summary>Gets a Boolean value that tells whether the screen recorder is available.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("available", ArgumentSemantic.Assign)]
 		bool Available { [Bind ("isAvailable")] get; }
 
+		/// <summary>Gets or sest a Boolean value that controls whether the camera enabled.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("cameraEnabled")]
@@ -164,17 +176,17 @@ namespace ReplayKit {
 		void StopRecording (NSUrl url, [NullAllowed] Action<NSError> completionHandler);
 
 		[Async]
-		[TV (15, 4), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 4), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("exportClipToURL:duration:completionHandler:")]
 		void ExportClip (NSUrl url, double duration, [NullAllowed] Action<NSError> completionHandler);
 
 		[Async]
-		[TV (15, 4), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 4), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("startClipBufferingWithCompletionHandler:")]
 		void StartClipBuffering ([NullAllowed] Action<NSError> completionHandler);
 
 		[Async]
-		[TV (15, 4), NoWatch, iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 4), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("stopClipBufferingWithCompletionHandler:")]
 		void StopClipBuffering ([NullAllowed] Action<NSError> completionHandler);
 	}
@@ -261,9 +273,15 @@ namespace ReplayKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface RPBroadcastController {
+		/// <summary>Gets a boolean value that tells whether the extension is currently broadcasting.</summary>
+		///         <value>A boolean value that tells whether the extension is currently broadcasting.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("broadcasting")]
 		bool Broadcasting { [Bind ("isBroadcasting")] get; }
 
+		/// <summary>Gets a value that tells whether the broadcast is paused.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("paused")]
 		bool Paused { [Bind ("isPaused")] get; }
 
@@ -376,11 +394,8 @@ namespace ReplayKit {
 		[Export ("updateServiceInfo:")]
 		void UpdateServiceInfo (NSDictionary<NSString, INSCoding> serviceInfo);
 
-		// NSInvalidArgumentException -[RPBroadcastHandler updateBroadcastURL:]: unrecognized selector sent to instance 0x608001a4b160
-		//	https://trello.com/c/eA440suj/91-33875315-rpbroadcasthandler-updatebroadcasturl-unrecognized-selector
-		//
-		//[Export ("updateBroadcastURL:")]
-		//void UpdateBroadcastUrl (NSUrl broadcastUrl);
+		[Export ("updateBroadcastURL:")]
+		void UpdateBroadcastUrl (NSUrl broadcastUrl);
 	}
 
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/ReplayKit/RPBroadcastMP4ClipHandler">Apple documentation for <c>RPBroadcastMP4ClipHandler</c></related>
@@ -405,10 +420,16 @@ namespace ReplayKit {
 	[BaseType (typeof (RPBroadcastHandler))]
 	interface RPBroadcastSampleHandler {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("RPVideoSampleOrientationKey")]
 		NSString VideoSampleOrientationKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("RPApplicationInfoBundleIdentifierKey")]

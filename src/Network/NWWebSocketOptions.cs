@@ -33,7 +33,6 @@ namespace Network {
 #else
 	[TV (13, 0)]
 	[iOS (13, 0)]
-	[Watch (6, 0)]
 #endif
 	public class NWWebSocketOptions : NWProtocolOptions {
 		bool autoReplyPing = false;
@@ -141,6 +140,7 @@ namespace Network {
 				block.SetupBlockUnsafe (static_ClientRequestHandler, handler);
 #endif
 				nw_ws_options_set_client_request_handler (GetCheckedHandle (), queue.Handle, &block);
+				GC.KeepAlive (queue);
 			}
 		}
 	}

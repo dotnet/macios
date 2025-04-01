@@ -145,7 +145,6 @@ namespace MonoTouchFixtures.CoreText {
 			Assert.AreEqual (1, provider.Count, "#Count");
 		}
 
-#if !__WATCHOS__
 		[Test]
 		public void GetTypographicBoundsForAdaptiveImageProvider ()
 		{
@@ -157,7 +156,6 @@ namespace MonoTouchFixtures.CoreText {
 			Assert.AreEqual (new CGRect (0, -3.90625, 13, 16.40625), bounds, "Bounds");
 			Assert.AreEqual (0, provider.Count, "#Count");
 		}
-#endif // !__WATCHOS__
 
 		class AdaptiveImageProvider : NSObject, ICTAdaptiveImageProviding {
 			public int Count;

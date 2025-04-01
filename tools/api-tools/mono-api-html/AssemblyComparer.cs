@@ -50,6 +50,14 @@ namespace Mono.ApiTools {
 			comparer = new NamespaceComparer (state);
 		}
 
+		public override string GroupName {
+			get { return "assemblies"; }
+		}
+
+		public override string ElementName {
+			get { return "assembly"; }
+		}
+
 		public string SourceAssembly { get; private set; }
 		public string TargetAssembly { get; private set; }
 

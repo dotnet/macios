@@ -37,26 +37,30 @@ using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
 
-using OSStatus = System.Int32;
 using AudioFileID = System.IntPtr;
 
 namespace AudioToolbox {
 
 	// AudioFormatListItem
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#else
-	[Watch (6, 0)]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioFormat {
+		/// <summary>The AudioStreamBasicDescription.</summary>
+		///         <remarks>
+		///         </remarks>
 		public AudioStreamBasicDescription AudioStreamBasicDescription;
+		/// <summary>The AudioChannelLayoutTag</summary>
+		///         <remarks>
+		///         </remarks>
 		public AudioChannelLayoutTag AudioChannelLayoutTag;
 
-#if !WATCH
+		/// <param name="formatList">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe static AudioFormat? GetFirstPlayableFormat (AudioFormat [] formatList)
 		{
 			if (formatList is null)
@@ -73,54 +77,63 @@ namespace AudioToolbox {
 				return formatList [index];
 			}
 		}
-#endif
 
+		/// <summary>Returns a human-readable reprensetation of the tuple.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return AudioChannelLayoutTag + ":" + AudioStreamBasicDescription.ToString ();
 		}
 	}
 
-#if !WATCH
-
 	public enum AudioFormatError : int // Implictly cast to OSType
 	{
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Unspecified = 0x77686174,   // 'what'
+		/// <summary>To be added.</summary>
 		UnsupportedProperty = 0x70726f70,   // 'prop'
+		/// <summary>To be added.</summary>
 		BadPropertySize = 0x2173697a,   // '!siz'
+		/// <summary>To be added.</summary>
 		BadSpecifierSize = 0x21737063,  // '!spc'
+		/// <summary>To be added.</summary>
 		UnsupportedDataFormat = 0x666d743f, // 'fmt?'
-		UnknownFormat = 0x21666d74  // '!fmt'
+		/// <summary>To be added.</summary>
+		UnknownFormat = 0x21666d74, // '!fmt'
 
 		// TODO: Not documented
 		// '!dat'
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioValueRange {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public double Minimum;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public double Maximum;
 	}
 
 	public enum AudioBalanceFadeType : uint // UInt32 in AudioBalanceFades
 	{
+		/// <summary>Overall gain is not allowed to exceed 1.0.</summary>
 		MaxUnityGain = 0,
-		EqualPower = 1
+		/// <summary>Overall loudness remains constant, but gain may be as high as 1.414 (+3dB).</summary>
+		EqualPower = 1,
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AudioBalanceFade {
 #if !COREBUILD
 		[StructLayout (LayoutKind.Sequential)]
@@ -131,6 +144,9 @@ namespace AudioToolbox {
 			public IntPtr ChannelLayoutWeak;
 		}
 
+		/// <param name="channelLayout">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioBalanceFade (AudioChannelLayout channelLayout)
 		{
 			if (channelLayout is null)
@@ -139,11 +155,26 @@ namespace AudioToolbox {
 			this.ChannelLayout = channelLayout;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float LeftRightBalance { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float BackFrontFade { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioBalanceFadeType Type { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioChannelLayout ChannelLayout { get; private set; }
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe float []? GetBalanceFade ()
 		{
 			var type_size = sizeof (Layout);
@@ -188,16 +219,16 @@ namespace AudioToolbox {
 
 	public enum PanningMode : uint // UInt32 in AudioPanningInfo
 	{
+		/// <summary>To be added.</summary>
 		SoundField = 3,
-		VectorBasedPanning = 4
+		/// <summary>To be added.</summary>
+		VectorBasedPanning = 4,
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class AudioPanningInfo {
 #if !COREBUILD
 		[StructLayout (LayoutKind.Sequential)]
@@ -211,6 +242,9 @@ namespace AudioToolbox {
 			public IntPtr OutputChannelMapWeak;
 		}
 
+		/// <param name="outputChannelMap">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioPanningInfo (AudioChannelLayout outputChannelMap)
 		{
 			if (outputChannelMap is null)
@@ -219,10 +253,25 @@ namespace AudioToolbox {
 			this.OutputChannelMap = outputChannelMap;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public PanningMode PanningMode { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioChannelFlags CoordinateFlags { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float [] Coordinates { get; private set; } = Array.Empty<float> ();
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public float GainScale { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioChannelLayout OutputChannelMap { get; private set; }
 
 		public unsafe float []? GetPanningMatrix ()
@@ -257,7 +306,7 @@ namespace AudioToolbox {
 				Coord0 = Coordinates [0],
 				Coord1 = Coordinates [1],
 				Coord2 = Coordinates [2],
-				GainScale = GainScale
+				GainScale = GainScale,
 			};
 
 			if (OutputChannelMap is not null) {
@@ -270,12 +319,10 @@ namespace AudioToolbox {
 #endif // !COREBUILD
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	static partial class AudioFormatPropertyNative {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		public unsafe extern static AudioFormatError AudioFormatGetPropertyInfo (AudioFormatProperty propertyID, int inSpecifierSize, AudioFormatType* inSpecifier,
@@ -408,18 +455,13 @@ namespace AudioToolbox {
 		ID3TagToDictionary = 0x69643364,    // 'id3d' // TODO:
 
 #if !MONOMAC
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("ios8.0")]
 		[ObsoletedOSPlatform ("maccatalyst13.1")]
 		[ObsoletedOSPlatform ("tvos9.0")]
-#else
-		[Deprecated (PlatformName.iOS, 8, 0)]
-#endif
 		HardwareCodecCapabilities = 0x68776363, // 'hwcc'
 #endif
 	}
-#endif // !WATCH
 }

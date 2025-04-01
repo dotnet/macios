@@ -9,7 +9,6 @@
 
 #nullable enable
 
-#if !__WATCHOS__
 using System;
 using System.Linq;
 
@@ -80,5 +79,3 @@ namespace MonoTouchFixtures.AudioToolbox {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

@@ -21,36 +21,56 @@ namespace ClassKit {
 
 	/// <summary>Enumerates activity outcome types.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[NoWatch, NoTV]
+	[NoTV]
 	[Native]
 	enum CLSBinaryValueType : long {
+		/// <summary>Indicates an activity that results in a true or false value</summary>
 		TrueFalse = 0,
+		/// <summary>Indicates an activity that results in a pass or fail value.</summary>
 		PassFail,
+		/// <summary>Indicates an activity that results in a yes or no value</summary>
 		YesNo,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		CorrectIncorrect,
 	}
 
 	/// <summary>Enumerates curriculum units.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[NoWatch, NoTV]
+	[NoTV]
 	[Native]
 	enum CLSContextType : long {
+		/// <summary>Indicates no context type.</summary>
 		None = 0,
+		/// <summary>Indicates an app context.</summary>
 		App,
+		/// <summary>Indicates a context for chapter.</summary>
 		Chapter,
+		/// <summary>Indicates a context for a section.</summary>
 		Section,
+		/// <summary>Indicates a context for level.</summary>
 		Level,
+		/// <summary>Indicates a context for a page.</summary>
 		Page,
+		/// <summary>Indicates a context for a task.</summary>
 		Task,
+		/// <summary>Indicates a context for a challenge.</summary>
 		Challenge,
+		/// <summary>Indicates a context for a quiz.</summary>
 		Quiz,
+		/// <summary>Indicates a context for an exercise</summary>
 		Exercise,
+		/// <summary>Indicates a context for a lesson.</summary>
 		Lesson,
+		/// <summary>Indicates a context for a book.</summary>
 		Book,
+		/// <summary>Indicates a context for a game.</summary>
 		Game,
+		/// <summary>Indicates a context for a document.</summary>
 		Document,
+		/// <summary>Indicates a context for audio material.</summary>
 		Audio,
+		/// <summary>Indicates a context for a video.</summary>
 		Video,
 		[iOS (13, 4)]
 		[MacCatalyst (14, 0)]
@@ -62,19 +82,29 @@ namespace ClassKit {
 
 	/// <summary>Enumerates ClassKit error codes.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[NoWatch, NoTV]
+	[NoTV]
 	[Native]
 	[ErrorDomain ("CLSErrorCodeDomain")]
 	public enum CLSErrorCode : long {
+		/// <summary>No error occurred.</summary>
 		None = 0,
+		/// <summary>ClassKit was not available</summary>
 		ClassKitUnavailable,
+		/// <summary>An argument was invalid.</summary>
 		InvalidArgument,
+		/// <summary>An attempt was made to modify a read-only value.</summary>
 		InvalidModification,
+		/// <summary>Authorization for the operation was denied.</summary>
 		AuthorizationDenied,
+		/// <summary>A database could not be accessed.</summary>
 		DatabaseInaccessible,
+		/// <summary>An unspecified limit was exceeded.</summary>
 		Limits,
+		/// <summary>An attempt was made to save a created object that is identical to an existing one.</summary>
 		InvalidCreate,
+		/// <summary>An update failed.</summary>
 		InvalidUpdate,
+		/// <summary>More than one error occurred, so the topmost error has an underlying error or errors.</summary>
 		PartialFailure,
 		InvalidAccountCredentials,
 	}
@@ -82,22 +112,30 @@ namespace ClassKit {
 
 	/// <summary>Enumerates topics for contexts.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[NoWatch, NoTV]
+	[NoTV]
 	enum CLSContextTopic {
+		/// <summary>Indicates mathematics.</summary>
 		[Field ("CLSContextTopicMath")]
 		Math,
+		/// <summary>Indicates science.</summary>
 		[Field ("CLSContextTopicScience")]
 		Science,
+		/// <summary>Indicates literacy and/or writing.</summary>
 		[Field ("CLSContextTopicLiteracyAndWriting")]
 		LiteracyAndWriting,
+		/// <summary>Indicates world languages.</summary>
 		[Field ("CLSContextTopicWorldLanguage")]
 		WorldLanguage,
+		/// <summary>Indicates social sciences.</summary>
 		[Field ("CLSContextTopicSocialScience")]
 		SocialScience,
+		/// <summary>Indicates computer science and/or engineering.</summary>
 		[Field ("CLSContextTopicComputerScienceAndEngineering")]
 		ComputerScienceAndEngineering,
+		/// <summary>Indicates arts and/or music.</summary>
 		[Field ("CLSContextTopicArtsAndMusic")]
 		ArtsAndMusic,
+		/// <summary>Indicates health and fitness.</summary>
 		[Field ("CLSContextTopicHealthAndFitness")]
 		HealthAndFitness,
 		// CLSContext.Topic should be nullable, thus we should add a null option
@@ -107,7 +145,7 @@ namespace ClassKit {
 
 
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[NoWatch, NoTV, iOS (14, 0)]
+	[NoTV, iOS (14, 0)]
 	[Native]
 	public enum CLSProgressReportingCapabilityKind : long {
 		Duration = 0,
@@ -119,13 +157,19 @@ namespace ClassKit {
 
 	/// <summary>Contains keys for accessing error data.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[NoWatch, NoTV]
+	[NoTV]
 	[Static]
 	interface CLSErrorUserInfoKeys {
 
+		/// <summary>Gets a key that can be used for finding the object that caused the error.</summary>
+		///         <value>The key that can be used for finding the object that caused the error.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CLSErrorObjectKey")]
 		NSString ObjectKey { get; }
 
+		/// <summary>Gets a key that can be used for finding the underlying error that caused the current error.</summary>
+		///         <value>The key that can be used for finding the underlying error that caused the current error.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CLSErrorUnderlyingErrorsKey")]
 		NSString UnderlyingErrorsKey { get; }
 
@@ -136,31 +180,49 @@ namespace ClassKit {
 
 	/// <summary>Enumerates key paths for retrieving ClassKit contexts.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[NoWatch, NoTV]
+	[NoTV]
 	[Static]
 	interface CLSPredicateKeyPath {
+		/// <summary>Gets the key path for retrieving contexts by their creation date.</summary>
+		///         <value>The key path for retrieving contexts by their creation date.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CLSPredicateKeyPathDateCreated")]
 		NSString DateCreated { get; }
 
+		/// <summary>Gets the key path for retrieving contexts by their identifier.</summary>
+		///         <value>The key path for retrieving contexts by their identifier.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CLSPredicateKeyPathIdentifier")]
 		NSString Identifier { get; }
 
+		/// <summary>Gets the key path for retrieving contexts by their title.</summary>
+		///         <value>The key path for retrieving contexts by their title.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CLSPredicateKeyPathTitle")]
 		NSString Title { get; }
 
+		/// <summary>Gets the key path for retrieving contexts by universal link URL.</summary>
+		///         <value>The key path for retrieving contexts by universal link URL.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CLSPredicateKeyPathUniversalLinkURL")]
 		NSString UniversalLinkUrl { get; }
 
+		/// <summary>Gets the key path for retrieving contexts by topic.</summary>
+		///         <value>The key path for retrieving contexts by topic.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CLSPredicateKeyPathTopic")]
 		NSString Topic { get; }
 
+		/// <summary>Gets the key path for retrieving contexts by their parent.</summary>
+		///         <value>The key path for retrieving contexts by their parent.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("CLSPredicateKeyPathParent")]
 		NSString Parent { get; }
 	}
 
 	/// <summary>Base class for ClassKit objects.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[NoWatch, NoTV]
+	[NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CLSObject : NSSecureCoding {
@@ -174,7 +236,7 @@ namespace ClassKit {
 
 	/// <summary>Encapsulates and interaction between the student and a task for a context.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[NoWatch, NoTV]
+	[NoTV]
 	[BaseType (typeof (CLSObject))]
 	[DisableDefaultCtor]
 	interface CLSActivity {
@@ -200,6 +262,9 @@ namespace ClassKit {
 
 		// From CLSActivity (Activation) Category
 
+		/// <summary>Gets a Boolean value that tells whether the activity is active.</summary>
+		///         <value>A Boolean value that tells whether the activity is active.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("started")]
 		bool Started { [Bind ("isStarted")] get; }
 
@@ -217,7 +282,7 @@ namespace ClassKit {
 
 	/// <summary>Base class for activity items.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[NoWatch, NoTV]
+	[NoTV]
 	[BaseType (typeof (CLSObject))]
 	[DisableDefaultCtor]
 	interface CLSActivityItem {
@@ -230,7 +295,7 @@ namespace ClassKit {
 	}
 
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[NoWatch, NoTV]
+	[NoTV]
 	[BaseType (typeof (CLSActivityItem))]
 	[DisableDefaultCtor]
 	interface CLSBinaryItem {
@@ -248,7 +313,7 @@ namespace ClassKit {
 
 	/// <summary>A node in a ClassKit context hierarchy.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[NoWatch, NoTV]
+	[NoTV]
 	[BaseType (typeof (CLSObject))]
 	[DisableDefaultCtor]
 	interface CLSContext {
@@ -296,6 +361,10 @@ namespace ClassKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (CLSContextType type, string identifier, string title);
 
+		/// <summary>Gets a Boolean value that tells whether the context is currently active.</summary>
+		///         <value>
+		///           <see langword="true" /> if the context is active. Otherwise, <see langword="false" />.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("active")]
 		bool Active { [Bind ("isActive")] get; }
 
@@ -386,7 +455,7 @@ namespace ClassKit {
 	///       <para>ClassKit contexts are used to arrange nested content, such as chapters and sections of a lesson plan, in order to organize and track student progress and tests. ClassKit supports a maximum of 8 layers of content nesting.</para>
 	///     </remarks>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[NoWatch, NoTV]
+	[NoTV]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface CLSDataStoreDelegate {
@@ -399,7 +468,7 @@ namespace ClassKit {
 
 	/// <summary>Manages ClassKit data by operating on hierarchical contexts, such as acts, chapters, sections, and so on.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[NoWatch, NoTV]
+	[NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CLSDataStore {
@@ -417,6 +486,13 @@ namespace ClassKit {
 		[NullAllowed, Export ("runningActivity", ArgumentSemantic.Strong)]
 		CLSActivity RunningActivity { get; }
 
+		/// <summary>An instance of the ClassKit.ICLSDataStoreDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the ClassKit.ICLSDataStoreDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		ICLSDataStoreDelegate Delegate { get; set; }
@@ -454,7 +530,7 @@ namespace ClassKit {
 
 	/// <summary>Represents a quantitative data item.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[NoWatch, NoTV]
+	[NoTV]
 	[BaseType (typeof (CLSActivityItem))]
 	[DisableDefaultCtor]
 	interface CLSQuantityItem {
@@ -469,7 +545,7 @@ namespace ClassKit {
 
 	/// <summary>Represents a score for a test or quiz.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[NoWatch, NoTV]
+	[NoTV]
 	[BaseType (typeof (CLSActivityItem))]
 	[DisableDefaultCtor]
 	interface CLSScoreItem {
@@ -486,7 +562,7 @@ namespace ClassKit {
 	}
 
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[NoWatch, NoTV]
+	[NoTV]
 	[Protocol]
 	interface CLSContextProvider {
 		[Abstract]
@@ -495,7 +571,7 @@ namespace ClassKit {
 	}
 
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[NoWatch, NoTV, iOS (14, 0)]
+	[NoTV, iOS (14, 0)]
 	[BaseType (typeof (CLSObject))]
 	[DisableDefaultCtor]
 	interface CLSProgressReportingCapability {

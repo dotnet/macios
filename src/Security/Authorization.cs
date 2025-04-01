@@ -48,21 +48,36 @@ namespace Security {
 #endif
 	// Untyped enum in ObjC
 	public enum AuthorizationStatus {
-		Success                 = 0,
-		InvalidSet              = -60001,
-		InvalidRef              = -60002,
-		InvalidTag              = -60003,
-		InvalidPointer          = -60004,
-		Denied                  = -60005,
-		Canceled                = -60006,
-		InteractionNotAllowed   = -60007,
-		Internal                = -60008,
-		ExternalizeNotAllowed   = -60009,
-		InternalizeNotAllowed   = -60010,
-		InvalidFlags            = -60011,
-		ToolExecuteFailure      = -60031,
-		ToolEnvironmentError    = -60032,
-		BadAddress              = -60033,
+		/// <summary>To be added.</summary>
+		Success = 0,
+		/// <summary>To be added.</summary>
+		InvalidSet = -60001,
+		/// <summary>To be added.</summary>
+		InvalidRef = -60002,
+		/// <summary>To be added.</summary>
+		InvalidTag = -60003,
+		/// <summary>To be added.</summary>
+		InvalidPointer = -60004,
+		/// <summary>To be added.</summary>
+		Denied = -60005,
+		/// <summary>To be added.</summary>
+		Canceled = -60006,
+		/// <summary>To be added.</summary>
+		InteractionNotAllowed = -60007,
+		/// <summary>To be added.</summary>
+		Internal = -60008,
+		/// <summary>To be added.</summary>
+		ExternalizeNotAllowed = -60009,
+		/// <summary>To be added.</summary>
+		InternalizeNotAllowed = -60010,
+		/// <summary>To be added.</summary>
+		InvalidFlags = -60011,
+		/// <summary>To be added.</summary>
+		ToolExecuteFailure = -60031,
+		/// <summary>To be added.</summary>
+		ToolEnvironmentError = -60032,
+		/// <summary>To be added.</summary>
+		BadAddress = -60033,
 	}
 
 #if NET
@@ -74,11 +89,17 @@ namespace Security {
 	// typedef UInt32 AuthorizationFlags;
 	[Flags]
 	public enum AuthorizationFlags : int {
+		/// <summary>To be added.</summary>
 		Defaults,
+		/// <summary>To be added.</summary>
 		InteractionAllowed = 1 << 0,
+		/// <summary>To be added.</summary>
 		ExtendRights = 1 << 1,
+		/// <summary>To be added.</summary>
 		PartialRights = 1 << 2,
+		/// <summary>To be added.</summary>
 		DestroyRights = 1 << 3,
+		/// <summary>To be added.</summary>
 		PreAuthorize = 1 << 4,
 #if NET
 		[SupportedOSPlatform ("maccatalyst17.0")]
@@ -101,8 +122,14 @@ namespace Security {
 	[MacCatalyst (15,0)]
 #endif
 	public class AuthorizationParameters {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public string? PathToSystemPrivilegeTool;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public string? Prompt;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public string? IconPath;
 	}
 
@@ -113,9 +140,15 @@ namespace Security {
 	[MacCatalyst (15,0)]
 #endif
 	public class AuthorizationEnvironment {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public string? Username;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public string? Password;
-		public bool   AddToSharedCredentialPool;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
+		public bool AddToSharedCredentialPool;
 	}
 
 #if NET
@@ -140,7 +173,7 @@ namespace Security {
 #endif
 	unsafe struct AuthorizationItemSet {
 		public int /* UInt32 */ count;
-		public AuthorizationItem * /* AuthorizationItem* */ ptrToAuthorization;
+		public AuthorizationItem* /* AuthorizationItem* */ ptrToAuthorization;
 	}
 
 #if NET
@@ -151,7 +184,7 @@ namespace Security {
 #endif
 	public unsafe class Authorization : DisposableObject {
 		[DllImport (Constants.SecurityLibrary)]
-		unsafe extern static int /* OSStatus = int */ AuthorizationCreate (AuthorizationItemSet *rights, AuthorizationItemSet *environment, AuthorizationFlags flags, IntPtr* auth);
+		unsafe extern static int /* OSStatus = int */ AuthorizationCreate (AuthorizationItemSet* rights, AuthorizationItemSet* environment, AuthorizationFlags flags, IntPtr* auth);
 
 #if NET
 		[SupportedOSPlatform ("maccatalyst")]
@@ -170,7 +203,7 @@ namespace Security {
 
 		[DllImport (Constants.SecurityLibrary)]
 		extern static int /* OSStatus = int */ AuthorizationFree (IntPtr handle, AuthorizationFlags flags);
-		
+
 		[Preserve (Conditional = true)]
 		internal Authorization (NativeHandle handle, bool owns)
 			: base (handle, owns)
@@ -186,7 +219,7 @@ namespace Security {
 #endif
 		public int ExecuteWithPrivileges (string pathToTool, AuthorizationFlags flags, string []? args)
 		{
-			string?[]? arguments = args!;
+			string? []? arguments = args!;
 
 			if (arguments is not null) {
 				// The arguments array must be null-terminated, so make sure that's the case
@@ -213,19 +246,19 @@ namespace Security {
 		{
 			Dispose (0, disposing);
 		}
-		
+
 		public virtual void Dispose (AuthorizationFlags flags, bool disposing)
 		{
 			if (Handle != IntPtr.Zero && Owns)
 				AuthorizationFree (Handle, flags);
 			base.Dispose (disposing);
 		}
-		
+
 		public static Authorization? Create (AuthorizationFlags flags)
 		{
 			return Create (null, null, flags);
 		}
-		
+
 		static void EncodeString (ref AuthorizationItem item, string key, string? value)
 		{
 			item.name = Marshal.StringToHGlobalAuto (key);
@@ -234,32 +267,32 @@ namespace Security {
 				item.valueLen = value.Length;
 			}
 		}
-		
+
 		public static Authorization? Create (AuthorizationParameters? parameters, AuthorizationEnvironment? environment, AuthorizationFlags flags)
 		{
 			AuthorizationItemSet pars = new AuthorizationItemSet ();
-			AuthorizationItemSet *ppars = null;
-			AuthorizationItem *pitems = null;
+			AuthorizationItemSet* ppars = null;
+			AuthorizationItem* pitems = null;
 			AuthorizationItemSet env = new AuthorizationItemSet ();
-			AuthorizationItemSet *penv = null;
-			AuthorizationItem *eitems = null;
+			AuthorizationItemSet* penv = null;
+			AuthorizationItem* eitems = null;
 			int code;
 			IntPtr auth;
 
 			try {
 				unsafe {
-					if (parameters is not null){
+					if (parameters is not null) {
 						ppars = &pars;
-						pars.ptrToAuthorization = (AuthorizationItem *) Marshal.AllocHGlobal (sizeof (AuthorizationItem) * 2);
+						pars.ptrToAuthorization = (AuthorizationItem*) Marshal.AllocHGlobal (sizeof (AuthorizationItem) * 2);
 						if (parameters.PathToSystemPrivilegeTool is not null)
 							EncodeString (ref pars.ptrToAuthorization [pars.count++], "system.privilege.admin", parameters.PathToSystemPrivilegeTool);
 						if (parameters.IconPath is not null)
 							EncodeString (ref pars.ptrToAuthorization [pars.count++], "icon", parameters.IconPath);
 					}
-					if (environment is not null || (parameters is not null && parameters.Prompt is not null)){
+					if (environment is not null || (parameters is not null && parameters.Prompt is not null)) {
 						penv = &env;
-						env.ptrToAuthorization = (AuthorizationItem *) Marshal.AllocHGlobal (sizeof (AuthorizationItem) * 4);
-						if (environment is not null){
+						env.ptrToAuthorization = (AuthorizationItem*) Marshal.AllocHGlobal (sizeof (AuthorizationItem) * 4);
+						if (environment is not null) {
 							if (environment.Username is not null)
 								EncodeString (ref env.ptrToAuthorization [env.count++], "username", environment.Username);
 							if (environment.Password is not null)
@@ -267,7 +300,7 @@ namespace Security {
 							if (environment.AddToSharedCredentialPool)
 								EncodeString (ref env.ptrToAuthorization [env.count++], "shared", null);
 						}
-						if (parameters is not null){
+						if (parameters is not null) {
 							if (parameters.Prompt is not null)
 								EncodeString (ref env.ptrToAuthorization [env.count++], "prompt", parameters.Prompt);
 						}
@@ -278,20 +311,20 @@ namespace Security {
 					return new Authorization (auth, true);
 				}
 			} finally {
-				if (ppars is not null){
-					for (int i = 0; i < pars.count; i++){
+				if (ppars is not null) {
+					for (int i = 0; i < pars.count; i++) {
 						Marshal.FreeHGlobal (pars.ptrToAuthorization [i].name);
 						Marshal.FreeHGlobal (pars.ptrToAuthorization [i].value);
 					}
-					Marshal.FreeHGlobal ((IntPtr)pars.ptrToAuthorization);
+					Marshal.FreeHGlobal ((IntPtr) pars.ptrToAuthorization);
 				}
-				if (penv is not null){
-					for (int i = 0; i < env.count; i++){
+				if (penv is not null) {
+					for (int i = 0; i < env.count; i++) {
 						Marshal.FreeHGlobal (env.ptrToAuthorization [i].name);
 						if (env.ptrToAuthorization [i].value != IntPtr.Zero)
 							Marshal.FreeHGlobal (env.ptrToAuthorization [i].value);
 					}
-					Marshal.FreeHGlobal ((IntPtr)env.ptrToAuthorization);
+					Marshal.FreeHGlobal ((IntPtr) env.ptrToAuthorization);
 				}
 			}
 		}

@@ -21,6 +21,8 @@ namespace CoreGraphics {
 		nfloat width;
 		nfloat height;
 
+		/// <summary>Represents an empty size.</summary>
+		///         <remarks>To be added.</remarks>
 		public static readonly CGSize Empty;
 
 #if !COREBUILD
@@ -82,16 +84,25 @@ namespace CoreGraphics {
 			return size1 - size2;
 		}
 
+		/// <summary>The Width component of the CGSize.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat Width {
 			get { return width; }
 			set { width = value; }
 		}
 
+		/// <summary>The height component of the CGSize.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nfloat Height {
 			get { return height; }
 			set { height = value; }
 		}
 
+		/// <summary>Returns true if the size is empty</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsEmpty {
 			get { return width == 0.0 && height == 0.0; }
 		}
@@ -130,7 +141,9 @@ namespace CoreGraphics {
 			}
 			unsafe {
 				size = default;
-				return NativeDrawingMethods.CGSizeMakeWithDictionaryRepresentation (dictionaryRepresentation.Handle, (CGSize*) Unsafe.AsPointer<CGSize> (ref size)) != 0;
+				bool result = NativeDrawingMethods.CGSizeMakeWithDictionaryRepresentation (dictionaryRepresentation.Handle, (CGSize*) Unsafe.AsPointer<CGSize> (ref size)) != 0;
+				GC.KeepAlive (dictionaryRepresentation);
+				return result;
 			}
 		}
 
@@ -158,14 +171,7 @@ namespace CoreGraphics {
 
 		public override int GetHashCode ()
 		{
-#if NET
 			return HashCode.Combine (width, height);
-#else
-			var hash = 23;
-			hash = hash * 31 + width.GetHashCode ();
-			hash = hash * 31 + height.GetHashCode ();
-			return hash;
-#endif
 		}
 
 #if !COREBUILD
@@ -187,17 +193,9 @@ namespace CoreGraphics {
 
 		public override string? ToString ()
 		{
-#if NET
 			return CFString.FromHandle (NSStringFromCGSize (this));
-#else
-			return String.Format ("{{Width={0}, Height={1}}}",
-				width.ToString (CultureInfo.CurrentCulture),
-				height.ToString (CultureInfo.CurrentCulture)
-			);
-#endif
 		}
 
-#if NET
 #if MONOMAC
 		// <quote>When building for 64 bit systems, or building 32 bit like 64 bit, NSSize is typedef’d to CGSize.</quote>
 		// https://developer.apple.com/documentation/foundation/nssize?language=objc
@@ -207,7 +205,6 @@ namespace CoreGraphics {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* NSString* */ IntPtr NSStringFromCGSize (CGSize size);
 #endif // MONOMAC
-#endif // !NET
 #endif // !COREBUILD
 	}
 }

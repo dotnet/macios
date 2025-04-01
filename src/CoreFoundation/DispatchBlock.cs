@@ -16,19 +16,13 @@ using System.Threading;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreFoundation {
 #if !COREBUILD
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public sealed class DispatchBlock : NativeObject {
 		[Preserve (Conditional = true)]
 		internal DispatchBlock (NativeHandle handle, bool owns)
@@ -36,21 +30,43 @@ namespace CoreFoundation {
 		{
 		}
 
+		/// <param name="action">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public DispatchBlock (Action action, DispatchBlockFlags flags = DispatchBlockFlags.None)
 			: base (create (action, flags), true)
 		{
 		}
 
+		/// <param name="action">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <param name="qosClass">To be added.</param>
+		///         <param name="relative_priority">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public DispatchBlock (Action action, DispatchBlockFlags flags, DispatchQualityOfService qosClass, int relative_priority)
 			: base (create (flags, qosClass, relative_priority, action), true)
 		{
 		}
 
+		/// <param name="dispatchBlock">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <param name="qosClass">To be added.</param>
+		///         <param name="relative_priority">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public DispatchBlock (DispatchBlock dispatchBlock, DispatchBlockFlags flags, DispatchQualityOfService qosClass, int relative_priority)
-			: base (dispatch_block_create_with_qos_class ((nuint) (ulong) flags, qosClass, relative_priority, Runtime.ThrowOnNull (dispatchBlock, nameof (dispatchBlock)).GetCheckedHandle ()), true)
+			: base (dispatch_block_create_with_qos_class ((nuint) (ulong) flags, qosClass, relative_priority, dispatchBlock.GetNonNullHandle (nameof (dispatchBlock))), true)
 		{
+			GC.KeepAlive (dispatchBlock);
 		}
 
+		/// <param name="action">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static DispatchBlock Create (Action action, DispatchBlockFlags flags = DispatchBlockFlags.None)
 		{
 			if (action is null)
@@ -58,6 +74,13 @@ namespace CoreFoundation {
 			return new DispatchBlock (action, flags);
 		}
 
+		/// <param name="action">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <param name="qosClass">To be added.</param>
+		///         <param name="relative_priority">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static DispatchBlock Create (Action action, DispatchBlockFlags flags, DispatchQualityOfService qosClass, int relative_priority)
 		{
 			if (action is null)
@@ -65,6 +88,13 @@ namespace CoreFoundation {
 			return new DispatchBlock (action, flags, qosClass, relative_priority);
 		}
 
+		/// <param name="block">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <param name="qosClass">To be added.</param>
+		///         <param name="relative_priority">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static DispatchBlock Create (DispatchBlock block, DispatchBlockFlags flags, DispatchQualityOfService qosClass, int relative_priority)
 		{
 			if (block is null)
@@ -72,16 +102,26 @@ namespace CoreFoundation {
 			return block.Create (flags, qosClass, relative_priority);
 		}
 
+		/// <param name="flags">To be added.</param>
+		///         <param name="qosClass">To be added.</param>
+		///         <param name="relative_priority">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public DispatchBlock Create (DispatchBlockFlags flags, DispatchQualityOfService qosClass, int relative_priority)
 		{
 			return new DispatchBlock (dispatch_block_create_with_qos_class ((nuint) (ulong) flags, qosClass, relative_priority, GetCheckedHandle ()), true);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal override void Retain ()
 		{
 			Handle = BlockLiteral._Block_copy (GetCheckedHandle ());
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal override void Release ()
 		{
 			BlockLiteral._Block_release (GetCheckedHandle ());
@@ -148,6 +188,8 @@ namespace CoreFoundation {
 			if (notification is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (notification));
 			dispatch_block_notify (GetCheckedHandle (), queue.GetCheckedHandle (), notification.GetCheckedHandle ());
+			GC.KeepAlive (queue);
+			GC.KeepAlive (notification);
 		}
 
 		[DllImport (Constants.libcLibrary)]
@@ -158,6 +200,9 @@ namespace CoreFoundation {
 			return dispatch_block_testcancel (GetCheckedHandle ());
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool Cancelled {
 			get { return TestCancel () != 0; }
 		}
@@ -186,7 +231,9 @@ namespace CoreFoundation {
 			unsafe {
 				var handle = (BlockLiteral*) (IntPtr) block.GetCheckedHandle ();
 				var del = handle->GetDelegateForBlock<DispatchBlockCallback> ();
-				return new Action (() => del ((IntPtr) block.GetCheckedHandle ()));
+				var result = new Action (() => del ((IntPtr) block.GetCheckedHandle ()));
+				GC.KeepAlive (block);
+				return result;
 			}
 		}
 
@@ -199,12 +246,19 @@ namespace CoreFoundation {
 	[Flags]
 	[Native]
 	public enum DispatchBlockFlags : ulong {
+		/// <summary>To be added.</summary>
 		None,
+		/// <summary>To be added.</summary>
 		Barrier = 1,
+		/// <summary>To be added.</summary>
 		Detached = 2,
+		/// <summary>To be added.</summary>
 		AssignCurrent = 4,
+		/// <summary>To be added.</summary>
 		NoQosClass = 8,
+		/// <summary>To be added.</summary>
 		InheritQosClass = 16,
+		/// <summary>To be added.</summary>
 		EnforceQosClass = 32,
 	}
 #endif // !COREBUILD

@@ -43,11 +43,15 @@ namespace ImageIO {
 
 	public partial class CGImageDestinationOptions {
 		CGColor? destinationBackgroundColor;
+		/// <summary>The background color used during image compositing for transparent regions of the image.</summary>
+		///         <value>The color used for background compositing.</value>
+		///         <remarks>To be added.</remarks>
 		public CGColor? DestinationBackgroundColor {
 			get { return destinationBackgroundColor; }
 			set {
 				destinationBackgroundColor = value;
 				(Dictionary as NSMutableDictionary)?.LowlevelSetObject (destinationBackgroundColor.GetHandle (), CGImageDestinationOptionsKeys.BackgroundColor.Handle);
+				GC.KeepAlive (destinationBackgroundColor);
 			}
 		}
 
@@ -59,6 +63,9 @@ namespace ImageIO {
 
 	public partial class CGCopyImageSourceOptions {
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -67,6 +74,9 @@ namespace ImageIO {
 		public CGImageMetadata? Metadata { get; set; }
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -75,6 +85,9 @@ namespace ImageIO {
 		public bool MergeMetadata { get; set; }
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -83,6 +96,9 @@ namespace ImageIO {
 		public bool ShouldExcludeXMP { get; set; }
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -91,6 +107,9 @@ namespace ImageIO {
 		public bool ShouldExcludeGPS { get; set; }
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -99,6 +118,9 @@ namespace ImageIO {
 		public DateTime? DateTime { get; set; }
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -139,6 +161,9 @@ namespace ImageIO {
 
 	public partial class CGImageAuxiliaryDataInfo {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGImageMetadata? Metadata {
 			get {
 				return GetNativeValue<CGImageMetadata> (CGImageAuxiliaryDataInfoKeys.MetadataKey);
@@ -169,12 +194,25 @@ namespace ImageIO {
 		{
 		}
 
+		/// <summary>Type identifier for the ImageIO.CGImageDestination type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
+		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[bool isCGImageDestination = (CFType.GetTypeID (foo.Handle) == CGImageDestination.GetTypeID ());]]></code>
+		///           </example>
+		///         </remarks>
 		[DllImport (Constants.ImageIOLibrary, EntryPoint = "CGImageDestinationGetTypeID")]
 		public extern static /* CFTypeID */ nint GetTypeID ();
 
 		[DllImport (Constants.ImageIOLibrary)]
 		extern static /* CFArrayRef __nonnull */ IntPtr CGImageDestinationCopyTypeIdentifiers ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static string? []? TypeIdentifiers {
 			get {
 				var handle = CGImageDestinationCopyTypeIdentifiers ();
@@ -187,6 +225,13 @@ namespace ImageIO {
 			/* CGDataConsumerRef __nonnull */ IntPtr consumer, /* CFStringRef __nonnull */ IntPtr type,
 			/* size_t */ nint count, /* CFDictionaryRef __nullable */ IntPtr options);
 
+		/// <param name="consumer">To be added.</param>
+		///         <param name="typeIdentifier">To be added.</param>
+		///         <param name="imageCount">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CGImageDestination? Create (CGDataConsumer consumer, string typeIdentifier, int imageCount, CGImageDestinationOptions? options = null)
 		{
 			if (consumer is null)
@@ -198,6 +243,8 @@ namespace ImageIO {
 			var typeId = CFString.CreateNative (typeIdentifier);
 			try {
 				IntPtr p = CGImageDestinationCreateWithDataConsumer (consumer.Handle, typeId, imageCount, dict.GetHandle ());
+				GC.KeepAlive (consumer);
+				GC.KeepAlive (dict);
 				return p == IntPtr.Zero ? null : new CGImageDestination (p, true);
 			} finally {
 				CFString.ReleaseNative (typeId);
@@ -220,6 +267,8 @@ namespace ImageIO {
 			var typeId = CFString.CreateNative (typeIdentifier);
 			try {
 				IntPtr p = CGImageDestinationCreateWithData (data.Handle, typeId, imageCount, dict.GetHandle ());
+				GC.KeepAlive (data);
+				GC.KeepAlive (dict);
 				return p == IntPtr.Zero ? null : new CGImageDestination (p, true);
 			} finally {
 				CFString.ReleaseNative (typeId);
@@ -241,6 +290,7 @@ namespace ImageIO {
 			var typeId = CFString.CreateNative (typeIdentifier);
 			try {
 				IntPtr p = CGImageDestinationCreateWithURL (url.Handle, typeId, imageCount, IntPtr.Zero);
+				GC.KeepAlive (url);
 				return p == IntPtr.Zero ? null : new CGImageDestination (p, true);
 			} finally {
 				CFString.ReleaseNative (typeId);
@@ -254,6 +304,7 @@ namespace ImageIO {
 		public void SetProperties (NSDictionary? properties)
 		{
 			CGImageDestinationSetProperties (Handle, properties.GetHandle ());
+			GC.KeepAlive (properties);
 		}
 
 		[DllImport (Constants.ImageIOLibrary)]
@@ -266,8 +317,10 @@ namespace ImageIO {
 			if (image is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (image));
 
-			using var dict = options?.ToDictionary ();
-			CGImageDestinationAddImage (Handle, image.Handle, dict.GetHandle ());
+			using (var dict = options?.ToDictionary ()) {
+				CGImageDestinationAddImage (Handle, image.Handle, dict.GetHandle ());
+				GC.KeepAlive (image);
+			}
 		}
 
 		public void AddImage (CGImage image, NSDictionary? properties)
@@ -276,6 +329,8 @@ namespace ImageIO {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (image));
 
 			CGImageDestinationAddImage (Handle, image.Handle, properties.GetHandle ());
+			GC.KeepAlive (image);
+			GC.KeepAlive (properties);
 		}
 
 		[DllImport (Constants.ImageIOLibrary)]
@@ -290,6 +345,8 @@ namespace ImageIO {
 
 			using var dict = options?.ToDictionary ();
 			CGImageDestinationAddImageFromSource (Handle, source.Handle, index, dict.GetHandle ());
+			GC.KeepAlive (source);
+			GC.KeepAlive (dict);
 		}
 
 		public void AddImage (CGImageSource source, int index, NSDictionary? properties)
@@ -298,6 +355,8 @@ namespace ImageIO {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 
 			CGImageDestinationAddImageFromSource (Handle, source.Handle, index, properties.GetHandle ());
+			GC.KeepAlive (source);
+			GC.KeepAlive (properties);
 		}
 
 		[DllImport (Constants.ImageIOLibrary)]
@@ -333,6 +392,9 @@ namespace ImageIO {
 			if (image is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (image));
 			CGImageDestinationAddImageAndMetadata (Handle, image.Handle, meta.GetHandle (), options.GetHandle ());
+			GC.KeepAlive (image);
+			GC.KeepAlive (meta);
+			GC.KeepAlive (options);
 		}
 
 #if NET
@@ -373,6 +435,8 @@ namespace ImageIO {
 			IntPtr err;
 			unsafe {
 				result = CGImageDestinationCopyImageSource (Handle, image.Handle, options.GetHandle (), &err);
+				GC.KeepAlive (image);
+				GC.KeepAlive (options);
 			}
 			error = Runtime.GetNSObject<NSError> (err);
 			return result != 0;

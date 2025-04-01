@@ -10,6 +10,9 @@ using AudioToolbox;
 
 namespace AVFoundation {
 	public partial class AVSampleCursor {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'CurrentSampleDependencyInfo2' instead. The property type of this property is wrong.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public virtual AVSampleCursorSyncInfo CurrentSampleDependencyInfo {

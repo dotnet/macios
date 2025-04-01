@@ -151,18 +151,35 @@ namespace Introspection {
 				// Looking at the stack trace in Xcode, it seems it hits the network and times out waiting for something?
 				// So just skip the testing, it's likely the constructor is bound correctly, but that it only works in some circumstances.
 				return true;
+			case "ASAccountAuthenticationModificationController":
+				return true; // started failing in Xcode 16.3 beta 1 for unknown reasons (it works in an Xcode project).
+#if __TVOS__
+			case "MTLAccelerationStructureDescriptor":
+			case "MTLAccelerationStructureGeometryDescriptor":
+			case "MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor":
+			case "MTLAccelerationStructureMotionTriangleGeometryDescriptor":
+			case "MTLAccelerationStructurePassDescriptor":
+			case "MTLAccelerationStructurePassSampleBufferAttachmentDescriptor":
+			case "MTLAccelerationStructurePassSampleBufferAttachmentDescriptorArray":
+			case "MTLAccelerationStructureTriangleGeometryDescriptor":
+			case "MTLMeshRenderPipelineDescriptor":
+			case "MTLMotionKeyframeData":
+			case "MTLRasterizationRateLayerArray":
+			case "MTLRasterizationRateMapDescriptor":
+			case "MTLRasterizationRateSampleArray":
+			case "MTLRenderPipelineFunctionsDescriptor":
+			case "MTLResourceStatePassSampleBufferAttachmentDescriptor":
+			case "MTLResourceStatePassSampleBufferAttachmentDescriptorArray":
+				// The initial tvOS 16.0 simulator doesn't have these classes, but the tvOS 16.1 simulator doess
+				if (TestRuntime.IsSimulator && !TestRuntime.CheckXcodeVersion (14, 1))
+					return true;
+				break;
+#endif
 			}
 
 			switch (type.Namespace) {
 			case "SafetyKit":
 				return true; // SafetyKit requires a custom entitlement, and will throw exceptions if it's not present.
-#if __IOS__
-			case "WatchKit":
-				return true; // WatchKit has been removed from iOS.
-#elif MONOMAC
-			case "QTKit":
-				return true; // QTKit has been removed from macos.
-#endif
 			}
 
 			// skip types that we renamed / rewrite since they won't behave correctly (by design)
@@ -547,6 +564,12 @@ namespace Introspection {
 				// This class uses another overload to get instantiated
 				if (cstr == "Void .ctor(Vision.VNRequestCompletionHandler)")
 					return true;
+				break;
+			case "AVSpeechSynthesisProviderAudioUnit":
+				if (cstr == "Void .ctor(AudioUnit.AudioComponentDescription, AudioUnit.AudioComponentInstantiationOptions, Foundation.NSError ByRef)") {
+					// This constructor is exposed using a factory method.
+					return true;
+				}
 				break;
 			}
 

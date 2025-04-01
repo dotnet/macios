@@ -35,31 +35,12 @@ using ObjCRuntime;
 using Foundation;
 using CoreFoundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreText {
 
-	#region Text Tab Constants
-#if !NET
-	public static class CTTextTabOptionKey {
-
-		public static readonly NSString ColumnTerminators;
-
-		static CTTextTabOptionKey ()
-		{
-			ColumnTerminators = Dlfcn.GetStringConstant (Libraries.CoreText.Handle, "kCTTabColumnTerminatorsAttributeName")!;
-		}
-	}
-#endif
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTTextTabOptions {
 
 		public CTTextTabOptions ()
@@ -74,8 +55,14 @@ namespace CoreText {
 			Dictionary = dictionary;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary Dictionary { get; private set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSCharacterSet ColumnTerminators {
 			get { return (NSCharacterSet) Dictionary [CTTextTabOptionKey.ColumnTerminators]; }
 			set { Adapter.SetValue (Dictionary, CTTextTabOptionKey.ColumnTerminators, value); }
@@ -90,14 +77,11 @@ namespace CoreText {
 			return self.Dictionary.GetHandle ();
 		}
 	}
-	#endregion
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTTextTab : NativeObject {
 		[Preserve (Conditional = true)]
 		internal CTTextTab (NativeHandle handle, bool owns)
@@ -122,12 +106,18 @@ namespace CoreText {
 		#region Text Tab Access
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern CTTextAlignment CTTextTabGetAlignment (IntPtr tab);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CTTextAlignment TextAlignment {
 			get { return CTTextTabGetAlignment (Handle); }
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern double CTTextTabGetLocation (IntPtr tab);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double Location {
 			get { return CTTextTabGetLocation (Handle); }
 		}

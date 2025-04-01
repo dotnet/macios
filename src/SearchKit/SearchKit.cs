@@ -35,15 +35,26 @@ using NativeHandle = System.IntPtr;
 
 namespace SearchKit {
 	public enum SKIndexType {
-		Unknown, Inverted, Vector, InvertedVector
+		/// <summary>To be added.</summary>
+		Unknown,
+		/// <summary>To be added.</summary>
+		Inverted,
+		/// <summary>To be added.</summary>
+		Vector,
+		/// <summary>To be added.</summary>
+		InvertedVector,
 	};
 
 	[Flags]
 	public enum SKSearchOptions {
+		/// <summary>To be added.</summary>
 		Default = 0,
+		/// <summary>To be added.</summary>
 		NoRelevanceScores = 1 << 0,
+		/// <summary>To be added.</summary>
 		SpaceMeansOr = 1 << 1,
-		FindSimilar = 1 << 2
+		/// <summary>To be added.</summary>
+		FindSimilar = 1 << 2,
 	}
 
 #if NET
@@ -129,7 +140,9 @@ namespace SearchKit {
 			var schemeHandle = CFString.CreateNative (scheme);
 			var nameHandle = CFString.CreateNative (name);
 			try {
-				return SKDocumentCreate (schemeHandle, parent.GetHandle (), nameHandle);
+				IntPtr result = SKDocumentCreate (schemeHandle, parent.GetHandle (), nameHandle);
+				GC.KeepAlive (parent);
+				return result;
 			} finally {
 				CFString.ReleaseNative (schemeHandle);
 				CFString.ReleaseNative (nameHandle);
@@ -148,12 +161,16 @@ namespace SearchKit {
 		}
 
 		public SKDocument (NSUrl url)
-			: base (SKDocumentCreateWithURL (Runtime.ThrowOnNull (url, nameof (url)).Handle), true, true)
+			: base (SKDocumentCreateWithURL (url.GetNonNullHandle (nameof (url))), true, true)
 		{
+			GC.KeepAlive (url);
 		}
 
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static IntPtr SKDocumentCopyURL (IntPtr h);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSUrl? Url {
 			get {
 				var url = SKDocumentCopyURL (GetCheckedHandle ());
@@ -163,6 +180,9 @@ namespace SearchKit {
 
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static IntPtr SKDocumentGetName (IntPtr h);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Name {
 			get {
 				var n = SKDocumentGetName (GetCheckedHandle ());
@@ -181,6 +201,9 @@ namespace SearchKit {
 		}
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static IntPtr SKDocumentGetSchemeName (IntPtr h);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Scheme {
 			get {
 				var s = SKDocumentGetSchemeName (GetCheckedHandle ());
@@ -223,6 +246,8 @@ namespace SearchKit {
 			var indexNameHandle = CFString.CreateNative (indexName);
 			try {
 				var handle = SKIndexCreateWithURL (url.Handle, indexNameHandle, type, analysisProperties.GetHandle ());
+				GC.KeepAlive (url);
+				GC.KeepAlive (analysisProperties);
 				if (handle == IntPtr.Zero)
 					return null;
 				return new SKIndex (handle, true);
@@ -240,6 +265,7 @@ namespace SearchKit {
 			var indexNameHandle = CFString.CreateNative (indexName);
 			try {
 				var handle = SKIndexOpenWithURL (url.Handle, indexNameHandle, writeAccess.AsByte ());
+				GC.KeepAlive (url);
 				if (handle == IntPtr.Zero)
 					return null;
 				return new SKIndex (handle, true);
@@ -257,6 +283,8 @@ namespace SearchKit {
 			var indexNameHandle = CFString.CreateNative (indexName);
 			try {
 				var handle = SKIndexCreateWithMutableData (data.Handle, indexNameHandle, type, analysisProperties.GetHandle ());
+				GC.KeepAlive (data);
+				GC.KeepAlive (analysisProperties);
 				if (handle == IntPtr.Zero)
 					return null;
 				return new SKIndex (handle, true);
@@ -274,6 +302,7 @@ namespace SearchKit {
 			var indexNameHandle = CFString.CreateNative (indexName);
 			try {
 				var handle = SKIndexOpenWithMutableData (data.Handle, indexNameHandle);
+				GC.KeepAlive (data);
 				if (handle == IntPtr.Zero)
 					return null;
 				return new SKIndex (handle, true);
@@ -291,6 +320,7 @@ namespace SearchKit {
 			var indexNameHandle = CFString.CreateNative (indexName);
 			try {
 				var handle = SKIndexOpenWithData (data.Handle, indexNameHandle);
+				GC.KeepAlive (data);
 				if (handle == IntPtr.Zero)
 					return null;
 				return new SKIndex (handle, true);
@@ -331,7 +361,9 @@ namespace SearchKit {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (document));
 			var textHandle = CFString.CreateNative (text);
 			try {
-				return SKIndexAddDocumentWithText (Handle, document.Handle, textHandle, canReplace.AsByte ()) != 0;
+				bool result = SKIndexAddDocumentWithText (Handle, document.Handle, textHandle, canReplace.AsByte ()) != 0;
+				GC.KeepAlive (document);
+				return result;
 			} finally {
 				CFString.ReleaseNative (textHandle);
 			}
@@ -346,7 +378,9 @@ namespace SearchKit {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (document));
 			var mimeHintHandle = CFString.CreateNative (mimeHint);
 			try {
-				return SKIndexAddDocument (Handle, document.Handle, mimeHintHandle, canReplace.AsByte ()) != 0;
+				bool result = SKIndexAddDocument (Handle, document.Handle, mimeHintHandle, canReplace.AsByte ()) != 0;
+				GC.KeepAlive (document);
+				return result;
 			} finally {
 				CFString.ReleaseNative (mimeHintHandle);
 			}
@@ -370,6 +404,9 @@ namespace SearchKit {
 
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static nint SKIndexGetDocumentCount (IntPtr handle);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint DocumentCount {
 			get {
 				return SKIndexGetDocumentCount (Handle);
@@ -379,6 +416,9 @@ namespace SearchKit {
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static nint SKIndexGetMaximumDocumentID (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint MaximumDocumentID {
 			get {
 				return SKIndexGetMaximumDocumentID (Handle);
@@ -387,6 +427,9 @@ namespace SearchKit {
 
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static nint SKIndexGetMaximumTermID (IntPtr handle);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint MaximumTermID {
 			get {
 				return SKIndexGetMaximumTermID (Handle);
@@ -395,6 +438,9 @@ namespace SearchKit {
 
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static IntPtr SKIndexGetAnalysisProperties (IntPtr h);
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public SKTextAnalysis AnalysisProperties {
 			get {
 				return new SKTextAnalysis (Runtime.GetNSObject<NSDictionary> (SKIndexGetAnalysisProperties (Handle)));
@@ -409,7 +455,10 @@ namespace SearchKit {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (document));
 			if (newParent is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (newParent));
-			return SKIndexMoveDocument (Handle, document.Handle, newParent.Handle) != 0;
+			bool result = SKIndexMoveDocument (Handle, document.Handle, newParent.Handle) != 0;
+			GC.KeepAlive (document);
+			GC.KeepAlive (newParent);
+			return result;
 		}
 
 
@@ -420,7 +469,9 @@ namespace SearchKit {
 		{
 			if (document is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (document));
-			return SKIndexRemoveDocument (Handle, document.Handle) != 0;
+			bool result = SKIndexRemoveDocument (Handle, document.Handle) != 0;
+			GC.KeepAlive (document);
+			return result;
 		}
 
 
@@ -434,7 +485,9 @@ namespace SearchKit {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (newName));
 			var newNameHandle = CFString.CreateNative (newName);
 			try {
-				return SKIndexRenameDocument (Handle, document.Handle, newNameHandle) != 0;
+				bool result = SKIndexRenameDocument (Handle, document.Handle, newNameHandle) != 0;
+				GC.KeepAlive (document);
+				return result;
 			} finally {
 				CFString.ReleaseNative (newNameHandle);
 			}
@@ -446,6 +499,9 @@ namespace SearchKit {
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static nint SKIndexGetMaximumBytesBeforeFlush (IntPtr h);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Advice ("Apple recommends to use Flush instead of setting these parameters.")]
 		public nint MaximumBytesBeforeFlush {
 			get {
@@ -491,6 +547,8 @@ namespace SearchKit {
 			if (dict is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (dict));
 			SKIndexSetDocumentProperties (Handle, document.Handle, dict.Handle);
+			GC.KeepAlive (document);
+			GC.KeepAlive (dict);
 		}
 	}
 
@@ -528,6 +586,7 @@ namespace SearchKit {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (nsString));
 
 			var h = SKSummaryCreateWithString (nsString.Handle);
+			GC.KeepAlive (nsString);
 			if (h == IntPtr.Zero)
 				return null;
 
@@ -617,11 +676,17 @@ namespace SearchKit {
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static nint SKSummaryGetParagraphCount (IntPtr summary);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint SentenceCount {
 			get {
 				return SKSummaryGetSentenceCount (GetCheckedHandle ());
 			}
 		}
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint ParagraphCount {
 			get {
 				return SKSummaryGetParagraphCount (GetCheckedHandle ());

@@ -7,7 +7,6 @@ parameters:
 
 - name: use1ES
   type: boolean
-  default: false
 
 steps:
 

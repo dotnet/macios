@@ -63,7 +63,13 @@ namespace ObjCRuntime {
 	public delegate void AssemblyRegistrationHandler (object sender, AssemblyRegistrationEventArgs args);
 
 	public class AssemblyRegistrationEventArgs : EventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool Register { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public System.Reflection.AssemblyName AssemblyName { get; internal set; }
 	}
 }
@@ -882,13 +888,7 @@ namespace Registrar {
 #else
 					var mi = (System.Reflection.MethodInfo) Method;
 					bool is_stret;
-#if __WATCHOS__
-					if (Runtime.Arch == Arch.DEVICE) {
-						is_stret = Stret.ArmNeedStret (NativeReturnType, null);
-					} else {
-						is_stret = IntPtr.Size == 4 ? Stret.X86NeedStret (NativeReturnType, null) : Stret.X86_64NeedStret (NativeReturnType, null);
-					}
-#elif MONOMAC || __MACCATALYST__
+#if MONOMAC || __MACCATALYST__
 					if (Runtime.IsARM64CallingConvention) {
 						is_stret = false;
 					} else {
@@ -1341,8 +1341,6 @@ namespace Registrar {
 				switch (App.Platform) {
 				case ApplePlatform.iOS:
 					return Driver.IsDotNet ? "Microsoft.iOS" : "Xamarin.iOS";
-				case ApplePlatform.WatchOS:
-					return Driver.IsDotNet ? "Microsoft.watchOS" : "Xamarin.WatchOS";
 				case ApplePlatform.TVOS:
 					return Driver.IsDotNet ? "Microsoft.tvOS" : "Xamarin.TVOS";
 				case ApplePlatform.MacOSX:
@@ -1359,12 +1357,6 @@ namespace Registrar {
 		internal const string AssemblyName = "Microsoft.macOS";
 #else
 		internal const string AssemblyName = "Xamarin.Mac";
-#endif
-#elif WATCH
-#if NET
-		internal const string AssemblyName = "Microsoft.watchOS";
-#else
-		internal const string AssemblyName = "Xamarin.WatchOS";
 #endif
 #elif TVOS
 #if NET
@@ -2700,7 +2692,6 @@ namespace Registrar {
 #if MTOUCH || MMP || BUNDLER
 				switch (App.Platform) {
 				case ApplePlatform.iOS:
-				case ApplePlatform.WatchOS:
 				case ApplePlatform.TVOS:
 					return Is64Bits ? "B" : "c";
 				case ApplePlatform.MacOSX:

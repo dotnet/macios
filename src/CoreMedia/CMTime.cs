@@ -17,55 +17,77 @@ using ObjCRuntime;
 
 namespace CoreMedia {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#else
-	[Watch (6, 0)]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public partial struct CMTime {
 		// CMTimeFlags -> uint32_t -> CMTime.h
 		[Flags]
 		public enum Flags : uint {
+			/// <summary>To be added.</summary>
 			Valid = 1,
+			/// <summary>To be added.</summary>
 			HasBeenRounded = 2,
+			/// <summary>To be added.</summary>
 			PositiveInfinity = 4,
+			/// <summary>To be added.</summary>
 			NegativeInfinity = 8,
+			/// <summary>To be added.</summary>
 			Indefinite = 16,
-			ImpliedValueFlagsMask = PositiveInfinity | NegativeInfinity | Indefinite
+			/// <summary>To be added.</summary>
+			ImpliedValueFlagsMask = PositiveInfinity | NegativeInfinity | Indefinite,
 		}
 #if !COREBUILD
 
+		/// <summary>Constant that contains an invalid CMTime.</summary>
+		///         <remarks>To be added.</remarks>
 		public readonly static CMTime Invalid = new CMTime (0);
 
 		const Flags kIndefinite = Flags.Valid | Flags.Indefinite;
+		/// <summary>Constant that contains an indefinite CMTime.</summary>
+		///         <remarks>To be added.</remarks>
 		public readonly static CMTime Indefinite = new CMTime (kIndefinite);
 
 		const Flags kPositive = Flags.Valid | Flags.PositiveInfinity;
+		/// <summary>Constant that contains a positive infinity CMTime.</summary>
+		///         <remarks>To be added.</remarks>
 		public readonly static CMTime PositiveInfinity = new CMTime (kPositive);
 
 		const Flags kNegative = Flags.Valid | Flags.NegativeInfinity;
+		/// <summary>Constant that contains a negative infinity CMTime.</summary>
+		///         <remarks>To be added.</remarks>
 		public readonly static CMTime NegativeInfinity = new CMTime (kNegative);
 
+		/// <summary>Constant that contains a zero CMTime.</summary>
+		///         <remarks>To be added.</remarks>
 		public readonly static CMTime Zero = new CMTime (Flags.Valid, 1);
 
+		/// <summary>Maximum supported time scale.</summary>
+		///         <remarks>To be added.</remarks>
 		public const int MaxTimeScale = 0x7fffffff;
 
 #endif // !COREBUILD
 
 		// CMTimeValue -> int64_t -> CMTime.h
+		/// <summary>Value component of a CMTime (the numerator).</summary>
+		///         <remarks>To be added.</remarks>
 		public long Value;
 
 		// CMTimeScale -> int32_t -> CMTime.h
+		/// <summary>Timescale for the CMTime (the denominator).</summary>
+		///         <remarks>To be added.</remarks>
 		public int TimeScale;
 
 		// CMTimeFlags -> uint32_t -> CMTime.h
+		/// <summary>Flags set on the CMTime</summary>
+		///         <remarks>To be added.</remarks>
 		public Flags TimeFlags;
 
 		// CMTimeEpoch -> int64_t -> CMTime.h
+		/// <summary>The time epoch.</summary>
+		///         <remarks>To be added.</remarks>
 		public long TimeEpoch;
 
 #if !COREBUILD
@@ -101,12 +123,18 @@ namespace CoreMedia {
 			TimeEpoch = epoch;
 		}
 
+		/// <summary>Indicates that the CMTime value stored is invalid.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsInvalid {
 			get {
 				return (TimeFlags & Flags.Valid) == 0;
 			}
 		}
 
+		/// <summary>Indicates if the CMTime is numeric.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsNumeric {
 			get {
 				return ((TimeFlags & (Flags.Valid | Flags.ImpliedValueFlagsMask)) == Flags.Valid);
@@ -114,24 +142,36 @@ namespace CoreMedia {
 
 		}
 
+		/// <summary>Indicates that the CMTime was rounded.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool HasBeenRounded {
 			get {
 				return IsNumeric && ((TimeFlags & Flags.HasBeenRounded) != 0);
 			}
 		}
 
+		/// <summary>Indicates that the CMTime is indefinite.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsIndefinite {
 			get {
 				return (TimeFlags & kIndefinite) == kIndefinite;
 			}
 		}
 
+		/// <summary>Indicates if the CMTime represents positive infinity.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsPositiveInfinity {
 			get {
 				return (TimeFlags & kPositive) == kPositive;
 			}
 		}
 
+		/// <summary>Indicates if the CMTime represents negative infinity.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsNegativeInfinity {
 			get {
 				return (TimeFlags & kNegative) == kNegative;
@@ -141,6 +181,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static CMTime CMTimeAbsoluteValue (CMTime time);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CMTime AbsoluteValue {
 			get {
 				return CMTimeAbsoluteValue (this);
@@ -196,11 +239,7 @@ namespace CoreMedia {
 
 		public override int GetHashCode ()
 		{
-#if NET
 			return HashCode.Combine (Value, TimeScale, TimeFlags, TimeEpoch);
-#else
-			return Value.GetHashCode () ^ TimeScale.GetHashCode () ^ TimeFlags.GetHashCode () ^ TimeEpoch.GetHashCode ();
-#endif
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]
@@ -235,21 +274,17 @@ namespace CoreMedia {
 			return CMTimeMultiplyByFloat64 (time, multiplier);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static CMTime CMTimeMultiplyByRatio (CMTime time, /* int32_t */ int multiplier, /* int32_t */ int divisor);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static CMTime Multiply (CMTime time, int multiplier, int divisor)
 		{
 			return CMTimeMultiplyByRatio (time, multiplier, divisor);
@@ -286,6 +321,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* Float64 */ double CMTimeGetSeconds (CMTime time);
 
+		/// <summary>Number of seconds</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public double Seconds {
 			get {
 				return CMTimeGetSeconds (this);
@@ -316,30 +354,34 @@ namespace CoreMedia {
 			return CMTimeMinimum (time1, time2);
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static CMTime CMTimeFoldIntoRange (CMTime time, CMTimeRange foldRange);
 
-#if NET
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static CMTime Fold (CMTime time, CMTimeRange foldRange)
 		{
 			return CMTimeFoldIntoRange (time, foldRange);
 		}
 
 		// FIXME: generated will need some changes to emit [Field] in partial struct (not class)
+		/// <summary>Key that can be used in NSDictionary objects returned by CMTime to extract the Value property.</summary>
+		///         <remarks>To be added.</remarks>
 		public readonly static NSString? ValueKey;
+		/// <summary>Key that can be used in NSDictionary objects returned by CMTime to extract the Scale property.</summary>
+		///         <remarks>To be added.</remarks>
 		public readonly static NSString? ScaleKey;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public readonly static NSString? EpochKey;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public readonly static NSString? FlagsKey;
 
 		static CMTime ()
@@ -362,6 +404,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* CFStringRef */ IntPtr CMTimeCopyDescription (/* CFAllocatorRef */ IntPtr allocator, CMTime time);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Description {
 			get {
 				return CFString.FromHandle (CMTimeCopyDescription (IntPtr.Zero, this));
@@ -380,7 +425,9 @@ namespace CoreMedia {
 		{
 			if (dict is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (dict));
-			return CMTimeMakeFromDictionary (dict.Handle);
+			CMTime result = CMTimeMakeFromDictionary (dict.Handle);
+			GC.KeepAlive (dict);
+			return result;
 		}
 #endif // !COREBUILD
 	}

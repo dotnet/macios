@@ -46,6 +46,9 @@ namespace Foundation {
 			Error = error;
 		}
 
+		/// <summary>Retrieves the NSError value.</summary>
+		///         <value />
+		///         <remarks>To be added.</remarks>
 		public NSError Error { get; private set; }
 	}
 
@@ -69,15 +72,6 @@ namespace Foundation {
 		{
 			return LocalizedDescription;
 		}
-
-#if __IOS__ && !NET
-		[Obsolete (Constants.WatchKitRemoved)]
-		public static NSString WatchKitErrorDomain {
-			get {
-				throw new PlatformNotSupportedException (Constants.WatchKitRemoved);
-			}
-		}
-#endif // __IOS__
 #endif
 	}
 }

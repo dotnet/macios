@@ -16,10 +16,8 @@ using AppKit;
 using WebKit;
 //using CoreText;
 
-namespace Foundation 
-{
-	public partial class NSAttributedString
-	{
+namespace Foundation {
+	public partial class NSAttributedString {
 		public NSAttributedString (string str,
 			NSFont? font = null,
 			NSColor? foregroundColor = null,
@@ -85,7 +83,11 @@ namespace Foundation
 		{
 			switch (type) {
 			case NSAttributedStringDataType.DocFormat:
-				Handle = new NSAttributedString (data, out resultDocumentAttributes).Handle;
+				{
+					var tempAttributedString = new NSAttributedString (data, out resultDocumentAttributes);
+					Handle = tempAttributedString.Handle;
+					GC.KeepAlive (tempAttributedString);
+				}
 				break;
 			case NSAttributedStringDataType.HTML:
 				Handle = InitWithHTML (data, out resultDocumentAttributes);
@@ -97,11 +99,11 @@ namespace Foundation
 				Handle = InitWithRtfd (data, out resultDocumentAttributes);
 				break;
 			default:
-				throw new ArgumentException("Error creating NSAttributedString.");
+				throw new ArgumentException ("Error creating NSAttributedString.");
 			}
 
 			if (Handle == IntPtr.Zero)
-				throw new ArgumentException("Error creating NSAttributedString.");
+				throw new ArgumentException ("Error creating NSAttributedString.");
 		}
 
 		public static NSAttributedString CreateWithRTF (NSData rtfData, out NSDictionary resultDocumentAttributes)

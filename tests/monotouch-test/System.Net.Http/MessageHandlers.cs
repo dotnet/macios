@@ -36,12 +36,10 @@ namespace MonoTests.System.Net.Http {
 
 		HttpMessageHandler GetHandler (Type handler_type)
 		{
-#if !__WATCHOS__
 			if (handler_type == typeof (HttpClientHandler))
 				return new HttpClientHandler ();
 			if (handler_type == typeof (CFNetworkHandler))
 				return new CFNetworkHandler ();
-#endif
 #if NET
 			if (handler_type == typeof (SocketsHttpHandler))
 				return new SocketsHttpHandler ();
@@ -54,12 +52,10 @@ namespace MonoTests.System.Net.Http {
 
 
 		[Test]
-#if !__WATCHOS__
 		[TestCase (typeof (HttpClientHandler))]
 		[TestCase (typeof (CFNetworkHandler))]
 #if NET
 		[TestCase (typeof (SocketsHttpHandler))]
-#endif
 #endif
 		[TestCase (typeof (NSUrlSessionHandler))]
 		public void DnsFailure (Type handlerType)
@@ -79,7 +75,6 @@ namespace MonoTests.System.Net.Http {
 			Assert.IsInstanceOf (typeof (HttpRequestException), ex, "Exception");
 		}
 
-#if !__WATCHOS__
 		// ensure that we do get the same cookies as the managed handler
 		[Test]
 		public void TestNSUrlSessionHandlerCookies ()
@@ -149,8 +144,17 @@ namespace MonoTests.System.Net.Http {
 				nativeCookieResult = await nativeResponse.Content.ReadAsStringAsync ();
 			}, out var ex);
 
-			if (!completed || managedCookieResult.Contains ("502 Bad Gateway") || nativeCookieResult.Contains ("502 Bad Gateway") || managedCookieResult.Contains ("504 Gateway Time-out") || nativeCookieResult.Contains ("504 Gateway Time-out"))
+			if (!completed)
 				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
+			var intermittentFailures = new string [] {
+				"500 Internal Server Error",
+				"502 Bad Gateway",
+				"503 Service Temporarily Unavailable",
+				"504 Gateway Time-out",
+			};
+			if (intermittentFailures.Any (v => managedCookieResult.Contains (v) || nativeCookieResult.Contains (v)))
+				TestRuntime.IgnoreInCI ("Intermittent network failure - ignore in CI");
+
 			Assert.IsTrue (completed, "Network request completed");
 			Assert.IsNull (ex, "Exception");
 			Assert.IsNotNull (managedCookieResult, "Managed cookies result");
@@ -399,13 +403,9 @@ namespace MonoTests.System.Net.Http {
 			}
 		}
 
-#endif
-
 		// ensure that if we have a redirect, we do not have the auth headers in the following requests
-#if !__WATCHOS__
 		[TestCase (typeof (HttpClientHandler))]
 		[TestCase (typeof (CFNetworkHandler))]
-#endif
 		[TestCase (typeof (NSUrlSessionHandler))]
 		public void RedirectionWithAuthorizationHeaders (Type handlerType)
 		{
@@ -439,10 +439,8 @@ namespace MonoTests.System.Net.Http {
 			}
 		}
 
-#if !__WATCHOS__
 #if !NET // By default HttpClientHandler redirects to a NSUrlSessionHandler, so no need to test that here.
 		[TestCase (typeof (HttpClientHandler))]
-#endif
 #endif
 #if NET
 		[TestCase (typeof (SocketsHttpHandler))]
@@ -471,12 +469,14 @@ namespace MonoTests.System.Net.Http {
 					// return false, since we want to test that the exception is raised
 					return false;
 				};
+#pragma warning disable SM02184 // "Server certificate validation disabled" - the warning is incorrect, because it's supposed to detect when server validation always passes (i.e. the callback returns 'true'), but we return _false_ (i.e. we always fail the server validation).
 #pragma warning disable SYSLIB0014 // 'ServicePointManager' is obsolete: 'WebRequest, HttpWebRequest, ServicePoint, and WebClient are obsolete. Use HttpClient instead. Settings on ServicePointManager no longer affect SslStream or HttpClient.' (https://aka.ms/dotnet-warnings/SYSLIB0014)
 				ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => {
 #pragma warning restore SYSLIB0014
 					invalidServicePointManagerCbWasExcuted = true;
 					return false;
 				};
+#pragma warning restore SM02184
 #if NET
 			} else if (handler is SocketsHttpHandler shh) {
 				expectedExceptionType = typeof (AuthenticationException);
@@ -534,9 +534,7 @@ namespace MonoTests.System.Net.Http {
 			}
 		}
 
-#if !__WATCHOS__
 		[TestCase (typeof (HttpClientHandler))]
-#endif
 		[TestCase (typeof (NSUrlSessionHandler))]
 		public void AcceptSslCertificatesServicePointManager (Type handlerType)
 		{
@@ -592,6 +590,7 @@ namespace MonoTests.System.Net.Http {
 		}
 
 #if NET
+		[Ignore ("https://github.com/xamarin/xamarin-macios/issues/21912")]
 		[TestCase ("https://self-signed.badssl.com/")]
 		[TestCase ("https://wrong.host.badssl.com/")]
 		public void AcceptSslCertificatesWithCustomValidationCallbackNSUrlSessionHandler (string url)
@@ -626,7 +625,7 @@ namespace MonoTests.System.Net.Http {
 				Assert.IsNotNull (serverCertificate, "Server certificate is null");
 				Assert.IsNull (ex, "Exception wasn't expected.");
 				Assert.IsNotNull (result, "Result was null");
-				Assert.IsTrue (result.IsSuccessStatusCode, "Status code was not success");
+				Assert.IsTrue (result.IsSuccessStatusCode, $"Status code was not success: {result.StatusCode}");
 			}
 		}
 

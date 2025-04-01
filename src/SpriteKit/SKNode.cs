@@ -65,8 +65,6 @@ namespace SpriteKit {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[Watch (5, 0)]
 #endif
 		public static SKNode? Create (string filename, Type [] types, out NSError error)
 		{
@@ -81,7 +79,9 @@ namespace SpriteKit {
 			using (var classes = new NSMutableSet<Class> ((nint) types.Length)) {
 				foreach (var type in types)
 					classes.Add (new Class (type));
-				return Create (filename, classes.Handle, out error);
+				SKNode? result = Create (filename, classes.Handle, out error);
+				GC.KeepAlive (classes);
+				return result;
 			}
 		}
 
@@ -90,8 +90,6 @@ namespace SpriteKit {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[Watch (5, 0)]
 #endif
 		public static SKNode? Create (string filename, NSSet<Class> classes, out NSError error)
 		{
@@ -101,7 +99,9 @@ namespace SpriteKit {
 			if (classes.Count == 0)
 				ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (classes), "Length must be greater than zero.");
 
-			return Create (filename, classes.Handle, out error);
+			SKNode? result = Create (filename, classes.Handle, out error);
+			GC.KeepAlive (classes);
+			return result;
 		}
 	}
 }

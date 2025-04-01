@@ -9,30 +9,28 @@ namespace LocalAuthentication {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum LAPolicy : long {
-		[NoWatch]
+		/// <summary>Use the TouchID sensor to authenticate the user.</summary>
 		[MacCatalyst (13, 1)]
 		DeviceOwnerAuthenticationWithBiometrics = 1,
+		/// <summary>Use the Touch ID sensor or the device password to authenticate the user.</summary>
 		DeviceOwnerAuthentication = 2,
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'DeviceOwnerAuthenticationWithCompanion' instead.")]
 		[NoiOS]
-		[NoWatch]
 		[NoMacCatalyst]
 		DeviceOwnerAuthenticationWithWatch = 3,
-		[NoWatch, NoTV, MacCatalyst (18, 0), Mac (15, 0), iOS (18, 0)]
+		[NoTV, MacCatalyst (18, 0), Mac (15, 0), iOS (18, 0)]
 		DeviceOwnerAuthenticationWithCompanion = 3,
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'DeviceOwnerAuthenticationWithBiometricsOrCompanion' instead.")]
 		[NoiOS]
-		[NoWatch]
 		[NoMacCatalyst]
 		DeviceOwnerAuthenticationWithBiometricsOrWatch = 4,
-		[NoWatch, NoTV, MacCatalyst (18, 0), Mac (15, 0), iOS (18, 0)]
+		[NoTV, MacCatalyst (18, 0), Mac (15, 0), iOS (18, 0)]
 		DeviceOwnerAuthenticationWithBiometricsOrCompanion = 4,
 		[Obsolete ("Use DeviceOwnerAuthenticationWithBiometricsOrWatch enum value instead.")]
 		[NoiOS]
-		[NoWatch]
 		[NoMacCatalyst]
 		OwnerAuthenticationWithBiometricsOrWatch = DeviceOwnerAuthenticationWithBiometricsOrWatch,
-		[NoMac, NoiOS, NoMacCatalyst, Watch (9, 0)]
+		[NoMac, NoiOS, NoMacCatalyst]
 		DeviceOwnerAuthenticationWithWristDetection = 5,
 	}
 
@@ -42,16 +40,17 @@ namespace LocalAuthentication {
 	[Native ("LAError")]
 	[ErrorDomain ("LAErrorDomain")]
 	public enum LAStatus : long {
+		/// <summary>Authentication succeeded.</summary>
 		Success = 0,
-		/// Authentication was not successful, because user failed to provide valid credentials.
+		/// <summary>Authentication was not successful, because user failed to provide valid credentials.</summary>
 		AuthenticationFailed = -1,
-		/// Authentication was canceled by user (e.g. tapped Cancel button).
+		/// <summary>Authentication was canceled by user (e.g. tapped Cancel button).</summary>
 		UserCancel = -2,
-		/// Authentication was canceled, because the user tapped the fallback button (Enter Password).
+		/// <summary>Authentication was canceled, because the user tapped the fallback button (Enter Password).</summary>
 		UserFallback = -3,
-		/// Authentication was canceled by system (e.g. another application went to foreground).
+		/// <summary>Authentication was canceled by system (e.g. another application went to foreground).</summary>
 		SystemCancel = -4,
-		/// Authentication could not start, because passcode is not set on the device.
+		/// <summary>Authentication could not start, because passcode is not set on the device.</summary>
 		PasscodeNotSet = -5,
 
 #if !NET
@@ -69,28 +68,30 @@ namespace LocalAuthentication {
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'BiometryLockout' instead.")]
 		TouchIDLockout = BiometryLockout,
 #endif
+		/// <summary>To be added.</summary>
 		AppCancel = -9,
+		/// <summary>To be added.</summary>
 		InvalidContext = -10,
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'CompanionNotAvailable' instead.")]
-		[NoiOS, NoWatch, NoMacCatalyst]
+		[NoiOS, NoMacCatalyst]
 		WatchNotAvailable = -11,
-		[NoiOS, NoWatch, NoMacCatalyst]
+		[NoiOS, NoMacCatalyst]
 		BiometryNotPaired = -12,
-		[NoiOS, NoWatch, NoMacCatalyst]
+		[NoiOS, NoMacCatalyst]
 		BiometryDisconnected = -13,
-		[NoiOS, NoWatch, NoMacCatalyst]
+		[NoiOS, NoMacCatalyst]
 		InvalidDimension = -14,
-		[NoWatch]
+		/// <summary>Indicates that biometric authentication is not supported on the device.</summary>
 		[MacCatalyst (13, 1)]
 		BiometryNotAvailable = -6,
-		[NoWatch]
+		/// <summary>Indicates that the user has not enrolled for biometric authentication.</summary>
 		[MacCatalyst (13, 1)]
 		BiometryNotEnrolled = -7,
-		[NoWatch]
+		/// <summary>Indicates that biometric authentication has failed too many times, and the user is now locked out.</summary>
 		[MacCatalyst (13, 1)]
 		BiometryLockout = -8,
+		/// <summary>To be added.</summary>
 		NotInteractive = -1004,
-		[NoWatch]
 		CompanionNotAvailable = -11,
 	}
 
@@ -99,8 +100,9 @@ namespace LocalAuthentication {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum LACredentialType : long {
+		/// <summary>Indicates that an application provided a password.</summary>
 		ApplicationPassword = 0,
-		[iOS (13, 4), NoWatch, NoTV]
+		[iOS (13, 4), NoTV]
 		[MacCatalyst (13, 1)]
 		SmartCardPin = -3,
 	}
@@ -110,17 +112,23 @@ namespace LocalAuthentication {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum LAAccessControlOperation : long {
+		/// <summary>Indicates an item creation operation.</summary>
 		CreateItem,
+		/// <summary>Indicates an item use operation.</summary>
 		UseItem,
+		/// <summary>Indicates a key creation operation.</summary>
 		CreateKey,
+		/// <summary>Indicates an key signing operation.</summary>
 		UseKeySign,
+		/// <summary>Indicates a decryption operation with a key.</summary>
 		[MacCatalyst (13, 1)]
 		UseKeyDecrypt,
+		/// <summary>Indicates an key exchange operation.</summary>
 		[MacCatalyst (13, 1)]
 		UseKeyKeyExchange,
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, NoTV]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[Native]
 	public enum LARightState : long {
 		Unknown = 0,

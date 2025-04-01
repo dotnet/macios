@@ -201,8 +201,8 @@ namespace VideoToolbox {
 		public static VTDecompressionSession? Create (VTDecompressionOutputCallback outputCallback,
 								 CMVideoFormatDescription formatDescription,
 #if NET
-							     VTVideoDecoderSpecification? decoderSpecification = null, // hardware acceleration is default behavior on iOS. no opt-in required.
-							     CVPixelBufferAttributes? destinationImageBufferAttributes = null)
+								 VTVideoDecoderSpecification? decoderSpecification = null, // hardware acceleration is default behavior on iOS. no opt-in required.
+								 CVPixelBufferAttributes? destinationImageBufferAttributes = null)
 #else
 								 VTVideoDecoderSpecification? decoderSpecification, // hardware acceleration is default behavior on iOS. no opt-in required.
 								 CVPixelBufferAttributes? destinationImageBufferAttributes)
@@ -222,7 +222,7 @@ namespace VideoToolbox {
 							  VTVideoDecoderSpecification? decoderSpecification, // hardware acceleration is default behavior on iOS. no opt-in required.
 							  NSDictionary? destinationImageBufferAttributes,
 #if NET
-						      delegate* unmanaged</* void* */ IntPtr, /* void* */ IntPtr, /* OSStatus */ VTStatus, VTDecodeInfoFlags, /* CVImageBuffer */ IntPtr, CMTime, CMTime, void> cback)
+							  delegate* unmanaged</* void* */ IntPtr, /* void* */ IntPtr, /* OSStatus */ VTStatus, VTDecodeInfoFlags, /* CVImageBuffer */ IntPtr, CMTime, CMTime, void> cback)
 #else
 							  IntPtr cback)
 #endif
@@ -236,7 +236,7 @@ namespace VideoToolbox {
 			var callbackHandle = GCHandle.Alloc (outputCallback);
 			var callbackStruct = new VTDecompressionOutputCallbackRecord () {
 				Proc = cback,
-				DecompressionOutputRefCon = GCHandle.ToIntPtr (callbackHandle)
+				DecompressionOutputRefCon = GCHandle.ToIntPtr (callbackHandle),
 			};
 			IntPtr ret;
 
@@ -247,11 +247,14 @@ namespace VideoToolbox {
 					destinationImageBufferAttributes.GetHandle (),
 					&callbackStruct,
 					&ret);
+				GC.KeepAlive (formatDescription);
+				GC.KeepAlive (decoderSpecification);
+				GC.KeepAlive (destinationImageBufferAttributes);
 			}
 
 			if (result == VTStatus.Ok && ret != IntPtr.Zero)
 				return new VTDecompressionSession (ret, true) {
-					callbackHandle = callbackHandle
+					callbackHandle = callbackHandle,
 				};
 
 			callbackHandle.Free ();
@@ -276,7 +279,9 @@ namespace VideoToolbox {
 
 			infoFlags = default;
 			unsafe {
-				return VTDecompressionSessionDecodeFrame (GetCheckedHandle (), sampleBuffer.Handle, decodeFlags, sourceFrame, (VTDecodeInfoFlags*) Unsafe.AsPointer<VTDecodeInfoFlags> (ref infoFlags));
+				VTStatus status = VTDecompressionSessionDecodeFrame (GetCheckedHandle (), sampleBuffer.Handle, decodeFlags, sourceFrame, (VTDecodeInfoFlags*) Unsafe.AsPointer<VTDecodeInfoFlags> (ref infoFlags));
+				GC.KeepAlive (sampleBuffer);
+				return status;
 			}
 		}
 #if false // Disabling for now until we have some tests on this
@@ -317,8 +322,10 @@ namespace VideoToolbox {
 			var block = new BlockLiteral ();
 			block.SetupBlockUnsafe (decompressionOutputHandlerTrampoline, outputHandler);
 			try {
-				return VTDecompressionSessionDecodeFrameWithOutputHandler (GetCheckedHandle (),
+				VTStatus status = VTDecompressionSessionDecodeFrameWithOutputHandler (GetCheckedHandle (),
 					sampleBuffer.Handle, decodeFlags, out infoFlags, ref block);
+				GC.KeepAlive (sampleBuffer);
+				return status;
 			} finally {
 				block.CleanupBlock ();
 			}
@@ -340,7 +347,9 @@ namespace VideoToolbox {
 			if (newDescriptor is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (newDescriptor));
 
-			return VTDecompressionSessionCanAcceptFormatDescription (GetCheckedHandle (), newDescriptor.Handle);
+			VTStatus status = VTDecompressionSessionCanAcceptFormatDescription (GetCheckedHandle (), newDescriptor.Handle);
+			GC.KeepAlive (newDescriptor);
+			return status;
 		}
 
 		[DllImport (Constants.VideoToolboxLibrary)]
@@ -393,14 +402,13 @@ namespace VideoToolbox {
 			return VTIsHardwareDecodeSupported (codecType) != 0;
 		}
 
-#if !__WATCHOS__
 #if NET
 		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 #else
-		[iOS (17, 0), TV (17, 0), Mac (14, 0), NoWatch]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0)]
 #endif
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static /* Boolean */ byte VTIsStereoMVHEVCDecodeSupported ();
@@ -413,12 +421,11 @@ namespace VideoToolbox {
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 #else
-		[iOS (17, 0), TV (17, 0), Mac (14, 0), NoWatch]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0)]
 #endif
 		public static bool IsStereoMvHevcDecodeSupported ()
 		{
 			return VTIsStereoMVHEVCDecodeSupported () != 0;
 		}
-#endif // !__WATCHOS__
 	}
 }

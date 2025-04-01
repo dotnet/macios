@@ -28,8 +28,6 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Watch (6, 0)]
 #endif
 	public class NWListener : NativeObject {
 		bool connectionHandlerWasSet = false;
@@ -57,6 +55,7 @@ namespace Network {
 
 			using var portPtr = new TransientString (port);
 			handle = nw_listener_create_with_port (portPtr, parameters.Handle);
+			GC.KeepAlive (parameters);
 			if (handle == IntPtr.Zero)
 				return null;
 			return new NWListener (handle, owns: true);
@@ -73,6 +72,7 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (parameters));
 
 			handle = nw_listener_create (parameters.Handle);
+			GC.KeepAlive (parameters);
 			if (handle == IntPtr.Zero)
 				return null;
 			return new NWListener (handle, owns: true);
@@ -89,6 +89,8 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (connection));
 
 			var handle = nw_listener_create_with_connection (connection.Handle, parameters.Handle);
+			GC.KeepAlive (connection);
+			GC.KeepAlive (parameters);
 			if (handle == IntPtr.Zero)
 				return null;
 			return new NWListener (handle, owns: true);
@@ -117,6 +119,7 @@ namespace Network {
 
 			using var launchd_key_ptr = new TransientString (launchd_key);
 			var handle = nw_listener_create_with_launchd_key (parameters.GetNonNullHandle (nameof (parameters)), launchd_key_ptr);
+			GC.KeepAlive (parameters);
 			if (handle == IntPtr.Zero)
 				return null;
 			return new NWListener (handle, owns: true);
@@ -132,11 +135,15 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (queue));
 
 			nw_listener_set_queue (GetCheckedHandle (), queue.Handle);
+			GC.KeepAlive (queue);
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
 		extern static ushort nw_listener_get_port (IntPtr listener);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ushort Port => nw_listener_get_port (GetCheckedHandle ());
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -291,6 +298,7 @@ namespace Network {
 		public void SetAdvertiseDescriptor (NWAdvertiseDescriptor descriptor)
 		{
 			nw_listener_set_advertise_descriptor (GetCheckedHandle (), descriptor.GetHandle ());
+			GC.KeepAlive (descriptor);
 		}
 
 #if NET
@@ -337,7 +345,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
@@ -368,7 +375,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]

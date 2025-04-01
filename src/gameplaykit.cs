@@ -47,18 +47,25 @@ namespace GameplayKit {
 	[Flags]
 	[MacCatalyst (13, 1)]
 	public enum GKMeshGraphTriangulationMode : ulong {
+		/// <summary>To be added.</summary>
 		Vertices = 1 << 0,
+		/// <summary>To be added.</summary>
 		Centers = 1 << 1,
-		EdgeMidpoints = 1 << 2
+		/// <summary>To be added.</summary>
+		EdgeMidpoints = 1 << 2,
 	}
 
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum GKRTreeSplitStrategy : long {
+		/// <summary>To be added.</summary>
 		Halve = 0,
+		/// <summary>To be added.</summary>
 		Linear = 1,
+		/// <summary>To be added.</summary>
 		Quadratic = 2,
-		ReduceOverlap = 3
+		/// <summary>To be added.</summary>
+		ReduceOverlap = 3,
 	}
 
 	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:GameplayKit.GKAgentDelegate" />.</summary>
@@ -1068,6 +1075,9 @@ namespace GameplayKit {
 		[Export ("numPoints")]
 		nuint NumPoints { get; }
 
+		/// <summary>Whether the <see cref="T:GameplayKit.GKPath" />'s last point connects to the first point.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("cyclical")]
 		bool Cyclical { [Bind ("isCyclical")] get; set; }
 
@@ -1093,6 +1103,11 @@ namespace GameplayKit {
 		[Export ("pathWithGraphNodes:radius:")]
 		GKPath FromGraphNodes (GKGraphNode [] nodes, float radius);
 
+		/// <param name="graphNodes">To be added.</param>
+		///         <param name="radius">To be added.</param>
+		///         <summary>Factory method to create a <see cref="T:GameplayKit.GKPath" /> with the specified <paramref name="graphNodes" /> and <paramref name="radius" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static] // Avoid breaking change
 		[Wrap ("FromGraphNodes (nodes: graphNodes, radius: radius)")]
 		GKPath FromGraphNodes (GKGraphNode2D [] graphNodes, float radius);
@@ -1635,6 +1650,9 @@ namespace GameplayKit {
 			get;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("seamless")]
 		bool Seamless { [Bind ("isSeamless")] get; }
 
@@ -1759,6 +1777,9 @@ namespace GameplayKit {
 		[Export ("displacement")]
 		double Displacement { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("distanceEnabled")]
 		bool DistanceEnabled { [Bind ("isDistanceEnabled")] get; set; }
 

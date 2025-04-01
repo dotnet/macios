@@ -7,8 +7,6 @@ using Foundation;
 using ObjCRuntime;
 using Xamarin.Utils;
 
-#if !__WATCHOS__
-
 #if HAS_UIKIT
 using UIKit;
 #else
@@ -79,5 +77,3 @@ namespace MonoTouchFixtures.Foundation {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

@@ -32,8 +32,6 @@ namespace Xamarin.MacDev.Tasks {
 				return MobileProvisionPlatform.iOS;
 			case ApplePlatform.TVOS:
 				return MobileProvisionPlatform.tvOS;
-			case ApplePlatform.WatchOS:
-				return MobileProvisionPlatform.iOS;
 			case ApplePlatform.MacOSX:
 			case ApplePlatform.MacCatalyst:
 				return MobileProvisionPlatform.MacOS;

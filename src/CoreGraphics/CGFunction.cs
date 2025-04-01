@@ -36,19 +36,11 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
-
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CGFunction.h
 	public class CGFunction : NativeObject {
 		CGFunctionEvaluate? evaluate;
@@ -58,21 +50,9 @@ namespace CoreGraphics {
 		unsafe static CGFunction ()
 		{
 			cbacks.version = 0;
-#if NET
 			cbacks.evaluate = &EvaluateCallback;
 			cbacks.release = &ReleaseCallback;
-#else
-			cbacks.evaluate = Marshal.GetFunctionPointerForDelegate (evaluateCallbackDelegate);
-			cbacks.release = Marshal.GetFunctionPointerForDelegate (releaseCallbackDelegate);
-#endif
 		}
-
-#if !NET
-		internal CGFunction (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
 
 		[Preserve (Conditional = true)]
 		internal CGFunction (NativeHandle handle, bool owns)
@@ -80,6 +60,9 @@ namespace CoreGraphics {
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGFunctionEvaluate? EvaluateFunction {
 			get {
 				return evaluate;
@@ -112,13 +95,8 @@ namespace CoreGraphics {
 		[StructLayout (LayoutKind.Sequential)]
 		struct CGFunctionCallbacks {
 			public /* unsigned int */ uint version;
-#if NET
 			public unsafe delegate* unmanaged<IntPtr, nfloat*, nfloat*, void> evaluate;
 			public unsafe delegate* unmanaged<IntPtr, void> release;
-#else
-			public IntPtr evaluate;
-			public IntPtr release;
-#endif
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -152,27 +130,13 @@ namespace CoreGraphics {
 				}
 			}
 		}
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		static CGFunctionReleaseCallback releaseCallbackDelegate = ReleaseCallback;
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (CGFunctionReleaseCallback))]
-#endif
-#endif
 		static void ReleaseCallback (IntPtr info)
 		{
 			GCHandle.FromIntPtr (info).Free ();
 		}
 
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		unsafe static CGFunctionEvaluateCallback evaluateCallbackDelegate = EvaluateCallback;
-#if !MONOMAC
-		[MonoPInvokeCallback (typeof (CGFunctionEvaluateCallback))]
-#endif
-#endif
 		unsafe static void EvaluateCallback (IntPtr info, nfloat* input, nfloat* output)
 		{
 			GCHandle lgc = GCHandle.FromIntPtr (info);

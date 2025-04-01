@@ -7,19 +7,18 @@
 // Copyright 2012, 2015 Xamarin Inc
 //
 
-#if !WATCH
-
 using System;
 using ObjCRuntime;
 
 namespace UIKit {
 	public partial class UIButton {
 
+		/// <include file="../../docs/api/UIKit/UIButton.xml" path="/Documentation/Docs[@DocId='M:UIKit.UIButton.#ctor(UIKit.UIButtonType)']/*" />
 		public UIButton (UIButtonType type)
 #if NET
-		: base (ObjCRuntime.Messaging.NativeHandle_objc_msgSend_int (class_ptr, Selector.GetHandle ("buttonWithType:"), (int)type))
+		: base (ObjCRuntime.Messaging.NativeHandle_objc_msgSend_int (class_ptr, Selector.GetHandle ("buttonWithType:"), (int) type))
 #else
-		: base (ObjCRuntime.Messaging.IntPtr_objc_msgSend_int (class_ptr, Selector.GetHandle ("buttonWithType:"), (int) type))
+			: base (ObjCRuntime.Messaging.IntPtr_objc_msgSend_int (class_ptr, Selector.GetHandle ("buttonWithType:"), (int) type))
 #endif
 		{
 			VerifyIsUIButton ();
@@ -37,5 +36,3 @@ namespace UIKit {
 		}
 	}
 }
-
-#endif // !WATCH

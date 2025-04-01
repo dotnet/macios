@@ -46,6 +46,7 @@ namespace PassKit {
 				var nsCurrencyCodePtr = NSString.CreateNative (currencyCode);
 				try {
 					PKPayLaterValidateAmount (amount.Handle, nsCurrencyCodePtr, &block);
+					GC.KeepAlive (amount);
 				} finally {
 					NSString.ReleaseNative (nsCurrencyCodePtr);
 				}

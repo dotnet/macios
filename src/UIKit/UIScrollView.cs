@@ -7,13 +7,15 @@
 // Copyright 2009, Novell, Inc.
 //
 
-#if !WATCH
-
 using System;
 
 namespace UIKit {
 	public partial class DraggingEventArgs : EventArgs {
+		/// <summary>Decelerating.</summary>
+		///         <remarks>To be added.</remarks>
 		public readonly static DraggingEventArgs True;
+		/// <summary>Not decelerating.</summary>
+		///         <remarks>To be added.</remarks>
 		public readonly static DraggingEventArgs False;
 
 		static DraggingEventArgs ()
@@ -23,5 +25,3 @@ namespace UIKit {
 		}
 	}
 }
-
-#endif // !WATCH

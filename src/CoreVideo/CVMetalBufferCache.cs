@@ -1,4 +1,3 @@
-#if !WATCH
 using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -11,23 +10,15 @@ using Foundation;
 using Metal;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 namespace CoreVideo {
 
 	/// <summary>A cache used to manage <see cref="CVMetalBuffer" /> instances.</summary>
-#if NET
 	[SupportedOSPlatform ("ios18.0")]
 	[SupportedOSPlatform ("maccatalyst18.0")]
 	[SupportedOSPlatform ("macos15.0")]
 	[SupportedOSPlatform ("tvos18.0")]
-#else
-	[NoWatch, TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 	public class CVMetalBufferCache : NativeObject {
 #if !COREBUILD
 		[Preserve (Conditional = true)]
@@ -88,6 +79,8 @@ namespace CoreVideo {
 			handle = IntPtr.Zero;
 			unsafe {
 				status = CVMetalBufferCacheCreate (IntPtr.Zero, attributes.GetHandle (), device.GetNonNullHandle (nameof (device)), (IntPtr*) Unsafe.AsPointer<IntPtr> (ref handle));
+				GC.KeepAlive (attributes);
+				GC.KeepAlive (device);
 			}
 			return status == CVReturn.Success;
 		}
@@ -124,6 +117,7 @@ namespace CoreVideo {
 			CVReturn res;
 			unsafe {
 				res = CVMetalBufferCacheCreateBufferFromImage (IntPtr.Zero, GetCheckedHandle (), imageBuffer.GetNonNullHandle (nameof (imageBuffer)), &handle);
+				GC.KeepAlive (imageBuffer);
 			}
 			if (res != CVReturn.Success)
 				throw new Exception ($"Could not create CVMetalBuffer, CVMetalBufferCacheCreateBufferFromImage returned: {res}");
@@ -153,4 +147,3 @@ namespace CoreVideo {
 #endif // !COREBUILD
 	}
 }
-#endif // !WATCH

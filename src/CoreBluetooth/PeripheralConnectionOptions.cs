@@ -35,25 +35,31 @@ using ObjCRuntime;
 
 namespace CoreBluetooth {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class PeripheralConnectionOptions : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public PeripheralConnectionOptions ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public PeripheralConnectionOptions (NSDictionary dictionary)
 			: base (dictionary)
 		{
 		}
 
 #if !MONOMAC
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? NotifyOnConnection {
 			get {
 				return GetBoolValue (CBConnectPeripheralOptionsKeys.NotifyOnConnectionKey);
@@ -68,6 +74,9 @@ namespace CoreBluetooth {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? NotifyOnNotification {
 			get {
 				return GetBoolValue (CBConnectPeripheralOptionsKeys.NotifyOnNotificationKey);
@@ -85,6 +94,9 @@ namespace CoreBluetooth {
 		}
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool? NotifyOnDisconnection {
 			get {
 				return GetBoolValue (CBConnectPeripheralOptionsKeys.NotifyOnDisconnectionKey);

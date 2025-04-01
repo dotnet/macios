@@ -1,0 +1,81 @@
+<Documentation>
+  <Docs DocId="M:Foundation.DictionaryContainer.#ctor">
+        <summary>When overridden, call the base-class constructor with a <see cref="T:Foundation.NSMutableDictionary" />.</summary>
+        <remarks>
+          <para>
+	When creating a strongly-typed wrapper for NSDictionary,
+	subclass the DicionaryContainer and provide two constructors:
+	one taking an NSDictionary (to create the wrapper) and one
+	taking no arguments, which should call the base class with an
+	NSMutableDictionary.  Then use one of the various Get and Set
+	methods exposed by this class to get and set values.  This is
+	how a sample class would work:
+
+      </para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+public class MyProperties : DicionaryContainer {
+    public MyProperties () : base (new NSMutableDictionary ())
+    {
+    }
+    
+    public MyProperties (NSDictionary dict) : base (dict)
+    {
+    }
+
+    static NSString boolKey = new NSString ("SomeBoolKey");
+
+    public bool MyBool {
+        get {
+            return GetInt32Value (boolKey);
+        }
+	set {
+	    SetInt32Value (boolKey, value);
+        }
+    }
+}
+	]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="M:Foundation.DictionaryContainer.#ctor(Foundation.NSDictionary)">
+        <param name="dictionary">The dictionary to be wrapped.</param>
+        <summary>When overridden, call the base-class constructor, passing the <paramref name="dictionary" />.</summary>
+        <remarks>
+          <para>
+	When creating a strongly-typed wrapper for NSDictionary,
+	subclass the DicionaryContainer and provide two constructors:
+	one taking an NSDictionary (to create the wrapper) and one
+	taking no arguments, which should call the base class with an
+	NSMutableDictionary.  Then use one of the various Get and Set
+	methods exposed by this class to get and set values.  This is
+	how a sample class would work:
+
+      </para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+public class MyProperties : DicionaryContainer {
+    public MyProperties () : base (new NSMutableDictionary ())
+    {
+    }
+    
+    public MyProperties (NSDictionary dict) : base (dict)
+    {
+    }
+
+    static NSString boolKey = new NSString ("SomeBoolKey");
+
+    public bool MyBool {
+        get {
+            return GetInt32Value (boolKey);
+        }
+	set {
+	    SetInt32Value (boolKey, value);
+        }
+    }
+}
+	]]></code>
+          </example>
+        </remarks>
+      </Docs>
+</Documentation>

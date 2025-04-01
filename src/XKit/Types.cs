@@ -46,12 +46,22 @@ namespace UIKit {
 	public struct NSDirectionalEdgeInsets {
 
 		// API match for NSDirectionalEdgeInsetsZero field/constant
+		/// <summary>Gets an NSDirectionalEdgeInsets that has zero top, leading, bottom, and trailing insets.</summary>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSDirectionalEdgeInsetsZero")] // fake (but helps testing and could also help documentation)
 		public static readonly NSDirectionalEdgeInsets Zero;
 
+		/// <summary>The top inset.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Top;
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Leading;
+		/// <summary>The bottom edge inset.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Bottom;
+		/// <summary>The trailing inset.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Trailing;
 
 #if !COREBUILD

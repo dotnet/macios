@@ -33,4 +33,4 @@ namespace MonoTouchFixtures.UIKit {
 	}
 }
 
-#endif // __WATCHOS__ || __IOS__
+#endif // __IOS__

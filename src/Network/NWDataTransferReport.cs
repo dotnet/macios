@@ -35,7 +35,6 @@ namespace Network {
 #else
 	[TV (13, 0)]
 	[iOS (13, 0)]
-	[Watch (6, 0)]
 #endif
 	public class NWDataTransferReport : NativeObject {
 
@@ -51,6 +50,7 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (connection));
 
 			InitializeHandle (nw_connection_create_new_data_transfer_report (connection.Handle));
+			GC.KeepAlive (connection);
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -179,6 +179,7 @@ namespace Network {
 				block.SetupBlockUnsafe (static_CollectHandler, handler);
 #endif
 				nw_data_transfer_report_collect (GetCheckedHandle (), queue.Handle, &block);
+				GC.KeepAlive (queue);
 			}
 		}
 
@@ -193,7 +194,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
@@ -207,7 +207,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]
@@ -222,7 +221,6 @@ namespace Network {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 #else
-		[Watch (8, 0)]
 		[TV (15, 0)]
 		[iOS (15, 0)]
 		[MacCatalyst (15, 0)]

@@ -22,7 +22,7 @@ using IntPtr = System.IntPtr;
 using OS_nw_protocol_options = System.IntPtr;
 using NativeHandle = System.IntPtr;
 #else
-using OS_nw_protocol_options=ObjCRuntime.NativeHandle;
+using OS_nw_protocol_options = ObjCRuntime.NativeHandle;
 #endif
 
 namespace Network {
@@ -36,7 +36,6 @@ namespace Network {
 	[TV (16, 0)]
 	[Mac (13, 0)]
 	[iOS (16, 0)]
-	[Watch (9, 0)]
 	[MacCatalyst (16, 0)]
 #endif
 	public class NSProtocolFramerOptions : NWProtocolOptions {
@@ -54,7 +53,10 @@ namespace Network {
 		}
 
 		public void SetValue<T> (string key, T? value) where T : NSObject
-			=> nw_framer_options_set_object_value (GetCheckedHandle (), key, value.GetHandle ());
+		{
+			nw_framer_options_set_object_value (GetCheckedHandle (), key, value.GetHandle ());
+			GC.KeepAlive (value);
+		}
 
 		[DllImport (Constants.NetworkLibrary)]
 		static extern NativeHandle nw_framer_options_copy_object_value (OS_nw_protocol_options options, IntPtr key);

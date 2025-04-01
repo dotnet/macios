@@ -37,52 +37,28 @@ using Foundation;
 using CoreFoundation;
 using CoreGraphics;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreText {
 
 	[Flags]
 	public enum CTFrameProgression : uint {
+		/// <summary>To be added.</summary>
 		TopToBottom = 0,
+		/// <summary>To be added.</summary>
 		RightToLeft = 1,
 		LeftToRight = 2,
 	}
 
 	public enum CTFramePathFillRule {
+		/// <summary>To be added.</summary>
 		EvenOdd,
-		WindingNumber
+		/// <summary>To be added.</summary>
+		WindingNumber,
 	}
 
-#if !NET
-	public static class CTFrameAttributeKey {
-
-		public static readonly NSString? Progression;
-
-		public static readonly NSString? PathFillRule;
-		public static readonly NSString? PathWidth;
-		public static readonly NSString? ClippingPaths;
-		public static readonly NSString? PathClippingPath;
-
-		static CTFrameAttributeKey ()
-		{
-			var handle = Libraries.CoreText.Handle;
-			Progression = Dlfcn.GetStringConstant (handle, "kCTFrameProgressionAttributeName");
-			PathFillRule = Dlfcn.GetStringConstant (handle, "kCTFramePathFillRuleAttributeName");
-			PathWidth = Dlfcn.GetStringConstant (handle, "kCTFramePathWidthAttributeName");
-			ClippingPaths = Dlfcn.GetStringConstant (handle, "kCTFrameClippingPathsAttributeName");
-			PathClippingPath = Dlfcn.GetStringConstant (handle, "kCTFramePathClippingPathAttributeName");
-		}
-	}
-#endif
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFrameAttributes {
 
 		public CTFrameAttributes ()
@@ -97,8 +73,14 @@ namespace CoreText {
 			Dictionary = dictionary;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary Dictionary { get; private set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CTFrameProgression? Progression {
 			get {
 				var value = Adapter.GetUInt32Value (Dictionary, CTFrameAttributeKey.Progression);
@@ -120,12 +102,10 @@ namespace CoreText {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFrame : NativeObject {
 		[Preserve (Conditional = true)]
 		internal CTFrame (NativeHandle handle, bool owns)
@@ -203,6 +183,7 @@ namespace CoreText {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (ctx));
 
 			CTFrameDraw (Handle, ctx.Handle);
+			GC.KeepAlive (ctx);
 		}
 	}
 }

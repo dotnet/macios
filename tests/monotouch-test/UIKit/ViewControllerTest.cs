@@ -7,16 +7,13 @@
 // Copyright 2012-2013 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__ && !MONOMAC
+#if !MONOMAC
 
 using System;
 using System.Reflection;
 using Foundation;
 using UIKit;
 using ObjCRuntime;
-#if HAS_IAD
-using iAd;
-#endif
 using NUnit.Framework;
 using Xamarin.Utils;
 
@@ -174,17 +171,7 @@ namespace MonoTouchFixtures.UIKit {
 				vc.EndAppearanceTransition ();
 			}
 		}
-
-#if HAS_IAD
-		[Test]
-		public void InterstitialAds_New ()
-		{
-			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 7, 0, throwIfOtherPlatform: false);
-			
-			UIViewController.PrepareForInterstitialAds ();
-		}
-#endif // HAS_IAD
 	}
 }
 
-#endif // !__WATCHOS__
+#endif // !MONOMAC

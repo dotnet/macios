@@ -1,4 +1,3 @@
-#if NET
 #if __MACOS__ || __MACCATALYST__
 
 using System.Runtime.InteropServices;
@@ -55,4 +54,3 @@ namespace CoreGraphics {
 }
 
 #endif // __MACOS__ || __MACCATALYST__
-#endif // NET

@@ -35,21 +35,9 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
-
 	// CGDataConsumer.h
 	public partial class CGDataConsumer : NativeObject {
-#if !NET
-		public CGDataConsumer (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal CGDataConsumer (NativeHandle handle, bool owns)
 			: base (handle, owns)
@@ -80,9 +68,14 @@ namespace CoreGraphics {
 			// not it's a __nullable parameter but it would return nil (see unit tests) and create an invalid instance
 			if (data is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
-			return CGDataConsumerCreateWithCFData (data.Handle);
+			IntPtr result = CGDataConsumerCreateWithCFData (data.Handle);
+			GC.KeepAlive (data);
+			return result;
 		}
 
+		/// <param name="data">To be added.</param>
+		///         <summary>Creates a data sink that saves the data on the specified NSData.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGDataConsumer (NSMutableData data)
 			: base (Create (data), true)
 		{
@@ -96,9 +89,14 @@ namespace CoreGraphics {
 			// not it's a __nullable parameter but it would return nil (see unit tests) and create an invalid instance
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
-			return CGDataConsumerCreateWithURL (url.Handle);
+			IntPtr result = CGDataConsumerCreateWithURL (url.Handle);
+			GC.KeepAlive (url);
+			return result;
 		}
 
+		/// <param name="url">To be added.</param>
+		///         <summary>Creates a data sink that saves the data on a file specified by the url.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGDataConsumer (NSUrl url)
 			: base (Create (url), true)
 		{

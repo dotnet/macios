@@ -1,5 +1,3 @@
-#if !WATCH
-
 using System;
 using System.Runtime.InteropServices;
 
@@ -18,6 +16,11 @@ namespace UIKit {
 		static extern nint /* NSComparisonResult */ UIContentSizeCategoryCompareToCategory (IntPtr /* NSString */ lhs, IntPtr /* NSString */ rhs);
 
 #if NET
+		/// <param name="category1">To be added.</param>
+		///         <param name="category2">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -32,7 +35,10 @@ namespace UIKit {
 			if (c2 is null)
 				throw new ArgumentException ($"Unknown 'UIContentSizeCategory' value", nameof (category2));
 
-			return (NSComparisonResult) (long) UIContentSizeCategoryCompareToCategory (c1.Handle, c2.Handle);
+			NSComparisonResult result = (NSComparisonResult) (long) UIContentSizeCategoryCompareToCategory (c1.Handle, c2.Handle);
+			GC.KeepAlive (c1);
+			GC.KeepAlive (c2);
+			return result;
 		}
 
 #if NET
@@ -44,6 +50,10 @@ namespace UIKit {
 		static extern byte UIContentSizeCategoryIsAccessibilityCategory (IntPtr /* NSString */ category);
 
 #if NET
+		/// <param name="self">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -54,9 +64,9 @@ namespace UIKit {
 			if (c1 is null)
 				throw new ArgumentException ($"Unknown 'UIContentSizeCategory' value");
 
-			return UIContentSizeCategoryIsAccessibilityCategory (c1.Handle) != 0;
+			bool result = UIContentSizeCategoryIsAccessibilityCategory (c1.Handle) != 0;
+			GC.KeepAlive (c1);
+			return result;
 		}
 	}
 }
-
-#endif // !WATCH

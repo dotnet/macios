@@ -1,7 +1,5 @@
 // Copyright 2015 Xamarin Inc. All rights reserved.
 
-#if !__WATCHOS__
-
 using System;
 using Foundation;
 using Metal;
@@ -42,5 +40,3 @@ namespace MonoTouchFixtures.SceneKit {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

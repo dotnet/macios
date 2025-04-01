@@ -10,13 +10,15 @@ using NativeHandle = System.IntPtr;
 namespace LocalAuthentication {
 
 	/// <summary>Enumerates supported biometric authentication types.</summary>
-	[Watch (11, 0)]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum LABiometryType : long {
+		/// <summary>Indicates that biometric authentication is not supported.</summary>
 		None,
+		/// <summary>Indicates that Touch ID is supported.</summary>
 		TouchId,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		FaceId,
 #if !NET
@@ -40,7 +42,12 @@ namespace LocalAuthentication {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface LAContext {
-		[NoWatch]
+		/// <summary>Gets or sets the localized title of the fallback dialog.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("localizedFallbackTitle")]
@@ -77,6 +84,12 @@ namespace LocalAuthentication {
 		[Export ("evaluateAccessControl:operation:localizedReason:reply:")]
 		void EvaluateAccessControl (SecAccessControl accessControl, LAAccessControlOperation operation, string localizedReason, Action<bool, NSError> reply);
 
+		/// <summary>Gets the state of the policy domain after a biometric authentication success or after the policy has been evaluated.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'LADomainStateBiometry.StateHash' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'LADomainStateBiometry.StateHash' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'LADomainStateBiometry.StateHash' instead.")]
@@ -85,20 +98,36 @@ namespace LocalAuthentication {
 		[NullAllowed]
 		NSData EvaluatedPolicyDomainState { get; }
 
-		[NoWatch]
+		/// <summary>Gets or sets the localized title of the Cancel button in the fallback dialog.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("localizedCancelTitle")]
 		string LocalizedCancelTitle { get; set; }
 
-		[NoWatch]
+		/// <summary>Represents the value that is associated with the LATouchIDAuthenticationMaximumAllowableReuseDuration constant.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("LATouchIDAuthenticationMaximumAllowableReuseDuration")]
 		double /* NSTimeInterval */ TouchIdAuthenticationMaximumAllowableReuseDuration { get; }
 
+		/// <summary>Gets or sets the time, in seconds, after a successful Touch ID authentication for which a user will not be challenged for another.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("touchIDAuthenticationAllowableReuseDuration")]
 		double /* NSTimeInterval */ TouchIdAuthenticationAllowableReuseDuration { get; set; }
 
+		/// <summary>Developers should not use this deprecated property. </summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 9, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 11)]
 		[MacCatalyst (13, 1)]
@@ -107,27 +136,35 @@ namespace LocalAuthentication {
 		[Export ("maxBiometryFailures")]
 		NSNumber MaxBiometryFailures { get; set; }
 
-		[NoWatch, NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("localizedReason")]
 		string LocalizedReason { get; set; }
 
-		[Watch (9, 0), NoTV]
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("interactionNotAllowed")]
 		bool InteractionNotAllowed { get; set; }
 
-		[NoWatch]
+		/// <summary>Gets a value that tells what kind of biometric authentication is supported by the device.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("biometryType")]
 		LABiometryType BiometryType { get; }
 
-		[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0), NoWatch]
+		[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("domainState")]
 		LADomainState DomainState { get; }
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, NoTV]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (LARight))]
 	[DisableDefaultCtor]
 	interface LAPersistedRight {
@@ -140,7 +177,7 @@ namespace LocalAuthentication {
 
 	delegate void LAPrivateKeyCompletionHandler ([NullAllowed] NSData data, [NullAllowed] NSError error);
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, NoTV]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface LAPrivateKey {
@@ -172,7 +209,7 @@ namespace LocalAuthentication {
 	delegate void LAPublicKeyCompletionHandler ([NullAllowed] NSData data, [NullAllowed] NSError error);
 	delegate void LAPublicKeyVerifyDataCompletionHandler ([NullAllowed] NSError error);
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, NoTV]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface LAPublicKey {
@@ -195,7 +232,7 @@ namespace LocalAuthentication {
 		bool CanVerify (SecKeyAlgorithm algorithm);
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, NoTV]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	interface LAAuthenticationRequirement {
 		[Static]
@@ -215,7 +252,7 @@ namespace LocalAuthentication {
 		LAAuthenticationRequirement GetBiometryRequirement (LABiometryFallbackRequirement fallback);
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, NoTV]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	interface LABiometryFallbackRequirement {
 		[Static]
@@ -229,7 +266,7 @@ namespace LocalAuthentication {
 
 	delegate void LARightAuthorizeCompletionHandler ([NullAllowed] NSError error);
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, NoTV]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	interface LARight {
 		[Export ("state")]
@@ -257,7 +294,7 @@ namespace LocalAuthentication {
 	delegate void LARightStoreCompletionHandler ([NullAllowed] LAPersistedRight right, [NullAllowed] NSError error);
 	delegate void LARightStoreRemoveRightCompletionHandler ([NullAllowed] NSError error);
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, NoTV]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface LARightStore {
@@ -292,7 +329,7 @@ namespace LocalAuthentication {
 
 	delegate void LASecretCompletionHandler ([NullAllowed] NSData data, [NullAllowed] NSError error);
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoWatch, NoTV]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface LASecret {
@@ -303,16 +340,16 @@ namespace LocalAuthentication {
 
 	[Flags]
 	[Native]
-	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0), Watch (11, 0), NoTV]
+	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0), NoTV]
 	enum LACompanionType : long {
 		None = 0,
-		[NoiOS, NoWatch, NoTV, NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		Watch = 1 << 0,
-		[NoMac, NoWatch, NoTV]
+		[NoMac, NoTV]
 		Mac = 1 << 1,
 	}
 
-	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0), NoWatch]
+	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface LADomainStateBiometry {
@@ -323,7 +360,7 @@ namespace LocalAuthentication {
 		NSData StateHash { get; }
 	}
 
-	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0), NoWatch]
+	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface LADomainStateCompanion {
@@ -338,7 +375,7 @@ namespace LocalAuthentication {
 		NSData GetStateHash (LACompanionType companionType);
 	}
 
-	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0), NoWatch]
+	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface LADomainState {
@@ -352,7 +389,7 @@ namespace LocalAuthentication {
 		NSData StateHash { get; }
 	}
 
-	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0), Watch (11, 0)]
+	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface LAEnvironment {
@@ -370,7 +407,7 @@ namespace LocalAuthentication {
 		LAEnvironmentState State { get; }
 	}
 
-	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0), Watch (11, 0)]
+	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
 	interface LAEnvironmentObserver {
@@ -380,7 +417,7 @@ namespace LocalAuthentication {
 
 	interface ILAEnvironmentObserver { }
 
-	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0), Watch (11, 0)]
+	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface LAEnvironmentMechanism {
@@ -394,7 +431,7 @@ namespace LocalAuthentication {
 		string IconSystemName { get; }
 	}
 
-	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0), Watch (11, 0)]
+	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[BaseType (typeof (LAEnvironmentMechanism))]
 	[DisableDefaultCtor]
 	interface LAEnvironmentMechanismBiometry {
@@ -414,7 +451,7 @@ namespace LocalAuthentication {
 		bool BuiltInSensorInaccessible { get; }
 	}
 
-	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0), Watch (11, 0)]
+	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[BaseType (typeof (LAEnvironmentMechanism))]
 	[DisableDefaultCtor]
 	interface LAEnvironmentMechanismCompanion {
@@ -425,7 +462,7 @@ namespace LocalAuthentication {
 		NSData StateHash { get; }
 	}
 
-	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0), Watch (11, 0)]
+	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[BaseType (typeof (LAEnvironmentMechanism))]
 	[DisableDefaultCtor]
 	interface LAEnvironmentMechanismUserPassword {
@@ -433,7 +470,7 @@ namespace LocalAuthentication {
 		bool IsSet { get; }
 	}
 
-	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0), Watch (11, 0)]
+	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface LAEnvironmentState : NSCopying {
@@ -443,7 +480,6 @@ namespace LocalAuthentication {
 		[Export ("userPassword"), NullAllowed]
 		LAEnvironmentMechanismUserPassword UserPassword { get; }
 
-		[NoWatch]
 		[Export ("companions")]
 		LAEnvironmentMechanismCompanion [] Companions { get; }
 

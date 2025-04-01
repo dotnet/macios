@@ -14,7 +14,6 @@ namespace HealthKit {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos13.0")]
 #else
-	[Watch (8, 0)]
 	[iOS (15, 0)]
 	[Mac (13, 0)]
 #endif
@@ -35,6 +34,7 @@ namespace HealthKit {
 			byte rv;
 			unsafe {
 				rv = HKAppleWalkingSteadinessClassificationForQuantity (value.GetHandle (), &classificationOut, &errorPtr);
+				GC.KeepAlive (value);
 			}
 
 			error = Runtime.GetNSObject<NSError> (errorPtr, false);

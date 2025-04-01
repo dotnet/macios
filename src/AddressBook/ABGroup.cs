@@ -46,6 +46,12 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace AddressBook {
+	[SupportedOSPlatform ("ios")]
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	static class ABGroupProperty {
 
 		public static int Name { get; private set; }
@@ -61,21 +67,22 @@ namespace AddressBook {
 		}
 	}
 
-#if NET
-	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("maccatalyst14.0", "Use the 'Contacts' API instead.")]
-	[ObsoletedOSPlatform ("ios9.0", "Use the 'Contacts' API instead.")]
-#else
-	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
-#endif
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
+	[UnsupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("tvos")]
 	public class ABGroup : ABRecord, IEnumerable<ABRecord> {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABGroupCreate ();
 
+		/// <summary>
+		///           Constructs and initializes a
+		///           <see cref="T:AddressBook.ABGroup" /> instance.
+		///         </summary>
+		///         <remarks>To be added.</remarks>
 		public ABGroup ()
 			: base (ABGroupCreate (), true)
 		{
@@ -85,6 +92,9 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABGroupCreateInSource (IntPtr source);
 
+		/// <param name="source">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public ABGroup (ABRecord source)
 			: base (IntPtr.Zero, true)
 		{
@@ -92,6 +102,7 @@ namespace AddressBook {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 
 			Handle = ABGroupCreateInSource (source.Handle);
+			GC.KeepAlive (source);
 		}
 
 		[Preserve (Conditional = true)]
@@ -106,6 +117,14 @@ namespace AddressBook {
 			AddressBook = addressbook;
 		}
 
+		/// <summary>
+		///           The name of the group.
+		///         </summary>
+		///         <value>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing the name of the group.
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string? Name {
 			get { return PropertyToString (ABGroupProperty.Name); }
 			set { SetValue (ABGroupProperty.Name, value); }
@@ -114,6 +133,9 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABGroupCopySource (IntPtr group);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public ABRecord? Source {
 			get {
 				var h = ABGroupCopySource (Handle);
@@ -126,6 +148,17 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		unsafe extern static byte ABGroupAddMember (IntPtr group, IntPtr person, IntPtr* error);
+		/// <param name="person">
+		///           The <see cref="T:AddressBook.ABRecord" /> to add to the group.
+		///         </param>
+		///         <summary>
+		///           Adds a <see cref="T:AddressBook.ABRecord" /> to the group.
+		///         </summary>
+		///         <remarks>
+		///         </remarks>
+		///         <exception cref="T:CoreFoundation.CFException">
+		///           The record couldn't be added to group.
+		///         </exception>
 		public void Add (ABRecord person)
 		{
 			if (person is null)
@@ -134,17 +167,37 @@ namespace AddressBook {
 			unsafe {
 				if (ABGroupAddMember (Handle, person.Handle, &error) == 0)
 					throw CFException.FromCFError (error);
+				GC.KeepAlive (person);
 			}
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABGroupCopyArrayOfAllMembers (IntPtr group);
 
+		/// <summary>
+		///           Returns an enumerator that iterates through all members in the group.
+		///         </summary>
+		///         <returns>
+		///           An <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Collections%20IEnumerator&amp;scope=Xamarin" title="T:System.Collections.IEnumerator">T:System.Collections.IEnumerator</a></format>
+		///           which will return all members in the group.
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return GetEnumerator ();
 		}
 
+		/// <summary>
+		///           Returns an enumerator that iterates through all members in the group.
+		///         </summary>
+		///         <returns>
+		///           An
+		///           <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Collections%20Generic%20IEnumerator{%20Address%20Book%20ABRecord}&amp;scope=Xamarin" title="T:System.Collections.Generic.IEnumerator{AddressBook.ABRecord}">T:System.Collections.Generic.IEnumerator{AddressBook.ABRecord}</a></format>
+		///           which will return all members in the group.
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public IEnumerator<ABRecord> GetEnumerator ()
 		{
 			var cfArrayRef = ABGroupCopyArrayOfAllMembers (Handle);
@@ -159,6 +212,21 @@ namespace AddressBook {
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABGroupCopyArrayOfAllMembersWithSortOrdering (IntPtr group, ABPersonSortBy sortOrdering);
 
+		/// <param name="sortOrdering">
+		///           A <see cref="T:AddressBook.ABPersonSortBy" /> which
+		///           specifies the odering of members in the returned array.
+		///         </param>
+		///         <summary>
+		///           Returns the group members sorted by the specified
+		///           <paramref name="sortOrdering" />.
+		///         </summary>
+		///         <returns>
+		///           A <see cref="T:AddressBook.ABRecord" /> array
+		///           containing the members of the group sorted by the
+		///           specified <paramref name="sortOrdering" />.
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public ABRecord [] GetMembers (ABPersonSortBy sortOrdering)
 		{
 			var cfArrayRef = ABGroupCopyArrayOfAllMembersWithSortOrdering (Handle, sortOrdering);
@@ -169,6 +237,18 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		unsafe extern static byte ABGroupRemoveMember (IntPtr group, IntPtr member, IntPtr* error);
+		/// <param name="member">
+		///           A <see cref="T:AddressBook.ABRecord" /> containing
+		///           the record to remove from the group.
+		///         </param>
+		///         <summary>
+		///           Removes <paramref name="member" /> from the group.
+		///         </summary>
+		///         <remarks>
+		///         </remarks>
+		///         <exception cref="T:CoreFoundation.CFException">
+		///           The record couldn't be remove from the group.
+		///         </exception>
 		public void Remove (ABRecord member)
 		{
 			if (member is null)
@@ -177,6 +257,7 @@ namespace AddressBook {
 			unsafe {
 				if (ABGroupRemoveMember (Handle, member.Handle, &error) == 0)
 					throw CFException.FromCFError (error);
+				GC.KeepAlive (member);
 			}
 		}
 	}

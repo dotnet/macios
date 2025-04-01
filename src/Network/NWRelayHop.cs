@@ -23,12 +23,12 @@ namespace Network {
 	[SupportedOSPlatform ("ios17.0")]
 	[SupportedOSPlatform ("maccatalyst17.0")]
 #else
-	[Watch (10, 0), TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 #endif
 	public class NWRelayHop : NativeObject {
 		[Preserve (Conditional = true)]
 #if NET
-		internal NWRelayHop (NativeHandle handle, bool owns) : base (handle, owns) {}
+		internal NWRelayHop (NativeHandle handle, bool owns) : base (handle, owns) { }
 #else
 		public NWRelayHop (NativeHandle handle, bool owns) : base (handle, owns) { }
 #endif
@@ -40,6 +40,9 @@ namespace Network {
 			NWProtocolOptions? relayTlsOptions)
 		{
 			var handle = nw_relay_hop_create (http3RelayEndpoint.GetHandle (), http2RelayEndpoint.GetHandle (), relayTlsOptions.GetHandle ());
+			GC.KeepAlive (http3RelayEndpoint);
+			GC.KeepAlive (http2RelayEndpoint);
+			GC.KeepAlive (relayTlsOptions);
 			if (handle == NativeHandle.Zero)
 				return default;
 			return new NWRelayHop (handle, owns: true);

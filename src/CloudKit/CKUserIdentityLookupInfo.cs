@@ -15,6 +15,10 @@ namespace CloudKit {
 			InitializeHandle (h);
 		}
 
+		/// <param name="email">To be added.</param>
+		///         <summary>Creates a new <see cref="T:CloudKit.CKUserIdentityLookupInfo" /> from the specified <paramref name="email" /> address.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CKUserIdentityLookupInfo FromEmail (string email)
 		{
 			if (string.IsNullOrEmpty (email))
@@ -22,6 +26,10 @@ namespace CloudKit {
 			return new CKUserIdentityLookupInfo (email, 0);
 		}
 
+		/// <param name="phoneNumber">To be added.</param>
+		///         <summary>Creates a new <see cref="T:CloudKit.CKUserIdentityLookupInfo" /> from the specified <paramref name="phoneNumber" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CKUserIdentityLookupInfo FromPhoneNumber (string phoneNumber)
 		{
 			if (string.IsNullOrEmpty (phoneNumber))

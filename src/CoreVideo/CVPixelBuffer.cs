@@ -16,22 +16,26 @@ using Foundation;
 using CFDictionaryRef = System.IntPtr;
 using CVPixelBufferRef = System.IntPtr;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 namespace CoreVideo {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public partial class CVPixelBuffer : CVImageBuffer {
 #if !COREBUILD
+		/// <summary>Type identifier for the CoreVideo.CVPixelBuffer type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
+		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[bool isCVPixelBuffer = (CFType.GetTypeID (foo.Handle) == CVPixelBuffer.GetTypeID ());]]></code>
+		///           </example>
+		///         </remarks>
 		[DllImport (Constants.CoreVideoLibrary, EntryPoint = "CVPixelBufferGetTypeID")]
 		public extern static /* CFTypeID */ nint GetTypeID ();
 
@@ -58,6 +62,13 @@ namespace CoreVideo {
 		{
 		}
 
+		internal static CVPixelBuffer? Create (NativeHandle handle, bool owns)
+		{
+			if (handle == IntPtr.Zero)
+				return null;
+			return new CVPixelBuffer (handle, owns);
+		}
+
 		static IntPtr Create (nint width, nint height, CVPixelFormatType pixelFormatType, NSDictionary? pixelBufferAttributes)
 		{
 			if (width <= 0)
@@ -70,6 +81,7 @@ namespace CoreVideo {
 			IntPtr handle;
 			unsafe {
 				ret = CVPixelBufferCreate (IntPtr.Zero, width, height, pixelFormatType, pixelBufferAttributes.GetHandle (), &handle);
+				GC.KeepAlive (pixelBufferAttributes);
 			}
 
 			if (ret != CVReturn.Success)
@@ -97,6 +109,7 @@ namespace CoreVideo {
 			var nsarray = NSArray.FromNSObjects (attributes);
 			unsafe {
 				ret = CVPixelBufferCreateResolvedAttributesDictionary (IntPtr.Zero, nsarray.GetHandle (), &resolvedDictionaryOut);
+				GC.KeepAlive (nsarray);
 			}
 			GC.KeepAlive (nsarray);
 			if (ret != CVReturn.Success)
@@ -104,31 +117,17 @@ namespace CoreVideo {
 			return Runtime.GetNSObject<NSDictionary> (resolvedDictionaryOut);
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[Watch (8, 0)]
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[NoMacCatalyst]
-#endif
 		[DllImport (Constants.CoreVideoLibrary)]
 		static extern CFDictionaryRef CVPixelBufferCopyCreationAttributes (CVPixelBufferRef pixelBuffer);
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[Watch (8, 0)]
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[NoMacCatalyst]
-#endif
 		public CVPixelBufferAttributes? GetPixelBufferCreationAttributes ()
 		{
 			var attrs = Runtime.GetNSObject<NSDictionary> (CVPixelBufferCopyCreationAttributes (Handle), true);
@@ -144,15 +143,7 @@ namespace CoreVideo {
 			/* void * CV_NULLABLE */ IntPtr releaseRefCon,
 			/* const void * CV_NULLABLE */ IntPtr baseAddress);
 
-#if !NET
-		static CVPixelBufferReleaseBytesCallback releaseBytesCallback = new CVPixelBufferReleaseBytesCallback (ReleaseBytesCallback);
-#endif
-
-#if NET
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallbackAttribute (typeof (CVPixelBufferReleaseBytesCallback))]
-#endif
 		static void ReleaseBytesCallback (IntPtr releaseRefCon, IntPtr baseAddress)
 		{
 			GCHandle handle = GCHandle.FromIntPtr (releaseRefCon);
@@ -167,11 +158,7 @@ namespace CoreVideo {
 			/* OSType */ CVPixelFormatType pixelFormatType,
 			/* void * CV_NONNULL */ IntPtr baseAddress,
 			/* size_t */ nint bytesPerRow,
-#if NET
 			delegate* unmanaged<IntPtr, IntPtr, void> releaseCallback,
-#else
-			CVPixelBufferReleaseBytesCallback /* CV_NULLABLE */ releaseCallback,
-#endif
 			/* void * CV_NULLABLE */ IntPtr releaseRefCon,
 			/* CFDictionaryRef CV_NULLABLE */ IntPtr pixelBufferAttributes,
 			/* CV_RETURNS_RETAINED_PARAMETER CVPixelBufferRef CV_NULLABLE * CV_NONNULL */ IntPtr* pixelBufferOut);// __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_4_0);
@@ -202,11 +189,7 @@ namespace CoreVideo {
 					pixelFormatType,
 					gchandle.AddrOfPinnedObject (),
 					bytesPerRow,
-#if NET
 					&ReleaseBytesCallback,
-#else
-					releaseBytesCallback,
-#endif
 					GCHandle.ToIntPtr (gchandle),
 					DictionaryContainerHelper.GetHandle (pixelBufferAttributes),
 					&handle);
@@ -232,9 +215,6 @@ namespace CoreVideo {
 			/* size_t */ nint dataSize,
 			/* size_t */ nint numberOfPlanes,
 			/* const void* */IntPtr planeAddresses);
-#if !NET
-		static CVPixelBufferReleasePlanarBytesCallback releasePlanarBytesCallback = new CVPixelBufferReleasePlanarBytesCallback (ReleasePlanarBytesCallback);
-#endif
 
 		static void ReleasePlanarBytesCallbackImpl (IntPtr releaseRefCon, IntPtr dataPtr, nint dataSize, nint numberOfPlanes, IntPtr planeAddresses)
 		{
@@ -244,11 +224,8 @@ namespace CoreVideo {
 				data.dataHandles [i].Free ();
 			handle.Free ();
 		}
-#if NET
+
 		[UnmanagedCallersOnly]
-#else
-		[MonoPInvokeCallbackAttribute (typeof (CVPixelBufferReleasePlanarBytesCallback))]
-#endif
 		static void ReleasePlanarBytesCallback (IntPtr releaseRefCon, IntPtr dataPtr, nint dataSize, nint numberOfPlanes, IntPtr planeAddresses)
 		{
 			ReleasePlanarBytesCallbackImpl (releaseRefCon, dataPtr, dataSize, numberOfPlanes, planeAddresses);
@@ -267,11 +244,7 @@ namespace CoreVideo {
 			/* size_t[] */ nint* planeWidth,
 			/* size_t[] */ nint* planeHeight,
 			/* size_t[] */ nint* planeBytesPerRow,
-#if NET
 			delegate* unmanaged<IntPtr, IntPtr, nint, nint, IntPtr, void>/* CV_NULLABLE */ releaseCallback,
-#else
-			CVPixelBufferReleasePlanarBytesCallback /* CV_NULLABLE */ releaseCallback,
-#endif
 			/* void * CV_NULLABLE */ IntPtr releaseRefCon,
 			/* CFDictionaryRef CV_NULLABLE */ IntPtr pixelBufferAttributes,
 			/* CV_RETURNS_RETAINED_PARAMETER CVPixelBufferRef CV_NULLABLE * CV_NONNULL */ IntPtr* pixelBufferOut); // __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_4_0);
@@ -335,11 +308,7 @@ namespace CoreVideo {
 											planeWidthsPtr,
 											planeHeightsPtr,
 											planeBytesPerRowPtr,
-#if NET
 											&ReleasePlanarBytesCallback,
-#else
-											releasePlanarBytesCallback,
-#endif
 											data_handle_ptr,
 											DictionaryContainerHelper.GetHandle (pixelBufferAttributes),
 											&handle);
@@ -386,6 +355,9 @@ namespace CoreVideo {
 		extern static /* void* __nullable */ IntPtr CVPixelBufferGetBaseAddress (
 			/* CVPixelBufferRef __nonnull */ IntPtr pixelBuffer);
 
+		/// <summary>Pointers to the base address storing the pixels.   Must call <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Video%20CVPixel%20Buffer%20Lock&amp;scope=Xamarin" title="M:CoreVideo.CVPixelBuffer.Lock*">M:CoreVideo.CVPixelBuffer.Lock*</a></format> to to lock the base address</summary>
+		///         <value>Pointer to the base address storing the pixels, or <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%20Ptr%20Zero&amp;scope=Xamarin" title="P:System.IntPtr.Zero">P:System.IntPtr.Zero</a></format> if the pixel buffer is not locked.</value>
+		///         <remarks>To be added.</remarks>
 		public IntPtr BaseAddress {
 			get {
 				return CVPixelBufferGetBaseAddress (Handle);
@@ -396,6 +368,9 @@ namespace CoreVideo {
 		extern static /* size_t */ nint CVPixelBufferGetBytesPerRow (
 			/* CVPixelBufferRef __nonnull */ IntPtr pixelBuffer);
 
+		/// <summary>The number of bytes per row in the pixel buffer.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint BytesPerRow {
 			get {
 				return CVPixelBufferGetBytesPerRow (Handle);
@@ -406,6 +381,9 @@ namespace CoreVideo {
 		extern static /* size_t */ nint CVPixelBufferGetDataSize (
 			/* CVPixelBufferRef __nonnull */ IntPtr pixelBuffer);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint DataSize {
 			get {
 				return CVPixelBufferGetDataSize (Handle);
@@ -415,6 +393,9 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static /* size_t */ nint CVPixelBufferGetHeight (/* CVPixelBufferRef __nonnull */ IntPtr pixelBuffer);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint Height {
 			get {
 				return CVPixelBufferGetHeight (Handle);
@@ -424,6 +405,9 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static /* size_t */ nint CVPixelBufferGetWidth (/* CVPixelBufferRef __nonnull */ IntPtr pixelBuffer);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint Width {
 			get {
 				return CVPixelBufferGetWidth (Handle);
@@ -434,6 +418,9 @@ namespace CoreVideo {
 		extern static /* size_t */ nint CVPixelBufferGetPlaneCount (
 			/* CVPixelBufferRef __nonnull */ IntPtr pixelBuffer);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public nint PlaneCount {
 			get {
 				return CVPixelBufferGetPlaneCount (Handle);
@@ -443,6 +430,9 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static /* Boolean */ byte CVPixelBufferIsPlanar (/* CVPixelBufferRef __nonnull */ IntPtr pixelBuffer);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsPlanar {
 			get {
 				return CVPixelBufferIsPlanar (Handle) != 0;
@@ -453,6 +443,9 @@ namespace CoreVideo {
 		extern static CVPixelFormatType CVPixelBufferGetPixelFormatType (
 			/* CVPixelBufferRef __nonnull */ IntPtr pixelBuffer);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CVPixelFormatType PixelFormatType {
 			get {
 				return CVPixelBufferGetPixelFormatType (Handle);

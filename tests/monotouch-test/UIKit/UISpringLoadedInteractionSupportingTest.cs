@@ -8,7 +8,7 @@
 // Copyright 2017 Microsoft.
 //
 
-#if !__TVOS__ && !__WATCHOS__ && !MONOMAC
+#if !__TVOS__ && !MONOMAC
 
 using System;
 using CoreGraphics;
@@ -136,4 +136,4 @@ namespace MonoTouchFixtures.UIKit {
 	}
 }
 
-#endif // !__TVOS__ && !__WATCHOS__
+#endif // !__TVOS__

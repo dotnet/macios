@@ -22,7 +22,7 @@ namespace UIKit {
 	internal class UIVideoStatusDispatcher : NSObject {
 		public const string callbackSelector = "Xamarin_Internal__video:didFinishSavingWithError:contextInfo:";
 		UIVideo.SaveStatus status;
-		
+
 		public UIVideoStatusDispatcher (UIVideo.SaveStatus status)
 		{
 			this.status = status;
@@ -38,13 +38,17 @@ namespace UIKit {
 			DangerousRelease ();
 		}
 	}
-	
+
 	public static class UIVideo {
 		public delegate void SaveStatus (string path, NSError error);
-		
+
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* BOOL */ byte UIVideoAtPathIsCompatibleWithSavedPhotosAlbum (/* NSString* */ IntPtr videoPath);
-		
+
+		/// <param name="path">The path to probe.</param>
+		///         <summary>Determines whether the video file is compatible with the current photos album.</summary>
+		///         <returns />
+		///         <remarks>To be added.</remarks>
 		public static bool IsCompatibleWithSavedPhotosAlbum (string path)
 		{
 			UIApplication.EnsureUIThread ();
@@ -55,6 +59,10 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static void UISaveVideoAtPathToSavedPhotosAlbum (/* NSString* */ IntPtr videoPath, /* id */ IntPtr completionTarget, /* SEL */ IntPtr selector, /* void* */ IntPtr contextInfo);
 
+		/// <param name="path">The path to save.</param>
+		///         <param name="status">Callback that will be invoked when the saving completes.</param>
+		///         <summary>Saves the video to the photos album.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void SaveToPhotosAlbum (string path, SaveStatus status)
 		{
 			if (path is null)
@@ -63,11 +71,13 @@ namespace UIKit {
 				throw new ArgumentNullException ("status");
 			UIApplication.EnsureUIThread ();
 			var dis = new UIVideoStatusDispatcher (status);
-			
-			using (var ns = new NSString (path))
+
+			using (var ns = new NSString (path)) {
 				UISaveVideoAtPathToSavedPhotosAlbum (ns.Handle, dis.Handle, Selector.GetHandle (UIVideoStatusDispatcher.callbackSelector), IntPtr.Zero);
+				GC.KeepAlive (dis);
+			}
 		}
-		
+
 	}
 }
 

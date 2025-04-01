@@ -25,20 +25,12 @@ using ObjCRuntime;
 using CoreVideo;
 using AudioToolbox;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreMedia {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#else
-	[Watch (6, 0)]
-#endif
 	public class CMFormatDescription : NativeObject {
 		[Preserve (Conditional = true)]
 		internal CMFormatDescription (NativeHandle handle, bool owns)
@@ -51,6 +43,9 @@ namespace CoreMedia {
 
 #if !COREBUILD
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary? GetExtensions ()
 		{
 			var cfDictRef = CMFormatDescriptionGetExtensions (Handle);
@@ -60,6 +55,10 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* CFPropertyListRef */ IntPtr CMFormatDescriptionGetExtension (/* CMFormatDescriptionRef */ IntPtr desc, /* CFStringRef */ IntPtr extensionkey);
 
+		/// <param name="extensionKey">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSObject? GetExtension (string extensionKey)
 		{
 			var extensionKeyHandle = CFString.CreateNative (extensionKey);
@@ -74,57 +73,99 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* FourCharCode */ uint CMFormatDescriptionGetMediaSubType (/* CMFormatDescriptionRef */ IntPtr desc);
 
+		/// <summary>Returns the media subtype, ideally you should use the strongly typed versions instead.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		/// 	  Instead of using this uint value, you can use the specific
+		/// 	  strongly-typed version: AudioFormatType, SubtitleFormatType,
+		/// 	  ClosedCaptionFormatType, MuxedStreamType, VideoCodecType,
+		/// 	  MetadataFormatType or TimeCodeFormatType.
+		/// 	</remarks>
 		public uint MediaSubType {
 			get {
 				return CMFormatDescriptionGetMediaSubType (Handle);
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioFormatType AudioFormatType {
 			get {
 				return MediaType == CMMediaType.Audio ? (AudioFormatType) MediaSubType : 0;
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CMSubtitleFormatType SubtitleFormatType {
 			get {
 				return MediaType == CMMediaType.Subtitle ? (CMSubtitleFormatType) MediaSubType : 0;
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CMClosedCaptionFormatType ClosedCaptionFormatType {
 			get {
 				return MediaType == CMMediaType.ClosedCaption ? (CMClosedCaptionFormatType) MediaSubType : 0;
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CMMuxedStreamType MuxedStreamType {
 			get {
 				return MediaType == CMMediaType.Muxed ? (CMMuxedStreamType) MediaSubType : 0;
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CMVideoCodecType VideoCodecType {
 			get {
 				return MediaType == CMMediaType.Video ? (CMVideoCodecType) MediaSubType : 0;
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CMMetadataFormatType MetadataFormatType {
 			get {
 				return MediaType == CMMediaType.Metadata ? (CMMetadataFormatType) MediaSubType : 0;
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CMTimeCodeFormatType TimeCodeFormatType {
 			get {
 				return MediaType == CMMediaType.TimeCode ? (CMTimeCodeFormatType) MediaSubType : 0;
 			}
 		}
 
+		/// <summary>Gets the <see cref="MediaSubType" /> property as a <see cref="CMTaggedBufferGroupFormatType" />.</summary>
+		/// <returns>The <see cref="MediaSubType" /> property as a <see cref="CMTaggedBufferGroupFormatType" />, if this format descripton's <see cref="MediaType" /> is <see cref="CMMediaType.TaggedBufferGroup" />, otherwise 0.</returns>
+		/// <remarks>Only applicable if this format descripton's <see cref="MediaType" /> is <see cref="CMMediaType.TaggedBufferGroup" />, otherwise 0 is returned.</remarks>
+		public CMTaggedBufferGroupFormatType TaggedBufferGroupFormatType {
+			get {
+				return MediaType == CMMediaType.TaggedBufferGroup ? (CMTaggedBufferGroupFormatType) MediaSubType : 0;
+			}
+		}
+
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static CMMediaType CMFormatDescriptionGetMediaType (/* CMFormatDescriptionRef */ IntPtr desc);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CMMediaType MediaType {
 			get {
 				return CMFormatDescriptionGetMediaType (Handle);
@@ -134,6 +175,16 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* CFTypeID */ nint CMFormatDescriptionGetTypeID ();
 
+		/// <summary>Type identifier for the CoreMedia.CMFormatDescription type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
+		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[bool isCMFormatDescription = (CFType.GetTypeID (foo.Handle) == CMFormatDescription.GetTypeID ());]]></code>
+		///           </example>
+		///         </remarks>
 		public static nint GetTypeID ()
 		{
 			return CMFormatDescriptionGetTypeID ();
@@ -142,6 +193,21 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		unsafe extern static /* OSStatus */ CMFormatDescriptionError CMFormatDescriptionCreate (/* CFAllocatorRef */ IntPtr allocator, CMMediaType mediaType, /* FourCharCode */ uint mediaSubtype, /* CFDictionaryRef */ IntPtr extensions, /* CMFormatDescriptionRef* */ IntPtr* descOut);
 
+		/// <param name="mediaType">media type that we want to create a wrapper for</param>
+		///         <param name="mediaSubtype">The media subtype</param>
+		///         <param name="error">Errors, if any, are returned here.</param>
+		///         <summary>Creates a CMFormatDescription (or a subclass of it) based on a native handle and to have it wrapped in a specific type.</summary>
+		///         <returns>
+		///           <para>The return can be either a CMFormatDescription a <see cref="T:CoreMedia.CMAudioFormatDescription" /> or a <see cref="T:CoreMedia.CMVideoFormatDescription" /> depending on the mediaType parameter that you passed.</para>
+		///           <para>
+		///           </para>
+		///           <para />
+		///         </returns>
+		///         <remarks>
+		///           <para>In general, the <see cref="M:CoreMedia.CMFormatDescription.Create(System.IntPtr)" /> is a better option as it probes for the underlying type and creates the correct subclass of <see cref="T:CoreMedia.CMFormatDescription" /></para>
+		///           <para>
+		///           </para>
+		///         </remarks>
 		public static CMFormatDescription? Create (CMMediaType mediaType, uint mediaSubtype, out CMFormatDescriptionError error)
 		{
 			IntPtr handle;
@@ -154,11 +220,24 @@ namespace CoreMedia {
 			return Create (mediaType, handle, true);
 		}
 
+		/// <param name="handle">The native handle to a CMFormatDescription or a subclass of it.</param>
+		///         <param name="owns">True if the handle is already owned by maanged code, false otherwise (and in this case, the code will manually call retain on the object).</param>
+		///         <summary>Creates a CMFormatDescription (or a subclass of it) based on a native handle.</summary>
+		///         <returns>
+		///           <para>The return can be either a CMFormatDescription a <see cref="T:CoreMedia.CMAudioFormatDescription" /> or a <see cref="T:CoreMedia.CMVideoFormatDescription" />, you can use the C# <see langword="is" /> expression to find out which subclass to cast the result to if you need access to the audio or video specific elements.</para>
+		///           <para>
+		///           </para>
+		///         </returns>
+		///         <remarks>This is mostly used to support the binding infrastructure.</remarks>
 		public static CMFormatDescription? Create (IntPtr handle, bool owns)
 		{
 			return Create (CMFormatDescriptionGetMediaType (handle), handle, owns);
 		}
 
+		/// <param name="handle">The native handle to a CMFormatDescription or a subclass of it.</param>
+		///         <summary>Creates a CMFormatDescription (or a subclass of it) based on a native handle.</summary>
+		///         <returns>The return can be either a CMFormatDescription a <see cref="T:CoreMedia.CMAudioFormatDescription" /> or a <see cref="T:CoreMedia.CMVideoFormatDescription" />, you can use the C# <see langword="is" /> expression to find out which subclass to cast the result to if you need access to the audio or video specific elements.</returns>
+		///         <remarks>This is the recommended way of surfacing an unmanaged format description, as this will create the proper wrapper with a strong type for the audio or video versions of it.</remarks>
 		public static CMFormatDescription? Create (IntPtr handle)
 		{
 			return Create (handle, false);
@@ -182,6 +261,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* AudioStreamBasicDescription */ IntPtr CMAudioFormatDescriptionGetStreamBasicDescription (/* CMAudioFormatDescriptionRef */ IntPtr desc);
 
+		/// <summary>Audio-media only: Returns the AudioStreamBasicDescritpion object for the audio.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioStreamBasicDescription? AudioStreamBasicDescription {
 			get {
 				var ret = CMAudioFormatDescriptionGetStreamBasicDescription (Handle);
@@ -197,6 +279,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		unsafe extern static /* AudioChannelLayout* */ IntPtr CMAudioFormatDescriptionGetChannelLayout (/* CMAudioFormatDescriptionRef */ IntPtr desc, /* size_t* */ nint* size);
 
+		/// <summary>Audio-media only: describe the channel layout.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioChannelLayout? AudioChannelLayout {
 			get {
 				nint size;
@@ -213,6 +298,11 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		unsafe extern static /* AudioFormatListItem* */ IntPtr CMAudioFormatDescriptionGetFormatList (/* CMAudioFormatDescriptionRef */ IntPtr desc, /* size_t* */ nint* size);
 
+		/// <summary>Audio-media only: the supported audio formats, sorted from most rich to less.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public AudioFormat []? AudioFormats {
 			get {
 				unsafe {
@@ -236,6 +326,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		unsafe extern static /* const void* */ IntPtr CMAudioFormatDescriptionGetMagicCookie (/* CMAudioFormatDescriptionRef */ IntPtr desc, /* size_t* */ nint* size);
 
+		/// <summary>Audio-media only: magic cookie that might need to be passed to some backends.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public byte []? AudioMagicCookie {
 			get {
 				nint size;
@@ -255,6 +348,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* AudioFormatListItem* */ IntPtr CMAudioFormatDescriptionGetMostCompatibleFormat (/* CMAudioFormatDescriptionRef */ IntPtr desc);
 
+		/// <summary>Audio-media only: returns the most compaible audio format.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioFormat AudioMostCompatibleFormat {
 			get {
 				unsafe {
@@ -269,6 +365,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* AudioFormatListItem* */ IntPtr CMAudioFormatDescriptionGetRichestDecodableFormat (/* CMAudioFormatDescriptionRef */ IntPtr desc);
 
+		/// <summary>Audio-media only: Returns the richest decodable format.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public AudioFormat AudioRichestDecodableFormat {
 			get {
 				unsafe {
@@ -300,14 +399,10 @@ namespace CoreMedia {
 #endif
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#else
-	[Watch (6, 0)]
-#endif
 	public class CMAudioFormatDescription : CMFormatDescription {
 		[Preserve (Conditional = true)]
 		internal CMAudioFormatDescription (NativeHandle handle, bool owns)
@@ -318,14 +413,10 @@ namespace CoreMedia {
 		// TODO: Move more audio specific methods here
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#else
-	[Watch (6, 0)]
-#endif
 	public partial class CMVideoFormatDescription : CMFormatDescription {
 		[Preserve (Conditional = true)]
 		internal CMVideoFormatDescription (NativeHandle handle, bool owns)
@@ -355,11 +446,18 @@ namespace CoreMedia {
 			return handle;
 		}
 
+		/// <param name="codecType">To be added.</param>
+		///         <param name="size">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMVideoFormatDescription (CMVideoCodecType codecType, CMVideoDimensions size)
 			: base (CreateCMVideoFormatDescription (codecType, size), true)
 		{
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CMVideoDimensions Dimensions {
 			get {
 				return CMVideoFormatDescriptionGetDimensions (Handle);
@@ -372,6 +470,11 @@ namespace CoreMedia {
 			/* CVImageBufferRef */ IntPtr imageBuffer,
 			/* CMVideoFormatDescriptionRef* */ IntPtr* outDesc);
 
+		/// <param name="imageBuffer">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CMVideoFormatDescription? CreateForImageBuffer (CVImageBuffer imageBuffer, out CMFormatDescriptionError error)
 		{
 			if (imageBuffer is null)
@@ -380,6 +483,7 @@ namespace CoreMedia {
 			IntPtr desc;
 			unsafe {
 				error = CMVideoFormatDescriptionCreateForImageBuffer (IntPtr.Zero, imageBuffer.Handle, &desc);
+				GC.KeepAlive (imageBuffer);
 			}
 			if (error != CMFormatDescriptionError.None)
 				return null;
@@ -387,12 +491,10 @@ namespace CoreMedia {
 			return new CMVideoFormatDescription (desc, true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.CoreMediaLibrary)]
 		unsafe static extern /* OSStatus */ CMFormatDescriptionError CMVideoFormatDescriptionCreateFromH264ParameterSets (
 			/* CFAllocatorRef */ IntPtr allocator,
@@ -402,12 +504,16 @@ namespace CoreMedia {
 			/* int */ int NALUnitHeaderLength,
 			/* CMFormatDescriptionRef* */ IntPtr* formatDescriptionOut);
 
-#if NET
+		/// <param name="parameterSets">To be added.</param>
+		///         <param name="nalUnitHeaderLength">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public static CMVideoFormatDescription? FromH264ParameterSets (List<byte []> parameterSets, int nalUnitHeaderLength, out CMFormatDescriptionError error)
 		{
 			if (parameterSets is null)
@@ -450,12 +556,10 @@ namespace CoreMedia {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.CoreMediaLibrary)]
 		unsafe static extern /* OSStatus */ CMFormatDescriptionError CMVideoFormatDescriptionGetH264ParameterSetAtIndex (
 			/* CMFormatDescriptionRef */ IntPtr videoDesc,
@@ -465,12 +569,10 @@ namespace CoreMedia {
 			/* size_t* */ nuint* parameterSetCountOut,
 			/* int* */ int* nalUnitHeaderLengthOut);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public byte []? GetH264ParameterSet (nuint index, out nuint parameterSetCount, out int nalUnitHeaderLength, out CMFormatDescriptionError error)
 		{
 			IntPtr ret;
@@ -495,6 +597,10 @@ namespace CoreMedia {
 			return arr;
 		}
 
+		/// <param name="originIsAtTopLeft">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGRect GetCleanAperture (bool originIsAtTopLeft)
 		{
 			return CMVideoFormatDescriptionGetCleanAperture (Handle, originIsAtTopLeft.AsByte ());
@@ -515,15 +621,15 @@ namespace CoreMedia {
 		{
 			if (imageBuffer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (imageBuffer));
-			return CMVideoFormatDescriptionMatchesImageBuffer (Handle, imageBuffer.Handle) != 0;
+			bool result = CMVideoFormatDescriptionMatchesImageBuffer (Handle, imageBuffer.Handle) != 0;
+			GC.KeepAlive (imageBuffer);
+			return result;
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.CoreMediaLibrary)]
 		unsafe static extern /* OSStatus */ CMFormatDescriptionError CMVideoFormatDescriptionCreateFromHEVCParameterSets (
 			/* CFAllocatorRef */ IntPtr allocator,
@@ -534,12 +640,10 @@ namespace CoreMedia {
 			/* CFDictionaryRef */ IntPtr extensions,
 			/* CMFormatDescriptionRef* */ IntPtr* formatDescriptionOut);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static CMVideoFormatDescription? FromHevcParameterSets (List<byte []> parameterSets, int nalUnitHeaderLength, NSDictionary extensions, out CMFormatDescriptionError error)
 		{
 			if (parameterSets is null)
@@ -567,6 +671,7 @@ namespace CoreMedia {
 					fixed (IntPtr* parameterSetPtrsPtr = parameterSetPtrs) {
 						fixed (nuint* parameterSetSizesPtr = parameterSetSizes) {
 							error = CMVideoFormatDescriptionCreateFromHEVCParameterSets (IntPtr.Zero, (nuint) parameterSets.Count, parameterSetPtrsPtr, parameterSetSizesPtr, nalUnitHeaderLength, extensions.GetHandle (), &desc);
+							GC.KeepAlive (extensions);
 						}
 					}
 				}
@@ -582,12 +687,10 @@ namespace CoreMedia {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.CoreMediaLibrary)]
 		unsafe static extern /* OSStatus */ CMFormatDescriptionError CMVideoFormatDescriptionGetHEVCParameterSetAtIndex (
 			/* CMFormatDescriptionRef */ IntPtr videoDesc,
@@ -597,12 +700,10 @@ namespace CoreMedia {
 			/* size_t* */ nuint* parameterSetCountOut,
 			/* int* */ int* nalUnitHeaderLengthOut);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public byte []? GetHevcParameterSet (nuint index, out nuint parameterSetCount, out int nalUnitHeaderLength, out CMFormatDescriptionError error)
 		{
 			IntPtr ret;

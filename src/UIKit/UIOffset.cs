@@ -21,6 +21,8 @@ namespace UIKit {
 	public struct UIOffset {
 
 		// API match for UIOffsetZero field/constant
+		/// <summary>A static identity offset of 0,0.</summary>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIOffsetZero")] // fake (but helps testing and could also help documentation)
 		public static readonly UIOffset Zero;
 
@@ -29,9 +31,17 @@ namespace UIKit {
 			Horizontal = horizontal;
 			Vertical = vertical;
 		}
+		/// <summary>The horizontal offset.</summary>
+		///         <remarks>To be added.</remarks>
 		public /* CGFloat */ nfloat Horizontal;
+		/// <summary>The vertical offset.</summary>
+		///         <remarks>To be added.</remarks>
 		public /* CGFloat */ nfloat Vertical;
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>Whether this has the same value as <paramref name="obj" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object obj)
 		{
 			if (!(obj is UIOffset))
@@ -40,6 +50,9 @@ namespace UIKit {
 			return other.Horizontal == Horizontal && other.Vertical == Vertical;
 		}
 
+		/// <summary>The hash code for this <see cref="T:UIKit.UIOffset" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (Horizontal, Vertical);

@@ -9,10 +9,8 @@
 using System;
 using System.ComponentModel;
 
-#if !WATCH
 using CoreImage;
 using GameplayKit;
-#endif
 
 using AVFoundation;
 using ObjCRuntime;
@@ -21,11 +19,8 @@ using CoreFoundation;
 using CoreGraphics;
 using CoreVideo;
 using SceneKit;
-#if !WATCH
 using Metal;
-#endif
 
-#if NET
 using MatrixFloat2x2 = global::CoreGraphics.NMatrix2;
 using MatrixFloat3x3 = global::CoreGraphics.NMatrix3;
 using MatrixFloat4x4 = global::CoreGraphics.NMatrix4;
@@ -34,19 +29,6 @@ using Vector3 = global::System.Numerics.Vector3;
 using Vector4 = global::System.Numerics.Vector4;
 using VectorFloat3 = global::CoreGraphics.NVector3;
 using Quaternion = global::System.Numerics.Quaternion;
-#else
-using Matrix2 = global::OpenTK.Matrix2;
-using Matrix3 = global::OpenTK.Matrix3;
-using Matrix4 = global::OpenTK.Matrix4;
-using MatrixFloat2x2 = global::OpenTK.NMatrix2;
-using MatrixFloat3x3 = global::OpenTK.NMatrix3;
-using MatrixFloat4x4 = global::OpenTK.NMatrix4;
-using Vector2 = global::OpenTK.Vector2;
-using Vector3 = global::OpenTK.Vector3;
-using Vector4 = global::OpenTK.Vector4;
-using VectorFloat3 = global::OpenTK.NVector3;
-using Quaternion = global::OpenTK.Quaternion;
-#endif
 
 #if MONOMAC
 using AppKit;
@@ -54,44 +36,13 @@ using UIColor = global::AppKit.NSColor;
 using UIImage = global::AppKit.NSImage;
 using UIView = global::AppKit.NSView;
 using UITouch = Foundation.NSObject;
-#if NET
-using pfloat = System.Runtime.InteropServices.NFloat;
-#else
-using pfloat = System.nfloat;
-#endif
 #else
 using UIKit;
 using NSLineBreakMode = global::UIKit.UILineBreakMode;
-using pfloat = System.Single;
 using NSEvent = System.Object;
-#if !WATCH
-using UIView = global::UIKit.UIView;
-#endif
-#endif
-
-#if WATCH
-using UITouch = System.Object;
-#endif
-
-#if !NET
-using NativeHandle = System.IntPtr;
 #endif
 
 namespace SpriteKit {
-
-#if WATCH
-	// stubs to limit the number of preprocessor directives in the source file
-	interface AVPlayer {}
-	interface CIFilter {}
-	interface GKPolygonObstacle {}
-	interface UIView {}
-	interface IMTLCommandBuffer {}
-	interface IMTLCommandQueue {}
-	interface IMTLDevice {}
-	interface IMTLRenderCommandEncoder {}
-	interface MTLRenderPassDescriptor {}
-#endif
-
 	/// <summary>The delegate that acts as the enumeration handler for <see cref="M:SpriteKit.SKNode.EnumerateChildNodes(System.String,SpriteKit.SKNodeChildEnumeratorHandler)" />.</summary>
 	delegate void SKNodeChildEnumeratorHandler (SKNode node, out bool stop);
 	/// <summary>A method that maps <paramref name="time" />, a value between 0 and 1, to a return value between 0 snd 1.</summary>
@@ -118,6 +69,9 @@ namespace SpriteKit {
 		[Export ("sceneTime")]
 		double SceneTime { get; set; }
 
+		/// <summary>Gets or sets a value that controls whether the scene plays.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("playing")]
 		bool Playing { [Bind ("isPlaying")] get; set; }
 
@@ -158,14 +112,14 @@ namespace SpriteKit {
 	[MacCatalyst (13, 1)]
 #if MONOMAC
 	[BaseType (typeof (NSResponder))]
-	partial interface SKNode : NSSecureCoding, NSCopying {
-#elif IOS || TVOS
+#else
 	[BaseType (typeof (UIResponder))]
-	partial interface SKNode : NSSecureCoding, NSCopying, UIFocusItem, UIFocusItemContainer, UICoordinateSpace {
-#else // WATCHOS
-	[BaseType (typeof (NSObject))]
-	partial interface SKNode : NSSecureCoding, NSCopying {
 #endif
+	partial interface SKNode : NSSecureCoding, NSCopying
+#if IOS || TVOS
+	, UIFocusItem, UIFocusItemContainer, UICoordinateSpace
+#endif
+	{
 		[DesignatedInitializer]
 		[Export ("init")]
 		NativeHandle Constructor ();
@@ -179,7 +133,6 @@ namespace SpriteKit {
 		[return: NullAllowed]
 		SKNode Create (string filename);
 
-		[Watch (5, 0)]
 		[MacCatalyst (13, 1)]
 		[Internal]
 		[Static]
@@ -188,7 +141,7 @@ namespace SpriteKit {
 		SKNode Create (string filename, IntPtr classesPtr, out NSError error);
 
 		[Export ("frame")]
-#if !(MONOMAC || WATCH)
+#if !MONOMAC
 		// For iOS+tvOS we also get this property from the UIFocusItem protocol, but we redefine it here to get the right availability attributes.
 		new
 #endif
@@ -218,17 +171,26 @@ namespace SpriteKit {
 		[Export ("alpha")]
 		nfloat Alpha { get; set; }
 
+		/// <summary>Gets or sets a value that causes this node and its descendants to be skipped when actions are processed for the scene. <see langword="true" /> causes them to be skipped.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("paused")]
 		bool Paused { [Bind ("isPaused")] get; set; }
 
+		/// <summary>Gets a value that tells whether the node and its descendants are rendered to the screen.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>
+		///         </remarks>
 		[Export ("hidden")]
 		bool Hidden { [Bind ("isHidden")] get; set; }
 
+		/// <summary>Gets or sets a value that controls whether the node responds to touch.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("userInteractionEnabled")]
 		bool UserInteractionEnabled { [Bind ("isUserInteractionEnabled")] get; set; }
 
 		[NoMac]
-		[Watch (9, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("focusBehavior", ArgumentSemantic.Assign)]
 		SKNodeFocusBehavior FocusBehavior { get; set; }
@@ -351,72 +313,42 @@ namespace SpriteKit {
 		void MoveToParent (SKNode parent);
 
 		// Moved from SpriteKit to GameplayKit header in iOS 10 beta 1
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("obstaclesFromNodeBounds:")]
 		GKPolygonObstacle [] ObstaclesFromNodeBounds (SKNode [] nodes);
 
 		// Moved from SpriteKit to GameplayKit header in iOS 10 beta 1
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("obstaclesFromNodePhysicsBodies:")]
 		GKPolygonObstacle [] ObstaclesFromNodePhysicsBodies (SKNode [] nodes);
 
 		// Moved from SpriteKit to GameplayKit header in iOS 10 beta 1
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("obstaclesFromSpriteTextures:accuracy:")]
 		GKPolygonObstacle [] ObstaclesFromSpriteTextures (SKNode [] sprites, float accuracy);
 
-#if !NET
-		[Deprecated (PlatformName.iOS, 10, 0, message: "Attributes are only available for node classes supporting SKShader (see SKSpriteNode etc.).")]
-		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Attributes are only available for node classes supporting SKShader (see SKSpriteNode etc.).")]
-		[Deprecated (PlatformName.WatchOS, 3, 0, message: "Attributes are only available for node classes supporting SKShader (see SKSpriteNode etc.).")]
-		[Export ("attributeValues", ArgumentSemantic.Copy)]
-		NSDictionary<NSString, SKAttributeValue> AttributeValues { get; set; }
-
-		[Deprecated (PlatformName.iOS, 10, 0, message: "Attributes are only available for node classes supporting SKShader (see SKSpriteNode etc.).")]
-		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Attributes are only available for node classes supporting SKShader (see SKSpriteNode etc.).")]
-		[Deprecated (PlatformName.WatchOS, 3, 0, message: "Attributes are only available for node classes supporting SKShader (see SKSpriteNode etc.).")]
-		[Export ("valueForAttributeNamed:")]
-		[return: NullAllowed]
-		SKAttributeValue GetValue (string key);
-
-		[Deprecated (PlatformName.iOS, 10, 0, message: "Attributes are only available for node classes supporting SKShader (see SKSpriteNode etc.).")]
-		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Attributes are only available for node classes supporting SKShader (see SKSpriteNode etc.).")]
-		[Deprecated (PlatformName.WatchOS, 3, 0, message: "Attributes are only available for node classes supporting SKShader (see SKSpriteNode etc.).")]
-		[Export ("setValue:forAttributeNamed:")]
-		void SetValue (SKAttributeValue value, string key);
-#endif
-
-#if !WATCH
 		// Extensions from GameplayKit, inlined to avoid ugly static extension syntax
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("obstaclesFromSpriteTextures:accuracy:")]
 		GKPolygonObstacle [] GetObstaclesFromSpriteTextures (SKNode [] sprites, float accuracy);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("obstaclesFromNodeBounds:")]
 		GKPolygonObstacle [] GetObstaclesFromNodeBounds (SKNode [] nodes);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("obstaclesFromNodePhysicsBodies:")]
 		GKPolygonObstacle [] GetObstaclesFromNodePhysicsBodies (SKNode [] nodes);
-#endif
 	}
 
 	[NoiOS]
 	[NoTV]
-	[NoWatch]
 	[NoMacCatalyst]
 	[Category, BaseType (typeof (NSEvent))]
 	partial interface SKNodeEvent_NSEvent {
@@ -428,7 +360,6 @@ namespace SpriteKit {
 	/// <summary>Extension methods for <see cref="T:UIKit.UITouch" /> that aide with conversion to Sprite Kit coordinates.</summary>
 	[NoMac]
 	[MacCatalyst (13, 1)]
-	[NoWatch]
 	[Category, BaseType (typeof (UITouch))]
 	partial interface SKNodeTouches_UITouch {
 
@@ -449,7 +380,6 @@ namespace SpriteKit {
 	[BaseType (typeof (SKNode))]
 	partial interface SKEffectNode : SKWarpable {
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("filter", ArgumentSemantic.Retain)]
@@ -509,9 +439,15 @@ namespace SpriteKit {
 
 		float MinimumRadius { get; set; } /* float, not CGFloat */
 
+		/// <summary>Gets or sets a value that controls whether the field is active.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
+		/// <summary>Gets or sets a value that controls whether the field should override all other fields whose regions intersect with its own region.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("exclusive")]
 		bool Exclusive { [Bind ("isExclusive")] get; set; }
 
@@ -580,10 +516,7 @@ namespace SpriteKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SKEffectNode))]
 	interface SKScene
-#if !WATCH
-		: GKSceneRootNodeType
-#endif
-	{
+		: GKSceneRootNodeType {
 		[Export ("initWithSize:")]
 		NativeHandle Constructor (CGSize size);
 
@@ -609,17 +542,14 @@ namespace SpriteKit {
 		[Export ("physicsWorld")]
 		SKPhysicsWorld PhysicsWorld { get; }
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("convertPointFromView:")]
 		CGPoint ConvertPointFromView (CGPoint point);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("convertPointToView:")]
 		CGPoint ConvertPointToView (CGPoint point);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("view", ArgumentSemantic.Weak)]
 		[NullAllowed]
@@ -634,12 +564,10 @@ namespace SpriteKit {
 		[Export ("didSimulatePhysics")]
 		void DidSimulatePhysics ();
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("didMoveToView:")]
 		void DidMoveToView (SKView view);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("willMoveFromView:")]
 		void WillMoveFromView (SKView view);
@@ -659,6 +587,13 @@ namespace SpriteKit {
 		[Export ("delegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the SpriteKit.ISKSceneDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the SpriteKit.ISKSceneDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("WeakDelegate")]
 		ISKSceneDelegate Delegate { get; set; }
@@ -1137,6 +1072,9 @@ namespace SpriteKit {
 		[Export ("blendMode")]
 		SKBlendMode BlendMode { get; set; }
 
+		/// <summary>Gets or sets a value that controls whether to antialias the shape.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("antialiased")]
 		bool Antialiased { [Bind ("isAntialiased")] get; set; }
 
@@ -1378,6 +1316,9 @@ namespace SpriteKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SKNode))]
 	interface SKLightNode {
+		/// <summary>Gets or sets of value that determines whether the node is casting light.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
@@ -1403,22 +1344,6 @@ namespace SpriteKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SKNode))]
 	partial interface SKVideoNode {
-
-#if WATCH
-		[Static, Export ("videoNodeWithFileNamed:")]
-		SKVideoNode VideoNodeWithFileNamed (string videoFile);
-
-		[Static, Export ("videoNodeWithURL:")]
-		SKVideoNode VideoNodeWithURL (NSUrl videoURL);
-
-		[DesignatedInitializer]
-		[Export ("initWithFileNamed:")]
-		NativeHandle Constructor (string videoFile);
-
-		[DesignatedInitializer]
-		[Export ("initWithURL:")]
-		NativeHandle Constructor (NSUrl url);
-#else
 		[Static, Export ("videoNodeWithAVPlayer:")]
 		SKVideoNode FromPlayer (AVPlayer player);
 
@@ -1449,7 +1374,6 @@ namespace SpriteKit {
 
 		[Export ("initWithURL:"), Internal]
 		IntPtr InitWithURL (NSUrl url);
-#endif
 
 		[Export ("play")]
 		void Play ();
@@ -1528,18 +1452,20 @@ namespace SpriteKit {
 	///       <para>Application developers should note the availability of debugging properties, such as <see cref="P:SpriteKit.SKView.ShowsFPS" />.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SpriteKit/Reference/SKView/index.html">Apple documentation for <c>SKView</c></related>
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIView))]
 	[DisableDefaultCtor]
+	partial interface SKView
 #if MONOMAC
-	partial interface SKView : NSSecureCoding {
-#else
-	partial interface SKView {
+	 : NSSecureCoding
 #endif
+		{
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
+		/// <summary>Gets or sets a value that controls whether the view is paused.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("paused")]
 		bool Paused { [Bind ("isPaused")] get; set; }
 
@@ -1556,6 +1482,9 @@ namespace SpriteKit {
 		[Export ("showsPhysics")]
 		bool ShowsPhysics { get; set; }
 
+		/// <summary>Gets or sets whether the view is rendered asynchronously.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("asynchronous")]
 		bool Asynchronous { [Bind ("isAsynchronous")] get; set; }
 
@@ -1639,7 +1568,6 @@ namespace SpriteKit {
 	/// <summary>Delegate object for <see cref="T:SpriteKit.SKView" /> objects, allowing the developer to control the frame rate.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/SpriteKit/SKViewDelegate">Apple documentation for <c>SKViewDelegate</c></related>
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -1695,7 +1623,6 @@ namespace SpriteKit {
 		[Static, Export ("doorwayWithDuration:")]
 		SKTransition DoorwayWithDuration (double sec);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static, Export ("transitionWithCIFilter:duration:")]
 		SKTransition TransitionWithCIFilter (CIFilter filter, double sec);
@@ -1736,7 +1663,6 @@ namespace SpriteKit {
 		[Static, Export ("textureWithData:size:rowLength:alignment:")]
 		SKTexture FromData (NSData pixelData, CGSize size, uint /* unsigned int*/ rowLength, uint /* unsigned int */ alignment);
 
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Export ("textureByApplyingCIFilter:")]
 		SKTexture TextureByApplyingCIFilter (CIFilter filter);
@@ -1788,14 +1714,11 @@ namespace SpriteKit {
 		[Export ("CGImage")]
 		CGImage CGImage { get; }
 
-#if !WATCH
 		// Static Category from GameplayKit
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("textureWithNoiseMap:")]
 		SKTexture FromNoiseMap (GKNoiseMap noiseMap);
-#endif
 	}
 
 	/// <summary>A method that modifies a texture in place.</summary>
@@ -1878,7 +1801,6 @@ namespace SpriteKit {
 		NativeHandle Constructor (string name, float /* float, not CGFloat */ value);
 
 		[Internal]
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 10, 0)]
 		[Deprecated (PlatformName.TvOS, 10, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
@@ -1891,15 +1813,10 @@ namespace SpriteKit {
 		[Export ("initWithName:vectorFloat2:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		[MarshalNativeExceptions]
-#if WATCH
-		NativeHandle Constructor (string name, Vector2 value);
-#else
 		[Internal]
 		IntPtr InitWithNameVectorFloat2 (string name, Vector2 value);
-#endif
 
 		[Internal]
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 10, 0)]
 		[Deprecated (PlatformName.TvOS, 10, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
@@ -1911,15 +1828,10 @@ namespace SpriteKit {
 		[MacCatalyst (13, 1)]
 		[Export ("initWithName:vectorFloat3:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-#if WATCH
-		NativeHandle Constructor (string name, Vector3 value);
-#else
 		[Internal]
 		IntPtr InitWithNameVectorFloat3 (string name, Vector3 value);
-#endif
 
 		[Internal]
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 10, 0)]
 		[Deprecated (PlatformName.TvOS, 10, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
@@ -1931,89 +1843,18 @@ namespace SpriteKit {
 		[MacCatalyst (13, 1)]
 		[Export ("initWithName:vectorFloat4:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-#if WATCH
-		NativeHandle Constructor (string name, Vector4 value);
-#else
 		[Internal]
 		IntPtr InitWithNameVectorFloat4 (string name, Vector4 value);
-#endif
-
-#if !NET
-		[Internal]
-		[NoWatch]
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 12)]
-		[Export ("initWithName:floatMatrix2:")]
-		IntPtr InitWithNameFloatMatrix2 (string name, Matrix2 value);
-#endif
-
-#if !NET
-		[Obsolete ("Use the '(string, MatrixFloat2x2)' overload instead.")]
-		[Sealed]
-		[Export ("initWithName:matrixFloat2x2:")]
-		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-#if WATCH
-		NativeHandle Constructor (string name, Matrix2 value);
-#else
-		[Internal]
-		IntPtr InitWithNameMatrixFloat2x2 (string name, Matrix2 value);
-#endif // WATCH
-#endif // !NET
 
 		[MacCatalyst (13, 1)]
 		[Export ("initWithName:matrixFloat2x2:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (string name, MatrixFloat2x2 value);
 
-#if !NET
-		[Internal]
-		[NoWatch]
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 12)]
-		[Export ("initWithName:floatMatrix3:")]
-		IntPtr InitWithNameFloatMatrix3 (string name, Matrix3 value);
-
-		[Obsolete ("Use the '(string, MatrixFloat3x3)' overload instead.")]
-		[Sealed]
-		[Export ("initWithName:matrixFloat3x3:")]
-		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-#if WATCH
-		NativeHandle Constructor (string name, Matrix3 value);
-#else
-		[Internal]
-		IntPtr InitWithNameMatrixFloat3x3 (string name, Matrix3 value);
-#endif // WATCH
-#endif // !NET
-
 		[MacCatalyst (13, 1)]
 		[Export ("initWithName:matrixFloat3x3:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (string name, MatrixFloat3x3 value);
-
-#if !NET
-		[Internal]
-		[NoWatch]
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 12)]
-		[Export ("initWithName:floatMatrix4:")]
-		IntPtr InitWithNameFloatMatrix4 (string name, Matrix4 value);
-#endif // !NET
-
-#if !NET
-		[Obsolete ("Use the '(string, MatrixFloat4x4)' overload instead.")]
-		[Export ("initWithName:matrixFloat4x4:")]
-		[Sealed]
-		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-#if WATCH
-		NativeHandle Constructor (string name, Matrix4 value);
-#else
-		[Internal]
-		IntPtr InitWithNameMatrixFloat4x4 (string name, Matrix4 value);
-#endif // WATCH
-#endif // !NET
 
 		[MacCatalyst (13, 1)]
 		[Export ("initWithName:matrixFloat4x4:")]
@@ -2034,7 +1875,6 @@ namespace SpriteKit {
 		float FloatValue { get; set; } /* float, not CGFloat */
 
 		[Internal]
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 10, 0)]
 		[Deprecated (PlatformName.TvOS, 10, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
@@ -2045,12 +1885,8 @@ namespace SpriteKit {
 
 		[MacCatalyst (13, 1)]
 		[Export ("vectorFloat2Value", ArgumentSemantic.Assign)]
-#if WATCH
-		Vector2 FloatVector2Value {
-#else
 		[Internal]
 		Vector2 _VectorFloat2Value {
-#endif
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -2058,7 +1894,6 @@ namespace SpriteKit {
 		}
 
 		[Internal]
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 10, 0)]
 		[Deprecated (PlatformName.TvOS, 10, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
@@ -2069,12 +1904,8 @@ namespace SpriteKit {
 
 		[MacCatalyst (13, 1)]
 		[Export ("vectorFloat3Value", ArgumentSemantic.Assign)]
-#if WATCH
-		Vector3 FloatVector3Value {
-#else
 		[Internal]
 		Vector3 _VectorFloat3Value {
-#endif
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -2082,7 +1913,6 @@ namespace SpriteKit {
 		}
 
 		[Internal]
-		[NoWatch]
 		[Deprecated (PlatformName.iOS, 10, 0)]
 		[Deprecated (PlatformName.TvOS, 10, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
@@ -2093,40 +1923,14 @@ namespace SpriteKit {
 
 		[MacCatalyst (13, 1)]
 		[Export ("vectorFloat4Value", ArgumentSemantic.Assign)]
-#if WATCH
-		Vector4 FloatVector4Value {
-#else
 		[Internal]
 		Vector4 _VectorFloat4Value {
-#endif
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			set;
 		}
 
-#if !NET
-		[Internal]
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 12)]
-		[NoWatch]
-		[Export ("floatMatrix2Value")]
-		Matrix2 _FloatMatrix2Value { get; set; }
-#endif // !NET
-
-#if !NET && WATCH
-		[Obsolete ("Use 'MatrixFloat2x2Value' instead.")]
-		[Export ("matrixFloat2x2Value", ArgumentSemantic.Assign)]
-		Matrix2 FloatMatrix2x2Value {
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")] get;
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")] set;
-		}
-#endif
-
-#if !NET && WATCH
-		[Sealed] // The selector is already used in the 'FloatMatrix2x2Value' property.
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("matrixFloat2x2Value", ArgumentSemantic.Assign)]
 		MatrixFloat2x2 MatrixFloat2x2Value {
@@ -2136,28 +1940,6 @@ namespace SpriteKit {
 			set;
 		}
 
-#if !NET
-		[Internal]
-		[NoWatch]
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 12)]
-		[Export ("floatMatrix3Value")]
-		Matrix3 _FloatMatrix3Value { get; set; }
-#endif // !NET
-
-#if !NET && WATCH
-		[Obsolete ("Use 'MatrixFloat3x3Value' instead.")]
-		[Export ("matrixFloat3x3Value", ArgumentSemantic.Assign)]
-		Matrix3 FloatMatrix3x3Value {
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")] get;
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")] set;
-		}
-#endif
-
-#if !NET && WATCH
-		[Sealed] // The selector is already used in the 'FloatMatrix3x3Value' property.
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("matrixFloat3x3Value", ArgumentSemantic.Assign)]
 		MatrixFloat3x3 MatrixFloat3x3Value {
@@ -2167,28 +1949,6 @@ namespace SpriteKit {
 			set;
 		}
 
-#if !NET
-		[Internal]
-		[NoWatch]
-		[Deprecated (PlatformName.iOS, 10, 0)]
-		[Deprecated (PlatformName.TvOS, 10, 0)]
-		[Deprecated (PlatformName.MacOSX, 10, 12)]
-		[Export ("floatMatrix4Value")]
-		Matrix4 _FloatMatrix4Value { get; set; }
-#endif // !NET
-
-#if !NET && WATCH
-		[Obsolete ("Use 'MatrixFloat4x4Value' instead.")]
-		[Export ("matrixFloat4x4Value", ArgumentSemantic.Assign)]
-		Matrix4 FloatMatrix4x4Value {
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")] get;
-			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")] set;
-		}
-#endif
-
-#if !NET && WATCH
-		[Sealed] // The selector is already used in the 'FloatMatrix4x4Value' property.
-#endif
 		[MacCatalyst (13, 1)]
 		[Export ("matrixFloat4x4Value", ArgumentSemantic.Assign)]
 		MatrixFloat4x4 MatrixFloat4x4Value {
@@ -2226,41 +1986,17 @@ namespace SpriteKit {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		SKUniform Create (string name, Vector4 value);
 
-#if !NET
-		[Obsolete ("Use the '(string, MatrixFloat2x2)' overload instead.")]
-		[Static]
-		[Export ("uniformWithName:matrixFloat2x2:")]
-		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		SKUniform Create (string name, Matrix2 value);
-#endif // !NET
-
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("uniformWithName:matrixFloat2x2:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		SKUniform Create (string name, MatrixFloat2x2 value);
 
-#if !NET
-		[Obsolete ("Use the '(string, MatrixFloat3x3)' overload instead.")]
-		[Static]
-		[Export ("uniformWithName:matrixFloat3x3:")]
-		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		SKUniform Create (string name, Matrix3 value);
-#endif
-
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("uniformWithName:matrixFloat3x3:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		SKUniform Create (string name, MatrixFloat3x3 value);
-
-#if !NET
-		[Obsolete ("Use 'the '(string, MatrixFloat4x4)' overload instead.")]
-		[Static]
-		[Export ("uniformWithName:matrixFloat4x4:")]
-		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
-		SKUniform Create (string name, Matrix4 value);
-#endif // !NET
 
 		[MacCatalyst (13, 1)]
 		[Static]
@@ -2729,6 +2465,9 @@ namespace SpriteKit {
 		[Static, Export ("bodyWithEdgeLoopFromRect:")]
 		SKPhysicsBody CreateEdgeLoop (CGRect rect);
 
+		/// <summary>Gets or sets a value the tells whether the physics body is affected by forces and impulses in the simulation.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("dynamic")]
 		bool Dynamic { [Bind ("isDynamic")] get; set; }
 
@@ -2738,6 +2477,9 @@ namespace SpriteKit {
 		[Export ("allowsRotation")]
 		bool AllowsRotation { get; set; }
 
+		/// <summary>Gets or sets a value that tells whether the body is resting on another body in the simulation, and thus does not participate in the simulation.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("resting")]
 		bool Resting { [Bind ("isResting")] get; set; }
 
@@ -2903,6 +2645,12 @@ namespace SpriteKit {
 		[Export ("contactDelegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakContactDelegate { get; set; }
 
+		/// <summary>A delegate object that can handle events relating to collisions between the physics bodies in the simulation.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakContactDelegate")]
 		ISKPhysicsContactDelegate ContactDelegate { get; set; }
 
@@ -3120,6 +2868,9 @@ namespace SpriteKit {
 		[Export ("autoplayLooped")]
 		bool AutoplayLooped { get; set; }
 
+		/// <summary>Whether the audio is altered by the node's position in the scene.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("positional")]
 		bool Positional { [Bind ("isPositional")] get; set; }
 	}
@@ -3407,14 +3158,11 @@ namespace SpriteKit {
 		[Export ("centerOfTileAtColumn:row:")]
 		CGPoint GetCenterOfTile (nuint column, nuint row);
 
-#if !WATCH
 		// Static Category from GameplayKit
-		[NoWatch]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("tileMapNodesWithTileSet:columns:rows:tileSize:fromNoiseMap:tileTypeNoiseMapThresholds:")]
 		SKTileMapNode [] FromTileSet (SKTileSet tileSet, nuint columns, nuint rows, CGSize tileSize, GKNoiseMap noiseMap, NSNumber [] thresholds);
-#endif
 
 		[Export ("attributeValues", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, SKAttributeValue> AttributeValues { get; set; }
@@ -3600,7 +3348,6 @@ namespace SpriteKit {
 
 	// SKRenderer is not available for WatchKit apps and the iOS simulator
 	/// <summary>The class used to render SpriteKit.</summary>
-	[NoWatch]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]

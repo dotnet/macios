@@ -42,4 +42,4 @@ namespace MonoTouchFixtures.Metal {
 	}
 }
 
-#endif // !__WATCHOS__
+#endif // !__IOS__

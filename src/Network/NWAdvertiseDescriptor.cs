@@ -28,8 +28,6 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[Watch (6, 0)]
 #endif
 	public class NWAdvertiseDescriptor : NativeObject {
 		[Preserve (Conditional = true)]
@@ -49,7 +47,6 @@ namespace Network {
 		[TV (16, 0)]
 		[Mac (13, 0)]
 		[iOS (16, 0)]
-		[Watch (9, 0)]
 #endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_advertise_descriptor nw_advertise_descriptor_create_application_service (IntPtr application_service_name);
@@ -69,7 +66,6 @@ namespace Network {
 		[TV (16, 0)]
 		[Mac (13, 0)]
 		[iOS (16, 0)]
-		[Watch (9, 0)]
 #endif
 		public NWAdvertiseDescriptor (string applicationServiceName) : base (nw_advertise_descriptor_create_application_service (applicationServiceName), true) { }
 
@@ -82,7 +78,6 @@ namespace Network {
 		[TV (16, 0)]
 		[Mac (13, 0)]
 		[iOS (16, 0)]
-		[Watch (9, 0)]
 #endif
 		[DllImport (Constants.NetworkLibrary)]
 		static extern IntPtr nw_advertise_descriptor_get_application_service_name (OS_nw_advertise_descriptor advertise_descriptor);
@@ -96,7 +91,6 @@ namespace Network {
 		[TV (16, 0)]
 		[Mac (13, 0)]
 		[iOS (16, 0)]
-		[Watch (9, 0)]
 #endif
 		public string? ApplicationServiceName {
 			get {
@@ -143,6 +137,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_advertise_descriptor_get_no_auto_rename (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool NoAutoRename {
 			set => nw_advertise_descriptor_set_no_auto_rename (GetCheckedHandle (), value.AsByte ());
 			get => nw_advertise_descriptor_get_no_auto_rename (GetCheckedHandle ()) != 0;
@@ -183,7 +180,10 @@ namespace Network {
 #endif
 		public NWTxtRecord TxtRecord {
 			get => new NWTxtRecord (nw_advertise_descriptor_copy_txt_record_object (GetCheckedHandle ()), owns: true);
-			set => nw_advertise_descriptor_set_txt_record_object (GetCheckedHandle (), value.GetHandle ());
+			set {
+				nw_advertise_descriptor_set_txt_record_object (GetCheckedHandle (), value.GetHandle ());
+				GC.KeepAlive (value);
+			}
 		}
 	}
 }

@@ -79,6 +79,7 @@ namespace Xamarin.MacDev.Tasks {
 		[Output]
 		public ITaskItem? EntitlementsInSignature { get; set; }
 
+		public string ValidateEntitlements { get; set; } = string.Empty;
 		#endregion
 
 		protected string ApplicationIdentifierKey {
@@ -86,7 +87,6 @@ namespace Xamarin.MacDev.Tasks {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return "application-identifier";
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -112,7 +112,6 @@ namespace Xamarin.MacDev.Tasks {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return iOSAllowedProvisioningKeys;
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -128,7 +127,6 @@ namespace Xamarin.MacDev.Tasks {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-				case ApplePlatform.WatchOS:
 					return AppBundleDir;
 				case ApplePlatform.MacOSX:
 				case ApplePlatform.MacCatalyst:
@@ -466,9 +464,7 @@ namespace Xamarin.MacDev.Tasks {
 				platform = MobileProvisionPlatform.tvOS;
 				break;
 			case "iPhoneSimulator":
-			case "WatchSimulator":
 			case "iPhoneOS":
-			case "WatchOS":
 				platform = MobileProvisionPlatform.iOS;
 				break;
 			case "MacOSX":
@@ -510,6 +506,9 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			compiled = GetCompiledEntitlements (profile, template);
+
+			ValidateAppEntitlements (profile, compiled);
+
 			archived = GetArchivedExpandedEntitlements (template, compiled);
 
 			try {
@@ -566,6 +565,63 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			return true;
+		}
+
+		void ValidateAppEntitlements (MobileProvision? profile, PDictionary requestedEntitlements)
+		{
+			var onlyWarn = false;
+			switch (ValidateEntitlements?.ToLowerInvariant ()) {
+			case "disable":
+				return;
+			case "warn":
+				onlyWarn = true;
+				break;
+			case null: // default to 'error'
+			case "":
+			case "error":
+				onlyWarn = false;
+				break;
+			default:
+				Log.LogError (7138, null, MSBStrings.E7138, ValidateEntitlements); // Invalid value '{0}' for the 'ValidateEntitlements' property. Valid values are: 'disable', 'warn' or 'error'.
+				return;
+			}
+
+			if (requestedEntitlements is null || requestedEntitlements.Count == 0) {
+				// Everything is OK if the app doesn't request any entitlements.
+				return;
+			}
+
+			var provisioningEntitlements = profile?.Entitlements;
+			var provisioningProfileName = profile?.Name;
+			foreach (var kvp in requestedEntitlements) {
+				var key = kvp.Key;
+				switch (key) {
+				case "aps-environment":
+					var requestedApsEnvironment = (kvp.Value as PString)?.Value;
+					if (profile is null) {
+						LogEntitlementValidationFailure (onlyWarn, 7139, MSBStrings.E7139, key); // "The app requests the entitlement '{0}', but no provisioning profile has been specified. Please specify the name of the provisioning profile to use with the 'CodesignProvision' property in the project file.
+					} else if (provisioningEntitlements is null || !provisioningEntitlements.TryGetValue<PString> (key, out var provisioningApsEnvironment)) {
+						LogEntitlementValidationFailure (onlyWarn, 7140, MSBStrings.E7140, key, provisioningProfileName); // The app requests the entitlement '{0}', but the provisioning profile '{1}' does not contain this entitlement.
+					} else if (requestedApsEnvironment != provisioningApsEnvironment.Value) {
+						LogEntitlementValidationFailure (onlyWarn, 7137, MSBStrings.E7137, key, requestedApsEnvironment, provisioningProfileName, provisioningApsEnvironment.Value); // The app requests the entitlement '{0}' with the value '{1}', but the provisioning profile '{2}' grants it for the value '{3}'."
+					} else {
+						Log.LogMessage (MessageImportance.Low, $"The app requests the entitlement '{key}' with the value '{requestedApsEnvironment}', which the provisioning profile '{provisioningProfileName}' grants.");
+					}
+					break;
+				default:
+					Log.LogMessage (MessageImportance.Low, $"The app requests entitlement '{key}', but no validation has been implemented for this entitlement. Assuming everything is OK.");
+					break;
+				}
+			}
+		}
+
+		void LogEntitlementValidationFailure (bool onlyWarn, int code, string message, params object? [] args)
+		{
+			if (onlyWarn) {
+				Log.LogWarning (code, Entitlements, message, args);
+			} else {
+				Log.LogError (code, Entitlements, message, args);
+			}
 		}
 
 		public bool ShouldCopyToBuildServer (ITaskItem item) => true;

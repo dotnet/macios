@@ -40,112 +40,76 @@ using CoreFoundation;
 using CoreGraphics;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreText {
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontDescriptor.h
 	public enum CTFontOrientation : uint {
+		/// <summary>To be added.</summary>
 		Default = 0,
+		/// <summary>To be added.</summary>
 		Horizontal = 1,
+		/// <summary>To be added.</summary>
 		Vertical = 2,
 	}
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontDescriptor.h
 	public enum CTFontFormat : uint {
+		/// <summary>An unrecognized font format.</summary>
 		Unrecognized = 0,
+		/// <summary>OpenType PostScript font.</summary>
 		OpenTypePostScript = 1,
+		/// <summary>OpenType TrueType font.</summary>
 		OpenTypeTrueType = 2,
+		/// <summary>TrueType font.</summary>
 		TrueType = 3,
+		/// <summary>PostScript font.</summary>
 		PostScript = 4,
+		/// <summary>Bitmap font.</summary>
 		Bitmap = 5,
 	}
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontDescriptor.h
 	public enum CTFontPriority : uint {
+		/// <summary>To be added.</summary>
 		System = 10000,
+		/// <summary>To be added.</summary>
 		Network = 20000,
+		/// <summary>To be added.</summary>
 		Computer = 30000,
+		/// <summary>To be added.</summary>
 		User = 40000,
+		/// <summary>To be added.</summary>
 		Dynamic = 50000,
+		/// <summary>To be added.</summary>
 		Process = 60000,
 	}
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontDescriptor.h
 	public enum CTFontDescriptorMatchingState : uint {
+		/// <summary>To be added.</summary>
 		Started,
+		/// <summary>To be added.</summary>
 		Finished,
+		/// <summary>To be added.</summary>
 		WillBeginQuerying,
+		/// <summary>To be added.</summary>
 		Stalled,
+		/// <summary>To be added.</summary>
 		WillBeginDownloading,
+		/// <summary>To be added.</summary>
 		Downloading,
+		/// <summary>To be added.</summary>
 		DownloadingFinished,
+		/// <summary>To be added.</summary>
 		Matched,
-		FailedWithError
+		/// <summary>To be added.</summary>
+		FailedWithError,
 	}
 
-#if !NET
-	public static class CTFontDescriptorAttributeKey {
-		public static readonly NSString? Url;
-		public static readonly NSString? Name;
-		public static readonly NSString? DisplayName;
-		public static readonly NSString? FamilyName;
-		public static readonly NSString? StyleName;
-		public static readonly NSString? Traits;
-		public static readonly NSString? Variation;
-		public static readonly NSString? Size;
-		public static readonly NSString? Matrix;
-		public static readonly NSString? CascadeList;
-		public static readonly NSString? CharacterSet;
-		public static readonly NSString? Languages;
-		public static readonly NSString? BaselineAdjust;
-		public static readonly NSString? MacintoshEncodings;
-		public static readonly NSString? Features;
-		public static readonly NSString? FeatureSettings;
-		public static readonly NSString? FixedAdvance;
-		public static readonly NSString? FontOrientation;
-		public static readonly NSString? FontFormat;
-		public static readonly NSString? RegistrationScope;
-		public static readonly NSString? Priority;
-		public static readonly NSString? Enabled;
-
-		static CTFontDescriptorAttributeKey ()
-		{
-			var handle = Libraries.CoreText.Handle;
-			Url = Dlfcn.GetStringConstant (handle, "kCTFontURLAttribute");
-			Name = Dlfcn.GetStringConstant (handle, "kCTFontNameAttribute");
-			DisplayName = Dlfcn.GetStringConstant (handle, "kCTFontDisplayNameAttribute");
-			FamilyName = Dlfcn.GetStringConstant (handle, "kCTFontFamilyNameAttribute");
-			StyleName = Dlfcn.GetStringConstant (handle, "kCTFontStyleNameAttribute");
-			Traits = Dlfcn.GetStringConstant (handle, "kCTFontTraitsAttribute");
-			Variation = Dlfcn.GetStringConstant (handle, "kCTFontVariationAttribute");
-			Size = Dlfcn.GetStringConstant (handle, "kCTFontSizeAttribute");
-			Matrix = Dlfcn.GetStringConstant (handle, "kCTFontMatrixAttribute");
-			CascadeList = Dlfcn.GetStringConstant (handle, "kCTFontCascadeListAttribute");
-			CharacterSet = Dlfcn.GetStringConstant (handle, "kCTFontCharacterSetAttribute");
-			Languages = Dlfcn.GetStringConstant (handle, "kCTFontLanguagesAttribute");
-			BaselineAdjust = Dlfcn.GetStringConstant (handle, "kCTFontBaselineAdjustAttribute");
-			MacintoshEncodings = Dlfcn.GetStringConstant (handle, "kCTFontMacintoshEncodingsAttribute");
-			Features = Dlfcn.GetStringConstant (handle, "kCTFontFeaturesAttribute");
-			FeatureSettings = Dlfcn.GetStringConstant (handle, "kCTFontFeatureSettingsAttribute");
-			FixedAdvance = Dlfcn.GetStringConstant (handle, "kCTFontFixedAdvanceAttribute");
-			FontOrientation = Dlfcn.GetStringConstant (handle, "kCTFontOrientationAttribute");
-			FontFormat = Dlfcn.GetStringConstant (handle, "kCTFontFormatAttribute");
-			RegistrationScope = Dlfcn.GetStringConstant (handle, "kCTFontRegistrationScopeAttribute");
-			Priority = Dlfcn.GetStringConstant (handle, "kCTFontPriorityAttribute");
-			Enabled = Dlfcn.GetStringConstant (handle, "kCTFontEnabledAttribute");
-		}
-	}
-#endif // !NET
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTFontDescriptorAttributes {
 
 		public CTFontDescriptorAttributes ()
@@ -160,33 +124,76 @@ namespace CoreText {
 			Dictionary = dictionary;
 		}
 
+		/// <summary>The NSDictionary that reflects the current values in the strongly typed CTFontDescriptorAttributes.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSDictionary Dictionary { get; private set; }
 
+		/// <summary>Used to access the URL for the font.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSUrl? Url {
 			get { return (NSUrl?) Dictionary [CTFontDescriptorAttributeKey.Url]; }
 			set { Adapter.SetValue (Dictionary, CTFontDescriptorAttributeKey.Url!, value); }
 		}
 
+		/// <summary>The PostScript name for the font.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string? Name {
 			get { return Adapter.GetStringValue (Dictionary, CTFontDescriptorAttributeKey.Name); }
 			set { Adapter.SetValue (Dictionary, CTFontDescriptorAttributeKey.Name!, value); }
 		}
 
+		/// <summary>The font display name</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>For example the display name for the PostScript name "HelveticaNeue" is "Helvetica Neue".</remarks>
 		public string? DisplayName {
 			get { return Adapter.GetStringValue (Dictionary, CTFontDescriptorAttributeKey.DisplayName); }
 			set { Adapter.SetValue (Dictionary, CTFontDescriptorAttributeKey.DisplayName!, value); }
 		}
 
+		/// <summary>The font family name.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// var attributes = new CTFontDescriptorAttributes () {
+		/// 	FamilyName = "Times New Roman"
+		/// };
+		///
+		/// var fontDescriptor = new CTFontDescriptor (attributes);
+		/// 	]]></code>
+		///           </example>
+		///         </remarks>
 		public string? FamilyName {
 			get { return Adapter.GetStringValue (Dictionary, CTFontDescriptorAttributeKey.FamilyName); }
 			set { Adapter.SetValue (Dictionary, CTFontDescriptorAttributeKey.FamilyName!, value); }
 		}
 
+		/// <summary>The font stylename</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public string? StyleName {
 			get { return Adapter.GetStringValue (Dictionary, CTFontDescriptorAttributeKey.StyleName); }
 			set { Adapter.SetValue (Dictionary, CTFontDescriptorAttributeKey.StyleName!, value); }
 		}
 
+		/// <summary>The font traits.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public CTFontTraits? Traits {
 			get {
 				if (CTFontDescriptorAttributeKey.Traits is NSString traitsKey && Dictionary [traitsKey] is NSDictionary traits)
@@ -198,6 +205,11 @@ namespace CoreText {
 			}
 		}
 
+		/// <summary>Font variation.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public CTFontVariation? Variation {
 			get {
 				if (CTFontDescriptorAttributeKey.Variation is NSString variationKey && Dictionary [variationKey] is NSDictionary variation)
@@ -210,11 +222,21 @@ namespace CoreText {
 		}
 
 		// CFNumber
+		/// <summary>The font point size, if not specified, the default 12.0 is used.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public float? Size {
 			get { return Adapter.GetSingleValue (Dictionary, CTFontDescriptorAttributeKey.Size); }
 			set { Adapter.SetValue (Dictionary, CTFontDescriptorAttributeKey.Size!, value); }
 		}
 
+		/// <summary>If set, the transformation matrix used when creating the font.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public unsafe CGAffineTransform? Matrix {
 			get {
 				if (CTFontDescriptorAttributeKey.Matrix is NSString matrixKey && Dictionary [matrixKey] is NSData d)
@@ -236,6 +258,11 @@ namespace CoreText {
 			}
 		}
 
+		/// <summary>Cascade list of font descriptors.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public IEnumerable<CTFontDescriptor>? CascadeList {
 			get {
 				if (CTFontDescriptorAttributeKey.CascadeList is NSString cascadeList)
@@ -245,27 +272,52 @@ namespace CoreText {
 			set { Adapter.SetNativeValue (Dictionary, CTFontDescriptorAttributeKey.CascadeList!, value); }
 		}
 
+		/// <summary>The character set.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public NSCharacterSet? CharacterSet {
 			get { return (NSCharacterSet) Dictionary [CTFontDescriptorAttributeKey.CharacterSet]; }
 			set { Adapter.SetValue (Dictionary, CTFontDescriptorAttributeKey.CharacterSet!, value); }
 		}
 
+		/// <summary>List of supported languages by the font, must be encoded in RFC3066bis standard.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public IEnumerable<string>? Languages {
 			get { return Adapter.GetStringArray (Dictionary, CTFontDescriptorAttributeKey.Languages); }
 			set { Adapter.SetValue (Dictionary, CTFontDescriptorAttributeKey.Languages!, value); }
 		}
 
 		// float represented as a CFNumber
+		/// <summary>The Baseline Adjustment.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public float? BaselineAdjust {
 			get { return Adapter.GetSingleValue (Dictionary, CTFontDescriptorAttributeKey.BaselineAdjust); }
 			set { Adapter.SetValue (Dictionary, CTFontDescriptorAttributeKey.BaselineAdjust!, value); }
 		}
 
+		/// <summary>If set, the Macintosh encodings for this font.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public float? MacintoshEncodings {
 			get { return Adapter.GetSingleValue (Dictionary, CTFontDescriptorAttributeKey.MacintoshEncodings); }
 			set { Adapter.SetValue (Dictionary, CTFontDescriptorAttributeKey.MacintoshEncodings!, value); }
 		}
 
+		/// <summary>The font features for a font reference.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public IEnumerable<CTFontFeatures>? Features {
 			get {
 				if (CTFontDescriptorAttributeKey.Features is NSString features) {
@@ -288,6 +340,11 @@ namespace CoreText {
 			}
 		}
 
+		/// <summary>Feature settings for the font.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public IEnumerable<CTFontFeatureSettings>? FeatureSettings {
 			get {
 				if (CTFontDescriptorAttributeKey.Features is NSString features) {
@@ -311,11 +368,21 @@ namespace CoreText {
 		}
 
 		// CFNumber
+		/// <summary>If set, overrides the font built-in constant advance.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public float? FixedAdvance {
 			get { return Adapter.GetSingleValue (Dictionary, CTFontDescriptorAttributeKey.FixedAdvance); }
 			set { Adapter.SetValue (Dictionary, CTFontDescriptorAttributeKey.FixedAdvance!, value); }
 		}
 
+		/// <summary>The font orientation.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public CTFontOrientation? FontOrientation {
 			get {
 				if (CTFontDescriptorAttributeKey.FontOrientation is NSString fontOrientation) {
@@ -330,6 +397,11 @@ namespace CoreText {
 			}
 		}
 
+		/// <summary>Font format.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public CTFontFormat? FontFormat {
 			get {
 				if (CTFontDescriptorAttributeKey.FontFormat is NSString fontFormat) {
@@ -344,6 +416,11 @@ namespace CoreText {
 			}
 		}
 
+		/// <summary>The font registration scope.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public CTFontManagerScope? RegistrationScope {
 			get {
 				if (CTFontDescriptorAttributeKey.RegistrationScope is NSString registrationScope) {
@@ -358,6 +435,11 @@ namespace CoreText {
 			}
 		}
 
+		/// <summary>The font priority used when resolving font duplicates.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public CTFontPriority? Priority {
 			get {
 				if (CTFontDescriptorAttributeKey.Priority is NSString priority) {
@@ -389,6 +471,11 @@ namespace CoreText {
 		}
 
 #if !XAMCORE_5_0
+		/// <summary>Enabled state.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>
+		///         </remarks>
 		public bool Enabled {
 			get {
 				var value = (NSNumber) Dictionary [CTFontDescriptorAttributeKey.Enabled];
@@ -402,7 +489,7 @@ namespace CoreText {
 		}
 #endif // !XAMCORE_5_0
 
-#if NET && (__IOS__ || __MACCATALYST__)
+#if __IOS__ || __MACCATALYST__
 		[SupportedOSPlatform ("ios13.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -414,12 +501,10 @@ namespace CoreText {
 #endif
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public partial class CTFontDescriptor : NativeObject {
 		[Preserve (Conditional = true)]
 		internal CTFontDescriptor (NativeHandle handle, bool owns)
@@ -449,8 +534,31 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontDescriptorCreateWithAttributes (IntPtr attributes);
+		static IntPtr Create (CTFontDescriptorAttributes attributes)
+		{
+			if (attributes is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (attributes));
+			var dict = attributes.Dictionary;
+			IntPtr result = CTFontDescriptorCreateWithAttributes (dict.Handle);
+			GC.KeepAlive (dict);
+			return result;
+		}
+
+		/// <param name="attributes">Font attributes to use for the font descriptor.</param>
+		///         <summary>Creates a font descriptor from a set of attributes.</summary>
+		///         <remarks>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// var attributes = new CTFontDescriptorAttributes () {
+		/// 	FamilyName = "Times New Roman"
+		/// };
+		///
+		/// var fontDescriptor = new CTFontDescriptor (attributes);
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		public CTFontDescriptor (CTFontDescriptorAttributes attributes)
-			: base (CTFontDescriptorCreateWithAttributes (Runtime.ThrowOnNull (attributes, nameof (attributes)).Dictionary.Handle), true, true)
+			: base (Create (attributes), true, true)
 		{
 		}
 
@@ -460,7 +568,9 @@ namespace CoreText {
 		{
 			if (attributes is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (attributes));
-			return CreateDescriptor (CTFontDescriptorCreateCopyWithAttributes (Handle, attributes.Handle));
+			CTFontDescriptor? descriptor = CreateDescriptor (CTFontDescriptorCreateCopyWithAttributes (Handle, attributes.Handle));
+			GC.KeepAlive (attributes);
+			return descriptor;
 		}
 
 		static CTFontDescriptor? CreateDescriptor (IntPtr h)
@@ -474,7 +584,10 @@ namespace CoreText {
 		{
 			if (attributes is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (attributes));
-			return CreateDescriptor (CTFontDescriptorCreateCopyWithAttributes (Handle, attributes.Dictionary.Handle));
+			var attributesDictionary = attributes.Dictionary;
+			CTFontDescriptor? descriptor = CreateDescriptor (CTFontDescriptorCreateCopyWithAttributes (Handle, attributesDictionary.Handle));
+			GC.KeepAlive (attributesDictionary);
+			return descriptor;
 		}
 
 		// TODO: is there a better type to use for variationIdentifier?  
@@ -679,7 +792,8 @@ namespace CoreText {
 		CTFontDescriptor? WithFeature (FontFeatureGroup featureGroup, int featureSelector)
 		{
 			using (NSNumber t = new NSNumber ((int) featureGroup), f = new NSNumber (featureSelector)) {
-				return CreateDescriptor (CTFontDescriptorCreateCopyWithFeature (Handle, t.Handle, f.Handle));
+				CTFontDescriptor? result = CreateDescriptor (CTFontDescriptorCreateCopyWithFeature (Handle, t.Handle, f.Handle));
+				return result;
 			}
 		}
 
@@ -688,6 +802,7 @@ namespace CoreText {
 		public CTFontDescriptor [] GetMatchingFontDescriptors (NSSet? mandatoryAttributes)
 		{
 			var cfArrayRef = CTFontDescriptorCreateMatchingFontDescriptors (Handle, mandatoryAttributes.GetHandle ());
+			GC.KeepAlive (mandatoryAttributes);
 			if (cfArrayRef == IntPtr.Zero)
 				return Array.Empty<CTFontDescriptor> ();
 			return CFArray.ArrayFromHandleFunc (cfArrayRef, fd => new CTFontDescriptor (cfArrayRef, false), true)!;
@@ -709,7 +824,9 @@ namespace CoreText {
 		static extern IntPtr CTFontDescriptorCreateMatchingFontDescriptor (IntPtr descriptor, IntPtr mandatoryAttributes);
 		public CTFontDescriptor? GetMatchingFontDescriptor (NSSet? mandatoryAttributes)
 		{
-			return CreateDescriptor (CTFontDescriptorCreateMatchingFontDescriptors (Handle, mandatoryAttributes.GetHandle ()));
+			CTFontDescriptor? result = CreateDescriptor (CTFontDescriptorCreateMatchingFontDescriptors (Handle, mandatoryAttributes.GetHandle ()));
+			GC.KeepAlive (mandatoryAttributes);
+			return result;
 		}
 
 		public CTFontDescriptor? GetMatchingFontDescriptor (params NSString [] mandatoryAttributes)
@@ -743,13 +860,17 @@ namespace CoreText {
 		{
 			if (attribute is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (attribute));
-			return Runtime.GetNSObject<NSObject> (CTFontDescriptorCopyAttribute (Handle, attribute.Handle), true);
+			NSObject? result = Runtime.GetNSObject<NSObject> (CTFontDescriptorCopyAttribute (Handle, attribute.Handle), true);
+			GC.KeepAlive (attribute);
+			return result;
 		}
 
 		public NSObject? GetLocalizedAttribute (NSString attribute)
 		{
 			unsafe {
-				return Runtime.GetNSObject<NSObject> (CTFontDescriptorCopyLocalizedAttribute (Handle, attribute.Handle, null), true);
+				NSObject? result = Runtime.GetNSObject<NSObject> (CTFontDescriptorCopyLocalizedAttribute (Handle, attribute.Handle, null), true);
+				GC.KeepAlive (attribute);
+				return result;
 			}
 		}
 
@@ -761,30 +882,22 @@ namespace CoreText {
 			IntPtr lang;
 			unsafe {
 				handle = CTFontDescriptorCopyLocalizedAttribute (Handle, attribute.Handle, &lang);
+				GC.KeepAlive (attribute);
 			}
 			language = Runtime.GetNSObject<NSString> (lang, true);
 			return Runtime.GetNSObject<NSObject> (handle, true);
 		}
 		#endregion
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		static unsafe extern byte CTFontDescriptorMatchFontDescriptorsWithProgressHandler (IntPtr descriptors, IntPtr mandatoryAttributes, BlockLiteral* progressBlock);
 
 		public delegate bool CTFontDescriptorProgressHandler (CTFontDescriptorMatchingState state, CTFontDescriptorMatchingProgress progress);
 
-#if !NET
-		delegate byte ct_font_desctiptor_progress_handler_t (IntPtr block, CTFontDescriptorMatchingState state, IntPtr progress);
-		static ct_font_desctiptor_progress_handler_t static_MatchFontDescriptorsHandler = MatchFontDescriptorsHandler;
-
-		[MonoPInvokeCallback (typeof (ct_font_desctiptor_progress_handler_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static byte MatchFontDescriptorsHandler (IntPtr block, CTFontDescriptorMatchingState state, IntPtr progress)
 		{
 			var del = BlockLiteral.GetTarget<CTFontDescriptorProgressHandler> (block);
@@ -797,12 +910,10 @@ namespace CoreText {
 			return 0;
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static bool MatchFontDescriptors (CTFontDescriptor [] descriptors, NSSet? mandatoryAttributes, CTFontDescriptorProgressHandler progressHandler)
 		{
@@ -813,15 +924,12 @@ namespace CoreText {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (progressHandler));
 
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, CTFontDescriptorMatchingState, IntPtr, byte> trampoline = &MatchFontDescriptorsHandler;
 				using var block = new BlockLiteral (trampoline, progressHandler, typeof (CTFontDescriptor), nameof (MatchFontDescriptorsHandler));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_MatchFontDescriptorsHandler, progressHandler);
-#endif
 				using var descriptorsArray = NSArray.FromNSObjects (descriptors);
 				var rv = CTFontDescriptorMatchFontDescriptorsWithProgressHandler (descriptorsArray.GetHandle (), mandatoryAttributes.GetHandle (), &block);
+				GC.KeepAlive (descriptorsArray);
+				GC.KeepAlive (mandatoryAttributes);
 				return rv != 0;
 			}
 		}

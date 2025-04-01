@@ -28,8 +28,7 @@ namespace Foundation {
 #if MONOMAC
 			try {
 				return SupportsSecureCoding (new Class (type));
-			}
-			catch (ArgumentException) {
+			} catch (ArgumentException) {
 				// unlike XI the current registration will throw for protocols
 				// until that's fixed we'll only report correctly properly bound protocol types
 				// the workaround is important since this method is used to validate our bindings
@@ -44,7 +43,9 @@ namespace Foundation {
 		{
 			if (klass is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (klass));
-			return SupportsSecureCoding (klass.Handle);
+			bool result = SupportsSecureCoding (klass.Handle);
+			GC.KeepAlive (klass);
+			return result;
 		}
 
 		internal static bool SupportsSecureCoding (IntPtr ptr)

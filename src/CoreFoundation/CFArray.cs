@@ -34,19 +34,11 @@ using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
 
-#if NET
 using CFIndex = System.IntPtr;
-#else
-using CFIndex = System.nint;
-#endif
 using CFArrayRef = System.IntPtr;
 using CFAllocatorRef = System.IntPtr;
 
 #nullable enable
-
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
 
 namespace CoreFoundation {
 
@@ -55,13 +47,6 @@ namespace CoreFoundation {
 
 		// this cache the handle instead of issuing a native call
 		internal static NativeHandle CFNullHandle = _CFNullHandle;
-
-#if !NET
-		internal CFArray (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
 
 		[Preserve (Conditional = true)]
 		internal CFArray (NativeHandle handle, bool owns)
@@ -90,6 +75,13 @@ namespace CoreFoundation {
 
 		internal static CFArray FromNativeObjects (params INativeObject [] values)
 		{
+			return new CFArray (Create (values), true);
+		}
+
+		internal static CFArray? FromNullableNativeObjects (params INativeObject []? values)
+		{
+			if (values is null)
+				return null;
 			return new CFArray (Create (values), true);
 		}
 

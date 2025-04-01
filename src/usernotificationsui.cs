@@ -23,31 +23,34 @@ namespace UserNotificationsUI {
 
 	/// <summary>Enumerates the kinds of media control button sets that the system will provide for playable notification content.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Unavailable (PlatformName.WatchOS)]
 	[Unavailable (PlatformName.TvOS)]
 	[Native]
 	public enum UNNotificationContentExtensionMediaPlayPauseButtonType : ulong {
+		/// <summary>Indicates that no playback controls should be overlayed on top of the notification content.</summary>
 		None,
+		/// <summary>Indicates that the default playback control display method should be used.</summary>
 		Default,
-		Overlay
+		/// <summary>Indicates that playback controls should be overlayed on top of the notification content.</summary>
+		Overlay,
 	}
 
 	/// <summary>Enumerates preferred notification responses.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Unavailable (PlatformName.WatchOS)]
 	[Unavailable (PlatformName.TvOS)]
 	[Native]
 	public enum UNNotificationContentExtensionResponseOption : ulong {
+		/// <summary>Indicates that the notification interface will not be dismissed, and that the content extension will handle the action.</summary>
 		DoNotDismiss,
+		/// <summary>Indicates that the notification interface will be dismissed, and that the content extension will handle the action.</summary>
 		Dismiss,
-		DismissAndForwardAction
+		/// <summary>Indicates that the notification interface will be dismissed, and that the notification will be forwarded to the app for it to respond.</summary>
+		DismissAndForwardAction,
 	}
 
 	interface IUNNotificationContentExtension { }
 
 	/// <summary>Interface that contains the mandatory methods, if any, for the <see cref="T:UserNotifications.UNNotificationContent" /> protocol, which is required for displaying notification content from a view controller's view with custom UI.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Unavailable (PlatformName.WatchOS)]
 	[Unavailable (PlatformName.TvOS)]
 	[Protocol]
 	interface UNNotificationContentExtension {
@@ -77,7 +80,6 @@ namespace UserNotificationsUI {
 
 	/// <summary>Content extension for presenting notification UI, including UI for playable content.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
-	[Unavailable (PlatformName.WatchOS)]
 	[Unavailable (PlatformName.TvOS)]
 	[Category]
 	[BaseType (typeof (NSExtensionContext))]

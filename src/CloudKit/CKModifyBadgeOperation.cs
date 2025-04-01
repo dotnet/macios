@@ -24,18 +24,23 @@ namespace CloudKit {
 #else
 	[Deprecated (PlatformName.MacOSX, 15, 0, message: "Modifying badge counts is no longer supported.")]
 	[Deprecated (PlatformName.iOS, 18, 0, message: "Modifying badge counts is no longer supported.")]
-	[Deprecated (PlatformName.WatchOS, 11, 0, message: "Modifying badge counts is no longer supported.")]
 	[Deprecated (PlatformName.TvOS, 18, 0, message: "Modifying badge counts is no longer supported.")]
 #endif
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	public class CKModifyBadgeOperation : CKOperation {
+		/// <summary>The handle for this class.</summary>
+		///         <value>The pointer to the Objective-C class.</value>
+		///         <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
 		public override NativeHandle ClassHandle { get => throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms); }
 
+		/// <summary>Default constructor, initializes a new instance of this class.</summary>
+		///         <remarks>To be added.</remarks>
 		public CKModifyBadgeOperation () : base (NSObjectFlag.Empty)
 		{
 			throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
 		}
 
+		/// <include file="../../docs/api/CloudKit/CKModifyBadgeOperation.xml" path="/Documentation/Docs[@DocId='M:CloudKit.CKModifyBadgeOperation.#ctor(Foundation.NSObjectFlag)']/*" />
 		protected CKModifyBadgeOperation (NSObjectFlag t) : base (t)
 		{
 			throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
@@ -52,6 +57,9 @@ namespace CloudKit {
 			throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual nuint BadgeValue {
 			get {
 				throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
@@ -61,6 +69,12 @@ namespace CloudKit {
 			}
 		}
 
+		/// <summary>Gets or sets the action that is run after the operation completes.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		public unsafe virtual global::System.Action<NSError>? Completed {
 			get {
 				throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);

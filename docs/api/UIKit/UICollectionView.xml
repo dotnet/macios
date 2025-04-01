@@ -307,14 +307,96 @@ public class SimpleCollectionViewController : UICollectionViewController
         </item>
       </list>
     </remarks>
-    
-    
-    
-    
-    
-    
-    
     <related type="article" href="https://docs.xamarin.com/ios/Guides/User_Interface/Introduction_to_Collection_Views">Introduction to Collection Views</related>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UICollectionView_class/index.html">Apple documentation for <c>UICollectionView</c></related>
   </Docs>
+  <Docs DocId="M:UIKit.UICollectionView.RegisterClassForCell(System.Type,System.String)">
+        <param name="cellType">To be added.</param>
+        <param name="reuseIdentifier">A non-empty string to be associated with the <paramref name="cellType" />.</param>
+        <summary>Specifies the type to be used to populate cells.</summary>
+        <remarks>
+          <para>The <see cref="T:UIKit.UICollectionView" /> maintains a highly-efficient reuse queue for offscreen components. This requires that the <see cref="T:UIKit.UICollectionView" /> be responsible for the lifecycle management of its component views. This method (and related methods such as <see cref="M:UIKit.UICollectionView.RegisterClassForSupplementaryView(System.Type,UIKit.UICollectionElementKindSection,System.String)" />) provide the <see cref="T:UIKit.UICollectionView" /> the knowledge of which types it needs to instantiate.</para>
+          <para>The application developer may pass <see langword="null" /> as the <paramref name="reuseIdentifier" />, in which case the <paramref name="cellType" /> will be "un-registered" and no longer instantiated. The application developer may pass in a <paramref name="reuseIdentifier" /> previously associated with another type, in which case the old type will be "de-registered" and the new <paramref name="cellType" /> will be used.</para>
+          <para>It is very important that the type that you specify implements a public constructor that takes a <see cref="T:System.Drawing.RectangleF" /> parameter, this is used to initialize the class from an object allocated by Objective-C.   The following example shows the constructor in use:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+public class AnimalCell : UICollectionViewCell
+{
+[Export ("initWithFrame:")]
+  public AnimalCell (RectangleF frame) : base (frame) {}
+}
+]]></code>
+          </example>
+          <para>Developers should not call this method if they have prototyped their <see cref="T:UIKit.UICollectionViewCell" /> type using a Storyboard. If they do so, they will overwrite the Storyboard-defined definition instantiation of the <see cref="T:UIKit.UICollectionViewCell" /> object's children.</para>
+        </remarks>
+        <altmember cref="M:UIKit.UICollectionView.RegisterClassForSupplementaryView" />
+        <altmember cref="M:UIKit.UICollectionView.RegisterNibForCell" />
+        <altmember cref="M:UIKit.UICollectionView.RegisterNibForSupplementaryView" />
+        <altmember cref="M:UIKit.UICollectionViewLayout.RegisterClassForDecorationView" />
+        <altmember cref="M:UIKit.UICollectionViewLayout.RegisterNibForDecorationView" />
+      </Docs>
+  <Docs DocId="M:UIKit.UICollectionView.RegisterClassForCell(System.Type,Foundation.NSString)">
+        <param name="cellType">A subtype of <see cref="T:UIKit.UICollectionViewCell" />.</param>
+        <param name="reuseIdentifier">A non-empty string to be associated with the <paramref name="cellType" />.</param>
+        <summary>Specifies the type to be used to populate cells.</summary>
+        <remarks>
+          <para>The <see cref="T:UIKit.UICollectionView" /> maintains a highly-efficient reuse queue for offscreen components. This requires that the <see cref="T:UIKit.UICollectionView" /> be responsible for the lifecycle management of its component views. This method (and related methods such as <see cref="M:UIKit.UICollectionView.RegisterClassForSupplementaryView(System.Type,UIKit.UICollectionElementKindSection,System.String)" />) provide the <see cref="T:UIKit.UICollectionView" /> the knowledge of which types it needs to instantiate.</para>
+          <para>The application developer may pass <see langword="null" /> as the <paramref name="reuseIdentifier" />, in which case the <paramref name="cellType" /> will be "un-registered" and no longer instantiated. The application developer may pass in a <paramref name="reuseIdentifier" /> previously associated with another type, in which case the old type will be "de-registered" and the new <paramref name="cellType" /> will be used.</para>
+          <para>It is very important that the type that you specify implements a public constructor that takes a <see cref="T:System.Drawing.RectangleF" /> parameter, this is used to initialize the class from an object allocated by Objective-C.   The following example shows the constructor in use:</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+public class AnimalCell : UICollectionViewCell
+{
+[Export ("initWithFrame:")]
+  public AnimalCell (RectangleF frame) : base (frame) {}
+}
+]]></code>
+          </example>
+          <para>Developers should not call this method if they have prototyped their <see cref="T:UIKit.UICollectionViewCell" /> type using a Storyboard. If they do so, they will overwrite the Storyboard-defined definition instantiation of the <see cref="T:UIKit.UICollectionViewCell" /> object's children.</para>
+        </remarks>
+        <altmember cref="M:UIKit.UICollectionView.RegisterClassForSupplementaryView" />
+        <altmember cref="M:UIKit.UICollectionView.RegisterNibForCell" />
+        <altmember cref="M:UIKit.UICollectionView.RegisterNibForSupplementaryView" />
+        <altmember cref="M:UIKit.UICollectionViewLayout.RegisterClassForDecorationView" />
+        <altmember cref="M:UIKit.UICollectionViewLayout.RegisterNibForDecorationView" />
+      </Docs>
+  <Docs DocId="M:UIKit.UICollectionView.RegisterClassForSupplementaryView(System.Type,UIKit.UICollectionElementKindSection,Foundation.NSString)">
+        <param name="cellType">A subtype of <see cref="T:UIKit.UICollectionReusableView" /> to be used for supplementary views</param>
+        <param name="section">The type of supplementary view being registered.</param>
+        <param name="reuseIdentifier">A non-empty string to be associated with the <paramref name="cellType" />.</param>
+        <summary>Specifies the type to be used to populate supplementary views.</summary>
+        <remarks>
+          <para>The <see cref="T:UIKit.UICollectionView" /> maintains a highly-efficient reuse queue for offscreen components. This requires that the <see cref="T:UIKit.UICollectionView" /> be responsible for the lifecycle management of its component views. This method (and related methods such as <see cref="M:UIKit.UICollectionView.RegisterClassForCell(System.Type,System.String)" />) provide the <see cref="T:UIKit.UICollectionView" /> the knowledge of which types it needs to instantiate.</para>
+          <para>The application developer may pass <see langword="null" /> as the <paramref name="reuseIdentifier" />, in which case the <paramref name="cellType" /> will be "un-registered" and no longer instantiated. The application developer may pass in a <paramref name="reuseIdentifier" /> previously associated with another type, in which case the old type will be "de-registered" and the new <paramref name="cellType" /> will be used.</para>
+          <para>
+	It is very important that you provide constructor that takes an IntPtr argument in any subclasses that you register.   This is required because the classes are actually allocated by the Objective-C runtime, and you must initialize them. 
+      </para>
+        </remarks>
+        <altmember cref="M:UIKit.UICollectionView.RegisterClassForCell" />
+        <altmember cref="M:UIKit.UICollectionView.RegisterNibForCell" />
+        <altmember cref="M:UIKit.UICollectionView.RegisterNibForSupplementaryView" />
+        <altmember cref="M:UIKit.UICollectionViewLayout.RegisterClassForDecorationView" />
+        <altmember cref="M:UIKit.UICollectionViewLayout.RegisterNibForDecorationView" />
+      </Docs>
+  <Docs DocId="M:UIKit.UICollectionView.RegisterNibForSupplementaryView(UIKit.UINib,UIKit.UICollectionElementKindSection,Foundation.NSString)">
+        <param name="nib">The <see cref="T:UIKit.UINib" /> to be used to populate the supplementary view.</param>
+        <param name="section">The kind of supplementary view being registered.</param>
+        <param name="reuseIdentifier">A non-empty string to be associated with the <paramref name="nib" />.</param>
+        <summary>Specifies the nib to be used for populating the supplementary view.</summary>
+        <remarks>
+          <para>The <see cref="T:UIKit.UICollectionView" /> maintains a highly-efficient reuse queue for offscreen components. This requires that the <see cref="T:UIKit.UICollectionView" /> be responsible for the lifecycle management of its component views. This method (and related methods such as <see cref="M:UIKit.UICollectionView.RegisterNibForCell(UIKit.UINib,System.String)" />) provide the <see cref="T:UIKit.UICollectionView" /> the knowledge of which types it needs to instantiate.</para>
+          <para>The application developer may pass <see langword="null" /> as the <paramref name="reuseIdentifier" />, in which case the <paramref name="nib" /> will be "un-registered" and no longer instantiated. The application developer may pass in a <paramref name="reuseIdentifier" /> previously associated with another nib, in which case the old nib will be "de-registered" and the new <paramref name="nib" /> will be used.</para>
+        </remarks>
+      </Docs>
+  <Docs DocId="M:UIKit.UICollectionView.DequeueReusableSupplementaryView(UIKit.UICollectionElementKindSection,Foundation.NSString,Foundation.NSIndexPath)">
+        <param name="section">A <see cref="T:UIKit.UICollectionElementKindSection" /> specifying what kind of supplementary view is desired.</param>
+        <param name="reuseIdentifier">To be added.</param>
+        <param name="indexPath">The <see cref="T:Foundation.NSIndexPath" /> specifying the location of the supplementary view.</param>
+        <summary>Returns a newly-allocated or reused supplementary <see cref="T:UIKit.UICollectionReusableView" />.</summary>
+        <returns>A supplementary <see cref="T:UIKit.UICollectionReusableView" /> that is either newly allocated or recycled from the reuse queue..</returns>
+        <remarks>
+          <para>The application developer must have registered a class or nib file using either <see cref="M:UIKit.UICollectionView.RegisterClassForSupplementaryView(System.Type,UIKit.UICollectionElementKindSection,System.String)" /> or <see cref="M:UIKit.UICollectionView.RegisterNibForSupplementaryView(UIKit.UINib,UIKit.UICollectionElementKindSection,System.String)" /> prior to calling this method.</para>
+          <para>If the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:UIKIt.UICollectionReusableView&amp;scope=Xamarin" title="T:UIKIt.UICollectionReusableView">T:UIKIt.UICollectionReusableView</a></format> is not newly allocated but is being recycled, this method will call that cell's <see cref="M:UIKit.UICollectionReusableView.PrepareForReuse" /> method.</para>
+        </remarks>
+      </Docs>
 </Documentation>

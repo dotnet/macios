@@ -32,10 +32,6 @@ using System.Runtime.Versioning;
 using CoreFoundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 // Disable until we get around to enable + fix any issues.
 #nullable disable
 
@@ -183,11 +179,15 @@ namespace Foundation {
 			IntPtr buf = Marshal.AllocHGlobal ((IntPtr) (count * IntPtr.Size));
 			for (nint i = 0; i < count; i++) {
 				var item = items [i];
+				// The analyzer cannot deal with arrays, we manually keep alive the whole array below
+#pragma warning disable RBI0014
 				IntPtr h = item is null ? NSNull.Null.Handle : item.Handle;
 				Marshal.WriteIntPtr (buf, (int) (i * IntPtr.Size), h);
+#pragma warning restore RBI0014
 			}
 			NSArray arr = Runtime.GetNSObject<NSArray> (NSArray.FromObjects (buf, count));
 			Marshal.FreeHGlobal (buf);
+			GC.KeepAlive (items);
 			return arr;
 		}
 
@@ -232,7 +232,6 @@ namespace Foundation {
 			}
 		}
 
-#if NET
 		/// <summary>Create an <see cref="NSArray" /> from the specified pointers.</summary>
 		/// <param name="items">Array of pointers (to <see cref="NSObject" /> instances).</param>
 		/// <remarks>If the <paramref name="items" /> array is null, an <see cref="ArgumentNullException" /> is thrown.</remarks>
@@ -242,11 +241,10 @@ namespace Foundation {
 				throw new ArgumentNullException (nameof (items));
 
 			unsafe {
-				fixed (IntPtr *valuesPtr = items)
+				fixed (IntPtr* valuesPtr = items)
 					return Runtime.GetNSObject<NSArray> (NSArray.FromObjects ((IntPtr) valuesPtr, items.Length))!;
 			}
 		}
-#endif
 
 		static public NSArray FromIntPtrs (NativeHandle [] vals)
 		{
@@ -274,15 +272,7 @@ namespace Foundation {
 
 		internal static NativeHandle GetAtIndex (NativeHandle handle, nuint i)
 		{
-#if NET
 			return Messaging.NativeHandle_objc_msgSend_UIntPtr (handle, Selector.GetHandle ("objectAtIndex:"), (UIntPtr) i);
-#else
-#if MONOMAC
-			return Messaging.IntPtr_objc_msgSend_UIntPtr (handle, selObjectAtIndex_XHandle, (UIntPtr) i);
-#else
-			return Messaging.IntPtr_objc_msgSend_UIntPtr (handle, Selector.GetHandle ("objectAtIndex:"), (UIntPtr) i);
-#endif
-#endif
 		}
 
 		[Obsolete ("Use of 'CFArray.StringArrayFromHandle' offers better performance.")]
@@ -533,7 +523,7 @@ namespace Foundation {
 		}
 
 #if !NET
-		[Watch (6,0), TV (13,0), iOS (13,0)]
+		[TV (13,0), iOS (13,0)]
 #else
 		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
 #endif

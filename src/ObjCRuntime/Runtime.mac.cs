@@ -47,16 +47,22 @@ namespace ObjCRuntime {
 		internal const string AssemblyName = "Xamarin.Mac.dll";
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static string? FrameworksPath {
 			get; set;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static string? ResourcesPath {
 			get; set;
 		}
-			
+
 		delegate void initialize_func ();
-		unsafe delegate sbyte *get_sbyteptr_func ();
+		unsafe delegate sbyte* get_sbyteptr_func ();
 
 #if !NET // There's a different implementation for other platforms + .NET macOS in Runtime.cs
 		static volatile bool originalWorkingDirectoryIsSet;

@@ -20,7 +20,6 @@ namespace Network {
 	[SupportedOSPlatform ("ios15.0")]
 	[SupportedOSPlatform ("maccatalyst")]
 #else
-	[Watch (8, 0)]
 	[TV (15, 0)]
 	[iOS (15, 0)]
 	[MacCatalyst (15, 0)]
@@ -34,6 +33,9 @@ namespace Network {
 		internal NWMultiplexGroup (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		public NWMultiplexGroup (NWEndpoint endpoint)
-			: base (nw_group_descriptor_create_multiplex (endpoint.GetCheckedHandle ()), true) { }
+			: base (nw_group_descriptor_create_multiplex (endpoint.GetCheckedHandle ()), true)
+		{
+			GC.KeepAlive (endpoint);
+		}
 	}
 }

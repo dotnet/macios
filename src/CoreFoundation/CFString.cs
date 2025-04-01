@@ -40,47 +40,61 @@ using System.Runtime.Versioning;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 namespace CoreFoundation {
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct CFRange {
 		nint loc; // defined as 'long' in native code
 		nint len; // defined as 'long' in native code
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int Location {
 			get { return (int) loc; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int Length {
 			get { return (int) len; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public long LongLocation {
 			get { return (long) loc; }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public long LongLength {
 			get { return (long) len; }
 		}
 
+		/// <param name="loc">To be added.</param>
+		///         <param name="len">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CFRange (int loc, int len)
 		{
 			this.loc = loc;
 			this.len = len;
 		}
 
+		/// <param name="l">To be added.</param>
+		///         <param name="len">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CFRange (long l, long len)
 		{
 			this.loc = (nint) l;
@@ -93,32 +107,45 @@ namespace CoreFoundation {
 			this.len = len;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return string.Format ("CFRange [Location: {0} Length: {1}]", loc, len);
 		}
 	}
 
-#if NET
 	// nothing is exposed publicly
 	internal static class CFObject {
-#else
-	public static class CFObject {
-#endif
 
 		[DllImport (Constants.CoreFoundationLibrary)]
 		internal extern static void CFRelease (IntPtr obj);
 
 		[DllImport (Constants.CoreFoundationLibrary)]
 		internal extern static IntPtr CFRetain (IntPtr obj);
+
+		/// <summary>Does nothing if <paramref name="obj" /> is IntPtr.Zero, otherwise calls CFRelease.</summary>
+		internal static void SafeRelease (IntPtr obj)
+		{
+			if (obj == IntPtr.Zero)
+				return;
+			CFRelease (obj);
+		}
+
+		/// <summary>Does nothing if <paramref name="obj" /> is IntPtr.Zero, otherwise calls CFRetain.</summary>
+		internal static IntPtr SafeRetain (IntPtr obj)
+		{
+			if (obj == IntPtr.Zero)
+				return obj;
+			return CFRetain (obj);
+		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CFString
 #if !COREBUILD
 		: NativeObject
@@ -127,6 +154,8 @@ namespace CoreFoundation {
 #if !COREBUILD
 		internal string? str;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected CFString () { }
 
 		[DllImport (Constants.CoreFoundationLibrary, CharSet = CharSet.Unicode)]
@@ -156,6 +185,9 @@ namespace CoreFoundation {
 				CFObject.CFRelease (handle);
 		}
 
+		/// <param name="str">To be added.</param>
+		///         <summary>Creates a CFString from a C# string.</summary>
+		///         <remarks>To be added.</remarks>
 		public CFString (string str)
 		{
 			if (str is null)
@@ -166,22 +198,21 @@ namespace CoreFoundation {
 			this.str = str;
 		}
 
+		/// <summary>Type identifier for the CoreFoundation.CFString type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
+		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[bool isCFString = (CFType.GetTypeID (foo.Handle) == CFString.GetTypeID ());]]></code>
+		///           </example>
+		///         </remarks>
 		[DllImport (Constants.CoreFoundationLibrary, EntryPoint = "CFStringGetTypeID")]
 		public extern static nint GetTypeID ();
 
-#if !NET
-		public CFString (NativeHandle handle)
-			: this (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
-#if NET
 		internal CFString (NativeHandle handle, bool owns)
-#else
-		protected internal CFString (NativeHandle handle, bool owns)
-#endif
 			: base (handle, owns)
 		{
 		}
@@ -237,8 +268,10 @@ namespace CoreFoundation {
 			if (x is null)
 				return null;
 
-			if (x.str is null)
+			if (x.str is null) {
 				x.str = FromHandle (x.Handle);
+				GC.KeepAlive (x);
+			}
 
 			return x.str;
 		}
@@ -252,6 +285,9 @@ namespace CoreFoundation {
 			return new CFString (s);
 		}
 
+		/// <summary>String length.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public int Length {
 			get {
 				if (str is not null)

@@ -8,8 +8,6 @@
 // Copyright 2012-2014 Xamarin Inc. All rights reserved.
 //
 
-#if !__WATCHOS__
-
 using System;
 using Foundation;
 using CoreBluetooth;
@@ -184,5 +182,3 @@ namespace MonoTouchFixtures.CoreBluetooth {
 		}
 	}
 }
-
-#endif // !__WATCHOS__

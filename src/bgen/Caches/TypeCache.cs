@@ -112,6 +112,9 @@ public class TypeCache {
 	public Type? CMClock { get; }
 	public Type? CMFormatDescription { get; }
 	public Type? CMSampleBuffer { get; }
+	public Type? CMTag { get; }
+	public Type? CMTagCollection { get; }
+	public Type? CMTaggedBufferGroup { get; }
 	public Type? CMTime { get; }
 	public Type? CMTimebase { get; }
 	public Type? CMTimeMapping { get; }
@@ -182,16 +185,10 @@ public class TypeCache {
 		System_UIntPtr = Lookup (corlibAssembly, "System", "UIntPtr");
 		System_Void = Lookup (corlibAssembly, "System", "Void");
 
-#if NET
 		System_nint = Lookup (corlibAssembly, "System", "IntPtr");
 		System_nuint = Lookup (corlibAssembly, "System", "UIntPtr");
 		var interopAssembly = Universe.LoadFromAssemblyName ("System.Runtime.InteropServices");
 		System_nfloat = Lookup (interopAssembly, "System.Runtime.InteropServices", "NFloat");
-#else
-		System_nint = Lookup (platformAssembly, "System", "nint");
-		System_nuint = Lookup (platformAssembly, "System", "nuint");
-		System_nfloat = Lookup (platformAssembly, "System", "nfloat");
-#endif
 
 		/* fundamental */
 		NSObject = Lookup (platformAssembly, "Foundation", "NSObject");
@@ -274,6 +271,9 @@ public class TypeCache {
 			CMClock = ConditionalLookup (platformAssembly, "CoreMedia", "CMClock");
 			CMFormatDescription = ConditionalLookup (platformAssembly, "CoreMedia", "CMFormatDescription");
 			CMSampleBuffer = ConditionalLookup (platformAssembly, "CoreMedia", "CMSampleBuffer");
+			CMTag = ConditionalLookup (platformAssembly, "CoreMedia", "CMTag");
+			CMTagCollection = ConditionalLookup (platformAssembly, "CoreMedia", "CMTagCollection");
+			CMTaggedBufferGroup = ConditionalLookup (platformAssembly, "CoreMedia", "CMTaggedBufferGroup");
 			CMTime = ConditionalLookup (platformAssembly, "CoreMedia", "CMTime");
 			CMTimebase = ConditionalLookup (platformAssembly, "CoreMedia", "CMTimebase");
 			CMTimeMapping = ConditionalLookup (platformAssembly, "CoreMedia", "CMTimeMapping");
@@ -349,11 +349,7 @@ public class TypeCache {
 		return nsvalueCreateMap;
 	}
 
-#if NET
 	static bool TryGetType (Assembly assembly, string @namespace, string typename, out string fullname, [NotNullWhen (true)] out Type? type)
-#else
-	static bool TryGetType (Assembly assembly, string @namespace, string typename, out string fullname, out Type? type)
-#endif
 	{
 		if (string.IsNullOrEmpty (@namespace)) {
 			fullname = typename;

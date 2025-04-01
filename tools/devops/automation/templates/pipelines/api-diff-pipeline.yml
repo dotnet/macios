@@ -16,21 +16,11 @@ parameters:
 - name: pool
   type: string
   displayName: Bot pool to use
-  default: automatic
-  values:
-  - pr
-  - ci
-  - automatic
 
 - name: isPR
   displayName: Is PR build
   type: boolean
   default: false
-
-- name: testConfigurations
-  displayName: Test configurations to run
-  type: object
-  default: []
 
 resources:
   repositories:
@@ -39,16 +29,9 @@ resources:
       submodules: true
 
   - repository: yaml-templates
-    type: github
-    name: xamarin/yaml-templates
+    type: git
+    name: xamarin.yaml-templates
     ref: refs/heads/main
-    endpoint: xamarin
-
-  - repository: maccore
-    type: github
-    name: xamarin/maccore
-    ref: refs/heads/main
-    endpoint: xamarin
 
   - repository: macios-adr
     type: git

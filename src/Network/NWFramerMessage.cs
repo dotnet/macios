@@ -38,7 +38,6 @@ namespace Network {
 #else
 	[TV (13, 0)]
 	[iOS (13, 0)]
-	[Watch (6, 0)]
 #endif
 	public class NWFramerMessage : NWProtocolMetadata {
 		[Preserve (Conditional = true)]
@@ -54,7 +53,9 @@ namespace Network {
 		{
 			if (protocolDefinition is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (protocolDefinition));
-			return new NWFramerMessage (nw_framer_protocol_create_message (protocolDefinition.Handle), owns: true);
+			var result = new NWFramerMessage (nw_framer_protocol_create_message (protocolDefinition.Handle), owns: true);
+			GC.KeepAlive (protocolDefinition);
+			return result;
 		}
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -168,7 +169,10 @@ namespace Network {
 		}
 
 		public void SetObject (string key, NSObject value)
-			=> nw_framer_message_set_object_value (GetCheckedHandle (), key, value.GetHandle ());
+		{
+			nw_framer_message_set_object_value (GetCheckedHandle (), key, value.GetHandle ());
+			GC.KeepAlive (value);
+		}
 
 		[DllImport (Constants.NetworkLibrary)]
 		static extern IntPtr nw_framer_message_copy_object_value (OS_nw_protocol_metadata message, IntPtr key);

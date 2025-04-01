@@ -1905,12 +1905,38 @@ namespace CoreMidi {
 		[DllImport (Constants.CoreMidiLibrary)]
 		extern static MidiEntityRef MIDIDeviceGetEntity (MidiDeviceRef handle, nint item);
 
+		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("maccatalyst14.0")]
+		[SupportedOSPlatform ("macos")]
+		[DllImport (Constants.CoreMidiLibrary)]
+		unsafe extern static OSStatus MIDIDeviceNewEntity (MidiDeviceRef device, /* CFString */ IntPtr name, /* MIDIProtocolId */ MidiProtocolId protocol, byte embedded, /* ItemCount */ nuint numSourceEndpoints, /* ItemCount */ nuint numDestinationEndpoints, MidiEntityRef* newEntity);
+
+		/// <summary>Create and add a new entity to an external device.</summary>
+		/// <param name="name">The name for the new entity.</param>
+		/// <param name="protocol">The protocol in use for the new entity.</param>
+		/// <param name="embedded">Whether the new entity is inside the device (true), or if it consists of external connectors (false).</param>
+		/// <param name="numberOfSourceEndpoints">The number of source endpoints in the new entity.</param>
+		/// <param name="numberOfDestinationEndpoints">The number of destination endpoints in the new entity.</param>
+		/// <param name="status">A status code that describes the result of creating the new entity. This will be <see cref="MidiError.Ok" /> in case of success.</param>
+		/// <returns>A newly created entity in case of success, null otherwise. In case of failure, <paramref name="status" /> will contain an error code.</returns>
+		public MidiEntity? CreateEntity (string name, MidiProtocolId protocol, bool embedded, nuint numberOfSourceEndpoints, nuint numberOfDestinationEndpoints, out MidiError status)
+		{
+			using var namePtr = new TransientCFString (name);
+			var handle = default (MidiEntityRef);
+			unsafe {
+				status = (MidiError) MIDIDeviceNewEntity (GetCheckedHandle (), namePtr, protocol, embedded.AsByte (), numberOfSourceEndpoints, numberOfDestinationEndpoints, &handle);
+			}
+			if (handle == MidiObject.InvalidRef)
+				return null;
+			return new MidiEntity (handle);
+		}
+
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("macos11.0")]
-		[ObsoletedOSPlatform ("ios14.0")]
-		[ObsoletedOSPlatform ("maccatalyst14.0")]
+		[ObsoletedOSPlatform ("macos11.0", "Call 'CreateEntity' instead.")]
+		[ObsoletedOSPlatform ("ios14.0", "Call 'CreateEntity' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst14.0", "Call 'CreateEntity' instead.")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		extern static int MIDIDeviceAddEntity (MidiDeviceRef device, /* CFString */ IntPtr name, byte embedded, nuint numSourceEndpoints, nuint numDestinationEndpoints, MidiEntityRef newEntity);
 
@@ -1925,14 +1951,28 @@ namespace CoreMidi {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("ios14.0")]
-		[ObsoletedOSPlatform ("maccatalyst14.0")]
-		[ObsoletedOSPlatform ("macos11.0")]
+		[ObsoletedOSPlatform ("macos11.0", "Call 'CreateEntity' instead.")]
+		[ObsoletedOSPlatform ("ios14.0", "Call 'CreateEntity' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst14.0", "Call 'CreateEntity' instead.")]
 		public int Add (string name, bool embedded, nuint numSourceEndpoints, nuint numDestinationEndpoints, MidiEntity newEntity)
 		{
 			using (NSString nsName = new NSString (name)) {
 				return MIDIDeviceAddEntity (GetCheckedHandle (), nsName.Handle, embedded ? (byte) 1 : (byte) 0, numSourceEndpoints, numDestinationEndpoints, newEntity.Handle);
 			}
+		}
+
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[DllImport (Constants.CoreMidiLibrary)]
+		extern static OSStatus MIDIDeviceRemoveEntity (MidiDeviceRef device, MidiEntityRef entity);
+
+		/// <summary>Remove the specified entity from this device.</summary>
+		/// <param name="entity">The entity to remove.</param>
+		/// <returns><see cref="MidiError.Ok" /> if successful, an error code otherwise.</returns>
+		public MidiError Remove (MidiEntity entity)
+		{
+			return (MidiError) MIDIDeviceRemoveEntity (GetCheckedHandle (), entity.GetCheckedHandle ());
 		}
 
 		/// <summary>Returns the number of MIDI entities in this device.</summary>

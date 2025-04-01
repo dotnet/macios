@@ -665,18 +665,34 @@ namespace SpriteKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SKSceneDelegate {
+		/// <param name="currentTime">To be added.</param>
+		/// <param name="scene">To be added.</param>
+		/// <summary>Method that is called once per frame, if <paramref name="scene" /> is presented and not paused, before any animation takes place.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("update:forScene:")]
 		void Update (double currentTime, SKScene scene);
 
+		/// <param name="scene">To be added.</param>
+		/// <summary>Method that is called after all scene actions are evaluated for <paramref name="scene" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("didEvaluateActionsForScene:")]
 		void DidEvaluateActions (SKScene scene);
 
+		/// <param name="scene">To be added.</param>
+		/// <summary>Method that is called after physics simulation for <paramref name="scene" /> is complete.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("didSimulatePhysicsForScene:")]
 		void DidSimulatePhysics (SKScene scene);
 
+		/// <param name="scene">To be added.</param>
+		/// <summary>Method that is called after constraints are applied to <paramref name="scene" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("didApplyConstraintsForScene:")]
 		void DidApplyConstraints (SKScene scene);
 
+		/// <param name="scene">To be added.</param>
+		/// <summary>Method that is called after the <paramref name="scene" /> is updated.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("didFinishUpdateForScene:")]
 		void DidFinishUpdate (SKScene scene);
 	}
@@ -1617,6 +1633,11 @@ namespace SpriteKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SKViewDelegate {
+		/// <param name="view">To be added.</param>
+		/// <param name="time">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("view:shouldRenderAtTime:")]
 		bool ShouldRender (SKView view, double time);
 	}
@@ -2682,9 +2703,15 @@ namespace SpriteKit {
 	[Protocol]
 	partial interface SKPhysicsContactDelegate {
 
+		/// <param name="contact">To be added.</param>
+		/// <summary>Method that is called when contact is started.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("didBeginContact:")]
 		void DidBeginContact (SKPhysicsContact contact);
 
+		/// <param name="contact">To be added.</param>
+		/// <summary>Method that is called after contact ends.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("didEndContact:")]
 		void DidEndContact (SKPhysicsContact contact);
 	}

@@ -159,25 +159,54 @@ namespace QuickLook {
 	[Model]
 	[Protocol]
 	interface QLPreviewControllerDelegate {
+		/// <param name="controller">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("previewControllerWillDismiss:")]
 		void WillDismiss (QLPreviewController controller);
 
+		/// <param name="controller">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("previewControllerDidDismiss:")]
 		void DidDismiss (QLPreviewController controller);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="url">To be added.</param>
+		/// <param name="item">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("previewController:shouldOpenURL:forPreviewItem:"), DelegateName ("QLOpenUrl"), DefaultValue (false)]
 		bool ShouldOpenUrl (QLPreviewController controller, NSUrl url, IQLPreviewItem item);
 
 #if !MONOMAC
 		// UIView and UIImage do not exists in MonoMac
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="item">To be added.</param>
+		/// <param name="view">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("previewController:frameForPreviewItem:inSourceView:"), DelegateName ("QLFrame"), DefaultValue (typeof (CGRect))]
 		CGRect FrameForPreviewItem (QLPreviewController controller, IQLPreviewItem item, ref UIView view);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="item">To be added.</param>
+		/// <param name="contentRect">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("previewController:transitionImageForPreviewItem:contentRect:"), DelegateName ("QLTransition"), DefaultValue (null)]
 		[return: NullAllowed]
 		UIImage TransitionImageForPreviewItem (QLPreviewController controller, IQLPreviewItem item, CGRect contentRect);
 
+		/// <param name="controller">To be added.</param>
+		/// <param name="item">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("previewController:transitionViewForPreviewItem:"), DelegateName ("QLTransitionView"), DefaultValue (null)]
 		[return: NullAllowed]
@@ -326,9 +355,18 @@ namespace QuickLook {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface QLPreviewingController {
+		/// <param name="identifier">To be added.</param>
+		/// <param name="queryString">To be added.</param>
+		/// <param name="handler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("preparePreviewOfSearchableItemWithIdentifier:queryString:completionHandler:")]
 		void PreparePreviewOfSearchableItem (string identifier, [NullAllowed] string queryString, Action<NSError> handler);
 
+		/// <param name="url">To be added.</param>
+		/// <param name="handler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("preparePreviewOfFileAtURL:completionHandler:")]
 		void PreparePreviewOfFile (NSUrl url, Action<NSError> handler);
 

@@ -4592,6 +4592,9 @@ namespace WebKit {
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "WKHTTPCookieStoreObserver")]
 	interface WKHttpCookieStoreObserver {
+		/// <param name="cookieStore">The store that changed.</param>
+		/// <summary>Method that is called when a cookie changes in the cookie store.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("cookiesDidChangeInCookieStore:")]
 		void CookiesDidChangeInCookieStore (WKHttpCookieStore cookieStore);
 	}
@@ -4684,9 +4687,19 @@ namespace WebKit {
 	[BaseType (typeof (NSObject))]
 	interface WKNavigationDelegate {
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="navigationAction">To be added.</param>
+		/// <param name="decisionHandler">To be added.</param>
+		/// <summary>Assigns an action to be taken after the specified <paramref name="navigationAction" /> has been either canceled or allowed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:decidePolicyForNavigationAction:decisionHandler:")]
 		void DecidePolicy (WKWebView webView, WKNavigationAction navigationAction, Action<WKNavigationActionPolicy> decisionHandler);
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="navigationResponse">To be added.</param>
+		/// <param name="decisionHandler">To be added.</param>
+		/// <summary>Assigns an action to be taken after the specified <paramref name="navigationResponse" /> has been either canceled or allowed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:decidePolicyForNavigationResponse:decisionHandler:")]
 		void DecidePolicy (WKWebView webView, WKNavigationResponse navigationResponse, Action<WKNavigationResponsePolicy> decisionHandler);
 
@@ -4695,27 +4708,61 @@ namespace WebKit {
 		[Export ("webView:decidePolicyForNavigationAction:preferences:decisionHandler:")]
 		void DecidePolicy (WKWebView webView, WKNavigationAction navigationAction, WKWebpagePreferences preferences, Action<WKNavigationActionPolicy, WKWebpagePreferences> decisionHandler);
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="navigation">To be added.</param>
+		/// <summary>Method that is called when data begins to load.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:didStartProvisionalNavigation:")]
 		void DidStartProvisionalNavigation (WKWebView webView, WKNavigation navigation);
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="navigation">To be added.</param>
+		/// <summary>Method that is called when a server redirect is received.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:didReceiveServerRedirectForProvisionalNavigation:")]
 		void DidReceiveServerRedirectForProvisionalNavigation (WKWebView webView, WKNavigation navigation);
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="navigation">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Method that is called when a committed navigation fails after data has begun to load.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:didFailProvisionalNavigation:withError:")]
 		void DidFailProvisionalNavigation (WKWebView webView, WKNavigation navigation, NSError error);
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="navigation">To be added.</param>
+		/// <summary>Method that is called when content begins to load.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:didCommitNavigation:")]
 		void DidCommitNavigation (WKWebView webView, WKNavigation navigation);
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="navigation">To be added.</param>
+		/// <summary>Method that is called when all the data is loaded.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:didFinishNavigation:")]
 		void DidFinishNavigation (WKWebView webView, WKNavigation navigation);
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="navigation">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Method that is called when a committed navigation fails.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:didFailNavigation:withError:")]
 		void DidFailNavigation (WKWebView webView, WKNavigation navigation, NSError error);
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="challenge">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>Method that is called when an authentication challenge is issued.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:didReceiveAuthenticationChallenge:completionHandler:")]
 		void DidReceiveAuthenticationChallenge (WKWebView webView, NSUrlAuthenticationChallenge challenge, Action<NSUrlSessionAuthChallengeDisposition, NSUrlCredential> completionHandler);
 
+		/// <param name="webView">To be added.</param>
+		/// <summary>Method that is called when a web view's content is terminated.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("webViewWebContentProcessDidTerminate:")]
 		void ContentProcessDidTerminate (WKWebView webView);
@@ -5193,18 +5240,47 @@ namespace WebKit {
 	[BaseType (typeof (NSObject))]
 	interface WKUIDelegate {
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="configuration">To be added.</param>
+		/// <param name="navigationAction">To be added.</param>
+		/// <param name="windowFeatures">To be added.</param>
+		/// <summary>Creates and configures a new <see cref="T:WebKit.WKWebView" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:createWebViewWithConfiguration:forNavigationAction:windowFeatures:")]
 		[return: NullAllowed]
 		WKWebView CreateWebView (WKWebView webView, WKWebViewConfiguration configuration,
 			WKNavigationAction navigationAction, WKWindowFeatures windowFeatures);
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="message">To be added.</param>
+		/// <param name="frame">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>Shows a JavaScript alert to the user.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:runJavaScriptAlertPanelWithMessage:initiatedByFrame:completionHandler:")]
 		void RunJavaScriptAlertPanel (WKWebView webView, string message, WKFrameInfo frame, Action completionHandler);
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="message">To be added.</param>
+		/// <param name="frame">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>Shows a JavaScript confirmation dialog to the user.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("webView:runJavaScriptConfirmPanelWithMessage:initiatedByFrame:completionHandler:")]
 		void RunJavaScriptConfirmPanel (WKWebView webView, string message, WKFrameInfo frame, Action<bool> completionHandler);
 
 #if !XAMCORE_5_0
+		/// <param name="webView">To be added.</param>
+		/// <param name="prompt">To be added.</param>
+		/// <param name="defaultText">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="frame">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>Shows a JavaScript text input box to the user.</summary>
+		/// <remarks>To be added.</remarks>
 		[Obsolete ("It's not possible to call the completion handler with a null value using this method. Please see https://github.com/xamarin/xamarin-macios/issues/15728 for a workaround.")]
 		[Export ("webView:runJavaScriptTextInputPanelWithPrompt:defaultText:initiatedByFrame:completionHandler:")]
 		void RunJavaScriptTextInputPanel (WKWebView webView, string prompt, [NullAllowed] string defaultText,
@@ -5221,10 +5297,18 @@ namespace WebKit {
 		[Export ("webView:runOpenPanelWithParameters:initiatedByFrame:completionHandler:")]
 		void RunOpenPanel (WKWebView webView, WKOpenPanelParameters parameters, WKFrameInfo frame, Action<NSUrl []> completionHandler);
 
+		/// <param name="webView">To be added.</param>
+		/// <summary>Method that is called when <paramref name="webView" /> closes.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("webViewDidClose:")]
 		void DidClose (WKWebView webView);
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="elementInfo">To be added.</param>
+		/// <summary>Method that is called to find out if the element should provide a preview.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'SetContextMenuConfiguration' instead.")]
 		[MacCatalyst (13, 1)]
@@ -5232,6 +5316,12 @@ namespace WebKit {
 		[Export ("webView:shouldPreviewElement:")]
 		bool ShouldPreviewElement (WKWebView webView, WKPreviewElementInfo elementInfo);
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="elementInfo">To be added.</param>
+		/// <param name="previewActions">To be added.</param>
+		/// <summary>Method that is called when the user peeks at content.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'SetContextMenuConfiguration' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'SetContextMenuConfiguration' instead.")]
@@ -5240,6 +5330,10 @@ namespace WebKit {
 		[return: NullAllowed]
 		UIViewController GetPreviewingViewController (WKWebView webView, WKPreviewElementInfo elementInfo, IWKPreviewActionItem [] previewActions);
 
+		/// <param name="webView">To be added.</param>
+		/// <param name="previewingViewController">To be added.</param>
+		/// <summary>Method that is called to respond when the user pops a preview action.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'WillCommitContextMenu' instead.")]
 		[MacCatalyst (13, 1)]

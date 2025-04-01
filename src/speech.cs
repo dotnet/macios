@@ -227,21 +227,43 @@ namespace Speech {
 	[BaseType (typeof (NSObject))]
 	interface SFSpeechRecognitionTaskDelegate {
 
+		/// <param name="task">The <see cref="T:Speech.SFSpeechRecognitionTask" /> for which this is the delegate object.</param>
+		/// <summary>The system calls this method periodically as speech is detected.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("speechRecognitionDidDetectSpeech:")]
 		void DidDetectSpeech (SFSpeechRecognitionTask task);
 
+		/// <param name="task">The <see cref="T:Speech.SFSpeechRecognitionTask" /> for which this is the delegate object.</param>
+		/// <param name="transcription">To be added.</param>
+		/// <summary>The system calls this method periodically, as the speech recognition attempts to refine the results.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("speechRecognitionTask:didHypothesizeTranscription:")]
 		void DidHypothesizeTranscription (SFSpeechRecognitionTask task, SFTranscription transcription);
 
+		/// <param name="task">The <see cref="T:Speech.SFSpeechRecognitionTask" /> for which this is the delegate object.</param>
+		/// <param name="recognitionResult">To be added.</param>
+		/// <summary>The system calls this method  after it has completed recognition.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("speechRecognitionTask:didFinishRecognition:")]
 		void DidFinishRecognition (SFSpeechRecognitionTask task, SFSpeechRecognitionResult recognitionResult);
 
+		/// <param name="task">The <see cref="T:Speech.SFSpeechRecognitionTask" /> for which this is the delegate object.</param>
+		/// <summary>Called by the system after the audio input has finished.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("speechRecognitionTaskFinishedReadingAudio:")]
 		void FinishedReadingAudio (SFSpeechRecognitionTask task);
 
+		/// <param name="task">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("speechRecognitionTaskWasCancelled:")]
 		void WasCancelled (SFSpeechRecognitionTask task);
 
+		/// <param name="task">The <see cref="T:Speech.SFSpeechRecognitionTask" /> for which this is the delegate object.</param>
+		/// <param name="successfully">
+		///           <see langword="true" /> if the speech recognition ended without error or cancellation.</param>
+		/// <summary>The system calls this method after the <paramref name="task" /> has finished.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("speechRecognitionTask:didFinishSuccessfully:")]
 		void DidFinishSuccessfully (SFSpeechRecognitionTask task, bool successfully);
 
@@ -266,6 +288,11 @@ namespace Speech {
 	[BaseType (typeof (NSObject))]
 	interface SFSpeechRecognizerDelegate {
 
+		/// <param name="speechRecognizer">To be added.</param>
+		/// <param name="available">
+		///           <see langword="true" /> if speech recognition is permitted.</param>
+		/// <summary>The system calls this when the availability of speech recognition has been changed.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("speechRecognizer:availabilityDidChange:")]
 		void AvailabilityDidChange (SFSpeechRecognizer speechRecognizer, bool available);
 	}

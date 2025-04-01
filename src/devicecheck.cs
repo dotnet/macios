@@ -49,7 +49,16 @@ namespace DeviceCheck {
 		[Export ("supported")]
 		bool Supported { [Bind ("isSupported")] get; }
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Generates an identification token for <see cref="P:DeviceCheck.DCDevice.CurrentDevice" /> and runs a handlere after the operation is complete.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous GenerateToken operation.   The value of the TResult parameter is a DeviceCheck.DCDeviceGenerateTokenCompletionHandler.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The GenerateTokenAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("generateTokenWithCompletionHandler:")]
 		void GenerateToken (DCDeviceGenerateTokenCompletionHandler completion);
 	}

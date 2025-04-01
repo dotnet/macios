@@ -466,6 +466,13 @@ namespace ARKit {
 		[Export ("unprojectPoint:ontoPlaneWithTransform:orientation:viewportSize:")]
 		Vector3 Unproject (CGPoint point, Matrix4 planeTransform, UIInterfaceOrientation orientation, CGSize viewportSize);
 
+		/// <param name="orientation">The camera orientation.</param>
+		/// <param name="viewportSize">The viewport size, in points.</param>
+		/// <param name="zNear">The distance to the near Z-clipping plane.</param>
+		/// <param name="zFar">The distance to the far Z-clipping plane..</param>
+		/// <summary>The projection matrix used to render 3D content so that it will match the real-world imagery.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("projectionMatrixForOrientation:viewportSize:zNear:zFar:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Matrix4 GetProjectionMatrix (UIInterfaceOrientation orientation, CGSize viewportSize, nfloat zNear, nfloat zFar);
@@ -739,9 +746,19 @@ namespace ARKit {
 		[Export ("validateWithCompletionHandler:")]
 		void Validate (Action<NSError> completionHandler);
 
+		/// <param name="image">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="physicalWidth">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithCGImage:orientation:physicalWidth:")]
 		NativeHandle Constructor (CGImage image, CGImagePropertyOrientation orientation, nfloat physicalWidth);
 
+		/// <param name="pixelBuffer">To be added.</param>
+		/// <param name="orientation">To be added.</param>
+		/// <param name="physicalWidth">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithPixelBuffer:orientation:physicalWidth:")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, CGImagePropertyOrientation orientation, nfloat physicalWidth);
 
@@ -1009,7 +1026,11 @@ namespace ARKit {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetWorldOrigin (Matrix4 relativeTransform);
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously returns a task that contains the current world map.</summary>
+			<returns>A task that contains the current world map.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("getCurrentWorldMapWithCompletionHandler:")]
 		void GetCurrentWorldMap (Action<ARWorldMap, NSError> completionHandler);
 

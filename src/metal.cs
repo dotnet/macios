@@ -207,6 +207,12 @@ namespace Metal {
 		[Abstract, Export ("didModifyRange:")]
 		void DidModify (NSRange range);
 
+		/// <param name="descriptor">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="bytesPerRow">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[return: NullAllowed]
 		[Abstract]
@@ -588,18 +594,41 @@ namespace Metal {
 		[Abstract, Export ("setComputePipelineState:")]
 		void SetComputePipelineState (IMTLComputePipelineState state);
 
+		/// <param name="buffer">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setBuffer:offset:atIndex:")]
 		void SetBuffer (IMTLBuffer buffer, nuint offset, nuint index);
 
+		/// <param name="texture">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setTexture:atIndex:")]
 		void SetTexture (IMTLTexture texture, nuint index);
 
+		/// <param name="sampler">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setSamplerState:atIndex:")]
 		void SetSamplerState (IMTLSamplerState sampler, nuint index);
 
+		/// <param name="sampler">To be added.</param>
+		/// <param name="lodMinClamp">To be added.</param>
+		/// <param name="lodMaxClamp">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setSamplerState:lodMinClamp:lodMaxClamp:atIndex:")]
 		void SetSamplerState (IMTLSamplerState sampler, float /* float, not CGFloat */ lodMinClamp, float /* float, not CGFloat */ lodMaxClamp, nuint index);
 
+		/// <param name="length">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setThreadgroupMemoryLength:atIndex:")]
 		void SetThreadgroupMemoryLength (nuint length, nuint index);
 
@@ -645,6 +674,10 @@ namespace Metal {
 		[Export ("setTextures:withRange:")]
 		void SetTextures (IMTLTexture [] textures, NSRange range);
 
+		/// <param name="offset">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("setBufferOffset:atIndex:")]
@@ -893,13 +926,40 @@ namespace Metal {
 		[Abstract, Export ("synchronizeResource:")]
 		void Synchronize (IMTLResource resource);
 
+		/// <param name="texture">To be added.</param>
+		/// <param name="slice">To be added.</param>
+		/// <param name="level">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS, NoTV, MacCatalyst (15, 0)]
 		[Abstract, Export ("synchronizeTexture:slice:level:")]
 		void Synchronize (IMTLTexture texture, nuint slice, nuint level);
 
+		/// <param name="sourceTexture">To be added.</param>
+		/// <param name="sourceSlice">To be added.</param>
+		/// <param name="sourceLevel">To be added.</param>
+		/// <param name="sourceOrigin">To be added.</param>
+		/// <param name="sourceSize">To be added.</param>
+		/// <param name="destinationTexture">To be added.</param>
+		/// <param name="destinationSlice">To be added.</param>
+		/// <param name="destinationLevel">To be added.</param>
+		/// <param name="destinationOrigin">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:")]
 		void CopyFromTexture (IMTLTexture sourceTexture, nuint sourceSlice, nuint sourceLevel, MTLOrigin sourceOrigin, MTLSize sourceSize, IMTLTexture destinationTexture, nuint destinationSlice, nuint destinationLevel, MTLOrigin destinationOrigin);
 
+		/// <param name="sourceBuffer">To be added.</param>
+		/// <param name="sourceOffset">To be added.</param>
+		/// <param name="sourceBytesPerRow">To be added.</param>
+		/// <param name="sourceBytesPerImage">To be added.</param>
+		/// <param name="sourceSize">To be added.</param>
+		/// <param name="destinationTexture">To be added.</param>
+		/// <param name="destinationSlice">To be added.</param>
+		/// <param name="destinationLevel">To be added.</param>
+		/// <param name="destinationOrigin">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("copyFromBuffer:sourceOffset:sourceBytesPerRow:sourceBytesPerImage:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:")]
 		void CopyFromBuffer (IMTLBuffer sourceBuffer, nuint sourceOffset, nuint sourceBytesPerRow, nuint sourceBytesPerImage, MTLSize sourceSize, IMTLTexture destinationTexture, nuint destinationSlice, nuint destinationLevel, MTLOrigin destinationOrigin);
 
@@ -908,6 +968,17 @@ namespace Metal {
 		[Export ("copyFromBuffer:sourceOffset:sourceBytesPerRow:sourceBytesPerImage:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:options:")]
 		void CopyFromBuffer (IMTLBuffer sourceBuffer, nuint sourceOffset, nuint sourceBytesPerRow, nuint sourceBytesPerImage, MTLSize sourceSize, IMTLTexture destinationTexture, nuint destinationSlice, nuint destinationLevel, MTLOrigin destinationOrigin, MTLBlitOption options);
 
+		/// <param name="sourceTexture">To be added.</param>
+		/// <param name="sourceSlice">To be added.</param>
+		/// <param name="sourceLevel">To be added.</param>
+		/// <param name="sourceOrigin">To be added.</param>
+		/// <param name="sourceSize">To be added.</param>
+		/// <param name="destinationBuffer">To be added.</param>
+		/// <param name="destinationOffset">To be added.</param>
+		/// <param name="destinatinBytesPerRow">To be added.</param>
+		/// <param name="destinationBytesPerImage">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toBuffer:destinationOffset:destinationBytesPerRow:destinationBytesPerImage:")]
 		void CopyFromTexture (IMTLTexture sourceTexture, nuint sourceSlice, nuint sourceLevel, MTLOrigin sourceOrigin, MTLSize sourceSize, IMTLBuffer destinationBuffer, nuint destinationOffset, nuint destinatinBytesPerRow, nuint destinationBytesPerImage);
 
@@ -930,6 +1001,13 @@ namespace Metal {
 		[Abstract, Export ("fillBuffer:range:value:")]
 		void FillBuffer (IMTLBuffer buffer, NSRange range, byte value);
 
+		/// <param name="sourceBuffer">To be added.</param>
+		/// <param name="sourceOffset">To be added.</param>
+		/// <param name="destinationBuffer">To be added.</param>
+		/// <param name="destinationOffset">To be added.</param>
+		/// <param name="size">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("copyFromBuffer:sourceOffset:toBuffer:destinationOffset:size:")]
 		void CopyFromBuffer (IMTLBuffer sourceBuffer, nuint sourceOffset, IMTLBuffer destinationBuffer, nuint destinationOffset, nuint size);
 
@@ -1108,11 +1186,20 @@ namespace Metal {
 		[return: Release]
 		IMTLCommandQueue CreateCommandQueue ();
 
+		/// <param name="maxCommandBufferCount">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newCommandQueueWithMaxCommandBufferCount:")]
 		[return: NullAllowed]
 		[return: Release]
 		IMTLCommandQueue CreateCommandQueue (nuint maxCommandBufferCount);
 
+		/// <param name="length">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newBufferWithLength:options:")]
 		[return: NullAllowed]
 		[return: Release]
@@ -2103,12 +2190,32 @@ namespace Metal {
 		[Export ("resourceOptions", ArgumentSemantic.Assign)]
 		MTLResourceOptions ResourceOptions { get; set; }
 
+		/// <param name="pixelFormat">To be added.</param>
+		/// <param name="width">To be added.</param>
+		/// <param name="height">To be added.</param>
+		/// <param name="mipmapped">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("texture2DDescriptorWithPixelFormat:width:height:mipmapped:")]
 		MTLTextureDescriptor CreateTexture2DDescriptor (MTLPixelFormat pixelFormat, nuint width, nuint height, bool mipmapped);
 
+		/// <param name="pixelFormat">To be added.</param>
+		/// <param name="size">To be added.</param>
+		/// <param name="mipmapped">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("textureCubeDescriptorWithPixelFormat:size:mipmapped:")]
 		MTLTextureDescriptor CreateTextureCubeDescriptor (MTLPixelFormat pixelFormat, nuint size, bool mipmapped);
 
+		/// <param name="pixelFormat">To be added.</param>
+		/// <param name="width">To be added.</param>
+		/// <param name="resourceOptions">To be added.</param>
+		/// <param name="usage">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("textureBufferDescriptorWithPixelFormat:width:resourceOptions:usage:")]
 		MTLTextureDescriptor CreateTextureBufferDescriptor (MTLPixelFormat pixelFormat, nuint width, MTLResourceOptions resourceOptions, MTLTextureUsage usage);
@@ -3139,15 +3246,34 @@ namespace Metal {
 		[Abstract, Export ("setRenderPipelineState:")]
 		void SetRenderPipelineState (IMTLRenderPipelineState pipelineState);
 
+		/// <param name="buffer">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setVertexBuffer:offset:atIndex:")]
 		void SetVertexBuffer (IMTLBuffer buffer, nuint offset, nuint index);
 
+		/// <param name="texture">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setVertexTexture:atIndex:")]
 		void SetVertexTexture (IMTLTexture texture, nuint index);
 
+		/// <param name="sampler">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setVertexSamplerState:atIndex:")]
 		void SetVertexSamplerState (IMTLSamplerState sampler, nuint index);
 
+		/// <param name="sampler">To be added.</param>
+		/// <param name="lodMinClamp">To be added.</param>
+		/// <param name="lodMaxClamp">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setVertexSamplerState:lodMinClamp:lodMaxClamp:atIndex:")]
 		void SetVertexSamplerState (IMTLSamplerState sampler, float /* float, not CGFloat */ lodMinClamp, float /* float, not CGFloat */ lodMaxClamp, nuint index);
 
@@ -3194,9 +3320,18 @@ namespace Metal {
 		[Abstract, Export ("setTriangleFillMode:")]
 		void SetTriangleFillMode (MTLTriangleFillMode fillMode);
 
+		/// <param name="buffer">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setFragmentBuffer:offset:atIndex:")]
 		void SetFragmentBuffer (IMTLBuffer buffer, nuint offset, nuint index);
 
+		/// <param name="offset">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Abstract, Export ("setFragmentBufferOffset:atIndex:")]
 		void SetFragmentBufferOffset (nuint offset, nuint index);
@@ -3205,12 +3340,26 @@ namespace Metal {
 		[Abstract, Export ("setFragmentBytes:length:atIndex:")]
 		void SetFragmentBytes (IntPtr bytes, nuint length, nuint index);
 
+		/// <param name="texture">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setFragmentTexture:atIndex:")]
 		void SetFragmentTexture (IMTLTexture texture, nuint index);
 
+		/// <param name="sampler">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setFragmentSamplerState:atIndex:")]
 		void SetFragmentSamplerState (IMTLSamplerState sampler, nuint index);
 
+		/// <param name="sampler">To be added.</param>
+		/// <param name="lodMinClamp">To be added.</param>
+		/// <param name="lodMaxClamp">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setFragmentSamplerState:lodMinClamp:lodMaxClamp:atIndex:")]
 		void SetFragmentSamplerState (IMTLSamplerState sampler, float /* float, not CGFloat */ lodMinClamp, float /* float, not CGFloat */ lodMaxClamp, nuint index);
 
@@ -3240,6 +3389,10 @@ namespace Metal {
 		[Export ("setStencilFrontReferenceValue:backReferenceValue:")]
 		void SetStencilFrontReferenceValue (uint frontReferenceValue, uint backReferenceValue);
 
+		/// <param name="mode">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setVisibilityResultMode:offset:")]
 		void SetVisibilityResultMode (MTLVisibilityResultMode mode, nuint offset);
 
@@ -3258,15 +3411,41 @@ namespace Metal {
 		[Export ("setStencilStoreAction:")]
 		void SetStencilStoreAction (MTLStoreAction storeAction);
 
+		/// <param name="primitiveType">To be added.</param>
+		/// <param name="vertexStart">To be added.</param>
+		/// <param name="vertexCount">To be added.</param>
+		/// <param name="instanceCount">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("drawPrimitives:vertexStart:vertexCount:instanceCount:")]
 		void DrawPrimitives (MTLPrimitiveType primitiveType, nuint vertexStart, nuint vertexCount, nuint instanceCount);
 
+		/// <param name="primitiveType">To be added.</param>
+		/// <param name="vertexStart">To be added.</param>
+		/// <param name="vertexCount">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("drawPrimitives:vertexStart:vertexCount:")]
 		void DrawPrimitives (MTLPrimitiveType primitiveType, nuint vertexStart, nuint vertexCount);
 
+		/// <param name="primitiveType">To be added.</param>
+		/// <param name="indexCount">To be added.</param>
+		/// <param name="indexType">To be added.</param>
+		/// <param name="indexBuffer">To be added.</param>
+		/// <param name="indexBufferOffset">To be added.</param>
+		/// <param name="instanceCount">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("drawIndexedPrimitives:indexCount:indexType:indexBuffer:indexBufferOffset:instanceCount:")]
 		void DrawIndexedPrimitives (MTLPrimitiveType primitiveType, nuint indexCount, MTLIndexType indexType, IMTLBuffer indexBuffer, nuint indexBufferOffset, nuint instanceCount);
 
+		/// <param name="primitiveType">To be added.</param>
+		/// <param name="indexCount">To be added.</param>
+		/// <param name="indexType">To be added.</param>
+		/// <param name="indexBuffer">To be added.</param>
+		/// <param name="indexBufferOffset">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("drawIndexedPrimitives:indexCount:indexType:indexBuffer:indexBufferOffset:")]
 		void DrawIndexedPrimitives (MTLPrimitiveType primitiveType, nuint indexCount, MTLIndexType indexType, IMTLBuffer indexBuffer, nuint indexBufferOffset);
 
@@ -3329,6 +3508,10 @@ namespace Metal {
 		[Abstract, Export ("setVertexBuffers:offsets:withRange:")]
 		void SetVertexBuffers (IMTLBuffer [] buffers, IntPtr uintArrayPtrOffsets, NSRange range);
 
+		/// <param name="offset">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Abstract, Export ("setVertexBufferOffset:atIndex:")]
 		void SetVertexBufferOffset (nuint offset, nuint index);
@@ -3478,6 +3661,12 @@ namespace Metal {
 		[Export ("memoryBarrierWithScope:afterStages:beforeStages:")]
 		void MemoryBarrier (MTLBarrierScope scope, MTLRenderStages after, MTLRenderStages before);
 
+		/// <param name="resources">To be added.</param>
+		/// <param name="count">To be added.</param>
+		/// <param name="after">To be added.</param>
+		/// <param name="before">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract (GenerateExtensionMethod = true)]
 		[iOS (16, 0), TV (16, 0), MacCatalyst (15, 0)]
 		[Export ("memoryBarrierWithResources:count:afterStages:beforeStages:")]
@@ -4175,10 +4364,19 @@ namespace Metal {
 		[Export ("usedSize")]
 		nuint UsedSize { get; }
 
+		/// <param name="alignment">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("maxAvailableSizeWithAlignment:")]
 		nuint GetMaxAvailableSize (nuint alignment);
 
+		/// <param name="length">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newBufferWithLength:options:")]
 		[return: NullAllowed]
@@ -4682,14 +4880,28 @@ namespace Metal {
 		[Export ("alignment")]
 		nuint Alignment { get; }
 
+		/// <param name="argumentBuffer">The destination buffer.</param>
+		/// <param name="offset">The offset of the buffer, in bytes.</param>
+		/// <summary>Sets the target buffer to which arguments will be encoded.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setArgumentBuffer:offset:")]
 		void SetArgumentBuffer ([NullAllowed] IMTLBuffer argumentBuffer, nuint offset);
 
+		/// <param name="argumentBuffer">The destination buffer.</param>
+		/// <param name="startOffset">The offset of the buffer, in bytes.</param>
+		/// <param name="arrayElement">The index, into the targeted buffer, of the argument.</param>
+		/// <summary>Sets the target buffer to which arguments will be encoded.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setArgumentBuffer:startOffset:arrayElement:")]
 		void SetArgumentBuffer ([NullAllowed] IMTLBuffer argumentBuffer, nuint startOffset, nuint arrayElement);
 
+		/// <param name="buffer">A buffer in an argument buffer.</param>
+		/// <param name="offset">The byte offset of <paramref name="buffer" />.</param>
+		/// <param name="index">The index of the nested buffer. Either a Metal index ID or the index member of a <see cref="T:Metal.MTLArgumentDescriptor" />.</param>
+		/// <summary>Encodes <paramref name="buffer" /> to the argument buffer.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setBuffer:offset:atIndex:")]
 		void SetBuffer ([NullAllowed] IMTLBuffer buffer, nuint offset, nuint index);
@@ -4698,6 +4910,10 @@ namespace Metal {
 		[Export ("setBuffers:offsets:withRange:")]
 		void SetBuffers (IntPtr buffers, IntPtr offsets, NSRange range);
 
+		/// <param name="texture">A texture within an argument buffer.</param>
+		/// <param name="index">The index of the texture. Either a Metal index ID or the index member of a <see cref="T:Metal.MTLArgumentDescriptor" />.</param>
+		/// <summary>Encodes the provided <paramref name="texture" /> into the argument buffer.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setTexture:atIndex:")]
 		void SetTexture ([NullAllowed] IMTLTexture texture, nuint index);
@@ -4710,6 +4926,10 @@ namespace Metal {
 		[Export ("setTextures:withRange:")]
 		void SetTextures (IMTLTexture [] textures, NSRange range);
 
+		/// <param name="sampler">A sampler within an argument buffer.</param>
+		/// <param name="index">The sampler index. Either a Metal index ID or the index member of a <see cref="T:Metal.MTLArgumentDescriptor" />.</param>
+		/// <summary>Encodes <paramref name="sampler" /> into the argument buffer.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setSamplerState:atIndex:")]
 		void SetSamplerState ([NullAllowed] IMTLSamplerState sampler, nuint index);
@@ -4722,6 +4942,10 @@ namespace Metal {
 		[Export ("setSamplerStates:withRange:")]
 		void SetSamplerStates (IMTLSamplerState [] samplers, NSRange range);
 
+		/// <param name="index">The index for the constant. Either a Metal index ID or the index member of a <see cref="T:Metal.MTLArgumentDescriptor" />.</param>
+		/// <summary>Returns a pointer to the constant at the specified <paramref name="index" /> into the buffer.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("constantDataAtIndex:")]
 		IntPtr GetConstantData (nuint index);
@@ -4748,6 +4972,10 @@ namespace Metal {
 		[Export ("setIndirectCommandBuffers:withRange:")]
 		void SetIndirectCommandBuffers (IMTLIndirectCommandBuffer [] buffers, NSRange range);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newArgumentEncoderForBufferAtIndex:")]
 		[return: NullAllowed]
@@ -5011,30 +5239,83 @@ namespace Metal {
 		[Export ("setRenderPipelineState:")]
 		void SetRenderPipelineState (IMTLRenderPipelineState pipelineState);
 
+		/// <param name="buffer">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setVertexBuffer:offset:atIndex:")]
 		void SetVertexBuffer (IMTLBuffer buffer, nuint offset, nuint index);
 
+		/// <param name="buffer">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setFragmentBuffer:offset:atIndex:")]
 		void SetFragmentBuffer (IMTLBuffer buffer, nuint offset, nuint index);
 
+		/// <param name="numberOfPatchControlPoints">To be added.</param>
+		/// <param name="patchStart">To be added.</param>
+		/// <param name="patchCount">To be added.</param>
+		/// <param name="patchIndexBuffer">To be added.</param>
+		/// <param name="patchIndexBufferOffset">To be added.</param>
+		/// <param name="instanceCount">To be added.</param>
+		/// <param name="baseInstance">To be added.</param>
+		/// <param name="buffer">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="instanceStride">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
 		[Export ("drawPatches:patchStart:patchCount:patchIndexBuffer:patchIndexBufferOffset:instanceCount:baseInstance:tessellationFactorBuffer:tessellationFactorBufferOffset:tessellationFactorBufferInstanceStride:")]
 		void DrawPatches (nuint numberOfPatchControlPoints, nuint patchStart, nuint patchCount, [NullAllowed] IMTLBuffer patchIndexBuffer, nuint patchIndexBufferOffset, nuint instanceCount, nuint baseInstance, IMTLBuffer buffer, nuint offset, nuint instanceStride);
 
+		/// <param name="numberOfPatchControlPoints">To be added.</param>
+		/// <param name="patchStart">To be added.</param>
+		/// <param name="patchCount">To be added.</param>
+		/// <param name="patchIndexBuffer">To be added.</param>
+		/// <param name="patchIndexBufferOffset">To be added.</param>
+		/// <param name="controlPointIndexBuffer">To be added.</param>
+		/// <param name="controlPointIndexBufferOffset">To be added.</param>
+		/// <param name="instanceCount">To be added.</param>
+		/// <param name="baseInstance">To be added.</param>
+		/// <param name="buffer">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="instanceStride">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[TV (14, 5)]
 		[MacCatalyst (13, 1)]
 		[Export ("drawIndexedPatches:patchStart:patchCount:patchIndexBuffer:patchIndexBufferOffset:controlPointIndexBuffer:controlPointIndexBufferOffset:instanceCount:baseInstance:tessellationFactorBuffer:tessellationFactorBufferOffset:tessellationFactorBufferInstanceStride:")]
 		void DrawIndexedPatches (nuint numberOfPatchControlPoints, nuint patchStart, nuint patchCount, [NullAllowed] IMTLBuffer patchIndexBuffer, nuint patchIndexBufferOffset, IMTLBuffer controlPointIndexBuffer, nuint controlPointIndexBufferOffset, nuint instanceCount, nuint baseInstance, IMTLBuffer buffer, nuint offset, nuint instanceStride);
 
+		/// <param name="primitiveType">To be added.</param>
+		/// <param name="vertexStart">To be added.</param>
+		/// <param name="vertexCount">To be added.</param>
+		/// <param name="instanceCount">To be added.</param>
+		/// <param name="baseInstance">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("drawPrimitives:vertexStart:vertexCount:instanceCount:baseInstance:")]
 		void DrawPrimitives (MTLPrimitiveType primitiveType, nuint vertexStart, nuint vertexCount, nuint instanceCount, nuint baseInstance);
 
+		/// <param name="primitiveType">To be added.</param>
+		/// <param name="indexCount">To be added.</param>
+		/// <param name="indexType">To be added.</param>
+		/// <param name="indexBuffer">To be added.</param>
+		/// <param name="indexBufferOffset">To be added.</param>
+		/// <param name="instanceCount">To be added.</param>
+		/// <param name="baseVertex">To be added.</param>
+		/// <param name="baseInstance">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("drawIndexedPrimitives:indexCount:indexType:indexBuffer:indexBufferOffset:instanceCount:baseVertex:baseInstance:")]
 		void DrawIndexedPrimitives (MTLPrimitiveType primitiveType, nuint indexCount, MTLIndexType indexType, IMTLBuffer indexBuffer, nuint indexBufferOffset, nuint instanceCount, nint baseVertex, nuint baseInstance);
@@ -5156,6 +5437,10 @@ namespace Metal {
 		[Export ("resetWithRange:")]
 		void Reset (NSRange range);
 
+		/// <param name="commandIndex">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("indirectRenderCommandAtIndex:")]
 		IMTLIndirectRenderCommand GetCommand (nuint commandIndex);

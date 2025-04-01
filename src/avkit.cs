@@ -713,6 +713,10 @@ namespace AVKit {
 		[Export ("canBeginTrimming")]
 		bool CanBeginTrimming { get; }
 
+		/// <param name="chapterNumber">To be added.</param>
+		/// <param name="chapterTitle">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("flashChapterNumber:chapterTitle:")]
 		void FlashChapter (nuint chapterNumber, [NullAllowed] string chapterTitle);
 

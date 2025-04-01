@@ -168,6 +168,10 @@ namespace Foundation {
 		[Export ("count")]
 		nuint Count { get; }
 
+		/// <param name="idx">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("objectAtIndex:")]
 		NativeHandle ValueAt (nuint idx);
 
@@ -313,15 +317,34 @@ namespace Foundation {
 		nint Length { get; }
 
 		// TODO: figure out the type, this deserves to be strongly typed if possble
+		/// <param name="attribute">To be added.</param>
+		/// <param name="location">To be added.</param>
+		/// <param name="effectiveRange">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("attribute:atIndex:effectiveRange:")]
 		NSObject GetAttribute (string attribute, nint location, out NSRange effectiveRange);
 
 		[Export ("attributedSubstringFromRange:"), Internal]
 		NSAttributedString Substring (NSRange range);
 
+		/// <param name="location">To be added.</param>
+		/// <param name="longestEffectiveRange">To be added.</param>
+		/// <param name="rangeLimit">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("attributesAtIndex:longestEffectiveRange:inRange:")]
 		NSDictionary GetAttributes (nint location, out NSRange longestEffectiveRange, NSRange rangeLimit);
 
+		/// <param name="attribute">To be added.</param>
+		/// <param name="location">To be added.</param>
+		/// <param name="longestEffectiveRange">To be added.</param>
+		/// <param name="rangeLimit">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("attribute:atIndex:longestEffectiveRange:inRange:")]
 		NSObject GetAttribute (string attribute, nint location, out NSRange longestEffectiveRange, NSRange rangeLimit);
 
@@ -1211,6 +1234,11 @@ namespace Foundation {
 		[Export ("setObject:forKey:")]
 		void SetObjectForKey (NSObject obj, NSObject key);
 
+		/// <param name="obj">To be added.</param>
+		/// <param name="key">To be added.</param>
+		/// <param name="cost">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setObject:forKey:cost:")]
 		void SetCost (NSObject obj, NSObject key, nuint cost);
 
@@ -1258,7 +1286,10 @@ namespace Foundation {
 		/// <param name="obj">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("cache:willEvictObject:"), EventArgs ("NSObject")]
+		[Export ("cache:willEvictObject:"), EventArgs ("NSObject", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void WillEvictObject (NSCache cache, NSObject obj);
 	}
 
@@ -1465,22 +1496,66 @@ namespace Foundation {
 		[MacCatalyst (13, 1)]
 		bool Matches (NSDate date, NSDateComponents components);
 
+		/// <param name="unit">To be added.</param>
+		/// <param name="value">To be added.</param>
+		/// <param name="date">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dateByAddingUnit:value:toDate:options:")]
 		[MacCatalyst (13, 1)]
 		NSDate DateByAddingUnit (NSCalendarUnit unit, nint value, NSDate date, NSCalendarOptions options);
 
+		/// <param name="hour">To be added.</param>
+		/// <param name="minute">To be added.</param>
+		/// <param name="second">To be added.</param>
+		/// <param name="date">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dateBySettingHour:minute:second:ofDate:options:")]
 		[MacCatalyst (13, 1)]
 		NSDate DateBySettingsHour (nint hour, nint minute, nint second, NSDate date, NSCalendarOptions options);
 
+		/// <param name="unit">To be added.</param>
+		/// <param name="value">To be added.</param>
+		/// <param name="date">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dateBySettingUnit:value:ofDate:options:")]
 		[MacCatalyst (13, 1)]
 		NSDate DateBySettingUnit (NSCalendarUnit unit, nint value, NSDate date, NSCalendarOptions options);
 
+		/// <param name="era">To be added.</param>
+		/// <param name="year">To be added.</param>
+		/// <param name="month">To be added.</param>
+		/// <param name="date">To be added.</param>
+		/// <param name="hour">To be added.</param>
+		/// <param name="minute">To be added.</param>
+		/// <param name="second">To be added.</param>
+		/// <param name="nanosecond">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dateWithEra:year:month:day:hour:minute:second:nanosecond:")]
 		[MacCatalyst (13, 1)]
 		NSDate Date (nint era, nint year, nint month, nint date, nint hour, nint minute, nint second, nint nanosecond);
 
+		/// <param name="era">To be added.</param>
+		/// <param name="year">To be added.</param>
+		/// <param name="week">To be added.</param>
+		/// <param name="weekday">To be added.</param>
+		/// <param name="hour">To be added.</param>
+		/// <param name="minute">To be added.</param>
+		/// <param name="second">To be added.</param>
+		/// <param name="nanosecond">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dateWithEra:yearForWeekOfYear:weekOfYear:weekday:hour:minute:second:nanosecond:")]
 		[MacCatalyst (13, 1)]
 		NSDate DateForWeekOfYear (nint era, nint year, nint week, nint weekday, nint hour, nint minute, nint second, nint nanosecond);
@@ -1489,14 +1564,35 @@ namespace Foundation {
 		[MacCatalyst (13, 1)]
 		void EnumerateDatesStartingAfterDate (NSDate start, NSDateComponents matchingComponents, NSCalendarOptions options, [BlockCallback] EnumerateDatesCallback callback);
 
+		/// <param name="era">To be added.</param>
+		/// <param name="year">To be added.</param>
+		/// <param name="month">To be added.</param>
+		/// <param name="day">To be added.</param>
+		/// <param name="date">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("getEra:year:month:day:fromDate:")]
 		[MacCatalyst (13, 1)]
 		void GetComponentsFromDate (out nint era, out nint year, out nint month, out nint day, NSDate date);
 
+		/// <param name="era">To be added.</param>
+		/// <param name="year">To be added.</param>
+		/// <param name="weekOfYear">To be added.</param>
+		/// <param name="weekday">To be added.</param>
+		/// <param name="date">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("getEra:yearForWeekOfYear:weekOfYear:weekday:fromDate:")]
 		[MacCatalyst (13, 1)]
 		void GetComponentsFromDateForWeekOfYear (out nint era, out nint year, out nint weekOfYear, out nint weekday, NSDate date);
 
+		/// <param name="hour">To be added.</param>
+		/// <param name="minute">To be added.</param>
+		/// <param name="second">To be added.</param>
+		/// <param name="nanosecond">To be added.</param>
+		/// <param name="date">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("getHour:minute:second:nanosecond:fromDate:")]
 		[MacCatalyst (13, 1)]
 		void GetHourComponentsFromDate (out nint hour, out nint minute, out nint second, out nint nanosecond, NSDate date);
@@ -1531,12 +1627,27 @@ namespace Foundation {
 		[return: NullAllowed]
 		NSDate FindNextDateAfterDateMatching (NSDate date, NSDateComponents components, NSCalendarOptions options);
 
+		/// <param name="date">To be added.</param>
+		/// <param name="hour">To be added.</param>
+		/// <param name="minute">To be added.</param>
+		/// <param name="second">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("nextDateAfterDate:matchingHour:minute:second:options:")]
 		[MacCatalyst (13, 1)]
 		[MarshalNativeExceptions]
 		[return: NullAllowed]
 		NSDate FindNextDateAfterDateMatching (NSDate date, nint hour, nint minute, nint second, NSCalendarOptions options);
 
+		/// <param name="date">To be added.</param>
+		/// <param name="unit">To be added.</param>
+		/// <param name="value">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("nextDateAfterDate:matchingUnit:value:options:")]
 		[MacCatalyst (13, 1)]
 		[MarshalNativeExceptions]
@@ -1950,6 +2061,11 @@ namespace Foundation {
 		[Export ("encodeInt64:forKey:")]
 		void Encode (long val, string key);
 
+		/// <param name="val">Native integer value to encode.</param>
+		/// <param name="key">Key to associate with the object being encoded.</param>
+		/// <summary>Encodes the platform-specific native integer (32 or 64 bits) using the specified associated key.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Export ("encodeInteger:forKey:")]
 		void Encode (nint val, string key);
 
@@ -1980,9 +2096,24 @@ namespace Foundation {
 		[Export ("decodeObjectForKey:")]
 		NSObject DecodeObject (string key);
 
+		/// <param name="key">The key identifying the item to decode.</param>
+		/// <param name="length">Number of bytes in the returned block.</param>
+		/// <summary>Low-level: decodes the item with the associated key into a memory block,
+		/// 	and returns a pointer to it.</summary>
+		/// <returns>Pointer to the block of memory that contains at least
+		/// 	the number of bytes set on the lenght parameter.</returns>
+		/// <remarks>
+		///         </remarks>
 		[Export ("decodeBytesForKey:returnedLength:")]
 		IntPtr DecodeBytes (string key, out nuint length);
 
+		/// <param name="length">Number of bytes in the returned block.</param>
+		/// <summary>Low-level: decodes the next item into a memory block,
+		/// 	and returns a pointer to it.</summary>
+		/// <returns>Pointer to the block of memory that contains at least
+		/// 	the number of bytes set on the lenght parameter.</returns>
+		/// <remarks>
+		///         </remarks>
 		[Export ("decodeBytesWithReturnedLength:")]
 		IntPtr DecodeBytes (out nuint length);
 
@@ -2331,6 +2462,10 @@ namespace Foundation {
 		[MacCatalyst (13, 1)]
 		bool IsValidDateInCalendar (NSCalendar calendar);
 
+		/// <param name="value">To be added.</param>
+		/// <param name="unit">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setValue:forComponent:")]
 		[MacCatalyst (13, 1)]
 		void SetValueForComponent (nint value, NSCalendarUnit unit);
@@ -2514,6 +2649,12 @@ namespace Foundation {
 		[Static]
 		string ToLocalizedString (NSDate date, NSDateFormatterStyle dateStyle, NSDateFormatterStyle timeStyle);
 
+		/// <param name="template">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="locale">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dateFormatFromTemplate:options:locale:")]
 		[Static]
 		string GetDateFormatFromTemplate (string template, nuint options, [NullAllowed] NSLocale locale);
@@ -2695,6 +2836,10 @@ namespace Foundation {
 		[return: NullAllowed]
 		NSData ReadToEnd ([NullAllowed] out NSError error);
 
+		/// <param name="length">To be added.</param>
+		/// <summary>Reads a block of data of the specified length from the file represented by this NSFileHandle.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'Read (nuint, out NSError)' instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'Read (nuint, out NSError)' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'Read (nuint, out NSError)' instead.")]
@@ -3187,12 +3332,19 @@ namespace Foundation {
 		/// <param name="obj">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("archiver:didEncodeObject:"), EventArgs ("NSObject")]
+		[Export ("archiver:didEncodeObject:"), EventArgs ("NSObject", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void EncodedObject (NSKeyedArchiver archiver, NSObject obj);
 
 		/// <param name="archiver">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("archiverDidFinish:")]
 		void Finished (NSKeyedArchiver archiver);
 
@@ -3201,12 +3353,21 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Delegate invoked by the object to get a value.</summary>
+			<value>To be added.</value>
+			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("archiver:willEncodeObject:"), DelegateName ("NSEncodeHook"), DefaultValue (null)]
 		NSObject WillEncode (NSKeyedArchiver archiver, NSObject obj);
 
 		/// <param name="archiver">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("archiverWillFinish:")]
 		void Finishing (NSKeyedArchiver archiver);
 
@@ -3215,7 +3376,10 @@ namespace Foundation {
 		/// <param name="newObject">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("archiver:willReplaceObject:withObject:"), EventArgs ("NSArchiveReplace")]
+		[Export ("archiver:willReplaceObject:withObject:"), EventArgs ("NSArchiveReplace", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void ReplacingObject (NSKeyedArchiver archiver, NSObject oldObject, NSObject newObject);
 	}
 
@@ -3230,12 +3394,21 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Delegate invoked by the object to get a value.</summary>
+			<value>To be added.</value>
+			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("unarchiver:didDecodeObject:"), DelegateName ("NSDecoderCallback"), DefaultValue (null)]
 		NSObject DecodedObject (NSKeyedUnarchiver unarchiver, NSObject obj);
 
 		/// <param name="unarchiver">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("unarchiverDidFinish:")]
 		void Finished (NSKeyedUnarchiver unarchiver);
 
@@ -3245,12 +3418,21 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Delegate invoked by the object to get a value.</summary>
+			<value>To be added.</value>
+			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("unarchiver:cannotDecodeObjectOfClassName:originalClasses:"), DelegateName ("NSDecoderHandler"), DefaultValue (null)]
 		Class CannotDecodeClass (NSKeyedUnarchiver unarchiver, string klass, string [] classes);
 
 		/// <param name="unarchiver">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("unarchiverWillFinish:")]
 		void Finishing (NSKeyedUnarchiver unarchiver);
 
@@ -3259,7 +3441,10 @@ namespace Foundation {
 		/// <param name="newObject">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("unarchiver:willReplaceObject:withObject:"), EventArgs ("NSArchiveReplace")]
+		[Export ("unarchiver:willReplaceObject:withObject:"), EventArgs ("NSArchiveReplace", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void ReplacingObject (NSKeyedUnarchiver unarchiver, NSObject oldObject, NSObject newObject);
 	}
 
@@ -3548,6 +3733,10 @@ namespace Foundation {
 		[Export ("resultCount")]
 		nint ResultCount { get; }
 
+		/// <param name="idx">To be added.</param>
+		/// <summary>The result at the specified index.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("resultAtIndex:")]
 		NSObject ResultAtIndex (nint idx);
 
@@ -3563,6 +3752,11 @@ namespace Foundation {
 		[Export ("groupedResults")]
 		NSObject [] GroupedResults { get; }
 
+		/// <param name="attribyteName">To be added.</param>
+		/// <param name="atIndex">To be added.</param>
+		/// <summary>The value of the specified attributeName in the result at the specified index in the Results array.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("valueOfAttribute:forResultAtIndex:")]
 		NSObject ValueOfAttribute (string attribyteName, nint atIndex);
 
@@ -5003,6 +5197,11 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Delegate invoked by the object to get a value.</summary>
+			<value>To be added.</value>
+			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the Delegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("metadataQuery:replacementObjectForResultObject:"), DelegateName ("NSMetadataQueryObject"), DefaultValue (null)]
 		NSObject ReplacementObjectForResultObject (NSMetadataQuery query, NSMetadataItem result);
 
@@ -5012,6 +5211,11 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Delegate invoked by the object to get a value.</summary>
+			<value>To be added.</value>
+			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the Delegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("metadataQuery:replacementValueForAttribute:value:"), DelegateName ("NSMetadataQueryValue"), DefaultValue (null)]
 		NSObject ReplacementValueForAttributevalue (NSMetadataQuery query, string attributeName, NSObject value);
 	}
@@ -5069,6 +5273,10 @@ namespace Foundation {
 		[Export ("resultCount")]
 		nint ResultCount { get; }
 
+		/// <param name="idx">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("resultAtIndex:")]
 		NSObject ResultAtIndex (nuint idx);
 
@@ -5083,6 +5291,9 @@ namespace Foundation {
 	[BaseType (typeof (NSArray))]
 	[DesignatedDefaultCtor]
 	interface NSMutableArray {
+		/// <param name="capacity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithCapacity:")]
 		NativeHandle Constructor (nuint capacity);
@@ -5100,12 +5311,19 @@ namespace Foundation {
 		[Export ("insertObject:atIndex:")]
 		void _Insert (IntPtr obj, nint index);
 
+		/// <param name="obj">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("insertObject:atIndex:")]
 		void Insert (NSObject obj, nint index);
 
 		[Export ("removeLastObject")]
 		void RemoveLastObject ();
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("removeObjectAtIndex:")]
 		void RemoveObject (nint index);
 
@@ -5114,6 +5332,10 @@ namespace Foundation {
 		[Export ("replaceObjectAtIndex:withObject:")]
 		void _ReplaceObject (nint index, IntPtr withObject);
 
+		/// <param name="index">To be added.</param>
+		/// <param name="withObject">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("replaceObjectAtIndex:withObject:")]
 		void ReplaceObject (nint index, NSObject withObject);
 
@@ -5193,6 +5415,10 @@ namespace Foundation {
 		[Export ("replaceCharactersInRange:withAttributedString:")]
 		void Replace (NSRange range, NSAttributedString value);
 
+		/// <param name="attrString">Attributed string to insert.</param>
+		/// <param name="location">Location where the string will be inserted.</param>
+		/// <summary>Inserts an attributed string into the current string.</summary>
+		/// <remarks>Any attributes that spanned the insertion point will be expanded, so they will continue to cover both the original text as well as the new text.</remarks>
 		[Export ("insertAttributedString:atIndex:")]
 		void Insert (NSAttributedString attrString, nint location);
 
@@ -5296,11 +5522,19 @@ namespace Foundation {
 
 	[BaseType (typeof (NSData))]
 	interface NSMutableData {
+		/// <param name="capacity">To be added.</param>
+		/// <summary>Factory method that instantiates an NSMutableData instance that can initially hold the specified capacity, in bytes.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("dataWithCapacity:")]
 		[Autorelease]
 		[PreSnippet ("if (capacity < 0 || capacity > nint.MaxValue) throw new ArgumentOutOfRangeException ();", Optimizable = true)]
 		NSMutableData FromCapacity (nint capacity);
 
+		/// <param name="length">To be added.</param>
+		/// <summary>Factory method that instantiates itself with the specified length of zeroed-out bytes.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("dataWithLength:")]
 		[Autorelease]
 		[PreSnippet ("if (length < 0 || length > nint.MaxValue) throw new ArgumentOutOfRangeException ();", Optimizable = true)]
@@ -5313,6 +5547,9 @@ namespace Foundation {
 		[Export ("mutableBytes")]
 		IntPtr MutableBytes { get; }
 
+		/// <param name="capacity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithCapacity:")]
 		[PreSnippet ("if (capacity > (ulong) nint.MaxValue) throw new ArgumentOutOfRangeException ();", Optimizable = true)]
 		NativeHandle Constructor (nuint capacity);
@@ -5609,9 +5846,26 @@ namespace Foundation {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSError : NSSecureCoding, NSCopying {
+		/// <param name="domain">To be added.</param>
+		/// <param name="code">To be added.</param>
+		/// <param name="userInfo">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("errorWithDomain:code:userInfo:")]
 		NSError FromDomain (NSString domain, nint code, [NullAllowed] NSDictionary userInfo);
 
+		/// <param name="domain">To be added.</param>
+		/// <param name="code">To be added.</param>
+		/// <param name="userInfo">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithDomain:code:userInfo:")]
 		NativeHandle Constructor (NSString domain, nint code, [NullAllowed] NSDictionary userInfo);
@@ -6210,9 +6464,18 @@ namespace Foundation {
 		[Export ("setOrthography:range:")]
 		void SetOrthographyrange (NSOrthography orthography, NSRange range);
 
+		/// <param name="charIndex">To be added.</param>
+		/// <param name="effectiveRange">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("orthographyAtIndex:effectiveRange:")]
 		NSOrthography GetOrthography (nint charIndex, ref NSRange effectiveRange);
 
+		/// <param name="newRange">To be added.</param>
+		/// <param name="delta">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("stringEditedInRange:changeInLength:")]
 		void StringEditedInRange (NSRange newRange, nint delta);
 
@@ -6222,6 +6485,13 @@ namespace Foundation {
 		[Export ("sentenceRangeForRange:")]
 		NSRange GetSentenceRangeForRange (NSRange range);
 
+		/// <param name="charIndex">To be added.</param>
+		/// <param name="tagScheme">To be added.</param>
+		/// <param name="tokenRange">To be added.</param>
+		/// <param name="sentenceRange">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tagAtIndex:scheme:tokenRange:sentenceRange:")]
 		string GetTag (nint charIndex, NSString tagScheme, ref NSRange tokenRange, ref NSRange sentenceRange);
 
@@ -6244,11 +6514,26 @@ namespace Foundation {
 		[Export ("enumerateTagsInRange:unit:scheme:options:usingBlock:")]
 		void EnumerateTags (NSRange range, NSLinguisticTaggerUnit unit, string scheme, NSLinguisticTaggerOptions options, LinguisticTagEnumerator enumerator);
 
+		/// <param name="charIndex">To be added.</param>
+		/// <param name="unit">To be added.</param>
+		/// <param name="scheme">To be added.</param>
+		/// <param name="tokenRange">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("tagAtIndex:unit:scheme:tokenRange:")]
 		[return: NullAllowed]
 		string GetTag (nuint charIndex, NSLinguisticTaggerUnit unit, string scheme, [NullAllowed] ref NSRange tokenRange);
 
+		/// <param name="charIndex">To be added.</param>
+		/// <param name="unit">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("tokenRangeAtIndex:unit:")]
 		NSRange GetTokenRange (nuint charIndex, NSLinguisticTaggerUnit unit);
@@ -6268,6 +6553,21 @@ namespace Foundation {
 		[return: NullAllowed]
 		string GetDominantLanguage (string str);
 
+		/// <param name="str">To be added.</param>
+		/// <param name="charIndex">To be added.</param>
+		/// <param name="unit">To be added.</param>
+		/// <param name="scheme">To be added.</param>
+		/// <param name="orthography">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="tokenRange">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("tagForString:atIndex:unit:scheme:orthography:tokenRange:")]
@@ -6634,6 +6934,13 @@ namespace Foundation {
 		[Export ("replaceMatchesInString:options:range:withTemplate:")]
 		nuint ReplaceMatches (NSMutableString mutableString, NSMatchingOptions options, NSRange range, NSString template);
 
+		/// <param name="result">To be added.</param>
+		/// <param name="str">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="template">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("replacementStringForResult:inString:offset:template:")]
 		NSString GetReplacementString (NSTextCheckingResult result, NSString str, nint offset, NSString template);
 
@@ -7004,6 +7311,10 @@ namespace Foundation {
 		[Static, Export ("timeZoneWithName:data:")]
 		NSTimeZone FromName (string tzName, NSData data);
 
+		/// <param name="seconds">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("timeZoneForSecondsFromGMT:")]
 		NSTimeZone FromGMT (nint seconds);
@@ -7218,7 +7529,16 @@ namespace Foundation {
 		void Invalidate ();
 
 		[Export ("getContinuationStreamsWithCompletionHandler:")]
-		[Async (ResultTypeName = "NSUserActivityContinuation")]
+		[Async (ResultTypeName = "NSUserActivityContinuation", XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous GetContinuationStreams operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSInputStream,Foundation.NSOutputStream,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The GetContinuationStreamsAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void GetContinuationStreams (Action<NSInputStream, NSOutputStream, NSError> completionHandler);
 
 		[MacCatalyst (13, 1)]
@@ -7348,7 +7668,11 @@ namespace Foundation {
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("deleteAllSavedUserActivitiesWithCompletionHandler:")]
 		void DeleteAllSavedUserActivities (Action handler);
 
@@ -7479,6 +7803,10 @@ namespace Foundation {
 		[Export ("boolForKey:")]
 		bool BoolForKey (string defaultName);
 
+		/// <param name="value">To be added.</param>
+		/// <param name="defaultName">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setInteger:forKey:")]
 		void SetInt (nint value, string defaultName);
 
@@ -9032,6 +9360,11 @@ namespace Foundation {
 		[Export ("sharedURLCache", ArgumentSemantic.Strong), Static]
 		NSUrlCache SharedCache { get; set; }
 
+		/// <param name="memoryCapacity">To be added.</param>
+		/// <param name="diskCapacity">To be added.</param>
+		/// <param name="diskPath">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use the overload that accepts an 'NSUrl' parameter instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use the overload that accepts an 'NSUrl' parameter instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use the overload that accepts an 'NSUrl' parameter instead.")]
@@ -9235,6 +9568,17 @@ namespace Foundation {
 	// 'init' returns NIL
 	[DisableDefaultCtor]
 	interface NSUrlAuthenticationChallenge : NSSecureCoding {
+		/// <param name="space">To be added.</param>
+		/// <param name="credential">To be added.</param>
+		/// <param name="previousFailureCount">To be added.</param>
+		/// <param name="response">To be added.</param>
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="sender">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithProtectionSpace:proposedCredential:previousFailureCount:failureResponse:error:sender:")]
 		NativeHandle Constructor (NSUrlProtectionSpace space, NSUrlCredential credential, nint previousFailureCount, [NullAllowed] NSUrlResponse response, [NullAllowed] NSError error, NSUrlConnection sender);
 
@@ -9382,7 +9726,17 @@ namespace Foundation {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSUrlSession.CreateDataTask' instead.")]
 		[Static]
 		[Export ("sendAsynchronousRequest:queue:completionHandler:")]
-		[Async (ResultTypeName = "NSUrlAsyncResult", MethodName = "SendRequestAsync")]
+		[Async (ResultTypeName = "NSUrlAsyncResult", MethodName = "SendRequestAsync", XmlDocs = """
+			<param name="request">Request to perform</param>
+			<param name="queue">Operation queue to dispatch the completion to.</param>
+			<summary>Loads the data and invokes a method upon completion.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous SendAsynchronousRequest operation. The value of the TResult parameter is of type <c>Action&lt;Foundation.NSUrlAsyncResult&gt;</c>.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The SendRequestAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			        </remarks>
+			""")]
 		void SendAsynchronousRequest (NSUrlRequest request, NSOperationQueue queue, NSUrlConnectionDataResponse completionHandler);
 	}
 
@@ -9483,6 +9837,12 @@ namespace Foundation {
 		[Export ("connection:needNewBodyStream:")]
 		NSInputStream NeedNewBodyStream (NSUrlConnection connection, NSUrlRequest request);
 
+		/// <param name="connection">To be added.</param>
+		/// <param name="bytesWritten">To be added.</param>
+		/// <param name="totalBytesWritten">To be added.</param>
+		/// <param name="totalBytesExpectedToWrite">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("connection:didSendBodyData:totalBytesWritten:totalBytesExpectedToWrite:")]
 		void SentBodyData (NSUrlConnection connection, nint bytesWritten, nint totalBytesWritten, nint totalBytesExpectedToWrite);
 
@@ -9745,16 +10105,30 @@ namespace Foundation {
 		void InvalidateAndCancel ();
 
 		[Export ("resetWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous Reset operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void Reset (Action completionHandler);
 
 		[Export ("flushWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous Flush operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void Flush (Action completionHandler);
 
 		// Fixed version (breaking change) only for NET
 		[Export ("getTasksWithCompletionHandler:")]
-		[Async (ResultTypeName = "NSUrlSessionActiveTasks")]
+		[Async (ResultTypeName = "NSUrlSessionActiveTasks", XmlDocs = """
+			<summary>Requests the groups of pending tasks (data, upload and downloads).</summary>
+			<returns>
+			          <para>A task that represents the asynchronous GetTasks operation.   The value of the TResult parameter is of type <c>Action&lt;Foundation.NSUrlSessionActiveTasks&gt;</c>.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void GetTasks (NSUrlSessionPendingTasks completionHandler);
 
 #if !NET
@@ -9959,9 +10333,23 @@ namespace Foundation {
 
 		[MacCatalyst (13, 1)]
 		[Export ("getAllTasksWithCompletionHandler:")]
-		[Async (ResultTypeName = "NSUrlSessionCombinedTasks")]
+		[Async (ResultTypeName = "NSUrlSessionCombinedTasks", XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous GetAllTasks operation.   The value of the TResult parameter is an array of MonoTouch.Foundation.NSUrlSessionTask.  The base class for data-transfer tasks created by a .</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The GetAllTasksAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void GetAllTasks (NSUrlSessionAllPendingTasks completionHandler);
 
+		/// <param name="hostname">To be added.</param>
+		/// <param name="port">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("streamTaskWithHostName:port:")]
 		NSUrlSessionStreamTask CreateBidirectionalStream (string hostname, nint port);
@@ -10046,8 +10434,23 @@ namespace Foundation {
 	[BaseType (typeof (NSUrlSessionTask), Name = "NSURLSessionStreamTask")]
 	[DisableDefaultCtor] // now (xcode11) marked as deprecated
 	interface NSUrlSessionStreamTask {
+		/// <param name="minBytes">To be added.</param>
+		/// <param name="maxBytes">To be added.</param>
+		/// <param name="timeout">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("readDataOfMinLength:maxLength:timeout:completionHandler:")]
-		[Async (ResultTypeName = "NSUrlSessionStreamDataRead")]
+		[Async (ResultTypeName = "NSUrlSessionStreamDataRead", XmlDocs = """
+			<param name="minBytes">To be added.</param>
+			<param name="maxBytes">To be added.</param>
+			<param name="timeout">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous ReadData operation.   The value of the TResult parameter is of type Foundation.NSUrlSessionStreamDataRead.  To be added.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void ReadData (nuint minBytes, nuint maxBytes, double timeout, NSUrlSessionDataRead completionHandler);
 
 		[Export ("writeData:timeout:completionHandler:")]
@@ -11194,6 +11597,9 @@ namespace Foundation {
 		[Export ("initWithSet:")]
 		NativeHandle Constructor (NSSet other);
 
+		/// <param name="capacity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithCapacity:")]
 		NativeHandle Constructor (nint capacity);
@@ -11328,6 +11734,15 @@ namespace Foundation {
 
 	[BaseType (typeof (NSObject), Name = "NSURLResponse")]
 	interface NSUrlResponse : NSSecureCoding, NSCopying {
+		/// <param name="url">To be added.</param>
+		/// <param name="mimetype">To be added.</param>
+		/// <param name="expectedContentLength">To be added.</param>
+		/// <param name="textEncodingName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithURL:MIMEType:expectedContentLength:textEncodingName:")]
 		NativeHandle Constructor (NSUrl url, string mimetype, nint expectedContentLength, [NullAllowed] string textEncodingName);
@@ -11590,10 +12005,21 @@ namespace Foundation {
 		[Field ("NSStreamNetworkServiceTypeCallSignaling")]
 		NSString NetworkServiceTypeCallSignaling { get; }
 
+		/// <param name="bufferSize">To be added.</param>
+		/// <param name="inputStream">To be added.</param>
+		/// <param name="outputStream">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("getBoundStreamsWithBufferSize:inputStream:outputStream:")]
 		void GetBoundStreams (nuint bufferSize, out NSInputStream inputStream, out NSOutputStream outputStream);
 
+		/// <param name="hostname">To be added.</param>
+		/// <param name="port">To be added.</param>
+		/// <param name="inputStream">To be added.</param>
+		/// <param name="outputStream">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("getStreamsToHostWithName:port:inputStream:outputStream:")]
 		void GetStreamsToHost (string hostname, nint port, out NSInputStream inputStream, out NSOutputStream outputStream);
@@ -11609,7 +12035,10 @@ namespace Foundation {
 		/// <param name="streamEvent">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("stream:handleEvent:"), EventArgs ("NSStream"), EventName ("OnEvent")]
+		[Export ("stream:handleEvent:"), EventArgs ("NSStream", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			"""), EventName ("OnEvent")]
 		void HandleEvent (NSStream theStream, NSStreamEvent streamEvent);
 	}
 
@@ -11623,30 +12052,53 @@ namespace Foundation {
 		[Export ("initWithData:encoding:")]
 		NativeHandle Constructor (NSData data, NSStringEncoding encoding);
 
+		/// <param name="attributedStringAttributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Bind ("sizeWithAttributes:")]
 		CGSize StringSize ([NullAllowed] NSDictionary attributedStringAttributes);
 
+		/// <param name="size">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="attributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Bind ("boundingRectWithSize:options:attributes:")]
 		CGRect BoundingRectWithSize (CGSize size, NSStringDrawingOptions options, NSDictionary attributes);
 
+		/// <param name="point">To be added.</param>
+		/// <param name="attributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Bind ("drawAtPoint:withAttributes:")]
 		void DrawString (CGPoint point, NSDictionary attributes);
 
+		/// <param name="rect">To be added.</param>
+		/// <param name="attributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Bind ("drawInRect:withAttributes:")]
 		void DrawString (CGRect rect, NSDictionary attributes);
 
+		/// <param name="rect">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="attributes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -11660,6 +12112,10 @@ namespace Foundation {
 		[Export ("length")]
 		nint Length { get; }
 
+		/// <param name="handle">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Sealed]
 		[Export ("isEqualToString:")]
 		bool IsEqualTo (IntPtr handle);
@@ -11691,6 +12147,9 @@ namespace Foundation {
 		[Export ("pathComponents")]
 		string [] PathComponents { get; }
 
+		/// <summary>Whether this is an absolute path.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Export ("isAbsolutePath")]
 		bool IsAbsolutePath { get; }
 
@@ -11751,6 +12210,13 @@ namespace Foundation {
 		[Static, Export ("stringEncodingForData:encodingOptions:convertedString:usedLossyConversion:")]
 		nuint DetectStringEncoding (NSData rawData, NSDictionary options, out string convertedString, out bool usedLossyConversion);
 
+		/// <param name="rawData">To be added.</param>
+		/// <param name="options">To be added.</param>
+		/// <param name="convertedString">To be added.</param>
+		/// <param name="usedLossyConversion">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Wrap ("DetectStringEncoding(rawData,options.GetDictionary ()!, out convertedString, out usedLossyConversion)")]
 		nuint DetectStringEncoding (NSData rawData, EncodingDetectionOptions options, out string convertedString, out bool usedLossyConversion);
@@ -11786,9 +12252,19 @@ namespace Foundation {
 		[Export ("lineRangeForRange:")]
 		NSRange LineRangeForRange (NSRange range);
 
+		/// <param name="startPtr">To be added.</param>
+		/// <param name="lineEndPtr">To be added.</param>
+		/// <param name="contentsEndPtr">To be added.</param>
+		/// <param name="range">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("getLineStart:end:contentsEnd:forRange:")]
 		void GetLineStart (out nuint startPtr, out nuint lineEndPtr, out nuint contentsEndPtr, NSRange range);
 
+		/// <param name="width">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("variantFittingPresentationWidth:")]
 		NSString GetVariantFittingPresentationWidth (nint width);
@@ -11825,12 +12301,23 @@ namespace Foundation {
 		bool HasSuffix (NSString suffix);
 
 		// UNUserNotificationCenterSupport category
+		/// <param name="key">To be added.</param>
+		/// <param name="arguments">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("localizedUserNotificationStringForKey:arguments:")]
 		NSString GetLocalizedUserNotificationString (NSString key, [Params][NullAllowed] NSObject [] arguments);
 
+		/// <param name="paragraphStartPosition">To be added.</param>
+		/// <param name="paragraphEndPosition">To be added.</param>
+		/// <param name="contentsEndPosition">To be added.</param>
+		/// <param name="range">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("getParagraphStart:end:contentsEnd:forRange:")]
 		void GetParagraphPositions (out nuint paragraphStartPosition, out nuint paragraphEndPosition, out nuint contentsEndPosition, NSRange range);
 
@@ -11898,9 +12385,18 @@ namespace Foundation {
 	[BaseType (typeof (NSString))]
 	// hack: it seems that generator.cs can't track NSCoding correctly ? maybe because the type is named NSString2 at that time
 	interface NSMutableString : NSCoding {
+		/// <param name="capacity">Initial capacity for the mutable string.</param>
+		/// <summary>Creates a new mutable string with the specified initial capacity.</summary>
+		/// <remarks>
+		///         </remarks>
 		[Export ("initWithCapacity:")]
 		NativeHandle Constructor (nint capacity);
 
+		/// <param name="str">String to insert.</param>
+		/// <param name="index">Position in the mutable string where the string will be inserted.</param>
+		/// <summary>Inserts a string into the mutable string.</summary>
+		/// <remarks>
+		///         </remarks>
 		[PreSnippet ("Check (index);", Optimizable = true)]
 		[Export ("insertString:atIndex:")]
 		void Insert (NSString str, nint index);
@@ -12975,6 +13471,9 @@ namespace Foundation {
 		[Export ("initWithOrderedSet:")]
 		NativeHandle Constructor (NSOrderedSet source);
 
+		/// <param name="capacity">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithCapacity:")]
 		NativeHandle Constructor (nint capacity);
@@ -12999,9 +13498,16 @@ namespace Foundation {
 		[Export ("insertObject:atIndex:")]
 		void _Insert (IntPtr obj, nint atIndex);
 
+		/// <param name="obj">To be added.</param>
+		/// <param name="atIndex">To be added.</param>
+		/// <summary>Inserts the specified object at the specified index.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("insertObject:atIndex:")]
 		void Insert (NSObject obj, nint atIndex);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Removes the object at the specified index.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("removeObjectAtIndex:")]
 		void Remove (nint index);
 
@@ -13010,6 +13516,10 @@ namespace Foundation {
 		[Export ("replaceObjectAtIndex:withObject:")]
 		void _Replace (nint objectAtIndex, IntPtr newObject);
 
+		/// <param name="objectAtIndex">To be added.</param>
+		/// <param name="newObject">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("replaceObjectAtIndex:withObject:")]
 		void Replace (nint objectAtIndex, NSObject newObject);
 
@@ -13040,9 +13550,17 @@ namespace Foundation {
 		[Export ("removeObjectsAtIndexes:")]
 		void RemoveObjects (NSIndexSet indexSet);
 
+		/// <param name="first">To be added.</param>
+		/// <param name="second">To be added.</param>
+		/// <summary>Exchanges the objects at the specified indices.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("exchangeObjectAtIndex:withObjectAtIndex:")]
 		void ExchangeObject (nint first, nint second);
 
+		/// <param name="indexSet">To be added.</param>
+		/// <param name="destination">To be added.</param>
+		/// <summary>Moves the objects currently at the specified indices so that they start at the specified destination index.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("moveObjectsAtIndexes:toIndex:")]
 		void MoveObjects (NSIndexSet indexSet, nint destination);
 
@@ -13051,6 +13569,10 @@ namespace Foundation {
 		[Export ("setObject:atIndex:")]
 		void _SetObject (IntPtr obj, nint index);
 
+		/// <param name="obj">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>Appends or replaces the object at the specified index.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setObject:atIndex:")]
 		void SetObject (NSObject obj, nint index);
 
@@ -13420,9 +13942,24 @@ namespace Foundation {
 
 	[BaseType (typeof (NSUrlResponse), Name = "NSHTTPURLResponse")]
 	interface NSHttpUrlResponse {
+		/// <param name="url">To be added.</param>
+		/// <param name="mimetype">To be added.</param>
+		/// <param name="expectedContentLength">To be added.</param>
+		/// <param name="textEncodingName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithURL:MIMEType:expectedContentLength:textEncodingName:")]
 		NativeHandle Constructor (NSUrl url, string mimetype, nint expectedContentLength, [NullAllowed] string textEncodingName);
 
+		/// <param name="url">To be added.</param>
+		/// <param name="statusCode">To be added.</param>
+		/// <param name="httpVersion">To be added.</param>
+		/// <param name="headerFields">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithURL:statusCode:HTTPVersion:headerFields:")]
 		NativeHandle Constructor (NSUrl url, nint statusCode, [NullAllowed] string httpVersion, [NullAllowed] NSDictionary headerFields);
 
@@ -13432,6 +13969,10 @@ namespace Foundation {
 		[Export ("allHeaderFields")]
 		NSDictionary AllHeaderFields { get; }
 
+		/// <param name="statusCode">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("localizedStringForStatusCode:")]
 		[Static]
 		string LocalizedStringForStatusCode (nint statusCode);
@@ -13763,11 +14304,24 @@ namespace Foundation {
 		NSBundle Bundle { get; }
 
 		[Export ("beginAccessingResourcesWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>A task that represents the asynchronous BeginAccessingResources operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void BeginAccessingResources (Action<NSError> completionHandler);
 
 		[Export ("conditionallyBeginAccessingResourcesWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous ConditionallyBeginAccessingResources operation.  The value of the TResult parameter is of type System.Action&lt;System.Boolean&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The ConditionallyBeginAccessingResourcesAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void ConditionallyBeginAccessingResources (Action<bool> completionHandler);
 
 		[Export ("endAccessingResources")]
@@ -13787,6 +14341,14 @@ namespace Foundation {
 
 	[BaseType (typeof (NSObject))]
 	interface NSIndexPath : NSCoding, NSSecureCoding, NSCopying {
+		/// <param name="index">
+		/// Object to place in the index-path.
+		///   	   </param>
+		/// <summary>Create a new index-path object with the specified object (not required for use with iOS <see cref="T:UIKit.UITableView" />).</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///         </remarks>
 		[Export ("indexPathWithIndex:")]
 		[Static]
 		NSIndexPath FromIndex (nuint index);
@@ -13796,12 +14358,34 @@ namespace Foundation {
 		[Static]
 		NSIndexPath _FromIndex (IntPtr indexes, nint len);
 
+		/// <param name="index">
+		/// 
+		/// Index to be appended.
+		///   	   
+		///   	   </param>
+		/// <summary>Returns a new index-path containing those in this object plus the new <paramref name="index" /> (not required for use with iOS <see cref="T:UIKit.UITableView" />).</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///         </remarks>
 		[Export ("indexPathByAddingIndex:")]
 		NSIndexPath IndexPathByAddingIndex (nuint index);
 
 		[Export ("indexPathByRemovingLastIndex")]
 		NSIndexPath IndexPathByRemovingLastIndex ();
 
+		/// <param name="position">
+		/// 
+		/// 
+		/// Position of index to return.
+		///   	   
+		///   	   
+		///   	   </param>
+		/// <summary>Return the index at the given <paramref name="position" /> in the index-path (not required for use with iOS <see cref="T:UIKit.UITableView" />).</summary>
+		/// <returns>
+		///         </returns>
+		/// <remarks>
+		///         </remarks>
 		[Export ("indexAtPosition:")]
 		nuint IndexAtPosition (nint position);
 
@@ -13841,6 +14425,16 @@ namespace Foundation {
 		[Export ("section")]
 		nint LongSection { get; }
 
+		/// <param name="row">
+		/// The row index within the corresponding <paramref name="section" /> of a <see cref="T:UIKit.UITableView" />.
+		///   	   </param>
+		/// <param name="section">
+		/// The index of the section in the <see cref="T:UIKit.UITableView" /> that contains the <paramref name="row" />.
+		///   	   </param>
+		/// <summary>Returns an index-path object initialized with the given row and section details.</summary>
+		/// <returns>An <see cref="T:Foundation.NSIndexPath" /> object, or <see langword="null" /> if it could not be created.</returns>
+		/// <remarks>
+		///         </remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Static]
@@ -13853,6 +14447,16 @@ namespace Foundation {
 		[Export ("section")]
 		nint Section { get; }
 
+		/// <param name="item">
+		/// Item value.
+		///   	   </param>
+		/// <param name="section">
+		/// Section value.
+		///   	   </param>
+		/// <summary>Creates an NSIndexPath from the given item and section values.</summary>
+		/// <returns>New instance of the NSIndexPath.</returns>
+		/// <remarks>
+		///         </remarks>
 		[Static]
 		[MacCatalyst (13, 1)]
 		[Export ("indexPathForItem:inSection:")]
@@ -13872,6 +14476,10 @@ namespace Foundation {
 
 	[BaseType (typeof (NSObject))]
 	interface NSIndexSet : NSCoding, NSSecureCoding, NSMutableCopying {
+		/// <param name="idx">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Export ("indexSetWithIndex:")]
 		NSIndexSet FromIndex (nint idx);
 
@@ -13897,18 +14505,38 @@ namespace Foundation {
 		[Export ("lastIndex")]
 		nuint LastIndex { get; }
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("indexGreaterThanIndex:")]
 		nuint IndexGreaterThan (nuint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("indexLessThanIndex:")]
 		nuint IndexLessThan (nuint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("indexGreaterThanOrEqualToIndex:")]
 		nuint IndexGreaterThanOrEqual (nuint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("indexLessThanOrEqualToIndex:")]
 		nuint IndexLessThanOrEqual (nuint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("containsIndex:")]
 		bool Contains (nuint index);
 
@@ -14294,10 +14922,19 @@ namespace Foundation {
 		// user needs to manually [Export] the selector on a static method, like
 		// they do for the "layer" property on CALayer subclasses.
 		//
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Static, Abstract]
 		[Export ("readableTypeIdentifiersForItemProvider", ArgumentSemantic.Copy)]
 		string [] ReadableTypeIdentifiers { get; }
 
+		/// <param name="data">To be added.</param>
+		/// <param name="typeIdentifier">To be added.</param>
+		/// <param name="outError">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static, Abstract]
 		[Export ("objectWithItemProviderData:typeIdentifier:error:")]
 		[return: NullAllowed]
@@ -14317,6 +14954,9 @@ namespace Foundation {
 		// user needs to manually [Export] the selector on a static method, like
 		// they do for the "layer" property on CALayer subclasses.
 		//
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Static, Abstract]
 		[Export ("writableTypeIdentifiersForItemProvider", ArgumentSemantic.Copy)]
 		string [] WritableTypeIdentifiers { get; }
@@ -14331,6 +14971,9 @@ namespace Foundation {
 		// [Export ("itemProviderVisibilityForRepresentationWithTypeIdentifier:")]
 		// NSItemProviderRepresentationVisibility GetItemProviderVisibility (string typeIdentifier);
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Export ("writableTypeIdentifiersForItemProvider", ArgumentSemantic.Copy)]
 		// 'WritableTypeIdentifiers' is a nicer name, but there's a static property with that name.
 		string [] WritableTypeIdentifiersForItemProvider { get; }
@@ -14406,6 +15049,10 @@ namespace Foundation {
 		[Export ("isOneway")]
 		bool IsOneway { get; }
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("getArgumentTypeAtIndex:")]
 		IntPtr GetArgumentType (nuint index);
 
@@ -14441,6 +15088,9 @@ namespace Foundation {
 
 	[BaseType (typeof (NSIndexSet))]
 	interface NSMutableIndexSet : NSSecureCoding {
+		/// <param name="index">To be added.</param>
+		/// <summary>Initializes a new index set from an existing unsigned integer.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithIndex:")]
 		NativeHandle Constructor (nuint index);
 
@@ -14456,12 +15106,22 @@ namespace Foundation {
 		[Export ("removeAllIndexes")]
 		void Clear ();
 
+		/// <param name="index">The index to add.</param>
+		/// <summary>Adds a single index to the existing set.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("addIndex:")]
 		void Add (nuint index);
 
+		/// <param name="index">The index to remove.</param>
+		/// <summary>Removes a single index from the collection.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("removeIndex:")]
 		void Remove (nuint index);
 
+		/// <param name="startIndex">To be added.</param>
+		/// <param name="delta">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("shiftIndexesStartingAtIndex:by:")]
 		void ShiftIndexes (nuint startIndex, nint delta);
 
@@ -14606,12 +15266,20 @@ namespace Foundation {
 		/// <param name="sender">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("netServiceWillPublish:")]
 		void WillPublish (NSNetService sender);
 
 		/// <param name="sender">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("netServiceDidPublish:")]
 		void Published (NSNetService sender);
 
@@ -14619,18 +15287,29 @@ namespace Foundation {
 		/// <param name="errors">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("netService:didNotPublish:"), EventArgs ("NSNetServiceError")]
+		[Export ("netService:didNotPublish:"), EventArgs ("NSNetServiceError", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void PublishFailure (NSNetService sender, NSDictionary errors);
 
 		/// <param name="sender">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("netServiceWillResolve:")]
 		void WillResolve (NSNetService sender);
 
 		/// <param name="sender">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("netServiceDidResolveAddress:")]
 		void AddressResolved (NSNetService sender);
 
@@ -14638,12 +15317,19 @@ namespace Foundation {
 		/// <param name="errors">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("netService:didNotResolve:"), EventArgs ("NSNetServiceError")]
+		[Export ("netService:didNotResolve:"), EventArgs ("NSNetServiceError", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void ResolveFailure (NSNetService sender, NSDictionary errors);
 
 		/// <param name="sender">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("netServiceDidStop:")]
 		void Stopped (NSNetService sender);
 
@@ -14651,7 +15337,10 @@ namespace Foundation {
 		/// <param name="data">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("netService:didUpdateTXTRecordData:"), EventArgs ("NSNetServiceData")]
+		[Export ("netService:didUpdateTXTRecordData:"), EventArgs ("NSNetServiceData", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void UpdatedTxtRecordData (NSNetService sender, NSData data);
 
 		/// <param name="sender">To be added.</param>
@@ -14659,7 +15348,10 @@ namespace Foundation {
 		/// <param name="outputStream">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("netService:didAcceptConnectionWithInputStream:outputStream:"), EventArgs ("NSNetServiceConnection")]
+		[Export ("netService:didAcceptConnectionWithInputStream:outputStream:"), EventArgs ("NSNetServiceConnection", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidAcceptConnection (NSNetService sender, NSInputStream inputStream, NSOutputStream outputStream);
 	}
 
@@ -14741,12 +15433,20 @@ namespace Foundation {
 		/// <param name="sender">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("netServiceBrowserWillSearch:")]
 		void SearchStarted (NSNetServiceBrowser sender);
 
 		/// <param name="sender">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("netServiceBrowserDidStopSearch:")]
 		void SearchStopped (NSNetServiceBrowser sender);
 
@@ -14754,7 +15454,10 @@ namespace Foundation {
 		/// <param name="errors">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("netServiceBrowser:didNotSearch:"), EventArgs ("NSNetServiceError")]
+		[Export ("netServiceBrowser:didNotSearch:"), EventArgs ("NSNetServiceError", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void NotSearched (NSNetServiceBrowser sender, NSDictionary errors);
 
 		/// <param name="sender">To be added.</param>
@@ -14762,7 +15465,10 @@ namespace Foundation {
 		/// <param name="moreComing">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("netServiceBrowser:didFindDomain:moreComing:"), EventArgs ("NSNetDomain")]
+		[Export ("netServiceBrowser:didFindDomain:moreComing:"), EventArgs ("NSNetDomain", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void FoundDomain (NSNetServiceBrowser sender, string domain, bool moreComing);
 
 		/// <param name="sender">To be added.</param>
@@ -14770,7 +15476,10 @@ namespace Foundation {
 		/// <param name="moreComing">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("netServiceBrowser:didFindService:moreComing:"), EventArgs ("NSNetService")]
+		[Export ("netServiceBrowser:didFindService:moreComing:"), EventArgs ("NSNetService", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void FoundService (NSNetServiceBrowser sender, NSNetService service, bool moreComing);
 
 		/// <param name="sender">To be added.</param>
@@ -14778,7 +15487,10 @@ namespace Foundation {
 		/// <param name="moreComing">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("netServiceBrowser:didRemoveDomain:moreComing:"), EventArgs ("NSNetDomain")]
+		[Export ("netServiceBrowser:didRemoveDomain:moreComing:"), EventArgs ("NSNetDomain", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DomainRemoved (NSNetServiceBrowser sender, string domain, bool moreComing);
 
 		/// <param name="sender">To be added.</param>
@@ -14786,7 +15498,10 @@ namespace Foundation {
 		/// <param name="moreComing">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("netServiceBrowser:didRemoveService:moreComing:"), EventArgs ("NSNetService")]
+		[Export ("netServiceBrowser:didRemoveService:moreComing:"), EventArgs ("NSNetService", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void ServiceRemoved (NSNetServiceBrowser sender, NSNetService service, bool moreComing);
 	}
 
@@ -15536,10 +16251,16 @@ namespace Foundation {
 		[Export ("initWithBool:")]
 		NativeHandle Constructor (bool value);
 
+		/// <param name="value">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithInteger:")]
 		NativeHandle Constructor (nint value);
 
+		/// <param name="value">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithUnsignedInteger:")]
 		NativeHandle Constructor (nuint value);
@@ -15568,10 +16289,18 @@ namespace Foundation {
 		[Export ("numberWithUnsignedInt:")]
 		NSNumber FromUInt32 (uint /* unsigned int, not NSUInteger */ value);
 
+		/// <param name="value">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("numberWithLong:")]
 		NSNumber FromLong (nint value);
 		//
+		/// <param name="value">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("numberWithUnsignedLong:")]
 		NSNumber FromUnsignedLong (nuint value);
@@ -15596,10 +16325,18 @@ namespace Foundation {
 		[Export ("numberWithBool:")]
 		NSNumber FromBoolean (bool value);
 
+		/// <param name="value">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("numberWithInteger:")]
 		NSNumber FromNInt (nint value);
 
+		/// <param name="value">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("numberWithUnsignedInteger:")]
 		NSNumber FromNUInt (nuint value);
@@ -15883,9 +16620,18 @@ namespace Foundation {
 		[Export ("decimalNumberByDividingBy:withBehavior:")]
 		NSDecimalNumber Divide (NSDecimalNumber d, NSObject Behavior);
 
+		/// <param name="power">To be added.</param>
+		/// <summary>Raises this number to the specified power.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("decimalNumberByRaisingToPower:")]
 		NSDecimalNumber RaiseTo (nuint power);
 
+		/// <param name="power">To be added.</param>
+		/// <param name="Behavior">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("decimalNumberByRaisingToPower:withBehavior:")]
 		NSDecimalNumber RaiseTo (nuint power, [NullAllowed] NSObject Behavior);
 
@@ -16053,9 +16799,36 @@ namespace Foundation {
 
 		// Disable warning for NSMutableArray
 #pragma warning disable 618
+		/// <param name="limitDate">To be added.</param>
+		/// <param name="components">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="receivePort">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="headerSpaceReserved">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("sendBeforeDate:components:from:reserved:")]
 		bool SendBeforeDate (NSDate limitDate, [NullAllowed] NSMutableArray components, [NullAllowed] NSPort receivePort, nuint headerSpaceReserved);
 
+		/// <param name="limitDate">To be added.</param>
+		/// <param name="msgID">To be added.</param>
+		/// <param name="components">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="receivePort">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="headerSpaceReserved">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("sendBeforeDate:msgid:components:from:reserved:")]
 		bool SendBeforeDate (NSDate limitDate, nuint msgID, [NullAllowed] NSMutableArray components, [NullAllowed] NSPort receivePort, nuint headerSpaceReserved);
 #pragma warning restore 618
@@ -17638,6 +18411,12 @@ namespace Foundation {
 		[Export ("presentedItemDidChangeUbiquityAttributes:")]
 		void PresentedItemChangedUbiquityAttributes (NSSet<NSString> attributes);
 
+		/// <summary>Gets the set of ubiquity attributes that will generate notifications if they are modified.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("observedPresentedItemUbiquityAttributes", ArgumentSemantic.Strong)]
@@ -18068,6 +18847,10 @@ namespace Foundation {
 		void Resume (NSUrlDownload download, NSUrlResponse response, long startingByte);
 
 		//- (void)download:(NSUrlDownload *)download didReceiveDataOfLength:(NSUInteger)length;
+		/// <param name="download">To be added.</param>
+		/// <param name="length">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("download:didReceiveDataOfLength:")]
 		void ReceivedData (NSUrlDownload download, nuint length);
 
@@ -18378,9 +19161,17 @@ namespace Foundation {
 		[Export ("numberOfRanges")]
 		nuint NumberOfRanges { get; }
 
+		/// <param name="idx">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("rangeAtIndex:")]
 		NSRange RangeAtIndex (nuint idx);
 
+		/// <param name="offset">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("resultByAdjustingRangesWithOffset:")]
 		NSTextCheckingResult ResultByAdjustingRanges (nint offset);
 
@@ -18621,6 +19412,9 @@ namespace Foundation {
 	[BaseType (typeof (NSObject))]
 	interface NSConditionLock : NSLocking {
 
+		/// <param name="condition">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		[Export ("initWithCondition:")]
 		NativeHandle Constructor (nint condition);
@@ -18628,21 +19422,36 @@ namespace Foundation {
 		[Export ("condition")]
 		nint Condition { get; }
 
+		/// <param name="condition">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("lockWhenCondition:")]
 		void LockWhenCondition (nint condition);
 
 		[Export ("tryLock")]
 		bool TryLock ();
 
+		/// <param name="condition">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("tryLockWhenCondition:")]
 		bool TryLockWhenCondition (nint condition);
 
+		/// <param name="condition">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("unlockWithCondition:")]
 		void UnlockWithCondition (nint condition);
 
 		[Export ("lockBeforeDate:")]
 		bool LockBeforeDate (NSDate limit);
 
+		/// <param name="condition">To be added.</param>
+		/// <param name="limit">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("lockWhenCondition:beforeDate:")]
 		bool LockWhenCondition (nint condition, NSDate limit);
 
@@ -18869,6 +19678,9 @@ namespace Foundation {
 
 #if MONOMAC
 	partial interface NSFilePresenter {
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -19080,18 +19892,35 @@ namespace Foundation {
 		[Export ("initWithTransform:")]
 		NativeHandle Constructor (NSAffineTransform transform);
 
+		/// <param name="deltaX">To be added.</param>
+		/// <param name="deltaY">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("translateXBy:yBy:")]
 		void Translate (nfloat deltaX, nfloat deltaY);
 
+		/// <param name="angle">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("rotateByDegrees:")]
 		void RotateByDegrees (nfloat angle);
 
+		/// <param name="angle">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("rotateByRadians:")]
 		void RotateByRadians (nfloat angle);
 
+		/// <param name="scale">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("scaleBy:")]
 		void Scale (nfloat scale);
 
+		/// <param name="scaleX">To be added.</param>
+		/// <param name="scaleY">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("scaleXBy:yBy:")]
 		void Scale (nfloat scaleX, nfloat scaleY);
 
@@ -19474,13 +20303,24 @@ namespace Foundation {
 		[Export ("numberOfItems")]
 		nint NumberOfItems { get; }
 
+		/// <param name="descriptor">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("insertDescriptor:atIndex:")]
 		void InsertDescriptoratIndex (NSAppleEventDescriptor descriptor, nint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("descriptorAtIndex:")]
 		NSAppleEventDescriptor DescriptorAtIndex (nint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("removeDescriptorAtIndex:")]
 		void RemoveDescriptorAtIndex (nint index);
 
@@ -19494,6 +20334,10 @@ namespace Foundation {
 		[Export ("removeDescriptorWithKeyword:")]
 		void RemoveDescriptorWithKeyword (AEKeyword keyword);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("keywordForDescriptorAtIndex:")]
 		AEKeyword KeywordForDescriptorAtIndex (nint index);
 
@@ -19900,14 +20744,20 @@ namespace Foundation {
 		/// <param name="notification">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("userNotificationCenter:didDeliverNotification:"), EventArgs ("UNCDidDeliverNotification")]
+		[Export ("userNotificationCenter:didDeliverNotification:"), EventArgs ("UNCDidDeliverNotification", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			""")]
 		void DidDeliverNotification (NSUserNotificationCenter center, NSUserNotification notification);
 
 		/// <param name="center">To be added.</param>
 		/// <param name="notification">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("userNotificationCenter:didActivateNotification:"), EventArgs ("UNCDidActivateNotification")]
+		[Export ("userNotificationCenter:didActivateNotification:"), EventArgs ("UNCDidActivateNotification", XmlDocs = """
+			<summary>To be added.</summary>
+			<remarks>To be added.</remarks>
+			""")]
 		void DidActivateNotification (NSUserNotificationCenter center, NSUserNotification notification);
 
 		/// <param name="center">To be added.</param>
@@ -19915,6 +20765,11 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>To be added.</summary>
+			<value>To be added.</value>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("userNotificationCenter:shouldPresentNotification:"), DelegateName ("UNCShouldPresentNotification"), DefaultValue (false)]
 		bool ShouldPresentNotification (NSUserNotificationCenter center, NSUserNotification notification);
 	}

@@ -386,10 +386,18 @@ namespace ModelIO {
 		[Export ("count")]
 		nuint Count { get; }
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Returns the top-level <see cref="T:ModelIO.MDLObject" /> node in this asset's indexed list of <see cref="T:ModelIO.MDLObject" /> nodes, at the specified index.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("objectAtIndexedSubscript:")]
 		[return: NullAllowed]
 		MDLObject GetObjectAtIndexedSubscript (nuint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Returns the object at the specified index.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("objectAtIndex:")]
 		MDLObject GetObject (nuint index);
 
@@ -820,6 +828,9 @@ namespace ModelIO {
 		[Export ("initWithReflectiveTexture:irradianceTexture:")]
 		NativeHandle Constructor ([NullAllowed] MDLTexture reflectiveTexture, [NullAllowed] MDLTexture irradianceTexture);
 
+		/// <param name="sphericalHarmonicsLevel">To be added.</param>
+		/// <summary>Generates a spherical harmonics map from the irradiance map of the light probe, to the specified harmonics depth.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("generateSphericalHarmonicsFromIrradiance:")]
 		void GenerateSphericalHarmonicsFromIrradiance (nuint sphericalHarmonicsLevel);
 
@@ -859,6 +870,21 @@ namespace ModelIO {
 		// inlined from MDLLightBaking (MDLLightProbe)
 		// reason: static protocol members made very bad extensions methods
 
+		/// <param name="textureSize">To be added.</param>
+		/// <param name="transform">To be added.</param>
+		/// <param name="lightsToConsider">To be added.</param>
+		/// <param name="objectsToConsider">To be added.</param>
+		/// <param name="reflectiveCubemap">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="irradianceCubemap">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("lightProbeWithTextureSize:forLocation:lightsToConsider:objectsToConsider:reflectiveCubemap:irradianceCubemap:")]
 		[return: NullAllowed]
@@ -1320,9 +1346,21 @@ namespace ModelIO {
 		[Export ("initWithBufferAllocator:")]
 		NativeHandle Constructor ([NullAllowed] IMDLMeshBufferAllocator bufferAllocator);
 
+		/// <param name="vertexBuffer">To be added.</param>
+		/// <param name="vertexCount">To be added.</param>
+		/// <param name="descriptor">To be added.</param>
+		/// <param name="submeshes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithVertexBuffer:vertexCount:descriptor:submeshes:")]
 		NativeHandle Constructor (IMDLMeshBuffer vertexBuffer, nuint vertexCount, MDLVertexDescriptor descriptor, MDLSubmesh [] submeshes);
 
+		/// <param name="vertexBuffers">To be added.</param>
+		/// <param name="vertexCount">To be added.</param>
+		/// <param name="descriptor">To be added.</param>
+		/// <param name="submeshes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithVertexBuffers:vertexCount:descriptor:submeshes:")]
 		NativeHandle Constructor (IMDLMeshBuffer [] vertexBuffers, nuint vertexCount, MDLVertexDescriptor descriptor, MDLSubmesh [] submeshes);
 
@@ -1409,10 +1447,25 @@ namespace ModelIO {
 		[Export ("addAttributeWithName:format:")]
 		void AddAttribute (string name, MDLVertexFormat format);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <param name="type">The mesh vector type.</param>
+		/// <param name="data">To be added.</param>
+		/// <param name="stride">To be added.</param>
+		/// <summary>Adds a vertex attribute and a corresponding empty vertex buffer.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("addAttributeWithName:format:type:data:stride:")]
 		void AddAttribute (string name, MDLVertexFormat format, string type, NSData data, nint stride);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <param name="data">To be added.</param>
+		/// <param name="stride">To be added.</param>
+		/// <param name="time">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("addAttributeWithName:format:type:data:stride:time:")]
 		void AddAttribute (string name, MDLVertexFormat format, string type, NSData data, nint stride, double time);
@@ -1618,6 +1671,12 @@ namespace ModelIO {
 		[Export ("newIcosahedronWithRadius:inwardNormals:geometryType:allocator:")]
 		MDLMesh CreateIcosahedron (float radius, bool inwardNormals, MDLGeometryType geometryType, [NullAllowed] IMDLMeshBufferAllocator allocator);
 
+		/// <param name="mesh">To be added.</param>
+		/// <param name="submeshIndex">To be added.</param>
+		/// <param name="subdivisionLevels">To be added.</param>
+		/// <summary>Subdivides the indexed submesh within the specified mesh, the specified number of times.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("newSubdividedMesh:submeshIndex:subdivisionLevels:")]
 		[return: NullAllowed]
@@ -1638,6 +1697,13 @@ namespace ModelIO {
 		[Export ("generateAmbientOcclusionTextureWithQuality:attenuationFactor:objectsToConsider:vertexAttributeNamed:materialPropertyNamed:")]
 		bool GenerateAmbientOcclusionTexture (float bakeQuality, float attenuationFactor, MDLObject [] objectsToConsider, string vertexAttributeName, string materialPropertyName);
 
+		/// <param name="raysPerSample">To be added.</param>
+		/// <param name="attenuationFactor">To be added.</param>
+		/// <param name="objectsToConsider">To be added.</param>
+		/// <param name="vertexAttributeName">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("generateAmbientOcclusionVertexColorsWithRaysPerSample:attenuationFactor:objectsToConsider:vertexAttributeNamed:")]
 		bool GenerateAmbientOcclusionVertexColors (nint raysPerSample, float attenuationFactor, MDLObject [] objectsToConsider, string vertexAttributeName);
 
@@ -1712,6 +1778,10 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLMeshBuffer : NSCopying {
+		/// <param name="data">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <summary>Writes <paramref name="data" /> into the buffer at the specified <paramref name="offset" /> number of bytes.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("fillData:offset:")]
 		void FillData (NSData data, nuint offset);
@@ -1724,18 +1794,27 @@ namespace ModelIO {
 		MDLMeshBufferMap Map { get; }
 
 #if NET
+		/// <summary>Gets the length of the buffer, in bytes.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 #endif
 		[Export ("length")]
 		nuint Length { get; }
 
 #if NET
+		/// <summary>Gets the allocator that is used to allocate memory for the mesh buffer.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 #endif
 		[Export ("allocator", ArgumentSemantic.Retain)]
 		IMDLMeshBufferAllocator Allocator { get; }
 
 #if NET
+		/// <summary>Gets the memory pool that the buffer occupies.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 #endif
 		[Export ("zone", ArgumentSemantic.Retain)]
@@ -1743,6 +1822,9 @@ namespace ModelIO {
 		IMDLMeshBufferZone Zone { get; }
 
 #if NET
+		/// <summary>Gets a value that indicates whether the buffer contains indices or vertices.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 #endif
 		[Export ("type")]
@@ -1754,6 +1836,10 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLMeshBufferAllocator {
+		/// <param name="capacity">To be added.</param>
+		/// <summary>Creates and returns a new mesh buffer zone with the specified  <paramref name="capacity" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newZone:")]
 		IMDLMeshBufferZone CreateZone (nuint capacity);
@@ -1767,6 +1853,11 @@ namespace ModelIO {
 		[Export ("newZoneForBuffersWithSize:andType:")]
 		IMDLMeshBufferZone CreateZone (NSNumber [] sizes, NSNumber [] types);
 
+		/// <param name="length">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newBuffer:type:")]
 		IMDLMeshBuffer CreateBuffer (nuint length, MDLMeshBufferType type);
@@ -1780,6 +1871,12 @@ namespace ModelIO {
 		[Export ("newBufferWithData:type:")]
 		IMDLMeshBuffer CreateBuffer (NSData data, MDLMeshBufferType type);
 
+		/// <param name="zone">To be added.</param>
+		/// <param name="length">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newBufferFromZone:length:type:")]
 		[return: NullAllowed]
@@ -1826,6 +1923,10 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLMeshBufferData : MDLMeshBuffer, NSCopying {
+		/// <param name="type">To be added.</param>
+		/// <param name="length">To be added.</param>
+		/// <summary>Creates a new mesh buffer of the specified size in bytes and the specified type.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithType:length:")]
 		NativeHandle Constructor (MDLMeshBufferType type, nuint length);
 
@@ -1861,12 +1962,18 @@ namespace ModelIO {
 	[Protocol]
 	interface MDLMeshBufferZone {
 #if NET
+		/// <summary>Gets the capacity of the zone, in bytes.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 #endif
 		[Export ("capacity")]
 		nuint Capacity { get; }
 
 #if NET
+		/// <summary>Gets the allocator that created the zone.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 #endif
 		[Export ("allocator")]
@@ -2133,6 +2240,10 @@ namespace ModelIO {
 		void RemoveObject (MDLObject @object);
 
 #if NET
+		/// <param name="index">The index of the object to get.</param>
+		/// <summary>Returns the object at the specified <paramref name="index" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 #endif
 		[MacCatalyst (13, 1)]
@@ -2140,6 +2251,9 @@ namespace ModelIO {
 		MDLObject GetObject (nuint index);
 
 #if NET
+		/// <summary>Gets the number of objects in this container.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 #endif
 		[MacCatalyst (13, 1)]
@@ -2179,12 +2293,22 @@ namespace ModelIO {
 		[Export ("initWithIESProfile:")]
 		NativeHandle Constructor (NSUrl url);
 
+		/// <param name="sphericalHarmonicsLevel">To be added.</param>
+		/// <summary>Fills the <see cref="P:ModelIO.MDLPhotometricLight.SphericalHarmonicsCoefficients" /> property to the depth that is specified by <paramref name="sphericalHarmonicsLevel" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("generateSphericalHarmonicsFromLight:")]
 		void GenerateSphericalHarmonics (nuint sphericalHarmonicsLevel);
 
+		/// <param name="textureSize">To be added.</param>
+		/// <summary>Fills the <see cref="P:ModelIO.MDLPhotometricLight.LightCubeMap" /> property with cube map data that has sides of length <paramref name="textureSize" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("generateCubemapFromLight:")]
 		void GenerateCubemap (nuint textureSize);
 
+		/// <param name="textureSize">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("generateTexture:")]
 		MDLTexture GenerateTexture (nuint textureSize);
@@ -2635,12 +2759,48 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLSubmesh : MDLNamed {
+		/// <param name="name">To be added.</param>
+		/// <param name="indexBuffer">To be added.</param>
+		/// <param name="indexCount">To be added.</param>
+		/// <param name="indexType">To be added.</param>
+		/// <param name="geometryType">To be added.</param>
+		/// <param name="material">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:indexBuffer:indexCount:indexType:geometryType:material:")]
 		NativeHandle Constructor (string name, IMDLMeshBuffer indexBuffer, nuint indexCount, MDLIndexBitDepth indexType, MDLGeometryType geometryType, [NullAllowed] MDLMaterial material);
 
+		/// <param name="indexBuffer">To be added.</param>
+		/// <param name="indexCount">To be added.</param>
+		/// <param name="indexType">To be added.</param>
+		/// <param name="geometryType">To be added.</param>
+		/// <param name="material">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithIndexBuffer:indexCount:indexType:geometryType:material:")]
 		NativeHandle Constructor (IMDLMeshBuffer indexBuffer, nuint indexCount, MDLIndexBitDepth indexType, MDLGeometryType geometryType, [NullAllowed] MDLMaterial material);
 
+		/// <param name="name">To be added.</param>
+		/// <param name="indexBuffer">To be added.</param>
+		/// <param name="indexCount">To be added.</param>
+		/// <param name="indexType">To be added.</param>
+		/// <param name="geometryType">To be added.</param>
+		/// <param name="material">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="topology">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:indexBuffer:indexCount:indexType:geometryType:material:topology:")]
 		NativeHandle Constructor (string name, IMDLMeshBuffer indexBuffer, nuint indexCount, MDLIndexBitDepth indexType, MDLGeometryType geometryType, [NullAllowed] MDLMaterial material, [NullAllowed] MDLSubmeshTopology topology);
 
@@ -2832,6 +2992,11 @@ namespace ModelIO {
 		[Export ("writeToURL:")]
 		bool WriteToUrl (NSUrl url);
 
+		/// <param name="url">To be added.</param>
+		/// <param name="level">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("writeToURL:level:")]
 		bool WriteToUrl (NSUrl url, nuint level);
@@ -2844,6 +3009,12 @@ namespace ModelIO {
 		[Export ("writeToURL:type:")]
 		bool WriteToUrl (NSUrl url, string type);
 
+		/// <param name="nsurl">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <param name="level">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("writeToURL:type:level:")]
 		bool WriteToUrl (NSUrl nsurl, string type, nuint level);
@@ -2855,6 +3026,10 @@ namespace ModelIO {
 		[return: NullAllowed]
 		CGImage GetImageFromTexture ();
 
+		/// <param name="level">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("imageFromTextureAtLevel:")]
 		[return: NullAllowed]
@@ -2874,10 +3049,20 @@ namespace ModelIO {
 		[return: NullAllowed]
 		NSData GetTexelDataWithBottomLeftOrigin ();
 
+		/// <param name="mipLevel">To be added.</param>
+		/// <param name="create">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("texelDataWithTopLeftOriginAtMipLevel:create:")]
 		[return: NullAllowed]
 		NSData GetTexelDataWithTopLeftOrigin (nint mipLevel, bool create);
 
+		/// <param name="mipLevel">To be added.</param>
+		/// <param name="create">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("texelDataWithBottomLeftOriginAtMipLevel:create:")]
 		[return: NullAllowed]
 		NSData GetTexelDataWithBottomLeftOrigin (nint mipLevel, bool create);
@@ -3210,6 +3395,9 @@ namespace ModelIO {
 			set;
 		}
 
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 #if NET
 		[Abstract]
@@ -3232,6 +3420,9 @@ namespace ModelIO {
 		double MaximumTime { get; }
 
 		// Added in iOS 10 SDK but it is supposed to be present in iOS 9.
+		/// <summary>To be added.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 #if NET
 		[Abstract]
@@ -3258,6 +3449,11 @@ namespace ModelIO {
 #if !NET
 		[Obsolete ("Use 'CreateGlobalTransform4x4' instead.")]
 #endif
+		/// <param name="obj">To be added.</param>
+		/// <param name="atTime">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("globalTransformWithObject:atTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -3298,6 +3494,12 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLVertexAttribute : NSCopying {
+		/// <param name="name">To be added.</param>
+		/// <param name="format">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="bufferIndex">To be added.</param>
+		/// <summary>Creates a new MDLVertexAttribute with the specified values.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithName:format:offset:bufferIndex:")]
 		NativeHandle Constructor (string name, MDLVertexFormat format, nuint offset, nuint bufferIndex);
 
@@ -3858,6 +4060,9 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLVertexBufferLayout : NSCopying {
+		/// <param name="stride">To be added.</param>
+		/// <summary>Creates a new vertex buffer layout with the specified <paramref name="stride" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithStride:")]
 		NativeHandle Constructor (nuint stride);

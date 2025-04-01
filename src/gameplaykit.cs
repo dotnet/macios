@@ -332,11 +332,19 @@ namespace GameplayKit {
 		[Export ("updateWithDeltaTime:")]
 		void Update (double deltaTimeInSeconds);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[MacCatalyst (13, 1)]
 		[Export ("classForGenericArgumentAtIndex:")]
 		Class GetClassForGenericArgument (nuint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("Class.Lookup (GetClassForGenericArgument (index))!")]
 		Type GetTypeForGenericArgument (nuint index);
@@ -395,6 +403,11 @@ namespace GameplayKit {
 		[Export ("createBranchWithPredicate:attribute:")]
 		GKDecisionNode CreateBranch (NSPredicate predicate, NSObject attribute);
 
+		/// <param name="weight">To be added.</param>
+		/// <param name="attribute">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("createBranchWithWeight:attribute:")]
 		GKDecisionNode CreateBranch (nint weight, NSObject attribute);
 	}
@@ -742,11 +755,19 @@ namespace GameplayKit {
 		[Export ("isConnectionLockedFromNode:toNode:")]
 		bool IsConnectionLocked (GKGraphNode2D startNode, GKGraphNode2D endNode);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[MacCatalyst (13, 1)]
 		[Export ("classForGenericArgumentAtIndex:")]
 		Class GetClassForGenericArgument (nuint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("Class.Lookup (GetClassForGenericArgument (index))!")]
 		Type GetTypeForGenericArgument (nuint index);
@@ -817,11 +838,19 @@ namespace GameplayKit {
 		[Export ("connectNodeToAdjacentNodes:")]
 		void ConnectNodeToAdjacentNodes (GKGridGraphNode node);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[MacCatalyst (13, 1)]
 		[Export ("classForGenericArgumentAtIndex:")]
 		Class GetClassForGenericArgument (nuint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("Class.Lookup (GetClassForGenericArgument (index))!")]
 		Type GetTypeForGenericArgument (nuint index);
@@ -880,14 +909,26 @@ namespace GameplayKit {
 		[Export ("triangulate")]
 		void Triangulate ();
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("triangleAtIndex:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		GKTriangle GetTriangle (nuint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("classForGenericArgumentAtIndex:")]
 		Class GetClassForGenericArgument (nuint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Wrap ("Class.Lookup (GetClassForGenericArgument (index))!")]
 		Type GetTypeForGenericArgument (nuint index);
 	}
@@ -1010,6 +1051,13 @@ namespace GameplayKit {
 		[return: NullAllowed]
 		IGKGameModelUpdate GetBestMove (IGKGameModelPlayer player);
 
+		/// <param name="player">To be added.</param>
+		/// <param name="numMovesToConsider">To be added.</param>
+		/// <summary>Returns a random move among the <paramref name="numMovesToConsider" /> best moves.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>
+		///           <para>If <see cref="P:GameplayKit.GKMinMaxStrategist.RandomSource" /> is <see langword="null" />, this method returns the same move as <see cref="M:GameplayKit.GKMinMaxStrategist.GetBestMove(GameplayKit.IGKGameModelPlayer)" />.</para>
+		///         </remarks>
 		[Export ("randomMoveForPlayer:fromNumberOfBestMoves:")]
 		[return: NullAllowed]
 		IGKGameModelUpdate GetRandomMove (IGKGameModelPlayer player, nint numMovesToConsider);
@@ -1072,6 +1120,10 @@ namespace GameplayKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (IntPtr points, nuint numPoints);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Retrieves the <see cref="T:OpenTK.Vector2" /> at the specified <paramref name="index" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("vertexAtIndex:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector2 GetVertex (nuint index);
@@ -1164,6 +1216,10 @@ namespace GameplayKit {
 		[Wrap ("this (nodes: graphNodes, radius: radius)")] // Avoid breaking change
 		NativeHandle Constructor (GKGraphNode2D [] graphNodes, float radius);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Developers should not use this deprecated method. Developers should use 'GetVector2Point' instead.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'GetVector2Point' instead.")]
 		[Deprecated (PlatformName.TvOS, 10, 0, message: "Use 'GetVector2Point' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Use 'GetVector2Point' instead.")]
@@ -1172,11 +1228,19 @@ namespace GameplayKit {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector2 GetPoint (nuint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Returns a 2-dimensional vector for the node at the specified <paramref name="index" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("float2AtIndex:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector2 GetVector2Point (nuint index);
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Returns a 3-dimensional vector for the node at the specified <paramref name="index" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("float3AtIndex:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -1200,6 +1264,11 @@ namespace GameplayKit {
 		[Export ("numberOfPossibleOutcomes", ArgumentSemantic.Assign)]
 		nuint NumberOfPossibleOutcomes { get; }
 
+		/// <param name="source">To be added.</param>
+		/// <param name="lowestInclusive">To be added.</param>
+		/// <param name="highestInclusive">To be added.</param>
+		/// <summary>Creates a distribution with the specified bounds.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithRandomSource:lowestValue:highestValue:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IGKRandom source, nint lowestInclusive, nint highestInclusive);
@@ -1217,10 +1286,19 @@ namespace GameplayKit {
 		//		[Export ("nextBool")]
 		//		bool GetNextBool ();
 
+		/// <param name="lowestInclusive">To be added.</param>
+		/// <param name="highestInclusive">To be added.</param>
+		/// <summary>Creates and returns a <see cref="T:GameplayKit.GKRandomDistribution" /> between the provided values.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("distributionWithLowestValue:highestValue:")]
 		GKRandomDistribution GetDistributionBetween (nint lowestInclusive, nint highestInclusive);
 
+		/// <param name="sideCount">To be added.</param>
+		/// <summary>Creates and returns a <see cref="T:GameplayKit.GKRandomDistribution" /> for a die with the specified number of sides.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("distributionForDieWithSideCount:")]
 		GKRandomDistribution GetDie (nint sideCount);
@@ -1246,6 +1324,11 @@ namespace GameplayKit {
 		[Export ("deviation")]
 		float Deviation { get; }
 
+		/// <param name="source">To be added.</param>
+		/// <param name="lowestInclusive">To be added.</param>
+		/// <param name="highestInclusive">To be added.</param>
+		/// <summary>Creates a distribution bounded by <paramref name="lowestInclusive" /> and <paramref name="highestInclusive" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithRandomSource:lowestValue:highestValue:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IGKRandom source, nint lowestInclusive, nint highestInclusive);
@@ -1264,6 +1347,11 @@ namespace GameplayKit {
 	interface GKShuffledDistribution {
 
 		// inlined from base type
+		/// <param name="source">To be added.</param>
+		/// <param name="lowestInclusive">To be added.</param>
+		/// <param name="highestInclusive">To be added.</param>
+		/// <summary>Creates and returns a <see cref="T:GameplayKit.GKShuffledDistribution" /> between the provided values.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithRandomSource:lowestValue:highestValue:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IGKRandom source, nint lowestInclusive, nint highestInclusive);
@@ -1283,6 +1371,10 @@ namespace GameplayKit {
 		[Export ("nextInt")]
 		nint GetNextInt ();
 
+		/// <param name="upperBound">To be added.</param>
+		/// <summary>Returns a random integer that is less than <paramref name="upperBound" />.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("nextIntWithUpperBound:")]
 		nuint GetNextInt (nuint upperBound);
@@ -1338,6 +1430,12 @@ namespace GameplayKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSData seed);
 
+		/// <param name="count">The number of values to discard.</param>
+		/// <summary>Discards <paramref name="count" /> values. (See remarks).</summary>
+		/// <remarks>
+		///           <para>
+		///             <see cref="T:GameplayKit.GKARC4RandomSource" /> objects are generally good random sources, but may be predicted by analyzing the first 768 values generated. To avoid such possibilities, call <see cref="M:GameplayKit.GKARC4RandomSource.DropValues(System.nuint)" /> with a value of 768 or greater.</para>
+		///         </remarks>
 		[Export ("dropValuesWithCount:")]
 		void DropValues (nuint count);
 	}
@@ -1787,10 +1885,25 @@ namespace GameplayKit {
 		[Export ("persistence")]
 		double Persistence { get; set; }
 
+		/// <param name="frequency">To be added.</param>
+		/// <param name="octaveCount">To be added.</param>
+		/// <param name="persistence">To be added.</param>
+		/// <param name="lacunarity">To be added.</param>
+		/// <param name="seed">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("perlinNoiseSourceWithFrequency:octaveCount:persistence:lacunarity:seed:")]
 		GKPerlinNoiseSource Create (double frequency, nint octaveCount, double persistence, double lacunarity, int seed);
 
+		/// <param name="frequency">To be added.</param>
+		/// <param name="octaveCount">To be added.</param>
+		/// <param name="persistence">To be added.</param>
+		/// <param name="lacunarity">To be added.</param>
+		/// <param name="seed">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFrequency:octaveCount:persistence:lacunarity:seed:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (double frequency, nint octaveCount, double persistence, double lacunarity, int seed);
@@ -1805,10 +1918,25 @@ namespace GameplayKit {
 		[Export ("persistence")]
 		double Persistence { get; set; }
 
+		/// <param name="frequency">To be added.</param>
+		/// <param name="octaveCount">To be added.</param>
+		/// <param name="persistence">To be added.</param>
+		/// <param name="lacunarity">To be added.</param>
+		/// <param name="seed">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("billowNoiseSourceWithFrequency:octaveCount:persistence:lacunarity:seed:")]
 		GKBillowNoiseSource Create (double frequency, nint octaveCount, double persistence, double lacunarity, int seed);
 
+		/// <param name="frequency">To be added.</param>
+		/// <param name="octaveCount">To be added.</param>
+		/// <param name="persistence">To be added.</param>
+		/// <param name="lacunarity">To be added.</param>
+		/// <param name="seed">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFrequency:octaveCount:persistence:lacunarity:seed:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (double frequency, nint octaveCount, double persistence, double lacunarity, int seed);
@@ -1820,10 +1948,23 @@ namespace GameplayKit {
 	[BaseType (typeof (GKCoherentNoiseSource))]
 	interface GKRidgedNoiseSource {
 
+		/// <param name="frequency">To be added.</param>
+		/// <param name="octaveCount">To be added.</param>
+		/// <param name="lacunarity">To be added.</param>
+		/// <param name="seed">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("ridgedNoiseSourceWithFrequency:octaveCount:lacunarity:seed:")]
 		GKRidgedNoiseSource Create (double frequency, nint octaveCount, double lacunarity, int seed);
 
+		/// <param name="frequency">To be added.</param>
+		/// <param name="octaveCount">To be added.</param>
+		/// <param name="lacunarity">To be added.</param>
+		/// <param name="seed">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithFrequency:octaveCount:lacunarity:seed:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (double frequency, nint octaveCount, double lacunarity, int seed);
@@ -1990,10 +2131,17 @@ namespace GameplayKit {
 		[Export ("queryReserve")]
 		nuint QueryReserve { get; set; }
 
+		/// <param name="maxNumberOfChildren">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("treeWithMaxNumberOfChildren:")]
 		GKRTree<ElementType> FromMaxNumberOfChildren (nuint maxNumberOfChildren);
 
+		/// <param name="maxNumberOfChildren">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithMaxNumberOfChildren:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (nuint maxNumberOfChildren);

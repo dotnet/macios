@@ -871,6 +871,10 @@ namespace CoreML {
 
 		// From MLMultiArray (NSNumberDataAccess) Category
 
+		/// <param name="idx">A numeric identifier for the object to get.</param>
+		/// <summary>Retrieves the element at <paramref name="idx" />, as if the array were single-dimensional.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("objectAtIndexedSubscript:")]
 		NSNumber GetObject (nint idx);
 
@@ -887,6 +891,10 @@ namespace CoreML {
 		// Bind 'key' as IntPtr to avoid multiple conversions (nint[] -> NSNumber[] -> NSArray)
 		NSNumber GetObjectInternal (IntPtr key);
 
+		/// <param name="obj">The new value.</param>
+		/// <param name="idx">A numeric identifier for the object to set.</param>
+		/// <summary>Sets the value at <paramref name="idx" /> to <paramref name="obj" />, as if the array were single-dimensional.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setObject:atIndexedSubscript:")]
 		void SetObject (NSNumber obj, nint idx);
 
@@ -1107,6 +1115,10 @@ namespace CoreML {
 		[Export ("count")]
 		nint Count { get; }
 
+		/// <param name="index">To be added.</param>
+		/// <summary>Gets the <see cref="T:CoreML.IMLFeatureProvider" /> at <paramref name="index" /> for the current batch.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("featuresAtIndex:")]
 		IMLFeatureProvider GetFeatures (nint index);

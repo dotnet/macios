@@ -4413,6 +4413,15 @@ namespace Intents {
 		[Export ("providerImage", ArgumentSemantic.Copy)]
 		INImage ProviderImage { get; set; }
 
+		/// <param name="defaultPartySize">To be added.</param>
+		/// <param name="defaultBookingDate">To be added.</param>
+		/// <param name="code">To be added.</param>
+		/// <param name="userActivity">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithDefaultPartySize:defaultBookingDate:code:userActivity:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (nuint defaultPartySize, NSDate defaultBookingDate, INGetAvailableRestaurantReservationBookingDefaultsIntentResponseCode code, [NullAllowed] NSUserActivity userActivity);
@@ -4430,6 +4439,7 @@ namespace Intents {
 	[BaseType (typeof (INIntent))]
 	interface INGetAvailableRestaurantReservationBookingsIntent : NSCopying {
 
+		/// <include file="../docs/api/Intents/INGetAvailableRestaurantReservationBookingsIntent.xml" path="/Documentation/Docs[@DocId='M:Intents.INGetAvailableRestaurantReservationBookingsIntent.#ctor(Intents.INRestaurant,System.UIntPtr,Foundation.NSDateComponents,Foundation.NSNumber,Foundation.NSDate,Foundation.NSDate)']/*" />
 		[MacCatalyst (13, 1)]
 		[Export ("initWithRestaurant:partySize:preferredBookingDateComponents:maximumNumberOfResults:earliestBookingDateForResults:latestBookingDateForResults:")]
 		NativeHandle Constructor (INRestaurant restaurant, nuint partySize, [NullAllowed] NSDateComponents preferredBookingDateComponents, [NullAllowed] NSNumber maximumNumberOfResults, [NullAllowed] NSDate earliestBookingDateForResults, [NullAllowed] NSDate latestBookingDateForResults);
@@ -4674,6 +4684,12 @@ namespace Intents {
 		[Export ("initWithRestaurant:reservationIdentifier:maximumNumberOfResults:earliestBookingDateForResults:")]
 		NativeHandle Constructor ([NullAllowed] INRestaurant restaurant, [NullAllowed] string reservationIdentifier, [NullAllowed] NSNumber maximumNumberOfResults, [NullAllowed] NSDate earliestBookingDateForResults);
 
+		/// <param name="restaurant">To be added.</param>
+		/// <param name="reservationIdentifier">To be added.</param>
+		/// <param name="maximumNumberOfResults">To be added.</param>
+		/// <param name="earliestBookingDateForResults">To be added.</param>
+		/// <summary>Creates a new booking search intent with the specified details.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("this (restaurant, reservationIdentifier, NSNumber.FromNInt (maximumNumberOfResults), earliestBookingDateForResults)")]
 		NativeHandle Constructor ([NullAllowed] INRestaurant restaurant, [NullAllowed] string reservationIdentifier, nint maximumNumberOfResults, [NullAllowed] NSDate earliestBookingDateForResults);
@@ -4823,6 +4839,10 @@ namespace Intents {
 	[DisableDefaultCtor]
 	interface INIntegerResolutionResult {
 
+		/// <param name="resolvedValue">To be added.</param>
+		/// <summary>Factory method to create an <see cref="T:Intents.INIntentResolutionResult" /> object indicating that the parameter value was successfully matched.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("successWithResolvedValue:")]
 		INIntegerResolutionResult GetSuccess (nint resolvedValue);
@@ -4981,12 +5001,20 @@ namespace Intents {
 		[DesignatedInitializer]
 		NativeHandle Constructor (INIntent intent, [NullAllowed] INIntentResponse response);
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Donates this <see cref="T:Intents.INInteraction" /> to the system.</summary>
+			<returns>A task that represents the asynchronous DonateInteraction operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("donateInteractionWithCompletion:")]
 		void DonateInteraction ([NullAllowed] Action<NSError> completion);
 
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Deletes all interactions previously donated by the developer.</summary>
+			<returns>A task that represents the asynchronous DeleteAllInteractions operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("deleteAllInteractionsWithCompletion:")]
 		void DeleteAllInteractions ([NullAllowed] Action<NSError> completion);
 
@@ -5767,7 +5795,16 @@ namespace Intents {
 
 		[MacCatalyst (13, 1)]
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Requests authorization from the user to use Intents / SiriKit.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RequestSiriAuthorization operation.  The value of the TResult parameter is of type System.Action&lt;Intents.INSiriAuthorizationStatus&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The RequestSiriAuthorizationAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("requestSiriAuthorization:")]
 		void RequestSiriAuthorization (Action<INSiriAuthorizationStatus> handler);
 
@@ -6363,6 +6400,12 @@ namespace Intents {
 	[BaseType (typeof (NSObject))]
 	interface INRestaurantReservationBooking : NSSecureCoding, NSCopying {
 
+		/// <param name="restaurant">To be added.</param>
+		/// <param name="bookingDate">To be added.</param>
+		/// <param name="partySize">To be added.</param>
+		/// <param name="bookingIdentifier">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithRestaurant:bookingDate:partySize:bookingIdentifier:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (INRestaurant restaurant, NSDate bookingDate, nuint partySize, string bookingIdentifier);
@@ -6413,10 +6456,25 @@ namespace Intents {
 	[BaseType (typeof (INRestaurantReservationBooking))]
 	interface INRestaurantReservationUserBooking : NSCopying {
 
+		/// <param name="restaurant">To be added.</param>
+		/// <param name="bookingDate">To be added.</param>
+		/// <param name="partySize">To be added.</param>
+		/// <param name="bookingIdentifier">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithRestaurant:bookingDate:partySize:bookingIdentifier:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (INRestaurant restaurant, NSDate bookingDate, nuint partySize, string bookingIdentifier);
 
+		/// <param name="restaurant">To be added.</param>
+		/// <param name="bookingDate">To be added.</param>
+		/// <param name="partySize">To be added.</param>
+		/// <param name="bookingIdentifier">To be added.</param>
+		/// <param name="guest">To be added.</param>
+		/// <param name="status">To be added.</param>
+		/// <param name="dateStatusModified">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithRestaurant:bookingDate:partySize:bookingIdentifier:guest:status:dateStatusModified:")]
 		NativeHandle Constructor (INRestaurant restaurant, NSDate bookingDate, nuint partySize, string bookingIdentifier, INRestaurantGuest guest, INRestaurantReservationUserBookingStatus status, NSDate dateStatusModified);
 
@@ -11529,6 +11587,10 @@ namespace Intents {
 		[Export ("isEqualToParameter:")]
 		bool IsEqualTo (INParameter parameter);
 
+		/// <param name="index">To be added.</param>
+		/// <param name="subKeyPath">To be added.</param>
+		/// <summary>Sets the index where the value of the parameter that is specified by the key path will be stored.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("setIndex:forSubKeyPath:")]
 		void SetIndex (nuint index, string subKeyPath);
 
@@ -11544,6 +11606,10 @@ namespace Intents {
 	[DisableDefaultCtor]
 	interface INRecurrenceRule : NSCopying, NSSecureCoding {
 
+		/// <param name="interval">To be added.</param>
+		/// <param name="frequency">To be added.</param>
+		/// <summary>Creates a new recurrence rule that describes repetitions at the specified frequency during the specified interval.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithInterval:frequency:")]
 		NativeHandle Constructor (nuint interval, INRecurrenceFrequency frequency);
 
@@ -13257,7 +13323,11 @@ namespace Intents {
 		[Export ("sharedCenter", ArgumentSemantic.Strong)]
 		INVoiceShortcutCenter SharedCenter { get; }
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>To be added.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("getAllVoiceShortcutsWithCompletion:")]
 		void GetAllVoiceShortcuts (INVoiceShortcutCenterGetVoiceShortcutsHandler completionHandler);
 

@@ -122,15 +122,29 @@ namespace ReplayKit {
 		void StartRecording (bool microphoneEnabled, [NullAllowed] Action<NSError> handler);
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Starts the recording and runs a handler when the recording starts.</summary>
+			<returns>A task that represents the asynchronous StartRecording operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("startRecordingWithHandler:")]
 		void StartRecording ([NullAllowed] Action<NSError> handler);
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Stops the recording and runs a handler when the recording stops.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous StopRecording operation.  The value of the TResult parameter is of type System.Action&lt;ReplayKit.RPPreviewViewController,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("stopRecordingWithHandler:")]
 		void StopRecording ([NullAllowed] Action<RPPreviewViewController, NSError> handler);
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Discards the recording.</summary>
+			<returns>A task that represents the asynchronous DiscardRecording operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("discardRecordingWithHandler:")]
 		void DiscardRecording (Action handler);
 
@@ -192,7 +206,14 @@ namespace ReplayKit {
 		void StartCapture ([NullAllowed] Action<CMSampleBuffer, RPSampleBufferType, NSError> captureHandler, [NullAllowed] Action<NSError> completionHandler);
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Stops screen and audio recording.</summary>
+			<returns>A task that represents the asynchronous StopCapture operation</returns>
+			<remarks>
+			          <para copied="true">The StopCaptureAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("stopCaptureWithHandler:")]
 		void StopCapture ([NullAllowed] Action<NSError> handler);
 
@@ -295,7 +316,15 @@ namespace ReplayKit {
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously presents the UI for choosing a broadcast activity view controller, and attempts to load the user's choice.</summary>
+			<returns>A task that asynchronously presents the UI for choosing a broadcast activity view controller and attempts to load the user's choice.</returns>
+			<remarks>
+			          <para>The LoadBroadcastActivityViewControllerAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">The LoadBroadcastActivityViewControllerAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("loadBroadcastActivityViewControllerWithHandler:")]
 		void LoadBroadcastActivityViewController (Action<RPBroadcastActivityViewController, NSError> handler);
 
@@ -375,7 +404,11 @@ namespace ReplayKit {
 		[NullAllowed]
 		string BroadcastExtensionBundleID { get; }
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Starts a new broadcast.</summary>
+			<returns>A task that represents the asynchronous StartBroadcast operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("startBroadcastWithHandler:")]
 		void StartBroadcast (Action<NSError> handler);
 
@@ -385,7 +418,14 @@ namespace ReplayKit {
 		[Export ("resumeBroadcast")]
 		void ResumeBroadcast ();
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Ends the broadcast.</summary>
+			<returns>A task that represents the asynchronous FinishBroadcast operation</returns>
+			<remarks>
+			          <para copied="true">The FinishBroadcastAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("finishBroadcastWithHandler:")]
 		void FinishBroadcast (Action<NSError> handler);
 	}

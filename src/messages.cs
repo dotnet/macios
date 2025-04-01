@@ -431,6 +431,11 @@ namespace Messages {
 		[Export ("numberOfStickersInStickerBrowserView:")]
 		nint GetNumberOfStickers (MSStickerBrowserView stickerBrowserView);
 
+		/// <param name="stickerBrowserView">To be added.</param>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("stickerBrowserView:stickerAtIndex:")]
 		MSSticker GetSticker (MSStickerBrowserView stickerBrowserView, nint index);

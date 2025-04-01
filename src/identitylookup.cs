@@ -111,7 +111,16 @@ namespace IdentityLookup {
 	interface ILMessageFilterExtensionContext {
 
 		[Export ("deferQueryRequestToNetworkWithCompletion:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Defers the query request to the network service for the extension and runs a handler when the operation is complete.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DeferQueryRequestToNetwork operation.  The value of the TResult parameter is of type System.Action&lt;IdentityLookup.ILNetworkResponse,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The DeferQueryRequestToNetworkAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void DeferQueryRequestToNetwork (Action<ILNetworkResponse, NSError> completion);
 	}
 

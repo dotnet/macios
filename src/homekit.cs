@@ -108,12 +108,20 @@ namespace HomeKit {
 		/// <param name="manager">To be added.</param>
 		/// <summary>A home in <paramref name="manager" /> was updated.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("homeManagerDidUpdateHomes:")]
 		void DidUpdateHomes (HMHomeManager manager);
 
 		/// <param name="manager">To be added.</param>
 		/// <summary>The primary home in <paramref name="manager" /> was updated.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("homeManagerDidUpdatePrimaryHome:")]
 		void DidUpdatePrimaryHome (HMHomeManager manager);
 
@@ -121,14 +129,20 @@ namespace HomeKit {
 		/// <param name="home">To be added.</param>
 		/// <summary>The <paramref name="home" /> was added to <paramref name="manager" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("homeManager:didAddHome:"), EventArgs ("HMHomeManager")]
+		[Export ("homeManager:didAddHome:"), EventArgs ("HMHomeManager", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidAddHome (HMHomeManager manager, HMHome home);
 
 		/// <param name="manager">To be added.</param>
 		/// <param name="home">To be added.</param>
 		/// <summary>The <paramref name="home" /> was removed from <paramref name="manager" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("homeManager:didRemoveHome:"), EventArgs ("HMHomeManager")]
+		[Export ("homeManager:didRemoveHome:"), EventArgs ("HMHomeManager", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidRemoveHome (HMHomeManager manager, HMHome home);
 
 		[iOS (13, 0), NoTV, NoMac]
@@ -251,7 +265,14 @@ namespace HomeKit {
 		[Export ("updateName:completionHandler:")]
 		void UpdateName (string name, Action<NSError> completion);
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously identifies the accessory.</summary>
+			<returns>A task that represents the asynchronous Identify operation</returns>
+			<remarks>
+			          <para copied="true">The IdentifyAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("identifyWithCompletionHandler:")]
 		void Identify (Action<NSError> completion);
 
@@ -280,6 +301,10 @@ namespace HomeKit {
 		/// <param name="accessory">To be added.</param>
 		/// <summary>The <paramref name="accessory" /> updated its name.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("accessoryDidUpdateName:")]
 		void DidUpdateName (HMAccessory accessory);
 
@@ -287,19 +312,29 @@ namespace HomeKit {
 		/// <param name="service">To be added.</param>
 		/// <summary>The <paramref name="accessory" /> updated the name of <paramref name="service" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("accessory:didUpdateNameForService:"), EventArgs ("HMAccessoryUpdate")]
+		[Export ("accessory:didUpdateNameForService:"), EventArgs ("HMAccessoryUpdate", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidUpdateNameForService (HMAccessory accessory, HMService service);
 
 		/// <param name="accessory">To be added.</param>
 		/// <param name="service">To be added.</param>
 		/// <summary>The <paramref name="accessory" /> updated the service type for <paramref name="service" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("accessory:didUpdateAssociatedServiceTypeForService:"), EventArgs ("HMAccessoryUpdate")]
+		[Export ("accessory:didUpdateAssociatedServiceTypeForService:"), EventArgs ("HMAccessoryUpdate", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidUpdateAssociatedServiceType (HMAccessory accessory, HMService service);
 
 		/// <param name="accessory">To be added.</param>
 		/// <summary>The <paramref name="accessory" /> updated its services.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("accessoryDidUpdateServices:")]
 		void DidUpdateServices (HMAccessory accessory);
 
@@ -308,7 +343,10 @@ namespace HomeKit {
 		/// <summary>Method that is called when <paramref name="profile" /> was added to <paramref name="accessory" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
-		[Export ("accessory:didAddProfile:"), EventArgs ("HMAccessoryProfile")]
+		[Export ("accessory:didAddProfile:"), EventArgs ("HMAccessoryProfile", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidAddProfile (HMAccessory accessory, HMAccessoryProfile profile);
 
 		/// <param name="accessory">The accessory from which the profile was removed.</param>
@@ -316,12 +354,19 @@ namespace HomeKit {
 		/// <summary>Method that is called when <paramref name="profile" /> was removed from <paramref name="accessory" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
-		[Export ("accessory:didRemoveProfile:"), EventArgs ("HMAccessoryProfile")]
+		[Export ("accessory:didRemoveProfile:"), EventArgs ("HMAccessoryProfile", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidRemoveProfile (HMAccessory accessory, HMAccessoryProfile profile);
 
 		/// <param name="accessory">To be added.</param>
 		/// <summary>Delegate method called by the system when the accessory's network visibility has changed.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("accessoryDidUpdateReachability:")]
 		void DidUpdateReachability (HMAccessory accessory);
 
@@ -330,7 +375,10 @@ namespace HomeKit {
 		/// <param name="characteristic">To be added.</param>
 		/// <summary>The <paramref name="accessory" /> updated the value of <paramref name="characteristic" /> on <paramref name="service" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("accessory:service:didUpdateValueForCharacteristic:"), EventArgs ("HMAccessoryServiceUpdateCharacteristic")]
+		[Export ("accessory:service:didUpdateValueForCharacteristic:"), EventArgs ("HMAccessoryServiceUpdateCharacteristic", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidUpdateValueForCharacteristic (HMAccessory accessory, HMService service, HMCharacteristic characteristic);
 
 		/// <param name="accessory">The accessory whose firmware version was updated.</param>
@@ -338,7 +386,10 @@ namespace HomeKit {
 		/// <summary>Method that is called when the firmware version of <paramref name="accessory" /> is updated to <paramref name="firmwareVersion" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
-		[Export ("accessory:didUpdateFirmwareVersion:"), EventArgs ("HMAccessoryFirmwareVersion")]
+		[Export ("accessory:didUpdateFirmwareVersion:"), EventArgs ("HMAccessoryFirmwareVersion", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidUpdateFirmwareVersion (HMAccessory accessory, string firmwareVersion);
 	}
 
@@ -395,14 +446,20 @@ namespace HomeKit {
 		/// <param name="accessory">To be added.</param>
 		/// <summary>The <paramref name="browser" /> found <paramref name="accessory" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("accessoryBrowser:didFindNewAccessory:"), EventArgs ("HMAccessoryBrowser")]
+		[Export ("accessoryBrowser:didFindNewAccessory:"), EventArgs ("HMAccessoryBrowser", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidFindNewAccessory (HMAccessoryBrowser browser, HMAccessory accessory);
 
 		/// <param name="browser">To be added.</param>
 		/// <param name="accessory">To be added.</param>
 		/// <summary>The <paramref name="browser" /> removed <paramref name="accessory" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("accessoryBrowser:didRemoveNewAccessory:"), EventArgs ("HMAccessoryBrowser")]
+		[Export ("accessoryBrowser:didRemoveNewAccessory:"), EventArgs ("HMAccessoryBrowser", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidRemoveNewAccessory (HMAccessoryBrowser browser, HMAccessory accessory);
 	}
 
@@ -577,7 +634,11 @@ namespace HomeKit {
 		[Export ("writeValue:completionHandler:")]
 		void WriteValue (NSObject value, Action<NSError> completion);
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously reads the value of the characteristic.</summary>
+			<returns>A task that represents the asynchronous ReadValue operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("readValueWithCompletionHandler:")]
 		void ReadValue (Action<NSError> completion);
 
@@ -845,7 +906,11 @@ namespace HomeKit {
 		[NoTV]
 		[NoMacCatalyst]
 		[Deprecated (PlatformName.MacCatalyst, 15, 4, message: "Use 'HMAccessorySetupManager.PerformAccessorySetup' instead.")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Displays a device selection user interface that allows the user to choose which devices to add and set up, and returning a task that represents the asynchronous AddAndSetupAccessories operation.</summary>
+			<returns>A task that represents the asynchronous AddAndSetupAccessories operation.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addAndSetupAccessoriesWithCompletionHandler:")]
 		void AddAndSetupAccessories (Action<NSError> completion);
 
@@ -1034,7 +1099,13 @@ namespace HomeKit {
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'ManageUsers' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ManageUsers' instead.")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Developers should not use this deprecated method. </summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AddUser operation.  The value of the TResult parameter is of type System.Action&lt;HomeKit.HMUser,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("addUserWithCompletionHandler:")]
 		void AddUser (Action<HMUser, NSError> completion);
 
@@ -1044,7 +1115,14 @@ namespace HomeKit {
 
 		[NoTV]
 		[MacCatalyst (14, 0)]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Displays a device selection user interface that allows the user manage users and their privileges, and then runs a handler when the user exits the UI.</summary>
+			<returns>A task that represents the asynchronous ManageUsers operation</returns>
+			<remarks>
+			          <para copied="true">The ManageUsersAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("manageUsersWithCompletionHandler:")]
 		void ManageUsers (Action<NSError> completion);
 
@@ -1091,12 +1169,20 @@ namespace HomeKit {
 		/// <param name="home">To be added.</param>
 		/// <summary>The name of the <paramref name="home" /> was updated.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("homeDidUpdateName:")]
 		void DidUpdateNameForHome (HMHome home);
 
 		/// <param name="home">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[MacCatalyst (14, 0)]
 		[Export ("homeDidUpdateAccessControlForCurrentUser:")]
 		void DidUpdateAccessControlForCurrentUser (HMHome home);
@@ -1105,28 +1191,40 @@ namespace HomeKit {
 		/// <param name="accessory">To be added.</param>
 		/// <summary>The <paramref name="accessory" /> was added to <paramref name="home" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didAddAccessory:"), EventArgs ("HMHomeAccessory")]
+		[Export ("home:didAddAccessory:"), EventArgs ("HMHomeAccessory", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidAddAccessory (HMHome home, HMAccessory accessory);
 
 		/// <param name="home">To be added.</param>
 		/// <param name="accessory">To be added.</param>
 		/// <summary>The <paramref name="accessory" /> was removed from <paramref name="home" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didRemoveAccessory:"), EventArgs ("HMHomeAccessory")]
+		[Export ("home:didRemoveAccessory:"), EventArgs ("HMHomeAccessory", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidRemoveAccessory (HMHome home, HMAccessory accessory);
 
 		/// <param name="home">To be added.</param>
 		/// <param name="user">To be added.</param>
 		/// <summary>The <paramref name="user" /> was added to <paramref name="home" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didAddUser:"), EventArgs ("HMHomeUser")]
+		[Export ("home:didAddUser:"), EventArgs ("HMHomeUser", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidAddUser (HMHome home, HMUser user);
 
 		/// <param name="home">To be added.</param>
 		/// <param name="user">To be added.</param>
 		/// <summary>The <paramref name="user" /> was removed from <paramref name="home" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didRemoveUser:"), EventArgs ("HMHomeUser")]
+		[Export ("home:didRemoveUser:"), EventArgs ("HMHomeUser", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidRemoveUser (HMHome home, HMUser user);
 
 		/// <param name="home">To be added.</param>
@@ -1134,49 +1232,70 @@ namespace HomeKit {
 		/// <param name="accessory">To be added.</param>
 		/// <summary>The <paramref name="accessory" /> was assigned to <paramref name="room" />, which belongs to <paramref name="home" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didUpdateRoom:forAccessory:"), EventArgs ("HMHomeRoomAccessory")]
+		[Export ("home:didUpdateRoom:forAccessory:"), EventArgs ("HMHomeRoomAccessory", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidUpdateRoom (HMHome home, HMRoom room, HMAccessory accessory);
 
 		/// <param name="home">To be added.</param>
 		/// <param name="room">To be added.</param>
 		/// <summary>The <paramref name="room" /> was added to <paramref name="home" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didAddRoom:"), EventArgs ("HMHomeRoom")]
+		[Export ("home:didAddRoom:"), EventArgs ("HMHomeRoom", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidAddRoom (HMHome home, HMRoom room);
 
 		/// <param name="home">To be added.</param>
 		/// <param name="room">To be added.</param>
 		/// <summary>The <paramref name="room" /> was removed from <paramref name="home" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didRemoveRoom:"), EventArgs ("HMHomeRoom")]
+		[Export ("home:didRemoveRoom:"), EventArgs ("HMHomeRoom", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidRemoveRoom (HMHome home, HMRoom room);
 
 		/// <param name="home">To be added.</param>
 		/// <param name="room">To be added.</param>
 		/// <summary>The name of the <paramref name="room" />, which belongs to <paramref name="home" />, was updated.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didUpdateNameForRoom:"), EventArgs ("HMHomeRoom")]
+		[Export ("home:didUpdateNameForRoom:"), EventArgs ("HMHomeRoom", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidUpdateNameForRoom (HMHome home, HMRoom room);
 
 		/// <param name="home">To be added.</param>
 		/// <param name="zone">To be added.</param>
 		/// <summary>The <paramref name="zone" /> was added to <paramref name="home" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didAddZone:"), EventArgs ("HMHomeZone")]
+		[Export ("home:didAddZone:"), EventArgs ("HMHomeZone", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidAddZone (HMHome home, HMZone zone);
 
 		/// <param name="home">To be added.</param>
 		/// <param name="zone">To be added.</param>
 		/// <summary>The <paramref name="zone" /> was removed from <paramref name="home" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didRemoveZone:"), EventArgs ("HMHomeZone")]
+		[Export ("home:didRemoveZone:"), EventArgs ("HMHomeZone", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidRemoveZone (HMHome home, HMZone zone);
 
 		/// <param name="home">To be added.</param>
 		/// <param name="zone">To be added.</param>
 		/// <summary>The name of the <paramref name="zone" />, which belongs to <paramref name="home" />, was updated.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didUpdateNameForZone:"), EventArgs ("HMHomeZone")]
+		[Export ("home:didUpdateNameForZone:"), EventArgs ("HMHomeZone", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidUpdateNameForZone (HMHome home, HMZone zone);
 
 		/// <param name="home">To be added.</param>
@@ -1184,7 +1303,10 @@ namespace HomeKit {
 		/// <param name="zone">To be added.</param>
 		/// <summary>The <paramref name="room" /> was added to <paramref name="zone" />, which belongs to <paramref name="home" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didAddRoom:toZone:"), EventArgs ("HMHomeRoomZone")]
+		[Export ("home:didAddRoom:toZone:"), EventArgs ("HMHomeRoomZone", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidAddRoomToZone (HMHome home, HMRoom room, HMZone zone);
 
 		/// <param name="home">To be added.</param>
@@ -1192,28 +1314,40 @@ namespace HomeKit {
 		/// <param name="zone">To be added.</param>
 		/// <summary>The <paramref name="room" /> was removed from <paramref name="zone" />, which belongs to <paramref name="home" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didRemoveRoom:fromZone:"), EventArgs ("HMHomeRoomZone")]
+		[Export ("home:didRemoveRoom:fromZone:"), EventArgs ("HMHomeRoomZone", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidRemoveRoomFromZone (HMHome home, HMRoom room, HMZone zone);
 
 		/// <param name="home">To be added.</param>
 		/// <param name="group">To be added.</param>
 		/// <summary>The <paramref name="group" /> was added to <paramref name="home" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didAddServiceGroup:"), EventArgs ("HMHomeServiceGroup")]
+		[Export ("home:didAddServiceGroup:"), EventArgs ("HMHomeServiceGroup", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidAddServiceGroup (HMHome home, HMServiceGroup group);
 
 		/// <param name="home">To be added.</param>
 		/// <param name="group">To be added.</param>
 		/// <summary>The <paramref name="group" /> was removed from <paramref name="home" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didRemoveServiceGroup:"), EventArgs ("HMHomeServiceGroup")]
+		[Export ("home:didRemoveServiceGroup:"), EventArgs ("HMHomeServiceGroup", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidRemoveServiceGroup (HMHome home, HMServiceGroup group);
 
 		/// <param name="home">To be added.</param>
 		/// <param name="group">To be added.</param>
 		/// <summary>The name of the <paramref name="group" />, which belongs to <paramref name="home" />, was updated.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didUpdateNameForServiceGroup:"), EventArgs ("HMHomeServiceGroup")]
+		[Export ("home:didUpdateNameForServiceGroup:"), EventArgs ("HMHomeServiceGroup", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidUpdateNameForServiceGroup (HMHome home, HMServiceGroup group);
 
 		/// <param name="home">To be added.</param>
@@ -1221,7 +1355,10 @@ namespace HomeKit {
 		/// <param name="group">To be added.</param>
 		/// <summary>The <paramref name="service" /> was added to <paramref name="group" />, which belongs to <paramref name="home" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didAddService:toServiceGroup:"), EventArgs ("HMHomeServiceServiceGroup")]
+		[Export ("home:didAddService:toServiceGroup:"), EventArgs ("HMHomeServiceServiceGroup", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidAddService (HMHome home, HMService service, HMServiceGroup group);
 
 		/// <param name="home">To be added.</param>
@@ -1229,70 +1366,100 @@ namespace HomeKit {
 		/// <param name="group">To be added.</param>
 		/// <summary>The <paramref name="service" /> was removed from <paramref name="group" />, which belongs to <paramref name="home" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didRemoveService:fromServiceGroup:"), EventArgs ("HMHomeServiceServiceGroup")]
+		[Export ("home:didRemoveService:fromServiceGroup:"), EventArgs ("HMHomeServiceServiceGroup", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidRemoveService (HMHome home, HMService service, HMServiceGroup group);
 
 		/// <param name="home">To be added.</param>
 		/// <param name="actionSet">To be added.</param>
 		/// <summary>The <paramref name="actionSet" /> was added to <paramref name="home" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didAddActionSet:"), EventArgs ("HMHomeActionSet")]
+		[Export ("home:didAddActionSet:"), EventArgs ("HMHomeActionSet", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidAddActionSet (HMHome home, HMActionSet actionSet);
 
 		/// <param name="home">To be added.</param>
 		/// <param name="actionSet">To be added.</param>
 		/// <summary>The <paramref name="actionSet" /> was removed from <paramref name="home" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didRemoveActionSet:"), EventArgs ("HMHomeActionSet")]
+		[Export ("home:didRemoveActionSet:"), EventArgs ("HMHomeActionSet", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidRemoveActionSet (HMHome home, HMActionSet actionSet);
 
 		/// <param name="home">To be added.</param>
 		/// <param name="actionSet">To be added.</param>
 		/// <summary>The name of the <paramref name="actionSet" />, which belongs to <paramref name="home" />, was updated.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didUpdateNameForActionSet:"), EventArgs ("HMHomeActionSet")]
+		[Export ("home:didUpdateNameForActionSet:"), EventArgs ("HMHomeActionSet", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidUpdateNameForActionSet (HMHome home, HMActionSet actionSet);
 
 		/// <param name="home">To be added.</param>
 		/// <param name="actionSet">To be added.</param>
 		/// <summary>The an action in <paramref name="actionSet" />, which belongs to <paramref name="home" />, was updated.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didUpdateActionsForActionSet:"), EventArgs ("HMHomeActionSet")]
+		[Export ("home:didUpdateActionsForActionSet:"), EventArgs ("HMHomeActionSet", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidUpdateActionsForActionSet (HMHome home, HMActionSet actionSet);
 
 		/// <param name="home">To be added.</param>
 		/// <param name="trigger">To be added.</param>
 		/// <summary>The <paramref name="trigger" /> was added to <paramref name="home" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didAddTrigger:"), EventArgs ("HMHomeTrigger")]
+		[Export ("home:didAddTrigger:"), EventArgs ("HMHomeTrigger", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidAddTrigger (HMHome home, HMTrigger trigger);
 
 		/// <param name="home">To be added.</param>
 		/// <param name="trigger">To be added.</param>
 		/// <summary>The <paramref name="trigger" /> was removed from <paramref name="home" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didRemoveTrigger:"), EventArgs ("HMHomeTrigger")]
+		[Export ("home:didRemoveTrigger:"), EventArgs ("HMHomeTrigger", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidRemoveTrigger (HMHome home, HMTrigger trigger);
 
 		/// <param name="home">To be added.</param>
 		/// <param name="trigger">To be added.</param>
 		/// <summary>The name of the <paramref name="trigger" />, which belongs to <paramref name="home" />, was updated.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didUpdateNameForTrigger:"), EventArgs ("HMHomeTrigger")]
+		[Export ("home:didUpdateNameForTrigger:"), EventArgs ("HMHomeTrigger", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidUpdateNameForTrigger (HMHome home, HMTrigger trigger);
 
 		/// <param name="home">To be added.</param>
 		/// <param name="trigger">To be added.</param>
 		/// <summary>The  <paramref name="trigger" />, which belongs to <paramref name="home" />, was updated.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didUpdateTrigger:"), EventArgs ("HMHomeTrigger")]
+		[Export ("home:didUpdateTrigger:"), EventArgs ("HMHomeTrigger", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidUpdateTrigger (HMHome home, HMTrigger trigger);
 
 		/// <param name="home">To be added.</param>
 		/// <param name="accessory">To be added.</param>
 		/// <summary>The <paramref name="accessory" />, which belongs to <paramref name="home" />, was unblocked.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didUnblockAccessory:"), EventArgs ("HMHomeAccessory")]
+		[Export ("home:didUnblockAccessory:"), EventArgs ("HMHomeAccessory", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidUnblockAccessory (HMHome home, HMAccessory accessory);
 
 		/// <param name="home">To be added.</param>
@@ -1300,7 +1467,10 @@ namespace HomeKit {
 		/// <param name="accessory">To be added.</param>
 		/// <summary>The <paramref name="error" /> occurred in <paramref name="accessory" />, which belongs to <paramref name="home" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("home:didEncounterError:forAccessory:"), EventArgs ("HMHomeErrorAccessory")]
+		[Export ("home:didEncounterError:forAccessory:"), EventArgs ("HMHomeErrorAccessory", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidEncounterError (HMHome home, NSError error, HMAccessory accessory);
 
 		/// <param name="home">To be added.</param>
@@ -1308,7 +1478,10 @@ namespace HomeKit {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (14, 0)]
-		[Export ("home:didUpdateHomeHubState:"), EventArgs ("HMHomeHubState")]
+		[Export ("home:didUpdateHomeHubState:"), EventArgs ("HMHomeHubState", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidUpdateHomeHubState (HMHome home, HMHomeHubState homeHubState);
 
 		[TV (13, 2), iOS (13, 2)]

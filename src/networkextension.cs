@@ -813,9 +813,21 @@ namespace NetworkExtension {
 		[Export ("handleNewFlow:")]
 		NEFilterNewFlowVerdict HandleNewFlow (NEFilterFlow flow);
 
+		/// <param name="flow">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="readBytes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("handleInboundDataFromFlow:readBytesStartOffset:readBytes:")]
 		NEFilterDataVerdict HandleInboundDataFromFlow (NEFilterFlow flow, nuint offset, NSData readBytes);
 
+		/// <param name="flow">To be added.</param>
+		/// <param name="offset">To be added.</param>
+		/// <param name="readBytes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("handleOutboundDataFromFlow:readBytesStartOffset:readBytes:")]
 		NEFilterDataVerdict HandleOutboundDataFromFlow (NEFilterFlow flow, nuint offset, NSData readBytes);
 
@@ -903,6 +915,11 @@ namespace NetworkExtension {
 		[Export ("remediateVerdictWithRemediationURLMapKey:remediationButtonTextMapKey:")]
 		NEFilterDataVerdict RemediateVerdict ([NullAllowed] string remediationUrlMapKey, [NullAllowed] string remediationButtonTextMapKey);
 
+		/// <param name="passBytes">To be added.</param>
+		/// <param name="peekBytes">To be added.</param>
+		/// <summary>Creates and returns a verdict that allows <paramref name="passBytes" /> to be passed on and notifies the system that it needs to see <paramref name="peekBytes" /> next.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("dataVerdictWithPassBytes:peekBytes:")]
 		NEFilterDataVerdict DataVerdict (nuint passBytes, nuint peekBytes);
@@ -1117,6 +1134,13 @@ namespace NetworkExtension {
 		[Export ("URLAppendStringVerdictWithMapKey:")]
 		NEFilterNewFlowVerdict UrlAppendStringVerdict (string urlAppendMapKey);
 
+		/// <param name="filterInbound">To be added.</param>
+		/// <param name="peekInboundBytes">To be added.</param>
+		/// <param name="filterOutbound">To be added.</param>
+		/// <param name="peekOutboundBytes">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("filterDataVerdictWithFilterInbound:peekInboundBytes:filterOutbound:peekOutboundBytes:")]
 		NEFilterNewFlowVerdict FilterDataVerdict (bool filterInbound, nuint peekInboundBytes, bool filterOutbound, nuint peekOutboundBytes);
@@ -1940,6 +1964,10 @@ namespace NetworkExtension {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NEProxyServer : NSSecureCoding, NSCopying {
+		/// <param name="address">To be added.</param>
+		/// <param name="port">To be added.</param>
+		/// <summary>Creates a new proxy server with the specified address and port.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("initWithAddress:port:")]
 		NativeHandle Constructor (string address, nint port);
 
@@ -3089,20 +3117,44 @@ namespace NetworkExtension {
 		[Export ("cancel")]
 		void Cancel ();
 
+		/// <param name="length">To be added.</param>
+		/// <param name="completion">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.Receive' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.Receive' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.Receive' instead.")]
 		[Deprecated (PlatformName.TvOS, 18, 0, message: "Use 'Network.NWConnection.Receive' instead.")]
 		[Export ("readLength:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="length">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous ReadLength operation.   The value of the TResult parameter is a System.nuint.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void ReadLength (nuint length, Action<NSData, NSError> completion);
 
+		/// <param name="minimum">To be added.</param>
+		/// <param name="maximum">To be added.</param>
+		/// <param name="completion">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.Receive' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.Receive' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.Receive' instead.")]
 		[Deprecated (PlatformName.TvOS, 18, 0, message: "Use 'Network.NWConnection.Receive' instead.")]
 		[Export ("readMinimumLength:maximumLength:completionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="minimum">To be added.</param>
+			<param name="maximum">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous ReadMinimumLength operation.   The value of the TResult parameter is a System.nuint.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void ReadMinimumLength (nuint minimum, nuint maximum, Action<NSData, NSError> completion);
 
 		/// <param name="data">To be added.</param>
@@ -3364,6 +3416,10 @@ namespace NetworkExtension {
 		[Export ("maximumDatagramLength")]
 		nuint MaximumDatagramLength { get; }
 
+		/// <param name="handler">To be added.</param>
+		/// <param name="maxDatagrams">To be added.</param>
+		/// <summary>Assigns a handler that will read, at most, <paramref name="maxDatagrams" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.Receive' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.Receive' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.Receive' instead.")]

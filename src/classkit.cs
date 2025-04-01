@@ -513,7 +513,11 @@ namespace ClassKit {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously saves the data store and returns a task that represents the operation.</summary>
+			<returns>A task that represents the operation.</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("saveWithCompletion:")]
 		void Save ([NullAllowed] Action<NSError> completion);
 

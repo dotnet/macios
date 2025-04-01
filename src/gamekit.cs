@@ -138,6 +138,11 @@ namespace GameKit {
 		[Export ("voiceChatService:didStopWithParticipantID:error:")]
 		void Stopped (GKVoiceChatService voiceChatService, string participantID, [NullAllowed] NSError error);
 
+		/// <param name="voiceChatService">To be added.</param>
+		/// <param name="participantID">To be added.</param>
+		/// <param name="callID">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("voiceChatService:didReceiveInvitationFromParticipantID:callID:")]
 		void ReceivedInvitation (GKVoiceChatService voiceChatService, string participantID, nint callID);
 	}
@@ -167,9 +172,17 @@ namespace GameKit {
 		[Export ("stopVoiceChatWithParticipantID:")]
 		void StopVoiceChat (string participantID);
 
+		/// <param name="callID">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("acceptCallID:error:")]
 		bool AcceptCall (nint callID, out NSError error);
 
+		/// <param name="callId">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("denyCallID:")]
 		void DenyCall (nint callId);
 
@@ -391,7 +404,13 @@ namespace GameKit {
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'LoadEntries' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'LoadEntries' instead.")]
 		[Export ("loadScoresWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously loads scores from the Game Center.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous LoadScores operation.   The value of the TResult parameter is a GameKit.GKScoresLoadedHandler.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void LoadScores ([NullAllowed] GKScoresLoadedHandler scoresLoadedHandler);
 
 		[NoTV]
@@ -401,7 +420,13 @@ namespace GameKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'LoadLeaderboards' instead.")]
 		[Static]
 		[Export ("loadCategoriesWithCompletionHandler:")]
-		[Async (ResultTypeName = "GKCategoryResult")]
+		[Async (ResultTypeName = "GKCategoryResult", XmlDocs = """
+			<summary>Deprecated.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous LoadCategories operation.   The value of the TResult parameter is of type GameKit.GKCategoryResult.  Category and title results from the asynchronous  method.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void LoadCategories ([NullAllowed] GKCategoryHandler categoryHandler);
 
 		[NoTV]
@@ -428,7 +453,13 @@ namespace GameKit {
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'LoadLeaderBoards(string[] leaderboardIDs, GKLeaderboardsHandler completionHandler)' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'LoadLeaderBoards(string[] leaderboardIDs, GKLeaderboardsHandler completionHandler)' instead.")]
 		[Export ("loadLeaderboardsWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Retrieves the list of leaderboards that have been configured for your application.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadLeaderboards operation.  The value of the TResult parameter is of type System.Action&lt;GameKit.GKLeaderboard[],Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void LoadLeaderboards ([NullAllowed] Action<GKLeaderboard [], NSError> completionHandler);
 
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'LoadEntries' instead.")]
@@ -443,7 +474,16 @@ namespace GameKit {
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("loadImageWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Loads the leaderboard image asynchronously.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous LoadImage operation.  The result is of type System.Threading.Tasks.Task&lt;AppKit.NSImage&gt; on MacOS and System.Threading.Tasks.Task&lt;UIKit.UIImage&gt; on iOS.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The LoadImageAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void LoadImage ([NullAllowed] GKImageLoadedHandler completionHandler);
 
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'LoadEntries' instead.")]
@@ -545,7 +585,13 @@ namespace GameKit {
 
 		[Export ("loadLeaderboardSetsWithCompletionHandler:")]
 		[Static]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous LoadLeaderboardSets operation.   The value of the TResult parameter is a <see cref="T:GameKit.GKLeaderboardSetsHandler" />.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void LoadLeaderboardSets ([NullAllowed] GKLeaderboardSetsHandler completionHandler);
 
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'LoadLeaderboardsWithCompletionHandler' instead.")]
@@ -553,7 +599,13 @@ namespace GameKit {
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'LoadLeaderboardsWithCompletionHandler' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'LoadLeaderboardsWithCompletionHandler' instead.")]
 		[Export ("loadLeaderboardsWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous LoadLeaderboards operation.   The value of the TResult parameter is a <see cref="T:GameKit.GKLeaderboardsHandler" />.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void LoadLeaderboards ([NullAllowed] GKLeaderboardsHandler completionHandler);
 
 		[TV (14, 0), iOS (14, 0)]
@@ -564,7 +616,16 @@ namespace GameKit {
 
 		[NoTV]
 		[Export ("loadImageWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous LoadImage operation.   The value of the TResult parameter is a <see cref="T:GameKit.GKImageLoadedHandler" />.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The LoadImageAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void LoadImage ([NullAllowed] GKImageLoadedHandler completionHandler);
 	}
 
@@ -756,7 +817,11 @@ namespace GameKit {
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ReportScores' instead.")]
 		[Export ("reportScoreWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Deprecated.</summary>
+			<returns>A task that represents the asynchronous ReportScore operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void ReportScore ([NullAllowed] Action<NSError> errorHandler);
 
 		[Export ("context", ArgumentSemantic.Assign)]
@@ -858,6 +923,10 @@ namespace GameKit {
 		/// <param name="viewController">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Abstract]
 		[Export ("leaderboardViewControllerDidFinish:")]
 		void DidFinish (GKLeaderboardViewController viewController);
@@ -950,11 +1019,21 @@ namespace GameKit {
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Set the 'AuthenticationHandler' instead.")]
 		[Export ("authenticateWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Developers should not use this deprecated method. Set the 'AuthenticationHandler' instead.</summary>
+			<returns>A task that represents the asynchronous Authenticate operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void Authenticate ([NullAllowed] Action<NSError> handler);
 
 		[MacCatalyst (13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Loads the recent players.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadRecentPlayers operation.  The value of the TResult parameter is of type System.Action&lt;GameKit.GKPlayer[],Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("loadRecentPlayersWithCompletionHandler:")]
 		void LoadRecentPlayers ([NullAllowed] Action<GKPlayer [], NSError> completionHandler);
 
@@ -964,7 +1043,13 @@ namespace GameKit {
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'LoadRecentPlayers' instead.")]
 		[Export ("loadFriendsWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously loads an array of the local player's friends' identifiers.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous LoadFriends operation.   The value of the TResult parameter is a GameKit.GKFriendsHandler.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void LoadFriends ([NullAllowed] GKFriendsHandler handler);
 
 		/// <include file="../docs/api/GameKit/GKLocalPlayer.xml" path="/Documentation/Docs[@DocId='P:GameKit.GKLocalPlayer.AuthenticationDidChangeNotificationName']/*" />
@@ -995,7 +1080,13 @@ namespace GameKit {
 
 		[MacCatalyst (13, 1)]
 		[Export ("loadDefaultLeaderboardIdentifierWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously loads the local player's default leaderboard identifier.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadDefaultLeaderboardIdentifier operation.  The value of the TResult parameter is of type System.Action&lt;System.String,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void LoadDefaultLeaderboardIdentifier ([NullAllowed] Action<string, NSError> completionHandler);
 
 		[MacCatalyst (13, 1)]
@@ -1014,7 +1105,13 @@ namespace GameKit {
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'LoadDefaultLeaderboardIdentifier' instead.")]
 		[Export ("loadDefaultLeaderboardCategoryIDWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously loads the local player's default leaderboard category identifier.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadDefaultLeaderboardCategoryID operation.  The value of the TResult parameter is of type System.Action&lt;System.String,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void LoadDefaultLeaderboardCategoryID ([NullAllowed] Action<string, NSError> completionHandler);
 
 		[NoTV]
@@ -1048,7 +1145,13 @@ namespace GameKit {
 		[Deprecated (PlatformName.MacOSX, 10, 15, 4, message: "Use 'FetchItemsForIdentityVerificationSignature' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FetchItemsForIdentityVerificationSignature' instead.")]
-		[Async (ResultTypeName = "GKIdentityVerificationSignatureResult")]
+		[Async (ResultTypeName = "GKIdentityVerificationSignatureResult", XmlDocs = """
+			<summary>Creates and returns a signature for authenticating the local player on a third-party server. See remarks</summary>
+			<returns>
+			          <para>A task that represents the asynchronous GenerateIdentityVerificationSignature operation.   The value of the TResult parameter is of type GameKit.GKIdentityVerificationSignatureResult.  Holds the return values from the asynchronous method </para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("generateIdentityVerificationSignatureWithCompletionHandler:")]
 		void GenerateIdentityVerificationSignature ([NullAllowed] GKIdentityVerificationSignatureHandler completionHandler);
 
@@ -1063,7 +1166,16 @@ namespace GameKit {
 		[Deprecated (PlatformName.TvOS, 10, 0)]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously loads an array of the local player's friends' identifiers.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadFriendPlayers operation.  The value of the TResult parameter is of type System.Action&lt;GameKit.GKPlayer[],Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The LoadFriendPlayersAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("loadFriendPlayersWithCompletionHandler:")]
 		void LoadFriendPlayers ([NullAllowed] Action<GKPlayer [], NSError> completionHandler);
 
@@ -1154,7 +1266,16 @@ namespace GameKit {
 		NSDate ModificationDate { get; }
 
 		[Export ("loadDataWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadData operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSData,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The LoadDataAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void LoadData ([NullAllowed] Action<NSData, NSError> handler);
 	}
 
@@ -1248,12 +1369,24 @@ namespace GameKit {
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ChooseBestHostingPlayer' instead.")]
 		[Export ("chooseBestHostPlayerWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Developers should not use this deprecated method. Developers should use 'ChooseBestHostingPlayer' instead.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous ChooseBestHostPlayer operation.  The value of the TResult parameter is of type System.Action&lt;System.String&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void ChooseBestHostPlayer (Action<string> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Export ("rematchWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous Rematch operation.  The value of the TResult parameter is of type System.Action&lt;GameKit.GKMatch,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void Rematch ([NullAllowed] Action<GKMatch, NSError> completionHandler);
 
 		[MacCatalyst (13, 1)]
@@ -1262,7 +1395,16 @@ namespace GameKit {
 
 		[MacCatalyst (13, 1)]
 		[Export ("chooseBestHostingPlayerWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous ChooseBestHostingPlayer operation.  The value of the TResult parameter is of type System.Action&lt;GameKit.GKPlayer&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The ChooseBestHostingPlayerAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void ChooseBestHostingPlayer (Action<GKPlayer> completionHandler);
 
 		[MacCatalyst (13, 1)]
@@ -1288,7 +1430,10 @@ namespace GameKit {
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'DataReceivedFromPlayer (GKMatch,NSData,GKPlayer)' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'DataReceivedFromPlayer (GKMatch,NSData,GKPlayer)' instead.")]
-		[Export ("match:didReceiveData:fromPlayer:"), EventArgs ("GKData")]
+		[Export ("match:didReceiveData:fromPlayer:"), EventArgs ("GKData", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DataReceived (GKMatch match, NSData data, string playerId);
 
 		/// <param name="match">To be added.</param>
@@ -1301,7 +1446,10 @@ namespace GameKit {
 		[Deprecated (PlatformName.MacOSX, 10, 8, message: "Use 'StateChangedForPlayer (GKMatch,GKPlayer,GKPlayerConnectionState)' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'StateChangedForPlayer (GKMatch,GKPlayer,GKPlayerConnectionState)' instead.")]
-		[Export ("match:player:didChangeState:"), EventArgs ("GKState")]
+		[Export ("match:player:didChangeState:"), EventArgs ("GKState", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void StateChanged (GKMatch match, string playerId, GKPlayerConnectionState state);
 
 		/// <param name="match">To be added.</param>
@@ -1311,7 +1459,10 @@ namespace GameKit {
 		///         </param>
 		/// <summary>Method that is called when a match cannot connect to any of the players.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("match:didFailWithError:"), EventArgs ("GKError")]
+		[Export ("match:didFailWithError:"), EventArgs ("GKError", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void Failed (GKMatch match, [NullAllowed] NSError error);
 
 		/// <param name="match">To be added.</param>
@@ -1319,6 +1470,11 @@ namespace GameKit {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Delegate invoked by the object to get a value.</summary>
+			<value>To be added.</value>
+			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'ShouldReinviteDisconnectedPlayer' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'ShouldReinviteDisconnectedPlayer' instead.")]
@@ -1333,7 +1489,10 @@ namespace GameKit {
 		/// <summary>Method that is called when data is received from a player.</summary>
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		[Export ("match:didReceiveData:fromRemotePlayer:"), EventArgs ("GKMatchReceivedDataFromRemotePlayer")]
+		[Export ("match:didReceiveData:fromRemotePlayer:"), EventArgs ("GKMatchReceivedDataFromRemotePlayer", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DataReceivedFromPlayer (GKMatch match, NSData data, GKPlayer player);
 
 		/// <param name="match">To be added.</param>
@@ -1341,7 +1500,10 @@ namespace GameKit {
 		/// <param name="state">To be added.</param>
 		/// <summary>Method that is called when a player's connection state changes.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("match:player:didChangeConnectionState:"), EventArgs ("GKMatchConnectionChanged")]
+		[Export ("match:player:didChangeConnectionState:"), EventArgs ("GKMatchConnectionChanged", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void StateChangedForPlayer (GKMatch match, GKPlayer player, GKPlayerConnectionState state);
 
 		/// <param name="match">To be added.</param>
@@ -1349,6 +1511,11 @@ namespace GameKit {
 		/// <summary>Method that is called when a player is disconnected from a two-player match.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Delegate invoked by the object to get a value.</summary>
+			<value>To be added.</value>
+			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[MacCatalyst (13, 1)]
 		[Export ("match:shouldReinviteDisconnectedPlayer:")]
 		[DelegateName ("GKMatchReinvitationForDisconnectedPlayer"), DefaultValue (true)]
@@ -1361,7 +1528,10 @@ namespace GameKit {
 		/// <summary>Method that is called when the <paramref name="recipient" /> recieves data from another <paramref name="player" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		[Export ("match:didReceiveData:forRecipient:fromRemotePlayer:"), EventArgs ("GKDataReceivedForRecipient")]
+		[Export ("match:didReceiveData:forRecipient:fromRemotePlayer:"), EventArgs ("GKDataReceivedForRecipient", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DataReceivedForRecipient (GKMatch match, NSData data, GKPlayer recipient, GKPlayer player);
 	}
 
@@ -1603,12 +1773,32 @@ namespace GameKit {
 		[Export ("cancel")]
 		void Cancel ();
 
+		/// <param name="playerGroup">To be added.</param>
+		/// <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("queryPlayerGroupActivity:withCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<param name="playerGroup">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous QueryPlayerGroupActivity operation.   The value of the TResult parameter is a GameKit.GKQueryHandler.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void QueryPlayerGroupActivity (nint playerGroup, [NullAllowed] GKQueryHandler completionHandler);
 
 		[Export ("queryActivityWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Queries for activity in all player groups.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous QueryActivity operation.   The value of the TResult parameter is a GameKit.GKQueryHandler.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void QueryActivity ([NullAllowed] GKQueryHandler completionHandler);
 
 		[TV (17, 2), Mac (14, 2), iOS (17, 2), MacCatalyst (17, 2)]
@@ -1792,6 +1982,10 @@ namespace GameKit {
 		/// <param name="viewController">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakMatchmakerDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Abstract]
 		[Export ("matchmakerViewControllerWasCancelled:")]
 		void WasCancelled (GKMatchmakerViewController viewController);
@@ -1801,14 +1995,20 @@ namespace GameKit {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
-		[Export ("matchmakerViewController:didFailWithError:"), EventArgs ("GKError")]
+		[Export ("matchmakerViewController:didFailWithError:"), EventArgs ("GKError", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakMatchmakerDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidFailWithError (GKMatchmakerViewController viewController, NSError error);
 
 		/// <param name="viewController">To be added.</param>
 		/// <param name="match">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("matchmakerViewController:didFindMatch:"), EventArgs ("GKMatch")]
+		[Export ("matchmakerViewController:didFindMatch:"), EventArgs ("GKMatch", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakMatchmakerDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidFindMatch (GKMatchmakerViewController viewController, GKMatch match);
 
 		/// <param name="viewController">To be added.</param>
@@ -1820,7 +2020,10 @@ namespace GameKit {
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'DidFindHostedPlayers' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'DidFindHostedPlayers' instead.")]
-		[Export ("matchmakerViewController:didFindPlayers:"), EventArgs ("GKPlayers")]
+		[Export ("matchmakerViewController:didFindPlayers:"), EventArgs ("GKPlayers", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakMatchmakerDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidFindPlayers (GKMatchmakerViewController viewController, string [] playerIDs);
 
 		/// <param name="viewController">To be added.</param>
@@ -1828,7 +2031,10 @@ namespace GameKit {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		[Export ("matchmakerViewController:didFindHostedPlayers:"), EventArgs ("GKMatchmakingPlayers")]
+		[Export ("matchmakerViewController:didFindHostedPlayers:"), EventArgs ("GKMatchmakingPlayers", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakMatchmakerDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void DidFindHostedPlayers (GKMatchmakerViewController viewController, GKPlayer [] playerIDs);
 
 		/// <param name="viewController">To be added.</param>
@@ -1840,7 +2046,10 @@ namespace GameKit {
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'HostedPlayerDidAccept' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'HostedPlayerDidAccept' instead.")]
-		[Export ("matchmakerViewController:didReceiveAcceptFromHostedPlayer:"), EventArgs ("GKPlayer")]
+		[Export ("matchmakerViewController:didReceiveAcceptFromHostedPlayer:"), EventArgs ("GKPlayer", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakMatchmakerDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void ReceivedAcceptFromHostedPlayer (GKMatchmakerViewController viewController, string playerID);
 
 		/// <param name="viewController">To be added.</param>
@@ -1848,7 +2057,10 @@ namespace GameKit {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		[Export ("matchmakerViewController:hostedPlayerDidAccept:"), EventArgs ("GKMatchmakingPlayer")]
+		[Export ("matchmakerViewController:hostedPlayerDidAccept:"), EventArgs ("GKMatchmakingPlayer", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakMatchmakerDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		void HostedPlayerDidAccept (GKMatchmakerViewController viewController, GKPlayer playerID);
 
 		[TV (17, 2), Mac (14, 2), iOS (17, 2), MacCatalyst (17, 2)]
@@ -1891,12 +2103,22 @@ namespace GameKit {
 
 		[Static]
 		[Export ("loadAchievementsWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously loads the achievement progress.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous LoadAchievements operation.   The value of the TResult parameter is a GameKit.GKCompletionHandler.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void LoadAchievements ([NullAllowed] GKCompletionHandler completionHandler);
 
 		[Static]
 		[Export ("resetAchievementsWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously resets all achievements for the local player.</summary>
+			<returns>A task that represents the asynchronous ResetAchivements operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void ResetAchivements ([NullAllowed] Action<NSError> completionHandler);
 
 		/// <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
@@ -1917,7 +2139,11 @@ namespace GameKit {
 		NativeHandle Constructor ([NullAllowed] string identifier, string playerId);
 
 		[Export ("reportAchievementWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Deprecated.</summary>
+			<returns>A task that represents the asynchronous ReportAchievement operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use ReportAchievements '(GKAchievement[] achievements, Action<NSError> completionHandler)' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use ReportAchievements '(GKAchievement[] achievements, Action<NSError> completionHandler)' instead.")]
@@ -2079,12 +2305,26 @@ namespace GameKit {
 
 		[Static]
 		[Export ("loadAchievementDescriptionsWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous LoadAchievementDescriptions operation.   The value of the TResult parameter is a <see cref="T:GameKit.GKAchievementDescriptionHandler" />.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void LoadAchievementDescriptions ([NullAllowed] GKAchievementDescriptionHandler handler);
 
 		[MacCatalyst (14, 0)] // the headers lie, not usable until at least Mac Catalyst 14.0
 		[Export ("loadImageWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para>The result is of type System.Threading.Tasks.Task&lt;AppKit.NSImage&gt; on MacOS and System.Threading.Tasks.Task&lt;UIKit.UIImage&gt; on iOS.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The LoadImageAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			        </remarks>
+			""")]
 		void LoadImage ([NullAllowed] GKImageLoadedHandler imageLoadedHandler);
 
 		[Export ("groupIdentifier", ArgumentSemantic.Retain)]
@@ -2147,6 +2387,10 @@ namespace GameKit {
 		/// <param name="viewController">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Abstract]
 		[Export ("achievementViewControllerDidFinish:")]
 		void DidFinish (GKAchievementViewController viewController);
@@ -2285,6 +2529,10 @@ namespace GameKit {
 		/// <param name="viewController">To be added.</param>
 		/// <summary>Developers should not use this deprecated method. </summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakComposeViewDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Abstract]
 		[Export ("friendRequestComposeViewControllerDidFinish:")]
 		void DidFinish (GKFriendRequestComposeViewController viewController);
@@ -2493,15 +2741,31 @@ namespace GameKit {
 
 		[Static]
 		[Export ("loadMatchesWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously loads all the matches for the current player.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous LoadMatches operation.   The value of the TResult parameter is a GameKit.GKTurnBasedMatchesRequest.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void LoadMatches ([NullAllowed] GKTurnBasedMatchesRequest onCompletion);
 
 		[Export ("removeWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously removes the match from the Game Center.</summary>
+			<returns>A task that represents the asynchronous Remove operation</returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void Remove ([NullAllowed] Action<NSError> onCompletion);
 
 		[Export ("loadMatchDataWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously loads the match data.</summary>
+			<returns>
+			          <para>A task that represents the asynchronous LoadMatchData operation.   The value of the TResult parameter is a GameKit.GKTurnBasedMatchData.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void LoadMatchData ([NullAllowed] GKTurnBasedMatchData onCompletion);
 
 		[NoTV]
@@ -2566,11 +2830,23 @@ namespace GameKit {
 		void LoadMatch (string matchId, [NullAllowed] Action<GKTurnBasedMatch, NSError> completionHandler);
 
 		[Export ("acceptInviteWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously accepts an invitation to a match.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AcceptInvite operation.  The value of the TResult parameter is of type System.Action&lt;GameKit.GKTurnBasedMatch,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void AcceptInvite ([NullAllowed] Action<GKTurnBasedMatch, NSError> completionHandler);
 
 		[Export ("declineInviteWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously declines an invitation to a match.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DeclineInvite operation.  The value of the TResult parameter is of type System.Action&lt;GameKit.GKTurnBasedMatch,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void DeclineInvite ([NullAllowed] Action<GKTurnBasedMatch, NSError> completionHandler);
 
 		[Export ("matchDataMaximumSize")]
@@ -2578,7 +2854,13 @@ namespace GameKit {
 
 		[MacCatalyst (13, 1)]
 		[Export ("rematchWithCompletionHandler:")]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Creates a new match with the same list of participants as the current match.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous Rematch operation.  The value of the TResult parameter is of type System.Action&lt;GameKit.GKTurnBasedMatch,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		void Rematch ([NullAllowed] Action<GKTurnBasedMatch, NSError> completionHandler);
 
 		[MacCatalyst (13, 1)]
@@ -2858,7 +3140,16 @@ namespace GameKit {
 		void Decline ();
 
 		[Export ("loadReceivedChallengesWithCompletionHandler:"), Static]
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadReceivedChallenges operation.  The value of the TResult parameter is of type System.Action&lt;GameKit.GKChallenge[],Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>
+			          <para copied="true">The LoadReceivedChallengesAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		void LoadReceivedChallenges ([NullAllowed] Action<GKChallenge [], NSError> completionHandler);
 
 		[MacCatalyst (13, 1)]
@@ -3010,6 +3301,10 @@ namespace GameKit {
 		/// <param name="controller">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Abstract]
 		[Export ("gameCenterViewControllerDidFinish:")]
 		void Finished (GKGameCenterViewController controller);
@@ -3068,6 +3363,10 @@ namespace GameKit {
 		/// <param name="challenge">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("localPlayerDidSelectChallenge:")]
 		void LocalPlayerSelectedChallenge (GKChallenge challenge);
 
@@ -3075,6 +3374,11 @@ namespace GameKit {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Delegate invoked by the object to get a value.</summary>
+			<value>To be added.</value>
+			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("shouldShowBannerForLocallyReceivedChallenge:")]
 		[DelegateName ("GKChallengePredicate"), DefaultValue (true)]
 		bool ShouldShowBannerForLocallyReceivedChallenge (GKChallenge challenge);
@@ -3082,6 +3386,10 @@ namespace GameKit {
 		/// <param name="challenge">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("localPlayerDidReceiveChallenge:")]
 		void LocalPlayerReceivedChallenge (GKChallenge challenge);
 
@@ -3089,6 +3397,11 @@ namespace GameKit {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Delegate invoked by the object to get a value.</summary>
+			<value>To be added.</value>
+			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("shouldShowBannerForLocallyCompletedChallenge:")]
 		[DelegateName ("GKChallengePredicate"), DefaultValue (true)]
 		bool ShouldShowBannerForLocallyCompletedChallenge (GKChallenge challenge);
@@ -3096,6 +3409,10 @@ namespace GameKit {
 		/// <param name="challenge">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("localPlayerDidCompleteChallenge:")]
 		void LocalPlayerCompletedChallenge (GKChallenge challenge);
 
@@ -3103,6 +3420,11 @@ namespace GameKit {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Delegate invoked by the object to get a value.</summary>
+			<value>To be added.</value>
+			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("shouldShowBannerForRemotelyCompletedChallenge:")]
 		[DelegateName ("GKChallengePredicate"), DefaultValue (true)]
 		bool ShouldShowBannerForRemotelyCompletedChallenge (GKChallenge challenge);
@@ -3110,6 +3432,10 @@ namespace GameKit {
 		/// <param name="challenge">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
+		[EventArgs ("", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
 		[Export ("remotePlayerDidCompleteChallenge:")]
 		void RemotePlayerCompletedChallenge (GKChallenge challenge);
 	}
@@ -3396,7 +3722,25 @@ namespace GameKit {
 		[Export ("badgedPlayers")]
 		GKCloudPlayer [] BadgedPlayers { get; }
 
-		[Async]
+		/// <param name="containerName">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <param name="title">To be added.</param>
+		/// <param name="maxPlayers">To be added.</param>
+		/// <param name="completionHandler">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
+		[Async (XmlDocs = """
+			<param name="containerName">To be added.</param>
+			<param name="title">To be added.</param>
+			<param name="maxPlayers">To be added.</param>
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous CreateSession operation.  The value of the TResult parameter is of type System.Action&lt;GameKit.GKGameSession,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Static]
 		[Export ("createSessionInContainer:withTitle:maxConnectedPlayers:completionHandler:")]
 		void CreateSession ([NullAllowed] string containerName, string title, nint maxPlayers, Action<GKGameSession, NSError> completionHandler);
@@ -3435,11 +3779,23 @@ namespace GameKit {
 		[Export ("removeSessionWithIdentifier:completionHandler:")]
 		void RemoveSession (string identifier, Action<NSError> completionHandler);
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous GetShareUrl operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSUrl,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("getShareURLWithCompletionHandler:")]
 		void GetShareUrl (Action<NSUrl, NSError> completionHandler);
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>To be added.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadData operation.  The value of the TResult parameter is of type System.Action&lt;Foundation.NSData,Foundation.NSError&gt;.</para>
+			        </returns>
+			<remarks>To be added.</remarks>
+			""")]
 		[Export ("loadDataWithCompletionHandler:")]
 		void LoadData (Action<NSData, NSError> completionHandler);
 

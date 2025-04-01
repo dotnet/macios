@@ -367,7 +367,14 @@ namespace CallKit {
 		[Export ("addIdentificationEntryWithNextSequentialPhoneNumber:label:")]
 		void AddIdentificationEntry (/* CXCallDirectoryPhoneNumber -> int64_t */ long phoneNumber, string label);
 
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Completes the call directory extension request.</summary>
+			<returns>A task that accepts the result of the request completion.</returns>
+			<remarks>
+			          <para copied="true">The CompleteRequestAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			          <para copied="true">To be added.</para>
+			        </remarks>
+			""")]
 		[Export ("completeRequestWithCompletionHandler:")]
 		void CompleteRequest ([NullAllowed] Action<bool> completion);
 

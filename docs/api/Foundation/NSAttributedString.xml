@@ -131,31 +131,31 @@ var text = new NSAttributedString (
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/Classes/NSAttributedString_Class/index.html">Apple documentation for <c>NSAttributedString</c></related>
   </Docs>
   <Docs DocId="M:Foundation.NSAttributedString.#ctor(System.String,UIKit.UIFont,UIKit.UIColor,UIKit.UIColor,UIKit.UIColor,UIKit.NSParagraphStyle,Foundation.NSLigatureType,System.Single,Foundation.NSUnderlineStyle,UIKit.NSShadow,System.Single,Foundation.NSUnderlineStyle)">
-        <param name="str">String to create.</param>
-        <param name="font">Desired font (or null, if none is desired).</param>
-        <param name="foregroundColor">Desired foreground color (or null if none is desired).</param>
-        <param name="backgroundColor">Desired background color (or null if none is desired)..</param>
-        <param name="strokeColor">Desired stroke color (or null if none is desired).</param>
-        <param name="paragraphStyle">To be added.</param>
-        <param name="ligatures">To be added.</param>
-        <param name="kerning">To be added.</param>
-        <param name="underlineStyle">To be added.</param>
-        <param name="shadow">Desired shadow.</param>
-        <param name="strokeWidth">Desired stroked width..</param>
-        <param name="strikethroughStyle">To be added.</param>
-        <summary>Creates a UIKit attributed string with the specified attributes in the parameters.</summary>
-        <remarks>
-          <para>
+    <param name="str">String to create.</param>
+    <param name="font">Desired font (or null, if none is desired).</param>
+    <param name="foregroundColor">Desired foreground color (or null if none is desired).</param>
+    <param name="backgroundColor">Desired background color (or null if none is desired)..</param>
+    <param name="strokeColor">Desired stroke color (or null if none is desired).</param>
+    <param name="paragraphStyle">To be added.</param>
+    <param name="ligatures">To be added.</param>
+    <param name="kerning">To be added.</param>
+    <param name="underlineStyle">To be added.</param>
+    <param name="shadow">Desired shadow.</param>
+    <param name="strokeWidth">Desired stroked width..</param>
+    <param name="strikethroughStyle">To be added.</param>
+    <summary>Creates a UIKit attributed string with the specified attributes in the parameters.</summary>
+    <remarks>
+      <para>
 	    This is the recommended constructor for NSAttributedString
 	    objects that are intended to be unique.   
 	  </para>
-          <para>
+      <para>
 	    The advantage of this constructor is that other than the
 	    string, every parameter is optional.   It provides a
 	    convenient way of creating the objects
 	  </para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
 //
 // This example shows how to create an NSAttributedString for
 // use with UIKit without creating the attributes separately
@@ -167,14 +167,38 @@ var text = new NSAttributedString (
     strokeWidth: 4
 );
 	]]></code>
-          </example>
-          <para>
+      </example>
+      <para>
 	    For cases where the same attributes will be reused across
 	    multiple attributed strings, it is best to create the
 	    attributes using the UIStringAttributes class as that will
 	    share the same dictionary across multiple uses while this
 	    constructor creates a dictionary on demand for the
 	    specified attributes in the constructor.
+	  </para>
+    </remarks>
+  </Docs>
+  <Docs DocId="M:Foundation.NSAttributedString.LowLevelGetAttributes(System.IntPtr,Foundation.NSRange@)">
+        <param name="location">The location to probe.</param>
+        <param name="effectiveRange">The range to probe.</param>
+        <summary>Low-level version that provides an NSDictionary for the attributes in the specified range.</summary>
+        <returns>IntPtr handle to a native NSDictionary class.</returns>
+        <remarks>
+          <para>
+	    In general, you should use the <see cref="M:Foundation.NSAttributedString.LowLevelGetAttributes(System.nint,Foundation.NSRange@)" />
+	    methods, which will return a high-level NSDictionary.
+	  </para>
+          <para>
+	    This is the low-level interface to NSAttributedString and
+	    in general is only useful for subclasses.  You are
+	    expected to return an IntPtr that represents a handle to
+	    an NSDictionary.  This API is kept as a low-level API,
+	    since it is consumed by NSTextStorage which might call
+	    this method thousands of times per character insertion, so
+	    it is very important that this is kept as fast as
+	    possible, possibly even caching or reusing existing
+	    dictionary instances.
+
 	  </para>
         </remarks>
       </Docs>

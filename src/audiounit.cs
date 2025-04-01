@@ -347,6 +347,9 @@ namespace AudioUnit {
 		[NullAllowed, Export ("transportStateBlock", ArgumentSemantic.Copy)]
 		AUHostTransportStateBlock TransportStateBlock { get; set; }
 
+		/// <param name="token">To be added.</param>
+		/// <summary>Removes the observer block that is identified by <paramref name="token" />.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("removeRenderObserver:")]
 		void RemoveRenderObserver (nint token);
 
@@ -371,6 +374,10 @@ namespace AudioUnit {
 			set;
 		}
 
+		/// <param name="count">To be added.</param>
+		/// <summary>Returns the <paramref name="count" /> most important parameters.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("parametersForOverviewWithCount:")]
 		NSNumber [] GetParametersForOverview (nint count);
 
@@ -883,6 +890,10 @@ namespace AudioUnit {
 		nuint Count { get; }
 
 		// -(AUAudioUnitBus * __nonnull)objectAtIndexedSubscript:(NSUInteger)index;
+		/// <param name="index">The zero-based index into the bus array of the desired bus.</param>
+		/// <summary>Returns the bus at the spcified location in the array.</summary>
+		/// <returns>The bus at the spcified location in the array.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("objectAtIndexedSubscript:")]
 		AUAudioUnitBus GetObject (nuint index);
 
@@ -892,6 +903,14 @@ namespace AudioUnit {
 		[Export ("countChangeable")]
 		bool CountChangeable { [Bind ("isCountChangeable")] get; }
 
+		/// <param name="count">To be added.</param>
+		/// <param name="outError">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("setBusCount:error:")]
 		bool SetBusCount (nuint count, [NullAllowed] out NSError outError);
 
@@ -1116,6 +1135,10 @@ namespace AudioUnit {
 		[Export ("displayName")]
 		string DisplayName { get; }
 
+		/// <param name="maximumLength">The maximum length of the returned localized display name or display name fragment.</param>
+		/// <summary>Returns the possibly truncated localized display name for the node.</summary>
+		/// <returns>The possibly truncated localized display name for the node.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("displayNameWithLength:")]
 		string GetDisplayName (nint maximumLength);
 

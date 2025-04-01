@@ -180,6 +180,11 @@ namespace Foundation {
 			return From<object> (items);
 		}
 
+		/// <param name="count">To be added.</param>
+		/// <param name="items">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public static NSArray FromObjects (nint count, params object [] items)
 		{
 			return From<object> (items, count);
@@ -523,6 +528,11 @@ namespace Foundation {
 		}
 
 		// can return an INativeObject or an NSObject
+		/// <typeparam name="T">To be added.</typeparam>
+		/// <param name="index">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		public T GetItem<T> (nuint index) where T : class, INativeObject
 		{
 			if (index >= GetCount (Handle))

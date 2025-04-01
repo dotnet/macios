@@ -4,7 +4,8 @@ include $(TOP)/Make.config
 
 export DOTNET=$(shell which dotnet)
 
-ifeq ($(shell arch),"arm64")
+SHELL_ARCH:=$(shell arch)
+ifeq ($(SHELL_ARCH),"arm64")
 IS_ARM64=1
 IS_APPLE_SILICON=1
 endif
@@ -26,6 +27,7 @@ LAUNCH_WITH_TIMEOUT_LONGER=$(RUN_WITH_TIMEOUT_EXEC) 600
 arm64-debug:
 	@echo IS_ARM64=$(IS_ARM64)
 	@echo IS_APPLE_SILICON=$(IS_APPLE_SILICON)
+	@echo SHELL_ARCH=$(SHELL_ARCH)
 	-arch
 	-sysctl -n sysctl.proc_translated
 

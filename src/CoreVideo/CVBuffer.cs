@@ -105,6 +105,14 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		unsafe extern static /* CFTypeRef */ IntPtr CVBufferGetAttachment (/* CVBufferRef */ IntPtr buffer, /* CFStringRef */ IntPtr key, CVAttachmentMode* attachmentMode);
 
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("macos12.0")]
+		[ObsoletedOSPlatform ("tvos15.0")]
+		[ObsoletedOSPlatform ("maccatalyst15.0")]
+		[ObsoletedOSPlatform ("ios15.0")]
 		unsafe static /* CFTypeRef */ IntPtr CVBufferGetAttachment (/* CVBufferRef */ IntPtr buffer, /* CFStringRef */ IntPtr key, out CVAttachmentMode attachmentMode)
 		{
 			attachmentMode = default;
@@ -120,6 +128,10 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		unsafe extern static /* CFTypeRef */ IntPtr CVBufferCopyAttachment (/* CVBufferRef */ IntPtr buffer, /* CFStringRef */ IntPtr key, CVAttachmentMode* attachmentMode);
 
+		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		unsafe static IntPtr CVBufferCopyAttachment (IntPtr buffer, IntPtr key, out CVAttachmentMode attachmentMode)
 		{
 			attachmentMode = default;
@@ -137,13 +149,11 @@ namespace CoreVideo {
 		{
 			if (key is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
-#if IOS || __MACCATALYST__ || TVOS
-			if (!SystemVersion.CheckiOS (15, 0)) {
+			if (!SystemVersion.IsAtLeastXcode13) {
 				T? result = Runtime.GetINativeObject<T> (CVBufferGetAttachment (Handle, key.Handle, out attachmentMode), false);
 				GC.KeepAlive (key);
 				return result;
 			}
-#endif
 			T? result2 = Runtime.GetINativeObject<T> (CVBufferCopyAttachment (Handle, key.Handle, out attachmentMode), true);
 			GC.KeepAlive (key);
 			return result2;
@@ -157,6 +167,10 @@ namespace CoreVideo {
 		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the generic 'GetAttachment<T>' method instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
+		[UnsupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("maccatalyst")]
 		public NSObject? GetAttachment (NSString key, out CVAttachmentMode attachmentMode)
 		{
 			if (key is null)
@@ -191,10 +205,8 @@ namespace CoreVideo {
 		///         <remarks>To be added.</remarks>
 		public NSDictionary? GetAttachments (CVAttachmentMode attachmentMode)
 		{
-#if IOS || __MACCATALYST__ || TVOS
-			if (!SystemVersion.CheckiOS (15, 0))
+			if (!SystemVersion.IsAtLeastXcode13)
 				return Runtime.GetNSObject<NSDictionary> (CVBufferGetAttachments (Handle, attachmentMode), false);
-#endif
 			return Runtime.GetINativeObject<NSDictionary> (CVBufferCopyAttachments (Handle, attachmentMode), true);
 		}
 
@@ -210,7 +222,9 @@ namespace CoreVideo {
 			where TKey : class, INativeObject
 			where TValue : class, INativeObject
 		{
-			return Runtime.GetNSObject<NSDictionary<TKey, TValue>> (CVBufferGetAttachments (Handle, attachmentMode));
+			if (SystemVersion.IsAtLeastXcode13)
+				return Runtime.GetNSObject<NSDictionary<TKey, TValue>> (CVBufferCopyAttachments (Handle, attachmentMode), true);
+			return Runtime.GetNSObject<NSDictionary<TKey, TValue>> (CVBufferGetAttachments (Handle, attachmentMode), false);
 		}
 
 		[DllImport (Constants.CoreVideoLibrary)]

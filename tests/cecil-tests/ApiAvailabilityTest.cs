@@ -69,7 +69,7 @@ namespace Cecil.Tests {
 			} finally {
 				Console.WriteLine ($"There's a total of {totalWarnings} warnings.");
 			}
-			Assert.AreEqual (797, totalWarnings, "Total warnings"); // this is just to see how the warning count changes as issues are fixed.
+			Assert.AreEqual (762, totalWarnings, "Total warnings"); // this is just to see how the warning count changes as issues are fixed.
 		}
 
 		public record ObsoletedFailure : IComparable {
@@ -185,11 +185,6 @@ namespace Cecil.Tests {
 			"CoreMedia.CMTime AVFoundation.AVCaptureConnection::VideoMaxFrameDuration()",
 			"CoreMedia.CMTime AVFoundation.AVCaptureConnection::VideoMinFrameDuration()",
 			"CoreMedia.CMTime AVFoundation.AVCaptureVideoDataOutput::MinFrameDuration()",
-			"CoreMidi.MidiClient.CreateVirtualDestination(System.String, out CoreMidi.MidiError&)",
-			"CoreMidi.MidiClient.CreateVirtualSource(System.String, out CoreMidi.MidiError&)",
-			"CoreMidi.MidiDevice.Add(System.String, System.Boolean, System.UIntPtr, System.UIntPtr, CoreMidi.MidiEntity)",
-			"CoreMidi.MidiEndpoint.Received(CoreMidi.MidiPacket[])",
-			"CoreMidi.MidiPort.Send(CoreMidi.MidiEndpoint, CoreMidi.MidiPacket[])",
 			"Foundation.NSData HealthKit.HKVerifiableClinicalRecord::JwsRepresentation()",
 			"Foundation.NSDate HealthKit.HKWorkoutEvent::Date()",
 			"Foundation.NSString CoreData.NSPersistentStoreCoordinator::DidImportUbiquitousContentChangesNotification()",

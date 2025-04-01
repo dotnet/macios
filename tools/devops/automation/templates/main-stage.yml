@@ -102,6 +102,7 @@ stages:
           gitHubToken: $(Github.Token)
           xqaCertPass: $(xqa--certificates--password)
           pool: ${{ parameters.pool }}
+          use1ES: true
 
   - stage: build_macos_tests
     displayName: '${{ parameters.stageDisplayNamePrefix }}Build macOS tests'

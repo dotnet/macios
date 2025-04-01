@@ -56,11 +56,9 @@ namespace CoreMidi {
 		FourteenBitNRpn = 5,
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	[NativeName ("MIDITransform")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiTransform {
@@ -82,11 +80,9 @@ namespace CoreMidi {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	[NativeName ("MIDIValueMap")]
 	[StructLayout (LayoutKind.Sequential)]
 	public unsafe struct MidiValueMap {
@@ -108,11 +104,9 @@ namespace CoreMidi {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	[NativeName ("MIDIControlTransform")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiControlTransform {
@@ -152,11 +146,9 @@ namespace CoreMidi {
 		}
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	[NativeName ("MIDIThruConnectionEndpoint")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiThruConnectionEndpoint {
@@ -358,11 +350,9 @@ namespace CoreMidi {
 	}
 
 #if !COREBUILD
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class MidiThruConnectionParams {
 		MidiThruConnectionParamsStruct connectionParams;
 

@@ -17,7 +17,6 @@ parameters:
 
 - name: use1ES
   type: boolean
-  default: true
 
 steps:
 

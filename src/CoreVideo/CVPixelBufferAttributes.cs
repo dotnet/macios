@@ -254,6 +254,10 @@ namespace CoreVideo {
 		///         <value>
 		///         </value>
 		///         <remarks>The property uses constant kCVPixelBufferOpenGLESCompatibilityKey value to access the underlying dictionary.</remarks>
+		[SupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
 		public bool? OpenGLESCompatibility {
 			set {
 				SetBooleanValue (CVPixelBuffer.OpenGLESCompatibilityKey, value);

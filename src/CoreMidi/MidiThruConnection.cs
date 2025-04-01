@@ -21,11 +21,9 @@ using System.Runtime.Versioning;
 
 namespace CoreMidi {
 #if !COREBUILD
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-#endif
 	public class MidiThruConnection : IDisposable {
 		MidiThruConnectionRef handle;
 		const MidiThruConnectionRef InvalidRef = 0;

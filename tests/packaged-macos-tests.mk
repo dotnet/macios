@@ -5,7 +5,7 @@ include $(TOP)/Make.config
 export DOTNET=$(shell which dotnet)
 
 SHELL_ARCH:=$(shell arch)
-ifeq ($(SHELL_ARCH),"arm64")
+ifeq ($(SHELL_ARCH),arm64)
 IS_ARM64=1
 IS_APPLE_SILICON=1
 endif

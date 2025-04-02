@@ -1068,13 +1068,9 @@ namespace Introspection {
 					goto default;
 #endif
 				case "MetalFXLibrary":
-#if __TVOS__
-					goto default;
-#else
 					if (TestRuntime.IsSimulatorOrDesktop)
 						break;
 					goto default;
-#endif
 #if __TVOS__
 				// This framework is only available on device
 				case "BrowserEngineKitLibrary":

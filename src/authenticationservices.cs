@@ -1994,7 +1994,7 @@ namespace AuthenticationServices {
 		SecKey LoginRequestEncryptionPublicKey {
 			[Wrap ("new SecKey (this._LoginRequestEncryptionPublicKey, owns: false)")]
 			get;
-			[Wrap ("_LoginRequestEncryptionPublicKey = value.Handle")]
+			[Wrap ("_LoginRequestEncryptionPublicKey = Runtime.RetainAndAutoreleaseNativeObject (value)")]
 			set;
 		}
 
@@ -2136,9 +2136,6 @@ namespace AuthenticationServices {
 		[Export ("saveCertificate:keyType:")]
 		void _Save (IntPtr certificate, ASAuthorizationProviderExtensionKeyType keyType);
 
-		[Wrap ("_Save (certificate.GetHandle (), keyType)")]
-		void Save (SecCertificate certificate, ASAuthorizationProviderExtensionKeyType keyType);
-
 		[Protected]
 		[Export ("copyKeyForKeyType:")]
 		[return: NullAllowed]
@@ -2201,7 +2198,20 @@ namespace AuthenticationServices {
 		[Mac (15, 0)]
 		[Export ("completeKeyRotationForKeyType:")]
 		void CompleteKeyRotation (ASAuthorizationProviderExtensionKeyType keyType);
+
+		[Mac (15, 4)]
+		[Export ("attestKey:clientDataHash:completion:")]
+		[Async]
+		void AttestKey (ASAuthorizationProviderExtensionKeyType keyType, NSData clientDataHash, ASAuthorizationProviderExtensionLoginManagerAttestCallback completion);
+
+		[Mac (15, 4)]
+		[Export ("attestPendingKey:clientDataHash:completion:")]
+		[Async]
+		void AttestPendingKey (ASAuthorizationProviderExtensionKeyType keyType, NSData clientDataHash, ASAuthorizationProviderExtensionLoginManagerAttestCallback completion);
+
 	}
+
+	delegate void ASAuthorizationProviderExtensionLoginManagerAttestCallback ([NullAllowed] NSArray attestationCertificates, [NullAllowed] NSError error);
 
 	[NoTV, NoiOS, NoMacCatalyst, Mac (13, 0)]
 	[Protocol]

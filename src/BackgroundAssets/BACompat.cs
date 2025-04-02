@@ -9,6 +9,7 @@ using Foundation;
 
 #nullable enable
 
+#if !__TVOS__
 
 namespace BackgroundAssets {
 
@@ -82,3 +83,5 @@ namespace BackgroundAssets {
 	}
 
 }
+
+#endif // !__TVOS__

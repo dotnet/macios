@@ -124,6 +124,22 @@ namespace CoreFoundation {
 
 		[DllImport (Constants.CoreFoundationLibrary)]
 		internal extern static IntPtr CFRetain (IntPtr obj);
+
+		/// <summary>Does nothing if <paramref name="obj" /> is IntPtr.Zero, otherwise calls CFRelease.</summary>
+		internal static void SafeRelease (IntPtr obj)
+		{
+			if (obj == IntPtr.Zero)
+				return;
+			CFRelease (obj);
+		}
+
+		/// <summary>Does nothing if <paramref name="obj" /> is IntPtr.Zero, otherwise calls CFRetain.</summary>
+		internal static IntPtr SafeRetain (IntPtr obj)
+		{
+			if (obj == IntPtr.Zero)
+				return obj;
+			return CFRetain (obj);
+		}
 	}
 
 	[SupportedOSPlatform ("ios")]

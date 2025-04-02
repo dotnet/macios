@@ -361,8 +361,8 @@ namespace MonoTouchFixtures.Security {
 
 		void Trust_FullChain (SecTrust trust, SecPolicy policy, X509CertificateCollection certs)
 		{
-			// that certificate stopped being valid on December 15th, 2023 so we validate it with a date earlier than that
-			trust.SetVerifyDate (new DateTime (638382479747632240, DateTimeKind.Utc));
+			// that certificate is valid between March 10th, 2025 and June 2nd, 2025, so we validate with a date in that range
+			trust.SetVerifyDate (new DateTime (2025, 4, 1, 0, 0, 0, DateTimeKind.Utc));
 
 			SecTrustResult trust_result = SecTrustResult.Unspecified;
 			var result = Evaluate (trust, out var trustError, true);
@@ -378,7 +378,7 @@ namespace MonoTouchFixtures.Security {
 			}
 			using (SecCertificate sc2 = trust [1]) {
 				Assert.That (CFGetRetainCount (sc2.Handle), Is.GreaterThanOrEqualTo ((nint) 2), "RetainCount(sc2)");
-				Assert.That (sc2.SubjectSummary, Is.EqualTo ("GTS CA 1C3"), "SubjectSummary(sc2)");
+				Assert.That (sc2.SubjectSummary, Is.EqualTo ("WR2"), "SubjectSummary(sc2)");
 			}
 			using (SecCertificate sc3 = trust [2]) {
 				Assert.That (CFGetRetainCount (sc3.Handle), Is.GreaterThanOrEqualTo ((nint) 2), "RetainCount(sc3)");

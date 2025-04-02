@@ -5,6 +5,7 @@
 #nullable enable
 
 using System;
+using System.Globalization;
 using System.Runtime.InteropServices;
 
 using ObjCRuntime;
@@ -517,19 +518,16 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFString */ IntPtr CFBundleCopyLocalizedString (IntPtr bundle, /* CFStringRef */ IntPtr key, /* CFStringRef */ IntPtr value, /* CFStringRef */ IntPtr tableName);
 
-		/// <param name="key">To be added.</param>
-		///         <param name="defaultValue">To be added.</param>
-		///         <param name="tableName">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		public string? GetLocalizedString (string key, string defaultValue, string? tableName)
+		/// <summary>Gets a localized string.</summary>
+		/// <param name="key">The key of the localized string to return.</param>
+		/// <param name="defaultValue">A default value if no localized string is found for the specified <paramref name="key" />.</param>
+		/// <param name="tableName">The name of the strings file to look in. The default is the 'Localizable.strings' file.</param>
+		/// <returns>A localized string for the key <paramref name="key" /> in the table <paramref name="tableName" />.</returns>
+		/// <remarks>Returns a localized string for the current bundle.</remarks>
+		public string? GetLocalizedString (string key, string defaultValue, string? tableName = null)
 		{
 			if (String.IsNullOrEmpty (key))
 				throw new ArgumentException (nameof (key));
-
-			if (String.IsNullOrEmpty (tableName))
-				throw new ArgumentException (nameof (tableName));
 
 			// we do allow null and simply use an empty string to avoid the extra check
 			if (defaultValue is null)
@@ -546,6 +544,59 @@ namespace CoreFoundation {
 				CFString.ReleaseNative (defaultValueHandle);
 				CFString.ReleaseNative (tableNameHandle);
 			}
+		}
+
+		[SupportedOSPlatform ("macos15.4")]
+		[SupportedOSPlatform ("ios18.4")]
+		[SupportedOSPlatform ("tvos18.4")]
+		[SupportedOSPlatform ("maccatalyst18.4")]
+		[DllImport (Constants.CoreFoundationLibrary)]
+		extern static /* CFStringRef */ IntPtr CFBundleCopyLocalizedStringForLocalizations (/* CFBundleRef */ IntPtr bundle, /* CFStringRef */ IntPtr key, /* CFStringRef */ IntPtr value, /* CFStringRef */ IntPtr tableName, /* CFArrayRef */ IntPtr localizations);
+
+		/// <summary>Gets a localized string for a list of possible localizations.</summary>
+		/// <param name="key">The key of the localized string to return.</param>
+		/// <param name="defaultValue">A default value if no localized string is found for the specified <paramref name="key" />.</param>
+		/// <param name="tableName">The name of the strings file to look in. Specify <c>null</c> to use the default 'Localizable.strings' file.</param>
+		/// <param name="localizations">An array of BCP 47 language codes to determine which localized string to return.</param>
+		/// <returns>A localized string for the key <paramref name="key" /> in the table <paramref name="tableName" />.</returns>
+		/// <remarks>Returns the most suitable localized string for the current bundle.</remarks>
+		[SupportedOSPlatform ("macos15.4")]
+		[SupportedOSPlatform ("ios18.4")]
+		[SupportedOSPlatform ("tvos18.4")]
+		[SupportedOSPlatform ("maccatalyst18.4")]
+		public string? GetLocalizedString (string key, string? defaultValue, string? tableName, string [] localizations)
+		{
+			if (string.IsNullOrEmpty (key))
+				throw new ArgumentException (nameof (key));
+
+			if (localizations is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (localizations));
+
+			using var keyHandle = new TransientCFString (key);
+			using var defaultValueHandle = new TransientCFString (defaultValue);
+			using var tableNameHandle = new TransientCFString (tableName);
+			using var localizationsArrayHandle = new TransientCFObject (CFArray.Create (localizations));
+			var rv = CFBundleCopyLocalizedStringForLocalizations (Handle, keyHandle, defaultValueHandle, tableNameHandle, localizationsArrayHandle);
+			return CFString.FromHandle (rv, releaseHandle: true);
+		}
+
+		/// <summary>Gets a localized string for a list of possible localizations.</summary>
+		/// <param name="key">The key of the localized string to return.</param>
+		/// <param name="defaultValue">A default value if no localized string is found for the specified <paramref name="key" />.</param>
+		/// <param name="tableName">The name of the strings file to look in.</param>
+		/// <param name="localizations">An array of languages to determine which localized string to return.</param>
+		/// <returns>A localized string for the key <paramref name="key" /> in the table <paramref name="tableName" />.</returns>
+		/// <remarks>Returns the most suitable localized string for the current bundle.</remarks>
+		[SupportedOSPlatform ("macos15.4")]
+		[SupportedOSPlatform ("ios18.4")]
+		[SupportedOSPlatform ("tvos18.4")]
+		[SupportedOSPlatform ("maccatalyst18.4")]
+		public string? GetLocalizedString (string key, string defaultValue, string tableName, params CultureInfo [] localizations)
+		{
+			var locs = new string [localizations.Length];
+			for (var i = 0; i < localizations.Length; i++)
+				locs [i] = localizations [i].Name;
+			return GetLocalizedString (key, defaultValue, tableName, locs);
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]

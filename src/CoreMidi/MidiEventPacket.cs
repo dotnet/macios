@@ -169,7 +169,35 @@ namespace CoreMidi {
 				}
 			}
 		}
+
+#if !__TVOS__
+
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("macos14.0")]
+		[UnsupportedOSPlatform ("tvos")]
+		[DllImport (Constants.CoreMidiLibrary)]
+		unsafe extern static OSStatus MIDIEventPacketSysexBytesForGroup (MidiEventPacket* pkt, byte /* UInt8 */ groupIndex, IntPtr* /* CFDataRef __nullable * __mononull */ outData);
+
+		/// <summary>Get MIDI 1.0 sysex bytes on the specified group.</summary>
+		/// <param name="groupIndex">The index of the target group.</param>
+		/// <param name="status">A status code that describes the result of the operation. This will be <see cref="MidiError.Ok" /> in case of success.</param>
+		/// <returns>An <see cref="NSData" /> that contains the requested byte stream.</returns>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("macos14.0")]
+		[UnsupportedOSPlatform ("tvos")]
+		public unsafe NSData? GetSysexBytes (byte groupIndex, out MidiError status)
+		{
+			var handle = default (IntPtr);
+
+			fixed (MidiEventPacket* self = &this) {
+				status = (MidiError) MIDIEventPacketSysexBytesForGroup (self, groupIndex, &handle);
+			}
+			if (handle == IntPtr.Zero)
+				return null;
+			return Runtime.GetNSObject<NSData> (handle, false);
+		}
+#endif // !__TVOS__
 	}
 }
-
-#endif // !__TVOS__

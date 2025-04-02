@@ -20711,7 +20711,6 @@ namespace AVFoundation {
 	}
 
 	[MacCatalyst (13, 1)]
-	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface AVRouteDetector {
 		/// <summary>To be added.</summary>

@@ -55,28 +55,28 @@ namespace AppKit {
 			}
 		}
 
-		/// <param name="fileName">To be added.</param>
-		///         <param name="lazy">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Create a new <see cref="NSImage" /> instance.</summary>
+		/// <param name="fileName">The path of the file to load for the new <see cref="NSImage" /> instance.</param>
+		/// <param name="lazy">Whether the file should be loaded right away or lazily.</param>
 		public NSImage (string fileName, bool lazy)
+			: base (NSObjectFlag.Empty)
 		{
 			if (lazy)
-				Handle = InitByReferencingFile (fileName);
+				InitializeHandle (_InitByReferencingFile (fileName));
 			else
-				Handle = InitWithContentsOfFile (fileName);
+				InitializeHandle (_InitWithContentsOfFile (fileName));
 		}
 
-		/// <param name="data">To be added.</param>
-		///         <param name="ignoresOrientation">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Create a new <see cref="NSImage" /> instance.</summary>
+		/// <param name="data">The image data for the new <see cref="NSImage" /> instance.</param>
+		/// <param name="ignoresOrientation">Whether the orientation in the image data is ignored or not.</param>
 		public NSImage (NSData data, bool ignoresOrientation)
+			: base (NSObjectFlag.Empty)
 		{
 			if (ignoresOrientation) {
-				Handle = InitWithDataIgnoringOrientation (data);
+				InitializeHandle (_InitWithDataIgnoringOrientation (data));
 			} else {
-				Handle = InitWithData (data);
+				InitializeHandle (_InitWithData (data));
 			}
 		}
 

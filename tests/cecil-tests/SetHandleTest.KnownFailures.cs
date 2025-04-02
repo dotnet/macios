@@ -8,8 +8,6 @@ namespace Cecil.Tests {
 			"AddressBook.ABGroup::.ctor(AddressBook.ABRecord)",
 			"AppKit.NSBitmapImageRep::.ctor(Foundation.NSObjectFlag,Foundation.NSObjectFlag)",
 			"AppKit.NSGradient::Initialize(AppKit.NSColor[],System.Void*,AppKit.NSColorSpace)",
-			"AppKit.NSImage::.ctor(Foundation.NSData,System.Boolean)",
-			"AppKit.NSImage::.ctor(System.String,System.Boolean)",
 			"AppKit.NSOpenGLPixelFormat::.ctor(AppKit.NSOpenGLPixelFormatAttribute[])",
 			"AppKit.NSOpenGLPixelFormat::.ctor(System.Object[])",
 			"AppKit.NSTextContainer::.ctor(CoreGraphics.CGSize,System.Boolean)",

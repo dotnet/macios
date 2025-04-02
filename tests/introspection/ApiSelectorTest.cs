@@ -303,13 +303,6 @@ namespace Introspection {
 					break;
 				}
 				break;
-			case "NSImage":
-				switch (selectorName) {
-				case "initByReferencingFile:":
-					return true;
-				}
-				break;
-
 			case "OSLogMessageComponent":
 				switch (selectorName) {
 				case "encodeWithCoder:":
@@ -1393,8 +1386,6 @@ namespace Introspection {
 			case "initWithMinCenterCoordinateDistance:":
 			case "initExcludingCategories:":
 			case "initIncludingCategories:":
-			// NSImage
-			case "initWithDataIgnoringOrientation:":
 				var mi = m as MethodInfo;
 				return mi is not null && !mi.IsPublic && (mi.ReturnType.Name == "IntPtr" || mi.ReturnType.Name == "NativeHandle");
 			// NSAppleEventDescriptor

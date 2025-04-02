@@ -8,8 +8,6 @@ namespace Cecil.Tests {
 			"AppKit.ActionDispatcher::.ctor(System.EventHandler)",
 			"AppKit.NSAlertDidEndDispatcher::.ctor(System.Action`1<System.IntPtr>)",
 			"AppKit.NSGradient::.ctor(AppKit.NSColor[],System.Single[],AppKit.NSColorSpace)",
-			"AppKit.NSImage::.ctor(Foundation.NSData,System.Boolean)",
-			"AppKit.NSImage::.ctor(System.String,System.Boolean)",
 			"AppKit.NSTextContainer::.ctor(CoreGraphics.CGSize,System.Boolean)",
 			"AVFoundation.AVAudioRecorder::.ctor(Foundation.NSUrl,AVFoundation.AudioSettings,Foundation.NSError&)",
 			"AVFoundation.AVAudioRecorder::.ctor(Foundation.NSUrl,AVFoundation.AVAudioFormat,Foundation.NSError&)",

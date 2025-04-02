@@ -2128,12 +2128,12 @@ namespace AVFoundation {
 	interface AVAudioRecorder {
 		[Export ("initWithURL:settings:error:")]
 		[Internal]
-		IntPtr InitWithUrl (NSUrl url, NSDictionary settings, out NSError error);
+		IntPtr _InitWithUrl (NSUrl url, NSDictionary settings, out NSError error);
 
 		[Internal]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithURL:format:error:")]
-		IntPtr InitWithUrl (NSUrl url, AVAudioFormat format, out NSError outError);
+		IntPtr _InitWithUrl (NSUrl url, AVAudioFormat format, out NSError outError);
 
 		[Export ("prepareToRecord")]
 		bool PrepareToRecord ();

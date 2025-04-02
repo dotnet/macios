@@ -13,8 +13,6 @@ namespace Cecil.Tests {
 			"AppKit.NSOpenGLPixelFormat::.ctor(AppKit.NSOpenGLPixelFormatAttribute[])",
 			"AppKit.NSOpenGLPixelFormat::.ctor(System.Object[])",
 			"AppKit.NSTextContainer::.ctor(CoreGraphics.CGSize,System.Boolean)",
-			"AVFoundation.AVAudioRecorder::.ctor(Foundation.NSUrl,AVFoundation.AudioSettings,Foundation.NSError&)",
-			"AVFoundation.AVAudioRecorder::.ctor(Foundation.NSUrl,AVFoundation.AVAudioFormat,Foundation.NSError&)",
 			"CoreFoundation.CFMutableString::.ctor(CoreFoundation.CFString,System.IntPtr)",
 			"CoreFoundation.CFMutableString::.ctor(System.String,System.IntPtr)",
 			"CoreFoundation.CFSocket::Initialize(CoreFoundation.CFRunLoop,CoreFoundation.CFSocket/CreateSocket)",

@@ -44,6 +44,9 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
+
 using ObjCRuntime;
 using CoreFoundation;
 using Foundation;
@@ -3184,6 +3187,221 @@ namespace CoreMidi {
 				return (MidiError) MIDIEndpointSetRefCons (GetCheckedHandle (), ref1, ref2);
 			}
 		}
+
+		[DllImport (Constants.CoreMidiLibrary)]
+		unsafe extern static OSStatus MIDISendSysex (MidiSysexSendRequest* request);
+
+		/// <summary>Asynchronously sends a single system-exclusive event.</summary>
+		/// <param name="data">The data to send.</param>
+		/// <param name="cancellationToken">An optional cancellation token that can be used to cancel the request.</param>
+		/// <returns>A <see cref="MidiError" /> value for the request. This will be <see cref="MidiError.Ok" /> if the request was successful, an error code otherwise.</returns>
+		public unsafe Task<MidiError> SendSysexAsync (byte[] data, CancellationToken? cancellationToken = null)
+		{
+			if (data is null)
+				ThrowHelper.ThrowArgumentNullException (nameof (data));
+
+			var tcs = new TaskCompletionSource<MidiError> ();
+			var request = new SysexRequest (this, data, tcs);
+			var rv = (MidiError) MIDISendSysex (request.GetSysexRequestStruct (cancellationToken));
+			if (rv != MidiError.Ok) {
+				request.Dispose ();
+				tcs.TrySetResult (rv);
+			}
+
+			return tcs.Task;
+		}
+
+		[DllImport (Constants.CoreMidiLibrary)]
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("macos14.0")]
+		[UnsupportedOSPlatform ("tvos")]
+		unsafe extern static OSStatus MIDISendUMPSysex (MidiSysexSendRequestUmp* request);
+
+		/// <summary>Asynchronously sends a single UMP system-exclusive event.</summary>
+		/// <param name="data">The data to send.</param>
+		/// <param name="cancellationToken">An optional cancellation token that can be used to cancel the request.</param>
+		/// <returns>A <see cref="MidiError" /> value for the request. This will be <see cref="MidiError.Ok" /> if the request was successful, an error code otherwise.</returns>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("macos14.0")]
+		[UnsupportedOSPlatform ("tvos")]
+		public unsafe Task<MidiError> SendSysexUmpAsync (uint[] data, CancellationToken? cancellationToken = null)
+		{
+			if (data is null)
+				ThrowHelper.ThrowArgumentNullException (nameof (data));
+
+			var tcs = new TaskCompletionSource<MidiError> ();
+			var request = new SysexRequest (this, data, tcs);
+			var rv = (MidiError) MIDISendUMPSysex (request.GetSysexUmpRequestStruct (cancellationToken));
+			if (rv != MidiError.Ok) {
+				request.Dispose ();
+				tcs.TrySetResult (rv);
+			}
+
+			return tcs.Task;
+		}
+
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("macos14.0")]
+		[UnsupportedOSPlatform ("tvos")]
+		[DllImport (Constants.CoreMidiLibrary)]
+		unsafe extern static OSStatus MIDISendUMPSysex8 (MidiSysexSendRequestUmp* request);
+
+		/// <summary>Asynchronously sends a single 8-bit system-exclusive event.</summary>
+		/// <param name="data">The data to send.</param>
+		/// <param name="cancellationToken">An optional cancellation token that can be used to cancel the request.</param>
+		/// <returns>A <see cref="MidiError" /> value for the request. This will be <see cref="MidiError.Ok" /> if the request was successful, an error code otherwise.</returns>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("macos14.0")]
+		[UnsupportedOSPlatform ("tvos")]
+		public unsafe Task<MidiError> SendSysexUmp8Async (uint[] data, CancellationToken? cancellationToken = null)
+		{
+			if (data is null)
+				ThrowHelper.ThrowArgumentNullException (nameof (data));
+
+			var tcs = new TaskCompletionSource<MidiError> ();
+			var request = new SysexRequest (this, data, tcs);
+			var rv = (MidiError) MIDISendUMPSysex8 (request.GetSysexUmpRequestStruct (cancellationToken));
+			if (rv != MidiError.Ok) {
+				request.Dispose ();
+				tcs.TrySetResult (rv);
+			}
+
+			return tcs.Task;
+		}
+
+		class SysexRequest : IDisposable {
+			IntPtr structPointer;
+			MidiEndpoint endpoint;
+			byte[]? byteData;
+			uint[]? uintData;
+			GCHandle dataHandle;
+			GCHandle thisHandle;
+			TaskCompletionSource<MidiError> onCompletion;
+			CancellationTokenRegistration? cancellationTokenRegistration;
+
+			public SysexRequest (MidiEndpoint endpoint, byte[] data, TaskCompletionSource<MidiError> onCompletion)
+			{
+				this.endpoint = endpoint;
+				this.byteData = data;
+				this.onCompletion = onCompletion;
+
+				unsafe {
+					structPointer = Marshal.AllocHGlobal (sizeof (MidiSysexSendRequest));
+				}
+				dataHandle = GCHandle.Alloc (byteData, GCHandleType.Pinned);
+				thisHandle = GCHandle.Alloc (this);
+			}
+
+			public SysexRequest (MidiEndpoint endpoint, uint[] data, TaskCompletionSource<MidiError> onCompletion)
+			{
+				this.endpoint = endpoint;
+				this.uintData = data;
+				this.onCompletion = onCompletion;
+
+				unsafe {
+					structPointer = Marshal.AllocHGlobal (sizeof (MidiSysexSendRequestUmp));
+				}
+				dataHandle = GCHandle.Alloc (uintData, GCHandleType.Pinned);
+				thisHandle = GCHandle.Alloc (this);
+			}
+
+			public unsafe MidiSysexSendRequest* GetSysexRequestStruct (CancellationToken? cancellationToken)
+			{
+				if (byteData is null)
+					throw new InvalidOperationException ($"No byte[] data specified.");
+
+				var rv = (MidiSysexSendRequest *) structPointer;
+
+				rv->Destination = endpoint.GetCheckedHandle ();
+				rv->Data = dataHandle.AddrOfPinnedObject ();
+				rv->BytesToSend = (uint) byteData.Length;
+				rv->CompletionProcedure = &SysexCompletion;
+				rv->Context = GCHandle.ToIntPtr (thisHandle);
+
+				cancellationTokenRegistration = cancellationToken?.Register (SysexCancellationRequest);
+
+				return rv;
+			}
+
+			public unsafe MidiSysexSendRequestUmp* GetSysexUmpRequestStruct (CancellationToken? cancellationToken)
+			{
+				if (uintData is null)
+					throw new InvalidOperationException ($"No uint[] data specified.");
+
+				var rv = (MidiSysexSendRequestUmp *) structPointer;
+
+				rv->Destination = endpoint.GetCheckedHandle ();
+				rv->Words = dataHandle.AddrOfPinnedObject ();
+				rv->WordsToSend = (uint) uintData.Length;
+				rv->CompletionProcedure = &UmpSysexCompletion;
+				rv->Context = GCHandle.ToIntPtr (thisHandle);
+
+				cancellationTokenRegistration = cancellationToken?.Register (UmpSysexCancellationRequest);
+
+				return rv;
+			}
+
+			void OnCompleted ()
+			{
+				onCompletion.TrySetResult (MidiError.Ok);
+				Dispose ();
+			}
+
+			[UnmanagedCallersOnly]
+			unsafe static void SysexCompletion (MidiSysexSendRequest* request)
+			{
+				var obj = (SysexRequest?) GCHandle.FromIntPtr (request->Context).Target;
+				obj?.OnCompleted ();
+			}
+
+			[UnmanagedCallersOnly]
+			unsafe static void UmpSysexCompletion (MidiSysexSendRequestUmp * request)
+			{
+				var obj = (SysexRequest?) GCHandle.FromIntPtr (request->Context).Target;
+				obj?.OnCompleted ();
+			}
+
+			unsafe void SysexCancellationRequest ()
+			{
+				var rv = (MidiSysexSendRequest *) structPointer;
+				if (rv == null)
+					return;
+				rv->Complete = true;
+			}
+
+			unsafe void UmpSysexCancellationRequest ()
+			{
+				var rv = (MidiSysexSendRequestUmp *) structPointer;
+				if (rv == null)
+					return;
+				rv->Complete = true;
+			}
+
+			public void Dispose ()
+			{
+				cancellationTokenRegistration?.Dispose ();
+				cancellationTokenRegistration = null;
+				if (structPointer != IntPtr.Zero) {
+					Marshal.FreeHGlobal (structPointer);
+					structPointer = IntPtr.Zero;
+				}
+				if (dataHandle.IsAllocated)
+					dataHandle.Free ();
+				if (thisHandle.IsAllocated)
+					thisHandle.Free ();
+				GC.SuppressFinalize (this);
+			}
+
+			~SysexRequest ()
+			{
+				Dispose ();
+			}
+		}
+
 		// MidiEndpoint 
 #endif // !COREBUILD
 	}

@@ -6,9 +6,6 @@
 
 !missing-field! kMIDIDriverPropertyUsesSerial not bound
 
-# old apis that have been ignored, please refer to issue https://github.com/dotnet/macios/issues/4452
-!missing-pinvoke! MIDISendSysex is not bound
-
 # same as the above, we should bind all of them, these have been added on Xcode 12 beta 2
 # https://github.com/dotnet/macios/issues/4452#issuecomment-660220392
 !missing-pinvoke! MIDIDestinationCreateWithProtocol is not bound
@@ -16,5 +13,3 @@
 !missing-pinvoke! MIDISourceCreateWithProtocol is not bound
 
 !missing-pinvoke! MIDIEventPacketSysexBytesForGroup is not bound
-!missing-pinvoke! MIDISendUMPSysex is not bound
-!missing-pinvoke! MIDISendUMPSysex8 is not bound

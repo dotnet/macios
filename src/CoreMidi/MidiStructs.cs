@@ -141,5 +141,141 @@ namespace CoreMidi {
 			}
 		}
 	}
+
+	/// <summary>A struct that represents a request to transmit a single system-exclusive event.</summary>
+	[NativeName ("MIDISysexSendRequest")]
+	struct MidiSysexSendRequest
+	{
+		MidiEndpointRef                                                                  destination;
+		IntPtr /* const Byte * */                                                        data;
+		uint                                                                             bytesToSend;
+		byte /* Boolean */                                                               complete;
+#pragma warning disable CS0169 //  The field '...' is never used
+		byte                                                                             reserved1;
+		byte                                                                             reserved2;
+		byte                                                                             reserved3;
+#pragma warning restore CS0169
+		unsafe delegate* unmanaged<MidiSysexSendRequest*, void> /* MIDICompletionProc */ completionProc;
+		IntPtr /* void * __nullable */                                                   completionRefCon;
+
+		/// <summary>The endpoint where the request is sent.</summary>
+		public MidiEndpointRef Destination {
+			get => destination;
+			set => destination = value;
+		}
+
+		/// <summary>A pointer to the data to send.</summary>
+		/// <remarks>The MIDI system will update this value as the request progresses.</remarks>
+		public IntPtr Data {
+			get => data;
+			set => data = value;
+		}
+
+		/// <summary>The number of bytes to send.</summary>
+		/// <remarks>The MIDI system will update this value as the request progresses.</remarks>
+		public uint BytesToSend {
+			get => bytesToSend;
+			set => bytesToSend = value;
+		}
+
+		/// <summary>The client can set true to immediately stop the request. The MIDI system will set it to true when the request is complete.</summary>
+		public bool Complete {
+			get => complete != 0;
+			set => complete = value.AsByte ();
+		}
+
+		/// <summary>The callback that is called when all the data has been sent and the request is complete.</summary>
+		/// <remarks>Also called if the client sets <see cref="Complete" /> to true before the request is complete.</remarks>
+		public unsafe delegate* unmanaged<MidiSysexSendRequest*, void> CompletionProcedure {
+			get => completionProc;
+			set => completionProc = value;
+		}
+
+		/// <summary>A context value that's passed to the <see cref="CompletionProcedure" /> callback.</summary>
+		public IntPtr Context {
+			get => completionRefCon;
+			set => completionRefCon = value;
+		}
+	}
+
+
+/*!
+	@struct			MIDISysexSendRequestUMP
+	@abstract		A request to transmit a UMP system-exclusive event.
+
+	@discussion
+		This represents a request to send a single UMP system-exclusive MIDI event to
+		a MIDI destination asynchronously.
+
+	@field			destination
+						The endpoint to which the event is to be sent.
+	@field			words
+						Initially, a pointer to the UMP SysEx event to be sent.
+						MIDISendUMPSysex will advance this pointer as data is
+						sent.
+	@field			wordsToSend
+						Initially, the number of words to be sent.  MIDISendUMPSysex
+						will decrement this counter as data is sent.
+	@field			complete
+						The client may set this to true at any time to abort
+						transmission.  The implementation sets this to true when
+						all data been transmitted.
+	@field			completionProc
+						Called when all bytes have been sent, or after the client
+						has set complete to true.
+	@field			completionRefCon
+						Passed as a refCon to completionProc.
+*/
+
+	/// <summary>A struct that represents a request to transmit a single UMP system-exclusive event.</summary>
+	[NativeName ("MIDISysexSendRequestUMP")]
+	struct MidiSysexSendRequestUmp
+	{
+		MidiEndpointRef destination;
+		IntPtr /* UInt32* */ words;
+		uint /* UInt32 */ wordsToSend;
+		byte /* Boolean */ complete;
+		unsafe delegate* unmanaged<MidiSysexSendRequestUmp*, void> /* MIDICompletionProcUMP */ completionProc;
+		IntPtr /* void* __nullable */ completionRefCon;
+
+		/// <summary>The endpoint where the request is sent.</summary>
+		public MidiEndpointRef Destination {
+			get => destination;
+			set => destination = value;
+		}
+
+		/// <summary>A pointer to the 32-bit word(s) to send.</summary>
+		/// <remarks>The MIDI system will update this value as the request progresses.</remarks>
+		public IntPtr Words {
+			get => words;
+			set => words = value;
+		}
+
+		/// <summary>The number of 32-bit words to send.</summary>
+		/// <remarks>The MIDI system will update this value as the request progresses.</remarks>
+		public uint WordsToSend {
+			get => wordsToSend;
+			set => wordsToSend = value;
+		}
+
+		/// <summary>The client can set true to immediately stop the request. The MIDI system will set it to true when the request is complete.</summary>
+		public bool Complete {
+			get => complete != 0;
+			set => complete = value.AsByte ();
+		}
+
+		/// <summary>The callback that is called when all the data has been sent and the request is complete.</summary>
+		/// <remarks>Also called if the client sets <see cref="Complete" /> to true before the request is complete.</remarks>
+		public unsafe delegate* unmanaged<MidiSysexSendRequestUmp*, void> CompletionProcedure {
+			get => completionProc;
+			set => completionProc = value;
+		}
+
+		/// <summary>A context value that's passed to the <see cref="CompletionProcedure" /> callback.</summary>
+		public IntPtr Context {
+			get => completionRefCon;
+			set => completionRefCon = value;
+		}
+	};
 }
 #endif

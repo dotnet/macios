@@ -31,6 +31,34 @@ namespace CoreMidi {
 		{
 			driverInterface = iface;
 		}
+
+		[DllImport (Constants.CoreMidiLibrary)]
+		unsafe static extern MidiDeviceListRef MIDIGetDriverDeviceList (MidiDriverInterface** driver);
+
+		/// <summary>Get the devices this driver owns or created.</summary>
+		/// <returns>If successful, a list of the device this driver owns or created. Otherwise null.</returns>
+		public unsafe MidiDeviceList? GetDeviceList ()
+		{
+			fixed (MidiDriverInterface *driver = &driverInterface) {
+				var rv = MIDIGetDriverDeviceList (&driver);
+				if (rv == MidiObject.InvalidRef)
+					return null;
+				return new MidiDeviceList (rv);
+			}
+		}
+
+		[DllImport (Constants.CoreMidiLibrary)]
+		static extern IntPtr /* CFRunLoopRef */ MIDIGetDriverIORunLoop ();
+
+		/// <summary>Get the high (realtime) priority run loop that can be used for asynchronous I/O completion callbacks.</summary>
+		/// <returns>If successful, the IO run loop. Otherwise null.</returns>
+		public static CFRunLoop? GetIORunLoop ()
+		{
+			var rv = MIDIGetDriverIORunLoop ();
+			if (rv == IntPtr.Zero)
+				return null;
+			return new CFRunLoop (rv, false);
+		}
 #endif // COREBUILD
 	}
 

@@ -2,8 +2,6 @@
 !missing-pinvoke! MIDIClientCreateWithBlock is not bound
 
 # old apis that have been ignored, please refer to issue https://github.com/dotnet/macios/issues/4452
-!missing-pinvoke! MIDIGetDriverDeviceList is not bound
-!missing-pinvoke! MIDIGetDriverIORunLoop is not bound
 !missing-pinvoke! MIDISendSysex is not bound
 
 # same as the above, we should bind all of them, these have been added on Xcode 12 beta 2

@@ -28,6 +28,12 @@ namespace CoreMedia {
 	public enum CMFormatDescriptionProjectionKind {
 		[Field ("kCMFormatDescriptionProjectionKind_Rectilinear")]
 		Rectilinear,
+
+		[Field ("kCMFormatDescriptionProjectionKind_Equirectangular")]
+		Equirectangular,
+
+		[Field ("kCMFormatDescriptionProjectionKind_HalfEquirectangular")]
+		HalfEquirectangular,
 	}
 
 	[NoTV, Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]

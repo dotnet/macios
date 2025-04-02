@@ -2969,13 +2969,6 @@ namespace SceneKit {
 		[Static, Export ("rendererWithContext:options:")]
 		SCNRenderer FromContext (IntPtr context, [NullAllowed] NSDictionary options);
 
-		[NoMacCatalyst]
-		[Static]
-		[Wrap ("FromContext (context.GetHandle (), options)")]
-		// GetHandle will return IntPtr.Zero is context is null
-		// GLContext == CGLContext on macOS and EAGLContext in iOS and tvOS (using on top of file)
-		SCNRenderer FromContext (GLContext context, [NullAllowed] NSDictionary options);
-
 		[NoTV]
 		[Export ("render")]
 		[Deprecated (PlatformName.MacOSX, 10, 11)]

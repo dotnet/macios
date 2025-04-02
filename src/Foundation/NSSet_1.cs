@@ -27,6 +27,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Versioning;
 
 using ObjCRuntime;
@@ -76,6 +77,35 @@ namespace Foundation {
 			: base (other)
 		{
 		}
+
+#nullable enable
+		/// <summary>Create an <cref name="NSSet`1" /> from a collection of items.</summary>
+		/// <param name="items">The items to add to the created <cref name="NSSet`1" />.</param>
+		/// <param name="convertCallback">A callback function to convert from the type of the element into the type to add to the returned set.</param>
+		/// <returns>Null if the collection of items is null, otherwise a new <cref name="NSSet`1" /> with the collection of items.</returns>
+		[return: NotNullIfNotNull (nameof (items))]
+		public static NSSet<TKey>? Create<V> (IEnumerable<V>? items, Func<V, TKey> convertCallback)
+		{
+			if (items is null)
+				return null;
+
+			using var mutableSet = new NSMutableSet<TKey> ();
+			foreach (var item in items)
+				mutableSet.Add (convertCallback (item));
+			return Runtime.GetNSObject<NSSet<TKey>> (mutableSet.Handle, false)!;
+		}
+
+		/// <summary>Create an <cref name="HashSet`2" /> from this set of items.</summary>
+		/// <param name="convertCallback">A callback function to convert from the type of each element into the type to add to the returned set.</param>
+		/// <returns>A new <cref name="HashSet`2" /> with this set of items.</returns>
+		public HashSet<T> ToHashSet<T> (Func<TKey, T> convertCallback)
+		{
+			var rv = new HashSet<T> ();
+			foreach (var item in this)
+				rv.Add (convertCallback (item));
+			return rv;
+		}
+#nullable disable
 
 		// Strongly typed versions of API from NSSet
 

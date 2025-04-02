@@ -145,7 +145,6 @@ namespace Cecil.Tests {
 			"PencilKit.PKDrawing::.ctor(Foundation.NSData,Foundation.NSError&)",
 			"Phase.PhaseSoundEvent::.ctor(Phase.PhaseEngine,System.String,Foundation.NSError&)",
 			"Phase.PhaseSoundEvent::.ctor(Phase.PhaseEngine,System.String,Phase.PhaseMixerParameters,Foundation.NSError&)",
-			"ScreenTime.STWebHistory::.ctor(System.String,Foundation.NSError&)",
 			"ShazamKit.SHCustomCatalog::.ctor(Foundation.NSData,Foundation.NSError&)",
 			"ShazamKit.SHSignature::.ctor(Foundation.NSData,Foundation.NSError&)",
 			"SoundAnalysis.SNAudioFileAnalyzer::.ctor(Foundation.NSUrl,Foundation.NSError&)",

@@ -75,6 +75,24 @@ namespace Foundation {
 			return indexes;
 		}
 
+		internal T [] ToInt64EnumArray<T> () where T: System.Enum
+		{
+			var array = ToArray ();
+			var rv = new T [array.Length];
+			for (var i = 0; i < array.Length; i++)
+				rv [i] = (T) (object) (long) array [i];
+			return rv;
+		}
+
+		internal HashSet<T> ToInt64EnumHashSet<T> () where T: System.Enum
+		{
+			var array = ToArray ();
+			var rv = new HashSet<T> ();
+			for (var i = 0; i < array.Length; i++)
+				rv.Add ((T) (object) (long) array [i]);
+			return rv;
+		}
+
 		public static NSIndexSet FromArray (nuint [] items)
 		{
 			if (items is null)

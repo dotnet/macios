@@ -331,6 +331,13 @@ namespace Foundation {
 			// something that's really not obvious
 			return StringValue.GetHashCode ();
 		}
+
+		public bool IsEqualTo (NSNumber number)
+		{
+			var result = IsEqualTo (number.GetHandle ());
+			GC.KeepAlive (number);
+			return result;
+		}
 #endif
 	}
 }

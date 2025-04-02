@@ -30,6 +30,7 @@
 // TODO: turn NSAnimatablePropertyCOntainer into a system similar to UIAppearance
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.ComponentModel;
 using Foundation;
@@ -39,6 +40,7 @@ using CoreFoundation;
 using CoreImage;
 using CoreAnimation;
 using CoreData;
+using DataDetection;
 using Intents;
 using SharedWithYouCore;
 using Symbols;
@@ -11874,7 +11876,56 @@ namespace AppKit {
 
 		[Export ("prepareForNewContentsWithOptions:")]
 		nint PrepareForNewContents (NSPasteboardContentsOptions options);
+
+		[Mac (15, 4)]
+		[Export ("accessBehavior", ArgumentSemantic.Assign)]
+		NSPasteboardAccessBehavior AccessBehavior { get; }
+
+		[Mac (15, 4)]
+		[Export ("detectPatternsForPatterns:completionHandler:")]
+		void DetectPatterns (NSSet<NSString> patterns, NSPasteboardDetectPatternsHandler completionHandler);
+
+		[Mac (15, 4)]
+		[Wrap ("DetectPatterns (NSSet<NSString>.Create (patterns, (v) => NSPasteboardDetectionPatternExtensions.GetConstant (v)!), completionHandler)")]
+		void DetectPatterns (HashSet<NSPasteboardDetectionPattern> patterns, NSPasteboardDetectPatternsHandler completionHandler);
+
+		[Mac (15, 4)]
+		[Wrap ("DetectPatterns (NSSet<NSString>.Create (patterns, (v) => NSPasteboardDetectionPatternExtensions.GetConstant (v)!), new NSPasteboardDetectPatternsHandler ((detectedPatterns, error) => completionHandler (detectedPatterns?.ToHashSet<NSPasteboardDetectionPattern> ((k) => NSPasteboardDetectionPatternExtensions.GetValue (k)), error)))")]
+		void DetectPatterns (HashSet<NSPasteboardDetectionPattern> patterns, NSPasteboardDetectPatternsCompletionHandler completionHandler);
+
+		[Mac (15, 4)]
+		[Export ("detectValuesForPatterns:completionHandler:")]
+		void DetectValues (NSSet<NSString> patterns, NSPasteboardDetectValuesHandler completionHandler);
+
+		[Mac (15, 4)]
+		[Wrap ("DetectValues (NSSet<NSString>.Create (patterns, (v) => NSPasteboardDetectionPatternExtensions.GetConstant (v)!), completionHandler)")]
+		void DetectValues (HashSet<NSPasteboardDetectionPattern> patterns, NSPasteboardDetectValuesHandler completionHandler);
+
+		[Mac (15, 4)]
+		[Wrap ("DetectValues (NSSet<NSString>.Create (patterns, (v) => NSPasteboardDetectionPatternExtensions.GetConstant (v)!), new NSPasteboardDetectValuesHandler ((detectedValues, error) => completionHandler (detectedValues?.ToDictionary<NSPasteboardDetectionPattern, DataDetection.DDMatch[]> ((k, v) => (NSPasteboardDetectionPatternExtensions.GetValue (k), ((NSArray) v).ToArray<DataDetection.DDMatch> ())), error)))")]
+		void DetectValues (HashSet<NSPasteboardDetectionPattern> patterns, NSPasteboardDetectValuesCompletionHandler completionHandler);
+
+		[Mac (15, 4)]
+		[Export ("detectMetadataForTypes:completionHandler:")]
+		void DetectMetadata (NSSet<NSString> types, NSPasteboardDetectMetadataHandler completionHandler);
+
+		[Mac (15, 4)]
+		[Wrap ("DetectMetadata (NSSet<NSString>.Create (types, (v) => NSPasteboardMetadataTypeExtensions.GetConstant (v)!), completionHandler)")]
+		void DetectMetadata (HashSet<NSPasteboardMetadataType> types, NSPasteboardDetectMetadataHandler completionHandler);
+
+		[Mac (15, 4)]
+		[Wrap ("DetectMetadata (NSSet<NSString>.Create (types, (v) => NSPasteboardMetadataTypeExtensions.GetConstant (v)!), new NSPasteboardDetectMetadataHandler ((detectedMetadata, error) => completionHandler (detectedMetadata?.ToDictionary<NSPasteboardMetadataType, UniformTypeIdentifiers.UTType> ((k, v) => (NSPasteboardMetadataTypeExtensions.GetValue (k), (UniformTypeIdentifiers.UTType) v)), error)))")]
+		void DetectMetadata (HashSet<NSPasteboardMetadataType> types, NSPasteboardDetectMetadataCompletionHandler completionHandler);
 	}
+
+	delegate void NSPasteboardDetectPatternsHandler ([NullAllowed] NSSet<NSString> detectedPatterns, [NullAllowed] NSError error);
+	delegate void NSPasteboardDetectPatternsCompletionHandler ([NullAllowed] HashSet<NSPasteboardDetectionPattern> detectedPatterns, [NullAllowed] NSError error);
+
+	delegate void NSPasteboardDetectValuesHandler ([NullAllowed] NSDictionary<NSString, NSObject> detectedValues, [NullAllowed] NSError error);
+	delegate void NSPasteboardDetectValuesCompletionHandler ([NullAllowed] Dictionary<NSPasteboardDetectionPattern, DDMatch []> detectedValues, [NullAllowed] NSError error);
+
+	delegate void NSPasteboardDetectMetadataHandler ([NullAllowed] NSDictionary<NSString, NSObject> detectedMetadata, [NullAllowed] NSError error);
+	delegate void NSPasteboardDetectMetadataCompletionHandler ([NullAllowed] Dictionary<NSPasteboardMetadataType, UTType> detectedMetadata, [NullAllowed] NSError error);
 
 	[NoMacCatalyst]
 	enum NSPasteboardName {
@@ -12059,6 +12110,41 @@ namespace AppKit {
 		[NullAllowed, Export ("collaborationMetadata", ArgumentSemantic.Copy)]
 		SWCollaborationMetadata CollaborationMetadata { get; set; }
 
+		[Mac (15, 4)]
+		[Export ("detectPatternsForPatterns:completionHandler:")]
+		void DetectPatterns (NSSet<NSString> patterns, NSPasteboardDetectPatternsHandler completionHandler);
+
+		[Mac (15, 4)]
+		[Wrap ("DetectPatterns (NSSet<NSString>.Create (patterns, (v) => NSPasteboardDetectionPatternExtensions.GetConstant (v)!), completionHandler)")]
+		void DetectPatterns (HashSet<NSPasteboardDetectionPattern> patterns, NSPasteboardDetectPatternsHandler completionHandler);
+
+		[Mac (15, 4)]
+		[Wrap ("DetectPatterns (NSSet<NSString>.Create (patterns, (v) => NSPasteboardDetectionPatternExtensions.GetConstant (v)!), new NSPasteboardDetectPatternsHandler ((detectedPatterns, error) => completionHandler (detectedPatterns?.ToHashSet<NSPasteboardDetectionPattern> ((k) => NSPasteboardDetectionPatternExtensions.GetValue (k)), error)))")]
+		void DetectPatterns (HashSet<NSPasteboardDetectionPattern> patterns, NSPasteboardDetectPatternsCompletionHandler completionHandler);
+
+		[Mac (15, 4)]
+		[Export ("detectValuesForPatterns:completionHandler:")]
+		void DetectValues (NSSet<NSString> patterns, NSPasteboardDetectValuesHandler completionHandler);
+
+		[Mac (15, 4)]
+		[Wrap ("DetectValues (NSSet<NSString>.Create (patterns, (v) => NSPasteboardDetectionPatternExtensions.GetConstant (v)!), completionHandler)")]
+		void DetectValues (HashSet<NSPasteboardDetectionPattern> patterns, NSPasteboardDetectValuesHandler completionHandler);
+
+		[Mac (15, 4)]
+		[Wrap ("DetectValues (NSSet<NSString>.Create (patterns, (v) => NSPasteboardDetectionPatternExtensions.GetConstant (v)!), new NSPasteboardDetectValuesHandler ((detectedValues, error) => completionHandler (detectedValues?.ToDictionary<NSPasteboardDetectionPattern, DataDetection.DDMatch[]> ((k, v) => (NSPasteboardDetectionPatternExtensions.GetValue (k), ((NSArray) v).ToArray<DataDetection.DDMatch> ())), error)))")]
+		void DetectValues (HashSet<NSPasteboardDetectionPattern> patterns, NSPasteboardDetectValuesCompletionHandler completionHandler);
+
+		[Mac (15, 4)]
+		[Export ("detectMetadataForTypes:completionHandler:")]
+		void DetectMetadata (NSSet<NSString> types, NSPasteboardDetectMetadataHandler completionHandler);
+
+		[Mac (15, 4)]
+		[Wrap ("DetectMetadata (NSSet<NSString>.Create (types, (v) => NSPasteboardMetadataTypeExtensions.GetConstant (v)!), completionHandler)")]
+		void DetectMetadata (HashSet<NSPasteboardMetadataType> types, NSPasteboardDetectMetadataHandler completionHandler);
+
+		[Mac (15, 4)]
+		[Wrap ("DetectMetadata (NSSet<NSString>.Create (types, (v) => NSPasteboardMetadataTypeExtensions.GetConstant (v)!), new NSPasteboardDetectMetadataHandler ((detectedMetadata, error) => completionHandler (detectedMetadata?.ToDictionary<NSPasteboardMetadataType, UniformTypeIdentifiers.UTType> ((k, v) => (NSPasteboardMetadataTypeExtensions.GetValue (k), (UniformTypeIdentifiers.UTType) v)), error)))")]
+		void DetectMetadata (HashSet<NSPasteboardMetadataType> types, NSPasteboardDetectMetadataCompletionHandler completionHandler);
 	}
 
 	interface INSPasteboardItemDataProvider { }
@@ -19027,6 +19113,10 @@ namespace AppKit {
 		[Mac (15, 2)]
 		[Export ("allowsWritingTools")]
 		bool AllowsWritingTools { get; set; }
+
+		[Mac (15, 4)]
+		[Export ("allowsWritingToolsAffordance")]
+		bool AllowsWritingToolsAffordance { get; set; }
 	}
 
 	[NoMacCatalyst]
@@ -19300,6 +19390,14 @@ namespace AppKit {
 		[Mac (14, 0)]
 		[Export ("textInputClientDidEndScrollingOrZooming")]
 		void TextInputClientDidEndScrollingOrZooming ();
+
+		[Mac (15, 4)]
+		[Export ("textInputClientDidUpdateSelection")]
+		void TextInputClientDidUpdateSelection ();
+
+		[Mac (15, 4)]
+		[Export ("textInputClientDidScroll")]
+		void TextInputClientDidScroll ();
 	}
 
 	[NoMacCatalyst]

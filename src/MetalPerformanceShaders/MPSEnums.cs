@@ -79,6 +79,8 @@ namespace MetalPerformanceShaders {
 
 		/// <summary>To be added.</summary>
 		SignedBit = 0x20000000,
+		[TV (18, 4), Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4)]
+		Int2 = SignedBit | 2,
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		Int4 = SignedBit | 4,
 		/// <summary>To be added.</summary>
@@ -91,6 +93,8 @@ namespace MetalPerformanceShaders {
 		[MacCatalyst (14, 1)]
 		Int64 = SignedBit | 64,
 
+		[TV (18, 4), Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4)]
+		UInt2 = 2,
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		UInt4 = 4,
 		/// <summary>To be added.</summary>

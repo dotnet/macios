@@ -4,7 +4,7 @@ include $(TOP)/Make.config
 
 export DOTNET=$(shell which dotnet)
 
-ifeq ($(shell arch),"arm64")
+ifeq ($(shell arch),arm64)
 IS_ARM64=1
 IS_APPLE_SILICON=1
 endif

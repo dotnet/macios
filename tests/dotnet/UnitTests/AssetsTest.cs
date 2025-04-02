@@ -274,6 +274,7 @@ namespace Xamarin.Tests {
 			"Icon Image:Icon32.png",
 			"Icon Image:Icon512.png",
 			"Icon Image:Icon64.png",
+			"MultiSized Image:AlternateAppIcons",
 			"MultiSized Image:AppIcons",
 			"PackedImage:ZZZZPackedAsset-1.1.0-gamut0",
 			"PackedImage:ZZZZPackedAsset-2.1.0-gamut0",

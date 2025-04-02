@@ -50,9 +50,6 @@ endif
 
 .libs/$(3)/$(4)$(1).o: shared.c | .libs/$(3)
 	$$(call Q_2,CC,    [$(3)]) $$(CLANG) -o $$@ $$(foreach arch,$$($(3)_ARCHITECTURES),-arch $$(arch)) $$($(2)_COMPILER_FLAGS) $$($(3)_COMPILER_FLAGS) -DNAME=$(1) -c
-ifneq ($(NO_INSTALL_NAME_TOOL_$(1)),1)
-	$$(Q) $(XCODE_DEVELOPER_ROOT)/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool -id @rpath/$(4)$(1).dylib $$@
-endif
 
 .libs/$(3)/$(4)$(1).a: .libs/$(3)/$(4)$(1).o
 	$$(call Q_2,AR     [$(1)]) $(XCODE_DEVELOPER_ROOT)/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar cru $$@ $$<

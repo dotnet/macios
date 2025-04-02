@@ -2085,19 +2085,33 @@ namespace CoreMidi {
 			}
 		}
 
+#if !XAMCORE_5_0 || __MACOS__
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+#if !__MACOS__
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("This API does not do anything on this platform.")]
+#endif
 		public bool UsesSerial {
 			get {
-				var kMIDIDriverPropertyUsesSerial = Dlfcn.GetIntPtr (Libraries.CoreMidi.Handle, "kMIDIDriverPropertyUsesSerial");
-				return GetInt (kMIDIDriverPropertyUsesSerial) != 0;
+#if __MACOS__
+				return GetInt (MidiDriverPropertyExtensions.kMIDIDriverPropertyUsesSerial) != 0;
+#else
+				return false;
+#endif
 			}
 			set {
-				var kMIDIDriverPropertyUsesSerial = Dlfcn.GetIntPtr (Libraries.CoreMidi.Handle, "kMIDIDriverPropertyUsesSerial");
-				SetInt (kMIDIDriverPropertyUsesSerial, value ? 1 : 0);
+#if __MACOS__
+				SetInt (MidiDriverPropertyExtensions.kMIDIDriverPropertyUsesSerial, value ? 1 : 0);
+#endif
 			}
 		}
+#endif // !XAMCORE_5_0 || __MACOS__
 
 #if !XAMCORE_5_0 || __MACOS__
 		/// <summary>To be added.</summary>

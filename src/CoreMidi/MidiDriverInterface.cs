@@ -59,6 +59,29 @@ namespace CoreMidi {
 				return null;
 			return new CFRunLoop (rv, false);
 		}
+
+#if MONOMAC
+		[SupportedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
+		[DllImport (Constants.CoreMidiLibrary)]
+		unsafe static extern OSStatus MIDIDriverEnableMonitoring (MidiDriverInterface** driver, byte enabled);
+
+		/// <summary>A driver can call this method to receive all the outgoing MIDI packets in the system.</summary>
+		/// <param name="enabled">Whether to enable or disable monitoring.</param>
+		/// <returns>A status code that describes the result of the operation. This will be <see cref="MidiError.Ok" /> in case of success.</returns>
+		[SupportedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
+		public unsafe MidiError EnableMonitoring (bool enabled)
+		{
+			fixed (MidiDriverInterface *driver = &driverInterface) {
+				return (MidiError) MIDIDriverEnableMonitoring (&driver, enabled.AsByte ());
+			}
+		}
+#endif // MONOMAC
 #endif // COREBUILD
 	}
 

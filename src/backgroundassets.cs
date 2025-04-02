@@ -18,7 +18,7 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace BackgroundAssets {
-	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[Native]
 	public enum BADownloadState : long {
 		Failed = -1,
@@ -28,7 +28,7 @@ namespace BackgroundAssets {
 		Finished,
 	}
 
-	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[Native]
 	public enum BAContentRequest : long {
 		Install = 1,
@@ -36,7 +36,7 @@ namespace BackgroundAssets {
 		Periodic,
 	}
 
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (18, 4), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[ErrorDomain ("BAErrorDomain")]
 	[Native]
 	public enum BAErrorCode : long {
@@ -52,13 +52,14 @@ namespace BackgroundAssets {
 		DownloadEssentialDownloadNotPermitted = 109,
 		DownloadBackgroundActivityProhibited = 111,
 		DownloadWouldExceedAllowance = 112,
+		DownloadDoesNotExist = 113,
 		SessionDownloadDisallowedByDomain = 202,
 		SessionDownloadDisallowedByAllowance = 203,
 		SessionDownloadAllowanceExceeded = 204,
 		SessionDownloadNotPermittedBeforeAppLaunch = 206,
 	}
 
-	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface BADownload : NSCoding, NSSecureCoding, NSCopying {
@@ -84,7 +85,7 @@ namespace BackgroundAssets {
 		BADownload CopyAsNonEssential ();
 	}
 
-	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface BAAppExtensionInfo : NSSecureCoding {
@@ -94,16 +95,17 @@ namespace BackgroundAssets {
 		[Export ("restrictedDownloadSizeRemaining", ArgumentSemantic.Strong)]
 		NSNumber RestrictedDownloadSizeRemaining { get; }
 
-		[NoTV, Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
+		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
 		[NullAllowed]
 		[Export ("restrictedEssentialDownloadSizeRemaining", ArgumentSemantic.Strong)]
 		NSNumber RestrictedEssentialDownloadSizeRemaining { get; }
 	}
 
-	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[Protocol]
 	interface BADownloaderExtension {
 
+		[NoTV]
 		[Deprecated (PlatformName.iOS, 16, 4, message: "'WillTerminate' will not be called in all applicable scenarios, do not rely on it.")]
 		[Deprecated (PlatformName.MacOSX, 13, 3, message: "'WillTerminate' will not be invoked in all applicable scenarios, do not rely on it.")]
 		[Deprecated (PlatformName.MacCatalyst, 16, 4, message: "'WillTerminate' will not be invoked in all applicable scenarios, do not rely on it.")]
@@ -125,7 +127,7 @@ namespace BackgroundAssets {
 
 	interface IBADownloadManagerDelegate { }
 
-	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 #if NET
 	[Protocol]
 	[Model]
@@ -154,7 +156,7 @@ namespace BackgroundAssets {
 		void Finished (BADownload download, NSUrl fileUrl);
 	}
 
-	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface BADownloadManager {
@@ -195,7 +197,7 @@ namespace BackgroundAssets {
 		void PerformWithExclusiveControlBeforeDate (NSDate date, Action<bool, NSError> performHandler);
 	}
 
-	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (BADownload), Name = "BAURLDownload")]
 	[DisableDefaultCtor]
 	interface BAUrlDownload {
@@ -209,12 +211,14 @@ namespace BackgroundAssets {
 		[Field ("BADownloaderPriorityMax")]
 		nint MaxPriority { get; }
 
+		[NoTV]
 		[Deprecated (PlatformName.iOS, 16, 4)]
 		[Deprecated (PlatformName.MacOSX, 13, 3)]
 		[Deprecated (PlatformName.MacCatalyst, 16, 4)]
 		[Export ("initWithIdentifier:request:applicationGroupIdentifier:")]
 		NativeHandle Constructor (string identifier, NSUrlRequest request, string applicationGroupIdentifier);
 
+		[NoTV]
 		[Deprecated (PlatformName.iOS, 16, 4)]
 		[Deprecated (PlatformName.MacOSX, 13, 3)]
 		[Deprecated (PlatformName.MacCatalyst, 16, 4)]

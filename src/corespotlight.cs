@@ -19,6 +19,22 @@ using NativeHandle = System.IntPtr;
 
 namespace CoreSpotlight {
 
+	[Partial]
+	interface CoreSpotlightConstants {
+		[Field ("CoreSpotlightVersionNumber")]
+		double CoreSpotlightVersionNumber { get; }
+
+		[Field ("CoreSpotlightVersionString")]
+		[Internal]
+		IntPtr _CoreSpotlightVersionString { get; }
+
+		[Static]
+		string CoreSpotlightVersionString {
+			[Wrap ("Marshal.PtrToStringUTF8 (_CoreSpotlightVersionString)!")]
+			get;
+		}
+	}
+
 	/// <summary>Handler for communication between the application and the index on the device. The app does not need to be running for this communication to occur.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreSpotlight/Reference/CSIndexExtensionRequestHandler_Class/index.html">Apple documentation for <c>CSIndexExtensionRequestHandler</c></related>
@@ -110,7 +126,6 @@ namespace CoreSpotlight {
 		[Export ("initWithName:")]
 		NativeHandle Constructor (string name);
 
-		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithName:protectionClass:")]
 		NativeHandle Constructor (string name, [NullAllowed] NSString protectionClass);
@@ -221,7 +236,19 @@ namespace CoreSpotlight {
 		[Export ("fileURLForSearchableIndex:itemIdentifier:typeIdentifier:inPlace:error:")]
 		[return: NullAllowed]
 		NSUrl GetFileUrl (CSSearchableIndex searchableIndex, string itemIdentifier, string typeIdentifier, bool inPlace, out NSError outError);
+
+		[NoTV]
+		[iOS (18, 4), Mac (15, 4), MacCatalyst (18, 4)]
+		[Export ("searchableItemsForIdentifiers:searchableItemsHandler:")]
+		void GetSearchableItems (string [] identifiers, CSSearchableIndexDelegateGetSearchableItemsHandler searchableItemsHandler);
+
+		[NoTV]
+		[iOS (18, 4), Mac (15, 4), MacCatalyst (18, 4)]
+		[Export ("searchableItemsDidUpdate:")]
+		void DidUpdate (CSSearchableItem [] items);
 	}
+
+	delegate void CSSearchableIndexDelegateGetSearchableItemsHandler (CSSearchableItem [] items);
 
 	/// <summary>A uniquely identifiable, searchable object in a <see cref="T:CoreSpotlight.CSSearchableIndex" />.</summary>
 	///     
@@ -299,6 +326,10 @@ namespace CoreSpotlight {
 		[NoTV]
 		[Export ("isUpdate", ArgumentSemantic.Assign)]
 		bool IsUpdate { get; set; }
+
+		[NoTV, iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Export ("updateListenerOptions", ArgumentSemantic.Assign)]
+		CSSearchableItemUpdateListenerOptions UpdateListenerOptions { get; set; }
 	}
 
 	/// <summary>Represents a string-like object that returns a locale-specific version of a string.</summary>
@@ -2194,14 +2225,12 @@ namespace CoreSpotlight {
 		[Field ("CSActionIdentifier")]
 		NSString ActionIdentifier { get; }
 
-		[NoTV, NoMac, iOS (15, 0)]
-		[NoMacCatalyst]
+		[NoTV, NoMac, iOS (15, 0), MacCatalyst (18, 0)]
 		[Export ("actionIdentifiers", ArgumentSemantic.Copy)]
 		string [] ActionIdentifiers { get; set; }
 
 		[NullAllowed]
-		[NoTV, NoMac, iOS (15, 0)]
-		[NoMacCatalyst]
+		[NoTV, NoMac, iOS (15, 0), MacCatalyst (18, 0)]
 		[Export ("sharedItemContentType", ArgumentSemantic.Copy)]
 		UTType SharedItemContentType { get; set; }
 
@@ -2323,6 +2352,26 @@ namespace CoreSpotlight {
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("providerInPlaceFileTypeIdentifiers", ArgumentSemantic.Copy)]
 		string [] ProviderInPlaceFileTypeIdentifiers { get; set; }
+
+		[NoTV]
+		[iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Export ("moveFrom:")]
+		void MoveFrom (CSSearchableItemAttributeSet sourceAttributeSet);
+
+		[NoTV]
+		[iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Export ("isPriority", ArgumentSemantic.Strong), NullAllowed]
+		NSNumber IsPriority { get; }
+
+		[NoTV]
+		[iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Export ("textContentSummary", ArgumentSemantic.Copy), NullAllowed]
+		string TextContentSummary { get; }
+
+		[NoTV]
+		[iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+		[Export ("transcribedTextContent", ArgumentSemantic.Strong), NullAllowed]
+		string TranscribedTextContent { get; set; }
 	}
 
 	/// <include file="../docs/api/CoreSpotlight/CSSearchQuery.xml" path="/Documentation/Docs[@DocId='T:CoreSpotlight.CSSearchQuery']/*" />
@@ -2520,7 +2569,7 @@ namespace CoreSpotlight {
 		AllowMail = 1L << 0,
 	}
 
-	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[Native]
 	public enum CSSuggestionKind : long {
 		None,
@@ -2528,4 +2577,11 @@ namespace CoreSpotlight {
 		Default,
 	}
 
+	[Native]
+	[TV (18, 4), iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+	public enum CSSearchableItemUpdateListenerOptions : ulong {
+		Default = 0,
+		Summarization = 1 << 1,
+		Priority = 1 << 2,
+	}
 }

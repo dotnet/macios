@@ -751,9 +751,7 @@ public partial class Generator : IMemberGatherer {
 			}
 
 			if (pi.ParameterType.IsSubclassOf (TypeCache.System_Delegate)) {
-				if (!delegate_types.ContainsKey (pi.ParameterType.Name)) {
-					delegate_types [pi.ParameterType.FullName] = pi.ParameterType.GetMethod ("Invoke");
-				}
+				EnsureDelegateCreation (pi.ParameterType);
 				if (AttributeManager.HasAttribute<BlockCallbackAttribute> (pi)) {
 					pars.Add (new TrampolineParameterInfo (NativeHandleType, safe_name));
 					invoke.AppendFormat ("NID{0}.Create ({1})!", Nomenclator.GetTrampolineName (pi.ParameterType), safe_name);
@@ -772,7 +770,7 @@ public partial class Generator : IMemberGatherer {
 				continue;
 			}
 
-			throw new BindingException (1001, true, pi.ParameterType.FullName);
+			exceptions.Add (ErrorHelper.CreateError (1001, pi.ParameterType.FullName));
 		}
 
 		var rt = mi.ReturnType;
@@ -2729,6 +2727,18 @@ public partial class Generator : IMemberGatherer {
 		return sb.ToString ();
 	}
 
+	void EnsureDelegateCreation (Type type)
+	{
+		if (!type.IsSubclassOf (TypeCache.System_Delegate))
+			return;
+
+		if (type.Namespace == "System" && type.Name.StartsWith ("Action", StringComparison.Ordinal))
+			return;
+
+		if (!delegate_types.ContainsKey (type.FullName))
+			delegate_types [type.FullName] = type.GetMethod ("Invoke");
+	}
+
 	//
 	// Renders the parameters in @parameters in a format suitable for a method declaration.
 	// The result is place into the provided string builder 
@@ -2746,8 +2756,12 @@ public partial class Generator : IMemberGatherer {
 			// Format nicely the type, as succinctly as possible
 			Type parType = pi.ParameterType;
 			if (parType.IsSubclassOf (TypeCache.System_Delegate)) {
-				var ti = MakeTrampoline (parType);
-				sb.AppendFormat ("[BlockProxy (typeof (ObjCRuntime.Trampolines.{0}))]", ti.NativeInvokerName);
+				if (!AttributeManager.HasAttribute<WrapAttribute> (mi)) {
+					var ti = MakeTrampoline (parType);
+					sb.AppendFormat ("[BlockProxy (typeof (ObjCRuntime.Trampolines.{0}))]", ti.NativeInvokerName);
+				} else {
+					EnsureDelegateCreation (parType);
+				}
 			}
 
 			if (AttributeManager.HasAttribute<TransientAttribute> (pi))

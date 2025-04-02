@@ -66,6 +66,9 @@ namespace ShazamKit {
 		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("SHMediaItemCreationDate")]
 		CreationDate,
+		[TV (18, 4), Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4)]
+		[Field ("SHMediaItemConfidence")]
+		Confidence,
 	}
 
 	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
@@ -132,6 +135,10 @@ namespace ShazamKit {
 
 		[Export ("predictedCurrentMatchOffset")]
 		double PredictedCurrentMatchOffset { get; }
+
+		[TV (18, 4), Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4)]
+		[Export ("confidence")]
+		float Confidence { get; }
 	}
 
 	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]

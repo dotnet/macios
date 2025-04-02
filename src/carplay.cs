@@ -865,6 +865,11 @@ namespace CarPlay {
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("assistantCellConfiguration", ArgumentSemantic.Strong)]
 		CPAssistantCellConfiguration AssistantCellConfiguration { get; set; }
+
+		[NullAllowed]
+		[iOS (18, 4), MacCatalyst (18, 4)]
+		[Export ("showsSpinnerWhileEmpty", ArgumentSemantic.Assign)]
+		bool ShowsSpinnerWhileEmpty { get; set; }
 	}
 
 	/// <summary>Delegate object for <see cref="T:CarPlay.CPListTemplate" /> objects.</summary>
@@ -2209,6 +2214,10 @@ namespace CarPlay {
 
 		[Export ("updateNowPlayingButtons:")]
 		void UpdateNowPlayingButtons (CPNowPlayingButton [] nowPlayingButtons);
+
+		[iOS (18, 4), MacCatalyst (18, 4)]
+		[Export ("nowPlayingMode", ArgumentSemantic.Strong), NullAllowed]
+		CPNowPlayingMode NowPlayingMode { get; set; }
 	}
 
 	[NoTV, NoMac, iOS (14, 0)]
@@ -2525,4 +2534,113 @@ namespace CarPlay {
 		CPTravelEstimates ManeuverTravelEstimates { get; }
 	}
 
+	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CPNowPlayingMode : NSSecureCoding {
+		[Static]
+		[Export ("defaultNowPlayingMode")]
+		CPNowPlayingMode DefaultNowPlayingMode { get; }
+	}
+
+	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
+	[BaseType (typeof (CPNowPlayingMode))]
+	interface CPNowPlayingModeSports : NSSecureCoding {
+		[Export ("initWithLeftTeam:rightTeam:eventStatus:backgroundArtwork:")]
+		NativeHandle Constructor (CPNowPlayingSportsTeam leftTeam, CPNowPlayingSportsTeam rightTeam, [NullAllowed] CPNowPlayingSportsEventStatus eventStatus, [NullAllowed] UIImage backgroundArtwork);
+
+		[Export ("leftTeam", ArgumentSemantic.Strong)]
+		CPNowPlayingSportsTeam LeftTeam { get; }
+
+		[Export ("rightTeam", ArgumentSemantic.Strong)]
+		CPNowPlayingSportsTeam RightTeam { get; }
+
+		[NullAllowed, Export ("eventStatus", ArgumentSemantic.Strong)]
+		CPNowPlayingSportsEventStatus EventStatus { get; }
+
+		[NullAllowed, Export ("backgroundArtwork", ArgumentSemantic.Copy)]
+		UIImage BackgroundArtwork { get; }
+	}
+
+	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CPNowPlayingSportsTeam : NSSecureCoding {
+		[Export ("initWithName:logo:teamStandings:eventScore:possessionIndicator:favorite:")]
+		NativeHandle Constructor (string name, CPNowPlayingSportsTeamLogo logo, [NullAllowed] string teamStandings, string eventScore, [NullAllowed] UIImage possessionIndicator, bool favorite);
+
+		[Export ("name")]
+		string Name { get; }
+
+		[Export ("logo", ArgumentSemantic.Copy)]
+		CPNowPlayingSportsTeamLogo Logo { get; }
+
+		[NullAllowed, Export ("teamStandings")]
+		string TeamStandings { get; }
+
+		[Export ("eventScore")]
+		string EventScore { get; }
+
+		[NullAllowed, Export ("possessionIndicator", ArgumentSemantic.Copy)]
+		UIImage PossessionIndicator { get; }
+
+		[Export ("favorite")]
+		bool Favorite { [Bind ("isFavorite")] get; }
+	}
+
+	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CPNowPlayingSportsEventStatus : NSSecureCoding {
+		[Export ("initWithEventStatusText:eventStatusImage:eventClock:")]
+		NativeHandle Constructor ([NullAllowed] string [] eventStatusText, [NullAllowed] UIImage eventStatusImage, [NullAllowed] CPNowPlayingSportsClock eventClock);
+
+		[NullAllowed, Export ("eventStatusText", ArgumentSemantic.Copy)]
+		string [] EventStatusText { get; }
+
+		[NullAllowed, Export ("eventClock", ArgumentSemantic.Copy)]
+		CPNowPlayingSportsClock EventClock { get; }
+
+		[NullAllowed, Export ("eventStatusImage", ArgumentSemantic.Copy)]
+		UIImage EventStatusImage { get; }
+	}
+
+	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CPNowPlayingSportsClock : INSSecureCoding {
+		[Internal]
+		[Export ("initWithElapsedTime:paused:")]
+		NativeHandle _InitWithElapsedTime (double elapsedTime, bool paused);
+
+		[Internal]
+		[Export ("initWithTimeRemaining:paused:")]
+		NativeHandle _InitWithRemainingTime (double timeRemaining, bool paused);
+
+		[Export ("timeValue")]
+		double TimeValue { get; }
+
+		[Export ("paused")]
+		bool Paused { [Bind ("isPaused")] get; }
+
+		[Export ("countsUp")]
+		bool CountsUp { get; }
+	}
+
+	[NoTV, NoMac, iOS (18, 4), MacCatalyst (18, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CPNowPlayingSportsTeamLogo : INSSecureCoding {
+		[Export ("initWithTeamLogo:")]
+		NativeHandle Constructor (UIImage teamLogo);
+
+		[Export ("initWithTeamInitials:")]
+		NativeHandle Constructor (string teamInitials);
+
+		[NullAllowed, Export ("logo", ArgumentSemantic.Copy)]
+		UIImage Logo { get; }
+
+		[NullAllowed, Export ("initials")]
+		string Initials { get; }
+	}
 }

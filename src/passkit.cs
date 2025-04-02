@@ -1702,6 +1702,14 @@ namespace PassKit {
 		[Mac (14, 5), iOS (17, 5), NoTV, MacCatalyst (17, 5)]
 		[Field ("PKPaymentNetworkNAPAS")]
 		NSString Napas { get; }
+
+		[Mac (15, 4), iOS (18, 4), NoTV, MacCatalyst (18, 4)]
+		[Field ("PKPaymentNetworkHimyan")]
+		NSString Himyan { get; }
+
+		[Mac (15, 4), iOS (18, 4), NoTV, MacCatalyst (18, 4)]
+		[Field ("PKPaymentNetworkJaywan")]
+		NSString Jaywan { get; }
 	}
 
 	/// <summary>A button used to activate an Apple Pay payment. Available styles and types are defined by <see cref="T:PassKit.PKPaymentButtonStyle" /> and <see cref="T:PassKit.PKPaymentButtonType" />.</summary>
@@ -3158,7 +3166,7 @@ namespace PassKit {
 	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	interface PKIdentityRequest {
-		[NullAllowed, Export ("descriptor", ArgumentSemantic.Assign)]
+		[NullAllowed, Export ("descriptor", ArgumentSemantic.Strong)]
 		IPKIdentityDocumentDescriptor Descriptor { get; set; }
 
 		[NullAllowed, Export ("nonce", ArgumentSemantic.Copy)]

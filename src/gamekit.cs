@@ -1881,6 +1881,10 @@ namespace GameKit {
 		[Export ("rarityPercent", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		NSNumber RarityPercent { get; }
+
+		[TV (18, 4), Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4)]
+		[Export ("releaseState", ArgumentSemantic.Assign)]
+		GKReleaseState ReleaseState { get; }
 	}
 
 	/// <include file="../docs/api/GameKit/IGKAchievementViewControllerDelegate.xml" path="/Documentation/Docs[@DocId='T:GameKit.IGKAchievementViewControllerDelegate']/*" />
@@ -3221,5 +3225,13 @@ namespace GameKit {
 
 		[NullAllowed, Export ("playerProperties")]
 		NSDictionary<GKPlayer, NSDictionary<NSString, NSObject>> PlayerProperties { get; }
+	}
+
+	[TV (18, 4), Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4)]
+	[Native]
+	public enum GKReleaseState : ulong {
+		Unknown,
+		Released,
+		Prereleased,
 	}
 }

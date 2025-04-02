@@ -757,6 +757,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		extern static void void_objc_msgSend_out_IntPtr_bool (IntPtr receiver, IntPtr selector, out NativeHandle path, bool create);
 
 		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
+		[return: MarshalAs (UnmanagedType.U1)]
 		extern static bool bool_objc_msgSend_ref_intptr (IntPtr receiver, IntPtr selector, ref NativeHandle path);
 
 		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]

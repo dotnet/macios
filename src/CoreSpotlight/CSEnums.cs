@@ -70,7 +70,7 @@ namespace CoreSpotlight {
 		CompleteUntilFirstUserAuthentication,
 	}
 
-	[NoTV, Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[Native]
 	public enum CSUserInteraction : long {
 		Select,

@@ -301,13 +301,8 @@ namespace Cecil.Tests {
 					"MediaPlayer.MPMediaEntity.get_PropertyPersistentID ()",
 					"MediaPlayer.MPMediaEntity.GetObject (Foundation.NSObject)",
 					"MediaPlayer.MPMediaEntity.PropertyPersistentID",
-					"MediaPlayer.MPMediaItem.DateAdded",
 					"MediaPlayer.MPMediaItem.get_PropertyPersistentID ()",
 					"MediaPlayer.MPMediaItem.GetObject (Foundation.NSObject)",
-					"MediaPlayer.MPMediaItem.HasProtectedAsset",
-					"MediaPlayer.MPMediaItem.IsExplicitItem",
-					"MediaPlayer.MPMediaItem.IsPreorder",
-					"MediaPlayer.MPMediaItem.PlaybackStoreID",
 					"MediaPlayer.MPMediaItem.PropertyPersistentID",
 
 					// Despite what headers say, NSAttributedString only implements NSItemProviderReading and NSItemProviderWriting on iOS (headers say tvOS and watchOS as well).

@@ -15,15 +15,12 @@ using ObjCRuntime;
 #nullable enable
 
 namespace MediaPlayer {
-
-#if NET
 	/// <summary>Information relating to the <see cref="T:MediaPlayer.MPNowPlayingInfoCenter" />.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class MPNowPlayingInfo {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
@@ -67,17 +64,15 @@ namespace MediaPlayer {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		public double? PlaybackDuration;
-#if NET
+
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public double? DefaultPlaybackRate;
 
-#if NET
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -85,9 +80,8 @@ namespace MediaPlayer {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public MPNowPlayingInfoLanguageOptionGroup []? AvailableLanguageOptions { get; set; }
-#if NET
+
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -95,9 +89,9 @@ namespace MediaPlayer {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
+
 		public MPNowPlayingInfoLanguageOption []? CurrentLanguageOptions { get; set; }
-#if NET
+
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -105,9 +99,8 @@ namespace MediaPlayer {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public string? CollectionIdentifier { get; set; }
-#if NET
+
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -115,9 +108,8 @@ namespace MediaPlayer {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public string? ExternalContentIdentifier { get; set; }
-#if NET
+
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -125,9 +117,8 @@ namespace MediaPlayer {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public string? ExternalUserProfileIdentifier { get; set; }
-#if NET
+
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -135,9 +126,8 @@ namespace MediaPlayer {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public float? PlaybackProgress { get; set; }
-#if NET
+
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -145,9 +135,8 @@ namespace MediaPlayer {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public MPNowPlayingInfoMediaType? MediaType { get; set; }
-#if NET
+
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -155,9 +144,8 @@ namespace MediaPlayer {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public bool? IsLiveStream { get; set; }
-#if NET
+
 		/// <summary>Gets or sets the URL for the currently playing item.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -165,9 +153,8 @@ namespace MediaPlayer {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public NSUrl? AssetUrl { get; set; }
-#if NET
+
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -175,7 +162,6 @@ namespace MediaPlayer {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public NSDate? CurrentPlaybackDate { get; set; }
 
 		/// <summary>To be added.</summary>

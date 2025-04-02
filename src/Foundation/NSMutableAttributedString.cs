@@ -41,11 +41,21 @@ namespace Foundation {
 
 	public partial class NSMutableAttributedString {
 
+		/// <param name="str">C# string.</param>
+		///         <param name="attributes">CoreText attributes to be applied to the string.</param>
+		///         <summary>Creates an NSMutableAttributedString from a C# string and applies the specified CoreText attributes to the entire string.</summary>
+		///         <remarks>
+		///         </remarks>
 		public NSMutableAttributedString (string str, CTStringAttributes attributes)
 			: this (str, attributes is null ? null : attributes.Dictionary)
 		{
 		}
 
+		/// <param name="attributes">To be added.</param>
+		///         <param name="range">Range to which the attribute will be applied.</param>
+		///         <summary>Sets the attributes for the specified ranges.  Any previous attributes in that range are replaces with the new values.</summary>
+		///         <remarks>
+		///         </remarks>
 		public void SetAttributes (NSDictionary attributes, NSRange range)
 		{
 			if (attributes is null)
@@ -55,16 +65,30 @@ namespace Foundation {
 			GC.KeepAlive (attributes);
 		}
 
+		/// <param name="attrs">CoreText attributes to be set on the string.</param>
+		///         <param name="range">Range to which the attribute will be applied.</param>
+		///         <summary>Sets the attributes for the specified ranges.  Any previous attributes in that range are replaces with the new values.</summary>
+		///         <remarks>
+		///         </remarks>
 		public void SetAttributes (CTStringAttributes attrs, NSRange range)
 		{
 			SetAttributes (attrs is null ? null : attrs.Dictionary, range);
 		}
 
+		/// <param name="attrs">The CoreText attributes to add.</param>
+		///         <param name="range">Range to which the attribute will be applied.</param>
+		///         <summary>Adds an attribute and its value to the specified range of characters in the string.</summary>
+		///         <remarks>
+		///         </remarks>
 		public void AddAttributes (CTStringAttributes attrs, NSRange range)
 		{
 			AddAttributes (attrs is null ? null : attrs.Dictionary, range);
 		}
 
+		/// <param name="first">To be added.</param>
+		///         <param name="rest">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Append (NSAttributedString first, params object [] rest)
 		{
 			Append (first);
@@ -79,11 +103,29 @@ namespace Foundation {
 			}
 		}
 #if !MONOMAC
+		/// <param name="str">To be added.</param>
+		///         <param name="attributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMutableAttributedString (string str, UIStringAttributes attributes)
 		: this (str, attributes is not null ? attributes.Dictionary : null)
 		{
 		}
 
+		/// <param name="str">To be added.</param>
+		///         <param name="font">To be added.</param>
+		///         <param name="foregroundColor">To be added.</param>
+		///         <param name="backgroundColor">To be added.</param>
+		///         <param name="strokeColor">To be added.</param>
+		///         <param name="paragraphStyle">To be added.</param>
+		///         <param name="ligatures">To be added.</param>
+		///         <param name="kerning">To be added.</param>
+		///         <param name="underlineStyle">To be added.</param>
+		///         <param name="shadow">To be added.</param>
+		///         <param name="strokeWidth">To be added.</param>
+		///         <param name="strikethroughStyle">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMutableAttributedString (string str,
 						  UIFont font = null,
 						  UIColor foregroundColor = null,

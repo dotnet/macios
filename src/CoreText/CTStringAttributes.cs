@@ -97,11 +97,16 @@ namespace CoreText {
 	[SupportedOSPlatform ("tvos")]
 	public class CTStringAttributes {
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTStringAttributes ()
 			: this (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTStringAttributes (NSDictionary dictionary)
 		{
 			if (dictionary is null)

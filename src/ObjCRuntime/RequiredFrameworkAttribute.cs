@@ -36,6 +36,9 @@ namespace ObjCRuntime {
 		///         <remarks>To be added.</remarks>
 		public string Name { get; private set; }
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public RequiredFrameworkAttribute (string name)
 		{
 			Name = name;

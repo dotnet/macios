@@ -72,11 +72,21 @@ namespace CoreGraphics {
 		}
 #endif
 
+		/// <param name="point">To be added.</param>
+		///         <param name="size">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CGPoint Add (CGPoint point, CGSize size)
 		{
 			return point + size;
 		}
 
+		/// <param name="point">To be added.</param>
+		///         <param name="size">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CGPoint Subtract (CGPoint point, CGSize size)
 		{
 			return point - size;
@@ -113,24 +123,40 @@ namespace CoreGraphics {
 		}
 
 #if !COREBUILD
+		/// <param name="x">To be added.</param>
+		///         <param name="y">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGPoint (double x, double y)
 		{
 			this.x = (nfloat) x;
 			this.y = (nfloat) y;
 		}
 
+		/// <param name="x">To be added.</param>
+		///         <param name="y">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGPoint (float x, float y)
 		{
 			this.x = x;
 			this.y = y;
 		}
 
+		/// <param name="point">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGPoint (CGPoint point)
 		{
 			this.x = point.x;
 			this.y = point.y;
 		}
 
+		/// <param name="dictionaryRepresentation">To be added.</param>
+		///         <param name="point">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool TryParse (NSDictionary? dictionaryRepresentation, out CGPoint point)
 		{
 			if (dictionaryRepresentation is null) {
@@ -145,22 +171,36 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary ToDictionary ()
 		{
 			return new NSDictionary (NativeDrawingMethods.CGPointCreateDictionaryRepresentation (this));
 		}
 #endif // !COREBUILD
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? obj)
 		{
 			return (obj is CGPoint t) && Equals (t);
 		}
 
+		/// <param name="point">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (CGPoint point)
 		{
 			return point.x == x && point.y == y;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (x, y);
@@ -173,6 +213,9 @@ namespace CoreGraphics {
 			y = Y;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string? ToString ()
 		{
 			return CFString.FromHandle (NSStringFromCGPoint (this));

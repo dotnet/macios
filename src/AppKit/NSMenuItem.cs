@@ -41,25 +41,47 @@ namespace AppKit {
 		NSObject? target;
 		Selector? action;
 
+		/// <param name="title">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMenuItem (string title, EventHandler handler) : this (title, "", handler)
 		{
 		}
 
+		/// <param name="title">To be added.</param>
+		///         <param name="charCode">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMenuItem (string title, string charCode, EventHandler handler) : this (title, null, charCode)
 		{
 			Activated += handler;
 		}
 
+		/// <param name="title">To be added.</param>
+		///         <param name="charCode">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <param name="validator">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMenuItem (string title, string charCode, EventHandler handler, Func<NSMenuItem, bool> validator) : this (title, null, charCode)
 		{
 			Activated += handler;
 			ValidateMenuItem = validator;
 		}
 
+		/// <param name="title">To be added.</param>
+		///         <param name="charCode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMenuItem (string title, string charCode) : this (title, null, charCode)
 		{
 		}
 
+		/// <param name="title">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMenuItem (string title) : this (title, null, "")
 		{
 		}

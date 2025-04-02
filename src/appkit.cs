@@ -5487,6 +5487,9 @@ namespace AppKit {
 #if XAMCORE_5_0
 		[NoMacCatalyst]
 #else
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Obsoleted (PlatformName.MacCatalyst, 13, 1, message: "Do not use; this API does not exist on this platform.")]
 #endif
 		[Export ("isSetOnMouseExited")]
@@ -5496,6 +5499,9 @@ namespace AppKit {
 #if XAMCORE_5_0
 		[NoMacCatalyst]
 #else
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Obsoleted (PlatformName.MacCatalyst, 13, 1, message: "Do not use; this API does not exist on this platform.")]
 #endif
 		[Deprecated (PlatformName.MacOSX, 10, 13)]

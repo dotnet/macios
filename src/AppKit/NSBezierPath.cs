@@ -92,6 +92,9 @@ namespace AppKit {
 				_SetAssociatedPointsAtIndex ((IntPtr) ptr, index);
 		}
 
+		/// <param name="points">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public unsafe void Append (CGPoint [] points)
 		{
 			if (points is null)
@@ -123,6 +126,10 @@ namespace AppKit {
 		}
 #endif
 
+		/// <param name="glyphs">To be added.</param>
+		///         <param name="font">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public unsafe void Append (uint [] glyphs, NSFont font)
 		{
 			if (glyphs is null)

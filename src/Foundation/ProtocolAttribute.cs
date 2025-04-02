@@ -31,6 +31,9 @@ namespace Foundation {
 	[AttributeUsage (AttributeTargets.Class | AttributeTargets.Interface)]
 	public sealed class ProtocolAttribute : Attribute {
 
+		/// <summary>To be added.</summary>
+		///         <remarks>
+		///         </remarks>
 		public ProtocolAttribute () { }
 
 		/// <summary>The type of a specific managed type that can be used to wrap an instane of this protocol.</summary>
@@ -77,6 +80,8 @@ namespace Foundation {
 
 	[AttributeUsage (AttributeTargets.Interface, AllowMultiple = true)]
 	public sealed class ProtocolMemberAttribute : Attribute {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public ProtocolMemberAttribute () { }
 
 		/// <summary>To be added.</summary>

@@ -197,6 +197,7 @@ namespace Foundation {
 
 		// This is just here as a constructor chain that can will
 		// only do Init at the most derived class.
+		/// <include file="../../docs/api/Foundation/NSObject.xml" path="/Documentation/Docs[@DocId='M:Foundation.NSObject.#ctor(Foundation.NSObjectFlag)']/*" />
 		public NSObject (NSObjectFlag x)
 		{
 			bool alloced = AllocIfNeeded ();
@@ -221,6 +222,11 @@ namespace Foundation {
 			Dispose (false);
 		}
 
+		/// <summary>Releases the resources used by the NSObject object.</summary>
+		///         <remarks>
+		///           <para>The Dispose method releases the resources used by the NSObject class.</para>
+		///           <para>Calling the Dispose method when the application is finished using the NSObject ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.  For more information on releasing resources see ``Cleaning up Unmananaged Resources'' at https://msdn.microsoft.com/en-us/library/498928w2.aspx</para>
+		///         </remarks>
 		public void Dispose ()
 		{
 			Dispose (true);
@@ -315,6 +321,14 @@ namespace Foundation {
 		-The new refcounting is enabled; and
 		-The class is not a custom type - it must wrap a framework class.
 		*/
+		/// <summary>Promotes a regular peer object (IsDirectBinding is true) into a toggleref object.</summary>
+		///         <remarks>
+		/// 	  This turns a regular peer object (one that has
+		/// 	  IsDirectBinding set to true) into a toggleref object.  This
+		/// 	  is necessary when you are storing to a backing field whose
+		/// 	  objc_c semantics is not copy or retain.  This is an internal
+		/// 	  method.
+		/// 	</remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		protected void MarkDirty ()
 		{
@@ -1055,6 +1069,9 @@ namespace Foundation {
 	[SupportedOSPlatform ("tvos")]
 	public class NSObservedChange {
 		NSDictionary dict;
+		/// <param name="source">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSObservedChange (NSDictionary source)
 		{
 			dict = source;

@@ -1838,6 +1838,12 @@ namespace AVFoundation {
 	[DisableDefaultCtor]
 	interface AVAudioPlayer {
 
+		/// <summary>Preloads the playback buffers.</summary>
+		///         <returns>
+		///           <see langword="true" /> if successful.</returns>
+		///         <remarks>
+		///           <para>The <see cref="M:AVFoundation.AVAudioPlayer.Play" /> function will call this method if necessary, but application developers may choose to explicitly call it in order to minimize startup lag.</para>
+		///         </remarks>
 		[Export ("prepareToPlay")]
 		bool PrepareToPlay ();
 
@@ -1847,6 +1853,8 @@ namespace AVFoundation {
 		[Export ("pause")]
 		void Pause ();
 
+		/// <summary>Stops sound playback asynchronously.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stop")]
 		void Stop ();
 
@@ -1887,6 +1895,10 @@ namespace AVFoundation {
 		[Export ("volume")]
 		float Volume { get; set; } // defined as 'float'
 
+		/// <param name="volume">To be added.</param>
+		///         <param name="duration">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("setVolume:fadeDuration:")]
 		void SetVolume (float volume, double duration);
@@ -1908,6 +1920,10 @@ namespace AVFoundation {
 		[Export ("meteringEnabled")]
 		bool MeteringEnabled { [Bind ("isMeteringEnabled")] get; set; }
 
+		/// <summary>Determines the average and peak power for the channels in the <see cref="T:AVFoundation.AVAudioPlayer" />.</summary>
+		///         <remarks>
+		///           <para>This method must be called prior to accessing <see cref="M:AVFoundation.AVAudioPlayer.AveragePower(System.nuint)" /> or <see cref="M:AVFoundation.AVAudioPlayer.PeakPower(System.nuint)" />.</para>
+		///         </remarks>
 		[Export ("updateMeters")]
 		void UpdateMeters ();
 
@@ -1929,6 +1945,21 @@ namespace AVFoundation {
 		[Export ("pan")]
 		float Pan { get; set; } // defined as 'float'
 
+		/// <param name="time">To be added.</param>
+		///         <summary>Begins playback at a certain delay, relative to the current playback time.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The value of <paramref name="time" /> must be greater than or equal to the <see cref="P:AVFoundation.AVAudioPlayer.DeviceCurrentTime" /> property (use <see cref="P:AVFoundation.AVAudioPlayer.CurrentTime" /> to move the playhead back in time, if necessary). </para>
+		///           <para>Multiple <see cref="T:AVFoundation.AVAudioPlayer" />s can be synchronized using this method:</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// var shortStartDelay = 0.01;
+		/// var now = player.DeviceCurrentTime;
+		/// player.PlayAtTime(now + shortStartDelay);
+		/// player2.PlayAtTime(now + shortStartDelay);
+		///           ]]></code>
+		///           </example>
+		///         </remarks>
 		[Export ("playAtTime:")]
 		bool PlayAtTime (double time);
 
@@ -2135,21 +2166,39 @@ namespace AVFoundation {
 		[Export ("initWithURL:format:error:")]
 		IntPtr InitWithUrl (NSUrl url, AVAudioFormat format, out NSError outError);
 
+		/// <summary>Prepares the recorder for efficient startup.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>This method creates or erases a file for recording.</para>
+		///           <para>The <see cref="M:AVFoundation.AVAudioRecorder.Record" /> method will call this method if ncessary, but application developers may choose to explicitly call it in order to minimize startup lag.</para>
+		///         </remarks>
 		[Export ("prepareToRecord")]
 		bool PrepareToRecord ();
 
+		/// <summary>Begins recording. This method is asynchronous.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("record")]
 		bool Record ();
 
+		/// <param name="duration">The number of seconds to record.</param>
+		///         <summary>Begins recording for a specific duration.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("recordForDuration:")]
 		bool RecordFor (double duration);
 
 		[Export ("pause")]
 		void Pause ();
 
+		/// <summary>Stops recording asynchronously.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stop")]
 		void Stop ();
 
+		/// <summary>Delete's the current recording.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("deleteRecording")]
 		bool DeleteRecording ();
 
@@ -2208,6 +2257,10 @@ namespace AVFoundation {
 		[Export ("meteringEnabled")]
 		bool MeteringEnabled { [Bind ("isMeteringEnabled")] get; set; }
 
+		/// <summary>Calculates the <see cref="M:AVFoundation.AVAudioRecorder.AveragePower(System.nuint)" /> and <see cref="M:AVFoundation.AVAudioRecorder.PeakPower(System.nuint)" /> properties.</summary>
+		///         <remarks>
+		///           <para>The <see cref="P:AVFoundation.AVAudioRecorder.MeteringEnabled" /> property must be <see langword="true" /> for this method to operate correctly.</para>
+		///         </remarks>
 		[Export ("updateMeters")]
 		void UpdateMeters ();
 
@@ -2226,10 +2279,21 @@ namespace AVFoundation {
 		[Export ("channelAssignments", ArgumentSemantic.Copy), NullAllowed]
 		AVAudioSessionChannelDescription [] ChannelAssignments { get; set; }
 
+		/// <param name="time">A value greater than or equal to <see cref="P:AVFoundation.AVAudioRecorder.currentTime" />. Specifies a time in seconds.</param>
+		///         <summary>Begins recording at a specific time.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>Begins recording at a specific time.  Can be used for exactly periodic recordings or recordings that occur with precise offsets to each other.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("recordAtTime:")]
 		bool RecordAt (double time);
 
+		/// <param name="time">A value greater than or equal to <see cref="P:AVFoundation.AVAudioRecorder.currentTime" />. Specifies a time in seconds.</param>
+		///         <param name="duration">Duration, in seconds, of the recording.</param>
+		///         <summary>Begins recording at a specific time, with a given duration.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The recording will automatically stop after <paramref name="duration" /> seconds.</para>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("recordAtTime:forDuration:")]
 		bool RecordAt (double time, double duration);

@@ -5376,6 +5376,11 @@ namespace WebKit {
 		[return: NullAllowed]
 		WKNavigation LoadHtmlString (NSString htmlString, [NullAllowed] NSUrl baseUrl);
 
+		/// <param name="htmlString">To be added.</param>
+		///         <param name="baseUrl">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("LoadHtmlString ((NSString)htmlString, baseUrl)")]
 		[return: NullAllowed]
 		WKNavigation LoadHtmlString (string htmlString, NSUrl baseUrl);
@@ -5407,6 +5412,7 @@ namespace WebKit {
 		[Async]
 		void EvaluateJavaScript (NSString javascript, [NullAllowed] WKJavascriptEvaluationResult completionHandler);
 
+		/// <include file="../docs/api/WebKit/WKWebView.xml" path="/Documentation/Docs[@DocId='M:WebKit.WKWebView.EvaluateJavaScript(System.String,WebKit.WKJavascriptEvaluationResult)']/*" />
 		[Wrap ("EvaluateJavaScript ((NSString)javascript, completionHandler)")]
 		[Async]
 		void EvaluateJavaScript (string javascript, WKJavascriptEvaluationResult completionHandler);

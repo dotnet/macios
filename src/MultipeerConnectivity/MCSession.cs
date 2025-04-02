@@ -35,7 +35,7 @@ namespace MultipeerConnectivity {
 			}
 		}
 
-		/// <summary>Create a new instance of an MCSession.</summary>
+		/// <summary>Create a new instance of an MCSession using a specific identity and intermediate certificates.</summary>
 		/// <param name="myPeerID">An id for the local device.</param>
 		/// <param name="identity">An identity that can be used to identify the local peer.</param>
 		/// <param name="certificates">Any additional intermediate certificates that might be required to verify the <paramref name="identity" />.</param>

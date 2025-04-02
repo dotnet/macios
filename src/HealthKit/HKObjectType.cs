@@ -28,6 +28,10 @@ namespace HealthKit {
 	}
 
 	public partial class HKCategoryType {
+		/// <param name="kind">To be added.</param>
+		///         <summary>Creates and returns a <see cref="T:HealthKit.HKCategoryType" /> object of the specified <paramref name="kind" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static HKCategoryType? Create (HKCategoryTypeIdentifier kind)
 		{
 			return HKObjectType.GetCategoryType (kind.GetConstant ());
@@ -35,6 +39,10 @@ namespace HealthKit {
 	}
 
 	public partial class HKCharacteristicType {
+		/// <param name="kind">To be added.</param>
+		///         <summary>Creates and returns a <see cref="T:HealthKit.HKCharacteristicType" /> for the specified <paramref name="kind" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static HKCharacteristicType? Create (HKCharacteristicTypeIdentifier kind)
 		{
 			return HKObjectType.GetCharacteristicType (kind.GetConstant ());
@@ -42,6 +50,10 @@ namespace HealthKit {
 	}
 
 	public partial class HKCorrelationType {
+		/// <param name="kind">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static HKCorrelationType? Create (HKCorrelationTypeIdentifier kind)
 		{
 			return HKObjectType.GetCorrelationType (kind.GetConstant ());
@@ -50,6 +62,10 @@ namespace HealthKit {
 #pragma warning restore CS0618 // Type or member is obsolete
 
 	public partial class HKDocumentType {
+		/// <param name="kind">To be added.</param>
+		///         <summary>Creates a new <see cref="T:HealthKit.HKDocumentType" /> from the specified type identifier.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static HKDocumentType? Create (HKDocumentTypeIdentifier kind)
 		{
 			var constant = kind.GetConstant ();

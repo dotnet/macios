@@ -72,6 +72,9 @@ namespace Foundation {
 		public int CompareTo (Object? obj)
 			=> (obj is NSOperatingSystemVersion other) ? CompareTo (other) : 1;
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 			=> $"{Major}.{Minor}.{PatchVersion}";
 

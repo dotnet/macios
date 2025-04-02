@@ -525,6 +525,11 @@ namespace UIKit {
 		void TextStorageEdited (NSTextStorage str, NSTextStorageEditedFlags editedMask, NSRange newCharRange, nint changeInLength, NSRange invalidatedCharRange);
 #endif
 
+		/// <param name="characterRange">To be added.</param>
+		///         <summary>Forces the <see cref="T:UIKit.NSLayoutManager" /> to generate glyphs for the specified characters, if it has not already done so.</summary>
+		///         <remarks>
+		///           <para>The <see cref="T:UIKit.NSLayoutManager" /> may calculate glyphs for a range larger than the <paramref name="characterRange" />. If <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Allows%20Non%20Continguous%20Layout&amp;scope=Xamarin" title="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout">P:UIKit.NSLayoutManager.AllowsNonContinguousLayout</a></format> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
+		///         </remarks>
 		[Export ("ensureGlyphsForCharacterRange:")]
 #if NET
 		void EnsureGlyphsForCharacterRange (NSRange characterRange);
@@ -532,9 +537,19 @@ namespace UIKit {
 		void EnsureGlyphsForCharacterRange (NSRange charRange);
 #endif
 
+		/// <param name="glyphRange">To be added.</param>
+		///         <summary>Forces the <see cref="T:UIKit.NSLayoutManager" /> to generate glyphs for the specified glyph range, if it has not already done so.</summary>
+		///         <remarks>
+		///           <para>The <see cref="T:UIKit.NSLayoutManager" /> may calculate glyphs for a range larger than the <paramref name="glyphRange" />. If <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Allows%20Non%20Continguous%20Layout&amp;scope=Xamarin" title="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout">P:UIKit.NSLayoutManager.AllowsNonContinguousLayout</a></format> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
+		///         </remarks>
 		[Export ("ensureGlyphsForGlyphRange:")]
 		void EnsureGlyphsForGlyphRange (NSRange glyphRange);
 
+		/// <param name="characterRange">To be added.</param>
+		///         <summary>Forces the <see cref="T:UIKit.NSLayoutManager" /> to layout the specified characters, if it has not already done so.</summary>
+		///         <remarks>
+		///           <para>The <see cref="T:UIKit.NSLayoutManager" /> may layout an area larger than the <paramref name="characterRange" />. If <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Allows%20Non%20Continguous%20Layout&amp;scope=Xamarin" title="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout">P:UIKit.NSLayoutManager.AllowsNonContinguousLayout</a></format> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
+		///         </remarks>
 		[Export ("ensureLayoutForCharacterRange:")]
 #if NET
 		void EnsureLayoutForCharacterRange (NSRange characterRange);
@@ -542,12 +557,28 @@ namespace UIKit {
 		void EnsureLayoutForCharacterRange (NSRange charRange);
 #endif
 
+		/// <param name="glyphRange">To be added.</param>
+		///         <summary>Forces the <see cref="T:UIKit.NSLayoutManager" /> to layout the specified glyphs, if it has not already done so.</summary>
+		///         <remarks>
+		///           <para>The <see cref="T:UIKit.NSLayoutManager" /> may layout a larger range than the specified <paramref name="glyphRange" />. If <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Allows%20Non%20Continguous%20Layout&amp;scope=Xamarin" title="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout">P:UIKit.NSLayoutManager.AllowsNonContinguousLayout</a></format> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
+		///         </remarks>
 		[Export ("ensureLayoutForGlyphRange:")]
 		void EnsureLayoutForGlyphRange (NSRange glyphRange);
 
+		/// <param name="container">To be added.</param>
+		///         <summary>Forces the <see cref="T:UIKit.NSLayoutManager" /> to layout the specified <see cref="T:UIKit.NSTextContainer" />, if it has not already done so.</summary>
+		///         <remarks>
+		///           <para>The <see cref="T:UIKit.NSLayoutManager" /> may layout more than the specified <paramref name="container" />. If <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20NSLayout%20Manager%20Allows%20Non%20Continguous%20Layout&amp;scope=Xamarin" title="P:UIKit.NSLayoutManager.AllowsNonContinguousLayout">P:UIKit.NSLayoutManager.AllowsNonContinguousLayout</a></format> is <see langword="false" />, the range will always extend to the beginning of the text.</para>
+		///         </remarks>
 		[Export ("ensureLayoutForTextContainer:")]
 		void EnsureLayoutForTextContainer (NSTextContainer container);
 
+		/// <param name="bounds">To be added.</param>
+		///         <param name="container">To be added.</param>
+		///         <summary>Forces the layout manager to perform layout on <paramref name="bounds" /> within <paramref name="container" />.</summary>
+		///         <remarks>
+		///           <para>The layout manager may lay out areas larger than <paramref name="bounds" />.</para>
+		///         </remarks>
 		[Export ("ensureLayoutForBoundingRect:inTextContainer:")]
 		void EnsureLayoutForBoundingRect (CGRect bounds, NSTextContainer container);
 
@@ -1006,6 +1037,11 @@ namespace UIKit {
 		/* GetGlyphRange (NSRange, nullable NSRangePointer) */
 
 #if NET || !MONOMAC
+		/// <param name="characterRange">To be added.</param>
+		///         <param name="actualCharacterRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Protected]
 #else
 		[Internal][Sealed]
@@ -1013,9 +1049,18 @@ namespace UIKit {
 		[Export ("glyphRangeForCharacterRange:actualCharacterRange:")]
 		NSRange GetGlyphRange (NSRange characterRange, IntPtr actualCharacterRange);
 
+		/// <param name="characterRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("GetGlyphRange (characterRange, IntPtr.Zero)")]
 		NSRange GetGlyphRange (NSRange characterRange);
 
+		/// <param name="characterRange">To be added.</param>
+		///         <param name="actualCharacterRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Sealed]
 		[Export ("glyphRangeForCharacterRange:actualCharacterRange:")]
 		NSRange GetGlyphRange (NSRange characterRange, out NSRange actualCharacterRange);
@@ -1031,6 +1076,11 @@ namespace UIKit {
 
 		/* GetCharacterRange (NSRange, nullable NSRangePointer) */
 #if NET || !MONOMAC
+		/// <param name="glyphRange">To be added.</param>
+		///         <param name="actualGlyphRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Protected]
 #else
 		[Internal][Sealed]
@@ -1038,9 +1088,18 @@ namespace UIKit {
 		[Export ("characterRangeForGlyphRange:actualGlyphRange:")]
 		NSRange GetCharacterRange (NSRange glyphRange, IntPtr actualGlyphRange);
 
+		/// <param name="glyphRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("GetCharacterRange (glyphRange, IntPtr.Zero)")]
 		NSRange GetCharacterRange (NSRange glyphRange);
 
+		/// <param name="glyphRange">To be added.</param>
+		///         <param name="actualGlyphRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Sealed]
 		[Export ("characterRangeForGlyphRange:actualGlyphRange:")]
 		NSRange GetCharacterRange (NSRange glyphRange, out NSRange actualGlyphRange);
@@ -1051,6 +1110,10 @@ namespace UIKit {
 		NSRange CharacterRangeForGlyphRange (NSRange glyphRange, out NSRange actualGlyphRange);
 #endif
 
+		/// <param name="container">To be added.</param>
+		///         <summary>The range of glyph indices contained in the specified <see cref="T:UIKit.NSTextContainer" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("glyphRangeForTextContainer:")]
 		NSRange GetGlyphRange (NSTextContainer container);
 
@@ -1125,6 +1188,11 @@ namespace UIKit {
 		[Export ("characterIndexForPoint:inTextContainer:fractionOfDistanceBetweenInsertionPoints:")]
 		nuint GetCharacterIndex (CGPoint point, NSTextContainer container, IntPtr fractionOfDistanceBetweenInsertionPoints);
 
+		/// <param name="point">To be added.</param>
+		///         <param name="container">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("GetCharacterIndex (point, container, IntPtr.Zero)")]
 		nuint GetCharacterIndex (CGPoint point, NSTextContainer container);
 
@@ -1435,6 +1503,14 @@ namespace UIKit {
 		void DrawBackgroundForGlyphRange (NSRange glyphsToShow, CGPoint origin);
 #endif
 
+		/// <param name="glyphsToShow">To be added.</param>
+		///         <param name="origin">To be added.</param>
+		///         <summary>Draws the specified glyph range.</summary>
+		///         <remarks>
+		///           <para>This method causes glyph generation and layout, if needed.</para>
+		///           <para>
+		///             <paramref name="glyphsToShow" /> must specify glyphs within a single <see cref="T:UIKit.NSTextContainer" />.</para>
+		///         </remarks>
 		[Export ("drawGlyphsForGlyphRange:atPoint:")]
 #if NET || !MONOMAC
 		void DrawGlyphs (NSRange glyphsToShow, CGPoint origin);
@@ -1442,6 +1518,14 @@ namespace UIKit {
 		void DrawGlyphsForGlyphRange (NSRange glyphsToShow, CGPoint origin);
 #endif
 
+		/// <param name="glyphRange">To be added.</param>
+		///         <param name="glyphBuffer">To be added.</param>
+		///         <param name="properties">To be added.</param>
+		///         <param name="characterIndexBuffer">To be added.</param>
+		///         <param name="bidiLevelBuffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Protected] // Class can be subclassed, and most methods can be overridden.
 		[MacCatalyst (13, 1)]
 		[Export ("getGlyphsInRange:glyphs:properties:characterIndexes:bidiLevels:")]
@@ -1516,10 +1600,20 @@ namespace UIKit {
 		NSRange TruncatedGlyphRangeInLineFragmentForGlyphAtIndex (nuint glyphIndex);
 #endif
 
+		/// <param name="glyphRange">To be added.</param>
+		///         <param name="callback">To be added.</param>
+		///         <summary>Enumerate the line fragments intersecting with the specified glyph range.|Enumerate the line fragments intersecting with the specified glyph rane.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("enumerateLineFragmentsForGlyphRange:usingBlock:")]
 		void EnumerateLineFragments (NSRange glyphRange, NSTextLayoutEnumerateLineFragments callback);
 
+		/// <param name="glyphRange">To be added.</param>
+		///         <param name="selectedRange">To be added.</param>
+		///         <param name="textContainer">To be added.</param>
+		///         <param name="callback">To be added.</param>
+		///         <summary>Enumerates the enclosing rectangles for the specified glyph range.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("enumerateEnclosingRectsForGlyphRange:withinSelectedGlyphRange:inTextContainer:usingBlock:")]
 		void EnumerateEnclosingRects (NSRange glyphRange, NSRange selectedRange, NSTextContainer textContainer, NSTextLayoutEnumerateEnclosingRects callback);

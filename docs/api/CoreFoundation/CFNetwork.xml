@@ -1,9 +1,17 @@
 <Documentation>
   <Docs DocId="M:CoreFoundation.CFNetwork.GetProxiesForAutoConfigurationScript(Foundation.NSString,System.Uri)">
-        <param name="proxyAutoConfigurationScript">JavaScript source to be executed to obtain a list of proxies to use.</param>
-        <param name="targetUri">To be added.</param>
-        <summary>Executes the provided javascript source to determine a list of proxies to use for connecting to the target URL.</summary>
-        <returns>Returns an array of <see cref="T:CoreFoundation.CFProxy" /> objects suitable to use for connecting to <paramref name="targetUri" />.</returns>
-        <remarks>This method serves as a convenience wrapper for <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:CoreFoundation.CFNetwork.GetProxiesForAutoConfigureationScript(Foundation.NSString proxyAutoConfigurationScript, Uri targetUri)&amp;scope=Xamarin" title="M:CoreFoundation.CFNetwork.GetProxiesForAutoConfigureationScript(Foundation.NSString proxyAutoConfigurationScript, Uri targetUri)">M:CoreFoundation.CFNetwork.GetProxiesForAutoConfigureationScript(Foundation.NSString proxyAutoConfigurationScript, Uri targetUri)</a></format>.</remarks>
+    <param name="proxyAutoConfigurationScript">JavaScript source to be executed to obtain a list of proxies to use.</param>
+    <param name="targetUri">To be added.</param>
+    <summary>Executes the provided javascript source to determine a list of proxies to use for connecting to the target URL.</summary>
+    <returns>Returns an array of <see cref="T:CoreFoundation.CFProxy" /> objects suitable to use for connecting to <paramref name="targetUri" />.</returns>
+    <remarks>This method serves as a convenience wrapper for <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:CoreFoundation.CFNetwork.GetProxiesForAutoConfigureationScript(Foundation.NSString proxyAutoConfigurationScript, Uri targetUri)&amp;scope=Xamarin" title="M:CoreFoundation.CFNetwork.GetProxiesForAutoConfigureationScript(Foundation.NSString proxyAutoConfigurationScript, Uri targetUri)">M:CoreFoundation.CFNetwork.GetProxiesForAutoConfigureationScript(Foundation.NSString proxyAutoConfigurationScript, Uri targetUri)</a></format>.</remarks>
+  </Docs>
+  <Docs DocId="M:CoreFoundation.CFNetwork.GetDefaultProxy">
+        <summary>Gets a custom <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Net%20IWeb%20Proxy&amp;scope=Xamarin" title="T:System.Net.IWebProxy">T:System.Net.IWebProxy</a></format> suitable for use with the standard .NET web request APIs.</summary>
+        <returns>A custom <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Net%20IWeb%20Proxy&amp;scope=Xamarin" title="T:System.Net.IWebProxy">T:System.Net.IWebProxy</a></format> which uses <see cref="M:CoreFoundation.CFNetwork.GetProxiesForUri(System.Uri,CoreFoundation.CFProxySettings)" /> to find a suitable proxy Uri to use.</returns>
+        <remarks>
+          <format type="text/html">
+            <a href="https://docs.microsoft.com/en-us/search/index?search=System%20Net%20Web%20Request&amp;scope=Xamarin" title="T:System.Net.WebRequest">T:System.Net.WebRequest</a>
+          </format> Uses this method to initialize its <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Net%20Web%20Request%20Proxy&amp;scope=Xamarin" title="P:System.Net.WebRequest.Proxy">P:System.Net.WebRequest.Proxy</a></format> property.</remarks>
       </Docs>
 </Documentation>

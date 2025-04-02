@@ -199,21 +199,40 @@ namespace ImageKit {
 		[Export ("selectedIndexes")]
 		NSIndexSet SelectedIndexes { get; }
 
+		/// <param name="indexes">To be added.</param>
+		///         <param name="extendSelection">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("selectIndexes:byExtendingSelection:")]
 		void SelectItemsAt (NSIndexSet indexes, bool extendSelection);
 
+		/// <param name="sender">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("rotateLeft:")]
 		void RotateLeft (NSObject sender);
 
+		/// <param name="sender">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("rotateRight:")]
 		void RotateRight (NSObject sender);
 
+		/// <param name="sender">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("deleteSelectedItems:")]
 		void DeleteSelectedItems (NSObject sender);
 
+		/// <param name="sender">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("downloadSelectedItems:")]
 		void DownloadSelectedItems (NSObject sender);
 
+		/// <param name="sender">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("downloadAllItems:")]
 		void DownloadAllItems (NSObject sender);
 
@@ -1474,9 +1493,15 @@ namespace ImageKit {
 		[Export ("initWithImageProperties:imageUTType:")]
 		NativeHandle Constructor (NSDictionary imageProperties, string imageUTType);
 
+		/// <param name="savePanel">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addSaveOptionsAccessoryViewToSavePanel:")]
 		void AddSaveOptionsToPanel (NSSavePanel savePanel);
 
+		/// <param name="view">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addSaveOptionsToView:")]
 		void AddSaveOptionsToView (NSView view);
 
@@ -1490,6 +1515,11 @@ namespace ImageKit {
 	[Model]
 	[Protocol (IsInformal = true)]
 	interface IKSaveOptionsDelegate {
+		/// <param name="saveOptions">To be added.</param>
+		///         <param name="imageUTType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("saveOptions:shouldShowUTType:"), DelegateName ("SaveOptionsShouldShowUTType"), DefaultValue (false)]
 		bool ShouldShowType (IKSaveOptions saveOptions, string imageUTType);
 	}
@@ -1587,12 +1617,27 @@ namespace ImageKit {
 	[Model]
 	[Protocol]
 	interface IKScannerDeviceViewDelegate {
+		/// <param name="scannerDeviceView">To be added.</param>
+		///         <param name="url">To be added.</param>
+		///         <param name="data">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("scannerDeviceView:didScanToURL:fileData:error:"), EventArgs ("IKScannerDeviceViewScan")]
 		void DidScan (IKScannerDeviceView scannerDeviceView, NSUrl url, NSData data, NSError error);
 
+		/// <param name="scannerDeviceView">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("scannerDeviceView:didEncounterError:"), EventArgs ("IKScannerDeviceViewError")]
 		void DidEncounterError (IKScannerDeviceView scannerDeviceView, NSError error);
 
+		/// <param name="scannerDeviceView">To be added.</param>
+		///         <param name="url">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("scannerDeviceView:didScanToURL:error:"), EventArgs ("IKScannerDeviceViewScanUrl")]
 		void DidScanToUrl (IKScannerDeviceView scannerDeviceView, NSUrl url, NSError error);
 
@@ -1621,12 +1666,22 @@ namespace ImageKit {
 		[Export ("autoPlayDelay")]
 		double AutoPlayDelay { get; set; }
 
+		/// <param name="dataSource">To be added.</param>
+		///         <param name="slideshowMode">To be added.</param>
+		///         <param name="slideshowOptions">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("runSlideshowWithDataSource:inMode:options:")]
 		void RunSlideshow (IIKSlideshowDataSource dataSource, string slideshowMode, NSDictionary slideshowOptions);
 
+		/// <param name="sender">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopSlideshow:")]
 		void StopSlideshow (NSObject sender);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("reloadData")]
 		void ReloadData ();
 
@@ -1639,10 +1694,18 @@ namespace ImageKit {
 		[Export ("indexOfCurrentSlideshowItem")]
 		nint IndexOfCurrentSlideshowItem { get; }
 
+		/// <param name="applicationBundleIdentifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("canExportToApplication:")]
 		bool CanExportToApplication (string applicationBundleIdentifier);
 
+		/// <param name="item">To be added.</param>
+		///         <param name="applicationBundleIdentifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("exportSlideshowItem:toApplication:")]
 		void ExportSlideshowItemtoApplication (NSObject item, string applicationBundleIdentifier);
@@ -1761,9 +1824,13 @@ namespace ImageKit {
 		[Export ("canExportSlideshowItemAtIndex:toApplication:")]
 		bool CanExportItemToApplication (nint index, string applicationBundleIdentifier);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("slideshowWillStart")]
 		void WillStart ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("slideshowDidStop")]
 		void DidStop ();
 

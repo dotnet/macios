@@ -36,6 +36,10 @@ namespace Foundation {
 	public class NSErrorException : Exception {
 		NSError error;
 
+		/// <param name="error">The NSError to wrap.</param>
+		///         <summary>Creates an NSErrorException that encapsulates an NSError.</summary>
+		///         <remarks>
+		///         </remarks>
 		public NSErrorException (NSError error)
 		{
 			if (error is null)

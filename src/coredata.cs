@@ -448,6 +448,11 @@ namespace CoreData {
 	[BaseType (typeof (NSObject))]
 	interface NSEntityDescription : NSCoding, NSCopying {
 
+		/// <param name="entityName">To be added.</param>
+		///         <param name="context">To be added.</param>
+		///         <summary>Retrieves the entity with <paramref name="entityName" /> that resides in the specified managed object <paramref name="context" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("entityForName:inManagedObjectContext:")]
 		[return: NullAllowed]
 		NSEntityDescription EntityForName (string entityName, NSManagedObjectContext context);
@@ -567,9 +572,17 @@ namespace CoreData {
 		NSDictionary RelationshipsByName { get; }
 #endif
 
+		/// <param name="entity">To be added.</param>
+		///         <summary>Gets a dictionary of the relationships that the receiver has with <paramref name="entity" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("relationshipsWithDestinationEntity:")]
 		NSRelationshipDescription [] RelationshipsWithDestinationEntity (NSEntityDescription entity);
 
+		/// <param name="entity">To be added.</param>
+		///         <summary>Returns a Boolean value that tells whether the receiver is a subtype of <paramref name="entity" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("isKindOfEntity:")]
 		bool IsKindOfEntity (NSEntityDescription entity);
 
@@ -2250,9 +2263,31 @@ namespace CoreData {
 		[Export ("initWithSourceModel:destinationModel:")]
 		NativeHandle Constructor (NSManagedObjectModel sourceModel, NSManagedObjectModel destinationModel);
 
+		/// <param name="sourceUrl">To be added.</param>
+		///         <param name="sStoreType">To be added.</param>
+		///         <param name="sOptions">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="mappings">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="dUrl">To be added.</param>
+		///         <param name="dStoreType">To be added.</param>
+		///         <param name="dOptions">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("migrateStoreFromURL:type:options:withMappingModel:toDestinationURL:destinationType:destinationOptions:error:")]
 		bool MigrateStoreFromUrl (NSUrl sourceUrl, string sStoreType, [NullAllowed] NSDictionary sOptions, [NullAllowed] NSMappingModel mappings, NSUrl dUrl, string dStoreType, [NullAllowed] NSDictionary dOptions, out NSError error);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("reset")]
 		void Reset ();
 
@@ -2286,20 +2321,49 @@ namespace CoreData {
 		[Export ("destinationContext", ArgumentSemantic.Strong)]
 		NSManagedObjectContext DestinationContext { get; }
 
+		/// <param name="mEntity">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceEntityForEntityMapping:")]
 		[return: NullAllowed]
 		NSEntityDescription SourceEntityForEntityMapping (NSEntityMapping mEntity);
 
+		/// <param name="mEntity">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("destinationEntityForEntityMapping:")]
 		[return: NullAllowed]
 		NSEntityDescription DestinationEntityForEntityMapping (NSEntityMapping mEntity);
 
+		/// <param name="sourceInstance">To be added.</param>
+		///         <param name="destinationInstance">To be added.</param>
+		///         <param name="entityMapping">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("associateSourceInstance:withDestinationInstance:forEntityMapping:")]
 		void AssociateSourceInstance (NSManagedObject sourceInstance, NSManagedObject destinationInstance, NSEntityMapping entityMapping);
 
+		/// <param name="mappingName">To be added.</param>
+		///         <param name="sourceInstances">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("destinationInstancesForEntityMappingNamed:sourceInstances:")]
 		NSManagedObject [] DestinationInstancesForEntityMappingNamed (string mappingName, [NullAllowed] NSManagedObject [] sourceInstances);
 
+		/// <param name="mappingName">To be added.</param>
+		///         <param name="destinationInstances">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceInstancesForEntityMappingNamed:destinationInstances:")]
 		NSManagedObject [] SourceInstancesForEntityMappingNamed (string mappingName, [NullAllowed] NSManagedObject [] destinationInstances);
 
@@ -2325,6 +2389,9 @@ namespace CoreData {
 		[Export ("userInfo", ArgumentSemantic.Retain)]
 		NSDictionary UserInfo { get; set; }
 
+		/// <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancelMigrationWithError:")]
 		void CancelMigrationWithError (NSError error);
 
@@ -2415,26 +2482,62 @@ namespace CoreData {
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	[DisableDefaultCtor]
 	interface NSPersistentHistoryChangeRequest {
+		/// <param name="date">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("fetchHistoryAfterDate:")]
 		NSPersistentHistoryChangeRequest FetchHistoryAfter (NSDate date);
 
+		/// <param name="token">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("fetchHistoryAfterToken:")]
 		NSPersistentHistoryChangeRequest FetchHistoryAfter ([NullAllowed] NSPersistentHistoryToken token);
 
+		/// <param name="transaction">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("fetchHistoryAfterTransaction:")]
 		NSPersistentHistoryChangeRequest FetchHistoryAfter ([NullAllowed] NSPersistentHistoryTransaction transaction);
 
+		/// <param name="date">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("deleteHistoryBeforeDate:")]
 		NSPersistentHistoryChangeRequest DeleteHistoryBefore (NSDate date);
 
+		/// <param name="token">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("deleteHistoryBeforeToken:")]
 		NSPersistentHistoryChangeRequest DeleteHistoryBefore ([NullAllowed] NSPersistentHistoryToken token);
 
+		/// <param name="transaction">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("deleteHistoryBeforeTransaction:")]
 		NSPersistentHistoryChangeRequest DeleteHistoryBefore ([NullAllowed] NSPersistentHistoryTransaction transaction);
@@ -2660,6 +2763,11 @@ namespace CoreData {
 		[Export ("migrationManagerClass")]
 		Class MigrationManagerClass { get; }
 
+		/// <param name="url">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Gets the metadata for the store at the provided URL.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("metadataForPersistentStoreWithURL:error:")]
 		[return: NullAllowed]
 #if XAMCORE_5_0
@@ -2668,6 +2776,15 @@ namespace CoreData {
 		NSDictionary MetadataForPersistentStoreWithUrl (NSUrl url, out NSError error);
 #endif
 
+		/// <param name="metadata">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="url">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Sets the metadata for the store at the provided URL.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("setMetadata:forPersistentStoreWithURL:error:")]
 #if XAMCORE_5_0
 		bool SetMetadata ([NullAllowed] NSDictionary<NSString, NSObject> metadata, NSUrl url, out NSError error);
@@ -2682,6 +2799,10 @@ namespace CoreData {
 		[Export ("initWithPersistentStoreCoordinator:configurationName:URL:options:")]
 		NativeHandle Constructor ([NullAllowed] NSPersistentStoreCoordinator root, [NullAllowed] string name, NSUrl url, [NullAllowed] NSDictionary options);
 
+		/// <param name="error">The error that was encountered, or <see langword="null" /> if no error was encountered.</param>
+		///         <summary>Causes the store to load its metadata.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("loadMetadata:")]
 		bool LoadMetadata (out NSError error);
 
@@ -2749,9 +2870,18 @@ namespace CoreData {
 		NSDictionary Metadata { get; set; }
 #endif
 
+		/// <param name="coordinator">To be added.</param>
+		///         <summary>Method that is called when this store is added to the store coordinator.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("didAddToPersistentStoreCoordinator:")]
 		void DidAddToPersistentStoreCoordinator (NSPersistentStoreCoordinator coordinator);
 
+		/// <param name="coordinator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Method that is called when the store is about to be removed from the coordinator.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("willRemoveFromPersistentStoreCoordinator:")]
 		void WillRemoveFromPersistentStoreCoordinator ([NullAllowed] NSPersistentStoreCoordinator coordinator);
 
@@ -2798,6 +2928,10 @@ namespace CoreData {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSPersistentStoreDescription : NSCopying {
+		/// <param name="Url">The store URL for which to get a description.</param>
+		///         <summary>Returns the description for the store at the specified URL.</summary>
+		///         <returns>The description for the store at the specified URL.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("persistentStoreDescriptionWithURL:")]
 		NSPersistentStoreDescription GetPersistentStoreDescription (NSUrl Url);
@@ -2838,6 +2972,16 @@ namespace CoreData {
 		[Export ("options", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSObject> Options { get; }
 
+		/// <param name="option">
+		///           <para>The value of the option to set.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="key">The key for the value to set.</param>
+		///         <summary>Sets the option for the specified <paramref name="key" />.</summary>
+		///         <remarks>
+		///           <para>
+		///             <see cref="T:CoreData.NSPersistentStoreCoordinator" /> contains static properties that represent the option keys that are valid for this dictionary.</para>
+		///         </remarks>
 		[Export ("setOption:forKey:")]
 		void SetOption ([NullAllowed] NSObject option, string key);
 
@@ -2860,6 +3004,13 @@ namespace CoreData {
 		[Export ("sqlitePragmas", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSObject> SqlitePragmas { get; }
 
+		/// <param name="value">
+		///           <para>The value to set.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="name">To be added.</param>
+		///         <summary>Sets the value for the specified option <paramref name="name" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setValue:forPragmaNamed:")]
 		void SetValue ([NullAllowed] NSObject value, string name);
 
@@ -2899,10 +3050,19 @@ namespace CoreData {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSPersistentContainer {
+		/// <param name="name">The name of the persistent container to create.</param>
+		///         <summary>Creates a persistent container with the specified name.</summary>
+		///         <returns>A persistent container with the specified name.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("persistentContainerWithName:")]
 		NSPersistentContainer GetPersistentContainer (string name);
 
+		/// <param name="name">The name of the persistent container to create.</param>
+		///         <param name="model">The object model for the persistent container to create.</param>
+		///         <summary>Creates a persistent container with the specified name and object model.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("persistentContainerWithName:managedObjectModel:")]
 		NSPersistentContainer GetPersistentContainer (string name, NSManagedObjectModel model);
@@ -2951,6 +3111,9 @@ namespace CoreData {
 		[DesignatedInitializer]
 		NativeHandle Constructor (string name, NSManagedObjectModel model);
 
+		/// <param name="block">A completion handler that takes a <see cref="T:CoreData.NSPersistentStoreDescription" /> and an error in which to store any errors that were encountered while attempting to load the stores.</param>
+		///         <summary>Loads the persistent stores in the container and runs a completion handler when finished.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("loadPersistentStoresWithCompletionHandler:")]
 		[Async]
 		void LoadPersistentStores (Action<NSPersistentStoreDescription, NSError> block);
@@ -2961,6 +3124,9 @@ namespace CoreData {
 		[Export ("newBackgroundContext")]
 		NSManagedObjectContext NewBackgroundContext { get; }
 
+		/// <param name="block">The code to perform.</param>
+		///         <summary>Performs background task that is represented by <paramref name="block" /> on the managed object context that was passed to it.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("performBackgroundTask:")]
 		void Perform (Action<NSManagedObjectContext> block);
 	}
@@ -2983,9 +3149,19 @@ namespace CoreData {
 		NSDictionary RegisteredStoreTypes { get; }
 #endif
 
+		/// <param name="storeClass">To be added.</param>
+		///         <param name="storeType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("registerStoreClass:forStoreType:")]
 		void RegisterStoreClass ([NullAllowed] Class storeClass, NSString storeType);
 
+		/// <param name="storeType">To be added.</param>
+		///         <param name="url">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use the method that takes an out NSError parameter.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use the method that takes an out NSError parameter.")]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use the method that takes an out NSError parameter.")]
@@ -2994,11 +3170,28 @@ namespace CoreData {
 		[return: NullAllowed]
 		NSDictionary MetadataForPersistentStoreOfType ([NullAllowed] NSString storeType, NSUrl url, out NSError error);
 
+		/// <param name="storeType">To be added.</param>
+		///         <param name="url">To be added.</param>
+		///         <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Gets the metadata for the store at a URL.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("metadataForPersistentStoreOfType:URL:options:error:")]
 		[return: NullAllowed]
 		NSDictionary<NSString, NSObject> GetMetadata (string storeType, NSUrl url, [NullAllowed] NSDictionary options, out NSError error);
 
+		/// <param name="metadata">To be added.</param>
+		///         <param name="storeType">To be added.</param>
+		///         <param name="url">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Sets the metadata for a persistent store at a URL.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use the method that takes an 'out NSError' parameter.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use the method that takes an 'out NSError' parameter.")]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use the method that takes an 'out NSError' parameter.")]
@@ -3006,10 +3199,31 @@ namespace CoreData {
 		[Static, Export ("setMetadata:forPersistentStoreOfType:URL:error:")]
 		bool SetMetadata ([NullAllowed] NSDictionary metadata, [NullAllowed] NSString storeType, NSUrl url, out NSError error);
 
+		/// <param name="metadata">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="storeType">To be added.</param>
+		///         <param name="url">To be added.</param>
+		///         <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Sets the metadata for a persistent store at a URL..</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("setMetadata:forPersistentStoreOfType:URL:options:error:")]
 		bool SetMetadata ([NullAllowed] NSDictionary<NSString, NSObject> metadata, string storeType, NSUrl url, [NullAllowed] NSDictionary options, out NSError error);
 
+		/// <param name="metadata">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="store">To be added.</param>
+		///         <summary>Sets the metadata for a persistent store.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setMetadata:forPersistentStore:")]
 #if XAMCORE_5_0
 		void SetMetadata ([NullAllowed] NSDictionary<NSString, NSObject> metadata, NSPersistentStore store);
@@ -3042,13 +3256,26 @@ namespace CoreData {
 		[Export ("persistentStores", ArgumentSemantic.Strong)]
 		NSPersistentStore [] PersistentStores { get; }
 
+		/// <param name="url">To be added.</param>
+		///         <summary>Returns the persistent store at <paramref name="url" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("persistentStoreForURL:")]
 		[return: NullAllowed]
 		NSPersistentStore PersistentStoreForUrl (NSUrl url);
 
+		/// <param name="store">To be added.</param>
+		///         <summary>Returns the URL for the specified <paramref name="store" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("URLForPersistentStore:")]
 		NSUrl UrlForPersistentStore (NSPersistentStore store);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="store">To be added.</param>
+		///         <summary>Sets the URL for the specfied <paramref name="store" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("setURL:forPersistentStore:")]
 		bool SetUrl (NSUrl url, NSPersistentStore store);
 
@@ -3060,23 +3287,49 @@ namespace CoreData {
 		NSPersistentStore AddPersistentStoreWithType (NSString storeType, [NullAllowed] string configuration, [NullAllowed] NSUrl storeUrl, [NullAllowed] NSDictionary options, out NSError error);
 #endif
 
+		/// <param name="storeDescription">To be added.</param>
+		///         <param name="block">To be added.</param>
+		///         <summary>Adds the described persistent store and runs a handler when it is complete.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("addPersistentStoreWithDescription:completionHandler:")]
 		[Async]
 		void AddPersistentStore (NSPersistentStoreDescription storeDescription, Action<NSPersistentStoreDescription, NSError> block);
 
+		/// <param name="store">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Removes the specified <paramref name="store" /> and reports any errors that are encountered.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("removePersistentStore:error:")]
 		bool RemovePersistentStore (NSPersistentStore store, out NSError error);
 
+		/// <param name="store">To be added.</param>
+		///         <param name="url">To be added.</param>
+		///         <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="storeType">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Migrates <paramref name="store" /> to <paramref name="url" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("migratePersistentStore:toURL:options:withType:error:")]
 		[return: NullAllowed]
 		NSPersistentStore MigratePersistentStore (NSPersistentStore store, NSUrl url, [NullAllowed] NSDictionary options, NSString storeType, out NSError error);
 
+		/// <param name="url">To be added.</param>
+		///         <summary>Returns a managed object id for the specified <paramref name="url" /> if a store that matches the URL can be found.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("managedObjectIDForURIRepresentation:")]
 		[return: NullAllowed]
 		NSManagedObjectID ManagedObjectIDForURIRepresentation (NSUrl url);
 
 #pragma warning disable 0109 // warning CS0109: The member 'NSManagedObjectContext.Lock()' does not hide an accessible member. The new keyword is not required.
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'PerformAndWait' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'PerformAndWait' instead.")]
@@ -3087,6 +3340,8 @@ namespace CoreData {
 #pragma warning restore
 
 #pragma warning disable 0109 // warning CS0109: The member 'NSManagedObjectContext.Unlock()' does not hide an accessible member. The new keyword is not required.
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'PerformAndWait' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'PerformAndWait' instead.")]
@@ -3350,6 +3605,12 @@ namespace CoreData {
 		[Field ("NSPersistentStoreUbiquitousPeerTokenOption")]
 		NSString PersistentStoreUbiquitousPeerTokenOption { get; }
 
+		/// <param name="storeUrl">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Static]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Please see the release notes and Core Data documentation.")]
@@ -3428,18 +3689,55 @@ namespace CoreData {
 		[NullAllowed, Export ("name")]
 		string Name { get; set; }
 
+		/// <param name="code">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("performBlock:")]
 		void Perform (Action code);
 
+		/// <param name="code">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("performBlockAndWait:")]
 		void PerformAndWait (Action code);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="storeType">To be added.</param>
+		///         <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Destroys the persistent store that is located at the specified <paramref name="url" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("destroyPersistentStoreAtURL:withType:options:error:")]
 		bool DestroyPersistentStore (NSUrl url, string storeType, [NullAllowed] NSDictionary options, out NSError error);
 
+		/// <param name="destinationUrl">To be added.</param>
+		///         <param name="destinationOptions">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="sourceUrl">To be added.</param>
+		///         <param name="sourceOptions">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="storeType">To be added.</param>
+		///         <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Replaces the persistent store at <paramref name="destinationUrl" /> with the one at <paramref name="sourceUrl" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("replacePersistentStoreAtURL:destinationOptions:withPersistentStoreFromURL:sourceOptions:storeType:error:")]
 		bool ReplacePersistentStore (NSUrl destinationUrl, [NullAllowed] NSDictionary destinationOptions, NSUrl sourceUrl, [NullAllowed] NSDictionary sourceOptions, string storeType, out NSError error);
@@ -3563,6 +3861,8 @@ namespace CoreData {
 		[NullAllowed]
 		NSProgress Progress { get; }
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancel")]
 		void Cancel ();
 	}
@@ -3630,6 +3930,16 @@ namespace CoreData {
 		[Export ("validationWarnings")]
 		string [] ValidationWarnings { get; }
 
+		/// <param name="validationPredicates">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="validationWarnings">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setValidationPredicates:withValidationWarnings:")]
 		void SetValidationPredicates ([NullAllowed] NSPredicate [] validationPredicates, [NullAllowed] string [] validationWarnings);
 

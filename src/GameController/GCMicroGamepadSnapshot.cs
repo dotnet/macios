@@ -181,6 +181,12 @@ namespace GameController {
 		unsafe static extern byte GCMicroGamepadSnapShotDataV100FromNSData (GCMicroGamepadSnapShotDataV100* snapshotData, /* NSData */ IntPtr data);
 
 #if NET
+		/// <param name="data">The NSData from which to get the V100 data.</param>
+		///         <param name="snapshotData">The location in which to store the snapshot data.</param>
+		///         <summary>Tries to obtain v100 snapshot data from an NSData object.</summary>
+		///         <returns>
+		///           <see langword="true" /> if the data could be retrieved. Otherwise, <see langword="false" />.</returns>
+		///         <remarks>When the return value is <see langword="false" />, <paramref name="snapshotData" /> will contain <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%20Ptr%20Zero&amp;scope=Xamarin" title="F:System.IntPtr.Zero">F:System.IntPtr.Zero</a></format>.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
@@ -220,6 +226,11 @@ namespace GameController {
 		unsafe static extern byte GCMicroGamepadSnapshotDataFromNSData (GCMicroGamepadSnapshotData* snapshotData, /* NSData */ IntPtr data);
 
 #if NET
+		/// <param name="data">To be added.</param>
+		///         <param name="snapshotData">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]

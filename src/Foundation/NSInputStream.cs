@@ -70,6 +70,7 @@ namespace Foundation {
 			}
 		}
 
+		/// <include file="../../docs/api/Foundation/NSInputStream.xml" path="/Documentation/Docs[@DocId='M:Foundation.NSInputStream.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			context.Release ();
@@ -79,6 +80,14 @@ namespace Foundation {
 		}
 
 		// Private API, so no documentation.
+		/// <param name="inFlags">Flags.</param>
+		///         <param name="inCallback">The callbacks to call when events occur.</param>
+		///         <param name="inContextPtr">User-defined data for the callback.</param>
+		///         <summary>Adds a client for the stream. This method is not supposed to be called by managed code, it will be called by consumers of the stream. When overriding it make sure to call the base implementation.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		[Export ("_setCFClientFlags:callback:context:")]
 		protected virtual bool SetCFClientFlags (CFStreamEventType inFlags, IntPtr inCallback, IntPtr inContextPtr)
 		{
@@ -109,6 +118,10 @@ namespace Foundation {
 			return false;
 		}
 
+		/// <param name="eventType">The events to notify.</param>
+		///         <summary>Notifies consumers of events in the stream.</summary>
+		///         <remarks>
+		///         </remarks>
 		public void Notify (CFStreamEventType eventType)
 		{
 			if ((flags & eventType) == 0)

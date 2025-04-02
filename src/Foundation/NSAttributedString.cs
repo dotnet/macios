@@ -198,21 +198,39 @@ namespace Foundation {
 		public NSAttributedString (NSData data, out NSError error)
 		: this (data, new NSDictionary (), out var _, out error) { }
 #else
+		/// <param name="url">To be added.</param>
+		///         <param name="documentAttributes">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use the 'Create' method instead, because there's no way to return an error from a constructor.")]
 		public NSAttributedString (NSUrl url, NSAttributedStringDocumentAttributes documentAttributes, ref NSError error)
 		: this (url, documentAttributes, out var _, ref error) { }
 
+		/// <param name="data">To be added.</param>
+		///         <param name="documentAttributes">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use the 'Create' method instead, because there's no way to return an error from a constructor.")]
 		public NSAttributedString (NSData data, NSAttributedStringDocumentAttributes documentAttributes, ref NSError error)
 		: this (data, documentAttributes, out var _, ref error) { }
 
+		/// <param name="url">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use the 'Create' method instead, because there's no way to return an error from a constructor.")]
 		public NSAttributedString (NSUrl url, ref NSError error)
 		: this (url, new NSDictionary (), out var _, ref error) { }
 
+		/// <param name="data">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use the 'Create' method instead, because there's no way to return an error from a constructor.")]
 		public NSAttributedString (NSData data, ref NSError error)
@@ -252,6 +270,11 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="str">String.</param>
+		///         <param name="attributes">CoreText string attributes.</param>
+		///         <summary>Creates an NSAttributedString for use with CoreText rendering functions.</summary>
+		///         <remarks>
+		///         </remarks>
 		public NSAttributedString (string str, CTStringAttributes? attributes)
 			: this (str, attributes?.Dictionary)
 		{
@@ -275,6 +298,10 @@ namespace Foundation {
 		}
 
 #if !MONOMAC
+		/// <param name="str">To be added.</param>
+		///         <param name="attributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSAttributedString (string str, UIStringAttributes? attributes)
 			: this (str, attributes?.Dictionary)
 		{

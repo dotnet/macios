@@ -92,6 +92,7 @@ namespace Foundation {
 			}
 		}
 
+		/// <include file="../../docs/api/Foundation/NSString.xml" path="/Documentation/Docs[@DocId='M:Foundation.NSString.CreateNative(System.String)']/*" />
 		[Obsolete ("Use of 'CFString.CreateNative' offers better performance.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static NativeHandle CreateNative (string str)
@@ -99,6 +100,11 @@ namespace Foundation {
 			return CreateNative (str, false);
 		}
 
+		/// <param name="str">To be added.</param>
+		///         <param name="autorelease">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NativeHandle CreateNative (string str, bool autorelease)
 		{
 			if (str is null)
@@ -107,11 +113,24 @@ namespace Foundation {
 			return CreateNative (str, 0, str.Length, autorelease);
 		}
 
+		/// <param name="value">To be added.</param>
+		///         <param name="start">To be added.</param>
+		///         <param name="length">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NativeHandle CreateNative (string value, int start, int length)
 		{
 			return CreateNative (value, start, length, false);
 		}
 
+		/// <param name="value">To be added.</param>
+		///         <param name="start">To be added.</param>
+		///         <param name="length">To be added.</param>
+		///         <param name="autorelease">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NativeHandle CreateNative (string value, int start, int length, bool autorelease)
 		{
 			if (value is null)
@@ -137,6 +156,9 @@ namespace Foundation {
 			NSObject.DangerousRelease (handle);
 		}
 
+		/// <param name="str">A string.</param>
+		///         <summary>Creates an NSString from a C# string.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSString (string str)
 		{
 			if (str is null)
@@ -145,6 +167,11 @@ namespace Foundation {
 			Handle = CreateWithCharacters (Handle, str, 0, str.Length);
 		}
 
+		/// <param name="value">To be added.</param>
+		///         <param name="start">To be added.</param>
+		///         <param name="length">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSString (string value, int start, int length)
 		{
 			if (value is null)
@@ -159,6 +186,11 @@ namespace Foundation {
 			Handle = CreateWithCharacters (Handle, value, start, length);
 		}
 
+		/// <summary>Returns a string representation of the value of the current instance.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			return FromHandle (Handle);
@@ -204,6 +236,11 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="a">To be added.</param>
+		///         <param name="b">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool Equals (NSString a, NSString b)
 		{
 			if ((a as object) == (b as object))
@@ -229,6 +266,10 @@ namespace Foundation {
 			return !Equals (a, b);
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (Object obj)
 		{
 			return Equals (this, obj as NSString);
@@ -255,12 +296,22 @@ namespace Foundation {
 		[DllImport ("__Internal")]
 		extern static IntPtr xamarin_localized_string_format_9 (IntPtr fmt, IntPtr arg1, IntPtr arg2, IntPtr arg3, IntPtr arg4, IntPtr arg5, IntPtr arg6, IntPtr arg7, IntPtr arg8, IntPtr arg9);
 
+		/// <param name="format">To be added.</param>
+		///         <param name="args">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSString LocalizedFormat (string format, params object [] args)
 		{
 			using (var ns = new NSString (format))
 				return LocalizedFormat (ns, args);
 		}
 
+		/// <param name="format">To be added.</param>
+		///         <param name="args">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSString LocalizedFormat (NSString format, params object [] args)
 		{
 			int argc = args.Length;
@@ -271,6 +322,11 @@ namespace Foundation {
 			return LocalizedFormat (format, nso);
 		}
 
+		/// <param name="format">To be added.</param>
+		///         <param name="args">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSString LocalizedFormat (NSString format, NSObject [] args)
 		{
 			NSString result;
@@ -314,11 +370,19 @@ namespace Foundation {
 			return result;
 		}
 
+		/// <param name="transform">To be added.</param>
+		///         <param name="reverse">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSString TransliterateString (NSStringTransform transform, bool reverse)
 		{
 			return TransliterateString (transform.GetConstant (), reverse);
 		}
 
+		/// <summary>Generates a hash code for the current instance.</summary>
+		///         <returns>A int containing the hash code for this instance.</returns>
+		///         <remarks>The algorithm used to generate the hash code is unspecified.</remarks>
 		public override int GetHashCode ()
 		{
 			return base.GetHashCode ();

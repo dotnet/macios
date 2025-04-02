@@ -120,6 +120,9 @@ namespace CoreGraphics {
 			return result;
 		}
 
+		/// <param name="url">To be added.</param>
+		///         <summary>Creates a new <see cref="T:CoreGraphics.CGDataProvider" /> from the data at the specified <paramref name="url" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGDataProvider (NSUrl url)
 			: base (Create (url), true)
 		{
@@ -138,6 +141,9 @@ namespace CoreGraphics {
 			return result;
 		}
 
+		/// <param name="data">To be added.</param>
+		///         <summary>Creates a new <see cref="T:CoreGraphics.CGDataProvider" /> from the provided <paramref name="data" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGDataProvider (NSData data)
 			: base (Create (data), true)
 		{
@@ -173,6 +179,10 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <param name="memoryBlock">Pointer to the memory block.</param>
+		///         <param name="size">Size of the block.</param>
+		///         <summary>Creates a CGDataProvider from an in-memory block.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGDataProvider (IntPtr memoryBlock, int size)
 			: this (memoryBlock, size, false)
 		{
@@ -187,6 +197,11 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <param name="memoryBlock">Pointer to the memory block.</param>
+		///         <param name="size">Size of the block.</param>
+		///         <param name="ownBuffer">If true this means that the CGDataProvider owns the buffer and will call FreeHGlobal when it is disposed, otherwise it is assumed that the block is owned by another object.</param>
+		///         <summary>Creates a CGDataProvider from an in-memory block.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGDataProvider (IntPtr memoryBlock, int size, bool ownBuffer)
 			: base (Create (memoryBlock, size, ownBuffer), true)
 		{
@@ -203,6 +218,11 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <param name="memoryBlock">To be added.</param>
+		///         <param name="size">To be added.</param>
+		///         <param name="releaseMemoryBlockCallback">To be added.</param>
+		///         <summary>Creates a new <see cref="T:CoreGraphics.CGDataProvider" /> from the data at the specified <paramref name="memoryBlock" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGDataProvider (IntPtr memoryBlock, int size, Action<IntPtr> releaseMemoryBlockCallback)
 			: base (Create (memoryBlock, size, releaseMemoryBlockCallback), true)
 		{
@@ -224,11 +244,19 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <param name="buffer">A block of bytes that contains the data to be provided.</param>
+		///         <param name="offset">Offset into the block that is considered part of the data to be provided.</param>
+		///         <param name="count">The number of bytes to consume from the offset start from the block.</param>
+		///         <summary>Creates a CGDataProvider that exposes the byte array starting at the specified offset for the specified amount of bytes.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGDataProvider (byte [] buffer, int offset, int count)
 			: base (Create (buffer, offset, count), true)
 		{
 		}
 
+		/// <param name="buffer">To be added.</param>
+		///         <summary>Creates a new <see cref="T:CoreGraphics.CGDataProvider" /> from the data in the provided <paramref name="buffer" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGDataProvider (byte [] buffer)
 			: this (buffer, 0, buffer.Length)
 		{
@@ -237,6 +265,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CFDataRef */ IntPtr CGDataProviderCopyData (/* CGDataProviderRef */ IntPtr provider);
 
+		/// <summary>Returns a copy of the provider's data.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSData? CopyData ()
 		{
 			return Runtime.GetNSObject<NSData> (CGDataProviderCopyData (Handle), true);

@@ -52,6 +52,11 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static OS_nw_endpoint nw_endpoint_create_host (IntPtr hostname, IntPtr port);
 
+		/// <param name="hostname">To be added.</param>
+		///         <param name="port">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NWEndpoint? Create (string hostname, string port)
 		{
 			if (hostname is null)
@@ -127,6 +132,12 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern unsafe OS_nw_endpoint nw_endpoint_create_bonjour_service (IntPtr name, IntPtr type, IntPtr domain);
 
+		/// <param name="name">To be added.</param>
+		///         <param name="serviceType">To be added.</param>
+		///         <param name="domain">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NWEndpoint? CreateBonjourService (string name, string serviceType, string domain)
 		{
 			if (serviceType is null)

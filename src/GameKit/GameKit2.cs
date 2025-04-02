@@ -229,6 +229,11 @@ namespace GameKit {
 
 	public partial class GKTurnBasedExchange {
 
+		/// <summary>Returns a string representation of the value of the current instance.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			return "GKTurnBasedExchange";
@@ -237,6 +242,11 @@ namespace GameKit {
 
 	public partial class GKTurnBasedExchangeReply {
 
+		/// <summary>Returns a string representation of the value of the current instance.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			return "GKTurnBasedExchangeReply";
@@ -245,6 +255,11 @@ namespace GameKit {
 
 	public partial class GKChallenge {
 
+		/// <summary>Returns a string representation of the value of the current instance.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			return GetType ().ToString ();

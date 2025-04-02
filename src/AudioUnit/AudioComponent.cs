@@ -576,6 +576,9 @@ namespace AudioUnit {
 		static extern IntPtr AudioComponentGetIcon (IntPtr comp);
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("maccatalyst")]

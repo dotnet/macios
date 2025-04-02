@@ -2927,6 +2927,13 @@ namespace ModelIO {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (NSData voxelData, MDLAxisAlignedBoundingBox boundingBox, float voxelExtent);
 
+		/// <param name="allocator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Returns a mesh that encloses the voxels in the array.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("meshUsingAllocator:")]
 		[return: NullAllowed]
 		MDLMesh CreateMesh ([NullAllowed] IMDLMeshBufferAllocator allocator);
@@ -2939,10 +2946,22 @@ namespace ModelIO {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetVoxel (Vector4i index);
 
+		/// <param name="mesh">To be added.</param>
+		///         <param name="divisions">To be added.</param>
+		///         <param name="patchRadius">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("setVoxelsForMesh:divisions:patchRadius:")]
 		void SetVoxels (MDLMesh mesh, int divisions, float patchRadius);
 
+		/// <param name="mesh">To be added.</param>
+		///         <param name="divisions">To be added.</param>
+		///         <param name="interiorShells">To be added.</param>
+		///         <param name="exteriorShells">To be added.</param>
+		///         <param name="patchRadius">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Use 'SetVoxels (MDLMesh, int, float)' instead.")]
 #if NET
 		[NoiOS]
@@ -2958,6 +2977,13 @@ namespace ModelIO {
 		[Export ("setVoxelsForMesh:divisions:interiorShells:exteriorShells:patchRadius:")]
 		void SetVoxels (MDLMesh mesh, int divisions, int interiorShells, int exteriorShells, float patchRadius);
 
+		/// <param name="mesh">To be added.</param>
+		///         <param name="divisions">To be added.</param>
+		///         <param name="interiorNBWidth">To be added.</param>
+		///         <param name="exteriorNBWidth">To be added.</param>
+		///         <param name="patchRadius">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Use 'SetVoxels (MDLMesh, int, float)' instead.")]
 #if NET
 		[NoiOS]
@@ -2976,6 +3002,10 @@ namespace ModelIO {
 #if !NET
 		[Obsolete ("Use 'GetVoxels (MDLVoxelIndexExtent2)' instead.")]
 #else
+		/// <param name="withinExtent">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 #endif
 		[Export ("voxelsWithinExtent:")]
@@ -2990,16 +3020,28 @@ namespace ModelIO {
 		NSData GetVoxels (MDLVoxelIndexExtent2 withinExtent);
 #endif
 
+		/// <summary>Returns a list of all the voxel indices as an array of 4-component integer arrays.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("voxelIndices")]
 		[return: NullAllowed]
 		NSData GetVoxelIndices ();
 
+		/// <param name="voxels">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("unionWithVoxels:")]
 		void UnionWith (MDLVoxelArray voxels);
 
+		/// <param name="voxels">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("differenceWithVoxels:")]
 		void DifferenceWith (MDLVoxelArray voxels);
 
+		/// <param name="voxels">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("intersectWithVoxels:")]
 		void IntersectWith (MDLVoxelArray voxels);
 
@@ -3053,6 +3095,8 @@ namespace ModelIO {
 			get;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("convertToSignedShellField")]
 		void ConvertToSignedShellField ();
@@ -3078,11 +3122,21 @@ namespace ModelIO {
 		[Export ("shellFieldExteriorThickness")]
 		float ShellFieldExteriorThickness { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("coarseMesh")]
 		[return: NullAllowed]
 		MDLMesh GetCoarseMesh ();
 
+		/// <param name="allocator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("coarseMeshUsingAllocator:")]
 		[return: NullAllowed]
@@ -3337,6 +3391,8 @@ namespace ModelIO {
 		[Export ("keyTimes")]
 		NSNumber [] WeakKeyTimes { get; }
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("clear")]
 		void Clear ();
 

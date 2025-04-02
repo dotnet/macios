@@ -15,7 +15,12 @@ namespace NetworkExtension {
 	public class NEVpnConnectionStartOptions : DictionaryContainer {
 
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NEVpnConnectionStartOptions () : base (new NSMutableDictionary ()) { }
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NEVpnConnectionStartOptions (NSDictionary dictionary) : base (dictionary) { }
 
 		/// <summary>To be added.</summary>

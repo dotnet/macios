@@ -66,6 +66,10 @@ namespace CoreImage {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CIColor : NSSecureCoding, NSCopying {
+		/// <param name="c">To be added.</param>
+		///         <summary>Creates a <see cref="T:CoreImage.CIColor" /> from a <see cref="T:CoreGraphics.CGColor" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("colorWithCGColor:")]
 		CIColor FromCGColor (CGColor c);
@@ -90,6 +94,10 @@ namespace CoreImage {
 		[return: NullAllowed]
 		CIColor FromRgb (nfloat red, nfloat green, nfloat blue, CGColorSpace colorSpace);
 
+		/// <param name="representation">To be added.</param>
+		///         <summary>Creates a <see cref="T:CoreImage.CIColor" /> from a string of the format "R G B A".</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("colorWithString:")]
 		CIColor FromString (string representation);
@@ -237,6 +245,9 @@ namespace CoreImage {
 		[Export ("clearColor", ArgumentSemantic.Strong)]
 		CIColor ClearColor { get; }
 
+		/// <summary>Returns a string representation of the color, in the format "R G B [A]".</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("stringRepresentation")]
 		string StringRepresentation ();
 
@@ -265,6 +276,10 @@ namespace CoreImage {
 		[Export ("init")]
 		NativeHandle Constructor ();
 
+		/// <param name="device">To be added.</param>
+		///         <summary>Creates a new CIContext from the provided Metal device.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("contextWithMTLDevice:")]
@@ -276,6 +291,11 @@ namespace CoreImage {
 		[Export ("contextWithMTLDevice:options:")]
 		CIContext FromMetalDevice (IMTLDevice device, [NullAllowed] NSDictionary options);
 
+		/// <param name="device">The source <see cref="T:Metal.IMTLDevice" />.</param>
+		///         <param name="options">The desired options for the new <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:CoreImag.CIContext&amp;scope=Xamarin" title="T:CoreImag.CIContext">T:CoreImag.CIContext</a></format>.<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
+		///         <summary>Creates a new <see cref="T:CoreImage.CIContext" /> from the provided Metal <paramref name="device" />, applying the specified options.</summary>
+		///         <returns>A new <see cref="T:CoreImage.CIContext" />.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("contextWithMTLDevice:options:")]
@@ -320,15 +340,37 @@ namespace CoreImage {
 		CIContext FromContext (EAGLContext eaglContext, [NullAllowed] NSDictionary dictionary);
 #endif
 
+		/// <param name="image">To be added.</param>
+		///         <param name="buffer">To be added.</param>
+		///         <summary>Renders <paramref name="image" /> to <paramref name="buffer" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("render:toCVPixelBuffer:")]
 		void Render (CIImage image, CVPixelBuffer buffer);
 
+		/// <param name="image">To be added.</param>
+		///         <param name="buffer">To be added.</param>
+		///         <param name="rectangle">To be added.</param>
+		///         <param name="cs">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("render:toCVPixelBuffer:bounds:colorSpace:")]
 		// null is not documented for CGColorSpace but it makes sense with the other overload not having this parameter (unit tested)
 		void Render (CIImage image, CVPixelBuffer buffer, CGRect rectangle, [NullAllowed] CGColorSpace cs);
 
+		/// <param name="image">To be added.</param>
+		///         <param name="surface">To be added.</param>
+		///         <param name="bounds">To be added.</param>
+		///         <param name="colorSpace">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("render:toIOSurface:bounds:colorSpace:")]
 		void Render (CIImage image, IOSurface.IOSurface surface, CGRect bounds, [NullAllowed] CGColorSpace colorSpace);
@@ -349,10 +391,28 @@ namespace CoreImage {
 		[Export ("outputImageMaximumSize")]
 		CGSize OutputImageMaximumSize { get; }
 
+		/// <param name="image">To be added.</param>
+		///         <param name="texture">To be added.</param>
+		///         <param name="commandBuffer">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="bounds">To be added.</param>
+		///         <param name="colorSpace">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("render:toMTLTexture:commandBuffer:bounds:colorSpace:")]
 		void Render (CIImage image, IMTLTexture texture, [NullAllowed] IMTLCommandBuffer commandBuffer, CGRect bounds, CGColorSpace colorSpace);
 
+		/// <param name="image">To be added.</param>
+		///         <param name="atPoint">To be added.</param>
+		///         <param name="fromRect">To be added.</param>
+		///         <summary>Developers should not use this deprecated method. Developers should use 'DrawImage (image, CGRect, CGRect)' instead.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 6, 0, message: "Use 'DrawImage (image, CGRect, CGRect)' instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'DrawImage (image, CGRect, CGRect)' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 8, message: "Use 'DrawImage (image, CGRect, CGRect)' instead.")]
@@ -360,6 +420,11 @@ namespace CoreImage {
 		[Export ("drawImage:atPoint:fromRect:")]
 		void DrawImage (CIImage image, CGPoint atPoint, CGRect fromRect);
 
+		/// <param name="image">The image to draw.</param>
+		///         <param name="inRectangle">The rectangle where to draw the image.</param>
+		///         <param name="fromRectangle">The rectangle of the image to draw.</param>
+		///         <summary>Draws the <paramref name="fromRectangle" /> portion of <paramref name="image" /> into the rectangle specified by <paramref name="inRectangle" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("drawImage:inRect:fromRect:")]
 		void DrawImage (CIImage image, CGRect inRectangle, CGRect fromRectangle);
 
@@ -388,6 +453,17 @@ namespace CoreImage {
 		[return: NullAllowed]
 		CGImage CreateCGImage (CIImage image, CGRect fromRect, int /* CIFormat = int */ ciImageFormat, [NullAllowed] CGColorSpace colorSpace);
 
+		/// <param name="image">To be added.</param>
+		///         <param name="fromRect">To be added.</param>
+		///         <param name="format">To be added.</param>
+		///         <param name="colorSpace">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="deferred">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("createCGImage:fromRect:format:colorSpace:deferred:")]
 		[return: Release]
@@ -3465,12 +3541,26 @@ namespace CoreImage {
 	[BaseType (typeof (CIKernel))]
 	[DisableDefaultCtor] // returns a nil handle -> instances of this type are returned from `kernel[s]WithString:`
 	interface CIWarpKernel {
+		/// <param name="extent">To be added.</param>
+		///         <param name="callback">To be added.</param>
+		///         <param name="image">To be added.</param>
+		///         <param name="args">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("applyWithExtent:roiCallback:inputImage:arguments:")]
 		[return: NullAllowed]
 		CIImage ApplyWithExtent (CGRect extent, CIKernelRoiCallback callback, CIImage image, [NullAllowed] NSObject [] args);
 
 		// Note: the API is supported in iOS 8, but with iOS 9, they guarantee
 		// a more derived result
+		/// <param name="coreImageShaderProgram">To be added.</param>
+		///         <summary>Creates a new CIWarpKernel from the supplied shader code.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 12, 0)]
 		[Deprecated (PlatformName.TvOS, 12, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 14)]
@@ -3560,6 +3650,10 @@ namespace CoreImage {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CISampler : NSCopying {
+		/// <param name="sourceImage">To be added.</param>
+		///         <summary>Creates a new <see cref="T:CoreImage.CISampler" /> from the <paramref name="sourceImage" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("samplerWithImage:")]
 		CISampler FromImage (CIImage sourceImage);
 
@@ -3637,24 +3731,40 @@ namespace CoreImage {
 		[Export ("vectorWithX:Y:Z:W:")]
 		CIVector Create (nfloat x, nfloat y, nfloat z, nfloat w);
 
+		/// <param name="point">To be added.</param>
+		///         <summary>Creates a <see cref="T:CoreGraphics.CGAffineTransform" /> that represents a directed distance from the origin to <paramref name="point" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("vectorWithCGPoint:")]
 		CIVector Create (CGPoint point);
 
+		/// <param name="point">To be added.</param>
+		///         <summary>Creates a <see cref="T:CoreGraphics.CGAffineTransform" /> that stores the X-coordinate, Y-coordinate, height, and width in the <see cref="P:CoreImage.CIVector.X" />, <see cref="P:CoreImage.CIVector.Y" />. <see cref="P:CoreImage.CIVector.Z" />, and <see cref="P:CoreImage.CIVector.W" /> properties, respectively.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("vectorWithCGRect:")]
 		CIVector Create (CGRect point);
 
+		/// <param name="affineTransform">To be added.</param>
+		///         <summary>Creates a vector from a <see cref="T:CoreGraphics.CGAffineTransform" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("vectorWithCGAffineTransform:")]
 		CIVector Create (CGAffineTransform affineTransform);
 
+		/// <param name="representation">To be added.</param>
+		///         <summary>Creates a vector from a string, such as "[1.0, 2.0, 3.0]".</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("vectorWithString:")]
 		CIVector FromString (string representation);
@@ -3754,9 +3864,23 @@ namespace CoreImage {
 		[return: NullAllowed]
 		CIDetector FromType (NSString detectorType, [NullAllowed] CIContext context, [NullAllowed] NSDictionary options);
 
+		/// <param name="image">Image to analyze.</param>
+		///         <summary>Analyzes the image and returns a list of features discovered in the image (faces, QR codes, rectangles).</summary>
+		///         <returns>Array of discovered features.</returns>
+		///         <remarks>
+		///         </remarks>
 		[Export ("featuresInImage:")]
 		CIFeature [] FeaturesInImage (CIImage image);
 
+		/// <param name="image">Image to analyze.</param>
+		///         <param name="options">
+		///           <para>Set of options to configure the search for features in the image.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Analyzes the image and returns a list of features discovered in the image (faces, QR codes, rectangles).</summary>
+		///         <returns>Array of discovered features.</returns>
+		///         <remarks>
+		///         </remarks>
 		[Export ("featuresInImage:options:")]
 		CIFeature [] FeaturesInImage (CIImage image, [NullAllowed] NSDictionary options);
 
@@ -6682,6 +6806,10 @@ namespace CoreImage {
 	[DisableDefaultCtor] // Handle is nil for `init`
 	interface CIBlendKernel {
 
+		/// <param name="string">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 12, 0)]
 		[Deprecated (PlatformName.TvOS, 12, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 14)]
@@ -6691,6 +6819,11 @@ namespace CoreImage {
 		[return: NullAllowed]
 		CIBlendKernel CreateKernel (string @string);
 
+		/// <param name="foreground">To be added.</param>
+		///         <param name="background">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("applyWithForeground:background:")]
 		[return: NullAllowed]
 		CIImage Apply (CIImage foreground, CIImage background);

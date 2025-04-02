@@ -117,6 +117,11 @@ namespace CoreMedia {
 		public CMTimeRange Target;
 
 #if !COREBUILD
+		/// <param name="source">To be added.</param>
+		///         <param name="target">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -126,6 +131,10 @@ namespace CoreMedia {
 			return CMTimeMappingMake (source, target);
 		}
 
+		/// <param name="target">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -135,6 +144,10 @@ namespace CoreMedia {
 			return CMTimeMappingMakeEmpty (target);
 		}
 
+		/// <param name="dict">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -146,6 +159,9 @@ namespace CoreMedia {
 			return result;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -221,6 +237,9 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public int Value;
 
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMTimeScale (int value)
 		{
 			if (value < 0 || value > 0x7fffffff)
@@ -243,6 +262,10 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public int Height;
 
+		/// <param name="width">To be added.</param>
+		///         <param name="height">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMVideoDimensions (int width, int height)
 		{
 			Width = width;

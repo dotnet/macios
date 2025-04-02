@@ -33,16 +33,29 @@ namespace AppKit {
 		// Per NSGradient.h, this initializer calls the designated initializer (below) with a
 		// color space of NSColorSpace.GenericRGBColorSpace, so we will do the same.
 
+		/// <param name="colors">To be added.</param>
+		///         <param name="locations">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSGradient (NSColor [] colors, float [] locations) :
 			this (colors, locations, NSColorSpace.GenericRGBColorSpace)
 		{
 		}
 
+		/// <param name="colors">To be added.</param>
+		///         <param name="locations">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSGradient (NSColor [] colors, double [] locations) :
 			this (colors, locations, NSColorSpace.GenericRGBColorSpace)
 		{
 		}
 
+		/// <param name="colors">To be added.</param>
+		///         <param name="locations">To be added.</param>
+		///         <param name="colorSpace">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSGradient (NSColor [] colors, float [] locations, NSColorSpace colorSpace)
 		{
 			unsafe {
@@ -53,6 +66,11 @@ namespace AppKit {
 			}
 		}
 
+		/// <param name="colors">To be added.</param>
+		///         <param name="locations">To be added.</param>
+		///         <param name="colorSpace">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSGradient (NSColor [] colors, double [] locations, NSColorSpace colorSpace) : base (NSObjectFlag.Empty)
 		{
 			unsafe {

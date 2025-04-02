@@ -42,6 +42,12 @@ namespace Contacts {
 		}
 
 #if MONOMAC
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <param name="keys">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSObject? GetUnifiedMeContact<T> (T [] keys, out NSError? error)
 			where T : INSObjectProtocol, INSSecureCoding, INSCopying
 		{

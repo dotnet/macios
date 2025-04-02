@@ -279,6 +279,13 @@ namespace NetworkExtension {
 	[Abstract] // documented as such and ...
 	[DisableDefaultCtor] // can't be created (with `init`) without crashing introspection tests
 	interface NEAppProxyFlow {
+		/// <param name="localEndpoint">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>Opens the flow.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'OpenWithLocalFlowEndpoint' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'OpenWithLocalFlowEndpoint' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'OpenWithLocalFlowEndpoint' instead.")]
@@ -286,9 +293,21 @@ namespace NetworkExtension {
 		[Async]
 		void OpenWithLocalEndpoint ([NullAllowed] NWHostEndpoint localEndpoint, Action<NSError> completionHandler);
 
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Closes the flow for reading.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("closeReadWithError:")]
 		void CloseRead ([NullAllowed] NSError error);
 
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Closes the flow for writing.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("closeWriteWithError:")]
 		void CloseWrite ([NullAllowed] NSError error);
 
@@ -1867,14 +1886,29 @@ namespace NetworkExtension {
 		[Static, Export ("sharedManager")]
 		NEVpnManager SharedManager { get; }
 
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>Loads the saved VPN configuration from the Network Extension preferences and runs a completion handler when the operation completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("loadFromPreferencesWithCompletionHandler:")]
 		[Async]
 		void LoadFromPreferences (Action<NSError> completionHandler); // nonnull !
 
+		/// <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Removes the configuration for this VPN manager from the Network Extension preferences and runs a completion handler when the operation completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeFromPreferencesWithCompletionHandler:")]
 		[Async]
 		void RemoveFromPreferences ([NullAllowed] Action<NSError> completionHandler);
 
+		/// <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Saves the configuration for this VPN manager to the Network Extension preferences and runs a completion handler when the operation completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("saveToPreferencesWithCompletionHandler:")]
 		[Async]
 		void SaveToPreferences ([NullAllowed] Action<NSError> completionHandler);
@@ -2712,6 +2746,11 @@ namespace NetworkExtension {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject), Name = "NWTCPConnectionAuthenticationDelegate")]
 	interface NWTcpConnectionAuthenticationDelegate {
+		/// <param name="connection">To be added.</param>
+		///         <summary>Method that is called to inform the delegate that it should provide identity information.</summary>
+		///         <returns>
+		///           <see langword="true" /> to indicate that the delegate will provide identity information.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Security.SecProtocolOptions.SetChallengeBlock' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Security.SecProtocolOptions.SetChallengeBlock' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Security.SecProtocolOptions.SetChallengeBlock' instead.")]
@@ -2719,6 +2758,10 @@ namespace NetworkExtension {
 		[Export ("shouldProvideIdentityForConnection:")]
 		bool ShouldProvideIdentity (NWTcpConnection connection);
 
+		/// <param name="connection">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>Method that is called to provide an identity and an optional certificate.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Security.SecProtocolOptions.SetChallengeBlock' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Security.SecProtocolOptions.SetChallengeBlock' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Security.SecProtocolOptions.SetChallengeBlock' instead.")]
@@ -2726,6 +2769,11 @@ namespace NetworkExtension {
 		[Export ("provideIdentityForConnection:completionHandler:")]
 		void ProvideIdentity (NWTcpConnection connection, Action<SecIdentity, NSArray> completion);
 
+		/// <param name="connection">To be added.</param>
+		///         <summary>Method that is called to inform the delegate that it should evaluate trust.</summary>
+		///         <returns>
+		///           <see langword="true" /> to indicate that the delegate will evaluate trust.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Security.SecProtocolOptions.SetVerifyBlock' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Security.SecProtocolOptions.SetVerifyBlock' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Security.SecProtocolOptions.SetVerifyBlock' instead.")]
@@ -2734,6 +2782,11 @@ namespace NetworkExtension {
 		bool ShouldEvaluateTrust (NWTcpConnection connection);
 
 
+		/// <param name="connection">To be added.</param>
+		///         <param name="peerCertificateChain">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>When implemented by the developer, overrides the default trust evaluation and runs a completion handler when the operation is complete.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Security.SecProtocolOptions.SetVerifyBlock' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Security.SecProtocolOptions.SetVerifyBlock' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Security.SecProtocolOptions.SetVerifyBlock' instead.")]
@@ -2879,6 +2932,8 @@ namespace NetworkExtension {
 		[NullAllowed, Export ("currentPath")]
 		NWPath CurrentPath { get; }
 
+		/// <summary>Mark the current endpoint unusable and try to connect to the next one.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.CancelCurrentEndpoint' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.CurrentPath' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.CancelCurrentEndpoint' instead.")]
@@ -2903,6 +2958,10 @@ namespace NetworkExtension {
 		[Export ("setReadHandler:maxDatagrams:")]
 		void SetReadHandler (Action<NSArray, NSError> handler, nuint maxDatagrams);
 
+		/// <param name="datagramArray">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>Writes the datagrams in the provided <paramref name="datagramArray" /> to the endpoint, and runs a completion handler when the operation completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.Send' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.Send' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.Send' instead.")]
@@ -2911,6 +2970,10 @@ namespace NetworkExtension {
 		[Async]
 		void WriteMultipleDatagrams (NSData [] datagramArray, Action<NSError> completionHandler);
 
+		/// <param name="datagram">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>Writes the provided <paramref name="datagram" /> to the endpoint, and runs a completion handler when the operation completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.Send' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.Send' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.Send' instead.")]
@@ -2919,6 +2982,8 @@ namespace NetworkExtension {
 		[Async]
 		void WriteDatagram (NSData datagram, Action<NSError> completionHandler);
 
+		/// <summary>Cancels the UDP session.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.Cancel' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.Cancel' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.Cancel' instead.")]

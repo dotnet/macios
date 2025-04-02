@@ -20642,7 +20642,6 @@ M:GameKit.GKSavedGame.Copy(Foundation.NSZone)
 M:GameKit.GKSavedGame.LoadDataAsync
 M:GameKit.GKSavedGameListener_Extensions.DidModifySavedGame(GameKit.IGKSavedGameListener,GameKit.GKPlayer,GameKit.GKSavedGame)
 M:GameKit.GKSavedGameListener_Extensions.HasConflictingSavedGames(GameKit.IGKSavedGameListener,GameKit.GKPlayer,GameKit.GKSavedGame[])
-M:GameKit.GKScore.#ctor(System.String)
 M:GameKit.GKScore.ChallengeComposeControllerAsync(System.String,GameKit.GKPlayer[],AppKit.NSViewController@)
 M:GameKit.GKScore.ChallengeComposeControllerAsync(System.String,GameKit.GKPlayer[],UIKit.UIViewController@)
 M:GameKit.GKScore.ChallengeComposeControllerAsync(System.String,GameKit.GKPlayer[])

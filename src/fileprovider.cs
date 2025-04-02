@@ -866,9 +866,25 @@ namespace FileProvider {
 		[NoTV, NoMacCatalyst, NoiOS, Mac (13, 0)]
 		[Export ("requestDownloadForItemWithIdentifier:requestedRange:completionHandler:")]
 		void RequestDownload (string itemIdentifier, NSRange rangeToMaterialize, Action<NSError> completionHandler);
+
+		// From NSFileProviderManager (ExternalDomain) Category
+		[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
+		[Export ("checkDomainsCanBeStored:onVolumeAtURL:unsupportedReason:error:")]
+		[Static]
+		bool CheckDomainsCanBeStored (out bool eligible, NSUrl volumeAtUrl, out NSFileProviderVolumeUnsupportedReason unsupportedReason, [NullAllowed] out NSError error);
 	}
 
 	interface INSFileProviderPendingSetEnumerator { }
+
+	[Category]
+	[BaseType (typeof (NSFileProviderManager))]
+	[NoTV, NoMacCatalyst, NoiOS, Mac (15, 4)]
+	interface NSFileProviderManager_Diagnostics {
+		[Export ("requestDiagnosticCollectionForItemWithIdentifier:errorReason:completionHandler:")]
+		void RequestDiagnosticCollection (string itemIdentifier, NSError errorReason, NSFileProviderManagerRequestDiagnosticCollectionCallback completionHandler);
+	}
+
+	delegate void NSFileProviderManagerRequestDiagnosticCollectionCallback ([NullAllowed] NSError error);
 
 	[NoMacCatalyst]
 	[NoTV, iOS (16, 0)]
@@ -1528,11 +1544,24 @@ namespace FileProvider {
 		Quarantined = 1 << 5,
 	}
 
+#if !XAMCORE_5_0
 	[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
 	[Category]
 	[BaseType (typeof (NSFileProviderManager))]
 	interface NSFileProviderManager_ExternalDomain {
+		[Obsolete ("Call 'NSFileProviderManager.CheckDomainsCanBeStored' instead.")]
 		[Export ("checkDomainsCanBeStored:onVolumeAtURL:unsupportedReason:error:")]
 		unsafe bool CheckDomainsCanBeStored (out bool eligible, NSUrl volumeAtUrl, NSFileProviderVolumeUnsupportedReason* unsupportedReason, [NullAllowed] out NSError error);
 	}
+#endif
+
+	[NoTV, NoMacCatalyst, NoiOS, Mac (15, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface NSFileProviderExternalVolumeHandling {
+		[Abstract]
+		[Export ("shouldConnectExternalDomainWithCompletionHandler:")]
+		void ShouldConnectExternalDomain (NSFileProviderExternalVolumeHandlingShouldConnectExternalDomainCallback completionHandler);
+	}
+
+	delegate void NSFileProviderExternalVolumeHandlingShouldConnectExternalDomainCallback ([NullAllowed] NSError connectionError);
 }

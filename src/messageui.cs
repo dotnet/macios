@@ -76,6 +76,11 @@ namespace MessageUI {
 		[MacCatalyst (13, 1)]
 		[Export ("setPreferredSendingEmailAddress:")]
 		void SetPreferredSendingEmailAddress (string emailAddress);
+
+		[MacCatalyst (18, 4), iOS (18, 4)]
+		[Export ("insertCollaborationItemProvider:completionHandler:")]
+		[Async]
+		void InsertCollaborationItemProvider (NSItemProvider itemProvider, Action<bool> completionHandler);
 	}
 
 	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:MessageUI.MFMailComposeViewControllerDelegate" />.</summary>

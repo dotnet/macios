@@ -2149,7 +2149,20 @@ namespace AuthenticationServices {
 		[Mac (15, 0)]
 		[Export ("completeKeyRotationForKeyType:")]
 		void CompleteKeyRotation (ASAuthorizationProviderExtensionKeyType keyType);
+
+		[Mac (15, 4)]
+		[Export ("attestKey:clientDataHash:completion:")]
+		[Async]
+		void AttestKey (ASAuthorizationProviderExtensionKeyType keyType, NSData clientDataHash, ASAuthorizationProviderExtensionLoginManagerAttestCallback completion);
+
+		[Mac (15, 4)]
+		[Export ("attestPendingKey:clientDataHash:completion:")]
+		[Async]
+		void AttestPendingKey (ASAuthorizationProviderExtensionKeyType keyType, NSData clientDataHash, ASAuthorizationProviderExtensionLoginManagerAttestCallback completion);
+
 	}
+
+	delegate void ASAuthorizationProviderExtensionLoginManagerAttestCallback ([NullAllowed] NSArray attestationCertificates, [NullAllowed] NSError error);
 
 	[NoTV, NoiOS, NoMacCatalyst, Mac (13, 0)]
 	[Protocol]

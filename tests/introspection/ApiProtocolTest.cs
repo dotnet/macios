@@ -45,6 +45,10 @@ namespace Introspection {
 				if (TestRuntime.IsSimulatorOrDesktop)
 					return true;
 				break;
+			case "SafetyKit":
+				if (TestRuntime.IsSimulator)
+					return !TestRuntime.CheckXcodeVersion (15, 0); // doesn't seem to be available in the iOS simulator until iOS 17+
+				break;
 			}
 
 			switch (type.Name) {
@@ -73,6 +77,36 @@ namespace Introspection {
 			case "GKHybridStrategist":
 				// We removed the bindings for this type.
 				return true;
+#endif
+#if __TVOS__
+			case "MTLAccelerationStructureBoundingBoxGeometryDescriptor":
+			case "MTLAccelerationStructureDescriptor":
+			case "MTLAccelerationStructureGeometryDescriptor":
+			case "MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor":
+			case "MTLAccelerationStructureMotionTriangleGeometryDescriptor":
+			case "MTLAccelerationStructurePassDescriptor":
+			case "MTLAccelerationStructurePassSampleBufferAttachmentDescriptor":
+			case "MTLAccelerationStructurePassSampleBufferAttachmentDescriptorArray":
+			case "MTLAccelerationStructureTriangleGeometryDescriptor":
+			case "MTLInstanceAccelerationStructureDescriptor":
+			case "MTLIntersectionFunctionDescriptor":
+			case "MTLIntersectionFunctionTableDescriptor":
+			case "MTLMeshRenderPipelineDescriptor":
+			case "MTLMotionKeyframeData":
+			case "MTLPrimitiveAccelerationStructureDescriptor":
+			case "MTLRasterizationRateLayerArray":
+			case "MTLRasterizationRateLayerDescriptor":
+			case "MTLRasterizationRateMapDescriptor":
+			case "MTLRasterizationRateSampleArray":
+			case "MTLRenderPipelineFunctionsDescriptor":
+			case "MTLResourceStatePassDescriptor":
+			case "MTLResourceStatePassSampleBufferAttachmentDescriptor":
+			case "MTLResourceStatePassSampleBufferAttachmentDescriptorArray":
+			case "MTLVisibleFunctionTableDescriptor":
+				// The initial tvOS 16.0 simulator doesn't have these classes, but the tvOS 16.1 simulator doess
+				if (TestRuntime.IsSimulator && !TestRuntime.CheckXcodeVersion (14, 1))
+					return true;
+				goto default;
 #endif
 			default:
 				return SkipDueToAttribute (type);

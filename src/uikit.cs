@@ -8123,6 +8123,10 @@ namespace UIKit {
 		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0)]
 		[Export ("mathExpressionCompletionType")]
 		UITextMathExpressionCompletionType MathExpressionCompletionType { get; set; }
+
+		[NoTV, NoMacCatalyst, iOS (18, 4)]
+		[Export ("conversationContext", ArgumentSemantic.Strong)]
+		UIConversationContext ConversationContext { get; set; }
 	}
 
 	/// <summary>Provides data for the  event.</summary>
@@ -8767,6 +8771,10 @@ namespace UIKit {
 		[NoTV, iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("didDismissWritingTools")]
 		void DidDismissWritingTools ();
+
+		[NoTV, iOS (18, 4), NoMacCatalyst]
+		[Export ("insertInputSuggestion:")]
+		void InsertInputSuggestion (UIInputSuggestion inputSuggestion);
 	}
 
 	/// <summary>A manager for bar button items.</summary>
@@ -8838,6 +8846,11 @@ namespace UIKit {
 		[Abstract]
 		[Export ("textDidChange:")]
 		void TextDidChange (IUITextInput textInput);
+
+		[NoTV, NoMacCatalyst, iOS (18, 4)]
+		[Abstract]
+		[Export ("conversationContext:didChange:")]
+		void ConversationContextDidChange ([NullAllowed] UIConversationContext context, [NullAllowed] IUITextInput textInput);
 	}
 
 	[MacCatalyst (13, 1)]
@@ -17301,6 +17314,10 @@ namespace UIKit {
 		[Export ("textField:editMenuForCharactersInRange:suggestedActions:")]
 		[return: NullAllowed]
 		UIMenu GetEditMenu (UITextField textField, NSRange range, UIMenuElement [] suggestedActions);
+
+		[NoTV, NoMacCatalyst, iOS (18, 4)]
+		[Export ("textField:insertInputSuggestion:"), EventArgs ("UITextFieldInsertInputSuggestion")]
+		void InsertInputSuggestion (UITextField textField, UIInputSuggestion inputSuggestion);
 	}
 
 	[MacCatalyst (13, 1)]
@@ -17532,6 +17549,10 @@ namespace UIKit {
 		[NoTV, MacCatalyst (18, 2), iOS (18, 2)]
 		[Export ("writingToolsCoordinator")]
 		UIWritingToolsCoordinator WritingToolsCoordinator { get; }
+
+		[NoTV, MacCatalyst (18, 4), iOS (18, 4)]
+		[Export ("subclassForWritingToolsCoordinator")]
+		Class SubclassForWritingToolsCoordinator { get; }
 	}
 
 	interface IUITextViewDelegate { }
@@ -17662,6 +17683,11 @@ namespace UIKit {
 		[NoTV, NoMacCatalyst, iOS (18, 0)]
 		[Export ("textView:didEndFormattingWithViewController:"), EventArgs ("UITextViewTextFormattingViewController")]
 		void DidEndFormatting (UITextView textView, UITextFormattingViewController viewController);
+
+		[IgnoredInDelegate]
+		[NoTV, NoMacCatalyst, iOS (18, 4)]
+		[Export ("textView:insertInputSuggestion:")]
+		void InsertInputSuggestion (UITextView textView, UIInputSuggestion inputSuggestion);
 	}
 
 	/// <include file="../docs/api/UIKit/UIToolbar.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIToolbar']/*" />
@@ -31347,6 +31373,14 @@ namespace UIKit {
 
 		[Export ("initWithTitle:image:identifier:viewControllerProvider:")]
 		NativeHandle Constructor (string title, [NullAllowed] UIImage image, string identifier, [NullAllowed] Func<UITab, UIViewController> viewControllerProvider);
+
+		[TV (18, 4), iOS (18, 4), MacCatalyst (18, 4)]
+		[Export ("enabled")]
+		bool Enabled { [Bind ("isEnabled")] get; set; }
+
+		[TV (18, 4), iOS (18, 4), MacCatalyst (18, 4)]
+		[Export ("hasVisiblePlacement")]
+		bool HasVisiblePlacement { get; }
 	}
 
 	[NoTV, iOS (18, 0), MacCatalyst (18, 0)]
@@ -31398,6 +31432,10 @@ namespace UIKit {
 
 		[Export ("reconfigureItemForTab:")]
 		void ReconfigureItemForTab (UITab tab);
+
+		[iOS (18, 2), MacCatalyst (18, 2)]
+		[NullAllowed, Export ("navigationOverflowItems", ArgumentSemantic.Strong)]
+		UIDeferredMenuElement NavigationOverflowItems { get; set; }
 	}
 
 	[NoTV, iOS (18, 0), MacCatalyst (18, 0)]
@@ -31430,6 +31468,22 @@ namespace UIKit {
 		[Export ("tabBarController:sidebar:contextMenuConfigurationForTab:"), DefaultValue (null)]
 		[return: NullAllowed]
 		UIContextMenuConfiguration GetContextMenuConfigurationForTab (UITabBarController tabBarController, UITabBarControllerSidebar sidebar, UITab tab);
+
+		[iOS (18, 4), MacCatalyst (18, 4)]
+		[Export ("tabBarController:sidebar:itemsForBeginningDragSession:tab:")]
+		UIDragItem [] GetItemsForBeginningDragSession (UITabBarController tabBarController, UITabBarControllerSidebar sidebar, IUIDragSession dragSession, UITab tab);
+
+		[iOS (18, 4), MacCatalyst (18, 4)]
+		[Export ("tabBarController:sidebar:itemsForAddingToDragSession:tab:")]
+		UIDragItem [] GetItemsForAddingToDragSession (UITabBarController tabBarController, UITabBarControllerSidebar sidebar, IUIDragSession dragSession, UITab tab);
+
+		[iOS (18, 4), MacCatalyst (18, 4)]
+		[Export ("tabBarController:sidebar:sidebarAction:group:operationForAcceptingItemsFromDropSession:")]
+		UIDropOperation GetOperationForAcceptingItemsFromDropSession (UITabBarController tabBarController, UITabBarControllerSidebar sidebar, UIAction sidebarAction, UITabGroup group, IUIDropSession session);
+
+		[iOS (18, 4), MacCatalyst (18, 4)]
+		[Export ("tabBarController:sidebar:sidebarAction:group:acceptItemsFromDropSession:")]
+		void AcceptItemsFromDropSession (UITabBarController tabBarController, UITabBarControllerSidebar sidebar, UIAction sidebarAction, UITabGroup group, IUIDropSession session);
 	}
 
 	interface IUITabBarControllerSidebarDelegate { }
@@ -32311,5 +32365,117 @@ namespace UIKit {
 	interface UIApplication_DefaultApplication {
 		[Export ("defaultStatusForCategory:error:")]
 		UIApplicationCategoryDefaultStatus GetDefaultStatus (UIApplicationCategory category, [NullAllowed] out NSError error);
+	}
+
+	[NoTV, NoMacCatalyst, iOS (18, 4)]
+	[BaseType (typeof (NSObject))]
+	interface UIConversationContext {
+		[Export ("threadIdentifier")]
+		string ThreadIdentifier { get; set; }
+
+		[Export ("entries", ArgumentSemantic.Copy)]
+		UIConversationEntry [] Entries { get; set; }
+
+		[Export ("selfIdentifiers", ArgumentSemantic.Copy)]
+		NSSet<NSString> SelfIdentifiers { get; set; }
+
+		[Export ("responsePrimaryRecipientIdentifiers", ArgumentSemantic.Copy)]
+		NSSet<NSString> ResponsePrimaryRecipientIdentifiers { get; set; }
+
+		[Export ("participantNameByIdentifier", ArgumentSemantic.Copy)]
+		NSDictionary<NSString, NSPersonNameComponents> ParticipantNameByIdentifier { get; set; }
+	}
+
+	[NoTV, NoMacCatalyst, iOS (18, 4)]
+	[BaseType (typeof (NSObject))]
+	interface UIConversationEntry {
+		[Export ("text")]
+		string Text { get; set; }
+
+		[Export ("senderIdentifier")]
+		string SenderIdentifier { get; set; }
+
+		[Export ("sentDate", ArgumentSemantic.Copy)]
+		NSDate SentDate { get; set; }
+
+		[Export ("entryIdentifier")]
+		string EntryIdentifier { get; set; }
+
+		[NullAllowed, Export ("replyThreadIdentifier")]
+		string ReplyThreadIdentifier { get; set; }
+
+		[Export ("primaryRecipientIdentifiers", ArgumentSemantic.Copy)]
+		NSSet<NSString> PrimaryRecipientIdentifiers { get; set; }
+	}
+
+	[NoTV, NoMacCatalyst, iOS (18, 4)]
+	[BaseType (typeof (NSObject))]
+	interface UIInputSuggestion {
+	}
+
+	[NoTV, NoMacCatalyst, iOS (18, 4)]
+	[BaseType (typeof (UIConversationContext))]
+	interface UIMailConversationContext {
+		[Export ("responseSubject")]
+		string ResponseSubject { get; set; }
+
+		[Export ("responseHasCustomSignature")]
+		bool ResponseHasCustomSignature { get; set; }
+
+		[Export ("responseSecondaryRecipientIdentifiers", ArgumentSemantic.Copy)]
+		NSSet<NSString> ResponseSecondaryRecipientIdentifiers { get; set; }
+	}
+
+	[NoTV, NoMacCatalyst, iOS (18, 4)]
+	[Native]
+	public enum UIMailConversationEntryKind : long {
+		None = 0,
+		Personal = 1,
+		Promotion = 2,
+		Social = 3,
+		Transaction = 4,
+		News = 5,
+	}
+
+	[NoTV, NoMacCatalyst, iOS (18, 4)]
+	[BaseType (typeof (UIConversationEntry))]
+	interface UIMailConversationEntry {
+		[Export ("kind", ArgumentSemantic.Assign)]
+		UIMailConversationEntryKind Kind { get; set; }
+
+		[Export ("responseSecondaryRecipientIdentifiers", ArgumentSemantic.Copy)]
+		NSSet<NSString> ResponseSecondaryRecipientIdentifiers { get; set; }
+	}
+
+	[NoTV, NoMacCatalyst, iOS (18, 4)]
+	[BaseType (typeof (UIConversationContext))]
+	interface UIMessageConversationContext {
+		[Export ("isJunk")]
+		bool IsJunk { get; set; }
+	}
+
+	[NoTV, NoMacCatalyst, iOS (18, 4)]
+	[Native]
+	public enum UIMessageConversationEntryDataKind : long {
+		Text = 0,
+		Attachment = 1,
+		Other = 2,
+	}
+
+	[NoTV, NoMacCatalyst, iOS (18, 4)]
+	[BaseType (typeof (UIConversationEntry))]
+	interface UIMessageConversationEntry {
+		[Export ("dataKind", ArgumentSemantic.Assign)]
+		UIMessageConversationEntryDataKind DataKind { get; set; }
+
+		[Export ("wasSentBySelf")]
+		bool WasSentBySelf { get; set; }
+	}
+
+	[NoTV, NoMacCatalyst, iOS (18, 4)]
+	[BaseType (typeof (UIInputSuggestion))]
+	interface UISmartReplySuggestion {
+		[Export ("smartReply")]
+		string SmartReply { get; }
 	}
 }

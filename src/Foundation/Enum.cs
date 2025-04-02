@@ -1982,6 +1982,10 @@ namespace Foundation {
 		/// <summary>The resource was retrieved via a network connection.</summary>
 		NetworkLoad,
 		/// <summary>The resource was pushed from a server.</summary>
+		[Deprecated (PlatformName.iOS, 18, 4, message: "Not supported in iOS 17+.")] // message mentions one OS version and the actual deprecation OS version don't match, but that's what the headers do.
+		[Deprecated (PlatformName.TvOS, 18, 4, message: "Not supported in tvOS 17+.")] // message mentions one OS version and the actual deprecation OS version don't match, but that's what the headers do.
+		[Deprecated (PlatformName.MacCatalyst, 18, 4, message: "Not supported in Mac Catalyst 17+.")] // message mentions one OS version and the actual deprecation OS version don't match, but that's what the headers do.
+		[Deprecated (PlatformName.MacOSX, 15, 4, message: "Not supported in macOS 14+.")] // message mentions one OS version and the actual deprecation OS version don't match, but that's what the headers do.
 		ServerPush,
 		/// <summary>The resource was retrieved from a local cache.</summary>
 		LocalCache,

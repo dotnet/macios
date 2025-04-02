@@ -32,7 +32,6 @@ ACCELERATE_SOURCES = \
 # Accessibility
 
 ACCESSIBILITY_SOURCES = \
-	Accessibility/AXFeatureOverrideSessionError.cs \
 	Accessibility/AXHearingUtilities.cs \
 	Accessibility/AXAnimatedImagesUtilities.cs \
 	Accessibility/AXPrefers.cs \
@@ -342,6 +341,7 @@ CARPLAY_API_SOURCES = \
 CARPLAY_SOURCES = \
 	CarPlay/CPCompat.cs \
 	CarPlay/CPNavigationAlert.cs \
+	CarPlay/CPNowPlayingSportsClock.cs \
 	CarPlay/CPMessageListItem.cs \
 
 # ClassKit
@@ -1612,6 +1612,9 @@ SCRIPTINGBRIDGE_SOURCES = \
 
 # ScreenTime
 
+SCREENTIME_SOURCES = \
+	ScreenTime/STWebHistory.cs \
+
 # SearchKit
 
 SEARCHKIT_SOURCES = \
@@ -1896,6 +1899,7 @@ WEBKIT_SOURCES = \
 	WebKit/WebView.cs \
 	WebKit/WKCompat.cs \
 	WebKit/WKPreferences.cs \
+	WebKit/WKWebExtensionMatchPattern.cs \
 	WebKit/WKWindowFeatures.cs \
 
 #
@@ -1934,6 +1938,7 @@ SHARED_CORE_SOURCES = \
 	ObjCRuntime/NativeAttribute.cs \
 	ObjCRuntime/NativeHandle.cs \
 	ObjCRuntime/NativeNameAttribute.cs \
+	ObjCRuntime/TransientCFObject.cs \
 	ObjCRuntime/TransientCFString.cs \
 	ObjCRuntime/TransientString.cs \
 	ObjCRuntime/NFloat.cs \
@@ -2138,6 +2143,7 @@ MACOS_FRAMEWORKS =          \
 	SensitiveContentAnalysis \
 	ServiceManagement       \
 	Security                \
+	SecurityUI              \
 	SharedWithYou           \
 	SharedWithYouCore       \
 	Social                  \
@@ -2250,6 +2256,7 @@ IOS_FRAMEWORKS =         \
 	SafetyKit \
 	ScreenTime \
 	Security \
+	SecurityUI \
 	SensitiveContentAnalysis \
 	SensorKit \
 	SharedWithYou \
@@ -2276,6 +2283,7 @@ TVOS_FRAMEWORKS =           \
 	AppTrackingTransparency \
 	AudioToolbox            \
 	AudioUnit               \
+	BackgroundAssets        \
 	BackgroundTasks         \
 	BrowserEngineKit        \
 	CFNetwork               \
@@ -2319,6 +2327,7 @@ TVOS_FRAMEWORKS =           \
 	PhotosUI                \
 	ReplayKit               \
 	Security                \
+	SecurityUI              \
 	SharedWithYou           \
 	SharedWithYouCore       \
 	SystemConfiguration     \
@@ -2418,6 +2427,7 @@ MACCATALYST_FRAMEWORKS = \
 	ScreenCaptureKit \
 	ScreenTime \
 	Security \
+	SecurityUI \
 	SensitiveContentAnalysis \
 	SensorKit \
 	ServiceManagement \

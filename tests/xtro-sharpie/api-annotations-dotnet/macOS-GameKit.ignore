@@ -3,5 +3,4 @@
 !missing-protocol-member! GKTurnBasedEventListener::player:didRequestMatchWithPlayers: not found
 
 # We have bound GKVoiceChatServiceError as GKVoiceChatServiceError which has no support for macOS
-!missing-field! GKVoiceChatServiceErrorDomain not bound
 # https://developer.apple.com/documentation/gamekit/gkvoicechatserviceerror?language=objc

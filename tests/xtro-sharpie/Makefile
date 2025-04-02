@@ -57,12 +57,16 @@ XIOS_RID = ios-arm64
 $(XIOS_PCH): .stamp-check-sharpie
 	$(SHARPIE) sdk-db --xcode $(XCODE) -s iphoneos$(IOS_SDK_VERSION) -a $(XIOS_ARCH) \
 	-modules false \
+	-exclude BrowserEngineCore \
 	-exclude FactoryOTAWifiUtils \
 	-exclude FactoryOTALogger \
 	-exclude FactoryOTANetworkUtils \
 	-exclude AssetsLibrary \
+	-exclude BrowserKit \
+	-exclude LockedCameraCapture \
 	-exclude Matter \
 	-exclude _CoreNFC_UIKit \
+	-exclude TranslationUIProvider \
 	-i ThreadNetwork/THClient.h \
 	$(CORETELEPHONY_HEADERS) \
 
@@ -73,7 +77,11 @@ XTVOS_RID = tvos-arm64
 $(XTVOS_PCH): .stamp-check-sharpie
 	$(SHARPIE) sdk-db --xcode $(XCODE) -s appletvos$(TVOS_SDK_VERSION) -a $(XTVOS_ARCH) \
 		-modules false \
+		-exclude BrowserEngineCore \
+		-exclude BrowserKit \
+		-exclude LockedCameraCapture \
 		-exclude Matter \
+		-exclude TranslationUIProvider \
 
 XMACOS_ARCH = x86_64
 XMACOS_PCH = macosx$(MACOS_SDK_VERSION)-$(XMACOS_ARCH).pch
@@ -83,9 +91,13 @@ $(XMACOS_PCH): .stamp-check-sharpie
 	$(SHARPIE) sdk-db --xcode $(XCODE) -s macosx$(MACOS_SDK_VERSION) -a $(XMACOS_ARCH) \
 		-modules false \
 		-exclude AccessorySetupKit \
+		-exclude BrowserEngineCore \
+		-exclude BrowserKit \
 		-exclude JavaNativeFoundation \
+		-exclude LockedCameraCapture \
 		-exclude Matter \
 		-exclude ParavirtualizedGraphics \
+		-exclude TranslationUIProvider \
 		$(CORETELEPHONY_HEADERS) \
 
 XMACCATALYST_ARCH = x86_64
@@ -99,6 +111,8 @@ $(XMACCATALYST_PCH): .stamp-check-sharpie
 	-exclude AccessorySetupKit \
 	-exclude AGL \
 	-exclude AudioVideoBridging \
+	-exclude BrowserEngineCore \
+	-exclude BrowserKit \
 	-exclude AssetsLibrary \
 	-exclude CalendarStore \
 	-exclude Carbon \
@@ -113,12 +127,14 @@ $(XMACCATALYST_PCH): .stamp-check-sharpie
 	-exclude IOBluetoothUI \
 	-exclude JavaNativeFoundation \
 	-exclude LDAP \
+	-exclude LockedCameraCapture \
 	-exclude Matter \
 	-exclude Python \
 	-exclude Quartz \
 	-exclude QuickLookUI \
 	-exclude SecurityInterface \
 	-exclude Virtualization \
+	-exclude TranslationUIProvider \
 	-i HomeKit/HomeKit.h \
 	$(CORETELEPHONY_HEADERS) \
 

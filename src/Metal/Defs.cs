@@ -42,6 +42,9 @@ namespace Metal {
 			Z = z;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("({0},{1},{2})", X, Y, Z);
@@ -92,6 +95,10 @@ namespace Metal {
 		static extern /* MDLVertexFormat */ nuint MTKModelIOVertexFormatFromMetal (/* MTLVertexFormat */ nuint modelIODescriptor);
 
 #if NET
+		/// <param name="vertexFormat">To be added.</param>
+		///         <summary>Converts from the current to the desired <paramref name="vertexFormat" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -133,6 +140,9 @@ namespace Metal {
 			Height = height;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("({0},{1},{2},{3}", X, Y, Width, Height);
@@ -165,6 +175,14 @@ namespace Metal {
 		///         <remarks>To be added.</remarks>
 		public double ZFar;
 
+		/// <param name="originX">To be added.</param>
+		///         <param name="originY">To be added.</param>
+		///         <param name="width">To be added.</param>
+		///         <param name="height">To be added.</param>
+		///         <param name="znear">To be added.</param>
+		///         <param name="zfar">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MTLViewport (double originX, double originY, double width, double height, double znear, double zfar)
 		{
 			OriginX = originX;
@@ -175,6 +193,9 @@ namespace Metal {
 			ZFar = zfar;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("({0},{1},{2},{3} Znear={4} Zfar={5})", OriginX, OriginY, Width, Height, ZNear, ZFar);
@@ -197,6 +218,10 @@ namespace Metal {
 		///         <remarks>To be added.</remarks>
 		public float Y;
 
+		/// <param name="x">To be added.</param>
+		///         <param name="y">To be added.</param>
+		///         <summary>Creates a new normalized sample position.</summary>
+		///         <remarks>To be added.</remarks>
 		public MTLSamplePosition (float x, float y)
 		{
 			this.X = x;
@@ -225,6 +250,12 @@ namespace Metal {
 		///         <remarks>To be added.</remarks>
 		public double Alpha;
 
+		/// <param name="red">To be added.</param>
+		///         <param name="green">To be added.</param>
+		///         <param name="blue">To be added.</param>
+		///         <param name="alpha">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MTLClearColor (double red, double green, double blue, double alpha)
 		{
 			Red = red;
@@ -248,6 +279,10 @@ namespace Metal {
 		///         <remarks>To be added.</remarks>
 		public MTLSize Size;
 
+		/// <param name="origin">To be added.</param>
+		///         <param name="size">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MTLRegion (MTLOrigin origin, MTLSize size)
 		{
 			Origin = origin;
@@ -327,6 +362,9 @@ namespace Metal {
 		[FieldOffset (0)]
 		public ulong Stencil;
 
+		/// <param name="color">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MTLClearValue (MTLClearColor color)
 		{
 			Depth = 0;
@@ -334,6 +372,9 @@ namespace Metal {
 			Color = color;
 		}
 
+		/// <param name="depth">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MTLClearValue (double depth)
 		{
 			Color.Red = 0;
@@ -345,6 +386,9 @@ namespace Metal {
 			Color.Alpha = 0;
 		}
 
+		/// <param name="stencil">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MTLClearValue (ulong stencil)
 		{
 			Color.Red = 0;
@@ -493,6 +537,12 @@ namespace Metal {
 		///         <remarks>To be added.</remarks>
 		public uint BaseInstance;
 
+		/// <param name="pathCount">To be added.</param>
+		///         <param name="instanceCount">To be added.</param>
+		///         <param name="patchStart">To be added.</param>
+		///         <param name="baseInstance">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MTLDrawPatchIndirectArguments (uint pathCount, uint instanceCount, uint patchStart, uint baseInstance)
 		{
 			PatchCount = pathCount;
@@ -553,6 +603,10 @@ namespace Metal {
 		public ushort [] InsideTessellationFactor;
 #endif
 
+		/// <param name="edgeTessellationFactor">To be added.</param>
+		///         <param name="insideTessellationFactor">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MTLQuadTessellationFactorsHalf (ushort [] edgeTessellationFactor, ushort [] insideTessellationFactor)
 		{
 			if (edgeTessellationFactor.Length > 4)
@@ -608,6 +662,10 @@ namespace Metal {
 		///         <remarks>To be added.</remarks>
 		public ushort InsideTessellationFactor;
 
+		/// <param name="edgeTessellationFactor">To be added.</param>
+		///         <param name="insideTessellationFactor">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MTLTriangleTessellationFactorsHalf (ushort [] edgeTessellationFactor, ushort insideTessellationFactor)
 		{
 			if (edgeTessellationFactor.Length > 3)

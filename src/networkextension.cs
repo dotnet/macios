@@ -279,6 +279,13 @@ namespace NetworkExtension {
 	[Abstract] // documented as such and ...
 	[DisableDefaultCtor] // can't be created (with `init`) without crashing introspection tests
 	interface NEAppProxyFlow {
+		/// <param name="localEndpoint">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>Opens the flow.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'OpenWithLocalFlowEndpoint' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'OpenWithLocalFlowEndpoint' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'OpenWithLocalFlowEndpoint' instead.")]
@@ -286,9 +293,21 @@ namespace NetworkExtension {
 		[Async]
 		void OpenWithLocalEndpoint ([NullAllowed] NWHostEndpoint localEndpoint, Action<NSError> completionHandler);
 
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Closes the flow for reading.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("closeReadWithError:")]
 		void CloseRead ([NullAllowed] NSError error);
 
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Closes the flow for writing.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("closeWriteWithError:")]
 		void CloseWrite ([NullAllowed] NSError error);
 
@@ -348,17 +367,38 @@ namespace NetworkExtension {
 	[BaseType (typeof (NETunnelProvider))]
 	[DisableDefaultCtor] // no valid handle when `init` is called
 	interface NEAppProxyProvider {
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>Starts the proxy with the specified <paramref name="options" /> and runs <paramref name="completionHandler" /> after the operation is complete.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("startProxyWithOptions:completionHandler:")]
 		[Async]
 		void StartProxy ([NullAllowed] NSDictionary<NSString, NSObject> options, Action<NSError> completionHandler);
 
+		/// <param name="reason">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>Stops the proxy with the specified <paramref name="reason" /> and runs <paramref name="completionHandler" /> when the operation is complete.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopProxyWithReason:completionHandler:")]
 		[Async]
 		void StopProxy (NEProviderStopReason reason, Action completionHandler);
 
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Cancels the proxy witht the specified error.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancelProxyWithError:")]
 		void CancelProxy ([NullAllowed] NSError error);
 
+		/// <param name="flow">To be added.</param>
+		///         <summary>Handles the provided proxy <paramref name="flow" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("handleNewFlow:")]
 		bool HandleNewFlow (NEAppProxyFlow flow);
 
@@ -383,6 +423,9 @@ namespace NetworkExtension {
 	[BaseType (typeof (NETunnelProviderManager))]
 	[DisableDefaultCtor] // no valid handle when `init` is called
 	interface NEAppProxyProviderManager {
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>Loads all proxy configurations for the app that were previously saved in the Network Extensions prefrences and runs <paramref name="completionHandler" /> when the operation is complete.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("loadAllFromPreferencesWithCompletionHandler:")]
 		[Async]
@@ -397,10 +440,17 @@ namespace NetworkExtension {
 	[BaseType (typeof (NEAppProxyFlow), Name = "NEAppProxyTCPFlow")]
 	[DisableDefaultCtor]
 	interface NEAppProxyTcpFlow {
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>Reads data from the flow and runs <paramref name="completionHandler" /> when the operation is complete.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("readDataWithCompletionHandler:")]
 		[Async]
 		void ReadData (Action<NSData, NSError> completionHandler);
 
+		/// <param name="data">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>Writes the provided <paramref name="data" /> to the flow and runs <paramref name="completionHandler" /> when the operation is complete.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("writeData:withCompletionHandler:")]
 		[Async]
 		void WriteData (NSData data, Action<NSError> completionHandler);
@@ -430,6 +480,9 @@ namespace NetworkExtension {
 	[BaseType (typeof (NEAppProxyFlow), Name = "NEAppProxyUDPFlow")]
 	[DisableDefaultCtor]
 	interface NEAppProxyUdpFlow {
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>Reads datagrams from the flow and runs <paramref name="completionHandler" /> when the operation is complete.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("readDatagramsWithCompletionHandler:")]
 		[Async (ResultTypeName = "NEDatagramReadResult")]
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'ReadDatagramsAndFlowEndpoints' instead.")]
@@ -437,6 +490,11 @@ namespace NetworkExtension {
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'ReadDatagramsAndFlowEndpoints' instead.")]
 		void ReadDatagrams (NEDatagramRead completionHandler);
 
+		/// <param name="datagrams">To be added.</param>
+		///         <param name="remoteEndpoints">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>Writes the provided <paramref name="datagrams" /> to the specified <paramref name="remoteEndpoints" /> and runs <paramref name="completionHandler" /> when the operation is complete.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'WriteDatagramsAndFlowEndpoints' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'WriteDatagramsAndFlowEndpoints' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'WriteDatagramsAndFlowEndpoints' instead.")]
@@ -614,18 +672,31 @@ namespace NetworkExtension {
 		[NullAllowed, Export ("URLAppendStringMap", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSString> UrlAppendStringMap { get; set; }
 
+		/// <param name="report">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("handleReport:")]
 		void HandleReport (NEFilterReport report);
 
+		/// <param name="flow">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>Handles a user remediation request and runs <paramref name="completionHandler" /> after changing the rules.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("handleRemediationForFlow:completionHandler:")]
 		[Async]
 		void HandleRemediationForFlow (NEFilterFlow flow, Action<NEFilterControlVerdict> completionHandler);
 
+		/// <param name="flow">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>Handles new filter rules and runs <paramref name="completionHandler" /> after changing the rules.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("handleNewFlow:completionHandler:")]
 		[Async]
 		void HandleNewFlow (NEFilterFlow flow, Action<NEFilterControlVerdict> completionHandler);
 
+		/// <summary>Method that is called to notify the Filter Data Provider that the filtering rules changed..</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("notifyRulesChanged")]
 		void NotifyRulesChanged ();
 	}
@@ -638,14 +709,25 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NEFilterNewFlowVerdict))]
 	interface NEFilterControlVerdict : NSSecureCoding, NSCopying {
+		/// <param name="updateRules">To be added.</param>
+		///         <summary>Creates and returns a verdict that allows the data flow, and updates the filtering rules.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("allowVerdictWithUpdateRules:")]
 		NEFilterControlVerdict AllowVerdictWithUpdateRules (bool updateRules);
 
+		/// <param name="updateRules">To be added.</param>
+		///         <summary>Creates and returns a verdict that drop the data in the flow, and updates the filtering rules.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("dropVerdictWithUpdateRules:")]
 		NEFilterControlVerdict DropVerdictWithUpdateRules (bool updateRules);
 
+		/// <summary>Creates and returns a verdict that indicates that the rules have been updated and future data flow will require new decisions.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("updateRules")]
 		NEFilterControlVerdict UpdateRules ();
@@ -659,6 +741,10 @@ namespace NetworkExtension {
 	[BaseType (typeof (NEFilterProvider))]
 	[DisableDefaultCtor] // no valid handle when `init` is called
 	interface NEFilterDataProvider {
+		/// <param name="flow">To be added.</param>
+		///         <summary>Method that is called to filter a new network flow.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("handleNewFlow:")]
 		NEFilterNewFlowVerdict HandleNewFlow (NEFilterFlow flow);
 
@@ -668,17 +754,31 @@ namespace NetworkExtension {
 		[Export ("handleOutboundDataFromFlow:readBytesStartOffset:readBytes:")]
 		NEFilterDataVerdict HandleOutboundDataFromFlow (NEFilterFlow flow, nuint offset, NSData readBytes);
 
+		/// <param name="flow">To be added.</param>
+		///         <summary>Method that is called to make a filtering decision for inbound data flow after the data is seen.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("handleInboundDataCompleteForFlow:")]
 		NEFilterDataVerdict HandleInboundDataCompleteForFlow (NEFilterFlow flow);
 
+		/// <param name="flow">To be added.</param>
+		///         <summary>ethod that is called to make a filtering decision for outbound data flow after the data is seen.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("handleOutboundDataCompleteForFlow:")]
 		NEFilterDataVerdict HandleOutboundDataCompleteForFlow (NEFilterFlow flow);
 
+		/// <param name="flow">To be added.</param>
+		///         <summary>Method that is called to handle a user remediation request.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("handleRemediationForFlow:")]
 		NEFilterRemediationVerdict HandleRemediationForFlow (NEFilterFlow flow);
 
+		/// <summary>Method that is called to handle to handle a change to the filtering rules.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("handleRulesChanged")]
@@ -709,14 +809,31 @@ namespace NetworkExtension {
 		[Export ("statisticsReportFrequency", ArgumentSemantic.Assign)]
 		NEFilterReportFrequency StatisticsReportFrequency { get; set; }
 
+		/// <summary>Creates and returns a verdict that allows the current and subsequent data to be passed on.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("allowVerdict")]
 		NEFilterDataVerdict AllowVerdict ();
 
+		/// <summary>Creates and returns a verdict that drops the current and subsequent data.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("dropVerdict")]
 		NEFilterDataVerdict DropVerdict ();
 
+		/// <param name="remediationUrlMapKey">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="remediationButtonTextMapKey">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Creates and returns a verdict that drops the current and subsequent data, but allows the user to request access.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("remediateVerdictWithRemediationURLMapKey:remediationButtonTextMapKey:")]
 		NEFilterDataVerdict RemediateVerdict ([NullAllowed] string remediationUrlMapKey, [NullAllowed] string remediationButtonTextMapKey);
@@ -725,6 +842,9 @@ namespace NetworkExtension {
 		[Export ("dataVerdictWithPassBytes:peekBytes:")]
 		NEFilterDataVerdict DataVerdict (nuint passBytes, nuint peekBytes);
 
+		/// <summary>Creates and returns a verdict that notifies the system that the Filter Control Provider needs to update the rules before deciding.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("needRulesVerdict")]
 		NEFilterDataVerdict NeedRulesVerdict ();
@@ -817,14 +937,23 @@ namespace NetworkExtension {
 		[Export ("sharedManager")]
 		NEFilterManager SharedManager { get; }
 
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>Loads the filter from the configuration that is saved in the Network Extension preferences and runs a completion handler after the operation is complete.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("loadFromPreferencesWithCompletionHandler:")]
 		[Async]
 		void LoadFromPreferences (Action<NSError> completionHandler);
 
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>Removes the filter from the Network Extensions preferences and runs a completion handler when the operation is complete.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeFromPreferencesWithCompletionHandler:")]
 		[Async]
 		void RemoveFromPreferences (Action<NSError> completionHandler);
 
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>Saves the filter in the Network Extensions preferences and runs a completion handler when the operation is complete.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("saveToPreferencesWithCompletionHandler:")]
 		[Async]
 		void SaveToPreferences (Action<NSError> completionHandler);
@@ -885,22 +1014,40 @@ namespace NetworkExtension {
 		[Export ("statisticsReportFrequency", ArgumentSemantic.Assign)]
 		NEFilterReportFrequency StatisticsReportFrequency { get; set; }
 
+		/// <summary>Creates and returns a verdict needs filter rules before it can decide.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("needRulesVerdict")]
 		NEFilterNewFlowVerdict NeedRulesVerdict ();
 
+		/// <summary>Returns a verdict that allows the data flow to pass.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("allowVerdict")]
 		NEFilterNewFlowVerdict AllowVerdict ();
 
+		/// <summary>Returns a verdict that drops the data flow and does not give the user the ability to request access.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("dropVerdict")]
 		NEFilterNewFlowVerdict DropVerdict ();
 
+		/// <param name="remediationUrlMapKey">To be added.</param>
+		///         <param name="remediationButtonTextMapKey">To be added.</param>
+		///         <summary>Returns a verdict that drops the data flow but gives the user the ability to request access.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("remediateVerdictWithRemediationURLMapKey:remediationButtonTextMapKey:")]
 		NEFilterNewFlowVerdict RemediateVerdict (string remediationUrlMapKey, string remediationButtonTextMapKey);
 
+		/// <param name="urlAppendMapKey">To be added.</param>
+		///         <summary>Returns a verdict that allows the data flow to pass, but that a string will be appended to the URL before the data is passed.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("URLAppendStringVerdictWithMapKey:")]
 		NEFilterNewFlowVerdict UrlAppendStringVerdict (string urlAppendMapKey);
@@ -923,10 +1070,17 @@ namespace NetworkExtension {
 	[BaseType (typeof (NEProvider))]
 	[Abstract] // documented as such
 	interface NEFilterProvider {
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("startFilterWithCompletionHandler:")]
 		[Async]
 		void StartFilter (Action<NSError> completionHandler);
 
+		/// <param name="reason">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopFilterWithReason:completionHandler:")]
 		[Async]
 		void StopFilter (NEProviderStopReason reason, Action completionHandler);
@@ -1061,14 +1215,23 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NEFilterVerdict))]
 	interface NEFilterRemediationVerdict : NSSecureCoding, NSCopying {
+		/// <summary>Returns a verdict that indicates that the flow will be allowed to pass if it is requested in the future.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("allowVerdict")]
 		NEFilterRemediationVerdict AllowVerdict ();
 
+		/// <summary>Returns a verdict that indicates that the flow will be not allowed to pass if it is requested in the future.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("dropVerdict")]
 		NEFilterRemediationVerdict DropVerdict ();
 
+		/// <summary>Returns a verdict that indicates that filtering rules are needed before it can be decided whether the flow will be allowed to pass if it is requested in the future.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("needRulesVerdict")]
 		NEFilterRemediationVerdict NeedRulesVerdict ();
@@ -1136,10 +1299,20 @@ namespace NetworkExtension {
 		[Export ("registerWithOptions:queue:handler:")]
 		bool Register ([NullAllowed] NSDictionary options, DispatchQueue queue, NEHotspotHelperHandler handler);
 
+		/// <param name="options">To be added.</param>
+		///         <param name="queue">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>Registers the hotspot helper.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("Register (options.GetDictionary (), queue, handler)")]
 		bool Register ([NullAllowed] NEHotspotHelperOptions options, DispatchQueue queue, NEHotspotHelperHandler handler);
 
+		/// <param name="network">To be added.</param>
+		///         <summary>Ends the helper's authentication session.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("logoff:")]
 		bool Logoff (NEHotspotNetwork network);
@@ -1211,14 +1384,26 @@ namespace NetworkExtension {
 		[NullAllowed, Export ("networkList")]
 		NEHotspotNetwork [] NetworkList { get; }
 
+		/// <param name="result">To be added.</param>
+		///         <summary>Creates and returns a command response.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("createResponse:")]
 		NEHotspotHelperResponse CreateResponse (NEHotspotHelperResult result);
 
+		/// <param name="endpoint">To be added.</param>
+		///         <summary>Creates and returns a TCP connection.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'NWParameters.RequiredInterface' with the 'Interface' property instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'NWParameters.RequiredInterface' with the 'Interface' property instead.")]
 		[Export ("createTCPConnection:")]
 		NWTcpConnection CreateTcpConnection (NWEndpoint endpoint);
 
+		/// <param name="endpoint">To be added.</param>
+		///         <summary>Creates and returns a UDP connection.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'NWParameters.RequiredInterface' with the 'Interface' property instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'NWParameters.RequiredInterface' with the 'Interface' property instead.")]
 		[Export ("createUDPSession:")]
@@ -1237,12 +1422,20 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NEHotspotHelperResponse {
+		/// <param name="network">To be added.</param>
+		///         <summary>Sets the network that transmits the confidence information.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setNetwork:")]
 		void SetNetwork (NEHotspotNetwork network);
 
+		/// <param name="networkList">To be added.</param>
+		///         <summary>Sets the handled networks.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setNetworkList:")]
 		void SetNetworkList (NEHotspotNetwork [] networkList);
 
+		/// <summary>Delivers the response.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("deliver")]
 		void Deliver ();
 	}
@@ -1297,9 +1490,15 @@ namespace NetworkExtension {
 		[Export ("chosenHelper")]
 		bool ChosenHelper { [Bind ("isChosenHelper")] get; }
 
+		/// <param name="confidence">To be added.</param>
+		///         <summary>Sets the hotspot's confidence.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setConfidence:")]
 		void SetConfidence (NEHotspotHelperConfidence confidence);
 
+		/// <param name="password">To be added.</param>
+		///         <summary>Sets the network password.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setPassword:")]
 		void SetPassword (string password);
 
@@ -1473,13 +1672,31 @@ namespace NetworkExtension {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // init returns nil
 	interface NEProvider {
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>Method that is called when the device is about to sleep.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("sleepWithCompletionHandler:")]
 		[Async]
 		void Sleep (Action completionHandler);
 
+		/// <summary>Method that is called when the device wakes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("wake")]
 		void Wake ();
 
+		/// <param name="remoteEndpoint">To be added.</param>
+		///         <param name="enableTLS">To be added.</param>
+		///         <param name="TLSParameters">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="connectionDelegate">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Creates a TCP connection with the specified values.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection' instead.")]
@@ -1487,6 +1704,14 @@ namespace NetworkExtension {
 		[Export ("createTCPConnectionToEndpoint:enableTLS:TLSParameters:delegate:")]
 		NWTcpConnection CreateTcpConnectionToEndpoint (NWEndpoint remoteEndpoint, bool enableTLS, [NullAllowed] NWTlsParameters TLSParameters, [NullAllowed] NSObject connectionDelegate);
 
+		/// <param name="remoteEndpoint">To be added.</param>
+		///         <param name="localEndpoint">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Creates a UDP connection with the specified values.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection' instead.")]
@@ -1507,6 +1732,10 @@ namespace NetworkExtension {
 		[NullAllowed, Export ("defaultPath")]
 		NWPath DefaultPath { get; }
 
+		/// <param name="message">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>Displays a message to the user and passes a Boolean result to a completion handler when it is finished.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 12, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 14)]
@@ -1685,10 +1914,27 @@ namespace NetworkExtension {
 	[BaseType (typeof (NEProvider))]
 	[DisableDefaultCtor] // init returns nil
 	interface NETunnelProvider {
+		/// <param name="messageData">To be added.</param>
+		///         <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Method that is called to handle messages from the containing app.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("handleAppMessage:completionHandler:")]
 		[Async]
 		void HandleAppMessage (NSData messageData, [NullAllowed] Action<NSData> completionHandler);
 
+		/// <param name="tunnelNetworkSettings">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Updates the network settings for the tunnel.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setTunnelNetworkSettings:completionHandler:")]
 		[Async]
 		void SetTunnelNetworkSettings ([NullAllowed] NETunnelNetworkSettings tunnelNetworkSettings, [NullAllowed] Action<NSError> completionHandler);
@@ -1726,6 +1972,9 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NEVpnManager))]
 	interface NETunnelProviderManager {
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>Loads all of the calling app's VPN configurations from the Network Extension preferences and runs a completion handler when the operation is complete.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("loadAllFromPreferencesWithCompletionHandler:")]
 		[Async]
@@ -1867,14 +2116,29 @@ namespace NetworkExtension {
 		[Static, Export ("sharedManager")]
 		NEVpnManager SharedManager { get; }
 
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>Loads the saved VPN configuration from the Network Extension preferences and runs a completion handler when the operation completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("loadFromPreferencesWithCompletionHandler:")]
 		[Async]
 		void LoadFromPreferences (Action<NSError> completionHandler); // nonnull !
 
+		/// <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Removes the configuration for this VPN manager from the Network Extension preferences and runs a completion handler when the operation completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeFromPreferencesWithCompletionHandler:")]
 		[Async]
 		void RemoveFromPreferences ([NullAllowed] Action<NSError> completionHandler);
 
+		/// <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Saves the configuration for this VPN manager to the Network Extension preferences and runs a completion handler when the operation completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("saveToPreferencesWithCompletionHandler:")]
 		[Async]
 		void SaveToPreferences ([NullAllowed] Action<NSError> completionHandler);
@@ -1917,6 +2181,10 @@ namespace NetworkExtension {
 		[Export ("status")]
 		NEVpnStatus Status { get; }
 
+		/// <param name="error">To be added.</param>
+		///         <summary>Begins connecting the VPN.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("startVPNTunnelAndReturnError:")]
 		bool StartVpnTunnel (out NSError error);
 
@@ -1925,10 +2193,17 @@ namespace NetworkExtension {
 		[Export ("startVPNTunnelWithOptions:andReturnError:")]
 		bool StartVpnTunnel ([NullAllowed] NSDictionary options, out NSError error);
 
+		/// <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Begins connecting the VPN.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("StartVpnTunnel (options.GetDictionary (), out error);")]
 		bool StartVpnTunnel ([NullAllowed] NEVpnConnectionStartOptions options, out NSError error);
 
+		/// <summary>Begins disconnecting the VPN.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopVPNTunnel")]
 		void StopVpnTunnel ();
 
@@ -2420,6 +2695,11 @@ namespace NetworkExtension {
 	[BaseType (typeof (NWEndpoint))]
 	[DisableDefaultCtor]
 	interface NWHostEndpoint {
+		/// <param name="hostname">To be added.</param>
+		///         <param name="port">To be added.</param>
+		///         <summary>Creates and returns a new host endpoint with the provided values.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWEndpoint.Create' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWEndpoint.Create' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWEndpoint.Create' instead.")]
@@ -2458,6 +2738,12 @@ namespace NetworkExtension {
 	[DisableDefaultCtor]
 	interface NWBonjourServiceEndpoint {
 
+		/// <param name="name">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <param name="domain">To be added.</param>
+		///         <summary>Creates and returns a new Bonjour service endpoint with the provided values.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWEndpoint.CreateBonjourService' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWEndpoint.CreateBonjourService' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWEndpoint.CreateBonjourService' instead.")]
@@ -2527,6 +2813,10 @@ namespace NetworkExtension {
 		[Export ("expensive")]
 		bool Expensive { [Bind ("isExpensive")] get; }
 
+		/// <param name="path">To be added.</param>
+		///         <summary>Returns <see langword="true" /> if this path represents the same path as the specified <paramref name="path" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWPath.EqualTo' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWPath.EqualTo' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWPath.EqualTo' instead.")]
@@ -2663,6 +2953,8 @@ namespace NetworkExtension {
 		[NullAllowed, Export ("error")]
 		NSError Error { get; }
 
+		/// <summary>Cancels the connection.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.Cancel' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.Cancel' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.Cancel' instead.")]
@@ -2686,6 +2978,10 @@ namespace NetworkExtension {
 		[Async]
 		void ReadMinimumLength (nuint minimum, nuint maximum, Action<NSData, NSError> completion);
 
+		/// <param name="data">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>Writes the provided <paramref name="data" /> to the connection and runs a completion handler when the operation completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.Send' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.Send' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.Send' instead.")]
@@ -2694,6 +2990,8 @@ namespace NetworkExtension {
 		[Async]
 		void Write (NSData data, Action<NSError> completion);
 
+		/// <summary>Closes the connection for write operations.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.Send' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.Send' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.Send' instead.")]
@@ -2712,6 +3010,11 @@ namespace NetworkExtension {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject), Name = "NWTCPConnectionAuthenticationDelegate")]
 	interface NWTcpConnectionAuthenticationDelegate {
+		/// <param name="connection">To be added.</param>
+		///         <summary>Method that is called to inform the delegate that it should provide identity information.</summary>
+		///         <returns>
+		///           <see langword="true" /> to indicate that the delegate will provide identity information.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Security.SecProtocolOptions.SetChallengeBlock' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Security.SecProtocolOptions.SetChallengeBlock' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Security.SecProtocolOptions.SetChallengeBlock' instead.")]
@@ -2719,6 +3022,10 @@ namespace NetworkExtension {
 		[Export ("shouldProvideIdentityForConnection:")]
 		bool ShouldProvideIdentity (NWTcpConnection connection);
 
+		/// <param name="connection">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>Method that is called to provide an identity and an optional certificate.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Security.SecProtocolOptions.SetChallengeBlock' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Security.SecProtocolOptions.SetChallengeBlock' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Security.SecProtocolOptions.SetChallengeBlock' instead.")]
@@ -2726,6 +3033,11 @@ namespace NetworkExtension {
 		[Export ("provideIdentityForConnection:completionHandler:")]
 		void ProvideIdentity (NWTcpConnection connection, Action<SecIdentity, NSArray> completion);
 
+		/// <param name="connection">To be added.</param>
+		///         <summary>Method that is called to inform the delegate that it should evaluate trust.</summary>
+		///         <returns>
+		///           <see langword="true" /> to indicate that the delegate will evaluate trust.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Security.SecProtocolOptions.SetVerifyBlock' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Security.SecProtocolOptions.SetVerifyBlock' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Security.SecProtocolOptions.SetVerifyBlock' instead.")]
@@ -2734,6 +3046,11 @@ namespace NetworkExtension {
 		bool ShouldEvaluateTrust (NWTcpConnection connection);
 
 
+		/// <param name="connection">To be added.</param>
+		///         <param name="peerCertificateChain">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>When implemented by the developer, overrides the default trust evaluation and runs a completion handler when the operation is complete.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Security.SecProtocolOptions.SetVerifyBlock' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Security.SecProtocolOptions.SetVerifyBlock' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Security.SecProtocolOptions.SetVerifyBlock' instead.")]
@@ -2879,6 +3196,8 @@ namespace NetworkExtension {
 		[NullAllowed, Export ("currentPath")]
 		NWPath CurrentPath { get; }
 
+		/// <summary>Mark the current endpoint unusable and try to connect to the next one.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.CancelCurrentEndpoint' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.CurrentPath' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.CancelCurrentEndpoint' instead.")]
@@ -2903,6 +3222,10 @@ namespace NetworkExtension {
 		[Export ("setReadHandler:maxDatagrams:")]
 		void SetReadHandler (Action<NSArray, NSError> handler, nuint maxDatagrams);
 
+		/// <param name="datagramArray">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>Writes the datagrams in the provided <paramref name="datagramArray" /> to the endpoint, and runs a completion handler when the operation completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.Send' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.Send' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.Send' instead.")]
@@ -2911,6 +3234,10 @@ namespace NetworkExtension {
 		[Async]
 		void WriteMultipleDatagrams (NSData [] datagramArray, Action<NSError> completionHandler);
 
+		/// <param name="datagram">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>Writes the provided <paramref name="datagram" /> to the endpoint, and runs a completion handler when the operation completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.Send' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.Send' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.Send' instead.")]
@@ -2919,6 +3246,8 @@ namespace NetworkExtension {
 		[Async]
 		void WriteDatagram (NSData datagram, Action<NSError> completionHandler);
 
+		/// <summary>Cancels the UDP session.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Network.NWConnection.Cancel' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Network.NWConnection.Cancel' instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'Network.NWConnection.Cancel' instead.")]
@@ -3139,18 +3468,33 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NEPacketTunnelFlow {
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>Reads packets from the TUN interface and runs a handler when the operation completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("readPacketsWithCompletionHandler:")]
 		[Async (ResultType = typeof (NEPacketTunnelFlowReadResult))]
 		void ReadPackets (Action<NSData [], NSNumber []> completionHandler);
 
+		/// <param name="packets">To be added.</param>
+		///         <param name="protocols">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("writePackets:withProtocols:")]
 		bool WritePackets (NSData [] packets, NSNumber [] protocols);
 
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Async]
 		[Export ("readPacketObjectsWithCompletionHandler:")]
 		void ReadPacketObjects (Action<NEPacket []> completionHandler);
 
+		/// <param name="packets">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("writePacketObjects:")]
 		bool WritePacketObjects (NEPacket [] packets);
@@ -3159,14 +3503,31 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NETunnelProvider))]
 	interface NEPacketTunnelProvider {
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>Starts the tunnel.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("startTunnelWithOptions:completionHandler:")]
 		[Async]
 		void StartTunnel ([NullAllowed] NSDictionary<NSString, NSObject> options, Action<NSError> completionHandler);
 
+		/// <param name="reason">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>Stops the Tunnel.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopTunnelWithReason:completionHandler:")]
 		[Async]
 		void StopTunnel (NEProviderStopReason reason, Action completionHandler);
 
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Cancels the tunnel with the specified error.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancelTunnelWithError:")]
 		void CancelTunnel ([NullAllowed] NSError error);
 
@@ -3176,6 +3537,19 @@ namespace NetworkExtension {
 		[Export ("packetFlow")]
 		NEPacketTunnelFlow PacketFlow { get; }
 
+		/// <param name="remoteEndpoint">The remote endpoint for the connection.</param>
+		///         <param name="enableTls">Whether TLS is enabled.</param>
+		///         <param name="tlsParameters">
+		///           <para>TLS parameters, if TLS is enabled.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="delegate">
+		///           <para>Handler to run when the connection is created.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Creates a new tunneled TCP connection.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'NWParameters.RequiredInterface' with the 'VirtualInterface' property instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'NWParameters.RequiredInterface' with the 'VirtualInterface' property instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'NWParameters.RequiredInterface' with the 'VirtualInterface' property instead.")]
@@ -3183,6 +3557,14 @@ namespace NetworkExtension {
 		[Export ("createTCPConnectionThroughTunnelToEndpoint:enableTLS:TLSParameters:delegate:")]
 		NWTcpConnection CreateTcpConnection (NWEndpoint remoteEndpoint, bool enableTls, [NullAllowed] NWTlsParameters tlsParameters, [NullAllowed] INWTcpConnectionAuthenticationDelegate @delegate);
 
+		/// <param name="remoteEndpoint">To be added.</param>
+		///         <param name="localEndpoint">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Creates a new tunneled UDP connection.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'NWParameters.RequiredInterface' with the 'VirtualInterface' property instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'NWParameters.RequiredInterface' with the 'VirtualInterface' property instead.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'NWParameters.RequiredInterface' with the 'VirtualInterface' property instead.")]
@@ -3220,12 +3602,37 @@ namespace NetworkExtension {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NEVpnConnection))]
 	interface NETunnelProviderSession {
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Begins connecting the tunnel.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("startTunnelWithOptions:andReturnError:")]
 		bool StartTunnel ([NullAllowed] NSDictionary<NSString, NSObject> options, [NullAllowed] out NSError error);
 
+		/// <summary>Begins disconnecting the tunnel.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopTunnel")]
 		void StopTunnel ();
 
+		/// <param name="messageData">To be added.</param>
+		///         <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="responseHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Sends the <paramref name="messageData" /> to the Tunnel Provider extension.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("sendProviderMessage:returnError:responseHandler:")]
 		bool SendProviderMessage (NSData messageData, [NullAllowed] out NSError error, [NullAllowed] Action<NSData> responseHandler);
 	}
@@ -3284,14 +3691,23 @@ namespace NetworkExtension {
 		[Export ("sharedManager")]
 		NEDnsProxyManager SharedManager { get; }
 
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("loadFromPreferencesWithCompletionHandler:")]
 		void LoadFromPreferences (Action<NSError> completionHandler);
 
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("removeFromPreferencesWithCompletionHandler:")]
 		void RemoveFromPreferences (Action<NSError> completionHandler);
 
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("saveToPreferencesWithCompletionHandler:")]
 		void SaveToPreferences (Action<NSError> completionHandler);
@@ -3328,17 +3744,38 @@ namespace NetworkExtension {
 	[BaseType (typeof (NEProvider), Name = "NEDNSProxyProvider")]
 	interface NEDnsProxyProvider {
 
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("startProxyWithOptions:completionHandler:")]
 		void StartProxy ([NullAllowed] NSDictionary options, Action<NSError> completionHandler);
 
+		/// <param name="reason">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("stopProxyWithReason:completionHandler:")]
 		void StopProxy (NEProviderStopReason reason, Action completionHandler);
 
+		/// <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancelProxyWithError:")]
 		void CancelProxy ([NullAllowed] NSError error);
 
+		/// <param name="flow">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("handleNewFlow:")]
 		bool HandleNewFlow (NEAppProxyFlow flow);
 
@@ -3481,9 +3918,17 @@ namespace NetworkExtension {
 		[Export ("preferredTLSVersion", ArgumentSemantic.Assign)]
 		NEHotspotConfigurationEapTlsVersion PreferredTlsVersion { get; set; }
 
+		/// <param name="identity">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("setIdentity:")]
 		bool SetIdentity (SecIdentity identity);
 
+		/// <param name="certificates">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("setTrustedServerCertificates:")]
 		bool SetTrustedServerCertificates (NSObject [] certificates);
 	}
@@ -3567,16 +4012,32 @@ namespace NetworkExtension {
 		[Export ("sharedManager", ArgumentSemantic.Strong)]
 		NEHotspotConfigurationManager SharedManager { get; }
 
+		/// <param name="configuration">To be added.</param>
+		///         <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("applyConfiguration:completionHandler:")]
 		void ApplyConfiguration (NEHotspotConfiguration configuration, [NullAllowed] Action<NSError> completionHandler);
 
+		/// <param name="ssid">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeConfigurationForSSID:")]
 		void RemoveConfiguration (string ssid);
 
+		/// <param name="domainName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeConfigurationForHS20DomainName:")]
 		void RemoveConfigurationForHS20DomainName (string domainName);
 
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("getConfiguredSSIDsWithCompletionHandler:")]
 		void GetConfiguredSsids (Action<string []> completionHandler);

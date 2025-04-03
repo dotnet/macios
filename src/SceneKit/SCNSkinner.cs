@@ -66,6 +66,14 @@ namespace SceneKit {
 		}
 
 #if NET
+		/// <param name="baseGeometry">To be added.</param>
+		///         <param name="bones">To be added.</param>
+		///         <param name="boneInverseBindTransforms">To be added.</param>
+		///         <param name="boneWeights">To be added.</param>
+		///         <param name="boneIndices">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]

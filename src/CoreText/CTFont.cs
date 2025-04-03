@@ -381,11 +381,16 @@ namespace CoreText {
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatures {
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatures ()
 			: this (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatures (NSDictionary dictionary)
 		{
 			if (dictionary is null)
@@ -458,11 +463,16 @@ namespace CoreText {
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontFeatureSelectors {
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureSelectors ()
 			: this (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureSelectors (NSDictionary dictionary)
 		{
 			if (dictionary is null)
@@ -623,6 +633,9 @@ namespace CoreText {
 			AllTypeFeaturesOff = 1,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureAllTypographicFeatures (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -690,6 +703,9 @@ namespace CoreText {
 			HistoricalLigaturesOff = 21,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureLigatures (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -729,6 +745,9 @@ namespace CoreText {
 			InitialCapsAndSmallCaps = 5,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureLetterCase (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -758,6 +777,9 @@ namespace CoreText {
 			Cursive = 2,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureCursiveConnection (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -785,6 +807,9 @@ namespace CoreText {
 			SubstituteVerticalFormsOff = 1,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureVerticalSubstitutionConnection (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -812,6 +837,9 @@ namespace CoreText {
 			LinguisticRearrangementOff = 1,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureLinguisticRearrangementConnection (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -843,6 +871,9 @@ namespace CoreText {
 			QuarterWidthNumbers = 3,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureNumberSpacing (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -886,6 +917,9 @@ namespace CoreText {
 			NonFinalSwashesOff = 9,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureSmartSwash (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -915,6 +949,9 @@ namespace CoreText {
 			DecomposeDiacritics = 2,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureDiacritics (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -948,6 +985,9 @@ namespace CoreText {
 			ScientificInferiors = 4,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureVerticalPosition (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -977,6 +1017,9 @@ namespace CoreText {
 			DiagonalFractions = 2,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureFractions (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1004,6 +1047,9 @@ namespace CoreText {
 			PreventOverlapOff = 1,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureOverlappingCharacters (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1051,6 +1097,9 @@ namespace CoreText {
 			PeriodsToEllipsisOff = 11,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureTypographicExtras (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1098,6 +1147,9 @@ namespace CoreText {
 			MathematicalGreekOff = 11,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureMathematicalExtras (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1135,6 +1187,9 @@ namespace CoreText {
 			MathSymbols = 6,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureOrnamentSets (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1160,6 +1215,9 @@ namespace CoreText {
 			NoAlternates = 0,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureCharacterAlternatives (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1193,6 +1251,9 @@ namespace CoreText {
 			DesignLevel5 = 4,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureDesignComplexity (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1228,6 +1289,9 @@ namespace CoreText {
 			TallCaps = 5,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureStyleOptions (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1281,6 +1345,9 @@ namespace CoreText {
 			TraditionalNamesCharacters = 14,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureCharacterShape (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1308,6 +1375,9 @@ namespace CoreText {
 			UpperCaseNumbers = 1,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureNumberCase (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1345,6 +1415,9 @@ namespace CoreText {
 			AltHalfWidthText = 6,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureTextSpacing (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1388,6 +1461,9 @@ namespace CoreText {
 			HanjaToHangulAltThree = 9,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureTransliteration (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1433,6 +1509,9 @@ namespace CoreText {
 			InvertedRoundedBoxAnnotation = 10,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureAnnotation (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1460,6 +1539,9 @@ namespace CoreText {
 			ProportionalKana = 1,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureKanaSpacing (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1489,6 +1571,9 @@ namespace CoreText {
 			HalfWidthIdeographs = 2,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureIdeographicSpacing (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1524,6 +1609,9 @@ namespace CoreText {
 			TranscodingCompositionOff = 5,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureUnicodeDecomposition (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1567,6 +1655,9 @@ namespace CoreText {
 			RubyKanaOff = 3,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureRubyKana (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1602,6 +1693,9 @@ namespace CoreText {
 			CJKSymbolAltFive = 5,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureCJKSymbolAlternatives (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1637,6 +1731,9 @@ namespace CoreText {
 			IdeographicAltFive = 5,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureIdeographicAlternatives (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1664,6 +1761,9 @@ namespace CoreText {
 			CJKVerticalRomanHBaseline = 1,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureCJKVerticalRomanPlacement (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1707,6 +1807,9 @@ namespace CoreText {
 			CJKItalicRomanOff = 3,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureItalicCJKRoman (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1738,6 +1841,9 @@ namespace CoreText {
 			CaseSensitiveSpacingOff = 3,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureCaseSensitiveLayout (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1769,6 +1875,9 @@ namespace CoreText {
 			AlternateVertKanaOff = 3,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureAlternateKana (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1874,6 +1983,9 @@ namespace CoreText {
 			StylisticAltTwentyOff = 41,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureStylisticAlternatives (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1909,6 +2021,9 @@ namespace CoreText {
 			ContextualSwashAlternatesOff = 5,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureContextualAlternates (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1938,6 +2053,9 @@ namespace CoreText {
 			LowerCasePetiteCaps = 2,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureLowerCase (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1967,6 +2085,9 @@ namespace CoreText {
 			UpperCasePetiteCaps = 2,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureUpperCase (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -1998,6 +2119,9 @@ namespace CoreText {
 			FullWidthCJKRoman = 3,
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureCJKRomanSpacing (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -2056,11 +2180,16 @@ namespace CoreText {
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontVariationAxes {
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontVariationAxes ()
 			: this (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontVariationAxes (NSDictionary dictionary)
 		{
 			if (dictionary is null)
@@ -2132,11 +2261,16 @@ namespace CoreText {
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontVariation {
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontVariation ()
 			: this (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontVariation (NSDictionary dictionary)
 		{
 			if (dictionary is null)
@@ -2798,6 +2932,11 @@ namespace CoreText {
 			}
 		}
 
+		/// <param name="characters">To be added.</param>
+		///         <param name="glyphs">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool GetGlyphsForCharacters (char [] characters, CGGlyph [] glyphs)
 		{
 			return GetGlyphsForCharacters (characters, glyphs, Math.Min (characters.Length, glyphs.Length));
@@ -2953,6 +3092,10 @@ namespace CoreText {
 		static extern CGGlyph CTFontGetGlyphWithName (/* CTFontRef __nonnull */ IntPtr font,
 			/* CFStringRef __nonnull */ IntPtr glyphName);
 
+		/// <param name="glyphName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGGlyph GetGlyphWithName (string glyphName)
 		{
 			if (glyphName is null)
@@ -2988,6 +3131,11 @@ namespace CoreText {
 			return CTFontGetOpticalBoundsForGlyphs (Handle, glyphs, boundingRects, count, (nuint) (ulong) options);
 		}
 
+		/// <param name="orientation">To be added.</param>
+		///         <param name="glyphs">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGRect GetBoundingRects (CTFontOrientation orientation, CGGlyph [] glyphs)
 		{
 			if (glyphs is null)
@@ -3006,6 +3154,11 @@ namespace CoreText {
 			return CTFontGetAdvancesForGlyphs (Handle, orientation, glyphs, advances, count);
 		}
 
+		/// <param name="orientation">To be added.</param>
+		///         <param name="glyphs">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public double GetAdvancesForGlyphs (CTFontOrientation orientation, CGGlyph [] glyphs)
 		{
 			if (glyphs is null)
@@ -3024,6 +3177,10 @@ namespace CoreText {
 			CTFontGetVerticalTranslationsForGlyphs (Handle, glyphs, translations, count);
 		}
 
+		/// <param name="glyph">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGPath? GetPathForGlyph (CGGlyph glyph)
 		{
 			IntPtr h;
@@ -3037,6 +3194,11 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern IntPtr CTFontCreatePathForGlyph (IntPtr font, CGGlyph glyph, CGAffineTransform* transform);
+		/// <param name="glyph">To be added.</param>
+		///         <param name="transform">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGPath? GetPathForGlyph (CGGlyph glyph, ref CGAffineTransform transform)
 		{
 			IntPtr h;
@@ -3053,6 +3215,11 @@ namespace CoreText {
 			[In] CGGlyph [] glyphs, [In] CGPoint [] positions, nint count,
 			/* CGContextRef __nonnull */ IntPtr context);
 
+		/// <param name="context">To be added.</param>
+		///         <param name="glyphs">To be added.</param>
+		///         <param name="positions">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void DrawGlyphs (CGContext context, CGGlyph [] glyphs, CGPoint [] positions)
 		{
 			if (context is null)
@@ -3086,6 +3253,9 @@ namespace CoreText {
 		#region Font Variations
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontCopyVariationAxes (IntPtr font);
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTFontVariationAxes [] GetVariationAxes ()
 		{
 			var cfArrayRef = CTFontCopyVariationAxes (Handle);
@@ -3097,6 +3267,9 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontCopyVariation (IntPtr font);
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTFontVariation? GetVariation ()
 		{
 			var cfDictionaryRef = CTFontCopyVariation (Handle);
@@ -3112,6 +3285,9 @@ namespace CoreText {
 			/* CTFontRef __nonnull */ IntPtr font);
 
 		// Always returns only default features
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatures [] GetFeatures ()
 		{
 			var cfArrayRef = CTFontCopyFeatures (Handle);
@@ -3125,6 +3301,9 @@ namespace CoreText {
 		static extern /* CFArrayRef __nullable */ IntPtr CTFontCopyFeatureSettings (
 			/* CTFontRef __nonnull */ IntPtr font);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTFontFeatureSettings [] GetFeatureSettings ()
 		{
 			var cfArrayRef = CTFontCopyFeatureSettings (Handle);
@@ -3138,6 +3317,10 @@ namespace CoreText {
 		#region Font Conversion
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontCopyGraphicsFont (IntPtr font, IntPtr attributes);
+		/// <param name="attributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGFont? ToCGFont (CTFontDescriptor? attributes)
 		{
 			var h = CTFontCopyGraphicsFont (Handle, attributes.GetHandle ());
@@ -3147,6 +3330,9 @@ namespace CoreText {
 			return new CGFont (h, true);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGFont? ToCGFont ()
 		{
 			return ToCGFont (null);
@@ -3158,6 +3344,10 @@ namespace CoreText {
 		static extern /* CFArrayRef __nullable */ IntPtr CTFontCopyAvailableTables (
 			/* CTFontRef __nonnull */ IntPtr font, CTFontTableOptions options);
 
+		/// <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTFontTable [] GetAvailableTables (CTFontTableOptions options)
 		{
 			var cfArrayRef = CTFontCopyAvailableTables (Handle, options);
@@ -3170,6 +3360,11 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontCopyTable (IntPtr font, CTFontTable table, CTFontTableOptions options);
+		/// <param name="table">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSData? GetFontTableData (CTFontTable table, CTFontTableOptions options)
 		{
 			var cfDataRef = CTFontCopyTable (Handle, table, options);
@@ -3182,6 +3377,10 @@ namespace CoreText {
 		extern static /* CFArrayRef __nullable */ IntPtr CTFontCopyDefaultCascadeListForLanguages (
 			/* CTFontRef __nonnull */ IntPtr font, /* CFArrayRef __nullable */ IntPtr languagePrefList);
 
+		/// <param name="languages">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTFontDescriptor? []? GetDefaultCascadeList (string [] languages)
 		{
 			using (var arr = languages is null ? null : NSArray.FromStrings (languages)) {
@@ -3265,11 +3464,24 @@ namespace CoreText {
 		}
 
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string? ToString ()
 		{
 			return FullName;
 		}
 
+		/// <summary>Type identifier for the CoreText.CTFont type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
+		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[bool isCTFont = (CFType.GetTypeID (foo.Handle) == CTFont.GetTypeID ());]]></code>
+		///           </example>
+		///         </remarks>
 		[DllImport (Constants.CoreTextLibrary, EntryPoint = "CTFontGetTypeID")]
 		public extern static nint GetTypeID ();
 	}

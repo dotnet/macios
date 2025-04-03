@@ -54,6 +54,12 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="name">To be added.</param>
+		///         <param name="eventCode">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <param name="isOptional">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSScriptCommandArgumentDescription (string name, string eventCode, string type, bool isOptional = false)
 		{
 			if (String.IsNullOrEmpty (name))

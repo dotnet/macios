@@ -46,6 +46,7 @@ namespace VideoToolbox {
 		{
 		}
 
+		/// <include file="../../docs/api/VideoToolbox/VTCompressionSession.xml" path="/Documentation/Docs[@DocId='M:VideoToolbox.VTCompressionSession.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero)
@@ -97,6 +98,15 @@ namespace VideoToolbox {
 		}
 #endif // !NET
 
+		/// <param name="width">Frame width in pixels.</param>
+		///         <param name="height">Frame height in pixels.</param>
+		///         <param name="codecType">Encoder to use to compress the frames.</param>
+		///         <param name="compressionOutputCallback">Method that will be invoked to process a compressed frame.  See the delegate type for more information on the received parameters.</param>
+		///         <param name="encoderSpecification">Parameters to choose the encoder, or null to let VideoToolbox choose it.</param>
+		///         <param name="sourceImageBufferAttributes">The Dictionary property extracted from a <see cref="T:CoreVideo.CVPixelBufferAttributes" /> type, or an NSDictionary with the desired CoreVideo Pixel Buffer Attributes values.</param>
+		///         <summary>Creates a compression session</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>The <paramref name="compressionOutputCallback" /> will be invoked for each frame in decode order, not necessarily the display order.</remarks>
 		public static VTCompressionSession? Create (int width, int height, CMVideoCodecType codecType,
 			VTCompressionOutputCallback compressionOutputCallback,
 			VTVideoEncoderSpecification? encoderSpecification = null, // hardware acceleration is default behavior on iOS. no opt-in required.
@@ -162,6 +172,15 @@ namespace VideoToolbox {
 				encoderSpecification, sourceImageBufferAttributes);
 		}
 #endif
+		/// <param name="width">To be added.</param>
+		///         <param name="height">To be added.</param>
+		///         <param name="codecType">To be added.</param>
+		///         <param name="compressionOutputCallback">To be added.</param>
+		///         <param name="encoderSpecification">To be added.</param>
+		///         <param name="sourceImageBufferAttributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static VTCompressionSession? Create (int width, int height, CMVideoCodecType codecType,
 			VTCompressionOutputCallback compressionOutputCallback,
 			VTVideoEncoderSpecification? encoderSpecification, // hardware acceleration is default behavior on iOS. no opt-in required.
@@ -216,6 +235,9 @@ namespace VideoToolbox {
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static IntPtr /* cvpixelbufferpoolref */ VTCompressionSessionGetPixelBufferPool (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CVPixelBufferPool? GetPixelBufferPool ()
 		{
 			var ret = VTCompressionSessionGetPixelBufferPool (GetCheckedHandle ());
@@ -236,6 +258,9 @@ namespace VideoToolbox {
 		extern static VTStatus VTCompressionSessionPrepareToEncodeFrames (IntPtr handle);
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
@@ -267,6 +292,15 @@ namespace VideoToolbox {
 			return status;
 		}
 
+		/// <param name="imageBuffer">To be added.</param>
+		///         <param name="presentationTimestamp">To be added.</param>
+		///         <param name="duration">To be added.</param>
+		///         <param name="frameProperties">To be added.</param>
+		///         <param name="sourceFrame">To be added.</param>
+		///         <param name="infoFlags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public VTStatus EncodeFrame (CVImageBuffer imageBuffer, CMTime presentationTimestamp, CMTime duration,
 			NSDictionary frameProperties, IntPtr sourceFrame, out VTEncodeInfoFlags infoFlags)
 		{
@@ -351,6 +385,10 @@ namespace VideoToolbox {
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static VTStatus VTCompressionSessionCompleteFrames (IntPtr session, CMTime completeUntilPresentationTimeStamp);
 
+		/// <param name="completeUntilPresentationTimeStamp">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public VTStatus CompleteFrames (CMTime completeUntilPresentationTimeStamp)
 		{
 			return VTCompressionSessionCompleteFrames (GetCheckedHandle (), completeUntilPresentationTimeStamp);
@@ -366,6 +404,10 @@ namespace VideoToolbox {
 		extern static VTStatus VTCompressionSessionBeginPass (IntPtr session, VTCompressionSessionOptionFlags flags, IntPtr reserved);
 
 #if NET
+		/// <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
@@ -386,6 +428,10 @@ namespace VideoToolbox {
 		unsafe extern static VTStatus VTCompressionSessionEndPass (IntPtr session, byte* furtherPassesRequestedOut, IntPtr reserved);
 
 #if NET
+		/// <param name="furtherPassesRequested">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
@@ -403,6 +449,9 @@ namespace VideoToolbox {
 		}
 
 		// Like EndPass, but this will be the final pass, so the encoder will skip the evaluation.
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public VTStatus EndPassAsFinal ()
 		{
 			unsafe {
@@ -423,6 +472,10 @@ namespace VideoToolbox {
 			/* const CMTimeRange** */ IntPtr* target);
 
 #if NET
+		/// <param name="timeRanges">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
@@ -449,6 +502,10 @@ namespace VideoToolbox {
 			return VTStatus.Ok;
 		}
 
+		/// <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public VTStatus SetCompressionProperties (VTCompressionProperties options)
 		{
 			if (options is null)

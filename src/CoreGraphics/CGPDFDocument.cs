@@ -57,6 +57,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGPDFDocumentRef */ IntPtr CGPDFDocumentCreateWithProvider (/* CGDataProviderRef */ IntPtr provider);
 
+		/// <param name="provider">Data provider.</param>
+		///         <summary>Creates a CGPDFDocument from a data provider, typically an array of bytes.</summary>
+		///         <remarks>You can use this to create PDF documents dynamically.   CGDataProviders can deliver the data either from a block of memory or from the contents of a file.</remarks>
 		public CGPDFDocument (CGDataProvider provider)
 			: base (CGPDFDocumentCreateWithProvider (provider.GetNonNullHandle (nameof (provider))), true)
 		{
@@ -76,6 +79,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGPDFDocumentRef */ IntPtr CGPDFDocumentCreateWithURL (/* CFURLRef */ IntPtr url);
 
+		/// <param name="str">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CGPDFDocument? FromFile (string str)
 		{
 			using (var url = CFUrl.FromFile (str)) {
@@ -89,6 +96,10 @@ namespace CoreGraphics {
 
 		}
 
+		/// <param name="str">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CGPDFDocument? FromUrl (string str)
 		{
 			using (var url = CFUrl.FromUrlString (str, null)) {
@@ -125,6 +136,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static void CGPDFDocumentGetVersion (/* CGPDFDocumentRef */ IntPtr document, /* int* */ int* majorVersion, /* int* */ int* minorVersion);
 
+		/// <param name="major">To be added.</param>
+		///         <param name="minor">To be added.</param>
+		///         <summary>Gets the version of <c>this</c> <see cref="T:CoreGraphics.CGPDFDocument" /> object, including the <paramref name="major" /> and <paramref name="minor" /> version numbers.</summary>
+		///         <remarks>To be added.</remarks>
 		public void GetVersion (out int major, out int minor)
 		{
 			major = default;
@@ -149,6 +164,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static byte CGPDFDocumentUnlockWithPassword (/* CGPDFDocumentRef */ IntPtr document, /* const char* */ IntPtr password);
 
+		/// <param name="password">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Unlock (string password)
 		{
 			using var passwordPtr = new TransientString (password);
@@ -193,6 +212,9 @@ namespace CoreGraphics {
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGPDFDictionaryRef */ IntPtr CGPDFDocumentGetCatalog (/* CGPDFDocumentRef */ IntPtr document);
+		/// <summary>Gets the catalog for <c>this</c> <see cref="T:CoreGraphics.CGPDFDocument" /> object.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGPDFDictionary GetCatalog ()
 		{
 			return new CGPDFDictionary (CGPDFDocumentGetCatalog (Handle));
@@ -201,6 +223,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGPDFDictionaryRef */ IntPtr CGPDFDocumentGetInfo (/* CGPDFDocumentRef */ IntPtr document);
 
+		/// <summary>Gets information for <c>this</c> <see cref="T:CoreGraphics.CGPDFDocument" /> as a <see cref="T:CoreGraphics.CGPDFDictionary" /> dictionary.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGPDFDictionary GetInfo ()
 		{
 			return new CGPDFDictionary (CGPDFDocumentGetInfo (Handle));
@@ -213,6 +238,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGPDFContextSetOutline (/* CGPDFDocumentRef */ IntPtr document, IntPtr /* dictionary */ outline);
 
+		/// <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
@@ -229,6 +257,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CFDictionaryPtry */ IntPtr CGPDFDocumentGetOutline (/* CGPDFDocumentRef */ IntPtr document);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
@@ -246,6 +277,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGPDFAccessPermissions CGPDFDocumentGetAccessPermissions (IntPtr document);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]

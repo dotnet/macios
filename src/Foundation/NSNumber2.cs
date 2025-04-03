@@ -288,16 +288,29 @@ namespace Foundation {
 			return (FromDouble ((double) value));
 		}
 
+		/// <summary>Returns a string representation of the value of the current instance.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			return StringValue;
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public int CompareTo (object obj)
 		{
 			return CompareTo (obj as NSNumber);
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public int CompareTo (NSNumber other)
 		{
 			// value must not be `nil` to call the `compare:` selector
@@ -308,12 +321,20 @@ namespace Foundation {
 		}
 
 		// should be present when implementing IComparable
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object other)
 		{
 			return Equals (other as NSNumber);
 		}
 
 		// IEquatable<NSNumber>
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (NSNumber other)
 		{
 			if (other is null)
@@ -323,6 +344,9 @@ namespace Foundation {
 			return result;
 		}
 
+		/// <summary>Generates a hash code for the current instance.</summary>
+		///         <returns>A int containing the hash code for this instance.</returns>
+		///         <remarks>The algorithm used to generate the hash code is unspecified.</remarks>
 		public override int GetHashCode ()
 		{
 			// this is heavy weight :( but it's the only way to follow .NET rule where:

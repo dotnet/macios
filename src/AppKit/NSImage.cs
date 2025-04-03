@@ -44,6 +44,10 @@ namespace AppKit {
 			}
 		}
 
+		/// <param name="stream">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSImage? FromStream (System.IO.Stream stream)
 		{
 			using (var data = NSData.FromStream (stream)) {
@@ -51,6 +55,10 @@ namespace AppKit {
 			}
 		}
 
+		/// <param name="fileName">To be added.</param>
+		///         <param name="lazy">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSImage (string fileName, bool lazy)
 		{
 			if (lazy)
@@ -59,6 +67,10 @@ namespace AppKit {
 				Handle = InitWithContentsOfFile (fileName);
 		}
 
+		/// <param name="data">To be added.</param>
+		///         <param name="ignoresOrientation">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSImage (NSData data, bool ignoresOrientation)
 		{
 			if (ignoresOrientation) {
@@ -78,6 +90,10 @@ namespace AppKit {
 			set { SetName (value); }
 		}
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSImage? ImageNamed (NSImageName name)
 		{
 			return ImageNamed (name.GetConstant ());

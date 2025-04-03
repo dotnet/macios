@@ -18,6 +18,12 @@ using CoreFoundation;
 namespace GameKit {
 #if !MONOMAC && !TVOS
 	public class GKDataReceivedEventArgs : EventArgs {
+		/// <param name="data">To be added.</param>
+		///         <param name="peer">To be added.</param>
+		///         <param name="session">To be added.</param>
+		///         <summary>Initializes a new instance of the GKDataReceivedEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public GKDataReceivedEventArgs (NSData data, string peer, GKSession session)
 		{
 			Data = data;
@@ -79,6 +85,10 @@ namespace GameKit {
 			}
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <param name="context">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetDataReceiveHandler (NSObject obj, IntPtr context)
 		{
 			receiver = null;
@@ -181,6 +191,12 @@ namespace GameKit {
 #endif // !TVOS
 
 	public class GKPeerChangedStateEventArgs : EventArgs {
+		/// <param name="session">To be added.</param>
+		///         <param name="peerID">To be added.</param>
+		///         <param name="state">To be added.</param>
+		///         <summary>Initializes a new instance of the GKPeerChangedStateEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public GKPeerChangedStateEventArgs (GKSession session, string peerID, GKPeerConnectionState state)
 		{
 			Session = session;
@@ -203,6 +219,12 @@ namespace GameKit {
 	}
 
 	public class GKPeerConnectionEventArgs : EventArgs {
+		/// <param name="session">To be added.</param>
+		///         <param name="peerID">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Initializes a new instance of the GKPeerConnectionEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public GKPeerConnectionEventArgs (GKSession session, string? peerID, NSError? error)
 		{
 			Session = session;
@@ -229,6 +251,11 @@ namespace GameKit {
 
 	public partial class GKTurnBasedExchange {
 
+		/// <summary>Returns a string representation of the value of the current instance.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			return "GKTurnBasedExchange";
@@ -237,6 +264,11 @@ namespace GameKit {
 
 	public partial class GKTurnBasedExchangeReply {
 
+		/// <summary>Returns a string representation of the value of the current instance.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			return "GKTurnBasedExchangeReply";
@@ -245,6 +277,11 @@ namespace GameKit {
 
 	public partial class GKChallenge {
 
+		/// <summary>Returns a string representation of the value of the current instance.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			return GetType ().ToString ();

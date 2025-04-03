@@ -69,6 +69,10 @@ namespace CoreMidi {
 		///         <remarks>This is ignored when <see cref="F:CoreMidi.MidiTransform.Transform" /> is set to <see cref="F:CoreMidi.MidiTransformType.None" /> or <see cref="F:CoreMidi.MidiTransformType.FilterOut" />.</remarks>
 		public short Param;
 
+		/// <param name="transform">Transformation type to be applied.</param>
+		///         <param name="param">Extra information needed by the transformation.</param>
+		///         <summary>Creates a new <see cref="T:CoreMidi.MidiTransform" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public MidiTransform (MidiTransformType transform, short param)
 		{
 			Transform = transform;
@@ -122,6 +126,13 @@ namespace CoreMidi {
 		///         <remarks>This is ignored when <see cref="F:CoreMidi.MidiControlTransform.Transform" /> is set to <see cref="F:CoreMidi.MidiTransformType.None" /> or <see cref="F:CoreMidi.MidiTransformType.FilterOut" />.</remarks>
 		public short Param;
 
+		/// <param name="controlType">MIDI conrol type.</param>
+		///         <param name="remappedControlType">Resulting control type.</param>
+		///         <param name="controlNumber">Number of the control to be transformed.</param>
+		///         <param name="transform">Transformation type to be applied.</param>
+		///         <param name="param">Additional information for the transformation.</param>
+		///         <summary>Creates a new <see cref="T:CoreMidi.MidiControlTransform" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public MidiControlTransform (MidiTransformControlType controlType,
 									 MidiTransformControlType remappedControlType,
 									 ushort controlNumber, MidiTransformType transform,
@@ -148,6 +159,10 @@ namespace CoreMidi {
 		///         <remarks>To be added.</remarks>
 		public MidiUniqueID UniqueID;
 
+		/// <param name="endpointRef">Endpoint ref.</param>
+		///         <param name="uniqueID">Endpoint unique id.</param>
+		///         <summary>Creates a new <see cref="T:CoreMidi.MidiThruConnectionEndpoint" />.</summary>
+		///         <remarks>Set <see cref="F:CoreMidi.MidiThruConnectionEndpoint.UniqueID" /> to 0 if the endpoint already exists.</remarks>
 		public MidiThruConnectionEndpoint (MidiEndpointRef endpointRef, MidiUniqueID uniqueID)
 		{
 			EndpointRef = endpointRef;
@@ -347,6 +362,8 @@ namespace CoreMidi {
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe extern static void MIDIThruConnectionParamsInitialize (MidiThruConnectionParamsStruct* inConnectionParams);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MidiThruConnectionParams ()
 		{
 			// Always create a valid init point

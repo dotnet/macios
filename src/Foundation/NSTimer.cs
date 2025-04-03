@@ -34,46 +34,92 @@ namespace Foundation {
 		// The right selector signature is:
 		//		- (void)timerFireMethod:(NSTimer *)timer
 		// which does not match the (old) API we were provided
+		/// <param name="when">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSTimer CreateRepeatingScheduledTimer (TimeSpan when, Action<NSTimer> action)
 		{
 			return CreateScheduledTimer (when.TotalSeconds, new NSTimerActionDispatcher (action), NSTimerActionDispatcher.Selector, null, true);
 		}
 
+		/// <param name="seconds">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSTimer CreateRepeatingScheduledTimer (double seconds, Action<NSTimer> action)
 		{
 			return CreateScheduledTimer (seconds, new NSTimerActionDispatcher (action), NSTimerActionDispatcher.Selector, null, true);
 		}
 
+		/// <param name="when">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSTimer CreateScheduledTimer (TimeSpan when, Action<NSTimer> action)
 		{
 			return CreateScheduledTimer (when.TotalSeconds, new NSTimerActionDispatcher (action), NSTimerActionDispatcher.Selector, null, false);
 		}
 
+		/// <param name="seconds">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSTimer CreateScheduledTimer (double seconds, Action<NSTimer> action)
 		{
 			return CreateScheduledTimer (seconds, new NSTimerActionDispatcher (action), NSTimerActionDispatcher.Selector, null, false);
 		}
 
+		/// <param name="when">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSTimer CreateRepeatingTimer (TimeSpan when, Action<NSTimer> action)
 		{
 			return CreateTimer (when.TotalSeconds, new NSTimerActionDispatcher (action), NSTimerActionDispatcher.Selector, null, true);
 		}
 
+		/// <param name="seconds">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSTimer CreateRepeatingTimer (double seconds, Action<NSTimer> action)
 		{
 			return CreateTimer (seconds, new NSTimerActionDispatcher (action), NSTimerActionDispatcher.Selector, null, true);
 		}
 
+		/// <param name="when">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSTimer CreateTimer (TimeSpan when, Action<NSTimer> action)
 		{
 			return CreateTimer (when.TotalSeconds, new NSTimerActionDispatcher (action), NSTimerActionDispatcher.Selector, null, false);
 		}
 
+		/// <param name="seconds">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSTimer CreateTimer (double seconds, Action<NSTimer> action)
 		{
 			return CreateTimer (seconds, new NSTimerActionDispatcher (action), NSTimerActionDispatcher.Selector, null, false);
 		}
 
+		/// <param name="date">To be added.</param>
+		///         <param name="when">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <param name="repeats">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSTimer (NSDate date, TimeSpan when, Action<NSTimer> action, System.Boolean repeats)
 			: this (date, when.TotalSeconds, new NSTimerActionDispatcher (action), NSTimerActionDispatcher.Selector, null, repeats)
 		{

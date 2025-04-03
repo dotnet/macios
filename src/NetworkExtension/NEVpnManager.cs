@@ -19,6 +19,9 @@ namespace NetworkExtension {
 	public partial class NEVpnManager {
 
 #if NET
+		/// <param name="authorization">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("maccatalyst")]

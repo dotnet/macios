@@ -301,6 +301,11 @@ namespace Foundation {
 			writeStream = Runtime.GetNSObject<NSOutputStream> (write);
 		}
 
+		/// <param name="socket">To be added.</param>
+		///         <param name="readStream">To be added.</param>
+		///         <param name="writeStream">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void CreatePairWithSocket (CFSocket socket,
 							 out NSInputStream readStream,
 												 out NSOutputStream writeStream)
@@ -315,6 +320,14 @@ namespace Foundation {
 			AssignStreams (read, write, out readStream, out writeStream);
 		}
 
+		/// <param name="family">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <param name="proto">To be added.</param>
+		///         <param name="endpoint">To be added.</param>
+		///         <param name="readStream">To be added.</param>
+		///         <param name="writeStream">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void CreatePairWithPeerSocketSignature (AddressFamily family, SocketType type,
 															  ProtocolType proto, IPEndPoint endpoint,
 															  out NSInputStream readStream,
@@ -330,6 +343,11 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="endpoint">To be added.</param>
+		///         <param name="readStream">To be added.</param>
+		///         <param name="writeStream">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void CreatePairWithSocketToHost (IPEndPoint endpoint,
 													   out NSInputStream readStream,
 													   out NSOutputStream writeStream)

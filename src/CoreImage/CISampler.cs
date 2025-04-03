@@ -102,6 +102,11 @@ namespace CoreImage {
 	}
 
 	public partial class CISampler {
+		/// <param name="sourceImage">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>Creates a new <see cref="T:CoreImage.CISampler" /> from the <paramref name="sourceImage" /> with <paramref name="options" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CISampler FromImage (CIImage sourceImage, CISamplerOptions? options)
 		{
 			if (options is null)
@@ -109,6 +114,10 @@ namespace CoreImage {
 			return FromImage (sourceImage, options.ToDictionary ());
 		}
 
+		/// <param name="sourceImage">The image from which to sample.</param>
+		///         <param name="options">Options that specify transform matrices, wrapping and filtering modes, and the color space.</param>
+		///         <summary>Creates a new sampler from a source image and a set of options.</summary>
+		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public CISampler (CIImage sourceImage, CISamplerOptions? options) : this (sourceImage, options?.ToDictionary ())
 		{

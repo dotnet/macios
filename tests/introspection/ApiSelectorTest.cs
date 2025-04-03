@@ -1353,9 +1353,6 @@ namespace Introspection {
 			case "initWithRTFD:documentAttributes:":
 			case "initWithURL:options:documentAttributes:error:":
 			case "initWithFileURL:options:documentAttributes:error:":
-			// AVAudioRecorder
-			case "initWithURL:settings:error:":
-			case "initWithURL:format:error:":
 			// NSUrlProtectionSpace
 			case "initWithHost:port:protocol:realm:authenticationMethod:":
 			case "initWithProxyHost:port:type:realm:authenticationMethod:":

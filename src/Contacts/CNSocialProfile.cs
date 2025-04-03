@@ -69,6 +69,10 @@ namespace Contacts {
 			}
 		}
 
+		/// <param name="serviceOption">To be added.</param>
+		///         <summary>Returns the localized string representing the <paramref name="serviceOption" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string LocalizeService (CNSocialProfileServiceOption serviceOption)
 		{
 			var srvc = ServiceOptionsToNSString (serviceOption);

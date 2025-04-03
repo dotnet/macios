@@ -47,9 +47,14 @@ namespace FileProviderUI {
 		[NullAllowed, Export ("domainIdentifier")]
 		string DomainIdentifier { get; }
 
+		/// <summary>Marks the requested action complete.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("completeRequest")]
 		void CompleteRequest ();
 
+		/// <param name="error">On failure, contains the error that occurred.</param>
+		///         <summary>Cancels the request with the specified error.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancelRequestWithError:")]
 		void CancelRequest (NSError error);
 	}
@@ -72,9 +77,16 @@ namespace FileProviderUI {
 		[Export ("extensionContext", ArgumentSemantic.Strong)]
 		FPUIActionExtensionContext ExtensionContext { get; }
 
+		/// <param name="error">The error for which to prepare.</param>
+		///         <summary>When implemented by the developer, presents UI to the user in response to the specified error.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("prepareForError:")]
 		void Prepare (NSError error);
 
+		/// <param name="actionIdentifier">The action identifier for the user action.</param>
+		///         <param name="itemIdentifiers">The item identifiers for the affected items.</param>
+		///         <summary>When implemented by the developer, presents UI to the user in response to the specified action and items.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("prepareForActionWithIdentifier:itemIdentifiers:")]
 		void Prepare (string actionIdentifier, NSString [] itemIdentifiers);
 	}

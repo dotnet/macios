@@ -14,6 +14,9 @@ using System;
 namespace SystemConfiguration {
 
 	public class SystemConfigurationException : Exception {
+		/// <param name="statusErrorCode">To be added.</param>
+		///         <summary>Creates a new <see cref="T:SystemConfiguration.SystemConfigurationException" /> wrapping the <paramref name="statusErrorCode" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public SystemConfigurationException (StatusCode statusErrorCode)
 			: base (StatusCodeError.GetErrorDescription (statusErrorCode))
 		{

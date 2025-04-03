@@ -377,6 +377,11 @@ namespace CoreFoundation {
 				callback.Invoke ();
 		}
 
+		/// <param name="allocator">To be added.</param>
+		///         <param name="name">To be added.</param>
+		///         <summary>Deprecated.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CFMessagePort? CreateRemotePort (CFAllocator? allocator, string name)
 		{
 			if (name is null)
@@ -392,11 +397,22 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>Invalidating a message port prevents the port from ever sending or receiving any more messages. </summary>
+		///         <remarks>The message port is not deallocated after invalidation, however <see cref="P:CoreFoundation.CFMessagePort.IsValid" /> property is set to be true.</remarks>
 		public void Invalidate ()
 		{
 			CFMessagePortInvalidate (GetCheckedHandle ());
 		}
 
+		/// <param name="msgid">To be added.</param>
+		///         <param name="data">To be added.</param>
+		///         <param name="sendTimeout">To be added.</param>
+		///         <param name="rcvTimeout">To be added.</param>
+		///         <param name="replyMode">To be added.</param>
+		///         <param name="returnData">To be added.</param>
+		///         <summary>Sends a message to the port.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CFMessagePortSendRequestStatus SendRequest (int msgid, NSData? data, double sendTimeout, double rcvTimeout, NSString? replyMode, out NSData? returnData)
 		{
 			CFMessagePortSendRequestStatus result;
@@ -412,6 +428,9 @@ namespace CoreFoundation {
 			return result;
 		}
 
+		/// <summary>Creates a CFRunLoopSource object for a CFMessagePort object.</summary>
+		///         <returns>The new CFRunLoopSource object for listening port</returns>
+		///         <remarks>Method returns loop which is not added to any run loop. Use <see cref="M:CoreFoundation.CFRunLoop.AddSource(CoreFoundation.CFRunLoopSource,Foundation.NSString)" /> to activate the loop.</remarks>
 		public CFRunLoopSource CreateRunLoopSource ()
 		{
 			// note: order is currently ignored by CFMessagePort object run loop sources. Pass 0 for this value.
@@ -419,6 +438,9 @@ namespace CoreFoundation {
 			return new CFRunLoopSource (runLoopHandle, false);
 		}
 
+		/// <param name="queue">To be added.</param>
+		///         <summary>Schedules message port’s callbacks on the specified dispatch queue.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetDispatchQueue (DispatchQueue? queue)
 		{
 			CFMessagePortSetDispatchQueue (GetCheckedHandle (), queue.GetHandle ());

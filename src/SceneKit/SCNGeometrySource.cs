@@ -18,6 +18,10 @@ using Metal;
 namespace SceneKit {
 	public partial class SCNGeometrySource {
 
+		/// <param name="vertices">To be added.</param>
+		///         <summary>Factory method to create a source for vertex data.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static unsafe SCNGeometrySource FromVertices (SCNVector3 [] vertices)
 		{
 			if (vertices is null)
@@ -27,6 +31,12 @@ namespace SceneKit {
 				return FromVertices ((IntPtr) ptr, vertices.Length);
 		}
 
+		/// <param name="normals">To be added.</param>
+		///         <summary>Factory method that creates a source for vertex normals.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The <paramref name="normals" /> must correspond directly to their associated vertices (in another <see cref="T:SceneKit.SCNGeometrySource" />).</para>
+		///         </remarks>
 		public static unsafe SCNGeometrySource FromNormals (SCNVector3 [] normals)
 		{
 			if (normals is null)
@@ -36,6 +46,13 @@ namespace SceneKit {
 				return FromNormals ((IntPtr) ptr, normals.Length);
 		}
 
+		/// <param name="texcoords">To be added.</param>
+		///         <summary>Factory method that creates a source for texture coordinates.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The <paramref name="texcoords" /> must correspond directly to their associated vertices (in another <see cref="T:SceneKit.SCNGeometrySource" />).</para>
+		///           <para>For non-tiling textures, texture coordinates are values between 0 and 1 that describe the mapping between a texture location and a geometry location. A value of [0,0] represents the origin of the texture while [1,1] represents the point at its furthest extent.</para>
+		///         </remarks>
 		public static unsafe SCNGeometrySource FromTextureCoordinates (CGPoint [] texcoords)
 		{
 			if (texcoords is null)

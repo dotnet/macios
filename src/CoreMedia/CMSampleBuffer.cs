@@ -795,6 +795,15 @@ namespace CoreMedia {
 			/* AudioStreamPacketDescription* */ AudioStreamPacketDescription* packetDescriptions,
 			/* CMSampleBufferRef* */ IntPtr* sBufOut);
 
+		/// <param name="dataBuffer">To be added.</param>
+		///         <param name="formatDescription">To be added.</param>
+		///         <param name="samplesCount">To be added.</param>
+		///         <param name="sampleTimestamp">To be added.</param>
+		///         <param name="packetDescriptions">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -901,6 +910,13 @@ namespace CoreMedia {
 			/* const CMSampleTimingInfo * CM_NONNULL */ CMSampleTimingInfo* sampleTiming,
 			/* CMSampleBufferRef* */ IntPtr* sBufOut);
 
+		/// <param name="imageBuffer">To be added.</param>
+		///         <param name="formatDescription">To be added.</param>
+		///         <param name="sampleTiming">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]

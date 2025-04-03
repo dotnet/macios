@@ -514,6 +514,9 @@ namespace CoreServices {
 
 		public event FSEventStreamEventsHandler? Events;
 
+		/// <param name="events">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected virtual void OnEvents (FSEvent [] events)
 		{
 			var handler = Events;
@@ -538,6 +541,9 @@ namespace CoreServices {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string? ToString ()
 		{
 			return Description;
@@ -546,6 +552,8 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern void FSEventStreamShow (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Show ()
 		{
 			FSEventStreamShow (GetCheckedHandle ());
@@ -554,6 +562,9 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern byte FSEventStreamStart (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Start ()
 		{
 			return FSEventStreamStart (GetCheckedHandle ()) != 0;
@@ -562,6 +573,8 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern void FSEventStreamStop (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Stop ()
 		{
 			FSEventStreamStop (GetCheckedHandle ());
@@ -572,6 +585,10 @@ namespace CoreServices {
 			IntPtr runLoop, IntPtr runLoopMode);
 
 #if NET
+		/// <param name="runLoop">To be added.</param>
+		///         <param name="runLoopMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos13.0", "Use 'SetDispatchQueue' instead.")]
 #else
@@ -584,16 +601,26 @@ namespace CoreServices {
 			GC.KeepAlive (runLoopMode);
 		}
 
+		/// <param name="runLoop">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void ScheduleWithRunLoop (CFRunLoop runLoop)
 		{
 			ScheduleWithRunLoop (runLoop, CFRunLoop.ModeDefault);
 		}
 
+		/// <param name="runLoop">To be added.</param>
+		///         <param name="runLoopMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void ScheduleWithRunLoop (NSRunLoop runLoop, NSString runLoopMode)
 		{
 			ScheduleWithRunLoop (runLoop.GetCFRunLoop (), runLoopMode);
 		}
 
+		/// <param name="runLoop">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void ScheduleWithRunLoop (NSRunLoop runLoop)
 		{
 			ScheduleWithRunLoop (runLoop.GetCFRunLoop (), CFRunLoop.ModeDefault);
@@ -663,6 +690,9 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern uint FSEventStreamFlushAsync (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public uint FlushAsync ()
 		{
 			return FSEventStreamFlushAsync (GetCheckedHandle ());
@@ -671,6 +701,8 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern void FSEventStreamFlushSync (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void FlushSync ()
 		{
 			FSEventStreamFlushSync (GetCheckedHandle ());
@@ -679,6 +711,8 @@ namespace CoreServices {
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern void FSEventStreamInvalidate (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Invalidate ()
 		{
 			FSEventStreamInvalidate (GetCheckedHandle ());

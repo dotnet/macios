@@ -61,10 +61,15 @@ namespace Foundation {
 		///         </remarks>
 		public bool Conditional;
 
+		/// <summary>Instruct the MonoTouch linker to preserve the decorated code</summary>
+		///         <remarks>By default the linker, when enabled, will remove all the code that is not directly used by the application.</remarks>
 		public PreserveAttribute ()
 		{
 		}
 
+		/// <param name="type">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public PreserveAttribute (Type type)
 		{
 		}

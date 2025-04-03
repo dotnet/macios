@@ -482,6 +482,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* CMClockRef */ IntPtr CMTimebaseGetUltimateMasterClock (/* CMTimebaseRef */ IntPtr timebase);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -502,6 +505,11 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static CMTime CMTimebaseGetTimeWithTimeScale (/* CMTimebaseRef */ IntPtr timebase, CMTimeScale timescale, CMTimeRoundingMethod method);
 
+		/// <param name="timeScale">To be added.</param>
+		///         <param name="roundingMethod">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CMTime GetTime (CMTimeScale timeScale, CMTimeRoundingMethod roundingMethod)
 		{
 			return CMTimebaseGetTimeWithTimeScale (Handle, timeScale, roundingMethod);
@@ -510,6 +518,11 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* OSStatus */ CMTimebaseError CMTimebaseSetAnchorTime (/* CMTimebaseRef */ IntPtr timebase, CMTime timebaseTime, CMTime immediateMasterTime);
 
+		/// <param name="timebaseTime">To be added.</param>
+		///         <param name="immediateMasterTime">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CMTimebaseError SetAnchorTime (CMTime timebaseTime, CMTime immediateMasterTime)
 		{
 			return CMTimebaseSetAnchorTime (Handle, timebaseTime, immediateMasterTime);
@@ -518,6 +531,11 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		unsafe extern static /* OSStatus */ CMTimebaseError CMTimebaseGetTimeAndRate (/* CMTimebaseRef */ IntPtr timebase, CMTime* time, /* Float64* */ double* rate);
 
+		/// <param name="time">To be added.</param>
+		///         <param name="rate">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CMTimebaseError GetTimeAndRate (out CMTime time, out double rate)
 		{
 			time = default;
@@ -530,6 +548,12 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* OSStatus */  CMTimebaseError CMTimebaseSetRateAndAnchorTime (/* CMTimebaseRef */ IntPtr timebase, /* Float64 */ double rate, CMTime timebaseTime, CMTime immediateMasterTime);
 
+		/// <param name="rate">To be added.</param>
+		///         <param name="timebaseTime">To be added.</param>
+		///         <param name="immediateMasterTime">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CMTimebaseError SetRateAndAnchorTime (double rate, CMTime timebaseTime, CMTime immediateMasterTime)
 		{
 			return CMTimebaseSetRateAndAnchorTime (Handle, rate, timebaseTime, immediateMasterTime);
@@ -538,6 +562,9 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* OSStatus */ CMTimebaseError CMTimebaseNotificationBarrier (/* CMTimebaseRef */ IntPtr timebase);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CMTimebaseError NotificationBarrier ()
 		{
 			return CMTimebaseNotificationBarrier (Handle);
@@ -551,6 +578,11 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* OSStatus */ CMTimebaseError CMTimebaseAddTimer (/* CMTimebaseRef */ IntPtr timebase, /* CFRunLoopTimerRef */ IntPtr timer, /* CFRunLoopRef */ IntPtr runloop);
 
+		/// <param name="timer">To be added.</param>
+		///         <param name="runloop">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CMTimebaseError AddTimer (NSTimer timer, NSRunLoop runloop)
 		{
 			if (timer is null)
@@ -569,6 +601,10 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* OSStatus */ CMTimebaseError CMTimebaseRemoveTimer (/* CMTimebaseRef */ IntPtr timebase, /* CFRunLoopTimerRef */ IntPtr timer);
 
+		/// <param name="timer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CMTimebaseError RemoveTimer (NSTimer timer)
 		{
 			if (timer is null)
@@ -582,6 +618,11 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* OSStatus */ CMTimebaseError CMTimebaseSetTimerNextFireTime (/* CMTimebaseRef */ IntPtr timebase, /* CFRunLoopTimerRef */ IntPtr timer, CMTime fireTime, /* uint32_t */ uint flags);
 
+		/// <param name="timer">To be added.</param>
+		///         <param name="fireTime">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CMTimebaseError SetTimerNextFireTime (NSTimer timer, CMTime fireTime)
 		{
 			if (timer is null)
@@ -595,6 +636,10 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* OSStatus */ CMTimebaseError CMTimebaseSetTimerToFireImmediately (/* CMTimebaseRef */ IntPtr timebase, /* CFRunLoopTimerRef */ IntPtr timer);
 
+		/// <param name="timer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CMTimebaseError SetTimerToFireImmediately (NSTimer timer)
 		{
 			if (timer is null)
@@ -664,6 +709,9 @@ namespace CoreMedia {
 #endif
 
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -680,6 +728,9 @@ namespace CoreMedia {
 			return new CMTimebase (ptr, true);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -696,6 +747,9 @@ namespace CoreMedia {
 			return new CMClock (ptr, true);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -712,6 +766,9 @@ namespace CoreMedia {
 			return new CMClockOrTimebase (ptr, true);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CMClockOrTimebase? CopySource ()
 		{
 			var ptr = CMTimebaseCopySource (Handle);

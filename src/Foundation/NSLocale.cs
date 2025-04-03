@@ -45,6 +45,10 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public string GetIdentifierDisplayName (string value)
 		{
 			return DisplayNameForKey (_Identifier, value);
@@ -59,6 +63,10 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public string GetLanguageCodeDisplayName (string value)
 		{
 			return DisplayNameForKey (_LanguageCode, value);
@@ -73,6 +81,10 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public string GetCountryCodeDisplayName (string value)
 		{
 			return DisplayNameForKey (_CountryCode, value);
@@ -177,6 +189,10 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public string GetCurrencyCodeDisplayName (string value)
 		{
 			return DisplayNameForKey (_CurrencyCode, value);

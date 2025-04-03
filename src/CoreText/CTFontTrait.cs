@@ -105,11 +105,16 @@ namespace CoreText {
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontTraits {
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontTraits ()
 			: this (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTFontTraits (NSDictionary dictionary)
 		{
 			if (dictionary is null)

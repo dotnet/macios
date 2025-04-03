@@ -187,6 +187,12 @@ namespace CoreAnimation {
 		[Export ("constraintWithAttribute:relativeTo:attribute:offset:")]
 		CAConstraint Create (CAConstraintAttribute attribute, string relativeToSource, CAConstraintAttribute srcAttr, nfloat offset);
 
+		/// <param name="attribute">To be added.</param>
+		///         <param name="relativeToSource">To be added.</param>
+		///         <param name="srcAttribute">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("constraintWithAttribute:relativeTo:attribute:")]
 		CAConstraint Create (CAConstraintAttribute attribute, string relativeToSource, CAConstraintAttribute srcAttribute);
@@ -200,22 +206,68 @@ namespace CoreAnimation {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface CADisplayLink {
+		/// <param name="target">Target object to invoke the selector on.</param>
+		///         <param name="sel">Selector to invoke.</param>
+		///         <summary>Objective-C style registeration of the method to be invoked every time the display is about to be updated.</summary>
+		///         <returns>The DisplayLink object that will invoke the specified method on each screen update.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    With C# you can use the Create overload that takes a NSAction as it can be used with lambdas.
+		/// 	  </para>
+		///           <para>
+		/// 	    Once you create the display link, you must add the handler to the runloop.
+		/// 	  </para>
+		///         </remarks>
 		[Export ("displayLinkWithTarget:selector:")]
 		[Static]
 		CADisplayLink Create (NSObject target, Selector sel);
 
+		/// <param name="runloop">The runloop on which to run.</param>
+		///         <param name="mode">Modes in which the timer will be invoked, one of the various NSString constants in <see cref="T:Foundation.NSRunLoop" />.<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
+		///         <summary>Trigger timer events on the specified runloop for the specified modes (weakly typed parameters).</summary>
+		///         <remarks>
+		///           <para>You should use the strongly typed version if possible, as it prevents common errors.</para>
+		///           <para>
+		/// 	    The mode parameter will determine when the event is sent.
+		/// 	    The NSRunLoop.NSDefaultRunLoopMode is not delivered during
+		/// 	    UI tracking events (like scrolling in a UIScrollbar).  For
+		/// 	    getting those kinds of events use
+		/// 	    NSRunLoop.UITrackingRunLoopMode.  Or use
+		/// 	    NSRunLoop.NSRunLoopCommonModes which covers both cases.
+		///
+		/// 	  </para>
+		///         </remarks>
 		[Export ("addToRunLoop:forMode:")]
 		void AddToRunLoop (NSRunLoop runloop, NSString mode);
 
+		/// <param name="runloop">The runloop on which to run.</param>
+		///         <param name="mode">Modes in which the timer will be invoked.</param>
+		///         <summary>Trigger timer events on the specified runloop for the specified modes.</summary>
+		///         <remarks>
+		///           <para>The mode parameter will determine when the event is sent. The NSRunLoop.NSDefaultRunLoopMode is not delivered during UI tracking events (like scrolling in a UIScrollbar). For getting those kinds of events use NSRunLoop.UITrackingRunLoopMode. Or use NSRunLoop.NSRunLoopCommonModes which covers both cases.  	  </para>
+		///         </remarks>
 		[Wrap ("AddToRunLoop (runloop, mode.GetConstant ()!)")]
 		void AddToRunLoop (NSRunLoop runloop, NSRunLoopMode mode);
 
+		/// <param name="runloop">The run loop from which to remove the display link.</param>
+		///         <param name="mode">
+		///           <para>The mode of the run loop.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Removes the display link from the provided run loop when in the specified mode.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeFromRunLoop:forMode:")]
 		void RemoveFromRunLoop (NSRunLoop runloop, NSString mode);
 
+		/// <param name="runloop">The run loop from which to remove the display link.</param>
+		///         <param name="mode">The mode of the run loop.</param>
+		///         <summary>Removes the display link from the provided run loop when in the specified mode.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("RemoveFromRunLoop (runloop, mode.GetConstant ()!)")]
 		void RemoveFromRunLoop (NSRunLoop runloop, NSRunLoopMode mode);
 
+		/// <summary>Terminates the connection between CoreAnimation and your code.     This removes the CADisplayLink from all run loops.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("invalidate")]
 		void Invalidate ();
 
@@ -305,6 +357,9 @@ namespace CoreAnimation {
 	[BaseType (typeof (NSObject))]
 	[Dispose ("OnDispose ();", Optimizable = true)]
 	interface CALayer : CAMediaTiming, NSSecureCoding {
+		/// <summary>Factory method to create a new <see cref="T:CoreAnimation.CALayer" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("layer")]
 		[Static]
 		CALayer Create ();
@@ -322,11 +377,22 @@ namespace CoreAnimation {
 		[Export ("modelLayer")]
 		CALayer ModelLayer { get; }
 
+		/// <param name="key">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("defaultValueForKey:")]
 		[return: NullAllowed]
 		NSObject DefaultValue (string key);
 
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("needsDisplayForKey:")]
 		bool NeedsDisplayForKey (string key);
@@ -410,6 +476,8 @@ namespace CoreAnimation {
 		[NullAllowed]
 		CALayer SuperLayer { get; }
 
+		/// <summary>Removes <c>this</c> from its <see cref="P:CoreAnimation.CALayer.SuperLayer" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeFromSuperlayer")]
 		void RemoveFromSuperLayer ();
 
@@ -423,22 +491,41 @@ namespace CoreAnimation {
 		[Export ("sublayers", ArgumentSemantic.Copy)]
 		CALayer [] Sublayers { get; set; }
 
+		/// <param name="layer">The layer being added.</param>
+		///         <summary>Appends the <paramref name="layer" /> to this layer's <see cref="P:CoreAnimation.CALayer.Sublayers" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addSublayer:")]
 		[PostGet ("Sublayers")]
 		void AddSublayer (CALayer layer);
 
+		/// <param name="layer">The layer being inserted.</param>
+		///         <param name="index">The index at which to insert the <paramref name="layer" />.</param>
+		///         <summary>Inserts the specified layer into the <see cref="P:CoreAnimation.CALayer.Sublayers" /> array at the specified index.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("insertSublayer:atIndex:")]
 		[PostGet ("Sublayers")]
 		void InsertSublayer (CALayer layer, int index);
 
+		/// <param name="layer">The layer being inserted.</param>
+		///         <param name="sibling">The existing sublayer, which will subsequently appear in front of <paramref name="layer" />.</param>
+		///         <summary>Inserts the specified layer into the <see cref="P:CoreAnimation.CALayer.Sublayers" /> array immediately prior to <paramref name="sibling" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("insertSublayer:below:")]
 		[PostGet ("Sublayers")]
 		void InsertSublayerBelow (CALayer layer, [NullAllowed] CALayer sibling);
 
+		/// <param name="layer">The layer being inserted.</param>
+		///         <param name="sibling">The existing sublayer, which will subsequently appear behind <paramref name="layer" />.</param>
+		///         <summary>Inserts the specified layer into the <see cref="P:CoreAnimation.CALayer.Sublayers" /> array immediately after <paramref name="sibling" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("insertSublayer:above:")]
 		[PostGet ("Sublayers")]
 		void InsertSublayerAbove (CALayer layer, [NullAllowed] CALayer sibling);
 
+		/// <param name="layer">To be added.</param>
+		///         <param name="with">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("replaceSublayer:with:")]
 		[PostGet ("Sublayers")]
 		void ReplaceSublayer (CALayer layer, CALayer with);
@@ -465,28 +552,84 @@ namespace CoreAnimation {
 		[Export ("masksToBounds")]
 		bool MasksToBounds { get; set; }
 
+		/// <param name="point">To be added.</param>
+		///         <param name="layer">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("convertPoint:fromLayer:")]
 		CGPoint ConvertPointFromLayer (CGPoint point, [NullAllowed] CALayer layer);
 
+		/// <param name="point">To be added.</param>
+		///         <param name="layer">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("convertPoint:toLayer:")]
 		CGPoint ConvertPointToLayer (CGPoint point, [NullAllowed] CALayer layer);
 
+		/// <param name="rect">To be added.</param>
+		///         <param name="layer">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("convertRect:fromLayer:")]
 		CGRect ConvertRectFromLayer (CGRect rect, [NullAllowed] CALayer layer);
 
+		/// <param name="rect">To be added.</param>
+		///         <param name="layer">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("convertRect:toLayer:")]
 		CGRect ConvertRectToLayer (CGRect rect, [NullAllowed] CALayer layer);
 
+		/// <param name="timeInterval">To be added.</param>
+		///         <param name="layer">
+		///           <para>They layer that will be used to convert the time from.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("convertTime:fromLayer:")]
 		double ConvertTimeFromLayer (double timeInterval, [NullAllowed] CALayer layer);
 
+		/// <param name="timeInterval">To be added.</param>
+		///         <param name="layer">
+		///           <para>The layer that will be used to convert the time to.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("convertTime:toLayer:")]
 		double ConvertTimeToLayer (double timeInterval, [NullAllowed] CALayer layer);
 
+		/// <param name="p">A point, in the coordinate system of this layer's <see cref="P:CoreAnimation.CALayer.SuperLayer" />.</param>
+		///         <summary>The furthest descendant in this layer's hierarchy that contains the point <paramref name="p" />.</summary>
+		///         <returns>The layer (possible <c>this</c>) that contains the point <paramref name="p" /> or <see langword="null" /> if <paramref name="p" /> lies outside the <see cref="P:CoreAnimation.CALayer.Bounds" /> rectangle of <c>this</c>.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("hitTest:")]
 		[return: NullAllowed]
 		CALayer HitTest (CGPoint p);
 
+		/// <param name="p">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("containsPoint:")]
 		bool Contains (CGPoint p);
 
@@ -556,6 +699,8 @@ namespace CoreAnimation {
 		[Export ("opaque")]
 		bool Opaque { [Bind ("isOpaque")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("display")]
 		void Display ();
 
@@ -566,12 +711,19 @@ namespace CoreAnimation {
 		[Export ("needsDisplay")]
 		bool NeedsDisplay { get; }
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setNeedsDisplay")]
 		void SetNeedsDisplay ();
 
+		/// <param name="r">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setNeedsDisplayInRect:")]
 		void SetNeedsDisplayInRect (CGRect r);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("displayIfNeeded")]
 		void DisplayIfNeeded ();
 
@@ -581,9 +733,27 @@ namespace CoreAnimation {
 		[Export ("needsDisplayOnBoundsChange")]
 		bool NeedsDisplayOnBoundsChange { get; set; }
 
+		/// <param name="ctx">Prepared context to draw into.</param>
+		///         <summary>Draws the layer on the specified context.</summary>
+		///         <remarks>
+		///           <para>
+		/// 	    Developers override this method to provide custom
+		/// 	    rendering of the contents of their instance of the
+		/// 	    CALayer.  If this method is not overwritten, the CALayer
+		/// 	    will invoke the <see cref="M:CoreAnimation.CALayerDelegate.DrawLayer(CoreAnimation.CALayer,CoreGraphics.CGContext)" />
+		/// 	    method to render the contents.
+		/// 	  </para>
+		///           <para>
+		/// 	    The provided context has been preconfigured for the target
+		/// 	    surface as well as having a clipping region defined.
+		/// 	  </para>
+		///         </remarks>
 		[Export ("drawInContext:")]
 		void DrawInContext (CGContext ctx);
 
+		/// <param name="ctx">The context in which the layer should be rendered.</param>
+		///         <summary>Renders the layer into the specified <see cref="T:CoreGraphics.CGContext" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("renderInContext:")]
 		void RenderInContext (CGContext ctx);
 
@@ -630,26 +800,46 @@ namespace CoreAnimation {
 
 		// Layout methods
 
+		/// <summary>The preferred size for this layer, in the coordinate of its <see cref="P:CoreAnimation.CALayer.SuperLayer" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("preferredFrameSize")]
 		CGSize PreferredFrameSize ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setNeedsLayout")]
 		void SetNeedsLayout ();
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("needsLayout")]
 		bool NeedsLayout ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("layoutIfNeeded")]
 		void LayoutIfNeeded ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("layoutSublayers")]
 		void LayoutSublayers ();
 
+		/// <param name="eventKey">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("defaultActionForKey:")]
 		[return: NullAllowed]
 		NSObject DefaultActionForKey (string eventKey);
 
+		/// <param name="eventKey">Identifier of the action desired.</param>
+		///         <summary>Returns the <see cref="P:CoreAnimation.CALayer.Actions" /> value associated with the specified key.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("actionForKey:")]
 		[return: NullAllowed]
 		NSObject ActionForKey (string eventKey);
@@ -665,12 +855,26 @@ namespace CoreAnimation {
 		[Export ("actions", ArgumentSemantic.Copy)]
 		NSDictionary Actions { get; set; }
 
+		/// <param name="animation">To be added.</param>
+		///         <param name="key">
+		///           <para>
+		/// 	    An identifier for the animation.  If the key already exists in the layer, the previous animation is removed.   
+		/// 	  </para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Adds the <paramref name="animation" /> to the render tree for the layer and associates it in <see cref="P:CoreAnimation.CALayer.Actions" /> with the key <paramref name="key" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addAnimation:forKey:")]
 		void AddAnimation (CAAnimation animation, [NullAllowed] string key);
 
+		/// <summary>Removes all animations currently attached to the layer.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeAllAnimations")]
 		void RemoveAllAnimations ();
 
+		/// <param name="key">The animation's identifier.</param>
+		///         <summary>Removes the specified animation from the layer.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeAnimationForKey:")]
 		void RemoveAnimation (string key);
 
@@ -683,6 +887,10 @@ namespace CoreAnimation {
 		[Export ("animationKeys"), NullAllowed]
 		string [] AnimationKeys { get; }
 
+		/// <param name="key">The animation's identifier.</param>
+		///         <summary>Returns the animation associated with the <paramref name="key" />.</summary>
+		///         <returns>The <see cref="T:CoreAnimation.CAAnimation" /> associated with <paramref name="key" /> or <see langword="null" /> if there is no such animation.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("animationForKey:")]
 		[return: NullAllowed]
 		CAAnimation AnimationForKey (string key);
@@ -880,9 +1088,15 @@ namespace CoreAnimation {
 		[Export ("visibleRect")]
 		CGRect VisibleRect { get; }
 
+		/// <param name="p">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("scrollPoint:")]
 		void ScrollPoint (CGPoint p);
 
+		/// <param name="r">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("scrollRectToVisible:")]
 		void ScrollRectToVisible (CGRect r);
 
@@ -930,12 +1144,18 @@ namespace CoreAnimation {
 		[Export ("autoresizingMask")]
 		CAAutoresizingMask AutoresizingMask { get; set; }
 
+		/// <param name="oldSize">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("resizeSublayersWithOldSize:")]
 		void ResizeSublayers (CGSize oldSize);
 
+		/// <param name="oldSuperlayerSize">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoTV]
 		[MacCatalyst (13, 1)]
@@ -952,6 +1172,9 @@ namespace CoreAnimation {
 		[NullAllowed]
 		CAConstraint [] Constraints { get; set; }
 
+		/// <param name="c">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoTV]
 		[MacCatalyst (13, 1)]
@@ -1118,6 +1341,9 @@ namespace CoreAnimation {
 		[Export ("drawableSize")]
 		CGSize DrawableSize { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("nextDrawable")]
 		[return: NullAllowed]
 		ICAMetalDrawable NextDrawable ();
@@ -1209,6 +1435,9 @@ namespace CoreAnimation {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CATiledLayer_class/index.html">Apple documentation for <c>CATiledLayer</c></related>
 	[BaseType (typeof (CALayer))]
 	interface CATiledLayer {
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("layer"), New, Static]
 		CALayer Create ();
 
@@ -1262,6 +1491,9 @@ namespace CoreAnimation {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CAReplicatorLayer_class/index.html">Apple documentation for <c>CAReplicatorLayer</c></related>
 	[BaseType (typeof (CALayer))]
 	interface CAReplicatorLayer {
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("layer"), New, Static]
 		CALayer Create ();
 
@@ -1346,6 +1578,9 @@ namespace CoreAnimation {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CAScrollLayer_class/index.html">Apple documentation for <c>CAScrollLayer</c></related>
 	[BaseType (typeof (CALayer))]
 	interface CAScrollLayer {
+		/// <summary>Creates a new sroll layer with default values.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("layer"), New, Static]
 		CALayer Create ();
 
@@ -1368,9 +1603,15 @@ namespace CoreAnimation {
 		NSString ScrollMode { get; set; }
 #endif
 
+		/// <param name="p">To be added.</param>
+		///         <summary>Scrolls the scroll layer to the supplied point.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("scrollToPoint:")]
 		void ScrollToPoint (CGPoint p);
 
+		/// <param name="r">To be added.</param>
+		///         <summary>Scrolls the scroll layer to include the specified rectangle.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("scrollToRect:")]
 		void ScrollToRect (CGRect r);
 	}
@@ -1419,6 +1660,9 @@ namespace CoreAnimation {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CAShapeLayer_class/index.html">Apple documentation for <c>CAShapeLayer</c></related>
 	[BaseType (typeof (CALayer))]
 	interface CAShapeLayer {
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("layer"), New, Static]
 		CALayer Create ();
 
@@ -1591,9 +1835,16 @@ namespace CoreAnimation {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CATransformLayer_class/index.html">Apple documentation for <c>CATransformLayer</c></related>
 	[BaseType (typeof (CALayer))]
 	interface CATransformLayer {
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("layer"), New, Static]
 		CALayer Create ();
 
+		/// <param name="thePoint">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("hitTest:")]
 		CALayer HitTest (CGPoint thePoint);
 	}
@@ -1662,6 +1913,9 @@ namespace CoreAnimation {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CATextLayer_class/index.html">Apple documentation for <c>CATextLayer</c></related>
 	[BaseType (typeof (CALayer))]
 	interface CATextLayer {
+		/// <summary>Creates and returns a new <see cref="T:CoreAnimation.CALayer" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("layer"), New, Static]
 		CALayer Create ();
 
@@ -1793,19 +2047,37 @@ namespace CoreAnimation {
 	[Protocol]
 #endif
 	interface CALayerDelegate {
+		/// <param name="layer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("displayLayer:")]
 		void DisplayLayer (CALayer layer);
 
+		/// <param name="layer">To be added.</param>
+		///         <param name="context">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("drawLayer:inContext:"), EventArgs ("CALayerDrawEventArgs")]
 		void DrawLayer (CALayer layer, CGContext context);
 
+		/// <param name="layer">The layer that will be redrawn.</param>
+		///         <summary>Method that is called when <paramref name="layer" /> is about to be drawn.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("layerWillDraw:")]
 		void WillDrawLayer (CALayer layer);
 
+		/// <param name="layer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("layoutSublayersOfLayer:")]
 		void LayoutSublayersOfLayer (CALayer layer);
 
+		/// <param name="layer">To be added.</param>
+		///         <param name="eventKey">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("actionForLayer:forKey:"), EventArgs ("CALayerDelegateAction"), DefaultValue (null)]
 		[return: NullAllowed]
 		NSObject ActionForLayer (CALayer layer, string eventKey);
@@ -1860,6 +2132,14 @@ namespace CoreAnimation {
 	[Protocol]
 	[DisableDefaultCtor]
 	interface CAAction {
+		/// <param name="eventKey">To be added.</param>
+		///         <param name="obj">To be added.</param>
+		///         <param name="arguments">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("runActionForKey:object:arguments:")]
 		void RunAction (string eventKey, NSObject obj, [NullAllowed] NSDictionary arguments);
@@ -1930,6 +2210,9 @@ namespace CoreAnimation {
 		[Export ("removedOnCompletion")]
 		bool RemovedOnCompletion { [Bind ("isRemovedOnCompletion")] get; set; }
 
+		/// <param name="key">To be added.</param>
+		///         <summary>With key-value observing, indicates that the value associated with <paramref name="key" /> is about to change.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("willChangeValueForKey:")]
 		void WillChangeValueForKey (string key);
 
@@ -1939,6 +2222,13 @@ namespace CoreAnimation {
 		[Export ("didChangeValueForKey:")]
 		void DidChangeValueForKey (string key);
 
+		/// <param name="key">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Whether the value for the given key should be archived.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("shouldArchiveValueForKey:")]
 		bool ShouldArchiveValueForKey (string key);
 
@@ -2116,9 +2406,22 @@ namespace CoreAnimation {
 #endif
 	[Model]
 	interface CAAnimationDelegate {
+		/// <param name="anim">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>The animation has started.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("animationDidStart:")]
 		void AnimationStarted (CAAnimation anim);
 
+		/// <param name="anim">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="finished">To be added.</param>
+		///         <summary>The animation has stopped.  Use the bool value to determine if this is a temporary pause, or the end of the animation.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("animationDidStop:finished:"), EventArgs ("CAAnimationState")]
 		void AnimationStopped (CAAnimation anim, bool finished);
 
@@ -2129,6 +2432,7 @@ namespace CoreAnimation {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CAPropertyAnimation_class/index.html">Apple documentation for <c>CAPropertyAnimation</c></related>
 	[BaseType (typeof (CAAnimation))]
 	interface CAPropertyAnimation {
+		/// <include file="../docs/api/CoreAnimation/CAPropertyAnimation.xml" path="/Documentation/Docs[@DocId='M:CoreAnimation.CAPropertyAnimation.FromKeyPath(System.String)']/*" />
 		[Static]
 		[Export ("animationWithKeyPath:")]
 		CAPropertyAnimation FromKeyPath ([NullAllowed] string path);
@@ -2232,6 +2536,13 @@ namespace CoreAnimation {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CABasicAnimation))]
 	interface CASpringAnimation {
+		/// <param name="path">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Creates a new animation from the specified key path.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, New, Export ("animationWithKeyPath:")]
 		CABasicAnimation FromKeyPath ([NullAllowed] string path);
 
@@ -2488,22 +2799,32 @@ namespace CoreAnimation {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CATransaction_class/index.html">Apple documentation for <c>CATransaction</c></related>
 	[BaseType (typeof (NSObject))]
 	interface CATransaction {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("begin")]
 		void Begin ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("commit")]
 		void Commit ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("flush")]
 		void Flush ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("lock")]
 		void Lock ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("unlock")]
 		void Unlock ();
@@ -2532,11 +2853,22 @@ namespace CoreAnimation {
 		[Export ("disableActions")]
 		bool DisableActions { get; set; }
 
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("valueForKey:")]
 		[return: NullAllowed]
 		NSObject ValueForKey (NSString key);
 
+		/// <param name="anObject">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("setValue:forKey:")]
 		void SetValueForKey ([NullAllowed] NSObject anObject, NSString key);
@@ -2594,6 +2926,9 @@ namespace CoreAnimation {
 		[Export ("animations", ArgumentSemantic.Copy)]
 		CAAnimation [] Animations { get; set; }
 
+		/// <summary>Factory method that creates a new CAAnimationGroup.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("animation"), Static, New]
 		CAAnimationGroup CreateAnimation ();
 	}
@@ -2622,6 +2957,9 @@ namespace CoreAnimation {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CAGradientLayer_class/index.html">Apple documentation for <c>CAGradientLayer</c></related>
 	[BaseType (typeof (CALayer))]
 	interface CAGradientLayer {
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("layer"), New, Static]
 		CALayer Create ();
 
@@ -2705,10 +3043,21 @@ namespace CoreAnimation {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CAMediaTimingFunction : NSSecureCoding {
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("functionWithName:")]
 		[Static]
 		CAMediaTimingFunction FromName (NSString name);
 
+		/// <param name="c1x">To be added.</param>
+		///         <param name="c1y">To be added.</param>
+		///         <param name="c2x">To be added.</param>
+		///         <param name="c2y">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("functionWithControlPoints::::")]
 		CAMediaTimingFunction FromControlPoints (float c1x, float c1y, float c2x, float c2y); /* all float, not CGFloat */
@@ -3097,15 +3446,32 @@ namespace CoreAnimation {
 		[Export ("style", ArgumentSemantic.Copy)]
 		NSDictionary Style { get; set; }
 
+		/// <summary>Creates and returns a new <see cref="T:CoreAnimation.CAEmitterCell" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("emitterCell")]
 		CAEmitterCell EmitterCell ();
 
+		/// <param name="key">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Returns the default value for the property that is indexed by the specified <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("defaultValueForKey:")]
 		[return: NullAllowed]
 		NSObject DefaultValueForKey (string key);
 
+		/// <param name="key">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Returns a Boolean value that tells if the value for <paramref name="key" /> should be archived.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("shouldArchiveValueForKey:")]
 		bool ShouldArchiveValueForKey (string key);
 
@@ -3146,6 +3512,9 @@ namespace CoreAnimation {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CAEmitterLayer_class/index.html">Apple documentation for <c>CAEmitterLayer</c></related>
 	[BaseType (typeof (CALayer))]
 	interface CAEmitterLayer {
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("layer"), New, Static]
 		CALayer Create ();
 
@@ -3431,10 +3800,20 @@ namespace CoreAnimation {
 
 	[BaseType (typeof (NSObject))]
 	interface CARenderer {
+		/// <param name="tex">To be added.</param>
+		///         <param name="dict">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("rendererWithMTLTexture:options:")]
 		CARenderer Create (IMTLTexture tex, [NullAllowed] NSDictionary dict);
 
+		/// <param name="tex">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("Create (tex, options.GetDictionary ())")]
 		CARenderer Create (IMTLTexture tex, [NullAllowed] CARendererOptions options);
@@ -3459,24 +3838,43 @@ namespace CoreAnimation {
 		[Export ("beginFrameAtTime:timeStamp:")]
 		void BeginFrame (double timeInSeconds, IntPtr ts);
 
+		/// <param name="timeInSeconds">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("BeginFrame (timeInSeconds, IntPtr.Zero)")]
 		void BeginFrame (double timeInSeconds);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("updateBounds")]
 		CGRect UpdateBounds ();
 
+		/// <param name="r">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addUpdateRect:")]
 		void AddUpdate (CGRect r);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("render")]
 		void Render ();
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("nextFrameTime")]
 		double /* CFTimeInterval */ GetNextFrameTime ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("endFrame")]
 		void EndFrame ();
 
+		/// <param name="tex">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setDestination:")]
 		void SetDestination (IMTLTexture tex);
 	}

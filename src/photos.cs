@@ -1520,15 +1520,35 @@ namespace Photos {
 		[Export ("prepareLivePhotoForPlaybackWithTargetSize:options:completionHandler:")]
 		void _PrepareLivePhotoForPlayback (CGSize targetSize, [NullAllowed] NSDictionary options, Action<PHLivePhoto, NSError> handler);
 
+		/// <param name="targetSize">The size of the output view to target.</param>
+		///         <param name="handler">A handler that takes the Live Photo and an error and is run on the main thread when the processing is complete.</param>
+		///         <summary>Prepares an edited Live Photo for playback.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Wrap ("_PrepareLivePhotoForPlayback (targetSize, null, handler)")]
 		void PrepareLivePhotoForPlayback (CGSize targetSize, Action<PHLivePhoto, NSError> handler);
 
+		/// <param name="targetSize">The size of the output view to target.</param>
+		///         <param name="options">
+		///           <para>Live Photo processing options.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="handler">A handler that takes the Live Photo and an error and is run on the main thread when the processing is complete.</param>
+		///         <summary>Prepares an edited Live Photo for playback.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Wrap ("_PrepareLivePhotoForPlayback (targetSize, (options as NSDictionary), handler)", IsVirtual = true)]
 		void PrepareLivePhotoForPlayback (CGSize targetSize, [NullAllowed] NSDictionary<NSString, NSObject> options, Action<PHLivePhoto, NSError> handler);
 
 		// the API existed earlier but the key needed to create the strong dictionary did not work
+		/// <param name="targetSize">The size of the output view to target.</param>
+		///         <param name="options">
+		///           <para>Live Photo processing options.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="handler">A handler that takes the Live Photo and an error and is run on the main thread when the processing is complete.</param>
+		///         <summary>Prepares an edited Live Photo for playback.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Async]
 		[Wrap ("_PrepareLivePhotoForPlayback (targetSize, options.GetDictionary (), handler)")]
@@ -1538,15 +1558,35 @@ namespace Photos {
 		[Export ("saveLivePhotoToOutput:options:completionHandler:")]
 		void _SaveLivePhoto (PHContentEditingOutput output, [NullAllowed] NSDictionary options, Action<bool, NSError> handler);
 
+		/// <param name="output">The output that will receive the Live Photo data.</param>
+		///         <param name="handler">A handler that receives an error and is run on the main thread when the processing is complete.</param>
+		///         <summary>Saves a Live Photo.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Wrap ("_SaveLivePhoto (output, null, handler)")]
 		void SaveLivePhoto (PHContentEditingOutput output, Action<bool, NSError> handler);
 
+		/// <param name="output">The photo editing output to which to save the photo.</param>
+		///         <param name="options">
+		///           <para>The Live Photo processing options to use, if any.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="handler">A handler that takes a <see langword="bool" /> and an error and is run when rendering completes.</param>
+		///         <summary>Saves a Live Photo.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Wrap ("_SaveLivePhoto (output, options, handler)", IsVirtual = true)]
 		void SaveLivePhoto (PHContentEditingOutput output, [NullAllowed] NSDictionary<NSString, NSObject> options, Action<bool, NSError> handler);
 
 		// the API existed earlier but the key needed to create the strong dictionary did not work
+		/// <param name="output">The photo editing output to which to save the photo.</param>
+		///         <param name="options">
+		///           <para>The Live Photo processing options to use, if any.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="handler">A handler that takes a <see langword="bool" /> and an error and is run when rendering completes.</param>
+		///         <summary>Saves a Live Photo.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Async]
 		[Wrap ("_SaveLivePhoto (output, options.GetDictionary (), handler)")]

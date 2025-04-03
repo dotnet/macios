@@ -287,6 +287,10 @@ namespace Foundation {
 #endif
 	{
 		// Inlined from the NSAttributedStringAttachmentConveniences category
+		/// <param name="attachment">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("attributedStringWithAttachment:")]
 		NSAttributedString FromAttachment (NSTextAttachment attachment);
 
@@ -537,17 +541,35 @@ namespace Foundation {
 		nint GetItemNumber (NSTextList textList, nuint index);
 
 #if !(MONOMAC || XAMCORE_5_0)
+		/// <param name="range">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Sealed]
 #endif
 		[return: NullAllowed]
 		[Export ("dataFromRange:documentAttributes:error:")]
 		NSData GetData (NSRange range, NSDictionary options, out NSError error);
 
+		/// <param name="range">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Wrap ("this.GetData (range, options.GetDictionary ()!, out error)")]
 		NSData GetData (NSRange range, NSAttributedStringDocumentAttributes options, out NSError error);
 
 #if !(MONOMAC || XAMCORE_5_0)
+		/// <param name="range">To be added.</param>
+		///         <param name="attributes">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Obsolete ("Use 'GetData' instead.")]
 		[Export ("dataFromRange:documentAttributes:error:")]
@@ -555,6 +577,12 @@ namespace Foundation {
 #endif
 
 #if !(MONOMAC || XAMCORE_5_0)
+		/// <param name="range">To be added.</param>
+		///         <param name="documentAttributes">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Obsolete ("Use 'GetData' instead.")]
 		[Wrap ("GetDataFromRange (range, documentAttributes.GetDictionary ()!, ref error)")]
@@ -562,6 +590,12 @@ namespace Foundation {
 #endif
 
 #if !(MONOMAC || XAMCORE_5_0)
+		/// <param name="range">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Sealed]
 #endif
 		[return: NullAllowed]
@@ -569,17 +603,35 @@ namespace Foundation {
 		NSFileWrapper GetFileWrapper (NSRange range, NSDictionary options, out NSError error);
 
 #if !(MONOMAC || XAMCORE_5_0)
+		/// <param name="range">To be added.</param>
+		///         <param name="attributes">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Obsolete ("Use 'GetFileWrapper' instead.")]
 		[Export ("fileWrapperFromRange:documentAttributes:error:")]
 		NSFileWrapper GetFileWrapperFromRange (NSRange range, NSDictionary attributes, ref NSError error);
 #endif
 
+		/// <param name="range">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Wrap ("this.GetFileWrapper (range, options.GetDictionary ()!, out error)")]
 		NSFileWrapper GetFileWrapper (NSRange range, NSAttributedStringDocumentAttributes options, out NSError error);
 
 #if !(MONOMAC || XAMCORE_5_0)
+		/// <param name="range">To be added.</param>
+		///         <param name="documentAttributes">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Obsolete ("Use 'GetFileWrapper' instead.")]
 		[Wrap ("GetFileWrapperFromRange (range, documentAttributes.GetDictionary ()!, ref error)")]
@@ -634,11 +686,28 @@ namespace Foundation {
 		[Wrap ("this.GetDocFormat (range, options.GetDictionary ())")]
 		NSData GetDocFormat (NSRange range, NSAttributedStringDocumentAttributes options);
 
+		/// <param name="rect">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="context">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("drawWithRect:options:context:")]
 		void DrawString (CGRect rect, NSStringDrawingOptions options, [NullAllowed] NSStringDrawingContext context);
 
+		/// <param name="size">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="context">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("boundingRectWithSize:options:context:")]
@@ -651,13 +720,23 @@ namespace Foundation {
 		[Export ("size")]
 		CGSize Size { get; }
 
+		/// <param name="point">To be added.</param>
+		///         <summary>Draws the string at the specified point.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("drawAtPoint:")]
 		void DrawString (CGPoint point);
 
+		/// <param name="rect">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("drawInRect:")]
 		void DrawString (CGRect rect);
 
 		// Inlined from the NSAttributedStringKitAdditions category
+		/// <param name="range">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("containsAttachmentsInRange:")]
 		bool ContainsAttachmentsInRange (NSRange range);
@@ -2622,6 +2701,9 @@ namespace Foundation {
 		[Export ("readInBackgroundAndNotifyForModes:")]
 		void ReadInBackground (NSString [] notifyRunLoopModes);
 
+		/// <param name="notifyRunLoopModes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("ReadInBackground (notifyRunLoopModes.GetConstants ())")]
 		void ReadInBackground (NSRunLoopMode [] notifyRunLoopModes);
 
@@ -2631,6 +2713,9 @@ namespace Foundation {
 		[Export ("readToEndOfFileInBackgroundAndNotifyForModes:")]
 		void ReadToEndOfFileInBackground (NSString [] notifyRunLoopModes);
 
+		/// <param name="notifyRunLoopModes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("ReadToEndOfFileInBackground (notifyRunLoopModes.GetConstants ())")]
 		void ReadToEndOfFileInBackground (NSRunLoopMode [] notifyRunLoopModes);
 
@@ -2640,6 +2725,9 @@ namespace Foundation {
 		[Export ("acceptConnectionInBackgroundAndNotifyForModes:")]
 		void AcceptConnectionInBackground (NSString [] notifyRunLoopModes);
 
+		/// <param name="notifyRunLoopModes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("AcceptConnectionInBackground (notifyRunLoopModes.GetConstants ())")]
 		void AcceptConnectionInBackground (NSRunLoopMode [] notifyRunLoopModes);
 
@@ -2649,6 +2737,9 @@ namespace Foundation {
 		[Export ("waitForDataInBackgroundAndNotifyForModes:")]
 		void WaitForDataInBackground (NSString [] notifyRunLoopModes);
 
+		/// <param name="notifyRunLoopModes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WaitForDataInBackground (notifyRunLoopModes.GetConstants ())")]
 		void WaitForDataInBackground (NSRunLoopMode [] notifyRunLoopModes);
 
@@ -2665,9 +2756,21 @@ namespace Foundation {
 		[Export ("fileDescriptor")]
 		int FileDescriptor { get; } /* int, not NSInteger */
 
+		/// <param name="readCallback">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setReadabilityHandler:")]
 		void SetReadabilityHandler ([NullAllowed] Action<NSFileHandle> readCallback);
 
+		/// <param name="writeCallback">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setWriteabilityHandler:")]
 		void SetWriteabilityHandle ([NullAllowed] Action<NSFileHandle> writeCallback);
 
@@ -2847,6 +2950,11 @@ namespace Foundation {
 		[Export ("attributedStringForObjectValue:withDefaultAttributes:")]
 		NSAttributedString GetAttributedString (NSObject obj, NSDictionary<NSString, NSObject> defaultAttributes);
 
+		/// <param name="obj">To be added.</param>
+		///         <param name="defaultAttributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("GetAttributedString (obj, defaultAttributes.GetDictionary ()!)")]
 #if MONOMAC
 		NSAttributedString GetAttributedString (NSObject obj, NSStringAttributes defaultAttributes);
@@ -3077,6 +3185,12 @@ namespace Foundation {
 		[return: NullAllowed]
 		NSObject GetUnarchivedObject (Class cls, NSData data, [NullAllowed] out NSError error);
 
+		/// <param name="type">To be added.</param>
+		///         <param name="data">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetUnarchivedObject (new Class (type), data, out error)")]
@@ -3089,6 +3203,12 @@ namespace Foundation {
 		[return: NullAllowed]
 		NSObject GetUnarchivedObject (NSSet<Class> classes, NSData data, [NullAllowed] out NSError error);
 
+		/// <param name="types">To be added.</param>
+		///         <param name="data">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetUnarchivedObject (new NSSet<Class> (Array.ConvertAll (types, t => new Class (t))), data, out error)")]
@@ -4431,6 +4551,13 @@ namespace Foundation {
 		[Export ("endEditing")]
 		void EndEditing ();
 
+		/// <param name="url">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="returnOptions">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'ReadFromUrl' instead.")]
@@ -4439,6 +4566,13 @@ namespace Foundation {
 		[Export ("readFromFileURL:options:documentAttributes:error:")]
 		bool ReadFromFile (NSUrl url, NSDictionary options, ref NSDictionary returnOptions, ref NSError error);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="returnOptions">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Developers should not use this deprecated method. Developers should use 'ReadFromUrl' instead.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'ReadFromUrl' instead.")]
@@ -4447,11 +4581,25 @@ namespace Foundation {
 		[Wrap ("ReadFromFile (url, options.GetDictionary ()!, ref returnOptions, ref error)")]
 		bool ReadFromFile (NSUrl url, NSAttributedStringDocumentAttributes options, ref NSDictionary returnOptions, ref NSError error);
 
+		/// <param name="data">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="returnOptions">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("readFromData:options:documentAttributes:error:")]
 		bool ReadFromData (NSData data, NSDictionary options, ref NSDictionary returnOptions, ref NSError error);
 
+		/// <param name="data">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="returnOptions">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Wrap ("ReadFromData (data, options.GetDictionary ()!, ref returnOptions, ref error)")]
@@ -4463,10 +4611,24 @@ namespace Foundation {
 		[Export ("readFromURL:options:documentAttributes:error:")]
 		bool ReadFromUrl (NSUrl url, NSDictionary options, ref NSDictionary<NSString, NSObject> returnOptions, ref NSError error);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="returnOptions">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("readFromURL:options:documentAttributes:error:")]
 		bool ReadFromUrl (NSUrl url, NSDictionary<NSString, NSObject> options, ref NSDictionary<NSString, NSObject> returnOptions, ref NSError error);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="returnOptions">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("ReadFromUrl (url, options.GetDictionary ()!, ref returnOptions, ref error)")]
 		bool ReadFromUrl (NSUrl url, NSAttributedStringDocumentAttributes options, ref NSDictionary<NSString, NSObject> returnOptions, ref NSError error);
@@ -5823,18 +5985,30 @@ namespace Foundation {
 		[Export ("addTimer:forMode:")]
 		void AddTimer (NSTimer timer, NSString forMode);
 
+		/// <param name="timer">To be added.</param>
+		///         <param name="forMode">The runloop to insert this into.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("AddTimer (timer, forMode.GetConstant ()!)")]
 		void AddTimer (NSTimer timer, NSRunLoopMode forMode);
 
 		[Export ("limitDateForMode:")]
 		NSDate LimitDateForMode (NSString mode);
 
+		/// <param name="mode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("LimitDateForMode (mode.GetConstant ()!)")]
 		NSDate LimitDateForMode (NSRunLoopMode mode);
 
 		[Export ("acceptInputForMode:beforeDate:")]
 		void AcceptInputForMode (NSString mode, NSDate limitDate);
 
+		/// <param name="mode">To be added.</param>
+		///         <param name="limitDate">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("AcceptInputForMode (mode.GetConstant ()!, limitDate)")]
 		void AcceptInputForMode (NSRunLoopMode mode, NSDate limitDate);
 
@@ -5847,6 +6021,11 @@ namespace Foundation {
 		[Export ("runMode:beforeDate:")]
 		bool RunUntil (NSString runLoopMode, NSDate limitdate);
 
+		/// <param name="runLoopMode">To be added.</param>
+		///         <param name="limitDate">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("RunUntil (runLoopMode.GetConstant ()!, limitDate)")]
 		bool RunUntil (NSRunLoopMode runLoopMode, NSDate limitDate);
 
@@ -5858,6 +6037,10 @@ namespace Foundation {
 		[Export ("performInModes:block:")]
 		void Perform (NSString [] modes, Action block);
 
+		/// <param name="modes">To be added.</param>
+		///         <param name="block">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("Perform (modes.GetConstants ()!, block)")]
 		void Perform (NSRunLoopMode [] modes, Action block);
@@ -8409,12 +8592,20 @@ namespace Foundation {
 		[Export ("scheduleInRunLoop:forMode:")]
 		void Schedule (NSRunLoop aRunLoop, NSString forMode);
 
+		/// <param name="aRunLoop">To be added.</param>
+		///         <param name="forMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Schedule (aRunLoop, forMode.GetConstant ()!)")]
 		void Schedule (NSRunLoop aRunLoop, NSRunLoopMode forMode);
 
 		[Export ("unscheduleFromRunLoop:forMode:")]
 		void Unschedule (NSRunLoop aRunLoop, NSString forMode);
 
+		/// <param name="aRunLoop">To be added.</param>
+		///         <param name="forMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Unschedule (aRunLoop, forMode.GetConstant ()!)")]
 		void Unschedule (NSRunLoop aRunLoop, NSRunLoopMode forMode);
 
@@ -8686,6 +8877,12 @@ namespace Foundation {
 		[Static, Wrap ("FromWeakConfiguration (configuration, sessionDelegate, delegateQueue);")]
 		NSUrlSession FromConfiguration (NSUrlSessionConfiguration configuration, NSUrlSessionDelegate sessionDelegate, [NullAllowed] NSOperationQueue delegateQueue);
 #endif
+		/// <param name="configuration">To be added.</param>
+		///         <param name="sessionDelegate">To be added.</param>
+		///         <param name="delegateQueue">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Wrap ("FromWeakConfiguration (configuration, (NSObject) sessionDelegate, delegateQueue);")]
 		NSUrlSession FromConfiguration (NSUrlSessionConfiguration configuration, INSUrlSessionDelegate sessionDelegate, [NullAllowed] NSOperationQueue delegateQueue);
 
@@ -10121,9 +10318,17 @@ namespace Foundation {
 		[Export ("removeFromRunLoop:forMode:")]
 		void Unschedule (NSRunLoop aRunLoop, string mode);
 #endif
+		/// <param name="aRunLoop">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Schedule (aRunLoop, mode.GetConstant ()!)")]
 		void Schedule (NSRunLoop aRunLoop, NSRunLoopMode mode);
 
+		/// <param name="aRunLoop">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Unschedule (aRunLoop, mode.GetConstant ()!)")]
 		void Unschedule (NSRunLoop aRunLoop, NSRunLoopMode mode);
 
@@ -10633,6 +10838,13 @@ namespace Foundation {
 		[Export ("applyTransform:reverse:range:updatedRange:")]
 		bool ApplyTransform (NSString transform, bool reverse, NSRange range, out NSRange resultingRange);
 
+		/// <param name="transform">To be added.</param>
+		///         <param name="reverse">To be added.</param>
+		///         <param name="range">To be added.</param>
+		///         <param name="resultingRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("ApplyTransform (transform.GetConstant ()!, reverse, range, out resultingRange)")]
 		bool ApplyTransform (NSStringTransform transform, bool reverse, NSRange range, out NSRange resultingRange);
@@ -12176,6 +12388,18 @@ namespace Foundation {
 		NSAttributedString GetContextHelp (string key);
 
 		// http://developer.apple.com/library/ios/#documentation/uikit/reference/NSBundle_UIKitAdditions/Introduction/Introduction.html
+		/// <param name="nibName">To be added.</param>
+		///         <param name="owner">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Loads the specified nib and returns the top-level objects. </summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("loadNibNamed:owner:options:")]
@@ -12532,6 +12756,9 @@ namespace Foundation {
 		[Field ("NSItemProviderPreferredImageSizeKey")]
 		NSString PreferredImageSizeKey { get; }
 
+		/// <param name="handler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setPreviewImageHandler:")]
 		void SetPreviewImageHandler (NSItemProviderLoadHandler handler);
 
@@ -12626,6 +12853,11 @@ namespace Foundation {
 		[Export ("registerObjectOfClass:visibility:loadHandler:")]
 		void RegisterObject (Class aClass, NSItemProviderRepresentationVisibility visibility, RegisterObjectRepresentationLoadHandler loadHandler);
 
+		/// <param name="type">To be added.</param>
+		///         <param name="visibility">To be added.</param>
+		///         <param name="loadHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("RegisterObject (new Class (type), visibility, loadHandler)")]
 		void RegisterObject (Type type, NSItemProviderRepresentationVisibility visibility, RegisterObjectRepresentationLoadHandler loadHandler);
@@ -12634,6 +12866,10 @@ namespace Foundation {
 		[Export ("canLoadObjectOfClass:")]
 		bool CanLoadObject (Class aClass);
 
+		/// <param name="type">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("CanLoadObject (new Class (type))")]
 		bool CanLoadObject (Type type);
@@ -12944,9 +13180,17 @@ namespace Foundation {
 		[Export ("removeFromRunLoop:forMode:")]
 		void Unschedule (NSRunLoop aRunLoop, string forMode);
 #endif
+		/// <param name="aRunLoop">To be added.</param>
+		///         <param name="forMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Schedule (aRunLoop, forMode.GetConstant ()!)")]
 		void Schedule (NSRunLoop aRunLoop, NSRunLoopMode forMode);
 
+		/// <param name="aRunLoop">To be added.</param>
+		///         <param name="forMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Unschedule (aRunLoop, forMode.GetConstant ()!)")]
 		void Unschedule (NSRunLoop aRunLoop, NSRunLoopMode forMode);
 
@@ -13090,9 +13334,17 @@ namespace Foundation {
 		void Unschedule (NSRunLoop aRunLoop, string forMode);
 #endif
 
+		/// <param name="aRunLoop">To be added.</param>
+		///         <param name="forMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Schedule (aRunLoop, forMode.GetConstant ()!)")]
 		void Schedule (NSRunLoop aRunLoop, NSRunLoopMode forMode);
 
+		/// <param name="aRunLoop">To be added.</param>
+		///         <param name="forMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("Unschedule (aRunLoop, forMode.GetConstant ()!)")]
 		void Unschedule (NSRunLoop aRunLoop, NSRunLoopMode forMode);
 
@@ -13356,6 +13608,10 @@ namespace Foundation {
 		[Export ("rangeValue")]
 		NSRange RangeValue { get; }
 
+		/// <param name="time">To be added.</param>
+		///         <summary>Creates an NSValue that wraps a CMTime object..</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithCMTime:")]
 		NSValue FromCMTime (CMTime time);
@@ -13367,6 +13623,10 @@ namespace Foundation {
 		[Export ("CMTimeValue")]
 		CMTime CMTimeValue { get; }
 
+		/// <param name="timeMapping">To be added.</param>
+		///         <summary>Creates an NSValue that wraps a CMTimeMapping object.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithCMTimeMapping:")]
 		NSValue FromCMTimeMapping (CMTimeMapping timeMapping);
@@ -13378,6 +13638,10 @@ namespace Foundation {
 		[Export ("CMTimeMappingValue")]
 		CMTimeMapping CMTimeMappingValue { get; }
 
+		/// <param name="timeRange">To be added.</param>
+		///         <summary>Creates an NSValue that wraps a CMTimeRange object.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithCMTimeRange:")]
 		NSValue FromCMTimeRange (CMTimeRange timeRange);
@@ -13463,24 +13727,44 @@ namespace Foundation {
 		[Export ("directionalEdgeInsetsValue")]
 		NSDirectionalEdgeInsets DirectionalEdgeInsetsValue { get; }
 
+		/// <param name="tran">To be added.</param>
+		///         <summary>Creates an NSValue that wraps a CGAffineTransform object..</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("valueWithCGAffineTransform:")]
 		[Static]
 		NSValue FromCGAffineTransform (CoreGraphics.CGAffineTransform tran);
 
+		/// <param name="insets">To be added.</param>
+		///         <summary>Creates an NSValue that wraps a UIEdgeInsets object.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("valueWithUIEdgeInsets:")]
 		[Static]
 		NSValue FromUIEdgeInsets (UIEdgeInsets insets);
 
+		/// <param name="insets">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("valueWithDirectionalEdgeInsets:")]
 		NSValue FromDirectionalEdgeInsets (NSDirectionalEdgeInsets insets);
 
+		/// <param name="insets">The UIOffset instance</param>
+		///         <summary>Creates an NSValue that wraps an UIOffset structure.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		[Export ("valueWithUIOffset:")]
 		[Static]
 		[NoMac]
@@ -13507,16 +13791,28 @@ namespace Foundation {
 		[MacCatalyst (13, 1)]
 		CGVector CGVectorValue { get; }
 
+		/// <param name="vector">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("valueWithCGVector:")]
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		NSValue FromCGVector (CGVector vector);
 
 		// Maybe we should include this inside mapkit.cs instead (it's a partial interface, so that's trivial)?
+		/// <param name="coordinate">To be added.</param>
+		///         <summary>Creates an NSValue that stores a CLLocationCoordinate2D.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithMKCoordinate:")]
 		NSValue FromMKCoordinate (CoreLocation.CLLocationCoordinate2D coordinate);
 
+		/// <param name="coordinateSpan">To be added.</param>
+		///         <summary>Creates an NSValue that stores an MKCoordinateSpan.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithMKCoordinateSpan:")]
 		NSValue FromMKCoordinateSpan (MapKit.MKCoordinateSpan coordinateSpan);
@@ -13535,6 +13831,10 @@ namespace Foundation {
 		[Export ("MKCoordinateSpanValue")]
 		MapKit.MKCoordinateSpan CoordinateSpanValue { get; }
 
+		/// <param name="transform">To be added.</param>
+		///         <summary>Creates an NSValue that wraps a CATransform3D object.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("valueWithCATransform3D:")]
 		[Static]
 		NSValue FromCATransform3D (CoreAnimation.CATransform3D transform);
@@ -13562,6 +13862,10 @@ namespace Foundation {
 
 		#region SceneKit Additions
 
+		/// <param name="vector">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithSCNVector3:")]
 		NSValue FromVector (SCNVector3 vector);
@@ -13573,6 +13877,10 @@ namespace Foundation {
 		[Export ("SCNVector3Value")]
 		SCNVector3 Vector3Value { get; }
 
+		/// <param name="vector">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithSCNVector4:")]
 		NSValue FromVector (SCNVector4 vector);
@@ -13584,6 +13892,10 @@ namespace Foundation {
 		[Export ("SCNVector4Value")]
 		SCNVector4 Vector4Value { get; }
 
+		/// <param name="matrix">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithSCNMatrix4:")]
 		NSValue FromSCNMatrix4 (SCNMatrix4 matrix);
@@ -14325,12 +14637,20 @@ namespace Foundation {
 		[Export ("scheduleInRunLoop:forMode:")]
 		void ScheduleInRunLoop (NSRunLoop runLoop, NSString runLoopMode);
 
+		/// <param name="runLoop">To be added.</param>
+		///         <param name="runLoopMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("ScheduleInRunLoop (runLoop, runLoopMode.GetConstant ()!)")]
 		void ScheduleInRunLoop (NSRunLoop runLoop, NSRunLoopMode runLoopMode);
 
 		[Export ("removeFromRunLoop:forMode:")]
 		void RemoveFromRunLoop (NSRunLoop runLoop, NSString runLoopMode);
 
+		/// <param name="runLoop">To be added.</param>
+		///         <param name="runLoopMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("RemoveFromRunLoop (runLoop, runLoopMode.GetConstant ()!)")]
 		void RemoveFromRunLoop (NSRunLoop runLoop, NSRunLoopMode runLoopMode);
 
@@ -14692,12 +15012,21 @@ namespace Foundation {
 		[Export ("paused")]
 		bool Paused { [Bind ("isPaused")] get; }
 
+		/// <param name="handler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setCancellationHandler:")]
 		void SetCancellationHandler (Action handler);
 
+		/// <param name="handler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setPausingHandler:")]
 		void SetPauseHandler (Action handler);
 
+		/// <param name="handler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("setResumingHandler:")]
 		void SetResumingHandler (Action handler);
@@ -16328,6 +16657,11 @@ namespace Foundation {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSTextCheckingResult AddressCheckingResult (NSRange range, NSDictionary components);
 
+		/// <param name="range">To be added.</param>
+		///         <param name="components">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("AddressCheckingResult (range, components.GetDictionary ()!)")]
 		NSTextCheckingResult AddressCheckingResult (NSRange range, NSTextCheckingAddressComponents components);
@@ -16371,6 +16705,11 @@ namespace Foundation {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSTextCheckingResult TransitInformationCheckingResult (NSRange range, NSDictionary components);
 
+		/// <param name="range">To be added.</param>
+		///         <param name="components">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("TransitInformationCheckingResult (range, components.GetDictionary ()!)")]
 		NSTextCheckingResult TransitInformationCheckingResult (NSRange range, NSTextCheckingTransitComponents components);
@@ -17016,6 +17355,8 @@ namespace Foundation {
 		[Export ("set")]
 		void Set ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("concat")]
 		void Concat ();
 

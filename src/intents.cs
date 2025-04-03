@@ -10731,6 +10731,11 @@ namespace Intents {
 		[Export ("parameterForClass:keyPath:")]
 		INParameter GetParameter (Class aClass, string keyPath);
 
+		/// <param name="type">To be added.</param>
+		///         <param name="keyPath">To be added.</param>
+		///         <summary>Gets the parameter for the specified key path on the specified intent or response type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("GetParameter (new Class (type), keyPath)")]
 		INParameter GetParameter (Type type, string keyPath);

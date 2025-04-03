@@ -43,11 +43,16 @@ namespace CoreText {
 	[SupportedOSPlatform ("tvos")]
 	public class CTTextTabOptions {
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTTextTabOptions ()
 			: this (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTTextTabOptions (NSDictionary dictionary)
 		{
 			if (dictionary is null)
@@ -92,11 +97,20 @@ namespace CoreText {
 		#region Text Tab Creation
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTTextTabCreate (CTTextAlignment alignment, double location, IntPtr options);
+		/// <param name="alignment">To be added.</param>
+		///         <param name="location">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTTextTab (CTTextAlignment alignment, double location)
 			: this (alignment, location, null)
 		{
 		}
 
+		/// <param name="alignment">To be added.</param>
+		///         <param name="location">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTTextTab (CTTextAlignment alignment, double location, CTTextTabOptions? options)
 			: base (CTTextTabCreate (alignment, location, options.GetHandle ()), true, true)
 		{
@@ -124,6 +138,9 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTTextTabGetOptions (IntPtr tab);
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTTextTabOptions? GetOptions ()
 		{
 			var options = CTTextTabGetOptions (Handle);

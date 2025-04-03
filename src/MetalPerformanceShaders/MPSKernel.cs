@@ -16,6 +16,13 @@ namespace MetalPerformanceShaders {
 		[DllImport (Constants.MetalPerformanceShadersLibrary)]
 		extern static byte MPSSupportsMTLDevice (/* __nullable id <MTLDevice> */ IntPtr device);
 
+		/// <param name="device">To be added.</param>
+		///         <summary>Determines if the device is supported.</summary>
+		///         <returns>
+		///           <see langword="true" /> if <paramref name="device" /> is supported. Oterwise, returns <see langword="false" /></returns>
+		///         <remarks>
+		///           <para>Before copying shaders to a new device, application developers should call the <see cref="M:MetalPerformanceShaders.MPSKernel.Supports(Metal.IMTLDevice)" /> method to determine if the <paramref name="device" /> is supported.</para>
+		///         </remarks>
 		public static bool Supports (IMTLDevice device)
 		{
 			bool result = MPSSupportsMTLDevice (device.GetHandle ()) != 0;
@@ -105,6 +112,10 @@ namespace MetalPerformanceShaders {
 		static extern void MPSSetHeapCacheDuration (IntPtr commandBuffer, double seconds);
 
 #if NET
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="seconds">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -169,6 +180,12 @@ namespace MetalPerformanceShaders {
 
 	public partial class MPSImageThresholdBinary {
 
+		/// <param name="device">The device on which the filter will run.</param>
+		///         <param name="thresholdValue">The value above which pixels will be brightened to the maximum value.</param>
+		///         <param name="maximumValue">The value to which to brighten pixels brighter than the threshold.</param>
+		///         <param name="transform">A color transform that maps 3-channel pixels to single-channel values.</param>
+		///         <summary>Constructs a new <c>MPSImageThresholdBinary</c> with the specified values.</summary>
+		///         <remarks>To be added.</remarks>
 		public MPSImageThresholdBinary (IMTLDevice device, float thresholdValue, float maximumValue, /*[NullAllowed]*/ float [] transform)
 			: base (NSObjectFlag.Empty)
 		{
@@ -190,6 +207,12 @@ namespace MetalPerformanceShaders {
 
 	public partial class MPSImageThresholdBinaryInverse {
 
+		/// <param name="device">The device on which the filter will run.</param>
+		///         <param name="thresholdValue">The value above which pixels will be darkened to 0 brightness.</param>
+		///         <param name="maximumValue">The value to which to brighten pixels that are dimmer than the threshold.</param>
+		///         <param name="transform">A color transform that maps 3-channel pixels to single-channel values.</param>
+		///         <summary>Constructs a new <c>MPSImageThresholdBinaryInverse</c> with the specified values.</summary>
+		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public MPSImageThresholdBinaryInverse (IMTLDevice device, float thresholdValue, float maximumValue, /*[NullAllowed]*/ float [] transform)
 			: base (NSObjectFlag.Empty)
@@ -210,6 +233,12 @@ namespace MetalPerformanceShaders {
 
 	public partial class MPSImageThresholdTruncate {
 
+		/// <param name="device">The device on which the filter will run.</param>
+		///         <param name="thresholdValue">The value to which pixel brightensses will be clamped.</param>
+		///         <param name="transform">A color transform that maps 3-channel pixels to single-channel values.</param>
+		///         <summary>Constructs a new <c>MPSImageThresholdTruncate</c> with the specified values.</summary>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public MPSImageThresholdTruncate (IMTLDevice device, float thresholdValue, /*[NullAllowed]*/ float [] transform)
 			: base (NSObjectFlag.Empty)
@@ -230,6 +259,11 @@ namespace MetalPerformanceShaders {
 
 	public partial class MPSImageThresholdToZero {
 
+		/// <param name="device">The device on which the filter will run.</param>
+		///         <param name="thresholdValue">The value above which pixels will be left unchanged.</param>
+		///         <param name="transform">A color transform that maps 3-channel pixels to single-channel values.</param>
+		///         <summary>Constructs a new <c>MPSImageThresholdToZero</c> with the specified values.</summary>
+		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public MPSImageThresholdToZero (IMTLDevice device, float thresholdValue, /*[NullAllowed]*/ float [] transform)
 			: base (NSObjectFlag.Empty)
@@ -250,6 +284,11 @@ namespace MetalPerformanceShaders {
 
 	public partial class MPSImageThresholdToZeroInverse {
 
+		/// <param name="device">The device on which the filter will run.</param>
+		///         <param name="thresholdValue">The value above which pixels will be darkened to 0.</param>
+		///         <param name="transform">A color transform that maps 3-channel pixels to single-channel values.</param>
+		///         <summary>Constructs a new <c>MPSImageThresholdToZeroInverse</c> with the specified values.</summary>
+		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public MPSImageThresholdToZeroInverse (IMTLDevice device, float thresholdValue, /*[NullAllowed]*/ float [] transform)
 			: base (NSObjectFlag.Empty)
@@ -270,6 +309,10 @@ namespace MetalPerformanceShaders {
 
 	public partial class MPSImageSobel {
 
+		/// <param name="device">The device on which the filter will run.</param>
+		///         <param name="transform">An array of 3 floating point values that is dot-multiplied with the components of the color to produce a gray scale tone.</param>
+		///         <summary>Constructs a new <c>MPSImageSobel</c> with the specified device and color transform.</summary>
+		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public MPSImageSobel (IMTLDevice device, float [] transform)
 			: base (NSObjectFlag.Empty)
@@ -293,6 +336,13 @@ namespace MetalPerformanceShaders {
 
 	public partial class MPSCnnConvolution {
 
+		/// <param name="device">To be added.</param>
+		///         <param name="convolutionDescriptor">To be added.</param>
+		///         <param name="kernelWeights">To be added.</param>
+		///         <param name="biasTerms">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public MPSCnnConvolution (IMTLDevice device, MPSCnnConvolutionDescriptor convolutionDescriptor, float [] kernelWeights, float [] biasTerms, MPSCnnConvolutionFlags flags)
 			: base (NSObjectFlag.Empty)
@@ -311,6 +361,13 @@ namespace MetalPerformanceShaders {
 	public partial class MPSCnnFullyConnected {
 
 #if NET
+		/// <param name="device">To be added.</param>
+		///         <param name="convolutionDescriptor">To be added.</param>
+		///         <param name="kernelWeights">To be added.</param>
+		///         <param name="biasTerms">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
@@ -428,6 +485,17 @@ namespace MetalPerformanceShaders {
 
 	public partial class MPSCnnBinaryConvolutionNode {
 #if NET
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="weights">To be added.</param>
+		///         <param name="outputBiasTerms">To be added.</param>
+		///         <param name="outputScaleTerms">To be added.</param>
+		///         <param name="inputBiasTerms">To be added.</param>
+		///         <param name="inputScaleTerms">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -445,6 +513,16 @@ namespace MetalPerformanceShaders {
 		}
 
 #if NET
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="weights">To be added.</param>
+		///         <param name="outputBiasTerms">To be added.</param>
+		///         <param name="outputScaleTerms">To be added.</param>
+		///         <param name="inputBiasTerms">To be added.</param>
+		///         <param name="inputScaleTerms">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -464,6 +542,17 @@ namespace MetalPerformanceShaders {
 
 	public partial class MPSCnnBinaryFullyConnectedNode {
 #if NET
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="weights">To be added.</param>
+		///         <param name="outputBiasTerms">To be added.</param>
+		///         <param name="outputScaleTerms">To be added.</param>
+		///         <param name="inputBiasTerms">To be added.</param>
+		///         <param name="inputScaleTerms">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -481,6 +570,16 @@ namespace MetalPerformanceShaders {
 		}
 
 #if NET
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="weights">To be added.</param>
+		///         <param name="outputBiasTerms">To be added.</param>
+		///         <param name="outputScaleTerms">To be added.</param>
+		///         <param name="inputBiasTerms">To be added.</param>
+		///         <param name="inputScaleTerms">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]

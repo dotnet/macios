@@ -121,6 +121,12 @@ namespace AudioUnit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AUAudioUnit {
+		/// <param name="cls">To be added.</param>
+		///         <param name="componentDescription">To be added.</param>
+		///         <param name="name">To be added.</param>
+		///         <param name="version">To be added.</param>
+		///         <summary>Registers a component that has been implemented as a subclass of <see cref="T:AudioUnit.AudioUnit" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("registerSubclass:asComponentDescription:name:version:")] // AUAudioUnitImplementation
 		void RegisterSubclass (Class cls, AudioComponentDescription componentDescription, string name, uint version);
@@ -132,6 +138,11 @@ namespace AudioUnit {
 		[Export ("initWithComponentDescription:error:")]
 		NativeHandle Constructor (AudioComponentDescription componentDescription, [NullAllowed] out NSError outError);
 
+		/// <param name="componentDescription">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>Asynchronously creates a <see cref="T:AudioUnit.AUAudioUnit" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("instantiateWithComponentDescription:options:completionHandler:")]
 		[Async]
@@ -205,9 +216,18 @@ namespace AudioUnit {
 		[Export ("componentVersion")]
 		uint ComponentVersion { get; }
 
+		/// <param name="outError">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Allocates the resources that are needed to render audio.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("allocateRenderResourcesAndReturnError:")]
 		bool AllocateRenderResources ([NullAllowed] out NSError outError);
 
+		/// <summary>Deallocates the resources that are needed to render audio.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("deallocateRenderResources")]
 		void DeallocateRenderResources ();
 
@@ -217,6 +237,8 @@ namespace AudioUnit {
 		[Export ("renderResourcesAllocated")]
 		bool RenderResourcesAllocated { get; }
 
+		/// <summary>Resets rendering to its initial state.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("reset")]
 		void Reset ();
 
@@ -456,6 +478,9 @@ namespace AudioUnit {
 		[Export ("channelMap"), NullAllowed]
 		NSNumber [] ChannelMap { get; set; }
 
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>Requests the view controller for the audio unit and runs <paramref name="completionHandler" /> when finished.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("requestViewControllerWithCompletionHandler:")]
@@ -463,9 +488,17 @@ namespace AudioUnit {
 		void RequestViewController (Action<AUViewControllerBase> completionHandler);
 
 		// AUAudioUnitImplementation
+		/// <param name="flag">To be added.</param>
+		///         <summary>Sets the <see cref="P:AudioUnit.AUAudioUnit.RenderResourcesAllocated" /> property.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setRenderResourcesAllocated:")]
 		void SetRenderResourcesAllocated (bool flag);
 
+		/// <param name="format">To be added.</param>
+		///         <param name="bus">To be added.</param>
+		///         <summary>Method that is called when the developer sets the bus format.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("shouldChangeToFormat:forBus:")]
 		bool ShouldChangeToFormat (AVAudioFormat format, AUAudioUnitBus bus);
 
@@ -484,6 +517,11 @@ namespace AudioUnit {
 		[Export ("MIDIOutputBufferSizeHint")]
 		nint MidiOutputBufferSizeHint { get; set; }
 
+		/// <param name="cable">To be added.</param>
+		///         <param name="channel">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("profileStateForCable:channel:")]
@@ -497,11 +535,25 @@ namespace AudioUnit {
 		[NullAllowed, Export ("profileChangedBlock", ArgumentSemantic.Assign)]
 		AUMidiCIProfileChangedCallback ProfileChangedCallback { get; set; }
 
+		/// <param name="profile">To be added.</param>
+		///         <param name="cable">To be added.</param>
+		///         <param name="channel">To be added.</param>
+		///         <param name="outError">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("disableProfile:cable:onChannel:error:")]
 		bool Disable (MidiCIProfile profile, byte cable, byte channel, [NullAllowed] out NSError outError);
 
+		/// <param name="profile">To be added.</param>
+		///         <param name="cable">To be added.</param>
+		///         <param name="channel">To be added.</param>
+		///         <param name="outError">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("enableProfile:cable:onChannel:error:")]
@@ -630,6 +682,14 @@ namespace AudioUnit {
 		[Export ("format")]
 		AVAudioFormat Format { get; }
 
+		/// <param name="format">A description of the audio format for the bus.</param>
+		///         <param name="outError">
+		///           <para>A location to which to record success or failure.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Sets configuration details about the supported channels and formats of audio data on this bus.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("setFormat:error:")]
 		bool SetFormat (AVAudioFormat format, [NullAllowed] out NSError outError);
 
@@ -739,10 +799,22 @@ namespace AudioUnit {
 		bool SetBusCount (nuint count, [NullAllowed] out NSError outError);
 
 		// -(void)addObserverToAllBusses:(NSObject * __nonnull)observer forKeyPath:(NSString * __nonnull)keyPath options:(NSKeyValueObservingOptions)options context:(void * __nullable)context;
+		/// <param name="observer">The KVO observer to add to all buses in the array.</param>
+		///         <param name="keyPath">The object-relative keypath that identifies the property to observe.</param>
+		///         <param name="options">The observing options for the observer.</param>
+		///         <param name="context">An object or value that is used to disambiguate observer calls.</param>
+		///         <summary>Adds a key-value observer to every bus in the array.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addObserverToAllBusses:forKeyPath:options:context:")]
 		void AddObserver (NSObject observer, string keyPath, NSKeyValueObservingOptions options, /* void * */ IntPtr context);
 
 		// -(void)removeObserverFromAllBusses:(NSObject * __nonnull)observer forKeyPath:(NSString * __nonnull)keyPath context:(void * __nullable)context;
+		/// <param name="observer">The KVO observer to remove from all buses in the array.</param>
+		///         <param name="keyPath">The object-relative keypath that identifies the observer to remove.</param>
+		///         <param name="context">The object or value that was used to disambiguate observer calls.</param>
+		///         <summary>Removes the specified key-value observer from every bus in the array.</summary>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeObserverFromAllBusses:forKeyPath:context:")]
 		void RemoveObserver (NSObject observer, string keyPath, /* void * */ IntPtr context);
 
@@ -759,6 +831,9 @@ namespace AudioUnit {
 		AUAudioUnitBusType BusType { get; }
 
 		//AUAudioUnitBusImplementation
+		/// <param name="busArray">An array of buses to copy into this bus array.</param>
+		///         <summary>Copies <paramref name="busArray" /> into this bus array, replacing the current buses in this array.</summary>
+		///         <remarks>This method is applicable only to subclasses of <see cref="T:AudioUnit.AUAudioUnit" />.</remarks>
 		[Export ("replaceBusses:")]
 		void ReplaceBusses (AUAudioUnitBus [] busArray);
 	}
@@ -851,15 +926,33 @@ namespace AudioUnit {
 		[Export ("value")]
 		float Value { get; set; }
 
+		/// <param name="value">The value to set.</param>
+		///         <param name="originator">The originator, whose notification should be skipped.</param>
+		///         <summary>Sets the parameter's value without notifying <paramref name="originator" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setValue:originator:")]
 		void SetValue (float value, IntPtr originator);
 
+		/// <param name="value">The value to set.</param>
+		///         <param name="originator">The originator, whose notification should be skipped.</param>
+		///         <summary>Sets the parameter to <paramref name="value" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("SetValue (value, originator.ObserverToken)")]
 		void SetValue (float value, AUParameterObserverToken originator);
 
+		/// <param name="value">The value to set.</param>
+		///         <param name="originator">The originator, whose notification should be skipped.</param>
+		///         <param name="hostTime">The time to apply the change.</param>
+		///         <summary>Sets the parameter's value, without notifying <paramref name="originator" />, at the specified <paramref name="hostTime" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setValue:originator:atHostTime:")]
 		void SetValue (float value, IntPtr originator, ulong hostTime);
 
+		/// <param name="value">The value to set.</param>
+		///         <param name="originator">The originator, whose notification should be skipped.</param>
+		///         <param name="hostTime">The host time of the initiating gesture.</param>
+		///         <summary>Sets the parameter to the specified value, and preserves the initiating gesture time.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("SetValue (value, originator.ObserverToken, hostTime)")]
 		void SetValue (float value, AUParameterObserverToken originator, ulong hostTime);
 
@@ -876,6 +969,10 @@ namespace AudioUnit {
 		[Export ("stringFromValue:")]
 		string _GetString (IntPtr value);
 
+		/// <param name="str">The string representation for which to get a parameter value.</param>
+		///         <summary>Returns the numeric value for the parameter in <paramref name="str" />.</summary>
+		///         <returns>The numeric value for the parameter string.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("valueFromString:")]
 		float GetValue (string str);
 
@@ -884,6 +981,12 @@ namespace AudioUnit {
 		[Export ("setValue:originator:atHostTime:eventType:")]
 		void SetValue (float value, IntPtr originator, ulong hostTime, AUParameterAutomationEventType eventType);
 
+		/// <param name="value">To be added.</param>
+		///         <param name="originator">To be added.</param>
+		///         <param name="hostTime">To be added.</param>
+		///         <param name="eventType">To be added.</param>
+		///         <summary>Sets the parameter's value to <paramref name="value" />, with the specified <paramref name="hostTime" /> and <paramref name="eventType" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("SetValue (value, originator.ObserverToken, hostTime, eventType)")]
 		void SetValue (float value, AUParameterObserverToken originator, ulong hostTime, AUParameterAutomationEventType eventType);
@@ -919,17 +1022,33 @@ namespace AudioUnit {
 		[Export ("displayNameWithLength:")]
 		string GetDisplayName (nint maximumLength);
 
+		/// <param name="observer">To be added.</param>
+		///         <summary>Adds an observer to a parameter or parameter group, and returns a token that identifies the observers for later removal.</summary>
+		///         <returns>A token that identifies the observers for later removal.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("tokenByAddingParameterObserver:")]
 		/* void * */
 		IntPtr TokenByAddingParameterObserver (AUParameterObserver observer);
 
+		/// <param name="observer">The block that is called after the parameter changes.</param>
+		///         <summary>Adds a observer for the parameter and returns a token that developers can use to identify it.</summary>
+		///         <returns>A token that can be passed to the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:RemoveParameterObserver*&amp;scope=Xamarin" title="M:RemoveParameterObserver*">M:RemoveParameterObserver*</a></format> and <see cref="M:AudioUnit.AUParameter.SetValue(System.Single,AudioUnit.AUParameterObserverToken,System.UInt64,AudioUnit.AUParameterAutomationEventType)" /> methods.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("new AUParameterObserverToken { ObserverToken = TokenByAddingParameterObserver (observer) }")]
 		AUParameterObserverToken CreateTokenByAddingParameterObserver (AUParameterObserver observer);
 
+		/// <param name="observer">To be added.</param>
+		///         <summary>Adds a recording observer to a parameter or parameter group, and returns a token that identifies the observers for later removal.</summary>
+		///         <returns>A token that identifies the observers for later removal.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("tokenByAddingParameterRecordingObserver:")]
 		/* void * */
 		IntPtr TokenByAddingParameterRecordingObserver (AUParameterRecordingObserver observer);
 
+		/// <param name="observer">The block that is called after the parameter changes.</param>
+		///         <summary>Adds a recording observer for the parameter and returns a token that developers can use to identify it.</summary>
+		///         <returns>A token that can be passed to the <see cref="M:AudioUnit.AUParameterNode.RemoveParameterObserver(System.IntPtr)" /> and <see cref="M:AudioUnit.AUParameter.SetValue(System.Single,AudioUnit.AUParameterObserverToken,System.UInt64,AudioUnit.AUParameterAutomationEventType)" /> methods.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("new AUParameterObserverToken { ObserverToken = TokenByAddingParameterRecordingObserver (observer) }")]
 		AUParameterObserverToken CreateTokenByAddingParameterRecordingObserver (AUParameterRecordingObserver observer);
 
@@ -951,9 +1070,15 @@ namespace AudioUnit {
 		[Export ("implementorValueFromStringCallback", ArgumentSemantic.Copy)]
 		AUImplementorValueFromStringCallback ImplementorValueFromStringCallback { get; set; }
 
+		/// <param name="token">An opaque pointer to the parameter observer to remove.</param>
+		///         <summary>Removes the parameter observer that is specified by <paramref name="token" />.</summary>
+		///         <remarks>Developers get valid <paramref name="token" /> instances by saving the value that is returned from <see cref="M:AudioUnit.AUParameterNode.TokenByAddingParameterRecordingObserver(AudioUnit.AUParameterRecordingObserver)" />.</remarks>
 		[Export ("removeParameterObserver:")]
 		void RemoveParameterObserver (/* void * */ IntPtr token);
 
+		/// <param name="token">An opaque pointer to the parameter observer to remove.</param>
+		///         <summary>Removes the parameter observer that is identified by <paramref name="token" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("RemoveParameterObserver (token.ObserverToken)")]
 		void RemoveParameterObserver (AUParameterObserverToken token);
 
@@ -974,6 +1099,10 @@ namespace AudioUnit {
 		[Export ("tokenByAddingParameterAutomationObserver:")]
 		IntPtr _GetToken (AUParameterAutomationObserver observer);
 
+		/// <param name="observer">To be added.</param>
+		///         <summary>Adds a parameter automation observer for the parameter and returns a token that developers can use to identify it.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("new AUParameterObserverToken (_GetToken (observer))")]
 		AUParameterObserverToken GetToken (AUParameterAutomationObserver observer);
@@ -1004,10 +1133,20 @@ namespace AudioUnit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AUParameterGroup))]
 	interface AUParameterTree : NSSecureCoding {
+		/// <param name="address">The address of the parameter to get.</param>
+		///         <summary>Gets the parameter at the specified address.</summary>
+		///         <returns>The parameter at the specified address.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("parameterWithAddress:")]
 		[return: NullAllowed]
 		AUParameter GetParameter (ulong address);
 
+		/// <param name="paramID">The parameter ID search parameter.</param>
+		///         <param name="scope">The scope search parameter.</param>
+		///         <param name="element">The element search parameter..</param>
+		///         <summary>Gets the parameter at the specified <paramref name="paramID" />, in the specified <paramref name="scope" />, that corresponds to the specified <paramref name="element" />.</summary>
+		///         <returns>The matching parameter, or <see langword="null" /> if no such parameter exists.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("parameterWithID:scope:element:")]
 		[return: NullAllowed]
 		AUParameter GetParameter (uint paramID, uint scope, uint element);

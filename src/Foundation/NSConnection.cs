@@ -39,16 +39,33 @@ using ObjCRuntime;
 namespace Foundation {
 	public partial class NSConnection {
 
+		/// <typeparam name="TProxy">To be added.</typeparam>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public TProxy GetRootProxy<TProxy> () where TProxy : NSObject
 		{
 			return GetRootProxy<TProxy> (_GetRootProxy ());
 		}
 
+		/// <typeparam name="TProxy">To be added.</typeparam>
+		///         <param name="name">To be added.</param>
+		///         <param name="hostName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static TProxy GetRootProxy<TProxy> (string name, string hostName) where TProxy : NSObject
 		{
 			return GetRootProxy<TProxy> (_GetRootProxy (name, hostName));
 		}
 
+		/// <typeparam name="TProxy">To be added.</typeparam>
+		///         <param name="name">To be added.</param>
+		///         <param name="hostName">To be added.</param>
+		///         <param name="server">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static TProxy GetRootProxy<TProxy> (string name, string hostName, NSPortNameServer server) where TProxy : NSObject
 		{
 			return GetRootProxy<TProxy> (_GetRootProxy (name, hostName, server));

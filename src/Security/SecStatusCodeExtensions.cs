@@ -35,6 +35,10 @@ namespace Security {
 			/* void * */ IntPtr reserved); /* always null */
 
 #if NET
+		/// <param name="status">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]

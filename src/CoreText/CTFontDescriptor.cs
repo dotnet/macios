@@ -112,11 +112,28 @@ namespace CoreText {
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontDescriptorAttributes {
 
+		/// <summary>Default constructor.</summary>
+		///         <remarks>
+		///           <para>Typically used to initialize objects with the C# initializer syntax.</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// var attributes = new CTFontDescriptorAttributes () {
+		/// 	FamilyName = "Times New Roman"
+		/// };
+		///
+		/// var fontDescriptor = new CTFontDescriptor (attributes);
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		public CTFontDescriptorAttributes ()
 			: this (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">An NSDictionary containing CTFontDescriptorAttributes keys and values.</param>
+		///         <summary>Creates a strongly typed CTFontDescriptorAttributes from a weakly typed NSDictionary.</summary>
+		///         <remarks>
+		///         </remarks>
 		public CTFontDescriptorAttributes (NSDictionary dictionary)
 		{
 			if (dictionary is null)
@@ -564,6 +581,10 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontDescriptorCreateCopyWithAttributes (IntPtr original, IntPtr attributes);
+		/// <param name="attributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTFontDescriptor? WithAttributes (NSDictionary attributes)
 		{
 			if (attributes is null)
@@ -580,6 +601,20 @@ namespace CoreText {
 			return new CTFontDescriptor (h, true);
 		}
 
+		/// <param name="attributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// var attributes = new CTFontDescriptorAttributes () {
+		/// 	FamilyName = "Times New Roman"
+		/// };
+		///
+		/// var newFontDescriptor = myDescriptor.WithAttributes (attributes);
+		/// 	]]></code>
+		///           </example>
+		///         </remarks>
 		public CTFontDescriptor? WithAttributes (CTFontDescriptorAttributes attributes)
 		{
 			if (attributes is null)
@@ -604,186 +639,334 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontDescriptorCreateCopyWithFeature (IntPtr original, IntPtr featureTypeIdentifier, IntPtr featureSelectorIdentifier);
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureAllTypographicFeatures.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.AllTypographicFeatures, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureLigatures.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.Ligatures, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureCursiveConnection.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.CursiveConnection, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureVerticalSubstitutionConnection.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.VerticalSubstitution, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureLinguisticRearrangementConnection.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.LinguisticRearrangement, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureNumberSpacing.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.NumberSpacing, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureSmartSwash.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.SmartSwash, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureDiacritics.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.Diacritics, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureVerticalPosition.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.VerticalPosition, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureFractions.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.Fractions, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureOverlappingCharacters.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.OverlappingCharacters, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureTypographicExtras.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.TypographicExtras, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureMathematicalExtras.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.MathematicalExtras, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureOrnamentSets.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.OrnamentSets, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureCharacterAlternatives.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.CharacterAlternatives, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureDesignComplexity.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.DesignComplexity, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureStyleOptions.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.StyleOptions, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureCharacterShape.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.CharacterShape, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureNumberCase.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.NumberCase, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureTextSpacing.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.TextSpacing, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureTransliteration.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.Transliteration, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureAnnotation.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.Annotation, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureKanaSpacing.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.KanaSpacing, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureIdeographicSpacing.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.IdeographicSpacing, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureUnicodeDecomposition.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.UnicodeDecomposition, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureRubyKana.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.RubyKana, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureCJKSymbolAlternatives.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.CJKSymbolAlternatives, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureIdeographicAlternatives.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.IdeographicAlternatives, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureCJKVerticalRomanPlacement.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.CJKVerticalRomanPlacement, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureItalicCJKRoman.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.ItalicCJKRoman, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureCaseSensitiveLayout.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.CaseSensitiveLayout, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureAlternateKana.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.AlternateKana, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureStylisticAlternatives.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.StylisticAlternatives, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureContextualAlternates.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.ContextualAlternates, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureLowerCase.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.LowerCase, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureUpperCase.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.UpperCase, (int) featureSelector);
 		}
 
+		/// <param name="featureSelector">the feature to create.</param>
+		///         <summary>Creates a font descriptor from this font descriptor, with the specified feature set.</summary>
+		///         <returns>A new CTFontDescriptor representing the specified feature.</returns>
+		///         <remarks>This is a convenience method that creates new CTFontDescriptors with a single feature altered.</remarks>
 		public CTFontDescriptor? WithFeature (CTFontFeatureCJKRomanSpacing.Selector featureSelector)
 		{
 			return WithFeature (FontFeatureGroup.CJKRomanSpacing, (int) featureSelector);
@@ -799,6 +982,10 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontDescriptorCreateMatchingFontDescriptors (IntPtr descriptor, IntPtr mandatoryAttributes);
+		/// <param name="mandatoryAttributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTFontDescriptor [] GetMatchingFontDescriptors (NSSet? mandatoryAttributes)
 		{
 			var cfArrayRef = CTFontDescriptorCreateMatchingFontDescriptors (Handle, mandatoryAttributes.GetHandle ());
@@ -808,12 +995,19 @@ namespace CoreText {
 			return CFArray.ArrayFromHandleFunc (cfArrayRef, fd => new CTFontDescriptor (cfArrayRef, false), true)!;
 		}
 
+		/// <param name="mandatoryAttributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTFontDescriptor? []? GetMatchingFontDescriptors (params NSString [] mandatoryAttributes)
 		{
 			NSSet attrs = NSSet.MakeNSObjectSet (mandatoryAttributes);
 			return GetMatchingFontDescriptors (attrs);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTFontDescriptor? []? GetMatchingFontDescriptors ()
 		{
 			NSSet? attrs = null;
@@ -822,6 +1016,10 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontDescriptorCreateMatchingFontDescriptor (IntPtr descriptor, IntPtr mandatoryAttributes);
+		/// <param name="mandatoryAttributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTFontDescriptor? GetMatchingFontDescriptor (NSSet? mandatoryAttributes)
 		{
 			CTFontDescriptor? result = CreateDescriptor (CTFontDescriptorCreateMatchingFontDescriptors (Handle, mandatoryAttributes.GetHandle ()));
@@ -829,12 +1027,19 @@ namespace CoreText {
 			return result;
 		}
 
+		/// <param name="mandatoryAttributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTFontDescriptor? GetMatchingFontDescriptor (params NSString [] mandatoryAttributes)
 		{
 			NSSet attrs = NSSet.MakeNSObjectSet (mandatoryAttributes);
 			return GetMatchingFontDescriptor (attrs);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTFontDescriptor? GetMatchingFontDescriptor ()
 		{
 			NSSet? attrs = null;
@@ -845,6 +1050,10 @@ namespace CoreText {
 		#region Descriptor Accessors
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontDescriptorCopyAttributes (IntPtr descriptor);
+		/// <summary>Retrieves the attributes from this CTFontDescriptor.</summary>
+		///         <returns>Strongly typed CTFontDescriptorAttributes.</returns>
+		///         <remarks>
+		///         </remarks>
 		public CTFontDescriptorAttributes? GetAttributes ()
 		{
 			var cfDictRef = CTFontDescriptorCopyAttributes (Handle);
@@ -856,6 +1065,10 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontDescriptorCopyAttribute (IntPtr descriptor, IntPtr attribute);
+		/// <param name="attribute">An NSString representing a CTFontDescriptor attribute, one of the keys in <see cref="T:CoreText.CTFontDescriptorAttributeKey" />.</param>
+		///         <summary>Fetches a CTFontDescriptorAttribute from the descriptor.</summary>
+		///         <returns>The attribute as an NSObject.</returns>
+		///         <remarks>You can use <see cref="M:CoreText.CTFontDescriptor.GetAttributes" /> method to get all the attributes at once with a strongly typed set of properties.</remarks>
 		public NSObject? GetAttribute (NSString attribute)
 		{
 			if (attribute is null)
@@ -865,6 +1078,11 @@ namespace CoreText {
 			return result;
 		}
 
+		/// <param name="attribute">An NSString representing a CTFontDescriptor attribute, one of the keys in <see cref="T:CoreText.CTFontDescriptorAttributeKey" />.</param>
+		///         <summary>Returns an attribute that has been localized.</summary>
+		///         <returns>The attribute as an NSObject, or null if not available.</returns>
+		///         <remarks>
+		///         </remarks>
 		public NSObject? GetLocalizedAttribute (NSString attribute)
 		{
 			unsafe {
@@ -876,6 +1094,12 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern IntPtr CTFontDescriptorCopyLocalizedAttribute (IntPtr descriptor, IntPtr attribute, IntPtr* language);
+		/// <param name="attribute">An NSString representing a CTFontDescriptor attribute, one of the keys in <see cref="T:CoreText.CTFontDescriptorAttributeKey" />.</param>
+		///         <param name="language">On output, the language code that matched (if available).</param>
+		///         <summary>Returns an attribute that has been localized.</summary>
+		///         <returns>The attribute as an NSObject or null if not available.</returns>
+		///         <remarks>
+		///         </remarks>
 		public NSObject? GetLocalizedAttribute (NSString attribute, out NSString? language)
 		{
 			IntPtr handle;
@@ -935,6 +1159,12 @@ namespace CoreText {
 		}
 
 #if !XAMCORE_5_0
+		/// <param name="descriptors">To be added.</param>
+		///         <param name="mandatoryAttributes">To be added.</param>
+		///         <param name="progressHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use 'MatchFontDescriptors (CTFontDescriptor[], NSSet, CTFontDescriptorProgressHandler)' instead.")]
 		public static bool MatchFontDescriptors (CTFontDescriptor [] descriptors, NSSet? mandatoryAttributes, Func<CTFontDescriptorMatchingState, IntPtr, bool> progressHandler)

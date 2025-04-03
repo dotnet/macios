@@ -61,12 +61,15 @@ namespace Foundation {
 		Common,
 
 #if MONOMAC
+		/// <summary>To be added.</summary>
 		[Field ("NSConnectionReplyMode")]
 		ConnectionReply = 2,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSModalPanelRunLoopMode", "AppKit")]
 		ModalPanel,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSEventTrackingRunLoopMode", "AppKit")]
 		EventTracking,
 #else

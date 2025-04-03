@@ -22,6 +22,10 @@ namespace AppKit {
 	}
 
 	public partial class NSStatusBar {
+		/// <param name="length">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSStatusItem CreateStatusItem (NSStatusItemLength length)
 		{
 			return CreateStatusItem ((float) length);

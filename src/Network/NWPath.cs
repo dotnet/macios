@@ -80,6 +80,10 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static byte nw_path_uses_interface_type (IntPtr handle, NWInterfaceType type);
 
+		/// <param name="type">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool UsesInterfaceType (NWInterfaceType type) => nw_path_uses_interface_type (GetCheckedHandle (), type) != 0;
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -115,6 +119,10 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static byte nw_path_is_equal (IntPtr p1, IntPtr p2);
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool EqualsTo (NWPath other)
 		{
 			if (other is null)
@@ -147,6 +155,9 @@ namespace Network {
 
 
 #if !XAMCORE_5_0
+		/// <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the overload that takes a 'Func<NWInterface, bool>' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public void EnumerateInterfaces (Action<NWInterface> callback)

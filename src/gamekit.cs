@@ -653,6 +653,9 @@ namespace GameKit {
 		[Export ("initWithLeaderboardIdentifier:forPlayer:")]
 		NativeHandle Constructor (string identifier, string playerID);
 
+		/// <param name="identifier">To be added.</param>
+		/// <summary>To be added.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithLeaderboardIdentifier:")]
 		NativeHandle Constructor (string identifier);
@@ -1253,6 +1256,9 @@ namespace GameKit {
 		GKPlayerStateUpdateHandler PlayerStateUpdateHandler { get; set; }
 		//void SetPlayerStateUpdateHandler (GKPlayerStateUpdateHandler handler);
 
+		/// <param name="handler">To be added.</param>
+		///         <summary>Sets the handler that is run when a player's voice chat status changes.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("setPlayerVoiceChatStateDidChangeHandler:", ArgumentSemantic.Copy)]
 		void SetPlayerVoiceChatStateChangeHandler (Action<GKPlayer, GKVoiceChatPlayerState> handler);

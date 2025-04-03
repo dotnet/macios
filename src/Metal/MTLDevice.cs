@@ -71,6 +71,9 @@ namespace Metal {
 		unsafe static extern IntPtr MTLCopyAllDevices ();
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios18.0")]
@@ -147,6 +150,11 @@ namespace Metal {
 		static readonly InnerNotification static_notificationHandler = TrampolineNotificationHandler;
 		[MonoPInvokeCallback (typeof (InnerNotification))]
 #else
+		/// <param name="block">To be added.</param>
+		///         <param name="device">To be added.</param>
+		///         <param name="notifyName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[UnmanagedCallersOnly]
 #endif
 		public static unsafe void TrampolineNotificationHandler (IntPtr block, IntPtr device, IntPtr notifyName)
@@ -167,6 +175,9 @@ namespace Metal {
 		static extern void MTLRemoveDeviceObserver (IntPtr observer);
 
 #if NET
+		/// <param name="observer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -193,6 +204,13 @@ namespace Metal {
 	[SupportedOSPlatform ("tvos")]
 #endif
 	public static partial class MTLDevice_Extensions {
+		/// <typeparam name="T">The type for which to create a buffer.</typeparam>
+		///         <param name="This">The instance on which this method operates.</param>
+		///         <param name="data">The data to copy into the buffer.</param>
+		///         <param name="options">Options for creating the buffer.</param>
+		///         <summary>Creates and returns a new buffer with a copy of the specified data.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static IMTLBuffer? CreateBuffer<T> (this IMTLDevice This, T [] data, MTLResourceOptions options) where T : struct
 		{
 			if (data is null)

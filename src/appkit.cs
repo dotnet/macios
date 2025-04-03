@@ -225,6 +225,9 @@ namespace AppKit {
 	}
 
 	interface NSAnimationProgressMarkEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSAnimationProgressMark")]
 		float Progress { get; } /* float, not CGFloat */
 	}
@@ -253,6 +256,9 @@ namespace AppKit {
 		[Export ("stopAnimation")]
 		void StopAnimation ();
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("isAnimating")]
 		bool IsAnimating ();
 
@@ -277,6 +283,9 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSAnimationDelegate Delegate { get; set; }
 
@@ -304,15 +313,27 @@ namespace AppKit {
 		[Export ("runLoopModesForAnimating")]
 		NSString [] RunLoopModesForAnimating { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSAnimationProgressMarkEventArgs)), Field ("NSAnimationProgressMarkNotification")]
 		NSString ProgressMarkNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAnimationProgressMark")]
 		NSString ProgressMark { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAnimationTriggerOrderIn")]
 		NSString TriggerOrderIn { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAnimationTriggerOrderOut")]
 		NSString TriggerOrderOut { get; }
 	}
@@ -415,6 +436,9 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSAlertDelegate Delegate { get; set; }
 
@@ -458,9 +482,15 @@ namespace AppKit {
 
 	[NoMacCatalyst]
 	interface NSApplicationDidFinishLaunchingEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSApplicationLaunchIsDefaultLaunchKey")]
 		bool IsLaunchDefault { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[ProbePresence, Export ("NSApplicationLaunchUserNotificationKey")]
 		bool IsLaunchFromUserNotification { get; }
 	}
@@ -493,31 +523,58 @@ namespace AppKit {
 		[Static, Export ("appearanceNamed:")]
 		NSAppearance GetAppearance (NSString name);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAppearanceNameAqua")]
 		NSString NameAqua { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAppearanceNameDarkAqua")]
 		NSString NameDarkAqua { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 10)]
 		[Field ("NSAppearanceNameLightContent")]
 		NSString NameLightContent { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAppearanceNameVibrantDark")]
 		NSString NameVibrantDark { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAppearanceNameVibrantLight")]
 		NSString NameVibrantLight { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAppearanceNameAccessibilityHighContrastAqua")]
 		NSString NameAccessibilityHighContrastAqua { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAppearanceNameAccessibilityHighContrastDarkAqua")]
 		NSString NameAccessibilityHighContrastDarkAqua { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAppearanceNameAccessibilityHighContrastVibrantLight")]
 		NSString NameAccessibilityHighContrastVibrantLight { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAppearanceNameAccessibilityHighContrastVibrantDark")]
 		NSString NameAccessibilityHighContrastVibrantDark { get; }
 
@@ -557,6 +614,9 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSApplicationDelegate Delegate { get; set; }
 
@@ -582,12 +642,21 @@ namespace AppKit {
 		[Export ("keyWindow")]
 		NSWindow KeyWindow { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isActive")]
 		bool Active { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isHidden")]
 		bool Hidden { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isRunning")]
 		bool Running { get; }
 
@@ -673,6 +742,13 @@ namespace AppKit {
 #endif
 
 		// NSEventMask must be casted to nuint to preserve the NSEventMask.Any special value on 64 bit systems. NSEventMask is not [Native].
+		/// <param name="mask">To be added.</param>
+		///         <param name="expiration">To be added.</param>
+		///         <param name="runLoopMode">To be added.</param>
+		///         <param name="deqFlag">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("NextEvent (mask, expiration, runLoopMode.GetConstant ()!, deqFlag)")]
 		NSEvent NextEvent (NSEventMask mask, NSDate expiration, NSRunLoopMode runLoopMode, bool deqFlag);
 
@@ -791,6 +867,9 @@ namespace AppKit {
 		[Export ("miniaturizeAll:")]
 		void MiniaturizeAll (NSObject sender);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isFullKeyboardAccessEnabled")]
 		bool FullKeyboardAccessEnabled { get; }
 
@@ -829,48 +908,93 @@ namespace AppKit {
 		[Export ("registerForRemoteNotifications")]
 		void RegisterForRemoteNotifications ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("registeredForRemoteNotifications")]
 		bool IsRegisteredForRemoteNotifications { [Bind ("isRegisteredForRemoteNotifications")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationDidBecomeActiveNotification")]
 		NSString DidBecomeActiveNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationDidHideNotification")]
 		NSString DidHideNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSApplicationDidFinishLaunchingEventArgs)), Field ("NSApplicationDidFinishLaunchingNotification")]
 		NSString DidFinishLaunchingNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationDidResignActiveNotification")]
 		NSString DidResignActiveNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationDidUnhideNotification")]
 		NSString DidUnhideNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationDidUpdateNotification")]
 		NSString DidUpdateNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationWillBecomeActiveNotification")]
 		NSString WillBecomeActiveNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationWillHideNotification")]
 		NSString WillHideNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationWillFinishLaunchingNotification")]
 		NSString WillFinishLaunchingNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationWillResignActiveNotification")]
 		NSString WillResignActiveNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationWillUnhideNotification")]
 		NSString WillUnhideNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationWillUpdateNotification")]
 		NSString WillUpdateNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationWillTerminateNotification")]
 		NSString WillTerminateNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationDidChangeScreenParametersNotification")]
 		NSString DidChangeScreenParametersNotification { get; }
 
@@ -882,15 +1006,27 @@ namespace AppKit {
 		[Field ("NSApplicationProtectedDataDidBecomeAvailableNotification")]
 		NSString ProtectedDataDidBecomeAvailableNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSApplicationLaunchIsDefaultLaunchKey")]
 		NSString LaunchIsDefaultLaunchKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSApplicationLaunchRemoteNotificationKey")]
 		NSString LaunchRemoteNotificationKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSApplicationLaunchUserNotificationKey")]
 		NSString LaunchUserNotificationKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSApplicationDidFinishRestoringWindowsNotification")]
 		NSString DidFinishRestoringWindowsNotification { get; }
 
@@ -983,18 +1119,33 @@ namespace AppKit {
 	[NoMacCatalyst]
 	[Static]
 	interface NSAboutPanelOption {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAboutPanelOptionCredits")]
 		NSString Credits { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAboutPanelOptionApplicationName")]
 		NSString ApplicationName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAboutPanelOptionApplicationIcon")]
 		NSString ApplicationIcon { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAboutPanelOptionVersion")]
 		NSString Version { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAboutPanelOptionApplicationVersion")]
 		NSString ApplicationVersion { get; }
 	}
@@ -1412,6 +1563,9 @@ namespace AppKit {
 		[Export ("transformUsingAffineTransform:")]
 		void TransformUsingAffineTransform (NSAffineTransform transform);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isEmpty")]
 		bool IsEmpty { get; }
 
@@ -1525,6 +1679,9 @@ namespace AppKit {
 		[Internal]
 		void _AppendBezierPathWithCGGlyphs (IntPtr glyphs, nint count, NSFont font);
 
+		/// <param name="path">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("AppendPath (path)")]
 		void Append (NSBezierPath path);
 
@@ -1585,6 +1742,9 @@ namespace AppKit {
 		[Export ("getBitmapDataPlanes:")]
 		void GetBitmapDataPlanes (IntPtr data);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isPlanar")]
 		bool IsPlanar { get; }
 
@@ -1671,48 +1831,90 @@ namespace AppKit {
 		[Export ("representationUsingType:properties:")]
 		NSData RepresentationUsingTypeProperties (NSBitmapImageFileType storageType, [NullAllowed] NSDictionary properties);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSImageCompressionMethod")]
 		NSString CompressionMethod { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSImageCompressionFactor")]
 		NSString CompressionFactor { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSImageDitherTransparency")]
 		NSString DitherTransparency { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSImageRGBColorTable")]
 		NSString RGBColorTable { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSImageInterlaced")]
 		NSString Interlaced { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSImageColorSyncProfileData")]
 		NSString ColorSyncProfileData { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSImageFrameCount")]
 		NSString FrameCount { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSImageCurrentFrame")]
 		NSString CurrentFrame { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSImageCurrentFrameDuration")]
 		NSString CurrentFrameDuration { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSImageLoopCount")]
 		NSString LoopCount { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSImageGamma")]
 		NSString Gamma { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSImageProgressive")]
 		NSString Progressive { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSImageEXIFData")]
 		NSString EXIFData { get; }
 
 		[Field ("NSImageIPTCData")]
 		NSString IptcData { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSImageFallbackBackgroundColor")]
 		NSString FallbackBackgroundColor { get; }
 	}
@@ -1760,6 +1962,9 @@ namespace AppKit {
 		[Export ("contentView")]
 		NSObject ContentView { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("transparent")]
 		bool Transparent { [Bind ("isTransparent")] get; set; }
 
@@ -1792,6 +1997,9 @@ namespace AppKit {
 		[Export ("loadColumnZero")]
 		void LoadColumnZero ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isLoaded")]
 		bool Loaded { get; }
 
@@ -2014,6 +2222,9 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSBrowserDelegate Delegate { get; set; }
 
@@ -2026,6 +2237,9 @@ namespace AppKit {
 		[Export ("separatesColumns")]
 		bool SeparatesColumns { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("titled")]
 		bool Titled { [Bind ("isTitled")] get; set; }
 
@@ -2214,9 +2428,15 @@ namespace AppKit {
 		void Set ();
 
 		//Detected properties
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("leaf")]
 		bool Leaf { [Bind ("isLeaf")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("loaded")]
 		bool Loaded { [Bind ("isLoaded")] get; set; }
 
@@ -2263,12 +2483,21 @@ namespace AppKit {
 		[Export ("setButtonType:")]
 		void SetButtonType (NSButtonType aType);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isOpaque")]
 		bool IsOpaque { get; }
 
+		/// <param name="fontObj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setFont:")]
 		void SetFont (NSFont fontObj);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("transparent")]
 		bool Transparent { [Bind ("isTransparent")] get; set; }
 
@@ -2312,6 +2541,9 @@ namespace AppKit {
 		[Deprecated (PlatformName.MacOSX, 10, 8, message: "This method still will set Title with the ampersand stripped from the value, but does nothing else. Set the Title directly.")]
 		string AlternateMnemonic { get; [Bind ("setAlternateTitleWithMnemonic:")] set; }
 
+		/// <param name="type">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setGradientType:")]
 		[Deprecated (PlatformName.MacOSX, 10, 12, message: "The GradientType property is unused, and setting it has no effect.")]
 		void SetGradientType (NSGradientType type);
@@ -2401,6 +2633,9 @@ namespace AppKit {
 		[Export ("bordered")]
 		bool Bordered { [Bind ("isBordered")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("transparent")]
 		bool Transparent { [Bind ("isTransparent")] get; set; }
 
@@ -2447,6 +2682,9 @@ namespace AppKit {
 		[Export ("sound")]
 		NSSound Sound { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("springLoaded")]
 		bool IsSpringLoaded { [Bind ("isSpringLoaded")] get; set; }
 
@@ -2531,21 +2769,36 @@ namespace AppKit {
 		[Export ("title")]
 		string Title { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isOpaque")]
 		bool IsOpaque { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
 		[Export ("sendActionOn:")]
 		nint SendActionOn (NSEventType mask);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("continuous")]
 		bool IsContinuous { [Bind ("isContinuous")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("editable")]
 		bool Editable { [Bind ("isEditable")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("selectable")]
 		bool Selectable { [Bind ("isSelectable")] get; set; }
 
@@ -2558,6 +2811,9 @@ namespace AppKit {
 		[Export ("scrollable")]
 		bool Scrollable { [Bind ("isScrollable")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("highlighted")]
 		bool Highlighted { [Bind ("isHighlighted")] get; set; }
 
@@ -2622,6 +2878,9 @@ namespace AppKit {
 		[Export ("controlTint")]
 		NSControlTint ControlTint { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Implement 'ViewDidChangeEffectiveAppearance' on NSView or observe 'NSApplication.EffectiveAppearance'.")]
 		[Notification, Field ("NSControlTintDidChangeNotification")]
 		NSString ControlTintChangedNotification { get; }
@@ -2714,6 +2973,9 @@ namespace AppKit {
 		[NullAllowed]
 		NSMenu DefaultMenu { get; }
 
+		/// <param name="flag">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setSendsActionOnEndEditing:")]
 		void SetSendsActionOnEndEditing (bool flag);
 
@@ -2933,6 +3195,9 @@ namespace AppKit {
 		[NullAllowed]
 		NSCollectionView CollectionView { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("selected")]
 		bool Selected { [Bind ("isSelected")] get; set; }
 
@@ -2955,6 +3220,9 @@ namespace AppKit {
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frameRect);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isFirstResponder")]
 		bool IsFirstResponder { get; }
 
@@ -2988,12 +3256,18 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSCollectionViewDelegate Delegate { get; set; }
 
 		[Export ("content", ArgumentSemantic.Copy)]
 		NSObject [] Content { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("selectable")]
 		bool Selectable { [Bind ("isSelectable")] get; set; }
 
@@ -3324,12 +3598,21 @@ namespace AppKit {
 	[Static]
 	[NoMacCatalyst]
 	interface NSCollectionElementKind {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSCollectionElementKindInterItemGapIndicator")]
 		NSString InterItemGapIndicator { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSCollectionElementKindSectionHeader")]
 		NSString SectionHeader { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSCollectionElementKindSectionFooter")]
 		NSString SectionFooter { get; }
 	}
@@ -3349,6 +3632,9 @@ namespace AppKit {
 		[Export ("zIndex", ArgumentSemantic.Assign)]
 		nint ZIndex { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hidden")]
 		bool Hidden { [Bind ("isHidden")] get; set; }
 
@@ -4498,6 +4784,9 @@ namespace AppKit {
 		[Export ("allKeys")]
 		string [] AllKeys ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isEditable")]
 		bool IsEditable { get; }
 
@@ -4561,6 +4850,9 @@ namespace AppKit {
 		[Export ("accessoryView", ArgumentSemantic.Retain), NullAllowed]
 		NSView AccessoryView { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("continuous")]
 		bool Continuous { [Bind ("isContinuous")] get; set; }
 
@@ -4693,33 +4985,63 @@ namespace AppKit {
 		[Export ("displayP3ColorSpace")]
 		NSColorSpace DisplayP3ColorSpace { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSCalibratedWhiteColorSpace")]
 		NSString CalibratedWhite { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSCalibratedBlackColorSpace")]
 		NSString CalibratedBlack { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSCalibratedRGBColorSpace")]
 		NSString CalibratedRGB { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSDeviceWhiteColorSpace")]
 		NSString DeviceWhite { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSDeviceBlackColorSpace")]
 		NSString DeviceBlack { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSDeviceRGBColorSpace")]
 		NSString DeviceRGB { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSDeviceCMYKColorSpace")]
 		NSString DeviceCMYK { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSNamedColorSpace")]
 		NSString Named { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPatternColorSpace")]
 		NSString Pattern { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSCustomColorSpace")]
 		NSString Custom { get; }
 	}
@@ -4736,6 +5058,9 @@ namespace AppKit {
 		[Export ("activate:")]
 		void Activate (bool exclusive);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isActive")]
 		bool IsActive { get; }
 
@@ -4792,6 +5117,9 @@ namespace AppKit {
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frameRect);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSComboBoxDelegate Delegate { get; set; }
 
@@ -4807,6 +5135,9 @@ namespace AppKit {
 		[Export ("numberOfVisibleItems")]
 		nint VisibleItems { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("buttonBordered")]
 		bool ButtonBordered { [Bind ("isButtonBordered")] get; set; }
 
@@ -4877,15 +5208,27 @@ namespace AppKit {
 		[Export ("objectValues")]
 		NSObject [] Values { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSComboBoxSelectionDidChangeNotification")]
 		NSString SelectionDidChangeNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSComboBoxSelectionIsChangingNotification")]
 		NSString SelectionIsChangingNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSComboBoxWillDismissNotification")]
 		NSString WillDismissNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSComboBoxWillPopUpNotification")]
 		NSString WillPopUpNotification { get; }
 	}
@@ -4928,6 +5271,9 @@ namespace AppKit {
 		[Export ("numberOfVisibleItems")]
 		nint VisibleItems { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("buttonBordered")]
 		bool ButtonBordered { [Bind ("isButtonBordered")] get; set; }
 
@@ -5130,9 +5476,15 @@ namespace AppKit {
 		[Export ("ignoresMultiClick")]
 		bool IgnoresMultiClick { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("continuous")]
 		bool Continuous { [Bind ("isContinuous")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
@@ -5179,6 +5531,9 @@ namespace AppKit {
 		[Export ("refusesFirstResponder")]
 		bool RefusesFirstResponder { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("highlighted")]
 		bool Highlighted { [Bind ("isHighlighted")] get; [Bind ("setHighlighted:")] set; }
 
@@ -5301,6 +5656,9 @@ namespace AppKit {
 		bool CommitEditing { get; }
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isEditing")]
 		bool IsEditing { get; }
 	}
@@ -5487,6 +5845,9 @@ namespace AppKit {
 #if XAMCORE_5_0
 		[NoMacCatalyst]
 #else
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Obsoleted (PlatformName.MacCatalyst, 13, 1, message: "Do not use; this API does not exist on this platform.")]
 #endif
 		[Export ("isSetOnMouseExited")]
@@ -5496,6 +5857,9 @@ namespace AppKit {
 #if XAMCORE_5_0
 		[NoMacCatalyst]
 #else
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Obsoleted (PlatformName.MacCatalyst, 13, 1, message: "Do not use; this API does not exist on this platform.")]
 #endif
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
@@ -5600,6 +5964,9 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSDatePickerCellDelegate Delegate { get; set; }
 	}
@@ -5657,6 +6024,9 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSDatePickerCellDelegate Delegate { get; set; }
 
@@ -5686,6 +6056,9 @@ namespace AppKit {
 		[NullAllowed, Export ("localizedKey")]
 		string LocalizedKey { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("explicitlyIncluded")]
 		bool ExplicitlyIncluded { [Bind ("isExplicitlyIncluded")] get; }
 	}
@@ -5896,6 +6269,9 @@ namespace AppKit {
 		[Export ("runModalPrintOperation:delegate:didRunSelector:contextInfo:")]
 		void RunModalPrintOperation (NSPrintOperation printOperation, [NullAllowed] NSObject delegateObject, [NullAllowed] Selector didRunSelector, [NullAllowed] IntPtr contextInfo);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isDocumentEdited")]
 		bool IsDocumentEdited { get; }
 
@@ -6019,6 +6395,9 @@ namespace AppKit {
 		[Export ("performAsynchronousFileAccessUsingBlock:")]
 		void PerformAsynchronousFileAccess (Action ioCode);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isEntireFileLoaded")]
 		bool IsEntireFileLoaded { get; }
 
@@ -6060,6 +6439,9 @@ namespace AppKit {
 		[Export ("duplicateAndReturnError:")]
 		NSDocument Duplicate ([NullAllowed] out NSError outError);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isInViewingMode")]
 		bool IsInViewingMode { get; }
 
@@ -6109,6 +6491,9 @@ namespace AppKit {
 		new void RestoreUserActivityState (NSUserActivity userActivity);
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isBrowsingVersions")]
 		bool IsBrowsingVersions { get; }
 
@@ -6291,9 +6676,15 @@ namespace AppKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (string key);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSDraggingImageComponentIconKey")]
 		NSString IconKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSDraggingImageComponentLabelKey")]
 		NSString LabelKey { get; }
 	}
@@ -6317,6 +6708,9 @@ namespace AppKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (INSPasteboardWriting pasteboardWriter);
 
+		/// <param name="provider">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setImageComponentsProvider:")]
 		void SetImagesContentProvider ([NullAllowed] NSDraggingItemImagesContentProvider provider);
 
@@ -6574,6 +6968,9 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSDrawerDelegate Delegate { get; set; }
 
@@ -6832,6 +7229,9 @@ namespace AppKit {
 		[Export ("xHeight")]
 		nfloat XHeight { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isFixedPitch")]
 		bool IsFixedPitch { get; }
 
@@ -6878,72 +7278,141 @@ namespace AppKit {
 		[Internal]
 		IntPtr _GetVerticalFont ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontFamilyAttribute")]
 		NSString FamilyAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontNameAttribute")]
 		NSString NameAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontFaceAttribute")]
 		NSString FaceAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontSizeAttribute")]
 		NSString SizeAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontVisibleNameAttribute")]
 		NSString VisibleNameAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontMatrixAttribute")]
 		NSString MatrixAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontVariationAttribute")]
 		NSString VariationAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontCharacterSetAttribute")]
 		NSString CharacterSetAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontCascadeListAttribute")]
 		NSString CascadeListAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontTraitsAttribute")]
 		NSString TraitsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontFixedAdvanceAttribute")]
 		NSString FixedAdvanceAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontFeatureSettingsAttribute")]
 		NSString FeatureSettingsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontSymbolicTrait")]
 		NSString SymbolicTrait { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontWeightTrait")]
 		NSString WeightTrait { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontWidthTrait")]
 		NSString WidthTrait { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontSlantTrait")]
 		NSString SlantTrait { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontVariationAxisIdentifierKey")]
 		NSString VariationAxisIdentifierKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontVariationAxisMinimumValueKey")]
 		NSString VariationAxisMinimumValueKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontVariationAxisMaximumValueKey")]
 		NSString VariationAxisMaximumValueKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontVariationAxisDefaultValueKey")]
 		NSString VariationAxisDefaultValueKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontVariationAxisNameKey")]
 		NSString VariationAxisNameKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontFeatureTypeIdentifierKey")]
 		NSString FeatureTypeIdentifierKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontFeatureSelectorIdentifierKey")]
 		NSString FeatureSelectorIdentifierKey { get; }
 
@@ -6995,9 +7464,15 @@ namespace AppKit {
 		[Internal, Export ("NSFontCollectionActionKey")]
 		NSString _Action { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSFontCollectionNameKey")]
 		string Name { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSFontCollectionOldNameKey")]
 		string OldName { get; }
 
@@ -7062,48 +7537,93 @@ namespace AppKit {
 		[Export ("matchingDescriptorsForFamily:options:")]
 		NSFontDescriptor [] GetMatchingDescriptors (string family, NSDictionary options);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontCollectionIncludeDisabledFontsOption")]
 		NSString IncludeDisabledFontsOption { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontCollectionRemoveDuplicatesOption")]
 		NSString RemoveDuplicatesOption { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontCollectionDisallowAutoActivationOption")]
 		NSString DisallowAutoActivationOption { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSFontCollectionChangedEventArgs)), Field ("NSFontCollectionDidChangeNotification")]
 		NSString ChangedNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontCollectionActionKey")]
 		NSString ActionKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontCollectionNameKey")]
 		NSString NameKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontCollectionOldNameKey")]
 		NSString OldNameKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontCollectionVisibilityKey")]
 		NSString VisibilityKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontCollectionWasShown")]
 		NSString ActionWasShown { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontCollectionWasHidden")]
 		NSString ActionWasHidden { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontCollectionWasRenamed")]
 		NSString ActionWasRenamed { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontCollectionAllFonts")]
 		NSString NameAllFonts { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontCollectionUser")]
 		NSString NameUser { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontCollectionFavorites")]
 		NSString NameFavorites { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontCollectionRecentlyUsed")]
 		NSString NameRecentlyUsed { get; }
 
@@ -7113,9 +7633,15 @@ namespace AppKit {
 	[BaseType (typeof (NSFontCollection))]
 	[DisableDefaultCtor]
 	interface NSMutableFontCollection {
+		/// <param name="descriptors">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setQueryDescriptors:")]
 		void SetQueryDescriptors (NSFontDescriptor [] descriptors);
 
+		/// <param name="descriptors">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setExclusionDescriptors:")]
 		void SetExclusionDescriptors (NSFontDescriptor [] descriptors);
 
@@ -7238,6 +7764,9 @@ namespace AppKit {
 		[Static, Export ("sharedFontManager")]
 		NSFontManager SharedFontManager { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isMultiple")]
 		bool IsMultiple { get; }
 
@@ -7295,6 +7824,9 @@ namespace AppKit {
 		[Export ("convertWeight:ofFont:")]
 		NSFont ConvertWeight (bool increaseWeight, NSFont fontObj);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
@@ -7407,6 +7939,9 @@ namespace AppKit {
 		[Export ("accessoryView", ArgumentSemantic.Retain), NullAllowed]
 		NSView AccessoryView { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 	}
@@ -7414,30 +7949,57 @@ namespace AppKit {
 	[NoMacCatalyst]
 	[Static]
 	interface NSFontWeight {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontWeightUltraLight")]
 		nfloat UltraLight { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontWeightThin")]
 		nfloat Thin { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontWeightLight")]
 		nfloat Light { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontWeightRegular")]
 		nfloat Regular { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontWeightMedium")]
 		nfloat Medium { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontWeightSemibold")]
 		nfloat Semibold { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontWeightBold")]
 		nfloat Bold { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontWeightHeavy")]
 		nfloat Heavy { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontWeightBlack")]
 		nfloat Black { get; }
 	}
@@ -7540,6 +8102,9 @@ namespace AppKit {
 		[Export ("initImageCell:")]
 		NativeHandle Constructor (NSImage image);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isOpaque")]
 		bool IsOpaque { get; }
 
@@ -7667,6 +8232,9 @@ namespace AppKit {
 		[Export ("attributes")]
 		NSDictionary Attributes { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isDrawingToScreen")]
 		bool IsDrawingToScreen { get; }
 
@@ -7807,6 +8375,9 @@ namespace AppKit {
 		[Export ("mergeCellsInHorizontalRange:verticalRange:")]
 		void MergeCells (NSRange hRange, NSRange vRange);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSGridViewSizeForContent")]
 		nfloat SizeForContent { get; }
 	}
@@ -7839,6 +8410,9 @@ namespace AppKit {
 		[Export ("bottomPadding")]
 		nfloat BottomPadding { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hidden")]
 		bool Hidden { [Bind ("isHidden")] get; set; }
 
@@ -7871,6 +8445,9 @@ namespace AppKit {
 		[Export ("trailingPadding")]
 		nfloat TrailingPadding { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hidden")]
 		bool Hidden { [Bind ("isHidden")] get; set; }
 
@@ -8007,6 +8584,9 @@ namespace AppKit {
 		[DebuggerBrowsable (DebuggerBrowsableState.Never)]
 		string CharactersIgnoringModifiers { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isARepeat")]
 		[DebuggerBrowsable (DebuggerBrowsableState.Never)]
 		bool IsARepeat { get; }
@@ -8139,6 +8719,9 @@ namespace AppKit {
 		[DebuggerBrowsable (DebuggerBrowsableState.Never)]
 		NSPointingDeviceType PointingDeviceType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isEnteringProximity")]
 		[DebuggerBrowsable (DebuggerBrowsableState.Never)]
 		bool IsEnteringProximity { get; }
@@ -8207,6 +8790,9 @@ namespace AppKit {
 		void RemoveMonitor (NSObject eventMonitor);
 
 		//Detected properties
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("mouseCoalescingEnabled")]
 		bool MouseCoalescingEnabled { [Bind ("isMouseCoalescingEnabled")] get; set; }
@@ -8227,6 +8813,9 @@ namespace AppKit {
 		[DebuggerBrowsable (DebuggerBrowsableState.Never)]
 		NSEventPhase MomentumPhase { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isDirectionInvertedFromDevice")]
 		[DebuggerBrowsable (DebuggerBrowsableState.Never)]
 		bool IsDirectionInvertedFromDevice { get; }
@@ -8235,6 +8824,9 @@ namespace AppKit {
 		[DebuggerBrowsable (DebuggerBrowsableState.Never)]
 		NSEventPhase Phase { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("isSwipeTrackingFromScrollEventsEnabled")]
 		bool IsSwipeTrackingFromScrollEventsEnabled { get; }
@@ -8301,9 +8893,15 @@ namespace AppKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSGestureRecognizerDelegate Delegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
@@ -8566,6 +9164,9 @@ namespace AppKit {
 		[Export ("helpRequested:")]
 		void HelpRequested (NSEvent eventPtr);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 11)]
 		[Export ("isTornOff")]
 		bool IsTornOff { get; }
@@ -8588,6 +9189,9 @@ namespace AppKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		INSMenuDelegate Delegate { get; set; }
@@ -8696,6 +9300,9 @@ namespace AppKit {
 		[Export ("parentItem")]
 		NSMenuItem ParentItem { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isSeparatorItem")]
 		bool IsSeparatorItem { get; }
 
@@ -8706,9 +9313,15 @@ namespace AppKit {
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'Title' instead.")]
 		void SetTitleWithMnemonic (string stringWithAmpersand);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isHighlighted")]
 		bool Highlighted { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isHiddenOrHasHiddenAncestor")]
 		bool IsHiddenOrHasHiddenAncestor { get; }
 
@@ -8752,9 +9365,15 @@ namespace AppKit {
 		[Export ("mixedStateImage", ArgumentSemantic.Retain)]
 		NSImage MixedStateImage { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("alternate")]
 		bool Alternate { [Bind ("isAlternate")] get; set; }
 
@@ -8778,6 +9397,9 @@ namespace AppKit {
 		[Export ("view", ArgumentSemantic.Retain)]
 		NSView View { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hidden")]
 		bool Hidden { [Bind ("isHidden")] get; set; }
 
@@ -9070,6 +9692,9 @@ namespace AppKit {
 		[Export ("removeObject:")]
 		void RemoveObject (NSObject object1);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("editable")]
 		bool Editable { [Bind ("isEditable")] get; set; }
 
@@ -9476,6 +10101,9 @@ namespace AppKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		INSOutlineViewDelegate Delegate { get; set; }
@@ -9484,6 +10112,9 @@ namespace AppKit {
 		[NullAllowed]
 		NSObject WeakDataSource { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDataSource")]
 		[NullAllowed]
 		INSOutlineViewDataSource DataSource { get; set; }
@@ -9737,6 +10368,9 @@ namespace AppKit {
 		bool RegisterBooks (NSBundle bundle);
 
 		//Detected properties
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("contextHelpModeActive")]
 		bool ContextHelpModeActive { [Bind ("isContextHelpModeActive")] get; set; }
@@ -9956,6 +10590,9 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMacCatalyst]
 		[Wrap ("WeakDelegate")]
 		INSImageDelegate Delegate { get; set; }
@@ -10793,12 +11430,21 @@ namespace AppKit {
 	[NoMacCatalyst]
 	[Static]
 	partial interface NSImageHint {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSImageHintCTM")]
 		NSString Ctm { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSImageHintInterpolation")]
 		NSString Interpolation { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSImageHintUserInterfaceLayoutDirection")]
 		NSString UserInterfaceLayoutDirection { get; }
 	}
@@ -10819,9 +11465,15 @@ namespace AppKit {
 		[Export ("drawInRect:fromRect:operation:fraction:respectFlipped:hints:")]
 		bool DrawInRect (CGRect dstSpacePortionRect, CGRect srcSpacePortionRect, NSCompositingOperation op, nfloat requestedAlpha, bool respectContextIsFlipped, [NullAllowed] NSDictionary hints);
 
+		/// <param name="alpha">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setAlpha:")]
 		void SetAlpha (bool alpha);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hasAlpha")]
 		bool HasAlpha { get; }
 
@@ -10922,6 +11574,9 @@ namespace AppKit {
 		[Export ("size")]
 		CGSize Size { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("opaque")]
 		bool Opaque { [Bind ("isOpaque")] get; set; }
 
@@ -10962,6 +11617,9 @@ namespace AppKit {
 		[Export ("imageFrameStyle")]
 		NSImageFrameStyle ImageFrameStyle { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("editable")]
 		bool Editable { [Bind ("isEditable")] get; set; }
 
@@ -11245,6 +11903,9 @@ namespace AppKit {
 		[Export ("allowsEmptySelection")]
 		bool AllowsEmptySelection { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("selectionByRect")]
 		bool SelectionByRect { [Bind ("isSelectionByRect")] get; set; }
 
@@ -11273,12 +11934,18 @@ namespace AppKit {
 		[Export ("autosizesCells")]
 		bool AutosizesCells { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("autoscroll")]
 		bool Autoscroll { [Bind ("isAutoscroll")] get; set; }
 
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSMatrixDelegate Delegate { get; set; }
 
@@ -11347,6 +12014,9 @@ namespace AppKit {
 		[NullAllowed, Export ("ratingPlaceholderImage", ArgumentSemantic.Strong)]
 		NSImage RatingPlaceholderImage { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("editable")]
 		bool Editable { [Bind ("isEditable")] get; set; }
 	}
@@ -11544,6 +12214,9 @@ namespace AppKit {
 	[BaseType (typeof (NSWindow))]
 	interface NSPanel {
 		//Detected properties
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("floatingPanel")]
 		bool FloatingPanel { [Bind ("isFloatingPanel")] get; set; }
 
@@ -11691,184 +12364,319 @@ namespace AppKit {
 #if !XAMCORE_5_0
 		// Pasteboard data types
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSStringPboardType")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'NSPasteboardTypeString' instead.")]
 		NSString NSStringType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFilenamesPboardType")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Create multiple items with 'NSPasteboardTypeFileUrl' or 'MobileCoreServices.UTType.FileURL' instead.")]
 		NSString NSFilenamesType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPostScriptPboardType")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'com.adobe.encapsulated-postscript' instead.")]
 		NSString NSPostScriptType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTIFFPboardType")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'NSPasteboardTypeTIFF' instead.")]
 		NSString NSTiffType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSRTFPboardType")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'NSPasteboardTypeRTF' instead.")]
 		NSString NSRtfType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTabularTextPboardType")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'NSPasteboardTypeTabularText' instead.")]
 		NSString NSTabularTextType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontPboardType")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'NSPasteboardTypeFont' instead.")]
 		NSString NSFontType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSRulerPboardType")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'NSPasteboardTypeRuler' instead.")]
 		NSString NSRulerType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSPasteboardType' enum instead.")]
 		[Field ("NSFileContentsPboardType")]
 		NSString NSFileContentsType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSColorPboardType")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'NSPasteboardTypeColor' instead.")]
 		NSString NSColorType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSRTFDPboardType")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'NSPasteboardTypeRTFD' instead.")]
 		NSString NSRtfdType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSHTMLPboardType")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'NSPasteboardTypeHTML' instead.")]
 		NSString NSHtmlType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPICTPboardType")]
 		[Deprecated (PlatformName.MacOSX, 10, 6 /* Yes, 10.6 */, message: "Do not use, the PICT format was discontinued a long time ago.")]
 		NSString NSPictType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSURLPboardType")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'NSPasteboardTypeUrl' instead.")]
 		NSString NSUrlType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPDFPboardType")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'NSPasteboardTypePDF' instead.")]
 		NSString NSPdfType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSVCardPboardType")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'MobileCoreServices.UTType.VCard' instead.")]
 		NSString NSVCardType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFilesPromisePboardType")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'com.apple.pasteboard.promised-file-url' instead.")]
 		NSString NSFilesPromiseType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSMultipleTextSelectionPboardType")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'NSPasteboardTypeMultipleTextSelection' instead.")]
 		NSString NSMultipleTextSelectionType { get; }
 
 		// Pasteboard names: for NSPasteboard.FromName()
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSGeneralPboard")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'NSPasteboardNameGeneral' instead.")]
 		NSString NSGeneralPasteboardName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontPboard")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'NSPasteboardNameFont' instead.")]
 		NSString NSFontPasteboardName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSRulerPboard")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'NSPasteboardNameRuler' instead.")]
 		NSString NSRulerPasteboardName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFindPboard")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'NSPasteboardNameFind' instead.")]
 		NSString NSFindPasteboardName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSDragPboard")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'NSPasteboardNameDrag' instead.")]
 		NSString NSDragPasteboardName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSPasteboardName' enum instead.")]
 		[Field ("NSPasteboardNameGeneral")]
 		NSString NSPasteboardNameGeneral { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSPasteboardName' enum instead.")]
 		[Field ("NSPasteboardNameFont")]
 		NSString NSPasteboardNameFont { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSPasteboardName' enum instead.")]
 		[Field ("NSPasteboardNameRuler")]
 		NSString NSPasteboardNameRuler { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSPasteboardName' enum instead.")]
 		[Field ("NSPasteboardNameFind")]
 		NSString NSPasteboardNameFind { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSPasteboardName' enum instead.")]
 		[Field ("NSPasteboardNameDrag")]
 		NSString NSPasteboardNameDrag { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSPasteboardType' enum instead.")]
 		[Field ("NSPasteboardTypeString")]
 		NSString NSPasteboardTypeString { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSPasteboardType' enum instead.")]
 		[Field ("NSPasteboardTypePDF")]
 		NSString NSPasteboardTypePDF { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSPasteboardType' enum instead.")]
 		[Field ("NSPasteboardTypeTIFF")]
 		NSString NSPasteboardTypeTIFF { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSPasteboardType' enum instead.")]
 		[Field ("NSPasteboardTypePNG")]
 		NSString NSPasteboardTypePNG { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSPasteboardType' enum instead.")]
 		[Field ("NSPasteboardTypeRTF")]
 		NSString NSPasteboardTypeRTF { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSPasteboardType' enum instead.")]
 		[Field ("NSPasteboardTypeRTFD")]
 		NSString NSPasteboardTypeRTFD { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSPasteboardType' enum instead.")]
 		[Field ("NSPasteboardTypeHTML")]
 		NSString NSPasteboardTypeHTML { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSPasteboardType' enum instead.")]
 		[Field ("NSPasteboardTypeTabularText")]
 		NSString NSPasteboardTypeTabularText { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSPasteboardType' enum instead.")]
 		[Field ("NSPasteboardTypeFont")]
 		NSString NSPasteboardTypeFont { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSPasteboardType' enum instead.")]
 		[Field ("NSPasteboardTypeRuler")]
 		NSString NSPasteboardTypeRuler { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSPasteboardType' enum instead.")]
 		[Field ("NSPasteboardTypeColor")]
 		NSString NSPasteboardTypeColor { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSPasteboardType' enum instead.")]
 		[Field ("NSPasteboardTypeSound")]
 		NSString NSPasteboardTypeSound { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSPasteboardType' enum instead.")]
 		[Field ("NSPasteboardTypeMultipleTextSelection")]
 		NSString NSPasteboardTypeMultipleTextSelection { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPasteboardTypeFindPanelSearchOptions")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'NSPasteboardTypeTextFinderOptions' instead.")]
 		NSString NSPasteboardTypeFindPanelSearchOptions { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSPasteboardType' enum instead.")]
 		[Field ("NSPasteboardTypeTextFinderOptions")]
 		NSString PasteboardTypeTextFinderOptions { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSPasteboardType' enum instead.")]
 		[Field ("NSPasteboardTypeURL")]
 		NSString NSPasteboardTypeUrl { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSPasteboardType' enum instead.")]
 		[Field ("NSPasteboardTypeFileURL")]
 		NSString NSPasteboardTypeFileUrl { get; }
@@ -12226,6 +13034,9 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSPathCellDelegate Delegate { get; set; }
 
@@ -12264,6 +13075,9 @@ namespace AppKit {
 		[Export ("placeholderAttributedString", ArgumentSemantic.Copy)]
 		NSAttributedString PlaceholderAttributedString { get; set; }
 
+		/// <param name="size">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setControlSize:")]
 		void SetControlSize (NSControlSize size);
 	}
@@ -12328,6 +13142,9 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSPathControlDelegate Delegate { get; set; }
 
@@ -12335,6 +13152,9 @@ namespace AppKit {
 		[NullAllowed]
 		NSMenu Menu { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("editable")]
 		bool Editable { [Bind ("isEditable")] get; set; }
 
@@ -12427,6 +13247,9 @@ namespace AppKit {
 		[Export ("contentSize")]
 		CGSize ContentSize { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("shown")]
 		bool Shown { [Bind ("isShown")] get; }
 
@@ -12436,6 +13259,9 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Weak), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSPopoverDelegate Delegate { set; get; }
 
@@ -12448,27 +13274,51 @@ namespace AppKit {
 		[Export ("close")]
 		void Close ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPopoverCloseReasonKey")]
 		NSString CloseReasonKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPopoverCloseReasonStandard")]
 		NSString CloseReasonStandard { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSPopoverCloseReasonDetachToWindow")]
 		NSString CloseReasonDetachToWindow { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSPopoverWillShowNotification")]
 		NSString WillShowNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSPopoverDidShowNotification")]
 		NSString DidShowNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSPopoverCloseEventArgs)), Field ("NSPopoverWillCloseNotification")]
 		NSString WillCloseNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSPopoverCloseEventArgs)), Field ("NSPopoverDidCloseNotification")]
 		NSString DidCloseNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("detached")]
 		bool Detached { [Bind ("isDetached")] get; }
 
@@ -12928,9 +13778,15 @@ namespace AppKit {
 		[Export ("bottomMargin")]
 		nfloat BottomMargin { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("horizontallyCentered")]
 		bool HorizontallyCentered { [Bind ("isHorizontallyCentered")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("verticallyCentered")]
 		bool VerticallyCentered { [Bind ("isVerticallyCentered")] get; set; }
 
@@ -12946,6 +13802,9 @@ namespace AppKit {
 		[Export ("printer", ArgumentSemantic.Copy)]
 		NSPrinter Printer { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("selectionOnly")]
 		bool SelectionOnly { [Bind ("isSelectionOnly")] get; set; }
 
@@ -12986,6 +13845,9 @@ namespace AppKit {
 		[Export ("EPSOperationWithView:insideRect:toData:")]
 		NSPrintOperation EpsFromView (NSView view, CGRect rect, NSMutableData data);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isCopyingOperation")]
 		bool IsCopyingOperation { get; }
 
@@ -13131,10 +13993,16 @@ namespace AppKit {
 		[Export ("sizeToFit")]
 		void SizeToFit ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("displayedWhenStopped")]
 		bool IsDisplayedWhenStopped { [Bind ("isDisplayedWhenStopped")] get; set; }
 
 		//Detected properties
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("indeterminate")]
 		bool Indeterminate { [Bind ("isIndeterminate")] get; set; }
 
@@ -13641,6 +14509,13 @@ namespace AppKit {
 		[Export ("willPresentError:")]
 		NSError WillPresentError (NSError error);
 
+		/// <param name="error">To be added.</param>
+		///         <param name="window">To be added.</param>
+		///         <param name="delegate">To be added.</param>
+		///         <param name="didPresentSelector">To be added.</param>
+		///         <param name="contextInfo">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Sealed]
 		[Export ("presentError:modalForWindow:delegate:didPresentSelector:contextInfo:")]
 		void PresentError (NSError error, NSWindow window, [NullAllowed] NSObject @delegate, [NullAllowed] Selector didPresentSelector, IntPtr contextInfo);
@@ -13701,6 +14576,9 @@ namespace AppKit {
 		[Export ("ruler")]
 		NSRulerView Ruler { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isDragging")]
 		bool IsDragging { get; }
 
@@ -13726,9 +14604,15 @@ namespace AppKit {
 		[Export ("imageOrigin")]
 		CGPoint ImageOrigin { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("movable")]
 		bool Movable { [Bind ("isMovable")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("removable")]
 		bool Removable { [Bind ("isRemovable")] get; set; }
 
@@ -13823,15 +14707,19 @@ namespace AppKit {
 
 	[NoMacCatalyst]
 	enum NSRulerViewUnits {
+		/// <summary>To be added.</summary>
 		[Field ("NSRulerViewUnitInches")]
 		Inches,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSRulerViewUnitCentimeters")]
 		Centimeters,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSRulerViewUnitPoints")]
 		Points,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSRulerViewUnitPicas")]
 		Picas,
 	}
@@ -13858,6 +14746,9 @@ namespace AppKit {
 		[Export ("URL")]
 		NSUrl Url { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isExpanded")]
 		bool IsExpanded { get; }
 
@@ -13900,6 +14791,9 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSOpenSavePanelDelegate Delegate { get; set; }
 
@@ -13909,6 +14803,9 @@ namespace AppKit {
 		[Export ("canSelectHiddenExtension")]
 		bool CanSelectHiddenExtension { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("extensionHidden")]
 		bool ExtensionHidden { [Bind ("isExtensionHidden")] get; set; }
 
@@ -14167,6 +15064,9 @@ namespace AppKit {
 		[Export ("knobProportion")]
 		nfloat KnobProportion { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("isCompatibleWithOverlayScrollers")]
 		bool CompatibleWithOverlayScrollers { get; }
@@ -14185,6 +15085,9 @@ namespace AppKit {
 		[Export ("scrollerWidthForControlSize:scrollerStyle:")]
 		nfloat GetScrollerWidth (NSControlSize forControlSize, NSScrollerStyle scrollerStyle);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSPreferredScrollerStyleDidChangeNotification")]
 		NSString PreferredStyleChangedNotification { get; }
 
@@ -14343,18 +15246,30 @@ namespace AppKit {
 		[Export ("setMagnification:centeredAtPoint:")]
 		void SetMagnification (nfloat magnification, CGPoint centeredAtPoint);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSScrollViewWillStartLiveMagnifyNotification")]
 		NSString WillStartLiveMagnifyNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSScrollViewDidEndLiveMagnifyNotification")]
 		NSString DidEndLiveMagnifyNotification { get; }
 
 		[Notification, Field ("NSScrollViewWillStartLiveScrollNotification")]
 		NSString WillStartLiveScrollNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSScrollViewDidLiveScrollNotification")]
 		NSString DidLiveScrollNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSScrollViewDidEndLiveScrollNotification")]
 		NSString DidEndLiveScrollNotification { get; }
 
@@ -14412,6 +15327,9 @@ namespace AppKit {
 		[Export ("rectForCancelButtonWhenCentered:")]
 		CGRect GetRectForCancelButton (bool isCentered);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		INSSearchFieldDelegate Delegate { get; set; }
@@ -14554,6 +15472,9 @@ namespace AppKit {
 		[Export ("segmentStyle")]
 		NSSegmentStyle SegmentStyle { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("springLoaded")]
 		bool IsSpringLoaded { [Bind ("isSpringLoaded")] get; set; }
 
@@ -14945,6 +15866,9 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSSpeechRecognizerDelegate Delegate { get; set; }
 
@@ -14985,6 +15909,9 @@ namespace AppKit {
 		[Export ("startSpeakingString:toURL:")]
 		bool StartSpeakingStringtoURL (string theString, NSUrl url);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isSpeaking")]
 		bool IsSpeaking { get; }
 
@@ -15012,6 +15939,9 @@ namespace AppKit {
 		[Export ("setObject:forProperty:error:")]
 		bool SetObjectforProperty (NSObject theObject, string property, out NSError outError);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("isAnyApplicationSpeaking")]
 		bool IsAnyApplicationSpeaking { get; }
@@ -15032,6 +15962,9 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSSpeechSynthesizerDelegate Delegate { get; set; }
 
@@ -15078,13 +16011,37 @@ namespace AppKit {
 	[NoMacCatalyst]
 	[StrongDictionary ("NSTextCheckingKey")]
 	interface NSTextCheckingOptions {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSOrthography Orthography { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string [] Quotes { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSDictionary Replacements { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSDate ReferenceDate { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSTimeZone ReferenceTimeZone { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		NSUrl DocumentUrl { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string DocumentTitle { get; set; }
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		string DocumentAuthor { get; set; }
 	}
 
@@ -15151,6 +16108,14 @@ namespace AppKit {
 		[Export ("menuForResult:string:options:atLocation:inView:")]
 		NSMenu MenuForResults (NSTextCheckingResult result, string checkedString, NSDictionary options, CGPoint location, NSView view);
 
+		/// <param name="result">To be added.</param>
+		///         <param name="checkedString">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="location">To be added.</param>
+		///         <param name="view">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("MenuForResults (result, checkedString, options.GetDictionary ()!, location, view)")]
 		NSMenu MenuForResults (NSTextCheckingResult result, string checkedString, NSTextCheckingOptions options, CGPoint location, NSView view);
 
@@ -15227,16 +16192,28 @@ namespace AppKit {
 		[Export ("setLanguage:"), Protected]
 		bool SetLanguage (string language);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("isAutomaticQuoteSubstitutionEnabled")]
 		bool IsAutomaticQuoteSubstitutionEnabled ();
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("isAutomaticDashSubstitutionEnabled")]
 		bool IsAutomaticDashSubstitutionEnabled ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("isAutomaticCapitalizationEnabled")]
 		bool IsAutomaticCapitalizationEnabled { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("isAutomaticPeriodSubstitutionEnabled")]
 		bool IsAutomaticPeriodSubstitutionEnabled { get; }
@@ -15244,6 +16221,9 @@ namespace AppKit {
 		[Export ("preventsAutocorrectionBeforeString:language:")]
 		bool PreventsAutocorrectionBefore (string aString, [NullAllowed] string language);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("isAutomaticTextCompletionEnabled")]
 		bool IsAutomaticTextCompletionEnabled { get; }
@@ -15312,6 +16292,9 @@ namespace AppKit {
 		[Export ("stop")]
 		bool Stop ();
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("isPlaying")]
 		bool IsPlaying ();
 
@@ -15328,6 +16311,9 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSSoundDelegate Delegate { get; set; }
 
@@ -15401,6 +16387,9 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSSplitViewDelegate Delegate { get; set; }
 
@@ -15425,10 +16414,16 @@ namespace AppKit {
 		[Export ("setHoldingPriority:forSubviewAtIndex:")]
 		void SetHoldingPriority (float /*NSLayoutPriority*/ priority, nint subviewIndex);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSSplitViewDividerIndexEventArgs))]
 		[Field ("NSSplitViewWillResizeSubviewsNotification")]
 		NSString NSSplitViewWillResizeSubviewsNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSSplitViewDividerIndexEventArgs))]
 		[Field ("NSSplitViewDidResizeSubviewsNotification")]
 		NSString NSSplitViewDidResizeSubviewsNotification { get; }
@@ -15466,6 +16461,9 @@ namespace AppKit {
 		[Export ("toggleSidebar:")]
 		void ToggleSidebar ([NullAllowed] NSObject sender);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSSplitViewControllerAutomaticDimension")]
 		nfloat AutomaticDimension { get; }
 
@@ -15506,6 +16504,9 @@ namespace AppKit {
 		[Export ("viewController", ArgumentSemantic.Strong)]
 		NSViewController ViewController { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("collapsed")]
 		bool Collapsed { [Bind ("isCollapsed")] get; set; }
 
@@ -15541,9 +16542,15 @@ namespace AppKit {
 		[Export ("automaticMaximumThickness", ArgumentSemantic.Assign)]
 		nfloat AutomaticMaximumThickness { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("springLoaded")]
 		bool SpringLoaded { [Bind ("isSpringLoaded")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSSplitViewItemUnspecifiedDimension")]
 		nfloat UnspecifiedDimension { get; }
 
@@ -15667,6 +16674,9 @@ namespace AppKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSStackViewDelegate Delegate { get; set; }
 
@@ -15852,6 +16862,9 @@ namespace AppKit {
 		[NullAllowed]
 		NSMenu Menu { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Soft-deprecation, forwards message to button, but will be gone in the future.")]
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
@@ -15875,6 +16888,9 @@ namespace AppKit {
 		[Export ("behavior", ArgumentSemantic.Assign)]
 		NSStatusItemBehavior Behavior { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("visible")]
 		bool Visible { [Bind ("isVisible")] get; set; }
 
@@ -15885,93 +16901,180 @@ namespace AppKit {
 	[Static]
 	[NoMacCatalyst]
 	interface NSStringAttributeKey {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFontAttributeName")]
 		NSString Font { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSParagraphStyleAttributeName")]
 		NSString ParagraphStyle { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSForegroundColorAttributeName")]
 		NSString ForegroundColor { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSUnderlineStyleAttributeName")]
 		NSString UnderlineStyle { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSSuperscriptAttributeName")]
 		NSString Superscript { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSBackgroundColorAttributeName")]
 		NSString BackgroundColor { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAttachmentAttributeName")]
 		NSString Attachment { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSLigatureAttributeName")]
 		NSString Ligature { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSBaselineOffsetAttributeName")]
 		NSString BaselineOffset { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSKernAttributeName")]
 		NSString KerningAdjustment { get; }
 
 		[Field ("NSTrackingAttributeName")]
 		NSString Tracking { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSLinkAttributeName")]
 		NSString Link { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSStrokeWidthAttributeName")]
 		NSString StrokeWidth { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSStrokeColorAttributeName")]
 		NSString StrokeColor { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSUnderlineColorAttributeName")]
 		NSString UnderlineColor { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSStrikethroughStyleAttributeName")]
 		NSString StrikethroughStyle { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSStrikethroughColorAttributeName")]
 		NSString StrikethroughColor { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSShadowAttributeName")]
 		NSString Shadow { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSObliquenessAttributeName")]
 		NSString Obliqueness { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSExpansionAttributeName")]
 		NSString Expansion { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSCursorAttributeName")]
 		NSString Cursor { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSToolTipAttributeName")]
 		NSString ToolTip { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSCharacterShapeAttributeName")]
 		NSString CharacterShape { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSGlyphInfoAttributeName")]
 		NSString GlyphInfo { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWritingDirectionAttributeName")]
 		NSString WritingDirection { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSMarkedClauseSegmentAttributeName")]
 		NSString MarkedClauseSegment { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSSpellingStateAttributeName")]
 		NSString SpellingState { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSVerticalGlyphFormAttributeName")]
 		NSString VerticalGlyphForm { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextAlternativesAttributeName")]
 		NSString TextAlternatives { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextEffectAttributeName")]
 		NSString TextEffect { get; }
 
@@ -16255,6 +17358,9 @@ namespace AppKit {
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject)), Model, Protocol]
 	partial interface NSTextFinderBarContainer {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Abstract, Export ("findBarVisible")]
 		bool FindBarVisible { [Bind ("isFindBarVisible")] get; set; }
 
@@ -16272,15 +17378,24 @@ namespace AppKit {
 	[DesignatedDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	partial interface NSTextFinder : NSCoding {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("client", ArgumentSemantic.Assign)]
 		INSTextFinderClient Client { set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("findBarContainer", ArgumentSemantic.Assign)]
 		INSTextFinderBarContainer FindBarContainer { set; }
 
 		[Export ("findIndicatorNeedsUpdate")]
 		bool FindIndicatorNeedsUpdate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("incrementalSearchingEnabled")]
 		bool IncrementalSearchingEnabled { [Bind ("isIncrementalSearchingEnabled")] get; set; }
 
@@ -16330,6 +17445,9 @@ namespace AppKit {
 		[Export ("opaqueAncestor")]
 		NSView OpaqueAncestor { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isHiddenOrHasHiddenAncestor")]
 		bool IsHiddenOrHasHiddenAncestor { get; }
 
@@ -16411,12 +17529,21 @@ namespace AppKit {
 		[Export ("isFlipped")]
 		bool IsFlipped { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isRotatedFromBase")]
 		bool IsRotatedFromBase { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isRotatedOrScaledFromBase")]
 		bool IsRotatedOrScaledFromBase { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isOpaque")]
 		bool IsOpaque { get; }
 
@@ -16665,6 +17792,12 @@ namespace AppKit {
 #endif
 
 #if NET
+		/// <param name="rect">To be added.</param>
+		///         <param name="owner">To be added.</param>
+		///         <param name="userData">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Sealed]
 		[Export ("addToolTipRect:owner:userData:")]
 		nint AddToolTip (CGRect rect, NSObject owner, IntPtr userData);
@@ -16709,6 +17842,9 @@ namespace AppKit {
 		NSTextInputContext InputContext { get; }
 
 		//Detected properties
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hidden")]
 		bool Hidden { [Bind ("isHidden")] get; set; }
 
@@ -16817,36 +17953,66 @@ namespace AppKit {
 		[Export ("enterFullScreenMode:withOptions:")]
 		bool EnterFullscreenModeWithOptions (NSScreen screen, [NullAllowed] NSDictionary options);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isInFullScreenMode")]
 		bool IsInFullscreenMode { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFullScreenModeApplicationPresentationOptions")]
 		NSString NSFullScreenModeApplicationPresentationOptions { get; }
 
 		// Fields
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFullScreenModeAllScreens")]
 		NSString NSFullScreenModeAllScreens { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFullScreenModeSetting")]
 		NSString NSFullScreenModeSetting { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSFullScreenModeWindowLevel")]
 		NSString NSFullScreenModeWindowLevel { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSViewFrameDidChangeNotification")]
 		NSString FrameChangedNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSViewFocusDidChangeNotification")]
 		[Deprecated (PlatformName.MacOSX, 10, 4)]
 		NSString FocusChangedNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSViewBoundsDidChangeNotification")]
 		NSString BoundsChangedNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' instead.")]
 		[Notification, Field ("NSViewGlobalFrameDidChangeNotification")]
 		NSString GlobalFrameChangedNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSViewDidUpdateTrackingAreasNotification")]
 		NSString UpdatedTrackingAreasNotification { get; }
 
@@ -16975,6 +18141,9 @@ namespace AppKit {
 		[Export ("noteFocusRingMaskChanged")]
 		void NoteFocusRingMaskChanged ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isDrawingFindIndicator")]
 		bool IsDrawingFindIndicator { get; }
 
@@ -17103,6 +18272,9 @@ namespace AppKit {
 		[Export ("prepareForReuse")]
 		void PrepareForReuse ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("isCompatibleWithResponsiveScrolling")]
 		bool IsCompatibleWithResponsiveScrolling { get; }
 
@@ -17175,6 +18347,9 @@ namespace AppKit {
 		[Export ("lastBaselineOffsetFromBottom")]
 		nfloat LastBaselineOffsetFromBottom { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSViewNoIntrinsicMetric")]
 		nfloat NoIntrinsicMetric { get; }
 
@@ -17256,21 +18431,39 @@ namespace AppKit {
 		[Export ("defaultAnimationForKey:")]
 		NSObject DefaultAnimationForKey (string key);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSViewAnimationTargetKey")]
 		NSString TargetKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSViewAnimationStartFrameKey")]
 		NSString StartFrameKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSViewAnimationEndFrameKey")]
 		NSString EndFrameKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSViewAnimationEffectKey")]
 		NSString EffectKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSViewAnimationFadeInEffect")]
 		NSString FadeInEffect { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSViewAnimationFadeOutEffect")]
 		NSString FadeOutEffect { get; }
 	}
@@ -17312,6 +18505,9 @@ namespace AppKit {
 		[Export ("view", ArgumentSemantic.Strong)]
 		NSView View { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("viewLoaded")]
 		bool ViewLoaded { [Bind ("isViewLoaded")] get; }
 
@@ -17456,6 +18652,9 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate"), NullAllowed]
 		INSPageControllerDelegate Delegate { get; set; }
 
@@ -17571,6 +18770,9 @@ namespace AppKit {
 		[Export ("dataCell")]
 		NSCell DataCell { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("editable")]
 		bool Editable { [Bind ("isEditable")] get; set; }
 
@@ -17583,6 +18785,9 @@ namespace AppKit {
 		[Export ("headerToolTip"), NullAllowed]
 		string HeaderToolTip { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hidden")]
 		bool Hidden { [Bind ("isHidden")] get; set; }
 
@@ -17599,15 +18804,27 @@ namespace AppKit {
 		[Export ("selectionHighlightStyle")]
 		NSTableViewSelectionHighlightStyle SelectionHighlightStyle { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("emphasized")]
 		bool Emphasized { [Bind ("isEmphasized")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("groupRowStyle")]
 		bool GroupRowStyle { [Bind ("isGroupRowStyle")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("selected")]
 		bool Selected { [Bind ("isSelected")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("floating")]
 		bool Floating { [Bind ("isFloating")] get; set; }
 
@@ -17626,6 +18843,9 @@ namespace AppKit {
 		[Export ("numberOfColumns")]
 		nint NumberOfColumns { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("targetForDropOperation")]
 		bool TargetForDropOperation { [Bind ("isTargetForDropOperation")] get; set; }
 
@@ -17644,9 +18864,15 @@ namespace AppKit {
 		[Export ("viewAtColumn:")]
 		NSView ViewAtColumn (nint column);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("previousRowSelected")]
 		bool PreviousRowSelected { [Bind ("isPreviousRowSelected")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("nextRowSelected")]
 		bool NextRowSelected { [Bind ("isNextRowSelected")] get; set; }
 	}
@@ -17898,6 +19124,9 @@ namespace AppKit {
 		[NullAllowed]
 		NSObject WeakDataSource { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDataSource")]
 		[NullAllowed]
 		INSTableViewDataSource DataSource { get; set; }
@@ -17906,6 +19135,9 @@ namespace AppKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		INSTableViewDelegate Delegate { get; set; }
@@ -18028,6 +19260,9 @@ namespace AppKit {
 		[Export ("floatsGroupRows")]
 		bool FloatsGroupRows { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTableViewRowViewKey")]
 		NSString RowViewKey { get; }
 
@@ -18512,6 +19747,9 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate", IsVirtual = true)]
 		INSTabViewDelegate Delegate { get; set; }
 
@@ -18713,6 +19951,9 @@ namespace AppKit {
 		[Export ("readRTFDFromFile:")]
 		bool FromRtfdFile (string path);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isRulerVisible")]
 		bool IsRulerVisible { get; }
 
@@ -18795,21 +20036,36 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSTextDelegate Delegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("editable")]
 		bool Editable { [Bind ("isEditable")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("selectable")]
 		bool Selectable { [Bind ("isSelectable")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("richText")]
 		bool RichText { [Bind ("isRichText")] get; set; }
 
 		[Export ("importsGraphics")]
 		bool ImportsGraphics { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fieldEditor")]
 		bool FieldEditor { [Bind ("isFieldEditor")] get; set; }
 
@@ -18843,9 +20099,15 @@ namespace AppKit {
 		[Export ("minSize")]
 		CGSize MinSize { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("horizontallyResizable")]
 		bool HorizontallyResizable { [Bind ("isHorizontallyResizable")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("verticallyResizable")]
 		bool VerticallyResizable { [Bind ("isVerticallyResizable")] get; set; }
 	}
@@ -19046,15 +20308,24 @@ namespace AppKit {
 		[Export ("bezeled")]
 		bool Bezeled { [Bind ("isBezeled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("editable")]
 		bool Editable { [Bind ("isEditable")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("selectable")]
 		bool Selectable { [Bind ("isSelectable")] get; set; }
 
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSTextFieldDelegate Delegate { get; set; }
 
@@ -19322,6 +20593,9 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSTokenFieldCellDelegate Delegate { get; set; }
 	}
@@ -19805,6 +21079,9 @@ namespace AppKit {
 		[Export ("breakUndoCoalescing")]
 		void BreakUndoCoalescing ();
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("isCoalescingUndo")]
 		bool IsCoalescingUndo ();
 
@@ -19836,15 +21113,24 @@ namespace AppKit {
 		[Export ("acceptsGlyphInfo")]
 		bool AcceptsGlyphInfo { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rulerVisible")]
 		bool RulerVisible { [Bind ("isRulerVisible")] get; set; }
 
 		[Export ("usesRuler")]
 		bool UsesRuler { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("continuousSpellCheckingEnabled")]
 		bool ContinuousSpellCheckingEnabled { [Bind ("isContinuousSpellCheckingEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("grammarCheckingEnabled")]
 		bool GrammarCheckingEnabled { [Bind ("isGrammarCheckingEnabled")] get; set; }
 
@@ -19866,19 +21152,31 @@ namespace AppKit {
 		[Export ("allowsImageEditing")]
 		bool AllowsImageEditing { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSTextViewDelegate Delegate { get; set; }
 
 #pragma warning disable 0109 // warning CS0109: The member 'NSTextView.Editable' does not hide an accessible member. The new keyword is not required.
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("editable")]
 		new bool Editable { [Bind ("isEditable")] get; set; }
 #pragma warning restore
 
 #pragma warning disable 0109 // warning CS0109: The member 'NSTextView.Selectable' does not hide an accessible member. The new keyword is not required.
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("selectable")]
 		new bool Selectable { [Bind ("isSelectable")] get; set; }
 #pragma warning restore
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("richText")]
 		bool RichText { [Bind ("isRichText")] get; set; }
 
@@ -19891,6 +21189,9 @@ namespace AppKit {
 		[Export ("backgroundColor")]
 		NSColor BackgroundColor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fieldEditor")]
 		bool FieldEditor { [Bind ("isFieldEditor")] get; set; }
 
@@ -19986,21 +21287,39 @@ namespace AppKit {
 		[Export ("smartInsertDeleteEnabled")]
 		bool SmartInsertDeleteEnabled { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("automaticQuoteSubstitutionEnabled")]
 		bool AutomaticQuoteSubstitutionEnabled { [Bind ("isAutomaticQuoteSubstitutionEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("automaticLinkDetectionEnabled")]
 		bool AutomaticLinkDetectionEnabled { [Bind ("isAutomaticLinkDetectionEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("automaticDataDetectionEnabled")]
 		bool AutomaticDataDetectionEnabled { [Bind ("isAutomaticDataDetectionEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("automaticDashSubstitutionEnabled")]
 		bool AutomaticDashSubstitutionEnabled { [Bind ("isAutomaticDashSubstitutionEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("automaticTextReplacementEnabled")]
 		bool AutomaticTextReplacementEnabled { [Bind ("isAutomaticTextReplacementEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("automaticSpellingCorrectionEnabled")]
 		bool AutomaticSpellingCorrectionEnabled { [Bind ("isAutomaticSpellingCorrectionEnabled")] get; set; }
 
@@ -20017,6 +21336,9 @@ namespace AppKit {
 		[Export ("stronglyReferencesTextStorage")]
 		bool StronglyReferencesTextStorage { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("automaticTextCompletionEnabled")]
 		bool AutomaticTextCompletionEnabled { [Bind ("isAutomaticTextCompletionEnabled")] get; set; }
 
@@ -20352,6 +21674,9 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSTokenFieldDelegate Delegate { get; set; }
 
@@ -20484,6 +21809,9 @@ namespace AppKit {
 		[Export ("autosavesConfiguration")]
 		bool AutosavesConfiguration { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMacCatalyst]
 		[Field ("NSToolbarSeparatorItemIdentifier")]
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Ignored by system.")]
@@ -20513,6 +21841,9 @@ namespace AppKit {
 		[Field ("NSToolbarShowFontsItemIdentifier")]
 		NSString NSToolbarShowFontsItemIdentifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMacCatalyst]
 		[Field ("NSToolbarCustomizeToolbarItemIdentifier")]
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Ignored by system.")]
@@ -20866,6 +22197,9 @@ namespace AppKit {
 		[Export ("normalizedPosition")]
 		CGPoint NormalizedPosition { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isResting")]
 		bool IsResting { get; }
 
@@ -21082,6 +22416,9 @@ namespace AppKit {
 		[Export ("indexPath")]
 		NSIndexPath IndexPath { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isLeaf")]
 		bool IsLeaf { get; }
 
@@ -21284,9 +22621,15 @@ namespace AppKit {
 		[Export ("setTitleWithRepresentedFilename:")]
 		void SetTitleWithRepresentedFilename (string filename);
 
+		/// <param name="flag">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setExcludedFromWindowsMenu:")]
 		void SetExcludedFromWindowsMenu (bool flag);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isExcludedFromWindowsMenu")]
 		bool ExcludedFromWindowsMenu { get; }
 
@@ -21298,6 +22641,9 @@ namespace AppKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		INSWindowDelegate Delegate { get; set; }
@@ -21373,6 +22719,9 @@ namespace AppKit {
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'NSAnimationContext.RunAnimation'.")]
 		void EnableFlushWindow ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isFlushWindowDisabled")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'NSAnimationContext.RunAnimation'.")]
 		bool FlushWindowDisabled { get; }
@@ -21394,6 +22743,9 @@ namespace AppKit {
 		[Export ("display")]
 		void Display ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("autodisplay")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'NSAnimationContext.RunAnimation'.")]
 		bool Autodisplay { [Bind ("isAutodisplay")] get; set; }
@@ -21425,6 +22777,9 @@ namespace AppKit {
 		void _Close ();
 
 #if !XAMCORE_5_0
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Call 'ReleaseWhenClosed ()' instead.")]
 		[Export ("releasedWhenClosed")]
 		bool ReleasedWhenClosed { [Bind ("isReleasedWhenClosed")] get; set; }
@@ -21507,9 +22862,15 @@ namespace AppKit {
 		[Export ("autorecalculatesContentBorderThicknessForEdge:")]
 		bool AutorecalculatesContentBorderThickness (NSRectEdge forEdgeedge);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("movable")]
 		bool IsMovable { [Bind ("isMovable")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("movableByWindowBackground")]
 		bool MovableByWindowBackground { [Bind ("isMovableByWindowBackground")] get; set; }
 
@@ -21571,9 +22932,15 @@ namespace AppKit {
 		[Export ("setIsVisible:")]
 		void SetIsVisible (bool value);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isKeyWindow")]
 		bool IsKeyWindow { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isMainWindow")]
 		bool IsMainWindow { get; }
 
@@ -21632,10 +22999,16 @@ namespace AppKit {
 		[Export ("gState")]
 		nint GState ();
 
+		/// <param name="flag">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 14)]
 		[Export ("setOneShot:")]
 		void SetOneShot (bool flag);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isOneShot")]
 		[Deprecated (PlatformName.MacOSX, 10, 14)]
 		bool IsOneShot { get; }
@@ -21702,6 +23075,9 @@ namespace AppKit {
 		[Export ("alphaValue")]
 		nfloat AlphaValue { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("opaque")]
 		bool IsOpaque { [Bind ("isOpaque")] get; set; }
 
@@ -21732,6 +23108,9 @@ namespace AppKit {
 		[Export ("collectionBehavior")]
 		NSWindowCollectionBehavior CollectionBehavior { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isOnActiveSpace")]
 		bool IsOnActiveSpace { get; }
 
@@ -21827,6 +23206,9 @@ namespace AppKit {
 		NSObject WindowController { get; set; }
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isSheet")]
 		bool IsSheet { get; }
 
@@ -21938,6 +23320,9 @@ namespace AppKit {
 		void EnableSnapshotRestoration ();
 
 		// This one comes from the NSUserInterfaceRestoration category ('@interface NSWindow (NSUserInterfaceRestoration)')
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("restorable")]
 		bool Restorable { [Bind ("isRestorable")] get; set; }
 
@@ -21987,114 +23372,198 @@ namespace AppKit {
 		// Fields
 		//
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidBecomeKeyNotification")]
 		[Notification]
 		NSString DidBecomeKeyNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidBecomeMainNotification")]
 		[Notification]
 		NSString DidBecomeMainNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidChangeScreenNotification")]
 		[Notification]
 		NSString DidChangeScreenNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidDeminiaturizeNotification")]
 		[Notification]
 		NSString DidDeminiaturizeNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidExposeNotification")]
 		[Notification (typeof (NSWindowExposeEventArgs))]
 		NSString DidExposeNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidMiniaturizeNotification")]
 		[Notification]
 		NSString DidMiniaturizeNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidMoveNotification")]
 		[Notification]
 		NSString DidMoveNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidResignKeyNotification")]
 		[Notification]
 		NSString DidResignKeyNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidResignMainNotification")]
 		[Notification]
 		NSString DidResignMainNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidResizeNotification")]
 		[Notification]
 		NSString DidResizeNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidUpdateNotification")]
 		[Notification]
 		NSString DidUpdateNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowWillCloseNotification")]
 		[Notification]
 		NSString WillCloseNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowWillMiniaturizeNotification")]
 		[Notification]
 		NSString WillMiniaturizeNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowWillMoveNotification")]
 		[Notification]
 		NSString WillMoveNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowWillBeginSheetNotification")]
 		[Notification]
 		NSString WillBeginSheetNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidEndSheetNotification")]
 		[Notification]
 		NSString DidEndSheetNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidChangeScreenProfileNotification")]
 		[Notification]
 		NSString DidChangeScreenProfileNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowWillStartLiveResizeNotification")]
 		[Notification]
 		NSString WillStartLiveResizeNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidEndLiveResizeNotification")]
 		[Notification]
 		NSString DidEndLiveResizeNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowWillEnterFullScreenNotification")]
 		[Notification]
 		NSString WillEnterFullScreenNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidEnterFullScreenNotification")]
 		[Notification]
 		NSString DidEnterFullScreenNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowWillExitFullScreenNotification")]
 		[Notification]
 		NSString WillExitFullScreenNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidExitFullScreenNotification")]
 		[Notification]
 		NSString DidExitFullScreenNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowWillEnterVersionBrowserNotification")]
 		[Notification]
 		NSString WillEnterVersionBrowserNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidEnterVersionBrowserNotification")]
 		[Notification]
 		NSString DidEnterVersionBrowserNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowWillExitVersionBrowserNotification")]
 		[Notification]
 		NSString WillExitVersionBrowserNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidExitVersionBrowserNotification")]
 		[Notification]
 		NSString DidExitVersionBrowserNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWindowDidChangeBackingPropertiesNotification")]
 		[Notification (typeof (NSWindowBackingPropertiesEventArgs))]
 		NSString DidChangeBackingPropertiesNotification { get; }
@@ -22239,6 +23708,9 @@ namespace AppKit {
 		[Export ("viewDidDisappear")]
 		void ViewDidDisappear ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hidden")]
 		bool IsHidden { [Bind ("isHidden")] get; set; }
 
@@ -22275,6 +23747,9 @@ namespace AppKit {
 		[Export ("viewWillMoveToWindow:")]
 		void ViewWillMove (NSWindow newWindow);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("emphasized")]
 		bool Emphasized { [Bind ("isEmphasized")] get; set; }
 	}
@@ -22352,6 +23827,9 @@ namespace AppKit {
 		[Export ("showWindow:")]
 		void ShowWindow ([NullAllowed] NSObject sender);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isWindowLoaded")]
 		bool IsWindowLoaded { get; }
 
@@ -22539,36 +24017,60 @@ namespace AppKit {
 
 	[NoMacCatalyst]
 	interface NSWorkspaceRenamedEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSWorkspaceVolumeLocalizedNameKey")]
 		string VolumeLocalizedName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSWorkspaceVolumeURLKey")]
 		NSUrl VolumeUrl { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSWorkspaceVolumeOldLocalizedNameKey")]
 		string OldVolumeLocalizedName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSWorkspaceVolumeOldURLKey")]
 		NSUrl OldVolumeUrl { get; }
 	}
 
 	[NoMacCatalyst]
 	interface NSWorkspaceMountEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSWorkspaceVolumeLocalizedNameKey")]
 		string VolumeLocalizedName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSWorkspaceVolumeURLKey")]
 		NSUrl VolumeUrl { get; }
 	}
 
 	[NoMacCatalyst]
 	interface NSWorkspaceApplicationEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSWorkspaceApplicationKey")]
 		NSRunningApplication Application { get; }
 	}
 
 	[NoMacCatalyst]
 	interface NSWorkspaceFileOperationEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSOperationNumber")]
 		nint FileType { get; }
 	}
@@ -22786,99 +24288,174 @@ namespace AppKit {
 		[Export ("menuBarOwningApplication")]
 		NSRunningApplication MenuBarOwningApplication { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceWillPowerOffNotification")]
 		[Notification ("SharedWorkspace.NotificationCenter")]
 		NSString WillPowerOffNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceWillSleepNotification")]
 		[Notification ("SharedWorkspace.NotificationCenter")]
 		NSString WillSleepNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidWakeNotification")]
 		[Notification ("SharedWorkspace.NotificationCenter")]
 		NSString DidWakeNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceScreensDidSleepNotification")]
 		[Notification ("SharedWorkspace.NotificationCenter")]
 		NSString ScreensDidSleepNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceScreensDidWakeNotification")]
 		[Notification ("SharedWorkspace.NotificationCenter")]
 		NSString ScreensDidWakeNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceSessionDidBecomeActiveNotification")]
 		[Notification ("SharedWorkspace.NotificationCenter")]
 		NSString SessionDidBecomeActiveNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceSessionDidResignActiveNotification")]
 		[Notification ("SharedWorkspace.NotificationCenter")]
 		NSString SessionDidResignActiveNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidRenameVolumeNotification")]
 		[Notification (typeof (NSWorkspaceRenamedEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString DidRenameVolumeNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidMountNotification")]
 		[Notification (typeof (NSWorkspaceMountEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString DidMountNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidUnmountNotification")]
 		[Notification (typeof (NSWorkspaceMountEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString DidUnmountNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceWillUnmountNotification")]
 		[Notification (typeof (NSWorkspaceMountEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString WillUnmountNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceWillLaunchApplicationNotification")]
 		[Notification (typeof (NSWorkspaceApplicationEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString WillLaunchApplication { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidLaunchApplicationNotification")]
 		[Notification (typeof (NSWorkspaceApplicationEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString DidLaunchApplicationNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidTerminateApplicationNotification")]
 		[Notification (typeof (NSWorkspaceApplicationEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString DidTerminateApplicationNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidHideApplicationNotification")]
 		[Notification (typeof (NSWorkspaceApplicationEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString DidHideApplicationNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidUnhideApplicationNotification")]
 		[Notification (typeof (NSWorkspaceApplicationEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString DidUnhideApplicationNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidActivateApplicationNotification")]
 		[Notification (typeof (NSWorkspaceApplicationEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString DidActivateApplicationNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidDeactivateApplicationNotification")]
 		[Notification (typeof (NSWorkspaceApplicationEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString DidDeactivateApplicationNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidPerformFileOperationNotification")]
 		[Notification (typeof (NSWorkspaceFileOperationEventArgs), "SharedWorkspace.NotificationCenter")]
 		NSString DidPerformFileOperationNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDidChangeFileLabelsNotification")]
 		[Notification ("SharedWorkspace.NotificationCenter")]
 		NSString DidChangeFileLabelsNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceActiveSpaceDidChangeNotification")]
 		[Notification ("SharedWorkspace.NotificationCenter")]
 		NSString ActiveSpaceDidChangeNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceLaunchConfigurationAppleEvent")]
 		NSString LaunchConfigurationAppleEvent { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceLaunchConfigurationArguments")]
 		NSString LaunchConfigurationArguments { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceLaunchConfigurationEnvironment")]
 		NSString LaunchConfigurationEnvironment { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceLaunchConfigurationArchitecture")]
 		NSString LaunchConfigurationArchitecture { get; }
 
@@ -22887,21 +24464,39 @@ namespace AppKit {
 		//
 		// Those not listed are not here, because they are documented as returing an error
 		//
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceRecycleOperation")]
 		NSString OperationRecycle { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDuplicateOperation")]
 		NSString OperationDuplicate { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceMoveOperation")]
 		NSString OperationMove { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceCopyOperation")]
 		NSString OperationCopy { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceLinkOperation")]
 		NSString OperationLink { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceDestroyOperation")]
 		NSString OperationDestroy { get; }
 
@@ -22923,6 +24518,9 @@ namespace AppKit {
 		NSRunningApplication OpenURLs (NSUrl [] urls, NSUrl applicationURL, NSWorkspaceLaunchOptions options, NSDictionary configuration, out NSError error);
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSWorkspaceAccessibilityDisplayOptionsDidChangeNotification")]
 		[Notification]
 		NSString DisplayOptionsDidChangeNotification { get; }
@@ -22956,15 +24554,27 @@ namespace AppKit {
 	[BaseType (typeof (NSObject))]
 	[ThreadSafe] // NSRunningApplication is documented to be thread-safe.
 	partial interface NSRunningApplication {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("terminated")]
 		bool Terminated { [Bind ("isTerminated")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("finishedLaunching")]
 		bool FinishedLaunching { [Bind ("isFinishedLaunching")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("hidden")]
 		bool Hidden { [Bind ("isHidden")] get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("active")]
 		bool Active { [Bind ("isActive")] get; }
 
@@ -23215,6 +24825,9 @@ namespace AppKit {
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSRuleEditorDelegate Delegate { get; set; }
 
@@ -23230,6 +24843,9 @@ namespace AppKit {
 		[Export ("rowHeight")]
 		nfloat RowHeight { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("editable")]
 		bool Editable { [Bind ("isEditable")] get; set; }
 
@@ -23317,6 +24933,9 @@ namespace AppKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		INSSharingServiceDelegate Delegate { get; set; }
@@ -23374,74 +24993,94 @@ namespace AppKit {
 	[NoMacCatalyst]
 	enum NSSharingServiceName {
 
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use the proprietary SDK instead.")]
 		[Field ("NSSharingServiceNamePostOnFacebook")]
 		PostOnFacebook,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSSharingServiceNamePostOnTwitter")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use the proprietary SDK instead.")]
 		PostOnTwitter,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSSharingServiceNamePostOnSinaWeibo")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use the proprietary SDK instead.")]
 		PostOnSinaWeibo,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSSharingServiceNameComposeEmail")]
 		ComposeEmail,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSSharingServiceNameComposeMessage")]
 		ComposeMessage,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSSharingServiceNameSendViaAirDrop")]
 		SendViaAirDrop,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSSharingServiceNameAddToSafariReadingList")]
 		AddToSafariReadingList,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSSharingServiceNameAddToIPhoto")]
 		AddToIPhoto,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSSharingServiceNameAddToAperture")]
 		AddToAperture,
 
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use the proprietary SDK instead.")]
 		[Field ("NSSharingServiceNameUseAsTwitterProfileImage")]
 		UseAsTwitterProfileImage,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSSharingServiceNameUseAsDesktopPicture")]
 		UseAsDesktopPicture,
 
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use the proprietary SDK instead.")]
 		[Field ("NSSharingServiceNamePostImageOnFlickr")]
 		PostImageOnFlickr,
 
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use the proprietary SDK instead.")]
 		[Field ("NSSharingServiceNamePostVideoOnVimeo")]
 		PostVideoOnVimeo,
 
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use the proprietary SDK instead.")]
 		[Field ("NSSharingServiceNamePostVideoOnYouku")]
 		PostVideoOnYouku,
 
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use the proprietary SDK instead.")]
 		[Field ("NSSharingServiceNamePostVideoOnTudou")]
 		PostVideoOnTudou,
 
+		/// <summary>To be added.</summary>
 		[Field ("NSSharingServiceNameCloudSharing")]
 		CloudSharing,
 
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use the proprietary SDK instead.")]
 		[Field ("NSSharingServiceNamePostOnTencentWeibo")]
 		PostOnTencentWeibo,
 
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use the proprietary SDK instead.")]
 		[Field ("NSSharingServiceNamePostOnLinkedIn")]
 		PostOnLinkedIn,
 
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use the proprietary SDK instead.")]
 		[Field ("NSSharingServiceNameUseAsFacebookProfileImage")]
 		UseAsFacebookProfileImage,
 
+		/// <summary>To be added.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use the proprietary SDK instead.")]
 		[Field ("NSSharingServiceNameUseAsLinkedInProfileImage")]
 		UseAsLinkedInProfileImage,
@@ -23505,6 +25144,9 @@ namespace AppKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		INSSharingServicePickerDelegate Delegate { get; set; }
@@ -23771,6 +25413,9 @@ namespace AppKit {
 		[Static, Export ("colorWithSRGBRed:green:blue:alpha:")]
 		NSColor FromSrgb (nfloat red, nfloat green, nfloat blue, nfloat alpha);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSSystemColorsDidChangeNotification")]
 		NSString SystemColorsChanged { get; }
 	}
@@ -23786,54 +25431,93 @@ namespace AppKit {
 	}
 
 	partial interface NSViewColumnMoveEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSOldColumn")]
 		nint OldColumn { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSNewColumn")]
 		nint NewColumn { get; }
 	}
 
 	partial interface NSViewColumnResizeEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSTableColumn")]
 		NSTableColumn Column { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSOldWidth")]
 		nint OldWidth { get; }
 	}
 
 	partial interface NSOutlineViewItemEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSObject")]
 		NSObject Item { get; }
 	}
 
 	partial interface NSOutlineView : NSAccessibilityOutline {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSOutlineViewSelectionDidChangeNotification")]
 		NSString SelectionDidChangeNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSOutlineViewSelectionIsChangingNotification")]
 		NSString SelectionIsChangingNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSViewColumnMoveEventArgs))]
 		[Field ("NSOutlineViewColumnDidMoveNotification")]
 		NSString ColumnDidMoveNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSViewColumnResizeEventArgs))]
 		[Field ("NSOutlineViewColumnDidResizeNotification")]
 		NSString ColumnDidResizeNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSOutlineViewItemEventArgs))]
 		[Field ("NSOutlineViewItemWillExpandNotification")]
 		NSString ItemWillExpandNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSOutlineViewItemEventArgs))]
 		[Field ("NSOutlineViewItemDidExpandNotification")]
 		NSString ItemDidExpandNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSOutlineViewItemEventArgs))]
 		[Field ("NSOutlineViewItemWillCollapseNotification")]
 		NSString ItemWillCollapseNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSOutlineViewItemEventArgs))]
 		[Field ("NSOutlineViewItemDidCollapseNotification")]
 		NSString ItemDidCollapseNotification { get; }
@@ -23882,14 +25566,23 @@ namespace AppKit {
 	}
 
 	interface NSWindowExposeEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSExposedRect", ArgumentSemantic.Copy)]
 		CGRect ExposedRect { get; }
 	}
 
 	interface NSWindowBackingPropertiesEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSBackingPropertyOldScaleFactorKey")]
 		nint OldScaleFactor { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSBackingPropertyOldColorSpaceKey")]
 		NSColorSpace OldColorSpace { get; }
 	}
@@ -24064,59 +25757,110 @@ namespace AppKit {
 		void ShowCorrectionIndicatorOfType (NSCorrectionIndicatorType type, string primaryString, string [] alternativeStrings,
 			CGRect forStringInRect, NSRulerView view, NSSpellCheckerShowCorrectionIndicatorOfTypeHandler completionHandler);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("isAutomaticTextReplacementEnabled")]
 		bool IsAutomaticTextReplacementEnabled { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("isAutomaticSpellingCorrectionEnabled")]
 		bool IsAutomaticSpellingCorrectionEnabled { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextCheckingOrthographyKey")]
 		NSString TextCheckingOrthographyKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextCheckingQuotesKey")]
 		NSString TextCheckingQuotesKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextCheckingReplacementsKey")]
 		NSString TextCheckingReplacementsKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextCheckingReferenceDateKey")]
 		NSString TextCheckingReferenceDateKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextCheckingReferenceTimeZoneKey")]
 		NSString TextCheckingReferenceTimeZoneKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextCheckingDocumentURLKey")]
 		NSString TextCheckingDocumentURLKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextCheckingDocumentTitleKey")]
 		NSString TextCheckingDocumentTitleKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextCheckingDocumentAuthorKey")]
 		NSString TextCheckingDocumentAuthorKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSTextCheckingRegularExpressionsKey")]
 		NSString TextCheckingRegularExpressionsKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSSpellCheckerDidChangeAutomaticSpellingCorrectionNotification")]
 		NSString DidChangeAutomaticSpellingCorrectionNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSSpellCheckerDidChangeAutomaticTextReplacementNotification")]
 		NSString DidChangeAutomaticTextReplacementNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextCheckingSelectedRangeKey")]
 		NSString TextCheckingSelectedRangeKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSSpellCheckerDidChangeAutomaticCapitalizationNotification")]
 		[Notification]
 		NSString DidChangeAutomaticCapitalizationNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSSpellCheckerDidChangeAutomaticPeriodSubstitutionNotification")]
 		[Notification]
 		NSString DidChangeAutomaticPeriodSubstitutionNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSSpellCheckerDidChangeAutomaticTextCompletionNotification")]
 		[Notification]
@@ -24134,14 +25878,23 @@ namespace AppKit {
 
 	partial interface NSTextViewDidChangeSelectionEventArgs {
 		// FIXME: verify property type "NSValue object containing an NSRange structure"
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSOldSelectedCharacterRange")]
 		NSValue OldSelectedCharacterRange { get; }
 	}
 
 	partial interface NSTextViewWillChangeNotifyingTextViewEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSOldNotifyingTextView")]
 		NSTextView OldView { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSNewNotifyingTextView")]
 		NSTextView NewView { get; }
 	}
@@ -24159,6 +25912,9 @@ namespace AppKit {
 		[Export ("usesFindBar")]
 		bool UsesFindBar { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("incrementalSearchingEnabled")]
 		bool IsIncrementalSearchingEnabled { [Bind ("isIncrementalSearchingEnabled")] get; set; }
 
@@ -24168,14 +25924,23 @@ namespace AppKit {
 		[Export ("updateQuickLookPreviewPanel")]
 		void UpdateQuickLookPreviewPanel ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSTextViewWillChangeNotifyingTextViewEventArgs))]
 		[Field ("NSTextViewWillChangeNotifyingTextViewNotification")]
 		NSString WillChangeNotifyingTextViewNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSTextViewDidChangeSelectionEventArgs))]
 		[Field ("NSTextViewDidChangeSelectionNotification")]
 		NSString DidChangeSelectionNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSTextViewDidChangeTypingAttributesNotification")]
 		NSString DidChangeTypingAttributesNotification { get; }
 
@@ -24216,20 +25981,32 @@ namespace AppKit {
 #endif
 
 	partial interface NSControlTextEditingEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSFieldEditor")]
 		NSTextView FieldEditor { get; }
 	}
 
 	partial interface NSControl {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSControlTextEditingEventArgs))]
 		[Field ("NSControlTextDidBeginEditingNotification")]
 		NSString TextDidBeginEditingNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSControlTextEditingEventArgs))]
 		[Field ("NSControlTextDidEndEditingNotification")]
 		NSString TextDidEndEditingNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSControlTextEditingEventArgs))]
 		[Field ("NSControlTextDidChangeNotification")]
 		NSString TextDidChangeNotification { get; }
@@ -24302,6 +26079,9 @@ namespace AppKit {
 	, NSUserInterfaceValidations // ValidateUserInterfaceItem was bound with NSObject and fix would break API compat  
 #endif
 	{
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("draft")]
 		bool IsDraft { [Bind ("isDraft")] get; set; }
 
@@ -24347,6 +26127,9 @@ namespace AppKit {
 		[Export ("unlockWithCompletionHandler:")]
 		void UnlockWithCompletionHandler (NSDocumentUnlockCompletionHandler completionHandler);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isLocked")]
 		bool IsLocked { get; }
 
@@ -24407,48 +26190,93 @@ namespace AppKit {
 	[Category, BaseType (typeof (NSSegmentedCell))]
 	partial interface NSSegmentBackgroundStyle_NSSegmentedCell {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSSharingServiceNamePostOnFacebook")]
 		NSString SharingServiceNamePostOnFacebook { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSSharingServiceNamePostOnTwitter")]
 		NSString SharingServiceNamePostOnTwitter { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSSharingServiceNamePostOnSinaWeibo")]
 		NSString SharingServiceNamePostOnSinaWeibo { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSSharingServiceNameComposeEmail")]
 		NSString SharingServiceNameComposeEmail { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSSharingServiceNameComposeMessage")]
 		NSString SharingServiceNameComposeMessage { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSSharingServiceNameSendViaAirDrop")]
 		NSString SharingServiceNameSendViaAirDrop { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSSharingServiceNameAddToSafariReadingList")]
 		NSString SharingServiceNameAddToSafariReadingList { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSSharingServiceNameAddToIPhoto")]
 		NSString SharingServiceNameAddToIPhoto { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSSharingServiceNameAddToAperture")]
 		NSString SharingServiceNameAddToAperture { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSSharingServiceNameUseAsTwitterProfileImage")]
 		NSString SharingServiceNameUseAsTwitterProfileImage { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSSharingServiceNameUseAsDesktopPicture")]
 		NSString SharingServiceNameUseAsDesktopPicture { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSSharingServiceNamePostImageOnFlickr")]
 		NSString SharingServiceNamePostImageOnFlickr { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSSharingServiceNamePostVideoOnVimeo")]
 		NSString SharingServiceNamePostVideoOnVimeo { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSSharingServiceNamePostVideoOnYouku")]
 		NSString SharingServiceNamePostVideoOnYouku { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSSharingServiceNamePostVideoOnTudou")]
 		NSString SharingServiceNamePostVideoOnTudou { get; }
 	}
@@ -24469,6 +26297,9 @@ namespace AppKit {
 	}*/
 
 	interface NSTextAlternativesSelectedAlternativeStringEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSAlternativeString")]
 		string AlternativeString { get; }
 	}
@@ -24489,6 +26320,9 @@ namespace AppKit {
 		[Export ("noteSelectedAlternativeString:")]
 		void NoteSelectedAlternativeString (string alternativeString);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSTextAlternativesSelectedAlternativeStringEventArgs)),
 			Field ("NSTextAlternativesSelectedAlternativeStringNotification")]
 		NSString SelectedAlternativeStringNotification { get; }
@@ -24543,118 +26377,199 @@ namespace AppKit {
 	}
 
 	partial interface NSBrowser {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSBrowserColumnConfigurationDidChangeNotification")]
 		NSString ColumnConfigurationChangedNotification { get; }
 	}
 
 	partial interface NSColorPanel {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSColorPanelColorDidChangeNotification")]
 		NSString ColorChangedNotification { get; }
 	}
 
 	partial interface NSFont {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSAntialiasThresholdChangedNotification")]
 		NSString AntialiasThresholdChangedNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSFontSetChangedNotification")]
 		NSString FontSetChangedNotification { get; }
 	}
 
 	partial interface NSHelpManager {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSContextHelpModeDidActivateNotification")]
 		NSString ContextHelpModeDidActivateNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSContextHelpModeDidDeactivateNotification")]
 		NSString ContextHelpModeDidDeactivateNotification { get; }
 	}
 
 	partial interface NSDrawer {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'NSSplitViewController' instead.")]
 		[Notification, Field ("NSDrawerWillOpenNotification")]
 		NSString WillOpenNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'NSSplitViewController' instead.")]
 		[Notification, Field ("NSDrawerDidOpenNotification")]
 		NSString DidOpenNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'NSSplitViewController' instead.")]
 		[Notification, Field ("NSDrawerWillCloseNotification")]
 		NSString WillCloseNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'NSSplitViewController' instead.")]
 		[Notification, Field ("NSDrawerDidCloseNotification")]
 		NSString DidCloseNotification { get; }
 	}
 
 	partial interface NSMenuItemIndexEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSMenuItemIndex")]
 		nint MenuItemIndex { get; }
 	}
 
 	partial interface NSMenuItemEventArgs {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("MenuItem")]
 		NSMenu MenuItem { get; }
 	}
 
 	partial interface NSMenu {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSMenuItemEventArgs))]
 		[Field ("NSMenuWillSendActionNotification")]
 		NSString WillSendActionNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSMenuItemEventArgs))]
 		[Field ("NSMenuDidSendActionNotification")]
 		NSString DidSendActionNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSMenuItemIndexEventArgs))]
 		[Field ("NSMenuDidAddItemNotification")]
 		NSString DidAddItemNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSMenuItemIndexEventArgs))]
 		[Field ("NSMenuDidRemoveItemNotification")]
 		NSString DidRemoveItemNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSMenuItemIndexEventArgs))]
 		[Field ("NSMenuDidChangeItemNotification")]
 		NSString DidChangeItemNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSMenuDidBeginTrackingNotification")]
 		NSString DidBeginTrackingNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSMenuDidEndTrackingNotification")]
 		NSString DidEndTrackingNotification { get; }
 	}
 
 	partial interface NSPopUpButtonCell : NSMenuItemValidation {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSPopUpButtonCellWillPopUpNotification")]
 		NSString WillPopUpNotification { get; }
 	}
 
 	partial interface NSPopUpButton {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSPopUpButtonWillPopUpNotification")]
 		NSString WillPopUpNotification { get; }
 	}
 
 	partial interface NSRuleEditor {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSRuleEditorRowsDidChangeNotification")]
 		NSString RowsDidChangeNotification { get; }
 	}
 
 	partial interface NSScreen {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSScreenColorSpaceDidChangeNotification")]
 		NSString ColorSpaceDidChangeNotification { get; }
 	}
 
 	partial interface NSTableView : NSUserInterfaceValidations {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSTableViewSelectionDidChangeNotification")]
 		NSString SelectionDidChangeNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSTableViewSelectionIsChangingNotification")]
 		NSString SelectionIsChangingNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSViewColumnMoveEventArgs))]
 		[Field ("NSTableViewColumnDidMoveNotification")]
 		NSString ColumnDidMoveNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSViewColumnResizeEventArgs))]
 		[Field ("NSTableViewColumnDidResizeNotification")]
 		NSString ColumnDidResizeNotification { get; }
@@ -24665,27 +26580,45 @@ namespace AppKit {
 		// FIXME: I think this is essentially a flags value
 		// of movements and characters. The docs are a bit
 		// confusing.
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("NSTextMovement")]
 		nint Movement { get; }
 	}
 
 	partial interface NSText {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSTextDidBeginEditingNotification")]
 		NSString DidBeginEditingNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification (typeof (NSTextDidEndEditingEventArgs))]
 		[Field ("NSTextDidEndEditingNotification")]
 		NSString DidEndEditingNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSTextDidChangeNotification")]
 		NSString DidChangeNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextMovementUserInfoKey")]
 		NSString MovementUserInfoKey { get; }
 	}
 
 	partial interface NSTextInputContext {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSTextInputContextKeyboardSelectionDidChangeNotification")]
 		NSString KeyboardSelectionDidChangeNotification { get; }
 	}
@@ -24715,6 +26648,9 @@ namespace AppKit {
 	}
 
 	partial interface NSImageRep {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSImageRepRegistryDidChangeNotification")]
 		NSString RegistryDidChangeNotification { get; }
 	}
@@ -24725,47 +26661,69 @@ namespace AppKit {
 	[NoMacCatalyst]
 	[Native]
 	public enum NSAccessibilityOrientation : long {
+		/// <summary>To be added.</summary>
 		Unknown = 0,
+		/// <summary>To be added.</summary>
 		Vertical = 1,
+		/// <summary>To be added.</summary>
 		Horizontal = 2,
 	}
 
 	[NoMacCatalyst]
 	[Native]
 	public enum NSAccessibilitySortDirection : long {
+		/// <summary>To be added.</summary>
 		Unknown = 0,
+		/// <summary>To be added.</summary>
 		Ascending = 1,
+		/// <summary>To be added.</summary>
 		Descending = 2,
 	}
 
 	[NoMacCatalyst]
 	[Native]
 	public enum NSAccessibilityRulerMarkerType : long {
+		/// <summary>To be added.</summary>
 		Unknown = 0,
+		/// <summary>To be added.</summary>
 		TabStopLeft = 1,
+		/// <summary>To be added.</summary>
 		TabStopRight = 2,
+		/// <summary>To be added.</summary>
 		TabStopCenter = 3,
+		/// <summary>To be added.</summary>
 		TabStopDecimal = 4,
+		/// <summary>To be added.</summary>
 		IndentHead = 5,
+		/// <summary>To be added.</summary>
 		IndentTail = 6,
+		/// <summary>To be added.</summary>
 		IndentFirstLine = 7,
 	}
 
 	[NoMacCatalyst]
 	[Native]
 	public enum NSAccessibilityUnits : long {
+		/// <summary>To be added.</summary>
 		Unknown = 0,
+		/// <summary>To be added.</summary>
 		Inches = 1,
+		/// <summary>To be added.</summary>
 		Centimeters = 2,
+		/// <summary>To be added.</summary>
 		Points = 3,
+		/// <summary>To be added.</summary>
 		Picas = 4,
 	}
 
 	[NoMacCatalyst]
 	[Native]
 	public enum NSAccessibilityPriorityLevel : long {
+		/// <summary>To be added.</summary>
 		Low = 10,
+		/// <summary>To be added.</summary>
 		Medium = 50,
+		/// <summary>To be added.</summary>
 		High = 90,
 	}
 
@@ -25550,54 +27508,105 @@ namespace AppKit {
 	[NoMacCatalyst]
 	[Static]
 	partial interface NSAccessibilityAttributes {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySharedFocusElementsAttribute")]
 		NSString SharedFocusElementsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityAlternateUIVisibleAttribute")]
 		NSString AlternateUIVisibleAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityListItemPrefixTextAttribute")]
 		NSString ListItemPrefixTextAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityListItemIndexTextAttribute")]
 		NSString ListItemIndexTextAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityListItemLevelTextAttribute")]
 		NSString ListItemLevelTextAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityRoleAttribute")]
 		NSString RoleAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityRoleDescriptionAttribute")]
 		NSString RoleDescriptionAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySubroleAttribute")]
 		NSString SubroleAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityHelpAttribute")]
 		NSString HelpAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityValueAttribute")]
 		NSString ValueAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityMinValueAttribute")]
 		NSString MinValueAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityMaxValueAttribute")]
 		NSString MaxValueAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityEnabledAttribute")]
 		NSString EnabledAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityFocusedAttribute")]
 		NSString FocusedAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityParentAttribute")]
 		NSString ParentAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityChildrenAttribute")]
 		NSString ChildrenAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityWindowAttribute")]
 		NSString WindowAttribute { get; }
 
@@ -25607,419 +27616,833 @@ namespace AppKit {
 		NSString ToplevelUIElementAttribute { get; }
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityTopLevelUIElementAttribute")]
 		NSString TopLevelUIElementAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySelectedChildrenAttribute")]
 		NSString SelectedChildrenAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityVisibleChildrenAttribute")]
 		NSString VisibleChildrenAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityPositionAttribute")]
 		NSString PositionAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySizeAttribute")]
 		NSString SizeAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityContentsAttribute")]
 		NSString ContentsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityTitleAttribute")]
 		NSString TitleAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityDescriptionAttribute")]
 		NSString DescriptionAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityShownMenuAttribute")]
 		NSString ShownMenuAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityValueDescriptionAttribute")]
 		NSString ValueDescriptionAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityPreviousContentsAttribute")]
 		NSString PreviousContentsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityNextContentsAttribute")]
 		NSString NextContentsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityHeaderAttribute")]
 		NSString HeaderAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityEditedAttribute")]
 		NSString EditedAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityTabsAttribute")]
 		NSString TabsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityHorizontalScrollBarAttribute")]
 		NSString HorizontalScrollBarAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityVerticalScrollBarAttribute")]
 		NSString VerticalScrollBarAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityOverflowButtonAttribute")]
 		NSString OverflowButtonAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityIncrementButtonAttribute")]
 		NSString IncrementButtonAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityDecrementButtonAttribute")]
 		NSString DecrementButtonAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityFilenameAttribute")]
 		NSString FilenameAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityExpandedAttribute")]
 		NSString ExpandedAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySelectedAttribute")]
 		NSString SelectedAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySplittersAttribute")]
 		NSString SplittersAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityDocumentAttribute")]
 		NSString DocumentAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityActivationPointAttribute")]
 		NSString ActivationPointAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityURLAttribute")]
 		NSString URLAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityIndexAttribute")]
 		NSString IndexAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityRowCountAttribute")]
 		NSString RowCountAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityColumnCountAttribute")]
 		NSString ColumnCountAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityOrderedByRowAttribute")]
 		NSString OrderedByRowAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityWarningValueAttribute")]
 		NSString WarningValueAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityCriticalValueAttribute")]
 		NSString CriticalValueAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityPlaceholderValueAttribute")]
 		NSString PlaceholderValueAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityContainsProtectedContentAttribute")]
 		NSString ContainsProtectedContentAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityTitleUIElementAttribute")]
 		NSString TitleUIAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityServesAsTitleForUIElementsAttribute")]
 		NSString ServesAsTitleForUIElementsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityLinkedUIElementsAttribute")]
 		NSString LinkedUIElementsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySelectedTextAttribute")]
 		NSString SelectedTextAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySelectedTextRangeAttribute")]
 		NSString SelectedTextRangeAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityNumberOfCharactersAttribute")]
 		NSString NumberOfCharactersAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityVisibleCharacterRangeAttribute")]
 		NSString VisibleCharacterRangeAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySharedTextUIElementsAttribute")]
 		NSString SharedTextUIElementsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySharedCharacterRangeAttribute")]
 		NSString SharedCharacterRangeAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityInsertionPointLineNumberAttribute")]
 		NSString InsertionPointLineNumberAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySelectedTextRangesAttribute")]
 		NSString SelectedTextRangesAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityLineForIndexParameterizedAttribute")]
 		NSString LineForIndexParameterizedAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityRangeForLineParameterizedAttribute")]
 		NSString RangeForLineParameterizedAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityStringForRangeParameterizedAttribute")]
 		NSString StringForRangeParameterizeAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityRangeForPositionParameterizedAttribute")]
 		NSString RangeForPositionParameterizedAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityRangeForIndexParameterizedAttribute")]
 		NSString RangeForIndexParameterizedAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityBoundsForRangeParameterizedAttribute")]
 		NSString BoundsForRangeParameterizedAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityRTFForRangeParameterizedAttribute")]
 		NSString RTFForRangeParameterizedAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityStyleRangeForIndexParameterizedAttribute")]
 		NSString StyleRangeForIndexParameterizedAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityAttributedStringForRangeParameterizedAttribute")]
 		NSString AttributedStringForRangeParameterizedAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityFontTextAttribute")]
 		NSString FontTextAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityForegroundColorTextAttribute")]
 		NSString ForegroundColorTextAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityBackgroundColorTextAttribute")]
 		NSString BackgroundColorTextAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityUnderlineColorTextAttribute")]
 		NSString UnderlineColorTextAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityStrikethroughColorTextAttribute")]
 		NSString StrikethroughColorTextAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityUnderlineTextAttribute")]
 		NSString UnderlineTextAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySuperscriptTextAttribute")]
 		NSString SuperscriptTextAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityStrikethroughTextAttribute")]
 		NSString StrikethroughTextAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityShadowTextAttribute")]
 		NSString ShadowTextAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityAttachmentTextAttribute")]
 		NSString AttachmentTextAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityLinkTextAttribute")]
 		NSString LinkTextAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityAutocorrectedTextAttribute")]
 		NSString AutocorrectedAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityMisspelledTextAttribute")]
 		NSString MisspelledTextAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityMarkedMisspelledTextAttribute")]
 		NSString MarkedMisspelledTextAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityMainAttribute")]
 		NSString MainAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityMinimizedAttribute")]
 		NSString MinimizedAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityCloseButtonAttribute")]
 		NSString CloseButtonAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityZoomButtonAttribute")]
 		NSString ZoomButtonAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityMinimizeButtonAttribute")]
 		NSString MinimizeButtonAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityToolbarButtonAttribute")]
 		NSString ToolbarButtonAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityProxyAttribute")]
 		NSString ProxyAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityGrowAreaAttribute")]
 		NSString GrowAreaAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityModalAttribute")]
 		NSString ModalAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityDefaultButtonAttribute")]
 		NSString DefaultButtonAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityCancelButtonAttribute")]
 		NSString CancelButtonAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityFullScreenButtonAttribute")]
 		NSString FullScreenButtonAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityMenuBarAttribute")]
 		NSString MenuBarAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityWindowsAttribute")]
 		NSString WindowsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityFrontmostAttribute")]
 		NSString FrontmostAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityHiddenAttribute")]
 		NSString HiddenAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityMainWindowAttribute")]
 		NSString MainWindowAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityFocusedWindowAttribute")]
 		NSString FocusedWindowAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityFocusedUIElementAttribute")]
 		NSString FocusedUIElementAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityExtrasMenuBarAttribute")]
 		NSString ExtrasMenuBarAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityColumnTitlesAttribute")]
 		NSString ColumnTitlesAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySearchButtonAttribute")]
 		NSString SearchButtonAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySearchMenuAttribute")]
 		NSString SearchMenuAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityClearButtonAttribute")]
 		NSString ClearButtonAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityRowsAttribute")]
 		NSString RowsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityVisibleRowsAttribute")]
 		NSString VisibleRowsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySelectedRowsAttribute")]
 		NSString SelectedRowsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityColumnsAttribute")]
 		NSString ColumnsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityVisibleColumnsAttribute")]
 		NSString VisibleColumnsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySelectedColumnsAttribute")]
 		NSString SelectedColumnsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySortDirectionAttribute")]
 		NSString SortDirectionAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySelectedCellsAttribute")]
 		NSString SelectedCellsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityVisibleCellsAttribute")]
 		NSString VisibleCellsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityRowHeaderUIElementsAttribute")]
 		NSString RowHeaderUIElementsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityColumnHeaderUIElementsAttribute")]
 		NSString ColumnHeaderUIElementsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityCellForColumnAndRowParameterizedAttribute")]
 		NSString CellForColumnAndRowParameterizedAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityRowIndexRangeAttribute")]
 		NSString RowIndexRangeAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityColumnIndexRangeAttribute")]
 		NSString ColumnIndexRangeAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityHorizontalUnitsAttribute")]
 		NSString HorizontalUnitsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityVerticalUnitsAttribute")]
 		NSString VerticalUnitsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityHorizontalUnitDescriptionAttribute")]
 		NSString HorizontalUnitDescriptionAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityVerticalUnitDescriptionAttribute")]
 		NSString VerticalUnitDescriptionAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityLayoutPointForScreenPointParameterizedAttribute")]
 		NSString LayoutPointForScreenPointParameterizedAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityLayoutSizeForScreenSizeParameterizedAttribute")]
 		NSString LayoutSizeForScreenSizeParameterizedAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityScreenPointForLayoutPointParameterizedAttribute")]
 		NSString ScreenPointForLayoutPointParameterizedAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityScreenSizeForLayoutSizeParameterizedAttribute")]
 		NSString ScreenSizeForLayoutSizeParameterizedAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityHandlesAttribute")]
 		NSString HandlesAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityDisclosingAttribute")]
 		NSString DisclosingAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityDisclosedRowsAttribute")]
 		NSString DisclosedRowsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityDisclosedByRowAttribute")]
 		NSString DisclosedByRowAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityDisclosureLevelAttribute")]
 		NSString DisclosureLevelAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityAllowedValuesAttribute")]
 		NSString AllowedValuesAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityLabelUIElementsAttribute")]
 		NSString LabelUIElementsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityLabelValueAttribute")]
 		NSString LabelValueAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'NSAccessibility' methods instead.")]
 		[Field ("NSAccessibilityMatteHoleAttribute")]
 		NSString MatteHoleAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'NSAccessibility' methods instead.")]
 		[Field ("NSAccessibilityMatteContentUIElementAttribute")]
 		NSString MatteContentUIElementAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityMarkerUIElementsAttribute")]
 		NSString MarkerUIElementsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityMarkerValuesAttribute")]
 		NSString MarkerValuesAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityMarkerGroupUIElementAttribute")]
 		NSString MarkerGroupUIElementAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityUnitsAttribute")]
 		NSString UnitsAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityUnitDescriptionAttribute")]
 		NSString UnitDescriptionAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityMarkerTypeAttribute")]
 		NSString MarkerTypeAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityMarkerTypeDescriptionAttribute")]
 		NSString MarkerTypeDescriptionAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityIdentifierAttribute")]
 		NSString IdentifierAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityRequiredAttribute")]
 		NSString RequiredAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityTextAlignmentAttribute")]
 		NSString TextAlignmentAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityLanguageTextAttribute")]
 		NSString LanguageTextAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityCustomTextAttribute")]
 		NSString CustomTextAttribute { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityAnnotationTextAttribute")]
 		NSString AnnotationTextAttribute { get; }
 	}
@@ -26027,12 +28450,21 @@ namespace AppKit {
 	[Static]
 	[NoMacCatalyst]
 	partial interface NSAccessibilityAnnotationAttributeKey {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityAnnotationLabel")]
 		NSString AnnotationLabel { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityAnnotationElement")]
 		NSString AnnotationElement { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityAnnotationLocation")]
 		NSString AnnotationLocation { get; }
 	}
@@ -26040,15 +28472,27 @@ namespace AppKit {
 	[Static]
 	[NoMacCatalyst]
 	interface NSAccessibilityFontKeys {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityFontNameKey")]
 		NSString FontNameKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityFontFamilyKey")]
 		NSString FontFamilyKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityVisibleNameKey")]
 		NSString VisibleNameKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityFontSizeKey")]
 		NSString FontSizeKey { get; }
 	}
@@ -26056,168 +28500,333 @@ namespace AppKit {
 	[Static]
 	[NoMacCatalyst]
 	interface NSAccessibilityRoles {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityUnknownRole")]
 		NSString UnknownRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityButtonRole")]
 		NSString ButtonRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityRadioButtonRole")]
 		NSString RadioButtonRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityCheckBoxRole")]
 		NSString CheckBoxRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySliderRole")]
 		NSString SliderRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityTabGroupRole")]
 		NSString TabGroupRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityTextFieldRole")]
 		NSString TextFieldRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityStaticTextRole")]
 		NSString StaticTextRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityTextAreaRole")]
 		NSString TextAreaRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityScrollAreaRole")]
 		NSString ScrollAreaRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityPopUpButtonRole")]
 		NSString PopUpButtonRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityMenuButtonRole")]
 		NSString MenuButtonRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityTableRole")]
 		NSString TableRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityApplicationRole")]
 		NSString ApplicationRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityGroupRole")]
 		NSString GroupRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityRadioGroupRole")]
 		NSString RadioGroupRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityListRole")]
 		NSString ListRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityScrollBarRole")]
 		NSString ScrollBarRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityValueIndicatorRole")]
 		NSString ValueIndicatorRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityImageRole")]
 		NSString ImageRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityMenuBarRole")]
 		NSString MenuRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityMenuItemRole")]
 		NSString MenuItemRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityColumnRole")]
 		NSString ColumnRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityRowRole")]
 		NSString RowRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityToolbarRole")]
 		NSString ToolbarRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityBusyIndicatorRole")]
 		NSString BusyIndicatorRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityProgressIndicatorRole")]
 		NSString ProgressIndicatorRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityWindowRole")]
 		NSString WindowRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityDrawerRole")]
 		NSString DrawerRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySystemWideRole")]
 		NSString SystemWideRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityOutlineRole")]
 		NSString OutlineRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityIncrementorRole")]
 		NSString IncrementorRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityBrowserRole")]
 		NSString BrowserRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityComboBoxRole")]
 		NSString ComboBoxRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySplitGroupRole")]
 		NSString SplitGroupRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySplitterRole")]
 		NSString SplitterRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityColorWellRole")]
 		NSString ColorWellRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityGrowAreaRole")]
 		NSString GrowAreaRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySheetRole")]
 		NSString SheetRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityHelpTagRole")]
 		NSString HelpTagRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityMatteRole")]
 		NSString MatteRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityRulerRole")]
 		NSString RulerRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityRulerMarkerRole")]
 		NSString RulerMarkerRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityLinkRole")]
 		NSString LinkRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityDisclosureTriangleRole")]
 		NSString DisclosureTriangleRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityGridRole")]
 		NSString GridRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityRelevanceIndicatorRole")]
 		NSString RelevanceIndicatorRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityLevelIndicatorRole")]
 		NSString LevelIndicatorRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityCellRole")]
 		NSString CellRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityPopoverRole")]
 		NSString PopoverRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityLayoutAreaRole")]
 		NSString LayoutAreaRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityLayoutItemRole")]
 		NSString LayoutItemRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityHandleRole")]
 		NSString HandleRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityMenuBarItemRole")]
 		NSString MenuBarItemRole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityPageRole")]
 		NSString PageRole { get; }
 	}
@@ -26225,99 +28834,195 @@ namespace AppKit {
 	[Static]
 	[NoMacCatalyst]
 	interface NSAccessibilitySubroles {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityUnknownSubrole")]
 		NSString UnknownSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityCloseButtonSubrole")]
 		NSString CloseButtonSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityZoomButtonSubrole")]
 		NSString ZoomButtonSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityMinimizeButtonSubrole")]
 		NSString MinimizeButtonSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityToolbarButtonSubrole")]
 		NSString ToolbarButtonSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityTableRowSubrole")]
 		NSString TableRowSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityOutlineRowSubrole")]
 		NSString OutlineRowSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySecureTextFieldSubrole")]
 		NSString SecureTextFieldSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityStandardWindowSubrole")]
 		NSString StandardWindowSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityDialogSubrole")]
 		NSString DialogSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySystemDialogSubrole")]
 		NSString SystemDialogSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityFloatingWindowSubrole")]
 		NSString FloatingWindowSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySystemFloatingWindowSubrole")]
 		NSString SystemFloatingWindowSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityIncrementArrowSubrole")]
 		NSString IncrementArrowSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityDecrementArrowSubrole")]
 		NSString DecrementArrowSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityIncrementPageSubrole")]
 		NSString IncrementPageSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityDecrementPageSubrole")]
 		NSString DecrementPageSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySearchFieldSubrole")]
 		NSString SearchFieldSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityTextAttachmentSubrole")]
 		NSString TextAttachmentSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityTextLinkSubrole")]
 		NSString TextLinkSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityTimelineSubrole")]
 		NSString TimelineSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySortButtonSubrole")]
 		NSString SortButtonSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityRatingIndicatorSubrole")]
 		NSString RatingIndicatorSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityContentListSubrole")]
 		NSString ContentListSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityDefinitionListSubrole")]
 		NSString DefinitionListSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityFullScreenButtonSubrole")]
 		NSString FullScreenButtonSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityToggleSubrole")]
 		NSString ToggleSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySwitchSubrole")]
 		NSString SwitchSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityDescriptionListSubrole")]
 		NSString DescriptionListSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityTabButtonSubrole")]
 		NSString TabButtonSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityCollectionListSubrole")]
 		NSString CollectionListSubrole { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilitySectionListSubrole")]
 		NSString SectionListSubrole { get; }
 	}
@@ -26470,12 +29175,21 @@ namespace AppKit {
 	[Static]
 	[NoMacCatalyst]
 	interface NSAccessibilityNotificationUserInfoKeys {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityUIElementsKey")]
 		NSString UIElementsKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityPriorityKey")]
 		NSString PriorityKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityAnnouncementKey")]
 		NSString AnnouncementKey { get; }
 	}
@@ -26483,36 +29197,69 @@ namespace AppKit {
 	[Static]
 	[NoMacCatalyst]
 	interface NSAccessibilityActions {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityPressAction")]
 		NSString PressAction { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityIncrementAction")]
 		NSString IncrementAction { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityDecrementAction")]
 		NSString DecrementAction { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityConfirmAction")]
 		NSString ConfirmAction { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityPickAction")]
 		NSString PickAction { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityCancelAction")]
 		NSString CancelAction { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityRaiseAction")]
 		NSString RaiseAction { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityShowMenuAction")]
 		NSString ShowMenu { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityDeleteAction")]
 		NSString DeleteAction { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityShowAlternateUIAction")]
 		NSString ShowAlternateUIAction { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("NSAccessibilityShowDefaultUIAction")]
 		NSString ShowDefaultUIAction { get; }
 	}
@@ -27030,12 +29777,18 @@ namespace AppKit {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		INSCandidateListTouchBarItemDelegate Delegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("collapsed")]
 		bool Collapsed { [Bind ("isCollapsed")] get; set; }
 
 		[Export ("allowsCollapsing")]
 		bool AllowsCollapsing { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("candidateListVisible")]
 		bool CandidateListVisible { [Bind ("isCandidateListVisible")] get; }
 
@@ -27343,6 +30096,9 @@ namespace AppKit {
 		[Export ("itemAlignment", ArgumentSemantic.Assign)]
 		NSScrubberAlignment ItemAlignment { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("continuous")]
 		bool Continuous { [Bind ("isContinuous")] get; set; }
 
@@ -27411,9 +30167,15 @@ namespace AppKit {
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frameRect);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("selected")]
 		bool Selected { [Bind ("isSelected")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("highlighted")]
 		bool Highlighted { [Bind ("isHighlighted")] get; set; }
 
@@ -27823,6 +30585,9 @@ namespace AppKit {
 		[Export ("intersectsOptions:")]
 		bool Intersects (NSUserInterfaceCompressionOptions options);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("empty")]
 		bool Empty { [Bind ("isEmpty")] get; }
 
@@ -27897,9 +30662,15 @@ namespace AppKit {
 		[Export ("windows", ArgumentSemantic.Copy)]
 		NSWindow [] Windows { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("overviewVisible")]
 		bool OverviewVisible { [Bind ("isOverviewVisible")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("tabBarVisible")]
 		bool TabBarVisible { [Bind ("isTabBarVisible")] get; }
 

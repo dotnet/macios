@@ -97,11 +97,16 @@ namespace CoreText {
 	[SupportedOSPlatform ("tvos")]
 	public class CTStringAttributes {
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTStringAttributes ()
 			: this (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTStringAttributes (NSDictionary dictionary)
 		{
 			if (dictionary is null)
@@ -400,11 +405,20 @@ namespace CoreText {
 			}
 		}
 
+		/// <param name="baselineClass">To be added.</param>
+		///         <param name="offset">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetBaselineInfo (CTBaselineClass baselineClass, double offset)
 		{
 			SetBaseline (baselineClass, offset, CTStringAttributeKey.BaselineInfo);
 		}
 
+		/// <param name="baselineClass">The kind of baseline to set.</param>
+		///         <param name="offset">The offset to alter.</param>
+		///         <summary>Applies a baseline change.</summary>
+		///         <remarks>
+		///         </remarks>
 		public void SetBaselineReferenceInfo (CTBaselineClass baselineClass, double offset)
 		{
 			SetBaseline (baselineClass, offset, CTStringAttributeKey.BaselineReferenceInfo);
@@ -423,6 +437,9 @@ namespace CoreText {
 		}
 
 		// 'Value must be a CFArray of CFNumberRefs' - System/Library/Frameworks/CoreText.framework/Headers/CTStringAttributes.h
+		/// <param name="writingDirections">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetWritingDirection (params CTWritingDirection [] writingDirections)
 		{
 			var ptrs = new NativeHandle [writingDirections.Length];

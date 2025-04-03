@@ -48,10 +48,19 @@ namespace Foundation {
 	[Register ("NSMutableSet", SkipRegistration = true)]
 	public sealed partial class NSMutableSet<TKey> : NSMutableSet, IEnumerable<TKey>
 		where TKey : class, INativeObject {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMutableSet ()
 		{
 		}
 
+		/// <param name="coder">The unarchiver object.</param>
+		///         <summary>A constructor that initializes the object from the data stored in the unarchiver object.</summary>
+		///         <remarks>
+		///           <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization).   This is part of the <see cref="T:Foundation.NSCoding" />  protocol.</para>
+		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="T:Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
+		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
+		///         </remarks>
 		public NSMutableSet (NSCoder coder)
 			: base (coder)
 		{
@@ -62,16 +71,25 @@ namespace Foundation {
 		{
 		}
 
+		/// <param name="objs">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMutableSet (params TKey [] objs)
 			: base (objs)
 		{
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMutableSet (NSSet<TKey> other)
 			: base (other)
 		{
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSMutableSet (NSMutableSet<TKey> other)
 			: base (other)
 		{
@@ -84,6 +102,10 @@ namespace Foundation {
 
 		// Strongly typed versions of API from NSSet
 
+		/// <param name="probe">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public TKey LookupMember (TKey probe)
 		{
 			if (probe is null)
@@ -103,6 +125,10 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Contains (TKey obj)
 		{
 			if (obj is null)
@@ -113,6 +139,9 @@ namespace Foundation {
 			return result;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public TKey [] ToArray ()
 		{
 			return base.ToArray<TKey> ();
@@ -141,6 +170,9 @@ namespace Foundation {
 		}
 
 		// Strongly typed versions of API from NSMutableSet
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Add (TKey obj)
 		{
 			if (obj is null)
@@ -150,6 +182,9 @@ namespace Foundation {
 			GC.KeepAlive (obj);
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Remove (TKey obj)
 		{
 			if (obj is null)
@@ -159,6 +194,9 @@ namespace Foundation {
 			GC.KeepAlive (obj);
 		}
 
+		/// <param name="objects">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void AddObjects (params TKey [] objects)
 		{
 			if (objects is null)
@@ -182,6 +220,9 @@ namespace Foundation {
 		#endregion
 
 		#region IEnumerable implementation
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return new NSFastEnumerator<TKey> (this);

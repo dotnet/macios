@@ -19,6 +19,11 @@ namespace MultipeerConnectivity {
 
 	public partial class MCSession {
 
+		/// <param name="myPeerID">To be added.</param>
+		///         <param name="identity">To be added.</param>
+		///         <param name="encryptionPreference">To be added.</param>
+		///         <summary>Constructor that allows the application developer to specify security constraints.</summary>
+		///         <remarks>To be added.</remarks>
 		public MCSession (MCPeerID myPeerID, SecIdentity identity, MCEncryptionPreference encryptionPreference)
 			: base (NSObjectFlag.Empty)
 		{
@@ -30,6 +35,12 @@ namespace MultipeerConnectivity {
 			}
 		}
 
+		/// <param name="myPeerID">To be added.</param>
+		///         <param name="identity">To be added.</param>
+		///         <param name="certificates">To be added.</param>
+		///         <param name="encryptionPreference">To be added.</param>
+		///         <summary>Constructor that allows the application developer to specify security constraints and certificates.</summary>
+		///         <remarks>To be added.</remarks>
 		public MCSession (MCPeerID myPeerID, SecIdentity identity, SecCertificate [] certificates, MCEncryptionPreference encryptionPreference)
 			: base (NSObjectFlag.Empty)
 		{

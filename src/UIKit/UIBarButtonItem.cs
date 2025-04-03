@@ -13,7 +13,7 @@ namespace UIKit {
 		class Callback : NSObject {
 			WeakReference<UIBarButtonItem> container;
 
-			[DynamicDependency ("InvokeAction")]
+			[DynamicDependency ("Call")]
 			public Callback (UIBarButtonItem item)
 			{
 				container = new WeakReference<UIBarButtonItem> (item);

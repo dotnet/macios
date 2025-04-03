@@ -1377,8 +1377,6 @@ namespace Introspection {
 			case "initWithSSIDPrefix:":
 			case "initWithSSIDPrefix:passphrase:isWEP:":
 			// MapKit
-			case "initWithMaxCenterCoordinateDistance:":
-			case "initWithMinCenterCoordinateDistance:":
 			case "initExcludingCategories:":
 			case "initIncludingCategories:":
 				var mi = m as MethodInfo;

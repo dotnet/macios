@@ -50,7 +50,6 @@ namespace Cecil.Tests {
 			"HomeKit.HMMatterTopology::.ctor(Foundation.NSObjectFlag)",
 			"HomeKit.HMMatterTopology::.ctor(HomeKit.HMMatterHome[])",
 			"HomeKit.HMMatterTopology::.ctor(ObjCRuntime.NativeHandle)",
-			"MapKit.MKMapCameraZoomRange::.ctor(System.Double,MapKit.MKMapCameraZoomRangeType)",
 			"MapKit.MKPointOfInterestFilter::.ctor(MapKit.MKPointOfInterestCategory[],MapKit.MKPointOfInterestFilterType)",
 			"ModelIO.MDLMesh::.ctor(ModelIO.MDLMesh,System.Int32,System.UInt32,ModelIO.IMDLMeshBufferAllocator)",
 			"ModelIO.MDLMesh::.ctor(System.Numerics.Vector3,CoreGraphics.NVector2i,ModelIO.MDLGeometryType,ModelIO.IMDLMeshBufferAllocator)",

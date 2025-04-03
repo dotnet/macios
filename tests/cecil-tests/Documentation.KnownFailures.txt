@@ -4510,8 +4510,6 @@ F:MapKit.MKLocalSearchResultType.PointOfInterest
 F:MapKit.MKLookAroundBadgePosition.BottomTrailing
 F:MapKit.MKLookAroundBadgePosition.TopLeading
 F:MapKit.MKLookAroundBadgePosition.TopTrailing
-F:MapKit.MKMapCameraZoomRangeType.Max
-F:MapKit.MKMapCameraZoomRangeType.Min
 F:MapKit.MKMapElevationStyle.Flat
 F:MapKit.MKMapElevationStyle.Realistic
 F:MapKit.MKMapFeatureOptions.PhysicalFeatures
@@ -19371,8 +19369,6 @@ M:MapKit.MKMapCamera.Copy(Foundation.NSZone)
 M:MapKit.MKMapCamera.EncodeTo(Foundation.NSCoder)
 M:MapKit.MKMapCameraBoundary.Copy(Foundation.NSZone)
 M:MapKit.MKMapCameraBoundary.EncodeTo(Foundation.NSCoder)
-M:MapKit.MKMapCameraZoomRange.#ctor(System.Double,MapKit.MKMapCameraZoomRangeType)
-M:MapKit.MKMapCameraZoomRange.#ctor(System.Double)
 M:MapKit.MKMapCameraZoomRange.Copy(Foundation.NSZone)
 M:MapKit.MKMapCameraZoomRange.EncodeTo(Foundation.NSCoder)
 M:MapKit.MKMapConfiguration.Copy(Foundation.NSZone)
@@ -44470,7 +44466,6 @@ T:MapKit.MKLocalSearchRegionPriority
 T:MapKit.MKLocalSearchResultType
 T:MapKit.MKLookAroundBadgePosition
 T:MapKit.MKLookAroundViewControllerDelegate
-T:MapKit.MKMapCameraZoomRangeType
 T:MapKit.MKMapElevationStyle
 T:MapKit.MKMapFeatureOptions
 T:MapKit.MKMapFeatureType

@@ -2408,11 +2408,11 @@ namespace MapKit {
 
 		[Internal]
 		[Export ("initWithMinCenterCoordinateDistance:")]
-		IntPtr InitWithMinCenterCoordinateDistance (double minDistance);
+		IntPtr _InitWithMinCenterCoordinateDistance (double minDistance);
 
 		[Internal]
 		[Export ("initWithMaxCenterCoordinateDistance:")]
-		IntPtr InitWithMaxCenterCoordinateDistance (double maxDistance);
+		IntPtr _InitWithMaxCenterCoordinateDistance (double maxDistance);
 
 		[Export ("minCenterCoordinateDistance")]
 		double MinCenterCoordinateDistance { get; }

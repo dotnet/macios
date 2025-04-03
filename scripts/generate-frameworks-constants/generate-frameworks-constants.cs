@@ -35,26 +35,18 @@ namespace GenerateFrameworksConstants {
 			var frameworks = Frameworks.GetFrameworks (platform, false).Values.Where (v => !v.Unavailable);
 			var sb = new StringBuilder ();
 
-#if NET
-			sb.AppendLine ("#if NET");
-#else
-			sb.AppendLine ("#if !NET");
-#endif
 			sb.AppendLine ("namespace ObjCRuntime {");
 			sb.AppendLine ("\tpublic static partial class Constants {");
 			foreach (var grouped in frameworks.GroupBy (v => v.Version)) {
 				sb.AppendLine ($"\t\t// {platform} {grouped.Key}");
-				foreach (var fw in grouped.OrderBy (v => v.Name))
+				foreach (var fw in grouped.OrderBy (v => v.Name)) {
+					sb.AppendLine ($"\t\t/// <summary>Path to the {fw.Namespace} framework to use with DllImport attributes.</summary>");
 					sb.AppendLine ($"\t\tpublic const string {fw.Namespace}Library = \"{fw.LibraryPath}\";");
+				}
 				sb.AppendLine ();
 			}
 			sb.AppendLine ("\t}");
 			sb.AppendLine ("}");
-#if NET
-			sb.AppendLine ("#endif // NET");
-#else
-			sb.AppendLine ("#endif // !NET");
-#endif
 
 			File.WriteAllText (output, sb.ToString ());
 			return 0;

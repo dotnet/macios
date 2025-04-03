@@ -625,11 +625,18 @@ namespace CoreMidi {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("macos11.0")]
-		[ObsoletedOSPlatform ("ios14.0")]
-		[ObsoletedOSPlatform ("maccatalyst14.0")]
+		[ObsoletedOSPlatform ("macos11.0", "Call 'MIDISourceCreateWithProtocol' instead.")]
+		[ObsoletedOSPlatform ("ios14.0", "Call 'MIDISourceCreateWithProtocol' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst14.0", "Call 'MIDISourceCreateWithProtocol' instead.")]
 		[DllImport (Constants.CoreMidiLibrary)]
-		unsafe extern static int /* OSStatus = SInt32 */ MIDISourceCreate (MidiObjectRef handle, IntPtr name, MidiObjectRef* endpoint);
+		unsafe extern static int /* OSStatus = SInt32 */ MIDISourceCreate (MidiObjectRef handle, IntPtr name, MidiEndpointRef* endpoint);
+
+		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("tvos")]
+		[DllImport (Constants.CoreMidiLibrary)]
+		unsafe extern static OSStatus MIDISourceCreateWithProtocol (MidiClientRef client, IntPtr /* CFStringRef */ name, MidiProtocolId protocol, MidiEndpointRef* outSrc);
 
 		GCHandle gch;
 
@@ -683,45 +690,59 @@ namespace CoreMidi {
 			return Name;
 		}
 
-		/// <param name="name">To be added.</param>
-		///         <param name="statusCode">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Create a virtual source for this client.</summary>
+		/// <param name="name">The name for the virtual source.</param>
+		/// <param name="statusCode">A status code that describes the result of this operation. This will be <see cref="MidiError.Ok" /> in case of success.</param>
+		/// <returns>A newly created <see cref="MidiEndpoint" /> if successful, otherwise null.</returns>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("macos11.0")]
-		[ObsoletedOSPlatform ("ios14.0")]
-		[ObsoletedOSPlatform ("maccatalyst14.0")]
+		[ObsoletedOSPlatform ("macos11.0", "Call 'CreateVirtualSource (string, MidiProtocolId, out MidiError)' instead.")]
+		[ObsoletedOSPlatform ("ios14.0", "Call 'CreateVirtualSource (string, MidiProtocolId, out MidiError)' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst14.0", "Call 'CreateVirtualSource (string, MidiProtocolId, out MidiError)' instead.")]
 		public MidiEndpoint? CreateVirtualSource (string name, out MidiError statusCode)
 		{
-			using (var nsstr = new NSString (name)) {
-				MidiObjectRef ret;
-				int code;
-				unsafe {
-					code = MIDISourceCreate (handle, nsstr.Handle, &ret);
-				}
-				if (code != 0) {
-					statusCode = (MidiError) code;
-					return null;
-				}
-				statusCode = MidiError.Ok;
-				return new MidiEndpoint (ret, true);
+			using var namePtr = new TransientCFString (name);
+			var handle = default (MidiEndpointRef);
+			unsafe {
+				statusCode = (MidiError) MIDISourceCreate (handle, namePtr, &handle);
 			}
+			if (handle == MidiObject.InvalidRef)
+				return null;
+			return new MidiEndpoint (handle, true);
 		}
 
-		/// <param name="name">To be added.</param>
-		///         <param name="status">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Create a virtual source for this client.</summary>
+		/// <param name="name">The name for the virtual source.</param>
+		/// <param name="protocol">The MIDI protocol for the data this source will produce.</param>
+		/// <param name="status">A status code that describes the result of this operation. This will be <see cref="MidiError.Ok" /> in case of success.</param>
+		/// <returns>A newly created <see cref="MidiEndpoint" /> if successful, otherwise null.</returns>
+		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("tvos")]
+		public MidiEndpoint? CreateVirtualSource (string name, MidiProtocolId protocol, out MidiError status)
+		{
+			using var namePtr = new TransientCFString (name);
+			var handle = default (MidiEndpointRef);
+			unsafe {
+				status = (MidiError) MIDISourceCreateWithProtocol (GetCheckedHandle (), namePtr, protocol, &handle);
+			}
+			if (handle == MidiObject.InvalidRef)
+				return null;
+			return new MidiEndpoint (handle, true);
+		}
+
+		/// <summary>Create a virtual destination for this client.</summary>
+		/// <param name="name">The name for the virtual destination.</param>
+		/// <param name="status">A status code that describes the result of this operation. This will be <see cref="MidiError.Ok" /> in case of success.</param>
+		/// <returns>A newly created <see cref="MidiEndpoint" /> if successful, otherwise null.</returns>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("macos11.0")]
-		[ObsoletedOSPlatform ("ios14.0")]
-		[ObsoletedOSPlatform ("maccatalyst14.0")]
+		[ObsoletedOSPlatform ("macos11.0", "Call the other 'CreateVirtualDestination' overload instead.")]
+		[ObsoletedOSPlatform ("ios14.0", "Call the other 'CreateVirtualDestination' overload instead.")]
+		[ObsoletedOSPlatform ("maccatalyst14.0", "Call the other 'CreateVirtualDestination' overload instead.")]
 		public MidiEndpoint? CreateVirtualDestination (string name, out MidiError status)
 		{
 			var m = new MidiEndpoint (this, name, out status);
@@ -731,6 +752,32 @@ namespace CoreMidi {
 			m.Dispose ();
 			return null;
 		}
+
+		/// <summary>Create a virtual destination for this client.</summary>
+		/// <param name="name">The name for the virtual destination.</param>
+		/// <param name="protocol">The MIDI protocol for the data this destination will receive.</param>
+		/// <param name="readBlock">The callback that will be called when the destination receives MIDI data.</param>
+		/// <param name="status">A status code that describes the result of this operation. This will be <see cref="MidiError.Ok" /> in case of success.</param>
+		/// <returns>A newly created <see cref="MidiEndpoint" /> if successful, otherwise null.</returns>
+		/// <remarks> FIXME: ADD BETTER DOCS HERE </remarks>
+		public unsafe MidiEndpoint? CreateVirtualDestination (string name, MidiProtocolId protocol, delegate* unmanaged<void*,void*,void> readBlock, out MidiError status)
+		{
+			using var namePtr = new TransientCFString (name);
+			var handle = default (MidiEndpointRef);
+			unsafe {
+				status = (MidiError) MIDIDestinationCreateWithProtocol (GetCheckedHandle (), namePtr, protocol, &handle, readBlock);
+			}
+			if (handle == MidiObject.InvalidRef)
+				return null;
+			return new MidiEndpoint (handle, name, true);
+		}
+
+		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("tvos")]
+		[DllImport (Constants.CoreMidiLibrary)]
+		unsafe extern static OSStatus MIDIDestinationCreateWithProtocol (MidiClientRef client, IntPtr /* CFStringRef */ name, MidiProtocolId protocol, MidiEndpointRef* outSrc, delegate* unmanaged<void * /* const MIDIEventList * */, void * /* __nullable srcConnRefCon */, void> readBlock);
 
 		/// <param name="name">name for the input port.</param>
 		///         <summary>Creates a new MIDI input port.</summary>
@@ -750,6 +797,41 @@ namespace CoreMidi {
 		public MidiPort CreateOutputPort (string name)
 		{
 			return new MidiPort (this, name, false);
+		}
+
+		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("tvos")]
+		[DllImport (Constants.CoreMidiLibrary)]
+		unsafe extern static OSStatus MIDIInputPortCreateWithProtocol (
+			MidiClientRef client,
+			IntPtr /* CFStringRef */ name,
+			MidiProtocolId protocol,
+			MidiPortRef* outPort,
+			delegate* unmanaged<void * /* const MIDIEventList * */, void * /* __nullable srcConnRefCon */, void> receiveBlock);
+
+		/// <summary>Create a input port for this client.</summary>
+		/// <param name="name">The name for the port.</param>
+		/// <param name="protocol">The MIDI protocol for the data this port will receive.</param>
+		/// <param name="readBlock">The callback that will be called when the port receives MIDI data.</param>
+		/// <param name="status">A status code that describes the result of this operation. This will be <see cref="MidiError.Ok" /> in case of success.</param>
+		/// <returns>A newly created <see cref="MidiEndpoint" /> if successful, otherwise null.</returns>
+		/// <remarks> FIXME: ADD BETTER DOCS HERE </remarks>
+		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("tvos")]
+		public unsafe MidiPort? CreateInputPort (string name, MidiProtocolId protocol, delegate* unmanaged<void*,void*,void> readBlock, out MidiError status)
+		{
+			using var namePtr = new TransientCFString (name);
+			var handle = default (MidiEndpointRef);
+			unsafe {
+				status = (MidiError) MIDIInputPortCreateWithProtocol (GetCheckedHandle (), namePtr, protocol, &handle, readBlock);
+			}
+			if (handle == MidiObject.InvalidRef)
+				return null;
+			return new MidiPort (handle, true, this, name);
 		}
 
 		public event EventHandler? SetupChanged;
@@ -1133,6 +1215,13 @@ namespace CoreMidi {
 
 		GCHandle gch;
 		bool input;
+
+		internal MidiPort (MidiPortRef handle, bool owns, MidiClient client, string portName)
+			: base (handle, owns)
+		{
+			Client = client;
+			PortName = portName;
+		}
 
 		internal MidiPort (MidiClient client, string portName, bool input)
 		{
@@ -2824,17 +2913,21 @@ namespace CoreMidi {
 			return new MidiEndpoint (h, "Destination" + destinationIndex, false);
 		}
 
-		internal MidiEndpoint (MidiClient client, string name, out MidiError code)
+		internal MidiEndpoint (MidiClient client, string name, out MidiError status)
 		{
-			using (var nsstr = new NSString (name)) {
-				GCHandle gch = GCHandle.Alloc (this);
-				unsafe {
-					MidiEndpointRef tempHandle;
-					code = MIDIDestinationCreate (client.handle, nsstr.Handle, &Read, GCHandle.ToIntPtr (gch), &tempHandle);
-					handle = tempHandle;
-				}
-				EndpointName = name;
+			EndpointName = name;
+
+			using var namePtr = new TransientCFString (name);
+			var handle = default (MidiEndpointRef);
+			gch = GCHandle.Alloc (this);
+			unsafe {
+				status = (MidiError) MIDIDestinationCreate (client.GetCheckedHandle (), namePtr, &Read, GCHandle.ToIntPtr (gch), &handle);
 			}
+			if (handle == MidiObject.InvalidRef) {
+				gch.Free ();
+				return;
+			}
+			this.handle = handle;
 		}
 
 		/// <include file="../../docs/api/CoreMidi/MidiEndpoint.xml" path="/Documentation/Docs[@DocId='M:CoreMidi.MidiEndpoint.Dispose(System.Boolean)']/*" />

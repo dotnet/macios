@@ -41,6 +41,8 @@ using NativeHandle = System.IntPtr;
 
 namespace Darwin {
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public class SystemLog : DisposableObject {
 		static SystemLog? _default;
 
@@ -55,6 +57,8 @@ namespace Darwin {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		[Flags]
 		public enum Option {
 			/// <summary>To be added.</summary>
@@ -253,7 +257,11 @@ namespace Darwin {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public class Message : DisposableObject {
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		public enum Kind {
 			/// <summary>To be added.</summary>
 			Message,
@@ -261,6 +269,8 @@ namespace Darwin {
 			Query,
 		}
 
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		[Flags]
 		public enum Op {
 			/// <summary>To be added.</summary>

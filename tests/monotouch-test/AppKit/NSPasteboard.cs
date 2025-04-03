@@ -270,14 +270,14 @@ namespace Xamarin.Mac.Tests {
 			using var pasteboard = NSPasteboard.CreateWithUniqueName ();
 			try {
 				var evt = new ManualResetEvent (false);
-				Dictionary<NSPasteboardDetectionPattern, DDMatch[]>? detected = null;
+				Dictionary<NSPasteboardDetectionPattern, DDMatch []>? detected = null;
 				NSError? error = null;
-				DDMatch[] matches;
+				DDMatch [] matches;
 				DDMatch match;
 				DDMatchEmailAddress matchedEmail;
 
 				var hashSet = new HashSet<NSPasteboardDetectionPattern> (new [] { NSPasteboardDetectionPattern.EmailAddress });
-				var callback = new NSPasteboardDetectValuesCompletionHandler ((Dictionary<NSPasteboardDetectionPattern, DDMatch[]> detectedResult, NSError? errorResult) => {
+				var callback = new NSPasteboardDetectValuesCompletionHandler ((Dictionary<NSPasteboardDetectionPattern, DDMatch []> detectedResult, NSError? errorResult) => {
 					detected = detectedResult;
 					error = errorResult;
 					evt.Set ();

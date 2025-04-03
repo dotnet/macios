@@ -25,6 +25,8 @@ using NativeHandle = System.IntPtr;
 namespace VideoToolbox {
 
 #if NET
+	/// <summary>Base class of <see cref="T:VideoToolbox.VTCompressionSession" /> and <see cref="T:VideoToolbox.VTDecompressionSession" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]

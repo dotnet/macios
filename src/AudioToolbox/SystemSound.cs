@@ -42,6 +42,7 @@ namespace AudioToolbox {
 		Vibrate = 0x00000FFF,
 	}
 
+	/// <include file="../../docs/api/AudioToolbox/SystemSound.xml" path="/Documentation/Docs[@DocId='T:AudioToolbox.SystemSound']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

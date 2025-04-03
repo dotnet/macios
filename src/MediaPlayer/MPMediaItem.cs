@@ -20,6 +20,7 @@ using CoreGraphics;
 #nullable enable
 
 namespace MediaPlayer {
+	/// <include file="../../docs/api/MediaPlayer/MPMediaItem.xml" path="/Documentation/Docs[@DocId='T:MediaPlayer.MPMediaItem']/*" />
 	public partial class MPMediaItem {
 		ulong UInt64ForProperty (NSString property)
 		{

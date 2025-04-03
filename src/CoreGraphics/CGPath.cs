@@ -42,6 +42,8 @@ using Foundation;
 namespace CoreGraphics {
 
 	// untyped enum -> CGPath.h
+	/// <summary>The type of an element in a CGPath.</summary>
+	///     <remarks>This is used by the callback function invoked by the CGPath.Apply method.</remarks>
 	public enum CGPathElementType {
 		/// <summary>This is a MoveTo operation, one point parameter.</summary>
 		MoveToPoint,
@@ -55,6 +57,36 @@ namespace CoreGraphics {
 		CloseSubpath,
 	}
 
+	/// <summary>An individual element on a CGPath.</summary>
+	///     <remarks>
+	///       <para>
+	/// Depending on the value of Type, you will use the values in Point1, Point2 and Point3.
+	/// </para>
+	///       <para>
+	///         <list type="table">
+	///           <listheader>
+	///             <term>CGPathElementType</term>
+	///             <description>Description</description>
+	///           </listheader>
+	///           <item>
+	///             <term>CloseSubpath</term>
+	///             <description>The end of a subpath.</description>
+	///           </item>
+	///           <item>
+	///             <term>MoveToPoint, AddLineToPoint</term>
+	///             <description>Use the Point1 value.</description>
+	///           </item>
+	///           <item>
+	///             <term>AddQuadCurveToPoint</term>
+	///             <description>Use the Point1 and Point2 values.</description>
+	///           </item>
+	///           <item>
+	///             <term>AddCurveToPoint</term>
+	///             <description>Use the Point1, Point2 and Point3 values.</description>
+	///           </item>
+	///         </list>
+	///       </para>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -90,6 +122,11 @@ namespace CoreGraphics {
 		public CGPoint Point3;
 	}
 
+	/// <summary>A drawing path is made up of lines, arcs, beziers that can be used to paint.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/WeatherMap/">WeatherMap</related>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/CoreAnimation/">Example_CoreAnimation</related>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/Drawing/">Example_Drawing</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -607,6 +644,11 @@ namespace CoreGraphics {
 			return CGPathContainsPoint (Handle, null, point, eoFill.AsByte ()) != 0;
 		}
 
+		/// <param name="element">
+		/// The element to process.
+		///   	   </param>
+		///     <summary>A function that can make changes to a CGPathElement.</summary>
+		///     <remarks>This is the function signature that is called back from CGPath.Apply for each element in a path. </remarks>
 		public delegate void ApplierFunction (CGPathElement element);
 
 		delegate void CGPathApplierFunction (/* void* */ IntPtr info, /* const CGPathElement* */ IntPtr element);

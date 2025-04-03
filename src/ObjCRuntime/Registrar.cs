@@ -60,8 +60,14 @@ using ProductException = ObjCRuntime.RuntimeException;
 
 #if MONOMAC
 namespace ObjCRuntime {
+	/// <param name="sender">To be added.</param>
+	///     <param name="args">To be added.</param>
+	///     <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public delegate void AssemblyRegistrationHandler (object sender, AssemblyRegistrationEventArgs args);
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public class AssemblyRegistrationEventArgs : EventArgs {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

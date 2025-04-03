@@ -45,6 +45,8 @@ namespace ImageIO {
 
 #if !COREBUILD
 	// untyped enum -> CGImageSource.h
+	/// <summary>The status of the CGImageSource loader.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CGImageSourceStatus {
 		/// <summary>The image loader has completed, the full set of images is loaded.</summary>
 		Complete = 0,
@@ -165,6 +167,9 @@ namespace ImageIO {
 	}
 #endif
 
+	/// <summary>Image Loader.</summary>
+	///     <remarks>
+	///     </remarks>
 	public partial class CGImageSource : NativeObject {
 #if !COREBUILD
 		/// <summary>Type identifier for the ImageIO.CGImageSource type.</summary>

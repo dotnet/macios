@@ -74,12 +74,12 @@ using (var ctxt = UIGraphics.GetCurrentContext ()) {
     </remarks>
   </Docs>
   <Docs DocId="M:CoreGraphics.CGContext.DrawPDFPage(CoreGraphics.CGPDFPage)">
-        <param name="page">The PDF page to be rendered.</param>
-        <summary>Renders the specified PDF <paramref name="page" />.</summary>
-        <remarks>
-          <para>The following example shows how to render the first page of a PDF file:</para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
+    <param name="page">The PDF page to be rendered.</param>
+    <summary>Renders the specified PDF <paramref name="page" />.</summary>
+    <remarks>
+      <para>The following example shows how to render the first page of a PDF file:</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
 doc = CGPDFDocument.FromFile (Path.Combine (NSBundle.MainBundle.BundlePath, "Images/QuartzImageDrawing.pdf"));
 if (doc == null)
 		throw new Exception ("Could not load document");
@@ -108,26 +108,26 @@ using (var ctxt = UIGraphics.GetCurrentContext ()) {
 	}				
 }
           ]]></code>
-          </example>
-        </remarks>
-      </Docs>
+      </example>
+    </remarks>
+  </Docs>
   <Docs DocId="M:CoreGraphics.CGContext.AsBitmapContext">
-        <summary>Casts the CGContext into a CGBitmapContext.</summary>
-        <returns>
-        </returns>
-        <remarks>
-          <para>
+    <summary>Casts the CGContext into a CGBitmapContext.</summary>
+    <returns>
+    </returns>
+    <remarks>
+      <para>
 	    While there are different kinds of CGContext kinds (regular, bitmap and PDF), Apple does not support a way
 	    to tell those apart.   Certain CGContext objects are actually known to be CGBitmapContext objects in a few
 	    situations (calling <see cref="M:UIKit.UIGraphics.GetImageFromCurrentImageContext" /> after creating a 
 	    context with <see cref="M:UIKit.UIGraphics.BeginImageContext(CoreGraphics.CGSize)" /> or <see cref="M:UIKit.UIGraphics.BeginImageContextWithOptions(CoreGraphics.CGSize,System.Boolean,System.nfloat)" />).
 	  </para>
-          <para>
+      <para>
 	    Those are really CGBitmapContext objects and by converting it, application developers can access the various bitmap properties
 	    on it.
 	  </para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
 UIGraphics.BeginImageContextWithOptions (image.Size, false, UIScreen.MainScreen.Scale);
 CGBitmapContext effectInContext = UIGraphics.GetCurrentContext ().AsBitmapContext ()
  
@@ -141,7 +141,35 @@ var effectInBuffer = new vImageBuffer () {
         BytesPerRow = effectInContext.BytesPerRow
 };
 ]]></code>
-          </example>
-        </remarks>
-      </Docs>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="T:CoreGraphics.CGContext">
+    <summary>Graphics context and primitives to draw in them.</summary>
+    <remarks>
+      <para>A <see cref="T:CoreGraphics.CGContext" /> is a Quartz 2D destination for drawing. It holds parameters and their states (set with functions such as <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Graphics%20CGContext%20Set%20Fill%20Color&amp;scope=Xamarin" title="M:CoreGraphics.CGContext.SetFillColor*">M:CoreGraphics.CGContext.SetFillColor*</a></format>) and device information (for instance, <see cref="M:CoreGraphics.CGContext.ConvertSizeToDeviceSpace(CoreGraphics.CGSize)" />). <see cref="T:CoreGraphics.CGContext" />s may represent a screen area, a bitmap, a PDF document, or a printer.</para>
+      <para>There are a limited number of <see cref="T:CoreGraphics.CGContext" />s available and application developer's should be conscientious about disposing of them after use. Generally, that means putting the drawing code in <c>using</c> blocks, as shown in the following example:</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+public override void Draw (RectangleF rect)
+{
+    base.Draw (rect);
+    using (var context = UIGraphics.GetCurrentContext ())
+    {
+        // draw a rectangle using a path
+	var myRectangleButtonPath = new CGPath ();
+	myRectangleButtonPath.AddRect (new RectangleF (new PointF (100, 10), new SizeF (200, 400)));
+	context.AddPath (myRectangleButtonPath);
+	context.DrawPath (CGPathDrawingMode.Stroke);
+    }
+}          
+          ]]></code>
+      </example>
+      <para>The example additionally shows the very common pattern of an overridden <see cref="M:UIKit.UIView.Draw(CoreGraphics.CGRect)" /> method in a custom <see cref="T:UIKit.UIView" /> and the use of <see cref="M:UIKit.UIGraphics.GetImageFromCurrentImageContext" /> to retrieve the current <see cref="T:CoreGraphics.CGContext" /> on which to draw.</para>
+    </remarks>
+    <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/AVTouchSample/">avTouch</related>
+    <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/Drawing/">Example_Drawing</related>
+    <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/QuartzSample/">QuartzSample</related>
+    <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/ZoomingPdfViewer/">ZoomingPdfViewer</related>
+  </Docs>
 </Documentation>

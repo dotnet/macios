@@ -47,6 +47,7 @@ using UIKit;
 
 namespace Foundation {
 
+	/// <include file="../../docs/api/Foundation/DictionaryContainer.xml" path="/Documentation/Docs[@DocId='T:Foundation.DictionaryContainer']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

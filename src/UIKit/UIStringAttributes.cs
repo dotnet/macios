@@ -40,6 +40,31 @@ using CoreText;
 
 namespace UIKit {
 
+	/// <summary>Strongly helper to define UIKit attributes for use with <see cref="T:Foundation.NSAttributedString" />. </summary>
+	///     <remarks>
+	///       <para>
+	/// 	You use this class to create attributes that can be used with
+	/// 	both <see cref="T:Foundation.NSAttributedString" />
+	/// 	and <see cref="T:Foundation.NSMutableAttributedString" />.
+	/// 	Since this class is strongly typed, you will get code
+	/// 	completion as well as avoid common mistakes when using
+	/// 	attributed strings with UIKit.
+	///
+	///       </para>
+	///       <example>
+	///         <code lang="csharp lang-csharp"><![CDATA[
+	/// // 
+	/// // Using NSAttributedString with UIKit
+	/// //
+	/// var myText = new NSAttributedString ("Hello, world",
+	///        new UIStringAttributes () {
+	///               ForegroundColor =  UIColor.Red,
+	/// 	      KerningAdjustment = 3
+	///        });
+	/// label.AttributedText = myText;
+	/// 	]]></code>
+	///       </example>
+	///     </remarks>
 	public class UIStringAttributes : DictionaryContainer {
 #if !COREBUILD
 		/// <summary>Default constructor</summary>

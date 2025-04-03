@@ -30,6 +30,7 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace ObjCRuntime {
+	/// <include file="../../docs/api/ObjCRuntime/Class.xml" path="/Documentation/Docs[@DocId='T:ObjCRuntime.Class']/*" />
 	public partial class Class : INativeObject
 #if !COREBUILD
 	, IEquatable<Class>

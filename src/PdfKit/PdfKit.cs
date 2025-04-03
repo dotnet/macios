@@ -32,6 +32,8 @@ namespace PdfKit {
 	}
 
 #if !IOS && !__TVOS__
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	partial class PdfAnnotationMarkup {
 		public CGPoint []? QuadrilateralPoints {
 			get {

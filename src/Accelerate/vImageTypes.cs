@@ -51,6 +51,13 @@ using vImagePixelCount = System.nint;
 namespace Accelerate {
 	// vImage_Buffer - vImage_Types.h
 #if NET
+	/// <summary>Structure used to represent image data.</summary>
+	///     <remarks>
+	///       <para>This structure is used to describe a block of image data.   The image data is stored in the Data property with the Width and Height properties describing how many pixels the image has on each dimension.   </para>
+	///       <para>
+	///       </para>
+	///       <para>The BytesPerRow property describes how many bytes are used on each row of pixels.   This is often referred to as the stride of the image.   It does not necessarily have to match the width in pixels, it can often be set to a different value to ensure that each image row starts in an aligned memory address (this is typically done to improve performance as CPUs are able to perform aligned fetches from memory faster than unaligned ones).</para>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -98,6 +105,8 @@ namespace Accelerate {
 
 	// vImage_AffineTransform - vImage_Types.h
 #if NET
+	/// <summary>Struct that represents an affine transformation as a vector of six single-precision values.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -130,6 +139,8 @@ namespace Accelerate {
 
 	// vImage_AffineTransform_Double - vImage_Types.h
 #if NET
+	/// <summary>Struct that represents an affine transformation as a vector of six double-precision values.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -160,6 +171,8 @@ namespace Accelerate {
 	}
 
 	// vImage_Error (ssize_t) - vImageTypes.h
+	/// <summary>Error codes returned by the various vImage manipulation APIs.</summary>
+	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum vImageError : long {
 		/// <summary>To be added.</summary>
@@ -197,6 +210,8 @@ namespace Accelerate {
 	}
 
 	// anonymous enum - Transform.h
+	/// <summary>Enumerates algorithms for gamma correction.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum vImageGamma {
 		/// <summary>To be added.</summary>
 		kUseGammaValue = 0,
@@ -225,6 +240,8 @@ namespace Accelerate {
 	};
 
 	// vImageMDTableUsageHint (untyped) - Transform.h
+	/// <summary>Enumerates hints for using a multi-dimensional table.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum vImageMDTableUsageHint : int {
 		/// <summary>To be added.</summary>
 		k16Q12 = 1,
@@ -233,6 +250,8 @@ namespace Accelerate {
 	}
 
 	// vImage_InterpolationMethod (untyped) - Transform.h
+	/// <summary>Enumerates algorithms for image interpolation.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum vImageInterpolationMethod : int {
 		/// <summary>To be added.</summary>
 		None = 0,
@@ -242,6 +261,8 @@ namespace Accelerate {
 		Half = 2,
 	}
 
+	/// <summary>Enumerates options for processing images.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	// vImage_Flags (uint32_t) - vImage_Types.h
 	public enum vImageFlags : uint {
@@ -270,6 +291,8 @@ namespace Accelerate {
 	}
 
 #if NET
+	/// <summary>Represents a pixel using 32-bit floating points values for its alpha, red, green and blue components.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -299,6 +322,8 @@ namespace Accelerate {
 	}
 
 #if NET
+	/// <summary>Represents a pixel using 8-bit integers for its red, green, blue and alpha components.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -329,6 +354,11 @@ namespace Accelerate {
 	}
 
 #if NET
+	/// <summary>Represents a pixel using 16-bit unsigned integers for its alpha, red, green and blue components.</summary>
+	///     <remarks>
+	///       <para>
+	///       </para>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -354,6 +384,11 @@ namespace Accelerate {
 	}
 
 #if NET
+	/// <summary>Represents a pixel using 16-bit signed integers for its alpha, red, green and blue components.</summary>
+	///     <remarks>
+	///       <para>
+	///       </para>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -379,6 +414,13 @@ namespace Accelerate {
 	}
 
 #if NET
+	/// <summary>Accelerated image operations.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	The vImage class provides a collection of methods that operate on images represented by the <see cref="T:Accelerate.vImageBuffer" /> structure.</para>
+	///       <para>
+	///       </para>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

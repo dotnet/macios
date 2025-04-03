@@ -40,6 +40,9 @@ using CFNetwork;
 
 namespace CoreFoundation {
 	// Utility enum for string constants in ObjC
+	/// <summary>An enum of <see cref="T:CoreFoundation.CFProxy" /> proxy types.</summary>
+	///     <remarks>
+	///     </remarks>
 	public enum CFProxyType {
 		/// <summary>No proxy should be used.</summary>
 		None,
@@ -57,6 +60,9 @@ namespace CoreFoundation {
 		SOCKS,
 	}
 
+	/// <summary>Provides information about a proxy.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -375,6 +381,8 @@ namespace CoreFoundation {
 		}
 	}
 
+	/// <summary>Configuration settings used by <see cref="M:CoreFoundation.CFNetwork.GetProxiesForURL(Foundation.NSUrl,CoreFoundation.CFProxySettings)" />.</summary>
+	///     <remarks>Returned by <see cref="M:CoreFoundation.CFNetwork.GetSystemProxySettings" />.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

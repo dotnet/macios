@@ -16,6 +16,8 @@ using Metal;
 using ObjCRuntime;
 
 namespace MetalPerformanceShaders {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class MPSStateResourceList {
 		/// <param name="descriptors">To be added.</param>
 		///         <summary>To be added.</summary>

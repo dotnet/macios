@@ -47,6 +47,8 @@ namespace CoreLocation {
 
 	// CLLocation.h
 #if NET
+	/// <summary>Geographical coordinates.</summary>
+	///     <remarks>The geographical coordinates use the WGS 84 reference frame.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -94,6 +96,9 @@ namespace CoreLocation {
 	}
 
 #if IOS && !COREBUILD // This code comes from Intents.CLPlacemark_INIntentsAdditions Category
+	/// <summary>Associates data such as street address with a coordinate.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreLocation/Reference/CLPlacemark_class/index.html">Apple documentation for <c>CLPlacemark</c></related>
 	public partial class CLPlacemark {
 #if NET
 		/// <param name="location">To be added.</param>

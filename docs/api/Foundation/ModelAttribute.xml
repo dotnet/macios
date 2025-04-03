@@ -1,0 +1,20 @@
+<Documentation>
+  <Docs DocId="T:Foundation.ModelAttribute">
+    <summary>Flag a class as a model.</summary>
+    <remarks>
+      <para>Objective-C protocols are like interfaces, but they support optional methods, that is, not all of the methods need to be implemented for the protocol to work.
+
+There are two ways of implementing a model, you can either implement it manually or use the existing strongly typed definitions. 
+</para>
+      <para>
+MonoTouch provides already strongly typed declarations ready to use that do not require manual binding. To support this programming model, the MonoTouch runtime supports the [Model] attribute on a class declaration. This informs the runtime that it should not wire up all the methods in the class, unless the method is explicitly implemented. 
+</para>
+      <para>
+The Model attribute is applied to a class that can have optional methods, and it is typically used for declaring Objective-C delegates or data models that have a number of optional methods.    The MonoTouch runtime treats classes with the Model attribute applied specially: only when a user overrides methods in a class, is the actual override exposed to the Objective-C world as existing.
+</para>
+      <para>
+This attribute is used in all of the models and delegate classes to allow the user to only implement the methods that he is interested in.
+</para>
+    </remarks>
+  </Docs>
+</Documentation>

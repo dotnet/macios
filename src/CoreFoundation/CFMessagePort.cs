@@ -23,6 +23,8 @@ namespace CoreFoundation {
 
 	// untyped enum from CFMessagePort.h
 	// used as a return value of type SInt32 (always 4 bytes)
+	/// <summary>This enumeration contains status codes for <see cref="M:CoreFoundation.CFMessagePort.SendRequest(System.Int32,Foundation.NSData,System.Double,System.Double,Foundation.NSString,Foundation.NSData@)" />.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CFMessagePortSendRequestStatus {
 		/// <summary>The message was sent, and any expected reply was received.</summary>
 		Success = 0,
@@ -47,6 +49,9 @@ namespace CoreFoundation {
 		public Func<NSString>? CopyDescription { get; set; }
 	}
 
+	/// <summary>A communication channel between multiple threads on the local device.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -64,6 +69,11 @@ namespace CoreFoundation {
 			public delegate* unmanaged<IntPtr, IntPtr> copyDescription;
 		}
 
+		/// <param name="type">To be added.</param>
+		///     <param name="data">To be added.</param>
+		///     <summary>To be added.</summary>
+		///     <returns>To be added.</returns>
+		///     <remarks>To be added.</remarks>
 		public delegate NSData CFMessagePortCallBack (int type, NSData data);
 
 		static Dictionary<IntPtr, CFMessagePortCallBack> outputHandles = new Dictionary<IntPtr, CFMessagePortCallBack> (Runtime.IntPtrEqualityComparer);

@@ -19,6 +19,8 @@ using CoreFoundation;
 using ObjCRuntime;
 
 namespace CFNetwork {
+	/// <summary>An HTTP message.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class CFHTTPMessage : CFType {
 		[Preserve (Conditional = true)]
 		internal CFHTTPMessage (NativeHandle handle, bool owns)
@@ -288,6 +290,8 @@ namespace CFNetwork {
 		}
 
 		// convenience enum on top of kCFHTTPAuthenticationScheme* fields
+		/// <summary>An enumeration whose values specify HTTP authentication schemes.</summary>
+		///     <remarks>To be added.</remarks>
 		public enum AuthenticationScheme {
 			Default,
 			Basic,

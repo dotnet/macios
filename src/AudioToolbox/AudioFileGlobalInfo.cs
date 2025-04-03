@@ -41,7 +41,8 @@ using Foundation;
 using System.Runtime.Versioning;
 
 namespace AudioToolbox {
-
+	/// <summary>Encapsulates global audio-file information.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

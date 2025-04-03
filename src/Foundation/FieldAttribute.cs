@@ -31,6 +31,10 @@ using System;
 #nullable enable
 
 namespace Foundation {
+	/// <summary>This attribute is present on properties to indicate that they reflect an underlying unmanaged global variable.</summary>
+	///     <remarks>
+	///       When this attribute is present on a property, it indicates that the property actually reflects an underlying unmanaged global variable.
+	///     </remarks>
 	[AttributeUsage (AttributeTargets.Property | AttributeTargets.Field)]
 	public sealed class FieldAttribute : Attribute {
 		/// <param name="symbolName">The unmanaged symbol that this field represents.</param>

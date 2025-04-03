@@ -36,7 +36,7 @@ using ObjCRuntime;
 using System.Runtime.Versioning;
 
 namespace AudioToolbox {
-
+	/// <include file="../../docs/api/AudioToolbox/AudioBuffers.xml" path="/Documentation/Docs[@DocId='T:AudioToolbox.AudioBuffers']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

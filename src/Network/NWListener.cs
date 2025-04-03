@@ -24,6 +24,8 @@ using NativeHandle = System.IntPtr;
 namespace Network {
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
@@ -280,6 +282,10 @@ namespace Network {
 		static nw_listener_advertised_endpoint_changed_handler_t static_AdvertisedEndpointChangedHandler = TrampolineAdvertisedEndpointChangedHandler;
 #endif
 
+		/// <param name="endpoint">To be added.</param>
+		///     <param name="added">To be added.</param>
+		///     <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		public delegate void AdvertisedEndpointChanged (NWEndpoint endpoint, bool added);
 
 #if !NET

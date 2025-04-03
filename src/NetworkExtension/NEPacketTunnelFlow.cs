@@ -10,6 +10,8 @@ namespace NetworkExtension {
 
 	// avoid generator default `Arg1` and `Arg2` since Action<> was used
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

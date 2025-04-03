@@ -31,6 +31,8 @@ using Foundation;
 using ObjCRuntime;
 
 namespace CoreServices {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum LSRoles/*Mask*/ : uint /* always 32-bit uint */
 	{
@@ -46,6 +48,8 @@ namespace CoreServices {
 		All = 0xffffffff,
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum LSAcceptanceFlags : uint /* always 32-bit uint */
 	{
@@ -55,6 +59,8 @@ namespace CoreServices {
 		AllowLoginUI = 2,
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum LSResult {
 		/// <summary>To be added.</summary>
 		Success = 0,
@@ -119,6 +125,8 @@ namespace CoreServices {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public static class LaunchServices {

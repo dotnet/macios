@@ -22,6 +22,8 @@ namespace MapKit {
 
 	// MKTileOverlay.h
 #if NET
+	/// <summary>Encapsulates the index values of a particular <see cref="T:MapKit.MKTileOverlay" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -69,6 +71,8 @@ namespace MapKit {
 	// MKGeometry.h
 	// note: CLLocationDegrees is double - see CLLocation.h
 #if NET
+	/// <summary>The area spanned by a region of the map.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -105,6 +109,8 @@ namespace MapKit {
 
 	// MKGeometry.h
 #if NET
+	/// <summary>Defines a region of the map to display.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -165,6 +171,7 @@ namespace MapKit {
 
 	// MKGeometry.h
 #if NET
+	/// <include file="../../docs/api/MapKit/MKMapPoint.xml" path="/Documentation/Docs[@DocId='T:MapKit.MKMapPoint']/*" />
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -249,6 +256,10 @@ namespace MapKit {
 
 	// MKGeometry.h
 #if NET
+	/// <summary>The extent of a 2D map projection as measured in map points.</summary>
+	///     <remarks>
+	///     </remarks>
+	///     <altmember cref="T:MapKit.MKMapPoint" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -330,6 +341,8 @@ namespace MapKit {
 
 	// MKGeometry.h
 #if NET
+	/// <summary>A rectangular area in a 2D map projection, measured in map points.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -684,6 +697,8 @@ namespace MapKit {
 
 	// MKGeometry.h
 #if NET
+	/// <summary>Helper class containing methods for calculating distances and latitude-dependent scales.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

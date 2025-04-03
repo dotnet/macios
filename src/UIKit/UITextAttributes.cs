@@ -16,6 +16,7 @@ using ObjCRuntime;
 
 namespace UIKit {
 
+	/// <include file="../../docs/api/UIKit/UITextAttributes.xml" path="/Documentation/Docs[@DocId='T:UIKit.UITextAttributes']/*" />
 	public class UITextAttributes {
 		/// <summary>The font to use to render the text.</summary>
 		///         <remarks>

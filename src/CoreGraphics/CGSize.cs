@@ -16,6 +16,8 @@ using ObjCRuntime;
 
 namespace CoreGraphics {
 
+	/// <summary>Structure containing height and width values.</summary>
+	///     <remarks>To be added.</remarks>
 	[Serializable]
 	public struct CGSize : IEquatable<CGSize> {
 		nfloat width;

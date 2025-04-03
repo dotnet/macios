@@ -50,6 +50,8 @@ using NativeHandle = System.IntPtr;
 
 namespace Security {
 
+	/// <summary>The kind of SecRecord.</summary>
+	///     <remarks>A SecRecord can represent one of the following values.</remarks>
 	public enum SecKind {
 		/// <summary>The SecRecord stores an internet password.</summary>
 		InternetPassword,
@@ -64,6 +66,13 @@ namespace Security {
 	}
 
 	// manually mapped to KeysAccessible
+	/// <summary>An enumeration whose values specify when a keychain item should be readable.</summary>
+	///     <remarks>
+	///       <para>There are a number of axis to consider for the accessible settings of an item.</para>
+	///       <para>Whether the information should be made accessible without entering a passcode, the device being unlocked or always available.</para>
+	///       <para>Another one is whether the information should be locked to this device, or whether the information can migrate to a new device via a backup restore.</para>
+	///       <para>This value is used by the <see cref="T:Security.SecAccessControl" /> constructor and surfaced as a property of the <see cref="T:Security.SecRecord" />.</para>
+	///     </remarks>
 	public enum SecAccessible {
 		/// <summary>Invalid value.</summary>
 		Invalid = -1,
@@ -105,6 +114,8 @@ namespace Security {
 		WhenPasscodeSetThisDeviceOnly,
 	}
 
+	/// <summary>Protocol used for InternetPasswords</summary>
+	///     <remarks>To be added.</remarks>
 	public enum SecProtocol {
 		/// <summary>Invalid</summary>
 		Invalid = -1,
@@ -172,6 +183,10 @@ namespace Security {
 		Pop3s,
 	}
 
+	/// <summary>An enumeration whose values specify various types of authentication. Used with the <see cref="P:Security.SecRecord.AuthenticationType" /> property.</summary>
+	///     <remarks>
+	///       <para />
+	///     </remarks>
 	public enum SecAuthenticationType {
 		/// <summary>Invalid authentication setting</summary>
 		Invalid = -1,
@@ -195,6 +210,7 @@ namespace Security {
 	}
 
 #if NET
+	/// <include file="../../docs/api/Security/SecKeyChain.xml" path="/Documentation/Docs[@DocId='T:Security.SecKeyChain']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -525,6 +541,17 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static SecStatusCode SecKeychainItemFreeContent (IntPtr attrList, IntPtr data);
 
+		/// <param name="serverName">To be added.</param>
+		///         <param name="accountName">To be added.</param>
+		///         <param name="password">To be added.</param>
+		///         <param name="protocolType">To be added.</param>
+		///         <param name="port">To be added.</param>
+		///         <param name="path">To be added.</param>
+		///         <param name="authenticationType">To be added.</param>
+		///         <param name="securityDomain">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static SecStatusCode AddInternetPassword (
 			string serverName,
 			string accountName,
@@ -571,6 +598,17 @@ namespace Security {
 		}
 
 
+		/// <param name="serverName">To be added.</param>
+		///         <param name="accountName">To be added.</param>
+		///         <param name="password">To be added.</param>
+		///         <param name="protocolType">To be added.</param>
+		///         <param name="port">To be added.</param>
+		///         <param name="path">To be added.</param>
+		///         <param name="authenticationType">To be added.</param>
+		///         <param name="securityDomain">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static SecStatusCode FindInternetPassword (
 			string serverName,
 			string accountName,
@@ -646,6 +684,12 @@ namespace Security {
 			}
 		}
 
+		/// <param name="serviceName">To be added.</param>
+		///         <param name="accountName">To be added.</param>
+		///         <param name="password">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static SecStatusCode AddGenericPassword (string serviceName, string accountName, byte [] password)
 		{
 			byte []? serviceNameBytes = null;
@@ -669,6 +713,12 @@ namespace Security {
 				);
 		}
 
+		/// <param name="serviceName">To be added.</param>
+		///         <param name="accountName">To be added.</param>
+		///         <param name="password">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static SecStatusCode FindGenericPassword (string serviceName, string accountName, out byte []? password)
 		{
 			password = null;
@@ -826,6 +876,29 @@ namespace Security {
 	}
 
 #if NET
+	/// <summary>Tracks a set of properties from the keychain.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	This represents a set of properties on a keychain record.   It
+	/// 	can be used to query the keychain by filling out a few of the
+	/// 	properties and calling one of the Query methods on the <see cref="T:Security.SecKeyChain" /> class and it is
+	/// 	also used as a result from some of the same Query methods.
+	///       </para>
+	///       <para>
+	/// 	You would typically use it like this:
+	///       </para>
+	///       <example>
+	///         <code lang="csharp lang-csharp"><![CDATA[
+	/// var query = new SecRecord (SecKind.InternetPassword) {
+	///    Server = "bugzilla.novell.com",
+	///    Account = "miguel"
+	/// };
+	/// var password = SecKeyChain.QueryAsData (query);
+	/// Console.WriteLine ("The password for the account is: {0}", password);
+	/// ]]></code>
+	///       </example>
+	///     </remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/LineLayout/">Keychain</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -2216,6 +2289,8 @@ namespace Security {
 	}
 
 #if NET
+	/// <summary>An exception based on a <see cref="T:Security.SecStatusCode" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -2248,6 +2323,8 @@ namespace Security {
 		}
 	}
 
+	/// <summary>Contains parameters for use with <see cref="M:Security.SecKey.CreateRandomKey(Security.SecKeyType,System.Int32,Foundation.NSDictionary,Foundation.NSError@)" />.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class SecKeyParameters : DictionaryContainer {
 		// For caching, as we can't reverse it easily.
 		SecAccessControl? _secAccessControl;
@@ -2274,6 +2351,8 @@ namespace Security {
 		}
 	}
 
+	/// <summary>Contains parameters for key generation.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class SecKeyGenerationParameters : DictionaryContainer {
 		/// <summary>Gets or sets the type of key to create.</summary>
 		///         <value>The type of key to create.</value>

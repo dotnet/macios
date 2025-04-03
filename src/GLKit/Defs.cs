@@ -37,6 +37,8 @@ using ObjCRuntime;
 namespace GLKit {
 
 	// GLint (32 bits on 64 bit hardware) -> GLKEffects.h
+	/// <summary>An enumeration whose values specify various components of a vertex.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum GLKVertexAttrib {
 		/// <summary>To be added.</summary>
 		Position,
@@ -51,6 +53,8 @@ namespace GLKit {
 	}
 
 	// GLint (32 bits on 64 bit hardware) -> GLKEffectPropertyLight.h
+	/// <summary>An enumeration whose values specify how lighting is calculated by an effect.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum GLKLightingType {
 		/// <summary>To be added.</summary>
 		PerVertex,
@@ -59,6 +63,8 @@ namespace GLKit {
 	}
 
 	// GLint (32 bits on 64 bit hardware) -> GLKEffectPropertyTexture.h
+	/// <summary>An enumeration of ways in which texture can be combined with other color components.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum GLKTextureEnvMode {
 		/// <summary>To be added.</summary>
 		Replace,
@@ -69,6 +75,8 @@ namespace GLKit {
 	}
 
 	// GLenum (32 bits on 64 bit hardware) -> GLKEffectPropertyTexture.h
+	/// <summary>An enumeration whose values specify different kinds of texture.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum GLKTextureTarget {
 		/// <summary>To be added.</summary>
 		Texture2D = 0x0DE1,    // GL_TEXTURE_2D
@@ -79,6 +87,8 @@ namespace GLKit {
 	}
 
 	// GLint (32 bits on 64 bit hardware) -> GLKEffectPropertyFog.h
+	/// <summary>An enumeration whose values specify different types of fog effect.</summary>
+	///     <remarks>In all cases, the fog calculation is clamped to the range 0..1.</remarks>
 	public enum GLKFogMode {
 		/// <summary>The fog is calculated using Math.Exp(-density * distance).</summary>
 		Exp = 0,
@@ -89,6 +99,8 @@ namespace GLKit {
 	}
 
 	// GLint (32 bits on 64 bit hardware) -> GLKView.h
+	/// <summary>An enumeration whose values specify the format of the color renderbuffer.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum GLKViewDrawableColorFormat {
 		/// <summary>To be added.</summary>
 		RGBA8888 = 0,
@@ -99,6 +111,8 @@ namespace GLKit {
 	}
 
 	// GLint (32 bits on 64 bit hardware) -> GLKView.h
+	/// <summary>An enumeration whose values specify the format of the depth renderbuffer.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum GLKViewDrawableDepthFormat {
 		/// <summary>To be added.</summary>
 		None,
@@ -109,6 +123,8 @@ namespace GLKit {
 	}
 
 	// GLint (32 bits on 64 bit hardware) -> GLKView.h
+	/// <summary>An enumeration whose values specify the format of the stencil renderbuffer.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum GLKViewDrawableStencilFormat {
 		/// <summary>To be added.</summary>
 		FormatNone,
@@ -117,6 +133,8 @@ namespace GLKit {
 	}
 
 	// GLint (32 bits on 64 bit hardware) -> GLKView.h
+	/// <summary>An enumeration whose values specify the format of the multisampling buffer.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum GLKViewDrawableMultisample {
 		/// <summary>To be added.</summary>
 		None,
@@ -125,6 +143,8 @@ namespace GLKit {
 	}
 
 	// GLint (32 bits on 64 bit hardware) -> GLKTextureLoader.h
+	/// <summary>An enumeration whose values specify the manner in which the alpha information is stored in the source image.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum GLKTextureInfoAlphaState {
 		/// <summary>To be added.</summary>
 		None,
@@ -135,6 +155,8 @@ namespace GLKit {
 	}
 
 	// GLint (32 bits on 64 bit hardware) -> GLKTextureLoader.h
+	/// <summary>An enumeration whose values specify the origin in the original source image.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum GLKTextureInfoOrigin {
 		/// <summary>To be added.</summary>
 		Unknown = 0,
@@ -145,6 +167,8 @@ namespace GLKit {
 	}
 
 	// GLuint (we'll keep `int` for compatibility) -> GLKTextureLoader.h
+	/// <summary>An enumeration whose values specify errors relating to texture loading.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum GLKTextureLoaderError {
 		/// <summary>To be added.</summary>
 		FileOrURLNotFound = 0,
@@ -190,6 +214,8 @@ namespace GLKit {
 
 	// glVertexAttribPointer structure values, again, problems with definitions being in different namespaces
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]

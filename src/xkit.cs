@@ -141,11 +141,17 @@ namespace UIKit {
 	[Flags]
 	[MacCatalyst (13, 1)]
 	public enum NSControlCharacterAction : long {
+		/// <summary>To be added.</summary>
 		ZeroAdvancement = (1 << 0),
+		/// <summary>To be added.</summary>
 		Whitespace = (1 << 1),
+		/// <summary>To be added.</summary>
 		HorizontalTab = (1 << 2),
+		/// <summary>To be added.</summary>
 		LineBreak = (1 << 3),
+		/// <summary>To be added.</summary>
 		ParagraphBreak = (1 << 4),
+		/// <summary>To be added.</summary>
 		ContainerBreak = (1 << 5),
 
 #if !NET && !__MACCATALYST__ && !MONOMAC
@@ -268,6 +274,7 @@ namespace UIKit {
 	[Flags]
 	[MacCatalyst (13, 1)]
 	public enum NSLayoutFormatOptions : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
 
 		/// <summary>Aligns all elements using their <see cref="F:UIKit.NSLayoutAttribute.Left" /> properties.</summary>
@@ -1306,6 +1313,10 @@ namespace UIKit {
 		void RemoveTemporaryAttribute (NSString attributeName, NSRange characterRange);
 
 #if NET
+		/// <param name="attributeName">To be added.</param>
+		///         <param name="characterRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Sealed]
 #endif
 		[NoiOS]
@@ -1396,6 +1407,11 @@ namespace UIKit {
 		void AddTemporaryAttribute (NSString attributeName, NSObject value, NSRange characterRange);
 
 #if NET
+		/// <param name="attributeName">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <param name="characterRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Sealed]
 #endif
 		[NoiOS]
@@ -3302,12 +3318,18 @@ namespace UIKit {
 		[Export ("ensureAttributesAreFixedInRange:")]
 		void EnsureAttributesAreFixed (NSRange range);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSTextStorageWillProcessEditingNotification")]
 #if !MONOMAC || NET
 		[Internal]
 #endif
 		NSString WillProcessEditingNotification { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Notification, Field ("NSTextStorageDidProcessEditingNotification")]
 #if !MONOMAC || NET
 		[Internal]
@@ -4705,70 +4727,87 @@ namespace UIKit {
 		[Field (null)]
 		CustomString = -1,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerBox")]
 		Box,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerCheck")]
 		Check,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerCircle")]
 		Circle,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerDiamond")]
 		Diamond,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerDisc")]
 		Disc,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerHyphen")]
 		Hyphen,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerSquare")]
 		Square,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerLowercaseHexadecimal")]
 		LowercaseHexadecimal,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerUppercaseHexadecimal")]
 		UppercaseHexadecimal,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerOctal")]
 		Octal,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerLowercaseAlpha")]
 		LowercaseAlpha,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerUppercaseAlpha")]
 		UppercaseAlpha,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerLowercaseLatin")]
 		LowercaseLatin,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerUppercaseLatin")]
 		UppercaseLatin,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerLowercaseRoman")]
 		LowercaseRoman,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerUppercaseRoman")]
 		UppercaseRoman,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("NSTextListMarkerDecimal")]
 		Decimal,
@@ -4779,6 +4818,7 @@ namespace UIKit {
 	[Native]
 	public enum NSTextListOptions : ulong {
 		None = 0,
+		/// <summary>To be added.</summary>
 		PrependEnclosingMarker = 1,
 	}
 

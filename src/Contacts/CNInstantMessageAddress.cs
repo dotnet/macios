@@ -14,6 +14,8 @@ using Foundation;
 
 namespace Contacts {
 	// Strong typed Keys to enum
+	/// <summary>Enumeration of values used by all instant-message services.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CNInstantMessageAddressOption {
 		/// <summary>Associated with the <see cref="P:Contacts.CNInstantMessageAddress.Username" /> property..</summary>
 		Username,
@@ -22,6 +24,8 @@ namespace Contacts {
 	}
 
 	// Strong typed Keys to enum
+	/// <summary>Enumerates common providers of instant messaging.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CNInstantMessageServiceOption {
 		/// <summary>AOL Instant Messenger.</summary>
 		Aim,

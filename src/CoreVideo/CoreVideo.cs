@@ -36,6 +36,8 @@ using ObjCRuntime;
 namespace CoreVideo {
 
 	// CVPixelBuffer.h
+	/// <summary>A struct that describes planar components.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -50,6 +52,8 @@ namespace CoreVideo {
 	}
 
 	// CVPixelBuffer.h
+	/// <summary>A struct that holds the <see cref="T:CoreVideo.CVPlanarComponentInfo" />s of a planar buffer.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -61,6 +65,8 @@ namespace CoreVideo {
 	}
 
 	// CVPixelBuffer.h
+	/// <summary>A struct that defines the <see cref="T:CoreVideo.CVPlanarComponentInfo" />s of a YCbCr planar buffer.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -77,6 +83,8 @@ namespace CoreVideo {
 		public CVPlanarComponentInfo ComponentInfoCr;
 	}
 
+	/// <summary>Implements a YCbCr biplanar buffer description.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -90,6 +98,8 @@ namespace CoreVideo {
 		public CVPlanarComponentInfo ComponentInfoCbCr;
 	}
 
+	/// <summary>A struct that describes a display timestamp.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -124,6 +134,8 @@ namespace CoreVideo {
 		public UInt64 Reserved;
 	}
 
+	/// <summary>Encodes an SMPTE timestamp.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -159,6 +171,9 @@ namespace CoreVideo {
 	}
 
 #if !XAMCORE_5_0
+	/// <summary>Encapsulates the description of a custom extended-pixel fill algorithm.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <altmember cref="T:CoreVideo.CVFillExtendedPixelsCallBack" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -175,6 +190,12 @@ namespace CoreVideo {
 		public IntPtr UserInfo;
 	}
 
+	/// <param name="pixelBuffer">To be added.</param>
+	///     <param name="refCon">To be added.</param>
+	///     <summary>A delegate that defines the function used to pad buffers that use a custom pixel format.</summary>
+	///     <returns>To be added.</returns>
+	///     <remarks>To be added.</remarks>
+	///     <altmember cref="T:CoreVideo.CVFillExtendedPixelsCallBackData" />
 	public delegate bool CVFillExtendedPixelsCallBack (IntPtr pixelBuffer, IntPtr refCon);
 #endif // !XAMCORE_5_0
 

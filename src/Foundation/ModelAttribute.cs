@@ -26,6 +26,7 @@ using System;
 
 namespace Foundation {
 
+	/// <include file="../../docs/api/Foundation/ModelAttribute.xml" path="/Documentation/Docs[@DocId='T:Foundation.ModelAttribute']/*" />
 	[AttributeUsage (AttributeTargets.Class | AttributeTargets.Interface)]
 	public sealed class ModelAttribute : Attribute {
 

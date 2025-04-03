@@ -21,6 +21,7 @@ using NativeHandle = System.IntPtr;
 #nullable disable
 
 namespace UIKit {
+	/// <include file="../../docs/api/UIKit/UIAppearance.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIAppearance']/*" />
 	public partial class UIAppearance {
 		/// <param name="other">To be added.</param>
 		///         <summary>Whether this is equivalent to <paramref name="other" />.</summary>

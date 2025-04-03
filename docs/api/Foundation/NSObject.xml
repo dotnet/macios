@@ -325,22 +325,22 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
     </remarks>
   </Docs>
   <Docs DocId="M:Foundation.NSObject.FromObject(System.Object)">
-        <param name="obj">A ECMA CLI object.</param>
-        <summary>Boxes an object into an NSObject.</summary>
-        <returns>Boxed object or null if the type can not be boxed.</returns>
-        <remarks>
-          <para>
+    <param name="obj">A ECMA CLI object.</param>
+    <summary>Boxes an object into an NSObject.</summary>
+    <returns>Boxed object or null if the type can not be boxed.</returns>
+    <remarks>
+      <para>
 	    This method can box the following types from a core
 	    runtime type to an NSObject type by boxing the values.
 	  </para>
-          <para>
+      <para>
 	    bool, char, sbyte, byte, short, ushort, int, int32,
 	    long, long64, float and double are boxed as NSNumbers.
 	  </para>
-          <para>
+      <para>
 	    IntPtr are boxed as NSValue containing a pointer.
 	  </para>
-          <para>
+      <para>
 	    System.Drawing.SizeF, System.Drawing.RectangleF,
 	    System.Drawing.PointF,
 	    MonoTouch.CoreGraphics.CGAffineTransform,
@@ -348,61 +348,61 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 	    MonoTouch.CoreAnimation.CATransform3D are boxed as an
 	    NSValue containing the corresponding type.
 	  </para>
-          <para>
+      <para>
 	    NSObjects and subclasses are returned as-is.
 	  </para>
-          <para>
+      <para>
 	    The null value is returned as an NSNull.
 	  </para>
-        </remarks>
-      </Docs>
+    </remarks>
+  </Docs>
   <Docs DocId="M:Foundation.NSObject.Dispose(System.Boolean)">
-        <param name="disposing">
-          <para>If set to <see langword="true" />, the method is invoked directly and will dispose managed and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
-        </param>
-        <summary>Releases the resources used by the NSObject object.</summary>
-        <remarks>
-          <para>This Dispose method releases the resources used by the NSObject class.</para>
-          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
-          <para>Calling the Dispose method when the application is finished using the NSObject ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
-          <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at https://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
-        </remarks>
-      </Docs>
+    <param name="disposing">
+      <para>If set to <see langword="true" />, the method is invoked directly and will dispose managed and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
+    </param>
+    <summary>Releases the resources used by the NSObject object.</summary>
+    <remarks>
+      <para>This Dispose method releases the resources used by the NSObject class.</para>
+      <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
+      <para>Calling the Dispose method when the application is finished using the NSObject ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
+      <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at https://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
+    </remarks>
+  </Docs>
   <Docs DocId="M:Foundation.NSObject.AddObserver(System.String,Foundation.NSKeyValueObservingOptions,System.Action{Foundation.NSObservedChange})">
-        <param name="key">
+    <param name="key">
 
 
 Key-path to use to perform the value lookup. The keypath consists of a series of lowercase ASCII-strings with no spaces in them separated by dot characters.
   	   
   	   
   	   </param>
-        <param name="options">
+    <param name="options">
 
 
 Flags indicating which notifications you are interested in receiving (New, Old, Initial, Prior).
   	   
   	   
   	   </param>
-        <param name="observer">
+    <param name="observer">
 
 
 Method that will receive the observed changes.   It will receive a <see cref="T:Foundation.NSObservedChange" /> parameter with the information that was changed.
   	   
   	   
   	   </param>
-        <summary>Registers an object for being observed externally using an arbitrary method.</summary>
-        <returns>
+    <summary>Registers an object for being observed externally using an arbitrary method.</summary>
+    <returns>
 
 An IDisposable object.  Invoke the Dispose method on this object to remove the observer.
      
      </returns>
-        <remarks>
-          <para>When the object is registered for observation, changes to the object specified in the keyPath that match the flags requested in options will be sent to the specied method (a lambda or method that matches the signature).</para>
-          <para>This version provides the convenience of exposing the changes as part of the strongly typed <see cref="T:Foundation.NSObservedChange" /> object that is received by the target.</para>
-          <para>
-          </para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[void Setup ()
+    <remarks>
+      <para>When the object is registered for observation, changes to the object specified in the keyPath that match the flags requested in options will be sent to the specied method (a lambda or method that matches the signature).</para>
+      <para>This version provides the convenience of exposing the changes as part of the strongly typed <see cref="T:Foundation.NSObservedChange" /> object that is received by the target.</para>
+      <para>
+      </para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[void Setup ()
 {
     AddObserver (rateKey, NSKeyValueObservingOptions.Old | NSKeyValueObservingOptions.New, (observed) => {
         Console.WriteLine ("Change: {0}", observed.Change);
@@ -412,47 +412,47 @@ An IDisposable object.  Invoke the Dispose method on this object to remove the 
         Console.WriteLine ("IsPrior: {0}", observed.IsPrior);
     });
 }]]></code>
-          </example>
-          <para>
-          </para>
-        </remarks>
-      </Docs>
+      </example>
+      <para>
+      </para>
+    </remarks>
+  </Docs>
   <Docs DocId="M:Foundation.NSObject.AddObserver(Foundation.NSString,Foundation.NSKeyValueObservingOptions,System.Action{Foundation.NSObservedChange})">
-        <param name="key">
+    <param name="key">
 
 
 Key-path to use to perform the value lookup. The keypath consists of a series of lowercase ASCII-strings with no spaces in them separated by dot characters.
   	   
   	   
   	   </param>
-        <param name="options">
+    <param name="options">
 
 
 Flags indicating which notifications you are interested in receiving (New, Old, Initial, Prior).
   	   
   	   
   	   </param>
-        <param name="observer">
+    <param name="observer">
 
 
 Method that will receive the observed changes.   It will receive a <see cref="T:Foundation.NSObservedChange" /> parameter with the information that was changed.
   	   
   	   
   	   </param>
-        <summary>Registers an object for being observed externally using an arbitrary method.</summary>
-        <returns>
+    <summary>Registers an object for being observed externally using an arbitrary method.</summary>
+    <returns>
 
 
 An IDisposable object.  Invoke the Dispose method on this object to remove the observer.
      
      </returns>
-        <remarks>
-          <para>When the object is registered for observation, changes to the object specified in the keyPath that match the flags requested in options will be sent to the specied method (a lambda or method that matches the signature).</para>
-          <para>This version provides the convenience of exposing the changes as part of the strongly typed <see cref="T:Foundation.NSObservedChange" /> object that is received by the target.</para>
-          <para>
-          </para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[void Setup ()
+    <remarks>
+      <para>When the object is registered for observation, changes to the object specified in the keyPath that match the flags requested in options will be sent to the specied method (a lambda or method that matches the signature).</para>
+      <para>This version provides the convenience of exposing the changes as part of the strongly typed <see cref="T:Foundation.NSObservedChange" /> object that is received by the target.</para>
+      <para>
+      </para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[void Setup ()
 {
     AddObserver (rateKey, NSKeyValueObservingOptions.Old | NSKeyValueObservingOptions.New, (observed) => {
         Console.WriteLine ("Change: {0}", observed.Change);
@@ -462,7 +462,7 @@ An IDisposable object.  Invoke the Dispose method on this object to remove the 
         Console.WriteLine ("IsPrior: {0}", observed.IsPrior);
     });
 }]]></code>
-          </example>
-        </remarks>
-      </Docs>
+      </example>
+    </remarks>
+  </Docs>
 </Documentation>

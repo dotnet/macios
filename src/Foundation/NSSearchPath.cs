@@ -38,6 +38,9 @@ using System.Runtime.Versioning;
 
 namespace Foundation {
 #if NET
+	/// <summary>Search paths utilities.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

@@ -238,6 +238,10 @@ namespace Foundation {
 #endif
 
 #if __MACOS__
+		/// <param name="str">To be added.</param>
+		///         <param name="attributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSAttributedString (string str, NSStringAttributes? attributes)
 			: this (str, attributes?.Dictionary)
 		{

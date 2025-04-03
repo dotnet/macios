@@ -145,6 +145,9 @@ namespace Foundation {
 	}
 
 #if NET
+	/// <summary>Provides data for the  event.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

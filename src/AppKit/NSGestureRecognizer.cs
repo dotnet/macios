@@ -43,6 +43,8 @@ namespace AppKit {
 			MarkDirty ();
 		}
 
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[Register ("__NSGestureRecognizerToken")]
@@ -56,6 +58,8 @@ namespace AppKit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[Register ("__NSGestureRecognizerParameterlessToken")]
@@ -78,6 +82,8 @@ namespace AppKit {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[Register ("__NSGestureRecognizerParametrizedToken")]

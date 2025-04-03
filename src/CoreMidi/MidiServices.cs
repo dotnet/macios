@@ -58,6 +58,9 @@ using MidiEntityRef = System.Int32;
 namespace CoreMidi {
 
 	// anonymous enum - MIDIServices.h
+	/// <summary>Errors raised by the CoreMIDI stack.</summary>
+	///     <remarks>
+	///     </remarks>
 	public enum MidiError : int {
 		/// <summary>To be added.</summary>
 		Ok = 0,
@@ -195,6 +198,13 @@ namespace CoreMidi {
 #endif // !COREBUILD
 	}
 
+	/// <summary>Base class for the <see cref="T:CoreMidi.MidiClient" />, <see cref="T:CoreMidi.MidiPort" />, <see cref="T:CoreMidi.MidiEntity" />, <see cref="T:CoreMidi.MidiDevice" /> and <see cref="T:CoreMidi.MidiEndpoint" /> classes.</summary>
+	///     <remarks>
+	///
+	///       Provides the shared properties for the various Midi classes.
+	///
+	///     </remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/CoreMidiSample/">CoreMidiSample</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -482,6 +492,9 @@ namespace CoreMidi {
 #endif // !COREBUILD
 	}
 
+	/// <summary>Exception raised by Midi methods.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -501,6 +514,7 @@ namespace CoreMidi {
 
 	delegate void MidiNotifyProc (IntPtr message, IntPtr context);
 
+	/// <include file="../../docs/api/CoreMidi/MidiClient.xml" path="/Documentation/Docs[@DocId='T:CoreMidi.MidiClient']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -757,6 +771,26 @@ namespace CoreMidi {
 	// We do not pack this structure since we do not really actually marshal it,
 	// we manually encode it and decode it using Marshal.{Read|Write}
 	//
+	/// <summary>Encapsulates a series of MIDI events.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	When you consume a MidiPacket (because some data was received)
+	/// 	you would use the Bytes property to get access to the
+	/// 	underlying Midi data.  The actual number of valid bytes is
+	/// 	stored in the Length property and you should not read beyond
+	/// 	that point.
+	///
+	///       </para>
+	///       <para>
+	/// 	When you produce MidiPackets, you can either create MidiPacket
+	/// 	instances by providing both an IntPtr and a Length parameter
+	/// 	to your own buffers, or you can provide a byte array as well
+	/// 	as a range within the array that determines where the Midi
+	/// 	data is stored.
+	///
+	///       </para>
+	///     </remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/CoreMidiSample/">CoreMidiSample</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -973,6 +1007,14 @@ namespace CoreMidi {
 
 	delegate void MidiReadProc (IntPtr packetList, IntPtr context, IntPtr srcPtr);
 
+	/// <summary>Input and Output ports.</summary>
+	///     <remarks>
+	///
+	///       The input and output port objects are created by calling the
+	///       <see cref="M:CoreMidi.MidiClient.CreateInputPort(System.String)" /> or <see cref="M:CoreMidi.MidiClient.CreateOutputPort(System.String)" /> methods.
+	///
+	///     </remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/CoreMidiSample/">CoreMidiSample</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -1156,6 +1198,8 @@ namespace CoreMidi {
 #endif // !COREBUILD
 	}
 
+	/// <summary>A <see cref="T:CoreMidi.MidiObject" /> that represents a sub-component of a <see cref="T:CoreMidi.MidiDevice" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -1732,6 +1776,18 @@ namespace CoreMidi {
 #endif // !COREBUILD
 	} // MidiEntity
 
+	/// <summary>Represents a MIDI device (typically they represent a hardware device, but virtual devices also exist).   Devices can contain one or more entities.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	A single MIDI hardware device contains one or more entities.
+	/// 	For example a single box could contain two independent MIDI tone
+	/// 	generators, or a generator and a keyboard.
+	///       </para>
+	///       <para>
+	/// 	To obtain a MidiDevice, use the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:CoreMidi.Midi.GetDevice(int)&amp;scope=Xamarin" title="T:CoreMidi.Midi.GetDevice(int)">T:CoreMidi.Midi.GetDevice(int)</a></format> or the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:CoreMidi.Midi.GetExternalDevice(int)&amp;scope=Xamarin" title="T:CoreMidi.Midi.GetExternalDevice(int)">T:CoreMidi.Midi.GetExternalDevice(int)</a></format> methods.
+	///
+	///       </para>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -2413,6 +2469,8 @@ namespace CoreMidi {
 #endif // !COREBUILD
 	} // MidiDevice
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -2482,6 +2540,9 @@ namespace CoreMidi {
 #endif // !COREBUILD
 	}
 
+	/// <summary>Endpoints represent an individual source or destination on the MIDI stream.</summary>
+	///     <remarks>Physical endpoints are owned by <see cref="T:CoreMidi.MidiEntity" /> objects, virtual endpoints do not have an owning entity.</remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/CoreMidiSample/">CoreMidiSample</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -2937,6 +2998,9 @@ namespace CoreMidi {
 	//
 	// The notification EventArgs
 	//
+	/// <summary>Provides data for the <see cref="E:CoreMidi.MidiClient.ObjectRemoved" /> and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Midi%20Object%20Added%20Or%20Removed%20Event%20Args%20Object%20Removed&amp;scope=Xamarin" title="E:CoreMidi.ObjectAddedOrRemovedEventArgs.ObjectRemoved">E:CoreMidi.ObjectAddedOrRemovedEventArgs.ObjectRemoved</a></format> events.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -2967,6 +3031,9 @@ namespace CoreMidi {
 		public MidiObject? Child { get; private set; }
 	}
 
+	/// <summary>Provides data for the <see cref="E:CoreMidi.MidiClient.PropertyChanged" /> event.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -2995,6 +3062,9 @@ namespace CoreMidi {
 		public string? PropertyName { get; private set; }
 	}
 
+	/// <summary>Provides data for the <see cref="E:CoreMidi.MidiClient.IOError" /> event.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -3023,6 +3093,10 @@ namespace CoreMidi {
 		public int ErrorCode { get; set; }
 	}
 
+	/// <summary>Provides data for the <see cref="E:CoreMidi.MidiPort.MessageReceived" /> and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Midi%20Midi%20Packets%20Event%20Args%20Message%20Received&amp;scope=Xamarin" title="E:CoreMidi.MidiPacketsEventArgs.MessageReceived">E:CoreMidi.MidiPacketsEventArgs.MessageReceived</a></format> events.</summary>
+	///     <remarks>
+	///     </remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/CoreMidiSample/">CoreMidiSample</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

@@ -17,6 +17,8 @@ using Foundation;
 #nullable enable
 
 namespace AppKit {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class NSStringAttributes : DictionaryContainer {
 		static internal NSDictionary? ToDictionary (
 			NSFont? font,

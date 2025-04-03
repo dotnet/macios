@@ -23,6 +23,8 @@ using System.Net.Sockets;
 namespace SystemConfiguration {
 
 	// SCNetworkReachabilityFlags -> uint32_t -> SCNetworkReachability.h
+	/// <summary>The reachability status.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum NetworkReachabilityFlags {
 		/// <summary>The host is reachable using a transient connection (PPP for example).</summary>
@@ -56,6 +58,7 @@ namespace SystemConfiguration {
 	}
 
 	// http://developer.apple.com/library/ios/#documentation/SystemConfiguration/Reference/SCNetworkReachabilityRef/Reference/reference.html
+	/// <include file="../../docs/api/SystemConfiguration/NetworkReachability.xml" path="/Documentation/Docs[@DocId='T:SystemConfiguration.NetworkReachability']/*" />
 	public class NetworkReachability : NativeObject {
 		// netinet/in.h
 		[StructLayout (LayoutKind.Sequential)]
@@ -501,6 +504,9 @@ namespace SystemConfiguration {
 #endif
 			/* __nullable */ SCNetworkReachabilityContext* context);
 
+		/// <param name="flags">The current reachability flags for the NetworkReachability object.</param>
+		///     <summary>Signature for the SetCallback method on NetworkReachability.</summary>
+		///     <remarks>Methods with this signature are invoked in response to changes in the <see cref="T:SystemConfiguration.NetworkReachability" /> state.</remarks>
 		public delegate void Notification (NetworkReachabilityFlags flags);
 
 		Notification? notification;

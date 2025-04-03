@@ -41,6 +41,8 @@ namespace CoreText {
 
 	#region Typesetter Values
 
+	/// <summary>Options applicable to a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:CoreText:CTTypesetter&amp;scope=Xamarin" title="T:CoreText:CTTypesetter">T:CoreText:CTTypesetter</a></format> object.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -127,6 +129,8 @@ namespace CoreText {
 	}
 	#endregion
 
+	/// <summary>A class that performs line layout.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

@@ -28,6 +28,33 @@ using ObjCRuntime;
 
 namespace Foundation {
 
+	/// <summary>Attribute applied to interfaces that represent Objective-C protocols.</summary>
+	///     <remarks>
+	///       <para>
+	///         Xamarin.iOS will export any interfaces with this attribute as a protocol to Objective-C,
+	///         and any classes that implement these interfaces will be marked as implementing
+	///         the corresponding protocol when exported to Objective-C.
+	///       </para>
+	///       <example>
+	///         <code lang="csharp lang-csharp"><![CDATA[
+	///   // This will create an Objective-C protocol called 'IMyProtocol', with one required member ('requiredMethod')
+	///   [Protocol ("IMyProtocol")]
+	///   interface IMyProtocol
+	///   {
+	///     [Export ("requiredMethod")]
+	///     void RequiredMethod ();
+	///   }
+	///
+	///   // This will export the equivalent of "@interface MyClass : NSObject <IMyProtocol>" to Objective-C.
+	///   class MyClass : NSObject, IMyProtocol
+	///   {
+	///     void RequiredMethod ()
+	///     {
+	///     }
+	///   }
+	///         ]]></code>
+	///       </example>
+	///     </remarks>
 	[AttributeUsage (AttributeTargets.Class | AttributeTargets.Interface)]
 	public sealed class ProtocolAttribute : Attribute {
 
@@ -78,6 +105,8 @@ namespace Foundation {
 #endif
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[AttributeUsage (AttributeTargets.Interface, AllowMultiple = true)]
 	public sealed class ProtocolMemberAttribute : Attribute {
 		/// <summary>To be added.</summary>

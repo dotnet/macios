@@ -45,6 +45,8 @@ using AudioFileID = System.IntPtr;
 
 namespace AudioToolbox {
 
+	/// <summary>Known audio file types.   Used to specify the kind of audio file to create, or as a hint to the audio parser about the contents of the file.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioFileType {  // UInt32 AudioFileTypeID
 		/// <summary>Audio Interchange File Format.</summary>
 		AIFF = 0x41494646, // AIFF
@@ -99,6 +101,9 @@ namespace AudioToolbox {
 		LatmInLoas = 0x6c6f6173, // loas
 	}
 
+	/// <summary>The error codes returned by <see cref="T:AudioToolbox.AudioFile" />.</summary>
+	///     <remarks>
+	///     </remarks>
 	public enum AudioFileError {// Implictly cast to OSType in AudioFile.h
 		/// <summary>To be added.</summary>
 		Success = 0, // noErr
@@ -136,6 +141,8 @@ namespace AudioToolbox {
 		FilePosition = -40,
 	}
 
+	/// <summary>An enumeration whose values specify the <c>permissions</c> argument in the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Toolbox%20Audio%20File%20Open&amp;scope=Xamarin" title="M:AudioToolbox.AudioFile.Open*">M:AudioToolbox.AudioFile.Open*</a></format> method.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum AudioFilePermission {
 		/// <summary>To be added.</summary>
@@ -146,6 +153,8 @@ namespace AudioToolbox {
 		ReadWrite = 0x03,
 	}
 
+	/// <summary>An enumeration whose values are valid flags for the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Toolbox%20Audio%20File%20Create&amp;scope=Xamarin" title="M:AudioToolbox.AudioFile.Create*">M:AudioToolbox.AudioFile.Create*</a></format> method.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum AudioFileFlags { // UInt32 in AudioFileCreateWithURL()
 		/// <summary>To be added.</summary>
@@ -154,6 +163,8 @@ namespace AudioToolbox {
 		DontPageAlignAudioData = 2,
 	}
 
+	/// <summary>An enumeration whose values represent information about a <see cref="T:AudioToolbox.AudioFile" />. See the <see cref="M:AudioToolbox.AudioFileStream.GetProperty(AudioToolbox.AudioFileStreamProperty,System.Int32@,System.IntPtr)" /> and <see cref="M:AudioToolbox.AudioFile.SetProperty(AudioToolbox.AudioFileProperty,System.Int32,System.IntPtr)" /> methods.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioFileProperty { // typedef UInt32 AudioFilePropertyID
 		/// <summary>To be added.</summary>
 		FileFormat = 0x66666d74,
@@ -221,6 +232,8 @@ namespace AudioToolbox {
 		UseAudioTrack = 0x7561746b,
 	}
 
+	/// <summary>An enumeration whose values specify an audio-loop's direction.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioFileLoopDirection { // Unused?
 		/// <summary>To be added.</summary>
 		NoLooping = 0,
@@ -232,6 +245,8 @@ namespace AudioToolbox {
 		Backward = 3,
 	}
 
+	/// <summary>An enumeration whose values specify different types of chunks appropriate to audio files.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioFileChunkType : uint // CoreAudio.framework - CoreAudioTypes.h - "four char code IDs"
 	{
 		/// <summary>To be added.</summary>
@@ -295,6 +310,8 @@ namespace AudioToolbox {
 		IsEstimate = 1,
 	}
 
+	/// <summary>A struct that encapsulates a Society of Motion Picture and Television Engineers time.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -318,6 +335,8 @@ namespace AudioToolbox {
 		public uint SubFrameSampleOffset;
 	}
 
+	/// <summary>A class that represents a specific named position within an audio file.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -400,6 +419,8 @@ namespace AudioToolbox {
 		}
 	}
 
+	/// <summary>An enumeration whose values specify the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20File%20Mark%20Type&amp;scope=Xamarin" title="P:AudioFileMark.Type">P:AudioFileMark.Type</a></format> property.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioFileMarkerType : uint // UInt32 in AudioFileMarkerType - AudioFile.h
 	{
 		/// <summary>To be added.</summary>
@@ -451,6 +472,8 @@ namespace AudioToolbox {
 		CAFKeySignature = 0x6b736967,   // 'ksig'
 	}
 
+	/// <summary>A collection of <see cref="T:AudioToolbox.AudioFileMarker" />s.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -540,6 +563,8 @@ namespace AudioToolbox {
 		}
 	}
 
+	/// <summary>Represents the number of valid frames in a file and where they begin or end.</summary>
+	///     <remarks>Not all audio file data formats guarantee that their contents are 100% valid; some have priming or remainder frames. This class can be used with such data formats to identify the valid frames in a file.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -557,6 +582,8 @@ namespace AudioToolbox {
 		public int RemainderFrames;
 	}
 
+	/// <summary>Represents a named region within an audio file.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -645,6 +672,8 @@ namespace AudioToolbox {
 		}
 	}
 
+	/// <summary>A flagging enumeration whose values are used in the <see cref="P:AudioToolbox.AudioFileRegion.Flags" /> property.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum AudioFileRegionFlags : uint // UInt32 in AudioFileRegion
 	{
@@ -656,6 +685,8 @@ namespace AudioToolbox {
 		PlayBackward = 4,
 	}
 
+	/// <summary>A list of <see cref="T:AudioToolbox.AudioFileRegion" />s.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -750,6 +781,11 @@ namespace AudioToolbox {
 		}
 	}
 
+	/// <summary>Class used to create audio files or read audio files.</summary>
+	///     <remarks>
+	///       <para>Use the Create, Open and OpenRead factory methods to create instances of this class. </para>
+	///       <para>This class provides access to the encoder and decoder for compressed audio files.</para>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -2389,6 +2425,8 @@ namespace AudioToolbox {
 		}
 	}
 
+	/// <summary>Metadata-like information relating to a particular audio file.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -2603,6 +2641,18 @@ namespace AudioToolbox {
 	delegate long GetSizeProc (IntPtr clientData);
 	delegate int SetSizeProc (IntPtr clientData, long size);
 
+	/// <summary>A derived class from AudioFile that exposes virtual methods that can be hooked into (for reading and writing)</summary>
+	///     <remarks>
+	///       <para>
+	/// AudioSource is an abstract class that derives from AudioFile that allows developers to hook up into the reading and writing stages of the AudioFile.   This can be used for example to read from an in-memory audio file, or to write to an in-memory buffer.
+	/// </para>
+	///       <para>
+	/// When you write data into the AudioSource using any of the methods from AudioFile, instead of writing the encoded data into a file, the data is sent to the Read abstract method.
+	/// </para>
+	///       <para>
+	/// To use this class, you must create a class that derives from AudioSource and override the Read, Write methods and the Size property.
+	/// </para>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

@@ -13,6 +13,9 @@ using Foundation;
 using ObjCRuntime;
 
 namespace CoreFoundation {
+	/// <summary>Base type for some Core Foundation classes, such as <see cref="T:CoreFoundation.CFSocket" /> and <see cref="T:CoreFoundation.CFStream" />.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -76,6 +79,8 @@ namespace CoreFoundation {
 		}
 	}
 
+	/// <summary>MonoTouch-internal interface for now.</summary>
+	///     <remarks>This interface will be used to annotate classes that wrap CoreFoundation types.</remarks>
 	public interface ICFType : INativeObject {
 	}
 }

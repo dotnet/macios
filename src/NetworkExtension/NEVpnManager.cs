@@ -16,6 +16,9 @@ using ObjCRuntime;
 using Security;
 
 namespace NetworkExtension {
+	/// <summary>Manages and controls VPN configurations and connections.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkExtension/Reference/NEVPNManagerClassRef/index.html">Apple documentation for <c>NEVPNManager</c></related>
 	public partial class NEVpnManager {
 
 #if NET

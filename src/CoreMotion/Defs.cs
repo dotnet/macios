@@ -15,6 +15,8 @@ namespace CoreMotion {
 
 	// CMAccelerometer.h
 #if NET
+	/// <summary>A 3D vector containing acceleration values.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -54,6 +56,7 @@ namespace CoreMotion {
 
 	// CMAttitude.h
 #if NET
+	/// <include file="../../docs/api/CoreMotion/CMRotationMatrix.xml" path="/Documentation/Docs[@DocId='T:CoreMotion.CMRotationMatrix']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -91,6 +94,10 @@ namespace CoreMotion {
 
 	// CMAttitude.h
 #if NET
+	/// <summary>Represents a Quaternion, used as one of the possible CMAttitude representations.</summary>
+	///     <remarks>
+	///       <para>Quaternions can be used to specify a non-ambiguous rotation. They avoid the issue of gymbal lock and are simpler to compose.</para>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -135,6 +142,8 @@ namespace CoreMotion {
 
 	// CMGyro.h
 #if NET
+	/// <summary>3D rotation rate.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -173,6 +182,8 @@ namespace CoreMotion {
 	}
 
 	// untyped enum -> CMDeviceMotion.h
+	/// <summary>An enumeration whose values specify the quality of the magnetometer calibration.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CMMagneticFieldCalibrationAccuracy {
 		/// <summary>Magnetic calibration has not occurred.</summary>
 		Uncalibrated = -1,

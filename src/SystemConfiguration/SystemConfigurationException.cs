@@ -13,6 +13,8 @@ using System;
 
 namespace SystemConfiguration {
 
+	/// <summary>An exception relating to network reachability. The cause of the exception is specified by the <see cref="P:SystemConfiguration.SystemConfigurationException.StatusErrorCode" /> property.</summary>
+	///     <remarks>To be added.</remarks>
 	public class SystemConfigurationException : Exception {
 		/// <param name="statusErrorCode">To be added.</param>
 		///         <summary>Creates a new <see cref="T:SystemConfiguration.SystemConfigurationException" /> wrapping the <paramref name="statusErrorCode" />.</summary>

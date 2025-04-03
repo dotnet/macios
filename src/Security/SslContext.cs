@@ -27,6 +27,8 @@ using NativeHandle = System.IntPtr;
 
 namespace Security {
 #if NET
+	/// <summary>Class that encapsulates SSL session state..</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

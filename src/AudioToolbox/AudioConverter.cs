@@ -37,6 +37,8 @@ using Foundation;
 using ObjCRuntime;
 
 namespace AudioToolbox {
+	/// <summary>An enumeration whose values specify various types of errors relating to the <see cref="T:AudioToolbox.AudioConverter" />.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioConverterError // Impliclty cast to OSStatus in AudioConverter.h
 	{
 		/// <summary>To be added.</summary>
@@ -69,6 +71,9 @@ namespace AudioToolbox {
 		AudioFormatUnsupported = 0x21646174, // '!dat' From http://lists.apple.com/archives/coreaudio-api/2009/Feb/msg00082.html
 	}
 
+	/// <summary>Constants for the sample rate conversion algorithm.</summary>
+	///     <remarks>
+	///     </remarks>
 	public enum AudioConverterSampleRateConverterComplexity // typedef UInt32 AudioConverterPropertyID
 	{
 		/// <summary>Represents lowest quality sample rate.</summary>
@@ -79,6 +84,9 @@ namespace AudioToolbox {
 		Mastering = 0x62617473, // 'bats'
 	}
 
+	/// <summary>Constants for the rendering quality of the sample rate converter.</summary>
+	///     <remarks>
+	///     </remarks>
 	public enum AudioConverterQuality // typedef UInt32 AudioConverterPropertyID
 	{
 		/// <summary>Represents maximum quality.</summary>
@@ -93,6 +101,9 @@ namespace AudioToolbox {
 		Min = 0,
 	}
 
+	/// <summary>The prime method constants.</summary>
+	///     <remarks>
+	///     </remarks>
 	public enum AudioConverterPrimeMethod // typedef UInt32 AudioConverterPropertyID
 	{
 		/// <summary>Represents primes with both leading and trailing input frames.</summary>
@@ -113,6 +124,9 @@ namespace AudioToolbox {
 		Unbuffered = 1 << 16,
 	}
 
+	/// <summary>The priming information for an audio converter.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -129,9 +143,13 @@ namespace AudioToolbox {
 		public int TrailingFrames;
 	}
 
+	/// <include file="../../docs/api/AudioToolbox/AudioConverterComplexInputData.xml" path="/Documentation/Docs[@DocId='T:AudioToolbox.AudioConverterComplexInputData']/*" />
 	public delegate AudioConverterError AudioConverterComplexInputData (ref int numberDataPackets, AudioBuffers data,
 		ref AudioStreamPacketDescription []? dataPacketDescription);
 
+	/// <summary>The linear PCM audio formats converter.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

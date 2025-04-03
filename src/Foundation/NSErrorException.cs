@@ -28,6 +28,12 @@ using System.Runtime.Versioning;
 
 namespace Foundation {
 #if NET
+	/// <summary>Exception that wraps an Objective-C NSError.</summary>
+	///     <remarks>
+	///       The exception wraps an Objective-C NSError.  These are created
+	///       when using Async programming to set the Task's exception to the
+	///       resulting error, they are not thrown by any APIs in MonoTouch.
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

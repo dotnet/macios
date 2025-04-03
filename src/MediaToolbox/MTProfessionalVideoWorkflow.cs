@@ -10,6 +10,8 @@ using ObjCRuntime;
 namespace MediaToolbox {
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	static public class MTProfessionalVideoWorkflow {

@@ -23,6 +23,7 @@
 using System;
 
 namespace ObjCRuntime {
+	/// <include file="../docs/api/ObjCRuntime/MonoPInvokeCallbackAttribute.xml" path="/Documentation/Docs[@DocId='T:ObjCRuntime.MonoPInvokeCallbackAttribute']/*" />
 	[AttributeUsage (AttributeTargets.Method)]
 	public sealed class MonoPInvokeCallbackAttribute : Attribute {
 		/// <param name="t">The type of the delegate that will be calling us back.</param>

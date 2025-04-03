@@ -12,6 +12,9 @@ using ObjCRuntime;
 #nullable enable
 
 namespace CoreData {
+	/// <summary>Describes the value relationships between an in-memory object and its persistent representation.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSEntityDescription_Class/index.html">Apple documentation for <c>NSEntityDescription</c></related>
 	public partial class NSEntityDescription {
 #if NET
 		/// <summary>Gets or sets the uniqueness constraints for this entity.</summary>

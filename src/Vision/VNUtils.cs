@@ -25,6 +25,8 @@ using Vector2 = global::OpenTK.Vector2;
 namespace Vision {
 
 #if NET
+	/// <summary>A set of utility functions for working with images.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]

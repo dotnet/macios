@@ -29,6 +29,8 @@ namespace PassKit {
 	// Apple just removed this class from their headers in Xcode 15 (beta 1).
 	// It's also not found on their documentation site, so I'm assuming it's done on purpose.
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("maccatalyst")]
@@ -68,6 +70,8 @@ namespace PassKit {
 	// Apple just removed this class from their headers in Xcode 15 (beta 1).
 	// It's also not found on their documentation site, so I'm assuming it's done on purpose.
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("maccatalyst")]
@@ -159,6 +163,8 @@ namespace PassKit {
 	// Apple just removed this protocol from their headers in Xcode 15 (beta 1).
 	// It's also not found on their documentation site, so I'm assuming it's done on purpose.
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("maccatalyst")]
@@ -180,6 +186,8 @@ namespace PassKit {
 	// Apple just removed this protocol from their headers in Xcode 15 (beta 1).
 	// It's also not found on their documentation site, so I'm assuming it's done on purpose.
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("maccatalyst")]
@@ -225,6 +233,8 @@ namespace PassKit {
 		}
 	} /* class PKDisbursementAuthorizationControllerDelegate */
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class PKDisbursementRequest {
 
 		// Apple just removed this protocol from their headers in Xcode 15 (beta 1).

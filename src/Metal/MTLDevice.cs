@@ -27,6 +27,8 @@ namespace Metal {
 #endif
 
 #if NET
+	/// <summary>Represents a single GPU.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]

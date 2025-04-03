@@ -48,6 +48,9 @@ using NativeHandle = System.IntPtr;
 
 namespace Security {
 
+	/// <summary>Represents digital certificates on iOS/OSX.</summary>
+	///     <remarks>
+	///     </remarks>
 	public partial class SecCertificate : NativeObject {
 #if !NET
 		public SecCertificate (NativeHandle handle)
@@ -278,6 +281,9 @@ namespace Security {
 		extern static /* CFDictionaryRef */ IntPtr SecCertificateCopyValues (/* SecCertificateRef */ IntPtr certificate, /* CFArrayRef */ IntPtr keys, /* CFErrorRef _Nullable * */ IntPtr error);
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <returns>The return type is <see cref="T:Security.SecKey" /> on iOS and <see cref="T:Foundation.NSData" /> on MacOS.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -610,6 +616,8 @@ namespace Security {
 #endif // COREBUILD
 	}
 
+	/// <summary>Encapsulate a security identity. A security identity comprises a certificate and its private key.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class SecIdentity : NativeObject {
 #if !NET
 		public SecIdentity (NativeHandle handle)
@@ -777,6 +785,8 @@ namespace Security {
 #endif
 	}
 
+	/// <summary>Encapsulates a security key, one half of a public-private key-pair.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class SecKey : NativeObject {
 #if !NET
 		public SecKey (IntPtr handle)

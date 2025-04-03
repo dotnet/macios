@@ -15,6 +15,9 @@ using Foundation;
 using ObjCRuntime;
 
 namespace AddressBookUI {
+	/// <summary>Provides data for the <see cref="E:AddressBookUI.ABUnknownPersonViewController.PersonCreated" /> event.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]

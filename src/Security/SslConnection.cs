@@ -25,6 +25,8 @@ namespace Security {
 #endif
 
 #if NET
+	/// <summary>Class that represents an SSL connection.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -121,6 +123,8 @@ namespace Security {
 
 
 #if NET
+	/// <summary>Class that allows reading and writing to an SSL stream connection.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

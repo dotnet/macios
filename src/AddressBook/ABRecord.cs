@@ -44,6 +44,25 @@ using NativeHandle = System.IntPtr;
 
 namespace AddressBook {
 
+	/// <summary>
+	///       Base type for
+	///       <see cref="T:AddressBook.ABGroup" /> and
+	///       <see cref="T:AddressBook.ABPerson" />.
+	///     </summary>
+	///     <remarks>
+	///       <para>
+	///         Supported operations:
+	///       </para>
+	///       <list type="bullet">
+	///         <item>
+	///           <term>
+	///             Getting record information:
+	///             <see cref="P:AddressBook.ABRecord.Id" />,
+	///             <see cref="P:AddressBook.ABRecord.Type" />.
+	///           </term>
+	///         </item>
+	///       </list>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]

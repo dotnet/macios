@@ -159,6 +159,8 @@ namespace ImageIO {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class CGImageAuxiliaryDataInfo {
 
 		/// <summary>To be added.</summary>
@@ -175,6 +177,7 @@ namespace ImageIO {
 	}
 
 #if NET
+	/// <include file="../../docs/api/ImageIO/CGImageDestination.xml" path="/Documentation/Docs[@DocId='T:ImageIO.CGImageDestination']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

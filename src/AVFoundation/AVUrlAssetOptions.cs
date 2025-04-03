@@ -34,7 +34,9 @@ using ObjCRuntime;
 #nullable enable
 
 namespace AVFoundation {
-
+	/// <summary>Represents options used to construct <see cref="T:AVFoundation.AVUrlAsset" /> object</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

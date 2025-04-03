@@ -14,6 +14,8 @@ using ObjCRuntime;
 
 namespace IOSurface {
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum IOSurfaceLockOptions : uint {
 		/// <summary>To be added.</summary>
 		ReadOnly = 1,
@@ -21,6 +23,8 @@ namespace IOSurface {
 		AvoidSync = 2,
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum IOSurfacePurgeabilityState : uint {
 		/// <summary>To be added.</summary>
 		NonVolatile = 0,
@@ -33,6 +37,8 @@ namespace IOSurface {
 	}
 
 	// To be used with kIOSurfaceCacheMode or IOSurfacePropertyKeyCacheMode
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum IOSurfaceMemoryMap {
 		/// <summary>To be added.</summary>
 		DefaultCache = 0,

@@ -42,8 +42,14 @@ using Foundation;
 
 namespace CoreFoundation {
 
+	/// <param name="data">To be added.</param>
+	///     <param name="error">To be added.</param>
+	///     <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public delegate void DispatchIOHandler (DispatchData? data, int error);
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

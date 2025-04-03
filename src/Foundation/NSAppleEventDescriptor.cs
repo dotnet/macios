@@ -10,6 +10,8 @@ using System;
 using AppKit;
 
 namespace Foundation {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum NSAppleEventDescriptorType {
 		/// <summary>To be added.</summary>
 		Record,

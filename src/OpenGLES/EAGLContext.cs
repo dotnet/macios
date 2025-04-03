@@ -5,6 +5,8 @@ using ObjCRuntime;
 
 namespace OpenGLES {
 	public partial class EAGLContext {
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		public enum PresentationMode {
 			/// <summary>To be added.</summary>
 			AtTime = 0,

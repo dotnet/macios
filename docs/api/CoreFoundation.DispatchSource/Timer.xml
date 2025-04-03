@@ -1,0 +1,42 @@
+<Documentation>
+  <Docs DocId="T:CoreFoundation.DispatchSource.Timer">
+    <summary>Sources of this type periodically invoke the event handler on the target queue. </summary>
+    <remarks>
+      <para>The timer parameters are configured with the dispatch_source_set_timer() function. Once this function returns, any pending source data accumulated for the previous timer parameters has been cleared; the next fire of the timer will occur at start, and every interval nanoseconds thereafter until the timer source is canceled.</para>
+      <para>
+      </para>
+      <para>Any fire of the timer may be delayed by the system in order to improve power consumption and system performance. The upper limit to the allowable delay may be configured with the leeway argument, the lower limit is under the control of the system.</para>
+      <para>
+      </para>
+      <para>For the initial timer fire at start, the upper limit to the allowable delay is set to leeway nanoseconds. For the subsequent timer fires at start + N * interval, the upper limit is MIN(leeway, interval / 2 ).</para>
+      <para>
+      </para>
+      <para>The lower limit to the allowable delay may vary with process state such as visibility of application UI. If the specified timer source was created with a the constructor that sets "strict" to true, the system will make a best effort to strictly observe the provided leeway value even if it is smaller than the current lower limit. Note that a minimal amount of delay is to be expected even if this flag is specified.</para>
+      <para>
+      </para>
+      <example>
+        <code lang="c#"><![CDATA[
+var dispatchSource = new DispatchSource.Timer (strict: true, queue: DispatchQueue.MainQueue);
+
+long delay = 2000000000;
+long leeway = 5000000000;
+dispatchSource.SetTimer (DispatchTime.Now, delay, leeway);
+
+dispatchSource.SetRegistrationHandler (() => {
+    Console.WriteLine ("Timer registered");
+});
+
+dispatchSource.SetEventHandler (() => {
+Console.WriteLine ("Timer tick");
+});
+
+dispatchSource.SetCancelHandler (() => {
+Console.WriteLine ("Timer stopped");
+});
+
+dispatchSource.Resume ();
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+</Documentation>

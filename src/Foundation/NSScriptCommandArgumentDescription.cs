@@ -12,6 +12,8 @@ namespace Foundation {
 
 	// The kyes are not found in any of the public headers from apple. That is the reason
 	// to use this technique.
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public static class NSScriptCommandArgumentDescriptionKeys {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -36,6 +38,8 @@ namespace Foundation {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class NSScriptCommandArgumentDescription {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

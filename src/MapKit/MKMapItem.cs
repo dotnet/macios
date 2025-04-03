@@ -18,6 +18,9 @@ namespace MapKit {
 
 	// it's similar to MKDirectionsTransportType values but it's something only used on the managed side
 	// to replace NSString fields
+	/// <summary>An enumeration of travel methods for which directions can be provided.</summary>
+	///     <remarks>
+	///     </remarks>
 	public enum MKDirectionsMode {
 		/// <summary>Driving directions.</summary>
 		Driving,
@@ -38,6 +41,9 @@ namespace MapKit {
 	}
 
 #if NET
+	/// <summary>Encapsulates properties to be used with <see cref="M:MapKit.MKMapItem.OpenInMaps(MapKit.MKLaunchOptions)" />.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

@@ -1,17 +1,17 @@
 <Documentation>
   <Docs DocId="M:CoreFoundation.DispatchQueue.#ctor(System.String,System.Boolean)">
-        <param name="label">Name for the dispatch queue, as a convention, use reverse-style DNS names for your queue name.</param>
-        <param name="concurrent">If set, the dispatch queue can invoke the submitted blocks concurrently.</param>
-        <summary>Creates a named dispatch queue that can optionally
+    <param name="label">Name for the dispatch queue, as a convention, use reverse-style DNS names for your queue name.</param>
+    <param name="concurrent">If set, the dispatch queue can invoke the submitted blocks concurrently.</param>
+    <summary>Creates a named dispatch queue that can optionally
 	execute any submitted code concurrently.</summary>
-        <remarks>
-          <para>
+    <remarks>
+      <para>
 	    If the <paramref name="concurrent" /> is set to <see langword="false" /> this is equivalent to calling the
 	    constructor tht takes a single string argument.   That is,
 	    it will execute all submitted code blocks serially, one
 	    after another.
 	  </para>
-          <para>
+      <para>
 	    If the value is <see langword="true" /> then the queue can
 	    execute the code blocks concurrently.   In this mode, you
 	    can use the <see cref="M:CoreFoundation.DispatchQueue.DispatchBarrierAsync(System.Action)" />
@@ -22,6 +22,79 @@
 	    submitted are queued, and will be scheduled to run
 	    (possibly concurrently) after the barrier method completes.
 	  </para>
-        </remarks>
-      </Docs>
+    </remarks>
+  </Docs>
+  <Docs DocId="T:CoreFoundation.DispatchQueue">
+    <summary>Provides a task queue that can perform tasks either synchronously or asynchronously.</summary>
+    <remarks>
+      <para>
+	Queues are the fundamental mechanism for scheduling blocks for
+	execution within the Apple Grand Central Dispatch framework.
+      </para>
+      <para> All blocks submitted to dispatch queues are dequeued in
+	FIFO order.  By default, queues created with the default
+	constructor wait for the previously dequeued block to complete
+	before dequeuing the next block. This FIFO completion behavior
+	is sometimes simply described as a "serial queue."  Queues are
+	not bound to any specific thread of execution and blocks
+	submitted to independent queues may execute concurrently.
+	Queues, like all dispatch objects, are reference counted and
+	newly created queues have a reference count of one.
+      </para>
+      <para>
+	Concurrent dispatch queues are created by passing <see langword="true" /> as the value for the concurrent parameter on
+	the constructor.  Concurrent queues may invoke blocks
+	concurrently (similarly to the global concurrent queues, but
+	potentially with more overhead), and support barrier blocks
+	submitted with the dispatch barrier API, which e.g. enables
+	the implementation of efficient reader-writer schemes.
+
+      </para>
+      <para>
+	The optional label argument is used to describe the purpose of
+	the queue and is useful during debugging and performance
+	analysis. By convention, clients should pass a reverse DNS
+	style label.  If a label is provided, it is copied. If a label
+	is not provided, then Label property returns an empty C
+	string.  For example:
+
+      </para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+	  var my_queue = new DispatchQueue ("com.example.subsystem.taskXYZ");
+	]]></code>
+      </example>
+      <para>
+	Queues may be temporarily suspended and resumed with the
+	functions <see cref="M:CoreFoundation.DispatchQueue.Suspend" />
+	and <see cref="M:CoreFoundation.DispatchQueue.Resume" />
+	respectively. Suspension is checked prior to block execution
+	and is not preemptive.
+
+      </para>
+      <para>
+	Dispatch queue is <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Threading%20Synchronization%20Context&amp;scope=Xamarin" title="T:System.Threading.SynchronizationContext">T:System.Threading.SynchronizationContext</a></format> aware and unless there is
+	custom synchronization context set for the thread it will install its own synchronization context to
+	ensure any context dispatch ends up on same dispatch queue.
+      </para>
+      <format type="text/html">
+        <h2>Dispatch Barrier API</h2>
+      </format>
+      <para>
+	The dispatch barrier API is a mechanism for submitting barrier blocks to a
+	dispatch queue, analogous to the <see cref="M:CoreFoundation.DispatchQueue.DispatchAsync(System.Action)" />/<see cref="M:CoreFoundation.DispatchQueue.DispatchSync(System.Action)" />
+	methods.
+	It enables the implementation of efficient reader/writer schemes.
+	Barrier blocks only behave specially when submitted to
+	concurrent queues ; on such a queue, a barrier block
+	will not run until all blocks submitted to the queue earlier have completed,
+	and any blocks submitted to the queue after a barrier block will not run
+	until the barrier block has completed.
+	When submitted to a a global queue or to a non-concurrent queue, barrier blocks behave identically to
+	blocks submitted with the <see cref="M:CoreFoundation.DispatchQueue.DispatchAsync(System.Action)" />/<see cref="M:CoreFoundation.DispatchQueue.DispatchSync(System.Action)" /> methods.
+      </para>
+    </remarks>
+    <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/AVCaptureFrames/">avcaptureframes</related>
+    <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/CoreTelephonyDemo/">CoreTelephonyDemo</related>
+  </Docs>
 </Documentation>

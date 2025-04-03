@@ -11,4 +11,43 @@
       <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at https://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
     </remarks>
   </Docs>
+  <Docs DocId="T:AudioUnit.AUGraph">
+    <summary>An audio processing graph.</summary>
+    <remarks>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+void createAUGraph ()
+{
+        AUGraphError result = 0;
+        int samplerNode, ioNode;
+
+        var sampler = new AudioComponentDescription () {
+                ComponentManufacturer = AudioComponentManufacturerType.Apple,
+		ComponentType = AudioComponentType.MusicDevice,
+		ComponentSubType = (int)AudioTypeMusicDevice.Sampler;
+        };
+
+        processingGraph = new AUGraph ();
+        samplerNode = processingGraph.AddNode (sampler);
+
+	var output = new AudioComponentDescription () {
+                ComponentManufacturer = AudioComponentManufacturerType.Apple,
+		ComponentType = AudioComponentType.Output;
+		ComponentSubType = (int)AudioTypeOutput.Remote;
+	};
+        ioNode = processingGraph.AddNode (output);
+
+        processingGraph.Open ();
+
+        result = processingGraph.ConnnectNodeInput (samplerNode, 0, ioNode, 0);
+        if (result != AUGraphError.OK)
+                throw new Exception ("Unable to open the audio processing graph.  Error code: " + result);
+        samplerUnit = processingGraph.GetNodeInfo (samplerNode);
+        ioUnit = processingGraph.GetNodeInfo (ioNode);
+}
+
+	]]></code>
+      </example>
+    </remarks>
+  </Docs>
 </Documentation>

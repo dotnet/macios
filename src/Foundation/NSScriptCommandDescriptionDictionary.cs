@@ -7,6 +7,8 @@ namespace Foundation {
 
 #if MONOMAC || __MACCATALYST__
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public static class NSScriptCommandDescriptionDictionaryKeys {
 		private static NSString cmdClass = new NSString ("CommandClass");
 		/// <summary>To be added.</summary>
@@ -55,6 +57,8 @@ namespace Foundation {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class NSScriptCommandDescriptionDictionary {
 
 		/// <param name="arg">To be added.</param>

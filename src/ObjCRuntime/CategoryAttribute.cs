@@ -12,6 +12,7 @@ using System;
 #nullable disable
 
 namespace ObjCRuntime {
+	/// <include file="../../docs/api/ObjCRuntime/CategoryAttribute.xml" path="/Documentation/Docs[@DocId='T:ObjCRuntime.CategoryAttribute']/*" />
 	[AttributeUsage (AttributeTargets.Class)]
 	public class CategoryAttribute : Attribute {
 		/// <param name="type">The Objective-C type to extend.   This must be a subclass of NSObject (or NSObject itself).</param>

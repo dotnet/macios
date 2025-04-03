@@ -66,8 +66,13 @@ namespace ObjCRuntime {
 #endif
 	}
 
+	/// <include file="../../docs/api/ObjCRuntime/Dlfcn.xml" path="/Documentation/Docs[@DocId='T:ObjCRuntime.Dlfcn']/*" />
 	public static class Dlfcn {
 #if !COREBUILD
+		/// <summary>Dynamic loader resolution flags.</summary>
+		///     <remarks>
+		///       <para>These flags are used to control the way the dynamic linker looks up symbols at runtime.</para>
+		///     </remarks>
 		public enum RTLD {
 			/// <summary>The dynamic linker searches for the symbol in the dylibs the calling image linked against when built. It is usually used when you intentionally have multiply defined symbol across images and want to find the "next" definition. </summary>
 			Next = -1,

@@ -42,6 +42,8 @@ using NativeHandle = System.IntPtr;
 
 namespace Security {
 
+	/// <summary>Encapsulates a security policy. A policy comprises a set of rules that specify how to evaluate a certificate for a certain level of trust.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class SecPolicy : NativeObject {
 #if !NET
 		public SecPolicy (NativeHandle handle)

@@ -12,6 +12,8 @@ using AudioToolbox;
 namespace AVFoundation {
 	public partial class AVCaptureVideoPreviewLayer {
 
+		/// <summary>Enumerates values that specify the presence or absence of a capture session connection.</summary>
+		///     <remarks>To be added.</remarks>
 		public enum InitMode {
 			/// <summary>Indicates a connection.</summary>
 			WithConnection,

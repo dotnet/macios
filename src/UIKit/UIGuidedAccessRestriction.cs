@@ -19,6 +19,9 @@ using UIKit;
 
 namespace UIKit {
 
+	/// <summary>A static class that provides a method to determine the state of a Guided Access restriction.</summary>
+	///     <remarks>
+	///     </remarks>
 	public static partial class UIGuidedAccessRestriction {
 #if !COREBUILD
 #if NET
@@ -63,6 +66,10 @@ namespace UIKit {
 		// [SupportedOSPlatform ("maccatalyst")]
 		// [SupportedOSPlatform ("tvos")]
 #endif
+		/// <param name="success">To be added.</param>
+		///     <param name="error">To be added.</param>
+		///     <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		public delegate void UIGuidedAccessConfigureAccessibilityFeaturesCompletionHandler (bool success, NSError error);
 
 #if !NET

@@ -11,6 +11,9 @@ using ObjCRuntime;
 
 namespace WebKit {
 
+	/// <typeparam name="T">To be added.</typeparam>
+	///     <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public interface IIndexedContainer<T> {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

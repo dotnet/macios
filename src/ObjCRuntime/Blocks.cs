@@ -65,6 +65,7 @@ namespace ObjCRuntime {
 		// followed by variable-length string (the signature)
 	}
 
+	/// <include file="../../docs/api/ObjCRuntime/BlockLiteral.xml" path="/Documentation/Docs[@DocId='T:ObjCRuntime.BlockLiteral']/*" />
 	[StructLayout (LayoutKind.Sequential)]
 #if XAMCORE_5_0
 	// Let's try to make this a ref struct in XAMCORE_5_0, that will mean blocks can't be boxed (which is good, because it would most likely result in broken code).
@@ -728,6 +729,11 @@ namespace ObjCRuntime {
 	}
 #endif
 
+	/// <summary>Flags for the BlockLiteral enum.</summary>
+	///     <remarks>
+	///       <para>Xamarin.iOS as of version 12.0 only uses the flags BlockFlags.BLOCK_HAS_COPY_DISPOSE | BlockFlags.BLOCK_HAS_SIGNATURE for its blocks.</para>
+	///       <para>See <format type="text/html"><a href="https://clang.llvm.org/docs/Block-ABI-Apple.html">Block ABI</a></format> for more detailed information about the Block ABI.</para>
+	///     </remarks>
 	[Flags]
 	internal enum BlockFlags : int {
 		/// <summary>Objective-C Block ABI Flags.</summary>

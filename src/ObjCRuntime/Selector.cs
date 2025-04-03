@@ -34,6 +34,9 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace ObjCRuntime {
+	/// <summary>Represents an Objective-C selector in managed code.</summary>
+	///     <remarks>
+	///     </remarks>
 	public partial class Selector : IEquatable<Selector>, INativeObject {
 		internal const string Alloc = "alloc";
 		internal const string Class = "class";

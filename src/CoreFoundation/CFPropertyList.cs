@@ -16,6 +16,8 @@ using ObjCRuntime;
 using Foundation;
 
 namespace CoreFoundation {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -146,6 +148,8 @@ namespace CoreFoundation {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum CFPropertyListFormat : long {
 		/// <summary>To be added.</summary>
@@ -156,6 +160,8 @@ namespace CoreFoundation {
 		BinaryFormat1 = 200,
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
 	public enum CFPropertyListMutabilityOptions : ulong {

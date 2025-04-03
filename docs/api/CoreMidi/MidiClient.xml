@@ -11,4 +11,62 @@
       <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at https://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
     </remarks>
   </Docs>
+  <Docs DocId="T:CoreMidi.MidiClient">
+    <summary>Main entry point to use MIDI in MacOS X and iOS.</summary>
+    <remarks>
+      <para>
+	The MidiClient class is your gateway to communicate with the
+	MIDI subsystem on MacOS and iOS.  
+      </para>
+      <para>
+	You typically will create an instance of MidiClient with a
+	name that identifies this particular client, connect to the
+	various events that are exposed to this class and create both
+	input and output midi ports using the <see cref="M:CoreMidi.MidiClient.CreateInputPort(System.String)" /><see cref="M:CoreMidi.MidiClient.CreateOutputPort(System.String)" />
+	methods.
+
+      </para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+client = new MidiClient ("CoreMidiSample MIDI CLient");
+client.ObjectAdded += delegate(object sender, ObjectAddedOrRemovedEventArgs e) {
+	Console.WriteLine ("Object {0} added to {1}", e.Child, e.Parent);
+};
+client.ObjectRemoved += delegate(object sender, ObjectAddedOrRemovedEventArgs e) {
+	Console.WriteLine ("Object {0} removed to {1}", e.Child, e.Parent);
+};
+client.PropertyChanged += delegate(object sender, ObjectPropertyChangedEventArgs e) {
+	Console.WriteLine ("Property {0} changed on {1}", e.PropertyName, e.MidiObject);
+};
+client.ThruConnectionsChanged += delegate {
+	Console.WriteLine ("Thru connections changed");
+};
+client.SerialPortOwnerChanged += delegate {
+	Console.WriteLine ("Serial port changed");
+};
+
+//
+// Create your input and output ports
+//
+outputPort = client.CreateOutputPort ("CoreMidiSample Output Port");
+inputPort = client.CreateInputPort ("CoreMidiSample Input Port");
+
+// Print out packets when we receive them
+inputPort.MessageReceived += delegate(object sender, MidiPacketsEventArgs e) {
+    Console.WriteLine ("Got {0} packets", e.Packets.Length);
+};
+	]]></code>
+      </example>
+      <para>
+	The following events will be raised on your MidiClient instance: 
+	<see cref="E:CoreMidi.MidiClient.IOError" />, 
+	<see cref="E:CoreMidi.MidiClient.ObjectAdded" />,
+	<see cref="E:CoreMidi.MidiClient.ObjectRemoved" />, 
+	<see cref="E:CoreMidi.MidiClient.PropertyChanged" />, 
+	<see cref="E:CoreMidi.MidiClient.SerialPortOwnerChanged" />,
+	<see cref="E:CoreMidi.MidiClient.SetupChanged" /> and 
+	<see cref="E:CoreMidi.MidiClient.ThruConnectionsChanged" /></para>
+    </remarks>
+    <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/CoreMidiSample/">CoreMidiSample</related>
+  </Docs>
 </Documentation>

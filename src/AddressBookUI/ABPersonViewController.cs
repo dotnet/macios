@@ -15,6 +15,9 @@ using Foundation;
 using ObjCRuntime;
 
 namespace AddressBookUI {
+	/// <summary>Provides data for the <see cref="E:AddressBookUI.ABUnknownPersonViewController.PerformDefaultAction" /> and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Address%20Book%20UIABPerson%20View%20Perform%20Default%20Action%20Event%20Args%20Perform%20Default%20Action&amp;scope=Xamarin" title="E:AddressBookUI.ABPersonViewPerformDefaultActionEventArgs.PerformDefaultAction">E:AddressBookUI.ABPersonViewPerformDefaultActionEventArgs.PerformDefaultAction</a></format> events.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]

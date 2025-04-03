@@ -17,6 +17,8 @@ using ObjCRuntime;
 namespace SystemConfiguration {
 
 	// https://developer.apple.com/library/mac/#documentation/SystemConfiguration/Reference/SystemConfiguration_Utilities/Reference/reference.html
+	/// <summary>Provides access to a text description associated with a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:SystemConfiguation.StatusCode&amp;scope=Xamarin" title="T:SystemConfiguation.StatusCode">T:SystemConfiguation.StatusCode</a></format>.</summary>
+	///     <remarks>To be added.</remarks>
 	public static class StatusCodeError {
 		[DllImport (Constants.SystemConfigurationLibrary)]
 		extern internal static StatusCode /* int */ SCError ();

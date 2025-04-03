@@ -37,6 +37,19 @@ using ObjCRuntime;
 using Foundation;
 
 namespace CoreGraphics {
+	/// <summary>A hardware accelerated context.</summary>
+	///     <remarks>
+	///       <para>CGLayers can be hardware accelerated and developers are
+	///       encouraged to use this instead of CGBitmaps for off-screen
+	///       rendering operations.</para>
+	///       <para>
+	/// 	To create CGLayers, use the <see cref="M:CoreGraphics.CGLayer.Create(CoreGraphics.CGContext,CoreGraphics.CGSize)" /> method.
+	///       </para>
+	///       <para>
+	/// 	Once you create a CGLayer, you extract the CGContext instance by accessing the Context property.
+	///       </para>
+	///     </remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/Drawing/">Example_Drawing</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

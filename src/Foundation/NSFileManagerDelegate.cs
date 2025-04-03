@@ -11,6 +11,9 @@ using System;
 using Foundation;
 
 namespace Foundation {
+	/// <summary>A delegate that, when overridden, allows the application developer fine-grained control over events relating to common file discovery and manipulation actions.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/NSFileManagerDelegate_Protocol/index.html">Apple documentation for <c>NSFileManagerDelegate</c></related>
 	public partial class NSFileManagerDelegate {
 		/// <param name="fileManager">To be added.</param>
 		///         <param name="srcPath">To be added.</param>

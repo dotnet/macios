@@ -38,6 +38,8 @@ using OpenGLES;
 #nullable enable
 
 namespace CoreImage {
+	/// <summary>Use to configure the CIContext rendering pipeline.</summary>
+	///     <remarks>You would use an instance of this class to configure the CIContext rendering operations.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

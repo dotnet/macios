@@ -21,6 +21,8 @@ using System.Runtime.Versioning;
 
 namespace PrintCore {
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum PMStatusCode {
 		/// <summary>To be added.</summary>
 		Ok = 0,
@@ -250,6 +252,8 @@ namespace PrintCore {
 		ReadGotZeroData = -9788,
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum PMPrinterState : System.UInt16 {
 		/// <summary>To be added.</summary>
 		Idle = 3,
@@ -259,6 +263,8 @@ namespace PrintCore {
 		Stopped = 5,
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum PMDuplexMode : System.UInt32 {
 		/// <summary>To be added.</summary>
 		None = 1,
@@ -270,6 +276,8 @@ namespace PrintCore {
 		SimplexTumble = 4,
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum PMOrientation : System.UInt16 {
 		/// <summary>To be added.</summary>
 		Portrait = 1,
@@ -282,6 +290,8 @@ namespace PrintCore {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	[StructLayout (LayoutKind.Sequential)]
@@ -317,6 +327,8 @@ namespace PrintCore {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	[StructLayout (LayoutKind.Sequential)]
@@ -367,6 +379,8 @@ namespace PrintCore {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	[StructLayout (LayoutKind.Sequential)]

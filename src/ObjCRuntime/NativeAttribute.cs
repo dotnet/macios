@@ -14,6 +14,9 @@ using System.Diagnostics;
 #nullable enable
 
 namespace ObjCRuntime {
+	/// <summary>This attributes tells the Xamarin.iOS runtime that the native enum this managed enum binds is using a native size for the platform as the size for each enum value (i.e. a 32-bit value on 32-bit architectures, and a 64-bit value on 64-bit architectures).</summary>
+	///     <remarks>
+	///     </remarks>
 	[AttributeUsage (AttributeTargets.Enum)]
 	public sealed class NativeAttribute : Attribute {
 		/// <summary>Initializes a new Native attribute.</summary>

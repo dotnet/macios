@@ -18,6 +18,8 @@ using ObjCRuntime;
 namespace MediaPlayer {
 
 	// MPVolumeSettings.h
+	/// <summary>Encapsulates functions relating to the display or hiding of volume controls.</summary>
+	///     <remarks>To be added.</remarks>
 	public static class MPVolumeSettings {
 #if NET
 		/// <summary>To be added.</summary>

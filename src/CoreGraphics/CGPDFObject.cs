@@ -39,6 +39,8 @@ using CoreFoundation;
 using System.Runtime.Versioning;
 
 namespace CoreGraphics {
+	/// <summary>Class that represents various objects in a PDF document.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

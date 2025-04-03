@@ -978,6 +978,8 @@ namespace PdfKit {
 		[Export ("hasAppearanceStream")]
 		bool HasAppearanceStream { get; }
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[NoMacCatalyst]
@@ -985,6 +987,9 @@ namespace PdfKit {
 		[Export ("removeAllAppearanceStreams")]
 		void RemoveAllAppearanceStreams ();
 
+		/// <param name="box">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[NoMacCatalyst]
@@ -1649,6 +1654,9 @@ namespace PdfKit {
 		[Export ("URL")]
 		NSUrl Url { get; set; }
 
+		/// <param name="highlighted">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setHighlighted:")]
 		void SetHighlighted (bool highlighted);
 	}
@@ -2327,6 +2335,12 @@ namespace PdfKit {
 		[return: NullAllowed]
 		PdfSelection GetSelection (PdfPage startPage, nint startCharIndex, PdfPage endPage, nint endCharIndex);
 
+		/// <param name="printInfo">To be added.</param>
+		///         <param name="scaleMode">To be added.</param>
+		///         <param name="doRotate">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -2631,6 +2645,9 @@ namespace PdfKit {
 		[Export ("transformForBox:")]
 		CGAffineTransform GetTransform (PdfDisplayBox box);
 
+		/// <param name="box">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[NoMacCatalyst]
@@ -2663,6 +2680,9 @@ namespace PdfKit {
 		[Export ("thumbnailOfSize:forBox:")]
 		NSImage GetThumbnail (CGSize size, PdfDisplayBox box);
 
+		/// <param name="box">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[NoMacCatalyst]
@@ -3163,6 +3183,9 @@ namespace PdfKit {
 		[Export ("greekingThreshold")]
 		nfloat GreekingThreshold { get; set; }
 
+		/// <param name="sender">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[NoMacCatalyst]
@@ -3301,6 +3324,9 @@ namespace PdfKit {
 		[Export ("areaOfInterestForPoint:")]
 		PdfAreaOfInterest GetAreaOfInterest (CGPoint point);
 
+		/// <param name="area">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -3354,6 +3380,9 @@ namespace PdfKit {
 		[NullAllowed]
 		PdfSelection [] HighlightedSelections { get; set; }
 
+		/// <param name="sender">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[NoMacCatalyst]
@@ -3361,6 +3390,9 @@ namespace PdfKit {
 		[Export ("takePasswordFrom:")]
 		void TakePasswordFrom (NSObject sender);
 
+		/// <param name="page">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[NoMacCatalyst]
@@ -3384,6 +3416,9 @@ namespace PdfKit {
 		[Export ("drawPagePost:toContext:")]
 		void DrawPagePost (PdfPage page, CGContext context);
 
+		/// <param name="page">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[NoMacCatalyst]
@@ -3400,12 +3435,21 @@ namespace PdfKit {
 		[Export ("copy:")]
 		void Copy ([NullAllowed] NSObject sender);
 
+		/// <param name="printInfo">To be added.</param>
+		///         <param name="doRotate">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("printWithInfo:autoRotate:")]
 		void Print (NSPrintInfo printInfo, bool doRotate);
 
+		/// <param name="printInfo">To be added.</param>
+		///         <param name="doRotate">To be added.</param>
+		///         <param name="scaleMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -3642,6 +3686,10 @@ namespace PdfKit {
 		// from the docs: 'By default, this method uses the string, if any, associated with the
 		// 'Title' key in the view's PDFDocument attribute dictionary. If there is no such string,
 		// this method uses the last path component if the document is URL-based.
+		/// <param name="sender">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
@@ -3660,6 +3708,9 @@ namespace PdfKit {
 		[Export ("PDFViewPerformGoToPage:"), EventArgs ("PdfView")]
 		void PerformGoToPage (PdfView sender);
 
+		/// <param name="sender">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]

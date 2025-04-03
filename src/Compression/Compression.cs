@@ -19,6 +19,26 @@ using ObjCRuntime;
 
 namespace Compression {
 #if NET
+	/// <summary>Provides methods and properties for compressing and decompressing streams by using the deflate algorithm.</summary>
+	///     <remarks>
+	///       <para>
+	///       The CompressionStream uses the Compression Framework to compress and decompress the data using the Streams API.
+	///       </para>
+	///       <example>
+	///         <code lang="c#"><![CDATA[
+	/// // sample zlib data 
+	/// static byte [] compressed_data = { 0xf3, 0x48, 0xcd, 0xc9, 0xc9, 0xe7, 0x02, 0x00 };
+	///
+	/// using (var backing = new MemoryStream (compressed_data)) // compress data to read
+	/// using (var decompressing = new CompressionStream (backing, CompressionMode.Decompress, CompressionAlgorithm.Zlib)) // create decompressin stream with the correct algorithm
+	/// using (var reader = new StreamReader (decompressing))
+	/// {
+	///     // perform the required stream operations
+	///     Console.WriteLine (reader.ReadLine ());
+	/// }
+	/// }]]></code>
+	///       </example>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]

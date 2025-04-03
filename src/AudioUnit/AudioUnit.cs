@@ -49,6 +49,8 @@ using NativeHandle = System.IntPtr;
 namespace AudioUnit {
 #if !COREBUILD
 #if NET
+	/// <summary>An exception relating to functions in the MonoTouch.AudioUnit namespace.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -123,7 +125,16 @@ namespace AudioUnit {
 		}
 	}
 
+	/// <include file="../../docs/api/AudioUnit/RenderDelegate.xml" path="/Documentation/Docs[@DocId='T:AudioUnit.RenderDelegate']/*" />
 	public delegate AudioUnitStatus RenderDelegate (AudioUnitRenderActionFlags actionFlags, AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, AudioBuffers data);
+	/// <param name="actionFlags">To be added.</param>
+	///     <param name="timeStamp">To be added.</param>
+	///     <param name="busNumber">To be added.</param>
+	///     <param name="numberFrames">To be added.</param>
+	///     <param name="audioUnit">To be added.</param>
+	///     <summary>Callback used with <see cref="M:AudioUnit.AudioUnit.SetInputCallback(AudioUnit.InputDelegate,AudioUnit.AudioUnitScopeType,System.UInt32)" />.</summary>
+	///     <returns>To be added.</returns>
+	///     <remarks>To be added.</remarks>
 	public delegate AudioUnitStatus InputDelegate (AudioUnitRenderActionFlags actionFlags, AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, AudioUnit audioUnit);
 
 	delegate AudioUnitStatus CallbackShared (IntPtr /* void* */ clientData, ref AudioUnitRenderActionFlags /* AudioUnitRenderActionFlags* */ actionFlags, ref AudioTimeStamp /* AudioTimeStamp* */ timeStamp, uint /* UInt32 */ busNumber, uint /* UInt32 */ numberFrames, IntPtr /* AudioBufferList* */ data);
@@ -155,6 +166,8 @@ namespace AudioUnit {
 	}
 
 #if NET
+	/// <summary>Describes a sampler instrument. Used with <see cref="M:AudioUnit.AudioUnit.LoadInstrument(AudioUnit.SamplerInstrumentData,AudioUnit.AudioUnitScopeType,System.UInt32)" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -264,6 +277,8 @@ namespace AudioUnit {
 	}
 
 #if NET
+	/// <summary>Holds information regarding an audio unit parameter.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -337,6 +352,8 @@ namespace AudioUnit {
 #endif // !COREBUILD
 	}
 
+	/// <summary>Enumerates types of audio unit parameter events.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AUParameterEventType : uint {
 		/// <summary>Indicates an instantaneous, or step, change in a value.</summary>
 		Immediate = 1,
@@ -345,6 +362,8 @@ namespace AudioUnit {
 	}
 
 #if NET
+	/// <summary>A change for an audio unit parameter.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -366,6 +385,8 @@ namespace AudioUnit {
 		public AUParameterEventType EventType;
 
 #if NET
+		/// <summary>Contains structs for different types parameter change events.</summary>
+		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -373,6 +394,8 @@ namespace AudioUnit {
 #endif
 		[StructLayout (LayoutKind.Explicit)]
 		public struct EventValuesStruct {
+			/// <summary>Contains values that describe a linear ramp change in a parameter value.</summary>
+			///     <remarks>To be added.</remarks>
 			[StructLayout (LayoutKind.Sequential)]
 			public struct RampStruct {
 				/// <summary>The offset into the frame buffer at which the change begins.</summary>
@@ -395,6 +418,8 @@ namespace AudioUnit {
 			[FieldOffset (0)]
 			public RampStruct Ramp;
 
+			/// <summary>Contains values that describe a step change in a parameter value.</summary>
+			///     <remarks>To be added.</remarks>
 			[StructLayout (LayoutKind.Sequential)]
 			public struct ImmediateStruct {
 				/// <summary>The offset into the frame buffer at which the change occurs.</summary>
@@ -417,6 +442,8 @@ namespace AudioUnit {
 	}
 
 #if NET
+	/// <summary>A plug-in component that processes or generates audio data.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -1426,6 +1453,8 @@ namespace AudioUnit {
 #endif // MONOMAC || __MACCATALYST__
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -1547,6 +1576,8 @@ namespace AudioUnit {
 	}
 #endif // !COREBUILD
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AURenderEventType : byte {
 		/// <summary>To be added.</summary>
 		Parameter = 1,
@@ -1570,6 +1601,8 @@ namespace AudioUnit {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -1606,6 +1639,8 @@ namespace AudioUnit {
 	}
 
 #if NET
+	/// <summary>Contains a token for an installed parameter observer delegate.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -1626,6 +1661,8 @@ namespace AudioUnit {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -1703,6 +1740,8 @@ namespace AudioUnit {
 	// 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -1725,6 +1764,8 @@ namespace AudioUnit {
 	}
 
 #if NET
+	/// <summary>An event that represents the change and time of change for a parameter value.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -1746,6 +1787,8 @@ namespace AudioUnit {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -1775,6 +1818,8 @@ namespace AudioUnit {
 
 #if !COREBUILD
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

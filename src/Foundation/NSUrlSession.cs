@@ -6,6 +6,10 @@ using System.IO;
 #nullable disable
 
 namespace Foundation {
+	/// <summary>This class holds the return values from the asynchronous methods <see cref="M:Foundation.NSUrlSession.CreateDownloadTaskFromResumeDataAsync(Foundation.NSData,Foundation.NSUrlSessionDownloadTask@)" />, <see cref="M:Foundation.NSUrlSession.CreateDownloadTaskFromResumeDataAsync(Foundation.NSData,Foundation.NSUrlSessionDownloadTask@)" />, <see cref="M:Foundation.NSUrlSession.CreateDownloadTaskFromResumeDataAsync(Foundation.NSData,Foundation.NSUrlSessionDownloadTask@)" />.</summary>
+	///     <remarks>
+	///       <para>This class holds the return values from the asynchronous methods <see cref="M:Foundation.NSUrlSession.CreateDownloadTaskFromResumeDataAsync(Foundation.NSData,Foundation.NSUrlSessionDownloadTask@)" />, <see cref="M:Foundation.NSUrlSession.CreateDownloadTaskFromResumeDataAsync(Foundation.NSData,Foundation.NSUrlSessionDownloadTask@)" />, <see cref="M:Foundation.NSUrlSession.CreateDownloadTaskFromResumeDataAsync(Foundation.NSData,Foundation.NSUrlSessionDownloadTask@)" />.</para>
+	///     </remarks>
 	public partial class NSUrlSessionDownloadTaskRequest : IDisposable {
 		string tmpfile;
 

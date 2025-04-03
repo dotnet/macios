@@ -4683,24 +4683,39 @@ namespace Intents {
 
 		// INImage_IntentsUI (IntentsUI)
 
+		/// <param name="image">To be added.</param>
+		///         <summary>Static factory method to create an <see cref="T:Intents.INImage" /> from a <see cref="T:CoreGraphics.CGImage" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac, NoTV]
 		[NoMacCatalyst]
 		[Static]
 		[Export ("imageWithCGImage:")]
 		INImage FromImage (CGImage image);
 
+		/// <param name="image">To be added.</param>
+		///         <summary>Static factory method to create an <see cref="T:Intents.INImage" /> from a <see cref="T:UIKit.UIImage" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac, NoTV]
 		[NoMacCatalyst]
 		[Static]
 		[Export ("imageWithUIImage:")]
 		INImage FromImage (UIImage image);
 
+		/// <param name="response">To be added.</param>
+		///         <summary>Gets the preferred image size for the specified <paramref name="response" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac, NoTV]
 		[NoMacCatalyst]
 		[Static]
 		[Export ("imageSizeForIntentResponse:")]
 		CGSize GetImageSize (INIntentResponse response);
 
+		/// <param name="completion">To be added.</param>
+		///         <summary>Passes the image to the provided <paramref name="completion" /> handler.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac, NoTV]
 		[NoMacCatalyst]
 		[Async]

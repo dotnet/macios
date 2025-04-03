@@ -43,6 +43,8 @@ using Foundation;
 namespace CoreText {
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontDescriptor.h
+	/// <summary>An enumeration whose values specify the orientation of a <see cref="T:CoreText.CTFont" />.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CTFontOrientation : uint {
 		/// <summary>To be added.</summary>
 		Default = 0,
@@ -53,6 +55,9 @@ namespace CoreText {
 	}
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontDescriptor.h
+	/// <summary>Font format.</summary>
+	///     <remarks>
+	///     </remarks>
 	public enum CTFontFormat : uint {
 		/// <summary>An unrecognized font format.</summary>
 		Unrecognized = 0,
@@ -69,6 +74,8 @@ namespace CoreText {
 	}
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontDescriptor.h
+	/// <summary>An enumeration whose values specify the priority of a <see cref="T:CoreText.CTFont" />.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CTFontPriority : uint {
 		/// <summary>To be added.</summary>
 		System = 10000,
@@ -85,6 +92,8 @@ namespace CoreText {
 	}
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontDescriptor.h
+	/// <summary>An enumeration whose values can be used as parameters for the <see cref="M:CoreText.CTFontDescriptor.MatchFontDescriptors(CoreText.CTFontDescriptor[],Foundation.NSSet,System.Func{CoreText.CTFontDescriptorMatchingState,System.IntPtr,System.Boolean})" /> method.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CTFontDescriptorMatchingState : uint {
 		/// <summary>To be added.</summary>
 		Started,
@@ -106,6 +115,21 @@ namespace CoreText {
 		FailedWithError,
 	}
 
+	/// <summary>Strongly typed class that contains font attributes.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	This is a class that allows developers to easily consume and configure font descriptor attributes.
+	///       </para>
+	///       <example>
+	///         <code lang="csharp lang-csharp"><![CDATA[
+	/// var attributes = new CTFontDescriptorAttributes () {
+	/// 	FamilyName = "Times New Roman"
+	/// };
+	///
+	/// var fontDescriptor = new CTFontDescriptor (attributes);
+	/// 	]]></code>
+	///       </example>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -518,6 +542,25 @@ namespace CoreText {
 #endif
 	}
 
+	/// <summary>Font Descriptors contain a description of font features that can identify a font.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	Font Descriptors contain a description of font features and can
+	/// 	completely identify a font.  Sometimes the description is not
+	/// 	complete enough, and the system will pick a font that matches
+	/// 	the specified parameters.
+	///       </para>
+	///       <example>
+	///         <code lang="csharp lang-csharp"><![CDATA[
+	/// var attributes = new CTFontDescriptorAttributes () {
+	/// 	FamilyName = "Times New Roman",
+	/// 	Size = 18
+	/// };
+	///
+	/// var fontDescriptor = new CTFontDescriptor (attributes);
+	/// ]]></code>
+	///       </example>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

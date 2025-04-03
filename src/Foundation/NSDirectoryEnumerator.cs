@@ -17,12 +17,17 @@ namespace Foundation {
 	public partial class NSDirectoryEnumerator : IEnumerator<NSString>, IEnumerator<string>, IEnumerator {
 		NSObject current;
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		bool IEnumerator.MoveNext ()
 		{
 			current = NextObject ();
 			return current is not null;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		void IEnumerator.Reset ()
 		{
 			throw new InvalidOperationException ();

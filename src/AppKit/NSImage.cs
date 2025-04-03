@@ -34,6 +34,9 @@ using CoreGraphics;
 namespace AppKit {
 
 	public partial class NSImage {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGImage CGImage {
 			get {
 				var rect = CGRect.Empty;
@@ -41,6 +44,10 @@ namespace AppKit {
 			}
 		}
 
+		/// <param name="stream">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSImage? FromStream (System.IO.Stream stream)
 		{
 			using (var data = NSData.FromStream (stream)) {
@@ -48,6 +55,10 @@ namespace AppKit {
 			}
 		}
 
+		/// <param name="fileName">To be added.</param>
+		///         <param name="lazy">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSImage (string fileName, bool lazy)
 		{
 			if (lazy)
@@ -56,6 +67,10 @@ namespace AppKit {
 				Handle = InitWithContentsOfFile (fileName);
 		}
 
+		/// <param name="data">To be added.</param>
+		///         <param name="ignoresOrientation">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSImage (NSData data, bool ignoresOrientation)
 		{
 			if (ignoresOrientation) {
@@ -66,12 +81,19 @@ namespace AppKit {
 		}
 
 		// note: if needed override the protected Get|Set methods
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public string? Name {
 			get { return GetName (); }
 			// ignore return value (bool)
 			set { SetName (value); }
 		}
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSImage? ImageNamed (NSImageName name)
 		{
 			return ImageNamed (name.GetConstant ());
@@ -80,6 +102,9 @@ namespace AppKit {
 
 	public partial class NSImageRep {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public CGImage CGImage {
 			get {
 				var rect = CGRect.Empty;

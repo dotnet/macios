@@ -59,6 +59,16 @@ namespace Security {
 
 #if !COREBUILD
 
+		/// <summary>Type identifier for the Security.SecTrust type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
+		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[bool isSecTrust = (CFType.GetTypeID (foo.Handle) == SecTrust.GetTypeID ());]]></code>
+		///           </example>
+		///         </remarks>
 		[DllImport (Constants.SecurityLibrary, EntryPoint = "SecTrustGetTypeID")]
 		public extern static nint GetTypeID ();
 
@@ -69,6 +79,11 @@ namespace Security {
 			/* SecTrustRef *__nonull */ IntPtr* sectrustref);
 
 
+		/// <param name="certificate">The certificate to be evaluated.</param>
+		///         <param name="policy">The policy to be used to evaluate the trust.</param>
+		///         <summary>Create a new instance based on the certificate, to be evaluated, and a policy, to be applied.</summary>
+		///         <remarks>
+		///         </remarks>
 		public SecTrust (X509Certificate certificate, SecPolicy? policy)
 		{
 			if (certificate is null)
@@ -80,6 +95,11 @@ namespace Security {
 			}
 		}
 
+		/// <param name="certificate">The certificate to be evaluated.</param>
+		///         <param name="policy">The policy to be used to evaluate the trust.</param>
+		///         <summary>Create a new instance based on the certificate, to be evaluated, and a policy, to be applied</summary>
+		///         <remarks>
+		///         </remarks>
 		public SecTrust (X509Certificate2 certificate, SecPolicy? policy)
 		{
 			if (certificate is null)
@@ -91,6 +111,10 @@ namespace Security {
 			}
 		}
 
+		/// <param name="certificates">A collection of X.509 certificates</param>
+		///         <param name="policy">The policy to be used to evaluate the trust.</param>
+		///         <summary>Create a new instance based on the certificate, to be evaluated, and a policy, to be applied.</summary>
+		///         <remarks>The first certificate (in the collection) is the one to be evaluated, the others will be used to build a chain of trust.</remarks>
 		public SecTrust (X509CertificateCollection certificates, SecPolicy? policy)
 		{
 			if (certificates is null)
@@ -103,6 +127,10 @@ namespace Security {
 			Initialize (array, policy);
 		}
 
+		/// <param name="certificates">A collection of X.509 certificates</param>
+		///         <param name="policy">The policy to be used to evaluate the trust.</param>
+		///         <summary>Create a new instance based on the certificate, to be evaluated, and a policy, to be applied.</summary>
+		///         <remarks>The first certificate (in the collection) is the one to be evaluated, the others will be used to build a chain of trust.</remarks>
 		public SecTrust (X509Certificate2Collection certificates, SecPolicy? policy)
 		{
 			if (certificates is null)
@@ -153,6 +181,9 @@ namespace Security {
 		unsafe extern static SecStatusCode /* OSStatus */ SecTrustEvaluate (IntPtr /* SecTrustRef */ trust, /* SecTrustResultType */ SecTrustResult* result);
 
 #if NET
+		/// <summary>Evaluate the trust of the certificate using the policy.</summary>
+		///         <returns>A code that describe if the certificate can be trusted and, if so, under which circumstances.</returns>
+		///         <remarks>In general both Proceed and Unspecified means you can trust the certificate, other values means it should not be trusted.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -277,6 +308,10 @@ namespace Security {
 		extern static IntPtr /* SecKeyRef */ SecTrustCopyPublicKey (IntPtr /* SecTrustRef */ trust);
 
 #if NET
+		/// <summary>Get the public key of the evaluated certificate.</summary>
+		///         <returns>A SecKey instance of the certificate's public key.</returns>
+		///         <remarks>
+		///         </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -332,6 +367,9 @@ namespace Security {
 		extern static IntPtr /* CFDataRef */ SecTrustCopyExceptions (IntPtr /* SecTrustRef */ trust);
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -352,6 +390,10 @@ namespace Security {
 		extern static byte SecTrustSetExceptions (IntPtr /* SecTrustRef */ trust, IntPtr /* __nullable CFDataRef */ exceptions);
 
 #if NET
+		/// <param name="data">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -367,6 +409,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static double /* CFAbsoluteTime */ SecTrustGetVerifyTime (IntPtr /* SecTrustRef */ trust);
 
+		/// <summary>Get the verification time.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>This is often used for digital signatures.</remarks>
 		public double GetVerifyTime ()
 		{
 			return SecTrustGetVerifyTime (GetCheckedHandle ());
@@ -375,6 +420,10 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static SecStatusCode /* OSStatus */ SecTrustSetVerifyDate (IntPtr /* SecTrustRef */ trust, IntPtr /* CFDateRef */ verifyDate);
 
+		/// <param name="date">Date for which the verification should made.</param>
+		///         <summary>Set the date at which the trust is to be evaluated.</summary>
+		///         <returns>An error code.</returns>
+		///         <remarks>This is often used for digital signatures.</remarks>
 		public SecStatusCode SetVerifyDate (DateTime date)
 		{
 			// CFDateRef amd NSDate are toll-freee bridged
@@ -387,6 +436,11 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static SecStatusCode /* OSStatus */ SecTrustSetAnchorCertificates (IntPtr /* SecTrustRef */ trust, IntPtr /* CFArrayRef */ anchorCertificates);
 
+		/// <param name="certificates">A collection of anchor (trusted root) certificates.</param>
+		///         <summary>Provide your own collection of trusted certificate for the evaluation.</summary>
+		///         <returns>An error code.</returns>
+		///         <remarks>
+		///         </remarks>
 		public SecStatusCode SetAnchorCertificates (X509CertificateCollection certificates)
 		{
 			if (certificates is null)
@@ -399,6 +453,11 @@ namespace Security {
 			return SetAnchorCertificates (array);
 		}
 
+		/// <param name="certificates">A collection of anchor (trusted root) certificates.</param>
+		///         <summary>Provide your own collection of trusted certificate for the evaluation.</summary>
+		///         <returns>An error code.</returns>
+		///         <remarks>
+		///         </remarks>
 		public SecStatusCode SetAnchorCertificates (X509Certificate2Collection certificates)
 		{
 			if (certificates is null)
@@ -411,6 +470,10 @@ namespace Security {
 			return SetAnchorCertificates (array);
 		}
 
+		/// <param name="array">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public SecStatusCode SetAnchorCertificates (SecCertificate [] array)
 		{
 			if (array is null)
@@ -425,6 +488,11 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static SecStatusCode /* OSStatus */ SecTrustSetAnchorCertificatesOnly (IntPtr /* SecTrustRef */ trust, byte anchorCertificatesOnly);
 
+		/// <param name="anchorCertificatesOnly">true if only the supplied anchors should be used, false if the system anchors should also be used</param>
+		///         <summary>Specify if only the supplied anchor certificates should be used.</summary>
+		///         <returns>An error code.</returns>
+		///         <remarks>
+		///         </remarks>
 		public SecStatusCode SetAnchorCertificatesOnly (bool anchorCertificatesOnly)
 		{
 			return SecTrustSetAnchorCertificatesOnly (GetCheckedHandle (), anchorCertificatesOnly.AsByte ());

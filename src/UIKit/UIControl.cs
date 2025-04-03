@@ -49,6 +49,10 @@ namespace UIKit {
 
 	public partial class UIControl {
 		static ConditionalWeakTable<UIControl, Dictionary<EventHandler, Dictionary<UIControlEvent, UIControlEventProxy>>> allTargets;
+		/// <param name="notification">EventHandler to invoke.</param>
+		///         <param name="events">Event mask that will trigger the event to be invoked.</param>
+		///         <summary>Adds an event handler for the specified set of events.</summary>
+		///         <remarks>The <paramref name="notification" /> handler will be invoked when the control receives any of the events listed in the <paramref name="events" /> mask.   The </remarks>
 		public void AddTarget (EventHandler notification, UIControlEvent events)
 		{
 			if (allTargets is null)
@@ -76,6 +80,11 @@ namespace UIKit {
 			}
 		}
 
+		/// <param name="notification">The event handler previously specified in AddTarget.</param>
+		///         <param name="events">The event mask to remove.</param>
+		///         <summary>Removes a previously installed event handler for the specified event list.</summary>
+		///         <remarks>
+		///         </remarks>
 		public void RemoveTarget (EventHandler notification, UIControlEvent events)
 		{
 			Dictionary<EventHandler, Dictionary<UIControlEvent, UIControlEventProxy>> targets;

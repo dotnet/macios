@@ -106,8 +106,21 @@ namespace Xamarin.Tests {
 				expectedAssets.Add ("PackedImage:ZZZZPackedAsset-2.1.0-gamut0");
 				break;
 			case ApplePlatform.MacCatalyst:
+				expectedAssets.Add ("Icon Image:Icon1024.png");
+				expectedAssets.Add ("Icon Image:Icon128.png");
+				expectedAssets.Add ("Icon Image:Icon16.png");
+				expectedAssets.Add ("Icon Image:Icon256.png");
+				expectedAssets.Add ("Icon Image:Icon32.png");
+				expectedAssets.Add ("Icon Image:Icon512.png");
+				expectedAssets.Add ("Icon Image:Icon64.png");
+				expectedAssets.Add ("Image:Icon16.png");
 				expectedAssets.Add ("Image:Icon16.png");
 				expectedAssets.Add ("Image:Icon32.png");
+				expectedAssets.Add ("Image:Icon32.png");
+				expectedAssets.Add ("MultiSized Image:AlternateAppIcons");
+				expectedAssets.Add ("MultiSized Image:AppIcons");
+				expectedAssets.Add ("PackedImage:ZZZZPackedAsset-1.1.0-gamut0");
+				expectedAssets.Add ("PackedImage:ZZZZPackedAsset-2.1.0-gamut0");
 				break;
 			default:
 				throw new ArgumentOutOfRangeException ($"Unknown platform: {platform}");
@@ -286,8 +299,18 @@ namespace Xamarin.Tests {
 				expectedAssets.Add ("PackedImage:ZZZZPackedAsset-2.1.0-gamut0");
 				break;
 			case ApplePlatform.MacCatalyst:
+				expectedAssets.Add ("Icon Image:Icon1024.png");
+				expectedAssets.Add ("Icon Image:Icon128.png");
+				expectedAssets.Add ("Icon Image:Icon16.png");
+				expectedAssets.Add ("Icon Image:Icon256.png");
+				expectedAssets.Add ("Icon Image:Icon32.png");
+				expectedAssets.Add ("Icon Image:Icon512.png");
+				expectedAssets.Add ("Icon Image:Icon64.png");
 				expectedAssets.Add ("Image:Icon16.png");
 				expectedAssets.Add ("Image:Icon32.png");
+				expectedAssets.Add ("MultiSized Image:AppIcons");
+				expectedAssets.Add ("PackedImage:ZZZZPackedAsset-1.1.0-gamut0");
+				expectedAssets.Add ("PackedImage:ZZZZPackedAsset-2.1.0-gamut0");
 				break;
 			default:
 				throw new ArgumentOutOfRangeException ($"Unknown platform: {platform}");
@@ -354,8 +377,19 @@ namespace Xamarin.Tests {
 				expectedAssets.Add ("PackedImage:ZZZZPackedAsset-2.1.0-gamut0");
 				break;
 			case ApplePlatform.MacCatalyst:
+				expectedAssets.Add ("Icon Image:Icon1024.png");
+				expectedAssets.Add ("Icon Image:Icon128.png");
+				expectedAssets.Add ("Icon Image:Icon16.png");
+				expectedAssets.Add ("Icon Image:Icon256.png");
+				expectedAssets.Add ("Icon Image:Icon32.png");
+				expectedAssets.Add ("Icon Image:Icon512.png");
+				expectedAssets.Add ("Icon Image:Icon64.png");
 				expectedAssets.Add ("Image:Icon16.png");
 				expectedAssets.Add ("Image:Icon32.png");
+				expectedAssets.Add ("MultiSized Image:AppIcons");
+				expectedAssets.Add ("MultiSized Image:AlternateAppIcons");
+				expectedAssets.Add ("PackedImage:ZZZZPackedAsset-1.1.0-gamut0");
+				expectedAssets.Add ("PackedImage:ZZZZPackedAsset-2.1.0-gamut0");
 				break;
 			default:
 				throw new ArgumentOutOfRangeException ($"Unknown platform: {platform}");

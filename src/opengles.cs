@@ -57,6 +57,13 @@ namespace OpenGLES {
 		[Export ("initWithAPI:sharegroup:")]
 		NativeHandle Constructor (EAGLRenderingAPI api, EAGLSharegroup sharegroup);
 
+		/// <param name="context">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Makes the supplied <paramref name="context" /> the context that contains the OpenGL ES state.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("setCurrentContext:")]
 		bool SetCurrentContext ([NullAllowed] EAGLContext context);
 

@@ -12,12 +12,27 @@ namespace Foundation {
 
 	public partial class NSUrlProtectionSpace {
 
+		/// <param name="host">To be added.</param>
+		///         <param name="port">To be added.</param>
+		///         <param name="protocol">To be added.</param>
+		///         <param name="realm">To be added.</param>
+		///         <param name="authenticationMethod">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSUrlProtectionSpace (string host, int port, string protocol, string realm, string authenticationMethod)
 			: base (NSObjectFlag.Empty)
 		{
 			Handle = Init (host, port, protocol, realm, authenticationMethod);
 		}
 
+		/// <param name="host">To be added.</param>
+		///         <param name="port">To be added.</param>
+		///         <param name="protocol">To be added.</param>
+		///         <param name="realm">To be added.</param>
+		///         <param name="authenticationMethod">To be added.</param>
+		///         <param name="useProxy">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSUrlProtectionSpace (string host, int port, string protocol, string realm, string authenticationMethod, bool useProxy)
 			: base (NSObjectFlag.Empty)
 		{

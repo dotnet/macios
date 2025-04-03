@@ -2205,7 +2205,7 @@
 	</Target>
 
 	<Target Name="_InstallMobile" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;ComputeMlaunchInstallArguments" Condition="'$(_SdkIsSimulator)' == 'false'">
-		<Exec SessionId="$(BuildSessionId)" Command="$(MlaunchPath) $(MlaunchInstallArguments)" />
+		<Exec SessionId="$(BuildSessionId)" Command="'$(MlaunchPath)' $(MlaunchInstallArguments)" />
 	</Target>
 
 	<Target Name="ComputeMlaunchRunArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest" Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'">
@@ -2261,7 +2261,7 @@
 	<!-- This is only needed for mobile platforms, RunCommand and RunArguments are defined for macOS in Microsoft.macOS.Sdk.targets. -->
 	<Target Name="_PrepareRunMobile" DependsOnTargets="_InstallMobile;ComputeMlaunchRunArguments" Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'">
 		<PropertyGroup>
-			<RunCommand>$(MlaunchPath)</RunCommand>
+			<RunCommand>'$(MlaunchPath)'</RunCommand>
 			<RunArguments>$(MlaunchRunArguments)</RunArguments>
 		</PropertyGroup>
 	</Target>

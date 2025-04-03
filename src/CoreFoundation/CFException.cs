@@ -114,11 +114,20 @@ namespace CoreFoundation {
 			RecoverySuggestion = recoverySuggestion;
 		}
 
+		/// <param name="cfErrorHandle">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CFException FromCFError (IntPtr cfErrorHandle)
 		{
 			return FromCFError (cfErrorHandle, true);
 		}
 
+		/// <param name="cfErrorHandle">To be added.</param>
+		///         <param name="release">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CFException FromCFError (IntPtr cfErrorHandle, bool release)
 		{
 			if (cfErrorHandle == IntPtr.Zero)

@@ -10,7 +10,6 @@ parameters:
 
   - name: use1ES
     type: boolean
-    default: false
 
   - name: repositoryAlias
     type: string
@@ -23,18 +22,6 @@ parameters:
   - name: uploadPrefix
     type: string
     default: '$(MaciosUploadPrefix)'
-
-  - name: testConfigurations
-    type: object
-    default: []
-
-  - name: supportedPlatforms
-    type: object
-    default: []
-
-  - name: testsLabels
-    type: string
-    default: ''
 
   - name: statusContext
     type: string

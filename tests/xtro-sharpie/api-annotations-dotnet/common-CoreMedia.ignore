@@ -411,7 +411,3 @@
 !unknown-pinvoke! CMTimebaseCreateWithMasterTimebase bound
 !unknown-pinvoke! CMTimebaseSetMasterClock bound
 !unknown-pinvoke! CMTimebaseSetMasterTimebase bound
-
-# it can return a Clock or a Timebase but the API already has a way to access the clock source (CMTimebaseCopySourceClock)
-# and the Timebase (CMTimebaseCopySourceTimebase) so there is no reason atm to add this method
-!missing-pinvoke! CMTimebaseCopySource is not bound

@@ -14,6 +14,9 @@ namespace ObjCRuntime {
 	// https://clang.llvm.org/docs/AttributeReference.html#objc-requires-super-clang-objc-requires-super
 	[AttributeUsage (AttributeTargets.Method, AllowMultiple = false)]
 	public sealed class RequiresSuperAttribute : AdviceAttribute {
+		/// <summary>Initializes a new instance of the RequiresSuper attribute.</summary>
+		///         <remarks>
+		///         </remarks>
 		public RequiresSuperAttribute ()
 			: base ("Overriding this method requires a call to the overriden method.")
 		{

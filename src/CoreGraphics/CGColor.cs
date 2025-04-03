@@ -124,6 +124,9 @@ namespace CoreGraphics {
 
 		}
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGColor (string name)
 			: base (Create (name), true)
 		{
@@ -216,6 +219,9 @@ namespace CoreGraphics {
 			return !color1.Equals (color2);
 		}
 
+		/// <summary>Get the hashcode for this color.</summary>
+		///         <returns>The hashcode.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			// looks weird but it's valid
@@ -224,6 +230,11 @@ namespace CoreGraphics {
 			return 0;
 		}
 
+		/// <param name="o">The other object.</param>
+		///         <summary>Determines if the objects are equal.</summary>
+		///         <returns>
+		///           <see langword="true" /> if this color is equal to the specified object.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? o)
 		{
 			var other = o as CGColor;

@@ -36,6 +36,11 @@ using ObjCRuntime;
 namespace Foundation {
 
 	public partial class NSCoder {
+		/// <param name="buffer">Byte array to encode.</param>
+		///         <param name="key">Key to associate with the object being encoded.</param>
+		///         <summary>Encodes the byte array using the specified associated key.</summary>
+		///         <remarks>
+		///         </remarks>
 		public void Encode (byte [] buffer, string key)
 		{
 			if (buffer is null)
@@ -51,6 +56,13 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="buffer">Byte array to encode.</param>
+		///         <param name="offset">Starting point in the buffer to encode.</param>
+		///         <param name="count">Number of bytes starting at the specified offset to encode.</param>
+		///         <param name="key">Key to associate with the object being encoded.</param>
+		///         <summary>Encodes a segment of the buffer using the specified associated key.</summary>
+		///         <remarks>
+		///         </remarks>
 		public void Encode (byte [] buffer, int offset, int count, string key)
 		{
 			if (buffer is null)
@@ -74,6 +86,10 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="key">The key identifying the item to decode.</param>
+		///         <summary>Decodes the requested key as an array of bytes.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public byte [] DecodeBytes (string key)
 		{
 			nuint len = 0;
@@ -87,6 +103,9 @@ namespace Foundation {
 			return retarray;
 		}
 
+		/// <summary>Decodes the next item as an array of bytes.</summary>
+		///         <returns>The array of bytes decoded from the stream.</returns>
+		///         <remarks>To be added.</remarks>
 		public byte [] DecodeBytes ()
 		{
 			nuint len = 0;
@@ -100,6 +119,11 @@ namespace Foundation {
 			return retarray;
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="result">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryDecode (string key, out bool result)
 		{
 			if (ContainsKey (key)) {
@@ -110,6 +134,11 @@ namespace Foundation {
 			return false;
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="result">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryDecode (string key, out double result)
 		{
 			if (ContainsKey (key)) {
@@ -120,6 +149,11 @@ namespace Foundation {
 			return false;
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="result">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryDecode (string key, out float result)
 		{
 			if (ContainsKey (key)) {
@@ -130,6 +164,11 @@ namespace Foundation {
 			return false;
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="result">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryDecode (string key, out int result)
 		{
 			if (ContainsKey (key)) {
@@ -140,6 +179,11 @@ namespace Foundation {
 			return false;
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="result">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryDecode (string key, out long result)
 		{
 			if (ContainsKey (key)) {
@@ -160,6 +204,11 @@ namespace Foundation {
 			return false;
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="result">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryDecode (string key, out NSObject result)
 		{
 			if (ContainsKey (key)) {
@@ -170,6 +219,11 @@ namespace Foundation {
 			return false;
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="result">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryDecode (string key, out byte [] result)
 		{
 			if (ContainsKey (key)) {
@@ -181,6 +235,12 @@ namespace Foundation {
 		}
 
 #if NET
+		/// <param name="type">To be added.</param>
+		///         <param name="key">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -194,6 +254,12 @@ namespace Foundation {
 		}
 
 #if NET
+		/// <param name="types">To be added.</param>
+		///         <param name="key">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]

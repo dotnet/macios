@@ -19,6 +19,12 @@ using ObjCRuntime;
 namespace PdfKit {
 	public partial class PdfAnnotation {
 
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <param name="value">To be added.</param>
+		///         <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -33,6 +39,11 @@ namespace PdfKit {
 			return result;
 		}
 
+		/// <param name="str">To be added.</param>
+		///         <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -47,6 +58,11 @@ namespace PdfKit {
 			}
 		}
 
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]

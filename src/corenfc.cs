@@ -133,6 +133,8 @@ namespace CoreNFC {
 		[Export ("readingAvailable")]
 		bool ReadingAvailable { get; }
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("restartPolling")]
 		void RestartPolling ();
 	}
@@ -581,10 +583,18 @@ namespace CoreNFC {
 	[BaseType (typeof (NSObject), Name = "NFCNDEFReaderSessionDelegate")]
 	interface NFCNdefReaderSessionDelegate {
 
+		/// <param name="session">The session that was invalidated.</param>
+		///         <param name="error">The error that invalidated the session.</param>
+		///         <summary>Developers may override this method to respond to the invalidation of the NFC session.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("readerSession:didInvalidateWithError:")]
 		void DidInvalidate (NFCNdefReaderSession session, NSError error);
 
+		/// <param name="session">The session that detected the messages.</param>
+		///         <param name="messages">To be added.</param>
+		///         <summary>Developers may override this method to respond to the detection of NFC tags.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("readerSession:didDetectNDEFs:")]
 		void DidDetect (NFCNdefReaderSession session, NFCNdefMessage [] messages);
@@ -702,6 +712,9 @@ namespace CoreNFC {
 	[BaseType (typeof (NSObject))]
 	interface NFCReaderSessionDelegate {
 
+		/// <param name="session">The session that became active.</param>
+		///         <summary>Developers may override this method to react to the <see cref="T:CoreNFC.NFCReaderSession" /> activating.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("readerSessionDidBecomeActive:")]
 		void DidBecomeActive (NFCReaderSession session);
@@ -709,9 +722,17 @@ namespace CoreNFC {
 #if !NET
 		[Abstract]
 #endif
+		/// <param name="session">The session that detected the tags.</param>
+		///         <param name="tags">The tags that were detected.</param>
+		///         <summary>Developers may override this method to react to the detection of NFC <paramref name="tags" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("readerSession:didDetectTags:")]
 		void DidDetectTags (NFCReaderSession session, INFCTag [] tags);
 
+		/// <param name="session">The session that was invalidated.</param>
+		///         <param name="error">The error that invalidated the session.</param>
+		///         <summary>Developers may override this method to react to the invalidation of the <see cref="T:CoreNFC.NFCReaderSession" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("readerSession:didInvalidateWithError:")]
 		void DidInvalidate (NFCReaderSession session, NSError error);

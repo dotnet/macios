@@ -43,6 +43,12 @@ namespace CoreMedia {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public struct TextMarkupColor {
+		/// <param name="red">To be added.</param>
+		///         <param name="green">To be added.</param>
+		///         <param name="blue">To be added.</param>
+		///         <param name="alpha">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public TextMarkupColor (float red, float green, float blue, float alpha)
 			: this ()
 		{
@@ -84,11 +90,16 @@ namespace CoreMedia {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CMTextMarkupAttributes : DictionaryContainer {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMTextMarkupAttributes ()
 		{
 		}
 
 #if !COREBUILD
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CMTextMarkupAttributes (NSDictionary dictionary)
 			: base (dictionary)
 		{

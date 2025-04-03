@@ -61,6 +61,10 @@ namespace ObjCRuntime {
 			this.handle = handle;
 		}
 
+		/// <param name="name">The selector name.</param>
+		///         <summary>Creates a new selector and registers it with the Objective-C runtime.</summary>
+		///         <remarks>
+		///         </remarks>
 		public Selector (string name)
 		{
 			this.name = name;
@@ -105,11 +109,21 @@ namespace ObjCRuntime {
 			return left.handle == right.handle;
 		}
 
+		/// <param name="right">The other object to compare against.</param>
+		///         <summary>Compares two objects for equality</summary>
+		///         <returns>True if the objects represent the same object</returns>
+		///         <remarks>
+		///         </remarks>
 		public override bool Equals (object? right)
 		{
 			return Equals (right as Selector);
 		}
 
+		/// <param name="right">The other selector to compare against.</param>
+		///         <summary>Compares two selectors for equality.</summary>
+		///         <returns>True if the objects represent the same selector.</returns>
+		///         <remarks>
+		///         </remarks>
 		public bool Equals (Selector? right)
 		{
 			if (right is null)
@@ -118,6 +132,11 @@ namespace ObjCRuntime {
 			return handle == right.handle;
 		}
 
+		/// <summary>Returns the Selector's hash code.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override int GetHashCode ()
 		{
 			return handle.GetHashCode ();
@@ -162,6 +181,11 @@ namespace ObjCRuntime {
 
 		// objc/runtime.h
 		// Selector.GetHandle is optimized by the AOT compiler, and the current implementation only supports IntPtr, so we can't switch to NativeHandle quite yet (the AOT compiler crashes).
+		/// <param name="name">Name of a selector</param>
+		///         <summary>Returns the handle to the specified Objective-C selector.</summary>
+		///         <returns>The handle to the specified Objective-C selector.</returns>
+		///         <remarks>
+		///         </remarks>
 		public static IntPtr GetHandle (string name)
 		{
 			var ptr = Marshal.StringToHGlobalAnsi (name);

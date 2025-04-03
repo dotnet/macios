@@ -21,7 +21,12 @@ namespace Foundation {
 	//
 	[AttributeUsage (AttributeTargets.Method, AllowMultiple = false)]
 	public class NotImplementedAttribute : Attribute {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NotImplementedAttribute () { }
+		/// <param name="message">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NotImplementedAttribute (string message) { Message = message; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

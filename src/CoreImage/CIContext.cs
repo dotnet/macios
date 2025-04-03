@@ -44,10 +44,16 @@ namespace CoreImage {
 	[SupportedOSPlatform ("tvos")]
 	public class CIContextOptions : DictionaryContainer {
 
+		/// <summary>Creates an empty set of options for CIContext rendering.</summary>
+		///         <remarks>
+		///         </remarks>
 		public CIContextOptions ()
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>Constructs a new <see cref="T:CoreImage.CIContextOptions" /> object using the options specified in <paramref name="dictionary" />.</summary>
+		///         <remarks>To be added.</remarks>
 		public CIContextOptions (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -190,6 +196,9 @@ namespace CoreImage {
 	}
 
 	public partial class CIContext {
+		/// <param name="options">The context options to use.</param>
+		///         <summary>Creates a new Core Image context with the specified <paramref name="options" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -199,23 +208,31 @@ namespace CoreImage {
 		{
 		}
 
+		/// <param name="ctx">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>Creates a new CIContext from an existing one, along with the provided </summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CIContext FromContext (CGContext ctx, CIContextOptions? options)
 		{
 			return FromContext (ctx, options?.Dictionary);
 		}
 
+		/// <param name="ctx">To be added.</param>
+		///         <summary>Creates a new CIContext from an existing one.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CIContext FromContext (CGContext ctx)
 		{
 			return FromContext (ctx, (NSDictionary?) null);
 		}
 
 #if HAS_OPENGLES
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("tvos")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-		[UnsupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("ios12.0")]
-		[ObsoletedOSPlatform ("tvos12.0")]
+		/// <param name="eaglContext">The source <see cref="T:OpenGLES.EAGLContext" />.</param>
+		///         <param name="options">The desired <see cref="T:CoreImage.CIContextOptions" />.</param>
+		///         <summary>Creates a <see cref="T:CoreImage.CIContext" /> based on the <paramref name="eaglContext" />, with the specified <paramref name="options" />.</summary>
+		///         <returns>A new <see cref="T:CoreImage.CIContext" />.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CIContext FromContext (EAGLContext eaglContext, CIContextOptions? options)
 		{
 			if (options is null)
@@ -225,6 +242,11 @@ namespace CoreImage {
 		}
 #endif
 
+		/// <param name="device">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>Creates a new CIContext from the provided Metal device, along with the specified context.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CIContext FromMetalDevice (IMTLDevice device, CIContextOptions? options)
 		{
 			if (options is null)
@@ -234,6 +256,10 @@ namespace CoreImage {
 		}
 
 #if MONOMAC
+		/// <param name="size">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.11")]
@@ -242,11 +268,22 @@ namespace CoreImage {
 			return CreateCGLayer (size, null);
 		}
 #else
+		/// <param name="options">To be added.</param>
+		///         <summary>Creates a new <see cref="T:CoreImage.CIContext" /> from the options that are named in <paramref name="options" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CIContext FromOptions (CIContextOptions? options)
 		{
 			return FromOptions (options?.Dictionary);
 		}
 
+		/// <param name="image">To be added.</param>
+		///         <param name="fromRect">To be added.</param>
+		///         <param name="ciImageFormat">To be added.</param>
+		///         <param name="colorSpace">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGImage? CreateCGImage (CIImage image, CGRect fromRect, CIFormat ciImageFormat, CGColorSpace? colorSpace)
 		{
 			return CreateCGImage (image, fromRect, CIImage.CIFormatToInt (ciImageFormat), colorSpace);

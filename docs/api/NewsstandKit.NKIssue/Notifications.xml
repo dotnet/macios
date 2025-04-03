@@ -1,0 +1,70 @@
+<Documentation>
+  <Docs DocId="M:NewsstandKit.NKIssue.Notifications.ObserveDownloadCompleted(System.EventHandler{Foundation.NSNotificationEventArgs})">
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:NewsstandKit.NKIssue.DownloadCompletedNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObservers(System.Collections.Generic.IEnumerable{Foundation.NSObject})" /></returns>
+        <remarks>
+          <para>The following example shows how you can use this method in your code</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = NKIssue.Notifications.ObserveDownloadCompleted ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+//Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = NKIssue.Notifications.ObserveDownloadCompleted (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+        </remarks>
+      </Docs>
+  <Docs DocId="M:NewsstandKit.NKIssue.Notifications.ObserveDownloadCompleted(Foundation.NSObject,System.EventHandler{Foundation.NSNotificationEventArgs})">
+        <param name="objectToObserve">The object to observe.</param>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:NewsstandKit.NKIssue.DownloadCompletedNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObservers(System.Collections.Generic.IEnumerable{Foundation.NSObject})" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:NewsstandKit.NKIssue.DownloadCompletedNotification" /> notifications.</para>
+          <example>
+            <code lang="csharp lang-csharp"><![CDATA[
+// Listen to all notifications posted for any object
+var token = NKIssue.Notifications.ObserveDownloadCompleted ((notification) => {
+	Console.WriteLine ("Observed DownloadCompletedNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = NKIssue.Notifications.ObserveDownloadCompleted (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed DownloadCompletedNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+</Documentation>

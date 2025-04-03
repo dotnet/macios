@@ -125,6 +125,22 @@ namespace Accounts {
 		[Async]
 		void RequestAccess (ACAccountType accountType, [NullAllowed] NSDictionary options, ACRequestCompletionHandler completion);
 
+		/// <param name="accountType">The type of account for which access is being requested.</param>
+		///         <param name="options">Options for accessing Facebook accounts or <see langword="null" />.</param>
+		///         <param name="completion">The handler to be called when the method completes.</param>
+		///         <summary>Requests access to a type of social account.</summary>
+		///         <remarks>
+		///           <para>Application developers can retrieve the <paramref name="accountType" /> object with the <see cref="M:Accounts.ACAccountStore.FindAccountType(System.String)" /> method.
+		///           </para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// var objStore = new ACAccountStore();
+		/// var options = new AccountStoreOptions();
+		/// objStore.RequestAccess(objStore.FindAccountType(ACAccountType.Facebook), options, (granted, error) => { });
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
+		///         <altmember cref="T:Accounts.AccountStoreOptions" />
 		[Wrap ("RequestAccess (accountType, options.GetDictionary (), completion)")]
 		[Async]
 		void RequestAccess (ACAccountType accountType, [NullAllowed] AccountStoreOptions options, ACRequestCompletionHandler completion);

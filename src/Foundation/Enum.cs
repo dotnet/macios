@@ -100,9 +100,13 @@ namespace Foundation {
 
 	[Native]
 	public enum NSUrlCredentialPersistence : ulong {
+		/// <summary>Not persisted.</summary>
 		None,
+		/// <summary>Persisted for the session.</summary>
 		ForSession,
+		/// <summary>Permanently.</summary>
 		Permanent,
+		/// <summary>To be added.</summary>
 		Synchronizable,
 	}
 
@@ -137,21 +141,31 @@ namespace Foundation {
 
 	[Native]
 	public enum NSUrlRequestCachePolicy : ulong {
+		/// <summary>To be added.</summary>
 		UseProtocolCachePolicy = 0,
+		/// <summary>To be added.</summary>
 		ReloadIgnoringLocalCacheData = 1,
+		/// <summary>To be added.</summary>
 		ReloadIgnoringLocalAndRemoteCacheData = 4, // Unimplemented
+		/// <summary>To be added.</summary>
 		ReloadIgnoringCacheData = ReloadIgnoringLocalCacheData,
 
+		/// <summary>To be added.</summary>
 		ReturnCacheDataElseLoad = 2,
+		/// <summary>To be added.</summary>
 		ReturnCacheDataDoNotLoad = 3,
 
+		/// <summary>To be added.</summary>
 		ReloadRevalidatingCacheData = 5, // Unimplemented
 	}
 
 	[Native]
 	public enum NSUrlCacheStoragePolicy : ulong {
+		/// <summary>To be added.</summary>
 		Allowed,
+		/// <summary>To be added.</summary>
 		AllowedInMemoryOnly,
+		/// <summary>To be added.</summary>
 		NotAllowed,
 	}
 
@@ -177,23 +191,32 @@ namespace Foundation {
 
 	[Native]
 	public enum NSPropertyListFormat : ulong {
+		/// <summary>Store in the old OpenStep format.</summary>
 		OpenStep = 1,
+		/// <summary>Store in XML format.</summary>
 		Xml = 100,
+		/// <summary>Store in the binary file format.</summary>
 		Binary = 200,
 	}
 
 	[Native]
 	public enum NSPropertyListMutabilityOptions : ulong {
+		/// <summary>To be added.</summary>
 		Immutable = 0,
+		/// <summary>To be added.</summary>
 		MutableContainers = 1,
+		/// <summary>To be added.</summary>
 		MutableContainersAndLeaves = 2,
 	}
 
 	// Should mirror NSPropertyListMutabilityOptions
 	[Native]
 	public enum NSPropertyListWriteOptions : ulong {
+		/// <summary>To be added.</summary>
 		Immutable = 0,
+		/// <summary>To be added.</summary>
 		MutableContainers = 1,
+		/// <summary>To be added.</summary>
 		MutableContainersAndLeaves = 2,
 	}
 
@@ -201,8 +224,11 @@ namespace Foundation {
 	// not implemented (always use Immutable/0)
 	[Native]
 	public enum NSPropertyListReadOptions : ulong {
+		/// <summary>To be added.</summary>
 		Immutable = 0,
+		/// <summary>To be added.</summary>
 		MutableContainers = 1,
+		/// <summary>To be added.</summary>
 		MutableContainersAndLeaves = 2,
 	}
 
@@ -219,13 +245,21 @@ namespace Foundation {
 
 	[Native]
 	public enum NSNetServicesStatus : long {
+		/// <summary>To be added.</summary>
 		UnknownError = -72000,
+		/// <summary>To be added.</summary>
 		CollisionError = -72001,
+		/// <summary>To be added.</summary>
 		NotFoundError = -72002,
+		/// <summary>To be added.</summary>
 		ActivityInProgress = -72003,
+		/// <summary>To be added.</summary>
 		BadArgumentError = -72004,
+		/// <summary>To be added.</summary>
 		CancelledError = -72005,
+		/// <summary>To be added.</summary>
 		InvalidError = -72006,
+		/// <summary>To be added.</summary>
 		TimeoutError = -72007,
 		MissingRequiredConfigurationError = -72008,
 	}
@@ -233,7 +267,9 @@ namespace Foundation {
 	[Flags]
 	[Native]
 	public enum NSNetServiceOptions : ulong {
+		/// <summary>To be added.</summary>
 		NoAutoRename = 1 << 0,
+		/// <summary>To be added.</summary>
 		ListenForConnections = 1 << 1,
 	}
 
@@ -377,8 +413,11 @@ namespace Foundation {
 	[Flags]
 	[Native]
 	public enum NSNotificationCoalescing : ulong {
+		/// <summary>To be added.</summary>
 		NoCoalescing = 0,
+		/// <summary>To be added.</summary>
 		CoalescingOnName = 1,
+		/// <summary>To be added.</summary>
 		CoalescingOnSender = 2,
 	}
 
@@ -618,61 +657,110 @@ namespace Foundation {
 	// they share the same values but there's more entries in CFNetworkErrors
 	// so anything new probably already exists over there
 	public enum NSUrlError : int {
+		/// <summary>To be added.</summary>
 		Unknown = -1,
 
+		/// <summary>To be added.</summary>
 		BackgroundSessionRequiresSharedContainer = -995,
+		/// <summary>To be added.</summary>
 		BackgroundSessionInUseByAnotherProcess = -996,
+		/// <summary>To be added.</summary>
 		BackgroundSessionWasDisconnected = -997,
 
+		/// <summary>To be added.</summary>
 		Cancelled = -999,
+		/// <summary>To be added.</summary>
 		BadURL = -1000,
+		/// <summary>To be added.</summary>
 		TimedOut = -1001,
+		/// <summary>To be added.</summary>
 		UnsupportedURL = -1002,
+		/// <summary>To be added.</summary>
 		CannotFindHost = -1003,
+		/// <summary>To be added.</summary>
 		CannotConnectToHost = -1004,
+		/// <summary>To be added.</summary>
 		NetworkConnectionLost = -1005,
+		/// <summary>To be added.</summary>
 		DNSLookupFailed = -1006,
+		/// <summary>To be added.</summary>
 		HTTPTooManyRedirects = -1007,
+		/// <summary>To be added.</summary>
 		ResourceUnavailable = -1008,
+		/// <summary>To be added.</summary>
 		NotConnectedToInternet = -1009,
+		/// <summary>To be added.</summary>
 		RedirectToNonExistentLocation = -1010,
+		/// <summary>To be added.</summary>
 		BadServerResponse = -1011,
+		/// <summary>To be added.</summary>
 		UserCancelledAuthentication = -1012,
+		/// <summary>To be added.</summary>
 		UserAuthenticationRequired = -1013,
+		/// <summary>To be added.</summary>
 		ZeroByteResource = -1014,
+		/// <summary>To be added.</summary>
 		CannotDecodeRawData = -1015,
+		/// <summary>To be added.</summary>
 		CannotDecodeContentData = -1016,
+		/// <summary>To be added.</summary>
 		CannotParseResponse = -1017,
+		/// <summary>To be added.</summary>
 		InternationalRoamingOff = -1018,
+		/// <summary>To be added.</summary>
 		CallIsActive = -1019,
+		/// <summary>To be added.</summary>
 		DataNotAllowed = -1020,
+		/// <summary>To be added.</summary>
 		RequestBodyStreamExhausted = -1021,
+		/// <summary>To be added.</summary>
 		AppTransportSecurityRequiresSecureConnection = -1022,
 
+		/// <summary>To be added.</summary>
 		FileDoesNotExist = -1100,
+		/// <summary>To be added.</summary>
 		FileIsDirectory = -1101,
+		/// <summary>To be added.</summary>
 		NoPermissionsToReadFile = -1102,
+		/// <summary>To be added.</summary>
 		DataLengthExceedsMaximum = -1103,
+		/// <summary>To be added.</summary>
 		FileOutsideSafeArea = -1104,
 
+		/// <summary>To be added.</summary>
 		SecureConnectionFailed = -1200,
+		/// <summary>To be added.</summary>
 		ServerCertificateHasBadDate = -1201,
+		/// <summary>To be added.</summary>
 		ServerCertificateUntrusted = -1202,
+		/// <summary>To be added.</summary>
 		ServerCertificateHasUnknownRoot = -1203,
+		/// <summary>To be added.</summary>
 		ServerCertificateNotYetValid = -1204,
+		/// <summary>To be added.</summary>
 		ClientCertificateRejected = -1205,
+		/// <summary>To be added.</summary>
 		ClientCertificateRequired = -1206,
 
+		/// <summary>To be added.</summary>
 		CannotLoadFromNetwork = -2000,
 
 		// Download and file I/O errors
+		/// <summary>To be added.</summary>
 		CannotCreateFile = -3000,
+		/// <summary>To be added.</summary>
 		CannotOpenFile = -3001,
+		/// <summary>To be added.</summary>
 		CannotCloseFile = -3002,
+		/// <summary>To be added.</summary>
 		CannotWriteToFile = -3003,
+		/// <summary>To be added.</summary>
 		CannotRemoveFile = -3004,
+		/// <summary>To be added.</summary>
 		CannotMoveFile = -3005,
+		/// <summary>To be added.</summary>
 		DownloadDecodingFailedMidStream = -3006,
+		/// <summary>To be added.</summary>
 		DownloadDecodingFailedToComplete = -3007,
 	}
 
@@ -810,9 +898,12 @@ namespace Foundation {
 	[Flags]
 	[Native]
 	public enum NSVolumeEnumerationOptions : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
 		// skip                  = 1 << 0,
+		/// <summary>To be added.</summary>
 		SkipHiddenVolumes = 1 << 1,
+		/// <summary>To be added.</summary>
 		ProduceFileReferenceUrls = 1 << 2,
 	}
 
@@ -847,35 +938,62 @@ namespace Foundation {
 
 	[Native]
 	public enum NSSearchPathDirectory : ulong {
+		/// <summary>Applications directory (/Applications).</summary>
 		ApplicationDirectory = 1,
+		/// <summary>Demo applications directory</summary>
 		DemoApplicationDirectory,
+		/// <summary>Deprecated, used to be /Developer/Applications.</summary>
 		DeveloperApplicationDirectory,
+		/// <summary>Directory for admin applications (Application/Utilities)</summary>
 		AdminApplicationDirectory,
+		/// <summary>Library directory contains documentation, configuration files and support files (Library)</summary>
 		LibraryDirectory,
+		/// <summary>Deprecated, used to be /Developer</summary>
 		DeveloperDirectory,
+		/// <summary>User directory (for all users, not the currently logged in user, /Users, /Network/Users for example)</summary>
 		UserDirectory,
+		/// <summary>Documentation directory</summary>
 		DocumentationDirectory,
+		/// <summary>Document directory (this is where an application can store its documents)</summary>
 		DocumentDirectory,
+		/// <summary>Directory for CoreServices (System/Library/CoreServices)</summary>
 		CoreServiceDirectory,
+		/// <summary>User autosave directory (Library/Autosave Information)</summary>
 		AutosavedInformationDirectory = 11,
+		/// <summary>The user’s desktop directory.</summary>
 		DesktopDirectory = 12,
+		/// <summary>Cache directory (Library/Caches)</summary>
 		CachesDirectory = 13,
+		/// <summary>Application support directory (Library/Application Support)</summary>
 		ApplicationSupportDirectory = 14,
+		/// <summary>Downloads directory (only avaialble when the domain specified includes the User value)</summary>
 		DownloadsDirectory = 15,
+		/// <summary>Input methods directory (Library/Input Methods)</summary>
 		InputMethodsDirectory = 16,
+		/// <summary>User’s movies directory (~/Movies)</summary>
 		MoviesDirectory = 17,
+		/// <summary>User’s music directory (~/Music)</summary>
 		MusicDirectory = 18,
+		/// <summary>User’s picture directory (~/Pictures)</summary>
 		PicturesDirectory = 19,
+		/// <summary>Printer descriptions directory, the directory that contains Postcript Printer Description files (Library/Printers/PPDS)</summary>
 		PrinterDescriptionDirectory = 20,
+		/// <summary>Shared public directory, when enabled (~/Public)</summary>
 		SharedPublicDirectory = 21,
+		/// <summary>Preference Panes directory, the directory that contains the *.prefPane bundles, (Library/PreferencePanes)</summary>
 		PreferencePanesDirectory = 22,
+		/// <summary>User scripts directory (Library/Application Scripts/app)</summary>
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
 		ApplicationScriptsDirectory = 23,
+		/// <summary>Item replacement directory, used for implementing safe-save features.</summary>
 		ItemReplacementDirectory = 99,
+		/// <summary>Combined directories where applications can appear.</summary>
 		AllApplicationsDirectory = 100,
+		/// <summary>Combined directories where resources can be appear.</summary>
 		AllLibrariesDirectory = 101,
+		/// <summary>Trash directory</summary>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		TrashDirectory = 102,
@@ -900,9 +1018,13 @@ namespace Foundation {
 
 	[Native]
 	public enum NSRoundingMode : ulong {
+		/// <summary>To be added.</summary>
 		Plain,
+		/// <summary>To be added.</summary>
 		Down,
+		/// <summary>To be added.</summary>
 		Up,
+		/// <summary>To be added.</summary>
 		Bankers,
 	}
 
@@ -971,19 +1093,26 @@ namespace Foundation {
 
 	[Native]
 	public enum NSNumberFormatterBehavior : ulong {
+		/// <summary>To be added.</summary>
 		Default = 0,
+		/// <summary>To be added.</summary>
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
 		Version_10_0 = 1000,
+		/// <summary>To be added.</summary>
 		Version_10_4 = 1040,
 	}
 
 	[Native]
 	public enum NSNumberFormatterPadPosition : ulong {
+		/// <summary>To be added.</summary>
 		BeforePrefix,
+		/// <summary>To be added.</summary>
 		AfterPrefix,
+		/// <summary>To be added.</summary>
 		BeforeSuffix,
+		/// <summary>To be added.</summary>
 		AfterSuffix,
 	}
 
@@ -1066,9 +1195,13 @@ namespace Foundation {
 
 	[Native]
 	public enum NSUbiquitousKeyValueStoreChangeReason : long {
+		/// <summary>To be added.</summary>
 		ServerChange,
+		/// <summary>To be added.</summary>
 		InitialSyncChange,
+		/// <summary>To be added.</summary>
 		QuotaViolationChange,
+		/// <summary>To be added.</summary>
 		AccountChange,
 	}
 
@@ -1203,14 +1336,23 @@ namespace Foundation {
 	public enum NSUnderlineStyle : long {
 		/// <summary>To be added.</summary>
 		None = 0x00,
+		/// <summary>To be added.</summary>
 		Single = 0x01,
+		/// <summary>To be added.</summary>
 		Thick = 0x02,
+		/// <summary>To be added.</summary>
 		Double = 0x09,
+		/// <summary>To be added.</summary>
 		PatternSolid = 0x0000,
+		/// <summary>To be added.</summary>
 		PatternDot = 0x0100,
+		/// <summary>To be added.</summary>
 		PatternDash = 0x0200,
+		/// <summary>To be added.</summary>
 		PatternDashDot = 0x0300,
+		/// <summary>To be added.</summary>
 		PatternDashDotDot = 0x0400,
+		/// <summary>To be added.</summary>
 		ByWord = 0x8000,
 	}
 
@@ -1220,8 +1362,11 @@ namespace Foundation {
 	// See https://github.com/xamarin/xamarin-macios/issues/6573
 	[Native]
 	public enum NSWritingDirection : long {
+		/// <summary>To be added.</summary>
 		Natural = -1,
+		/// <summary>To be added.</summary>
 		LeftToRight = 0,
+		/// <summary>To be added.</summary>
 		RightToLeft = 1,
 	}
 
@@ -1267,12 +1412,17 @@ namespace Foundation {
 	[Flags]
 	[Native]
 	public enum NSUrlBookmarkCreationOptions : ulong {
+		/// <summary>To be added.</summary>
 		PreferFileIDResolution = 1 << 8,
+		/// <summary>To be added.</summary>
 		MinimalBookmark = 1 << 9,
+		/// <summary>To be added.</summary>
 		SuitableForBookmarkFile = 1 << 10,
+		/// <summary>To be added.</summary>
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		WithSecurityScope = 1 << 11,
+		/// <summary>To be added.</summary>
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		SecurityScopeAllowOnlyReadAccess = 1 << 12,
@@ -1283,8 +1433,11 @@ namespace Foundation {
 	[Flags]
 	[Native]
 	public enum NSUrlBookmarkResolutionOptions : ulong {
+		/// <summary>To be added.</summary>
 		WithoutUI = 1 << 8,
+		/// <summary>To be added.</summary>
 		WithoutMounting = 1 << 9,
+		/// <summary>To be added.</summary>
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		WithSecurityScope = 1 << 10,
@@ -1337,15 +1490,21 @@ namespace Foundation {
 
 	[Native]
 	public enum NSUrlRequestNetworkServiceType : ulong {
+		/// <summary>Default traffic</summary>
 		Default,
+		/// <summary>Voice over IP traffic.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'PushKit' framework instead.")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'PushKit' framework instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'PushKit' framework instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'PushKit' framework instead.")]
 		VoIP,
+		/// <summary>Video traffic.</summary>
 		Video,
+		/// <summary>Background traffic.</summary>
 		Background,
+		/// <summary>Voice traffic.</summary>
 		Voice,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		ResponsiveData = 6,
 		[TV (13, 0), iOS (13, 0)]
@@ -1354,6 +1513,7 @@ namespace Foundation {
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		ResponsiveAV = 9,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		CallSignaling = 11,
 	}
@@ -1393,32 +1553,47 @@ namespace Foundation {
 
 	[Native]
 	public enum NSUrlSessionAuthChallengeDisposition : long {
+		/// <summary>To be added.</summary>
 		UseCredential = 0,
+		/// <summary>To be added.</summary>
 		PerformDefaultHandling = 1,
+		/// <summary>To be added.</summary>
 		CancelAuthenticationChallenge = 2,
+		/// <summary>To be added.</summary>
 		RejectProtectionSpace = 3,
 	}
 
 	[Native]
 	public enum NSUrlSessionTaskState : long {
+		/// <summary>To be added.</summary>
 		Running = 0,
+		/// <summary>To be added.</summary>
 		Suspended = 1,
+		/// <summary>To be added.</summary>
 		Canceling = 2,
+		/// <summary>To be added.</summary>
 		Completed = 3,
 	}
 
 	[Native]
 	public enum NSUrlSessionResponseDisposition : long {
+		/// <summary>To be added.</summary>
 		Cancel = 0,
+		/// <summary>To be added.</summary>
 		Allow = 1,
+		/// <summary>To be added.</summary>
 		BecomeDownload = 2,
+		/// <summary>To be added.</summary>
 		BecomeStream = 3,
 	}
 
 	[Native]
 	public enum NSUrlErrorCancelledReason : long {
+		/// <summary>To be added.</summary>
 		UserForceQuitApplication,
+		/// <summary>To be added.</summary>
 		BackgroundUpdatesDisabled,
+		/// <summary>To be added.</summary>
 		InsufficientSystemResources,
 	}
 
@@ -1446,11 +1621,17 @@ namespace Foundation {
 
 	[Native]
 	public enum NSTimeZoneNameStyle : long {
+		/// <summary>To be added.</summary>
 		Standard,
+		/// <summary>To be added.</summary>
 		ShortStandard,
+		/// <summary>To be added.</summary>
 		DaylightSaving,
+		/// <summary>To be added.</summary>
 		ShortDaylightSaving,
+		/// <summary>To be added.</summary>
 		Generic,
+		/// <summary>To be added.</summary>
 		ShortGeneric,
 	}
 
@@ -1602,63 +1783,97 @@ namespace Foundation {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSQualityOfService : long {
+		/// <summary>To be added.</summary>
 		UserInteractive = 33,
+		/// <summary>To be added.</summary>
 		UserInitiated = 25,
+		/// <summary>To be added.</summary>
 		Utility = 17,
+		/// <summary>To be added.</summary>
 		Background = 9,
+		/// <summary>To be added.</summary>
 		Default = -1,
 	}
 
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSProcessInfoThermalState : long {
+		/// <summary>To be added.</summary>
 		Nominal,
+		/// <summary>To be added.</summary>
 		Fair,
+		/// <summary>To be added.</summary>
 		Serious,
+		/// <summary>To be added.</summary>
 		Critical,
 	}
 
 	[Native]
 	public enum NSUrlRelationship : long {
+		/// <summary>To be added.</summary>
 		Contains,
+		/// <summary>To be added.</summary>
 		Same,
+		/// <summary>To be added.</summary>
 		Other,
 	}
 
 	// NSTextCheckingResult.h:typedef NS_OPTIONS(uint64_t, NSTextCheckingType)
 	[Flags]
 	public enum NSTextCheckingType : ulong {
+		/// <summary>To be added.</summary>
 		Orthography = 1 << 0,
+		/// <summary>To be added.</summary>
 		Spelling = 1 << 1,
+		/// <summary>To be added.</summary>
 		Grammar = 1 << 2,
+		/// <summary>To be added.</summary>
 		Date = 1 << 3,
+		/// <summary>To be added.</summary>
 		Address = 1 << 4,
+		/// <summary>To be added.</summary>
 		Link = 1 << 5,
+		/// <summary>To be added.</summary>
 		Quote = 1 << 6,
+		/// <summary>To be added.</summary>
 		Dash = 1 << 7,
+		/// <summary>To be added.</summary>
 		Replacement = 1 << 8,
+		/// <summary>To be added.</summary>
 		Correction = 1 << 9,
+		/// <summary>To be added.</summary>
 		RegularExpression = 1 << 10,
+		/// <summary>To be added.</summary>
 		PhoneNumber = 1 << 11,
+		/// <summary>To be added.</summary>
 		TransitInformation = 1 << 12,
 	}
 
 	// NSTextCheckingResult.h:typedef uint64_t NSTextCheckingTypes;
 	public enum NSTextCheckingTypes : ulong {
+		/// <summary>To be added.</summary>
 		AllSystemTypes = 0xffffffff,
+		/// <summary>To be added.</summary>
 		AllCustomTypes = 0xffffffff00000000,
+		/// <summary>To be added.</summary>
 		AllTypes = 0xffffffffffffffff,
 	}
 
 	[Native]
 	[Flags]
 	public enum NSRegularExpressionOptions : ulong {
+		/// <summary>To be added.</summary>
 		CaseInsensitive = 1 << 0,
+		/// <summary>To be added.</summary>
 		AllowCommentsAndWhitespace = 1 << 1,
+		/// <summary>To be added.</summary>
 		IgnoreMetacharacters = 1 << 2,
+		/// <summary>To be added.</summary>
 		DotMatchesLineSeparators = 1 << 3,
+		/// <summary>To be added.</summary>
 		AnchorsMatchLines = 1 << 4,
 		UseUnixLineSeparators = 1 << 5,
+		/// <summary>To be added.</summary>
 		UseUnicodeWordBoundaries = 1 << 6,
 	}
 
@@ -1762,9 +1977,17 @@ namespace Foundation {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSUrlSessionTaskMetricsResourceFetchType : long {
+		/// <summary>The manner of the resource loading is not known.</summary>
 		Unknown,
+		/// <summary>The resource was retrieved via a network connection.</summary>
 		NetworkLoad,
+		/// <summary>The resource was pushed from a server.</summary>
+		[Deprecated (PlatformName.iOS, 18, 4, message: "Not supported in iOS 17+.")] // message mentions one OS version and the actual deprecation OS version don't match, but that's what the headers do.
+		[Deprecated (PlatformName.TvOS, 18, 4, message: "Not supported in tvOS 17+.")] // message mentions one OS version and the actual deprecation OS version don't match, but that's what the headers do.
+		[Deprecated (PlatformName.MacCatalyst, 18, 4, message: "Not supported in Mac Catalyst 17+.")] // message mentions one OS version and the actual deprecation OS version don't match, but that's what the headers do.
+		[Deprecated (PlatformName.MacOSX, 15, 4, message: "Not supported in macOS 14+.")] // message mentions one OS version and the actual deprecation OS version don't match, but that's what the headers do.
 		ServerPush,
+		/// <summary>The resource was retrieved from a local cache.</summary>
 		LocalCache,
 	}
 
@@ -1821,8 +2044,11 @@ namespace Foundation {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSUrlSessionDelayedRequestDisposition : long {
+		/// <summary>To be added.</summary>
 		ContinueLoading = 0,
+		/// <summary>To be added.</summary>
 		UseNewRequest = 1,
+		/// <summary>To be added.</summary>
 		Cancel = 2,
 	}
 

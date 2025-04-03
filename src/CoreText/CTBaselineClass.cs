@@ -52,26 +52,6 @@ namespace CoreText {
 	}
 
 	static partial class CTBaselineClassID {
-#if !NET
-		public static readonly NSString? Roman;
-		public static readonly NSString? IdeographicCentered;
-		public static readonly NSString? IdeographicLow;
-		public static readonly NSString? IdeographicHigh;
-		public static readonly NSString? Hanging;
-		public static readonly NSString? Math;
-
-		static CTBaselineClassID ()
-		{
-			var handle = Libraries.CoreText.Handle;
-			Roman = Dlfcn.GetStringConstant (handle, "kCTBaselineClassRoman");
-			IdeographicCentered = Dlfcn.GetStringConstant (handle, "kCTBaselineClassIdeographicCentered");
-			IdeographicLow = Dlfcn.GetStringConstant (handle, "kCTBaselineClassIdeographicLow");
-			IdeographicHigh = Dlfcn.GetStringConstant (handle, "kCTBaselineClassIdeographicHigh");
-			Hanging = Dlfcn.GetStringConstant (handle, "kCTBaselineClassHanging");
-			Math = Dlfcn.GetStringConstant (handle, "kCTBaselineClassMath");
-		}
-#endif
-
 		public static NSString? ToNSString (CTBaselineClass key)
 		{
 			switch (key) {
@@ -108,18 +88,6 @@ namespace CoreText {
 	}
 
 	static partial class CTBaselineFontID {
-#if !NET
-		public static readonly NSString? Reference;
-		public static readonly NSString? Original;
-
-		static CTBaselineFontID ()
-		{
-			var handle = Libraries.CoreText.Handle;
-			Reference = Dlfcn.GetStringConstant (handle, "kCTBaselineReferenceFont");
-			Original = Dlfcn.GetStringConstant (handle, "kCTBaselineOriginalFont");
-		}
-#endif // !NET
-
 		public static NSString? ToNSString (CTBaselineFont key)
 		{
 			switch (key) {

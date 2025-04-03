@@ -821,17 +821,33 @@ namespace MediaLibrary {
 		[NullAllowed, Export ("rootMediaGroup", ArgumentSemantic.Retain)]
 		MLMediaGroup RootMediaGroup { get; }
 
+		/// <param name="mediaGroupIdentifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("mediaGroupForIdentifier:")]
 		[return: NullAllowed]
 		MLMediaGroup MediaGroupForIdentifier (NSString mediaGroupIdentifier);
 
+		/// <param name="mediaGroupIdentifiers">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("mediaGroupsForIdentifiers:")]
 		NSDictionary<NSString, MLMediaGroup> MediaGroupsForIdentifiers (NSString [] mediaGroupIdentifiers);
 
+		/// <param name="mediaObjectIdentifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("mediaObjectForIdentifier:")]
 		[return: NullAllowed]
 		MLMediaObject MediaObjectForIdentifier (NSString mediaObjectIdentifier);
 
+		/// <param name="mediaObjectIdentifiers">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("mediaObjectsForIdentifiers:")]
 		NSDictionary<NSString, MLMediaObject> MediaObjectsForIdentifiers (NSString [] mediaObjectIdentifiers);
 

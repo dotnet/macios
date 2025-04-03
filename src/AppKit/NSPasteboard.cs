@@ -10,6 +10,10 @@ using ObjCRuntime;
 
 namespace AppKit {
 	public partial class NSPasteboard {
+		/// <param name="objects">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool WriteObjects (INSPasteboardWriting [] objects)
 		{
 			var nsa_pasteboardReading = NSArray.FromNSObjects (objects);

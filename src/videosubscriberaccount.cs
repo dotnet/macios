@@ -168,6 +168,11 @@ namespace VideoSubscriberAccount {
 		[Export ("accountManager:dismissViewController:")]
 		void DismissViewController (VSAccountManager accountManager, UIViewController viewController);
 
+		/// <param name="accountManager">To be added.</param>
+		///         <param name="accountProviderIdentifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("accountManager:shouldAuthenticateAccountProviderWithIdentifier:")]
 		bool ShouldAuthenticateAccountProvider (VSAccountManager accountManager, string accountProviderIdentifier);
 	}
@@ -235,6 +240,8 @@ namespace VideoSubscriberAccount {
 	[DisableDefaultCtor]
 	interface VSAccountManagerResult {
 
+		/// <summary>Informs the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:VideoSubscriberAccounts.VSAccountManager&amp;scope=Xamarin" title="T:VideoSubscriberAccounts.VSAccountManager">T:VideoSubscriberAccounts.VSAccountManager</a></format> that the app no longer needs the requested work.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancel")]
 		void Cancel ();
 	}
@@ -494,6 +501,12 @@ namespace VideoSubscriberAccount {
 		[Export ("defaultSubscriptionRegistrationCenter")]
 		VSSubscriptionRegistrationCenter Default { get; }
 
+		/// <param name="currentSubscription">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setCurrentSubscription:")]
 		void SetCurrentSubscription ([NullAllowed] VSSubscription currentSubscription);
 	}

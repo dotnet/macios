@@ -59,6 +59,12 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr /* SecPolicyRef */ SecPolicyCreateSSL (byte server, IntPtr /* CFStringRef */ hostname);
 
+		/// <param name="server">Indicate if the policy is for a server (true) or client (false) certificate.</param>
+		///         <param name="hostName">The server host name on which the policy will be applied.</param>
+		///         <summary>Create a policy instance that represent the SSL/TLS profile.</summary>
+		///         <returns>A SecPolicy instance that can be used to validate a SecCertificate using SecTrust.</returns>
+		///         <remarks>
+		///         </remarks>
 		static public SecPolicy CreateSslPolicy (bool server, string hostName)
 		{
 			var handle = CFString.CreateNative (hostName);
@@ -72,11 +78,25 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr /* SecPolicyRef */ SecPolicyCreateBasicX509 ();
 
+		/// <summary>Create a policy instance that represent the basic X.509 certificate profile.</summary>
+		///         <returns>A SecPolicy instance that can be used to validate a SecCertificate using SecTrust.</returns>
+		///         <remarks>
+		///         </remarks>
 		static public SecPolicy CreateBasicX509Policy ()
 		{
 			return new SecPolicy (SecPolicyCreateBasicX509 (), true);
 		}
 
+		/// <summary>Type identifier for the Security.SecPolicy type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
+		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[bool isSecPolicy = (CFType.GetTypeID (foo.Handle) == SecPolicy.GetTypeID ());]]></code>
+		///           </example>
+		///         </remarks>
 		[DllImport (Constants.SecurityLibrary, EntryPoint = "SecPolicyGetTypeID")]
 		public extern static nint GetTypeID ();
 

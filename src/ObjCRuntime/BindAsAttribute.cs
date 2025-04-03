@@ -40,6 +40,9 @@ namespace ObjCRuntime {
 	//
 	[AttributeUsage (AttributeTargets.ReturnValue | AttributeTargets.Property | AttributeTargets.Parameter, AllowMultiple = false)]
 	public class BindAsAttribute : Attribute {
+		/// <param name="type">The managed type.</param>
+		///         <summary>Initializes a new BindAs attribute with the specified managed type.</summary>
+		///         <remarks />
 		public BindAsAttribute (Type type)
 		{
 			Type = type;

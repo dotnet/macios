@@ -40,11 +40,16 @@ namespace CoreVideo {
 	[SupportedOSPlatform ("tvos")]
 	public class CVPixelBufferAttributes : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>Creates an empty set of attributes.</summary>
+		///         <remarks>To be added.</remarks>
 		public CVPixelBufferAttributes ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>Initializes the strongly typed <see cref="T:CoreVideo.CVPixelBufferAttributes" /> from the provided dictionary.</summary>
+		///         <remarks>To be added.</remarks>
 		public CVPixelBufferAttributes (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -68,6 +73,33 @@ namespace CoreVideo {
 			}
 			get {
 				return (CVPixelFormatType?) GetUIntValue (CVPixelBuffer.PixelFormatTypeKey);
+			}
+		}
+
+		/// <summary>The pixel formats of the pixel buffer.</summary>
+		/// <value></value>
+		/// <remarks>The property uses constant kCVPixelBufferPixelFormatTypeKey value to access the underlying dictionary.</remarks>
+		public CVPixelFormatType []? PixelFormatTypes {
+			get {
+				var obj = GetNativeValue<NSObject> (CVPixelBuffer.PixelFormatTypeKey);
+				if (obj is null) {
+					return null;
+				} else if (obj is NSNumber number) {
+					return new CVPixelFormatType [] { (CVPixelFormatType) number.UInt32Value };
+				} else if (obj is NSArray array) {
+					return Array.ConvertAll (array.ToArray (), (v) => (CVPixelFormatType) ((NSNumber) v).UInt32Value);
+				} else {
+					throw new InvalidOperationException ($"Unable to convert object of type {obj.GetType ()} into an array of CVPixelFormatType.");
+				}
+			}
+			set {
+				if (value is null) {
+					SetNumberValue (CVPixelBuffer.PixelFormatTypeKey, (uint?) null);
+				} else if (value.Length == 1) {
+					SetNumberValue (CVPixelBuffer.PixelFormatTypeKey, (uint?) value [0]);
+				} else {
+					SetArrayValue (CVPixelBuffer.PixelFormatTypeKey, Array.ConvertAll (value, (v) => new NSNumber ((uint) v)));
+				}
 			}
 		}
 
@@ -249,6 +281,10 @@ namespace CoreVideo {
 		///         <value>
 		///         </value>
 		///         <remarks>The property uses constant kCVPixelBufferOpenGLESCompatibilityKey value to access the underlying dictionary.</remarks>
+		[SupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
 		public bool? OpenGLESCompatibility {
 			set {
 				SetBooleanValue (CVPixelBuffer.OpenGLESCompatibilityKey, value);

@@ -62,12 +62,27 @@ namespace Security {
 		{
 		}
 #if !COREBUILD
+		/// <summary>Type identifier for the Security.SecCertificate type.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
+		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[bool isSecCertificate = (CFType.GetTypeID (foo.Handle) == SecCertificate.GetTypeID ());]]></code>
+		///           </example>
+		///         </remarks>
 		[DllImport (Constants.SecurityLibrary, EntryPoint = "SecCertificateGetTypeID")]
 		public extern static nint GetTypeID ();
 
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr SecCertificateCreateWithData (IntPtr allocator, IntPtr cfData);
 
+		/// <param name="data">X.509 certificate data inside an NSData instance.</param>
+		///         <summary>Initialize this instance from an NSData buffer containing a, DER-encoded, X.509 certificate.</summary>
+		///         <remarks>
+		///         </remarks>
 		public SecCertificate (NSData data)
 		{
 			if (data is null)
@@ -76,6 +91,10 @@ namespace Security {
 			Initialize (data);
 		}
 
+		/// <param name="data">Raw certificate data.</param>
+		///         <summary>Initialize this instance from a raw, DER-encoded, X.509 certificate byte array</summary>
+		///         <remarks>
+		///         </remarks>
 		public SecCertificate (byte [] data)
 		{
 			if (data is null)
@@ -86,6 +105,10 @@ namespace Security {
 			}
 		}
 
+		/// <param name="certificate">a valid X509Certificate instance</param>
+		///         <summary>Initialize this instance from an existing X509Certificate instance.</summary>
+		///         <remarks>
+		///         </remarks>
 		public SecCertificate (X509Certificate certificate)
 		{
 			if (certificate is null)
@@ -121,6 +144,10 @@ namespace Security {
 		}
 #endif
 
+		/// <param name="certificate">a valid X509Certificate2 instance</param>
+		///         <summary>Initialize this instance from an existing X509Certificate2 instance.</summary>
+		///         <remarks>
+		///         </remarks>
 		public SecCertificate (X509Certificate2 certificate)
 		{
 			if (certificate is null)
@@ -185,6 +212,9 @@ namespace Security {
 				return data.ToArray ();
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public X509Certificate ToX509Certificate ()
 		{
 #if NET
@@ -199,6 +229,9 @@ namespace Security {
 #endif
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public X509Certificate2 ToX509Certificate2 ()
 		{
 #if NET
@@ -316,6 +349,9 @@ namespace Security {
 		static extern IntPtr /* SecKeyRef* */ SecCertificateCopyKey (IntPtr /* SecKeyRef* */ key);
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -337,6 +373,9 @@ namespace Security {
 		unsafe static extern /* OSStatus */ int SecCertificateCopyCommonName (IntPtr /* SecCertificateRef */ certificate, IntPtr* /* CFStringRef * __nonnull CF_RETURNS_RETAINED */ commonName);
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -362,6 +401,9 @@ namespace Security {
 		unsafe static extern /* OSStatus */ int SecCertificateCopyEmailAddresses (IntPtr /* SecCertificateRef */ certificate, IntPtr* /* CFArrayRef * __nonnull CF_RETURNS_RETAINED */ emailAddresses);
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -387,6 +429,9 @@ namespace Security {
 		static extern /* __nullable CFDataRef */ IntPtr SecCertificateCopyNormalizedIssuerSequence (IntPtr /* SecCertificateRef */ certificate);
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
@@ -408,6 +453,9 @@ namespace Security {
 		static extern /* __nullable CFDataRef */ IntPtr SecCertificateCopyNormalizedSubjectSequence (IntPtr /* SecCertificateRef */ certificate);
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
@@ -448,6 +496,9 @@ namespace Security {
 		static extern /* __nullable CFDataRef */ IntPtr SecCertificateCopySerialNumber (IntPtr /* SecCertificateRef */ certificate);
 #endif
 #if NET
+		/// <summary>Developers should not use this deprecated method. Developers should use 'GetSerialNumber(out NSError)' instead.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -480,6 +531,10 @@ namespace Security {
 		unsafe static extern /* __nullable CFDataRef */ IntPtr SecCertificateCopySerialNumberData (IntPtr /* SecCertificateRef */ certificate, IntPtr* /* CFErrorRef * */ error);
 
 #if NET
+		/// <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
@@ -570,6 +625,16 @@ namespace Security {
 		}
 
 #if !COREBUILD
+		/// <summary>Type identifier for the Security.SecIdentity type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
+		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[bool isSecIdentity = (CFType.GetTypeID (foo.Handle) == SecIdentity.GetTypeID ());]]></code>
+		///           </example>
+		///         </remarks>
 		[DllImport (Constants.SecurityLibrary, EntryPoint = "SecIdentityGetTypeID")]
 		public extern static nint GetTypeID ();
 
@@ -690,6 +755,10 @@ namespace Security {
 			}
 		}
 
+		/// <param name="certificate">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static SecIdentity Import (X509Certificate2 certificate)
 		{
 			if (certificate is null)
@@ -727,6 +796,16 @@ namespace Security {
 		}
 
 #if !COREBUILD
+		/// <summary>Type identifier for the Security.SecKey type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
+		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[bool isSecKey = (CFType.GetTypeID (foo.Handle) == SecKey.GetTypeID ());]]></code>
+		///           </example>
+		///         </remarks>
 		[DllImport (Constants.SecurityLibrary, EntryPoint = "SecKeyGetTypeID")]
 		public extern static nint GetTypeID ();
 
@@ -751,6 +830,12 @@ namespace Security {
 		// TODO: pull all the TypeRefs needed for the NSDictionary
 
 #if NET
+		/// <param name="parameters">A dictionary of key pair parameters.</param>
+		///         <param name="publicKey">A location to store the public key.</param>
+		///         <param name="privateKey">A location to store the private key.</param>
+		///         <summary>Generates a key pair from the provided values.</summary>
+		///         <returns>A status code for the operation.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -785,6 +870,14 @@ namespace Security {
 			return res;
 		}
 
+		/// <param name="type">The type of key pair to generate.</param>
+		///         <param name="keySizeInBits">The key size, in bits</param>
+		///         <param name="publicAndPrivateKeyAttrs">Attributes for the keys in the pair.</param>
+		///         <param name="publicKey">A location to store the public key.</param>
+		///         <param name="privateKey">A location to store the private key.</param>
+		///         <summary>Generates a key pair from the provided values.</summary>
+		///         <returns>A status code for the operation.</returns>
+		///         <remarks>To be added.</remarks>
 		[Advice ("On iOS this method applies the attributes to both public and private key. To apply different attributes to each key, use 'GenerateKeyPair (SecKeyType, int, SecPublicPrivateKeyAttrs, SecPublicPrivateKeyAttrs, out SecKey, out SecKey)' instead.")]
 		public static SecStatusCode GenerateKeyPair (SecKeyType type, int keySizeInBits, SecPublicPrivateKeyAttrs publicAndPrivateKeyAttrs, out SecKey? publicKey, out SecKey? privateKey)
 		{
@@ -807,6 +900,15 @@ namespace Security {
 #endif
 		}
 #if !MONOMAC
+		/// <param name="type">The type of key pair to generate.</param>
+		///         <param name="keySizeInBits">The key size, in bits</param>
+		///         <param name="publicKeyAttrs">The public key attributes.</param>
+		///         <param name="privateKeyAttrs">The private key attributes.</param>
+		///         <param name="publicKey">A location to store the public key.</param>
+		///         <param name="privateKey">A location to store the private key.</param>
+		///         <summary>Generates a key pair from the provided values.</summary>
+		///         <returns>A status code for the operation.</returns>
+		///         <remarks>To be added.</remarks>
 		public static SecStatusCode GenerateKeyPair (SecKeyType type, int keySizeInBits, SecPublicPrivateKeyAttrs publicKeyAttrs, SecPublicPrivateKeyAttrs privateKeyAttrs, out SecKey? publicKey, out SecKey? privateKey)
 		{
 			if (type == SecKeyType.Invalid)
@@ -855,6 +957,13 @@ namespace Security {
 		unsafe extern static SecStatusCode SecKeyRawSign (IntPtr handle, SecPadding padding, IntPtr dataToSign, nint dataToSignLen, IntPtr sig, nint* sigLen);
 
 #if NET
+		/// <param name="padding">To be added.</param>
+		///         <param name="dataToSign">To be added.</param>
+		///         <param name="dataToSignLen">To be added.</param>
+		///         <param name="result">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -875,6 +984,12 @@ namespace Security {
 			return _RawSign (padding, dataToSign, dataToSignLen, out result);
 		}
 
+		/// <param name="padding">To be added.</param>
+		///         <param name="dataToSign">To be added.</param>
+		///         <param name="result">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe SecStatusCode RawSign (SecPadding padding, byte [] dataToSign, out byte [] result)
 		{
 			if (dataToSign is null)
@@ -913,6 +1028,14 @@ namespace Security {
 		extern static SecStatusCode SecKeyRawVerify (IntPtr handle, SecPadding padding, IntPtr signedData, nint signedLen, IntPtr sign, nint signLen);
 
 #if NET
+		/// <param name="padding">To be added.</param>
+		///         <param name="signedData">To be added.</param>
+		///         <param name="signedDataLen">To be added.</param>
+		///         <param name="signature">To be added.</param>
+		///         <param name="signatureLen">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -930,6 +1053,12 @@ namespace Security {
 			return SecKeyRawVerify (GetCheckedHandle (), padding, signedData, (nint) signedDataLen, signature, (nint) signatureLen);
 		}
 
+		/// <param name="padding">To be added.</param>
+		///         <param name="signedData">To be added.</param>
+		///         <param name="signature">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public SecStatusCode RawVerify (SecPadding padding, byte [] signedData, byte [] signature)
 		{
 			if (signature is null)
@@ -983,6 +1112,12 @@ namespace Security {
 			return SecKeyEncrypt (GetCheckedHandle (), padding, plainText, plainTextLen, cipherText, (nint*) Unsafe.AsPointer<nint> (ref cipherTextLen));
 		}
 
+		/// <param name="padding">To be added.</param>
+		///         <param name="plainText">To be added.</param>
+		///         <param name="cipherText">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public SecStatusCode Encrypt (SecPadding padding, byte [] plainText, byte [] cipherText)
 		{
 			if (cipherText is null)
@@ -998,6 +1133,12 @@ namespace Security {
 			}
 		}
 
+		/// <param name="padding">To be added.</param>
+		///         <param name="plainText">To be added.</param>
+		///         <param name="cipherText">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public SecStatusCode Encrypt (SecPadding padding, byte [] plainText, out byte [] cipherText)
 		{
 			cipherText = new byte [BlockSize];
@@ -1058,6 +1199,12 @@ namespace Security {
 			}
 		}
 
+		/// <param name="padding">To be added.</param>
+		///         <param name="cipherText">To be added.</param>
+		///         <param name="plainText">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public SecStatusCode Decrypt (SecPadding padding, byte [] cipherText, out byte []? plainText)
 		{
 			plainText = null;
@@ -1074,6 +1221,11 @@ namespace Security {
 		unsafe static extern IntPtr /* SecKeyRef _Nullable */ SecKeyCreateRandomKey (IntPtr /* CFDictionaryRef* */ parameters, IntPtr* /* CFErrorRef** */ error);
 
 #if NET
+		/// <param name="parameters">A dictionary of <see cref="T:Security.SecKeyGenerationParameters" /> values, keyed by keys from <see cref="T:Security.SecKeyParameters" />.</param>
+		///         <param name="error">A location in which to write codes for any errors that occur.</param>
+		///         <summary>Creates and returns a new key pair.</summary>
+		///         <returns>A new key pair.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -1095,6 +1247,13 @@ namespace Security {
 		}
 
 #if NET
+		/// <param name="keyType">Whether to create a DSA elliptic curve or RSA key.</param>
+		///         <param name="keySizeInBits">To be added.</param>
+		///         <param name="parameters">A dictionary of <see cref="T:Security.SecKeyGenerationParameters" /> values, keyed by keys from <see cref="T:Security.SecKeyParameters" />.</param>
+		///         <param name="error">A location in which to write codes for any errors that occur.</param>
+		///         <summary>Creates and returns a new key pair.</summary>
+		///         <returns>A new key pair.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -1111,6 +1270,11 @@ namespace Security {
 		}
 
 #if NET
+		/// <param name="parameters">A parameter object for specifying details about the key pair to create.</param>
+		///         <param name="error">A location in which to write codes for any errors that occur.</param>
+		///         <summary>Creates and returns a new key pair.</summary>
+		///         <returns>A new key pair.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -1138,6 +1302,12 @@ namespace Security {
 		unsafe static extern IntPtr /* SecKeyRef _Nullable */ SecKeyCreateWithData (IntPtr /* CFDataRef* */ keyData, IntPtr /* CFDictionaryRef* */ attributes, IntPtr* /* CFErrorRef** */ error);
 
 #if NET
+		/// <param name="keyData">To be added.</param>
+		///         <param name="parameters">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -1162,6 +1332,15 @@ namespace Security {
 		}
 
 #if NET
+		/// <param name="keyData">To be added.</param>
+		///         <param name="keyType">To be added.</param>
+		///         <param name="keyClass">To be added.</param>
+		///         <param name="keySizeInBits">To be added.</param>
+		///         <param name="parameters">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -1188,6 +1367,10 @@ namespace Security {
 		unsafe static extern IntPtr /* CFDataRef _Nullable */ SecKeyCopyExternalRepresentation (IntPtr /* SecKeyRef* */ key, IntPtr* /* CFErrorRef** */ error);
 
 #if NET
+		/// <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -1205,6 +1388,9 @@ namespace Security {
 		}
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -1230,6 +1416,9 @@ namespace Security {
 		static extern IntPtr /* CFDictionaryRef _Nullable */ SecKeyCopyAttributes (IntPtr /* SecKeyRef* */ key);
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -1251,6 +1440,9 @@ namespace Security {
 		static extern IntPtr /* SecKeyRef* */ SecKeyCopyPublicKey (IntPtr /* SecKeyRef* */ key);
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -1272,6 +1464,11 @@ namespace Security {
 		static extern byte /* Boolean */ SecKeyIsAlgorithmSupported (IntPtr /* SecKeyRef* */ key, /* SecKeyOperationType */ nint operation, IntPtr /* SecKeyAlgorithm* */ algorithm);
 
 #if NET
+		/// <param name="operation">To be added.</param>
+		///         <param name="algorithm">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -1292,6 +1489,12 @@ namespace Security {
 		unsafe static extern /* CFDataRef _Nullable */ IntPtr SecKeyCreateSignature (/* SecKeyRef */ IntPtr key, /* SecKeyAlgorithm */ IntPtr algorithm, /* CFDataRef */ IntPtr dataToSign, /* CFErrorRef* */ IntPtr* error);
 
 #if NET
+		/// <param name="algorithm">To be added.</param>
+		///         <param name="dataToSign">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -1322,6 +1525,13 @@ namespace Security {
 		unsafe static extern /* Boolean */ byte SecKeyVerifySignature (/* SecKeyRef */ IntPtr key, /* SecKeyAlgorithm */ IntPtr algorithm, /* CFDataRef */ IntPtr signedData, /* CFDataRef */ IntPtr signature, /* CFErrorRef* */ IntPtr* error);
 
 #if NET
+		/// <param name="algorithm">To be added.</param>
+		///         <param name="signedData">To be added.</param>
+		///         <param name="signature">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -1355,6 +1565,12 @@ namespace Security {
 		unsafe static extern /* CFDataRef _Nullable */ IntPtr SecKeyCreateEncryptedData (/* SecKeyRef */ IntPtr key, /* SecKeyAlgorithm */ IntPtr algorithm, /* CFDataRef */ IntPtr plaintext, /* CFErrorRef* */ IntPtr* error);
 
 #if NET
+		/// <param name="algorithm">To be added.</param>
+		///         <param name="plaintext">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -1385,6 +1601,12 @@ namespace Security {
 		unsafe static extern /* CFDataRef _Nullable */ IntPtr SecKeyCreateDecryptedData (/* SecKeyRef */ IntPtr key, /* SecKeyAlgorithm */ IntPtr algorithm, /* CFDataRef */ IntPtr ciphertext, /* CFErrorRef* */ IntPtr* error);
 
 #if NET
+		/// <param name="algorithm">To be added.</param>
+		///         <param name="ciphertext">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -1415,6 +1637,13 @@ namespace Security {
 		unsafe static extern /* CFDataRef _Nullable */ IntPtr SecKeyCopyKeyExchangeResult (/* SecKeyRef */ IntPtr privateKey, /* SecKeyAlgorithm */ IntPtr algorithm, /* SecKeyRef */ IntPtr publicKey, /* CFDictionaryRef */ IntPtr parameters, /* CFErrorRef* */ IntPtr* error);
 
 #if NET
+		/// <param name="algorithm">To be added.</param>
+		///         <param name="publicKey">To be added.</param>
+		///         <param name="parameters">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -1439,6 +1668,13 @@ namespace Security {
 		}
 
 #if NET
+		/// <param name="algorithm">To be added.</param>
+		///         <param name="publicKey">To be added.</param>
+		///         <param name="parameters">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]

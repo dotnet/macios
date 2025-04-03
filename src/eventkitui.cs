@@ -87,6 +87,10 @@ namespace EventKitUI {
 	[Model]
 	[Protocol]
 	interface EKEventViewDelegate {
+		/// <param name="controller">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("eventViewController:didCompleteWithAction:"), EventArgs ("EKEventView")]
 		void Completed (EKEventViewController controller, EKEventViewAction action);
@@ -136,6 +140,8 @@ namespace EventKitUI {
 		[Export ("event")]
 		EKEvent Event { get; set; }
 
+		/// <summary>Cancels the editing operation, discarding any changes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancelEditing")]
 		void CancelEditing ();
 	}
@@ -155,10 +161,18 @@ namespace EventKitUI {
 	[Model]
 	[Protocol]
 	interface EKEventEditViewDelegate {
+		/// <param name="controller">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("eventEditViewController:didCompleteWithAction:"), EventArgs ("EKEventEdit")]
 		void Completed (EKEventEditViewController controller, EKEventEditViewAction action);
 
+		/// <param name="controller">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("eventEditViewControllerDefaultCalendarForNewEvents:"), DelegateName ("EKEventEditController"), DefaultValue (null)]
 		EKCalendar GetDefaultCalendarForNewEvents (EKEventEditViewController controller);
 	}
@@ -246,12 +260,21 @@ namespace EventKitUI {
 	[Model]
 	[Protocol]
 	interface EKCalendarChooserDelegate {
+		/// <param name="calendarChooser">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("calendarChooserSelectionDidChange:")]
 		void SelectionChanged (EKCalendarChooser calendarChooser);
 
+		/// <param name="calendarChooser">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("calendarChooserDidFinish:")]
 		void Finished (EKCalendarChooser calendarChooser);
 
+		/// <param name="calendarChooser">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("calendarChooserDidCancel:")]
 		void Cancelled (EKCalendarChooser calendarChooser);
 	}

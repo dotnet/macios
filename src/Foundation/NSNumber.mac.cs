@@ -17,6 +17,10 @@ using ObjCRuntime;
 namespace Foundation {
 	public partial class NSNumber {
 #if !COREBUILD
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSNumber FromObject (object value)
 		{
 			if (value is float) {

@@ -42,6 +42,9 @@ namespace CoreGraphics {
 		{
 		}
 
+		/// <param name="page">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGPDFContentStream (CGPDFPage page)
 			: base (CGPDFContentStreamCreateWithPage (page.GetNonNullHandle (nameof (page))), true)
 		{
@@ -60,6 +63,11 @@ namespace CoreGraphics {
 			return result;
 		}
 
+		/// <param name="stream">To be added.</param>
+		///         <param name="streamResources">To be added.</param>
+		///         <param name="parent">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGPDFContentStream (CGPDFStream stream, NSDictionary? streamResources = null, CGPDFContentStream? parent = null)
 			: base (Create (stream, streamResources, parent), true)
 		{
@@ -78,6 +86,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CFArrayRef */ IntPtr CGPDFContentStreamGetStreams (/* CGPDFContentStreamRef */ IntPtr cs);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGPDFStream? []? GetStreams ()
 		{
 			var rv = CGPDFContentStreamGetStreams (Handle);
@@ -87,6 +98,11 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGPDFObjectRef */ IntPtr CGPDFContentStreamGetResource (/* CGPDFContentStreamRef */ IntPtr cs, /* const char* */ IntPtr category, /* const char* */ IntPtr name);
 
+		/// <param name="category">To be added.</param>
+		///         <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGPDFObject? GetResource (string category, string name)
 		{
 			if (category is null)

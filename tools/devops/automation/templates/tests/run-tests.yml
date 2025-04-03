@@ -5,7 +5,6 @@ parameters:
 
 - name: testsLabels
   type: string
-  default: '--label=run-ios-tests,run-non-monotouch-tests,run-monotouch-tests,run-mscorlib-tests' # default context, since we started dealing with iOS devices.
 
 - name: label
   type: string
@@ -26,10 +25,6 @@ parameters:
 - name: testPrefix
   type: string
   default: 'ios' # default context, since we started dealing with iOS devices.
-
-- name: makeTarget
-  type: string
-  default: 'vsts-device-tests' # target to be used to run the tests
 
 - name: uploadPrefix
   type: string
@@ -123,7 +118,7 @@ steps:
     # show environment
     env -0 | sort -z | tr '\0' '\n' || true
 
-    make -C tests ${{ parameters.makeTarget }}
+    make -C tests jenkins
 
     # We reached the end! This means we succeeded!
     set +x

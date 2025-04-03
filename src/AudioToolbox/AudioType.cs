@@ -285,12 +285,25 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public static readonly AudioFormatFlags AudioFormatFlagsAudioUnitNativeFloat = AudioFormatFlags.IsFloat | AudioFormatFlags.IsPacked | (BitConverter.IsLittleEndian ? 0 : AudioFormatFlags.IsBigEndian) | AudioFormatFlags.IsNonInterleaved;
 
+		/// <param name="formatType">Format type for the AudioStreamBasicDescription.</param>
+		///         <summary>Initializes the AudioStreamBasicDescription with the specified format type.</summary>
+		///         <remarks>
+		///         </remarks>
 		public AudioStreamBasicDescription (AudioFormatType formatType)
 			: this ()
 		{
 			Format = formatType;
 		}
 
+		/// <param name="sampleRate">Sample rate.</param>
+		///         <param name="channelsPerFrame">Channels per frame.</param>
+		///         <param name="bitsPerChannel">Bits per channel.</param>
+		///         <param name="bigEndian">Format data..</param>
+		///         <summary>Convenience function to create an AudioStreamBasicDescription for LinearPCM data..</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public static AudioStreamBasicDescription CreateLinearPCM (double sampleRate = 44100, uint channelsPerFrame = 2, uint bitsPerChannel = 16, bool bigEndian = false)
 		{
 			var desc = new AudioStreamBasicDescription (AudioFormatType.LinearPCM);
@@ -306,6 +319,10 @@ namespace AudioToolbox {
 			return desc;
 		}
 
+		/// <param name="format">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe static AudioChannelLayoutTag []? GetAvailableEncodeChannelLayoutTags (AudioStreamBasicDescription format)
 		{
 			var type_size = sizeof (AudioStreamBasicDescription);
@@ -323,6 +340,10 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <param name="format">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe static int []? GetAvailableEncodeNumberChannels (AudioStreamBasicDescription format)
 		{
 			uint size;
@@ -339,6 +360,10 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <param name="magicCookie">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe AudioFormat []? GetOutputFormatList (byte []? magicCookie = null)
 		{
 			var afi = new AudioFormatInfo ();
@@ -362,6 +387,10 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <param name="magicCookie">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe AudioFormat []? GetFormatList (byte [] magicCookie)
 		{
 			if (magicCookie is null)
@@ -393,6 +422,10 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <param name="format">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioFormatError GetFormatInfo (ref AudioStreamBasicDescription format)
 		{
 			unsafe {
@@ -469,6 +502,11 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <summary>Renders a debugging-friendly description of the contents of the AudioStreamBasicDescription.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			return String.Format ("[SampleRate={0} FormatID={1} FormatFlags={2} BytesPerPacket={3} FramesPerPacket={4} BytesPerFrame={5} ChannelsPerFrame={6} BitsPerChannel={7}]",
@@ -493,6 +531,9 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public int DataByteSize;
 
+		/// <summary>Provides a string representation of the packet description.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("StartOffset={0} VariableFramesInPacket={1} DataByteSize={2}", StartOffset, VariableFramesInPacket, DataByteSize);
@@ -722,6 +763,10 @@ namespace AudioToolbox {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public static class AudioChannelLabelExtensions {
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool IsReserved (this AudioChannelLabel value)
 		{
 			return (uint) value >= 0xF0000000 && (uint) value <= 0xFFFFFFFE;
@@ -860,6 +905,9 @@ namespace AudioToolbox {
 			return (IntPtr) ptr;
 		}
 
+		/// <summary>User visible representation.</summary>
+		///         <returns />
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("[id={0} {1} - {2},{3},{4}", Label, Flags, Coords [0], Coords [1], Coords [2]);
@@ -1264,6 +1312,10 @@ namespace AudioToolbox {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public static class AudioChannelLayoutTagExtensions {
+		/// <param name="layoutTag">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioChannelBit? ToAudioChannel (this AudioChannelLayoutTag layoutTag)
 		{
 			int value;
@@ -1278,11 +1330,19 @@ namespace AudioToolbox {
 			return (AudioChannelBit) value;
 		}
 
+		/// <param name="inLayoutTag">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static uint GetNumberOfChannels (this AudioChannelLayoutTag inLayoutTag)
 		{
 			return (uint) inLayoutTag & 0x0000FFFF;
 		}
 
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool IsReserved (this AudioChannelLayoutTag value)
 		{
 			return (uint) value >= 0xF0000000 && (uint) value <= 0xFFFFFFFE;
@@ -1297,6 +1357,8 @@ namespace AudioToolbox {
 	[DebuggerDisplay ("{Name}")]
 	public class AudioChannelLayout {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioChannelLayout ()
 		{
 		}
@@ -1388,11 +1450,19 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <param name="channelBitmap">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioChannelLayout? FromAudioChannelBitmap (AudioChannelBit channelBitmap)
 		{
 			return GetChannelLayout (AudioFormatProperty.ChannelLayoutForBitmap, (int) channelBitmap);
 		}
 
+		/// <param name="channelLayoutTag">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioChannelLayout? FromAudioChannelLayoutTag (AudioChannelLayoutTag channelLayoutTag)
 		{
 			return GetChannelLayout (AudioFormatProperty.ChannelLayoutForTag, (int) channelLayoutTag);
@@ -1429,6 +1499,9 @@ namespace AudioToolbox {
 			return new AudioChannelLayout (handle);
 		}
 
+		/// <summary>Renders a human-readable version of the object.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("AudioChannelLayout: Tag={0} Bitmap={1} Channels={2}", AudioTag, ChannelUsage, Channels!.Length);
@@ -1457,6 +1530,10 @@ namespace AudioToolbox {
 			return buffer;
 		}
 
+		/// <param name="layout">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioFormatError Validate (AudioChannelLayout layout)
 		{
 			if (layout is null)
@@ -1470,6 +1547,11 @@ namespace AudioToolbox {
 			return res;
 		}
 
+		/// <param name="inputLayout">To be added.</param>
+		///         <param name="outputLayout">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe static int []? GetChannelMap (AudioChannelLayout inputLayout, AudioChannelLayout outputLayout)
 		{
 			if (inputLayout is null)
@@ -1504,6 +1586,11 @@ namespace AudioToolbox {
 			return res == 0 ? value : null;
 		}
 
+		/// <param name="inputLayout">To be added.</param>
+		///         <param name="outputLayout">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe static float [,]? GetMatrixMixMap (AudioChannelLayout inputLayout, AudioChannelLayout outputLayout)
 		{
 			if (inputLayout is null)
@@ -1542,6 +1629,10 @@ namespace AudioToolbox {
 			return res == 0 ? value : null;
 		}
 
+		/// <param name="layout">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static int? GetNumberOfChannels (AudioChannelLayout layout)
 		{
 			if (layout is null)
@@ -1559,6 +1650,10 @@ namespace AudioToolbox {
 			return res != 0 ? null : (int?) value;
 		}
 
+		/// <param name="layout">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static AudioChannelLayoutTag? GetTagForChannelLayout (AudioChannelLayout layout)
 		{
 			if (layout is null)
@@ -1577,6 +1672,10 @@ namespace AudioToolbox {
 			return res != 0 ? null : (AudioChannelLayoutTag?) value;
 		}
 
+		/// <param name="count">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe static AudioChannelLayoutTag []? GetTagsForNumberOfChannels (int count)
 		{
 			const int type_size = sizeof (uint);
@@ -1594,6 +1693,11 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <summary>Encodes the AudioChannelLayout as an in-memory NSData structure.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public NSData AsData ()
 		{
 			int size;
@@ -1694,6 +1798,9 @@ namespace AudioToolbox {
 			}
 		}
 
+		/// <summary>Returns a string representation of the time code.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("[Subframes={0},Divisor={1},Counter={2},Type={3},Flags={4},Hours={5},Minutes={6},Seconds={7},Frames={8}]",
@@ -1776,6 +1883,9 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public uint Reserved;
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			var sb = new StringBuilder ("{");
@@ -1830,6 +1940,9 @@ namespace AudioToolbox {
 		///         <remarks>The size of this buffer is described by the <see cref="F:AudioToolbox.AudioBuffer.DataByteSize" /> property.</remarks>
 		public IntPtr Data;
 
+		/// <summary>Debugging method that display information about the AudioBuffer.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return string.Format ("[channels={0},dataByteSize={1},ptrData=0x{2:x}]", NumberChannels, DataByteSize, Data);

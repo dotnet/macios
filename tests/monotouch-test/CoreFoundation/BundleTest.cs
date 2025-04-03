@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Foundation;
 using CoreFoundation;
 using NUnit.Framework;
@@ -161,8 +162,11 @@ namespace MonoTouchFixtures.CoreFoundation {
 		public void TestLocalizations ()
 		{
 			var main = CFBundle.GetMain ();
-			var localizations = CFBundle.GetLocalizations (main.Url);
-			Assert.AreEqual (1, localizations.Length);
+			var localizations = CFBundle.GetLocalizations (main.Url).OrderBy (v => v).ToArray ();
+			var expected = new string [] {
+				"Base", "en-AU", "en-UK", "es", "es-AR", "es-ES"
+			}.OrderBy (v => v).ToArray ();
+			Assert.AreEqual (string.Join (";", expected), string.Join (";", localizations), "Localizations");
 		}
 
 		[Test]
@@ -313,14 +317,6 @@ namespace MonoTouchFixtures.CoreFoundation {
 			Assert.Throws<ArgumentException> (() => main.GetLocalizedString (key, null, "tableName"));
 		}
 
-		[TestCase ("")]
-		[TestCase (null)]
-		public void TestLocalizedStringNullTable (string tableName)
-		{
-			var main = CFBundle.GetMain ();
-			Assert.Throws<ArgumentException> (() => main.GetLocalizedString ("key", null, tableName));
-		}
-
 		[Test]
 		public void TestGetLocalizationsForPreferencesNullLocalArray ()
 		{
@@ -337,6 +333,218 @@ namespace MonoTouchFixtures.CoreFoundation {
 		public void TestGetInfoDictionaryNull ()
 		{
 			Assert.Throws<ArgumentNullException> (() => CFBundle.GetInfoDictionary (null));
+		}
+
+		[Test]
+		public void GetLocalizedString ()
+		{
+			var main = CFBundle.GetMain ();
+
+			Assert.Multiple (() => {
+				Assert.Throws<ArgumentException> (() => main.GetLocalizedString (null, "value", "table"), "Key E1");
+				Assert.Throws<ArgumentException> (() => main.GetLocalizedString ("", "value", "table"), "Key E2");
+
+				var defaultValue = "default";
+				var preferred = NSBundle.MainBundle.PreferredLocalizations [0];
+				string key;
+				string expectedValue;
+				string tableName;
+				string s;
+
+				// default localization
+				foreach (var tn in new string [] { "Localizable", null, "" }) {
+					tableName = tn;
+					key = "GoodMorning";
+					expectedValue = "?";
+					switch (preferred) {
+					case "en-AU":
+						expectedValue = "G'day mate";
+						break;
+					case "en-UK":
+						expectedValue = "Wakey, wakey, eggs and bakey";
+						break;
+					case "es":
+						expectedValue = "Buenas";
+						break;
+					case "es-AR":
+						expectedValue = "Buen día";
+						break;
+					case "es-ES":
+						expectedValue = "Buenos días";
+						break;
+					default:
+						expectedValue = $"Unexpected preferred language ({preferred}), probably missing localizations.";
+						break;
+					}
+					s = main.GetLocalizedString (key, defaultValue, tableName);
+					Assert.AreEqual (expectedValue, s, $"{tableName}/{key}");
+				}
+
+				// no matching table, so default value
+				foreach (var tn in new string [] { "Base", "AnythingElse" }) {
+					tableName = tn;
+					key = "GoodMorning";
+					expectedValue = "default";
+					s = main.GetLocalizedString (key, defaultValue, tableName);
+					Assert.AreEqual (expectedValue, s, $"{tableName}/{key}");
+				}
+
+				tableName = "CustomTable";
+				key = "Local Animal";
+				expectedValue = "?";
+				switch (preferred) {
+				case "en-AU":
+					expectedValue = "Quokka";
+					break;
+				case "en-UK":
+					expectedValue = "Tiger of the Highlands";
+					break;
+				case "es":
+					expectedValue = "Ocelote";
+					break;
+				case "es-AR":
+					expectedValue = "Pato vapor cabeza blanca";
+					break;
+				case "es-ES":
+					expectedValue = "Lince ibérico";
+					break;
+				default:
+					expectedValue = $"Unexpected preferred language ({preferred}), probably missing localizations.";
+					break;
+				}
+				s = main.GetLocalizedString (key, defaultValue, tableName);
+				Assert.AreEqual (expectedValue, s, key);
+			});
+		}
+
+		[Test]
+		public void GetLocalizedStringWithLanguages ()
+		{
+			TestRuntime.AssertXcodeVersion (16, 3);
+			var main = CFBundle.GetMain ();
+
+			Assert.Multiple (() => {
+				Assert.Throws<ArgumentException> (() => main.GetLocalizedString (null, "value", "table", Array.Empty<string> ()), "Key E1");
+				Assert.Throws<ArgumentException> (() => main.GetLocalizedString ("", "value", "table", Array.Empty<string> ()), "Key E2");
+
+				Assert.Throws<ArgumentNullException> (() => main.GetLocalizedString ("key", "value", "table", (string []) null), "Localizations E1");
+
+				var defaultValue = "default";
+				string tableName;
+				string key;
+				string s;
+
+				tableName = "CustomTable";
+				key = "Local Animal";
+				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { });
+				Assert.AreEqual ("Tiger of the Highlands", s, $"{tableName}/{key}:[]");
+
+				// There's no en-US translation, so the en-UK one is picked instead
+				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-US" });
+				Assert.AreEqual ("Tiger of the Highlands", s, $"{tableName}/{key}:en-US");
+
+				// There's no de-DE translation, so the en-UK one is picked instead
+				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "de-DE" });
+				Assert.AreEqual ("Tiger of the Highlands", s, $"{tableName}/{key}:en-US");
+
+				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-AU" });
+				Assert.AreEqual ("Quokka", s, $"{tableName}/{key}:en-AU");
+
+				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-UK" });
+				Assert.AreEqual ("Tiger of the Highlands", s, $"{tableName}/{key}:en-UK");
+
+				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-ES" });
+				Assert.AreEqual ("Lince ibérico", s, $"{tableName}/{key}:es-ES");
+
+				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-AR" });
+				Assert.AreEqual ("Pato vapor cabeza blanca", s, $"{tableName}/{key}:es-AR");
+
+				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es" });
+				Assert.AreEqual ("Ocelote", s, $"{tableName}/{key}:es");
+
+				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-MX" });
+				Assert.AreEqual ("Ocelote", s, $"{tableName}/{key}:es-MX");
+
+				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-AR", "es-ES" });
+				Assert.AreEqual ("Pato vapor cabeza blanca", s, $"{tableName}/{key}:es-AR;es-ES");
+
+				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-ES", "es-AR" });
+				Assert.AreEqual ("Lince ibérico", s, $"{tableName}/{key}:es-ES;es-AR");
+
+				foreach (var tn in new string [] { "Localizable", null, "" }) {
+					tableName = tn;
+					key = "GoodMorning";
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { });
+					Assert.AreEqual ("Wakey, wakey, eggs and bakey", s, $"{tableName}/{key}:[]");
+
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-CA" });
+					Assert.AreEqual ("Wakey, wakey, eggs and bakey", s, $"{tableName}/{key}:en-CA");
+
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-US" });
+					Assert.AreEqual ("Wakey, wakey, eggs and bakey", s, $"{tableName}/{key}:en-US");
+
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-AU" });
+					Assert.AreEqual ("G'day mate", s, $"{tableName}/{key}:en-AU");
+
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-UK" });
+					Assert.AreEqual ("Wakey, wakey, eggs and bakey", s, $"{tableName}/{key}:en-UK");
+
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-ES" });
+					Assert.AreEqual ("Buenos días", s, $"{tableName}/{key}:es-ES");
+
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-AR" });
+					Assert.AreEqual ("Buen día", s, $"{tableName}/{key}:es-AR");
+
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es" });
+					Assert.AreEqual ("Buenas", s, $"{tableName}/{key}:es");
+
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-MX" });
+					Assert.AreEqual ("Buenas", s, $"{tableName}/{key}:es-MX");
+
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-AR", "es-ES" });
+					Assert.AreEqual ("Buen día", s, $"{tableName}/{key}:es-AR;es-ES");
+
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-ES", "es-AR" });
+					Assert.AreEqual ("Buenos días", s, $"{tableName}/{key}:es-ES;es-AR");
+				}
+
+				foreach (var tn in new string [] { "Base", "AnythingElse" }) {
+					tableName = tn;
+					key = "GoodMorning";
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { });
+					Assert.AreEqual (defaultValue, s, $"{tableName}/{key}:[]");
+
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-CA" });
+					Assert.AreEqual (defaultValue, s, $"{tableName}/{key}:en-CA");
+
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-US" });
+					Assert.AreEqual (defaultValue, s, $"{tableName}/{key}:en-US");
+
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-AU" });
+					Assert.AreEqual (defaultValue, s, $"{tableName}/{key}:en-AU");
+
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-UK" });
+					Assert.AreEqual (defaultValue, s, $"{tableName}/{key}:en-UK");
+
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-ES" });
+					Assert.AreEqual (defaultValue, s, $"{tableName}/{key}:es-ES");
+
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-AR" });
+					Assert.AreEqual (defaultValue, s, $"{tableName}/{key}:es-AR");
+
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es" });
+					Assert.AreEqual (defaultValue, s, $"{tableName}/{key}:es");
+
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-MX" });
+					Assert.AreEqual (defaultValue, s, $"{tableName}/{key}:es-MX");
+
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-AR", "es-ES" });
+					Assert.AreEqual (defaultValue, s, $"{tableName}/{key}:es-AR;es-ES");
+
+					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-ES", "es-AR" });
+					Assert.AreEqual (defaultValue, s, $"{tableName}/{key}:es-ES;es-AR");
+				}
+			});
 		}
 
 #if MONOMAC

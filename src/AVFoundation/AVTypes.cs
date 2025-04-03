@@ -31,6 +31,9 @@ namespace AVFoundation {
 			Up = up;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("({0}:{1})", Forward, Up);
@@ -45,6 +48,10 @@ namespace AVFoundation {
 			return !left.Equals (right);
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? obj)
 		{
 			if (!(obj is AVAudio3DVectorOrientation))
@@ -53,11 +60,18 @@ namespace AVFoundation {
 			return this.Equals ((AVAudio3DVectorOrientation) obj);
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (AVAudio3DVectorOrientation other)
 		{
 			return Forward == other.Forward && Up == other.Up;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (Forward, Up);
@@ -82,6 +96,9 @@ namespace AVFoundation {
 		///         <remarks>To be added.</remarks>
 		public float Roll;
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("(Yaw={0},Pitch={1},Roll={2})", Yaw, Pitch, Roll);
@@ -101,6 +118,10 @@ namespace AVFoundation {
 
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? obj)
 		{
 			if (!(obj is AVAudio3DAngularOrientation))
@@ -109,11 +130,18 @@ namespace AVFoundation {
 			return this.Equals ((AVAudio3DAngularOrientation) obj);
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (AVAudio3DAngularOrientation other)
 		{
 			return this == other;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (Yaw, Pitch, Roll);
@@ -136,6 +164,11 @@ namespace AVFoundation {
 		///         <remarks>To be added.</remarks>
 		public float BlueGain;
 
+		/// <param name="redGain">To be added.</param>
+		///         <param name="greenGain">To be added.</param>
+		///         <param name="blueGain">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVCaptureWhiteBalanceGains (float redGain, float greenGain, float blueGain)
 		{
 			RedGain = redGain;
@@ -143,6 +176,9 @@ namespace AVFoundation {
 			BlueGain = blueGain;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("(RedGain={0},GreenGain={1},BlueGain={2})", RedGain, GreenGain, BlueGain);
@@ -162,6 +198,10 @@ namespace AVFoundation {
 				left.BlueGain != right.BlueGain);
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? obj)
 		{
 			if (!(obj is AVCaptureWhiteBalanceGains))
@@ -170,11 +210,18 @@ namespace AVFoundation {
 			return this.Equals ((AVCaptureWhiteBalanceGains) obj);
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (AVCaptureWhiteBalanceGains other)
 		{
 			return this == other;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (RedGain, GreenGain, BlueGain);
@@ -194,12 +241,19 @@ namespace AVFoundation {
 		///         <remarks>To be added.</remarks>
 		public float Y;
 
+		/// <param name="x">To be added.</param>
+		///         <param name="y">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVCaptureWhiteBalanceChromaticityValues (float x, float y)
 		{
 			X = x;
 			Y = y;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("({0},{1})", X, Y);
@@ -215,6 +269,10 @@ namespace AVFoundation {
 			return left.X != right.X || left.Y != right.Y;
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? obj)
 		{
 			if (!(obj is AVCaptureWhiteBalanceChromaticityValues))
@@ -223,11 +281,18 @@ namespace AVFoundation {
 			return this.Equals ((AVCaptureWhiteBalanceChromaticityValues) obj);
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (AVCaptureWhiteBalanceChromaticityValues other)
 		{
 			return this == other;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (X, Y);
@@ -247,11 +312,18 @@ namespace AVFoundation {
 		///         <remarks>To be added.</remarks>
 		public float Tint;
 
+		/// <param name="temperature">To be added.</param>
+		///         <param name="tint">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVCaptureWhiteBalanceTemperatureAndTintValues (float temperature, float tint)
 		{
 			Temperature = temperature;
 			Tint = tint;
 		}
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("(Temperature={0},Tint={1})", Temperature, Tint);
@@ -268,6 +340,10 @@ namespace AVFoundation {
 
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? obj)
 		{
 			if (!(obj is AVCaptureWhiteBalanceTemperatureAndTintValues))
@@ -276,11 +352,18 @@ namespace AVFoundation {
 			return this.Equals ((AVCaptureWhiteBalanceTemperatureAndTintValues) obj);
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (AVCaptureWhiteBalanceTemperatureAndTintValues other)
 		{
 			return this == other;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (Temperature, Tint);
@@ -301,6 +384,11 @@ namespace AVFoundation {
 		[DllImport (Constants.AVFoundationLibrary)]
 		static extern /* CGRect */ CGRect AVMakeRectWithAspectRatioInsideRect (/* CGSize */ CGSize aspectRatio, /* CGRect */ CGRect boundingRect);
 
+		/// <param name="self">To be added.</param>
+		///         <param name="aspectRatio">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CGRect WithAspectRatio (this CGRect self, CGSize aspectRatio)
 		{
 			return AVMakeRectWithAspectRatioInsideRect (aspectRatio, self);

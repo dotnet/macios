@@ -1095,6 +1095,9 @@ namespace MobileCoreServices {
 		[Field ("kUTTypeUniversalSceneDescriptionMobile", "ModelIO")]
 		NSString UniversalSceneDescriptionMobile { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("kUTTypeLivePhoto", "+CoreServices")]

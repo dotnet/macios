@@ -32,7 +32,6 @@ ACCELERATE_SOURCES = \
 # Accessibility
 
 ACCESSIBILITY_SOURCES = \
-	Accessibility/AXFeatureOverrideSessionError.cs \
 	Accessibility/AXHearingUtilities.cs \
 	Accessibility/AXAnimatedImagesUtilities.cs \
 	Accessibility/AXPrefers.cs \
@@ -233,6 +232,7 @@ AUTHENTICATIONSERVICES_SOURCES = \
 	AuthenticationServices/ASAuthorization.cs \
 	AuthenticationServices/ASAuthorizationRequest.cs \
 	AuthenticationServices/PublicPrivateKeyAuthentication.cs \
+	AuthenticationServices/ASAuthorizationProviderExtensionLoginManager.cs \
 
 # AVFoundation
 
@@ -285,6 +285,7 @@ AVFOUNDATION_SOURCES = \
 	AVFoundation/AVSpeechSynthesisProviderAudioUnit.cs \
 	AVFoundation/AVSpeechUtterance.cs \
 	AVFoundation/AVTextStyleRule.cs \
+	AVFoundation/AVAssetTrack.cs \
 	AVFoundation/Events.cs \
 	AVFoundation/AudioRendererWasFlushedAutomaticallyEventArgs.cs \
 	AVFoundation/AVCaptureReactionType.rgen.cs \
@@ -340,6 +341,7 @@ CARPLAY_API_SOURCES = \
 CARPLAY_SOURCES = \
 	CarPlay/CPCompat.cs \
 	CarPlay/CPNavigationAlert.cs \
+	CarPlay/CPNowPlayingSportsClock.cs \
 	CarPlay/CPMessageListItem.cs \
 
 # ClassKit
@@ -613,7 +615,6 @@ COREMEDIA_SOURCES = \
 # CoreMidi
 
 COREMIDI_CORE_SOURCES = \
-	CoreMidi/MidiCompat.cs \
 	CoreMidi/MidiCIDeviceIdentification.cs \
 	CoreMidi/MidiServices.cs \
 	CoreMidi/MidiStructs.cs \
@@ -685,7 +686,6 @@ CORETEXT_SOURCES = \
 	CoreText/CTStringAttributes.cs \
 	CoreText/CTTextTab.cs \
 	CoreText/CTTypesetter.cs \
-	CoreText/CTTypesetterOptionKeyCompat.cs \
 	CoreText/ConstructorError.cs \
 
 # CoreTelephony
@@ -721,6 +721,9 @@ COREVIDEO_SOURCES = \
 	CoreVideo/CVPixelBufferPoolSettings.cs \
 	CoreVideo/CVPixelFormatDescription.cs \
 	CoreVideo/CVTime.cs \
+
+CRYPTOTOKENKIT_SOURCES = \
+	CryptoTokenKit/TKTokenKeychainKey.cs \
 
 # CoreWlan
 
@@ -1404,6 +1407,7 @@ NETWORKEXTENSION_SOURCES = \
 	NetworkExtension/NEHotspotConfiguration.cs \
 	NetworkExtension/NEHotspotEapSettings.cs \
 	NetworkExtension/NEVpnManager.cs \
+	NetworkExtension/NEAppProxyFlow.cs \
 
 # NewsstandKit
 
@@ -1587,6 +1591,7 @@ SCENEKIT_SOURCES = \
 	SceneKit/SCNSceneLoadingOptions.cs \
 	SceneKit/SCNSceneSource.cs \
 	SceneKit/SCNSkinner.cs \
+	SceneKit/SCNRenderer.cs \
 	SceneKit/SCNTechnique.cs \
 	SceneKit/NSValue.cs \
 
@@ -1606,6 +1611,9 @@ SCRIPTINGBRIDGE_SOURCES = \
 	ScriptingBridge/SBApplication.cs \
 
 # ScreenTime
+
+SCREENTIME_SOURCES = \
+	ScreenTime/STWebHistory.cs \
 
 # SearchKit
 
@@ -1891,6 +1899,7 @@ WEBKIT_SOURCES = \
 	WebKit/WebView.cs \
 	WebKit/WKCompat.cs \
 	WebKit/WKPreferences.cs \
+	WebKit/WKWebExtensionMatchPattern.cs \
 	WebKit/WKWindowFeatures.cs \
 
 #
@@ -1929,6 +1938,7 @@ SHARED_CORE_SOURCES = \
 	ObjCRuntime/NativeAttribute.cs \
 	ObjCRuntime/NativeHandle.cs \
 	ObjCRuntime/NativeNameAttribute.cs \
+	ObjCRuntime/TransientCFObject.cs \
 	ObjCRuntime/TransientCFString.cs \
 	ObjCRuntime/TransientString.cs \
 	ObjCRuntime/NFloat.cs \
@@ -2133,6 +2143,7 @@ MACOS_FRAMEWORKS =          \
 	SensitiveContentAnalysis \
 	ServiceManagement       \
 	Security                \
+	SecurityUI              \
 	SharedWithYou           \
 	SharedWithYouCore       \
 	Social                  \
@@ -2245,6 +2256,7 @@ IOS_FRAMEWORKS =         \
 	SafetyKit \
 	ScreenTime \
 	Security \
+	SecurityUI \
 	SensitiveContentAnalysis \
 	SensorKit \
 	SharedWithYou \
@@ -2271,6 +2283,7 @@ TVOS_FRAMEWORKS =           \
 	AppTrackingTransparency \
 	AudioToolbox            \
 	AudioUnit               \
+	BackgroundAssets        \
 	BackgroundTasks         \
 	BrowserEngineKit        \
 	CFNetwork               \
@@ -2314,6 +2327,7 @@ TVOS_FRAMEWORKS =           \
 	PhotosUI                \
 	ReplayKit               \
 	Security                \
+	SecurityUI              \
 	SharedWithYou           \
 	SharedWithYouCore       \
 	SystemConfiguration     \
@@ -2413,6 +2427,7 @@ MACCATALYST_FRAMEWORKS = \
 	ScreenCaptureKit \
 	ScreenTime \
 	Security \
+	SecurityUI \
 	SensitiveContentAnalysis \
 	SensorKit \
 	ServiceManagement \

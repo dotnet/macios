@@ -46,6 +46,7 @@ namespace UIKit
 			return null;
 		}
 
+		/// <include file="../../docs/api/UIKit/NSLayoutConstraint.xml" path="/Documentation/Docs[@DocId='M:UIKit.NSLayoutConstraint.FromVisualFormat(System.String,UIKit.NSLayoutFormatOptions,System.Object[])']/*" />
 		static public NSLayoutConstraint [] FromVisualFormat (string format, NSLayoutFormatOptions formatOptions, params object [] viewsAndMetrics)
 		{
 			NSMutableDictionary views = null, metrics = null;
@@ -110,6 +111,12 @@ namespace UIKit
 			return NSLayoutConstraint.Create (view1, attribute1, relation, null, NSLayoutAttribute.NoAttribute, multiplier, constant);
 		}
 
+		/// <param name="view1">To be added.</param>
+		///         <param name="attribute1">To be added.</param>
+		///         <param name="relation">To be added.</param>
+		///         <summary>Static factory method to create a constraint based on a <see cref="T:UIKit.UIView" />, an <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:NSLayoutAttribute&amp;scope=Xamarin" title="T:NSLayoutAttribute">T:NSLayoutAttribute</a></format>, and an <see cref="T:UIKit.NSLayoutRelation" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSLayoutConstraint Create (NSObject view1, NSLayoutAttribute attribute1, NSLayoutRelation relation)
 		{
 			return NSLayoutConstraint.Create (view1, attribute1, relation, null, NSLayoutAttribute.NoAttribute, 1.0f, 0f);
@@ -124,6 +131,10 @@ namespace UIKit
 
 #if !MONOMAC || NET
 #if NET
+		/// <typeparam name="AnchorType">To be added.</typeparam>
+		///         <summary>For an anchor-based constraint, returns the first anchor, properly downcast to <c>AnchorType</c>.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -135,6 +146,10 @@ namespace UIKit
 		}
 
 #if NET
+		/// <typeparam name="AnchorType">To be added.</typeparam>
+		///         <summary>For an anchor-based constraint, returns the second anchor, properly downcast to <c>AnchorType</c>.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]

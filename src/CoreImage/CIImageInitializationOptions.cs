@@ -61,10 +61,15 @@ namespace CoreImage {
 	// Keeping 'CIImageInitializationOptionsWithMetadata' to avoid breaking change
 	public class CIImageInitializationOptionsWithMetadata : CIImageInitializationOptions {
 #if !COREBUILD
+		/// <summary>Creates a new CIImageInitializationOptionsWithMetadata with default values.</summary>
+		///         <remarks>To be added.</remarks>
 		public CIImageInitializationOptionsWithMetadata ()
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>Creates a new CIImageInitializationOptionsWithMetadata by using the specified dictionary of options.</summary>
+		///         <remarks>To be added.</remarks>
 		public CIImageInitializationOptionsWithMetadata (NSDictionary dictionary)
 			: base (dictionary)
 		{

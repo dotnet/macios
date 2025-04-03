@@ -120,6 +120,8 @@ using UIKit;
 
 namespace CoreImage {
 	public partial class CIFilter {
+		/// <summary>Creates a new CIFilter with default values.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -133,6 +135,10 @@ namespace CoreImage {
 		{
 		}
 
+		/// <param name="categories">To be added.</param>
+		///         <summary>Returns an array of strings that specifies the filters taht the system provides for the specified <paramref name="categories" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string [] FilterNamesInCategories (params string [] categories)
 		{
 			return _FilterNamesInCategories (categories);

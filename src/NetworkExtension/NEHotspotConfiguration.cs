@@ -10,11 +10,19 @@ namespace NetworkExtension {
 
 	public partial class NEHotspotConfiguration {
 
+		/// <param name="ssid">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NEHotspotConfiguration (string ssid)
 		{
 			InitializeHandle (initWithSsid (ssid));
 		}
 
+		/// <param name="ssid">To be added.</param>
+		///         <param name="passphrase">To be added.</param>
+		///         <param name="isWep">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NEHotspotConfiguration (string ssid, string passphrase, bool isWep)
 		{
 			InitializeHandle (initWithSsid (ssid, passphrase, isWep));

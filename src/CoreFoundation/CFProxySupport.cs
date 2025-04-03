@@ -569,6 +569,11 @@ namespace CoreFoundation {
 			return native == IntPtr.Zero ? null : new NSArray (native);
 		}
 
+		/// <param name="proxyAutoConfigurationScript">JavaScript source to be executed to obtain a list of proxies to use.</param>
+		///         <param name="targetURL">The target URL to connect to.</param>
+		///         <summary>Executes the provided javascript source to determine a list of proxies to use for connecting to the target URL.</summary>
+		///         <returns>Returns an array of <see cref="T:CoreFoundation.CFProxy" /> objects suitable to use for connecting to <paramref name="targetURL" />.</returns>
+		///         <remarks>See also: <see cref="M:CoreFoundation.CFNetwork.GetProxiesForURL(Foundation.NSUrl,CoreFoundation.CFProxySettings)" /></remarks>
 		public static CFProxy []? GetProxiesForAutoConfigurationScript (NSString proxyAutoConfigurationScript, NSUrl targetURL)
 		{
 			if (proxyAutoConfigurationScript is null)
@@ -594,6 +599,7 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <include file="../../docs/api/CoreFoundation/CFNetwork.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.CFNetwork.GetProxiesForAutoConfigurationScript(Foundation.NSString,System.Uri)']/*" />
 		public static CFProxy []? GetProxiesForAutoConfigurationScript (NSString proxyAutoConfigurationScript, Uri targetUri)
 		{
 			// proxyAutoConfigurationScript checked later
@@ -621,6 +627,11 @@ namespace CoreFoundation {
 			return native == IntPtr.Zero ? null : new NSArray (native);
 		}
 
+		/// <param name="url">The target URL to connect to.</param>
+		///         <param name="proxySettings">The proxy settings as returned by <see cref="M:CoreFoundation.CFNetwork.GetSystemProxySettings" />.</param>
+		///         <summary>Gets an array of <see cref="T:CoreFoundation.CFProxy" /> objects suitable to use for connecting to <paramref name="url" />.</summary>
+		///         <returns>Returns an array of <see cref="T:CoreFoundation.CFProxy" /> objects suitable to use for connecting to <paramref name="url" />.</returns>
+		///         <remarks>See also: <see cref="M:CoreFoundation.CFNetwork.GetProxiesForUri(System.Uri,CoreFoundation.CFProxySettings)" /></remarks>
 		public static CFProxy []? GetProxiesForURL (NSUrl url, CFProxySettings? proxySettings)
 		{
 			if (url is null)
@@ -649,6 +660,11 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <param name="uri">The target Uri to connect to.</param>
+		///         <param name="proxySettings">The proxy settings as returned by <see cref="M:CoreFoundation.CFNetwork.GetSystemProxySettings" />.</param>
+		///         <summary>Gets an array of <see cref="T:CoreFoundation.CFProxy" /> objects suitable to use for connecting to <paramref name="uri" />.</summary>
+		///         <returns>Returns an array of <see cref="T:CoreFoundation.CFProxy" /> objects suitable to use for connecting to <paramref name="uri" />.</returns>
+		///         <remarks>This method serves as a convenience wrapper for <see cref="M:CoreFoundation.CFNetwork.GetProxiesForURL(Foundation.NSUrl,CoreFoundation.CFProxySettings)" />.</remarks>
 		public static CFProxy []? GetProxiesForUri (Uri uri, CFProxySettings? proxySettings)
 		{
 			if (uri is null)
@@ -664,6 +680,10 @@ namespace CoreFoundation {
 		[DllImport (Constants.CFNetworkLibrary)]
 		extern static /* CFDictionaryRef __nullable */ IntPtr CFNetworkCopySystemProxySettings ();
 
+		/// <summary>Gets the system's proxy configuration settings.</summary>
+		///         <returns>A <see cref="T:CoreFoundation.CFProxySettings" /> with the system's proxy settings.</returns>
+		///         <remarks>These settings are used by <see cref="M:CoreFoundation.CFNetwork.GetProxiesForURL(Foundation.NSUrl,CoreFoundation.CFProxySettings)" /> and 
+		/// 	<format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Foundation%20Get%20Proxies%20For%20Uri&amp;scope=Xamarin" title="M:CoreFoundation.GetProxiesForUri*">M:CoreFoundation.GetProxiesForUri*</a></format>.</remarks>
 		public static CFProxySettings? GetSystemProxySettings ()
 		{
 			IntPtr native = CFNetworkCopySystemProxySettings ();
@@ -1106,6 +1126,7 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <include file="../../docs/api/CoreFoundation/CFNetwork.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.CFNetwork.GetDefaultProxy']/*" />
 		public static IWebProxy GetDefaultProxy ()
 		{
 			return new CFWebProxy ();

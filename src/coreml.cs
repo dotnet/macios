@@ -193,6 +193,10 @@ namespace CoreML {
 		[Export ("optional")]
 		bool Optional { [Bind ("isOptional")] get; }
 
+		/// <param name="value">The value to check.</param>
+		///         <summary>Gets whether <paramref name="value" /> is a valid value (and kind) for this feature.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("isAllowedValue:")]
 		bool IsAllowed (MLFeatureValue value);
 
@@ -321,40 +325,77 @@ namespace CoreML {
 		[NullAllowed, Export ("sequenceValue")]
 		MLSequence SequenceValue { get; }
 
+		/// <param name="value">A pixel buffer with which to create and return a new feature value.</param>
+		///         <summary>Returns an MLFeatureValue that wraps a CVPixelBuffer.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("featureValueWithPixelBuffer:")]
 		MLFeatureValue Create (CVPixelBuffer value);
 
+		/// <param name="sequence">A sequence of data.</param>
+		///         <summary>Returns a <see cref="T:CoreML.MLFeatureValue" /> representing the <paramref name="sequence" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("featureValueWithSequence:")]
 		MLFeatureValue Create (MLSequence sequence);
 
+		/// <param name="value">A 64-bit integer with which to create and return a new feature value.</param>
+		///         <summary>Returns an MLFeatureValue that wraps a 64-bit integer.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("featureValueWithInt64:")]
 		MLFeatureValue Create (long value);
 
+		/// <param name="value">A double with which to create and return a new feature value.</param>
+		///         <summary>Returns an MLFeatureValue that wraps a double.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("featureValueWithDouble:")]
 		MLFeatureValue Create (double value);
 
+		/// <param name="value">A string with which to create and return a new feature value.</param>
+		///         <summary>Returns an MLFeatureValue that wraps a string.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("featureValueWithString:")]
 		MLFeatureValue Create (string value);
 
+		/// <param name="value">A multiarray with which to create and return a new feature value.</param>
+		///         <summary>Returns an MLFeatureValue that wraps an MLMultiArray.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("featureValueWithMultiArray:")]
 		MLFeatureValue Create (MLMultiArray value);
 
+		/// <param name="type">The kind of feature to create.</param>
+		///         <summary>Static factory method to create a <see cref="T:CoreML.MLFeatureValue" /> of the specified type but with an undefined value.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("undefinedFeatureValueWithType:")]
 		MLFeatureValue CreateUndefined (MLFeatureType type);
 
+		/// <param name="value">A dictionary with which to create and return a new feature value.</param>
+		///         <param name="error">If not <see langword="null" />, the error that occurred.</param>
+		///         <summary>Returns an MLFeatureValue that wraps a dictionary, and reports any errors in <paramref name="error" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("featureValueWithDictionary:error:")]
 		[return: NullAllowed]
 		MLFeatureValue Create (NSDictionary<NSObject, NSNumber> value, out NSError error);
 
+		/// <param name="value">The value to compare against.</param>
+		///         <summary>Returns <see langword="true" /> if <paramref name="value" /> has the same <see cref="T:CoreML.MLFeatureType" /> and value as <c>this</c>.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("isEqualToFeatureValue:")]
 		bool IsEqual (MLFeatureValue value);
 
@@ -515,21 +556,43 @@ namespace CoreML {
 		[Export ("configuration")]
 		MLModelConfiguration Configuration { get; }
 
+		/// <param name="url">The URL of the model resource.</param>
+		///         <param name="error">On failure, the error that occurred.</param>
+		///         <summary>Creates and returns a CoreML model with the data that is stored at the specified <paramref name="url" />, reporting any errors in <paramref name="error" />.</summary>
+		///         <returns>The new model, or <see langword="null" /> if an error occurred.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("modelWithContentsOfURL:error:")]
 		[return: NullAllowed]
 		MLModel Create (NSUrl url, out NSError error);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="configuration">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("modelWithContentsOfURL:configuration:error:")]
 		[return: NullAllowed]
 		MLModel Create (NSUrl url, MLModelConfiguration configuration, out NSError error);
 
+		/// <param name="input">The feature from which to make a prediction.</param>
+		///         <param name="error">On failure, the error that occurred.</param>
+		///         <summary>Makes a prediction on <paramref name="input" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("predictionFromFeatures:error:")]
 		[return: NullAllowed]
 		IMLFeatureProvider GetPrediction (IMLFeatureProvider input, out NSError error);
 
+		/// <param name="input">The feature from which to make a prediction.</param>
+		///         <param name="options">Options about resources to use for the prediction.</param>
+		///         <param name="error">On failure, the error that occurred.</param>
+		///         <summary>Makes a prediction on <paramref name="input" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("predictionFromFeatures:options:error:")]
 		[return: NullAllowed]
 		IMLFeatureProvider GetPrediction (IMLFeatureProvider input, MLPredictionOptions options, out NSError error);
@@ -540,6 +603,12 @@ namespace CoreML {
 		[return: NullAllowed]
 		IMLBatchProvider GetPredictions (IMLBatchProvider inputBatch, [NullAllowed] out NSError error);
 
+		/// <param name="inputBatch">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Gets the <see cref="T:CoreML.IMLBatchProvider" /> describing the outputs for the <paramref name="inputBatch" /> and <paramref name="options" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("predictionsFromBatch:options:error:")]
 		[return: NullAllowed]
@@ -566,6 +635,7 @@ namespace CoreML {
 
 		// Category MLModel (MLModelCompilation)
 
+		/// <include file="../docs/api/CoreML/MLModel.xml" path="/Documentation/Docs[@DocId='M:CoreML.MLModel.CompileModel(Foundation.NSUrl,Foundation.NSError@)']/*" />
 		[Deprecated (PlatformName.MacOSX, 13, 0, message: "Use 'CompileModel (NSUrl, Action<NSUrl, NSError>)' overload or 'CompileModelAsync' instead.")]
 		[Deprecated (PlatformName.iOS, 16, 0, message: "Use 'CompileModel (NSUrl, Action<NSUrl, NSError>)' overload or 'CompileModelAsync' instead.")]
 		[Deprecated (PlatformName.TvOS, 16, 0, message: "Use 'CompileModel (NSUrl, Action<NSUrl, NSError>)' overload or 'CompileModelAsync' instead.")]
@@ -780,6 +850,10 @@ namespace CoreML {
 		[Export ("objectAtIndexedSubscript:")]
 		NSNumber GetObject (nint idx);
 
+		/// <param name="key">A numeric identifier for the object to get.</param>
+		///         <summary>Retrieves the element at the point specified by <paramref name="key" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("objectForKeyedSubscript:")]
 		NSNumber GetObject (NSNumber [] key);
 
@@ -792,6 +866,10 @@ namespace CoreML {
 		[Export ("setObject:atIndexedSubscript:")]
 		void SetObject (NSNumber obj, nint idx);
 
+		/// <param name="obj">The new value.</param>
+		///         <param name="key">A numeric identifier for the object to set.</param>
+		///         <summary>Sets the value at <paramref name="key" /> to <paramref name="obj" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setObject:forKeyedSubscript:")]
 		void SetObject (NSNumber obj, NSNumber [] key);
 
@@ -991,11 +1069,23 @@ namespace CoreML {
 		[Export ("initWithModelDescription:parameterDictionary:error:")]
 		NativeHandle Constructor (MLModelDescription modelDescription, NSDictionary<NSString, NSObject> parameters, out NSError error);
 
+		/// <param name="inputFeatures">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Gets the most likely prediction for <paramref name="inputFeatures" /> and <paramref name="options" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("predictionFromFeatures:options:error:")]
 		[return: NullAllowed]
 		IMLFeatureProvider GetPrediction (IMLFeatureProvider inputFeatures, MLPredictionOptions options, out NSError error);
 
+		/// <param name="inputBatch">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Gets the set of predictions for <paramref name="inputBatch" />, applying <paramref name="options" /> to each input.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("predictionsFromBatch:options:error:")]
 		[return: NullAllowed]
 		IMLBatchProvider GetPredictions (IMLBatchProvider inputBatch, MLPredictionOptions options, out NSError error);
@@ -1088,10 +1178,18 @@ namespace CoreML {
 		[Export ("type")]
 		MLFeatureType Type { get; }
 
+		/// <param name="type">To be added.</param>
+		///         <summary>Static factory method that creates an empty <see cref="T:CoreML.MLSequence" /> that works with the specified <paramref name="type" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("emptySequenceWithType:")]
 		MLSequence CreateEmpty (MLFeatureType type);
 
+		/// <param name="stringValues">To be added.</param>
+		///         <summary>Static factory method that creates an <see cref="T:CoreML.MLSequence" /> from the given <paramref name="stringValues" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("sequenceWithStringArray:")]
 		MLSequence Create (string [] stringValues);
@@ -1102,6 +1200,10 @@ namespace CoreML {
 		[Export ("stringValues")]
 		string [] StringValues { get; }
 
+		/// <param name="int64Values">To be added.</param>
+		///         <summary>Static factory method that creates an <see cref="T:CoreML.MLSequence" /> from the given <paramref name="int64Values" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("sequenceWithInt64Array:")]
 		MLSequence Create (NSNumber [] int64Values);

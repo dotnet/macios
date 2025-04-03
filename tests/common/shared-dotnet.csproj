@@ -123,8 +123,6 @@
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
 			ZipPath="$(ZipPath)"
-			Recursive="true"
-			Symlinks="true"
 			Sources="$(DirectoryToCompress)"
 			OutputFile="$(CompressedPath)"
 			WorkingDirectory="$(DirectoryToCompress)"

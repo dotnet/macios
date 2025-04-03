@@ -44,6 +44,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr sec_trust_create (IntPtr sectrustHandle);
 
+		/// <param name="trust">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SecTrust2 (SecTrust trust)
 		{
 			if (trust is null)

@@ -164,8 +164,8 @@
     <BundleResource Include="$(MonoTouchTestDirectory)\CoreImage\xamarinmonkey.heic">
       <Link>CoreImage\xamarinmonkey.heic</Link>
     </BundleResource>
-    <BundleResource Include="$(MonoTouchTestDirectory)\Resources\Base.lproj\Localizable.strings">
-      <Link>Resources\Base.lproj\Localizable.strings</Link>
+    <BundleResource Include="$(MonoTouchTestDirectory)\Resources\*.lproj\*.strings">
+      <Link>$([MSBuild]::MakeRelative ('$(MonoTouchTestDirectory)', '%(FullPath)'))</Link>
     </BundleResource>
     <BundleResource Include="$(MonoTouchTestDirectory)\Resources\metal-sample.metal">
       <Link>Resources\metal-sample.metal</Link>

@@ -38,6 +38,10 @@ namespace ObjCRuntime {
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[AttributeUsage (AttributeTargets.Delegate | AttributeTargets.Method, AllowMultiple = false)]
 	public sealed class UserDelegateTypeAttribute : Attribute {
+		/// <param name="userDelegateType">The exposed managed delegate type that corresponds to the delegate this attribute is applied to.</param>
+		///         <summary>Initializes a new attribute with the specified managed delegate type.</summary>
+		///         <remarks>
+		///         </remarks>
 		public UserDelegateTypeAttribute (Type userDelegateType)
 		{
 			UserDelegateType = userDelegateType;

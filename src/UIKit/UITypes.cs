@@ -24,12 +24,23 @@ namespace UIKit {
 	public struct UIEdgeInsets {
 
 		// API match for UIEdgeInsetsZero field/constant
+		/// <summary>An instance with all of the UIEdgeInsets parameters set to zero.</summary>
+		///         <remarks>
+		///         </remarks>
 		[Field ("UIEdgeInsetsZero")] // fake (but helps testing and could also help documentation)
 		public static readonly UIEdgeInsets Zero;
 
+		/// <summary>Top value.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Top;
+		/// <summary>Left value.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Left;
+		/// <summary>Bottom value.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Bottom;
+		/// <summary>Right value.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Right;
 
 #if !COREBUILD
@@ -42,6 +53,10 @@ namespace UIKit {
 		}
 
 		// note: UIEdgeInsetsInsetRect (UIGeometry.h) is a macro
+		/// <param name="rect">To be added.</param>
+		///         <summary>Adjusts a rectangle by the given edge insets.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGRect InsetRect (CGRect rect)
 		{
 			return new CGRect (rect.X + Left,
@@ -51,6 +66,10 @@ namespace UIKit {
 		}
 
 		// note: UIEdgeInsetsEqualToEdgeInsets (UIGeometry.h) is a macro
+		/// <param name="other">To be added.</param>
+		///         <summary>Whether this is equivalent to <paramref name="other" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (UIEdgeInsets other)
 		{
 			if (Left != other.Left)
@@ -62,6 +81,10 @@ namespace UIKit {
 			return (Bottom == other.Bottom);
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>Whether this is equivalent to the <paramref name="obj" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object obj)
 		{
 			if (obj is UIEdgeInsets)
@@ -79,6 +102,9 @@ namespace UIKit {
 			return !insets1.Equals (insets2);
 		}
 
+		/// <summary>The hash for this <see cref="T:UIKit.UIEdgeInsets" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (Top, Left, Right, Bottom);
@@ -87,6 +113,10 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static UIEdgeInsets UIEdgeInsetsFromString (IntPtr /* NSString */ s);
 
+		/// <param name="s">To be added.</param>
+		///         <summary>Creates an edge inset from a string representation.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		static public UIEdgeInsets FromString (string s)
 		{
 			// note: null is allowed
@@ -100,6 +130,11 @@ namespace UIKit {
 		extern static IntPtr /* NSString */ NSStringFromUIEdgeInsets (UIEdgeInsets insets);
 
 		// note: ensure we can roundtrip ToString into FromString
+		/// <summary>Returns a human-readable version of the UIEdgeInset properties, for debugging.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string ToString ()
 		{
 			using (var ns = new NSString (NSStringFromUIEdgeInsets (this)))
@@ -116,7 +151,11 @@ namespace UIKit {
 	[StructLayout (LayoutKind.Sequential)]
 	public struct UIFloatRange : IEquatable<UIFloatRange> {
 
+		/// <summary>The minimum value in the interval.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Minimum;
+		/// <summary>The maximum value in the interval.</summary>
+		///         <remarks>To be added.</remarks>
 		public nfloat Maximum;
 
 		public UIFloatRange (nfloat minimum, nfloat maximum)
@@ -128,6 +167,9 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static byte UIFloatRangeIsInfinite (UIFloatRange range);
 
+		/// <summary>Gets whether the range is infinitely large.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public bool IsInfinite {
 			get {
 				return UIFloatRangeIsInfinite (this) != 0;
@@ -138,8 +180,16 @@ namespace UIKit {
 		// [DllImport (Constants.UIKitLibrary)]
 		// static extern bool UIFloatRangeIsEqualToRange (UIFloatRange range, UIFloatRange otherRange);
 
+		/// <param name="other">To be added.</param>
+		///         <summary>Whether two <see cref="T:UIKit.UIFloatRange" /> objects have equal values.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (UIFloatRange other) => this.Minimum == other.Minimum && this.Maximum == other.Maximum;
 
+		/// <param name="other">To be added.</param>
+		///         <summary>Whether two <see cref="T:UIKit.UIFloatRange" /> objects have equal values.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object other)
 		{
 			if (other is UIFloatRange)
@@ -147,14 +197,21 @@ namespace UIKit {
 			return false;
 		}
 
+		/// <summary>A hash for the interval.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (Minimum, Maximum);
 		}
 
+		/// <summary>Gets a <see cref="T:UIKit.UIFloatRange" /> that has no magnitude.</summary>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIFloatRangeZero")] // fake (but helps testing and could also help documentation)
 		public static UIFloatRange Zero;
 
+		/// <summary>An infinitely large range.</summary>
+		///         <remarks>To be added.</remarks>
 		[Field ("UIFloatRangeInfinite")] // fake (but helps testing and could also help documentation)
 		public static UIFloatRange Infinite = new UIFloatRange (nfloat.NegativeInfinity, nfloat.PositiveInfinity);
 	}

@@ -231,6 +231,10 @@ namespace GLKit {
 		extern static GLKVertexAttributeParametersInternal FromVertexFormat_ (nuint vertexFormat);
 #endif
 
+		/// <param name="vertexFormat">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static GLKVertexAttributeParameters FromVertexFormat (MDLVertexFormat vertexFormat)
 		{
 #if XAMCORE_5_0

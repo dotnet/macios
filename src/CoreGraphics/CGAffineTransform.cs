@@ -89,6 +89,22 @@ namespace CoreGraphics {
 		}
 
 		// Identity
+		/// <summary>Returns the identity affine transformation.</summary>
+		///         <returns>The identity matrix.</returns>
+		///         <remarks>
+		///           <para>
+		/// Sets up an identity transformation, like this:
+		/// </para>
+		///           <para>
+		/// | 1 0 0 |
+		/// </para>
+		///           <para>
+		/// | 0 1 0 |
+		/// </para>
+		///           <para>
+		/// | 0 0 1 |
+		/// </para>
+		///         </remarks>
 		public static CGAffineTransform MakeIdentity ()
 		{
 			return new CGAffineTransform (1, 0, 0, 1, 0, 0);
@@ -117,6 +133,11 @@ namespace CoreGraphics {
 		//
 		// Operations
 		//
+		/// <param name="a">The first affine.</param>
+		///         <param name="b">The second affine.</param>
+		///         <summary>Multiplies the two affine transformations and returns the result.</summary>
+		///         <returns>The multiplied affine.</returns>
+		///         <remarks>Use affine multiplication to compose multiple affine tranformations into a single affine.</remarks>
 		public static CGAffineTransform Multiply (CGAffineTransform a, CGAffineTransform b)
 		{
 			return new CGAffineTransform (a.A * b.A + a.B * b.C,
@@ -127,6 +148,9 @@ namespace CoreGraphics {
 							  a.Tx * b.B + a.Ty * b.D + b.Ty);
 		}
 
+		/// <param name="b">The affine used to multiply the current affine by.</param>
+		///         <summary>Multiplies the current affine transformation by the specified affine transformation.</summary>
+		///         <remarks>Use affine multiplication to compose multiple affine tranformations into a single affine.</remarks>
 		public void Multiply (CGAffineTransform b)
 		{
 			var a = this;
@@ -249,6 +273,9 @@ namespace CoreGraphics {
 		extern static /* NSString */ IntPtr NSStringFromCGAffineTransform (CGAffineTransform transform);
 #endif
 
+		/// <summary>Renders the affine in textual form.</summary>
+		///         <returns />
+		///         <remarks>To be added.</remarks>
 		public override String? ToString ()
 		{
 #if MONOMAC
@@ -281,6 +308,11 @@ namespace CoreGraphics {
 							  a.Tx * b.B + a.Ty * b.D + b.Ty);
 		}
 
+		/// <param name="o">The object to compare this instance against.</param>
+		///         <summary>Compares the objects for equality.</summary>
+		///         <returns>
+		///           <see langword="true" /> if the objects are equal, <see langword="false" /> if not.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? o)
 		{
 			if (o is CGAffineTransform transform) {
@@ -289,20 +321,47 @@ namespace CoreGraphics {
 				return false;
 		}
 
+		/// <summary>The hashcode for this object.</summary>
+		///         <returns>An integer value.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (A, C, B, D, Tx, Ty);
 		}
 
+		/// <param name="point">The point to transform.</param>
+		///         <summary>Transforms the coordinates of the provided point by the affine.</summary>
+		///         <returns>The point translated to the new coordinate space.</returns>
+		///         <remarks>
+		///           <para>
+		/// The point defined by x, y is transformed like this:
+		/// </para>
+		///           <para>
+		/// new_x = xx * x + xy * y + x0;
+		/// </para>
+		///           <para>
+		/// new_y = yx * x + yy * y + y0;
+		/// </para>
+		///         </remarks>
 		public CGPoint TransformPoint (CGPoint point)
 		{
 			return new CGPoint (A * point.X + C * point.Y + Tx,
 						B * point.X + D * point.Y + Ty);
 		}
 
+		/// <param name="rect">To be added.</param>
+		///         <param name="t">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		public extern static CGRect CGRectApplyAffineTransform (CGRect rect, CGAffineTransform t);
 
+		/// <param name="rect">A rectangle to transform.</param>
+		///         <summary>Applies the affine transform to the supplied rectangle and returns the transformed rectangle.</summary>
+		///         <returns>The transformed rectangle.</returns>
+		///         <remarks>
+		///         </remarks>
 		public CGRect TransformRect (CGRect rect)
 		{
 			return CGRectApplyAffineTransform (rect, this);
@@ -311,14 +370,25 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGSize CGSizeApplyAffineTransform (CGSize rect, CGAffineTransform t);
 
+		/// <param name="size">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGSize TransformSize (CGSize size)
 		{
 			return CGSizeApplyAffineTransform (size, this);
 		}
 
+		/// <param name="t">Affine transformation to invert.</param>
+		///         <summary>Inverts the affine transformation matrix.</summary>
+		///         <returns>If the affine transformation can not be inverted, the same matrix is returned.</returns>
+		///         <remarks>You can use the inversion matrix to map points in the target coordinate space that had been mapped to the original coordinate space.</remarks>
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		public extern static CGAffineTransform CGAffineTransformInvert (CGAffineTransform t);
 
+		/// <summary>Inverts this affine transformation.</summary>
+		///         <returns>If the affine transformation can not be inverted, the matrix does not change.</returns>
+		///         <remarks>You can use the inversion matrix to map points in the target coordinate space that had been mapped to the original coordinate space.</remarks>
 		public CGAffineTransform Invert ()
 		{
 			return CGAffineTransformInvert (this);

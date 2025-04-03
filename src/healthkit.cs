@@ -679,6 +679,14 @@ namespace HealthKit {
 		[return: NullAllowed]
 		HKCdaDocumentSample Create (NSData documentData, NSDate startDate, NSDate endDate, [NullAllowed] NSDictionary metadata, out NSError validationError);
 
+		/// <param name="documentData">To be added.</param>
+		///         <param name="startDate">To be added.</param>
+		///         <param name="endDate">To be added.</param>
+		///         <param name="metadata">To be added.</param>
+		///         <param name="validationError">To be added.</param>
+		///         <summary>Creates a new <see cref="T:HealthKit.HKCdaDocumentSample" /> with the specified values.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Wrap ("Create (documentData, startDate, endDate, metadata.GetDictionary (), out validationError)")]
 		[return: NullAllowed]
 		HKCdaDocumentSample Create (NSData documentData, NSDate startDate, NSDate endDate, HKMetadata metadata, out NSError validationError);
@@ -730,6 +738,14 @@ namespace HealthKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)] // this is not the one we want to be seen (compat only)
 		HKCorrelation Create (HKCorrelationType correlationType, NSDate startDate, NSDate endDate, NSSet objects, [NullAllowed] NSDictionary metadata);
 
+		/// <param name="correlationType">To be added.</param>
+		///         <param name="startDate">To be added.</param>
+		///         <param name="endDate">To be added.</param>
+		///         <param name="objects">To be added.</param>
+		///         <param name="metadata">To be added.</param>
+		///         <summary>Creates a correlation between <paramref name="objects" /> for the supplied date range.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Wrap ("Create (correlationType, startDate, endDate, objects, metadata.GetDictionary ())")]
 		HKCorrelation Create (HKCorrelationType correlationType, NSDate startDate, NSDate endDate, NSSet objects, HKMetadata metadata);
 
@@ -1781,6 +1797,10 @@ namespace HealthKit {
 		NSString Identifier { get; }
 
 #if NET
+		/// <param name="hkTypeIdentifier">To be added.</param>
+		///         <summary>Returns the quantity type of <paramref name="hkTypeIdentifier" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Internal]
 #else
 		[Obsolete ("Use 'HKQuantityType.Create (HKQuantityTypeIdentifier)'.")]
@@ -1791,6 +1811,10 @@ namespace HealthKit {
 		HKQuantityType GetQuantityType ([NullAllowed] NSString hkTypeIdentifier);
 
 #if NET
+		/// <param name="hkCategoryTypeIdentifier">To be added.</param>
+		///         <summary>Returns the category type for <paramref name="hkCategoryTypeIdentifier" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Internal]
 #else
 		[Obsolete ("Use 'HKCategoryType.Create (HKCategoryTypeIdentifier)'.")]
@@ -1801,6 +1825,10 @@ namespace HealthKit {
 		HKCategoryType GetCategoryType ([NullAllowed] NSString hkCategoryTypeIdentifier);
 
 #if NET
+		/// <param name="hkCharacteristicTypeIdentifier">To be added.</param>
+		///         <summary>Returns the characteristic type of <paramref name="hkCharacteristicTypeIdentifier" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Internal]
 #else
 		[Obsolete ("Use 'HKCharacteristicType.Create (HKCharacteristicTypeIdentifier)'.")]
@@ -1811,6 +1839,10 @@ namespace HealthKit {
 		HKCharacteristicType GetCharacteristicType ([NullAllowed] NSString hkCharacteristicTypeIdentifier);
 
 #if NET
+		/// <param name="hkCorrelationTypeIdentifier">To be added.</param>
+		///         <summary>Returns the correlation type of <paramref name="hkCorrelationTypeIdentifier" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Internal]
 #else
 		[Obsolete ("Use 'HKCorrelationType.Create (HKCorrelationTypeIdentifier)'.")]
@@ -1851,6 +1883,10 @@ namespace HealthKit {
 		[return: NullAllowed]
 		HKClinicalType GetClinicalType (NSString identifier);
 
+		/// <param name="identifier">To be added.</param>
+		///         <summary>Returns the clinical type of the <paramref name="identifier" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetClinicalType (identifier.GetConstant ()!)")]
@@ -2058,6 +2094,14 @@ namespace HealthKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)] // this is not the one we want to be seen (compat only)
 		HKQuantitySample FromType (HKQuantityType quantityType, HKQuantity quantity, NSDate startDate, NSDate endDate, [NullAllowed] NSDictionary metadata);
 
+		/// <param name="quantityType">To be added.</param>
+		///         <param name="quantity">To be added.</param>
+		///         <param name="startDate">To be added.</param>
+		///         <param name="endDate">To be added.</param>
+		///         <param name="metadata">To be added.</param>
+		///         <summary>Creates a new HKQuantitySample, using a stronglty typed HKMetadata for the metadata.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("FromType (quantityType, quantity, startDate, endDate, metadata.GetDictionary ())")]
 		HKQuantitySample FromType (HKQuantityType quantityType, HKQuantity quantity, NSDate startDate, NSDate endDate, HKMetadata metadata);
@@ -2232,6 +2276,10 @@ namespace HealthKit {
 		[Export ("predicateForClinicalRecordsWithFHIRResourceType:")]
 		NSPredicate GetPredicateForClinicalRecords (NSString resourceType);
 
+		/// <param name="resourceType">The resource type for which to generate a query predicate.</param>
+		///         <summary>Creates and returns a predicate for a Fast Healthcare Interoperability Resources record of the specified resource type.</summary>
+		///         <returns>A predicate for a Fast Healthcare Interoperability Resources record of the specified resource type.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetPredicateForClinicalRecords (resourceType.GetConstant ()!)")]
@@ -2242,6 +2290,12 @@ namespace HealthKit {
 		[Export ("predicateForClinicalRecordsFromSource:FHIRResourceType:identifier:")]
 		NSPredicate GetPredicateForClinicalRecords (HKSource source, string resourceType, string identifier);
 
+		/// <param name="source">The HealthKit source for the predicate.</param>
+		///         <param name="resourceType">The resource type for which to generate a query predicate.</param>
+		///         <param name="identifier">The record identifier.</param>
+		///         <summary>Creates and returns a predicate for a Fast Healthcare Interoperability Resources record for the specified query parameters.</summary>
+		///         <returns>A predicate for a Fast Healthcare Interoperability Resources record oor the specified query parameters.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetPredicateForClinicalRecords (source, resourceType.GetConstant (), identifier)")]
@@ -3928,6 +3982,16 @@ namespace HealthKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)] // this is not the one we want to be seen (compat only)
 		HKWorkout Create (HKWorkoutActivityType workoutActivityType, NSDate startDate, NSDate endDate, [NullAllowed] HKWorkoutEvent [] workoutEvents, [NullAllowed] HKQuantity totalEnergyBurned, [NullAllowed] HKQuantity totalDistance, [NullAllowed] NSDictionary metadata);
 
+		/// <param name="workoutActivityType">To be added.</param>
+		///         <param name="startDate">To be added.</param>
+		///         <param name="endDate">To be added.</param>
+		///         <param name="workoutEvents">To be added.</param>
+		///         <param name="totalEnergyBurned">To be added.</param>
+		///         <param name="totalDistance">To be added.</param>
+		///         <param name="metadata">To be added.</param>
+		///         <summary>Creates an activity that lasts from <paramref name="startDate" /> to <paramref name="endDate" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Wrap ("Create (workoutActivityType, startDate, endDate, workoutEvents, totalEnergyBurned, totalDistance, metadata.GetDictionary ())")]
 		HKWorkout Create (HKWorkoutActivityType workoutActivityType, NSDate startDate, NSDate endDate, HKWorkoutEvent [] workoutEvents, HKQuantity totalEnergyBurned, HKQuantity totalDistance, HKMetadata metadata);
 
@@ -3935,6 +3999,16 @@ namespace HealthKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)] // this is not the one we want to be seen (compat only)
 		HKWorkout Create (HKWorkoutActivityType workoutActivityType, NSDate startDate, NSDate endDate, double duration, [NullAllowed] HKQuantity totalEnergyBurned, [NullAllowed] HKQuantity totalDistance, [NullAllowed] NSDictionary metadata);
 
+		/// <param name="workoutActivityType">To be added.</param>
+		///         <param name="startDate">To be added.</param>
+		///         <param name="endDate">To be added.</param>
+		///         <param name="duration">To be added.</param>
+		///         <param name="totalEnergyBurned">To be added.</param>
+		///         <param name="totalDistance">To be added.</param>
+		///         <param name="metadata">To be added.</param>
+		///         <summary>Creates an activity that lasts from <paramref name="startDate" /> to <paramref name="endDate" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Wrap ("Create (workoutActivityType, startDate, endDate, duration, totalEnergyBurned, totalDistance, metadata.GetDictionary ())")]
 		HKWorkout Create (HKWorkoutActivityType workoutActivityType, NSDate startDate, NSDate endDate, double duration, HKQuantity totalEnergyBurned, HKQuantity totalDistance, HKMetadata metadata);
 
@@ -3943,6 +4017,17 @@ namespace HealthKit {
 		[Export ("workoutWithActivityType:startDate:endDate:workoutEvents:totalEnergyBurned:totalDistance:device:metadata:")]
 		HKWorkout Create (HKWorkoutActivityType workoutActivityType, NSDate startDate, NSDate endDate, [NullAllowed] HKWorkoutEvent [] workoutEvents, [NullAllowed] HKQuantity totalEnergyBurned, [NullAllowed] HKQuantity totalDistance, [NullAllowed] HKDevice device, [NullAllowed] NSDictionary metadata);
 
+		/// <param name="workoutActivityType">To be added.</param>
+		///         <param name="startDate">To be added.</param>
+		///         <param name="endDate">To be added.</param>
+		///         <param name="workoutEvents">To be added.</param>
+		///         <param name="totalEnergyBurned">To be added.</param>
+		///         <param name="totalDistance">To be added.</param>
+		///         <param name="device">To be added.</param>
+		///         <param name="metadata">To be added.</param>
+		///         <summary>Creates and returns a new <see cref="T:HealthKit.HKWorkout" /> with the provide values.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("Create (workoutActivityType, startDate, endDate, workoutEvents, totalEnergyBurned, totalDistance, device, metadata.GetDictionary ())")]
@@ -3953,6 +4038,17 @@ namespace HealthKit {
 		[Export ("workoutWithActivityType:startDate:endDate:duration:totalEnergyBurned:totalDistance:device:metadata:")]
 		HKWorkout Create (HKWorkoutActivityType workoutActivityType, NSDate startDate, NSDate endDate, double duration, [NullAllowed] HKQuantity totalEnergyBurned, [NullAllowed] HKQuantity totalDistance, [NullAllowed] HKDevice device, [NullAllowed] NSDictionary metadata);
 
+		/// <param name="workoutActivityType">To be added.</param>
+		///         <param name="startDate">To be added.</param>
+		///         <param name="endDate">To be added.</param>
+		///         <param name="duration">To be added.</param>
+		///         <param name="totalEnergyBurned">To be added.</param>
+		///         <param name="totalDistance">To be added.</param>
+		///         <param name="device">To be added.</param>
+		///         <param name="metadata">To be added.</param>
+		///         <summary>Creates and returns a new <see cref="T:HealthKit.HKWorkout" /> with the provide values.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("Create (workoutActivityType, startDate, endDate, duration, totalEnergyBurned, totalDistance, device, metadata.GetDictionary ())")]
@@ -3963,6 +4059,18 @@ namespace HealthKit {
 		[Export ("workoutWithActivityType:startDate:endDate:workoutEvents:totalEnergyBurned:totalDistance:totalSwimmingStrokeCount:device:metadata:")]
 		HKWorkout Create (HKWorkoutActivityType workoutActivityType, NSDate startDate, NSDate endDate, [NullAllowed] HKWorkoutEvent [] workoutEvents, [NullAllowed] HKQuantity totalEnergyBurned, [NullAllowed] HKQuantity totalDistance, [NullAllowed] HKQuantity totalSwimmingStrokeCount, [NullAllowed] HKDevice device, [NullAllowed] NSDictionary metadata);
 
+		/// <param name="workoutActivityType">To be added.</param>
+		///         <param name="startDate">To be added.</param>
+		///         <param name="endDate">To be added.</param>
+		///         <param name="workoutEvents">To be added.</param>
+		///         <param name="totalEnergyBurned">To be added.</param>
+		///         <param name="totalDistance">To be added.</param>
+		///         <param name="totalSwimmingStrokeCount">To be added.</param>
+		///         <param name="device">To be added.</param>
+		///         <param name="metadata">To be added.</param>
+		///         <summary>Creates and returns a new <see cref="T:HealthKit.HKWorkout" /> with the provide values.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("Create (workoutActivityType, startDate, endDate, workoutEvents, totalEnergyBurned, totalDistance, totalSwimmingStrokeCount, device, metadata.GetDictionary ())")]
@@ -3973,6 +4081,18 @@ namespace HealthKit {
 		[Export ("workoutWithActivityType:startDate:endDate:workoutEvents:totalEnergyBurned:totalDistance:totalFlightsClimbed:device:metadata:")]
 		HKWorkout CreateFlightsClimbedWorkout (HKWorkoutActivityType workoutActivityType, NSDate startDate, NSDate endDate, [NullAllowed] HKWorkoutEvent [] workoutEvents, [NullAllowed] HKQuantity totalEnergyBurned, [NullAllowed] HKQuantity totalDistance, [NullAllowed] HKQuantity totalFlightsClimbed, [NullAllowed] HKDevice device, [NullAllowed] NSDictionary metadata);
 
+		/// <param name="workoutActivityType">To be added.</param>
+		///         <param name="startDate">To be added.</param>
+		///         <param name="endDate">To be added.</param>
+		///         <param name="workoutEvents">To be added.</param>
+		///         <param name="totalEnergyBurned">To be added.</param>
+		///         <param name="totalDistance">To be added.</param>
+		///         <param name="totalFlightsClimbed">To be added.</param>
+		///         <param name="device">To be added.</param>
+		///         <param name="metadata">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("CreateFlightsClimbedWorkout (workoutActivityType, startDate, endDate, workoutEvents, totalEnergyBurned, totalDistance, totalFlightsClimbed, device, metadata.GetDictionary ())")]
@@ -4080,6 +4200,12 @@ namespace HealthKit {
 		[Export ("workoutEventWithType:date:metadata:")]
 		HKWorkoutEvent Create (HKWorkoutEventType type, NSDate date, NSDictionary metadata);
 
+		/// <param name="type">To be added.</param>
+		///         <param name="date">To be added.</param>
+		///         <param name="metadata">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'Create (HKWorkoutEventType, NSDateInterval, HKMetadata)' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'Create (HKWorkoutEventType, NSDateInterval, HKMetadata)' instead.")]
@@ -4092,6 +4218,12 @@ namespace HealthKit {
 		[Export ("workoutEventWithType:dateInterval:metadata:")]
 		HKWorkoutEvent Create (HKWorkoutEventType type, NSDateInterval dateInterval, [NullAllowed] NSDictionary metadata);
 
+		/// <param name="type">To be added.</param>
+		///         <param name="dateInterval">To be added.</param>
+		///         <param name="metadata">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("Create (type, dateInterval, metadata.GetDictionary ())")]
@@ -4669,6 +4801,11 @@ namespace HealthKit {
 		[Async, Protected, Export ("finishRouteWithWorkout:metadata:completion:")]
 		void FinishRoute (HKWorkout workout, [NullAllowed] NSDictionary metadata, Action<HKWorkoutRoute, NSError> completion);
 
+		/// <param name="workout">The workout to which to add the route.</param>
+		///         <param name="metadata">The metadata for the route.</param>
+		///         <param name="completion">A handler to run when the operation completes.</param>
+		///         <summary>Finalizes the route and saves it to the workout.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async, Wrap ("FinishRoute (workout, metadata.GetDictionary (), completion)")]
 		void FinishRoute (HKWorkout workout, HKMetadata metadata, Action<HKWorkoutRoute, NSError> completion);
 
@@ -4677,6 +4814,10 @@ namespace HealthKit {
 		[Export ("addMetadata:completion:")]
 		void AddMetadata (NSDictionary metadata, HKWorkoutRouteBuilderAddMetadataHandler completion);
 
+		/// <param name="metadata">The metadata to add.</param>
+		///         <param name="completion">A handler to run when the operation completes.</param>
+		///         <summary>Adds the provided metadata to the route and runs a handler when the operation completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Async, Wrap ("AddMetadata (metadata.GetDictionary ()!, completion)")]
 		void AddMetadata (HKMetadata metadata, HKWorkoutRouteBuilderAddMetadataHandler completion);
@@ -4750,6 +4891,11 @@ namespace HealthKit {
 		[Export ("addMetadata:completion:")]
 		void Add (NSDictionary metadata, HKWorkoutBuilderCompletionHandler completionHandler);
 
+		/// <param name="metadata">The metadata to add.</param>
+		///         <param name="completionHandler">A handler to run when the operation completes.</param>
+		///         <summary>Adds the specified metadata to the workout and runs a handler when the operation completes.</summary>
+		///         <remarks>To be added.</remarks>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Wrap ("Add (metadata.GetDictionary ()!, completionHandler)")]
 		void Add (HKMetadata metadata, HKWorkoutBuilderCompletionHandler completionHandler);
@@ -4860,6 +5006,10 @@ namespace HealthKit {
 		[Export ("finishSeriesWithMetadata:completion:")]
 		void FinishSeries ([NullAllowed] NSDictionary metadata, HKQuantitySeriesSampleBuilderFinishSeriesDelegate completionHandler);
 
+		/// <param name="metadata">The metadata to add to the series.</param>
+		///         <param name="completionHandler">A handler to run when the operation completes.</param>
+		///         <summary>Finishes and saves the series.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Wrap ("FinishSeries (metadata.GetDictionary (), completionHandler)")]
 		void FinishSeries ([NullAllowed] HKMetadata metadata, HKQuantitySeriesSampleBuilderFinishSeriesDelegate completionHandler);

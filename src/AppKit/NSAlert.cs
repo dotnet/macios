@@ -67,11 +67,18 @@ namespace AppKit {
 	}
 
 	public partial class NSAlert {
+		/// <param name="window">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void BeginSheet (NSWindow window)
 		{
 			BeginSheet (window, null, null, IntPtr.Zero);
 		}
 
+		/// <param name="window">To be added.</param>
+		///         <param name="onEnded">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void BeginSheet (NSWindow window, Action? onEnded)
 		{
 			BeginSheetForResponse (window, r => {
@@ -85,11 +92,20 @@ namespace AppKit {
 			BeginSheet (window, new NSAlertDidEndDispatcher (onEnded), NSAlertDidEndDispatcher.Selector, IntPtr.Zero);
 		}
 
+		/// <param name="window">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public nint RunSheetModal (NSWindow window)
 		{
 			return RunSheetModal (window, NSApplication.SharedApplication);
 		}
 
+		/// <param name="window">To be added.</param>
+		///         <param name="application">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public nint RunSheetModal (NSWindow? window, NSApplication application)
 		{
 			if (application is null)

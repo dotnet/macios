@@ -24,12 +24,21 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageConvolution {
+		/// <summary>Gets the height of the window around the pixel to consider. This is always an odd number.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("kernelHeight")]
 		nuint KernelHeight { get; }
 
+		/// <summary>Gets the width of the window around the pixel to consider. This is always an odd number.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("kernelWidth")]
 		nuint KernelWidth { get; }
 
+		/// <summary>Gets or sets a value that is added to a pixel after it is transformed.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bias")]
 		float Bias { get; set; }
 
@@ -57,6 +66,9 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSImageLaplacian {
 
+		/// <summary>Gets or sets a bias to add to convolved pixels before they are converted to their storage format.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bias")]
 		float Bias { get; set; }
 
@@ -84,9 +96,15 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 
+		/// <summary>Gets the height of the window around the pixel to consider. This is always an odd number.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("kernelHeight")]
 		nuint KernelHeight { get; }
 
+		/// <summary>Gets the width of the window around the pixel to consider. This is always an odd number.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("kernelWidth")]
 		nuint KernelWidth { get; }
 
@@ -130,6 +148,9 @@ namespace MetalPerformanceShaders {
 
 		// [Export ("initWithDevice:")] marked as NS_UNAVAILABLE - You must use initWithDevice:sigma: instead.
 
+		/// <summary>Gets the standard deviation of the blur effect, with larger values indicating a stronger blur.</summary>
+		///         <value>The standard deviation of the blur effect.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sigma")]
 		float Sigma { get; }
 	}
@@ -229,12 +250,21 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 
+		/// <summary>The region of the texture to sample.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("clipRectSource", ArgumentSemantic.Assign)]
 		MTLRegion ClipRectSource { get; set; }
 
+		/// <summary>Controls whether the histogram will be zeroed before it is written to. Default is <see langword="true" /></summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("zeroHistogram")]
 		bool ZeroHistogram { get; set; }
 
+		/// <summary>Gets the configuration of the histogram.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("histogramInfo")]
 		MPSImageHistogramInfo HistogramInfo {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -253,9 +283,16 @@ namespace MetalPerformanceShaders {
 		[Export ("encodeToCommandBuffer:sourceTexture:histogram:histogramOffset:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, IMTLTexture source, IMTLBuffer histogram, nuint histogramOffset);
 
+		/// <param name="sourceFormat">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("histogramSizeForSourceFormat:")]
 		nuint GetHistogramSize (MTLPixelFormat sourceFormat);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("minPixelThresholdValue", ArgumentSemantic.Assign)]
 		Vector4 MinPixelThresholdValue {
@@ -278,6 +315,9 @@ namespace MetalPerformanceShaders {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (IMTLDevice device, ref MPSImageHistogramInfo histogramInfo);
 
+		/// <summary>Gets the configuration of the current histogram.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("histogramInfo")]
 		MPSImageHistogramInfo HistogramInfo {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -305,6 +345,9 @@ namespace MetalPerformanceShaders {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (IMTLDevice device, ref MPSImageHistogramInfo histogramInfo);
 
+		/// <summary>Gets the configuration of the current and desired histograms.</summary>
+		///         <value>The configuration of the current and desired histograms.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("histogramInfo")]
 		MPSImageHistogramInfo HistogramInfo {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -373,26 +416,60 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor]
 	interface MPSUnaryImageKernel {
+		/// <summary>Gets or sets the location of the destination clipping rectangle in the source texture.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("offset", ArgumentSemantic.Assign)]
 		MPSOffset Offset { get; set; }
 
+		/// <summary>Gets or sets the clipping rectangle in which to write data. The default value writes to the entire image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		///         <!--MPSRectNoClip info should go below when available. -->
 		[Export ("clipRect", ArgumentSemantic.Assign)]
 		MTLRegion ClipRect { get; set; }
 
+		/// <summary>Gets or sets the behavior to use when the shader encounters the edge of the image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("edgeMode", ArgumentSemantic.Assign)]
 		MPSImageEdgeMode EdgeMode { get; set; }
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="texture">To be added.</param>
+		///         <param name="copyAllocator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Attempts to apply the kernel to <paramref name="texture" />, using <paramref name="copyAllocator" /> to allocate and write to a new texture if in-place application fails.</summary>
+		///         <returns>
+		///           <see langword="true" /> if in-place application succeeds. Otherwise, returns <see langword="false" />.</returns>
+		///         <remarks>If <see langword="true" /> is returned and a non-null copy allocator was supplied, <paramref name="texture" /> will point to the newly allocated texture, whether in-place or out-of-place. If no copy allocator is supplied, the reference <paramref name="texture" /> remains unchanged on failure.</remarks>
 		[Export ("encodeToCommandBuffer:inPlaceTexture:fallbackCopyAllocator:")]
 		bool EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, out NSObject /* IMTLTexture */ texture, [NullAllowed] MPSCopyAllocator copyAllocator);
 		// FIXME: can't use IMTLTexture now
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceTexture">To be added.</param>
+		///         <param name="destinationTexture">To be added.</param>
+		///         <summary>Encodes the kernel to <paramref name="commandBuffer" />, which will overwrite <paramref name="destinationTexture" /> with the result of applying the kernel to <paramref name="sourceTexture" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:sourceTexture:destinationTexture:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, IMTLTexture sourceTexture, IMTLTexture destinationTexture);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("encodeToCommandBuffer:sourceImage:destinationImage:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, MPSImage destinationImage);
 
+		/// <param name="destinationSize">To be added.</param>
+		///         <summary>Calculates and returns the area of the source texture that will be read for the specified <paramref name="destinationSize" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceRegionForDestinationSize:")]
 		MPSRegion SourceRegionForDestinationSize (MTLSize destinationSize);
 
@@ -450,24 +527,66 @@ namespace MetalPerformanceShaders {
 		[Export ("clipRect", ArgumentSemantic.Assign)]
 		MTLRegion ClipRect { get; set; }
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="primaryTexture">To be added.</param>
+		///         <param name="inPlaceSecondaryTexture">To be added.</param>
+		///         <param name="copyAllocator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Attempts to apply the kernel to <paramref name="inPlaceSecondaryTexture" />, using <paramref name="copyAllocator" /> to allocate and write to a new texture if in-place application fails.</summary>
+		///         <returns>
+		///           <see langword="true" /> if in-place application succeeds. Otherwise, returns <see langword="false" />.</returns>
+		///         <remarks>If <see langword="false" /> is returned and a non-null copy allocator was supplied, <paramref name="inPlaceSecondaryTexture" /> will point to the newly allocated texture.</remarks>
 		[Export ("encodeToCommandBuffer:primaryTexture:inPlaceSecondaryTexture:fallbackCopyAllocator:")]
 		bool EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, IMTLTexture primaryTexture, out NSObject /* IMTLTexture */ inPlaceSecondaryTexture, [NullAllowed] MPSCopyAllocator copyAllocator);
 		// FIXME: can't use IMTLTexture now
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="inPlacePrimaryTexture">To be added.</param>
+		///         <param name="secondaryTexture">To be added.</param>
+		///         <param name="copyAllocator">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Attempts to apply the kernel to <paramref name="inPlacePrimaryTexture" />, using <paramref name="copyAllocator" /> to allocate and write to a new texture if in-place application fails.</summary>
+		///         <returns>
+		///           <see langword="true" /> if in-place application succeeds. Otherwise, returns <see langword="false" />.</returns>
+		///         <remarks>If <see langword="false" /> is returned and a non-null copy allocator was supplied, <paramref name="inPlacePrimaryTexture" /> will point to the newly allocated texture.</remarks>
 		[Export ("encodeToCommandBuffer:inPlacePrimaryTexture:secondaryTexture:fallbackCopyAllocator:")]
 		bool EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, out NSObject /* MTLTexture */ inPlacePrimaryTexture, IMTLTexture secondaryTexture, [NullAllowed] MPSCopyAllocator copyAllocator);
 		// FIXME: can't use IMTLTexture now
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="primaryTexture">To be added.</param>
+		///         <param name="secondaryTexture">To be added.</param>
+		///         <param name="destinationTexture">To be added.</param>
+		///         <summary>Encodes the kernel to <paramref name="commandBuffer" />, which will overwrite <paramref name="destinationTexture" /> with the result of applying the kernel to <paramref name="primaryTexture" /> and <paramref name="secondaryTexture" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:primaryTexture:secondaryTexture:destinationTexture:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, IMTLTexture primaryTexture, IMTLTexture secondaryTexture, IMTLTexture destinationTexture);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="primaryImage">To be added.</param>
+		///         <param name="secondaryImage">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("encodeToCommandBuffer:primaryImage:secondaryImage:destinationImage:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSImage primaryImage, MPSImage secondaryImage, MPSImage destinationImage);
 
+		/// <param name="destinationSize">To be added.</param>
+		///         <summary>Calculates and returns the area of the primary source texture that will be read for the specified <paramref name="destinationSize" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("primarySourceRegionForDestinationSize:")]
 		MPSRegion PrimarySourceRegionForDestinationSize (MTLSize destinationSize);
 
+		/// <param name="destinationSize">To be added.</param>
+		///         <summary>Calculates and returns the area of the secondary source texture that will be read for the specified <paramref name="destinationSize" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("secondarySourceRegionForDestinationSize:")]
 		MPSRegion SecondarySourceRegionForDestinationSize (MTLSize destinationSize);
 
@@ -487,6 +606,9 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageMedian {
+		/// <summary>Gets the length of the sides of the region to consider. This property is always an odd number.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("kernelDiameter")]
 		nuint KernelDiameter { get; }
 
@@ -496,10 +618,16 @@ namespace MetalPerformanceShaders {
 
 		// [Export ("initWithDevice:")] is NS_UNAVAILABLE - You must use initWithDevice:kernelDiameter: instead.
 
+		/// <summary>Gets the maximum supported kernel diameter.</summary>
+		///         <value>The maximum supported kernel diameter.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("maxKernelDiameter")]
 		nuint MaxKernelDiameter { get; }
 
+		/// <summary>Gets the minimum supported kernel diameter.</summary>
+		///         <value>The minimum supported kernel diameter.</value>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("minKernelDiameter")]
 		nuint MinKernelDiameter { get; }
@@ -521,9 +649,15 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageAreaMax {
+		/// <summary>Gets the height of the window around the pixel to consider. This is always an odd number.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("kernelHeight")]
 		nuint KernelHeight { get; }
 
+		/// <summary>Gets the width of the window around the pixel to consider. This is always an odd number.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("kernelWidth")]
 		nuint KernelWidth { get; }
 
@@ -830,6 +964,22 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device);
 
+		/// <param name="zone">
+		///           <para>
+		///           Zone to use to allocate this object, or null to use the default zone.
+		///         </para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="device">
+		///           <para>The device for which to make a copy.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Copies a shader for the specified device and zone.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>App developers can call this method to create copies of shaders for use on multiple threads.</para>
+		///           <para>Application developers should call the <see cref="M:MetalPerformanceShaders.MPSKernel.Supports(Metal.IMTLDevice)" /> method to determine if the<paramref name="device" /> is supported.</para>
+		///         </remarks>
 		[Export ("copyWithZone:device:")]
 		[return: Release ()]
 		MPSKernel CopyWithZone ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
@@ -911,21 +1061,47 @@ namespace MetalPerformanceShaders {
 		[Export ("edgeMode", ArgumentSemantic.Assign)]
 		MPSImageEdgeMode EdgeMode { get; set; }
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:sourceImage:destinationImage:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, MPSImage destinationImage);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="destinationState">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("encodeToCommandBuffer:sourceImage:destinationState:destinationImage:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, MPSState destinationState, MPSImage destinationImage);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImages">To be added.</param>
+		///         <param name="destinationImages">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("encodeBatchToCommandBuffer:sourceImages:destinationImages:")]
 		void EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImages, NSArray<MPSImage> destinationImages);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImages">To be added.</param>
+		///         <param name="destinationStates">To be added.</param>
+		///         <param name="destinationImages">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("encodeBatchToCommandBuffer:sourceImages:destinationStates:destinationImages:")]
 		void EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImages, [NullAllowed] NSArray<MPSState> destinationStates, NSArray<MPSImage> destinationImages);
 
+		/// <param name="destinationSize">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceRegionForDestinationSize:")]
 		MPSRegion GetSourceRegion (MTLSize destinationSize);
 
@@ -963,37 +1139,87 @@ namespace MetalPerformanceShaders {
 		[Export ("destinationImageAllocator", ArgumentSemantic.Retain)]
 		IMPSImageAllocator DestinationImageAllocator { get; set; }
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("encodeToCommandBuffer:sourceImage:")]
 		MPSImage EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSImage sourceImage);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="outState">To be added.</param>
+		///         <param name="isTemporary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("encodeToCommandBuffer:sourceImage:destinationState:destinationStateIsTemporary:")]
 		MPSImage EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, [NullAllowed] out MPSState outState, bool isTemporary);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImages">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("encodeBatchToCommandBuffer:sourceImages:")]
 		NSArray<MPSImage> EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImages);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImages">To be added.</param>
+		///         <param name="outStates">To be added.</param>
+		///         <param name="isTemporary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("encodeBatchToCommandBuffer:sourceImages:destinationStates:destinationStateIsTemporary:")]
 		NSArray<MPSImage> EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImages, [NullAllowed] out NSArray<MPSState> outStates, bool isTemporary);
 
+		/// <param name="sourceImage">To be added.</param>
+		///         <param name="sourceStates">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("resultStateForSourceImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		MPSState GetResultState (MPSImage sourceImage, [NullAllowed] NSArray<MPSState> sourceStates, MPSImage destinationImage);
 
+		/// <param name="sourceImage">To be added.</param>
+		///         <param name="sourceStates">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("resultStateBatchForSourceImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		NSArray<MPSState> GetResultStateBatch (NSArray<MPSImage> sourceImage, [NullAllowed] NSArray<MPSState> [] sourceStates, NSArray<MPSImage> destinationImage);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="sourceStates">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("temporaryResultStateForCommandBuffer:sourceImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		MPSState GetTemporaryResultState (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, [NullAllowed] NSArray<MPSState> sourceStates, MPSImage destinationImage);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="sourceStates">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("temporaryResultStateBatchForCommandBuffer:sourceImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
@@ -1013,6 +1239,11 @@ namespace MetalPerformanceShaders {
 		[Export ("appendBatchBarrier")]
 		bool AppendBatchBarrier { get; }
 
+		/// <param name="sourceImages">To be added.</param>
+		///         <param name="sourceStates">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("destinationImageDescriptorForSourceImages:sourceStates:")]
 		MPSImageDescriptor GetDestinationImageDescriptor (NSArray<MPSImage> sourceImages, [NullAllowed] NSArray<MPSState> sourceStates);
@@ -1344,6 +1575,11 @@ namespace MetalPerformanceShaders {
 		[Internal, Export ("setBatchNormalizationParametersForInferenceWithMean:variance:gamma:beta:epsilon:")]
 		void SetBatchNormalizationParameters (IntPtr /* float* */ mean, IntPtr /* float* */ variance, [NullAllowed] IntPtr /* float* */ gamma, [NullAllowed] IntPtr /* float* */ beta, float epsilon);
 
+		/// <param name="neuronType">To be added.</param>
+		///         <param name="parameterA">To be added.</param>
+		///         <param name="parameterB">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.TvOS, 11, 3, message: "Use 'FusedNeuronDescriptor' property instead.")]
 		[Deprecated (PlatformName.iOS, 11, 3, message: "Use 'FusedNeuronDescriptor' property instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, 4, message: "Use 'FusedNeuronDescriptor' property instead.")]
@@ -1385,6 +1621,9 @@ namespace MetalPerformanceShaders {
 		[Export ("neuronParameterB")]
 		float NeuronParameterB { get; }
 
+		/// <param name="A">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.TvOS, 11, 3, message: "Use 'FusedNeuronDescriptor' property instead.")]
 		[Deprecated (PlatformName.iOS, 11, 3, message: "Use 'FusedNeuronDescriptor' property instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, 4, message: "Use 'FusedNeuronDescriptor' property instead.")]
@@ -1599,30 +1838,61 @@ namespace MetalPerformanceShaders {
 		[NullAllowed, Export ("fusedNeuronDescriptor")]
 		MPSNNNeuronDescriptor FusedNeuronDescriptor { get; }
 
+		/// <param name="sourceImage">To be added.</param>
+		///         <param name="sourceStates">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("resultStateForSourceImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		MPSCnnConvolutionGradientState GetResultState (MPSImage sourceImage, [NullAllowed] NSArray<MPSState> sourceStates, MPSImage destinationImage);
 
+		/// <param name="sourceImage">To be added.</param>
+		///         <param name="sourceStates">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("resultStateBatchForSourceImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		MPSCnnConvolutionGradientState [] GetResultStateBatch (NSArray<MPSImage> sourceImage, [NullAllowed] NSArray<MPSState> [] sourceStates, NSArray<MPSImage> destinationImage);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="sourceStates">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("temporaryResultStateForCommandBuffer:sourceImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		MPSCnnConvolutionGradientState GetTemporaryResultState (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, [NullAllowed] NSArray<MPSState> sourceStates, MPSImage destinationImage);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="sourceStates">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("temporaryResultStateBatchForCommandBuffer:sourceImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		MPSCnnConvolutionGradientState [] GetTemporaryResultStateBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImage, [NullAllowed] NSArray<MPSState> [] sourceStates, NSArray<MPSImage> destinationImage);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("reloadWeightsAndBiasesFromDataSource")]
 		void ReloadWeightsAndBiasesFromDataSource ();
 
+		/// <param name="dataSource">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Please use 'ReloadWeightsAndBiasesFromDataSource' instead.")]
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Please use 'ReloadWeightsAndBiasesFromDataSource' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Please use 'ReloadWeightsAndBiasesFromDataSource' instead.")]
@@ -1631,10 +1901,19 @@ namespace MetalPerformanceShaders {
 		[Export ("reloadWeightsAndBiasesWithDataSource:")]
 		void ReloadWeightsAndBiases (IMPSCnnConvolutionDataSource dataSource);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="state">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("reloadWeightsAndBiasesWithCommandBuffer:state:")]
 		void ReloadWeightsAndBiases (IMTLCommandBuffer commandBuffer, MPSCnnConvolutionWeightsAndBiasesState state);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="resultStateCanBeTemporary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("exportWeightsAndBiasesWithCommandBuffer:resultStateCanBeTemporary:")]
 		MPSCnnConvolutionWeightsAndBiasesState ExportWeightsAndBiases (IMTLCommandBuffer commandBuffer, bool resultStateCanBeTemporary);
@@ -1674,18 +1953,30 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnPooling {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Override]
 		[Export ("kernelWidth")]
 		nuint KernelWidth { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Override]
 		[Export ("kernelHeight")]
 		nuint KernelHeight { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Override]
 		[Export ("strideInPixelsX")]
 		nuint StrideInPixelsX { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Override]
 		[Export ("strideInPixelsY")]
 		nuint StrideInPixelsY { get; }
@@ -1744,10 +2035,16 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("zeroPadSizeX")]
 		nuint ZeroPadSizeX { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("zeroPadSizeY")]
 		nuint ZeroPadSizeY { get; set; }
@@ -1761,19 +2058,34 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnSpatialNormalization {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("alpha")]
 		float Alpha { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("beta")]
 		float Beta { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("delta")]
 		float Delta { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Override]
 		[Export ("kernelWidth")]
 		nuint KernelWidth { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Override]
 		[Export ("kernelHeight")]
 		nuint KernelHeight { get; }
@@ -1795,12 +2107,21 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnSpatialNormalizationGradient {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("alpha")]
 		float Alpha { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("beta")]
 		float Beta { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("delta")]
 		float Delta { get; set; }
 
@@ -2083,30 +2404,57 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSImageDescriptor : NSCopying {
 
+		/// <summary>Gets the image width.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("width")]
 		nuint Width { get; set; }
 
+		/// <summary>Gets the image height.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("height")]
 		nuint Height { get; set; }
 
+		/// <summary>Gets the number of feature channels for the image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("featureChannels")]
 		nuint FeatureChannels { get; set; }
 
+		/// <summary>Gets the number of images in a batch of images for processing.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("numberOfImages")]
 		nuint NumberOfImages { get; set; }
 
+		/// <summary>Gets pixel format of the image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("pixelFormat")]
 		MTLPixelFormat PixelFormat { get; }
 
+		/// <summary>Gets or sets the channel storage format.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("channelFormat", ArgumentSemantic.Assign)]
 		MPSImageFeatureChannelFormat ChannelFormat { get; set; }
 
+		/// <summary>Gets or sets the CPU cache mode for the underlying texture for an image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("cpuCacheMode", ArgumentSemantic.Assign)]
 		MTLCpuCacheMode CpuCacheMode { get; set; }
 
+		/// <summary>Gets or sets the storage mode for the image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("storageMode", ArgumentSemantic.Assign)]
 		MTLStorageMode StorageMode { get; set; }
 
+		/// <summary>Gets the intended use of the image.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("usage", ArgumentSemantic.Assign)]
 		MTLTextureUsage Usage { get; set; }
 
@@ -2124,10 +2472,15 @@ namespace MetalPerformanceShaders {
 	[Native]
 	[Flags]
 	public enum MPSPurgeableState : ulong {
+		/// <summary>Indicates that the underlying texture has not been allocated.</summary>
 		AllocationDeferred = 0,
+		/// <summary>Indicates that the underlying texture can be queried without changing its purgeable state.</summary>
 		KeepCurrent = MTLPurgeableState.KeepCurrent,
+		/// <summary>Indicates that the texture may not be discarded.</summary>
 		NonVolatile = MTLPurgeableState.NonVolatile,
+		/// <summary>Indicates that the texture may be, but does not have to be, discarded.</summary>
 		Volatile = MTLPurgeableState.Volatile,
+		/// <summary>Indicates that the underlying texture should be discarded.</summary>
 		Empty = MTLPurgeableState.Empty,
 	}
 
@@ -2252,10 +2605,18 @@ namespace MetalPerformanceShaders {
 		[Export ("batchRepresentation")]
 		NSArray<MPSImage> BatchRepresentation { get; }
 
+		/// <param name="subRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("batchRepresentationWithSubRange:")]
 		NSArray<MPSImage> GetBatchRepresentation (NSRange subRange);
 
+		/// <param name="featureChannelRange">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("subImageWithFeatureChannelRange:")]
 		MPSImage GetSubImage (NSRange featureChannelRange);
@@ -2267,6 +2628,10 @@ namespace MetalPerformanceShaders {
 		[Export ("resourceSize")]
 		nuint ResourceSize { get; }
 
+		/// <param name="state">To be added.</param>
+		///         <summary>Sets the purgeable state of the underlying texture for the image.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("setPurgeableState:")]
 		MPSPurgeableState SetPurgeableState (MPSPurgeableState state);
 
@@ -2299,6 +2664,9 @@ namespace MetalPerformanceShaders {
 		[Export ("writeBytes:dataLayout:imageIndex:")]
 		void WriteBytes (IntPtr /* void* */ dataBytes, MPSDataLayout dataLayout, nuint imageIndex);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("synchronizeOnCommandBuffer:")]
 		void Synchronize (IMTLCommandBuffer commandBuffer);
@@ -2312,6 +2680,9 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSTemporaryImage {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[New]
@@ -2323,10 +2694,20 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithParentImage:sliceRange:featureChannels:")]
 		NativeHandle Constructor (MPSImage parent, NSRange sliceRange, nuint featureChannels);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="imageDescriptor">To be added.</param>
+		///         <summary>Gets a temporary image from the specified <paramref name="commandBuffer" />, with data that conforms to <paramref name="imageDescriptor" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("temporaryImageWithCommandBuffer:imageDescriptor:")]
 		MPSTemporaryImage GetTemporaryImage (IMTLCommandBuffer commandBuffer, MPSImageDescriptor imageDescriptor);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="textureDescriptor">To be added.</param>
+		///         <summary>Gets a temporary image from the specified <paramref name="commandBuffer" />, with data that conforms to <paramref name="textureDescriptor" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("temporaryImageWithCommandBuffer:textureDescriptor:")]
 		MPSTemporaryImage GetTemporaryImage (IMTLCommandBuffer commandBuffer, MTLTextureDescriptor textureDescriptor);
@@ -2336,10 +2717,17 @@ namespace MetalPerformanceShaders {
 		[Export ("temporaryImageWithCommandBuffer:textureDescriptor:featureChannels:")]
 		MPSTemporaryImage GetTemporaryImage (IMTLCommandBuffer commandBuffer, MTLTextureDescriptor textureDescriptor, nuint featureChannels);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="descriptorList">To be added.</param>
+		///         <summary>Indicates to the framework that the app might create temporary images described by <paramref name="descriptorList" /> and to optimize memory allocations accordingly.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("prefetchStorageWithCommandBuffer:imageDescriptorList:")]
 		void PrefetchStorage (IMTLCommandBuffer commandBuffer, MPSImageDescriptor [] descriptorList);
 
+		/// <summary>Gets or sets the maximum number of reads that a CNN kernel may make on the image before its contents expire.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("readCount")]
 		nuint ReadCount { get; set; }
 	}
@@ -2461,15 +2849,27 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSMatrixDescriptor {
 
+		/// <summary>Gets the number of columns in the matrix.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rows")]
 		nuint Rows { get; set; }
 
+		/// <summary>Gets the nubmer of columns that are in the matrix.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("columns")]
 		nuint Columns { get; set; }
 
+		/// <summary>Gets the type of data that are stored in the matrix.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("dataType", ArgumentSemantic.Assign)]
 		MPSDataType DataType { get; set; }
 
+		/// <summary>Gets the row stride for the matrix, in bytes.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rowBytes")]
 		nuint RowBytes { get; set; }
 
@@ -2489,10 +2889,16 @@ namespace MetalPerformanceShaders {
 		[Export ("rowBytesFromColumns:dataType:")]
 		nuint GetRowBytesFromColumns (nuint columns, MPSDataType dataType);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("matrices")]
 		nuint Matrices { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("matrixBytes")]
 		nuint MatrixBytes { get; }
@@ -2521,21 +2927,39 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor] // init NS_UNAVAILABLE;
 	interface MPSMatrix {
 
+		/// <summary>Gets the Metal device on which the matrix will be used.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("device", ArgumentSemantic.Retain)]
 		IMTLDevice Device { get; }
 
+		/// <summary>Gets the number of columns in the matrix.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rows")]
 		nuint Rows { get; }
 
+		/// <summary>Gets the nubmer of columns that are in the matrix.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("columns")]
 		nuint Columns { get; }
 
+		/// <summary>Gets the type of data that are stored in the matrix.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("dataType")]
 		MPSDataType DataType { get; }
 
+		/// <summary>Gets the row stride, in bytes.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rowBytes")]
 		nuint RowBytes { get; }
 
+		/// <summary>Gets a buffer that contains the data in the matrix.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("data")]
 		IMTLBuffer Data { get; }
 
@@ -2551,18 +2975,30 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:descriptor:")]
 		NativeHandle Constructor (IMTLDevice device, MPSMatrixDescriptor descriptor);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("synchronizeOnCommandBuffer:")]
 		void Synchronize (IMTLCommandBuffer commandBuffer);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("resourceSize")]
 		nuint ResourceSize { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("matrices")]
 		nuint Matrices { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("matrixBytes")]
 		nuint MatrixBytes { get; }
@@ -2586,18 +3022,33 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:resultRows:resultColumns:interiorColumns:")]
 		NativeHandle Constructor (IMTLDevice device, nuint resultRows, nuint resultColumns, nuint interiorColumns);
 
+		/// <summary>Gets or sets the origin of the results matrix.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("resultMatrixOrigin", ArgumentSemantic.Assign)]
 		MTLOrigin ResultMatrixOrigin { get; set; }
 
+		/// <summary>Gets or sets the origin of the left matrix.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("leftMatrixOrigin", ArgumentSemantic.Assign)]
 		MTLOrigin LeftMatrixOrigin { get; set; }
 
+		/// <summary>Gets or sets the origin of the right matrix.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rightMatrixOrigin", ArgumentSemantic.Assign)]
 		MTLOrigin RightMatrixOrigin { get; set; }
 
 		[Export ("initWithDevice:transposeLeft:transposeRight:resultRows:resultColumns:interiorColumns:alpha:beta:")]
 		NativeHandle Constructor (IMTLDevice device, bool transposeLeft, bool transposeRight, nuint resultRows, nuint resultColumns, nuint interiorColumns, double alpha, double beta);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="leftMatrix">To be added.</param>
+		///         <param name="rightMatrix">To be added.</param>
+		///         <param name="resultMatrix">To be added.</param>
+		///         <summary>Encodes the matrix manipulation that is described by the left and right matrices, to the specified <paramref name="commandBuffer" />, and indicates that <paramref name="resultMatrix" /> will contain the results.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:leftMatrix:rightMatrix:resultMatrix:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSMatrix leftMatrix, MPSMatrix rightMatrix, MPSMatrix resultMatrix);
 
@@ -2609,10 +3060,16 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("batchStart")]
 		nuint BatchStart { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("batchSize")]
 		nuint BatchSize { get; set; }
@@ -2640,11 +3097,20 @@ namespace MetalPerformanceShaders {
 		[Export ("temporaryStateWithCommandBuffer:bufferSize:")]
 		MPSState CreateTemporaryState (IMTLCommandBuffer commandBuffer, nuint bufferSize);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="descriptor">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("temporaryStateWithCommandBuffer:textureDescriptor:")]
 		MPSState CreateTemporaryState (IMTLCommandBuffer commandBuffer, MTLTextureDescriptor descriptor);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("temporaryStateWithCommandBuffer:")]
@@ -2666,6 +3132,11 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:resourceList:")]
 		NativeHandle Constructor (IMTLDevice device, MPSStateResourceList resourceList);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="resourceList">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("temporaryStateWithCommandBuffer:resourceList:")]
@@ -2675,6 +3146,9 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithResources:")]
 		NativeHandle Constructor ([NullAllowed] IMTLResource [] resources);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("resourceCount")]
 		nuint ResourceCount { get; }
@@ -2684,12 +3158,24 @@ namespace MetalPerformanceShaders {
 		[return: NullAllowed]
 		IMTLResource GetResource (nuint index, bool allocateMemory);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("readCount")]
 		nuint ReadCount { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isTemporary")]
 		bool IsTemporary { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("label")]
 		string Label { get; set; }
 
@@ -2705,18 +3191,34 @@ namespace MetalPerformanceShaders {
 		[Export ("resourceTypeAtIndex:")]
 		MPSStateResourceType GetResourceType (nuint index);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("synchronizeOnCommandBuffer:")]
 		void Synchronize (IMTLCommandBuffer commandBuffer);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("resourceSize")]
 		nuint ResourceSize { get; }
 
+		/// <param name="sourceImages">To be added.</param>
+		///         <param name="sourceStates">To be added.</param>
+		///         <param name="kernel">To be added.</param>
+		///         <param name="inDescriptor">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("destinationImageDescriptorForSourceImages:sourceStates:forKernel:suggestedDescriptor:")]
 		MPSImageDescriptor GetDestinationImageDescriptor (NSArray<MPSImage> sourceImages, [NullAllowed] NSArray<MPSState> sourceStates, MPSKernel kernel, MPSImageDescriptor inDescriptor);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Please use 'GetResource (nuint, bool)' instead.")]
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Please use 'GetResource (nuint, bool)' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, 4, message: "Please use 'GetResource (nuint, bool)' instead.")]
@@ -2731,14 +3233,26 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSMatrix))]
 	[DisableDefaultCtor]
 	interface MPSTemporaryMatrix {
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="matrixDescriptor">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("temporaryMatrixWithCommandBuffer:matrixDescriptor:")]
 		MPSTemporaryMatrix Create (IMTLCommandBuffer commandBuffer, MPSMatrixDescriptor matrixDescriptor);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="descriptorList">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("prefetchStorageWithCommandBuffer:matrixDescriptorList:")]
 		void PrefetchStorage (IMTLCommandBuffer commandBuffer, MPSMatrixDescriptor [] descriptorList);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("readCount")]
 		nuint ReadCount { get; set; }
 	}
@@ -2748,21 +3262,39 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSVector {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("device", ArgumentSemantic.Retain)]
 		IMTLDevice Device { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("length")]
 		nuint Length { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("vectors")]
 		nuint Vectors { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("dataType")]
 		MPSDataType DataType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("vectorBytes")]
 		nuint VectorBytes { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("data")]
 		IMTLBuffer Data { get; }
 
@@ -2778,10 +3310,16 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:descriptor:")]
 		NativeHandle Constructor (IMTLDevice device, MPSVectorDescriptor descriptor);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("synchronizeOnCommandBuffer:")]
 		void Synchronize (IMTLCommandBuffer commandBuffer);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("resourceSize")]
 		nuint ResourceSize { get; }
@@ -2797,15 +3335,27 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSVectorDescriptor {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("length")]
 		nuint Length { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("vectors")]
 		nuint Vectors { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("dataType", ArgumentSemantic.Assign)]
 		MPSDataType DataType { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("vectorBytes")]
 		nuint VectorBytes { get; }
 
@@ -2827,15 +3377,27 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor] // According to docs needs a Metal Device so initWithDevice: makes more sense.
 	interface MPSMatrixUnaryKernel {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceMatrixOrigin", ArgumentSemantic.Assign)]
 		MTLOrigin SourceMatrixOrigin { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("resultMatrixOrigin", ArgumentSemantic.Assign)]
 		MTLOrigin ResultMatrixOrigin { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("batchStart")]
 		nuint BatchStart { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("batchSize")]
 		nuint BatchSize { get; set; }
 
@@ -2854,18 +3416,33 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor] // According to docs needs a Metal Device so initWithDevice: makes more sense.
 	interface MPSMatrixBinaryKernel {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("primarySourceMatrixOrigin", ArgumentSemantic.Assign)]
 		MTLOrigin PrimarySourceMatrixOrigin { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("secondarySourceMatrixOrigin", ArgumentSemantic.Assign)]
 		MTLOrigin SecondarySourceMatrixOrigin { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("resultMatrixOrigin", ArgumentSemantic.Assign)]
 		MTLOrigin ResultMatrixOrigin { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("batchStart")]
 		nuint BatchStart { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("batchSize")]
 		nuint BatchSize { get; set; }
 
@@ -2890,6 +3467,12 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:rows:columns:")]
 		NativeHandle Constructor (IMTLDevice device, nuint rows, nuint columns);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="inputMatrix">To be added.</param>
+		///         <param name="inputVector">To be added.</param>
+		///         <param name="resultVector">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:inputMatrix:inputVector:resultVector:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSMatrix inputMatrix, MPSVector inputVector, MPSVector resultVector);
 
@@ -2911,6 +3494,12 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:right:upper:transpose:unit:order:numberOfRightHandSides:alpha:")]
 		NativeHandle Constructor (IMTLDevice device, bool right, bool upper, bool transpose, bool unit, nuint order, nuint numberOfRightHandSides, double alpha);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceMatrix">To be added.</param>
+		///         <param name="rightHandSideMatrix">To be added.</param>
+		///         <param name="solutionMatrix">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:sourceMatrix:rightHandSideMatrix:solutionMatrix:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSMatrix sourceMatrix, MPSMatrix rightHandSideMatrix, MPSMatrix solutionMatrix);
 
@@ -2931,6 +3520,13 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:transpose:order:numberOfRightHandSides:")]
 		NativeHandle Constructor (IMTLDevice device, bool transpose, nuint order, nuint numberOfRightHandSides);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceMatrix">To be added.</param>
+		///         <param name="rightHandSideMatrix">To be added.</param>
+		///         <param name="pivotIndices">To be added.</param>
+		///         <param name="solutionMatrix">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:sourceMatrix:rightHandSideMatrix:pivotIndices:solutionMatrix:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSMatrix sourceMatrix, MPSMatrix rightHandSideMatrix, MPSMatrix pivotIndices, MPSMatrix solutionMatrix);
 
@@ -2952,6 +3548,12 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:upper:order:numberOfRightHandSides:")]
 		NativeHandle Constructor (IMTLDevice device, bool upper, nuint order, nuint numberOfRightHandSides);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceMatrix">To be added.</param>
+		///         <param name="rightHandSideMatrix">To be added.</param>
+		///         <param name="solutionMatrix">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:sourceMatrix:rightHandSideMatrix:solutionMatrix:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSMatrix sourceMatrix, MPSMatrix rightHandSideMatrix, MPSMatrix solutionMatrix);
 
@@ -2973,6 +3575,16 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:rows:columns:")]
 		NativeHandle Constructor (IMTLDevice device, nuint rows, nuint columns);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceMatrix">To be added.</param>
+		///         <param name="resultMatrix">To be added.</param>
+		///         <param name="pivotIndices">To be added.</param>
+		///         <param name="status">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:sourceMatrix:resultMatrix:pivotIndices:status:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSMatrix sourceMatrix, MPSMatrix resultMatrix, MPSMatrix pivotIndices, [NullAllowed] IMTLBuffer status);
 
@@ -2994,6 +3606,15 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:lower:order:")]
 		NativeHandle Constructor (IMTLDevice device, bool lower, nuint order);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceMatrix">To be added.</param>
+		///         <param name="resultMatrix">To be added.</param>
+		///         <param name="status">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:sourceMatrix:resultMatrix:status:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSMatrix sourceMatrix, MPSMatrix resultMatrix, [NullAllowed] IMTLBuffer status);
 
@@ -3012,6 +3633,12 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSMatrixCopyDescriptor {
+		/// <param name="sourceMatrix">To be added.</param>
+		///         <param name="destinationMatrix">To be added.</param>
+		///         <param name="offsets">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("descriptorWithSourceMatrix:destinationMatrix:offsets:")]
 		MPSMatrixCopyDescriptor Create (MPSMatrix sourceMatrix, MPSMatrix destinationMatrix, MPSMatrixCopyOffsets offsets);
@@ -3037,18 +3664,34 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, nuint copyRows, nuint copyColumns, bool areSourcesTransposed, bool areDestinationsTransposed);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("copyRows")]
 		nuint CopyRows { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("copyColumns")]
 		nuint CopyColumns { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourcesAreTransposed")]
 		bool AreSourcesTransposed { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("destinationsAreTransposed")]
 		bool AreDestinationsTransposed { get; }
 
+		/// <param name="cmdBuf">To be added.</param>
+		///         <param name="copyDescriptor">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:copyDescriptor:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer cmdBuf, MPSMatrixCopyDescriptor copyDescriptor);
 
@@ -3162,12 +3805,21 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	[BaseType (typeof (MPSKernel))]
 	interface MPSImageCopyToMatrix {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("destinationMatrixOrigin", ArgumentSemantic.Assign)]
 		MTLOrigin DestinationMatrixOrigin { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("destinationMatrixBatchIndex")]
 		nuint DestinationMatrixBatchIndex { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("dataLayout")]
 		MPSDataLayout DataLayout { get; }
 
@@ -3179,9 +3831,19 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="destinationMatrix">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:sourceImage:destinationMatrix:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, MPSMatrix destinationMatrix);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImages">To be added.</param>
+		///         <param name="destinationMatrix">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("encodeBatchToCommandBuffer:sourceImages:destinationMatrix:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImages, MPSMatrix destinationMatrix);
@@ -3191,6 +3853,9 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor] // There is a DesignatedInitializer, file a bug if needed.
 	interface MPSImageFindKeypoints {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("keypointRangeInfo")]
 		MPSImageKeypointRangeInfo KeypointRangeInfo { get; }
 
@@ -3211,27 +3876,48 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSBinaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageArithmetic {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("primaryScale")]
 		float PrimaryScale { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("secondaryScale")]
 		float SecondaryScale { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bias")]
 		float Bias { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("primaryStrideInPixels", ArgumentSemantic.Assign)]
 		MTLSize PrimaryStrideInPixels { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("secondaryStrideInPixels", ArgumentSemantic.Assign)]
 		MTLSize SecondaryStrideInPixels { get; set; }
 
 		// float
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("minimumValue")]
 		float MinimumValue { get; set; }
 
 		// float
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("maximumValue")]
 		float MaximumValue { get; set; }
@@ -3326,6 +4012,9 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageStatisticsMinAndMax {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("clipRectSource", ArgumentSemantic.Assign)]
 		MTLRegion ClipRectSource { get; set; }
 
@@ -3343,6 +4032,9 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageStatisticsMeanAndVariance {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("clipRectSource", ArgumentSemantic.Assign)]
 		MTLRegion ClipRectSource { get; set; }
 
@@ -3360,6 +4052,9 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageStatisticsMean {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("clipRectSource", ArgumentSemantic.Assign)]
 		MTLRegion ClipRectSource { get; set; }
 
@@ -3377,15 +4072,25 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSNNDefaultPadding : MPSNNPadding {
+		/// <param name="method">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("paddingWithMethod:")]
 		MPSNNDefaultPadding Create (MPSNNPaddingMethod method);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[MacCatalyst (13, 1)]
 		[Export ("paddingForTensorflowAveragePooling")]
 		MPSNNDefaultPadding CreatePaddingForTensorflowAveragePooling ();
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("paddingForTensorflowAveragePoolingValidOnly")]
@@ -3592,43 +4297,113 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="primaryImage">To be added.</param>
+		///         <param name="secondaryImage">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:primaryImage:secondaryImage:destinationImage:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSImage primaryImage, MPSImage secondaryImage, MPSImage destinationImage);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="primaryImages">To be added.</param>
+		///         <param name="secondaryImages">To be added.</param>
+		///         <param name="destinationImages">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("encodeBatchToCommandBuffer:primaryImages:secondaryImages:destinationImages:")]
 		void EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> primaryImages, NSArray<MPSImage> secondaryImages, NSArray<MPSImage> destinationImages);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="primaryImage">To be added.</param>
+		///         <param name="secondaryImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:primaryImage:secondaryImage:")]
 		MPSImage EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSImage primaryImage, MPSImage secondaryImage);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="primaryImage">To be added.</param>
+		///         <param name="secondaryImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("encodeBatchToCommandBuffer:primaryImages:secondaryImages:")]
 		NSArray<MPSImage> EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> primaryImage, NSArray<MPSImage> secondaryImage);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="primaryImage">To be added.</param>
+		///         <param name="secondaryImage">To be added.</param>
+		///         <param name="outState">To be added.</param>
+		///         <param name="isTemporary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("encodeToCommandBuffer:primaryImage:secondaryImage:destinationState:destinationStateIsTemporary:")]
 		MPSImage EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSImage primaryImage, MPSImage secondaryImage, [NullAllowed] out MPSState outState, bool isTemporary);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="primaryImages">To be added.</param>
+		///         <param name="secondaryImages">To be added.</param>
+		///         <param name="outState">To be added.</param>
+		///         <param name="isTemporary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("encodeBatchToCommandBuffer:primaryImages:secondaryImages:destinationStates:destinationStateIsTemporary:")]
 		NSArray<MPSImage> EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> primaryImages, NSArray<MPSImage> secondaryImages, [NullAllowed] out MPSState [] outState, bool isTemporary);
 
+		/// <param name="primaryImage">To be added.</param>
+		///         <param name="secondaryImage">To be added.</param>
+		///         <param name="sourceStates">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("resultStateForPrimaryImage:secondaryImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		MPSState GetResultState (MPSImage primaryImage, MPSImage secondaryImage, [NullAllowed] NSArray<MPSState> sourceStates, MPSImage destinationImage);
 
+		/// <param name="primaryImage">To be added.</param>
+		///         <param name="secondaryImage">To be added.</param>
+		///         <param name="sourceStates">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("resultStateBatchForPrimaryImage:secondaryImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		NSArray<MPSState> GetResultStateBatch (NSArray<MPSImage> primaryImage, NSArray<MPSImage> secondaryImage, [NullAllowed] NSArray<MPSState> [] sourceStates, NSArray<MPSImage> destinationImage);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="primaryImage">To be added.</param>
+		///         <param name="secondaryImage">To be added.</param>
+		///         <param name="sourceStates">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("temporaryResultStateForCommandBuffer:primaryImage:secondaryImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		MPSState GetTemporaryResultState (IMTLCommandBuffer commandBuffer, MPSImage primaryImage, MPSImage secondaryImage, [NullAllowed] NSArray<MPSState> sourceStates, MPSImage destinationImage);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="primaryImage">To be added.</param>
+		///         <param name="secondaryImage">To be added.</param>
+		///         <param name="sourceStates">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("temporaryResultStateBatchForCommandBuffer:primaryImage:secondaryImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
@@ -3648,6 +4423,11 @@ namespace MetalPerformanceShaders {
 		[Export ("appendBatchBarrier")]
 		bool AppendBatchBarrier { get; }
 
+		/// <param name="sourceImages">To be added.</param>
+		///         <param name="sourceStates">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("destinationImageDescriptorForSourceImages:sourceStates:")]
 		MPSImageDescriptor GetDestinationImageDescriptor (NSArray<MPSImage> sourceImages, [NullAllowed] NSArray<MPSState> sourceStates);
@@ -3866,6 +4646,9 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSCnnConvolutionDescriptor), Name = "MPSCNNSubPixelConvolutionDescriptor")]
 	[DisableDefaultCtor]
 	interface MPSCnnSubPixelConvolutionDescriptor {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("subPixelScaleFactor")]
 		nuint SubPixelScaleFactor { get; set; }
 	}
@@ -3932,18 +4715,42 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="convolutionGradientState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("encodeToCommandBuffer:sourceImage:convolutionGradientState:")]
 		MPSImage EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, [NullAllowed] MPSCnnConvolutionGradientState convolutionGradientState);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="convolutionGradientState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("encodeBatchToCommandBuffer:sourceImages:convolutionGradientStates:")]
 		NSArray<MPSImage> EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImage, [NullAllowed] MPSCnnConvolutionGradientState [] convolutionGradientState);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="convolutionGradientState">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("encodeToCommandBuffer:sourceImage:convolutionGradientState:destinationImage:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, [NullAllowed] MPSCnnConvolutionGradientState convolutionGradientState, MPSImage destinationImage);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="convolutionGradientState">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("encodeBatchToCommandBuffer:sourceImages:convolutionGradientStates:destinationImages:")]
 		void EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImage, [NullAllowed] MPSCnnConvolutionGradientState [] convolutionGradientState, NSArray<MPSImage> destinationImage);
@@ -4038,6 +4845,9 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnPoolingGradient {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceSize", ArgumentSemantic.Assign)]
 		MTLSize SourceSize { get; set; }
 
@@ -4058,9 +4868,15 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnPoolingAverageGradient {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("zeroPadSizeX")]
 		nuint ZeroPadSizeX { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("zeroPadSizeY")]
 		nuint ZeroPadSizeY { get; set; }
 
@@ -4120,12 +4936,21 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSCNNUpsampling")]
 	[DisableDefaultCtor] // failed assertion
 	interface MPSCnnUpsampling {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleFactorX")]
 		double ScaleFactorX { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleFactorY")]
 		double ScaleFactorY { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("alignCorners")]
 		bool AlignCorners { get; }
@@ -4165,9 +4990,15 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnUpsamplingGradient {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleFactorX")]
 		double ScaleFactorX { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleFactorY")]
 		double ScaleFactorY { get; }
 
@@ -4204,18 +5035,33 @@ namespace MetalPerformanceShaders {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "MPSRNNDescriptor")]
 	interface MPSRnnDescriptor {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("inputFeatureChannels")]
 		nuint InputFeatureChannels { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("outputFeatureChannels")]
 		nuint OutputFeatureChannels { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("useLayerInputUnitTransformMode")]
 		bool UseLayerInputUnitTransformMode { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("useFloat32Weights")]
 		bool UseFloat32Weights { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("layerSequenceDirection", ArgumentSemantic.Assign)]
 		MPSRnnSequenceDirection LayerSequenceDirection { get; set; }
 	}
@@ -4224,9 +5070,21 @@ namespace MetalPerformanceShaders {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSRnnDescriptor), Name = "MPSRNNSingleGateDescriptor")]
 	interface MPSRnnSingleGateDescriptor {
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("inputWeights", ArgumentSemantic.Retain)]
 		IMPSCnnConvolutionDataSource InputWeights { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("recurrentWeights", ArgumentSemantic.Retain)]
 		IMPSCnnConvolutionDataSource RecurrentWeights { get; set; }
 
@@ -4239,30 +5097,78 @@ namespace MetalPerformanceShaders {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSRnnDescriptor))]
 	interface MPSGRUDescriptor {
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("inputGateInputWeights", ArgumentSemantic.Retain)]
 		IMPSCnnConvolutionDataSource InputGateInputWeights { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("inputGateRecurrentWeights", ArgumentSemantic.Retain)]
 		IMPSCnnConvolutionDataSource InputGateRecurrentWeights { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("recurrentGateInputWeights", ArgumentSemantic.Retain)]
 		IMPSCnnConvolutionDataSource RecurrentGateInputWeights { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("recurrentGateRecurrentWeights", ArgumentSemantic.Retain)]
 		IMPSCnnConvolutionDataSource RecurrentGateRecurrentWeights { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("outputGateInputWeights", ArgumentSemantic.Retain)]
 		IMPSCnnConvolutionDataSource OutputGateInputWeights { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("outputGateRecurrentWeights", ArgumentSemantic.Retain)]
 		IMPSCnnConvolutionDataSource OutputGateRecurrentWeights { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("outputGateInputGateWeights", ArgumentSemantic.Retain)]
 		IMPSCnnConvolutionDataSource OutputGateInputGateWeights { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("gatePnormValue")]
 		float GatePnormValue { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("flipOutputGates")]
 		bool FlipOutputGates { get; set; }
 
@@ -4275,54 +5181,141 @@ namespace MetalPerformanceShaders {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSRnnDescriptor))]
 	interface MPSLSTMDescriptor {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("memoryWeightsAreDiagonal")]
 		bool AreMemoryWeightsDiagonal { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("inputGateInputWeights", ArgumentSemantic.Retain)]
 		IMPSCnnConvolutionDataSource InputGateInputWeights { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("inputGateRecurrentWeights", ArgumentSemantic.Retain)]
 		IMPSCnnConvolutionDataSource InputGateRecurrentWeights { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("inputGateMemoryWeights", ArgumentSemantic.Retain)]
 		IMPSCnnConvolutionDataSource InputGateMemoryWeights { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("forgetGateInputWeights", ArgumentSemantic.Retain)]
 		IMPSCnnConvolutionDataSource ForgetGateInputWeights { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("forgetGateRecurrentWeights", ArgumentSemantic.Retain)]
 		IMPSCnnConvolutionDataSource ForgetGateRecurrentWeights { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("forgetGateMemoryWeights", ArgumentSemantic.Retain)]
 		IMPSCnnConvolutionDataSource ForgetGateMemoryWeights { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("outputGateInputWeights", ArgumentSemantic.Retain)]
 		IMPSCnnConvolutionDataSource OutputGateInputWeights { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("outputGateRecurrentWeights", ArgumentSemantic.Retain)]
 		IMPSCnnConvolutionDataSource OutputGateRecurrentWeights { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("outputGateMemoryWeights", ArgumentSemantic.Retain)]
 		IMPSCnnConvolutionDataSource OutputGateMemoryWeights { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("cellGateInputWeights", ArgumentSemantic.Retain)]
 		IMPSCnnConvolutionDataSource CellGateInputWeights { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("cellGateRecurrentWeights", ArgumentSemantic.Retain)]
 		IMPSCnnConvolutionDataSource CellGateRecurrentWeights { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("cellGateMemoryWeights", ArgumentSemantic.Retain)]
 		IMPSCnnConvolutionDataSource CellGateMemoryWeights { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("cellToOutputNeuronType", ArgumentSemantic.Assign)]
 		MPSCnnNeuronType CellToOutputNeuronType { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("cellToOutputNeuronParamA")]
 		float CellToOutputNeuronParamA { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("cellToOutputNeuronParamB")]
 		float CellToOutputNeuronParamB { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("cellToOutputNeuronParamC")]
 		float CellToOutputNeuronParamC { get; set; }
@@ -4351,21 +5344,39 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSRNNImageInferenceLayer")]
 	[DisableDefaultCtor] // There is a DesignatedInitializer, file a bug if needed.
 	interface MPSRnnImageInferenceLayer {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("inputFeatureChannels")]
 		nuint InputFeatureChannels { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("outputFeatureChannels")]
 		nuint OutputFeatureChannels { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("numberOfLayers")]
 		nuint NumberOfLayers { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("recurrentOutputIsTemporary")]
 		bool IsRecurrentOutputTemporary { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("storeAllIntermediateStates")]
 		bool StoreAllIntermediateStates { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bidirectionalCombineMode", ArgumentSemantic.Assign)]
 		MPSRnnBidirectionalCombineMode BidirectionalCombineMode { get; set; }
 
@@ -4377,9 +5388,31 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, MPSRnnDescriptor [] rnnDescriptors);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImages">To be added.</param>
+		///         <param name="destinationImages">To be added.</param>
+		///         <param name="recurrentInputState">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="recurrentOutputStates">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeSequenceToCommandBuffer:sourceImages:destinationImages:recurrentInputState:recurrentOutputStates:")]
 		void EncodeSequence (IMTLCommandBuffer commandBuffer, MPSImage [] sourceImages, MPSImage [] destinationImages, [NullAllowed] MPSRnnRecurrentImageState recurrentInputState, [NullAllowed] NSMutableArray<MPSRnnRecurrentImageState> recurrentOutputStates);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceSequence">To be added.</param>
+		///         <param name="destinationForwardImages">To be added.</param>
+		///         <param name="destinationBackwardImages">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeBidirectionalSequenceToCommandBuffer:sourceSequence:destinationForwardImages:destinationBackwardImages:")]
 		void EncodeBidirectionalSequence (IMTLCommandBuffer commandBuffer, MPSImage [] sourceSequence, MPSImage [] destinationForwardImages, [NullAllowed] MPSImage [] destinationBackwardImages);
 
@@ -4387,6 +5420,17 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 
+		/// <param name="zone">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="device">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("copyWithZone:device:")]
 		[return: Release ()]
 		MPSRnnImageInferenceLayer Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
@@ -4411,21 +5455,39 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSKernel), Name = "MPSRNNMatrixInferenceLayer")]
 	[DisableDefaultCtor] // There is a DesignatedInitializer, file a bug if needed.
 	interface MPSRnnMatrixInferenceLayer {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("inputFeatureChannels")]
 		nuint InputFeatureChannels { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("outputFeatureChannels")]
 		nuint OutputFeatureChannels { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("numberOfLayers")]
 		nuint NumberOfLayers { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("recurrentOutputIsTemporary")]
 		bool IsRecurrentOutputTemporary { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("storeAllIntermediateStates")]
 		bool StoreAllIntermediateStates { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bidirectionalCombineMode", ArgumentSemantic.Assign)]
 		MPSRnnBidirectionalCombineMode BidirectionalCombineMode { get; set; }
 
@@ -4437,13 +5499,44 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, MPSRnnDescriptor [] rnnDescriptors);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceMatrices">To be added.</param>
+		///         <param name="destinationMatrices">To be added.</param>
+		///         <param name="recurrentInputState">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="recurrentOutputStates">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeSequenceToCommandBuffer:sourceMatrices:destinationMatrices:recurrentInputState:recurrentOutputStates:")]
 		void EncodeSequence (IMTLCommandBuffer commandBuffer, MPSMatrix [] sourceMatrices, MPSMatrix [] destinationMatrices, [NullAllowed] MPSRnnRecurrentMatrixState recurrentInputState, [NullAllowed] NSMutableArray<MPSRnnRecurrentMatrixState> recurrentOutputStates);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceMatrices">To be added.</param>
+		///         <param name="sourceOffsets">To be added.</param>
+		///         <param name="destinationMatrices">To be added.</param>
+		///         <param name="destinationOffsets">To be added.</param>
+		///         <param name="recurrentInputState">To be added.</param>
+		///         <param name="recurrentOutputStates">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("encodeSequenceToCommandBuffer:sourceMatrices:sourceOffsets:destinationMatrices:destinationOffsets:recurrentInputState:recurrentOutputStates:")]
 		void EncodeSequence (IMTLCommandBuffer commandBuffer, MPSMatrix [] sourceMatrices, [NullAllowed] IntPtr sourceOffsets, MPSMatrix [] destinationMatrices, [NullAllowed] IntPtr destinationOffsets, [NullAllowed] MPSRnnRecurrentMatrixState recurrentInputState, [NullAllowed] NSMutableArray<MPSRnnRecurrentMatrixState> recurrentOutputStates);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceSequence">To be added.</param>
+		///         <param name="destinationForwardMatrices">To be added.</param>
+		///         <param name="destinationBackwardMatrices">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeBidirectionalSequenceToCommandBuffer:sourceSequence:destinationForwardMatrices:destinationBackwardMatrices:")]
 		void EncodeBidirectionalSequence (IMTLCommandBuffer commandBuffer, MPSMatrix [] sourceSequence, MPSMatrix [] destinationForwardMatrices, [NullAllowed] MPSMatrix [] destinationBackwardMatrices);
 
@@ -4451,6 +5544,17 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 
+		/// <param name="zone">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="device">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("copyWithZone:device:")]
 		[return: Release ()]
 		MPSRnnMatrixInferenceLayer Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
@@ -4465,30 +5569,65 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor ([NullAllowed] IMPSHandle handle);
 
+		/// <param name="handle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithHandle:")]
 		MPSNNImageNode Create ([NullAllowed] IMPSHandle handle);
 
+		/// <param name="handle">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("exportedNodeWithHandle:")]
 		MPSNNImageNode GetExportedNode ([NullAllowed] IMPSHandle handle);
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("handle", ArgumentSemantic.Retain)]
 		IMPSHandle MPSHandle { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("format", ArgumentSemantic.Assign)]
 		MPSImageFeatureChannelFormat Format { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("imageAllocator", ArgumentSemantic.Retain)]
 		IMPSImageAllocator ImageAllocator { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("exportFromGraph")]
 		bool ExportFromGraph { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("synchronizeResource")]
 		bool SynchronizeResource { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("stopGradient")]
 		bool StopGradient { get; set; }
@@ -4499,12 +5638,24 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSNNStateNode {
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("handle", ArgumentSemantic.Retain)]
 		IMPSHandle MPSHandle { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("exportFromGraph")]
 		bool ExportFromGraph { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("synchronizeResource")]
 		bool SynchronizeResource { get; set; }
@@ -4518,37 +5669,82 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSNNFilterNode {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("resultImage")]
 		MPSNNImageNode ResultImage { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("resultState")]
 		MPSNNStateNode ResultState { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("resultStates")]
 		MPSNNStateNode [] ResultStates { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("paddingPolicy", ArgumentSemantic.Retain)]
 		IMPSNNPadding PaddingPolicy { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("label")]
 		string Label { get; set; }
 
+		/// <param name="gradientImageSource">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("gradientFilterWithSource:")]
 		MPSNNGradientFilterNode GetFilter (MPSNNImageNode gradientImageSource);
 
+		/// <param name="gradientImagesSources">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("gradientFilterWithSources:")]
 		MPSNNGradientFilterNode GetFilter (MPSNNImageNode [] gradientImagesSources);
 
+		/// <param name="gradientImagesSources">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("gradientFiltersWithSources:")]
 		MPSNNGradientFilterNode [] GetFilters (MPSNNImageNode [] gradientImagesSources);
 
+		/// <param name="gradientImageSource">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("gradientFiltersWithSource:")]
 		MPSNNGradientFilterNode [] GetFilters (MPSNNImageNode gradientImageSource);
 
+		/// <param name="gradientImageSource">To be added.</param>
+		///         <param name="nodeHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("trainingGraphWithSourceGradient:nodeHandler:")]
 		[return: NullAllowed]
@@ -4574,6 +5770,11 @@ namespace MetalPerformanceShaders {
 		[Export ("accumulatorPrecision", ArgumentSemantic.Assign)]
 		MPSNNConvolutionAccumulatorPrecisionOption AccumulatorPrecision { get; set; }
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="weights">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:weights:")]
 		MPSCnnConvolutionNode Create (MPSNNImageNode sourceNode, IMPSCnnConvolutionDataSource weights);
@@ -4594,6 +5795,11 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSCnnConvolutionNode), Name = "MPSCNNFullyConnectedNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnFullyConnectedNode {
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="weights">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:weights:")]
 		MPSCnnFullyConnectedNode Create (MPSNNImageNode sourceNode, IMPSCnnConvolutionDataSource weights);
@@ -4607,6 +5813,14 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSCnnConvolutionNode), Name = "MPSCNNBinaryConvolutionNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnBinaryConvolutionNode {
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="weights">To be added.</param>
+		///         <param name="scaleValue">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:weights:scaleValue:type:flags:")]
 		MPSCnnBinaryConvolutionNode Create (MPSNNImageNode sourceNode, IMPSCnnConvolutionDataSource weights, float scaleValue, MPSCnnBinaryConvolutionType type, MPSCnnBinaryConvolutionFlags flags);
@@ -4631,6 +5845,14 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSCnnBinaryConvolutionNode), Name = "MPSCNNBinaryFullyConnectedNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnBinaryFullyConnectedNode {
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="weights">To be added.</param>
+		///         <param name="scaleValue">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:weights:scaleValue:type:flags:")]
 		MPSCnnBinaryFullyConnectedNode Create (MPSNNImageNode sourceNode, IMPSCnnConvolutionDataSource weights, float scaleValue, MPSCnnBinaryConvolutionType type, MPSCnnBinaryConvolutionFlags flags);
@@ -4655,6 +5877,12 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSCnnConvolutionNode), Name = "MPSCNNConvolutionTransposeNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnConvolutionTransposeNode {
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="convolutionGradientState">To be added.</param>
+		///         <param name="weights">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("nodeWithSource:convolutionGradientState:weights:")]
@@ -4670,6 +5898,13 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnConvolutionGradientNode : MPSNNTrainableNode {
 
+		/// <param name="sourceGradient">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="gradientState">To be added.</param>
+		///         <param name="weights">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSourceGradient:sourceImage:convolutionGradientState:weights:")]
 		MPSCnnConvolutionGradientNode Create (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSCnnConvolutionGradientStateNode gradientState, [NullAllowed] IMPSCnnConvolutionDataSource weights);
@@ -4684,6 +5919,11 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronNode {
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="descriptor">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("nodeWithSource:descriptor:")]
@@ -4714,6 +5954,13 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronPowerNode {
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="a">To be added.</param>
+		///         <param name="b">To be added.</param>
+		///         <param name="c">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:a:b:c:")]
 		MPSCnnNeuronPowerNode Create (MPSNNImageNode sourceNode, float a, float b, float c);
@@ -4721,6 +5968,10 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithSource:a:b:c:")]
 		NativeHandle Constructor (MPSNNImageNode sourceNode, float a, float b, float c);
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:")]
 		MPSCnnNeuronPowerNode Create (MPSNNImageNode sourceNode);
@@ -4734,6 +5985,13 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronExponentialNode {
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="a">To be added.</param>
+		///         <param name="b">To be added.</param>
+		///         <param name="c">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:a:b:c:")]
 		MPSCnnNeuronExponentialNode Create (MPSNNImageNode sourceNode, float a, float b, float c);
@@ -4741,6 +5999,10 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithSource:a:b:c:")]
 		NativeHandle Constructor (MPSNNImageNode sourceNode, float a, float b, float c);
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:")]
 		MPSCnnNeuronExponentialNode Create (MPSNNImageNode sourceNode);
@@ -4754,6 +6016,13 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronLogarithmNode {
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="a">To be added.</param>
+		///         <param name="b">To be added.</param>
+		///         <param name="c">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:a:b:c:")]
 		MPSCnnNeuronLogarithmNode Create (MPSNNImageNode sourceNode, float a, float b, float c);
@@ -4761,6 +6030,10 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithSource:a:b:c:")]
 		NativeHandle Constructor (MPSNNImageNode sourceNode, float a, float b, float c);
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:")]
 		MPSCnnNeuronLogarithmNode Create (MPSNNImageNode sourceNode);
@@ -4774,6 +6047,13 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronGradientNode {
 
+		/// <param name="sourceGradient">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="gradientState">To be added.</param>
+		///         <param name="descriptor">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSourceGradient:sourceImage:gradientState:descriptor:")]
 		MPSCnnNeuronGradientNode Create (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState, MPSNNNeuronDescriptor descriptor);
@@ -4793,9 +6073,16 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNUnaryReductionNode {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("clipRectSource", ArgumentSemantic.Assign)]
 		MTLRegion ClipRectSource { get; set; }
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:")]
 		MPSNNUnaryReductionNode Create (MPSNNImageNode sourceNode);
@@ -4809,6 +6096,10 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNReductionRowMinNode {
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[New]
 		[Export ("nodeWithSource:")]
@@ -4823,6 +6114,10 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNReductionColumnMinNode {
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[New]
 		[Export ("nodeWithSource:")]
@@ -4837,6 +6132,10 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNReductionFeatureChannelsMinNode {
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[New]
 		[Export ("nodeWithSource:")]
@@ -4851,6 +6150,10 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNReductionFeatureChannelsArgumentMinNode {
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[New]
 		[Export ("nodeWithSource:")]
@@ -4865,6 +6168,10 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNReductionRowMaxNode {
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[New]
 		[Export ("nodeWithSource:")]
@@ -4879,6 +6186,10 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNReductionColumnMaxNode {
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[New]
 		[Export ("nodeWithSource:")]
@@ -4893,6 +6204,10 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNReductionFeatureChannelsMaxNode {
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[New]
 		[Export ("nodeWithSource:")]
@@ -4907,6 +6222,10 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNReductionFeatureChannelsArgumentMaxNode {
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[New]
 		[Export ("nodeWithSource:")]
@@ -4921,6 +6240,10 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNReductionRowMeanNode {
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[New]
 		[Export ("nodeWithSource:")]
@@ -4935,6 +6258,10 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNReductionColumnMeanNode {
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[New]
 		[Export ("nodeWithSource:")]
@@ -4949,6 +6276,10 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNReductionFeatureChannelsMeanNode {
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[New]
 		[Export ("nodeWithSource:")]
@@ -4963,6 +6294,10 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNReductionSpatialMeanNode {
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[New]
 		[Export ("nodeWithSource:")]
@@ -4977,6 +6312,10 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNReductionRowSumNode {
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[New]
 		[Export ("nodeWithSource:")]
@@ -4991,6 +6330,10 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNReductionColumnSumNode {
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[New]
 		[Export ("nodeWithSource:")]
@@ -5005,6 +6348,10 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNReductionFeatureChannelsSumNode {
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[New]
 		[Export ("nodeWithSource:")]
@@ -5013,6 +6360,9 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithSource:")]
 		NativeHandle Constructor (MPSNNImageNode sourceNode);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("weight")]
 		float Weight { get; set; }
 	}
@@ -5022,6 +6372,10 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronAbsoluteNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNeuronAbsoluteNode {
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:")]
 		MPSCnnNeuronAbsoluteNode Create (MPSNNImageNode sourceNode);
@@ -5035,10 +6389,19 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronELUNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNeuronEluNode {
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="a">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:a:")]
 		MPSCnnNeuronEluNode Create (MPSNNImageNode sourceNode, float a);
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:")]
 		MPSCnnNeuronEluNode Create (MPSNNImageNode sourceNode);
@@ -5055,6 +6418,12 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronReLUNNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNeuronReLunNode {
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="a">To be added.</param>
+		///         <param name="b">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:a:b:")]
 		MPSCnnNeuronReLunNode Create (MPSNNImageNode sourceNode, float a, float b);
@@ -5062,6 +6431,10 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithSource:a:b:")]
 		NativeHandle Constructor (MPSNNImageNode sourceNode, float a, float b);
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:")]
 		MPSCnnNeuronReLunNode Create (MPSNNImageNode sourceNode);
@@ -5075,6 +6448,12 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronLinearNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNeuronLinearNode {
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="a">To be added.</param>
+		///         <param name="b">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:a:b:")]
 		MPSCnnNeuronLinearNode Create (MPSNNImageNode sourceNode, float a, float b);
@@ -5086,6 +6465,10 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithSource:a:b:")]
 		NativeHandle Constructor (MPSNNImageNode sourceNode, float a, float b);
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:")]
 		MPSCnnNeuronLinearNode Create (MPSNNImageNode sourceNode);
@@ -5099,10 +6482,19 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronReLUNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNeuronReLUNode {
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="a">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:a:")]
 		MPSCnnNeuronReLUNode Create (MPSNNImageNode sourceNode, float a);
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:")]
 		MPSCnnNeuronReLUNode Create (MPSNNImageNode sourceNode);
@@ -5119,6 +6511,10 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronSigmoidNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNeuronSigmoidNode {
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:")]
 		MPSCnnNeuronSigmoidNode Create (MPSNNImageNode sourceNode);
@@ -5132,6 +6528,12 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronHardSigmoidNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNeuronHardSigmoidNode {
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="a">To be added.</param>
+		///         <param name="b">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:a:b:")]
 		MPSCnnNeuronHardSigmoidNode Create (MPSNNImageNode sourceNode, float a, float b);
@@ -5139,6 +6541,10 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithSource:a:b:")]
 		NativeHandle Constructor (MPSNNImageNode sourceNode, float a, float b);
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:")]
 		MPSCnnNeuronHardSigmoidNode Create (MPSNNImageNode sourceNode);
@@ -5152,6 +6558,12 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronSoftPlusNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNeuronSoftPlusNode {
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="a">To be added.</param>
+		///         <param name="b">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:a:b:")]
 		MPSCnnNeuronSoftPlusNode Create (MPSNNImageNode sourceNode, float a, float b);
@@ -5159,6 +6571,10 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithSource:a:b:")]
 		NativeHandle Constructor (MPSNNImageNode sourceNode, float a, float b);
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:")]
 		MPSCnnNeuronSoftPlusNode Create (MPSNNImageNode sourceNode);
@@ -5172,6 +6588,10 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronSoftSignNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNeuronSoftSignNode {
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:")]
 		MPSCnnNeuronSoftSignNode Create (MPSNNImageNode sourceNode);
@@ -5185,6 +6605,12 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronTanHNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNeuronTanHNode {
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="a">To be added.</param>
+		///         <param name="b">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:a:b:")]
 		MPSCnnNeuronTanHNode Create (MPSNNImageNode sourceNode, float a, float b);
@@ -5192,6 +6618,10 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithSource:a:b:")]
 		NativeHandle Constructor (MPSNNImageNode sourceNode, float a, float b);
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:")]
 		MPSCnnNeuronTanHNode Create (MPSNNImageNode sourceNode);
@@ -5205,6 +6635,11 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronPReLUNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNeuronPReLUNode {
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="aData">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:aData:")]
 		MPSCnnNeuronPReLUNode Create (MPSNNImageNode sourceNode, NSData aData);
@@ -5219,18 +6654,30 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnPoolingNode {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("kernelWidth")]
 		nuint KernelWidth { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("kernelHeight")]
 		nuint KernelHeight { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("strideInPixelsX")]
 		nuint StrideInPixelsX { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("strideInPixelsY")]
 		nuint StrideInPixelsY { get; }
@@ -5265,15 +6712,27 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithSourceGradient:sourceImage:gradientState:kernelWidth:kernelHeight:strideInPixelsX:strideInPixelsY:paddingPolicy:")]
 		NativeHandle Constructor (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState, nuint kernelWidth, nuint kernelHeight, nuint strideInPixelsX, nuint strideInPixelsY, [NullAllowed] IMPSNNPadding paddingPolicy);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("kernelWidth")]
 		nuint KernelWidth { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("kernelHeight")]
 		nuint KernelHeight { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("strideInPixelsX")]
 		nuint StrideInPixelsX { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("strideInPixelsY")]
 		nuint StrideInPixelsY { get; }
 	}
@@ -5350,9 +6809,15 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnSpatialNormalizationGradientNode {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("kernelWidth")]
 		nuint KernelWidth { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("kernelHeight")]
 		nuint KernelHeight { get; set; }
 
@@ -5363,12 +6828,21 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithSourceGradient:sourceImage:gradientState:kernelSize:")]
 		NativeHandle Constructor (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState, nuint kernelSize);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("alpha")]
 		float Alpha { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("beta")]
 		float Beta { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("delta")]
 		float Delta { get; set; }
 	}
@@ -5458,6 +6932,11 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnInstanceNormalizationNode {
 
+		/// <param name="source">To be added.</param>
+		///         <param name="dataSource">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:dataSource:")]
 		MPSCnnInstanceNormalizationNode Create (MPSNNImageNode source, IMPSCnnInstanceNormalizationDataSource dataSource);
@@ -5471,6 +6950,12 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnInstanceNormalizationGradientNode : MPSNNTrainableNode {
 
+		/// <param name="sourceGradient">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="gradientState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSourceGradient:sourceImage:gradientState:")]
 		MPSCnnInstanceNormalizationGradientNode Create (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState);
@@ -5490,6 +6975,11 @@ namespace MetalPerformanceShaders {
 		[Export ("flags", ArgumentSemantic.Assign)]
 		MPSCnnBatchNormalizationFlags Flags { get; set; }
 
+		/// <param name="source">To be added.</param>
+		///         <param name="dataSource">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:dataSource:")]
 		MPSCnnBatchNormalizationNode Create (MPSNNImageNode source, IMPSCnnBatchNormalizationDataSource dataSource);
@@ -5503,6 +6993,12 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSNNGradientFilterNode), Name = "MPSCNNBatchNormalizationGradientNode")]
 	interface MPSCnnBatchNormalizationGradientNode : MPSNNTrainableNode {
 
+		/// <param name="sourceGradient">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="gradientState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSourceGradient:sourceImage:gradientState:")]
 		MPSCnnBatchNormalizationGradientNode Create (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState);
@@ -5551,15 +7047,28 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSNNFilterNode), Name = "MPSCNNNormalizationNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNormalizationNode {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("alpha")]
 		float Alpha { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("beta")]
 		float Beta { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("delta")]
 		float Delta { get; set; }
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:")]
 		MPSCnnNormalizationNode Create (MPSNNImageNode sourceNode);
@@ -5574,9 +7083,15 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSCnnNormalizationNode), Name = "MPSCNNSpatialNormalizationNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnSpatialNormalizationNode {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("kernelWidth")]
 		nuint KernelWidth { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("kernelHeight")]
 		nuint KernelHeight { get; set; }
 
@@ -5670,10 +7185,24 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSNNFilterNode))]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSNNScaleNode {
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="size">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:outputSize:")]
 		MPSNNScaleNode Create (MPSNNImageNode sourceNode, MTLSize size);
 
+		/// <param name="sourceNode">To be added.</param>
+		///         <param name="transformProvider">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="size">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:transformProvider:outputSize:")]
 		MPSNNScaleNode Create (MPSNNImageNode sourceNode, [NullAllowed] IMPSImageTransformProvider transformProvider, MTLSize size);
@@ -5690,10 +7219,19 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSNNFilterNode))]
 	[DisableDefaultCtor]
 	interface MPSNNBinaryArithmeticNode {
+		/// <param name="sourceNodes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSources:")]
 		MPSNNBinaryArithmeticNode Create (MPSNNImageNode [] sourceNodes);
 
+		/// <param name="left">To be added.</param>
+		///         <param name="right">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithLeftSource:rightSource:")]
 		MPSNNBinaryArithmeticNode Create (MPSNNImageNode left, MPSNNImageNode right);
@@ -5704,44 +7242,84 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithLeftSource:rightSource:")]
 		NativeHandle Constructor (MPSNNImageNode left, MPSNNImageNode right);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("gradientClass")]
 		Class GradientClass { get; }
 
+		/// <param name="gradientImages">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("gradientFiltersWithSources:")]
 		MPSNNGradientFilterNode [] GetGradientFilters (MPSNNImageNode [] gradientImages);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("primaryScale")]
 		float PrimaryScale { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("secondaryScale")]
 		float SecondaryScale { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bias")]
 		float Bias { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("primaryStrideInPixelsX")]
 		nuint PrimaryStrideInPixelsX { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("primaryStrideInPixelsY")]
 		nuint PrimaryStrideInPixelsY { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("primaryStrideInFeatureChannels")]
 		nuint PrimaryStrideInFeatureChannels { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("secondaryStrideInPixelsX")]
 		nuint SecondaryStrideInPixelsX { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("secondaryStrideInPixelsY")]
 		nuint SecondaryStrideInPixelsY { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("secondaryStrideInFeatureChannels")]
 		nuint SecondaryStrideInFeatureChannels { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("minimumValue")]
 		float MinimumValue { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("maximumValue")]
 		float MaximumValue { get; set; }
 	}
@@ -5751,6 +7329,9 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNComparisonNode {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("comparisonType", ArgumentSemantic.Assign)]
 		MPSNNComparisonType ComparisonType { get; set; }
 	}
@@ -5760,6 +7341,13 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNArithmeticGradientNode {
 
+		/// <param name="sourceGradient">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="gradientState">To be added.</param>
+		///         <param name="isSecondarySourceFilter">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSourceGradient:sourceImage:gradientState:isSecondarySourceFilter:")]
 		MPSNNArithmeticGradientNode Create (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNBinaryGradientStateNode gradientState, bool isSecondarySourceFilter);
@@ -5770,30 +7358,57 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithGradientImages:forwardFilter:isSecondarySourceFilter:")]
 		NativeHandle Constructor (MPSNNImageNode [] gradientImages, MPSNNFilterNode filter, bool isSecondarySourceFilter);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("primaryScale")]
 		float PrimaryScale { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("secondaryScale")]
 		float SecondaryScale { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("bias")]
 		float Bias { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("secondaryStrideInPixelsX")]
 		nuint SecondaryStrideInPixelsX { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("secondaryStrideInPixelsY")]
 		nuint SecondaryStrideInPixelsY { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("secondaryStrideInFeatureChannels")]
 		nuint SecondaryStrideInFeatureChannels { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("minimumValue")]
 		float MinimumValue { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("maximumValue")]
 		float MaximumValue { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isSecondarySourceFilter")]
 		bool IsSecondarySourceFilter { get; }
 	}
@@ -5803,6 +7418,13 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNAdditionGradientNode {
 
+		/// <param name="sourceGradient">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="gradientState">To be added.</param>
+		///         <param name="isSecondarySourceFilter">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[New]
 		[Export ("nodeWithSourceGradient:sourceImage:gradientState:isSecondarySourceFilter:")]
@@ -5820,6 +7442,13 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNSubtractionGradientNode {
 
+		/// <param name="sourceGradient">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="gradientState">To be added.</param>
+		///         <param name="isSecondarySourceFilter">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[New]
 		[Export ("nodeWithSourceGradient:sourceImage:gradientState:isSecondarySourceFilter:")]
@@ -5837,6 +7466,13 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNMultiplicationGradientNode {
 
+		/// <param name="sourceGradient">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="gradientState">To be added.</param>
+		///         <param name="isSecondarySourceFilter">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[New]
 		[Export ("nodeWithSourceGradient:sourceImage:gradientState:isSecondarySourceFilter:")]
@@ -5854,6 +7490,10 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnDropoutNode {
 
+		/// <param name="source">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:")]
 		MPSCnnDropoutNode Create (MPSNNImageNode source);
@@ -5861,6 +7501,11 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithSource:")]
 		NativeHandle Constructor (MPSNNImageNode source);
 
+		/// <param name="source">To be added.</param>
+		///         <param name="keepProbability">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:keepProbability:")]
 		MPSCnnDropoutNode Create (MPSNNImageNode source, float keepProbability);
@@ -5938,6 +7583,11 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnLossNode {
 
+		/// <param name="source">To be added.</param>
+		///         <param name="descriptor">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:lossDescriptor:")]
 		MPSCnnLossNode Create (MPSNNImageNode source, MPSCnnLossDescriptor descriptor);
@@ -5957,6 +7607,11 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnYoloLossNode {
 
+		/// <param name="source">To be added.</param>
+		///         <param name="descriptor">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("nodeWithSource:lossDescriptor:")]
@@ -5965,6 +7620,9 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithSource:lossDescriptor:")]
 		NativeHandle Constructor (MPSNNImageNode source, MPSCnnYoloLossDescriptor descriptor);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("inputLabels", ArgumentSemantic.Retain)]
 		MPSNNLabelsNode InputLabels { get; }
 	}
@@ -5974,6 +7632,10 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSNNFilterNode))]
 	[DisableDefaultCtor]
 	interface MPSNNConcatenationNode {
+		/// <param name="sourceNodes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSources:")]
 		MPSNNConcatenationNode Create (MPSNNImageNode [] sourceNodes);
@@ -5987,6 +7649,12 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNConcatenationGradientNode {
 
+		/// <param name="gradientSourceNode">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="gradientState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSourceGradient:sourceImage:gradientState:")]
 		MPSNNConcatenationGradientNode Create (MPSNNImageNode gradientSourceNode, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState);
@@ -6013,6 +7681,12 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNReshapeGradientNode {
 
+		/// <param name="sourceGradient">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="gradientState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSourceGradient:sourceImage:gradientState:")]
 		MPSNNReshapeGradientNode Create (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState);
@@ -6026,6 +7700,12 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNReductionSpatialMeanGradientNode {
 
+		/// <param name="sourceGradient">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="gradientState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSourceGradient:sourceImage:gradientState:")]
 		MPSNNReductionSpatialMeanGradientNode Create (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState);
@@ -6039,9 +7719,19 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNPadNode {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fillValue")]
 		float FillValue { get; set; }
 
+		/// <param name="source">To be added.</param>
+		///         <param name="paddingSizeBefore">To be added.</param>
+		///         <param name="paddingSizeAfter">To be added.</param>
+		///         <param name="edgeMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:paddingSizeBefore:paddingSizeAfter:edgeMode:")]
 		MPSNNPadNode Create (MPSNNImageNode source, MPSImageCoordinate paddingSizeBefore, MPSImageCoordinate paddingSizeAfter, MPSImageEdgeMode edgeMode);
@@ -6055,6 +7745,12 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNPadGradientNode {
 
+		/// <param name="sourceGradient">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="gradientState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSourceGradient:sourceImage:gradientState:")]
 		MPSNNPadGradientNode Create (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState);
@@ -6068,6 +7764,12 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnSoftMaxGradientNode {
 
+		/// <param name="sourceGradient">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="gradientState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSourceGradient:sourceImage:gradientState:")]
 		MPSCnnSoftMaxGradientNode Create (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState);
@@ -6081,6 +7783,12 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnLogSoftMaxGradientNode {
 
+		/// <param name="sourceGradient">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="gradientState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSourceGradient:sourceImage:gradientState:")]
 		MPSCnnLogSoftMaxGradientNode Create (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState);
@@ -6094,6 +7802,10 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSNNFilterNode), Name = "MPSCNNSoftMaxNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnSoftMaxNode {
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:")]
 		MPSCnnSoftMaxNode Create (MPSNNImageNode sourceNode);
@@ -6107,6 +7819,10 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSNNFilterNode), Name = "MPSCNNLogSoftMaxNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnLogSoftMaxNode {
+		/// <param name="sourceNode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSource:")]
 		MPSCnnLogSoftMaxNode Create (MPSNNImageNode sourceNode);
@@ -6127,9 +7843,15 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithSource:integerScaleFactorX:integerScaleFactorY:")]
 		NativeHandle Constructor (MPSNNImageNode sourceNode, nuint integerScaleFactorX, nuint integerScaleFactorY);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleFactorX")]
 		double ScaleFactorX { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleFactorY")]
 		double ScaleFactorY { get; }
 	}
@@ -6155,12 +7877,21 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithSource:integerScaleFactorX:integerScaleFactorY:alignCorners:")]
 		NativeHandle Constructor (MPSNNImageNode sourceNode, nuint integerScaleFactorX, nuint integerScaleFactorY, bool alignCorners);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleFactorX")]
 		double ScaleFactorX { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleFactorY")]
 		double ScaleFactorY { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("alignCorners")]
 		bool AlignCorners { get; }
@@ -6171,6 +7902,14 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnUpsamplingNearestGradientNode {
 
+		/// <param name="sourceGradient">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="gradientState">To be added.</param>
+		///         <param name="scaleFactorX">To be added.</param>
+		///         <param name="scaleFactorY">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSourceGradient:sourceImage:gradientState:scaleFactorX:scaleFactorY:")]
 		MPSCnnUpsamplingNearestGradientNode Create (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState, double scaleFactorX, double scaleFactorY);
@@ -6178,9 +7917,15 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithSourceGradient:sourceImage:gradientState:scaleFactorX:scaleFactorY:")]
 		NativeHandle Constructor (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState, double scaleFactorX, double scaleFactorY);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleFactorX")]
 		double ScaleFactorX { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleFactorY")]
 		double ScaleFactorY { get; }
 	}
@@ -6190,6 +7935,14 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnUpsamplingBilinearGradientNode {
 
+		/// <param name="sourceGradient">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="gradientState">To be added.</param>
+		///         <param name="scaleFactorX">To be added.</param>
+		///         <param name="scaleFactorY">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("nodeWithSourceGradient:sourceImage:gradientState:scaleFactorX:scaleFactorY:")]
 		MPSCnnUpsamplingBilinearGradientNode NodeWithSourceGradient (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState, double scaleFactorX, double scaleFactorY);
@@ -6197,9 +7950,15 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithSourceGradient:sourceImage:gradientState:scaleFactorX:scaleFactorY:")]
 		NativeHandle Constructor (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState, double scaleFactorX, double scaleFactorY);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleFactorX")]
 		double ScaleFactorX { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleFactorY")]
 		double ScaleFactorY { get; }
 	}
@@ -6354,6 +8113,12 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, MPSNNImageNode resultImage, bool resultIsNeeded);
 
+		/// <param name="device">To be added.</param>
+		///         <param name="resultImage">To be added.</param>
+		///         <param name="resultIsNeeded">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("graphWithDevice:resultImage:resultImageIsNeeded:")]
@@ -6463,27 +8228,70 @@ namespace MetalPerformanceShaders {
 		[Export ("resultImageIsNeeded")]
 		bool ResultImageIsNeeded { get; }
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("reloadFromDataSources")]
 		void ReloadFromDataSources ();
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImages">To be added.</param>
+		///         <param name="sourceStates">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="intermediateImages">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="destinationStates">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:sourceImages:sourceStates:intermediateImages:destinationStates:")]
 		[return: NullAllowed]
 		MPSImage EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSImage [] sourceImages, [NullAllowed] MPSState [] sourceStates, [NullAllowed] NSMutableArray<MPSImage> intermediateImages, [NullAllowed] NSMutableArray<MPSState> destinationStates);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImages">To be added.</param>
+		///         <param name="sourceStates">To be added.</param>
+		///         <param name="intermediateImages">To be added.</param>
+		///         <param name="destinationStates">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("encodeBatchToCommandBuffer:sourceImages:sourceStates:intermediateImages:destinationStates:")]
 		[return: NullAllowed]
 		NSArray<MPSImage> EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> [] sourceImages, [NullAllowed] NSArray<MPSState> [] sourceStates, [NullAllowed] NSMutableArray<NSArray<MPSImage>> intermediateImages, [NullAllowed] NSMutableArray<NSArray<MPSState>> destinationStates);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImages">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:sourceImages:")]
 		[return: NullAllowed]
 		MPSImage EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSImage [] sourceImages);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImages">To be added.</param>
+		///         <param name="sourceStates">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeBatchToCommandBuffer:sourceImages:sourceStates:")]
 		[return: NullAllowed]
 		NSArray<MPSImage> EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> [] sourceImages, [NullAllowed] NSArray<MPSState> [] sourceStates);
 
+		/// <param name="sourceImages">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Async, Export ("executeAsyncWithSourceImages:completionHandler:")]
 		MPSImage Execute (MPSImage [] sourceImages, Action<MPSImage, NSError> handler);
 
@@ -6559,6 +8367,8 @@ namespace MetalPerformanceShaders {
 		bool Load { get; }
 #endif
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("purge")]
 		void Purge ();
@@ -6573,25 +8383,50 @@ namespace MetalPerformanceShaders {
 		[NullAllowed, Export ("label")]
 		string Label { get; }
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("rangesForUInt8Kernel")]
 		IntPtr GetRangesForUInt8Kernel ();
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("lookupTableForUInt8Kernel")]
 		IntPtr /* float* */ GetLookupTableForUInt8Kernel ();
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("weightsQuantizationType")]
 		MPSCnnWeightsQuantizationType GetWeightsQuantizationType ();
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="gradientState">To be added.</param>
+		///         <param name="sourceState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("updateWithCommandBuffer:gradientState:sourceState:")]
 		[return: NullAllowed]
 		MPSCnnConvolutionWeightsAndBiasesState Update (IMTLCommandBuffer commandBuffer, MPSCnnConvolutionGradientState gradientState, MPSCnnConvolutionWeightsAndBiasesState sourceState);
 
+		/// <param name="gradientState">To be added.</param>
+		///         <param name="sourceState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("updateWithGradientState:sourceState:")]
 		bool Update (MPSCnnConvolutionGradientState gradientState, MPSCnnConvolutionWeightsAndBiasesState sourceState);
 
+		/// <param name="zone">To be added.</param>
+		///         <param name="device">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("copyWithZone:device:")]
 		[return: Release]
@@ -6827,14 +8662,26 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSTemporaryVector {
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="descriptor">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("temporaryVectorWithCommandBuffer:descriptor:")]
 		MPSTemporaryVector Create (IMTLCommandBuffer commandBuffer, MPSVectorDescriptor descriptor);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="descriptorList">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("prefetchStorageWithCommandBuffer:descriptorList:")]
 		void PrefetchStorage (IMTLCommandBuffer commandBuffer, MPSVectorDescriptor [] descriptorList);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("readCount")]
 		nuint ReadCount { get; set; }
 	}
@@ -6848,30 +8695,60 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, nuint count, nuint rows, nuint columns, bool transpose);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rows")]
 		nuint Rows { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("columns")]
 		nuint Columns { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("count")]
 		nuint Count { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("transpose")]
 		bool Transpose { get; }
 
+		/// <param name="neuronType">To be added.</param>
+		///         <param name="parameterA">To be added.</param>
+		///         <param name="parameterB">To be added.</param>
+		///         <param name="parameterC">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setNeuronType:parameterA:parameterB:parameterC:")]
 		void SetNeuronType (MPSCnnNeuronType neuronType, float parameterA, float parameterB, float parameterC);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronType")]
 		MPSCnnNeuronType NeuronType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronParameterA")]
 		float NeuronParameterA { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronParameterB")]
 		float NeuronParameterB { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronParameterC")]
 		float NeuronParameterC { get; }
 
@@ -6889,9 +8766,15 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSMatrixSoftMax {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceRows")]
 		nuint SourceRows { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceColumns")]
 		nuint SourceColumns { get; set; }
 
@@ -6900,6 +8783,11 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 
 		// Keeping the same name as in the parent class so it ends up in an overload
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="inputMatrix">To be added.</param>
+		///         <param name="resultMatrix">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:inputMatrix:resultMatrix:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSMatrix inputMatrix, MPSMatrix resultMatrix);
 
@@ -6907,6 +8795,17 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 
+		/// <param name="zone">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="device">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("copyWithZone:device:")]
 		[return: Release ()]
 		MPSMatrixSoftMax Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
@@ -6917,30 +8816,60 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSMatrixNeuron {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceNumberOfFeatureVectors")]
 		nuint SourceNumberOfFeatureVectors { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceInputFeatureChannels")]
 		nuint SourceInputFeatureChannels { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("alpha")]
 		double Alpha { get; set; }
 
+		/// <param name="neuronType">To be added.</param>
+		///         <param name="parameterA">To be added.</param>
+		///         <param name="parameterB">To be added.</param>
+		///         <param name="parameterC">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setNeuronType:parameterA:parameterB:parameterC:")]
 		void SetNeuronType (MPSCnnNeuronType neuronType, float parameterA, float parameterB, float parameterC);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronType")]
 		MPSCnnNeuronType NeuronType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronParameterA")]
 		float NeuronParameterA { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronParameterB")]
 		float NeuronParameterB { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronParameterC")]
 		float NeuronParameterC { get; }
 
+		/// <param name="parametersA">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setNeuronToPReLUWithParametersA:")]
 		void SetNeuronToPReLU (NSData parametersA);
 
@@ -6949,6 +8878,15 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 
 		// Keeping the same name as in the parent class so it ends up in an overload
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="inputMatrix">To be added.</param>
+		///         <param name="biasVector">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="resultMatrix">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:inputMatrix:biasVector:resultMatrix:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSMatrix inputMatrix, [NullAllowed] MPSVector biasVector, MPSMatrix resultMatrix);
 
@@ -6956,6 +8894,17 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 
+		/// <param name="zone">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="device">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("copyWithZone:device:")]
 		[return: Release ()]
 		MPSMatrixNeuron Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
@@ -6966,30 +8915,60 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSMatrixNeuronGradient {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceNumberOfFeatureVectors")]
 		nuint SourceNumberOfFeatureVectors { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceInputFeatureChannels")]
 		nuint SourceInputFeatureChannels { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("alpha")]
 		double Alpha { get; set; }
 
+		/// <param name="neuronType">To be added.</param>
+		///         <param name="parameterA">To be added.</param>
+		///         <param name="parameterB">To be added.</param>
+		///         <param name="parameterC">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setNeuronType:parameterA:parameterB:parameterC:")]
 		void SetNeuronType (MPSCnnNeuronType neuronType, float parameterA, float parameterB, float parameterC);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronType")]
 		MPSCnnNeuronType NeuronType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronParameterA")]
 		float NeuronParameterA { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronParameterB")]
 		float NeuronParameterB { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronParameterC")]
 		float NeuronParameterC { get; }
 
+		/// <param name="a">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setNeuronToPReLUWithParametersA:")]
 		void SetNeuronToPReLU (NSData a);
 
@@ -6997,6 +8976,14 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="gradientMatrix">To be added.</param>
+		///         <param name="inputMatrix">To be added.</param>
+		///         <param name="biasVector">To be added.</param>
+		///         <param name="resultGradientForDataMatrix">To be added.</param>
+		///         <param name="resultGradientForBiasVector">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:gradientMatrix:inputMatrix:biasVector:resultGradientForDataMatrix:resultGradientForBiasVector:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSMatrix gradientMatrix, MPSMatrix inputMatrix, [NullAllowed] MPSVector biasVector, MPSMatrix resultGradientForDataMatrix, [NullAllowed] MPSVector resultGradientForBiasVector);
 
@@ -7004,6 +8991,11 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 
+		/// <param name="zone">To be added.</param>
+		///         <param name="device">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("copyWithZone:device:")]
 		[return: Release]
 		MPSMatrixNeuronGradient Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
@@ -7014,15 +9006,27 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSMatrixFullyConnectedGradient {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceNumberOfFeatureVectors")]
 		nuint SourceNumberOfFeatureVectors { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceOutputFeatureChannels")]
 		nuint SourceOutputFeatureChannels { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceInputFeatureChannels")]
 		nuint SourceInputFeatureChannels { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("alpha")]
 		double Alpha { get; set; }
 
@@ -7030,9 +9034,22 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="gradientMatrix">To be added.</param>
+		///         <param name="weightMatrix">To be added.</param>
+		///         <param name="resultGradientForDataMatrix">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeGradientForDataToCommandBuffer:gradientMatrix:weightMatrix:resultGradientForDataMatrix:")]
 		void EncodeGradientForData (IMTLCommandBuffer commandBuffer, MPSMatrix gradientMatrix, MPSMatrix weightMatrix, MPSMatrix resultGradientForDataMatrix);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="gradientMatrix">To be added.</param>
+		///         <param name="inputMatrix">To be added.</param>
+		///         <param name="resultGradientForWeightMatrix">To be added.</param>
+		///         <param name="resultGradientForBiasVector">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeGradientForWeightsAndBiasToCommandBuffer:gradientMatrix:inputMatrix:resultGradientForWeightMatrix:resultGradientForBiasVector:")]
 		void EncodeGradientForWeightsAndBias (IMTLCommandBuffer commandBuffer, MPSMatrix gradientMatrix, MPSMatrix inputMatrix, MPSMatrix resultGradientForWeightMatrix, [NullAllowed] MPSVector resultGradientForBiasVector);
 
@@ -7040,6 +9057,11 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 
+		/// <param name="zone">To be added.</param>
+		///         <param name="device">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("copyWithZone:device:")]
 		[return: Release]
 		MPSMatrixFullyConnectedGradient Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
@@ -7064,30 +9086,60 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSMatrixFullyConnected {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceNumberOfFeatureVectors")]
 		nuint SourceNumberOfFeatureVectors { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceInputFeatureChannels")]
 		nuint SourceInputFeatureChannels { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceOutputFeatureChannels")]
 		nuint SourceOutputFeatureChannels { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("alpha")]
 		double Alpha { get; set; }
 
+		/// <param name="neuronType">To be added.</param>
+		///         <param name="parameterA">To be added.</param>
+		///         <param name="parameterB">To be added.</param>
+		///         <param name="parameterC">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setNeuronType:parameterA:parameterB:parameterC:")]
 		void SetNeuronType (MPSCnnNeuronType neuronType, float parameterA, float parameterB, float parameterC);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronType")]
 		MPSCnnNeuronType NeuronType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronParameterA")]
 		float NeuronParameterA { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronParameterB")]
 		float NeuronParameterB { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronParameterC")]
 		float NeuronParameterC { get; }
 
@@ -7096,6 +9148,16 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 
 		// Keeping the same name as in the parent class so it ends up in an overload
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="inputMatrix">To be added.</param>
+		///         <param name="weightMatrix">To be added.</param>
+		///         <param name="biasVector">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="resultMatrix">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:inputMatrix:weightMatrix:biasVector:resultMatrix:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSMatrix inputMatrix, MPSMatrix weightMatrix, [NullAllowed] MPSVector biasVector, MPSMatrix resultMatrix);
 
@@ -7103,6 +9165,17 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 
+		/// <param name="zone">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="device">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("copyWithZone:device:")]
 		[return: Release ()]
 		MPSMatrixFullyConnected Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
@@ -7113,15 +9186,27 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSMatrixFindTopK {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceRows")]
 		nuint SourceRows { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceColumns")]
 		nuint SourceColumns { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("indexOffset")]
 		nuint IndexOffset { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("numberOfTopKValues")]
 		nuint NumberOfTopKValues { get; set; }
 
@@ -7130,6 +9215,12 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device, nuint numberOfTopKValues);
 
 		// Keeping the same name as in the parent class so it ends up in an overload
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="inputMatrix">To be added.</param>
+		///         <param name="resultIndexMatrix">To be added.</param>
+		///         <param name="resultValueMatrix">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:inputMatrix:resultIndexMatrix:resultValueMatrix:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSMatrix inputMatrix, MPSMatrix resultIndexMatrix, MPSMatrix resultValueMatrix);
 
@@ -7137,6 +9228,17 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 
+		/// <param name="zone">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="device">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("copyWithZone:device:")]
 		[return: Release ()]
 		MPSMatrixFindTopK Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
@@ -7146,6 +9248,9 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (NSObject))]
 	interface MPSStateResourceList {
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("resourceList")]
 		MPSStateResourceList Create ();
@@ -7159,6 +9264,9 @@ namespace MetalPerformanceShaders {
 		//[Export ("resourceListWithBufferSizes:", IsVariadic = true)]
 		//MPSStateResourceList ResourceListWithBufferSizes (nuint firstSize, IntPtr varArgs);
 
+		/// <param name="descriptor">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("appendTexture:")]
 		void Append (MTLTextureDescriptor descriptor);
 
@@ -7171,12 +9279,26 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSKeyedUnarchiver : MPSDeviceProvider {
 
+		/// <param name="classes">To be added.</param>
+		///         <param name="data">To be added.</param>
+		///         <param name="device">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("unarchivedObjectOfClasses:fromData:device:error:")]
 		[return: NullAllowed]
 		NSObject GetUnarchivedObject (NSSet<Class> classes, NSData data, IMTLDevice device, [NullAllowed] out NSError error);
 
+		/// <param name="class">To be added.</param>
+		///         <param name="data">To be added.</param>
+		///         <param name="device">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("unarchivedObjectOfClass:fromData:device:error:")]
@@ -7498,12 +9620,21 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSMatrixCopyToImage {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceMatrixOrigin", ArgumentSemantic.Assign)]
 		MTLOrigin SourceMatrixOrigin { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceMatrixBatchIndex")]
 		nuint SourceMatrixBatchIndex { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("dataLayout")]
 		MPSDataLayout DataLayout { get; }
 
@@ -7515,9 +9646,19 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceMatrix">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:sourceMatrix:destinationImage:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSMatrix sourceMatrix, MPSImage destinationImage);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceMatrix">To be added.</param>
+		///         <param name="destinationImages">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeBatchToCommandBuffer:sourceMatrix:destinationImages:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSMatrix sourceMatrix, NSArray<MPSImage> destinationImages);
 	}
@@ -7541,15 +9682,27 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSImageGuidedFilter {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("kernelDiameter")]
 		nuint KernelDiameter { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("epsilon")]
 		float Epsilon { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("reconstructScale")]
 		float ReconstructScale { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("reconstructOffset")]
 		float ReconstructOffset { get; set; }
 
@@ -7561,9 +9714,22 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceTexture">To be added.</param>
+		///         <param name="guidanceTexture">To be added.</param>
+		///         <param name="weightsTexture">To be added.</param>
+		///         <param name="destinationCoefficientsTexture">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeRegressionToCommandBuffer:sourceTexture:guidanceTexture:weightsTexture:destinationCoefficientsTexture:")]
 		void EncodeRegression (IMTLCommandBuffer commandBuffer, IMTLTexture sourceTexture, IMTLTexture guidanceTexture, [NullAllowed] IMTLTexture weightsTexture, IMTLTexture destinationCoefficientsTexture);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="guidanceTexture">To be added.</param>
+		///         <param name="coefficientsTexture">To be added.</param>
+		///         <param name="destinationTexture">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeReconstructionToCommandBuffer:guidanceTexture:coefficientsTexture:destinationTexture:")]
 		void EncodeReconstruction (IMTLCommandBuffer commandBuffer, IMTLTexture guidanceTexture, IMTLTexture coefficientsTexture, IMTLTexture destinationTexture);
 	}
@@ -7573,12 +9739,21 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSImageNormalizedHistogram {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("clipRectSource", ArgumentSemantic.Assign)]
 		MTLRegion ClipRectSource { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("zeroHistogram")]
 		bool ZeroHistogram { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("histogramInfo")]
 		MPSImageHistogramInfo HistogramInfo {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -7597,6 +9772,10 @@ namespace MetalPerformanceShaders {
 		[Export ("encodeToCommandBuffer:sourceTexture:minmaxTexture:histogram:histogramOffset:")]
 		void Encode (IMTLCommandBuffer commandBuffer, IMTLTexture source, IMTLTexture minmaxTexture, IMTLBuffer histogram, nuint histogramOffset);
 
+		/// <param name="sourceFormat">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("histogramSizeForSourceFormat:")]
 		nuint GetHistogramSize (MTLPixelFormat sourceFormat);
 	}
@@ -7606,6 +9785,9 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor] // Only subclasses are meant to be used
 	interface MPSImageReduceUnary {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("clipRectSource", ArgumentSemantic.Assign)]
 		MTLRegion ClipRectSource { get; set; }
 	}
@@ -7695,9 +9877,15 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSMatrixSoftMaxGradient {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceRows")]
 		nuint SourceRows { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceColumns")]
 		nuint SourceColumns { get; set; }
 
@@ -7706,6 +9894,12 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 
 		// Keeping the same name as in the parent class so it ends up in an overload
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="gradientMatrix">To be added.</param>
+		///         <param name="forwardOutputMatrix">To be added.</param>
+		///         <param name="resultMatrix">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:gradientMatrix:forwardOutputMatrix:resultMatrix:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSMatrix gradientMatrix, MPSMatrix forwardOutputMatrix, MPSMatrix resultMatrix);
 
@@ -7713,6 +9907,11 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 
+		/// <param name="zone">To be added.</param>
+		///         <param name="device">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("copyWithZone:device:")]
 		[return: Release]
 		MPSMatrixSoftMaxGradient Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
@@ -7737,30 +9936,57 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSRayIntersector : NSSecureCoding, NSCopying {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("cullMode", ArgumentSemantic.Assign)]
 		MTLCullMode CullMode { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("frontFacingWinding", ArgumentSemantic.Assign)]
 		MTLWinding FrontFacingWinding { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("triangleIntersectionTestType", ArgumentSemantic.Assign)]
 		MPSTriangleIntersectionTestType TriangleIntersectionTestType { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("boundingBoxIntersectionTestType", ArgumentSemantic.Assign)]
 		MPSBoundingBoxIntersectionTestType BoundingBoxIntersectionTestType { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rayMaskOptions", ArgumentSemantic.Assign)]
 		MPSRayMaskOptions RayMaskOptions { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rayStride")]
 		nuint RayStride { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("intersectionStride")]
 		nuint IntersectionStride { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rayDataType", ArgumentSemantic.Assign)]
 		MPSRayDataType RayDataType { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("intersectionDataType", ArgumentSemantic.Assign)]
 		MPSIntersectionDataType IntersectionDataType { get; set; }
 
@@ -7772,6 +9998,11 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 
+		/// <param name="zone">To be added.</param>
+		///         <param name="device">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("copyWithZone:device:")]
 		[return: Release]
 		MPSRayIntersector Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
@@ -7779,6 +10010,9 @@ namespace MetalPerformanceShaders {
 		[Export ("recommendedMinimumRayBatchSizeForRayCount:")]
 		nuint GetRecommendedMinimumRayBatchSize (nuint rayCount);
 
+		/// <param name="coder">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeWithCoder:")]
 		void Encode (NSCoder coder);
 
@@ -7809,30 +10043,57 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSInstanceAccelerationStructure {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("accelerationStructures", ArgumentSemantic.Retain)]
 		MPSTriangleAccelerationStructure [] AccelerationStructures { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("instanceBuffer", ArgumentSemantic.Retain)]
 		IMTLBuffer InstanceBuffer { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("instanceBufferOffset")]
 		nuint InstanceBufferOffset { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("transformBuffer", ArgumentSemantic.Retain)]
 		IMTLBuffer TransformBuffer { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("transformBufferOffset")]
 		nuint TransformBufferOffset { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("transformType", ArgumentSemantic.Assign)]
 		MPSTransformType TransformType { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("maskBuffer", ArgumentSemantic.Retain)]
 		IMTLBuffer MaskBuffer { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("maskBufferOffset")]
 		nuint MaskBufferOffset { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("instanceCount")]
 		nuint InstanceCount { get; set; }
 
@@ -7903,24 +10164,45 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, MPSAccelerationStructureGroup group);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("rebuild")]
 		void Rebuild ();
 
+		/// <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("rebuildWithCompletionHandler:")]
 		void Rebuild (MPSAccelerationStructureCompletionHandler completionHandler);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeRefitToCommandBuffer:")]
 		void EncodeRefit (IMTLCommandBuffer commandBuffer);
 
+		/// <param name="zone">To be added.</param>
+		///         <param name="device">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("copyWithZone:device:")]
 		[return: Release]
 		MPSAccelerationStructure Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
 
+		/// <param name="zone">To be added.</param>
+		///         <param name="group">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("copyWithZone:group:")]
 		[return: Release]
 		MPSAccelerationStructure Copy ([NullAllowed] NSZone zone, MPSAccelerationStructureGroup group);
 
+		/// <param name="coder">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeWithCoder:")]
 		void Encode (NSCoder coder);
 	}
@@ -7930,30 +10212,57 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSTriangleAccelerationStructure {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("vertexBuffer", ArgumentSemantic.Retain)]
 		IMTLBuffer VertexBuffer { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("vertexBufferOffset")]
 		nuint VertexBufferOffset { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("vertexStride")]
 		nuint VertexStride { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("indexBuffer", ArgumentSemantic.Retain)]
 		IMTLBuffer IndexBuffer { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("indexType", ArgumentSemantic.Assign)]
 		MPSDataType IndexType { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("indexBufferOffset")]
 		nuint IndexBufferOffset { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("maskBuffer", ArgumentSemantic.Retain)]
 		IMTLBuffer MaskBuffer { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("maskBufferOffset")]
 		nuint MaskBufferOffset { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("triangleCount")]
 		nuint TriangleCount { get; set; }
 
@@ -7985,6 +10294,8 @@ namespace MetalPerformanceShaders {
 		[Export ("batchNormalization", ArgumentSemantic.Retain)]
 		MPSCnnBatchNormalization BatchNormalization { get; }
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("reset")]
 		void Reset ();
 
@@ -8030,9 +10341,15 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnNormalizationMeanAndVarianceState {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("mean")]
 		IMTLBuffer Mean { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("variance")]
 		IMTLBuffer Variance { get; }
 
@@ -8097,6 +10414,8 @@ namespace MetalPerformanceShaders {
 		[Export ("load")]
 		bool Load { get; }
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("purge")]
 		void Purge ();
@@ -8108,18 +10427,36 @@ namespace MetalPerformanceShaders {
 		[NullAllowed, Export ("label")]
 		string Label { get; }
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="batchNormalizationState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("updateGammaAndBetaWithCommandBuffer:batchNormalizationState:")]
 		[return: NullAllowed]
 		MPSCnnNormalizationGammaAndBetaState UpdateGammaAndBeta (IMTLCommandBuffer commandBuffer, MPSCnnBatchNormalizationState batchNormalizationState);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="batchNormalizationState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("updateMeanAndVarianceWithCommandBuffer:batchNormalizationState:")]
 		[return: NullAllowed]
 		MPSCnnNormalizationMeanAndVarianceState UpdateMeanAndVariance (IMTLCommandBuffer commandBuffer, MPSCnnBatchNormalizationState batchNormalizationState);
 
+		/// <param name="batchNormalizationState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("updateGammaAndBetaWithBatchNormalizationState:")]
 		bool UpdateGammaAndBeta (MPSCnnBatchNormalizationState batchNormalizationState);
 
+		/// <param name="batchNormalizationState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("updateMeanAndVarianceWithBatchNormalizationState:")]
 		bool UpdateMeanAndVariance (MPSCnnBatchNormalizationState batchNormalizationState);
@@ -8130,6 +10467,9 @@ namespace MetalPerformanceShaders {
 		[Export ("epsilon")]
 		float Epsilon { get; }
 
+		/// <param name="coder">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeWithCoder:")]
 		void Encode (NSCoder coder);
 
@@ -8143,6 +10483,11 @@ namespace MetalPerformanceShaders {
 		[Export ("supportsSecureCoding")]
 		bool SupportsSecureCoding { get; }
 
+		/// <param name="zone">To be added.</param>
+		///         <param name="device">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("copyWithZone:device:")]
 		[return: Release]
@@ -8184,16 +10529,41 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="batchNormalizationState">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:sourceImage:batchNormalizationState:destinationImage:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, MPSCnnBatchNormalizationState batchNormalizationState, MPSImage destinationImage);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImages">To be added.</param>
+		///         <param name="batchNormalizationState">To be added.</param>
+		///         <param name="destinationImages">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeBatchToCommandBuffer:sourceImages:batchNormalizationState:destinationImages:")]
 		void EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImages, MPSCnnBatchNormalizationState batchNormalizationState, NSArray<MPSImage> destinationImages);
 
+		/// <param name="sourceImage">To be added.</param>
+		///         <param name="sourceStates">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("resultStateForSourceImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		MPSCnnBatchNormalizationState GetResultState (MPSImage sourceImage, [NullAllowed] NSArray<MPSState> sourceStates, MPSImage destinationImage);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="sourceStates">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("temporaryResultStateForCommandBuffer:sourceImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		MPSCnnBatchNormalizationState GetTemporaryResultState (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, [NullAllowed] NSArray<MPSState> sourceStates, MPSImage destinationImage);
@@ -8204,17 +10574,29 @@ namespace MetalPerformanceShaders {
 		//[Export ("reloadDataSource:")]
 		//void ReloadDataSource (IMPSCnnBatchNormalizationDataSource dataSource);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("reloadGammaAndBetaFromDataSource")]
 		void ReloadGammaAndBetaFromDataSource ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("reloadMeanAndVarianceFromDataSource")]
 		void ReloadMeanAndVarianceFromDataSource ();
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="gammaAndBetaState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("reloadGammaAndBetaWithCommandBuffer:gammaAndBetaState:")]
 		void ReloadGammaAndBeta (IMTLCommandBuffer commandBuffer, MPSCnnNormalizationGammaAndBetaState gammaAndBetaState);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="meanAndVarianceState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("reloadMeanAndVarianceWithCommandBuffer:meanAndVarianceState:")]
 		void ReloadMeanAndVariance (IMTLCommandBuffer commandBuffer, MPSCnnNormalizationMeanAndVarianceState meanAndVarianceState);
@@ -8233,6 +10615,11 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImages">To be added.</param>
+		///         <param name="batchNormalizationState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeBatchToCommandBuffer:sourceImages:batchNormalizationState:")]
 		void EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImages, MPSCnnBatchNormalizationState batchNormalizationState);
 	}
@@ -8251,15 +10638,43 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceGradient">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="batchNormalizationState">To be added.</param>
+		///         <param name="destinationGradient">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:sourceGradient:sourceImage:batchNormalizationState:destinationGradient:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSImage sourceGradient, MPSImage sourceImage, MPSCnnBatchNormalizationState batchNormalizationState, MPSImage destinationGradient);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceGradients">To be added.</param>
+		///         <param name="sourceImages">To be added.</param>
+		///         <param name="batchNormalizationState">To be added.</param>
+		///         <param name="destinationGradients">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeBatchToCommandBuffer:sourceGradients:sourceImages:batchNormalizationState:destinationGradients:")]
 		void EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceGradients, NSArray<MPSImage> sourceImages, MPSCnnBatchNormalizationState batchNormalizationState, NSArray<MPSImage> destinationGradients);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceGradient">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="batchNormalizationState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:sourceGradient:sourceImage:batchNormalizationState:")]
 		MPSImage Encode (IMTLCommandBuffer commandBuffer, MPSImage sourceGradient, MPSImage sourceImage, MPSCnnBatchNormalizationState batchNormalizationState);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceGradients">To be added.</param>
+		///         <param name="sourceImages">To be added.</param>
+		///         <param name="batchNormalizationState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeBatchToCommandBuffer:sourceGradients:sourceImages:batchNormalizationState:")]
 		NSArray<MPSImage> EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceGradients, NSArray<MPSImage> sourceImages, MPSCnnBatchNormalizationState batchNormalizationState);
 	}
@@ -8278,6 +10693,12 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceGradients">To be added.</param>
+		///         <param name="sourceImages">To be added.</param>
+		///         <param name="batchNormalizationState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeBatchToCommandBuffer:sourceGradients:sourceImages:batchNormalizationState:")]
 		void EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceGradients, NSArray<MPSImage> sourceImages, MPSCnnBatchNormalizationState batchNormalizationState);
 	}
@@ -8329,6 +10750,11 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:cnnConvolutionDescriptor:")]
 		NativeHandle Constructor (IMTLDevice device, MPSCnnConvolutionDescriptor descriptor);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="descriptor">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("temporaryCNNConvolutionWeightsAndBiasesStateWithCommandBuffer:cnnConvolutionDescriptor:")]
 		MPSCnnConvolutionWeightsAndBiasesState GetTemporaryCnnConvolutionWeightsAndBiasesState (IMTLCommandBuffer commandBuffer, MPSCnnConvolutionDescriptor descriptor);
@@ -8390,10 +10816,16 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("reloadWeightsAndBiasesFromDataSource")]
 		void ReloadWeightsAndBiasesFromDataSource ();
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="state">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("reloadWeightsAndBiasesWithCommandBuffer:state:")]
 		void ReloadWeightsAndBiases (IMTLCommandBuffer commandBuffer, MPSCnnConvolutionWeightsAndBiasesState state);
 	}
@@ -8563,16 +10995,31 @@ namespace MetalPerformanceShaders {
 		[Export ("label")]
 		string Label { get; }
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="instanceNormalizationStateBatch">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("updateGammaAndBetaWithCommandBuffer:instanceNormalizationStateBatch:")]
 		[return: NullAllowed]
 		MPSCnnNormalizationGammaAndBetaState UpdateGammaAndBeta (IMTLCommandBuffer commandBuffer, MPSCnnInstanceNormalizationGradientState [] instanceNormalizationStateBatch);
 
+		/// <param name="instanceNormalizationStateBatch">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("updateGammaAndBetaWithInstanceNormalizationStateBatch:")]
 		bool UpdateGammaAndBeta (MPSCnnInstanceNormalizationGradientState [] instanceNormalizationStateBatch);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("epsilon")]
 		float GetEpsilon ();
 
+		/// <param name="coder">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeWithCoder:")]
 		void Encode (NSCoder coder);
 
@@ -8584,6 +11031,11 @@ namespace MetalPerformanceShaders {
 		//[Export ("supportsSecureCoding")]
 		//bool SupportsSecureCoding { get; }
 
+		/// <param name="zone">To be added.</param>
+		///         <param name="device">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("copyWithZone:device:")]
 		[return: Release]
@@ -8615,6 +11067,9 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 
+		/// <param name="dataSource">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Please use 'ReloadGammaAndBetaFromDataSource' instead.")]
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Please use 'ReloadGammaAndBetaFromDataSource' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Please use 'ReloadGammaAndBetaFromDataSource' instead.")]
@@ -8622,17 +11077,36 @@ namespace MetalPerformanceShaders {
 		[Export ("reloadDataSource:")]
 		void ReloadDataSource (IMPSCnnInstanceNormalizationDataSource dataSource);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("reloadGammaAndBetaFromDataSource")]
 		void ReloadGammaAndBetaFromDataSource ();
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="gammaAndBetaState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("reloadGammaAndBetaWithCommandBuffer:gammaAndBetaState:")]
 		void ReloadGammaAndBeta (IMTLCommandBuffer commandBuffer, MPSCnnNormalizationGammaAndBetaState gammaAndBetaState);
 
+		/// <param name="sourceImage">To be added.</param>
+		///         <param name="sourceStates">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("resultStateForSourceImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		MPSCnnInstanceNormalizationGradientState GetResultState (MPSImage sourceImage, [NullAllowed] NSArray<MPSState> sourceStates, MPSImage destinationImage);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="sourceStates">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("temporaryResultStateForCommandBuffer:sourceImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		MPSCnnInstanceNormalizationGradientState GetTemporaryResultState (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, [NullAllowed] NSArray<MPSState> sourceStates, MPSImage destinationImage);
@@ -8677,15 +11151,43 @@ namespace MetalPerformanceShaders {
 		[Export ("kernelOffsetY")]
 		nint KernelOffsetY { get; set; }
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceGradient">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="gradientState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:sourceGradient:sourceImage:gradientState:")]
 		MPSImage Encode (IMTLCommandBuffer commandBuffer, MPSImage sourceGradient, MPSImage sourceImage, MPSState gradientState);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceGradient">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="gradientState">To be added.</param>
+		///         <param name="destinationGradient">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:sourceGradient:sourceImage:gradientState:destinationGradient:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSImage sourceGradient, MPSImage sourceImage, MPSState gradientState, MPSImage destinationGradient);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceGradients">To be added.</param>
+		///         <param name="sourceImages">To be added.</param>
+		///         <param name="gradientStates">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeBatchToCommandBuffer:sourceGradients:sourceImages:gradientStates:")]
 		NSArray<MPSImage> EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceGradients, NSArray<MPSImage> sourceImages, NSArray<MPSState> gradientStates);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceGradients">To be added.</param>
+		///         <param name="sourceImages">To be added.</param>
+		///         <param name="gradientStates">To be added.</param>
+		///         <param name="destinationGradients">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeBatchToCommandBuffer:sourceGradients:sourceImages:gradientStates:destinationGradients:")]
 		void EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceGradients, NSArray<MPSImage> sourceImages, NSArray<MPSState> gradientStates, NSArray<MPSImage> destinationGradients);
 	}
@@ -8719,6 +11221,12 @@ namespace MetalPerformanceShaders {
 		[Export ("bytesPerImage")]
 		nuint BytesPerImage { get; set; }
 
+		/// <param name="data">To be added.</param>
+		///         <param name="layout">To be added.</param>
+		///         <param name="size">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("cnnLossDataDescriptorWithData:layout:size:")]
 		[return: NullAllowed]
@@ -8805,6 +11313,11 @@ namespace MetalPerformanceShaders {
 		[Export ("delta")]
 		float Delta { get; set; }
 
+		/// <param name="lossType">To be added.</param>
+		///         <param name="reductionType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("cnnLossDescriptorWithType:reductionType:")]
 		MPSCnnLossDescriptor Create (MPSCnnLossType lossType, MPSCnnReductionType reductionType);
@@ -8865,15 +11378,39 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="labels">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:sourceImage:labels:destinationImage:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, MPSCnnLossLabels labels, MPSImage destinationImage);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="labels">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:sourceImage:labels:")]
 		MPSImage Encode (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, MPSCnnLossLabels labels);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="labels">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeBatchToCommandBuffer:sourceImages:labels:destinationImages:")]
 		void EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImage, NSArray<MPSCnnLossLabels> labels, NSArray<MPSImage> destinationImage);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="labels">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeBatchToCommandBuffer:sourceImages:labels:")]
 		NSArray<MPSImage> EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImage, NSArray<MPSCnnLossLabels> labels);
 	}
@@ -8883,48 +11420,93 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnYoloLossDescriptor : NSCopying {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("XYLossDescriptor", ArgumentSemantic.Retain)]
 		MPSCnnLossDescriptor XYLossDescriptor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("WHLossDescriptor", ArgumentSemantic.Retain)]
 		MPSCnnLossDescriptor WHLossDescriptor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("confidenceLossDescriptor", ArgumentSemantic.Retain)]
 		MPSCnnLossDescriptor ConfidenceLossDescriptor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("classesLossDescriptor", ArgumentSemantic.Retain)]
 		MPSCnnLossDescriptor ClassesLossDescriptor { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("reductionType", ArgumentSemantic.Assign)]
 		MPSCnnReductionType ReductionType { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("rescore")]
 		bool Rescore { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleXY")]
 		float ScaleXY { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleWH")]
 		float ScaleWH { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleNoObject")]
 		float ScaleNoObject { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleObject")]
 		float ScaleObject { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleClass")]
 		float ScaleClass { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("minIOUForObjectPresence")]
 		float MinIouForObjectPresence { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("maxIOUForObjectAbsence")]
 		float MaxIouForObjectAbsence { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("numberOfAnchorBoxes")]
 		nuint NumberOfAnchorBoxes { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("anchorBoxes", ArgumentSemantic.Retain)]
 		NSData AnchorBoxes { get; set; }
 
@@ -8938,45 +11520,87 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnYoloLoss {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lossXY", ArgumentSemantic.Retain)]
 		MPSCnnLoss LossXY { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lossWH", ArgumentSemantic.Retain)]
 		MPSCnnLoss LossWH { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lossConfidence", ArgumentSemantic.Retain)]
 		MPSCnnLoss LossConfidence { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lossClasses", ArgumentSemantic.Retain)]
 		MPSCnnLoss LossClasses { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleXY")]
 		float ScaleXY { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleWH")]
 		float ScaleWH { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleNoObject")]
 		float ScaleNoObject { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleObject")]
 		float ScaleObject { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("scaleClass")]
 		float ScaleClass { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("minIOUForObjectPresence")]
 		float MinIouForObjectPresence { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("maxIOUForObjectAbsence")]
 		float MaxIouForObjectAbsence { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("reductionType")]
 		MPSCnnReductionType ReductionType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("numberOfAnchorBoxes")]
 		nuint NumberOfAnchorBoxes { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("anchorBoxes", ArgumentSemantic.Retain)]
 		NSData AnchorBoxes { get; }
 
@@ -8988,15 +11612,39 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="labels">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:sourceImage:labels:destinationImage:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, MPSCnnLossLabels labels, MPSImage destinationImage);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="labels">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:sourceImage:labels:")]
 		MPSImage Encode (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, MPSCnnLossLabels labels);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="labels">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeBatchToCommandBuffer:sourceImages:labels:destinationImages:")]
 		void EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImage, NSArray<MPSCnnLossLabels> labels, NSArray<MPSImage> destinationImage);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceImage">To be added.</param>
+		///         <param name="labels">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeBatchToCommandBuffer:sourceImages:labels:")]
 		NSArray<MPSImage> EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImage, NSArray<MPSCnnLossLabels> labels);
 	}
@@ -9064,9 +11712,23 @@ namespace MetalPerformanceShaders {
 		[Export ("maximumValue")]
 		float MaximumValue { get; set; }
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="primaryImage">To be added.</param>
+		///         <param name="secondaryImage">To be added.</param>
+		///         <param name="destinationState">To be added.</param>
+		///         <param name="destinationImage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:primaryImage:secondaryImage:destinationState:destinationImage:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSImage primaryImage, MPSImage secondaryImage, MPSCnnArithmeticGradientState destinationState, MPSImage destinationImage);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="primaryImages">To be added.</param>
+		///         <param name="secondaryImages">To be added.</param>
+		///         <param name="destinationStates">To be added.</param>
+		///         <param name="destinationImages">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeBatchToCommandBuffer:primaryImages:secondaryImages:destinationStates:destinationImages:")]
 		void EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> primaryImages, NSArray<MPSImage> secondaryImages, MPSCnnArithmeticGradientState [] destinationStates, NSArray<MPSImage> destinationImages);
 	}
@@ -9116,9 +11778,15 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNCompare {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("comparisonType", ArgumentSemantic.Assign)]
 		MPSNNComparisonType ComparisonType { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("threshold")]
 		float Threshold { get; set; }
 
@@ -9219,37 +11887,79 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNNeuronDescriptor : NSCopying, NSSecureCoding {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronType", ArgumentSemantic.Assign)]
 		MPSCnnNeuronType NeuronType { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("a")]
 		float A { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("b")]
 		float B { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("c")]
 		float C { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("data", ArgumentSemantic.Retain)]
 		NSData Data { get; set; }
 
+		/// <param name="neuronType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("cnnNeuronDescriptorWithType:")]
 		MPSNNNeuronDescriptor Create (MPSCnnNeuronType neuronType);
 
+		/// <param name="neuronType">To be added.</param>
+		///         <param name="a">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("cnnNeuronDescriptorWithType:a:")]
 		MPSNNNeuronDescriptor Create (MPSCnnNeuronType neuronType, float a);
 
+		/// <param name="neuronType">To be added.</param>
+		///         <param name="a">To be added.</param>
+		///         <param name="b">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("cnnNeuronDescriptorWithType:a:b:")]
 		MPSNNNeuronDescriptor Create (MPSCnnNeuronType neuronType, float a, float b);
 
+		/// <param name="neuronType">To be added.</param>
+		///         <param name="a">To be added.</param>
+		///         <param name="b">To be added.</param>
+		///         <param name="c">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("cnnNeuronDescriptorWithType:a:b:c:")]
 		MPSNNNeuronDescriptor Create (MPSCnnNeuronType neuronType, float a, float b, float c);
 
+		/// <param name="data">To be added.</param>
+		///         <param name="noCopy">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("cnnNeuronPReLUDescriptorWithData:noCopy:")]
 		MPSNNNeuronDescriptor Create (NSData data, bool noCopy);
@@ -9304,9 +12014,15 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSCnnNormalizationGammaAndBetaState {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("gamma")]
 		IMTLBuffer Gamma { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("beta")]
 		IMTLBuffer Beta { get; }
 
@@ -9323,30 +12039,60 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSMatrixBatchNormalization {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceNumberOfFeatureVectors")]
 		nuint SourceNumberOfFeatureVectors { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceInputFeatureChannels")]
 		nuint SourceInputFeatureChannels { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("epsilon")]
 		float Epsilon { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("computeStatistics")]
 		bool ComputeStatistics { get; set; }
 
+		/// <param name="neuronType">To be added.</param>
+		///         <param name="parameterA">To be added.</param>
+		///         <param name="parameterB">To be added.</param>
+		///         <param name="parameterC">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setNeuronType:parameterA:parameterB:parameterC:")]
 		void SetNeuronType (MPSCnnNeuronType neuronType, float parameterA, float parameterB, float parameterC);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronType")]
 		MPSCnnNeuronType NeuronType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronParameterA")]
 		float NeuronParameterA { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronParameterB")]
 		float NeuronParameterB { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronParameterC")]
 		float NeuronParameterC { get; }
 
@@ -9354,6 +12100,15 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="inputMatrix">To be added.</param>
+		///         <param name="meanVector">To be added.</param>
+		///         <param name="varianceVector">To be added.</param>
+		///         <param name="gammaVector">To be added.</param>
+		///         <param name="betaVector">To be added.</param>
+		///         <param name="resultMatrix">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:inputMatrix:meanVector:varianceVector:gammaVector:betaVector:resultMatrix:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSMatrix inputMatrix, MPSVector meanVector, MPSVector varianceVector, [NullAllowed] MPSVector gammaVector, [NullAllowed] MPSVector betaVector, MPSMatrix resultMatrix);
 
@@ -9361,6 +12116,11 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 
+		/// <param name="zone">To be added.</param>
+		///         <param name="device">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("copyWithZone:device:")]
 		[return: Release]
 		MPSMatrixBatchNormalization Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
@@ -9371,27 +12131,54 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSMatrixBatchNormalizationGradient {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceNumberOfFeatureVectors")]
 		nuint SourceNumberOfFeatureVectors { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sourceInputFeatureChannels")]
 		nuint SourceInputFeatureChannels { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("epsilon")]
 		float Epsilon { get; set; }
 
+		/// <param name="neuronType">To be added.</param>
+		///         <param name="parameterA">To be added.</param>
+		///         <param name="parameterB">To be added.</param>
+		///         <param name="parameterC">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setNeuronType:parameterA:parameterB:parameterC:")]
 		void SetNeuronType (MPSCnnNeuronType neuronType, float parameterA, float parameterB, float parameterC);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronType")]
 		MPSCnnNeuronType NeuronType { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronParameterA")]
 		float NeuronParameterA { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronParameterB")]
 		float NeuronParameterB { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("neuronParameterC")]
 		float NeuronParameterC { get; }
 
@@ -9399,6 +12186,18 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="gradientMatrix">To be added.</param>
+		///         <param name="inputMatrix">To be added.</param>
+		///         <param name="meanVector">To be added.</param>
+		///         <param name="varianceVector">To be added.</param>
+		///         <param name="gammaVector">To be added.</param>
+		///         <param name="betaVector">To be added.</param>
+		///         <param name="resultGradientForDataMatrix">To be added.</param>
+		///         <param name="resultGradientForGammaVector">To be added.</param>
+		///         <param name="resultGradientForBetaVector">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:gradientMatrix:inputMatrix:meanVector:varianceVector:gammaVector:betaVector:resultGradientForDataMatrix:resultGradientForGammaVector:resultGradientForBetaVector:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSMatrix gradientMatrix, MPSMatrix inputMatrix, MPSVector meanVector, MPSVector varianceVector, [NullAllowed] MPSVector gammaVector, [NullAllowed] MPSVector betaVector, MPSMatrix resultGradientForDataMatrix, [NullAllowed] MPSVector resultGradientForGammaVector, [NullAllowed] MPSVector resultGradientForBetaVector);
 
@@ -9406,6 +12205,11 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 
+		/// <param name="zone">To be added.</param>
+		///         <param name="device">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("copyWithZone:device:")]
 		[return: Release]
 		MPSMatrixBatchNormalizationGradient Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
@@ -9421,11 +12225,20 @@ namespace MetalPerformanceShaders {
 		[Export ("temporaryStateWithCommandBuffer:bufferSize:")]
 		MPSNNGradientState CreateTemporaryState (IMTLCommandBuffer commandBuffer, nuint bufferSize);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="descriptor">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[New]
 		[Static]
 		[Export ("temporaryStateWithCommandBuffer:textureDescriptor:")]
 		MPSNNGradientState CreateTemporaryState (IMTLCommandBuffer commandBuffer, MTLTextureDescriptor descriptor);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[New]
 		[Static]
 		[Export ("temporaryStateWithCommandBuffer:")]
@@ -9443,6 +12256,11 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:resourceList:")]
 		NativeHandle Constructor (IMTLDevice device, MPSStateResourceList resourceList);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="resourceList">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[New]
 		[Static]
 		[Export ("temporaryStateWithCommandBuffer:resourceList:")]
@@ -9462,11 +12280,20 @@ namespace MetalPerformanceShaders {
 		[Export ("temporaryStateWithCommandBuffer:bufferSize:")]
 		MPSNNBinaryGradientState CreateTemporaryState (IMTLCommandBuffer commandBuffer, nuint bufferSize);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="descriptor">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[New]
 		[Static]
 		[Export ("temporaryStateWithCommandBuffer:textureDescriptor:")]
 		MPSNNBinaryGradientState CreateTemporaryState (IMTLCommandBuffer commandBuffer, MTLTextureDescriptor descriptor);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[New]
 		[Static]
 		[Export ("temporaryStateWithCommandBuffer:")]
@@ -9484,6 +12311,11 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:resourceList:")]
 		NativeHandle Constructor (IMTLDevice device, MPSStateResourceList resourceList);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="resourceList">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[New]
 		[Static]
 		[Export ("temporaryStateWithCommandBuffer:resourceList:")]
@@ -9508,24 +12340,45 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNOptimizerDescriptor {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("learningRate")]
 		float LearningRate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("gradientRescale")]
 		float GradientRescale { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("applyGradientClipping")]
 		bool ApplyGradientClipping { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("gradientClipMax")]
 		float GradientClipMax { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("gradientClipMin")]
 		float GradientClipMin { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("regularizationScale")]
 		float RegularizationScale { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("regularizationType", ArgumentSemantic.Assign)]
 		MPSNNRegularizationType RegularizationType { get; set; }
 
@@ -9535,10 +12388,27 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithLearningRate:gradientRescale:applyGradientClipping:gradientClipMax:gradientClipMin:regularizationType:regularizationScale:")]
 		NativeHandle Constructor (float learningRate, float gradientRescale, bool applyGradientClipping, float gradientClipMax, float gradientClipMin, MPSNNRegularizationType regularizationType, float regularizationScale);
 
+		/// <param name="learningRate">To be added.</param>
+		///         <param name="gradientRescale">To be added.</param>
+		///         <param name="regularizationType">To be added.</param>
+		///         <param name="regularizationScale">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("optimizerDescriptorWithLearningRate:gradientRescale:regularizationType:regularizationScale:")]
 		MPSNNOptimizerDescriptor Create (float learningRate, float gradientRescale, MPSNNRegularizationType regularizationType, float regularizationScale);
 
+		/// <param name="learningRate">To be added.</param>
+		///         <param name="gradientRescale">To be added.</param>
+		///         <param name="applyGradientClipping">To be added.</param>
+		///         <param name="gradientClipMax">To be added.</param>
+		///         <param name="gradientClipMin">To be added.</param>
+		///         <param name="regularizationType">To be added.</param>
+		///         <param name="regularizationScale">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("optimizerDescriptorWithLearningRate:gradientRescale:applyGradientClipping:gradientClipMax:gradientClipMin:regularizationType:regularizationScale:")]
 		MPSNNOptimizerDescriptor Create (float learningRate, float gradientRescale, bool applyGradientClipping, float gradientClipMax, float gradientClipMin, MPSNNRegularizationType regularizationType, float regularizationScale);
@@ -9549,27 +12419,51 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor] // You must use one of the sub-classes of MPSNNOptimizer.
 	interface MPSNNOptimizer {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("learningRate")]
 		float LearningRate { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("gradientRescale")]
 		float GradientRescale { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("applyGradientClipping")]
 		bool ApplyGradientClipping { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("gradientClipMax")]
 		float GradientClipMax { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("gradientClipMin")]
 		float GradientClipMin { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("regularizationScale")]
 		float RegularizationScale { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("regularizationType")]
 		MPSNNRegularizationType RegularizationType { get; }
 
+		/// <param name="newLearningRate">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setLearningRate:")]
 		void SetLearningRate (float newLearningRate);
 	}
@@ -9579,9 +12473,15 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNOptimizerStochasticGradientDescent {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("momentumScale")]
 		float MomentumScale { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("useNestrovMomentum")]
 		bool UseNestrovMomentum { get; }
 
@@ -9591,15 +12491,42 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:momentumScale:useNestrovMomentum:optimizerDescriptor:")]
 		NativeHandle Constructor (IMTLDevice device, float momentumScale, bool useNestrovMomentum, MPSNNOptimizerDescriptor optimizerDescriptor);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="inputGradientVector">To be added.</param>
+		///         <param name="inputValuesVector">To be added.</param>
+		///         <param name="inputMomentumVector">To be added.</param>
+		///         <param name="resultValuesVector">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:inputGradientVector:inputValuesVector:inputMomentumVector:resultValuesVector:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSVector inputGradientVector, MPSVector inputValuesVector, [NullAllowed] MPSVector inputMomentumVector, MPSVector resultValuesVector);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="convolutionGradientState">To be added.</param>
+		///         <param name="convolutionSourceState">To be added.</param>
+		///         <param name="inputMomentumVectors">To be added.</param>
+		///         <param name="resultState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:convolutionGradientState:convolutionSourceState:inputMomentumVectors:resultState:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSCnnConvolutionGradientState convolutionGradientState, MPSCnnConvolutionWeightsAndBiasesState convolutionSourceState, [NullAllowed] NSArray<MPSVector> inputMomentumVectors, MPSCnnConvolutionWeightsAndBiasesState resultState);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="batchNormalizationState">To be added.</param>
+		///         <param name="inputMomentumVectors">To be added.</param>
+		///         <param name="resultState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:batchNormalizationState:inputMomentumVectors:resultState:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSCnnBatchNormalizationState batchNormalizationState, [NullAllowed] NSArray<MPSVector> inputMomentumVectors, MPSCnnNormalizationGammaAndBetaState resultState);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="batchNormalizationGradientState">To be added.</param>
+		///         <param name="batchNormalizationSourceState">To be added.</param>
+		///         <param name="inputMomentumVectors">To be added.</param>
+		///         <param name="resultState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:batchNormalizationGradientState:batchNormalizationSourceState:inputMomentumVectors:resultState:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSCnnBatchNormalizationState batchNormalizationGradientState, MPSCnnBatchNormalizationState batchNormalizationSourceState, [NullAllowed] NSArray<MPSVector> inputMomentumVectors, MPSCnnNormalizationGammaAndBetaState resultState);
 	}
@@ -9609,9 +12536,15 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNOptimizerRmsProp {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("decay")]
 		double Decay { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("epsilon")]
 		float Epsilon { get; }
 
@@ -9621,15 +12554,42 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:decay:epsilon:optimizerDescriptor:")]
 		NativeHandle Constructor (IMTLDevice device, double decay, float epsilon, MPSNNOptimizerDescriptor optimizerDescriptor);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="inputGradientVector">To be added.</param>
+		///         <param name="inputValuesVector">To be added.</param>
+		///         <param name="inputSumOfSquaresVector">To be added.</param>
+		///         <param name="resultValuesVector">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:inputGradientVector:inputValuesVector:inputSumOfSquaresVector:resultValuesVector:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSVector inputGradientVector, MPSVector inputValuesVector, MPSVector inputSumOfSquaresVector, MPSVector resultValuesVector);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="convolutionGradientState">To be added.</param>
+		///         <param name="convolutionSourceState">To be added.</param>
+		///         <param name="inputSumOfSquaresVectors">To be added.</param>
+		///         <param name="resultState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:convolutionGradientState:convolutionSourceState:inputSumOfSquaresVectors:resultState:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSCnnConvolutionGradientState convolutionGradientState, MPSCnnConvolutionWeightsAndBiasesState convolutionSourceState, [NullAllowed] NSArray<MPSVector> inputSumOfSquaresVectors, MPSCnnConvolutionWeightsAndBiasesState resultState);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="batchNormalizationState">To be added.</param>
+		///         <param name="inputSumOfSquaresVectors">To be added.</param>
+		///         <param name="resultState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:batchNormalizationState:inputSumOfSquaresVectors:resultState:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSCnnBatchNormalizationState batchNormalizationState, [NullAllowed] NSArray<MPSVector> inputSumOfSquaresVectors, MPSCnnNormalizationGammaAndBetaState resultState);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="batchNormalizationGradientState">To be added.</param>
+		///         <param name="batchNormalizationSourceState">To be added.</param>
+		///         <param name="inputSumOfSquaresVectors">To be added.</param>
+		///         <param name="resultState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:batchNormalizationGradientState:batchNormalizationSourceState:inputSumOfSquaresVectors:resultState:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSCnnBatchNormalizationState batchNormalizationGradientState, MPSCnnBatchNormalizationState batchNormalizationSourceState, [NullAllowed] NSArray<MPSVector> inputSumOfSquaresVectors, MPSCnnNormalizationGammaAndBetaState resultState);
 	}
@@ -9639,15 +12599,27 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNOptimizerAdam {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("beta1")]
 		double Beta1 { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("beta2")]
 		double Beta2 { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("epsilon")]
 		float Epsilon { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("timeStep")]
 		nuint TimeStep { get; set; }
 
@@ -9657,15 +12629,46 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:beta1:beta2:epsilon:timeStep:optimizerDescriptor:")]
 		NativeHandle Constructor (IMTLDevice device, double beta1, double beta2, float epsilon, nuint timeStep, MPSNNOptimizerDescriptor optimizerDescriptor);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="inputGradientVector">To be added.</param>
+		///         <param name="inputValuesVector">To be added.</param>
+		///         <param name="inputMomentumVector">To be added.</param>
+		///         <param name="inputVelocityVector">To be added.</param>
+		///         <param name="resultValuesVector">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:inputGradientVector:inputValuesVector:inputMomentumVector:inputVelocityVector:resultValuesVector:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSVector inputGradientVector, MPSVector inputValuesVector, MPSVector inputMomentumVector, MPSVector inputVelocityVector, MPSVector resultValuesVector);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="convolutionGradientState">To be added.</param>
+		///         <param name="convolutionSourceState">To be added.</param>
+		///         <param name="inputMomentumVectors">To be added.</param>
+		///         <param name="inputVelocityVectors">To be added.</param>
+		///         <param name="resultState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:convolutionGradientState:convolutionSourceState:inputMomentumVectors:inputVelocityVectors:resultState:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSCnnConvolutionGradientState convolutionGradientState, MPSCnnConvolutionWeightsAndBiasesState convolutionSourceState, [NullAllowed] NSArray<MPSVector> inputMomentumVectors, [NullAllowed] NSArray<MPSVector> inputVelocityVectors, MPSCnnConvolutionWeightsAndBiasesState resultState);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="batchNormalizationState">To be added.</param>
+		///         <param name="inputMomentumVectors">To be added.</param>
+		///         <param name="inputVelocityVectors">To be added.</param>
+		///         <param name="resultState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:batchNormalizationState:inputMomentumVectors:inputVelocityVectors:resultState:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSCnnBatchNormalizationState batchNormalizationState, [NullAllowed] NSArray<MPSVector> inputMomentumVectors, [NullAllowed] NSArray<MPSVector> inputVelocityVectors, MPSCnnNormalizationGammaAndBetaState resultState);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="batchNormalizationGradientState">To be added.</param>
+		///         <param name="batchNormalizationSourceState">To be added.</param>
+		///         <param name="inputMomentumVectors">To be added.</param>
+		///         <param name="inputVelocityVectors">To be added.</param>
+		///         <param name="resultState">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeToCommandBuffer:batchNormalizationGradientState:batchNormalizationSourceState:inputMomentumVectors:inputVelocityVectors:resultState:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSCnnBatchNormalizationState batchNormalizationGradientState, MPSCnnBatchNormalizationState batchNormalizationSourceState, [NullAllowed] NSArray<MPSVector> inputMomentumVectors, [NullAllowed] NSArray<MPSVector> inputVelocityVectors, MPSCnnNormalizationGammaAndBetaState resultState);
 	}
@@ -9675,6 +12678,9 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor] // You must use one of the sub-classes of MPSNNReduceUnary.
 	interface MPSNNReduceUnary {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("clipRectSource", ArgumentSemantic.Assign)]
 		MTLRegion ClipRectSource { get; set; }
 	}
@@ -9814,6 +12820,9 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNReduceFeatureChannelsSum {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("weight")]
 		float Weight { get; set; }
 
@@ -9827,9 +12836,15 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor] // You must use one of the sub-classes of MPSNNReduceBinary.
 	interface MPSNNReduceBinary {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("primarySourceClipRect", ArgumentSemantic.Assign)]
 		MTLRegion PrimarySourceClipRect { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("secondarySourceClipRect", ArgumentSemantic.Assign)]
 		MTLRegion SecondarySourceClipRect { get; set; }
 	}
@@ -9849,6 +12864,9 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNReduceFeatureChannelsAndWeightsSum {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("doWeightedSumByNonZeroWeights")]
 		bool DoWeightedSumByNonZeroWeights { get; }
 
@@ -9893,12 +12911,21 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNPad {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("paddingSizeBefore", ArgumentSemantic.Assign)]
 		MPSImageCoordinate PaddingSizeBefore { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("paddingSizeAfter", ArgumentSemantic.Assign)]
 		MPSImageCoordinate PaddingSizeAfter { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("fillValue")]
 		float FillValue { get; set; }
 
@@ -9936,12 +12963,21 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNResizeBilinear {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("resizeWidth")]
 		nuint ResizeWidth { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("resizeHeight")]
 		nuint ResizeHeight { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("alignCorners")]
 		bool AlignCorners { get; }
 
@@ -9959,15 +12995,27 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSNNCropAndResizeBilinear {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("resizeWidth")]
 		nuint ResizeWidth { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("resizeHeight")]
 		nuint ResizeHeight { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("numberOfRegions")]
 		nuint NumberOfRegions { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("regions")]
 		IntPtr Regions { get; }
 
@@ -10004,11 +13052,20 @@ namespace MetalPerformanceShaders {
 		[Export ("temporaryStateWithCommandBuffer:bufferSize:")]
 		MPSRnnMatrixTrainingState CreateTemporaryState (IMTLCommandBuffer commandBuffer, nuint bufferSize);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="descriptor">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[New]
 		[Export ("temporaryStateWithCommandBuffer:textureDescriptor:")]
 		MPSRnnMatrixTrainingState CreateTemporaryState (IMTLCommandBuffer commandBuffer, MTLTextureDescriptor descriptor);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[New]
 		[Export ("temporaryStateWithCommandBuffer:")]
@@ -10026,6 +13083,11 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:resourceList:")]
 		NativeHandle Constructor (IMTLDevice device, MPSStateResourceList resourceList);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="resourceList">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[New]
 		[Export ("temporaryStateWithCommandBuffer:resourceList:")]
@@ -10040,21 +13102,39 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSRnnMatrixTrainingLayer {
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("inputFeatureChannels")]
 		nuint InputFeatureChannels { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("outputFeatureChannels")]
 		nuint OutputFeatureChannels { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("storeAllIntermediateStates")]
 		bool StoreAllIntermediateStates { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("recurrentOutputIsTemporary")]
 		bool RecurrentOutputIsTemporary { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("trainingStateIsTemporary")]
 		bool TrainingStateIsTemporary { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("accumulateWeightGradients")]
 		bool AccumulateWeightGradients { get; set; }
 
@@ -10062,27 +13142,88 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, MPSRnnDescriptor rnnDescriptor, NSMutableArray<MPSMatrix> trainableWeights);
 
+		/// <param name="matrices">To be added.</param>
+		///         <param name="dataType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("createWeightGradientMatrices:dataType:")]
 		void CreateWeightGradientMatrices (NSMutableArray<MPSMatrix> matrices, MPSDataType dataType);
 
+		/// <param name="matrices">To be added.</param>
+		///         <param name="dataType">To be added.</param>
+		///         <param name="commandBuffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("createTemporaryWeightGradientMatrices:dataType:commandBuffer:")]
 		void CreateTemporaryWeightGradientMatrices (NSMutableArray<MPSMatrix> matrices, MPSDataType dataType, IMTLCommandBuffer commandBuffer);
 
+		/// <param name="matrices">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("createWeightMatrices:")]
 		void CreateWeightMatrices (NSMutableArray<MPSMatrix> matrices);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="weights">To be added.</param>
+		///         <param name="matrixId">To be added.</param>
+		///         <param name="matrix">To be added.</param>
+		///         <param name="copyFromWeightsToMatrix">To be added.</param>
+		///         <param name="matrixOffset">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeCopyWeightsToCommandBuffer:weights:matrixId:matrix:copyFromWeightsToMatrix:matrixOffset:")]
 		void EncodeCopyWeights (IMTLCommandBuffer commandBuffer, MPSMatrix [] weights, MPSRnnMatrixId matrixId, MPSMatrix matrix, bool copyFromWeightsToMatrix, MTLOrigin matrixOffset);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceMatrices">To be added.</param>
+		///         <param name="sourceOffsets">To be added.</param>
+		///         <param name="destinationMatrices">To be added.</param>
+		///         <param name="destinationOffsets">To be added.</param>
+		///         <param name="trainingStates">To be added.</param>
+		///         <param name="recurrentInputState">To be added.</param>
+		///         <param name="recurrentOutputStates">To be added.</param>
+		///         <param name="weights">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeForwardSequenceToCommandBuffer:sourceMatrices:sourceOffsets:destinationMatrices:destinationOffsets:trainingStates:recurrentInputState:recurrentOutputStates:weights:")]
 		void EncodeForwardSequence (IMTLCommandBuffer commandBuffer, MPSMatrix [] sourceMatrices, [NullAllowed] IntPtr sourceOffsets, MPSMatrix [] destinationMatrices, [NullAllowed] IntPtr destinationOffsets, NSMutableArray<MPSRnnMatrixTrainingState> trainingStates, [NullAllowed] MPSRnnRecurrentMatrixState recurrentInputState, [NullAllowed] NSMutableArray<MPSRnnRecurrentMatrixState> recurrentOutputStates, MPSMatrix [] weights);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="sourceMatrices">To be added.</param>
+		///         <param name="destinationMatrices">To be added.</param>
+		///         <param name="trainingStates">To be added.</param>
+		///         <param name="weights">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeForwardSequenceToCommandBuffer:sourceMatrices:destinationMatrices:trainingStates:weights:")]
 		void EncodeForwardSequence (IMTLCommandBuffer commandBuffer, MPSMatrix [] sourceMatrices, MPSMatrix [] destinationMatrices, NSMutableArray<MPSRnnMatrixTrainingState> trainingStates, MPSMatrix [] weights);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="forwardSources">To be added.</param>
+		///         <param name="forwardSourceOffsets">To be added.</param>
+		///         <param name="sourceGradients">To be added.</param>
+		///         <param name="sourceGradientOffsets">To be added.</param>
+		///         <param name="destinationGradients">To be added.</param>
+		///         <param name="destinationOffsets">To be added.</param>
+		///         <param name="weightGradients">To be added.</param>
+		///         <param name="trainingStates">To be added.</param>
+		///         <param name="recurrentInputState">To be added.</param>
+		///         <param name="recurrentOutputStates">To be added.</param>
+		///         <param name="weights">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeGradientSequenceToCommandBuffer:forwardSources:forwardSourceOffsets:sourceGradients:sourceGradientOffsets:destinationGradients:destinationOffsets:weightGradients:trainingStates:recurrentInputState:recurrentOutputStates:weights:")]
 		void EncodeGradientSequence (IMTLCommandBuffer commandBuffer, MPSMatrix [] forwardSources, [NullAllowed] IntPtr forwardSourceOffsets, MPSMatrix [] sourceGradients, [NullAllowed] IntPtr sourceGradientOffsets, [NullAllowed] MPSMatrix [] destinationGradients, [NullAllowed] IntPtr destinationOffsets, [NullAllowed] MPSMatrix [] weightGradients, MPSRnnMatrixTrainingState [] trainingStates, [NullAllowed] MPSRnnRecurrentMatrixState recurrentInputState, [NullAllowed] NSMutableArray<MPSRnnRecurrentMatrixState> recurrentOutputStates, MPSMatrix [] weights);
 
+		/// <param name="commandBuffer">To be added.</param>
+		///         <param name="forwardSources">To be added.</param>
+		///         <param name="sourceGradients">To be added.</param>
+		///         <param name="destinationGradients">To be added.</param>
+		///         <param name="weightGradients">To be added.</param>
+		///         <param name="trainingStates">To be added.</param>
+		///         <param name="weights">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("encodeGradientSequenceToCommandBuffer:forwardSources:sourceGradients:destinationGradients:weightGradients:trainingStates:weights:")]
 		void EncodeGradientSequence (IMTLCommandBuffer commandBuffer, MPSMatrix [] forwardSources, MPSMatrix [] sourceGradients, [NullAllowed] MPSMatrix [] destinationGradients, [NullAllowed] MPSMatrix [] weightGradients, MPSRnnMatrixTrainingState [] trainingStates, MPSMatrix [] weights);
 
@@ -10090,6 +13231,11 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 
+		/// <param name="zone">To be added.</param>
+		///         <param name="device">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("copyWithZone:device:")]
 		[return: Release]
 		MPSRnnMatrixTrainingLayer Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);

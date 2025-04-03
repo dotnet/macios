@@ -128,18 +128,37 @@ namespace ContactsUI {
 	[BaseType (typeof (NSObject))]
 	interface CNContactPickerDelegate {
 
+		/// <param name="picker">To be added.</param>
+		///         <summary>Called after the user selects the "Cancel" button.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("contactPickerDidCancel:")]
 		void ContactPickerDidCancel (CNContactPickerViewController picker);
 
+		/// <param name="picker">To be added.</param>
+		///         <param name="contact">To be added.</param>
+		///         <summary>Called after the user selects the <paramref name="contact" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("contactPicker:didSelectContact:")]
 		void DidSelectContact (CNContactPickerViewController picker, CNContact contact);
 
+		/// <param name="picker">To be added.</param>
+		///         <param name="contactProperty">To be added.</param>
+		///         <summary>Called after the user selects a property of the contact.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("contactPicker:didSelectContactProperty:")]
 		void DidSelectContactProperty (CNContactPickerViewController picker, CNContactProperty contactProperty);
 
+		/// <param name="picker">To be added.</param>
+		///         <param name="contacts">To be added.</param>
+		///         <summary>Called after the user selects multiple contacts. Devs must override this method to configure the <see cref="T:ContactsUI.CNContactPickerViewController" /> for multiple selection.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("contactPicker:didSelectContacts:")]
 		void DidSelectContacts (CNContactPickerViewController picker, CNContact [] contacts);
 
+		/// <param name="picker">To be added.</param>
+		///         <param name="contactProperties">To be added.</param>
+		///         <summary>Called after the user selects multiple properties. Devs must override this method to configure the <see cref="T:ContactsUI.CNContactPickerViewController" /> for multiple selection.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("contactPicker:didSelectContactProperties:")]
 		void DidSelectContactProperties (CNContactPickerViewController picker, CNContactProperty [] contactProperties);
 	}
@@ -185,18 +204,33 @@ namespace ContactsUI {
 			set;
 		}
 
+		/// <param name="contact">To be added.</param>
+		///         <summary>Creates a <see cref="T:ContactsUI.CNContactViewController" /> to display <paramref name="contact" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("viewControllerForContact:")]
 		CNContactViewController FromContact (CNContact contact);
 
+		/// <param name="contact">To be added.</param>
+		///         <summary>Creates a <see cref="T:ContactsUI.CNContactViewController" /> to display <paramref name="contact" /> when it is not known if <paramref name="contact" /> was fetched or newly created.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("viewControllerForUnknownContact:")]
 		CNContactViewController FromUnknownContact (CNContact contact);
 
+		/// <param name="contact">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Creates a <see cref="T:ContactsUI.CNContactViewController" /> to display the newly-created <paramref name="contact" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Static]
@@ -314,6 +348,13 @@ namespace ContactsUI {
 		[Export ("shouldShowLinkedContacts", ArgumentSemantic.Assign)]
 		bool ShouldShowLinkedContacts { get; set; }
 
+		/// <param name="key">To be added.</param>
+		///         <param name="identifier">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Highlights the property identified by <paramref name="key" />. If <paramref name="key" /> is multivalued, <paramref name="identifier" /> specifies which to highlight. (See <see cref="T:Contacts.CNContactKey" /> for values for <paramref name="key" />.)</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("highlightPropertyWithKey:identifier:")] //TODO: Maybe we can mNullallowedake a strongly type version
@@ -337,9 +378,21 @@ namespace ContactsUI {
 	[BaseType (typeof (NSObject))]
 	interface CNContactViewControllerDelegate {
 
+		/// <param name="viewController">To be added.</param>
+		///         <param name="property">To be added.</param>
+		///         <summary>Return <see langword="true" /> if the default action for the property should be triggered when it is selected by the user.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("contactViewController:shouldPerformDefaultActionForContactProperty:")]
 		bool ShouldPerformDefaultAction (CNContactViewController viewController, CNContactProperty property);
 
+		/// <param name="viewController">To be added.</param>
+		///         <param name="contact">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Method that is called after the view is presented.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("contactViewController:didCompleteWithContact:")]
 		void DidComplete (CNContactViewController viewController, [NullAllowed] CNContact contact);
 	}

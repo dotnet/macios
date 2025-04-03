@@ -269,7 +269,9 @@ namespace CoreVideo {
 			ContainsGrayscaleKey = CVPixelFormatKeys.ContainsGrayscale;
 
 			// Xcode 14
+#pragma warning disable CA1416 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'CVPixelFormatKeys.ContainsSenselArray.get' is only supported on: 'ios' 16.0 and later, 'maccatalyst' 16.0 and later, 'macOS/OSX' 13.0 and later, 'tvos' 16.0 and later.
 			ContainsSenselArray = CVPixelFormatKeys.ContainsSenselArray;
+#pragma warning restore CA1416
 		}
 #endif
 

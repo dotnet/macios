@@ -22,6 +22,10 @@ using NativeHandle = System.IntPtr;
 
 namespace UIKit {
 	public partial class UIAppearance {
+		/// <param name="other">To be added.</param>
+		///         <summary>Whether this is equivalent to <paramref name="other" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object other)
 		{
 			UIAppearance ao = other as UIAppearance;
@@ -30,6 +34,9 @@ namespace UIKit {
 			return ao.Handle == Handle;
 		}
 
+		/// <summary>Generates a hash code for the current instance.</summary>
+		///         <returns>A int containing the hash code for this instance.</returns>
+		///         <remarks>The algorithm used to generate the hash code is unspecified.</remarks>
 		public override int GetHashCode ()
 		{
 			return Handle.GetHashCode ();
@@ -100,6 +107,11 @@ namespace UIKit {
 		const string selAppearanceWhenContainedIn = "appearanceWhenContainedIn:";
 		const string selAppearanceForTraitCollectionWhenContainedIn = "appearanceForTraitCollection:whenContainedIn:";
 
+		/// <param name="class_ptr">To be added.</param>
+		///         <param name="whenFoundIn">To be added.</param>
+		///         <summary>This object's appearance proxy in the specified containment hierarchy.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static IntPtr GetAppearance (IntPtr class_ptr, params Type [] whenFoundIn)
 		{
@@ -116,6 +128,12 @@ namespace UIKit {
 				ptrs);
 		}
 
+		/// <param name="class_ptr">To be added.</param>
+		///         <param name="traits">To be added.</param>
+		///         <param name="whenFoundIn">To be added.</param>
+		///         <summary>Returns an appearance proxy for the specified <paramref name="traits" /> when found in the <paramref name="whenFoundIn" /> containment hierarchy.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static IntPtr GetAppearance (IntPtr class_ptr, UITraitCollection traits, params Type [] whenFoundIn)
 		{
@@ -144,6 +162,11 @@ namespace UIKit {
 
 		const string selAppearanceForTraitCollection = "appearanceForTraitCollection:";
 
+		/// <param name="class_ptr">To be added.</param>
+		///         <param name="traits">To be added.</param>
+		///         <summary>Returns an appearance proxy for the specified <paramref name="traits" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static IntPtr GetAppearance (IntPtr class_ptr, UITraitCollection traits)
 		{
 			if (traits is null)

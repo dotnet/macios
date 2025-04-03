@@ -7,10 +7,13 @@
 // Copyright 2014 Xamarin Inc
 //
 using System;
+using System.Collections.Generic;
 using Foundation;
 using ObjCRuntime;
 using CoreMedia;
 using AVFoundation;
+using CoreVideo;
+using Metal;
 
 namespace VideoToolbox {
 
@@ -2500,5 +2503,374 @@ namespace VideoToolbox {
 
 		// This can be either CFNumber or CFArray, so we have to bind it as NSObject
 		NSString ChromaRedMeanSquaredError { get; }
+	}
+
+	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
+	[BaseType (typeof (NSObject))]
+	interface VTFrameProcessor {
+		[Export ("startSessionWithConfiguration:error:")]
+		bool StartSession (IVTFrameProcessorConfiguration configuration, [NullAllowed] out NSError error);
+
+		[Export ("processWithParameters:error:")]
+		bool Process (IVTFrameProcessorParameters parameters, [NullAllowed] out NSError error);
+
+		[Export ("processWithParameters:completionHandler:")]
+		void Process (IVTFrameProcessorParameters parameters, VTFrameProcessorProcessHandler completionHandler);
+
+		[Export ("processWithCommandBuffer:parameters:")]
+		void Process (IMTLCommandBuffer commandBuffer, IVTFrameProcessorParameters parameters);
+
+		[Export ("endSession")]
+		void EndSession ();
+	}
+
+	delegate void VTFrameProcessorProcessHandler (IVTFrameProcessorParameters parameters, [NullAllowed] NSError error);
+
+	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface VTFrameProcessorConfiguration {
+		[Static, Abstract]
+		[Export ("processorSupported")]
+		bool ProcessorSupported { get; }
+
+		[Abstract]
+		[Export ("frameSupportedPixelFormats")]
+		NSNumber [] WeakFrameSupportedPixelFormats { get; }
+
+		CVPixelFormatType [] FrameSupportedPixelFormats {
+			[Wrap ("Array.ConvertAll (this.WeakFrameSupportedPixelFormats, (v) => (CVPixelFormatType) v.UInt32Value);")]
+			get;
+		}
+
+		[Abstract]
+		[Export ("sourcePixelBufferAttributes")]
+		NSDictionary WeakSourcePixelBufferAttributes { get; }
+
+		[Wrap ("WeakSourcePixelBufferAttributes")]
+		CVPixelBufferAttributes SourcePixelBufferAttributes { get; }
+
+		[Abstract]
+		[Export ("destinationPixelBufferAttributes")]
+		NSDictionary WeakDestinationPixelBufferAttributes { get; }
+
+		[Wrap ("WeakDestinationPixelBufferAttributes")]
+		CVPixelBufferAttributes DestinationPixelBufferAttributes { get; }
+
+		[Export ("nextFrameCount")]
+		nint NextFrameCount { get; }
+
+		[Export ("previousFrameCount")]
+		nint PreviousFrameCount { get; }
+
+		[Static]
+		[Export ("maximumDimensions")]
+		CMVideoDimensions MaximumDimensions { get; }
+
+		[Static]
+		[Export ("minimumDimensions")]
+		CMVideoDimensions MinimumDimensions { get; }
+	}
+
+	interface IVTFrameProcessorConfiguration { }
+
+	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
+#if !__MACCATALYST__
+	[ErrorDomain ("VTFrameProcessorErrorDomain")]
+#endif
+	[Native]
+	public enum VTFrameProcessorError : long {
+		UnknownError = -19730,
+		UnsupportedResolution = -19731,
+		SessionNotStarted = -19732,
+		SessionAlreadyActive = -19733,
+		FatalError = -19734,
+		SessionLevelError = -19735,
+		InitializationFailed = -19736,
+		UnsupportedInput = -19737,
+		MemoryAllocationFailure = -19738,
+		RevisionNotSupported = -19739,
+		ProcessingError = -19740,
+		InvalidParameterError = -19741,
+		InvalidFrameTiming = -19742
+	}
+
+	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface VTFrameProcessorFrame {
+		[Export ("initWithBuffer:presentationTimeStamp:")]
+		NativeHandle Constructor (CVPixelBuffer buffer, CMTime presentationTimeStamp);
+
+		[Export ("buffer")]
+		CVPixelBuffer Buffer { get; }
+
+		[Export ("presentationTimeStamp")]
+		CMTime PresentationTimeStamp { get; }
+	}
+
+	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface VTFrameProcessorOpticalFlow {
+		[Export ("initWithForwardFlow:backwardFlow:")]
+		NativeHandle Constructor (CVPixelBuffer forwardFlow, CVPixelBuffer backwardFlow);
+
+		[Export ("forwardFlow")]
+		CVPixelBuffer ForwardFlow { get; }
+
+		[Export ("backwardFlow")]
+		CVPixelBuffer BackwardFlow { get; }
+	}
+
+	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface VTFrameProcessorParameters {
+		[Abstract]
+		[Export ("sourceFrame")]
+		VTFrameProcessorFrame SourceFrame { get; }
+	}
+
+	interface IVTFrameProcessorParameters { }
+
+	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
+	[Native]
+	public enum VTFrameRateConversionConfigurationQualityPrioritization : long {
+		Normal = 1,
+		Quality = 2,
+	}
+
+	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
+	[Native]
+	public enum VTFrameRateConversionConfigurationRevision : long {
+		Revision1 = 1,
+	}
+
+	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
+	[Native]
+	public enum VTFrameRateConversionParametersSubmissionMode : long {
+		Random = 1,
+		Sequential = 2,
+		SequentialReferencesUnchanged = 3,
+	}
+
+	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface VTFrameRateConversionConfiguration : VTFrameProcessorConfiguration {
+		[Export ("initWithFrameWidth:frameHeight:usePrecomputedFlow:qualityPrioritization:revision:")]
+		NativeHandle Constructor (nint frameWidth, nint frameHeight, bool usePrecomputedFlow, VTFrameRateConversionConfigurationQualityPrioritization qualityPrioritization, VTFrameRateConversionConfigurationRevision revision);
+
+		[Export ("frameWidth")]
+		nint FrameWidth { get; }
+
+		[Export ("frameHeight")]
+		nint FrameHeight { get; }
+
+		[Export ("usePrecomputedFlow")]
+		bool UsePrecomputedFlow { get; }
+
+		[Export ("qualityPrioritization")]
+		VTFrameRateConversionConfigurationQualityPrioritization QualityPrioritization { get; }
+
+		[Export ("revision")]
+		VTFrameRateConversionConfigurationRevision Revision { get; }
+
+		[Static]
+		[Export ("supportedRevisions")]
+		NSIndexSet WeakSupportedRevisions { get; }
+
+		[Static]
+		[Wrap ("WeakSupportedRevisions.ToInt64EnumHashSet<VTFrameRateConversionConfigurationRevision> ()")]
+		HashSet<VTFrameRateConversionConfigurationRevision> SupportedRevisions { get; }
+
+		[Static]
+		[Export ("defaultRevision")]
+		VTFrameRateConversionConfigurationRevision DefaultRevision { get; }
+	}
+
+	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface VTFrameRateConversionParameters : VTFrameProcessorParameters {
+		[Export ("initWithSourceFrame:nextFrame:opticalFlow:interpolationPhase:submissionMode:destinationFrames:")]
+		NativeHandle Constructor (VTFrameProcessorFrame sourceFrame, VTFrameProcessorFrame nextFrame, [NullAllowed] VTFrameProcessorOpticalFlow opticalFlow, NSNumber [] interpolationPhase, VTFrameRateConversionParametersSubmissionMode submissionMode, VTFrameProcessorFrame [] destinationFrame);
+
+		[Export ("sourceFrame")]
+		new VTFrameProcessorFrame SourceFrame { get; }
+
+		[NullAllowed, Export ("nextFrame")]
+		VTFrameProcessorFrame NextFrame { get; }
+
+		[NullAllowed, Export ("opticalFlow")]
+		VTFrameProcessorOpticalFlow OpticalFlow { get; }
+
+		[BindAs (typeof (float []))]
+		[Export ("interpolationPhase")]
+		NSNumber [] InterpolationPhase { get; }
+
+		[Export ("submissionMode")]
+		VTFrameRateConversionParametersSubmissionMode SubmissionMode { get; }
+
+		[Export ("destinationFrames")]
+		VTFrameProcessorFrame [] DestinationFrames { get; }
+	}
+
+	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
+	[Native]
+	public enum VTMotionBlurConfigurationQualityPrioritization : long {
+		Normal = 1,
+		Quality = 2,
+	}
+
+	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
+	[Native]
+	public enum VTMotionBlurConfigurationRevision : long {
+		Revision1 = 1,
+	}
+
+	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
+	[Native]
+	public enum VTMotionBlurParametersSubmissionMode : long {
+		Random = 1,
+		Sequential = 2,
+	}
+
+	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface VTMotionBlurConfiguration : VTFrameProcessorConfiguration {
+		[Export ("initWithFrameWidth:frameHeight:usePrecomputedFlow:qualityPrioritization:revision:")]
+		NativeHandle Constructor (nint frameWidth, nint frameHeight, bool usePrecomputedFlow, VTMotionBlurConfigurationQualityPrioritization qualityPrioritization, VTMotionBlurConfigurationRevision revision);
+
+		[Export ("frameWidth")]
+		nint FrameWidth { get; }
+
+		[Export ("frameHeight")]
+		nint FrameHeight { get; }
+
+		[Export ("usePrecomputedFlow")]
+		bool UsePrecomputedFlow { get; }
+
+		[Export ("qualityPrioritization")]
+		VTMotionBlurConfigurationQualityPrioritization QualityPrioritization { get; }
+
+		[Export ("revision")]
+		VTMotionBlurConfigurationRevision Revision { get; }
+
+		[Static]
+		[Export ("supportedRevisions")]
+		NSIndexSet WeakSupportedRevisions { get; }
+
+		[Static]
+		[Wrap ("WeakSupportedRevisions.ToInt64EnumHashSet<VTMotionBlurConfigurationRevision> ()")]
+		HashSet<VTMotionBlurConfigurationRevision> SupportedRevisions { get; }
+
+		[Static]
+		[Export ("defaultRevision")]
+		VTMotionBlurConfigurationRevision DefaultRevision { get; }
+	}
+
+	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface VTMotionBlurParameters : VTFrameProcessorParameters {
+		[Export ("initWithSourceFrame:nextFrame:previousFrame:nextOpticalFlow:previousOpticalFlow:motionBlurStrength:submissionMode:destinationFrame:")]
+		NativeHandle Constructor (VTFrameProcessorFrame sourceFrame, [NullAllowed] VTFrameProcessorFrame nextFrame, [NullAllowed] VTFrameProcessorFrame previousFrame, [NullAllowed] VTFrameProcessorOpticalFlow nextOpticalFlow, [NullAllowed] VTFrameProcessorOpticalFlow previousOpticalFlow, nint motionBlurStrength, VTMotionBlurParametersSubmissionMode submissionMode, VTFrameProcessorFrame destinationFrame);
+
+		[Export ("sourceFrame")]
+		new VTFrameProcessorFrame SourceFrame { get; }
+
+		[NullAllowed, Export ("nextFrame")]
+		VTFrameProcessorFrame NextFrame { get; }
+
+		[NullAllowed, Export ("previousFrame")]
+		VTFrameProcessorFrame PreviousFrame { get; }
+
+		[NullAllowed, Export ("nextOpticalFlow")]
+		VTFrameProcessorOpticalFlow NextOpticalFlow { get; }
+
+		[NullAllowed, Export ("previousOpticalFlow")]
+		VTFrameProcessorOpticalFlow PreviousOpticalFlow { get; }
+
+		[Export ("motionBlurStrength")]
+		nint MotionBlurStrength { get; }
+
+		[Export ("submissionMode")]
+		VTMotionBlurParametersSubmissionMode SubmissionMode { get; }
+
+		[Export ("destinationFrame")]
+		VTFrameProcessorFrame DestinationFrame { get; }
+	}
+
+	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
+	[Native]
+	public enum VTOpticalFlowConfigurationQualityPrioritization : long {
+		Normal = 1,
+		Quality = 2,
+	}
+
+	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
+	[Native]
+	public enum VTOpticalFlowConfigurationRevision : long {
+		Revision1 = 1,
+	}
+
+	[MacCatalyst (18, 4), NoTV, NoiOS, Mac (15, 4)]
+	[Native]
+	public enum VTOpticalFlowParametersSubmissionMode : long {
+		Random = 1,
+		Sequential = 2,
+	}
+
+	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface VTOpticalFlowConfiguration : VTFrameProcessorConfiguration {
+		[Export ("initWithFrameWidth:frameHeight:qualityPrioritization:revision:")]
+		NativeHandle Constructor (nint frameWidth, nint frameHeight, VTOpticalFlowConfigurationQualityPrioritization qualityPrioritization, VTOpticalFlowConfigurationRevision revision);
+
+		[Export ("frameWidth")]
+		nint FrameWidth { get; }
+
+		[Export ("frameHeight")]
+		nint FrameHeight { get; }
+
+		[Export ("qualityPrioritization")]
+		VTOpticalFlowConfigurationQualityPrioritization QualityPrioritization { get; }
+
+		[Export ("revision")]
+		VTOpticalFlowConfigurationRevision Revision { get; }
+
+		[Static]
+		[Export ("supportedRevisions")]
+		NSIndexSet WeakSupportedRevisions { get; }
+
+		[Static]
+		[Wrap ("WeakSupportedRevisions.ToInt64EnumHashSet<VTOpticalFlowConfigurationRevision> ()")]
+		HashSet<VTOpticalFlowConfigurationRevision> SupportedRevisions { get; }
+
+		[Static]
+		[Export ("defaultRevision")]
+		VTOpticalFlowConfigurationRevision DefaultRevision { get; }
+	}
+
+	[NoMacCatalyst, NoTV, NoiOS, Mac (15, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface VTOpticalFlowParameters : VTFrameProcessorParameters {
+		[Export ("initWithSourceFrame:nextFrame:submissionMode:destinationOpticalFlow:")]
+		NativeHandle Constructor (VTFrameProcessorFrame sourceFrame, VTFrameProcessorFrame nextFrame, VTOpticalFlowParametersSubmissionMode submissionMode, VTFrameProcessorOpticalFlow destinationOpticalFlow);
+
+		[Export ("sourceFrame")]
+		new VTFrameProcessorFrame SourceFrame { get; }
+
+		[Export ("nextFrame")]
+		VTFrameProcessorFrame NextFrame { get; }
+
+		[Export ("submissionMode")]
+		VTOpticalFlowParametersSubmissionMode SubmissionMode { get; }
+
+		[Export ("destinationOpticalFlow")]
+		VTFrameProcessorOpticalFlow DestinationOpticalFlow { get; }
 	}
 }

@@ -37,10 +37,6 @@ using Foundation;
 using CoreFoundation;
 using CoreGraphics;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreText {
 
 	// defined as uint32_t - System/Library/Frameworks/CoreText.framework/Headers/CTRun.h
@@ -55,12 +51,10 @@ namespace CoreText {
 		HasNonIdentityMatrix = (1 << 2),
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTRun : NativeObject {
 		[Preserve (Conditional = true)]
 		internal CTRun (NativeHandle handle, bool owns)
@@ -70,6 +64,10 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		extern static void CTRunDraw (IntPtr h, IntPtr context, NSRange range);
+		/// <param name="context">To be added.</param>
+		///         <param name="range">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Draw (CGContext context, NSRange range)
 		{
 			CTRunDraw (Handle, context.Handle, range);
@@ -78,6 +76,11 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		extern static void CTRunGetAdvances (IntPtr h, NSRange range, [In, Out] CGSize []? buffer);
+		/// <param name="range">To be added.</param>
+		///         <param name="buffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGSize [] GetAdvances (NSRange range, CGSize []? buffer)
 		{
 			buffer = GetBuffer (range, buffer);
@@ -99,11 +102,18 @@ namespace CoreText {
 			return buffer ?? new T [range.Length == 0 ? glyphCount : range.Length];
 		}
 
+		/// <param name="range">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGSize [] GetAdvances (NSRange range)
 		{
 			return GetAdvances (range, null);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGSize [] GetAdvances ()
 		{
 			return GetAdvances (new NSRange (0, 0), null);
@@ -112,6 +122,9 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		extern static IntPtr CTRunGetAttributes (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTStringAttributes? GetAttributes ()
 		{
 			var d = Runtime.GetNSObject<NSDictionary> (CTRunGetAttributes (Handle));
@@ -132,6 +145,11 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		extern static void CTRunGetGlyphs (IntPtr h, NSRange range, [In, Out] ushort []? buffer);
+		/// <param name="range">To be added.</param>
+		///         <param name="buffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public ushort [] GetGlyphs (NSRange range, ushort []? buffer)
 		{
 			buffer = GetBuffer (range, buffer);
@@ -141,11 +159,18 @@ namespace CoreText {
 			return buffer;
 		}
 
+		/// <param name="range">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public ushort [] GetGlyphs (NSRange range)
 		{
 			return GetGlyphs (range, null);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public ushort [] GetGlyphs ()
 		{
 			return GetGlyphs (new NSRange (0, 0), null);
@@ -153,6 +178,11 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		extern static CGRect CTRunGetImageBounds (IntPtr h, IntPtr context, NSRange range);
+		/// <param name="context">To be added.</param>
+		///         <param name="range">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGRect GetImageBounds (CGContext context, NSRange range)
 		{
 			CGRect bounds = CTRunGetImageBounds (Handle, context.Handle, range);
@@ -162,6 +192,11 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		extern static void CTRunGetPositions (IntPtr h, NSRange range, [In, Out] CGPoint []? buffer);
+		/// <param name="range">To be added.</param>
+		///         <param name="buffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGPoint [] GetPositions (NSRange range, CGPoint []? buffer)
 		{
 			buffer = GetBuffer (range, buffer);
@@ -171,11 +206,18 @@ namespace CoreText {
 			return buffer;
 		}
 
+		/// <param name="range">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGPoint [] GetPositions (NSRange range)
 		{
 			return GetPositions (range, null);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGPoint [] GetPositions ()
 		{
 			return GetPositions (new NSRange (0, 0), null);
@@ -203,11 +245,18 @@ namespace CoreText {
 			return buffer;
 		}
 
+		/// <param name="range">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public nint [] GetStringIndices (NSRange range)
 		{
 			return GetStringIndices (range, null);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public nint [] GetStringIndices ()
 		{
 			return GetStringIndices (new NSRange (0, 0), null);
@@ -245,33 +294,26 @@ namespace CoreText {
 			return CTRunGetTypographicBounds (Handle, range, out ascent, out descent, out leading);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public double GetTypographicBounds ()
 		{
 			NSRange range = new NSRange () { Location = 0, Length = 0 };
 			return CTRunGetTypographicBounds (Handle, range, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern void CTRunGetBaseAdvancesAndOrigins (/* CTRunRef */ IntPtr runRef, /* CFRange */ NSRange range, CGSize [] advancesBuffer, CGPoint [] originsBuffer);
 
-#if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (13, 0)]
-		[iOS (13, 0)]
-#endif
 		public void GetBaseAdvancesAndOrigins (NSRange range, out CGSize [] advancesBuffer, out CGPoint [] originsBuffer)
 		{
 			advancesBuffer = GetBuffer<CGSize> (range, null);

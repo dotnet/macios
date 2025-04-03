@@ -220,6 +220,7 @@ namespace GameKit {
 		ICloudUnavailable = 35,
 		LockdownMode = 36,
 		AppUnlisted = 37,
+		DebugMode = 38,
 		FriendListDescriptionMissing = 100,
 		FriendListRestricted = 101,
 		FriendListDenied = 102,
@@ -437,6 +438,10 @@ namespace GameKit {
 
 	// NSInteger -> GKMatchmaker.h
 	[Native]
+	[Deprecated (PlatformName.iOS, 18, 4, message: "Use 'GKInviteRecipientResponse' instead.")]
+	[Deprecated (PlatformName.MacOSX, 15, 4, message: "Use 'GKInviteRecipientResponse' instead.")]
+	[Deprecated (PlatformName.TvOS, 18, 4, message: "Use 'GKInviteRecipientResponse' instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 18, 4, message: "Use 'GKInviteRecipientResponse' instead.")]
 	public enum GKInviteeResponse : long {
 		/// <summary>To be added.</summary>
 		Accepted = 0,

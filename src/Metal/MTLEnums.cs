@@ -266,6 +266,7 @@ namespace Metal {
 		/// <summary>To be added.</summary>
 		UChar4Normalized = 9,
 
+		/// <summary>To be added.</summary>
 		Char2Normalized = 10,
 		/// <summary>To be added.</summary>
 		Char3Normalized = 11,
@@ -279,6 +280,7 @@ namespace Metal {
 		/// <summary>To be added.</summary>
 		UShort4 = 15,
 
+		/// <summary>To be added.</summary>
 		Short2 = 16,
 		/// <summary>To be added.</summary>
 		Short3 = 17,
@@ -296,52 +298,77 @@ namespace Metal {
 		Short2Normalized = 22,
 		/// <summary>To be added.</summary>
 		Short3Normalized = 23,
+		/// <summary>To be added.</summary>
 		Short4Normalized = 24,
 
 		/// <summary>To be added.</summary>
 		Half2 = 25,
+		/// <summary>To be added.</summary>
 		Half3 = 26,
+		/// <summary>To be added.</summary>
 		Half4 = 27,
 
+		/// <summary>To be added.</summary>
 		Float = 28,
 		/// <summary>To be added.</summary>
 		Float2 = 29,
 		/// <summary>To be added.</summary>
 		Float3 = 30,
+		/// <summary>To be added.</summary>
 		Float4 = 31,
+		/// <summary>To be added.</summary>
 		Int = 32,
+		/// <summary>To be added.</summary>
 		Int2 = 33,
+		/// <summary>To be added.</summary>
 		Int3 = 34,
+		/// <summary>To be added.</summary>
 		Int4 = 35,
 
+		/// <summary>To be added.</summary>
 		UInt = 36,
+		/// <summary>To be added.</summary>
 		UInt2 = 37,
+		/// <summary>To be added.</summary>
 		UInt3 = 38,
+		/// <summary>To be added.</summary>
 		UInt4 = 39,
 
+		/// <summary>To be added.</summary>
 		Int1010102Normalized = 40,
+		/// <summary>To be added.</summary>
 		UInt1010102Normalized = 41,
 
+		/// <summary>Indicates four unsigned 8-bit characters that describe BGRA channels.</summary>
 		[MacCatalyst (13, 1)]
 		UChar4NormalizedBgra = 42,
+		/// <summary>Indicates a single unsigned 8-bit character.</summary>
 		[MacCatalyst (13, 1)]
 		UChar = 45,
+		/// <summary>Indicates a single signed 8-bit character.</summary>
 		[MacCatalyst (13, 1)]
 		Char = 46,
+		/// <summary>Indicates a single unsigned 8-bit character.</summary>
 		[MacCatalyst (13, 1)]
 		UCharNormalized = 47,
 
+		/// <summary>Indicates a single normalized signed 8-bit character.</summary>
 		[MacCatalyst (13, 1)]
 		CharNormalized = 48,
+		/// <summary>Indicates a single unsigned 16-bit two's complement value.</summary>
 		[MacCatalyst (13, 1)]
 		UShort = 49,
+		/// <summary>Indicates a single signed 16-bit two's complement value.</summary>
 		[MacCatalyst (13, 1)]
 		Short = 50,
+		/// <summary>ndicates a single normalized unsigned 16-bit two's complement value.</summary>
 		[MacCatalyst (13, 1)]
 		UShortNormalized = 51,
+		/// <summary>Indicates a single normalized signed 16-bit two's complement value</summary>
 		[MacCatalyst (13, 1)]
 		ShortNormalized = 52,
 
+		/// <summary>Indicates a single half-precision floating point value.</summary>
 		[MacCatalyst (13, 1)]
 		Half = 53,
 
@@ -895,8 +922,11 @@ namespace Metal {
 	/// <summary>Enumerates values that control how and whether to monitor samples that pass depth and stencil tests.</summary>
 	[Native]
 	public enum MTLVisibilityResultMode : ulong {
+		/// <summary>Indicates that monitoring is turned off.</summary>
 		Disabled = 0,
+		/// <summary>Indicates that only whether the samples pass the depth and stencil tests should be tracked.</summary>
 		Boolean = 1,
+		/// <summary>Indicates that the samples that pass should be monitored.</summary>
 		Counting = 2,
 	}
 
@@ -914,14 +944,18 @@ namespace Metal {
 	/// <summary>Vertex winding rule for front-facing primitives.</summary>
 	[Native]
 	public enum MTLWinding : ulong {
+		/// <summary>To be added.</summary>
 		Clockwise = 0,
+		/// <summary>To be added.</summary>
 		CounterClockwise = 1,
 	}
 
 	/// <summary>How to rasterize triangle and triangle-strip primitives.</summary>
 	[Native]
 	public enum MTLTriangleFillMode : ulong {
+		/// <summary>To be added.</summary>
 		Fill,
+		/// <summary>To be added.</summary>
 		Lines,
 	}
 
@@ -952,10 +986,13 @@ namespace Metal {
 	[Native]
 	[Flags]
 	public enum MTLTextureUsage : ulong {
+		/// <summary>A value that indicates that it is not known what the texture usage option is.</summary>
 		Unknown = 0x0000,
 		/// <summary>A value that indicates that the texture will be read by shaders at any stage in rendering.</summary>
 		ShaderRead = 0x0001,
+		/// <summary>A value that indicates that the texture will be written to by compute shaders.</summary>
 		ShaderWrite = 0x0002,
+		/// <summary>A value that indicates that the texture will be used as a color, depth, or stencil render target in a rendering pass.</summary>
 		RenderTarget = 0x0004,
 #if !NET
 		[Obsolete ("This option is unavailable.")]
@@ -1008,11 +1045,16 @@ namespace Metal {
 	/// <summary>The frequency at which the vertex shader function should fetch attribute data.</summary>
 	[Native]
 	public enum MTLVertexStepFunction : ulong {
+		/// <summary>To be added.</summary>
 		Constant,
+		/// <summary>To be added.</summary>
 		PerVertex,
+		/// <summary>To be added.</summary>
 		PerInstance,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		PerPatch = 3,
+		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		PerPatchControlPoint = 4,
 	}

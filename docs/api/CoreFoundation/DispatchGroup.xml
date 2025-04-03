@@ -1,0 +1,17 @@
+<Documentation>
+  <Docs DocId="M:CoreFoundation.DispatchGroup.Wait(CoreFoundation.DispatchTime)">
+        <param name="timeout">A DispatchTime that represents the number of nanoseconds to wait.</param>
+        <summary>Waits synchronously for all blocks in the group to complete or the specified timeout has elapsed.</summary>
+        <returns>
+          <see langword="true" /> if all code blockes finished before timeout otherwise <see langword="false" />.</returns>
+        <remarks>
+          <para>This function waits for the completion of the blocks associated with the given dispatch group, and returns after all blocks have completed or when the specified timeout has elapsed.</para>
+          <para />
+          <para>This function will return immediately if there are no blocks associated with the dispatch group (i.e. the group is empty).</para>
+          <para />
+          <para>The result of calling this function from multiple threads simultaneously with the same dispatch group is undefined.</para>
+          <para />
+          <para>After the successful return of this function, the dispatch group is empty.</para>
+        </remarks>
+      </Docs>
+</Documentation>

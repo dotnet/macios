@@ -34,6 +34,8 @@ namespace SceneKit {
 				mutDict = (NSMutableDictionary) dict;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SCNPropertyControllers ()
 		{
 			mutDict = new NSMutableDictionary ();

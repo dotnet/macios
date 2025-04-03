@@ -49,6 +49,10 @@ namespace Contacts {
 
 	public partial class CNSocialProfile {
 
+		/// <param name="option">To be added.</param>
+		///         <summary>Returns the localized string representing the <paramref name="option" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string LocalizeProperty (CNSocialProfileOption option)
 		{
 			switch (option) {
@@ -65,6 +69,10 @@ namespace Contacts {
 			}
 		}
 
+		/// <param name="serviceOption">To be added.</param>
+		///         <summary>Returns the localized string representing the <paramref name="serviceOption" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static string LocalizeService (CNSocialProfileServiceOption serviceOption)
 		{
 			var srvc = ServiceOptionsToNSString (serviceOption);

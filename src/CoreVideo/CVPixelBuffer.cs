@@ -26,6 +26,16 @@ namespace CoreVideo {
 	[SupportedOSPlatform ("tvos")]
 	public partial class CVPixelBuffer : CVImageBuffer {
 #if !COREBUILD
+		/// <summary>Type identifier for the CoreVideo.CVPixelBuffer type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
+		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[bool isCVPixelBuffer = (CFType.GetTypeID (foo.Handle) == CVPixelBuffer.GetTypeID ());]]></code>
+		///           </example>
+		///         </remarks>
 		[DllImport (Constants.CoreVideoLibrary, EntryPoint = "CVPixelBufferGetTypeID")]
 		public extern static /* CFTypeID */ nint GetTypeID ();
 
@@ -92,6 +102,10 @@ namespace CoreVideo {
 			/* CFArrayRef __nullable */ IntPtr attributes,
 			/* CFDictionaryRef __nullable * __nonnull */ IntPtr* resolvedDictionaryOut);
 
+		/// <param name="attributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary? GetAttributes (NSDictionary []? attributes)
 		{
 			CVReturn ret;
@@ -336,6 +350,9 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static CVReturn CVPixelBufferFillExtendedPixels (/* CVPixelBufferRef __nonnull */ IntPtr pixelBuffer);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CVReturn FillExtendedPixels ()
 		{
 			return CVPixelBufferFillExtendedPixels (Handle);
@@ -482,6 +499,10 @@ namespace CoreVideo {
 		extern static CVReturn CVPixelBufferLockBaseAddress (
 			/* CVPixelBufferRef __nonnull */ IntPtr pixelBuffer, CVPixelBufferLock lockFlags);
 
+		/// <param name="lockFlags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CVReturn Lock (CVPixelBufferLock lockFlags)
 		{
 			return CVPixelBufferLockBaseAddress (Handle, lockFlags);
@@ -491,6 +512,10 @@ namespace CoreVideo {
 		extern static CVReturn CVPixelBufferUnlockBaseAddress (
 			/* CVPixelBufferRef __nonnull */ IntPtr pixelBuffer, CVPixelBufferLock unlockFlags);
 
+		/// <param name="unlockFlags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CVReturn Unlock (CVPixelBufferLock unlockFlags)
 		{
 			return CVPixelBufferUnlockBaseAddress (Handle, unlockFlags);

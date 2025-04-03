@@ -1,0 +1,26 @@
+<Documentation>
+  <Docs DocId="M:AudioUnit.AUParameterTree.CreateParameter(System.String,System.String,System.UInt64,System.Single,System.Single,AudioUnit.AudioUnitParameterUnit,System.String,AudioUnit.AudioUnitParameterOptions,System.String[],Foundation.NSNumber[])">
+        <param name="identifier">A permanent non-localized name for the parameter.</param>
+        <param name="name">A localized display name.</param>
+        <param name="address">The address of the parameter.</param>
+        <param name="min">The minimum allowed value of the parameter.</param>
+        <param name="max">The maximum allowed value of the parameter.</param>
+        <param name="unit">The unit of measurement in which the parameter is expressed.</param>
+        <param name="unitName">
+          <para>The localized name of the parameter.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="flags">The parameter options for the parameter.</param>
+        <param name="valueStrings">
+          <para>The localized value strings for the parameter.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="dependentParameters">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Creates a new parameter with the specified values.</summary>
+        <returns>A new parameter that was created with the specified values.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+</Documentation>

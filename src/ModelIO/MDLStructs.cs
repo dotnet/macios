@@ -47,6 +47,10 @@ namespace ModelIO {
 		static extern /* MTLVertexFormat */ nuint MTKMetalVertexFormatFromModelIO (/* MTLVertexFormat */ nuint vertexFormat);
 
 #if NET
+		/// <param name="vertexFormat">To be added.</param>
+		///         <summary>Converts the current vertex format into the specified <paramref name="vertexFormat" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]

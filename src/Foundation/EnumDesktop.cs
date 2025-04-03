@@ -119,10 +119,15 @@ namespace Foundation {
 	[Native]
 	[Advice ("'NSUserNotification' usages should be replaced with 'UserNotifications' framework.")]
 	public enum NSUserNotificationActivationType : long {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		ContentsClicked = 1,
+		/// <summary>To be added.</summary>
 		ActionButtonClicked = 2,
+		/// <summary>To be added.</summary>
 		Replied = 3,
+		/// <summary>To be added.</summary>
 		AdditionalActionClicked = 4,
 	}
 
@@ -130,16 +135,27 @@ namespace Foundation {
 	[Native]
 	[Flags]
 	public enum NSAppleEventSendOptions : ulong {
+		/// <summary>To be added.</summary>
 		NoReply = 0x00000001, // kAENoReply,
+		/// <summary>To be added.</summary>
 		QueueReply = 0x00000002, // kAEQueueReply,
+		/// <summary>To be added.</summary>
 		WaitForReply = 0x00000003, // kAEWaitReply,
+		/// <summary>To be added.</summary>
 		NeverInteract = 0x00000010, // kAENeverInteract,
+		/// <summary>To be added.</summary>
 		CanInteract = 0x00000020, // kAECanInteract,
+		/// <summary>To be added.</summary>
 		AlwaysInteract = 0x00000030, // kAEAlwaysInteract,
+		/// <summary>To be added.</summary>
 		CanSwitchLayer = 0x00000040, // kAECanSwitchLayer,
+		/// <summary>To be added.</summary>
 		DontRecord = 0x00001000, // kAEDontRecord,
+		/// <summary>To be added.</summary>
 		DontExecute = 0x00002000, // kAEDontExecute,
+		/// <summary>To be added.</summary>
 		DontAnnotate = 0x00010000, // kAEDoNotAutomaticallyAddAnnotationsToEvent,
+		/// <summary>To be added.</summary>
 		DefaultOptions = WaitForReply | CanInteract,
 	}
 }

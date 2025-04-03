@@ -26,6 +26,9 @@ namespace SceneKit {
 		[DllImport (Constants.SceneKitLibrary)]
 		static extern void SCNExportJavaScriptModule (IntPtr context);
 
+		/// <param name="context">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void ExportModule (JSContext context)
 		{
 			if (context is null)

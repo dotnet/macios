@@ -11,6 +11,11 @@
 
 namespace UIKit {
 	public static partial class UIViewControllerTransitionCoordinatorContext_Extensions {
+		/// <param name="This">The instance on which this method operates.</param>
+		///         <param name="kind">To be added.</param>
+		///         <summary>Gets a view controller that controls a transition.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static UIView GetTransitionViewController (this IUIViewControllerTransitionCoordinatorContext This, UITransitionViewControllerKind kind)
 		{
 			switch (kind) {

@@ -41,24 +41,52 @@ using ObjCRuntime;
 namespace Foundation {
 
 	public partial class NSSet : IEnumerable<NSObject> {
+		/// <param name="objs">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSSet (params NSObject [] objs) : this (NSArray.FromNSObjects (objs))
 		{
 		}
 
+		/// <param name="objs">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSSet (params object [] objs) : this (NSArray.FromObjects (objs))
 		{
 		}
 
+		/// <param name="strings">An array of strings.</param>
+		///         <summary>Creates a set from an array of strings.</summary>
+		///         <remarks>The C# strings are stored as NSString objects in the set.</remarks>
 		public NSSet (params string [] strings) : this (NSArray.FromStrings (strings))
 		{
 		}
 
+		/// <typeparam name="T">Strongly typed version of the array that you want to get, must be a class that derives from <see cref="T:Foundation.NSObject" />.</typeparam>
+		///         <summary>Returns the contents of the set as a strongly typed array.</summary>
+		///         <returns>An array of type T with the contents of the set.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    The following example shows how to get an array of UIFonts
+		/// 	  </para>
+		///           <example>
+		///             <code lang="c#"><![CDATA[
+		/// var myColors = new NSSet (UIColor.Red, UIColor.Blue, UIColor.Yellow);
+		/// UIColor [] asArray = myColors.ToArray<UIColor> ();
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		public T [] ToArray<T> () where T : class, INativeObject
 		{
 			IntPtr nsarr = _AllObjects ();
 			return NSArray.ArrayFromHandle<T> (nsarr);
 		}
 
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <param name="values">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSSet MakeNSObjectSet<T> (T [] values) where T : class, INativeObject
 		{
 			using (var a = NSArray.FromNSObjects (values))
@@ -79,6 +107,10 @@ namespace Foundation {
 		#endregion
 
 		#region IEnumerable
+		/// <summary>Enumerate over the NSObjects in the set.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>This returns an enumerator that returns the NSObject objects contained in the set.  They are returned as System.Object objects.</remarks>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return ((IEnumerable<NSObject>) this).GetEnumerator ();
@@ -127,6 +159,10 @@ namespace Foundation {
 			return copy;
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Contains (object obj)
 		{
 			return Contains (NSObject.FromObject (obj));

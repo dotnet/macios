@@ -498,14 +498,17 @@ namespace SceneKit {
 		[NoMac]
 		OpenGLES2,
 #else
+		/// <summary>To be added.</summary>
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
 		OpenGLLegacy,
+		/// <summary>To be added.</summary>
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
 		OpenGLCore32,
+		/// <summary>To be added.</summary>
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]

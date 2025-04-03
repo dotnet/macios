@@ -55,6 +55,8 @@ namespace AppKit {
 
 		static bool initialized;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Preserve]
 		public static void Init ()
 		{
@@ -105,6 +107,8 @@ namespace AppKit {
 			typeof (NSApplication).GetField ("class_ptr", BindingFlags.Static | BindingFlags.NonPublic)?.SetValue (null, Class.GetHandle ("NSApplication"));
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void InitDrawingBridge ()
 		{
 			var UseCocoaDrawableField = Type.GetType ("System.Drawing.GDIPlus, System.Drawing")?.GetField ("UseCocoaDrawable", BindingFlags.Static | BindingFlags.Public);
@@ -114,6 +118,9 @@ namespace AppKit {
 			UseCarbonDrawableField?.SetValue (null, false);
 		}
 
+		/// <param name="args">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void Main (string [] args)
 		{
 			// Switch to an AppKitSynchronizationContext if Main is invoked
@@ -130,18 +137,29 @@ namespace AppKit {
 				TransientString.FreeStringArray (argsPtr, args.Length);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void EnsureUIThread ()
 		{
 			if (NSApplication.CheckForIllegalCrossThreadCalls && NSApplication.mainThread != Thread.CurrentThread)
 				throw new AppKitThreadAccessException ();
 		}
 
+		/// <param name="del">To be added.</param>
+		///         <param name="expectedType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void EnsureEventAndDelegateAreNotMismatched (object del, Type expectedType)
 		{
 			if (NSApplication.CheckForEventAndDelegateMismatches && !(expectedType.IsAssignableFrom (del.GetType ())))
 				throw new InvalidOperationException (string.Format ("Event registration is overwriting existing delegate. Either just use events or your own delegate: {0} {1}", del.GetType (), expectedType));
 		}
 
+		/// <param name="currentDelegateValue">To be added.</param>
+		///         <param name="newDelegateValue">To be added.</param>
+		///         <param name="internalDelegateType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void EnsureDelegateAssignIsNotOverwritingInternalDelegate (object? currentDelegateValue, object? newDelegateValue, Type internalDelegateType)
 		{
 			if (NSApplication.CheckForEventAndDelegateMismatches && currentDelegateValue is not null && newDelegateValue is not null
@@ -150,6 +168,10 @@ namespace AppKit {
 				throw new InvalidOperationException (string.Format ("Event registration is overwriting existing delegate. Either just use events or your own delegate: {0} {1}", newDelegateValue.GetType (), internalDelegateType));
 		}
 
+		/// <param name="mask">To be added.</param>
+		///         <param name="lastEvent">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void DiscardEvents (NSEventMask mask, NSEvent lastEvent)
 		{
 			DiscardEvents ((nuint) (ulong) mask, lastEvent);

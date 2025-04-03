@@ -30,6 +30,13 @@ namespace UIKit {
 		extern static /* UIGuidedAccessRestrictionState */ nint UIGuidedAccessRestrictionStateForIdentifier (/* NSString */ IntPtr restrictionIdentifier);
 
 #if NET
+		/// <param name="restrictionIdentifier">The identifier of the restriction.</param>
+		///         <summary>Returns the state (allow,deny) for the specified <paramref name="restrictionIdentifier" />.</summary>
+		///         <returns>
+		///           <see cref="F:UIKit.UIGuidedAccessRestrictionState.Allow" /> means that the application should allow the behavior. <see cref="F:UIKit.UIGuidedAccessRestrictionState.Deny" /> means that the application should not allow the behavior.</returns>
+		///         <remarks>
+		/// 	  You can enable Guided Access mode by calling <see cref="M:UIKit.UIAccessibility.RequestGuidedAccessSession(System.Boolean,System.Action{System.Boolean})" />.
+		/// 	</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -83,6 +90,11 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <param name="features">To be added.</param>
+		///         <param name="enabled">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -106,6 +118,11 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <param name="features">To be added.</param>
+		///         <param name="enabled">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]

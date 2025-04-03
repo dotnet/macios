@@ -43,14 +43,23 @@ namespace Foundation {
 		string? selector;
 		ArgumentSemantic semantic;
 
+		/// <summary>Use this method to expose a C# method, property or constructor as a method that can be invoked from Objective-C.</summary>
+		///         <remarks>Use this method to expose a C# method, property or constructor as a method that can be invoked from Objective-C.   The name is derived from the actual method or property.</remarks>
 		protected ExportAttribute () { }
 
+		/// <param name="selector">The selector name.</param>
+		///         <summary>Exports the given method or property to Objective-C land with the specified method name.</summary>
+		///         <remarks>Use this method to expose a C# method, property or constructor as a method that can be invoked from Objective-C.</remarks>
 		public ExportAttribute (string? selector)
 		{
 			this.selector = selector;
 			this.semantic = ArgumentSemantic.None;
 		}
 
+		/// <param name="selector">The selector name.</param>
+		///         <param name="semantic">The semantics of the setter (Assign, Copy or Retain).</param>
+		///         <summary>Use this method to expose a C# method, property or constructor as a method that can be invoked from Objective-C.</summary>
+		///         <remarks>Use this method to expose a C# method, property or constructor as a method that can be invoked from Objective-C.</remarks>
 		public ExportAttribute (string? selector, ArgumentSemantic semantic)
 		{
 			this.selector = selector;
@@ -81,6 +90,10 @@ namespace Foundation {
 			set;
 		}
 
+		/// <param name="prop">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public ExportAttribute ToGetter (PropertyInfo prop)
 		{
 			if (string.IsNullOrEmpty (Selector))
@@ -88,6 +101,10 @@ namespace Foundation {
 			return new ExportAttribute (selector, semantic);
 		}
 
+		/// <param name="prop">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public ExportAttribute ToSetter (PropertyInfo prop)
 		{
 			if (string.IsNullOrEmpty (Selector))
@@ -98,13 +115,27 @@ namespace Foundation {
 
 	[AttributeUsage (AttributeTargets.Property)]
 	public sealed class OutletAttribute : ExportAttribute {
+		/// <summary>Default constructor</summary>
+		///         <remarks>
+		///         </remarks>
 		public OutletAttribute () : base (null) { }
+		/// <param name="name">Outlet name.</param>
+		///         <summary>Links the managed property with the specified Objective-C outlet.</summary>
+		///         <remarks>
+		///         </remarks>
 		public OutletAttribute (string name) : base (name) { }
 	}
 
 	[AttributeUsage (AttributeTargets.Method)]
 	public sealed class ActionAttribute : ExportAttribute {
+		/// <summary>Initializes a new instance of an Action attribute</summary>
+		///         <remarks>
+		///         </remarks>
 		public ActionAttribute () : base (null) { }
+		/// <param name="selector">Name for the selector to expose</param>
+		///         <summary>Creates a new instance of the action attribtue with the given selector.</summary>
+		///         <remarks>
+		///         </remarks>
 		public ActionAttribute (string selector) : base (selector) { }
 	}
 }

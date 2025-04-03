@@ -170,6 +170,10 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <param name="colorspace">To be added.</param>
+		///         <param name="colors">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGGradient (CGColorSpace? colorspace, CGColor [] colors)
 			: base (Create (colorspace, colors), true)
 		{

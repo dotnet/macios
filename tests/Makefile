@@ -205,3 +205,4 @@ build-all:
 	$(MAKE) build-all -C introspection/dotnet
 	$(MAKE) build-all -C monotouch-test/dotnet
 	$(MAKE) build-all -C xcframework-test/dotnet
+

@@ -1,115 +1,115 @@
 <Documentation>
   <Docs DocId="M:Compression.CompressionStream.Read(System.Byte[],System.Int32,System.Int32)">
-        <param name="array">An array of bytes. When this method returns, the buffer contains the specified byte array with the values between offset and (offset + count - 1) replaced by the bytes read from the current source.</param>
-        <param name="offset">The zero-based byte offset in array at which to begin storing the data read from the current stream.</param>
-        <param name="count">The maximum number of bytes to be read from the current stream.</param>
-        <summary>Reads a sequence of bytes from the current stream and advances the position within the stream by the number of bytes read.</summary>
-        <returns>The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many bytes are not currently available, or zero (0) if the end of the stream has been reached.</returns>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <paramref name="array" /> is null.
+    <param name="array">An array of bytes. When this method returns, the buffer contains the specified byte array with the values between offset and (offset + count - 1) replaced by the bytes read from the current source.</param>
+    <param name="offset">The zero-based byte offset in array at which to begin storing the data read from the current stream.</param>
+    <param name="count">The maximum number of bytes to be read from the current stream.</param>
+    <summary>Reads a sequence of bytes from the current stream and advances the position within the stream by the number of bytes read.</summary>
+    <returns>The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many bytes are not currently available, or zero (0) if the end of the stream has been reached.</returns>
+    <remarks>To be added.</remarks>
+    <exception cref="T:System.ArgumentNullException">
+      <paramref name="array" /> is null.
         </exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="offset" /> or <paramref name="count" /> is negative.
+    <exception cref="T:System.ArgumentOutOfRangeException">
+      <paramref name="offset" /> or <paramref name="count" /> is negative.
         </exception>
-        <exception cref="T:System.ObjectDisposedException">
+    <exception cref="T:System.ObjectDisposedException">
           The current stream is disposed.
         </exception>
-        <exception cref="T:System.NotSupportedException">
+    <exception cref="T:System.NotSupportedException">
           The current stream does not support reading.
         </exception>
-      </Docs>
+  </Docs>
   <Docs DocId="M:Compression.CompressionStream.BeginRead(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)">
-        <param name="buffer">The byte array to read the data into.</param>
-        <param name="offset">The byte offset in <see langword="array" /> at which to begin reading data from the stream.</param>
-        <param name="count">The maximum number of bytes to read.</param>
-        <param name="asyncCallback">An optional asynchronous callback, to be called when the read operation is complete.</param>
-        <param name="asyncState">A user-provided object that distinguishes this particular asynchronous read request from other requests.</param>
-        <summary>Begins an asynchronous read operation.</summary>
-        <returns>An object that represents the asynchronous read operation, which could still be pending.</returns>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.IO.IOException">
+    <param name="buffer">The byte array to read the data into.</param>
+    <param name="offset">The byte offset in <see langword="array" /> at which to begin reading data from the stream.</param>
+    <param name="count">The maximum number of bytes to read.</param>
+    <param name="asyncCallback">An optional asynchronous callback, to be called when the read operation is complete.</param>
+    <param name="asyncState">A user-provided object that distinguishes this particular asynchronous read request from other requests.</param>
+    <summary>Begins an asynchronous read operation.</summary>
+    <returns>An object that represents the asynchronous read operation, which could still be pending.</returns>
+    <remarks>To be added.</remarks>
+    <exception cref="T:System.IO.IOException">
           The method tried to read asynchronously past the end of the stream, or a disk error occurred.
         </exception>
-        <exception cref="T:System.ArgumentException">
+    <exception cref="T:System.ArgumentException">
           One or more of the arguments is invalid.
         </exception>
-        <exception cref="T:System.ObjectDisposedException">
+    <exception cref="T:System.ObjectDisposedException">
           The underlying stream is closed.
         </exception>
-        <exception cref="T:System.NotSupportedException">
+    <exception cref="T:System.NotSupportedException">
           The current CompressionStream implementation does not support the read operation.
         </exception>
-        <exception cref="T:System.InvalidOperationException">
+    <exception cref="T:System.InvalidOperationException">
           This call cannot be completed.
         </exception>
-      </Docs>
+  </Docs>
   <Docs DocId="M:Compression.CompressionStream.ReadAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)">
-        <param name="array">The array to write the data into.</param>
-        <param name="offset">The byte offset in array at which to begin writing data from the stream.</param>
-        <param name="count">The maximum number of bytes to read.</param>
-        <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-        <summary>Asynchronously reads a sequence of bytes from the current stream and advances the position within the stream by the number of bytes read.</summary>
-        <returns>A task that represents the asynchronous read operation. The value of the TResult parameter contains the total number of bytes read into the buffer. 
+    <param name="array">The array to write the data into.</param>
+    <param name="offset">The byte offset in array at which to begin writing data from the stream.</param>
+    <param name="count">The maximum number of bytes to read.</param>
+    <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    <summary>Asynchronously reads a sequence of bytes from the current stream and advances the position within the stream by the number of bytes read.</summary>
+    <returns>A task that represents the asynchronous read operation. The value of the TResult parameter contains the total number of bytes read into the buffer. 
         The result value can be less than the number of bytes requested if the number of bytes currently available is less than the requested number, 
         or it can be 0 (zero) if the end of the stream has been reached.</returns>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <paramref name="array" /> is null.
+    <remarks>To be added.</remarks>
+    <exception cref="T:System.ArgumentNullException">
+      <paramref name="array" /> is null.
         </exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="offset" /> or <paramref name="count" /> is negative.
+    <exception cref="T:System.ArgumentOutOfRangeException">
+      <paramref name="offset" /> or <paramref name="count" /> is negative.
         </exception>
-        <exception cref="T:System.ObjectDisposedException">
+    <exception cref="T:System.ObjectDisposedException">
           Either the current stream or the destination stream is disposed.
         </exception>
-        <exception cref="T:System.NotSupportedException">
+    <exception cref="T:System.NotSupportedException">
           The current stream does not support reading.
         </exception>
-      </Docs>
+  </Docs>
   <Docs DocId="M:Compression.CompressionStream.BeginWrite(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)">
-        <param name="array">The array to write data from.</param>
-        <param name="offset">The byte offset in <see langword="array" /> to begin writing from.</param>
-        <param name="count">The maximum number of bytes to write.</param>
-        <param name="asyncCallback">An optional asynchronous callback, to be called when the write operation is complete.</param>
-        <param name="asyncState">A user-provided object that distinguishes this particular asynchronous write request from other requests.</param>
-        <summary>Begins an asynchronous write operation.</summary>
-        <returns>An object that represents the asynchronous write operation, which could still be pending.</returns>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.IO.IOException">
+    <param name="array">The array to write data from.</param>
+    <param name="offset">The byte offset in <see langword="array" /> to begin writing from.</param>
+    <param name="count">The maximum number of bytes to write.</param>
+    <param name="asyncCallback">An optional asynchronous callback, to be called when the write operation is complete.</param>
+    <param name="asyncState">A user-provided object that distinguishes this particular asynchronous write request from other requests.</param>
+    <summary>Begins an asynchronous write operation.</summary>
+    <returns>An object that represents the asynchronous write operation, which could still be pending.</returns>
+    <remarks>To be added.</remarks>
+    <exception cref="T:System.IO.IOException">
           The method tried to write asynchronously past the end of the stream, or a disk error occurred.
         </exception>
-        <exception cref="T:System.ArgumentException">
+    <exception cref="T:System.ArgumentException">
           One or more of the arguments is invalid.
         </exception>
-        <exception cref="T:System.ObjectDisposedException">
+    <exception cref="T:System.ObjectDisposedException">
           The underlying stream is closed.
         </exception>
-        <exception cref="T:System.NotSupportedException">
+    <exception cref="T:System.NotSupportedException">
           The current CompressionStream implementation does not support the write operation.
         </exception>
-        <exception cref="T:System.InvalidOperationException">
+    <exception cref="T:System.InvalidOperationException">
           This call cannot be completed.
         </exception>
-      </Docs>
+  </Docs>
   <Docs DocId="M:Compression.CompressionStream.CopyToAsync(System.IO.Stream,System.Int32,System.Threading.CancellationToken)">
-        <param name="destination">The stream to which the contents of the current stream will be copied.</param>
-        <param name="bufferSize">The size, in bytes, of the buffer. This value must be greater than zero. The default size is 81920.</param>
-        <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-        <summary>Asynchronously reads the bytes from the current stream and writes them to another stream.</summary>
-        <returns>A task that represents the asynchronous copy operation.</returns>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException">
+    <param name="destination">The stream to which the contents of the current stream will be copied.</param>
+    <param name="bufferSize">The size, in bytes, of the buffer. This value must be greater than zero. The default size is 81920.</param>
+    <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    <summary>Asynchronously reads the bytes from the current stream and writes them to another stream.</summary>
+    <returns>A task that represents the asynchronous copy operation.</returns>
+    <remarks>To be added.</remarks>
+    <exception cref="T:System.ArgumentNullException">
          destination is null. 
         </exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">
+    <exception cref="T:System.ArgumentOutOfRangeException">
           buffersize is negative or zero.
         </exception>
-        <exception cref="T:System.ObjectDisposedException">
+    <exception cref="T:System.ObjectDisposedException">
           Either the current stream or the destination stream is disposed.
         </exception>
-        <exception cref="T:System.NotSupportedException">
+    <exception cref="T:System.NotSupportedException">
           The current stream does not support reading, or the destination stream does not support writing.
         </exception>
-      </Docs>
+  </Docs>
 </Documentation>

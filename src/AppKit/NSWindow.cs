@@ -81,6 +81,10 @@ namespace AppKit {
 		}
 #endif
 
+		/// <param name="windowRef">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		static public NSWindow FromWindowRef (IntPtr windowRef)
 		{
 #if NET
@@ -118,6 +122,8 @@ namespace AppKit {
 			DangerousReleasedWhenClosed = value;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Close ()
 		{
 			if (TrackReleasedWhenClosed) {
@@ -152,16 +158,31 @@ namespace AppKit {
 			set { SetFrameAutosaveName (value); }
 		}
 
+		/// <param name="mask">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSEvent NextEventMatchingMask (NSEventMask mask)
 		{
 			return NextEventMatchingMask ((uint) mask);
 		}
 
+		/// <param name="mask">To be added.</param>
+		///         <param name="expiration">To be added.</param>
+		///         <param name="mode">To be added.</param>
+		///         <param name="deqFlag">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSEvent NextEventMatchingMask (NSEventMask mask, NSDate expiration, string mode, bool deqFlag)
 		{
 			return NextEventMatchingMask ((uint) mask, expiration, mode, deqFlag);
 		}
 
+		/// <param name="mask">To be added.</param>
+		///         <param name="beforeLastEvent">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void DiscardEventsMatchingMask (NSEventMask mask, NSEvent beforeLastEvent)
 		{
 			DiscardEventsMatchingMask ((uint) mask, beforeLastEvent);

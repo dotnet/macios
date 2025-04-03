@@ -75,6 +75,13 @@ namespace Foundation {
 
 		List<ObservedData> __mt_ObserverList_var = new List<ObservedData> ();
 
+		/// <param name="aName">The name of the notification to observe.</param>
+		///         <param name="notify">The delegate that will be invoked when the notification is posted.</param>
+		///         <param name="fromObject">If not-null, filters the notifications to those sent by this object.</param>
+		///         <summary>Adds an observer for the specified notification</summary>
+		///         <returns>An observer token that can be used later as the parameter passed to RemoveObserver (NSObject observer).</returns>
+		///         <remarks>
+		///         </remarks>
 		public NSObject AddObserver (NSString aName, Action<NSNotification> notify, NSObject fromObject)
 		{
 			if (notify is null)
@@ -87,11 +94,20 @@ namespace Foundation {
 			return proxy;
 		}
 
+		/// <param name="aName">The name of the notification to observe.</param>
+		///         <param name="notify">The delegate that will be invoked when the notification is posted.</param>
+		///         <summary>Adds an observer for the specified notification</summary>
+		///         <returns>An observer token that can be used later as the parameter passed to RemoveObserver (NSObject observer).</returns>
+		///         <remarks>
+		///         </remarks>
 		public NSObject AddObserver (NSString aName, Action<NSNotification> notify)
 		{
 			return AddObserver (aName, notify, null);
 		}
 
+		/// <param name="keys">To be added.</param>
+		///         <summary>Removes multiple observers in one call.</summary>
+		///         <remarks>This removes all of the observers in the IEnumerable&lt;NSObject&gt; parameter.</remarks>
 		public void RemoveObservers (IEnumerable<NSObject> keys)
 		{
 			if (keys is null)
@@ -141,6 +157,10 @@ namespace Foundation {
 		///         <remarks>
 		///         </remarks>
 		public NSNotification Notification { get; private set; }
+		/// <param name="notification">To be added.</param>
+		///         <summary>Initializes a new instance of the NSNotificationEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public NSNotificationEventArgs (NSNotification notification)
 		{
 			Notification = notification;

@@ -67,6 +67,9 @@ namespace Foundation {
 			return Location == other.Location && Length == other.Length;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return string.Format ("[Location={0},Length={1}]", Location, Length);

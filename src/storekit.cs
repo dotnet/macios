@@ -723,6 +723,10 @@ namespace StoreKit {
 		[Async]
 		void LoadProduct (NSDictionary parameters, [NullAllowed] Action<bool, NSError> callback);
 
+		/// <param name="parameters">To be added.</param>
+		///         <param name="callback">To be added.</param>
+		///         <summary>Loads the product that is specified by the specified product <paramref name="parameters" /> and runs the provided <paramref name="callback" /> when the operation completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("LoadProduct (parameters.GetDictionary ()!, callback)")]
 		[Async]
 		void LoadProduct (StoreProductParameters parameters, [NullAllowed] Action<bool, NSError> callback);
@@ -887,7 +891,7 @@ namespace StoreKit {
 		[Field ("SKStoreProductParameterAdNetworkCampaignIdentifier")]
 		NSString AdNetworkCampaignIdentifier { get; }
 
-		[NoMac, iOS (16, 0), MacCatalyst (16, 0), TV (17, 0)]
+		[NoMac, iOS (16, 1), MacCatalyst (16, 1), TV (16, 1)]
 		[Field ("SKStoreProductParameterAdNetworkSourceIdentifier")]
 		NSString AdNetworkSourceIdentifier { get; }
 
@@ -947,6 +951,13 @@ namespace StoreKit {
 		[Export ("loadWithOptions:completionHandler:")]
 		void Load (NSDictionary options, [NullAllowed] Action<bool, NSError> completionHandler);
 
+		/// <param name="options">Setup options object.</param>
+		///         <param name="completionHandler">
+		///           <para>A handler to run after the load operation completes</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Loads a setup view with the specified <paramref name="options" /> and runs a handler when the view is loaded.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Wrap ("Load (options.GetDictionary ()!, completionHandler)")]
 		void Load (SKCloudServiceSetupOptions options, Action<bool, NSError> completionHandler);
@@ -1589,7 +1600,7 @@ namespace StoreKit {
 		[Export ("adCampaignIdentifier", ArgumentSemantic.Strong)]
 		NSNumber AdCampaignIdentifier { get; set; }
 
-		[NoMac, iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[NoMac, iOS (16, 1), MacCatalyst (16, 1), NoTV]
 		[Export ("sourceIdentifier", ArgumentSemantic.Strong)]
 		NSNumber SourceIdentifier { get; set; }
 

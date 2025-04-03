@@ -618,6 +618,7 @@ namespace Security {
 		/// <summary>Indicates that the CRL authority was not valid.</summary>
 		InvalidCRLAuthority = -67827,   /* The CRL authority was not valid. */
 #if MONOMAC
+		/// <summary>To be added.</summary>
 		[Obsolete ("Use InvalidCRLAuthority.")]
 		InvaldCRLAuthority = InvalidCRLAuthority,
 #endif
@@ -672,6 +673,7 @@ namespace Security {
 		/// <summary>Indicates an invalid credentials tuple.</summary>
 		InvalidTupleCredentials = -67852,   /* The tuple credentials are not valid. */
 #if MONOMAC
+		/// <summary>To be added.</summary>
 		[Obsolete ("Use InvalidTupleCredentials.")]
 		InvalidTupleCredendtials = InvalidTupleCredentials,
 #endif
@@ -771,6 +773,8 @@ namespace Security {
 		CertificateNameNotAllowed = -67900,
 		CertificateValidityPeriodTooLong = -67901,
 		CertificateIsCA = -67902,
+		CertificateDuplicateExtension = -67903,
+		MissingQualifiedCertStatement = -67904,
 	}
 
 	// typedef uint32_t SecPadding;

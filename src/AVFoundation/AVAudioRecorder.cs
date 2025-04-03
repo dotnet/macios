@@ -31,72 +31,41 @@ using System;
 #nullable enable
 
 namespace AVFoundation {
-#if !TVOS
 	public partial class AVAudioRecorder {
-		AVAudioRecorder (NSUrl url, AudioSettings settings, out NSError error)
-		{
-			// We use this method because it allows us to out NSError but, as a side effect, it is possible for the handle to be null and we will need to check this manually (on the Create method).
-			Handle = InitWithUrl (url, settings.Dictionary, out error);
-		}
-
-		AVAudioRecorder (NSUrl url, AVAudioFormat format, out NSError error)
-		{
-			// We use this method because it allows us to out NSError but, as a side effect, it is possible for the handle to be null and we will need to check this manually (on the Create method).
-			Handle = InitWithUrl (url, format, out error);
-		}
-
-		/// <param name="url">To be added.</param>
-		///         <param name="settings">To be added.</param>
-		///         <param name="error">To be added.</param>
-		///         <summary>Static factory method for creating an <see cref="T:AVFoundation.AVAudioRecorder" />.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Create a new <see cref="AVAudioRecorder" /> instance.</summary>
+		/// <param name="url">The url for the new <see cref="AVAudioRecorder" /> instance.</param>
+		/// <param name="settings">The settings for the new <see cref="AVAudioRecorder" /> instance.</param>
+		/// <param name="error">Returns the error if creating a new <see cref="AVAudioRecorder" /> instance fails.</param>
+		/// <returns>A newly created <see cref="AVAudioRecorder" /> instance if successful, null otherwise.</returns>
 		public static AVAudioRecorder? Create (NSUrl url, AudioSettings settings, out NSError? error)
 		{
 			if (settings is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (settings));
-			error = null;
-			try {
-				AVAudioRecorder r = new AVAudioRecorder (url, settings, out error);
-				if (r.Handle == IntPtr.Zero)
-					return null;
-
-				return r;
-			} catch {
+			var rv = new AVAudioRecorder (NSObjectFlag.Empty);
+			rv.InitializeHandle (rv._InitWithUrl (url, settings.Dictionary, out error), string.Empty, false);
+			if (rv.Handle == IntPtr.Zero) {
+				rv.Dispose ();
 				return null;
 			}
+			return rv;
 		}
 
-		/// <param name="url">To be added.</param>
-		///         <param name="format">To be added.</param>
-		///         <param name="error">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[UnsupportedOSPlatform ("tvos")]
+		/// <summary>Create a new <see cref="AVAudioRecorder" /> instance.</summary>
+		/// <param name="url">The url for the new <see cref="AVAudioRecorder" /> instance.</param>
+		/// <param name="format">The format for the new <see cref="AVAudioRecorder" /> instance.</param>
+		/// <param name="error">Returns the error if creating a new <see cref="AVAudioRecorder" /> instance fails.</param>
+		/// <returns>A newly created <see cref="AVAudioRecorder" /> instance if successful, null otherwise.</returns>
 		public static AVAudioRecorder? Create (NSUrl url, AVAudioFormat? format, out NSError? error)
 		{
 			if (format is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (format));
-			error = null;
-			try {
-				AVAudioRecorder r = new AVAudioRecorder (url, format, out error);
-				if (r.Handle == IntPtr.Zero)
-					return null;
-
-				return r;
-			} catch {
+			var rv = new AVAudioRecorder (NSObjectFlag.Empty);
+			rv.InitializeHandle (rv._InitWithUrl (url, format, out error), string.Empty, false);
+			if (rv.Handle == IntPtr.Zero) {
+				rv.Dispose ();
 				return null;
 			}
-		}
-
-		internal static AVAudioRecorder? ToUrl (NSUrl url, NSDictionary settings, out NSError? error)
-		{
-			return Create (url, new AudioSettings (settings), out error);
+			return rv;
 		}
 	}
-#endif // !TVOS
 }

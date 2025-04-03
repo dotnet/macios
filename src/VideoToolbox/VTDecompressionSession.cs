@@ -46,6 +46,7 @@ namespace VideoToolbox {
 		{
 		}
 
+		/// <include file="../../docs/api/VideoToolbox/VTDecompressionSession.xml" path="/Documentation/Docs[@DocId='M:VideoToolbox.VTDecompressionSession.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero)
@@ -198,6 +199,13 @@ namespace VideoToolbox {
 		}
 #endif // !NET
 
+		/// <param name="outputCallback">To be added.</param>
+		///         <param name="formatDescription">To be added.</param>
+		///         <param name="decoderSpecification">To be added.</param>
+		///         <param name="destinationImageBufferAttributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static VTDecompressionSession? Create (VTDecompressionOutputCallback outputCallback,
 								 CMVideoFormatDescription formatDescription,
 #if NET
@@ -272,6 +280,13 @@ namespace VideoToolbox {
 			/* void* */ IntPtr sourceFrame,
 			/* VTDecodeInfoFlags */ VTDecodeInfoFlags* infoFlagsOut);
 
+		/// <param name="sampleBuffer">To be added.</param>
+		///         <param name="decodeFlags">To be added.</param>
+		///         <param name="sourceFrame">To be added.</param>
+		///         <param name="infoFlags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public VTStatus DecodeFrame (CMSampleBuffer sampleBuffer, VTDecodeFrameFlags decodeFlags, IntPtr sourceFrame, out VTDecodeInfoFlags infoFlags)
 		{
 			if (sampleBuffer is null)
@@ -334,6 +349,9 @@ namespace VideoToolbox {
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static VTStatus VTDecompressionSessionFinishDelayedFrames (IntPtr sesion);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public VTStatus FinishDelayedFrames ()
 		{
 			return VTDecompressionSessionFinishDelayedFrames (GetCheckedHandle ());
@@ -342,6 +360,10 @@ namespace VideoToolbox {
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static VTStatus VTDecompressionSessionCanAcceptFormatDescription (IntPtr sesion, IntPtr newFormatDescriptor);
 
+		/// <param name="newDescriptor">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public VTStatus CanAcceptFormatDescriptor (CMFormatDescription newDescriptor)
 		{
 			if (newDescriptor is null)
@@ -355,6 +377,9 @@ namespace VideoToolbox {
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static VTStatus VTDecompressionSessionWaitForAsynchronousFrames (IntPtr sesion);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public VTStatus WaitForAsynchronousFrames ()
 		{
 			return VTDecompressionSessionWaitForAsynchronousFrames (GetCheckedHandle ());
@@ -363,6 +388,10 @@ namespace VideoToolbox {
 		[DllImport (Constants.VideoToolboxLibrary)]
 		unsafe extern static VTStatus VTDecompressionSessionCopyBlackPixelBuffer (IntPtr sesion, IntPtr* pixelBufferOut);
 
+		/// <param name="pixelBuffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public VTStatus CopyBlackPixelBuffer (out CVPixelBuffer? pixelBuffer)
 		{
 			VTStatus result;
@@ -374,6 +403,10 @@ namespace VideoToolbox {
 			return result;
 		}
 
+		/// <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public VTStatus SetDecompressionProperties (VTDecompressionProperties options)
 		{
 			if (options is null)
@@ -392,6 +425,10 @@ namespace VideoToolbox {
 		extern static byte VTIsHardwareDecodeSupported (CMVideoCodecType codecType);
 
 #if NET
+		/// <param name="codecType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]

@@ -101,6 +101,10 @@ namespace MediaToolbox {
 			MTAudioProcessingTapCreationFlags flags,
 			/* MTAudioProcessingTapRef* */ IntPtr* tapOut);
 
+		/// <param name="callbacks">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MTAudioProcessingTap (MTAudioProcessingTapCallbacks callbacks, MTAudioProcessingTapCreationFlags flags)
 		{
 			if (callbacks is null)
@@ -162,7 +166,8 @@ namespace MediaToolbox {
 				handles [handle] = this;
 		}
 
-		protected override void Dispose (bool disposing)
+		/// <include file="../../docs/api/MediaToolbox/MTAudioProcessingTap.xml" path="/Documentation/Docs[@DocId='M:MediaToolbox.MTAudioProcessingTap.Dispose(System.Boolean)']/*" />
+	protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero) {
 				lock (handles)
@@ -174,6 +179,9 @@ namespace MediaToolbox {
 		[DllImport (Constants.MediaToolboxLibrary)]
 		unsafe extern static void* MTAudioProcessingTapGetStorage (/* MTAudioProcessingTapRef */ IntPtr tap);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe void* GetStorage ()
 		{
 			return MTAudioProcessingTapGetStorage (Handle);
@@ -352,6 +360,9 @@ namespace MediaToolbox {
 	}
 
 	public class MTAudioProcessingTapCallbacks {
+		/// <param name="process">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MTAudioProcessingTapCallbacks (MTAudioProcessingTapProcessDelegate process)
 		{
 			if (process is null)

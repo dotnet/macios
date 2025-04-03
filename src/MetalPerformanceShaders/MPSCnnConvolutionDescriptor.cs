@@ -7,6 +7,13 @@ namespace MetalPerformanceShaders {
 	public partial class MPSCnnConvolutionDescriptor {
 
 #if NET
+		/// <param name="mean">To be added.</param>
+		///         <param name="variance">To be added.</param>
+		///         <param name="gamma">To be added.</param>
+		///         <param name="beta">To be added.</param>
+		///         <param name="epsilon">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]

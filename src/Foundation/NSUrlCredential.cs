@@ -14,6 +14,12 @@ using Security;
 namespace Foundation {
 
 	public partial class NSUrlCredential {
+		/// <param name="identity">Identity to use for the credential.</param>
+		///         <param name="certificates">Certificates.</param>
+		///         <param name="persistence">Specifies how long the credential should be kept.</param>
+		///         <summary>Creates an NSUrlCredential from an identity (digital certificate + private key) and a list of certificates. </summary>
+		///         <remarks>
+		///         </remarks>
 		public NSUrlCredential (SecIdentity identity, SecCertificate [] certificates, NSUrlCredentialPersistence persistence)
 			: base (NSObjectFlag.Empty)
 		{
@@ -26,6 +32,14 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="identity">Identity to use for the credential.</param>
+		///         <param name="certificates">Certificates for the credential.</param>
+		///         <param name="persistence">Specifies how long the credential should be kept.</param>
+		///         <summary>Creates an NSUrlCredential from an identity (digital certificate + private key) and a list of certificates. </summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public static NSUrlCredential FromIdentityCertificatesPersistance (SecIdentity identity, SecCertificate [] certificates, NSUrlCredentialPersistence persistence)
 		{
 			if (identity is null)
@@ -50,6 +64,10 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="trust">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSUrlCredential FromTrust (SecTrust trust)
 		{
 			if (trust is null)

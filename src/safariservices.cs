@@ -68,10 +68,21 @@ namespace SafariServices {
 		NativeHandle Constructor ();
 #endif
 
+		/// <param name="identifier">To be added.</param>
+		///         <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Relaods the specified content blocker and runs a completion handler when the operation completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Static, Export ("reloadContentBlockerWithIdentifier:completionHandler:")]
 		void ReloadContentBlocker (string identifier, [NullAllowed] Action<NSError> completionHandler);
 
+		/// <param name="identifier">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>Passes the state of the specified content blocker to the provided <paramref name="completionHandler" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 4)]
 		[Static]
 		[Async]
@@ -98,11 +109,31 @@ namespace SafariServices {
 		[Static, Export ("defaultReadingList")]
 		SSReadingList DefaultReadingList { get; }
 
+		/// <param name="url">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("supportsURL:")]
 		// Apple says it's __nonnull so let's be safe and maintain compatibility with our current behaviour
 		[PreSnippet ("if (url is null) return false;", Optimizable = true)]
 		bool SupportsUrl ([NullAllowed] NSUrl url);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="title">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="previewText">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("addReadingListItemWithURL:title:previewText:error:")]
 		bool Add (NSUrl url, [NullAllowed] string title, [NullAllowed] string previewText, out NSError error);
 
@@ -218,19 +249,48 @@ namespace SafariServices {
 	[BaseType (typeof (NSObject))]
 	[Protocol]
 	partial interface SFSafariViewControllerDelegate {
+		/// <param name="controller">To be added.</param>
+		///         <param name="url">To be added.</param>
+		///         <param name="title">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Method that is called to retrieve the activity items for the requested action.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("safariViewController:activityItemsForURL:title:")]
 		UIActivity [] GetActivityItems (SFSafariViewController controller, NSUrl url, [NullAllowed] string title);
 
+		/// <param name="controller">To be added.</param>
+		///         <summary>Method that is called when the user dismisses the view.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("safariViewControllerDidFinish:")]
 		void DidFinish (SFSafariViewController controller);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="didLoadSuccessfully">To be added.</param>
+		///         <summary>Method that is called after the first URL is loaded.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("safariViewController:didCompleteInitialLoad:")]
 		void DidCompleteInitialLoad (SFSafariViewController controller, bool didLoadSuccessfully);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="url">To be added.</param>
+		///         <param name="title">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("safariViewController:excludedActivityTypesForURL:title:")]
 		string [] GetExcludedActivityTypes (SFSafariViewController controller, NSUrl url, [NullAllowed] string title);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="url">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("safariViewController:initialLoadDidRedirectToURL:")]
 		void InitialLoadDidRedirectToUrl (SFSafariViewController controller, NSUrl url);
@@ -288,9 +348,14 @@ namespace SafariServices {
 		[Export ("initWithURL:callbackURLScheme:completionHandler:")]
 		NativeHandle Constructor (NSUrl url, [NullAllowed] string callbackUrlScheme, SFAuthenticationCompletionHandler completionHandler);
 
+		/// <summary>Starts authentication process, displaying an interface to the user.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("start")]
 		bool Start ();
 
+		/// <summary>Cancels the authentication session.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancel")]
 		void Cancel ();
 	}

@@ -74,11 +74,21 @@ namespace CoreGraphics {
 			return new CGPoint (size.Width, size.Height);
 		}
 
+		/// <param name="size1">To be added.</param>
+		///         <param name="size2">To be added.</param>
+		///         <summary>Adds two CGSize objects and returns the result.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CGSize Add (CGSize size1, CGSize size2)
 		{
 			return size1 + size2;
 		}
 
+		/// <param name="size1">To be added.</param>
+		///         <param name="size2">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CGSize Subtract (CGSize size1, CGSize size2)
 		{
 			return size1 - size2;
@@ -115,24 +125,40 @@ namespace CoreGraphics {
 		}
 
 #if !COREBUILD
+		/// <param name="width">To be added.</param>
+		///         <param name="height">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGSize (double width, double height)
 		{
 			this.width = (nfloat) width;
 			this.height = (nfloat) height;
 		}
 
+		/// <param name="width">To be added.</param>
+		///         <param name="height">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGSize (float width, float height)
 		{
 			this.width = width;
 			this.height = height;
 		}
 
+		/// <param name="size">To be added.</param>
+		///         <summary>Initializes a CGSize object from another CGSize.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGSize (CGSize size)
 		{
 			this.width = size.width;
 			this.height = size.height;
 		}
 
+		/// <param name="dictionaryRepresentation">To be added.</param>
+		///         <param name="size">To be added.</param>
+		///         <summary>Attempts to parse the contents of an NSDictionary with a serialized CGSize into a CGSize.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static bool TryParse (NSDictionary? dictionaryRepresentation, out CGSize size)
 		{
 			if (dictionaryRepresentation is null) {
@@ -147,11 +173,17 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Serializes a CGSize into an <see cref="T:Foundation.NSDictionary" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary ToDictionary ()
 		{
 			return new NSDictionary (NativeDrawingMethods.CGSizeCreateDictionaryRepresentation (this));
 		}
 
+		/// <param name="point">To be added.</param>
+		///         <summary>Initializes a CGSize object from a CGPoint.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGSize (CGPoint point)
 		{
 			this.width = point.X;
@@ -159,16 +191,27 @@ namespace CoreGraphics {
 		}
 #endif // !COREBUILD
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>Compares the CGSize with another object.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? obj)
 		{
 			return (obj is CGSize t) && Equals (t);
 		}
 
+		/// <param name="size">To be added.</param>
+		///         <summary>Compares the size with the specified size.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (CGSize size)
 		{
 			return size.width == width && size.height == height;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (width, height);
@@ -181,16 +224,25 @@ namespace CoreGraphics {
 			height = Height;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGSize ToRoundedCGSize ()
 		{
 			return new CGSize ((nfloat) Math.Round (width), (nfloat) Math.Round (height));
 		}
 
+		/// <summary>Converts the CGSize to a CGPOint.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGPoint ToCGPoint ()
 		{
 			return (CGPoint) this;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string? ToString ()
 		{
 			return CFString.FromHandle (NSStringFromCGSize (this));

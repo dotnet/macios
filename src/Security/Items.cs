@@ -232,6 +232,7 @@ namespace Security {
 			return n;
 		}
 
+		/// <include file="../../docs/api/Security/SecKeyChain.xml" path="/Documentation/Docs[@DocId='M:Security.SecKeyChain.QueryAsData(Security.SecRecord,System.Boolean,Security.SecStatusCode@)']/*" />
 		public static NSData? QueryAsData (SecRecord query, bool wantPersistentReference, out SecStatusCode status)
 		{
 			if (query is null)
@@ -251,6 +252,7 @@ namespace Security {
 			}
 		}
 
+		/// <include file="../../docs/api/Security/SecKeyChain.xml" path="/Documentation/Docs[@DocId='M:Security.SecKeyChain.QueryAsData(Security.SecRecord,System.Boolean,System.Int32,Security.SecStatusCode@)']/*" />
 		public static NSData []? QueryAsData (SecRecord query, bool wantPersistentReference, int max, out SecStatusCode status)
 		{
 			if (query is null)
@@ -280,18 +282,39 @@ namespace Security {
 			}
 		}
 
+		/// <include file="../../docs/api/Security/SecKeyChain.xml" path="/Documentation/Docs[@DocId='M:Security.SecKeyChain.QueryAsData(Security.SecRecord)']/*" />
 		public static NSData? QueryAsData (SecRecord query)
 		{
 			SecStatusCode status;
 			return QueryAsData (query, false, out status);
 		}
 
+		/// <include file="../../docs/api/Security/SecKeyChain.xml" path="/Documentation/Docs[@DocId='M:Security.SecKeyChain.QueryAsData(Security.SecRecord,System.Int32)']/*" />
 		public static NSData []? QueryAsData (SecRecord query, int max)
 		{
 			SecStatusCode status;
 			return QueryAsData (query, false, max, out status);
 		}
 
+		/// <param name="query">The query used to lookup the value on the keychain.</param>
+		///         <param name="result">Returns the status code from calling SecItemCopyMatching.</param>
+		///         <summary>Fetches a single SecRecord.</summary>
+		///         <returns>Returns a stronglty typed SecRecord.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    Unlike the <see cref="M:Security.SecKeyChain.QueryAsData(Security.SecRecord,System.Boolean,System.Int32,Security.SecStatusCode@)" />
+		/// 	    methods which return a binary blob inside an NSData, this
+		/// 	    returns a strongly typed SecRecord that you can easily
+		/// 	    inspect.
+		/// 	  </para>
+		///           <para>
+		/// 	    This is the strongly typed equivalent of calling the
+		/// 	    Security's framework SecItemCopyMatching method with the
+		/// 	    kSecReturnData set to true, kSecReturnAttributes set to
+		/// 	    true and kSecMatchLimit set to 1, forcing a single record
+		/// 	    to be returned.
+		/// 	  </para>
+		///         </remarks>
 		public static SecRecord? QueryAsRecord (SecRecord query, out SecStatusCode result)
 		{
 			if (query is null)
@@ -308,6 +331,7 @@ namespace Security {
 			}
 		}
 
+		/// <include file="../../docs/api/Security/SecKeyChain.xml" path="/Documentation/Docs[@DocId='M:Security.SecKeyChain.QueryAsRecord(Security.SecRecord,System.Int32,Security.SecStatusCode@)']/*" />
 		public static SecRecord []? QueryAsRecord (SecRecord query, int max, out SecStatusCode result)
 		{
 			if (query is null)
@@ -329,6 +353,12 @@ namespace Security {
 			}
 		}
 
+		/// <param name="query">To be added.</param>
+		///         <param name="max">To be added.</param>
+		///         <param name="result">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static INativeObject []? QueryAsReference (SecRecord query, int max, out SecStatusCode result)
 		{
 			if (query is null) {
@@ -363,6 +393,10 @@ namespace Security {
 			}
 		}
 
+		/// <param name="record">A populated record.</param>
+		///         <summary>Adds the specified record to the keychain.</summary>
+		///         <returns>The result of the operation.</returns>
+		///         <remarks>To be added.</remarks>
 		public static SecStatusCode Add (SecRecord record)
 		{
 			if (record is null)
@@ -371,6 +405,10 @@ namespace Security {
 
 		}
 
+		/// <param name="record">Record to be removed from the keychain.</param>
+		///         <summary>Removes the specified record from the keychain.</summary>
+		///         <returns>The status code from performing the remove operation.</returns>
+		///         <remarks>This calls the SecItemDelete method on the keychain.</remarks>
 		public static SecStatusCode Remove (SecRecord record)
 		{
 			if (record is null)
@@ -378,6 +416,18 @@ namespace Security {
 			return SecItem.SecItemDelete (record.queryDict.Handle);
 		}
 
+		/// <param name="query">The query to use to update the records on the keychain.</param>
+		///         <param name="newAttributes">The updated record value to store.</param>
+		///         <summary>Updates the record matching the query with the provided data.</summary>
+		///         <returns>Status code of calling SecItemUpdate.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    This performs an update on the keychain.
+		/// 	  </para>
+		///           <para>
+		/// 	    This calls the SecItemUpdate method.
+		/// 	  </para>
+		///         </remarks>
 		public static SecStatusCode Update (SecRecord query, SecRecord newAttributes)
 		{
 			if (query is null)
@@ -669,6 +719,7 @@ namespace Security {
 			}
 		}
 #else
+		/// <include file="../../docs/api/Security/SecKeyChain.xml" path="/Documentation/Docs[@DocId='M:Security.SecKeyChain.QueryAsConcreteType(Security.SecRecord,Security.SecStatusCode@)']/*" />
 		public static object? QueryAsConcreteType (SecRecord query, out SecStatusCode result)
 		{
 			if (query is null) {
@@ -698,6 +749,9 @@ namespace Security {
 		}
 #endif
 
+		/// <param name="identity">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void AddIdentity (SecIdentity identity)
 		{
 			if (identity is null)
@@ -712,6 +766,9 @@ namespace Security {
 			}
 		}
 
+		/// <param name="identity">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void RemoveIdentity (SecIdentity identity)
 		{
 			if (identity is null)
@@ -726,6 +783,11 @@ namespace Security {
 			}
 		}
 
+		/// <param name="certificate">To be added.</param>
+		///         <param name="throwOnError">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static SecIdentity? FindIdentity (SecCertificate certificate, bool throwOnError = false)
 		{
 			if (certificate is null)
@@ -790,11 +852,14 @@ namespace Security {
 		}
 
 		// it's possible to query something without a class
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SecRecord ()
 		{
 			queryDict = new NSMutableDictionary ();
 		}
 
+		/// <include file="../../docs/api/Security/SecRecord.xml" path="/Documentation/Docs[@DocId='M:Security.SecRecord.#ctor(Security.SecKind)']/*" />
 		public SecRecord (SecKind secKind)
 		{
 			var kind = SecClass.FromSecKind (secKind);
@@ -810,33 +875,51 @@ namespace Security {
 #endif
 		}
 
+		/// <param name="certificate">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SecRecord (SecCertificate certificate) : this (SecKind.Certificate)
 		{
 			SetCertificate (certificate);
 		}
 
+		/// <param name="identity">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SecRecord (SecIdentity identity) : this (SecKind.Identity)
 		{
 			SetIdentity (identity);
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SecRecord (SecKey key) : this (SecKind.Key)
 		{
 			SetKey (key);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public SecCertificate? GetCertificate ()
 		{
 			CheckClass (SecClass.Certificate);
 			return GetValueRef<SecCertificate> ();
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public SecIdentity? GetIdentity ()
 		{
 			CheckClass (SecClass.Identity);
 			return GetValueRef<SecIdentity> ();
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public SecKey? GetKey ()
 		{
 			CheckClass (SecClass.Key);
@@ -850,23 +933,35 @@ namespace Security {
 				throw new InvalidOperationException ("SecRecord of incompatible SecClass");
 		}
 
+		/// <summary>Makes a copy of this SecRecord.</summary>
+		///         <returns />
+		///         <remarks>To be added.</remarks>
 		public SecRecord Clone ()
 		{
 			return new SecRecord (NSMutableDictionary.FromDictionary (queryDict));
 		}
 
 		// some API are unusable without this (e.g. SecKey.GenerateKeyPair) without duplicating much of SecRecord logic
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary ToDictionary ()
 		{
 			return queryDict;
 		}
 
+		/// <summary>Releases the resources used by the SecRecord object.</summary>
+		///         <remarks>
+		///           <para>The Dispose method releases the resources used by the SecRecord class.</para>
+		///           <para>Calling the Dispose method when the application is finished using the SecRecord ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.  For more information on releasing resources see ``Cleaning up Unmananaged Resources'' at https://msdn.microsoft.com/en-us/library/498928w2.aspx</para>
+		///         </remarks>
 		public void Dispose ()
 		{
 			Dispose (true);
 			GC.SuppressFinalize (this);
 		}
 
+		/// <include file="../../docs/api/Security/SecRecord.xml" path="/Documentation/Docs[@DocId='M:Security.SecRecord.Dispose(System.Boolean)']/*" />
 		protected virtual void Dispose (bool disposing)
 		{
 			if (disposing)
@@ -1833,20 +1928,40 @@ namespace Security {
 			}
 		}
 
+		/// <typeparam name="T">The desired strong type of the value to
+		/// 	get, one of <see cref="T:Security.SecCertificate" /><see cref="T:Security.SecIdentity" /> or <see cref="T:Security.SecKey" />.</typeparam>
+		///         <summary>Returns the associated Certificate, Identity, or Key stored in this record.</summary>
+		///         <returns>The return value, if present shoudl be one of the
+		/// 	allowed types <see cref="T:Security.SecCertificate" /><see cref="T:Security.SecIdentity" /> or <see cref="T:Security.SecKey" />.</returns>
+		///         <remarks>
+		///         </remarks>
 		public T? GetValueRef<T> () where T : class, INativeObject
 		{
 			return Runtime.GetINativeObject<T> (queryDict.LowlevelObjectForKey (SecItem.ValueRef), false);
 		}
 
 		// This can be used to store SecKey, SecCertificate, SecIdentity and SecKeyChainItem (not bound yet, and not availble on iOS)
+		/// <param name="value">An object of type <see cref="T:Security.SecCertificate" /><see cref="T:Security.SecIdentity" /> or <see cref="T:Security.SecKey" />.</param>
+		///         <summary>Use this to add a certificate, identity or key to the record.</summary>
+		///         <remarks>
+		///         </remarks>
 		public void SetValueRef (INativeObject value)
 		{
 			SetValue (value.GetHandle (), SecItem.ValueRef);
 			GC.KeepAlive (value);
 		}
 
+		/// <param name="cert">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetCertificate (SecCertificate cert) => SetValueRef (cert);
+		/// <param name="identity">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetIdentity (SecIdentity identity) => SetValueRef (identity);
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetKey (SecKey key) => SetValueRef (key);
 
 	}
@@ -2125,6 +2240,9 @@ namespace Security {
 			return String.Format ("Unknown error: 0x{0:x}", code);
 		}
 
+		/// <param name="code" />
+		///         <summary>Creates an exception from a status code.</summary>
+		///         <remarks>To be added.</remarks>
 		public SecurityException (SecStatusCode code) : base (ToMessage (code))
 		{
 		}

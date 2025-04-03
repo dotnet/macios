@@ -287,6 +287,11 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern IntPtr CGWindowListCreateImage (CGRect screenBounds, CGWindowListOption windowOption, uint windowID, CGWindowImageOption imageOption);
 
+		/// <param name="windownumber">To be added.</param>
+		///         <param name="bounds">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("maccatalyst18.0", "Use ScreenCaptureKit instead.")]
 		[UnsupportedOSPlatform ("ios")]
@@ -398,6 +403,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGImageRef */ IntPtr CGImageCreateCopy (/* CGImageRef */ IntPtr image);
 
+		/// <summary>Makes a copy of the image.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>Duplicates the image.</remarks>
 		public CGImage? Clone ()
 		{
 			var h = CGImageCreateCopy (Handle);
@@ -407,6 +416,11 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGImageRef */ IntPtr CGImageCreateCopyWithColorSpace (/* CGImageRef */ IntPtr image, /* CGColorSpaceRef */ IntPtr space);
 
+		/// <param name="cs">To be added.</param>
+		///         <summary>Creates a copy of the image based on the specified colorspace.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>This method could return null if the image is a mask, or if there is a colorspace component mismatch between the images.</remarks>
 		public CGImage? WithColorSpace (CGColorSpace? cs)
 		{
 			var h = CGImageCreateCopyWithColorSpace (Handle, cs.GetHandle ());
@@ -417,6 +431,12 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGImageRef */ IntPtr CGImageCreateWithImageInRect (/* CGImageRef */ IntPtr image, CGRect rect);
 
+		/// <param name="rect">Region to copy.</param>
+		///         <summary>Creates a new image with the dimensions specified in the rectangle</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public CGImage? WithImageInRect (CGRect rect)
 		{
 			var h = CGImageCreateWithImageInRect (Handle, rect);
@@ -426,6 +446,12 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGImageRef */ IntPtr CGImageCreateWithMask (/* CGImageRef */ IntPtr image, /* CGImageRef */ IntPtr mask);
 
+		/// <param name="mask">The mask.</param>
+		///         <summary>Creates a new image that has been masked with the specified mask.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public CGImage? WithMask (CGImage mask)
 		{
 			if (mask is null)

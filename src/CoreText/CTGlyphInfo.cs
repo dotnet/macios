@@ -92,6 +92,11 @@ namespace CoreText {
 			}
 		}
 
+		/// <param name="glyphName">To be added.</param>
+		///         <param name="font">To be added.</param>
+		///         <param name="baseString">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTGlyphInfo (string glyphName, CTFont font, string baseString)
 			: base (Create (glyphName, font, baseString), true, verify: true)
 		{
@@ -117,6 +122,11 @@ namespace CoreText {
 			}
 		}
 
+		/// <param name="glyph">To be added.</param>
+		///         <param name="font">To be added.</param>
+		///         <param name="baseString">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTGlyphInfo (CGGlyph glyph, CTFont font, string baseString)
 			: base (Create (glyph, font, baseString), true, verify: true)
 		{
@@ -138,6 +148,11 @@ namespace CoreText {
 			}
 		}
 
+		/// <param name="cid">To be added.</param>
+		///         <param name="collection">To be added.</param>
+		///         <param name="baseString">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTGlyphInfo (CGFontIndex cid, CTCharacterCollection collection, string baseString)
 			: base (Create (cid, collection, baseString), true, true)
 		{
@@ -192,6 +207,9 @@ namespace CoreText {
 		}
 		#endregion
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string? ToString ()
 		{
 			return GlyphName;

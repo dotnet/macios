@@ -165,13 +165,25 @@ namespace iTunesLibrary {
 		[Export ("persistentID", ArgumentSemantic.Retain)]
 		NSNumber PersistentId { get; }
 
+		/// <param name="property">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("valueForProperty:")]
 		[return: NullAllowed]
 		NSObject GetValue (string property);
 
+		/// <param name="properties">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("enumerateValuesForProperties:usingBlock:")]
 		void EnumerateValues ([NullAllowed] NSSet<NSString> properties, ITLibMediaEntityEnumerateValuesHandler handler);
 
+		/// <param name="properties">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("enumerateValuesExceptForProperties:usingBlock:")]
 		void EnumerateValuesExcept ([NullAllowed] NSSet<NSString> properties, ITLibMediaEntityEnumerateValuesHandler handler);
 	}
@@ -636,11 +648,22 @@ namespace iTunesLibrary {
 		[Export ("allPlaylists", ArgumentSemantic.Retain)]
 		ITLibPlaylist [] AllPlaylists { get; }
 
+		/// <param name="requestedAPIVersion">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("libraryWithAPIVersion:error:")]
 		[return: NullAllowed]
 		ITLibrary GetLibrary (string requestedAPIVersion, [NullAllowed] out NSError error);
 
+		/// <param name="requestedAPIVersion">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("libraryWithAPIVersion:options:error:")]
 		[return: NullAllowed]
@@ -653,13 +676,22 @@ namespace iTunesLibrary {
 		[Export ("initWithAPIVersion:options:error:")]
 		NativeHandle Constructor (string requestedAPIVersion, ITLibInitOptions options, [NullAllowed] out NSError error);
 
+		/// <param name="mediaFileUrl">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("artworkForMediaFile:")]
 		[return: NullAllowed]
 		ITLibArtwork GetArtwork (NSUrl mediaFileUrl);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("reloadData")]
 		bool ReloadData ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("unloadData")]
 		void UnloadData ();
 	}

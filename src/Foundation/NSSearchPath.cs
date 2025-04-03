@@ -44,6 +44,13 @@ namespace Foundation {
 	[SupportedOSPlatform ("tvos")]
 #endif
 	public static class NSSearchPath {
+		/// <param name="directory">Searched directory kind.</param>
+		///         <param name="domainMask">Searched domains mask.</param>
+		///         <param name="expandTilde">Controls whether to expand tildes.</param>
+		///         <summary>Builds an array of directory search paths in specified directory and domains.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>The array is in the order in which you should search the directories. The directory returned may not exist.</remarks>
 		public static string [] GetDirectories (NSSearchPathDirectory directory, NSSearchPathDomain domainMask, bool expandTilde = true)
 		{
 			return CFArray.StringArrayFromHandle (NSSearchPathForDirectoriesInDomains ((nuint) (ulong) directory, (nuint) (ulong) domainMask, expandTilde.AsByte ()));

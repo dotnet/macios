@@ -23,6 +23,10 @@ namespace GameplayKit {
 #if !NET
 		public virtual GKGraphNode2D [] GetNodes (GKPolygonObstacle obstacle)
 #else
+		/// <param name="obstacle">To be added.</param>
+		///         <summary>Returns the array of <see cref="T:GameplayKit.GKGraphNode2D" /> corresponding to the <paramref name="obstacle" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public GKGraphNode2D [] GetNodes (GKPolygonObstacle obstacle)
 #endif
 		{
@@ -63,11 +67,20 @@ namespace GameplayKit {
 		{
 		}
 
+		/// <param name="obstacles">To be added.</param>
+		///         <param name="bufferRadius">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static new GKObstacleGraph<NodeType>? FromObstacles (GKPolygonObstacle [] obstacles, float bufferRadius)
 		{
 			return Runtime.GetNSObject<GKObstacleGraph<NodeType>> (GraphWithObstacles (obstacles, bufferRadius, new Class (typeof (NodeType))));
 		}
 
+		/// <param name="obstacle">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public new NodeType [] GetNodes (GKPolygonObstacle obstacle)
 		{
 			return NSArray.ArrayFromHandle<NodeType> (_GetNodes (obstacle));

@@ -18,6 +18,9 @@ namespace Foundation {
 	}
 
 	public partial class NSAppleEventDescriptor {
+		/// <param name="type">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSAppleEventDescriptor (NSAppleEventDescriptorType type)
 		{
 			switch (type) {

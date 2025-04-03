@@ -135,8 +135,9 @@ namespace MonoTouchFixtures.Foundation {
 		public void PreferredLocalizations ()
 		{
 			string [] locz = main.PreferredLocalizations;
+			var localizations = new string [] { "en-AU", "en-UK", "es", "es-AR", "es-ES" };
 			Assert.That (locz.Length, Is.GreaterThanOrEqualTo (1), "Length");
-			Assert.That (locz, Contains.Item ("Base"), "Base");
+			Assert.That (localizations, Contains.Item (locz [0]), $"PreferredLocalizations: {string.Join (";", locz)}");
 		}
 
 		[Test]
@@ -198,10 +199,10 @@ namespace MonoTouchFixtures.Foundation {
 				Assert.That (l.ToString (), Is.EqualTo ("NoKey"), "NString,null,null");
 
 			// TestKey exists (Localizable.strings) and returns TestValue
-			using (var l = main.GetLocalizedString ("TestKey", null, null))
+			using (var l = main.GetLocalizedString ("TestKey", null, "Localizable"))
 				Assert.That (l.ToString (), Is.EqualTo ("TestValue"), "string,null,null-2");
 			using (var key = new NSString ("TestKey"))
-			using (var l = main.GetLocalizedString (key, null, null))
+			using (var l = main.GetLocalizedString (key, null, "Localizable"))
 				Assert.That (l.ToString (), Is.EqualTo ("TestValue"), "NString,null,null-2");
 		}
 	}

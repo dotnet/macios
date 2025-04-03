@@ -51,6 +51,9 @@ namespace GameKit {
 		//
 		// We could continue to use the older one... but we're not 100% sure that their implementation won't 
 		// start to differ in future releases (in IOS7 it looks like the older is called, nothing else)
+		/// <param name="categoryOrIdentifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public GKScore (string categoryOrIdentifier)
 		{
 			if (categoryOrIdentifier is null)

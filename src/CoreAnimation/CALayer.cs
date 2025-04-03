@@ -171,6 +171,10 @@ namespace CoreAnimation {
 	public partial class CADisplayLink {
 		NSActionDispatcher? dispatcher;
 
+		/// <param name="action">Method to invoke on each screen refresh.</param>
+		///         <summary>Registers the delegate to be invoked every time the display is about to be updated.</summary>
+		///         <returns>The DisplayLink object that will invoke the specified method on each screen update.</returns>
+		///         <remarks>Once you create the display link, you must add the handler to the runloop.</remarks>
 		public static CADisplayLink Create (Action action)
 		{
 			var dispatcher = new NSActionDispatcher (action);

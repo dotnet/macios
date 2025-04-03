@@ -46,11 +46,18 @@ namespace CoreText {
 	[SupportedOSPlatform ("tvos")]
 	public class CTFontCollectionOptions {
 
+		/// <summary>Default constructor, creates an empty set of options.</summary>
+		///         <remarks>
+		///         </remarks>
 		public CTFontCollectionOptions ()
 			: this (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">Dictionary with parameters.</param>
+		///         <summary>Creates a strongly typed CTFontCollectionOptions from the contents of an NSDictionary that contains CTFontCollectionOptions keys.</summary>
+		///         <remarks>
+		///         </remarks>
 		public CTFontCollectionOptions (NSDictionary dictionary)
 		{
 			if (dictionary is null)
@@ -111,6 +118,10 @@ namespace CoreText {
 		#region Collection Creation
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontCollectionCreateFromAvailableFonts (IntPtr options);
+		/// <param name="options">Configuration options for creating the font collection, can be null.</param>
+		///         <summary>Creates a CTFontCollection that contains all of the available font descriptors.</summary>
+		///         <remarks>
+		///         </remarks>
 		public CTFontCollection (CTFontCollectionOptions? options)
 			: base (CTFontCollectionCreateFromAvailableFonts (options.GetHandle ()), true, true)
 		{
@@ -126,6 +137,11 @@ namespace CoreText {
 			GC.KeepAlive (options);
 			return result;
 		}
+		/// <param name="queryDescriptors">An array of font descriptors, can be null.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>Creates a CTFontCollection from the specified set of queryDescriptors.</summary>
+		///         <remarks>
+		///         </remarks>
 		public CTFontCollection (CTFontDescriptor []? queryDescriptors, CTFontCollectionOptions? options)
 			: base (Create (queryDescriptors, options), true, true)
 		{
@@ -133,6 +149,13 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontCollectionCreateCopyWithFontDescriptors (IntPtr original, IntPtr queryDescriptors, IntPtr options);
+		/// <param name="queryDescriptors">The font descriptors to add.</param>
+		///         <param name="options">Configuration options for creating the font collection, can be null.</param>
+		///         <summary>Creates a copy of the CTFontCollection while adding the specified font descriptors.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public CTFontCollection? WithFontDescriptors (CTFontDescriptor []? queryDescriptors, CTFontCollectionOptions? options)
 		{
 			using var descriptors = queryDescriptors is null ? null : CFArray.FromNativeObjects (queryDescriptors);
@@ -148,6 +171,10 @@ namespace CoreText {
 		#region Retrieving Matching Descriptors
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontCollectionCreateMatchingFontDescriptors (IntPtr collection);
+		/// <summary>Gets the mathching font descriptors from this collection.</summary>
+		///         <returns>An array of font descriptors.</returns>
+		///         <remarks>
+		///         </remarks>
 		public CTFontDescriptor [] GetMatchingFontDescriptors ()
 		{
 			var cfArrayRef = CTFontCollectionCreateMatchingFontDescriptors (Handle);
@@ -163,6 +190,10 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontCollectionCreateMatchingFontDescriptorsWithOptions (IntPtr collection, IntPtr options);
 
+		/// <param name="options">The options to match.</param>
+		///         <summary>Returns an array of font descriptors that have the specified options.</summary>
+		///         <returns>An array of font descriptors that have the specified options.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -191,6 +222,11 @@ namespace CoreText {
 			return (CFIndex) rv;
 		}
 
+		/// <param name="comparer">Sorting method.</param>
+		///         <summary>Gets an array of font descriptors sorted by the specified sorting function.</summary>
+		///         <returns>An array of font descriptors.</returns>
+		///         <remarks>
+		///         </remarks>
 		public CTFontDescriptor? []? GetMatchingFontDescriptors (Comparison<CTFontDescriptor> comparer)
 		{
 			GCHandle comparison = GCHandle.Alloc (comparer);

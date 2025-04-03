@@ -617,17 +617,27 @@ namespace CoreFoundation {
 				private set;
 			}
 
+			/// <param name="handle">To be added.</param>
+			///         <param name="remote">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public CFSocketAcceptEventArgs (CFSocketNativeHandle handle, IPEndPoint remote)
 			{
 				this.SocketHandle = handle;
 				this.RemoteEndPoint = remote;
 			}
 
+			/// <summary>Creates a new <see cref="T:CoreFoundation.CFSocket" /> from the accepted connection</summary>
+			///         <returns>The new instance of the created socket</returns>
+			///         <remarks>This could throw a <see cref="T:CoreFoundation.CFSocketException" /> if there is an error trying to create the socket.</remarks>
 			public CFSocket CreateSocket ()
 			{
 				return new CFSocket (SocketHandle);
 			}
 
+			/// <summary>Human readable description of the event arguments.</summary>
+			///         <returns>To be added.</returns>
+			///         <remarks>To be added.</remarks>
 			public override string ToString ()
 			{
 				return string.Format ("[CFSocketAcceptEventArgs: RemoteEndPoint={0}]", RemoteEndPoint);
@@ -647,11 +657,17 @@ namespace CoreFoundation {
 				private set;
 			}
 
+			/// <param name="result">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public CFSocketConnectEventArgs (CFSocketError result)
 			{
 				this.Result = result;
 			}
 
+			/// <summary>Human readable description of the event arguments.</summary>
+			///         <returns>To be added.</returns>
+			///         <remarks>To be added.</remarks>
 			public override string ToString ()
 			{
 				return string.Format ("[CFSocketConnectEventArgs: Result={0}]", Result);
@@ -679,6 +695,10 @@ namespace CoreFoundation {
 				private set;
 			}
 
+			/// <param name="remote">To be added.</param>
+			///         <param name="data">To be added.</param>
+			///         <summary>Constructs a new instance with an endpoint and a byte buffer.</summary>
+			///         <remarks>To be added.</remarks>
 			public CFSocketDataEventArgs (IPEndPoint remote, byte [] data)
 			{
 				this.RemoteEndPoint = remote;
@@ -691,6 +711,8 @@ namespace CoreFoundation {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		public class CFSocketReadEventArgs : EventArgs {
+			/// <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public CFSocketReadEventArgs () { }
 		}
 
@@ -699,6 +721,8 @@ namespace CoreFoundation {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		public class CFSocketWriteEventArgs : EventArgs {
+			/// <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public CFSocketWriteEventArgs () { }
 		}
 
@@ -741,11 +765,20 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static nint CFSocketConnectToAddress (IntPtr handle, IntPtr address, double timeout);
 
+		/// <param name="address">To be added.</param>
+		///         <param name="port">To be added.</param>
+		///         <param name="timeout">Time to wait for the operation to complete.   If the value is negative, no wait takes place, and instead the operation takes place in the background.</param>
+		///         <summary>Connects the socket to the specified IP address and port.</summary>
+		///         <remarks>This method throws a <see cref="T:CoreFoundation.CFSocketException" /> if the timeout expires before being able to complete the operation.</remarks>
 		public void Connect (IPAddress address, int port, double timeout)
 		{
 			Connect (new IPEndPoint (address, port), timeout);
 		}
 
+		/// <param name="endpoint">To be added.</param>
+		///         <param name="timeout">Time to wait for the operation to complete.   If the value is negative, no wait takes place, and instead the operation takes place in the background.</param>
+		///         <summary>Connects the socket to the specified endpoint.</summary>
+		///         <remarks>This method throws a <see cref="T:CoreFoundation.CFSocketException" /> if the timeout expires before being able to complete the operation.</remarks>
 		public void Connect (IPEndPoint endpoint, double timeout)
 		{
 			using (var address = new CFSocketAddress (endpoint)) {

@@ -14,6 +14,7 @@ using NativeHandle = System.IntPtr;
 namespace MetalFX {
 
 	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4)]
 	[Native]
 	public enum MTLFXSpatialScalerColorProcessingMode : long {
 		Perceptual = 0,
@@ -24,6 +25,7 @@ namespace MetalFX {
 	interface IMTLFXSpatialScaler { }
 
 	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4)]
 	[Protocol]
 	interface MTLFXSpatialScaler {
 		[Abstract]
@@ -90,6 +92,7 @@ namespace MetalFX {
 	interface IMTLFXTemporalScaler { }
 
 	[Mac (13, 0), iOS (16, 0)]
+	[TV (18, 4)]
 	[Protocol]
 	interface MTLFXTemporalScaler {
 		[Abstract]
@@ -224,6 +227,7 @@ namespace MetalFX {
 	}
 
 	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MTLFXSpatialScalerDescriptor {
@@ -258,6 +262,7 @@ namespace MetalFX {
 	}
 
 	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MTLFXTemporalScalerDescriptor {

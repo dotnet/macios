@@ -368,10 +368,21 @@ namespace CoreMidi {
 		[Export ("netServiceDomain", ArgumentSemantic.Retain)]
 		string NetServiceDomain { get; }
 
+		/// <param name="hostName">To be added.</param>
+		///         <param name="netService">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("hostWithName:netService:")]
 		MidiNetworkHost Create (string hostName, NSNetService netService);
 
+		/// <param name="hostName">To be added.</param>
+		///         <param name="netServiceName">To be added.</param>
+		///         <param name="netServiceDomain">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("hostWithName:netServiceName:netServiceDomain:")]
 		MidiNetworkHost Create (string hostName, string netServiceName, string netServiceDomain);
@@ -380,6 +391,10 @@ namespace CoreMidi {
 		[Export ("hostWithName:address:port:")]
 		MidiNetworkHost Create (string hostName, string address, nint port);
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("hasSameAddressAs:")]
 		bool HasSameAddressAs (MidiNetworkHost other);
 	}
@@ -422,6 +437,10 @@ namespace CoreMidi {
 		[Export ("host", ArgumentSemantic.Retain)]
 		MidiNetworkHost Host { get; }
 
+		/// <param name="host">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static, Export ("connectionWithHost:")]
 		MidiNetworkConnection FromHost (MidiNetworkHost host);
 	}
@@ -478,9 +497,17 @@ namespace CoreMidi {
 		[Export ("contacts")]
 		NSSet Contacts { get; }
 
+		/// <param name="contact">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("addContact:")]
 		bool AddContact (MidiNetworkHost contact);
 
+		/// <param name="contact">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeContact:")]
 		bool RemoveContact (MidiNetworkHost contact);
 
@@ -490,9 +517,17 @@ namespace CoreMidi {
 		[Export ("connections")]
 		NSSet Connections { get; }
 
+		/// <param name="connection">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("addConnection:")]
 		bool AddConnection (MidiNetworkConnection connection);
 
+		/// <param name="connection">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeConnection:")]
 		bool RemoveConnection (MidiNetworkConnection connection);
 
@@ -627,12 +662,28 @@ namespace CoreMidi {
 		MidiCIDeviceIdentification DeviceIdentification { get; }
 #endif
 
+		/// <param name="channel">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("profileStateForChannel:")]
 		MidiCIProfileState GetProfileState (byte channel);
 
+		/// <param name="profile">To be added.</param>
+		///         <param name="channel">To be added.</param>
+		///         <param name="outError">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("enableProfile:onChannel:error:")]
 		bool EnableProfile (MidiCIProfile profile, byte channel, [NullAllowed] out NSError outError);
 
+		/// <param name="profile">To be added.</param>
+		///         <param name="channel">To be added.</param>
+		///         <param name="outError">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("disableProfile:onChannel:error:")]
 		bool DisableProfile (MidiCIProfile profile, byte channel, [NullAllowed] out NSError outError);
 

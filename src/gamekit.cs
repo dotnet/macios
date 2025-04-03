@@ -1282,6 +1282,9 @@ namespace GameKit {
 		GKPlayerStateUpdateHandler PlayerStateUpdateHandler { get; set; }
 		//void SetPlayerStateUpdateHandler (GKPlayerStateUpdateHandler handler);
 
+		/// <param name="handler">To be added.</param>
+		///         <summary>Sets the handler that is run when a player's voice chat status changes.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("setPlayerVoiceChatStateDidChangeHandler:", ArgumentSemantic.Copy)]
 		void SetPlayerVoiceChatStateChangeHandler (Action<GKPlayer, GKVoiceChatPlayerState> handler);
@@ -1881,6 +1884,10 @@ namespace GameKit {
 		[Export ("rarityPercent", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		NSNumber RarityPercent { get; }
+
+		[TV (18, 4), Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4)]
+		[Export ("releaseState", ArgumentSemantic.Assign)]
+		GKReleaseState ReleaseState { get; }
 	}
 
 	/// <include file="../docs/api/GameKit/IGKAchievementViewControllerDelegate.xml" path="/Documentation/Docs[@DocId='T:GameKit.IGKAchievementViewControllerDelegate']/*" />
@@ -3221,5 +3228,13 @@ namespace GameKit {
 
 		[NullAllowed, Export ("playerProperties")]
 		NSDictionary<GKPlayer, NSDictionary<NSString, NSObject>> PlayerProperties { get; }
+	}
+
+	[TV (18, 4), Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4)]
+	[Native]
+	public enum GKReleaseState : ulong {
+		Unknown,
+		Released,
+		Prereleased,
 	}
 }

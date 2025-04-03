@@ -88,6 +88,10 @@ namespace CoreGraphics {
 			get { return Type == CGPDFObjectType.Null; }
 		}
 
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryGetValue (out bool value)
 		{
 			byte b;
@@ -115,6 +119,10 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryGetValue (out string? value)
 		{
 			IntPtr ip;
@@ -126,6 +134,10 @@ namespace CoreGraphics {
 			return rv;
 		}
 
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryGetValue (out CGPDFArray? value)
 		{
 			IntPtr ip;
@@ -137,6 +149,10 @@ namespace CoreGraphics {
 			return rv;
 		}
 
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryGetValue (out CGPDFDictionary? value)
 		{
 			IntPtr ip;
@@ -148,6 +164,10 @@ namespace CoreGraphics {
 			return rv;
 		}
 
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryGetValue (out CGPDFStream? value)
 		{
 			IntPtr ip;
@@ -159,6 +179,10 @@ namespace CoreGraphics {
 			return rv;
 		}
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryGetName (out string? name)
 		{
 			IntPtr ip;

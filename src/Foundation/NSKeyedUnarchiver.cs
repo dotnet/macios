@@ -28,6 +28,10 @@ namespace Foundation {
 
 	public partial class NSKeyedUnarchiver {
 
+		/// <param name="kls">To be added.</param>
+		///         <param name="codedName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public static void GlobalSetClass (Class kls, string codedName)
 		{
 			if (codedName is null)
@@ -41,6 +45,10 @@ namespace Foundation {
 			CFString.ReleaseNative (ptr);
 		}
 
+		/// <param name="codedName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static Class GlobalGetClass (string codedName)
 		{
 			if (codedName is null)

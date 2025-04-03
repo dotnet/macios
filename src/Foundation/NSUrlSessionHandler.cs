@@ -124,7 +124,7 @@ namespace Foundation {
 		readonly Dictionary<NSUrlSessionTask, InflightData> inflightRequests;
 		readonly object inflightRequestsLock = new object ();
 		readonly NSUrlSessionConfiguration.SessionConfigurationType sessionType;
-#if !MONOMAC
+#if !MONOMAC && !NET8_0 && !NET10_0_OR_GREATER
 		NSObject? notificationToken;  // needed to make sure we do not hang if not using a background session
 		readonly object notificationTokenLock = new object (); // need to make sure that threads do no step on each other with a dispose and a remove  inflight data
 #endif
@@ -140,10 +140,15 @@ namespace Foundation {
 			return config;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NSUrlSessionHandler () : this (CreateConfig ())
 		{
 		}
 
+		/// <param name="configuration">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[CLSCompliant (false)]
 		public NSUrlSessionHandler (NSUrlSessionConfiguration configuration)
 		{
@@ -155,6 +160,7 @@ namespace Foundation {
 			allowsCellularAccess = configuration.AllowsCellularAccess;
 			AllowAutoRedirect = true;
 
+#if !NET10_0_OR_GREATER
 #pragma warning disable SYSLIB0014
 			// SYSLIB0014: 'ServicePointManager' is obsolete: 'WebRequest, HttpWebRequest, ServicePoint, and WebClient are obsolete. Use HttpClient instead. Settings on ServicePointManager no longer affect SslStream or HttpClient.' (https://aka.ms/dotnet-warnings/SYSLIB0014)
 			// https://github.com/xamarin/xamarin-macios/issues/20764
@@ -170,12 +176,13 @@ namespace Foundation {
 				configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_2;
 			else if ((sp & (SecurityProtocolType) 12288) != 0) // Tls13 value not yet in monno
 				configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_3;
+#endif // NET10_0_OR_GREATER
 
 			session = NSUrlSession.FromConfiguration (configuration, (INSUrlSessionDelegate) new NSUrlSessionHandlerDelegate (this), null);
 			inflightRequests = new Dictionary<NSUrlSessionTask, InflightData> ();
 		}
 
-#if !MONOMAC && !NET8_0
+#if !MONOMAC && !NET8_0 && !NET10_0_OR_GREATER
 
 		void AddNotification ()
 		{
@@ -227,7 +234,7 @@ namespace Foundation {
 						data.CancellationTokenSource.Cancel ();
 					inflightRequests.Remove (task);
 				}
-#if !MONOMAC && !NET8_0
+#if !MONOMAC && !NET8_0 && !NET10_0_OR_GREATER
 				// do we need to be notified? If we have not inflightData, we do not
 				if (inflightRequests.Count == 0)
 					RemoveNotification ();
@@ -240,10 +247,13 @@ namespace Foundation {
 			task?.Dispose ();
 		}
 
+		/// <param name="disposing">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected override void Dispose (bool disposing)
 		{
 			lock (inflightRequestsLock) {
-#if !MONOMAC && !NET8_0
+#if !MONOMAC && !NET8_0 && !NET10_0_OR_GREATER
 				// remove the notification if present, method checks against null
 				RemoveNotification ();
 #endif
@@ -325,7 +335,7 @@ namespace Foundation {
 				trustOverrideForUrl = value;
 			}
 		}
-#if !NET8_0
+#if !NET8_0 && !NET10_0_OR_GREATER
 		// we do check if a user does a request and the application goes to the background, but
 		// in certain cases the user does that on purpose (BeingBackgroundTask) and wants to be able
 		// to use the network. In those cases, which are few, we want the developer to explicitly 
@@ -335,21 +345,21 @@ namespace Foundation {
 
 #if !XAMCORE_5_0
 		[EditorBrowsable (EditorBrowsableState.Never)]
-#if NET8_0
+#if NET8_0 || NET10_0_OR_GREATER
 		[Obsolete ("This property is ignored.")]
 #else
-		[Obsolete ("This property will be ignored in .NET 8.")]
+		[Obsolete ("This property will be ignored in .NET 10+.")]
 #endif
 		public bool BypassBackgroundSessionCheck {
 			get {
-#if NET8_0
+#if NET8_0 || NET10_0_OR_GREATER
 				return true;
 #else
 				return bypassBackgroundCheck;
 #endif
 			}
 			set {
-#if !NET8_0
+#if !NET8_0 && !NET10_0_OR_GREATER
 				EnsureModifiability ();
 				bypassBackgroundCheck = value;
 #endif
@@ -496,6 +506,11 @@ namespace Foundation {
 			return nsrequest;
 		}
 
+		/// <param name="request">To be added.</param>
+		///         <param name="cancellationToken">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		protected override async Task<HttpResponseMessage> SendAsync (HttpRequestMessage request, CancellationToken cancellationToken)
 		{
 			Volatile.Write (ref sentRequest, true);
@@ -506,7 +521,7 @@ namespace Foundation {
 			var inflightData = new InflightData (request.RequestUri?.AbsoluteUri!, cancellationToken, request);
 
 			lock (inflightRequestsLock) {
-#if !MONOMAC && !NET8_0
+#if !MONOMAC && !NET8_0 && !NET10_0_OR_GREATER
 				// Add the notification whenever needed
 				AddNotification ();
 #endif

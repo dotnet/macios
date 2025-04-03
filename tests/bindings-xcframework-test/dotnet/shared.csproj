@@ -22,6 +22,13 @@
 
   <Import Project="$(RootTestsDirectory)/common/shared-dotnet.csproj" />
 
+  <PropertyGroup>
+    <NativeReferenceSuffix Condition="'$(UseZippedXcframework)' == 'true'">.zip</NativeReferenceSuffix>
+    <NativeReferenceSuffixWithSlash Condition="'$(UseZippedXcframework)' == 'true'">.zip</NativeReferenceSuffixWithSlash>
+    <NativeReferenceSuffixWithSlash Condition="'$(UseZippedXcframework)' != 'true'">/</NativeReferenceSuffixWithSlash>
+    <NativeReferencePlatform Condition="'$(UsePlatformSpecificXcframework)' == 'true'">$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)'))\</NativeReferencePlatform>
+  </PropertyGroup>
+
   <ItemGroup>
     <ObjcBindingApiDefinition Include="$(BindingsFrameworkDirectory)/ApiDefinition.cs" />
     <ObjcBindingCoreSource Include="$(BindingsFrameworkDirectory)/StructsAndEnums.cs" />
@@ -37,21 +44,22 @@
     <TestLibrariesOutput Include="$(TestLibrariesDirectory)\.libs\XStaticObjectTest.xcframework\Info.plist" />
     <TestLibrariesOutput Include="$(TestLibrariesDirectory)\.libs\XTest.xcframework\Info.plist" />
 
-    <NativeReference Include="$(TestLibrariesDirectory)\.libs\XStaticArTest.xcframework">
+    <NativeReference Include="$(TestLibrariesDirectory)\.libs\$(NativeReferencePlatform)XStaticArTest.xcframework$(NativeReferenceSuffix)">
       <Kind>Framework</Kind>
       <SmartLink>False</SmartLink>
       <Frameworks>CoreLocation ModelIO</Frameworks>
       <NoDSymUtil>true</NoDSymUtil>
       <NoSymbolStrip>true</NoSymbolStrip>
     </NativeReference>
-    <NativeReference Include="$(TestLibrariesDirectory)\.libs\XStaticObjectTest.xcframework">
+    <NativeReference Include="$(TestLibrariesDirectory)\.libs\$(NativeReferencePlatform)XStaticObjectTest.xcframework$(NativeReferenceSuffix)">
       <Kind>Framework</Kind>
       <SmartLink>False</SmartLink>
       <Frameworks>CoreLocation ModelIO</Frameworks>
       <NoDSymUtil>true</NoDSymUtil>
       <NoSymbolStrip>true</NoSymbolStrip>
     </NativeReference>
-    <NativeReference Include="$(TestLibrariesDirectory)\.libs\XTest.xcframework/">
+    <!-- the trailing slash here is a significant part of a test -->
+    <NativeReference Include="$(TestLibrariesDirectory)\.libs\$(NativeReferencePlatform)XTest.xcframework$(NativeReferenceSuffixWithSlash)">
       <Kind>Framework</Kind>
       <SmartLink>False</SmartLink>
       <Frameworks>CoreLocation ModelIO</Frameworks>

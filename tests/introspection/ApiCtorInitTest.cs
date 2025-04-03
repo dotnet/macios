@@ -132,6 +132,8 @@ namespace Introspection {
 #endif
 			case "AVSpeechSynthesisVoice": // Calling description crashes the test
 				return TestRuntime.CheckExactXcodeVersion (12, 2, beta: 3);
+			case "AVRouteDetector": // only seems to work on device.
+				return TestRuntime.IsSimulator;
 			case "SKView":
 				// Causes a crash later. Filed as radar://18440271.
 				// Apple said they won't fix this ('init' isn't a designated initializer)
@@ -151,6 +153,30 @@ namespace Introspection {
 				// Looking at the stack trace in Xcode, it seems it hits the network and times out waiting for something?
 				// So just skip the testing, it's likely the constructor is bound correctly, but that it only works in some circumstances.
 				return true;
+			case "ASAccountAuthenticationModificationController":
+				return true; // started failing in Xcode 16.3 beta 1 for unknown reasons (it works in an Xcode project).
+#if __TVOS__
+			case "MTLAccelerationStructureDescriptor":
+			case "MTLAccelerationStructureGeometryDescriptor":
+			case "MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor":
+			case "MTLAccelerationStructureMotionTriangleGeometryDescriptor":
+			case "MTLAccelerationStructurePassDescriptor":
+			case "MTLAccelerationStructurePassSampleBufferAttachmentDescriptor":
+			case "MTLAccelerationStructurePassSampleBufferAttachmentDescriptorArray":
+			case "MTLAccelerationStructureTriangleGeometryDescriptor":
+			case "MTLMeshRenderPipelineDescriptor":
+			case "MTLMotionKeyframeData":
+			case "MTLRasterizationRateLayerArray":
+			case "MTLRasterizationRateMapDescriptor":
+			case "MTLRasterizationRateSampleArray":
+			case "MTLRenderPipelineFunctionsDescriptor":
+			case "MTLResourceStatePassSampleBufferAttachmentDescriptor":
+			case "MTLResourceStatePassSampleBufferAttachmentDescriptorArray":
+				// The initial tvOS 16.0 simulator doesn't have these classes, but the tvOS 16.1 simulator doess
+				if (TestRuntime.IsSimulator && !TestRuntime.CheckXcodeVersion (14, 1))
+					return true;
+				break;
+#endif
 			}
 
 			switch (type.Namespace) {

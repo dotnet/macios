@@ -34,6 +34,9 @@ namespace Foundation {
 	[AttributeUsage (AttributeTargets.Assembly)]
 	public sealed class LinkerSafeAttribute : Attribute {
 
+		/// <summary>Default attribute constructor.</summary>
+		///         <remarks>
+		///         </remarks>
 		public LinkerSafeAttribute ()
 		{
 		}

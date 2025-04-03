@@ -22,11 +22,16 @@ using System;
 namespace StoreKit {
 	public partial class SKReceiptProperties : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SKReceiptProperties ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SKReceiptProperties (NSDictionary dictionary)
 			: base (dictionary)
 		{

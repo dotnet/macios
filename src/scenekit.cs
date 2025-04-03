@@ -2333,6 +2333,15 @@ namespace SceneKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		SCNHitTestResult [] HitTest (SCNVector3 pointA, SCNVector3 pointB, [NullAllowed] NSDictionary options);
 
+		/// <param name="pointA">To be added.</param>
+		///         <param name="pointB">To be added.</param>
+		///         <param name="options">
+		///           <para>Strongly typed set of options to perform the hit-test detection.</para>
+		///           <para>This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Returns an array of hit test results for descendant nodes that intersect with a line between <paramref name="pointA" /> and <paramref name="pointB" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("HitTest (pointA, pointB, options.GetDictionary ())")]
 		SCNHitTestResult [] HitTest (SCNVector3 pointA, SCNVector3 pointB, [NullAllowed] SCNHitTestOptions options);
 
@@ -2850,6 +2859,11 @@ namespace SceneKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		void SetSemantic ([NullAllowed] NSString geometrySourceSemantic, string symbol, [NullAllowed] NSDictionary options);
 
+		/// <param name="geometrySourceSemantic">To be added.</param>
+		///         <param name="symbol">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>Sets the specified semantic.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("SetSemantic (geometrySourceSemantic, symbol, options.GetDictionary ())")]
 		void SetSemantic (NSString geometrySourceSemantic, string symbol, SCNProgramSemanticOptions options);
@@ -2968,13 +2982,6 @@ namespace SceneKit {
 		[NoMacCatalyst]
 		[Static, Export ("rendererWithContext:options:")]
 		SCNRenderer FromContext (IntPtr context, [NullAllowed] NSDictionary options);
-
-		[NoMacCatalyst]
-		[Static]
-		[Wrap ("FromContext (context.GetHandle (), options)")]
-		// GetHandle will return IntPtr.Zero is context is null
-		// GLContext == CGLContext on macOS and EAGLContext in iOS and tvOS (using on top of file)
-		SCNRenderer FromContext (GLContext context, [NullAllowed] NSDictionary options);
 
 		[NoTV]
 		[Export ("render")]
@@ -3102,6 +3109,12 @@ namespace SceneKit {
 		[return: NullAllowed]
 		SCNScene FromUrl (NSUrl url, [NullAllowed] NSDictionary options, out NSError error);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Creates and returns a new SceneKit scene with the contents of the file at the provided URL.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("FromUrl (url, options.GetDictionary (), out error)")]
 		[return: NullAllowed]
@@ -3161,6 +3174,12 @@ namespace SceneKit {
 		[return: NullAllowed]
 		SCNScene FromFile (string name, [NullAllowed] string directory, [NullAllowed] NSDictionary options);
 
+		/// <param name="name">To be added.</param>
+		///         <param name="directory">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>Creates and returns a new SceneKit scene with the contents of the specified file in the main bundle for the application.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static, Wrap ("FromFile (name, directory, options.GetDictionary ())")]
 		[return: NullAllowed]
@@ -3176,6 +3195,13 @@ namespace SceneKit {
 			[NullAllowed] ISCNSceneExportDelegate aDelegate,
 			[NullAllowed] SCNSceneExportProgressHandler exportProgressHandler);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <param name="exportProgressHandler">To be added.</param>
+		///         <summary>Writes the scene to a URL.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("WriteToUrl (url, options.GetDictionary (), handler, exportProgressHandler)")]
 		bool WriteToUrl (NSUrl url, SCNSceneLoadingOptions options, ISCNSceneExportDelegate handler, SCNSceneExportProgressHandler exportProgressHandler);
@@ -3297,6 +3323,11 @@ namespace SceneKit {
 		[return: NullAllowed]
 		SCNSceneSource FromUrl (NSUrl url, [NullAllowed] NSDictionary options);
 
+		/// <param name="url">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>Creates a scene source that reads the graph that is contained in the file that is pointed to by <paramref name="url" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("FromUrl (url, options.GetDictionary ())")]
 		[return: NullAllowed]
 		SCNSceneSource FromUrl (NSUrl url, SCNSceneLoadingOptions options);
@@ -3307,6 +3338,11 @@ namespace SceneKit {
 		[return: NullAllowed]
 		SCNSceneSource FromData (NSData data, [NullAllowed] NSDictionary options);
 
+		/// <param name="data">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>Creates a scene source that reads the graph that is contained in <paramref name="data" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("FromData (data, options.GetDictionary ())")]
 		[return: NullAllowed]
@@ -3331,6 +3367,11 @@ namespace SceneKit {
 		[return: NullAllowed]
 		SCNScene SceneFromOptions ([NullAllowed] NSDictionary options, [NullAllowed] SCNSceneSourceStatusHandler statusHandler);
 
+		/// <param name="options">To be added.</param>
+		///         <param name="statusHandler">To be added.</param>
+		///         <summary>Creates a new scene from the specified options dictionary, periodically calling <paramref name="statusHandler" /> to report progress.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("SceneFromOptions (options?.GetDictionary (), statusHandler)")]
 		[return: NullAllowed]
 		SCNScene SceneFromOptions ([NullAllowed] SCNSceneLoadingOptions options, [NullAllowed] SCNSceneSourceStatusHandler statusHandler);
@@ -3340,6 +3381,11 @@ namespace SceneKit {
 		[return: NullAllowed]
 		SCNScene SceneWithOption ([NullAllowed] NSDictionary options, out NSError error);
 
+		/// <param name="options">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Creates a new scene from the specified options dictionary, and reporting any error condtion in <paramref name="error" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("SceneWithOption (options?.GetDictionary (), out error)")]
 		[return: NullAllowed]
 		SCNScene SceneWithOption (SCNSceneLoadingOptions options, out NSError error);
@@ -3657,6 +3703,11 @@ namespace SceneKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		SCNHitTestResult [] HitTest (CGPoint thePoint, [NullAllowed] NSDictionary options);
 
+		/// <param name="thePoint">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("HitTest (thePoint, options.GetDictionary ())")]
 		SCNHitTestResult [] HitTest (CGPoint thePoint, SCNHitTestOptions options);
 
@@ -4015,6 +4066,12 @@ namespace SceneKit {
 		[Export ("unlock")]
 		void Unlock ();
 
+		/// <param name="completion">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("setCompletionBlock:")]
 		void SetCompletionBlock ([NullAllowed] Action completion);
@@ -5107,6 +5164,12 @@ namespace SceneKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		SCNHitTestResult [] RayTestWithSegmentFromPoint (SCNVector3 origin, SCNVector3 dest, [NullAllowed] NSDictionary options);
 
+		/// <param name="origin">To be added.</param>
+		///         <param name="dest">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("RayTestWithSegmentFromPoint (origin, dest, options.GetDictionary ())")]
 		SCNHitTestResult [] RayTestWithSegmentFromPoint (SCNVector3 origin, SCNVector3 dest, [NullAllowed] SCNPhysicsTest options);
 
@@ -5114,6 +5177,12 @@ namespace SceneKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		SCNPhysicsContact [] ContactTest (SCNPhysicsBody bodyA, SCNPhysicsBody bodyB, [NullAllowed] NSDictionary options);
 
+		/// <param name="bodyA">To be added.</param>
+		///         <param name="bodyB">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("ContactTest (bodyA, bodyB, options.GetDictionary ())")]
 		SCNPhysicsContact [] ContactTest (SCNPhysicsBody bodyA, SCNPhysicsBody bodyB, [NullAllowed] SCNPhysicsTest options);
 
@@ -5121,6 +5190,11 @@ namespace SceneKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		SCNPhysicsContact [] ContactTest (SCNPhysicsBody body, [NullAllowed] NSDictionary options);
 
+		/// <param name="body">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("ContactTest (body, options.GetDictionary ())")]
 		SCNPhysicsContact [] ContactTest (SCNPhysicsBody body, [NullAllowed] SCNPhysicsTest options);
 
@@ -5128,6 +5202,13 @@ namespace SceneKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		SCNPhysicsContact [] ConvexSweepTest (SCNPhysicsShape shape, SCNMatrix4 from, SCNMatrix4 to, [NullAllowed] NSDictionary options);
 
+		/// <param name="shape">To be added.</param>
+		///         <param name="from">To be added.</param>
+		///         <param name="to">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("ConvexSweepTest (shape, from, to, options.GetDictionary ())")]
 		SCNPhysicsContact [] ConvexSweepTest (SCNPhysicsShape shape, SCNMatrix4 from, SCNMatrix4 to, [NullAllowed] SCNPhysicsTest options);
 

@@ -34,6 +34,9 @@ namespace AppKit {
 			}
 		}
 
+		/// <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void DuplicateDocument (DuplicateCallback? callback)
 		{
 			if (callback is null) {

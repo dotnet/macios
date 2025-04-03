@@ -42,11 +42,17 @@ namespace UIKit {
 
 	public class UIStringAttributes : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>Default constructor</summary>
+		///         <remarks>
+		///         </remarks>
 		public UIStringAttributes ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">Dictionary to initialize from</param>
+		///         <summary>Creates a UIStringAttributes from UIKit NSAttributedString attributes stored in a dictionary.</summary>
+		///         <remarks>To be added.</remarks>
 		public UIStringAttributes (NSDictionary dictionary)
 			: base (dictionary)
 		{

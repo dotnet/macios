@@ -2733,6 +2733,14 @@ namespace UIKit {
 		[Export ("openURL:options:completionHandler:")]
 		void OpenUrl (NSUrl url, NSDictionary options, [NullAllowed] Action<bool> completion);
 
+		/// <param name="url">The URL to be opened.</param>
+		///         <param name="options">Launch options.</param>
+		///         <param name="completion">
+		///           <para>Asynchronously called after launch.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Opens the specified URL, launching the app that is registered to handle the scheme.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("OpenUrl (url, options.GetDictionary ()!, completion)")]
 		[Async]
@@ -3481,6 +3489,10 @@ namespace UIKit {
 		UIApplicationShortcutIcon FromSystemImageName (string systemImageName);
 
 		// This is inside ContactsUI.framework
+		/// <param name="contact">To be added.</param>
+		///         <summary>Creates and returns a new shortcut icon for the provided contact.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[NoTV]
 		[NoMacCatalyst]
@@ -4133,6 +4145,12 @@ namespace UIKit {
 		[Export ("application:openURL:options:")]
 		bool OpenUrl (UIApplication app, NSUrl url, NSDictionary options);
 
+		/// <param name="app">To be added.</param>
+		///         <param name="url">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>Indicates that the application should open the specified <paramref name="url" /> according to <paramref name="options" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("OpenUrl(app, url, options.GetDictionary ())")]
 		bool OpenUrl (UIApplication app, NSUrl url, UIApplicationOpenUrlOptions options);
@@ -6115,6 +6133,18 @@ namespace UIKit {
 		string [] ReadableTypeIdentifiers { get; }
 
 		// From the NSItemProviderReading protocol, a static method.
+		/// <param name="data">To be added.</param>
+		///         <param name="typeIdentifier">To be added.</param>
+		///         <param name="outError">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Static]
@@ -7468,6 +7498,15 @@ namespace UIKit {
 		[Static, Export ("fontDescriptorWithFontAttributes:")]
 		UIFontDescriptor FromAttributes (NSDictionary attributes);
 
+		/// <param name="attributes">Weak dictionary of font attributes.</param>
+		///         <summary>Creates a UIFontDescriptor using a set of attributes contained in the dictionary.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///           <para>
+		///           </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Static, Wrap ("FromAttributes (attributes.GetDictionary ()!)")]
 		UIFontDescriptor FromAttributes (UIFontAttributes attributes);
 
@@ -7480,6 +7519,13 @@ namespace UIKit {
 		[Static, Export ("preferredFontDescriptorWithTextStyle:")]
 		UIFontDescriptor GetPreferredDescriptorForTextStyle (NSString uiFontTextStyle);
 
+		/// <param name="uiFontTextStyle">Name of one of the built-in system text styles.</param>
+		///         <summary>Weakly-typed version of an API used to retrieve the user's desired font size.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Static]
 		[Wrap ("GetPreferredDescriptorForTextStyle (uiFontTextStyle.GetConstant ()!)")]
 		UIFontDescriptor GetPreferredDescriptorForTextStyle (UIFontTextStyle uiFontTextStyle);
@@ -7490,6 +7536,17 @@ namespace UIKit {
 		[Export ("preferredFontDescriptorWithTextStyle:compatibleWithTraitCollection:")]
 		UIFontDescriptor GetPreferredDescriptorForTextStyle (NSString uiFontTextStyle, [NullAllowed] UITraitCollection traitCollection);
 
+		/// <param name="uiFontTextStyle">Name of one of the built-in system text styles.</param>
+		///         <param name="traitCollection">
+		///           <para>The trait collection for which to get the preferred font descriptor.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Returns the preferred font descriptor for the specified style and trait collection.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetPreferredDescriptorForTextStyle (uiFontTextStyle.GetConstant ()!, traitCollection)")]
@@ -7506,6 +7563,14 @@ namespace UIKit {
 		[Export ("fontDescriptorByAddingAttributes:")]
 		UIFontDescriptor CreateWithAttributes (NSDictionary attributes);
 
+		/// <param name="attributes">dictionary containing the attributes.</param>
+		///         <summary>Creates a new UIFontDescriptor based on adding the provided attributes to the current descriptor.</summary>
+		///         <returns>New UIFontDescriptor containing the added attributes.</returns>
+		///         <remarks>
+		///           <para>
+		///           </para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		[Wrap ("CreateWithAttributes (attributes.GetDictionary ()!)")]
 		UIFontDescriptor CreateWithAttributes (UIFontAttributes attributes);
 
@@ -7695,6 +7760,10 @@ namespace UIKit {
 		[Export ("ignoreTouch:forEvent:")]
 		void IgnoreTouch (UITouch touch, UIEvent forEvent);
 
+		/// <param name="button">To be added.</param>
+		///         <param name="event">To be added.</param>
+		///         <summary>Developers may override this method to tell the gesture recognizer to ignore specific presses.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Sealed] // Docs: This method is intended to be called, not overridden.
 		[Export ("ignorePress:forEvent:")]
@@ -8123,6 +8192,10 @@ namespace UIKit {
 		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0)]
 		[Export ("mathExpressionCompletionType")]
 		UITextMathExpressionCompletionType MathExpressionCompletionType { get; set; }
+
+		[NoTV, NoMacCatalyst, iOS (18, 4)]
+		[Export ("conversationContext", ArgumentSemantic.Strong)]
+		UIConversationContext ConversationContext { get; set; }
 	}
 
 	/// <summary>Provides data for the  event.</summary>
@@ -8767,6 +8840,10 @@ namespace UIKit {
 		[NoTV, iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("didDismissWritingTools")]
 		void DidDismissWritingTools ();
+
+		[NoTV, iOS (18, 4), NoMacCatalyst]
+		[Export ("insertInputSuggestion:")]
+		void InsertInputSuggestion (UIInputSuggestion inputSuggestion);
 	}
 
 	/// <summary>A manager for bar button items.</summary>
@@ -8838,6 +8915,11 @@ namespace UIKit {
 		[Abstract]
 		[Export ("textDidChange:")]
 		void TextDidChange (IUITextInput textInput);
+
+		[NoTV, NoMacCatalyst, iOS (18, 4)]
+		[Abstract]
+		[Export ("conversationContext:didChange:")]
+		void ConversationContextDidChange ([NullAllowed] UIConversationContext context, [NullAllowed] IUITextInput textInput);
 	}
 
 	[MacCatalyst (13, 1)]
@@ -9333,6 +9415,15 @@ namespace UIKit {
 		string [] ReadableTypeIdentifiers { get; }
 
 		// From the NSItemProviderReading protocol, a static method.
+		/// <param name="data">To be added.</param>
+		///         <param name="typeIdentifier">To be added.</param>
+		///         <param name="outError">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Static factory method to create a <see cref="T:UIKit.UIImage" /> from <paramref name="data" />, with <paramref name="typeIdentifier" /> being the appropriate UTI.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("objectWithItemProviderData:typeIdentifier:error:")]
 		[NoTV]
@@ -12758,6 +12849,10 @@ namespace UIKit {
 		[Export ("setItems:options:")]
 		void SetItems (NSDictionary<NSString, NSObject> [] items, NSDictionary options);
 
+		/// <param name="items">To be added.</param>
+		///         <param name="pasteboardOptions">To be added.</param>
+		///         <summary>Adds <paramref name="items" /> to the pasteboard.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Wrap ("SetItems (items, pasteboardOptions.GetDictionary ()!)")]
@@ -14910,6 +15005,13 @@ namespace UIKit {
 		[Appearance]
 		void SetTitleTextAttributes ([NullAllowed] NSDictionary attributes, UIControlState state);
 
+		/// <param name="state">The state that you want to retrieve the rendering text attributes from.</param>
+		///         <summary>Returns the current rendering text attributes for the requested state.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///           <para id="tool-remark">This member participates in the <see cref="T:UIKit.UIAppearance" /> styling system.  See the <see cref="P:UIKit.UISegmentedControl.Appearance" /> property and the <see cref="M:UIKit.UISegmentedControl.AppearanceWhenContainedIn(System.Type[])" /> method.</para>
+		///         </remarks>
 		[Appearance]
 		[Wrap ("new UIStringAttributes (GetWeakTitleTextAttributes (state))")]
 		UIStringAttributes GetTitleTextAttributes (UIControlState state);
@@ -15747,6 +15849,10 @@ namespace UIKit {
 		[Internal]
 		void SetBadgeTextAttributes ([NullAllowed] NSDictionary textAttributes, UIControlState state);
 
+		/// <param name="textAttributes">The desired <see cref="T:UIKit.UIStringAttributes" />.</param>
+		///         <param name="state">The <see cref="T:UIKit.UIControlState" /> to which the <paramref name="textAttributes" /> should apply.</param>
+		///         <summary>Configures the badge so that when it is in the given <paramref name="state" />, it has the provided <paramref name="textAttributes" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("SetBadgeTextAttributes (textAttributes.GetDictionary (), state)")]
 		void SetBadgeTextAttributes (UIStringAttributes textAttributes, UIControlState state);
@@ -15758,6 +15864,10 @@ namespace UIKit {
 		[return: NullAllowed]
 		NSDictionary<NSString, NSObject> GetBadgeTextAttributesDictionary (UIControlState state);
 
+		/// <param name="state">The <see cref="T:UIKit.UIControlState" /> being queried.</param>
+		///         <summary>Gets the <see cref="T:UIKit.UIStringAttributes" /> that the badge will have for the specified <paramref name="state" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("new UIStringAttributes (GetBadgeTextAttributesDictionary(state))")]
 		UIStringAttributes GetBadgeTextAttributes (UIControlState state);
@@ -15964,6 +16074,7 @@ namespace UIKit {
 		[return: NullAllowed]
 		UITableViewCell DequeueReusableCell (string identifier);
 
+		/// <include file="../docs/api/UIKit/UITableView.xml" path="/Documentation/Docs[@DocId='M:UIKit.UITableView.DequeueReusableCell(Foundation.NSString)']/*" />
 		[Export ("dequeueReusableCellWithIdentifier:")]
 		[Sealed]
 		[return: NullAllowed]
@@ -17305,6 +17416,10 @@ namespace UIKit {
 		[Export ("textField:editMenuForCharactersInRange:suggestedActions:")]
 		[return: NullAllowed]
 		UIMenu GetEditMenu (UITextField textField, NSRange range, UIMenuElement [] suggestedActions);
+
+		[NoTV, NoMacCatalyst, iOS (18, 4)]
+		[Export ("textField:insertInputSuggestion:"), EventArgs ("UITextFieldInsertInputSuggestion")]
+		void InsertInputSuggestion (UITextField textField, UIInputSuggestion inputSuggestion);
 	}
 
 	[MacCatalyst (13, 1)]
@@ -17536,6 +17651,10 @@ namespace UIKit {
 		[NoTV, MacCatalyst (18, 2), iOS (18, 2)]
 		[Export ("writingToolsCoordinator")]
 		UIWritingToolsCoordinator WritingToolsCoordinator { get; }
+
+		[NoTV, MacCatalyst (18, 4), iOS (18, 4)]
+		[Export ("subclassForWritingToolsCoordinator")]
+		Class SubclassForWritingToolsCoordinator { get; }
 	}
 
 	interface IUITextViewDelegate { }
@@ -17666,6 +17785,11 @@ namespace UIKit {
 		[NoTV, NoMacCatalyst, iOS (18, 0)]
 		[Export ("textView:didEndFormattingWithViewController:"), EventArgs ("UITextViewTextFormattingViewController")]
 		void DidEndFormatting (UITextView textView, UITextFormattingViewController viewController);
+
+		[IgnoredInDelegate]
+		[NoTV, NoMacCatalyst, iOS (18, 4)]
+		[Export ("textView:insertInputSuggestion:")]
+		void InsertInputSuggestion (UITextView textView, UIInputSuggestion inputSuggestion);
 	}
 
 	/// <include file="../docs/api/UIKit/UIToolbar.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIToolbar']/*" />
@@ -19071,6 +19195,9 @@ namespace UIKit {
 		UIModalPresentationStyle ModalPresentationStyle { get; set; }
 
 		// 3.2 extensions from MoviePlayer
+		/// <param name="moviePlayerViewController">The <see cref="T:MediaPlayer.MPMoviePlayerViewController" /> to be presented.</param>
+		///         <summary>Displays a movie controller using the standard transition.</summary>
+		///         <remarks>Along with <see cref="M:UIKit.UIViewController.DismissMoviePlayerViewController" />, this method can be used to control the presentation and dismissal of a <see cref="T:MediaPlayer.MPMoviePlayerViewController" /></remarks>
 		[NoMac]
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -19079,6 +19206,11 @@ namespace UIKit {
 		[Export ("presentMoviePlayerViewControllerAnimated:")]
 		void PresentMoviePlayerViewController (MPMoviePlayerViewController moviePlayerViewController);
 
+		/// <summary>Dismisses the <see cref="T:MediaPlayer.MPMoviePlayerViewController" />.</summary>
+		///         <remarks>
+		///           <para>Along with <see cref="M:UIKit.UIViewController.PresentMoviePlayerViewController(MediaPlayer.MPMoviePlayerViewController)" />, this method can be used to control the presentation and dismissal of a <see cref="T:MediaPlayer.MPMoviePlayerViewController" /></para>
+		///         </remarks>
+		///         <altmember cref="M:UIKit.UIViewController.PresentMoviePlayerViewController" />
 		[NoMac]
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AVPlayerViewController' (AVKit) instead.")]
@@ -20371,6 +20503,13 @@ namespace UIKit {
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>An instance of the UIKit.IUIWebViewDelegate model class which acts as the class delegate.</summary>
+		///         <value>The instance of the UIKit.IUIWebViewDelegate model class</value>
+		///         <remarks>
+		///           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+		///           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+		///         </remarks>
 		[Wrap ("WeakDelegate")]
 		IUIWebViewDelegate Delegate { get; set; }
 
@@ -20404,6 +20543,10 @@ namespace UIKit {
 		[Export ("canGoForward")]
 		bool CanGoForward { get; }
 
+		/// <summary>Returns <see langword="true" /> if the web view is still loading content.  Read-only.</summary>
+		///         <value>
+		///         </value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isLoading")]
 		bool IsLoading { get; }
 
@@ -24755,6 +24898,9 @@ namespace UIKit {
 		[Export ("addTypeIdentifiersForAcceptingClass:")]
 		void AddTypeIdentifiers (Class itemProviderReadingClass);
 
+		/// <param name="itemProviderReadingType">The type of objects that can be pasted and/or dropped.</param>
+		///         <summary>Adds the acceptable type identifiers from the provider reading type to the array that specifies the types that can be pasted and/or dropped.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("AddTypeIdentifiers (new Class (itemProviderReadingType))")]
 		void AddTypeIdentifiers (Type itemProviderReadingType);
 	}
@@ -31351,6 +31497,14 @@ namespace UIKit {
 
 		[Export ("initWithTitle:image:identifier:viewControllerProvider:")]
 		NativeHandle Constructor (string title, [NullAllowed] UIImage image, string identifier, [NullAllowed] Func<UITab, UIViewController> viewControllerProvider);
+
+		[TV (18, 4), iOS (18, 4), MacCatalyst (18, 4)]
+		[Export ("enabled")]
+		bool Enabled { [Bind ("isEnabled")] get; set; }
+
+		[TV (18, 4), iOS (18, 4), MacCatalyst (18, 4)]
+		[Export ("hasVisiblePlacement")]
+		bool HasVisiblePlacement { get; }
 	}
 
 	[NoTV, iOS (18, 0), MacCatalyst (18, 0)]
@@ -31402,6 +31556,10 @@ namespace UIKit {
 
 		[Export ("reconfigureItemForTab:")]
 		void ReconfigureItemForTab (UITab tab);
+
+		[iOS (18, 2), MacCatalyst (18, 2)]
+		[NullAllowed, Export ("navigationOverflowItems", ArgumentSemantic.Strong)]
+		UIDeferredMenuElement NavigationOverflowItems { get; set; }
 	}
 
 	[NoTV, iOS (18, 0), MacCatalyst (18, 0)]
@@ -31434,6 +31592,22 @@ namespace UIKit {
 		[Export ("tabBarController:sidebar:contextMenuConfigurationForTab:"), DefaultValue (null)]
 		[return: NullAllowed]
 		UIContextMenuConfiguration GetContextMenuConfigurationForTab (UITabBarController tabBarController, UITabBarControllerSidebar sidebar, UITab tab);
+
+		[iOS (18, 4), MacCatalyst (18, 4)]
+		[Export ("tabBarController:sidebar:itemsForBeginningDragSession:tab:")]
+		UIDragItem [] GetItemsForBeginningDragSession (UITabBarController tabBarController, UITabBarControllerSidebar sidebar, IUIDragSession dragSession, UITab tab);
+
+		[iOS (18, 4), MacCatalyst (18, 4)]
+		[Export ("tabBarController:sidebar:itemsForAddingToDragSession:tab:")]
+		UIDragItem [] GetItemsForAddingToDragSession (UITabBarController tabBarController, UITabBarControllerSidebar sidebar, IUIDragSession dragSession, UITab tab);
+
+		[iOS (18, 4), MacCatalyst (18, 4)]
+		[Export ("tabBarController:sidebar:sidebarAction:group:operationForAcceptingItemsFromDropSession:")]
+		UIDropOperation GetOperationForAcceptingItemsFromDropSession (UITabBarController tabBarController, UITabBarControllerSidebar sidebar, UIAction sidebarAction, UITabGroup group, IUIDropSession session);
+
+		[iOS (18, 4), MacCatalyst (18, 4)]
+		[Export ("tabBarController:sidebar:sidebarAction:group:acceptItemsFromDropSession:")]
+		void AcceptItemsFromDropSession (UITabBarController tabBarController, UITabBarControllerSidebar sidebar, UIAction sidebarAction, UITabGroup group, IUIDropSession session);
 	}
 
 	interface IUITabBarControllerSidebarDelegate { }
@@ -32315,5 +32489,117 @@ namespace UIKit {
 	interface UIApplication_DefaultApplication {
 		[Export ("defaultStatusForCategory:error:")]
 		UIApplicationCategoryDefaultStatus GetDefaultStatus (UIApplicationCategory category, [NullAllowed] out NSError error);
+	}
+
+	[NoTV, NoMacCatalyst, iOS (18, 4)]
+	[BaseType (typeof (NSObject))]
+	interface UIConversationContext {
+		[Export ("threadIdentifier")]
+		string ThreadIdentifier { get; set; }
+
+		[Export ("entries", ArgumentSemantic.Copy)]
+		UIConversationEntry [] Entries { get; set; }
+
+		[Export ("selfIdentifiers", ArgumentSemantic.Copy)]
+		NSSet<NSString> SelfIdentifiers { get; set; }
+
+		[Export ("responsePrimaryRecipientIdentifiers", ArgumentSemantic.Copy)]
+		NSSet<NSString> ResponsePrimaryRecipientIdentifiers { get; set; }
+
+		[Export ("participantNameByIdentifier", ArgumentSemantic.Copy)]
+		NSDictionary<NSString, NSPersonNameComponents> ParticipantNameByIdentifier { get; set; }
+	}
+
+	[NoTV, NoMacCatalyst, iOS (18, 4)]
+	[BaseType (typeof (NSObject))]
+	interface UIConversationEntry {
+		[Export ("text")]
+		string Text { get; set; }
+
+		[Export ("senderIdentifier")]
+		string SenderIdentifier { get; set; }
+
+		[Export ("sentDate", ArgumentSemantic.Copy)]
+		NSDate SentDate { get; set; }
+
+		[Export ("entryIdentifier")]
+		string EntryIdentifier { get; set; }
+
+		[NullAllowed, Export ("replyThreadIdentifier")]
+		string ReplyThreadIdentifier { get; set; }
+
+		[Export ("primaryRecipientIdentifiers", ArgumentSemantic.Copy)]
+		NSSet<NSString> PrimaryRecipientIdentifiers { get; set; }
+	}
+
+	[NoTV, NoMacCatalyst, iOS (18, 4)]
+	[BaseType (typeof (NSObject))]
+	interface UIInputSuggestion {
+	}
+
+	[NoTV, NoMacCatalyst, iOS (18, 4)]
+	[BaseType (typeof (UIConversationContext))]
+	interface UIMailConversationContext {
+		[Export ("responseSubject")]
+		string ResponseSubject { get; set; }
+
+		[Export ("responseHasCustomSignature")]
+		bool ResponseHasCustomSignature { get; set; }
+
+		[Export ("responseSecondaryRecipientIdentifiers", ArgumentSemantic.Copy)]
+		NSSet<NSString> ResponseSecondaryRecipientIdentifiers { get; set; }
+	}
+
+	[NoTV, NoMacCatalyst, iOS (18, 4)]
+	[Native]
+	public enum UIMailConversationEntryKind : long {
+		None = 0,
+		Personal = 1,
+		Promotion = 2,
+		Social = 3,
+		Transaction = 4,
+		News = 5,
+	}
+
+	[NoTV, NoMacCatalyst, iOS (18, 4)]
+	[BaseType (typeof (UIConversationEntry))]
+	interface UIMailConversationEntry {
+		[Export ("kind", ArgumentSemantic.Assign)]
+		UIMailConversationEntryKind Kind { get; set; }
+
+		[Export ("responseSecondaryRecipientIdentifiers", ArgumentSemantic.Copy)]
+		NSSet<NSString> ResponseSecondaryRecipientIdentifiers { get; set; }
+	}
+
+	[NoTV, NoMacCatalyst, iOS (18, 4)]
+	[BaseType (typeof (UIConversationContext))]
+	interface UIMessageConversationContext {
+		[Export ("isJunk")]
+		bool IsJunk { get; set; }
+	}
+
+	[NoTV, NoMacCatalyst, iOS (18, 4)]
+	[Native]
+	public enum UIMessageConversationEntryDataKind : long {
+		Text = 0,
+		Attachment = 1,
+		Other = 2,
+	}
+
+	[NoTV, NoMacCatalyst, iOS (18, 4)]
+	[BaseType (typeof (UIConversationEntry))]
+	interface UIMessageConversationEntry {
+		[Export ("dataKind", ArgumentSemantic.Assign)]
+		UIMessageConversationEntryDataKind DataKind { get; set; }
+
+		[Export ("wasSentBySelf")]
+		bool WasSentBySelf { get; set; }
+	}
+
+	[NoTV, NoMacCatalyst, iOS (18, 4)]
+	[BaseType (typeof (UIInputSuggestion))]
+	interface UISmartReplySuggestion {
+		[Export ("smartReply")]
+		string SmartReply { get; }
 	}
 }

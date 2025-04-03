@@ -1,0 +1,140 @@
+<Documentation>
+  <Docs DocId="M:Security.SecKeyChain.QueryAsData(Security.SecRecord,System.Boolean,Security.SecStatusCode@)">
+        <param name="query">The query used to lookup the value on the keychain.</param>
+        <param name="wantPersistentReference">If set to true, the returned NSData can be stored on disk for later used, or shared between processes.</param>
+        <param name="status">Returns the status code from calling SecItemCopyMatching.</param>
+        <summary>Fetches a set of NSData records from the Keychain.</summary>
+        <summary>Fetches an NSData record from the Keychain.</summary>
+        <returns>The NSData associated with the given query.</returns>
+        <remarks>
+          <para>
+	    The returned NSData is a binary blob, if you want to get a
+	    high-level representation, use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Security%20Sec%20Key%20Chain%20Query%20As%20Record&amp;scope=Xamarin" title="M:Security.SecKeyChain.QueryAsRecord*">M:Security.SecKeyChain.QueryAsRecord*</a></format>
+	    instead.
+	  </para>
+          <para>
+	    This is the strongly typed equivalent of calling the
+	    Security's framework SecItemCopyMatching method with the
+	    kSecReturnData set to true and kSecMatchLimit to 1,
+	    forcing a single record to be returned.  If
+	    wantPersistentReference is true, this also sets the
+	    kSecReturnPersistentRef dictionary key to true.
+
+	  </para>
+        </remarks>
+      </Docs>
+  <Docs DocId="M:Security.SecKeyChain.QueryAsData(Security.SecRecord,System.Boolean,System.Int32,Security.SecStatusCode@)">
+        <param name="query">The query used to lookup the value on the keychain.</param>
+        <param name="wantPersistentReference">If set to true, the returned NSData can be stored on disk for later used, or shared between processes.</param>
+        <param name="max">Maximum number of values to return.</param>
+        <param name="status">Returns the status code from calling SecItemCopyMatching.</param>
+        <summary>Fetches a set of NSData records from the Keychain.</summary>
+        <returns>An array of NSData records associated with the given query.</returns>
+        <remarks>
+          <para>
+	    The returned NSData is a binary blob, if you want to get a
+	    high-level representation, use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Security%20Sec%20Key%20Chain%20Query%20As%20Record&amp;scope=Xamarin" title="M:Security.SecKeyChain.QueryAsRecord*">M:Security.SecKeyChain.QueryAsRecord*</a></format>
+	    instead.
+	  </para>
+          <para>
+	    This is the strongly typed equivalent of calling the
+	    Security's framework SecItemCopyMatching method with the
+	    kSecReturnData set to true and kSecMatchLimit set to the value of max,
+	    forcing that many record to be returned.  If
+	    wantPersistentReference is true, this also sets the
+	    kSecReturnPersistentRef dictionary key to true.
+	  </para>
+        </remarks>
+      </Docs>
+  <Docs DocId="M:Security.SecKeyChain.QueryAsData(Security.SecRecord)">
+        <param name="query">The query used to lookup the value on the keychain.</param>
+        <summary>Fetches an NSData record from the Keychain.</summary>
+        <returns>The NSData associated with the given query.</returns>
+        <remarks>
+          <para>
+	    The returned NSData is a binary blob, if you want to get a
+	    high-level representation, use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Security%20Sec%20Key%20Chain%20Query%20As%20Record&amp;scope=Xamarin" title="M:Security.SecKeyChain.QueryAsRecord*">M:Security.SecKeyChain.QueryAsRecord*</a></format>
+	    instead.
+	  </para>
+          <para>
+	    The returned NSData is not suitable for storing on disk or
+	    passing to another process.  If you want that, you should
+	    use the overload that takes the bool
+	    wantPersistentReference parameter and set that to true.
+	  </para>
+          <para>
+	    This is the strongly typed equivalent of calling the
+	    Security's framework SecItemCopyMatching method with the
+	    kSecReturnData set to true and kSecMatchLimit to 1,
+	    forcing a single record to be returned.
+	  </para>
+        </remarks>
+      </Docs>
+  <Docs DocId="M:Security.SecKeyChain.QueryAsData(Security.SecRecord,System.Int32)">
+        <param name="query">The query used to lookup the value on the keychain.</param>
+        <param name="max">Maximum number of values to return.</param>
+        <summary>Fetches a set of NSData records from the Keychain.</summary>
+        <returns>An array of NSData records associated with the given query.</returns>
+        <remarks>
+          <para>
+	    The returned NSData is a binary blob, if you want to get a
+	    high-level representation, use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Security%20Sec%20Key%20Chain%20Query%20As%20Record&amp;scope=Xamarin" title="M:Security.SecKeyChain.QueryAsRecord*">M:Security.SecKeyChain.QueryAsRecord*</a></format>
+	    instead.
+	  </para>
+          <para>
+	    The returned NSData is not suitable for storing on disk or
+	    passing to another process.  If you want that, you should
+	    use the overload that takes the bool
+	    wantPersistentReference parameter and set that to true.
+	  </para>
+          <para>
+	    This is the strongly typed equivalent of calling the
+	    Security's framework SecItemCopyMatching method with the
+	    kSecReturnData set to true and kSecMatchLimit set to the value of max,
+	    forcing that many record to be returned.
+	  </para>
+        </remarks>
+      </Docs>
+  <Docs DocId="M:Security.SecKeyChain.QueryAsRecord(Security.SecRecord,System.Int32,Security.SecStatusCode@)">
+        <param name="query">The query used to lookup the value on the keychain.</param>
+        <param name="max">Maximum number of values to return.</param>
+        <param name="result">Returns the status code from calling SecItemCopyMatching.</param>
+        <summary>Fetches one or more SecRecords.</summary>
+        <returns>Returns an array of strongly typed SecRecord objects.</returns>
+        <remarks>
+          <para>
+	    Unlike the <see cref="M:Security.SecKeyChain.QueryAsData(Security.SecRecord,System.Boolean,System.Int32,Security.SecStatusCode@)" />
+	    methods which return a binary blob inside an NSData, this
+	    returns a strongly typed SecRecord that you can easily
+	    inspect.
+	  </para>
+          <para>
+	    This is the strongly typed equivalent of calling the
+	    Security's framework SecItemCopyMatching method with the
+	    kSecReturnData set to true, kSecReturnAttributes set to
+	    true and kSecMatchLimit set to max, which returns at most
+	    that many records.
+	  </para>
+        </remarks>
+      </Docs>
+  <Docs DocId="M:Security.SecKeyChain.QueryAsConcreteType(Security.SecRecord,Security.SecStatusCode@)">
+        <param name="query">The query used to lookup the value on the keychain.</param>
+        <param name="result">Returns the status code from calling SecItemCopyMatching.</param>
+        <summary>Use this method to query the KeyChain and get back a <see cref="T:Security.SecCertificate" />, a <see cref="T:Security.SecKey" /> or a <see cref="T:Security.SecIdentity" />.</summary>
+        <returns>An object that can be one of <see cref="T:Security.SecCertificate" />, a <see cref="T:Security.SecKey" /> or a <see cref="T:Security.SecIdentity" /> or null if there is no value found. </returns>
+        <remarks>
+          <para>
+	    This method will throw an exception if the KeyChain
+	    contains a new data type that you have introduced with a
+	    newer version of Xamarin.iOS into the keychain and you
+	    then try to use this with an older version that does not
+	    have the ability of decoding theve value.
+	  </para>
+          <para>
+	    This is the strongly typed equivalent of calling the
+	    Security's framework SecItemCopyMatching method with the
+	    kSecReturnRef set to true.
+	  </para>
+        </remarks>
+      </Docs>
+</Documentation>

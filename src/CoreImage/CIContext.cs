@@ -228,12 +228,11 @@ namespace CoreImage {
 		}
 
 #if HAS_OPENGLES
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("tvos")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-		[UnsupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("ios12.0")]
-		[ObsoletedOSPlatform ("tvos12.0")]
+		/// <param name="eaglContext">The source <see cref="T:OpenGLES.EAGLContext" />.</param>
+		///         <param name="options">The desired <see cref="T:CoreImage.CIContextOptions" />.</param>
+		///         <summary>Creates a <see cref="T:CoreImage.CIContext" /> based on the <paramref name="eaglContext" />, with the specified <paramref name="options" />.</summary>
+		///         <returns>A new <see cref="T:CoreImage.CIContext" />.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CIContext FromContext (EAGLContext eaglContext, CIContextOptions? options)
 		{
 			if (options is null)
@@ -243,6 +242,11 @@ namespace CoreImage {
 		}
 #endif
 
+		/// <param name="device">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>Creates a new CIContext from the provided Metal device, along with the specified context.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CIContext FromMetalDevice (IMTLDevice device, CIContextOptions? options)
 		{
 			if (options is null)
@@ -252,6 +256,10 @@ namespace CoreImage {
 		}
 
 #if MONOMAC
+		/// <param name="size">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.11")]

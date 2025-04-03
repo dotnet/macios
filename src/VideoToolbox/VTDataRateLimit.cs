@@ -33,6 +33,10 @@ namespace VideoToolbox {
 		///         <remarks>To be added.</remarks>
 		public double Seconds { get; set; }
 
+		/// <param name="numberOfBytes">To be added.</param>
+		///         <param name="seconds">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public VTDataRateLimit (uint numberOfBytes, double seconds) : this ()
 		{
 			NumberOfBytes = numberOfBytes;

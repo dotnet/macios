@@ -8,6 +8,10 @@ namespace PassKit {
 
 	public partial class PKContactFieldsExtensions {
 
+		/// <param name="set">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		static public PKContactFields GetValue (NSSet set)
 		{
 			if (set is null)
@@ -15,6 +19,10 @@ namespace PassKit {
 			return PKContactFieldsExtensions.ToFlags (set.ToArray<NSString> ());
 		}
 
+		/// <param name="values">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		static public NSSet GetSet (PKContactFields values)
 		{
 			return new NSMutableSet (values.ToArray ());

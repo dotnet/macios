@@ -29,7 +29,7 @@ namespace UIKit {
 				if (clicked is not null)
 					clicked (sender, EventArgs.Empty);
 			}
-	   }
+		}
 
 		/// <param name="image">Image to be used in the button. If it is too large, the image is scaled to fit.</param>
 		/// <param name="style">A style value defined in <see cref="T:UIKit.UIBarButtonItemStyle" />.</param>

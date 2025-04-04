@@ -1232,7 +1232,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			will apply to Xamarin.Mac as well.
 		-->
 		<ParseDeviceSpecificBuildInformation
-			SessionId="$(BuildSessionId)"
 			Condition="'$(DeviceSpecificBuild)' == 'true' And '$(TargetiOSDevice)' != '' And '$(_CanDeployToDeviceOrSimulator)' == 'true' And '$(_PlatformName)' != 'macOS'"
 			Architectures="$(TargetArchitectures)"
 			IntermediateOutputPath="$(IntermediateOutputPath)"

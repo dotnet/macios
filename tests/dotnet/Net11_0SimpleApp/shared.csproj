@@ -5,10 +5,13 @@
 
 		<ApplicationTitle>MySimpleApp</ApplicationTitle>
 		<ApplicationId>com.xamarin.mysimpleapp</ApplicationId>
-		<ApplicationVersion>6.0</ApplicationVersion>
+		<ApplicationVersion>9.0</ApplicationVersion>
 
 		<ExcludeNUnitLiteReference>true</ExcludeNUnitLiteReference>
 		<ExcludeTouchUnitReference>true</ExcludeTouchUnitReference>
+
+		<!-- This is only to speed up the build -->
+		<UseInterpreter Condition="!$(TargetFramework.EndsWith ('-macos'))">true</UseInterpreter>
 	</PropertyGroup>
 
 	<Import Project="../../common/shared-dotnet.csproj" />

@@ -52,6 +52,10 @@ namespace Xamarin.Tests {
 			}
 		}
 
+		public static Version DotNetVersion {
+			get => Version.Parse (DotNetTfm.Replace ("net", ""));
+		}
+
 		static bool? use_system; // if the system-installed XI/XM should be used instead of the local one.
 
 		public static bool UseSystem {

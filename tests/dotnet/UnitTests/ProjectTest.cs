@@ -1553,62 +1553,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		public void BuildNet6_0App (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			var project = "Net6_0SimpleApp";
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
-
-			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, netVersion: "net6.0");
-			Clean (project_path);
-			var properties = GetDefaultProperties (runtimeIdentifiers);
-			properties ["ExcludeNUnitLiteReference"] = "true";
-			properties ["ExcludeTouchUnitReference"] = "true";
-			// This is to prevent this type of errors:
-			//     Unable to find package Microsoft.NETCore.App.Ref with version (= 6.0.27)
-			// which happens when we don't have a feed for the Microsoft.NETCore.App.Ref version in question
-			// (the specific package version may in fact not exist yet - which happens sometimes for maestro bumps,
-			// and if that happens, we can do nothing but wait, which may take a while).
-			// This works around the problem by just skipping the reference to the Microsoft.NETCore.App.Ref package,
-			// which we don't need for this test anyway.
-			properties ["DisableImplicitFrameworkReferences"] = "true";
-
-			var result = DotNet.AssertBuildFailure (project_path, properties);
-			var errors = BinLog.GetBuildLogErrors (result.BinLogPath).ToList ();
-
-			// Due to an implementation detail in .NET, the same error message is shown twice.
-			var targetFramework = $"net6.0-{platform.AsString ().ToLowerInvariant ()}";
-			AssertErrorMessages (errors,
-				$"The workload '{targetFramework}' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/maui-support-policy for more information about the support policy.",
-				$"The workload '{targetFramework}' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/maui-support-policy for more information about the support policy.");
-		}
-
-		[Test]
-		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
-		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
-		public void BuildNetFutureApp (ApplePlatform platform, string runtimeIdentifiers)
-		{
-			// Builds an app with a higher .NET version than we support (for instance 'net9.0-ios' when we support 'net8.0-ios')
-			var project = "MySimpleApp";
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
-
-			var majorNetVersion = Version.Parse (Configuration.DotNetTfm.Replace ("net", "")).Major;
-			var netVersion = $"net{majorNetVersion + 1}.0";
-			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, netVersion: netVersion);
-			Clean (project_path);
-			var properties = GetDefaultProperties (runtimeIdentifiers);
-			var targetFramework = platform.ToFramework (netVersion);
-			properties ["TargetFramework"] = targetFramework;
-			properties ["ExcludeNUnitLiteReference"] = "true";
-			properties ["ExcludeTouchUnitReference"] = "true";
-
-			var result = DotNet.AssertBuildFailure (project_path, properties);
-			var errors = BinLog.GetBuildLogErrors (result.BinLogPath).ToList ();
-
-			AssertErrorMessages (errors,
-				$"The current .NET SDK does not support targeting .NET {majorNetVersion + 1}.0.  Either target .NET {majorNetVersion}.0 or lower, or use a version of the .NET SDK that supports .NET {majorNetVersion + 1}.0. Download the .NET SDK from https://aka.ms/dotnet/download");
+			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 6, isFuture: false);
 		}
 
 		[Test]
@@ -1619,8 +1564,59 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		public void BuildNet7_0App (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			var tfm = "net7.0";
-			var project = "Net7_0SimpleApp";
+			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 7, isFuture: false);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
+		public void BuildNet8_0App (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 8, isFuture: false);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
+		public void BuildNet9_0App (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			BuildSupportedNetVersionApp (platform, runtimeIdentifiers, 9);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
+		public void BuildNet10_0App (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			BuildSupportedNetVersionApp (platform, runtimeIdentifiers, 10);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
+		public void BuildNet11_0App (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 11, isFuture: true);
+			// In .NET 11
+			// * Copy this test and create a new .NET 12 test
+			// * Update this test to call 'BuildSupportedNetVersionApp'
+			// * The SupportedOSPlatformVersion values in the test project might need updating.
+		}
+
+		void BuildUnsupportedNetVersionApp (ApplePlatform platform, string runtimeIdentifiers, int majorNetVersion, bool isFuture)
+		{
+			var tfm = $"net{majorNetVersion}.0";
+			var project = $"Net{majorNetVersion}_0SimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 
@@ -1632,24 +1628,28 @@ namespace Xamarin.Tests {
 			var errors = BinLog.GetBuildLogErrors (result.BinLogPath).ToList ();
 			// Due to an implementation detail in .NET, the same error message is shown twice.
 			var targetFramework = $"{tfm}-{platform.AsString ().ToLowerInvariant ()}";
-			AssertErrorMessages (errors,
-				$"The workload '{targetFramework}' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/maui-support-policy for more information about the support policy.",
-				$"The workload '{targetFramework}' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/maui-support-policy for more information about the support policy.");
+			if (isFuture) {
+				AssertErrorMessages (errors,
+					$"The current .NET SDK does not support targeting .NET {majorNetVersion}.0.  Either target .NET {majorNetVersion - 1}.0 or lower, or use a version of the .NET SDK that supports .NET {majorNetVersion}.0. Download the .NET SDK from https://aka.ms/dotnet/download");
+			} else {
+				AssertErrorMessages (errors,
+					$"The workload '{targetFramework}' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/maui-support-policy for more information about the support policy.",
+					$"The workload '{targetFramework}' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/maui-support-policy for more information about the support policy.");
+			}
 		}
 
-		[Test]
-		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
-		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
-		public void BuildNet8_0App (ApplePlatform platform, string runtimeIdentifiers)
+		void BuildSupportedNetVersionApp (ApplePlatform platform, string runtimeIdentifiers, int majorNetVersion)
 		{
-			var project = "Net8_0SimpleApp";
+			if (majorNetVersion == Configuration.DotNetVersion.Major)
+				Assert.Ignore ("Don't need to run when we're on the current .NET version."); // this is just to speed up the test run
+
+			var netVersion = $"{majorNetVersion}.0";
+			var tfm = "net" + netVersion;
+			var project = $"Net{netVersion.Replace ('.', '_')}SimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 
-			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, netVersion: "net8.0");
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, netVersion: tfm);
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 
@@ -1660,38 +1660,8 @@ namespace Xamarin.Tests {
 			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
 			Assert.AreEqual ("com.xamarin.mysimpleapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
 			Assert.AreEqual ("MySimpleApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
-			Assert.AreEqual ("8.0", infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
-			Assert.AreEqual ("8.0", infoPlist.GetString ("CFBundleShortVersionString").Value, "CFBundleShortVersionString");
-
-			var appExecutable = GetNativeExecutable (platform, appPath);
-			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
-		}
-
-		[Test]
-		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
-		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
-		public void BuildNet9_0App (ApplePlatform platform, string runtimeIdentifiers)
-		{
-			var project = "Net9_0SimpleApp";
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
-
-			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, netVersion: "net9.0");
-			Clean (project_path);
-			var properties = GetDefaultProperties (runtimeIdentifiers);
-
-			var result = DotNet.AssertBuild (project_path, properties);
-			AssertThatLinkerExecuted (result);
-			var infoPlistPath = GetInfoPListPath (platform, appPath);
-			Assert.That (infoPlistPath, Does.Exist, "Info.plist");
-			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
-			Assert.AreEqual ("com.xamarin.mysimpleapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
-			Assert.AreEqual ("MySimpleApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
-			Assert.AreEqual ("9.0", infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
-			Assert.AreEqual ("9.0", infoPlist.GetString ("CFBundleShortVersionString").Value, "CFBundleShortVersionString");
+			Assert.AreEqual (netVersion, infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
+			Assert.AreEqual (netVersion, infoPlist.GetString ("CFBundleShortVersionString").Value, "CFBundleShortVersionString");
 
 			var appExecutable = GetNativeExecutable (platform, appPath);
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);

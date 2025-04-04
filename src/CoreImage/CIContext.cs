@@ -235,6 +235,12 @@ namespace CoreImage {
 		///         <summary>Creates a <see cref="T:CoreImage.CIContext" /> based on the <paramref name="eaglContext" />, with the specified <paramref name="options" />.</summary>
 		///         <returns>A new <see cref="T:CoreImage.CIContext" />.</returns>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("ios12.0")]
+		[ObsoletedOSPlatform ("tvos12.0")]
 		public static CIContext FromContext (EAGLContext eaglContext, CIContextOptions? options)
 		{
 			if (options is null)

@@ -56,6 +56,13 @@ namespace QuickLook {
 		extern static /* CGImageRef */ IntPtr QLThumbnailImageCreate (/* CFAllocatorRef */ IntPtr allocator, /* CFUrlRef */ IntPtr url, CGSize maxThumbnailSize, /* CFDictionaryRef */ IntPtr options);
 
 #if NET
+		/// <param name="url">To be added.</param>
+		///         <param name="maxThumbnailSize">To be added.</param>
+		///         <param name="scaleFactor">To be added.</param>
+		///         <param name="iconMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]

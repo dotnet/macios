@@ -54,6 +54,12 @@ namespace AppKit {
 			set { base.Cell = value; }
 		}
 
+		/// <param name="title">To be added.</param>
+		///         <param name="image">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSButton CreateButton (string title, NSImage image, Action action)
 		{
 			var dispatcher = new NSActionDispatcher (action);
@@ -62,6 +68,11 @@ namespace AppKit {
 			return control;
 		}
 
+		/// <param name="title">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSButton CreateButton (string title, Action action)
 		{
 			var dispatcher = new NSActionDispatcher (action);
@@ -70,6 +81,11 @@ namespace AppKit {
 			return control;
 		}
 
+		/// <param name="image">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSButton CreateButton (NSImage image, Action action)
 		{
 			var dispatcher = new NSActionDispatcher (action);
@@ -78,6 +94,11 @@ namespace AppKit {
 			return control;
 		}
 
+		/// <param name="title">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSButton CreateCheckbox (string title, Action action)
 		{
 			var dispatcher = new NSActionDispatcher (action);
@@ -86,6 +107,11 @@ namespace AppKit {
 			return control;
 		}
 
+		/// <param name="title">To be added.</param>
+		///         <param name="action">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSButton CreateRadioButton (string title, Action action)
 		{
 			var dispatcher = new NSActionDispatcher (action);

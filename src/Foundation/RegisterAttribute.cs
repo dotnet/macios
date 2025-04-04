@@ -32,12 +32,21 @@ namespace Foundation {
 		string? name;
 		bool is_wrapper;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public RegisterAttribute () { }
+		/// <param name="name">The name to use when exposing this class to the Objective-C world.</param>
+		///         <summary>Used to specify how the ECMA class is exposed as an Objective-C class.</summary>
+		///         <remarks>To be added.</remarks>
 		public RegisterAttribute (string name)
 		{
 			this.name = name;
 		}
 
+		/// <param name="name">The name to use when exposing this class to the Objective-C world.</param>
+		///         <param name="isWrapper">Used to specify if the class being registered is wrapping an existing Objective-C class, or if it's a new class.</param>
+		///         <summary>Used to specify how the ECMA class is exposed as an Objective-C class.</summary>
+		///         <remarks>To be added.</remarks>
 		public RegisterAttribute (string name, bool isWrapper)
 		{
 			this.name = name;

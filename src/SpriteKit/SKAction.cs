@@ -22,6 +22,11 @@ namespace SpriteKit {
 
 	public partial class SKAction {
 
+		/// <param name="size">To be added.</param>
+		///         <param name="duration">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static SKAction ResizeTo (CGSize size, double duration)
 		{
 			return SKAction.ResizeTo (size.Width, size.Height, duration);

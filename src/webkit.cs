@@ -771,6 +771,9 @@ namespace WebKit {
 		string Cookie { get; set; }
 
 #if !XAMCORE_5_0
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'Body' property instead.")]
 		[Wrap ("Body", IsVirtual = true)]
 		DomHtmlElement body { get; set; }
@@ -780,6 +783,9 @@ namespace WebKit {
 		DomHtmlElement Body { get; set; }
 
 #if !XAMCORE_5_0
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'Images' property instead.")]
 		[Wrap ("Images", IsVirtual = true)]
 		DomHtmlCollection images { get; }
@@ -789,6 +795,9 @@ namespace WebKit {
 		DomHtmlCollection Images { get; }
 
 #if !XAMCORE_5_0
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'Applets' property instead.")]
 		[Wrap ("Applets", IsVirtual = true)]
 		DomHtmlCollection applets { get; }
@@ -798,6 +807,9 @@ namespace WebKit {
 		DomHtmlCollection Applets { get; }
 
 #if !XAMCORE_5_0
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'Links' property instead.")]
 		[Wrap ("Links", IsVirtual = true)]
 		DomHtmlCollection links { get; }
@@ -807,6 +819,9 @@ namespace WebKit {
 		DomHtmlCollection Links { get; }
 
 #if !XAMCORE_5_0
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'Forms' property instead.")]
 		[Wrap ("Forms", IsVirtual = true)]
 		DomHtmlCollection forms { get; }
@@ -816,6 +831,9 @@ namespace WebKit {
 		DomHtmlCollection Forms { get; }
 
 #if !XAMCORE_5_0
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'Anchors' property instead.")]
 		[Wrap ("Anchors", IsVirtual = true)]
 		DomHtmlCollection anchors { get; }
@@ -1569,6 +1587,9 @@ namespace WebKit {
 		bool DefaultChecked { get; set; }
 
 #if !XAMCORE_5_0
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'DefaultChecked' property instead.")]
 		[Wrap ("DefaultChecked", IsVirtual = true)]
 		bool defaultChecked { get; set; }
@@ -1854,6 +1875,9 @@ namespace WebKit {
 		[Export ("textEncodingName")]
 		string TextEncodingName { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isLoading")]
 		bool IsLoading { get; }
 
@@ -2193,6 +2217,9 @@ namespace WebKit {
 		[Export ("alternateTitle")]
 		string AlternateTitle { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("WebHistoryItemChangedNotification")]
 		[Notification]
 		NSString ChangedNotification { get; }
@@ -2249,18 +2276,33 @@ namespace WebKit {
 		[Export ("webView:unableToImplementPolicyWithError:frame:"), EventArgs ("WebFailureToImplementPolicy")]
 		void UnableToImplementPolicy (WebView webView, NSError error, WebFrame frame);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("WebActionNavigationTypeKey")]
 		NSString WebActionNavigationTypeKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("WebActionElementKey")]
 		NSString WebActionElementKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("WebActionButtonKey")]
 		NSString WebActionButtonKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("WebActionModifierFlagsKey")]
 		NSString WebActionModifierFlagsKey { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Field ("WebActionOriginalURLKey")]
 		NSString WebActionOriginalUrlKey { get; }
 	}
@@ -2308,6 +2350,9 @@ namespace WebKit {
 		[Export ("identifier")]
 		string Identifier { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("arePlugInsEnabled")]
 		bool PlugInsEnabled { get; [Bind ("setPlugInsEnabled:")] set; }
 
@@ -2351,9 +2396,15 @@ namespace WebKit {
 		[Export ("userStyleSheetLocation", ArgumentSemantic.Retain)]
 		NSUrl UserStyleSheetLocation { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("javaEnabled")]
 		bool JavaEnabled { [Bind ("isJavaEnabled")] get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("javaScriptEnabled")]
 		bool JavaScriptEnabled { [Bind ("isJavaScriptEnabled")] get; set; }
 
@@ -2729,6 +2780,9 @@ namespace WebKit {
 		[Export ("estimatedProgress")]
 		double EstimatedProgress { get; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isLoading")]
 		bool IsLoading { get; }
 
@@ -2769,30 +2823,45 @@ namespace WebKit {
 		[Export ("resourceLoadDelegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakResourceLoadDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakResourceLoadDelegate")]
 		IWebResourceLoadDelegate ResourceLoadDelegate { get; set; }
 
 		[Export ("downloadDelegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakDownloadDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDownloadDelegate")]
 		IWebDownloadDelegate DownloadDelegate { get; set; }
 
 		[Export ("frameLoadDelegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakFrameLoadDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakFrameLoadDelegate")]
 		IWebFrameLoadDelegate FrameLoadDelegate { get; set; }
 
 		[Export ("UIDelegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakUIDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakUIDelegate")]
 		IWebUIDelegate UIDelegate { get; set; }
 
 		[Export ("policyDelegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakPolicyDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakPolicyDelegate")]
 		IWebPolicyDelegate PolicyDelegate { get; set; }
 
@@ -2898,6 +2967,9 @@ namespace WebKit {
 		DomCssStyleDeclaration StyleDeclarationWithText (string text);
 
 		//Detected properties
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("editable")]
 		bool Editable { [Bind ("isEditable")] get; set; }
 
@@ -2907,6 +2979,9 @@ namespace WebKit {
 		[Export ("smartInsertDeleteEnabled")]
 		bool SmartInsertDeleteEnabled { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("continuousSpellCheckingEnabled")]
 		bool ContinuousSpellCheckingEnabled { [Bind ("isContinuousSpellCheckingEnabled")] get; set; }
 
@@ -5376,6 +5451,11 @@ namespace WebKit {
 		[return: NullAllowed]
 		WKNavigation LoadHtmlString (NSString htmlString, [NullAllowed] NSUrl baseUrl);
 
+		/// <param name="htmlString">To be added.</param>
+		///         <param name="baseUrl">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("LoadHtmlString ((NSString)htmlString, baseUrl)")]
 		[return: NullAllowed]
 		WKNavigation LoadHtmlString (string htmlString, NSUrl baseUrl);
@@ -5407,6 +5487,7 @@ namespace WebKit {
 		[Async]
 		void EvaluateJavaScript (NSString javascript, [NullAllowed] WKJavascriptEvaluationResult completionHandler);
 
+		/// <include file="../docs/api/WebKit/WKWebView.xml" path="/Documentation/Docs[@DocId='M:WebKit.WKWebView.EvaluateJavaScript(System.String,WebKit.WKJavascriptEvaluationResult)']/*" />
 		[Wrap ("EvaluateJavaScript ((NSString)javascript, completionHandler)")]
 		[Async]
 		void EvaluateJavaScript (string javascript, WKJavascriptEvaluationResult completionHandler);

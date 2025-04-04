@@ -34,6 +34,9 @@ namespace UIKit {
 		///         </remarks>
 		public UIOffset TextShadowOffset;
 
+		/// <summary>The default constructor does nothing, you must fill at least one property for this to be useful.</summary>
+		///         <remarks>
+		///         </remarks>
 		public UITextAttributes ()
 		{
 		}

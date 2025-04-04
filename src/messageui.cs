@@ -55,24 +55,57 @@ namespace MessageUI {
 		[Wrap ("WeakMailComposeDelegate")]
 		IMFMailComposeViewControllerDelegate MailComposeDelegate { get; set; }
 
+		/// <param name="subject">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setSubject:")]
 		void SetSubject (string subject);
 
+		/// <param name="recipients">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setToRecipients:")]
 		void SetToRecipients ([NullAllowed] string [] recipients);
 
+		/// <param name="ccRecipients">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setCcRecipients:")]
 		void SetCcRecipients ([NullAllowed] string [] ccRecipients);
 
+		/// <param name="bccRecipients">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setBccRecipients:")]
 		void SetBccRecipients ([NullAllowed] string [] bccRecipients);
 
+		/// <param name="body">To be added.</param>
+		///         <param name="isHtml">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setMessageBody:isHTML:")]
 		void SetMessageBody (string body, bool isHtml);
 
+		/// <param name="attachment">To be added.</param>
+		///         <param name="mimeType">To be added.</param>
+		///         <param name="fileName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addAttachmentData:mimeType:fileName:")]
 		void AddAttachmentData (NSData attachment, string mimeType, string fileName);
 
+		/// <param name="emailAddress">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("setPreferredSendingEmailAddress:")]
 		void SetPreferredSendingEmailAddress (string emailAddress);
@@ -95,6 +128,11 @@ namespace MessageUI {
 	[Model]
 	[Protocol]
 	interface MFMailComposeViewControllerDelegate {
+		/// <param name="controller">To be added.</param>
+		///         <param name="result">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("mailComposeController:didFinishWithResult:error:")]
 		void Finished (MFMailComposeViewController controller, MFMailComposeResult result, [NullAllowed] NSError error);
 	}
@@ -166,6 +204,10 @@ namespace MessageUI {
 		[Export ("canSendSubject")]
 		bool CanSendSubject { get; }
 
+		/// <param name="uti">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("isSupportedAttachmentUTI:")]
 		bool IsSupportedAttachment (string uti);
@@ -177,6 +219,9 @@ namespace MessageUI {
 		[Export ("subject", ArgumentSemantic.Copy)]
 		string Subject { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[return: NullAllowed]
 		[Export ("attachments")]
 		NSDictionary [] GetAttachments ();
@@ -191,9 +236,26 @@ namespace MessageUI {
 		[NullAllowed, Export ("message", ArgumentSemantic.Copy)]
 		MSMessage Message { get; set; }
 
+		/// <param name="attachmentURL">To be added.</param>
+		///         <param name="alternateFilename">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("addAttachmentURL:withAlternateFilename:")]
 		bool AddAttachment (NSUrl attachmentURL, [NullAllowed] string alternateFilename);
 
+		/// <param name="attachmentData">To be added.</param>
+		///         <param name="uti">To be added.</param>
+		///         <param name="filename">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("addAttachmentData:typeIdentifier:filename:")]
 		bool AddAttachment (NSData attachmentData, string uti, string filename);
 
@@ -201,6 +263,8 @@ namespace MessageUI {
 		[Export ("insertCollaborationItemProvider:")]
 		bool InsertCollaboration (NSItemProvider itemProvider);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("disableUserAttachments")]
 		void DisableUserAttachments ();
 
@@ -251,6 +315,10 @@ namespace MessageUI {
 	[Model]
 	[Protocol]
 	interface MFMessageComposeViewControllerDelegate {
+		/// <param name="controller">To be added.</param>
+		///         <param name="result">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("messageComposeViewController:didFinishWithResult:")]
 		void Finished (MFMessageComposeViewController controller, MessageComposeResult result);

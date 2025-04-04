@@ -215,6 +215,9 @@ namespace AuthenticationServices {
 		[Export ("sharedStore")]
 		ASCredentialIdentityStore SharedStore { get; }
 
+		/// <param name="completion">To be added.</param>
+		///         <summary>Retrieves the state of store, which is passed as an argument to the <paramref name="completion" /> handler.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("getCredentialIdentityStoreStateWithCompletion:")]
 		void GetCredentialIdentityStoreState (Action<ASCredentialIdentityStoreState> completion);
@@ -224,6 +227,10 @@ namespace AuthenticationServices {
 		[Export ("getCredentialIdentitiesForService:credentialIdentityTypes:completionHandler:")]
 		void GetCredentialIdentities ([NullAllowed] ASCredentialServiceIdentifier serviceIdentifier, [NullAllowed] ASCredentialIdentityTypes credentialIdentityTypes, ASCredentialIdentityStoreGetCredentialIdentitiesHandler completion);
 
+		/// <param name="credentialIdentities">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>Saves (or replaces, if the store does not support incremental updates) the <paramref name="credentialIdentities" /> to the store.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Deprecated (PlatformName.MacOSX, 14, 0, message: "Use 'SaveCredentialIdentityEntries  (ASCredentialIdentity [])' instead.")]
 		[Deprecated (PlatformName.iOS, 17, 0, message: "Use 'SaveCredentialIdentityEntries  (ASCredentialIdentity [])' instead.")]
@@ -231,6 +238,10 @@ namespace AuthenticationServices {
 		[Export ("saveCredentialIdentities:completion:")]
 		void SaveCredentialIdentities (ASPasswordCredentialIdentity [] credentialIdentities, [NullAllowed] ASCredentialIdentityStoreCompletionHandler completion);
 
+		/// <param name="credentialIdentities">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>Removes the specified <paramref name="credentialIdentities" /> from the store. The <paramref name="completion" /> handler is called after the process completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacCatalyst, 17, 0, message: "Use 'RemoveCredentialIdentityEntries (ASPasswordCredentialIdentity [])' instead.")]
 		[Deprecated (PlatformName.iOS, 17, 0, message: "Use 'RemoveCredentialIdentityEntries (ASPasswordCredentialIdentity [])' instead.")]
 		[Deprecated (PlatformName.MacOSX, 14, 0, message: "Use 'RemoveCredentialIdentityEntries (ASPasswordCredentialIdentity [])' instead.")]
@@ -238,10 +249,17 @@ namespace AuthenticationServices {
 		[Export ("removeCredentialIdentities:completion:")]
 		void RemoveCredentialIdentities (ASPasswordCredentialIdentity [] credentialIdentities, [NullAllowed] ASCredentialIdentityStoreCompletionHandler completion);
 
+		/// <param name="completion">To be added.</param>
+		///         <summary>Removes all credential identities from the store. The <paramref name="completion" /> handler is called after the process completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("removeAllCredentialIdentitiesWithCompletion:")]
 		void RemoveAllCredentialIdentities ([NullAllowed] Action<bool, NSError> completion);
 
+		/// <param name="newCredentialIdentities">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>Replaces the existing identities with the specified <paramref name="newCredentialIdentities" /> from the store. The <paramref name="completion" /> handler is called after the process completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacCatalyst, 17, 0, message: "Use 'ReplaceCredentialIdentityEntries (ASPasswordCredentialIdentity [])' instead.")]
 		[Deprecated (PlatformName.iOS, 17, 0, message: "Use 'ReplaceCredentialIdentityEntries (ASPasswordCredentialIdentity [])' instead.")]
 		[Deprecated (PlatformName.MacOSX, 14, 0, message: "Use 'ReplaceCredentialIdentityEntries (ASPasswordCredentialIdentity [])' instead.")]
@@ -293,12 +311,21 @@ namespace AuthenticationServices {
 	[BaseType (typeof (NSExtensionContext))]
 	[DisableDefaultCtor]
 	interface ASCredentialProviderExtensionContext {
+		/// <param name="credential">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>Completes the request by providing <paramref name="credential" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("completeRequestWithSelectedCredential:completionHandler:")]
 		void CompleteRequest (ASPasswordCredential credential, [NullAllowed] ASCredentialProviderExtensionRequestCompletionHandler completionHandler);
 
+		/// <summary>Called to complete the request and dismiss the associated <see cref="T:UIKit.UIViewController" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("completeExtensionConfigurationRequest")]
 		void CompleteExtensionConfigurationRequest ();
 
+		/// <param name="error">The error must be of type <see cref="T:AuthenticationServices.ASExtensionErrorCode" />.</param>
+		///         <summary>Cancels the request.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancelRequestWithError:")]
 		void CancelRequest (NSError error);
 
@@ -355,6 +382,12 @@ namespace AuthenticationServices {
 		[DesignatedInitializer]
 		NativeHandle Constructor (ASCredentialServiceIdentifier serviceIdentifier, string user, [NullAllowed] string recordIdentifier);
 
+		/// <param name="serviceIdentifier">To be added.</param>
+		///         <param name="user">To be added.</param>
+		///         <param name="recordIdentifier">To be added.</param>
+		///         <summary>Static factory method to create a new <see cref="T:AuthenticationServices.ASPasswordCredentialIdentity" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("identityWithServiceIdentifier:user:recordIdentifier:")]
 		ASPasswordCredentialIdentity Create (ASCredentialServiceIdentifier serviceIdentifier, string user, [NullAllowed] string recordIdentifier);
@@ -395,21 +428,32 @@ namespace AuthenticationServices {
 		[Export ("extensionContext", ArgumentSemantic.Strong)]
 		ASCredentialProviderExtensionContext ExtensionContext { get; }
 
+		/// <param name="serviceIdentifiers">Zero or more service identifiers. More-specific identifiers are at lower index values.</param>
+		///         <summary>Developers should override this method to prepare a list of credentials for the <paramref name="serviceIdentifiers" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("prepareCredentialListForServiceIdentifiers:")]
 		void PrepareCredentialList (ASCredentialServiceIdentifier [] serviceIdentifiers);
 
+		/// <param name="credentialIdentity">To be added.</param>
+		///         <summary>Developers should override this method to attempt to provide the credential without user interaction.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 14, 0, message: "Use 'ProvideCredentialWithoutUserInteraction (ASCredentialRequest)' instead.")]
 		[Deprecated (PlatformName.iOS, 17, 0, message: "Use 'ProvideCredentialWithoutUserInteraction (ASCredentialRequest)' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 17, 0, message: "Use 'ProvideCredentialWithoutUserInteraction (ASCredentialRequest)' instead.")]
 		[Export ("provideCredentialWithoutUserInteractionForIdentity:")]
 		void ProvideCredentialWithoutUserInteraction (ASPasswordCredentialIdentity credentialIdentity);
 
+		/// <param name="credentialIdentity">To be added.</param>
+		///         <summary>Developers should override this method which is called shortly before the user is shown the interface for the credential.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 14, 0, message: "Use 'PrepareInterfaceToProvideCredential (ASPasswordCredentialIdentity)' instead.")]
 		[Deprecated (PlatformName.iOS, 17, 0, message: "Use 'PrepareInterfaceToProvideCredential (ASPasswordCredentialIdentity)' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 17, 0, message: "Use 'PrepareInterfaceToProvideCredential (ASPasswordCredentialIdentity)' instead.")]
 		[Export ("prepareInterfaceToProvideCredentialForIdentity:")]
 		void PrepareInterfaceToProvideCredential (ASPasswordCredentialIdentity credentialIdentity);
 
+		/// <summary>Developers should override this method to prepare for the user-experience of enabling the developer's extension.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("prepareInterfaceForExtensionConfiguration")]
 		void PrepareInterfaceForExtensionConfiguration ();
 
@@ -450,6 +494,11 @@ namespace AuthenticationServices {
 		[Export ("initWithUser:password:")]
 		NativeHandle Constructor (string user, string password);
 
+		/// <param name="user">To be added.</param>
+		///         <param name="password">To be added.</param>
+		///         <summary>Static factory methods to create a new <see cref="T:AuthenticationServices.ASPasswordCredential" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("credentialWithUser:password:")]
 		ASPasswordCredential Create (string user, string password);

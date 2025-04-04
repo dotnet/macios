@@ -41,6 +41,12 @@ namespace Foundation {
 			return ret;
 		}
 
+		/// <param name="suiteName">To be added.</param>
+		///         <param name="commandName">To be added.</param>
+		///         <param name="commandDeclaration">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSScriptCommandDescription Create (string suiteName, string commandName, NSScriptCommandDescriptionDictionary commandDeclaration)
 		{
 			if (String.IsNullOrEmpty (suiteName))
@@ -98,6 +104,10 @@ namespace Foundation {
 			get { return Runtime.ToFourCCString (FCCAppleEventCode); }
 		}
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public string GetTypeForArgument (string name)
 		{
 			if (name is null)
@@ -109,6 +119,10 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public string GetAppleEventCodeForArgument (string name)
 		{
 			if (name is null)
@@ -119,6 +133,10 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool IsOptionalArgument (string name)
 		{
 			using (var nsName = new NSString (name)) {
@@ -133,6 +151,9 @@ namespace Foundation {
 			get { return Runtime.ToFourCCString (FCCAppleEventCodeForReturnType); }
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSScriptCommand CreateCommand ()
 		{
 			return new NSScriptCommand (CreateCommandInstancePtr ());

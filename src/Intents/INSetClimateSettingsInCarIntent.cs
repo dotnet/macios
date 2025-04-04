@@ -9,6 +9,19 @@ using ObjCRuntime;
 namespace Intents {
 
 	public partial class INSetClimateSettingsInCarIntent {
+		/// <param name="enableFan">To be added.</param>
+		///         <param name="enableAirConditioner">To be added.</param>
+		///         <param name="enableClimateControl">To be added.</param>
+		///         <param name="enableAutoMode">To be added.</param>
+		///         <param name="airCirculationMode">To be added.</param>
+		///         <param name="fanSpeedIndex">To be added.</param>
+		///         <param name="fanSpeedPercentage">To be added.</param>
+		///         <param name="relativeFanSpeedSetting">To be added.</param>
+		///         <param name="temperature">To be added.</param>
+		///         <param name="relativeTemperatureSetting">To be added.</param>
+		///         <param name="climateZone">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("ios12.0", "Use the overload that takes 'INSpeakableString carName'.")]

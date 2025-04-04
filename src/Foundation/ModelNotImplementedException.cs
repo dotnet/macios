@@ -24,10 +24,14 @@ using System;
 
 namespace Foundation {
 	public class ModelNotImplementedException : Exception {
+		/// <summary>Default constructor.</summary>
+		///         <remarks>To be added.</remarks>
 		public ModelNotImplementedException () { }
 	}
 
 	public class You_Should_Not_Call_base_In_This_Method : Exception {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public You_Should_Not_Call_base_In_This_Method () { }
 	}
 }

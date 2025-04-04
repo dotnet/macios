@@ -20,6 +20,8 @@ namespace MediaPlayer {
 	// MPVolumeSettings.h
 	public static class MPVolumeSettings {
 #if NET
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("ios11.3", "Use 'MPVolumeView' to present volume controls.")]
@@ -30,6 +32,8 @@ namespace MediaPlayer {
 		public extern static void AlertShow ();
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("ios11.3", "Use 'MPVolumeView' to present volume controls.")]
@@ -51,6 +55,9 @@ namespace MediaPlayer {
 		extern static /* BOOL */ byte MPVolumeSettingsAlertIsVisible ();
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("ios11.3", "Use 'MPVolumeView' to present volume controls.")]

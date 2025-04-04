@@ -42,6 +42,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		static extern void sec_protocol_options_set_local_identity (sec_protocol_options_t handle, sec_identity_t identity);
 
+		/// <param name="identity">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetLocalIdentity (SecIdentity2 identity)
 		{
 			if (identity is null)
@@ -106,6 +109,9 @@ namespace Security {
 		static extern void sec_protocol_options_add_tls_ciphersuite_group (sec_protocol_options_t handle, SslCipherSuiteGroup cipherSuiteGroup);
 
 #if NET
+		/// <param name="cipherSuiteGroup">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -161,6 +167,9 @@ namespace Security {
 		static extern void sec_protocol_options_set_tls_min_version (sec_protocol_options_t handle, SslProtocol protocol);
 
 #if NET
+		/// <param name="protocol">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -218,6 +227,9 @@ namespace Security {
 		static extern void sec_protocol_options_set_tls_max_version (sec_protocol_options_t handle, SslProtocol protocol);
 
 #if NET
+		/// <param name="protocol">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -353,6 +365,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		static extern void sec_protocol_options_add_tls_application_protocol (sec_protocol_options_t handle, IntPtr applicationProtocol);
 
+		/// <param name="applicationProtocol">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void AddTlsApplicationProtocol (string applicationProtocol)
 		{
 			if (applicationProtocol is null)
@@ -364,6 +379,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		static extern void sec_protocol_options_set_tls_server_name (sec_protocol_options_t handle, IntPtr serverName);
 
+		/// <param name="serverName">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetTlsServerName (string serverName)
 		{
 			if (serverName is null)
@@ -390,6 +408,9 @@ namespace Security {
 		static extern void sec_protocol_options_set_tls_diffie_hellman_parameters (IntPtr handle, IntPtr dispatchDataParameter);
 
 #if NET
+		/// <param name="parameters">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -414,6 +435,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		static extern void sec_protocol_options_add_pre_shared_key (IntPtr handle, IntPtr dispatchDataParameter);
 
+		/// <param name="parameters">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void AddPreSharedKey (DispatchData parameters)
 		{
 			if (parameters is null)
@@ -425,46 +449,74 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		static extern void sec_protocol_options_set_tls_tickets_enabled (IntPtr handle, byte ticketsEnabled);
 
+		/// <param name="ticketsEnabled">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetTlsTicketsEnabled (bool ticketsEnabled) => sec_protocol_options_set_tls_tickets_enabled (GetCheckedHandle (), (byte) (ticketsEnabled ? 1 : 0));
 
 		[DllImport (Constants.SecurityLibrary)]
 		static extern void sec_protocol_options_set_tls_is_fallback_attempt (IntPtr handle, byte isFallbackAttempt);
 
+		/// <param name="isFallbackAttempt">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetTlsIsFallbackAttempt (bool isFallbackAttempt) => sec_protocol_options_set_tls_is_fallback_attempt (GetCheckedHandle (), (byte) (isFallbackAttempt ? 1 : 0));
 
 		[DllImport (Constants.SecurityLibrary)]
 		static extern void sec_protocol_options_set_tls_resumption_enabled (IntPtr handle, byte resumptionEnabled);
 
+		/// <param name="resumptionEnabled">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetTlsResumptionEnabled (bool resumptionEnabled) => sec_protocol_options_set_tls_resumption_enabled (GetCheckedHandle (), (byte) (resumptionEnabled ? 1 : 0));
 
 		[DllImport (Constants.SecurityLibrary)]
 		static extern void sec_protocol_options_set_tls_false_start_enabled (IntPtr handle, byte falseStartEnabled);
 
+		/// <param name="falseStartEnabled">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetTlsFalseStartEnabled (bool falseStartEnabled) => sec_protocol_options_set_tls_false_start_enabled (GetCheckedHandle (), (byte) (falseStartEnabled ? 1 : 0));
 
 		[DllImport (Constants.SecurityLibrary)]
 		static extern void sec_protocol_options_set_tls_ocsp_enabled (IntPtr handle, byte ocspEnabled);
 
+		/// <param name="ocspEnabled">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetTlsOcspEnabled (bool ocspEnabled) => sec_protocol_options_set_tls_ocsp_enabled (GetCheckedHandle (), (byte) (ocspEnabled ? 1 : 0));
 
 		[DllImport (Constants.SecurityLibrary)]
 		static extern void sec_protocol_options_set_tls_sct_enabled (IntPtr handle, byte sctEnabled);
 
+		/// <param name="sctEnabled">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetTlsSignCertificateTimestampEnabled (bool sctEnabled) => sec_protocol_options_set_tls_sct_enabled (GetCheckedHandle (), (byte) (sctEnabled ? 1 : 0));
 
 		[DllImport (Constants.SecurityLibrary)]
 		static extern void sec_protocol_options_set_tls_renegotiation_enabled (IntPtr handle, byte renegotiationEnabled);
 
+		/// <param name="renegotiationEnabled">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetTlsRenegotiationEnabled (bool renegotiationEnabled) => sec_protocol_options_set_tls_renegotiation_enabled (GetCheckedHandle (), (byte) (renegotiationEnabled ? 1 : 0));
 
 		[DllImport (Constants.SecurityLibrary)]
 		static extern void sec_protocol_options_set_peer_authentication_required (IntPtr handle, byte peerAuthenticationRequired);
 
+		/// <param name="peerAuthenticationRequired">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetPeerAuthenticationRequired (bool peerAuthenticationRequired) => sec_protocol_options_set_peer_authentication_required (GetCheckedHandle (), (byte) (peerAuthenticationRequired ? 1 : 0));
 
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe static extern void sec_protocol_options_set_key_update_block (sec_protocol_options_t options, BlockLiteral* key_update_block, dispatch_queue_t key_update_queue);
 
+		/// <param name="keyUpdate">To be added.</param>
+		///         <param name="keyUpdateQueue">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void SetKeyUpdateCallback (SecProtocolKeyUpdate keyUpdate, DispatchQueue keyUpdateQueue)
 		{

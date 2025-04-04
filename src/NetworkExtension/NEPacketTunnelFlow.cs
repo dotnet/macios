@@ -18,6 +18,10 @@ namespace NetworkExtension {
 	public class NEPacketTunnelFlowReadResult {
 
 #if !COREBUILD
+		/// <param name="packets">To be added.</param>
+		///         <param name="protocols">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NEPacketTunnelFlowReadResult (NSData [] packets, NSNumber [] protocols)
 		{
 			Packets = packets;

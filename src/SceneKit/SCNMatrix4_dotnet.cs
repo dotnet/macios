@@ -154,6 +154,9 @@ namespace SceneKit {
 			Column3 = new SCNVector4 (m03, m13, m23, m33);
 		}
 
+		/// <param name="transform">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SCNMatrix4 (CoreAnimation.CATransform3D transform)
 		{
 			Column0 = new SCNVector4 ((pfloat) transform.M11, (pfloat) transform.M12, (pfloat) transform.M13, (pfloat) transform.M14);

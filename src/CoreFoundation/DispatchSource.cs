@@ -515,8 +515,22 @@ namespace CoreFoundation {
 		public class ProcessMonitor : DispatchSource {
 			static IntPtr type_proc;
 
+			/// <param name="handle">To be added.</param>
+			///         <param name="owns">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public ProcessMonitor (IntPtr handle, bool owns) : base (handle, owns) { }
+			/// <param name="handle">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			public ProcessMonitor (IntPtr handle) : base (handle, false) { }
+			/// <param name="processId">The process ID to monitor.</param>
+			///         <param name="monitorKind">The kind of monitoring desired fo the specified process.</param>
+			///         <param name="queue">The target queue for this dispatch source object.   Pass null to use the default target queue (the default priority global concurrent queue).</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>
+			///           <para />
+			///         </remarks>
 			public ProcessMonitor (int processId, ProcessMonitorFlags monitorKind = ProcessMonitorFlags.Exit, DispatchQueue? queue = null)
 			{
 
@@ -781,6 +795,11 @@ namespace CoreFoundation {
 			[DllImport (Constants.libcLibrary)]
 			internal extern static int close (int fd);
 
+			/// <param name="path">Path to a file to monitor.</param>
+			///         <param name="vnodeKind">The kind of monitoring to perform.</param>
+			///         <param name="queue">The target queue for this dispatch source object.   Pass null to use the default target queue (the default priority global concurrent queue).</param>
+			///         <summary>Creates a VNode monitor for the specified file path to monitor the specified set of events on it.</summary>
+			///         <remarks>To be added.</remarks>
 			public VnodeMonitor (string path, VnodeMonitorKind vnodeKind, DispatchQueue? queue = null)
 			{
 				if (path is null)
@@ -803,6 +822,9 @@ namespace CoreFoundation {
 					InitializeHandle (handle);
 			}
 
+			/// <param name="disposing">To be added.</param>
+			///         <summary>To be added.</summary>
+			///         <remarks>To be added.</remarks>
 			protected override void Dispose (bool disposing)
 			{
 				if (fd != -1) {
@@ -848,6 +870,10 @@ namespace CoreFoundation {
 			///         <remarks>To be added.</remarks>
 			public WriteMonitor (IntPtr handle) : base (handle, false) { }
 
+			/// <param name="fileDescriptor">To be added.</param>
+			///         <param name="queue">The target queue for this dispatch source object.   Pass null to use the default target queue (the default priority global concurrent queue).</param>
+			///         <summary>Creates a file descriptor monitor that invokes the event handler when writing to the file descriptor wont block.</summary>
+			///         <remarks>To be added.</remarks>
 			public WriteMonitor (int fileDescriptor, DispatchQueue? queue = null)
 			{
 				if (type_write == IntPtr.Zero)

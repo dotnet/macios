@@ -55,6 +55,8 @@ namespace Network {
 			return new NWContentContext (handle, owns: true, global: true);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal override void Release ()
 		{
 			if (global)
@@ -65,6 +67,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static IntPtr nw_content_context_create (IntPtr contextIdentifier);
 
+		/// <param name="contextIdentifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NWContentContext (string contextIdentifier)
 		{
 			if (contextIdentifier is null)
@@ -148,6 +153,10 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static IntPtr nw_content_context_copy_protocol_metadata (IntPtr handle, IntPtr protocol);
 
+		/// <param name="protocolDefinition">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NWProtocolMetadata? GetProtocolMetadata (NWProtocolDefinition protocolDefinition)
 		{
 			if (protocolDefinition is null)
@@ -171,6 +180,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static void nw_content_context_set_metadata_for_protocol (IntPtr handle, IntPtr protocolMetadata);
 
+		/// <param name="protocolMetadata">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetMetadata (NWProtocolMetadata protocolMetadata)
 		{
 			if (protocolMetadata is null)
@@ -201,6 +213,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_content_context_foreach_protocol_metadata (IntPtr handle, BlockLiteral* callback);
 
+		/// <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void IterateProtocolMetadata (Action<NWProtocolDefinition?, NWProtocolMetadata?> callback)
 		{

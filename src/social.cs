@@ -140,6 +140,13 @@ namespace Social {
 		[Export ("requestForServiceType:requestMethod:URL:parameters:")]
 		SLRequest Create (NSString serviceType, SLRequestMethod requestMethod, NSUrl url, [NullAllowed] NSDictionary parameters);
 
+		/// <param name="serviceKind">To be added.</param>
+		///         <param name="method">To be added.</param>
+		///         <param name="url">To be added.</param>
+		///         <param name="parameters">To be added.</param>
+		///         <summary>Creates a new request object with the specified values.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Wrap ("Create (serviceKind.GetConstant ()!, method, url, parameters)")]
 		SLRequest Create (SLServiceKind serviceKind, SLRequestMethod method, NSUrl url, [NullAllowed] NSDictionary parameters);

@@ -444,10 +444,19 @@ namespace CoreBluetooth {
 	[Model]
 	[Protocol]
 	interface CBCentralManagerDelegate {
+		/// <param name="central">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("centralManagerDidUpdateState:")]
 		void UpdatedState (CBCentralManager central);
 
+		/// <param name="central">To be added.</param>
+		///         <param name="peripheral">To be added.</param>
+		///         <param name="advertisementData">To be added.</param>
+		///         <param name="RSSI">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("centralManager:didDiscoverPeripheral:advertisementData:RSSI:"), EventArgs ("CBDiscoveredPeripheral")]
 #if XAMCORE_5_0
 		void DiscoveredPeripheral (CBCentralManager central, CBPeripheral peripheral, NSDictionary advertisementData, NSNumber rssi);
@@ -455,15 +464,33 @@ namespace CoreBluetooth {
 		void DiscoveredPeripheral (CBCentralManager central, CBPeripheral peripheral, NSDictionary advertisementData, NSNumber RSSI);
 #endif
 
+		/// <param name="central">To be added.</param>
+		///         <param name="peripheral">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("centralManager:didConnectPeripheral:"), EventArgs ("CBPeripheral")]
 		void ConnectedPeripheral (CBCentralManager central, CBPeripheral peripheral);
 
+		/// <param name="central">To be added.</param>
+		///         <param name="peripheral">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("centralManager:didFailToConnectPeripheral:error:"), EventArgs ("CBPeripheralError")]
 		void FailedToConnectPeripheral (CBCentralManager central, CBPeripheral peripheral, [NullAllowed] NSError error);
 
+		/// <param name="central">To be added.</param>
+		///         <param name="peripheral">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("centralManager:didDisconnectPeripheral:error:"), EventArgs ("CBPeripheralError")]
 		void DisconnectedPeripheral (CBCentralManager central, CBPeripheral peripheral, [NullAllowed] NSError error);
 
+		/// <param name="central">To be added.</param>
+		///         <param name="dict">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("centralManager:willRestoreState:"), EventArgs ("CBWillRestore")]
 		void WillRestoreState (CBCentralManager central, NSDictionary dict);
 
@@ -758,6 +785,8 @@ namespace CoreBluetooth {
 		[Wrap ("WeakDelegate")]
 		ICBPeripheralDelegate Delegate { get; set; }
 
+		/// <summary>Reads the signal strength of the peripheral.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("readRSSI")]
 		void ReadRSSI ();
 
@@ -770,24 +799,50 @@ namespace CoreBluetooth {
 		[Export ("discoverCharacteristics:forService:"), Internal]
 		void DiscoverCharacteristics ([NullAllowed] NSArray characteristicUUIDs, CBService forService);
 
+		/// <param name="characteristic">To be added.</param>
+		///         <summary>Reads the value of the specified <paramref name="characteristic" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("readValueForCharacteristic:")]
 		void ReadValue (CBCharacteristic characteristic);
 
+		/// <param name="data">To be added.</param>
+		///         <param name="characteristic">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <summary>Writes <paramref name="data" /> to the specified <paramref name="characteristic" /> with the specified <paramref name="type" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("writeValue:forCharacteristic:type:")]
 		void WriteValue (NSData data, CBCharacteristic characteristic, CBCharacteristicWriteType type);
 
+		/// <param name="enabled">To be added.</param>
+		///         <param name="characteristic">To be added.</param>
+		///         <summary>Sets the notification status for the specified <paramref name="characteristic" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setNotifyValue:forCharacteristic:")]
 		void SetNotifyValue (bool enabled, CBCharacteristic characteristic);
 
+		/// <param name="characteristic">To be added.</param>
+		///         <summary>Finds descriptors for the specified <paramref name="characteristic" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("discoverDescriptorsForCharacteristic:")]
 		void DiscoverDescriptors (CBCharacteristic characteristic);
 
+		/// <param name="descriptor">To be added.</param>
+		///         <summary>Reads the value of the characteristic that is identified by the specified <paramref name="descriptor" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("readValueForDescriptor:")]
 		void ReadValue (CBDescriptor descriptor);
 
+		/// <param name="data">The data to write.</param>
+		///         <param name="descriptor">The descriptor to use for the data.</param>
+		///         <summary>Writes <paramref name="data" /> to the characteristic that is identified by the specified <paramref name="descriptor" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("writeValue:forDescriptor:")]
 		void WriteValue (NSData data, CBDescriptor descriptor);
 
+		/// <param name="type">To be added.</param>
+		///         <summary>Gets the maximum write length for data that is written to the values of the specified <paramref name="type" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("maximumWriteValueLengthForType:")]
 		nuint GetMaximumWriteValueLength (CBCharacteristicWriteType type);
@@ -806,6 +861,9 @@ namespace CoreBluetooth {
 		[Export ("canSendWriteWithoutResponse")]
 		bool CanSendWriteWithoutResponse { get; }
 
+		/// <param name="psm">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("openL2CAPChannel:")]
 		void OpenL2CapChannel (ushort psm);
@@ -832,6 +890,10 @@ namespace CoreBluetooth {
 	[Model]
 	[Protocol]
 	interface CBPeripheralDelegate {
+		/// <param name="peripheral">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'RssiRead' instead.")]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'RssiRead' instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'RssiRead' instead.")]
@@ -839,10 +901,19 @@ namespace CoreBluetooth {
 		[Export ("peripheralDidUpdateRSSI:error:"), EventArgs ("NSError", true)]
 		void RssiUpdated (CBPeripheral peripheral, [NullAllowed] NSError error);
 
+		/// <param name="peripheral">To be added.</param>
+		///         <param name="rssi">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("peripheral:didReadRSSI:error:"), EventArgs ("CBRssi")]
 		void RssiRead (CBPeripheral peripheral, NSNumber rssi, [NullAllowed] NSError error);
 
+		/// <param name="peripheral">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("peripheral:didDiscoverServices:"), EventArgs ("NSError", true)]
 #if XAMCORE_5_0
 		void DiscoveredServices (CBPeripheral peripheral, [NullAllowed] NSError error);
@@ -850,6 +921,11 @@ namespace CoreBluetooth {
 		void DiscoveredService (CBPeripheral peripheral, [NullAllowed] NSError error);
 #endif
 
+		/// <param name="peripheral">To be added.</param>
+		///         <param name="service">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("peripheral:didDiscoverIncludedServicesForService:error:"), EventArgs ("CBService")]
 		void DiscoveredIncludedService (CBPeripheral peripheral, CBService service, [NullAllowed] NSError error);
 
@@ -860,35 +936,86 @@ namespace CoreBluetooth {
 		void DiscoveredCharacteristic (CBPeripheral peripheral, CBService service, [NullAllowed] NSError error);
 #endif
 
+		/// <param name="peripheral">To be added.</param>
+		///         <param name="characteristic">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("peripheral:didUpdateValueForCharacteristic:error:"), EventArgs ("CBCharacteristic")]
 		void UpdatedCharacterteristicValue (CBPeripheral peripheral, CBCharacteristic characteristic, [NullAllowed] NSError error);
 
+		/// <param name="peripheral">To be added.</param>
+		///         <param name="characteristic">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("peripheral:didWriteValueForCharacteristic:error:"), EventArgs ("CBCharacteristic")]
 		void WroteCharacteristicValue (CBPeripheral peripheral, CBCharacteristic characteristic, [NullAllowed] NSError error);
 
+		/// <param name="peripheral">To be added.</param>
+		///         <param name="characteristic">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("peripheral:didUpdateNotificationStateForCharacteristic:error:"), EventArgs ("CBCharacteristic")]
 		void UpdatedNotificationState (CBPeripheral peripheral, CBCharacteristic characteristic, [NullAllowed] NSError error);
 
+		/// <param name="peripheral">To be added.</param>
+		///         <param name="characteristic">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("peripheral:didDiscoverDescriptorsForCharacteristic:error:"), EventArgs ("CBCharacteristic")]
 		void DiscoveredDescriptor (CBPeripheral peripheral, CBCharacteristic characteristic, [NullAllowed] NSError error);
 
+		/// <param name="peripheral">To be added.</param>
+		///         <param name="descriptor">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("peripheral:didUpdateValueForDescriptor:error:"), EventArgs ("CBDescriptor")]
 		void UpdatedValue (CBPeripheral peripheral, CBDescriptor descriptor, [NullAllowed] NSError error);
 
+		/// <param name="peripheral">To be added.</param>
+		///         <param name="descriptor">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("peripheral:didWriteValueForDescriptor:error:"), EventArgs ("CBDescriptor")]
 		void WroteDescriptorValue (CBPeripheral peripheral, CBDescriptor descriptor, [NullAllowed] NSError error);
 
+		/// <param name="peripheral">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("peripheralDidUpdateName:")]
 		void UpdatedName (CBPeripheral peripheral);
 
+		/// <param name="peripheral">To be added.</param>
+		///         <param name="services">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("peripheral:didModifyServices:"), EventArgs ("CBPeripheralServices")]
 		void ModifiedServices (CBPeripheral peripheral, CBService [] services);
 
+		/// <param name="peripheral">To be added.</param>
+		///         <param name="channel">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[EventArgs ("CBPeripheralOpenL2CapChannel")]
 		[Export ("peripheral:didOpenL2CAPChannel:error:")]
 		void DidOpenL2CapChannel (CBPeripheral peripheral, [NullAllowed] CBL2CapChannel channel, [NullAllowed] NSError error);
 
+		/// <param name="peripheral">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("peripheralIsReadyToSendWriteWithoutResponse:")]
 		void IsReadyToSendWriteWithoutResponse (CBPeripheral peripheral);
@@ -1136,6 +1263,9 @@ namespace CoreBluetooth {
 	// `delloc` a default instance crash applications and a default instance, without the ability to change the UUID, does not make sense
 	[DisableDefaultCtor]
 	interface CBCentral : NSCopying {
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoTV]
 		[NoMacCatalyst]
@@ -1202,37 +1332,82 @@ namespace CoreBluetooth {
 		[Export ("isAdvertising")]
 		bool Advertising { get; }
 
+		/// <param name="service">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("addService:")]
 		void AddService (CBMutableService service);
 
+		/// <param name="service">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeService:")]
 		void RemoveService (CBMutableService service);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeAllServices")]
 		void RemoveAllServices ();
 
+		/// <param name="request">To be added.</param>
+		///         <param name="result">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("respondToRequest:withResult:")]
 		void RespondToRequest (CBATTRequest request, CBATTError result); // TODO: Could it return CBATTError?. This won't work because it's a value
 
+		/// <param name="options">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("startAdvertising:")]
 		void StartAdvertising ([NullAllowed] NSDictionary options);
 
+		/// <param name="options">
+		///           <para>Weakly typed set of options to advertise.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("StartAdvertising (options.GetDictionary ())")]
 		void StartAdvertising ([NullAllowed] StartAdvertisingOptions options);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopAdvertising")]
 		void StopAdvertising ();
 
+		/// <param name="latency">To be added.</param>
+		///         <param name="connectedCentral">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setDesiredConnectionLatency:forCentral:")]
 		void SetDesiredConnectionLatency (CBPeripheralManagerConnectionLatency latency, CBCentral connectedCentral);
 
+		/// <param name="value">To be added.</param>
+		///         <param name="characteristic">To be added.</param>
+		///         <param name="subscribedCentrals">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("updateValue:forCharacteristic:onSubscribedCentrals:")]
 		bool UpdateValue (NSData value, CBMutableCharacteristic characteristic, [NullAllowed] CBCentral [] subscribedCentrals);
 
+		/// <param name="encryptionRequired">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("publishL2CAPChannelWithEncryption:")]
 		void PublishL2CapChannel (bool encryptionRequired);
 
+		/// <param name="psm">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("unpublishL2CAPChannel:")]
 		void UnpublishL2CapChannel (ushort psm);
@@ -1282,44 +1457,108 @@ namespace CoreBluetooth {
 	[Model]
 	[Protocol]
 	interface CBPeripheralManagerDelegate {
+		/// <param name="peripheral">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("peripheralManagerDidUpdateState:")]
 		void StateUpdated (CBPeripheralManager peripheral);
 
+		/// <param name="peripheral">To be added.</param>
+		///         <param name="dict">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("peripheralManager:willRestoreState:"), EventArgs ("CBWillRestore")]
 		void WillRestoreState (CBPeripheralManager peripheral, NSDictionary dict);
 
+		/// <param name="peripheral">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("peripheralManagerDidStartAdvertising:error:"), EventArgs ("NSError", true)]
 		void AdvertisingStarted (CBPeripheralManager peripheral, [NullAllowed] NSError error);
 
+		/// <param name="peripheral">To be added.</param>
+		///         <param name="service">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("peripheralManager:didAddService:error:"), EventArgs ("CBPeripheralManagerService")]
 		void ServiceAdded (CBPeripheralManager peripheral, CBService service, [NullAllowed] NSError error);
 
+		/// <param name="peripheral">To be added.</param>
+		///         <param name="central">To be added.</param>
+		///         <param name="characteristic">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("peripheralManager:central:didSubscribeToCharacteristic:"), EventArgs ("CBPeripheralManagerSubscription")]
 		void CharacteristicSubscribed (CBPeripheralManager peripheral, CBCentral central, CBCharacteristic characteristic);
 
+		/// <param name="peripheral">To be added.</param>
+		///         <param name="central">To be added.</param>
+		///         <param name="characteristic">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("peripheralManager:central:didUnsubscribeFromCharacteristic:"), EventArgs ("CBPeripheralManagerSubscription")]
 		void CharacteristicUnsubscribed (CBPeripheralManager peripheral, CBCentral central, CBCharacteristic characteristic);
 
+		/// <param name="peripheral">To be added.</param>
+		///         <param name="request">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("peripheralManager:didReceiveReadRequest:"), EventArgs ("CBATTRequest")]
 		void ReadRequestReceived (CBPeripheralManager peripheral, CBATTRequest request);
 
+		/// <param name="peripheral">To be added.</param>
+		///         <param name="requests">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("peripheralManager:didReceiveWriteRequests:"), EventArgs ("CBATTRequests")]
 		void WriteRequestsReceived (CBPeripheralManager peripheral, CBATTRequest [] requests);
 
+		/// <param name="peripheral">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("peripheralManagerIsReadyToUpdateSubscribers:")]
 		void ReadyToUpdateSubscribers (CBPeripheralManager peripheral);
 
+		/// <param name="peripheral">To be added.</param>
+		///         <param name="channel">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[EventArgs ("CBPeripheralManagerOpenL2CapChannel")]
 		[Export ("peripheralManager:didOpenL2CAPChannel:error:")]
 		void DidOpenL2CapChannel (CBPeripheralManager peripheral, [NullAllowed] CBL2CapChannel channel, [NullAllowed] NSError error);
 
+		/// <param name="peripheral">To be added.</param>
+		///         <param name="psm">To be added.</param>
+		///         <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[EventArgs ("CBPeripheralManagerL2CapChannelOperation")]
 		[Export ("peripheralManager:didUnpublishL2CAPChannel:error:")]
 		void DidUnpublishL2CapChannel (CBPeripheralManager peripheral, ushort psm, [NullAllowed] NSError error);
 
+		/// <param name="peripheral">To be added.</param>
+		///         <param name="psm">To be added.</param>
+		///         <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[EventArgs ("CBPeripheralManagerL2CapChannelOperation")]
 		[Export ("peripheralManager:didPublishL2CAPChannel:error:")]

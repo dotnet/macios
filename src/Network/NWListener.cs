@@ -44,6 +44,11 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static IntPtr nw_listener_create_with_port (IntPtr port, IntPtr nwparameters);
 
+		/// <param name="port">To be added.</param>
+		///         <param name="parameters">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NWListener? Create (string port, NWParameters parameters)
 		{
 			IntPtr handle;
@@ -64,6 +69,10 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static IntPtr nw_listener_create (IntPtr nwparameters);
 
+		/// <param name="parameters">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NWListener? Create (NWParameters parameters)
 		{
 			IntPtr handle;
@@ -81,6 +90,11 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static IntPtr nw_listener_create_with_connection (IntPtr nwconnection, IntPtr nwparameters);
 
+		/// <param name="connection">To be added.</param>
+		///         <param name="parameters">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NWListener? Create (NWConnection connection, NWParameters parameters)
 		{
 			if (parameters is null)
@@ -129,6 +143,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static void nw_listener_set_queue (IntPtr listener, IntPtr queue);
 
+		/// <param name="queue">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetQueue (DispatchQueue queue)
 		{
 			if (queue is null)
@@ -149,6 +166,8 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static void nw_listener_start (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Start ()
 		{
 			lock (connectionHandlerLock) {
@@ -162,6 +181,8 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static void nw_listener_cancel (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Cancel () => nw_listener_cancel (GetCheckedHandle ());
 
 #if !NET
@@ -185,6 +206,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern unsafe void nw_listener_set_state_changed_handler (IntPtr handle, BlockLiteral* callback);
 
+		/// <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void SetStateChangedHandler (Action<NWListenerState, NWError?> callback)
 		{
@@ -225,6 +249,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern unsafe void nw_listener_set_new_connection_handler (IntPtr handle, BlockLiteral* callback);
 
+		/// <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void SetNewConnectionHandler (Action<NWConnection> callback)
 		{
@@ -272,6 +299,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern unsafe void nw_listener_set_advertised_endpoint_changed_handler (IntPtr handle, BlockLiteral* callback);
 
+		/// <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void SetAdvertisedEndpointChangedHandler (AdvertisedEndpointChanged callback)
 		{
@@ -295,6 +325,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static void nw_listener_set_advertise_descriptor (IntPtr handle, IntPtr advertiseDescriptor);
 
+		/// <param name="descriptor">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetAdvertiseDescriptor (NWAdvertiseDescriptor descriptor)
 		{
 			nw_listener_set_advertise_descriptor (GetCheckedHandle (), descriptor.GetHandle ());

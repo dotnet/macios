@@ -106,21 +106,41 @@ namespace Foundation {
 				throw new ArgumentException ("Error creating NSAttributedString.");
 		}
 
+		/// <param name="rtfData">To be added.</param>
+		///         <param name="resultDocumentAttributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSAttributedString CreateWithRTF (NSData rtfData, out NSDictionary resultDocumentAttributes)
 		{
 			return new NSAttributedString (rtfData, NSAttributedStringDataType.RTF, out resultDocumentAttributes);
 		}
 
+		/// <param name="rtfdData">To be added.</param>
+		///         <param name="resultDocumentAttributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSAttributedString CreateWithRTFD (NSData rtfdData, out NSDictionary resultDocumentAttributes)
 		{
 			return new NSAttributedString (rtfdData, NSAttributedStringDataType.RTFD, out resultDocumentAttributes);
 		}
 
+		/// <param name="htmlData">To be added.</param>
+		///         <param name="resultDocumentAttributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSAttributedString CreateWithHTML (NSData htmlData, out NSDictionary resultDocumentAttributes)
 		{
 			return new NSAttributedString (htmlData, NSAttributedStringDataType.HTML, out resultDocumentAttributes);
 		}
 
+		/// <param name="wordDocFormat">To be added.</param>
+		///         <param name="docAttributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSAttributedString CreateWithDocFormat (NSData wordDocFormat, out NSDictionary docAttributes)
 		{
 			return new NSAttributedString (wordDocFormat, NSAttributedStringDataType.DocFormat, out docAttributes);

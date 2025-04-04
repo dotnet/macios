@@ -12,6 +12,9 @@ namespace Photos {
 			get { return _ObjectAtIndexedSubscript (index); }
 		}
 
+		/// <summary>A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Collections%20Generic%20IEnumerator&amp;scope=Xamarin" title="T:System.Collections.Generic.IEnumerator">T:System.Collections.Generic.IEnumerator</a></format> that can iterate over the assets in the <see cref="T:Photos.PHFetchResult" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public IEnumerator<NSObject> GetEnumerator ()
 		{
 			nint len = Count;
@@ -20,6 +23,9 @@ namespace Photos {
 				yield return this [i];
 		}
 
+		/// <summary>Returns an <see cref="System.Collections.IEnumerator" /> of the assets in the <see cref="T:Photos.PHFetchResult" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			nint len = Count;
@@ -28,6 +34,11 @@ namespace Photos {
 				yield return this [i];
 		}
 
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <param name="indexes">To be added.</param>
+		///         <summary>Returns the objects at <paramref name="indexes" />, all of which must be type T.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public T [] ObjectsAt<T> (NSIndexSet indexes) where T : NSObject
 		{
 			var nsarr = _ObjectsAt (indexes);

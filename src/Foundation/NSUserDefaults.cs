@@ -14,6 +14,9 @@ namespace Foundation {
 
 	public partial class NSUserDefaults {
 #if NET
+		/// <param name="name">The user name.</param>
+		///         <summary>Developers should not use this deprecated constructor. </summary>
+		///         <remarks>This method has been deprecated, avoid.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -29,6 +32,10 @@ namespace Foundation {
 		}
 
 #if NET
+		/// <param name="name">The name for your suite (application group)</param>
+		///         <param name="type">The type to create.   Notice that the <see cref="F:Foundation.NSUserDefaultsType.UserName" /> is no longer supported.</param>
+		///         <summary>Returns a new NSUserDefaults for the specific suite name when passing <see cref="F:Foundation.NSUserDefaultsType.SuiteName" /> as the type. </summary>
+		///         <remarks>Use this method to create an NSUserDefaults that can be used to share information across applications in a suite, or between an application and its extensions.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -51,6 +58,13 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="value">String value to store.</param>
+		///         <param name="defaultName">The key name used to store the value.</param>
+		///         <summary>Sets a string value at the specified key.</summary>
+		///         <remarks>
+		///           <para>
+		///           </para>
+		///         </remarks>
 		public void SetString (string? value, string defaultName)
 		{
 			using var str = (NSString?) value;

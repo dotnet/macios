@@ -95,6 +95,9 @@ namespace CoreText {
 		#region Line Creation
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTLineCreateWithAttributedString (IntPtr @string);
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTLine (NSAttributedString value)
 			: base (CTLineCreateWithAttributedString (value.GetNonNullHandle (nameof (value))), true, true)
 		{
@@ -103,6 +106,12 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTLineCreateTruncatedLine (IntPtr line, double width, CTLineTruncation truncationType, IntPtr truncationToken);
+		/// <param name="width">To be added.</param>
+		///         <param name="truncationType">To be added.</param>
+		///         <param name="truncationToken">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTLine? GetTruncatedLine (double width, CTLineTruncation truncationType, CTLine? truncationToken)
 		{
 			var h = CTLineCreateTruncatedLine (Handle, width, truncationType, truncationToken.GetHandle ());
@@ -135,6 +144,9 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTLineGetGlyphRuns (IntPtr line);
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CTRun [] GetGlyphRuns ()
 		{
 			var cfArrayRef = CTLineGetGlyphRuns (Handle);
@@ -163,6 +175,9 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern void CTLineDraw (IntPtr line, IntPtr context);
+		/// <param name="context">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Draw (CGContext context)
 		{
 			if (context is null)
@@ -177,6 +192,10 @@ namespace CoreText {
 		static extern CGRect CTLineGetImageBounds (/* CTLineRef __nonnull */ IntPtr line,
 			/* CGContextRef __nullable */ IntPtr context);
 
+		/// <param name="context">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGRect GetImageBounds (CGContext? context)
 		{
 			CGRect bounds = CTLineGetImageBounds (Handle, context.GetHandle ());
@@ -187,6 +206,17 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern CGRect CTLineGetBoundsWithOptions (IntPtr line, nuint options);
 
+		/// <param name="options">Determines the kind of typographical information to return.</param>
+		///         <summary>Returns the bounds of the line as a rectangle, based on the specified <see cref="T:CoreText.CTLineBoundsOptions" />.</summary>
+		///         <returns>The bounding rectangle based on the parameter you pass on the options.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    This function can return different bounds based on the options passed.    
+		/// 	  </para>
+		///           <para>
+		///             <img href="~/CoreText/_images/CoreTextBoundOptions.png" alt="Illustration of the area defined by the various bounds options" />
+		///           </para>
+		///         </remarks>
 		public CGRect GetBounds (CTLineBoundsOptions options)
 		{
 			return CTLineGetBoundsWithOptions (Handle, (nuint) (ulong) options);
@@ -201,6 +231,16 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern double CTLineGetTypographicBounds (IntPtr line, IntPtr ascent, IntPtr descent, IntPtr leading);
+		/// <summary>Returns the typorgraphic width of the line.</summary>
+		///         <returns>The width of the line, or zero if there are any errors.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    Use the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:CoreText.CTLine.GetTypographicBounds(out float, out float, out float)&amp;scope=Xamarin" title="M:CoreText.CTLine.GetTypographicBounds(out float, out float, out float)">M:CoreText.CTLine.GetTypographicBounds(out float, out float, out float)</a></format> method to retrieve more information about the typographical features of the line.
+		/// 	  </para>
+		///           <para>
+		/// 	    Starting with iOS 6.0, the <see cref="M:CoreText.CTLine.GetBounds(CoreText.CTLineBoundsOptions)" /> provides finer typorgraphical information than this method.
+		/// 	  </para>
+		///         </remarks>
 		public double GetTypographicBounds ()
 		{
 			return CTLineGetTypographicBounds (Handle, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
@@ -219,6 +259,10 @@ namespace CoreText {
 		#region Line Caret Positioning and Highlighting
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern nint CTLineGetStringIndexForPosition (IntPtr line, CGPoint position);
+		/// <param name="position">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public nint GetStringIndexForPosition (CGPoint position)
 		{
 			return CTLineGetStringIndexForPosition (Handle, position);
@@ -258,6 +302,9 @@ namespace CoreText {
 			}
 		}
 
+		/// <param name="enumerator">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]

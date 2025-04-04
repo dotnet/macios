@@ -139,18 +139,43 @@ namespace CoreSpotlight {
 		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0), NoTV]
 		NativeHandle Constructor (string name, NSFileProtectionType protectionClass, string bundleIdentifier, nint options);
 
+		/// <param name="items">The items to index.</param>
+		///         <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Indexes the specified searchable items and runs <paramref name="completionHandler" /> when finished.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("indexSearchableItems:completionHandler:")]
 		[Async]
 		void Index (CSSearchableItem [] items, [NullAllowed] Action<NSError> completionHandler);
 
+		/// <param name="identifiers">To be added.</param>
+		///         <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Removes the identified items and runs <paramref name="completionHandler" /> when finished.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("deleteSearchableItemsWithIdentifiers:completionHandler:")]
 		[Async]
 		void Delete (string [] identifiers, [NullAllowed] Action<NSError> completionHandler);
 
+		/// <param name="domainIdentifiers">The domain identifier for the items to delete.</param>
+		///         <param name="completionHandler">Handler that is called after the index change is journaled. may be <see langword="null" />.
+		///         <para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
+		///         <summary>Removes all items from the specified domains and runs <paramref name="completionHandler" /> after the index change is journaled.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("deleteSearchableItemsWithDomainIdentifiers:completionHandler:")]
 		[Async]
 		void DeleteWithDomain (string [] domainIdentifiers, [NullAllowed] Action<NSError> completionHandler);
 
+		/// <param name="completionHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Removes all items and runs <paramref name="completionHandler" /> when finished.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("deleteAllSearchableItemsWithCompletionHandler:")]
 		[Async]
 		void DeleteAll ([NullAllowed] Action<NSError> completionHandler);
@@ -211,26 +236,56 @@ namespace CoreSpotlight {
 	[BaseType (typeof (NSObject))]
 	interface CSSearchableIndexDelegate {
 
+		/// <param name="searchableIndex">To be added.</param>
+		///         <param name="acknowledgementHandler">To be added.</param>
+		///         <summary>Reindexes all items in the specified index and runs <paramref name="acknowledgementHandler" /> when finished.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("searchableIndex:reindexAllSearchableItemsWithAcknowledgementHandler:")]
 		void ReindexAllSearchableItems (CSSearchableIndex searchableIndex, Action acknowledgementHandler);
 
+		/// <param name="searchableIndex">To be added.</param>
+		///         <param name="identifiers">To be added.</param>
+		///         <param name="acknowledgementHandler">To be added.</param>
+		///         <summary>Reindexes the specified items in the specified index and runs <paramref name="acknowledgementHandler" /> when finished.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("searchableIndex:reindexSearchableItemsWithIdentifiers:acknowledgementHandler:")]
 		void ReindexSearchableItems (CSSearchableIndex searchableIndex, string [] identifiers, Action acknowledgementHandler);
 
+		/// <param name="searchableIndex">To be added.</param>
+		///         <summary>Method that is called after index throttling starts.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("searchableIndexDidThrottle:")]
 		void DidThrottle (CSSearchableIndex searchableIndex);
 
+		/// <param name="searchableIndex">To be added.</param>
+		///         <summary>Method that is called after index throttling is stopped..</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("searchableIndexDidFinishThrottle:")]
 		void DidFinishThrottle (CSSearchableIndex searchableIndex);
 
+		/// <param name="searchableIndex">To be added.</param>
+		///         <param name="itemIdentifier">To be added.</param>
+		///         <param name="typeIdentifier">To be added.</param>
+		///         <param name="outError">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("dataForSearchableIndex:itemIdentifier:typeIdentifier:error:")]
 		[return: NullAllowed]
 		NSData GetData (CSSearchableIndex searchableIndex, string itemIdentifier, string typeIdentifier, out NSError outError);
 
+		/// <param name="searchableIndex">To be added.</param>
+		///         <param name="itemIdentifier">To be added.</param>
+		///         <param name="typeIdentifier">To be added.</param>
+		///         <param name="inPlace">To be added.</param>
+		///         <param name="outError">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("fileURLForSearchableIndex:itemIdentifier:typeIdentifier:inPlace:error:")]
@@ -344,6 +399,9 @@ namespace CoreSpotlight {
 		[Export ("initWithLocalizedStrings:")]
 		NativeHandle Constructor (NSDictionary localizedStrings);
 
+		/// <summary>Returns the string for the current locale.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("localizedString")]
 		string GetLocalizedString ();
 	}
@@ -2427,9 +2485,13 @@ namespace CoreSpotlight {
 		[Export ("protectionClasses", ArgumentSemantic.Copy)]
 		string [] ProtectionClasses { get; set; }
 
+		/// <summary>Starts the search.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("start")]
 		void Start ();
 
+		/// <summary>Cancels the current search and calls <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Core%20Spotlight%20Completion%20Handler&amp;scope=Xamarin" title="P:CoreSpotlight.CompletionHandler">P:CoreSpotlight.CompletionHandler</a></format>, if present, with <see cref="F:CoreSpotlight.CSSearchQueryErrorCode.Cancelled" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancel")]
 		void Cancel ();
 	}

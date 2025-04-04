@@ -47,6 +47,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr sec_identity_create (IntPtr secidentityHandle);
 
+		/// <param name="identity">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SecIdentity2 (SecIdentity identity)
 		{
 			if (identity is null)
@@ -59,6 +62,10 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr sec_identity_create_with_certificates (IntPtr secidentityHandle, IntPtr arrayHandle);
 
+		/// <param name="identity">To be added.</param>
+		///         <param name="certificates">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SecIdentity2 (SecIdentity identity, params SecCertificate [] certificates)
 		{
 			if (identity is null)

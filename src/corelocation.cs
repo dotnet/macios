@@ -219,6 +219,10 @@ namespace CoreLocation {
 		[Export ("initWithCoordinate:altitude:horizontalAccuracy:verticalAccuracy:timestamp:")]
 		NativeHandle Constructor (CLLocationCoordinate2D coordinate, double altitude, double hAccuracy, double vAccuracy, NSDate timestamp);
 
+		/// <param name="location">To be added.</param>
+		///         <summary>Calculates the distance, in meters, between the <see cref="T:CoreLocation.CLLocation" /> and <paramref name="location" />.</summary>
+		///         <returns>The great-arc distance, in meters, along the surface of the Earth. Altitudes are not taken into consideration.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("distanceFromLocation:")]
 		double DistanceFrom (CLLocation location);
 
@@ -365,11 +369,15 @@ namespace CoreLocation {
 		[NullAllowed, Export ("location", ArgumentSemantic.Copy)]
 		CLLocation Location { get; }
 
+		/// <summary>Starts updating the location</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("startUpdatingLocation")]
 		void StartUpdatingLocation ();
 
+		/// <summary>Stops updating the location.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("stopUpdatingLocation")]
 		void StopUpdatingLocation ();
 
@@ -388,11 +396,17 @@ namespace CoreLocation {
 		[Export ("headingFilter", ArgumentSemantic.Assign)]
 		double HeadingFilter { get; set; }
 
+		/// <summary>Starts updating the heading.</summary>
+		///         <remarks>
+		///           <para>Heading information is only available on devices with a hardware magnetometer. (See <see cref="P:CoreLocation.CLLocationManager.HeadingAvailable" />.)</para>
+		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("startUpdatingHeading")]
 		void StartUpdatingHeading ();
 
+		/// <summary>Stops updating the heading.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("stopUpdatingHeading")]
@@ -498,11 +512,17 @@ namespace CoreLocation {
 		[Export ("monitoredRegions", ArgumentSemantic.Copy)]
 		NSSet MonitoredRegions { get; }
 
+		/// <summary>Starts monitoring for significant changes.</summary>
+		///         <remarks>
+		///           <para>This is the most energy-efficient monitoring mode and primarily relies on cellphone-tower changes. It is most appropriate for applications that do not have precise location-monitoring needs. </para>
+		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("startMonitoringSignificantLocationChanges")]
 		void StartMonitoringSignificantLocationChanges ();
 
+		/// <summary>Starts monitoring significant location changes.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("stopMonitoringSignificantLocationChanges")]
@@ -523,6 +543,9 @@ namespace CoreLocation {
 		[Export ("startMonitoringForRegion:desiredAccuracy:")]
 		void StartMonitoring (CLRegion region, double desiredAccuracy);
 
+		/// <param name="region">To be added.</param>
+		///         <summary>Stops monitoring the <paramref name="region" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.iOS, 17, 0, message: "Use 'void RemoveCondition (string identifier)' instead.")]
@@ -584,6 +607,7 @@ namespace CoreLocation {
 		[Export ("pausesLocationUpdatesAutomatically", ArgumentSemantic.Assign)]
 		bool PausesLocationUpdatesAutomatically { get; set; }
 
+		/// <include file="../docs/api/CoreLocation/CLLocationManager.xml" path="/Documentation/Docs[@DocId='M:CoreLocation.CLLocationManager.AllowDeferredLocationUpdatesUntil(System.Double,System.Double)']/*" />
 		[NoTV]
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Not used anymore. Call will not have any effect.")]
@@ -592,6 +616,9 @@ namespace CoreLocation {
 		[Export ("allowDeferredLocationUpdatesUntilTraveled:timeout:")]
 		void AllowDeferredLocationUpdatesUntil (double distance, double timeout);
 
+		/// <summary>Turns off deferred background location updates.</summary>
+		///         <remarks>To be added.</remarks>
+		///         <altmember cref="M:CoreLocation.CLLocationManager.AllowDeferredLocationUpdatesUntil" />
 		[NoTV]
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Not used anymore. Call will not have any effect.")]
@@ -655,6 +682,11 @@ namespace CoreLocation {
 		[Export ("requestStateForRegion:")]
 		void RequestState (CLRegion region);
 
+		/// <param name="region">The region being checked.</param>
+		///         <summary>Starts delivering notifications about beacons in <paramref name="region" />.</summary>
+		///         <remarks>
+		///           <para>Prior to calling this method, application developers must assign to <see cref="P:CoreLocation.CLLocationManager.Delegate" /> an object that implements the <see cref="M:CoreLocation.CLLocationManagerDelegate.DidRangeBeacons(CoreLocation.CLLocationManager,CoreLocation.CLBeacon[],CoreLocation.CLBeaconRegion)" /> and <see cref="M:CoreLocation.CLLocationManagerDelegate.RangingBeaconsDidFailForRegion(CoreLocation.CLLocationManager,CoreLocation.CLBeaconRegion,Foundation.NSError)" /> methods.</para>
+		///         </remarks>
 		[NoTV]
 		[NoMac]
 		[NoMacCatalyst]
@@ -668,6 +700,9 @@ namespace CoreLocation {
 		[Export ("startRangingBeaconsSatisfyingConstraint:")]
 		void StartRangingBeacons (CLBeaconIdentityConstraint constraint);
 
+		/// <param name="region">To be added.</param>
+		///         <summary>Stops tracking beacons in the <paramref name="region" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[NoMac]
 		[NoMacCatalyst]
@@ -703,11 +738,15 @@ namespace CoreLocation {
 		[Export ("requestAlwaysAuthorization")]
 		void RequestAlwaysAuthorization ();
 
+		/// <summary>Starts generating events in response to visits.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("startMonitoringVisits")]
 		void StartMonitoringVisits ();
 
+		/// <summary>Stops generating events in response to visits.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("stopMonitoringVisits")]
@@ -778,6 +817,11 @@ namespace CoreLocation {
 	[Model]
 	[Protocol]
 	partial interface CLLocationManagerDelegate {
+		/// <param name="manager">The <see cref="T:CoreLocation.CLLocationManager" /> for which <c>this</c> is the delegate object.</param>
+		///         <param name="newLocation">To be added.</param>
+		///         <param name="oldLocation">To be added.</param>
+		///         <summary>Developers should not use this deprecated method. </summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 6, 0)]
 		[MacCatalyst (13, 1)]
@@ -785,44 +829,87 @@ namespace CoreLocation {
 		[Export ("locationManager:didUpdateToLocation:fromLocation:"), EventArgs ("CLLocationUpdated")]
 		void UpdatedLocation (CLLocationManager manager, CLLocation newLocation, CLLocation oldLocation);
 
+		/// <param name="manager">The <see cref="T:CoreLocation.CLLocationManager" /> for which <c>this</c> is the delegate object.</param>
+		///         <param name="newHeading">The new heading.</param>
+		///         <summary>The device's heading has been updated.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("locationManager:didUpdateHeading:"), EventArgs ("CLHeadingUpdated")]
 		void UpdatedHeading (CLLocationManager manager, CLHeading newHeading);
 
+		/// <param name="manager">The <see cref="T:CoreLocation.CLLocationManager" /> for which <c>this</c> is the delegate object.</param>
+		///         <summary>The system believes that the magnetometer should be calibrated.</summary>
+		///         <returns>Return <see langword="true" /> to allow the calibration dialog.</returns>
+		///         <remarks>
+		///           <para>This method will be executed when the system believes that the magnetometer (compass) requires calibration, either because it has not been calibrated recently or because a large change in the local magnetic field was detected.</para>
+		///           <para>Application developers may override this method to return <see langword="false" />, in which case the calibration dialog will not appear.</para>
+		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("locationManagerShouldDisplayHeadingCalibration:"), DelegateName ("CLLocationManagerEventArgs"), DefaultValue (true)]
 		bool ShouldDisplayHeadingCalibration (CLLocationManager manager);
 
+		/// <param name="manager">The <see cref="T:CoreLocation.CLLocationManager" /> for which <c>this</c> is the delegate object.</param>
+		///         <param name="error">The error that occurred.</param>
+		///         <summary>A failure occurred while updating locations.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("locationManager:didFailWithError:"), EventArgs ("NSError", true)]
 		void Failed (CLLocationManager manager, NSError error);
 
+		/// <param name="manager">The <see cref="T:CoreLocation.CLLocationManager" /> for which <c>this</c> is the delegate object.</param>
+		///         <param name="region">The region entered.</param>
+		///         <summary>Called when the device enters a monitored region.</summary>
+		///         <remarks>
+		///         </remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("locationManager:didEnterRegion:"), EventArgs ("CLRegion")]
 		void RegionEntered (CLLocationManager manager, CLRegion region);
 
+		/// <param name="manager">The <see cref="T:CoreLocation.CLLocationManager" /> for which <c>this</c> is the delegate object.</param>
+		///         <param name="region">The region left.</param>
+		///         <summary>Called when the device leaves a monitored region.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("locationManager:didExitRegion:"), EventArgs ("CLRegion")]
 		void RegionLeft (CLLocationManager manager, CLRegion region);
 
+		/// <param name="manager">The <see cref="T:CoreLocation.CLLocationManager" /> for which <c>this</c> is the delegate object.</param>
+		///         <param name="region">To be added.</param>
+		///         <param name="error">The cause of the failure.</param>
+		///         <summary>Monitoring <paramref name="region" /> failed.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("locationManager:monitoringDidFailForRegion:withError:"), EventArgs ("CLRegionError")]
 		void MonitoringFailed (CLLocationManager manager, [NullAllowed] CLRegion region, NSError error);
 
+		/// <param name="manager">The <see cref="T:CoreLocation.CLLocationManager" /> for which <c>this</c> is the delegate object.</param>
+		///         <param name="region">To be added.</param>
+		///         <summary>Monitoring began for <paramref name="region" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("locationManager:didStartMonitoringForRegion:"), EventArgs ("CLRegion")]
 		void DidStartMonitoringForRegion (CLLocationManager manager, CLRegion region);
 
+		/// <param name="manager">The <see cref="T:CoreLocation.CLLocationManager" /> for which <c>this</c> is the delegate object.</param>
+		///         <param name="state">The new state of the region.</param>
+		///         <param name="region">To be added.</param>
+		///         <summary>The <paramref name="state" /> of the <paramref name="region" /> has changed.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("locationManager:didDetermineState:forRegion:"), EventArgs ("CLRegionStateDetermined")]
 		void DidDetermineState (CLLocationManager manager, CLRegionState state, CLRegion region);
 
+		/// <param name="manager">The <see cref="T:CoreLocation.CLLocationManager" /> for which <c>this</c> is the delegate object.</param>
+		///         <param name="beacons">The ranged <see cref="T:CoreLocation.CLBeacon" />s.</param>
+		///         <param name="region">To be added.</param>
+		///         <summary>Range information was generated for <paramref name="beacons" /> in <paramref name="region" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'DidRangeBeaconsSatisfyingConstraint' instead.")]
@@ -837,6 +924,12 @@ namespace CoreLocation {
 		[EventArgs ("CLRegionBeaconsConstraintRanged")]
 		void DidRangeBeaconsSatisfyingConstraint (CLLocationManager manager, CLBeacon [] beacons, CLBeaconIdentityConstraint beaconConstraint);
 
+		/// <param name="manager">The <see cref="T:CoreLocation.CLLocationManager" /> for which <c>this</c> is the delegate object.</param>
+		///         <param name="region">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>
+		///           <paramref name="error" /> occurred while attempting to get range data from <paramref name="region" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'DidFailRangingBeacons' instead.")]
@@ -851,11 +944,19 @@ namespace CoreLocation {
 		[EventArgs ("CLRegionBeaconsConstraintFailed")]
 		void DidFailRangingBeacons (CLLocationManager manager, CLBeaconIdentityConstraint beaconConstraint, NSError error);
 
+		/// <param name="manager">To be added.</param>
+		///         <param name="visit">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("locationManager:didVisit:"), EventArgs ("CLVisited")]
 		void DidVisit (CLLocationManager manager, CLVisit visit);
 
+		/// <param name="manager">The <see cref="T:CoreLocation.CLLocationManager" /> for which <c>this</c> is the delegate object.</param>
+		///         <param name="status">The new authorization status of the application.</param>
+		///         <summary>The authorization status of the application has changed.</summary>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'DidChangeAuthorization' instead.")]
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'DidChangeAuthorization' instead.")]
 		[Deprecated (PlatformName.TvOS, 14, 0, message: "Use 'DidChangeAuthorization' instead.")]
@@ -863,19 +964,33 @@ namespace CoreLocation {
 		[Export ("locationManager:didChangeAuthorizationStatus:"), EventArgs ("CLAuthorizationChanged")]
 		void AuthorizationChanged (CLLocationManager manager, CLAuthorizationStatus status);
 
+		/// <param name="manager">The <see cref="T:CoreLocation.CLLocationManager" /> for which <c>this</c> is the delegate object.</param>
+		///         <param name="locations">To be added.</param>
+		///         <summary>The device has generated <paramref name="locations" /> updates.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("locationManager:didUpdateLocations:"), EventArgs ("CLLocationsUpdated")]
 		void LocationsUpdated (CLLocationManager manager, CLLocation [] locations);
 
+		/// <param name="manager">The <see cref="T:CoreLocation.CLLocationManager" /> for which <c>this</c> is the delegate object.</param>
+		///         <summary>Location updating has been paused.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("locationManagerDidPauseLocationUpdates:"), EventArgs ("")]
 		void LocationUpdatesPaused (CLLocationManager manager);
 
+		/// <param name="manager">The <see cref="T:CoreLocation.CLLocationManager" /> for which <c>this</c> is the delegate object.</param>
+		///         <summary>Location updating has restarted after pausing.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("locationManagerDidResumeLocationUpdates:"), EventArgs ("")]
 		void LocationUpdatesResumed (CLLocationManager manager);
 
+		/// <param name="manager">The <see cref="T:CoreLocation.CLLocationManager" /> for which <c>this</c> is the delegate object.</param>
+		///         <param name="error">The reason deferred updates are no longer available.</param>
+		///         <summary>Location updates will no longer be deferred.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("locationManager:didFinishDeferredUpdatesWithError:"), EventArgs ("NSError", true)]
@@ -946,6 +1061,10 @@ namespace CoreLocation {
 		[Export ("initCircularRegionWithCenter:radius:identifier:")]
 		NativeHandle Constructor (CLLocationCoordinate2D center, double radius, string identifier);
 
+		/// <param name="coordinate">The coordinate to probe.</param>
+		///         <summary>Probes whether the given location is contained within the region.</summary>
+		///         <returns />
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'CLCircularRegion' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'CLCircularRegion' instead.")]
@@ -1122,6 +1241,10 @@ namespace CoreLocation {
 		[Export ("radius")]
 		double Radius { get; }
 
+		/// <param name="coordinate">To be added.</param>
+		///         <summary>Returns <see langword="true" /> if <paramref name="coordinate" /> is within the region.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("containsCoordinate:")]
 		bool ContainsCoordinate (CLLocationCoordinate2D coordinate);
 	}
@@ -1190,6 +1313,15 @@ namespace CoreLocation {
 		[Export ("initWithBeaconIdentityConstraint:identifier:")]
 		NativeHandle Constructor (CLBeaconIdentityConstraint beaconIdentityConstraint, string identifier);
 
+		/// <param name="measuredPower">
+		///           <para>The measured RSSI (signal strength) of the device, in decibels at 1M. Developers should pass <see langword="null" /> to use the device's default value.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Gets data for use with <see cref="M:CoreBluetooth.CBPeripheralManager.StartAdvertising(Foundation.NSDictionary)" />.</summary>
+		///         <returns>The result can be passed to <see cref="M:CoreBluetooth.CBPeripheralManager.StartAdvertising(Foundation.NSDictionary)" />.</returns>
+		///         <remarks>
+		///           <para>Retrieves the appropriate data required by <see cref="M:CoreBluetooth.CBPeripheralManager.StartAdvertising(Foundation.NSDictionary)" />.</para>
+		///         </remarks>
 		[Export ("peripheralDataWithMeasuredPower:")]
 		NSMutableDictionary GetPeripheralData ([NullAllowed] NSNumber measuredPower);
 
@@ -1313,15 +1445,33 @@ namespace CoreLocation {
 		[Export ("isGeocoding")]
 		bool Geocoding { get; }
 
+		/// <param name="location">Location to look up.</param>
+		///         <param name="completionHandler">Method to invoke when the reverse lookup has completed.</param>
+		///         <summary>Requests a longitude/latitude to a human address.</summary>
+		///         <remarks>
+		///         </remarks>
 		[Export ("reverseGeocodeLocation:completionHandler:")]
 		[Async]
 		void ReverseGeocodeLocation (CLLocation location, CLGeocodeCompletionHandler completionHandler);
 
+		/// <param name="location">To be added.</param>
+		///         <param name="locale">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("reverseGeocodeLocation:preferredLocale:completionHandler:")]
 		[Async]
 		void ReverseGeocodeLocation (CLLocation location, [NullAllowed] NSLocale locale, CLGeocodeCompletionHandler completionHandler);
 
+		/// <param name="addressDictionary">Addressbook dictionary to submit</param>
+		///         <param name="completionHandler">Method to invoke when the request completes.</param>
+		///         <summary>Developers should not use this deprecated method. Developers should use 'GeocodeAddress (string, CLRegion, NSLocale, CLGeocodeCompletionHandler)' instead.</summary>
+		///         <remarks>
+		///         </remarks>
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'GeocodeAddress (string, CLRegion, NSLocale, CLGeocodeCompletionHandler)' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'GeocodeAddress (string, CLRegion, NSLocale, CLGeocodeCompletionHandler)' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'GeocodeAddress (string, CLRegion, NSLocale, CLGeocodeCompletionHandler)' instead.")]
@@ -1330,28 +1480,64 @@ namespace CoreLocation {
 		[Async]
 		void GeocodeAddress (NSDictionary addressDictionary, CLGeocodeCompletionHandler completionHandler);
 
+		/// <param name="addressString">Adress that you want to submit.</param>
+		///         <param name="completionHandler">Method to invoke when the request completes.</param>
+		///         <summary>Request a latitude/longitude location from a human readable address.</summary>
+		///         <remarks>
+		///         </remarks>
 		[Export ("geocodeAddressString:completionHandler:")]
 		[Async]
 		void GeocodeAddress (string addressString, CLGeocodeCompletionHandler completionHandler);
 
+		/// <param name="addressString">Adress that you want to submit.</param>
+		///         <param name="region">Region to limit the lookup for.</param>
+		///         <param name="completionHandler">Method to invoke when the request completes.</param>
+		///         <summary>Request a latitude/longitude location from a human readable address and region.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("geocodeAddressString:inRegion:completionHandler:")]
 		[Async]
 		void GeocodeAddress (string addressString, [NullAllowed] CLRegion region, CLGeocodeCompletionHandler completionHandler);
 
+		/// <param name="addressString">To be added.</param>
+		///         <param name="region">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="locale">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Async]
 		[Export ("geocodeAddressString:inRegion:preferredLocale:completionHandler:")]
 		void GeocodeAddress (string addressString, [NullAllowed] CLRegion region, [NullAllowed] NSLocale locale, CLGeocodeCompletionHandler completionHandler);
 
+		/// <summary>Cancels the geocoding attempt.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancelGeocode")]
 		void CancelGeocode ();
 
+		/// <param name="postalAddress">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("geocodePostalAddress:completionHandler:")]
 		[Async]
 		void GeocodePostalAddress (CNPostalAddress postalAddress, CLGeocodeCompletionHandler completionHandler);
 
+		/// <param name="postalAddress">To be added.</param>
+		///         <param name="locale">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("geocodePostalAddress:preferredLocale:completionHandler:")]

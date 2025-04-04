@@ -207,7 +207,12 @@ namespace System.Net.Http {
 #if !NET
 		internal
 #endif
-		protected override async Task<HttpResponseMessage> SendAsync (HttpRequestMessage request, CancellationToken cancellationToken)
+				/// <param name="request">To be added.</param>
+				///         <param name="cancellationToken">To be added.</param>
+				///         <summary>To be added.</summary>
+				///         <returns>To be added.</returns>
+				///         <remarks>To be added.</remarks>
+				protected override async Task<HttpResponseMessage> SendAsync (HttpRequestMessage request, CancellationToken cancellationToken)
 		{
 			return await SendAsync (request, cancellationToken, true).ConfigureAwait (false);
 		}

@@ -23,6 +23,8 @@ namespace MediaPlayer {
 	[SupportedOSPlatform ("tvos")]
 #endif
 	public class MPNowPlayingInfo {
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public MPNowPlayingInfo ()
 		{
 		}

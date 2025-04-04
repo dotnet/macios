@@ -435,6 +435,10 @@ namespace CoreTelephony {
 		[Export ("supportsCellularPlan")]
 		bool SupportsCellularPlan { get; }
 
+		/// <param name="request">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("addPlanWith:completionHandler:")]
 		void AddPlan (CTCellularPlanProvisioningRequest request, Action<CTCellularPlanProvisioningAddPlanResult> completionHandler);

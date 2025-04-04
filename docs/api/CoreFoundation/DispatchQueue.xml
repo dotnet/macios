@@ -1,0 +1,27 @@
+<Documentation>
+  <Docs DocId="M:CoreFoundation.DispatchQueue.#ctor(System.String,System.Boolean)">
+        <param name="label">Name for the dispatch queue, as a convention, use reverse-style DNS names for your queue name.</param>
+        <param name="concurrent">If set, the dispatch queue can invoke the submitted blocks concurrently.</param>
+        <summary>Creates a named dispatch queue that can optionally
+	execute any submitted code concurrently.</summary>
+        <remarks>
+          <para>
+	    If the <paramref name="concurrent" /> is set to <see langword="false" /> this is equivalent to calling the
+	    constructor tht takes a single string argument.   That is,
+	    it will execute all submitted code blocks serially, one
+	    after another.
+	  </para>
+          <para>
+	    If the value is <see langword="true" /> then the queue can
+	    execute the code blocks concurrently.   In this mode, you
+	    can use the <see cref="M:CoreFoundation.DispatchQueue.DispatchBarrierAsync(System.Action)" />
+	    method to submit a code block that will wait for all
+	    pending concurrent blocks to complete execution, then it
+	    will execute the code block to completion.   During the
+	    time that the barrier executes, any other code blocks
+	    submitted are queued, and will be scheduled to run
+	    (possibly concurrently) after the barrier method completes.
+	  </para>
+        </remarks>
+      </Docs>
+</Documentation>

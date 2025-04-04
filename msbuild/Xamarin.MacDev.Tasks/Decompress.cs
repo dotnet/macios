@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 
@@ -12,6 +13,7 @@ using Microsoft.Build.Utilities;
 using Xamarin.Bundler;
 using Xamarin.Localization.MSBuild;
 using Xamarin.MacDev.Tasks;
+using Xamarin.Utils;
 
 #nullable enable
 
@@ -84,7 +86,7 @@ namespace Xamarin.MacDev {
 		/// <param name="decompressionDir">The location on disk to store the extracted results</param>
 		/// <param name="cancellationToken">The cancellation token (if any=</param>
 		/// <param name="decompressedResource">The location on disk to the extracted resource</param>
-		/// <returns></returns>
+		/// <returns>True if successfully decompressed, false otherwise.</returns>
 		public static bool TryDecompress (TaskLoggingHelper log, string zip, string resource, string decompressionDir, List<string> createdFiles, CancellationToken? cancellationToken, [NotNullWhen (true)] out string? decompressedResource)
 		{
 			decompressedResource = Path.Combine (decompressionDir, resource);
@@ -232,6 +234,136 @@ namespace Xamarin.MacDev {
 			}
 
 			return rv;
+		}
+
+		/// <summary>
+		/// Compresses the specified resources (may be either files or directories) into a zip file.
+		///
+		/// Fails if:
+		/// * The resources is or contains a symlink and we're executing on Windows.
+		/// * The resources isn't found inside the zip file.
+		/// </summary>
+		/// <param name="log"></param>
+		/// <param name="zip">The zip to create</param>
+		/// <param name="resources">The files or directories to compress.</param>
+		/// <returns>True if successfully compressed, false otherwise.</returns>
+		/// <remarks>
+		///     We use 'zip' to compress on !Windows, and System.IO.Compression to extract on Windows.
+		///     This is because System.IO.Compression doesn't handle symlinks correctly, so we can only use
+		///     it on Windows. It's also possible to set the XAMARIN_USE_SYSTEM_IO_COMPRESSION=1 environment
+		///     variable to force using System.IO.Compression on !Windows, which is particularly useful when
+		///     testing the System.IO.Compression implementation locally (with the caveat that if the resources
+		///     to compress has symlinks, it may not work).
+		/// </remarks>
+		public static bool TryCompress (TaskLoggingHelper log, string zip, IEnumerable<string> resources, bool overwrite, string workingDirectory, bool maxCompression = false)
+		{
+			if (overwrite) {
+				if (File.Exists (zip)) {
+					log.LogMessage (MessageImportance.Low, "Replacing zip file {0} with {1}", zip, string.Join (", ", resources));
+					File.Delete (zip);
+				} else {
+					log.LogMessage (MessageImportance.Low, "Creating zip file {0} with {1}", zip, string.Join (", ", resources));
+				}
+			} else {
+				if (File.Exists (zip)) {
+					log.LogMessage (MessageImportance.Low, "Updating zip file {0} with {1}", zip, string.Join (", ", resources));
+				} else {
+					log.LogMessage (MessageImportance.Low, "Creating new zip file {0} with {1}", zip, string.Join (", ", resources));
+				}
+			}
+
+			var zipdir = Path.GetDirectoryName (zip);
+			if (!string.IsNullOrEmpty (zipdir))
+				Directory.CreateDirectory (zipdir);
+
+			bool rv;
+			if (Environment.OSVersion.Platform == PlatformID.Win32NT) {
+				rv = TryCompressUsingSystemIOCompression (log, zip, resources, workingDirectory, maxCompression);
+			} else if (!string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("XAMARIN_USE_SYSTEM_IO_COMPRESSION"))) {
+				rv = TryCompressUsingSystemIOCompression (log, zip, resources, workingDirectory, maxCompression);
+			} else {
+				rv = TryCompressUsingZip (log, zip, resources, workingDirectory, maxCompression);
+			}
+
+			return rv;
+		}
+
+		// Will always add to an existing zip file (not replace)
+		static bool TryCompressUsingZip (TaskLoggingHelper log, string zip, IEnumerable<string> resources, string workingDirectory, bool maxCompression)
+		{
+			var zipArguments = new List<string> ();
+			if (maxCompression)
+				zipArguments.Add ("-9");
+			zipArguments.Add ("-r");
+			zipArguments.Add ("-y");
+			zipArguments.Add (zip);
+
+			foreach (var resource in resources) {
+				var fullPath = Path.GetFullPath (resource);
+				var relativePath = PathUtils.AbsoluteToRelative (workingDirectory, fullPath);
+				zipArguments.Add (relativePath);
+			}
+			var rv = XamarinTask.ExecuteAsync (log, "zip", zipArguments, workingDirectory: workingDirectory).Result;
+			log.LogMessage (MessageImportance.Low, "Updated {0} with {1}: {2}", zip, string.Join (", ", resources), rv.ExitCode == 0);
+			return rv.ExitCode == 0;
+		}
+
+#if NET
+		const CompressionLevel SmallestCompressionLevel = CompressionLevel.SmallestSize;
+#else
+		const CompressionLevel SmallestCompressionLevel = CompressionLevel.Optimal;
+#endif
+
+		// Will always add to an existing zip file (not replace)
+		static bool TryCompressUsingSystemIOCompression (TaskLoggingHelper log, string zip, IEnumerable<string> resources, string workingDirectory, bool maxCompression)
+		{
+			var rv = true;
+
+			workingDirectory = Path.GetFullPath (workingDirectory);
+
+			var resourcePaths = resources.Select (Path.GetFullPath).ToList ();
+			foreach (var resource in resourcePaths) {
+				if (!resource.StartsWith (workingDirectory, StringComparison.Ordinal))
+					throw new InvalidOperationException ($"The resource to compress '{resource}' must be inside the working directory '{workingDirectory}'");
+			}
+
+			using var archive = ZipFile.Open (zip, File.Exists (zip) ? ZipArchiveMode.Update : ZipArchiveMode.Create);
+
+			var rootDirLength = workingDirectory.Length + 1;
+			foreach (var resource in resourcePaths) {
+				log.LogMessage (MessageImportance.Low, $"Procesing {resource}");
+				if (Directory.Exists (resource)) {
+					var entries = Directory.GetFileSystemEntries (resource, "*", SearchOption.AllDirectories);
+					var entriesWithZipName = entries.Select (v => new { Path = v, ZipName = v.Substring (rootDirLength) });
+					foreach (var entry in entriesWithZipName) {
+						if (Directory.Exists (entry.Path)) {
+							if (entries.Where (v => v.StartsWith (entry.Path, StringComparison.Ordinal)).Count () == 1) {
+								// this is a directory with no files inside, we need to create an entry with a trailing directory separator.
+								archive.CreateEntry (entry.ZipName + zipDirectorySeparator);
+							}
+						} else {
+							WriteFileToZip (log, archive, entry.Path, entry.ZipName, maxCompression);
+						}
+					}
+				} else if (File.Exists (resource)) {
+					var zipName = resource.Substring (rootDirLength);
+					WriteFileToZip (log, archive, resource, zipName, maxCompression);
+				} else {
+					throw new FileNotFoundException (resource);
+				}
+				log.LogMessage (MessageImportance.Low, "Updated {0} with {1}", zip, resource);
+			}
+
+			return rv;
+		}
+
+		static void WriteFileToZip (TaskLoggingHelper log, ZipArchive archive, string path, string zipName, bool maxCompression)
+		{
+			var zipEntry = archive.CreateEntry (zipName, maxCompression ? SmallestCompressionLevel : CompressionLevel.Optimal);
+			using var fs = File.OpenRead (path);
+			using var zipStream = zipEntry.Open ();
+			fs.CopyTo (zipStream);
+			log.LogMessage (MessageImportance.Low, $"Compressed {path} into the zip file as {zipName}");
 		}
 
 		static int GetExternalAttributes (ZipArchiveEntry self)

@@ -37,6 +37,11 @@ namespace CoreGraphics {
 		object? info;
 		GCHandle gch;
 
+		/// <param name="cs">To be added.</param>
+		///         <param name="table">To be added.</param>
+		///         <param name="userInfo">To be added.</param>
+		///         <summary>Creates a <see cref="T:CoreGraphics.CGPDFScanner" /> object that invokes callbacks in the <paramref name="cs" /> parameter when it encounters an operator specified by the <paramref name="table" /> parameter.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGPDFScanner (CGPDFContentStream cs, CGPDFOperatorTable table, object userInfo)
 		{
 			if (cs is null)
@@ -74,6 +79,7 @@ namespace CoreGraphics {
 			CGPDFScannerRelease (GetCheckedHandle ());
 		}
 
+		/// <include file="../../docs/api/CoreGraphics/CGPDFScanner.xml" path="/Documentation/Docs[@DocId='M:CoreGraphics.CGPDFScanner.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			if (gch.IsAllocated)
@@ -84,6 +90,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGPDFContentStreamRef */ IntPtr CGPDFScannerGetContentStream (/* CGPDFScannerRef */ IntPtr scanner);
 
+		/// <summary>Gets the content stream for <c>this</c> <see cref="T:CoreGraphics.CGPDFScanner" /> object.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGPDFContentStream GetContentStream ()
 		{
 			return new CGPDFContentStream (CGPDFScannerGetContentStream (Handle), false);
@@ -92,6 +101,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static byte CGPDFScannerScan (/* CGPDFScannerRef */ IntPtr scanner);
 
+		/// <summary>Parses <c>this</c> <see cref="T:CoreGraphics.CGPDFScanner" /> object, and then returns whether the parsing succeeded.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Scan ()
 		{
 			return CGPDFScannerScan (Handle) != 0;
@@ -100,6 +112,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static byte CGPDFScannerPopObject (/* CGPDFScannerRef */ IntPtr scanner, /* CGPDFObjectRef* */ IntPtr* value);
 
+		/// <param name="value">To be added.</param>
+		///         <summary>Pops an object from the stack of <c>this</c> <see cref="T:CoreGraphics.CGPDFScanner" /> object, returns that object by using the <paramref name="value" /> parameter, and then returns whether this method succeeded.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryPop (out CGPDFObject? value)
 		{
 			IntPtr ip;
@@ -114,6 +130,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static byte CGPDFScannerPopBoolean (/* CGPDFScannerRef */ IntPtr scanner, /* CGPDFBoolean* */ byte* value);
 
+		/// <param name="value">To be added.</param>
+		///         <summary>Pops a <see cref="T:System.Boolean" /> object from the stack of <c>this</c> <see cref="T:CoreGraphics.CGPDFScanner" /> object, returns that object by using the <paramref name="value" /> parameter, and then returns whether this method succeeded.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe bool TryPop (out bool value)
 		{
 			byte bytevalue;
@@ -149,6 +169,10 @@ namespace CoreGraphics {
 		// note: that string is not ours to free
 
 		// not to be confusing with CGPDFScannerPopString (value)
+		/// <param name="name">To be added.</param>
+		///         <summary>Pops a character string object from the stack of <c>this</c><see cref="T:CoreGraphics.CGPDFScanner" /> object, returns that object by using the <paramref name="name" /> parameter, and then returns whether this method succeeded.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryPopName (out string? name)
 		{
 			IntPtr ip;
@@ -163,6 +187,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static byte CGPDFScannerPopString (/* CGPDFScannerRef */ IntPtr scanner, /* CGPDFStringRef* */ IntPtr* value);
 
+		/// <param name="value">To be added.</param>
+		///         <summary>Pops a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> object from the stack of <c>this</c> <see cref="T:CoreGraphics.CGPDFScanner" /> object, returns that object by using the <paramref name="value" /> parameter, and then returns whether this method succeeded.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryPop (out string? value)
 		{
 			IntPtr ip;
@@ -177,6 +205,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static byte CGPDFScannerPopArray (/* CGPDFScannerRef */ IntPtr scanner, /* CGPDFArrayRef* */ IntPtr* value);
 
+		/// <param name="value">To be added.</param>
+		///         <summary>Pops an array from the stack of <c>this</c> <see cref="T:CoreGraphics.CGPDFScanner" /> object, returns that array by using the <paramref name="value" /> parameter, and then returns whether this method succeeded.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryPop (out CGPDFArray? value)
 		{
 			IntPtr ip;
@@ -191,6 +223,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static byte CGPDFScannerPopDictionary (/* CGPDFScannerRef */ IntPtr scanner, /* CGPDFDictionaryRef* */ IntPtr* value);
 
+		/// <param name="value">To be added.</param>
+		///         <summary>Pops a PDF dictionary from the stack of <c>this</c> <see cref="T:CoreGraphics.CGPDFScanner" /> object, returns that dictionary by using the <paramref name="value" /> parameter, and then returns whether this method succeeded.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryPop (out CGPDFDictionary? value)
 		{
 			IntPtr ip;
@@ -205,6 +241,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static byte CGPDFScannerPopStream (/* CGPDFScannerRef */ IntPtr scanner, /* CGPDFStreamRef* */ IntPtr* value);
 
+		/// <param name="value">To be added.</param>
+		///         <summary>Pops a PDF stream from the stack of <c>this</c> <see cref="T:CoreGraphics.CGPDFScanner" /> object, returns that stream by using the <paramref name="value" /> parameter, and then returns whether this method succeeded.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryPop (out CGPDFStream? value)
 		{
 			IntPtr ip;

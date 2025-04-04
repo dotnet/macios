@@ -10,6 +10,13 @@ namespace MapKit {
 
 	public partial class MKPolyline {
 
+		/// <param name="points">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public static unsafe MKPolyline FromPoints (MKMapPoint [] points)
 		{
 			if (points is null)
@@ -22,6 +29,13 @@ namespace MapKit {
 			}
 		}
 
+		/// <param name="coords">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public static unsafe MKPolyline FromCoordinates (CLLocationCoordinate2D [] coords)
 		{
 			if (coords is null)

@@ -304,6 +304,10 @@ namespace Foundation {
 		}
 		#endregion
 
+		/// <param name="dict">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSFileAttributes? FromDictionary (NSDictionary dict)
 		{
 			if (dict is null)
@@ -483,6 +487,12 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="attributes">To be added.</param>
+		///         <param name="path">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool SetAttributes (NSFileAttributes attributes, string path, out NSError error)
 		{
 			if (attributes is null)
@@ -490,6 +500,11 @@ namespace Foundation {
 			return SetAttributes (attributes.ToDictionary (), path, out error);
 		}
 
+		/// <param name="attributes">To be added.</param>
+		///         <param name="path">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool SetAttributes (NSFileAttributes attributes, string path)
 		{
 			if (attributes is null)
@@ -498,41 +513,83 @@ namespace Foundation {
 			return SetAttributes (attributes.ToDictionary (), path, out _);
 		}
 
+		/// <param name="path">To be added.</param>
+		///         <param name="createIntermediates">To be added.</param>
+		///         <param name="attributes">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool CreateDirectory (string path, bool createIntermediates, NSFileAttributes? attributes, out NSError error)
 		{
 			return CreateDirectory (path, createIntermediates, attributes?.ToDictionary (), out error);
 		}
 
+		/// <param name="path">To be added.</param>
+		///         <param name="createIntermediates">To be added.</param>
+		///         <param name="attributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool CreateDirectory (string path, bool createIntermediates, NSFileAttributes? attributes)
 		{
 			return CreateDirectory (path, createIntermediates, attributes?.ToDictionary (), out var _);
 		}
 
+		/// <param name="path">To be added.</param>
+		///         <param name="data">To be added.</param>
+		///         <param name="attributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool CreateFile (string path, NSData data, NSFileAttributes? attributes)
 		{
 			return CreateFile (path, data, attributes?.ToDictionary ());
 		}
 
+		/// <param name="path">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSFileAttributes? GetAttributes (string path, out NSError error)
 		{
 			return NSFileAttributes.FromDictionary (_GetAttributes (path, out error));
 		}
 
+		/// <param name="path">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSFileAttributes? GetAttributes (string path)
 		{
 			return NSFileAttributes.FromDictionary (_GetAttributes (path, out var _));
 		}
 
+		/// <param name="path">Path to the any file in the volume to probe for information.</param>
+		///         <summary>Returns the file system attributes for a given volume.</summary>
+		///         <returns>A NSFileSystemAttributes object that contains the file system properties or null on error.</returns>
+		///         <remarks>This function returns the file system information associated with the specified path.   The path is any path name that is contained in a volume.</remarks>
 		public NSFileSystemAttributes? GetFileSystemAttributes (string path)
 		{
 			return NSFileSystemAttributes.FromDictionary (_GetFileSystemAttributes (path, out var _));
 		}
 
+		/// <param name="path">Path to the any file in the volume to probe for information.</param>
+		///         <param name="error">Error object, to return any error conditions.</param>
+		///         <summary>Returns the file system attributes for a given volume.</summary>
+		///         <returns>A NSFileSystemAttributes object that contains the file system properties, or null on error.</returns>
+		///         <remarks>This function returns the file system information associated with the specified path.   The path is any path name that is contained in a volume.</remarks>
 		public NSFileSystemAttributes? GetFileSystemAttributes (string path, out NSError error)
 		{
 			return NSFileSystemAttributes.FromDictionary (_GetFileSystemAttributes (path, out error));
 		}
 
+		/// <param name="properties">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSUrl [] GetMountedVolumes (NSString [] properties, NSVolumeEnumerationOptions options)
 		{
 			using var array = NSArray.FromNSObjects (properties);
@@ -548,6 +605,14 @@ namespace Foundation {
 			set { ChangeCurrentDirectory (value); }
 		}
 
+		/// <param name="filename">Path of file</param>
+		///         <param name="skipBackup">True if you want to flag this file to be skipped for backups or false if you want to have this file backed up to iCloud.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>A null return value will indicate success, while a non-null error will contain an instance of NSError detailing the problem</returns>
+		///         <remarks>If you set the SkipBackup attribute on a file, it will inform the operating system that this file should not be backed up into iCloud.   
+		///         This high-level API automagically adjust itself based on the version of iOS being executed. 
+		///         On iOS 5.0.1 (only) it will use the old setxattr API to set (or remove) the "com.apple.MobileBackup" attribute. 
+		///         On iOS 5.1 (and later) it will use NSUrlIsExcludedFromBackupKey to accomplish the same.</remarks>
 		public static NSError SetSkipBackupAttribute (string filename, bool skipBackup)
 		{
 			if (filename is null)
@@ -559,11 +624,26 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="filename">Path of the file to probe.</param>
+		///         <summary>Returns the status of the SkipBackup to iCloud attribute is set on the file.</summary>
+		///         <returns>true if the extended attribute is set.</returns>
+		///         <remarks>This returns true if the file is marked not to be backed up by iCloud, otherwise it will return false.
+		///         This high-level API automagically adjust itself based on the version of iOS being executed. 
+		///         On iOS 5.0.1 (only) it will use the old getxattr API to get the value of the "com.apple.MobileBackup" attribute. 
+		///         On iOS 5.1 (and later) it will use NSUrlIsExcludedFromBackupKey to accomplish the same.</remarks>
 		public static bool GetSkipBackupAttribute (string filename)
 		{
 			return GetSkipBackupAttribute (filename, out var _);
 		}
 
+		/// <param name="filename">Path of the file to probe.</param>
+		///         <param name="error">The error will be set to null if there was no error, or it will point to an instance of NSError if there was a problem.</param>
+		///         <summary>Returns the status of the SkipBackup to iCloud attribute is set on the file.</summary>
+		///         <returns>true if the extended attribute is set.</returns>
+		///         <remarks>This returns true if the file is marked not to be backed up by iCloud, otherwise it will return false.
+		///         This high-level API automagically adjust itself based on the version of iOS being executed. 
+		///         On iOS 5.0.1 (only) it will use the old getxattr API to get the value of the "com.apple.MobileBackup" attribute. 
+		///         On iOS 5.1 (and later) it will use NSUrlIsExcludedFromBackupKey to accomplish the same.</remarks>
 		public static bool GetSkipBackupAttribute (string filename, out NSError error)
 		{
 			if (filename is null)

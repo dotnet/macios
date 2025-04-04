@@ -282,6 +282,12 @@ namespace UserNotifications {
 		[Export ("options")]
 		UNNotificationActionOptions Options { get; }
 
+		/// <param name="identifier">The unique identifier that the application will use to find the action.</param>
+		///         <param name="title">A localized action title.</param>
+		///         <param name="options">A mask that indicates whether authentication is required, whether the action is destructive, and/or whether to run the application in the foreground.</param>
+		///         <summary>Creates and returns a new notification action with the specified <paramref name="identifier" />, <paramref name="title" />, and <paramref name="options" />.</summary>
+		///         <returns>A new notification action with the specified <paramref name="identifier" />, <paramref name="title" />, and <paramref name="options" />.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("actionWithIdentifier:title:options:")]
 		UNNotificationAction FromIdentifier (string identifier, string title, UNNotificationActionOptions options);
@@ -305,6 +311,14 @@ namespace UserNotifications {
 	[DisableDefaultCtor] // as per docs (use FromIdentifier)
 	interface UNTextInputNotificationAction {
 
+		/// <param name="identifier">The unique identifier for the action within the scope of the app.</param>
+		///         <param name="title">The title of the action.</param>
+		///         <param name="options">The notification action options.</param>
+		///         <param name="textInputButtonTitle">The title of the text input button.</param>
+		///         <param name="textInputPlaceholder">The placeholder text.</param>
+		///         <summary>Creates and returns a new text input notification action with the specified values.</summary>
+		///         <returns>A new text input notification action with the specified values</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("actionWithIdentifier:title:options:textInputButtonTitle:textInputPlaceholder:")]
 		UNTextInputNotificationAction FromIdentifier (string identifier, string title, UNNotificationActionOptions options, string textInputButtonTitle, string textInputPlaceholder);
@@ -354,6 +368,19 @@ namespace UserNotifications {
 		[Export ("type")]
 		string Type { get; }
 
+		/// <param name="identifier">The unique attachment identifier.</param>
+		///         <param name="url">The location of the attachment.</param>
+		///         <param name="options">
+		///           <para>A dictionary of attachment options, such as clipping rectangles, animation frame numbers, and so on.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="error">
+		///           <para>A location to which errors will be written.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Creates and returns a new notification attachment with the supplied <paramref name="identifier" />, <paramref name="url" />, <paramref name="options" />, and <paramref name="options" />.</summary>
+		///         <returns>A new notification attachmen.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("attachmentWithIdentifier:URL:options:error:")]
 		[return: NullAllowed]
@@ -459,15 +486,39 @@ namespace UserNotifications {
 		[Export ("hiddenPreviewsBodyPlaceholder")]
 		string HiddenPreviewsBodyPlaceholder { get; }
 
+		/// <param name="identifier">The app-unique identifier for the category.</param>
+		///         <param name="actions">Four or fewer actions to display.</param>
+		///         <param name="intentIdentifiers">The intent identifiers for the category.</param>
+		///         <param name="options">Category options.</param>
+		///         <summary>Creates and returns a new notification category from the specified arguments.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("categoryWithIdentifier:actions:intentIdentifiers:options:")]
 		UNNotificationCategory FromIdentifier (string identifier, UNNotificationAction [] actions, string [] intentIdentifiers, UNNotificationCategoryOptions options);
 
+		/// <param name="identifier">The app-unique identifier for the category.</param>
+		///         <param name="actions">Four or fewer actions to display.</param>
+		///         <param name="intentIdentifiers">The intent identifiers for the category.</param>
+		///         <param name="hiddenPreviewsBodyPlaceholder">A string to display when notification previews are disabled.</param>
+		///         <param name="options">Category options.</param>
+		///         <summary>Creates and returns a new notification category from the specified arguments.</summary>
+		///         <returns>A new notification category from the specified arguments.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("categoryWithIdentifier:actions:intentIdentifiers:hiddenPreviewsBodyPlaceholder:options:")]
 		UNNotificationCategory FromIdentifier (string identifier, UNNotificationAction [] actions, string [] intentIdentifiers, string hiddenPreviewsBodyPlaceholder, UNNotificationCategoryOptions options);
 
+		/// <param name="identifier">To be added.</param>
+		///         <param name="actions">To be added.</param>
+		///         <param name="intentIdentifiers">To be added.</param>
+		///         <param name="hiddenPreviewsBodyPlaceholder">To be added.</param>
+		///         <param name="categorySummaryFormat">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("categoryWithIdentifier:actions:intentIdentifiers:hiddenPreviewsBodyPlaceholder:categorySummaryFormat:options:")]
@@ -752,6 +803,15 @@ namespace UserNotifications {
 		[NullAllowed, Export ("trigger", ArgumentSemantic.Copy)]
 		UNNotificationTrigger Trigger { get; }
 
+		/// <param name="identifier">An identifer, unique to the application scope.</param>
+		///         <param name="content">The content of the notification.</param>
+		///         <param name="trigger">
+		///           <para>The trigger that activates the notification when the trigger's conditions are met.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Creates a new notification request with the specified <paramref name="identifier" />, <paramref name="content" />, and <paramref name="trigger" />.</summary>
+		///         <returns>A new notification request.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("requestWithIdentifier:content:trigger:")]
 		UNNotificationRequest FromIdentifier (string identifier, UNNotificationContent content, [NullAllowed] UNNotificationTrigger trigger);
@@ -841,9 +901,15 @@ namespace UserNotifications {
 	interface UNNotificationServiceExtension {
 
 		// Not async because app developers are supposed to implement/override this method, not call it themselves.
+		/// <param name="request">The request that was received.</param>
+		///         <param name="contentHandler">An action to perform on the modified payload.</param>
+		///         <summary>Method that is called to modify a notification.</summary>
+		///         <remarks>Developers overload this method to modify a notification.</remarks>
 		[Export ("didReceiveNotificationRequest:withContentHandler:")]
 		void DidReceiveNotificationRequest (UNNotificationRequest request, Action<UNNotificationContent> contentHandler);
 
+		/// <summary>Method that is called when the extension is about to expire.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("serviceExtensionTimeWillExpire")]
 		void TimeWillExpire ();
 	}
@@ -971,6 +1037,10 @@ namespace UserNotifications {
 		[Export ("defaultRingtoneSound", ArgumentSemantic.Copy)]
 		UNNotificationSound DefaultRingtoneSound { get; }
 
+		/// <param name="name">The name of the sound to get.</param>
+		///         <summary>Gets the sound that is specified by <paramref name="name" />.</summary>
+		///         <returns>The sound that is specified by <paramref name="name" />.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("soundNamed:")]
 		UNNotificationSound GetSound (string name);
@@ -983,6 +1053,10 @@ namespace UserNotifications {
 		[Export ("defaultCriticalSound", ArgumentSemantic.Copy)]
 		UNNotificationSound DefaultCriticalSound { get; }
 
+		/// <param name="volume">The volume at which to play the alert sound.</param>
+		///         <summary>Creates and returns a default critical notification sound.</summary>
+		///         <returns>The default critical notification sound.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("defaultCriticalSoundWithAudioVolume:")]
@@ -993,11 +1067,20 @@ namespace UserNotifications {
 		[Export ("ringtoneSoundNamed:")]
 		UNNotificationSound GetRingtoneSound (string name);
 
+		/// <param name="name">The name of the file that contains the sound to play.</param>
+		///         <summary>Creates and returns a default critical notification sound.</summary>
+		///         <returns>The default critical notification sound.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("criticalSoundNamed:")]
 		UNNotificationSound GetCriticalSound (string name);
 
+		/// <param name="name">The name of the file that contains the sound to play.</param>
+		///         <param name="volume">The volume at which to play the alert sound.</param>
+		///         <summary>Creates and returns a critical notification sound.</summary>
+		///         <returns>The critical notification sound.</returns>
+		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("criticalSoundNamed:withAudioVolume:")]
@@ -1035,6 +1118,11 @@ namespace UserNotifications {
 		[Export ("timeInterval")]
 		double TimeInterval { get; }
 
+		/// <param name="timeInterval">To be added.</param>
+		///         <param name="repeats">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("triggerWithTimeInterval:repeats:")]
 		UNTimeIntervalNotificationTrigger CreateTrigger (double timeInterval, bool repeats);
@@ -1060,6 +1148,11 @@ namespace UserNotifications {
 		[Export ("dateComponents", ArgumentSemantic.Copy)]
 		NSDateComponents DateComponents { get; }
 
+		/// <param name="dateComponents">To be added.</param>
+		///         <param name="repeats">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("triggerWithDateMatchingComponents:repeats:")]
 		UNCalendarNotificationTrigger CreateTrigger (NSDateComponents dateComponents, bool repeats);
@@ -1102,13 +1195,27 @@ namespace UserNotifications {
 	[BaseType (typeof (NSObject))]
 	interface UNUserNotificationCenterDelegate {
 
+		/// <param name="center">The notification center that received the response.</param>
+		///         <param name="notification">To be added.</param>
+		///         <param name="completionHandler">An action that takes no arguments and returns no value.</param>
+		///         <summary>Called to deliver a notification to an application that is running in the foreground.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("userNotificationCenter:willPresentNotification:withCompletionHandler:")]
 		void WillPresentNotification (UNUserNotificationCenter center, UNNotification notification, Action<UNNotificationPresentationOptions> completionHandler);
 
+		/// <param name="center">The notification center that received the response.</param>
+		///         <param name="response">The user's response.</param>
+		///         <param name="completionHandler">An action that takes no arguments and returns no value.</param>
+		///         <summary>Called after the user selects an action from a notification from the app.</summary>
+		///         <remarks>To be added.</remarks>
 		[Unavailable (PlatformName.TvOS)]
 		[Export ("userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:")]
 		void DidReceiveNotificationResponse (UNUserNotificationCenter center, UNNotificationResponse response, Action completionHandler);
 
+		/// <param name="center">The notification center that received the response.</param>
+		///         <param name="notification">The notification.</param>
+		///         <summary>Called to open the in-app notification settings.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("userNotificationCenter:openSettingsForNotification:")]
@@ -1143,46 +1250,79 @@ namespace UserNotifications {
 		[Export ("currentNotificationCenter")]
 		UNUserNotificationCenter Current { get; }
 
+		/// <param name="options">The options for the authorization request.</param>
+		///         <param name="completionHandler">A task that takes a <see langword="bool" /> success value and an error to process.</param>
+		///         <summary>Requests notification authorization with the specified options, and processes the result of the request.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("requestAuthorizationWithOptions:completionHandler:")]
 		void RequestAuthorization (UNAuthorizationOptions options, Action<bool, NSError> completionHandler);
 
+		/// <param name="categories">The set of categories to support.</param>
+		///         <summary>Sets the specified supported notification categories</summary>
+		///         <remarks>To be added.</remarks>
 		[Unavailable (PlatformName.TvOS)]
 		[Export ("setNotificationCategories:")]
 		void SetNotificationCategories (NSSet<UNNotificationCategory> categories);
 
+		/// <param name="completionHandler">An action that takes an array of the currently registered notification categories and returns <see langword="void" />.</param>
+		///         <summary>Returns the currently registered notification categories for the app, processing them before they are returned.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Unavailable (PlatformName.TvOS)]
 		[Export ("getNotificationCategoriesWithCompletionHandler:")]
 		void GetNotificationCategories (Action<NSSet<UNNotificationCategory>> completionHandler);
 
+		/// <param name="completionHandler">An action that takes a notification settings object and returns <see langword="void" />.</param>
+		///         <summary>Returns the notification settings object for the app, processing it before it is returned.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("getNotificationSettingsWithCompletionHandler:")]
 		void GetNotificationSettings (Action<UNNotificationSettings> completionHandler);
 
+		/// <param name="request">The data and settings for the notification.</param>
+		///         <param name="completionHandler">An action that returns <see langword="void" /> and takes an out parameter for storing any errors that occur while trying to add the request.<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
+		///         <summary>Adds the local notification that is specified by <paramref name="request" />, with the specified <paramref name="completionHandler" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("addNotificationRequest:withCompletionHandler:")]
 		void AddNotificationRequest (UNNotificationRequest request, [NullAllowed] Action<NSError> completionHandler);
 
+		/// <param name="completionHandler">An action that takes an array of the pending notification requests and returns <see langword="void" />.</param>
+		///         <summary>Returns an array that contains the pending notification requests, processing them before returning them.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Export ("getPendingNotificationRequestsWithCompletionHandler:")]
 		void GetPendingNotificationRequests (Action<UNNotificationRequest []> completionHandler);
 
+		/// <param name="identifiers">The identifiers for which to remove the corresponding notification requests.</param>
+		///         <summary>Removes all pending notification requests for the app that have any of the the specified <paramref name="identifiers" /> from the notification center.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removePendingNotificationRequestsWithIdentifiers:")]
 		void RemovePendingNotificationRequests (string [] identifiers);
 
+		/// <summary>Removes all pending notification requests for the app from the notification center.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("removeAllPendingNotificationRequests")]
 		void RemoveAllPendingNotificationRequests ();
 
+		/// <param name="completionHandler">An action that takes an array of the delivered notifications and returns <see langword="void" />.</param>
+		///         <summary>Returns the delivered notifications that are still in the notification center, processing them before they are returned.</summary>
+		///         <remarks>To be added.</remarks>
 		[Async]
 		[Unavailable (PlatformName.TvOS)]
 		[Export ("getDeliveredNotificationsWithCompletionHandler:")]
 		void GetDeliveredNotifications (Action<UNNotification []> completionHandler);
 
+		/// <param name="identifiers">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Unavailable (PlatformName.TvOS)]
 		[Export ("removeDeliveredNotificationsWithIdentifiers:")]
 		void RemoveDeliveredNotifications (string [] identifiers);
 
+		/// <summary>Removes all delivered notifications for the app from the notification center.</summary>
+		///         <remarks>To be added.</remarks>
 		[Unavailable (PlatformName.TvOS)]
 		[Export ("removeAllDeliveredNotifications")]
 		void RemoveAllDeliveredNotifications ();

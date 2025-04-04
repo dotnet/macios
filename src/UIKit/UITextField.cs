@@ -19,6 +19,10 @@ using ObjCRuntime;
 namespace UIKit {
 
 	public partial class UITextFieldEditingEndedEventArgs : EventArgs {
+		/// <param name="reason">To be added.</param>
+		///         <summary>Initializes a new instance of the UITextFieldEditingEndedEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public UITextFieldEditingEndedEventArgs (UITextFieldDidEndEditingReason reason)
 		{
 			this.Reason = reason;

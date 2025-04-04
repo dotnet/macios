@@ -29,6 +29,8 @@ namespace Foundation {
 	[AttributeUsage (AttributeTargets.Class | AttributeTargets.Interface)]
 	public sealed class ModelAttribute : Attribute {
 
+		/// <summary>Default constructor.</summary>
+		///         <remarks>To be added.</remarks>
 		public ModelAttribute () { }
 
 		/// <summary>Specifies if the Objective-C type name for the model.</summary>

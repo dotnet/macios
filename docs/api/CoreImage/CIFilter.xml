@@ -63,4 +63,78 @@
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/QuartzCoreFramework/Classes/CIFilter_Class/index.html">Apple documentation for <c>CIFilter</c></related>
   </Docs>
+  <Docs DocId="M:CoreImage.CIFilter.FromName(System.String)">
+    <param name="name">The name of the CoreImage filter to instantiate.</param>
+    <summary>Returns a CIFilter for the specific effect.</summary>
+    <returns>To be added.</returns>
+    <remarks>
+      <para>
+            On iOS 5.0, the following are the built-in filters:
+            <see cref="P:CoreImage.CIFilterCategory.Blur" />, <see cref="P:CoreImage.CIFilterCategory.ColorEffect" />,
+            <see cref="T:CoreImage.CIAdditionCompositing" />,
+            <see cref="T:CoreImage.CIAffineTransform" />,
+            <see cref="T:CoreImage.CICheckerboardGenerator" />,
+            <see cref="T:CoreImage.CIColorBlendMode" />,
+            <see cref="T:CoreImage.CIColorBurnBlendMode" />,
+            <see cref="T:CoreImage.CIColorControls" />,
+            <see cref="T:CoreImage.CIColorCube" />,
+            <see cref="T:CoreImage.CIColorDodgeBlendMode" />,
+            <see cref="T:CoreImage.CIColorInvert" />,
+            <see cref="T:CoreImage.CIColorMatrix" />,
+            <see cref="T:CoreImage.CIColorMonochrome" />,
+            <see cref="T:CoreImage.CIConstantColorGenerator" />,
+            <see cref="T:CoreImage.CICrop" />,
+            <see cref="T:CoreImage.CIDarkenBlendMode" />,
+            <see cref="T:CoreImage.CIDifferenceBlendMode" />,
+            <see cref="T:CoreImage.CIExclusionBlendMode" />,
+            <see cref="T:CoreImage.CIExposureAdjust" />,
+            <see cref="T:CoreImage.CIFalseColor" />,
+            <see cref="T:CoreImage.CIGammaAdjust" />,
+            <see cref="T:CoreImage.CIGaussianGradient" />,
+            <see cref="T:CoreImage.CIHardLightBlendMode" />,
+            <see cref="T:CoreImage.CIHighlightShadowAdjust" />,
+            <see cref="T:CoreImage.CIHueAdjust" />,
+            <see cref="T:CoreImage.CIHueBlendMode" />,
+            <see cref="T:CoreImage.CILightenBlendMode" />,
+            <see cref="T:CoreImage.CILinearGradient" />,
+            <see cref="T:CoreImage.CILuminosityBlendMode" />,
+            <see cref="T:CoreImage.CIMaximumCompositing" />,
+            <see cref="T:CoreImage.CIMinimumCompositing" />,
+            <see cref="T:CoreImage.CIMultiplyBlendMode" />,
+            <see cref="T:CoreImage.CIMultiplyCompositing" />,
+            <see cref="T:CoreImage.CIOverlayBlendMode" />,
+            <see cref="T:CoreImage.CIRadialGradient" />,
+            <see cref="T:CoreImage.CISaturationBlendMode" />,
+            <see cref="T:CoreImage.CIScreenBlendMode" />,
+            <see cref="T:CoreImage.CISepiaTone" />,
+            <see cref="T:CoreImage.CISoftLightBlendMode" />,
+            <see cref="T:CoreImage.CISourceAtopCompositing" />,
+            <see cref="T:CoreImage.CISourceInCompositing" />,
+            <see cref="T:CoreImage.CISourceOutCompositing" />,
+            <see cref="T:CoreImage.CISourceOverCompositing" />,
+            <see cref="T:CoreImage.CIStraightenFilter" />,
+            <see cref="T:CoreImage.CIStripesGenerator" />,
+            <see cref="T:CoreImage.CITemperatureAndTint" />,
+            <see cref="T:CoreImage.CIToneCurve" />,
+            <see cref="T:CoreImage.CIVibrance" />,
+            <see cref="T:CoreImage.CIVignette" /> and <see cref="T:CoreImage.CIWhitePointAdjust" />.
+            
+          </para>
+      <para>
+            To create a filter of the specified type, instantiate an
+            instance of one of the above types, assign values to their
+            properties and extract the result by using the OutputImage
+            property.
+            
+          </para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+              var sepiaFilter = new CISepiaTone () {
+              Image = mySourceImage,
+              Intensity = 0.8f
+              };
+            ]]></code>
+      </example>
+    </remarks>
+  </Docs>
 </Documentation>

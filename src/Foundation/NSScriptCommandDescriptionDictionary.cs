@@ -57,6 +57,9 @@ namespace Foundation {
 
 	public partial class NSScriptCommandDescriptionDictionary {
 
+		/// <param name="arg">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Add (NSScriptCommandArgumentDescription arg)
 		{
 			if (arg is null)
@@ -68,6 +71,10 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="arg">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Remove (NSScriptCommandArgumentDescription arg)
 		{
 			if (arg is null)

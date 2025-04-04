@@ -115,13 +115,27 @@ namespace Foundation {
 
 	[AttributeUsage (AttributeTargets.Property)]
 	public sealed class OutletAttribute : ExportAttribute {
+		/// <summary>Default constructor</summary>
+		///         <remarks>
+		///         </remarks>
 		public OutletAttribute () : base (null) { }
+		/// <param name="name">Outlet name.</param>
+		///         <summary>Links the managed property with the specified Objective-C outlet.</summary>
+		///         <remarks>
+		///         </remarks>
 		public OutletAttribute (string name) : base (name) { }
 	}
 
 	[AttributeUsage (AttributeTargets.Method)]
 	public sealed class ActionAttribute : ExportAttribute {
+		/// <summary>Initializes a new instance of an Action attribute</summary>
+		///         <remarks>
+		///         </remarks>
 		public ActionAttribute () : base (null) { }
+		/// <param name="selector">Name for the selector to expose</param>
+		///         <summary>Creates a new instance of the action attribtue with the given selector.</summary>
+		///         <remarks>
+		///         </remarks>
 		public ActionAttribute (string selector) : base (selector) { }
 	}
 }

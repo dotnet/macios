@@ -7,34 +7,7 @@ using ObjCRuntime;
 
 #nullable enable
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace GameKit {
-#if !NET
-	public partial class GKGameSession {
-
-		[Obsolete ("Empty stub (GKGameSessionEventListenerPrivate category members are not public API).")]
-		public static void DidAddPlayer (GKGameSession session, GKCloudPlayer player) { }
-
-		[Obsolete ("Empty stub (GKGameSessionEventListenerPrivate category members are not public API).")]
-		public static void DidChangeConnectionState (GKGameSession session, GKCloudPlayer player, GKConnectionState newState) { }
-
-		[Obsolete ("Empty stub (GKGameSessionEventListenerPrivate category members are not public API).")]
-		public static void DidReceiveData (GKGameSession session, Foundation.NSData data, GKCloudPlayer player) { }
-
-		[Obsolete ("Empty stub (GKGameSessionEventListenerPrivate category members are not public API).")]
-		public static void DidReceiveMessage (GKGameSession session, string message, Foundation.NSData data, GKCloudPlayer player) { }
-
-		[Obsolete ("Empty stub (GKGameSessionEventListenerPrivate category members are not public API).")]
-		public static void DidRemovePlayer (GKGameSession session, GKCloudPlayer player) { }
-
-		[Obsolete ("Empty stub (GKGameSessionEventListenerPrivate category members are not public API).")]
-		public static void DidSaveData (GKGameSession session, GKCloudPlayer player, Foundation.NSData data) { }
-	}
-#endif
-
 #if !XAMCORE_5_0
 #if __IOS__ || __MACCATALYST__
 	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="T:GameKit.GKPeerPickerControllerDelegate" />.</summary>
@@ -45,15 +18,10 @@ namespace GameKit {
 	///     </remarks>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("Use 'MCBrowserViewController' from the 'MultipeerConnectivity' framework instead.")]
-#if NET
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("maccatalyst")]
-#else
-	[Unavailable (PlatformName.MacOSX)]
-	[Unavailable (PlatformName.TvOS)]
-#endif
 	public interface IGKPeerPickerControllerDelegate : INativeObject, IDisposable {
 	}
 
@@ -63,15 +31,10 @@ namespace GameKit {
 	///     </remarks>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("Use 'MCBrowserViewController' from the 'MultipeerConnectivity' framework instead.")]
-#if NET
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("maccatalyst")]
-#else
-	[Unavailable (PlatformName.MacOSX)]
-	[Unavailable (PlatformName.TvOS)]
-#endif
 	public static class GKPeerPickerControllerDelegate_Extensions {
 		/// <param name="This">The instance on which this extension method operates.</param>
 		///         <param name="picker">To be added.</param>
@@ -120,15 +83,10 @@ namespace GameKit {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameKit/Reference/GKPeerPickerControllerDelegate_Protocol/index.html">Apple documentation for <c>GKPeerPickerControllerDelegate</c></related>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("Use 'MCBrowserViewController' from the 'MultipeerConnectivity' framework instead.")]
-#if NET
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("maccatalyst")]
-#else
-	[Unavailable (PlatformName.MacOSX)]
-	[Unavailable (PlatformName.TvOS)]
-#endif
 	public unsafe class GKPeerPickerControllerDelegate : NSObject, IGKPeerPickerControllerDelegate {
 		/// <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
 		///         <remarks>
@@ -192,15 +150,10 @@ namespace GameKit {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameKit/Reference/GKPeerPickerController_Class/index.html">Apple documentation for <c>GKPeerPickerController</c></related>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("Use 'MCBrowserViewController' from the 'MultipeerConnectivity' framework instead.")]
-#if NET
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("maccatalyst")]
-#else
-	[Unavailable (PlatformName.MacOSX)]
-	[Unavailable (PlatformName.TvOS)]
-#endif
 	public class GKPeerPickerController : NSObject {
 		/// <summary>The handle for this class.</summary>
 		///         <value>The pointer to the Objective-C class.</value>

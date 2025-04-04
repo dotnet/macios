@@ -621,15 +621,10 @@ $(SHARED_PATH)/Delegates.generated.cs: $(SHARED_PATH)/Delegates.cs.t4 $(SHARED_P
 $(COMMON_TARGET_DIRS):
 	$(Q) mkdir -p $@
 
-DOTNET_GENERATE_FRAMEWORKS_CONSTANTS=generate-frameworks-constants/dotnet/bin/Debug/$(DOTNET_TFM)/generate-frameworks-constants.dll
-
-$(DOTNET_GENERATE_FRAMEWORKS_CONSTANTS): $(wildcard generate-frameworks-constants/*.cs*) $(TOP)/tools/common/Frameworks.cs Makefile
-	$(Q) $(DOTNET) build "/bl:$@.binlog" /r generate-frameworks-constants/dotnet/generate-frameworks-constants.csproj $(MSBUILD_VERBOSITY)
-	$(Q) touch $@ # Running 'dotnet build' doesn't always touch the target, so make sure we do here, otherwise make can end up confused.
-
 # This rule means: generate a Constants.<platform>.generated.cs for the frameworks in the variable <PLATFORM>_FRAMEWORKS
-$(DOTNET_BUILD_DIR)/%/Constants.generated.cs: Makefile $(DOTNET_GENERATE_FRAMEWORKS_CONSTANTS) | $(DOTNET_BUILD_DIR)
-	$(Q) $(DOTNET) $(DOTNET_GENERATE_FRAMEWORKS_CONSTANTS) "$*" "$@.tmp"
+include $(TOP)/scripts/generate-frameworks-constants/fragment.mk
+$(DOTNET_BUILD_DIR)/%/Constants.generated.cs: Makefile $(GENERATE_FRAMEWORKS_CONSTANTS) | $(DOTNET_BUILD_DIR)
+	$(Q) $(GENERATE_FRAMEWORKS_CONSTANTS_EXEC) "$*" "$@.tmp"
 	$(Q) mv "$@.tmp" "$@"
 
 # This target builds all the generated project files. It's not really useful by itself,

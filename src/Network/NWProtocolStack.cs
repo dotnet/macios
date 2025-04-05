@@ -28,6 +28,8 @@ using NativeHandle = System.IntPtr;
 namespace Network {
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
@@ -44,6 +46,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_protocol_stack_prepend_application_protocol (nw_protocol_stack_t stack, nw_protocol_options_t options);
 
+		/// <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void PrependApplicationProtocol (NWProtocolOptions options)
 		{
 			if (options is null)
@@ -55,6 +60,8 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_protocol_stack_clear_application_protocols (nw_protocol_stack_t stack);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void ClearApplicationProtocols ()
 		{
 			nw_protocol_stack_clear_application_protocols (GetCheckedHandle ());
@@ -97,6 +104,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe extern static void nw_protocol_stack_iterate_application_protocols (nw_protocol_stack_t stack, BlockLiteral* completion);
 
+		/// <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void IterateProtocols (Action<NWProtocolOptions> callback)
 		{

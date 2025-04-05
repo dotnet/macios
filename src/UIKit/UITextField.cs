@@ -18,16 +18,38 @@ using ObjCRuntime;
 
 namespace UIKit {
 
+	/// <summary>Provides data for the <see cref="E:UIKit.UITextField.EndedWithReason" /> event.</summary>
+	///     <remarks>
+	///     </remarks>
 	public partial class UITextFieldEditingEndedEventArgs : EventArgs {
+		/// <param name="reason">To be added.</param>
+		///         <summary>Initializes a new instance of the UITextFieldEditingEndedEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public UITextFieldEditingEndedEventArgs (UITextFieldDidEndEditingReason reason)
 		{
 			this.Reason = reason;
 		}
+		/// <summary>Gets or sets the reason why the edit was ended.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public UITextFieldDidEndEditingReason Reason { get; set; }
 	}
 
+	/// <param name="textField">To be added.</param>
+	///     <param name="range">To be added.</param>
+	///     <param name="replacementString">To be added.</param>
+	///     <summary>A delegate used to respond to changes on the UITextField.</summary>
+	///     <returns>To be added.</returns>
+	///     <remarks>To be added.</remarks>
 	public delegate bool UITextFieldChange (UITextField textField, NSRange range, string replacementString);
 
+	/// <param name="textField">To be added.</param>
+	///     <summary>A delegate used to get the condition for a UITextField.</summary>
+	///     <returns>To be added.</returns>
+	///     <remarks>To be added.</remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/MapDemo">Example_ContentControls</related>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/MonoCatalog-MonoDevelop/">monocatalog</related>
 	public delegate bool UITextFieldCondition (UITextField textField);
 
 	public partial class UITextField : IUITextInputTraits {
@@ -176,26 +198,41 @@ namespace UIKit {
 			remove { EnsureUITextFieldDelegate ().editingStarted -= value; }
 		}
 
+		/// <summary>Delegate invoked by the object to get a value.</summary>
+		///         <value />
+		///         <remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
 		public UITextFieldCondition ShouldBeginEditing {
 			get { return EnsureUITextFieldDelegate ().shouldBeginEditing; }
 			set { EnsureUITextFieldDelegate ().shouldBeginEditing = value; }
 		}
 
+		/// <summary>Delegate invoked by the object to get a value.</summary>
+		///         <value>A delegate, usually a method, a anonymous method or a lambda function.</value>
+		///         <remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
 		public UITextFieldChange ShouldChangeCharacters {
 			get { return EnsureUITextFieldDelegate ().shouldChangeCharacters; }
 			set { EnsureUITextFieldDelegate ().shouldChangeCharacters = value; }
 		}
 
+		/// <summary>Delegate invoked by the object to get a value.</summary>
+		///         <value>The delegate/method.</value>
+		///         <remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
 		public UITextFieldCondition ShouldClear {
 			get { return EnsureUITextFieldDelegate ().shouldClear; }
 			set { EnsureUITextFieldDelegate ().shouldClear = value; }
 		}
 
+		/// <summary>Delegate invoked by the object to get a value.</summary>
+		///         <value />
+		///         <remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
 		public UITextFieldCondition ShouldEndEditing {
 			get { return EnsureUITextFieldDelegate ().shouldEndEditing; }
 			set { EnsureUITextFieldDelegate ().shouldEndEditing = value; }
 		}
 
+		/// <summary>Delegate invoked by the object to get a value.</summary>
+		///         <value>A delegate that holds a method, an anonymous method or a lambda function.</value>
+		///         <remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
 		public UITextFieldCondition ShouldReturn {
 			get { return EnsureUITextFieldDelegate ().shouldReturn; }
 			set { EnsureUITextFieldDelegate ().shouldReturn = value; }

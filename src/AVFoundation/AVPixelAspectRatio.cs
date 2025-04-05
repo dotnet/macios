@@ -31,7 +31,8 @@ using System.Runtime.Versioning;
 #nullable enable
 
 namespace AVFoundation {
-
+	/// <summary>Encapsulates the aspect ratio of a pixel. Used with <see cref="P:AVFoundation.AVVideoCompositionRenderContext.PixelAspectRatio" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -51,6 +52,9 @@ namespace AVFoundation {
 			VerticalSpacing = verticalSpacing;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("(horizontalSpacing={0}, verticalSpacing={1})", HorizontalSpacing, VerticalSpacing);
@@ -66,11 +70,18 @@ namespace AVFoundation {
 			return left.HorizontalSpacing != right.HorizontalSpacing || left.VerticalSpacing != right.VerticalSpacing;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (HorizontalSpacing, VerticalSpacing);
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? other)
 		{
 			if (other is AVPixelAspectRatio) {

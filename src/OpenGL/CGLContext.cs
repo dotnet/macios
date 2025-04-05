@@ -40,6 +40,8 @@ using NativeHandle = System.IntPtr;
 
 namespace OpenGL {
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[ObsoletedOSPlatform ("macos10.14", "Use 'Metal' Framework instead.")]
 #else
@@ -78,6 +80,9 @@ namespace OpenGL {
 
 		[DllImport (Constants.OpenGLLibrary)]
 		extern static CGLErrorCode CGLLockContext (IntPtr ctx);
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGLErrorCode Lock ()
 		{
 			return CGLLockContext (Handle);
@@ -85,6 +90,9 @@ namespace OpenGL {
 
 		[DllImport (Constants.OpenGLLibrary)]
 		extern static CGLErrorCode CGLUnlockContext (IntPtr ctx);
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGLErrorCode Unlock ()
 		{
 			return CGLUnlockContext (Handle);
@@ -96,6 +104,9 @@ namespace OpenGL {
 		[DllImport (Constants.OpenGLLibrary)]
 		extern static IntPtr CGLGetCurrentContext ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public static CGLContext? CurrentContext {
 			get {
 				IntPtr ctx = CGLGetCurrentContext ();

@@ -39,6 +39,8 @@ using Foundation;
 namespace CoreGraphics {
 
 	// untyped enum -> CGGeometry.h
+	/// <summary>Coordinates used to establish the edge in RectangleFExtensions.Divide.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CGRectEdge : uint {
 		/// <summary>To be added.</summary>
 		MinXEdge,
@@ -50,16 +52,13 @@ namespace CoreGraphics {
 		MaxYEdge,
 	}
 
-#if NET
+	/// <summary>Extensions to the RectangleF class that are useful when using CoreGraphics.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public static class CGRectExtensions {
-#else
-	public static class RectangleFExtensions {
-#endif
-
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern /* CGFloat */ nfloat CGRectGetMinX (CGRect rect);
 

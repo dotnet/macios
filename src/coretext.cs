@@ -129,21 +129,13 @@ namespace CoreText {
 
 		[Deprecated (PlatformName.iOS, 6, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
+		[Deprecated (PlatformName.MacOSX, 10, 8)]
+		[Deprecated (PlatformName.TvOS, 9, 0)]
 		[Field ("kCTTypesetterOptionDisableBidiProcessing")]
-#if !NET
-		[Internal]
-		NSString _DisableBidiProcessing { get; }
-#else
 		NSString DisableBidiProcessing { get; }
-#endif
 
 		[Field ("kCTTypesetterOptionForcedEmbeddingLevel")]
-#if !NET
-		[Internal]
-		NSString _ForceEmbeddingLevel { get; }
-#else
 		NSString ForceEmbeddingLevel { get; }
-#endif
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -169,7 +161,6 @@ namespace CoreText {
 		NSString FontAssetNameKey { get; }
 	}
 
-#if NET
 	[Internal]
 	[Static]
 	[Partial]
@@ -385,7 +376,6 @@ namespace CoreText {
 		[Field ("kCTFontCollectionRemoveDuplicatesOption")]
 		NSString RemoveDuplicates { get; }
 	}
-#endif
 
 	[Internal]
 	[Static]
@@ -431,7 +421,6 @@ namespace CoreText {
 	[Static]
 	[Partial]
 	interface CTStringAttributeKey {
-#if NET
 		[Field ("kCTFontAttributeName")]
 		NSString Font { get; }
 
@@ -504,7 +493,6 @@ namespace CoreText {
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("kCTAdaptiveImageProviderAttributeName")]
 		NSString AdaptiveImageProvider { get; }
-#endif
 
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]

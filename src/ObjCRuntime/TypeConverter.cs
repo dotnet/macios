@@ -11,6 +11,11 @@ using Foundation;
 
 namespace ObjCRuntime {
 
+	/// <summary>Converts Obj-C type encodings to managed types.</summary>
+	///     <remarks>
+	///       <para>This class provides a way of converting Objective-C encoded type strings to .NET and viceversa.   The full details about type encodings are available <format type="html"><a href="https://developer.apple.com/documentation/DeveloperTools/gcc-4.0.1/gcc/Type-encoding.html">here</a></format>.
+	///     </para>
+	///     </remarks>
 	public static class TypeConverter {
 #if !COREBUILD
 		/*
@@ -19,6 +24,12 @@ namespace ObjCRuntime {
 		 *
 		 * http://developer.apple.com/documentation/DeveloperTools/gcc-4.0.1/gcc/Type-encoding.html
 		 */
+		/// <param name="type">Type description.</param>
+		///         <summary>Converts the specified Objective-C description into the .NET type.</summary>
+		///         <returns>The .NET type.</returns>
+		///         <remarks>
+		///           <para>For example: TypeConverter.ToManaged ("@") returns typeof (IntPtr).</para>
+		///         </remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)] // To inline the Runtime.DynamicRegistrationSupported code if possible.
 		public static Type ToManaged (string type)
 		{
@@ -99,6 +110,12 @@ namespace ObjCRuntime {
 		 *
 		 * http://developer.apple.com/documentation/DeveloperTools/gcc-4.0.1/gcc/Type-encoding.html
 		 */
+		/// <param name="type">A .NET type.</param>
+		///         <summary>Converts a .NET type into the Objective-C type code.</summary>
+		///         <returns />
+		///         <remarks>
+		///           <para>For example: TypeConverter.ToNative (int.GetType ()) will return "i".</para>
+		///         </remarks>
 		public static string ToNative (Type type)
 		{
 			if (type.IsGenericParameter)

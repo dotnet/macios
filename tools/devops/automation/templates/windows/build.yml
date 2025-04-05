@@ -97,7 +97,7 @@ steps:
 
 - task: UseDotNet@2
   inputs:
-    version: 8.x
+    version: 9.x
 
 - pwsh: '& "$(Build.SourcesDirectory)/$Env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/initialize-test-output-variables.ps1"'
   displayName: Set output variables
@@ -152,6 +152,19 @@ steps:
       throw "The mac we're trying to connect to ($($Env:MAC_AGENT_IP)) is reserved for a different build (with build id $($macBuildId)). If you're reran this job, please rerun all jobs instead."
     }
   displayName: "Verify ssh connection"
+
+- pwsh: |
+    $remoteTmpPath = "${Env:LOCALAPPDATA}\Temp\Xamarin\XMA\Remote"
+    Write-Host "Remote tmp path: $remoteTmpPath"
+    # let's see what's there
+    if (Test-Path -Path $remoteTmpPath) {
+      Get-ChildItem -Path $remoteTmpPath
+      Get-ChildItem -Path $remoteTmpPath | Format-Table | Out-String | Write-Host
+      Remove-Item -Recurse -Force $remoteTmpPath
+    } else {
+      Write-Host "Remote tmp path doesn't exist!"
+    }
+  displayName: "Cleanup temporary files"
 
 # This task fixes errors such as these:
 #     error MSB4242: SDK Resolver Failure: "The SDK resolver "NuGetSdkResolver" failed while attempting to resolve the SDK "Microsoft.Build.NoTargets/3.3.0".

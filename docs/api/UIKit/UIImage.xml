@@ -37,4 +37,14 @@
     <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Media/Images/Rotate_An_Image">Rotate An Image</related>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIImage_Class/index.html">Apple documentation for <c>UIImage</c></related>
   </Docs>
+  <Docs DocId="M:UIKit.UIImage.SaveToPhotosAlbum(UIKit.UIImage.SaveStatus)">
+        <param name="status">If not-null, a method to invoke when the file has been saved to the Camera Album.</param>
+        <summary>Saves the specified image into the Photos Album.</summary>
+        <remarks>
+          <para>On systems without a camera, the Camera Album is the Saved Photos album instead.   This can not be changed.</para>
+          <para>If a non-null value was specified for <paramref name="status" /> then the method is invoked on completion with both the image reference and an if there was an error, a non-null instance of NSError.</para>
+          <para>This method requires the developer to request, and the user to grant, access to the Photos album. (See <format type="text/html"><a href="https://developer.xamarin.com/guides/ios/platform_features/introduction-to-ios10/security-privacy-enhancements/#Accessing_Private_User_Data">Accessing Private User Data</a></format>.)</para>
+          <para>This method should only be invoked on the main thread (see <see cref="M:Foundation.NSObject.InvokeOnMainThread(ObjCRuntime.Selector,Foundation.NSObject)" />).</para>
+        </remarks>
+      </Docs>
 </Documentation>

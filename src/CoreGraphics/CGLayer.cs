@@ -36,19 +36,24 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
-
-
-#if NET
+	/// <summary>A hardware accelerated context.</summary>
+	///     <remarks>
+	///       <para>CGLayers can be hardware accelerated and developers are
+	///       encouraged to use this instead of CGBitmaps for off-screen
+	///       rendering operations.</para>
+	///       <para>
+	/// 	To create CGLayers, use the <see cref="M:CoreGraphics.CGLayer.Create(CoreGraphics.CGContext,CoreGraphics.CGSize)" /> method.
+	///       </para>
+	///       <para>
+	/// 	Once you create a CGLayer, you extract the CGContext instance by accessing the Context property.
+	///       </para>
+	///     </remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/Drawing/">Example_Drawing</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CGLayer.h
 	public class CGLayer : NativeObject {
 #if !COREBUILD
@@ -105,6 +110,11 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGLayerRef */ IntPtr CGLayerCreateWithContext (/* CGContextRef */ IntPtr context, CGSize size, /* CFDictionaryRef */ IntPtr auxiliaryInfo);
 
+		/// <param name="context">The source context.</param>
+		///         <param name="size">The size for the CGLayer.</param>
+		///         <summary>Creates a new CGLayer object with the specified graphics context and size</summary>
+		///         <returns />
+		///         <remarks>To be added.</remarks>
 		public static CGLayer Create (CGContext? context, CGSize size)
 		{
 			// note: auxiliaryInfo is reserved and should be null

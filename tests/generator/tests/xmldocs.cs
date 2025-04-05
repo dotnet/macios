@@ -1,5 +1,6 @@
 using System;
 using Foundation;
+using ObjCRuntime;
 #if IOS
 using UIKit;
 #endif
@@ -195,5 +196,25 @@ namespace XmlDocumentation {
 		/// <summary>Summary for Option1.</summary>
 		[Export ("Option1")]
 		string Option1 { get; set; }
+	}
+
+	/// <summary>CategoryA</summary>
+	[Category, BaseType (typeof (T1))]
+	interface CategoryA {
+		/// <summary>CategoryA.StaticMethod</summary>
+		/// <param name="p0">p0</param>
+		[Static]
+		[Export ("staticMethod:")]
+		void StaticMethod (int p0);
+
+		/// <summary>CategoryA.InstanceMethod</summary>
+		/// <param name="p0">p0</param>
+		[Export ("instanceMethod:")]
+		void InstanceMethod (int p0);
+
+		/// <summary>CategoryA.StaticProperty</summary>
+		[Static]
+		[Export ("staticProperty")]
+		int StaticProperty { get; set; }
 	}
 }

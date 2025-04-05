@@ -17,6 +17,8 @@ namespace Foundation {
 
 	// Helper to (mostly) support NS[Mutable]Copying protocols
 #if NET
+	/// <summary>An OS-controlled area within memory from which objects are allocated.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

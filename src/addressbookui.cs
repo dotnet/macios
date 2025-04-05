@@ -73,6 +73,13 @@ namespace AddressBookUI {
 	[Protocol]
 	interface ABNewPersonViewControllerDelegate {
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="person">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("newPersonViewController:didCompleteWithNewPerson:")]
 		[Abstract]
 		void DidCompleteWithNewPerson (ABNewPersonViewController controller, [NullAllowed] ABPerson person);
@@ -165,20 +172,45 @@ namespace AddressBookUI {
 	[Model]
 	[Protocol]
 	interface ABPeoplePickerNavigationControllerDelegate {
+		/// <param name="peoplePicker">To be added.</param>
+		///         <param name="selectedPerson">To be added.</param>
+		///         <summary>Developers should not use this deprecated method. Developers should use 'DidSelectPerson' instead (or 'ABPeoplePickerNavigationController.PredicateForSelectionOfPerson').</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'DidSelectPerson' instead (or 'ABPeoplePickerNavigationController.PredicateForSelectionOfPerson').")]
 		[Export ("peoplePickerNavigationController:shouldContinueAfterSelectingPerson:")]
 		bool ShouldContinue (ABPeoplePickerNavigationController peoplePicker, ABPerson selectedPerson);
 
+		/// <param name="peoplePicker">To be added.</param>
+		///         <param name="selectedPerson">To be added.</param>
+		///         <param name="propertyId">To be added.</param>
+		///         <param name="identifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'DidSelectPerson' instead (or 'ABPeoplePickerNavigationController.PredicateForSelectionOfProperty').")]
 		[Export ("peoplePickerNavigationController:shouldContinueAfterSelectingPerson:property:identifier:")]
 		bool ShouldContinue (ABPeoplePickerNavigationController peoplePicker, ABPerson selectedPerson, int /* ABPropertyId = int32 */ propertyId, int /* ABMultiValueIdentifier = int32 */ identifier);
 
+		/// <param name="peoplePicker">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("peoplePickerNavigationControllerDidCancel:")]
 		void Cancelled (ABPeoplePickerNavigationController peoplePicker);
 
+		/// <param name="peoplePicker">To be added.</param>
+		///         <param name="selectedPerson">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("peoplePickerNavigationController:didSelectPerson:")]
 		void DidSelectPerson (ABPeoplePickerNavigationController peoplePicker, ABPerson selectedPerson);
 
+		/// <param name="peoplePicker">To be added.</param>
+		///         <param name="selectedPerson">To be added.</param>
+		///         <param name="propertyId">To be added.</param>
+		///         <param name="identifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("peoplePickerNavigationController:didSelectPerson:property:identifier:")]
 		void DidSelectPerson (ABPeoplePickerNavigationController peoplePicker, ABPerson selectedPerson, int /* ABPropertyId = int32 */ propertyId, int /* ABMultiValueIdentifier = int32 */ identifier);
 	}
@@ -437,6 +469,13 @@ namespace AddressBookUI {
 	[Protocol]
 	interface ABPersonViewControllerDelegate {
 
+		/// <param name="personViewController">To be added.</param>
+		///         <param name="person">To be added.</param>
+		///         <param name="propertyId">To be added.</param>
+		///         <param name="identifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("personViewController:shouldPerformDefaultActionForPerson:property:identifier:")]
 		[Abstract]
 		bool ShouldPerformDefaultActionForPerson (ABPersonViewController personViewController, ABPerson person, int /* ABPropertyID = int32 */ propertyId, int /* ABMultiValueIdentifier = int32 */ identifier);
@@ -526,10 +565,21 @@ namespace AddressBookUI {
 	[Model]
 	[Protocol]
 	interface ABUnknownPersonViewControllerDelegate {
+		/// <param name="unknownPersonView">To be added.</param>
+		///         <param name="person">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("unknownPersonViewController:didResolveToPerson:")]
 		[Abstract]
 		void DidResolveToPerson (ABUnknownPersonViewController unknownPersonView, [NullAllowed] ABPerson person);
 
+		/// <param name="personViewController">To be added.</param>
+		///         <param name="person">To be added.</param>
+		///         <param name="propertyId">To be added.</param>
+		///         <param name="identifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("unknownPersonViewController:shouldPerformDefaultActionForPerson:property:identifier:")]
 		bool ShouldPerformDefaultActionForPerson (ABUnknownPersonViewController personViewController, ABPerson person, int /* ABPropertyID = int32 */ propertyId, int /* ABMultiValueIdentifier = int32 */ identifier);
 	}

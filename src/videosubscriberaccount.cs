@@ -150,6 +150,10 @@ namespace VideoSubscriberAccount {
 	[BaseType (typeof (NSObject))]
 	interface VSAccountManagerDelegate {
 
+		/// <param name="accountManager">To be added.</param>
+		///         <param name="viewController">To be added.</param>
+		///         <summary>Developers override this to specify the <see cref="T:UIKit.UIViewController" /> to be shown when the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:VideoSubscriberAccounts.VSAccountManager&amp;scope=Xamarin" title="T:VideoSubscriberAccounts.VSAccountManager">T:VideoSubscriberAccounts.VSAccountManager</a></format> requires user interaction.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 #if NET
 		[NoMac]
@@ -159,6 +163,10 @@ namespace VideoSubscriberAccount {
 		[Export ("accountManager:presentViewController:")]
 		void PresentViewController (VSAccountManager accountManager, UIViewController viewController);
 
+		/// <param name="accountManager">To be added.</param>
+		///         <param name="viewController">To be added.</param>
+		///         <summary>Called after the user has interacted with the <paramref name="viewController" />.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract]
 #if NET
 		[NoMac]
@@ -168,6 +176,11 @@ namespace VideoSubscriberAccount {
 		[Export ("accountManager:dismissViewController:")]
 		void DismissViewController (VSAccountManager accountManager, UIViewController viewController);
 
+		/// <param name="accountManager">To be added.</param>
+		///         <param name="accountProviderIdentifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("accountManager:shouldAuthenticateAccountProviderWithIdentifier:")]
 		bool ShouldAuthenticateAccountProvider (VSAccountManager accountManager, string accountProviderIdentifier);
 	}
@@ -189,11 +202,20 @@ namespace VideoSubscriberAccount {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		IVSAccountManagerDelegate Delegate { get; set; }
 
+		/// <param name="options">If not empty, may contain the key <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Video%20Subscriber%20Account%20VSCheck%20Access%20Option%20Keys&amp;scope=Xamarin" title="P:VideoSubscriberAccount.VSCheckAccessOptionKeys">P:VideoSubscriberAccount.VSCheckAccessOptionKeys</a></format>.</param>
+		///         <param name="completionHandler">Called by the system with the results of the permission check.</param>
+		///         <summary>Checks whether the user has provided permission for the app to access their subscription information.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Async]
 		[Export ("checkAccessStatusWithOptions:completionHandler:")]
 		void CheckAccessStatus (NSDictionary options, Action<VSAccountAccessStatus, NSError> completionHandler);
 
+		/// <param name="accountMetadataRequest">To be added.</param>
+		///         <param name="completionHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Async]
 		[Export ("enqueueAccountMetadataRequest:completionHandler:")]
@@ -235,6 +257,8 @@ namespace VideoSubscriberAccount {
 	[DisableDefaultCtor]
 	interface VSAccountManagerResult {
 
+		/// <summary>Informs the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:VideoSubscriberAccounts.VSAccountManager&amp;scope=Xamarin" title="T:VideoSubscriberAccounts.VSAccountManager">T:VideoSubscriberAccounts.VSAccountManager</a></format> that the app no longer needs the requested work.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancel")]
 		void Cancel ();
 	}
@@ -494,6 +518,12 @@ namespace VideoSubscriberAccount {
 		[Export ("defaultSubscriptionRegistrationCenter")]
 		VSSubscriptionRegistrationCenter Default { get; }
 
+		/// <param name="currentSubscription">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("setCurrentSubscription:")]
 		void SetCurrentSubscription ([NullAllowed] VSSubscription currentSubscription);
 	}

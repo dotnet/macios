@@ -49,6 +49,8 @@ using NativeHandle = System.IntPtr;
 namespace AudioUnit {
 #if !COREBUILD
 #if NET
+	/// <summary>An exception relating to functions in the MonoTouch.AudioUnit namespace.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -123,7 +125,16 @@ namespace AudioUnit {
 		}
 	}
 
+	/// <include file="../../docs/api/AudioUnit/RenderDelegate.xml" path="/Documentation/Docs[@DocId='T:AudioUnit.RenderDelegate']/*" />
 	public delegate AudioUnitStatus RenderDelegate (AudioUnitRenderActionFlags actionFlags, AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, AudioBuffers data);
+	/// <param name="actionFlags">To be added.</param>
+	///     <param name="timeStamp">To be added.</param>
+	///     <param name="busNumber">To be added.</param>
+	///     <param name="numberFrames">To be added.</param>
+	///     <param name="audioUnit">To be added.</param>
+	///     <summary>Callback used with <see cref="M:AudioUnit.AudioUnit.SetInputCallback(AudioUnit.InputDelegate,AudioUnit.AudioUnitScopeType,System.UInt32)" />.</summary>
+	///     <returns>To be added.</returns>
+	///     <remarks>To be added.</remarks>
 	public delegate AudioUnitStatus InputDelegate (AudioUnitRenderActionFlags actionFlags, AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, AudioUnit audioUnit);
 
 	delegate AudioUnitStatus CallbackShared (IntPtr /* void* */ clientData, ref AudioUnitRenderActionFlags /* AudioUnitRenderActionFlags* */ actionFlags, ref AudioTimeStamp /* AudioTimeStamp* */ timeStamp, uint /* UInt32 */ busNumber, uint /* UInt32 */ numberFrames, IntPtr /* AudioBufferList* */ data);
@@ -155,6 +166,8 @@ namespace AudioUnit {
 	}
 
 #if NET
+	/// <summary>Describes a sampler instrument. Used with <see cref="M:AudioUnit.AudioUnit.LoadInstrument(AudioUnit.SamplerInstrumentData,AudioUnit.AudioUnitScopeType,System.UInt32)" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -172,6 +185,10 @@ namespace AudioUnit {
 		///         <remarks>To be added.</remarks>
 		public const byte DefaultBankLSB = 0x00;
 
+		/// <param name="fileUrl">To be added.</param>
+		///         <param name="instrumentType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public SamplerInstrumentData (CFUrl fileUrl, InstrumentType instrumentType)
 		{
 			if (fileUrl is null)
@@ -260,6 +277,8 @@ namespace AudioUnit {
 	}
 
 #if NET
+	/// <summary>Holds information regarding an audio unit parameter.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -333,6 +352,8 @@ namespace AudioUnit {
 #endif // !COREBUILD
 	}
 
+	/// <summary>Enumerates types of audio unit parameter events.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AUParameterEventType : uint {
 		/// <summary>Indicates an instantaneous, or step, change in a value.</summary>
 		Immediate = 1,
@@ -341,6 +362,8 @@ namespace AudioUnit {
 	}
 
 #if NET
+	/// <summary>A change for an audio unit parameter.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -362,6 +385,8 @@ namespace AudioUnit {
 		public AUParameterEventType EventType;
 
 #if NET
+		/// <summary>Contains structs for different types parameter change events.</summary>
+		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -369,6 +394,8 @@ namespace AudioUnit {
 #endif
 		[StructLayout (LayoutKind.Explicit)]
 		public struct EventValuesStruct {
+			/// <summary>Contains values that describe a linear ramp change in a parameter value.</summary>
+			///     <remarks>To be added.</remarks>
 			[StructLayout (LayoutKind.Sequential)]
 			public struct RampStruct {
 				/// <summary>The offset into the frame buffer at which the change begins.</summary>
@@ -391,6 +418,8 @@ namespace AudioUnit {
 			[FieldOffset (0)]
 			public RampStruct Ramp;
 
+			/// <summary>Contains values that describe a step change in a parameter value.</summary>
+			///     <remarks>To be added.</remarks>
 			[StructLayout (LayoutKind.Sequential)]
 			public struct ImmediateStruct {
 				/// <summary>The offset into the frame buffer at which the change occurs.</summary>
@@ -413,6 +442,8 @@ namespace AudioUnit {
 	}
 
 #if NET
+	/// <summary>A plug-in component that processes or generates audio data.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -454,6 +485,9 @@ namespace AudioUnit {
 			return handle;
 		}
 
+		/// <param name="component">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioUnit (AudioComponent component)
 			: this (Create (component), true)
 		{
@@ -473,6 +507,12 @@ namespace AudioUnit {
 		///         <remarks>To be added.</remarks>
 		public bool IsPlaying { get { return _isPlaying; } }
 
+		/// <param name="audioFormat">To be added.</param>
+		///         <param name="scope">To be added.</param>
+		///         <param name="audioUnitElement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe AudioUnitStatus SetFormat (AudioToolbox.AudioStreamBasicDescription audioFormat, AudioUnitScopeType scope, uint audioUnitElement = 0)
 		{
 			return (AudioUnitStatus) AudioUnitSetProperty (Handle,
@@ -483,6 +523,11 @@ namespace AudioUnit {
 							   (uint) Marshal.SizeOf<AudioToolbox.AudioStreamBasicDescription> ());
 		}
 
+		/// <param name="scope">To be added.</param>
+		///         <param name="audioUnitElement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public uint GetCurrentDevice (AudioUnitScopeType scope, uint audioUnitElement = 0)
 		{
 			uint device = 0;
@@ -506,6 +551,9 @@ namespace AudioUnit {
 		[Obsolete ("This API is not available on iOS.")]
 #endif
 #if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -541,6 +589,12 @@ namespace AudioUnit {
 #endif
 		}
 #endif
+		/// <param name="inputDevice">To be added.</param>
+		///         <param name="scope">To be added.</param>
+		///         <param name="audioUnitElement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe AudioUnitStatus SetCurrentDevice (uint inputDevice, AudioUnitScopeType scope, uint audioUnitElement = 0)
 		{
 			return AudioUnitSetProperty (Handle,
@@ -551,6 +605,11 @@ namespace AudioUnit {
 						(uint) sizeof (uint));
 		}
 
+		/// <param name="scope">To be added.</param>
+		///         <param name="audioUnitElement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioStreamBasicDescription GetAudioFormat (AudioUnitScopeType scope, uint audioUnitElement = 0)
 		{
 			var audioFormat = new AudioStreamBasicDescription ();
@@ -571,6 +630,11 @@ namespace AudioUnit {
 			return audioFormat;
 		}
 
+		/// <param name="scope">To be added.</param>
+		///         <param name="audioUnitElement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public ClassInfoDictionary? GetClassInfo (AudioUnitScopeType scope = AudioUnitScopeType.Global, uint audioUnitElement = 0)
 		{
 			IntPtr ptr = new IntPtr ();
@@ -591,6 +655,12 @@ namespace AudioUnit {
 			return new ClassInfoDictionary (Runtime.GetNSObject<NSDictionary> (ptr, true));
 		}
 
+		/// <param name="preset">To be added.</param>
+		///         <param name="scope">To be added.</param>
+		///         <param name="audioUnitElement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus SetClassInfo (ClassInfoDictionary preset, AudioUnitScopeType scope = AudioUnitScopeType.Global, uint audioUnitElement = 0)
 		{
 			var ptr = preset.Dictionary.Handle;
@@ -600,6 +670,11 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <param name="scope">To be added.</param>
+		///         <param name="audioUnitElement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe AudioUnitParameterInfo []? GetParameterList (AudioUnitScopeType scope = AudioUnitScopeType.Global, uint audioUnitElement = 0)
 		{
 			uint size;
@@ -628,6 +703,12 @@ namespace AudioUnit {
 			return info;
 		}
 
+		/// <param name="instrumentData">To be added.</param>
+		///         <param name="scope">To be added.</param>
+		///         <param name="audioUnitElement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus LoadInstrument (SamplerInstrumentData instrumentData, AudioUnitScopeType scope = AudioUnitScopeType.Global, uint audioUnitElement = 0)
 		{
 			if (instrumentData is null)
@@ -640,6 +721,12 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <param name="sourceAudioUnit">To be added.</param>
+		///         <param name="sourceOutputNumber">To be added.</param>
+		///         <param name="destInputNumber">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus MakeConnection (AudioUnit sourceAudioUnit, uint sourceOutputNumber, uint destInputNumber)
 		{
 			var auc = new AudioUnitConnection {
@@ -655,6 +742,12 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <param name="enableIO">To be added.</param>
+		///         <param name="scope">To be added.</param>
+		///         <param name="audioUnitElement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus SetEnableIO (bool enableIO, AudioUnitScopeType scope, uint audioUnitElement = 0)
 		{
 			// EnableIO: UInt32          
@@ -664,6 +757,12 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <param name="value">To be added.</param>
+		///         <param name="scope">To be added.</param>
+		///         <param name="audioUnitElement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus SetMaximumFramesPerSlice (uint value, AudioUnitScopeType scope, uint audioUnitElement = 0)
 		{
 			// MaximumFramesPerSlice: UInt32
@@ -672,6 +771,11 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <param name="scope">To be added.</param>
+		///         <param name="audioUnitElement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public uint GetMaximumFramesPerSlice (AudioUnitScopeType scope = AudioUnitScopeType.Global, uint audioUnitElement = 0)
 		{
 			// MaximumFramesPerSlice: UInt32
@@ -693,6 +797,11 @@ namespace AudioUnit {
 			return value;
 		}
 
+		/// <param name="scope">To be added.</param>
+		///         <param name="count">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus SetElementCount (AudioUnitScopeType scope, uint count)
 		{
 			// ElementCount: UInt32
@@ -701,6 +810,10 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <param name="scope">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public uint GetElementCount (AudioUnitScopeType scope)
 		{
 			// ElementCount: UInt32
@@ -722,6 +835,12 @@ namespace AudioUnit {
 			return value;
 		}
 
+		/// <param name="sampleRate">To be added.</param>
+		///         <param name="scope">To be added.</param>
+		///         <param name="audioUnitElement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus SetSampleRate (double sampleRate, AudioUnitScopeType scope = AudioUnitScopeType.Output, uint audioUnitElement = 0)
 		{
 			// ElementCount: Float64
@@ -730,6 +849,13 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <param name="status">To be added.</param>
+		///         <param name="data1">To be added.</param>
+		///         <param name="data2">To be added.</param>
+		///         <param name="offsetSampleFrame">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus MusicDeviceMIDIEvent (uint status, uint data1, uint data2, uint offsetSampleFrame = 0)
 		{
 			return MusicDeviceMIDIEvent (Handle, status, data1, data2, offsetSampleFrame);
@@ -746,6 +872,9 @@ namespace AudioUnit {
 		[DllImport (Constants.AudioUnitLibrary)]
 		unsafe static extern AudioUnitStatus AudioUnitGetProperty (IntPtr inUnit, AudioUnitPropertyIDType inID, AudioUnitScopeType inScope, uint inElement, double* outData, uint* ioDataSize);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public double GetLatency ()
 		{
 			uint size = sizeof (double);
@@ -761,6 +890,12 @@ namespace AudioUnit {
 
 		#region SetRenderCallback
 
+		/// <param name="renderDelegate">To be added.</param>
+		///         <param name="scope">To be added.</param>
+		///         <param name="audioUnitElement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus SetRenderCallback (RenderDelegate renderDelegate, AudioUnitScopeType scope = AudioUnitScopeType.Global, uint audioUnitElement = 0)
 		{
 			if (renderer is null)
@@ -815,6 +950,12 @@ namespace AudioUnit {
 
 		#region SetInputCallback
 
+		/// <param name="inputDelegate">To be added.</param>
+		///         <param name="scope">To be added.</param>
+		///         <param name="audioUnitElement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus SetInputCallback (InputDelegate inputDelegate, AudioUnitScopeType scope = AudioUnitScopeType.Global, uint audioUnitElement = 0)
 		{
 			if (inputs is null)
@@ -884,6 +1025,12 @@ namespace AudioUnit {
 		static extern AudioComponentStatus AudioOutputUnitPublish (AudioComponentDescription inDesc, IntPtr /* CFStringRef */ inName, uint /* UInt32 */ inVersion, IntPtr /* AudioUnit */ inOutputUnit);
 
 #if NET
+		/// <param name="description">To be added.</param>
+		///         <param name="name">To be added.</param>
+		///         <param name="version">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -929,6 +1076,10 @@ namespace AudioUnit {
 		static extern IntPtr AudioOutputUnitGetHostIcon (IntPtr /* AudioUnit */ au, float /* float */ desiredPointSize);
 
 #if NET
+		/// <param name="desiredPointSize">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -949,6 +1100,9 @@ namespace AudioUnit {
 #endif
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus Initialize ()
 		{
 			return AudioUnitInitialize (Handle);
@@ -961,6 +1115,9 @@ namespace AudioUnit {
 #endif
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus Uninitialize ()
 		{
 			return AudioUnitUninitialize (Handle);
@@ -973,6 +1130,8 @@ namespace AudioUnit {
 #endif
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus Start ()
 #else
 		public void Start ()
@@ -989,6 +1148,8 @@ namespace AudioUnit {
 		}
 
 #if NET
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus Stop ()
 #else
 		public void Stop ()
@@ -1006,6 +1167,14 @@ namespace AudioUnit {
 
 		#region Render
 
+		/// <param name="actionFlags">To be added.</param>
+		///         <param name="timeStamp">To be added.</param>
+		///         <param name="busNumber">To be added.</param>
+		///         <param name="numberFrames">To be added.</param>
+		///         <param name="data">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus Render (ref AudioUnitRenderActionFlags actionFlags, AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, AudioBuffers data)
 		{
 			if ((IntPtr) data == IntPtr.Zero)
@@ -1023,11 +1192,23 @@ namespace AudioUnit {
 
 		#endregion
 
+		/// <param name="type">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <param name="scope">To be added.</param>
+		///         <param name="audioUnitElement">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus SetParameter (AudioUnitParameterType type, float value, AudioUnitScopeType scope, uint audioUnitElement = 0)
 		{
 			return AudioUnitSetParameter (Handle, type, scope, audioUnitElement, value, 0);
 		}
 
+		/// <param name="inParameterEvent">To be added.</param>
+		///         <param name="inNumParamEvents">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus ScheduleParameter (AudioUnitParameterEvent inParameterEvent, uint inNumParamEvents)
 		{
 			return AudioUnitScheduleParameters (Handle, inParameterEvent, inNumParamEvents);
@@ -1036,6 +1217,7 @@ namespace AudioUnit {
 		[DllImport (Constants.AudioUnitLibrary)]
 		static extern int AudioComponentInstanceDispose (IntPtr inInstance);
 
+		/// <include file="../../docs/api/AudioUnit/AudioUnit.xml" path="/Documentation/Docs[@DocId='M:AudioUnit.AudioUnit.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero && Owns) {
@@ -1170,6 +1352,10 @@ namespace AudioUnit {
 		unsafe static extern AudioUnitStatus AudioUnitSetProperty (IntPtr inUnit, AudioUnitPropertyIDType inID, AudioUnitScopeType inScope, uint inElement,
 			AUScheduledAudioFileRegion.ScheduledAudioFileRegion* inData, int inDataSize);
 
+		/// <param name="region">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus SetScheduledFileRegion (AUScheduledAudioFileRegion region)
 		{
 			if (region is null)
@@ -1185,6 +1371,10 @@ namespace AudioUnit {
 		unsafe static extern AudioUnitStatus AudioUnitSetProperty (IntPtr inUnit, AudioUnitPropertyIDType inID, AudioUnitScopeType inScope, uint inElement,
 			AudioTimeStamp* inData, int inDataSize);
 
+		/// <param name="timeStamp">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus SetScheduleStartTimeStamp (AudioTimeStamp timeStamp)
 		{
 			unsafe {
@@ -1192,6 +1382,10 @@ namespace AudioUnit {
 			}
 		}
 
+		/// <param name="audioFile">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus SetScheduledFiles (AudioFile audioFile)
 		{
 			if (audioFile is null)
@@ -1209,6 +1403,10 @@ namespace AudioUnit {
 		static extern AudioUnitStatus AudioUnitSetProperty (IntPtr inUnit, AudioUnitPropertyIDType inID, AudioUnitScopeType inScope, uint inElement,
 			IntPtr inData, int inDataSize);
 
+		/// <param name="audioFiles">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public unsafe AudioUnitStatus SetScheduledFiles (AudioFile [] audioFiles)
 		{
 			if (audioFiles is null)
@@ -1255,6 +1453,8 @@ namespace AudioUnit {
 #endif // MONOMAC || __MACCATALYST__
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -1292,6 +1492,11 @@ namespace AudioUnit {
 			current = (AURenderEvent*) (IntPtr) handle;
 		}
 
+		/// <summary>Releases the resources used by the AURenderEventEnumerator object.</summary>
+		///         <remarks>
+		///           <para>The Dispose method releases the resources used by the AURenderEventEnumerator class.</para>
+		///           <para>Calling the Dispose method when the application is finished using the AURenderEventEnumerator ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.  For more information on releasing resources see ``Cleaning up Unmananaged Resources'' at https://msdn.microsoft.com/en-us/library/498928w2.aspx</para>
+		///         </remarks>
 		public void Dispose ()
 		{
 			Handle = NativeHandle.Zero;
@@ -1352,6 +1557,9 @@ namespace AudioUnit {
 			} while (IsAt (now));
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool /*IEnumerator<AURenderEvent>.*/MoveNext ()
 		{
 			if (current is not null)
@@ -1359,6 +1567,8 @@ namespace AudioUnit {
 			return current is not null;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void /*IEnumerator<AURenderEvent>.*/Reset ()
 		{
 			current = (AURenderEvent*) (IntPtr) Handle;
@@ -1366,6 +1576,8 @@ namespace AudioUnit {
 	}
 #endif // !COREBUILD
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AURenderEventType : byte {
 		/// <summary>To be added.</summary>
 		Parameter = 1,
@@ -1389,6 +1601,8 @@ namespace AudioUnit {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -1425,6 +1639,8 @@ namespace AudioUnit {
 	}
 
 #if NET
+	/// <summary>Contains a token for an installed parameter observer delegate.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -1435,6 +1651,9 @@ namespace AudioUnit {
 		/// <summary>The token that represents a parameter or parameter recording observer delegate.</summary>
 		///         <remarks>To be added.</remarks>
 		public IntPtr ObserverToken;
+		/// <param name="observerToken">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AUParameterObserverToken (IntPtr observerToken)
 		{
 			ObserverToken = observerToken;
@@ -1442,6 +1661,8 @@ namespace AudioUnit {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -1519,6 +1740,8 @@ namespace AudioUnit {
 	// 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -1541,6 +1764,8 @@ namespace AudioUnit {
 	}
 
 #if NET
+	/// <summary>An event that represents the change and time of change for a parameter value.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -1562,6 +1787,8 @@ namespace AudioUnit {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -1591,6 +1818,8 @@ namespace AudioUnit {
 
 #if !COREBUILD
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

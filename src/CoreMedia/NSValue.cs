@@ -50,6 +50,10 @@ public partial class NSValue : NSObject {
 	/// </summary>
 	/// <param name="handle">The native handle.</param>
 	/// <returns>The CMTimeRange.</returns>
+	[SupportedOSPlatform ("ios16.0")]
+	[SupportedOSPlatform ("macos13.0")]
+	[SupportedOSPlatform ("maccatalyst16.0")]
+	[SupportedOSPlatform ("tvos16.0")]
 	public static CMVideoDimensions ToCMVideoDimensions (NativeHandle handle)
 	{
 		using var nsvalue = Runtime.GetNSObject<NSValue> (handle)!;

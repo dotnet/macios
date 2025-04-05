@@ -9,6 +9,8 @@ using ObjCRuntime;
 
 namespace Metal {
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -16,6 +18,10 @@ namespace Metal {
 #endif
 	public static class IMTLRenderCommandEncoder_Extensions {
 #if NET
+		/// <param name="This">To be added.</param>
+		///         <param name="viewports">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("ios")]
@@ -30,6 +36,10 @@ namespace Metal {
 		}
 
 #if NET
+		/// <param name="This">To be added.</param>
+		///         <param name="scissorRects">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("ios")]

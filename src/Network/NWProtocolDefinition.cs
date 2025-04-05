@@ -25,6 +25,8 @@ using NativeHandle = System.IntPtr;
 namespace Network {
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
@@ -41,6 +43,10 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_protocol_definition_is_equal (OS_nw_protocol_definition definition1, OS_nw_protocol_definition definition2);
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (object other)
 		{
 			if (other is null)

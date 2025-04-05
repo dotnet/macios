@@ -16,6 +16,8 @@ using ObjCRuntime;
 
 namespace NetworkExtension {
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class NEHotspotEapSettings {
 
 		/// <summary>To be added.</summary>

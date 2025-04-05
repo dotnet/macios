@@ -29,6 +29,8 @@ namespace ModelIO {
 
 	partial class MDLMesh {
 
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		public enum MDLMeshVectorType {
 			/// <summary>To be added.</summary>
 			Dimensions,
@@ -186,6 +188,16 @@ namespace ModelIO {
 			return new MDLMesh (extent, inwardNormals, geometryType, allocator);
 		}
 
+		/// <param name="mesh">To be added.</param>
+		///         <param name="submeshIndex">To be added.</param>
+		///         <param name="subdivisionLevels">To be added.</param>
+		///         <param name="allocator">
+		///           <para>The allocator to use instead of the default, internal allocator.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static MDLMesh CreateSubdividedMesh (MDLMesh mesh, int submeshIndex, uint subdivisionLevels, IMDLMeshBufferAllocator allocator)
 		{
 			return new MDLMesh (mesh, submeshIndex, subdivisionLevels, allocator);

@@ -49,26 +49,53 @@ namespace Foundation {
 		// this is so it makes it simpler for the generator to support
 		// [NullAllowed] on array parameters.
 		//
+		/// <param name="items">Strongly typed array of NSObjects.</param>
+		///         <summary>Creates an NSArray from a C# array of NSObjects.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		static public NSArray FromNSObjects (params NSObject [] items)
 		{
 			return FromNativeObjects (items);
 		}
 
+		/// <param name="count">Number of items to copy from the items array.</param>
+		///         <param name="items">Strongly typed array of NSObjects.</param>
+		///         <summary>Creates an NSArray from a C# array of NSObjects.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		static public NSArray FromNSObjects (int count, params NSObject [] items)
 		{
 			return FromNativeObjects (items, count);
 		}
 
+		/// <param name="items">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSArray FromNSObjects (params INativeObject [] items)
 		{
 			return FromNativeObjects (items);
 		}
 
+		/// <param name="count">To be added.</param>
+		///         <param name="items">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSArray FromNSObjects (int count, params INativeObject [] items)
 		{
 			return FromNativeObjects (items, count);
 		}
 
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <param name="items">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSArray FromNSObjects<T> (params T [] items) where T : class, INativeObject
 		{
 			return FromNativeObjects (items);
@@ -110,11 +137,23 @@ namespace Foundation {
 			}
 			return FromNSObjects (ret);
 		}
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <param name="count">To be added.</param>
+		///         <param name="items">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSArray FromNSObjects<T> (int count, params T [] items) where T : class, INativeObject
 		{
 			return FromNativeObjects (items, count);
 		}
 
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <param name="nsobjectificator">To be added.</param>
+		///         <param name="items">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSArray FromNSObjects<T> (Func<T, NSObject> nsobjectificator, params T [] items)
 		{
 			if (nsobjectificator is null)
@@ -130,6 +169,12 @@ namespace Foundation {
 			return FromNativeObjects (arr);
 		}
 
+		/// <param name="items">Array of C# objects.</param>
+		///         <summary>Creates an NSArray from a C# array of NSObjects.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>The values will be boxed into
+		/// 	NSObjects using <see cref="M:Foundation.NSObject.FromObject(System.Object)" />.</remarks>
 		public static NSArray FromObjects (params object [] items)
 		{
 			return From<object> (items);
@@ -205,6 +250,11 @@ namespace Foundation {
 			return arr;
 		}
 
+		/// <param name="items">Array of C# strings.</param>
+		///         <summary>Creates an NSArray from a C# array of strings.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>To be added.</remarks>
 		static public NSArray FromStrings (params string [] items) => FromStrings ((IReadOnlyList<string>) items);
 
 		static public NSArray FromStrings (IReadOnlyList<string> items)
@@ -333,6 +383,21 @@ namespace Foundation {
 			return ret;
 		}
 
+		/// <typeparam name="T">Parameter type, determines the kind of
+		/// 	array returned, limited to NSObject and subclasses of it.</typeparam>
+		///         <param name="weakArray">Handle to an weakly typed NSArray.</param>
+		///         <summary>Returns a strongly-typed C# array of the parametrized type from a weakly typed NSArray.</summary>
+		///         <returns>An C# array with the values.</returns>
+		///         <remarks>
+		///           <para>Use this method to get a set of NSObject arrays from an NSArray.</para>
+		///           <example>
+		///             <code lang="c#"><![CDATA[
+		/// NSArray someArray = ...;
+		///
+		/// NSString [] values = NSArray.FromArray<CGImage> (someArray);
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		static public T [] FromArray<T> (NSArray weakArray) where T : NSObject
 		{
 			if (weakArray is null || weakArray.Handle == NativeHandle.Zero)
@@ -349,6 +414,22 @@ namespace Foundation {
 			}
 		}
 
+		/// <typeparam name="T">Parameter type, determines the kind of
+		/// 	array returned, can be either an NSObject, or other
+		/// 	CoreGraphics data types.</typeparam>
+		///         <param name="weakArray">Handle to an weakly typed NSArray.</param>
+		///         <summary>Returns a strongly-typed C# array of the parametrized type from a weakly typed NSArray.</summary>
+		///         <returns>An C# array with the values.</returns>
+		///         <remarks>
+		///           <para>Use this method to get a set of NSObject arrays from an NSArray.</para>
+		///           <example>
+		///             <code lang="c#"><![CDATA[
+		/// NSArray someArray = ...;
+		///
+		/// CGImage [] myImages = NSArray.FromArray<CGImage> (someArray);
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		static public T [] FromArrayNative<T> (NSArray weakArray) where T : class, INativeObject
 		{
 			if (weakArray is null || weakArray.Handle == NativeHandle.Zero)
@@ -450,6 +531,10 @@ namespace Foundation {
 			return UnsafeGetItem<T> (Handle, index);
 		}
 
+		/// <param name="weakArray">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSObject [] [] FromArrayOfArray (NSArray weakArray)
 		{
 			if (weakArray is null || weakArray.Handle == IntPtr.Zero)
@@ -466,6 +551,10 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="items">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NSArray From (NSObject [] [] items)
 		{
 			if (items is null)

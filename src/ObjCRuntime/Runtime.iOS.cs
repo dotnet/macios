@@ -19,6 +19,10 @@ using UIKit;
 
 namespace ObjCRuntime {
 
+	/// <summary>Provides information about the Xamarin.iOS Runtime.</summary>
+	///     <remarks>
+	///     </remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SysSound/">SysSound</related>
 	public static partial class Runtime {
 #if !COREBUILD
 #if NET
@@ -119,6 +123,12 @@ namespace ObjCRuntime {
 		{
 		}
 #else
+		/// <param name="uri">Uri to probe to start the WWAN connection.</param>
+		///         <param name="callback">Callback that will be called when the WWAN connection has been started up. This callback will be invoked on the main thread. If there was an exception while trying to start the WWAN, it will be passed to the callback, otherwise null is passed.</param>
+		///         <summary>This method forces the WAN network access to be woken up asynchronously.</summary>
+		///         <remarks>
+		///           <para>When the phone is not on WiFi, this will force the networking stack to start.</para>
+		///         </remarks>
 		public static void StartWWAN (Uri uri, Action<Exception?> callback)
 		{
 			if (uri is null)
@@ -142,6 +152,11 @@ namespace ObjCRuntime {
 		[DllImport ("__Internal")]
 		static extern void xamarin_start_wwan (IntPtr uri);
 
+		/// <param name="uri">Uri to probe to start the WWAN connection.</param>
+		///         <summary>This method forces the WAN network access to be woken up.</summary>
+		///         <remarks>
+		///           <para>When the phone is not on WiFi, this will force the networking stack to start.</para>
+		///         </remarks>
 		public static void StartWWAN (Uri uri)
 		{
 			if (uri is null)

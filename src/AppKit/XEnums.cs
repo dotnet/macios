@@ -16,35 +16,50 @@ namespace AppKit {
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPrintRenderingQuality : long {
+		/// <summary>To be added.</summary>
 		Best,
+		/// <summary>To be added.</summary>
 		Responsive,
 	}
 
 	[NoMacCatalyst]
 	[Native]
 	public enum NSCorrectionIndicatorType : long {
+		/// <summary>To be added.</summary>
 		Default = 0,
+		/// <summary>To be added.</summary>
 		Reversion,
+		/// <summary>To be added.</summary>
 		Guesses,
 	}
 
 	[NoMacCatalyst]
 	[Native]
 	public enum NSCorrectionResponse : long {
+		/// <summary>To be added.</summary>
 		None,
+		/// <summary>To be added.</summary>
 		Accepted,
+		/// <summary>To be added.</summary>
 		Rejected,
+		/// <summary>To be added.</summary>
 		Ignored,
+		/// <summary>To be added.</summary>
 		Edited,
+		/// <summary>To be added.</summary>
 		Reverted,
 	}
 
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextFinderMatchingType : long {
+		/// <summary>To be added.</summary>
 		Contains = 0,
+		/// <summary>To be added.</summary>
 		StartsWith = 1,
+		/// <summary>To be added.</summary>
 		FullWord = 2,
+		/// <summary>To be added.</summary>
 		EndsWith = 3,
 	}
 
@@ -81,7 +96,9 @@ namespace AppKit {
 	{
 		/// <summary>To be added.</summary>
 		None = 0x0,
+		/// <summary>To be added.</summary>
 		Spelling = 0x1,
+		/// <summary>To be added.</summary>
 		Grammar = 0x2,
 	}
 }

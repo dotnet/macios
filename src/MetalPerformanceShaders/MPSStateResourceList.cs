@@ -16,7 +16,13 @@ using Metal;
 using ObjCRuntime;
 
 namespace MetalPerformanceShaders {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class MPSStateResourceList {
+		/// <param name="descriptors">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static MPSStateResourceList? Create (params MTLTextureDescriptor [] descriptors)
 		{
 			if (descriptors is null)

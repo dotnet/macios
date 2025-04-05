@@ -1,6 +1,5 @@
 <Documentation>
   <Docs DocId="T:GLKit.GLKViewController">
-    
     <remarks>
       <para>
 	UIViewController specifically designed to host OpenGL content,
@@ -105,5 +104,23 @@ public class RippleViewController : GLKViewController {
       </example>
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKViewController_ClassRef/index.html">Apple documentation for <c>GLKViewController</c></related>
+  </Docs>
+  <Docs DocId="M:GLKit.GLKViewController.Update">
+    <summary>Method invoked on each frame, before the GLKView's drawing method is invoked.</summary>
+    <remarks>
+      <para>
+	    This method should compute the data that should be
+	    displayed on the next frame.  For applications that need to
+	    synchronize with a clock, you can use the <see cref="P:GLKit.GLKViewController.TimeSinceLastUpdate" />
+	    property to compute the data to be displayed.
+	  </para>
+      <para>
+	    You should not attempt to draw in this method.  Drawing
+	    will be triggered on your <see cref="T:GLKit.GLKView" /> instance (either using
+	    the <see cref="E:GLKit.GLKView.DrawInRect" />
+	    event handler, or using the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:GLKit.GLKViewControllerDelegate.DrawInRect(GLKit.GLKView,System.Drawing.RectangleF*&amp;scope=Xamarin" title="M:GLKit.GLKViewControllerDelegate.DrawInRect(GLKit.GLKView,System.Drawing.RectangleF*">M:GLKit.GLKViewControllerDelegate.DrawInRect(GLKit.GLKView,System.Drawing.RectangleF*</a></format> method.
+
+	  </para>
+    </remarks>
   </Docs>
 </Documentation>

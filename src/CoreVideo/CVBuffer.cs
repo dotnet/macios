@@ -72,6 +72,8 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static void CVBufferRemoveAllAttachments (/* CVBufferRef */ IntPtr buffer);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void RemoveAllAttachments ()
 		{
 			CVBufferRemoveAllAttachments (Handle);
@@ -80,6 +82,9 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static void CVBufferRemoveAttachment (/* CVBufferRef */ IntPtr buffer, /* CFStringRef */ IntPtr key);
 
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void RemoveAttachment (NSString key)
 		{
 			if (key is null)
@@ -100,6 +105,14 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		unsafe extern static /* CFTypeRef */ IntPtr CVBufferGetAttachment (/* CVBufferRef */ IntPtr buffer, /* CFStringRef */ IntPtr key, CVAttachmentMode* attachmentMode);
 
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("macos12.0")]
+		[ObsoletedOSPlatform ("tvos15.0")]
+		[ObsoletedOSPlatform ("maccatalyst15.0")]
+		[ObsoletedOSPlatform ("ios15.0")]
 		unsafe static /* CFTypeRef */ IntPtr CVBufferGetAttachment (/* CVBufferRef */ IntPtr buffer, /* CFStringRef */ IntPtr key, out CVAttachmentMode attachmentMode)
 		{
 			attachmentMode = default;
@@ -115,6 +128,10 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		unsafe extern static /* CFTypeRef */ IntPtr CVBufferCopyAttachment (/* CVBufferRef */ IntPtr buffer, /* CFStringRef */ IntPtr key, CVAttachmentMode* attachmentMode);
 
+		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		unsafe static IntPtr CVBufferCopyAttachment (IntPtr buffer, IntPtr key, out CVAttachmentMode attachmentMode)
 		{
 			attachmentMode = default;
@@ -122,25 +139,38 @@ namespace CoreVideo {
 		}
 
 		// any CF object can be attached
+		/// <typeparam name="T">To be added.</typeparam>
+		///         <param name="key">To be added.</param>
+		///         <param name="attachmentMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public T? GetAttachment<T> (NSString key, out CVAttachmentMode attachmentMode) where T : class, INativeObject
 		{
 			if (key is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
-#if IOS || __MACCATALYST__ || TVOS
-			if (!SystemVersion.CheckiOS (15, 0)) {
+			if (!SystemVersion.IsAtLeastXcode13) {
 				T? result = Runtime.GetINativeObject<T> (CVBufferGetAttachment (Handle, key.Handle, out attachmentMode), false);
 				GC.KeepAlive (key);
 				return result;
 			}
-#endif
 			T? result2 = Runtime.GetINativeObject<T> (CVBufferCopyAttachment (Handle, key.Handle, out attachmentMode), true);
 			GC.KeepAlive (key);
 			return result2;
 		}
 
 #if MONOMAC && !XAMCORE_5_0
+		/// <param name="key">To be added.</param>
+		///         <param name="attachmentMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the generic 'GetAttachment<T>' method instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
+		[UnsupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("maccatalyst")]
 		public NSObject? GetAttachment (NSString key, out CVAttachmentMode attachmentMode)
 		{
 			if (key is null)
@@ -169,27 +199,40 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static /* CFDictionaryRef */ IntPtr CVBufferCopyAttachments (/* CVBufferRef */ IntPtr buffer, CVAttachmentMode attachmentMode);
 
+		/// <param name="attachmentMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary? GetAttachments (CVAttachmentMode attachmentMode)
 		{
-#if IOS || __MACCATALYST__ || TVOS
-			if (!SystemVersion.CheckiOS (15, 0))
+			if (!SystemVersion.IsAtLeastXcode13)
 				return Runtime.GetNSObject<NSDictionary> (CVBufferGetAttachments (Handle, attachmentMode), false);
-#endif
 			return Runtime.GetINativeObject<NSDictionary> (CVBufferCopyAttachments (Handle, attachmentMode), true);
 		}
 
 		// There is some API that needs a more strongly typed version of a NSDictionary
 		// and there is no easy way to downcast from NSDictionary to NSDictionary<TKey, TValue>
+		/// <typeparam name="TKey">To be added.</typeparam>
+		///         <typeparam name="TValue">To be added.</typeparam>
+		///         <param name="attachmentMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSDictionary<TKey, TValue>? GetAttachments<TKey, TValue> (CVAttachmentMode attachmentMode)
 			where TKey : class, INativeObject
 			where TValue : class, INativeObject
 		{
-			return Runtime.GetNSObject<NSDictionary<TKey, TValue>> (CVBufferGetAttachments (Handle, attachmentMode));
+			if (SystemVersion.IsAtLeastXcode13)
+				return Runtime.GetNSObject<NSDictionary<TKey, TValue>> (CVBufferCopyAttachments (Handle, attachmentMode), true);
+			return Runtime.GetNSObject<NSDictionary<TKey, TValue>> (CVBufferGetAttachments (Handle, attachmentMode), false);
 		}
 
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static void CVBufferPropagateAttachments (/* CVBufferRef */ IntPtr sourceBuffer, /* CVBufferRef */ IntPtr destinationBuffer);
 
+		/// <param name="destinationBuffer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void PropogateAttachments (CVBuffer destinationBuffer)
 		{
 			if (destinationBuffer is null)
@@ -202,6 +245,11 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static void CVBufferSetAttachment (/* CVBufferRef */ IntPtr buffer, /* CFStringRef */ IntPtr key, /* CFTypeRef */ IntPtr @value, CVAttachmentMode attachmentMode);
 
+		/// <param name="key">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <param name="attachmentMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetAttachment (NSString key, INativeObject @value, CVAttachmentMode attachmentMode)
 		{
 			if (key is null)
@@ -216,6 +264,10 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static void CVBufferSetAttachments (/* CVBufferRef */ IntPtr buffer, /* CFDictionaryRef */ IntPtr theAttachments, CVAttachmentMode attachmentMode);
 
+		/// <param name="theAttachments">To be added.</param>
+		///         <param name="attachmentMode">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetAttachments (NSDictionary theAttachments, CVAttachmentMode attachmentMode)
 		{
 			if (theAttachments is null)

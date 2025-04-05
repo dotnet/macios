@@ -40,6 +40,8 @@ using System.Runtime.Versioning;
 
 namespace AudioUnit {
 #if NET
+	/// <summary>Utility class to hold miscellaneous functions relating to audio streams, samples, and output categories.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

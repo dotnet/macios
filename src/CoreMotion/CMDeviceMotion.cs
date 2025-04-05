@@ -12,6 +12,8 @@ namespace CoreMotion {
 
 	// CMDeviceMotion.h
 #if NET
+	/// <summary>Encapsulates the accuracy and field strength of the magnetometer after calibration.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -25,6 +27,9 @@ namespace CoreMotion {
 		///         <remarks>To be added.</remarks>
 		public CMMagneticFieldCalibrationAccuracy Accuracy;
 
+		/// <summary>A string describing the magnetic field.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("({0},{1})", Field, Accuracy);

@@ -24,6 +24,8 @@ namespace ImageIO {
 
 	// CGImageMetadata.h
 #if NET
+	/// <summary>An EXIF, IPTC, or XMP property and value.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -57,6 +59,13 @@ namespace ImageIO {
 		// CFArrayRef	-> NSArray (NSObject)
 		// CFDictionary	-> NSDictionary (NSObject)
 
+		/// <param name="xmlns">To be added.</param>
+		///         <param name="prefix">To be added.</param>
+		///         <param name="name">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGImageMetadataTag (NSString xmlns, NSString? prefix, NSString name, CGImageMetadataType type, NSObject? value) :
 			this (xmlns, prefix, name, type, value.GetHandle ())
 		{
@@ -64,6 +73,13 @@ namespace ImageIO {
 		}
 
 		// CFBoolean support
+		/// <param name="xmlns">To be added.</param>
+		///         <param name="prefix">To be added.</param>
+		///         <param name="name">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGImageMetadataTag (NSString xmlns, NSString? prefix, NSString name, CGImageMetadataType type, bool value) :
 			this (xmlns, prefix, name, type, value ? CFBoolean.TrueHandle : CFBoolean.FalseHandle)
 		{
@@ -85,6 +101,16 @@ namespace ImageIO {
 			GC.KeepAlive (name);
 		}
 
+		/// <summary>Type identifier for the ImageIO.CGImageMetadataTag type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
+		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[bool isCGImageMetadataTag = (CFType.GetTypeID (foo.Handle) == CGImageMetadataTag.GetTypeID ());]]></code>
+		///           </example>
+		///         </remarks>
 		[DllImport (Constants.ImageIOLibrary, EntryPoint = "CGImageMetadataTagGetTypeID")]
 		public extern static nint GetTypeID ();
 
@@ -158,6 +184,9 @@ namespace ImageIO {
 		extern static /* CFArrayRef __nullable */ IntPtr CGImageMetadataTagCopyQualifiers (
 			/* CGImageMetadataTagRef __nonnull */ IntPtr tag);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGImageMetadataTag? []? GetQualifiers ()
 		{
 			IntPtr result = CGImageMetadataTagCopyQualifiers (Handle);

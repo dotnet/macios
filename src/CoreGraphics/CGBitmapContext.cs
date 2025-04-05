@@ -35,18 +35,14 @@ using System.Runtime.Versioning;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
-
-#if NET
+	/// <summary>CGContext backed by an in-memory bitmap.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/Drawing/">Example_Drawing</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CGBitmapContext : CGContext {
 #if !COREBUILD
 		// If allocated, this points to the byte array buffer that is passed.
@@ -112,6 +108,7 @@ namespace CoreGraphics {
 			this.buffer = buffer;
 		}
 
+		/// <include file="../../docs/api/CoreGraphics/CGBitmapContext.xml" path="/Documentation/Docs[@DocId='M:CoreGraphics.CGBitmapContext.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			if (buffer.IsAllocated)
@@ -219,6 +216,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGImageRef */ IntPtr CGBitmapContextCreateImage (/* CGContextRef */ IntPtr context);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGImage? ToImage ()
 		{
 			var h = CGBitmapContextCreateImage (Handle);

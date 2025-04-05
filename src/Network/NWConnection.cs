@@ -32,12 +32,25 @@ namespace Network {
 	// be present, and *also* the error will be set, indicating that some data was
 	// retrieved, before the error was raised.
 	//
+	/// <param name="data">To be added.</param>
+	///     <param name="dataSize">To be added.</param>
+	///     <param name="context">To be added.</param>
+	///     <param name="isComplete">To be added.</param>
+	///     <param name="error">To be added.</param>
+	///     <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public delegate void NWConnectionReceiveCompletion (IntPtr data, nuint dataSize, NWContentContext? context, bool isComplete, NWError? error);
 
 	//
 	// Signature for a method invoked on data received, same as NWConnectionReceiveCompletion,
 	// but they receive DispatchData instead of data + dataSize
 	//
+	/// <param name="data">To be added.</param>
+	///     <param name="context">To be added.</param>
+	///     <param name="isComplete">To be added.</param>
+	///     <param name="error">To be added.</param>
+	///     <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public delegate void NWConnectionReceiveDispatchDataCompletion (DispatchData? data, NWContentContext? context, bool isComplete, NWError? error);
 
 	//
@@ -47,6 +60,8 @@ namespace Network {
 	public delegate void NWConnectionReceiveReadOnlySpanCompletion (ReadOnlySpan<byte> data, NWContentContext? context, bool isComplete, NWError? error);
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
@@ -63,6 +78,10 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern nw_connection_t nw_connection_create (nw_endpoint_t endpoint, nw_parameters_t parameters);
 
+		/// <param name="endpoint">To be added.</param>
+		///         <param name="parameters">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NWConnection (NWEndpoint endpoint, NWParameters parameters)
 		{
 			if (endpoint is null)
@@ -124,6 +143,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_connection_set_state_changed_handler (nw_connection_t connection, void* handler);
 
+		/// <param name="stateHandler">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe void SetStateChangeHandler (Action<NWConnectionState, NWError?> stateHandler)
 		{
@@ -163,6 +185,9 @@ namespace Network {
 		static extern unsafe void nw_connection_set_viability_changed_handler (IntPtr handle, void* callback);
 
 #if !XAMCORE_5_0
+		/// <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use 'SetViabilityChangeHandler' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[BindingImpl (BindingImplOptions.Optimizable)]
@@ -197,6 +222,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern unsafe void nw_connection_set_better_path_available_handler (IntPtr handle, void* callback);
 
+		/// <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe void SetBetterPathAvailableHandler (Action<bool> callback)
 		{
@@ -237,6 +265,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_connection_set_path_changed_handler (IntPtr handle, BlockLiteral* callback);
 
+		/// <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void SetPathChangedHandler (Action<NWPath> callback)
 		{
@@ -255,6 +286,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_connection_set_queue (IntPtr handle, IntPtr queue);
 
+		/// <param name="queue">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetQueue (DispatchQueue queue)
 		{
 			if (queue is null)
@@ -266,26 +300,36 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_connection_start (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Start () => nw_connection_start (GetCheckedHandle ());
 
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_connection_restart (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Restart () => nw_connection_restart (GetCheckedHandle ());
 
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_connection_cancel (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Cancel () => nw_connection_cancel (GetCheckedHandle ());
 
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_connection_force_cancel (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void ForceCancel () => nw_connection_force_cancel (GetCheckedHandle ());
 
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_connection_cancel_current_endpoint (IntPtr handle);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void CancelCurrentEndpoint () => nw_connection_cancel_current_endpoint (GetCheckedHandle ());
 
 #if !NET
@@ -382,6 +426,11 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_connection_receive (IntPtr handle, /* uint32_t */ uint minimumIncompleteLength, /* uint32_t */ uint maximumLength, BlockLiteral* callback);
 
+		/// <param name="minimumIncompleteLength">To be added.</param>
+		///         <param name="maximumLength">To be added.</param>
+		///         <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void Receive (uint minimumIncompleteLength, uint maximumLength, NWConnectionReceiveCompletion callback)
 		{
@@ -400,6 +449,11 @@ namespace Network {
 			}
 		}
 
+		/// <param name="minimumIncompleteLength">To be added.</param>
+		///         <param name="maximumLength">To be added.</param>
+		///         <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void ReceiveData (uint minimumIncompleteLength, uint maximumLength, NWConnectionReceiveDispatchDataCompletion callback)
 		{
@@ -439,6 +493,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_connection_receive_message (IntPtr handle, BlockLiteral* callback);
 
+		/// <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void ReceiveMessage (NWConnectionReceiveCompletion callback)
 		{
@@ -458,6 +515,9 @@ namespace Network {
 
 		}
 
+		/// <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void ReceiveMessageData (NWConnectionReceiveDispatchDataCompletion callback)
 		{
@@ -534,6 +594,12 @@ namespace Network {
 			GC.KeepAlive (buffer);
 		}
 
+		/// <param name="buffer">To be added.</param>
+		///         <param name="context">To be added.</param>
+		///         <param name="isComplete">To be added.</param>
+		///         <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Send (byte [] buffer, NWContentContext context, bool isComplete, Action<NWError?> callback)
 		{
 			DispatchData? d = null;
@@ -543,6 +609,14 @@ namespace Network {
 			Send (d, context, isComplete, callback);
 		}
 
+		/// <param name="buffer">To be added.</param>
+		///         <param name="start">To be added.</param>
+		///         <param name="length">To be added.</param>
+		///         <param name="context">To be added.</param>
+		///         <param name="isComplete">To be added.</param>
+		///         <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Send (byte [] buffer, int start, int length, NWContentContext context, bool isComplete, Action<NWError?> callback)
 		{
 			DispatchData? d = null;
@@ -552,6 +626,12 @@ namespace Network {
 			Send (d, context, isComplete, callback);
 		}
 
+		/// <param name="buffer">To be added.</param>
+		///         <param name="context">To be added.</param>
+		///         <param name="isComplete">To be added.</param>
+		///         <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void Send (DispatchData? buffer, NWContentContext context, bool isComplete, Action<NWError?> callback)
 		{
@@ -573,6 +653,11 @@ namespace Network {
 			}
 		}
 
+		/// <param name="buffer">To be added.</param>
+		///         <param name="context">To be added.</param>
+		///         <param name="isComplete">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public unsafe void SendIdempotent (DispatchData? buffer, NWContentContext context, bool isComplete)
 		{
 			if (context is null)
@@ -582,6 +667,11 @@ namespace Network {
 			GC.KeepAlive (context);
 		}
 
+		/// <param name="buffer">To be added.</param>
+		///         <param name="context">To be added.</param>
+		///         <param name="isComplete">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SendIdempotent (byte [] buffer, NWContentContext context, bool isComplete)
 		{
 			DispatchData? d = null;
@@ -623,6 +713,10 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		extern static IntPtr nw_connection_copy_protocol_metadata (IntPtr handle, IntPtr protocolDefinition);
 
+		/// <param name="definition">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NWProtocolMetadata? GetProtocolMetadata (NWProtocolDefinition definition)
 		{
 			if (definition is null)
@@ -656,6 +750,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe extern static void nw_connection_batch (IntPtr handle, BlockLiteral* callback_block);
 
+		/// <param name="method">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Batch (Action method)
 		{
 			unsafe {

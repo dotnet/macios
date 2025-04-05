@@ -1,0 +1,59 @@
+<Documentation>
+  <Docs DocId="T:Foundation.LinkerSafeAttribute">
+    <summary>Assembly-level attributed used to inform MonoTouch's linker that this assembly can be safely linked, regardless of the system linker settings.</summary>
+    <remarks>
+      <para>
+	Use this attribute in your assembly if it is safe to perform
+	linking on it, regardless of the user default setting to "Link
+	only Framework Assemblies.
+      </para>
+      <para>
+	The use case for this attribute are third-party libraries that
+	are safe to be linked because they have either safe to be
+	linked because they do not depend on members or methods to be
+	compiled in to work, or if they do, they used the <see cref="T:Foundation.PreserveAttribute" /> to preserve those classes. 
+
+      </para>
+      <para>
+	The default configuration for MonoTouch projects is to link
+	only the SDK assemblies, and not link user code or third party
+	assemblies.  But many third party assemblies might want to
+	reduce their on-disk footprint by informing the linker that
+	they are linkable.    Use this attribute in those cases.
+
+      </para>
+      <para>
+	You do not actually need to take a dependency on the Xamarin
+	assemblies, for example, if you are a third-party developer
+	that is creating a component or nuget package that is safe to
+	be linked, you can just include the LinkerSafe attribute
+	source code in your application, and the Xamarin linker will
+	recognize it.
+
+      </para>
+      <para>
+	To use, merely add the following snippet to your source code
+	in your assembly:
+
+      </para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+[assembly:LinkerSafe]
+]]></code>
+      </example>
+      <para>
+	To use in an assembly, without taking a dependency in Xamarin's assemblies:
+
+      </para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+class LinkerSafeAttribute : System.Attribute {
+    public LinkerSafeAttribute () {}
+}
+
+[assembly:LinkerSafe]
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+</Documentation>

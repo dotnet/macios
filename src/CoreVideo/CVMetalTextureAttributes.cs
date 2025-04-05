@@ -13,6 +13,8 @@ using Metal;
 #nullable enable
 
 namespace CoreVideo {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class CVMetalTextureAttributes : DictionaryContainer {
 
 		/// <summary>To be added.</summary>

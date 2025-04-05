@@ -4,6 +4,18 @@
         <name>api0</name>
     </assembly>
     <members>
+        <member name="T:XmlDocumentation.CategoryA">
+            <summary>CategoryA</summary>
+        </member>
+        <member name="M:XmlDocumentation.CategoryA.InstanceMethod(XmlDocumentation.T1,System.Int32)">
+            <summary>CategoryA.InstanceMethod</summary><param name="This">The instance on which this method operates.</param><param name="p0">p0</param>
+        </member>
+        <member name="M:XmlDocumentation.CategoryA.StaticMethod(XmlDocumentation.T1,System.Int32)">
+            <summary>CategoryA.StaticMethod</summary><param name="This">The instance on which this method operates.</param><param name="p0">p0</param>
+        </member>
+        <member name="P:XmlDocumentation.CategoryA.StaticProperty">
+            <summary>CategoryA.StaticProperty</summary>
+        </member>
         <member name="T:XmlDocumentation.E1">
             <summary>
             Summary for E1

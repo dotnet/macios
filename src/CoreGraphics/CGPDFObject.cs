@@ -38,19 +38,13 @@ using ObjCRuntime;
 using CoreFoundation;
 using System.Runtime.Versioning;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
-
-
-#if NET
+	/// <summary>Class that represents various objects in a PDF document.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CGPDFObject.h
 	public class CGPDFObject : INativeObject {
 		/// <summary>Handle (pointer) to the unmanaged object representation.</summary>
@@ -62,11 +56,7 @@ namespace CoreGraphics {
 		// the containing CGPDFDocument, and not possible to handle independently, which is why this class
 		// does not subclass NativeObject (there's no way to retain/release CGPDFObject instances). It's
 		// also why this constructor doesn't have a 'bool owns' parameter: it's always owned by the containing CGPDFDocument.
-#if NET
 		internal CGPDFObject (NativeHandle handle)
-#else
-		public CGPDFObject (NativeHandle handle)
-#endif
 		{
 			Handle = handle;
 		}
@@ -100,6 +90,10 @@ namespace CoreGraphics {
 			get { return Type == CGPDFObjectType.Null; }
 		}
 
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryGetValue (out bool value)
 		{
 			byte b;
@@ -127,6 +121,10 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryGetValue (out string? value)
 		{
 			IntPtr ip;
@@ -138,6 +136,10 @@ namespace CoreGraphics {
 			return rv;
 		}
 
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryGetValue (out CGPDFArray? value)
 		{
 			IntPtr ip;
@@ -149,6 +151,10 @@ namespace CoreGraphics {
 			return rv;
 		}
 
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryGetValue (out CGPDFDictionary? value)
 		{
 			IntPtr ip;
@@ -160,6 +166,10 @@ namespace CoreGraphics {
 			return rv;
 		}
 
+		/// <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryGetValue (out CGPDFStream? value)
 		{
 			IntPtr ip;
@@ -171,6 +181,10 @@ namespace CoreGraphics {
 			return rv;
 		}
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryGetName (out string? name)
 		{
 			IntPtr ip;

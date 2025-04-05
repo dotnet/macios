@@ -21,9 +21,7 @@ namespace GameKit {
 	// NSUInteger -> GKPeerPickerController.h
 	/// <summary>An enumeration whose values specify acceptable ping for peer-to-peer connections.</summary>
 	[NoMac]
-#if NET
 	[NoTV]
-#endif
 	[Deprecated (PlatformName.iOS, 7, 0)]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
@@ -198,10 +196,6 @@ namespace GameKit {
 		TurnBasedInvalidTurn,
 		/// <summary>The session for a turn-based game was in an invalid state.</summary>
 		TurnBasedInvalidState,
-#if MONOMAC && !NET
-		[Obsolete ("This value was re-used on macOS only and removed later.")]
-		Offline = 25,
-#endif
 		/// <summary>The receiver is not currently receiving invitations.</summary>
 		InvitationsDisabled = 25, // iOS 7.0
 		/// <summary>The player's photo could not be retrieved.</summary>
@@ -220,6 +214,7 @@ namespace GameKit {
 		ICloudUnavailable = 35,
 		LockdownMode = 36,
 		AppUnlisted = 37,
+		DebugMode = 38,
 		FriendListDescriptionMissing = 100,
 		FriendListRestricted = 101,
 		FriendListDenied = 102,
@@ -437,6 +432,10 @@ namespace GameKit {
 
 	// NSInteger -> GKMatchmaker.h
 	[Native]
+	[Deprecated (PlatformName.iOS, 18, 4, message: "Use 'GKInviteRecipientResponse' instead.")]
+	[Deprecated (PlatformName.MacOSX, 15, 4, message: "Use 'GKInviteRecipientResponse' instead.")]
+	[Deprecated (PlatformName.TvOS, 18, 4, message: "Use 'GKInviteRecipientResponse' instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 18, 4, message: "Use 'GKInviteRecipientResponse' instead.")]
 	public enum GKInviteeResponse : long {
 		/// <summary>To be added.</summary>
 		Accepted = 0,
@@ -492,18 +491,6 @@ namespace GameKit {
 		/// <summary>The recipient did not answer.</summary>
 		NoAnswer = 5,
 	}
-
-#if !NET
-	[Deprecated (PlatformName.iOS, 14, 0, message: "Do not use; this API was removed.")]
-	[Deprecated (PlatformName.MacOSX, 11, 0, message: "Do not use; this API was removed.")]
-	[Deprecated (PlatformName.TvOS, 14, 0, message: "Do not use; this API was removed.")]
-	[Native]
-	public enum GKAuthenticationType : ulong {
-		WithoutUI = 0,
-		GreenBuddyUI = 1,
-		AuthKitInvocation = 2,
-	}
-#endif
 
 	[TV (14, 0)]
 	[iOS (14, 0)]

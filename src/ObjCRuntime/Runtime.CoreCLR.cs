@@ -41,6 +41,10 @@ using MonoObjectPtr = System.IntPtr;
 
 namespace ObjCRuntime {
 
+	/// <summary>Provides information about the Xamarin.iOS Runtime.</summary>
+	///     <remarks>
+	///     </remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SysSound/">SysSound</related>
 	public partial class Runtime {
 		// Keep in sync with XamarinLookupTypes in main.h
 		internal enum TypeLookup {

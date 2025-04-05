@@ -30,6 +30,8 @@ using ObjCRuntime;
 #nullable enable
 
 namespace AVFoundation {
+	/// <summary>Audio conversion priming information.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -43,12 +45,19 @@ namespace AVFoundation {
 		///         <remarks>To be added.</remarks>
 		public uint TrailingFrames;
 
+		/// <param name="leadingFrames">To be added.</param>
+		///         <param name="trailingFrames">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVAudioConverterPrimeInfo (uint leadingFrames, uint trailingFrames)
 		{
 			LeadingFrames = leadingFrames;
 			TrailingFrames = trailingFrames;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return $"({LeadingFrames}:{TrailingFrames})";
@@ -64,6 +73,10 @@ namespace AVFoundation {
 			return !left.Equals (right);
 		}
 
+		/// <param name="obj">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? obj)
 		{
 			if (!(obj is AVAudioConverterPrimeInfo))
@@ -72,11 +85,18 @@ namespace AVFoundation {
 			return this.Equals ((AVAudioConverterPrimeInfo) obj);
 		}
 
+		/// <param name="other">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool Equals (AVAudioConverterPrimeInfo other)
 		{
 			return LeadingFrames == other.LeadingFrames && TrailingFrames == other.TrailingFrames;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (LeadingFrames, TrailingFrames);

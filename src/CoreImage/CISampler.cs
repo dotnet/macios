@@ -37,6 +37,8 @@ using System.Runtime.Versioning;
 namespace CoreImage {
 
 	// convenience enum on kCISamplerWrap[Black|Clamp] fields -> CISampler.h (headers hidden under QuartzCore.framework)
+	/// <summary>Enumerates values that control how samples from outside the source image are treated.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CIWrapMode {
 		/// <summary>Areas outside the source image are treated as black.</summary>
 		Black,
@@ -45,6 +47,8 @@ namespace CoreImage {
 	}
 
 	// convenience enum on kCISamplerFilter[Nearest|Linear] fields -> CISampler.h (headers hidden under QuartzCore.framework)
+	/// <summary>Enumerates filter modes.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CIFilterMode {
 		/// <summary>Use the value of the nearest pixel.</summary>
 		Nearest,
@@ -52,13 +56,15 @@ namespace CoreImage {
 		Linear,
 	}
 
-#if NET
+	/// <summary>Options to conrol sampler operations for <see cref="T:CoreImage.CISampler" /> objects.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CISamplerOptions {
+		/// <summary>Creates a new default sampler options argument.</summary>
+		///         <remarks>To be added.</remarks>
 		public CISamplerOptions () { }
 
 		/// <summary>Gets or sets the matrix to use for affine transformations.</summary>
@@ -84,11 +90,7 @@ namespace CoreImage {
 
 			if (AffineMatrix.HasValue) {
 				var a = AffineMatrix.Value;
-#if NET
 				using (var array = NSArray.FromObjects (a.A, a.B, a.C, a.D, a.Tx, a.Ty))
-#else
-				using (var array = NSArray.FromObjects (a.xx, a.yx, a.xy, a.yy, a.x0, a.y0))
-#endif
 					ret.SetObject (array, CISampler.AffineMatrix);
 			}
 			if (WrapMode.HasValue) {
@@ -106,6 +108,11 @@ namespace CoreImage {
 	}
 
 	public partial class CISampler {
+		/// <param name="sourceImage">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>Creates a new <see cref="T:CoreImage.CISampler" /> from the <paramref name="sourceImage" /> with <paramref name="options" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CISampler FromImage (CIImage sourceImage, CISamplerOptions? options)
 		{
 			if (options is null)
@@ -113,6 +120,10 @@ namespace CoreImage {
 			return FromImage (sourceImage, options.ToDictionary ());
 		}
 
+		/// <param name="sourceImage">The image from which to sample.</param>
+		///         <param name="options">Options that specify transform matrices, wrapping and filtering modes, and the color space.</param>
+		///         <summary>Creates a new sampler from a source image and a set of options.</summary>
+		///         <remarks>To be added.</remarks>
 		[DesignatedInitializer]
 		public CISampler (CIImage sourceImage, CISamplerOptions? options) : this (sourceImage, options?.ToDictionary ())
 		{

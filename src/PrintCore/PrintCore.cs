@@ -28,6 +28,8 @@ using NativeHandle = System.IntPtr;
 
 namespace PrintCore {
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class PMPrintCoreBase : NativeObject {
@@ -55,13 +57,20 @@ namespace PrintCore {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class PMPrintException : Exception {
+		/// <param name="code">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public PMPrintException (PMStatusCode code) : base (code.ToString ()) { }
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class PMPrintSession : PMPrintCoreBase {
@@ -83,11 +92,17 @@ namespace PrintCore {
 			throw new PMPrintException (code);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public PMPrintSession ()
 			: base (Create (), true)
 		{
 		}
 
+		/// <param name="session">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static PMStatusCode TryCreate (out PMPrintSession? session)
 		{
 			PMStatusCode code;
@@ -123,6 +138,9 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static PMStatusCode PMSessionDefaultPrintSettings (IntPtr session, IntPtr settings);
 
+		/// <param name="settings">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void AssignDefaultSettings (PMPrintSettings settings)
 		{
 			if (settings is null)
@@ -134,6 +152,9 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static PMStatusCode PMSessionDefaultPageFormat (IntPtr session, IntPtr pageFormat);
 
+		/// <param name="pageFormat">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void AssignDefaultPageFormat (PMPageFormat pageFormat)
 		{
 			if (pageFormat is null)
@@ -144,6 +165,12 @@ namespace PrintCore {
 
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMSessionCreatePrinterList (IntPtr printSession, IntPtr* printerListArray, int* index, IntPtr* printer);
+		/// <param name="printerList">To be added.</param>
+		///         <param name="index">To be added.</param>
+		///         <param name="printer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public PMStatusCode CreatePrinterList (out string? []? printerList, out int index, out PMPrinter? printer)
 		{
 			PMStatusCode code;
@@ -173,6 +200,11 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMSessionValidatePrintSettings (IntPtr handle, IntPtr printSettings, byte* changed);
 
+		/// <param name="settings">To be added.</param>
+		///         <param name="changed">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public PMStatusCode ValidatePrintSettings (PMPrintSettings settings, out bool changed)
 		{
 			if (settings is null)
@@ -194,6 +226,8 @@ namespace PrintCore {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class PMPrintSettings : PMPrintCoreBase {
@@ -218,11 +252,17 @@ namespace PrintCore {
 			throw new PMPrintException (code);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public PMPrintSettings ()
 			: base (Create (), true)
 		{
 		}
 
+		/// <param name="settings">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static PMStatusCode TryCreate (out PMPrintSettings? settings)
 		{
 			PMStatusCode code;
@@ -282,6 +322,11 @@ namespace PrintCore {
 		unsafe extern static PMStatusCode PMGetPageRange (IntPtr handle, uint* minPage, uint* maxPage);
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static PMStatusCode PMSetPageRange (IntPtr handle, uint minPage, uint maxPage);
+		/// <param name="minPage">To be added.</param>
+		///         <param name="maxPage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public PMStatusCode GetPageRange (out uint minPage, out uint maxPage)
 		{
 			minPage = default;
@@ -291,6 +336,11 @@ namespace PrintCore {
 			}
 		}
 
+		/// <param name="minPage">To be added.</param>
+		///         <param name="maxPage">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public PMStatusCode SetPageRange (uint minPage, uint maxPage)
 		{
 			return PMSetPageRange (Handle, minPage, maxPage);
@@ -300,6 +350,10 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static PMStatusCode PMCopyPrintSettings (IntPtr source, IntPtr dest);
 
+		/// <param name="destination">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public PMStatusCode CopySettings (PMPrintSettings destination)
 		{
 			if (destination is null)
@@ -412,6 +466,8 @@ namespace PrintCore {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class PMPageFormat : PMPrintCoreBase {
@@ -443,11 +499,19 @@ namespace PrintCore {
 			throw new PMPrintException (code);
 		}
 
+		/// <param name="paper">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public PMPageFormat (PMPaper? paper = null)
 			: base (Create (paper), true)
 		{
 		}
 
+		/// <param name="pageFormat">To be added.</param>
+		///         <param name="paper">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static PMStatusCode TryCreate (out PMPageFormat? pageFormat, PMPaper? paper = null)
 		{
 			PMStatusCode code;
@@ -532,6 +596,8 @@ namespace PrintCore {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class PMPaper : PMPrintCoreBase {
@@ -612,6 +678,10 @@ namespace PrintCore {
 			}
 		}
 
+		/// <param name="printer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public string? GetLocalizedName (PMPrinter printer)
 		{
 			if (printer is null)
@@ -630,6 +700,8 @@ namespace PrintCore {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class PMPrinter : PMPrintCoreBase {
@@ -654,6 +726,8 @@ namespace PrintCore {
 			throw new PMPrintException (code);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public PMPrinter ()
 			: base (Create (), true)
 		{
@@ -675,11 +749,18 @@ namespace PrintCore {
 			}
 		}
 
+		/// <param name="printerId">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public PMPrinter (string printerId)
 			: base (Create (printerId), true)
 		{
 		}
 
+		/// <param name="printer">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static PMStatusCode TryCreate (out PMPrinter? printer)
 		{
 			IntPtr value;
@@ -695,6 +776,10 @@ namespace PrintCore {
 			return code;
 		}
 
+		/// <param name="printerId">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static PMPrinter? TryCreate (string printerId)
 		{
 			using (var idf = new CFString (printerId)) {
@@ -715,6 +800,10 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMPrinterCopyDeviceURI (IntPtr handle, IntPtr* url);
 
+		/// <param name="url">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public PMStatusCode TryGetDeviceUrl (out NSUrl? url)
 		{
 			PMStatusCode code;
@@ -785,6 +874,11 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMPrinterGetMimeTypes (IntPtr printer, IntPtr settings, IntPtr* arrayStr);
 
+		/// <param name="settings">To be added.</param>
+		///         <param name="mimeTypes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public PMStatusCode TryGetMimeTypes (PMPrintSettings settings, out string? []? mimeTypes)
 		{
 			PMStatusCode code;
@@ -803,6 +897,10 @@ namespace PrintCore {
 
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMPrinterGetPaperList (IntPtr printer, IntPtr* arrayStr);
+		/// <param name="paperList">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public PMStatusCode TryGetPaperList (out PMPaper []? paperList)
 		{
 			PMStatusCode code;
@@ -832,6 +930,13 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static PMStatusCode PMPrinterPrintWithFile (IntPtr handle, IntPtr settings, IntPtr pageFormat, IntPtr strMimeType, IntPtr fileUrl);
 
+		/// <param name="settings">To be added.</param>
+		///         <param name="pageFormat">To be added.</param>
+		///         <param name="fileUrl">To be added.</param>
+		///         <param name="mimeType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public PMStatusCode TryPrintFile (PMPrintSettings settings, PMPageFormat? pageFormat, NSUrl fileUrl, string? mimeType = null)
 		{
 			if (settings is null)
@@ -854,6 +959,13 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static PMStatusCode PMPrinterPrintWithProvider (IntPtr printer, IntPtr settings, IntPtr pageFormat, IntPtr strMimeType, IntPtr cgDataProvider);
 
+		/// <param name="settings">To be added.</param>
+		///         <param name="pageFormat">To be added.</param>
+		///         <param name="provider">To be added.</param>
+		///         <param name="mimeType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public PMStatusCode TryPrintFromProvider (PMPrintSettings settings, PMPageFormat? pageFormat, CGDataProvider provider, string? mimeType = null)
 		{
 			if (settings is null)
@@ -878,6 +990,10 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMPrinterSetOutputResolution (IntPtr printer, IntPtr printSettings, PMResolution* resolutionP);
 
+		/// <param name="settings">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public PMResolution GetOutputResolution (PMPrintSettings settings)
 		{
 			if (settings is null)
@@ -893,6 +1009,10 @@ namespace PrintCore {
 			return new PMResolution (0, 0);
 		}
 
+		/// <param name="settings">To be added.</param>
+		///         <param name="res">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetOutputResolution (PMPrintSettings settings, PMResolution res)
 		{
 			if (settings is null)
@@ -906,6 +1026,9 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static PMStatusCode PMPrinterSetDefault (IntPtr printer);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public PMStatusCode SetDefault ()
 		{
 			return PMPrinterSetDefault (Handle);
@@ -991,6 +1114,8 @@ namespace PrintCore {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class PMServer : PMPrintCoreBase {
@@ -1003,6 +1128,9 @@ namespace PrintCore {
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static PMStatusCode PMServerLaunchPrinterBrowser (IntPtr server, IntPtr dictFutureUse);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static PMStatusCode LaunchPrinterBrowser ()
 		{
 			return PMServerLaunchPrinterBrowser (IntPtr.Zero /* Server Local */, IntPtr.Zero);
@@ -1010,6 +1138,10 @@ namespace PrintCore {
 
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMServerCreatePrinterList (IntPtr server, IntPtr* printerListArray);
+		/// <param name="printerList">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static PMStatusCode CreatePrinterList (out PMPrinter []? printerList)
 		{
 			PMStatusCode code;

@@ -34,7 +34,9 @@ namespace Social {
 #endif
 	[Native]
 	public enum SLComposeViewControllerResult : long {
+		/// <summary>To be added.</summary>
 		Cancelled,
+		/// <summary>To be added.</summary>
 		Done,
 	}
 }

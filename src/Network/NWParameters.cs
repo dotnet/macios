@@ -28,6 +28,8 @@ using NativeHandle = System.IntPtr;
 namespace Network {
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
@@ -134,6 +136,11 @@ namespace Network {
 		//
 		// If you pass null, to either configureTls, or configureTcp they will use the default options
 		//
+		/// <param name="configureTls">To be added.</param>
+		///         <param name="configureTcp">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe static NWParameters CreateSecureTcp (Action<NWProtocolOptions>? configureTls = null, Action<NWProtocolOptions>? configureTcp = null)
 		{
@@ -154,6 +161,10 @@ namespace Network {
 			return new NWParameters (ptr, owns: true);
 		}
 
+		/// <param name="configureTcp">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		// If you pass null to configureTcp, it will use the default options
 		public unsafe static NWParameters CreateTcp (Action<NWProtocolOptions>? configureTcp = null)
@@ -176,6 +187,11 @@ namespace Network {
 		//
 		// If you pass null, to either configureTls, or configureTcp they will use the default options
 		//
+		/// <param name="configureTls">To be added.</param>
+		///         <param name="configureUdp">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe static NWParameters CreateSecureUdp (Action<NWProtocolOptions>? configureTls = null, Action<NWProtocolOptions>? configureUdp = null)
 		{
@@ -197,6 +213,10 @@ namespace Network {
 		}
 
 		// If you pass null to configureTcp, it will use the default options
+		/// <param name="configureUdp">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe static NWParameters CreateUdp (Action<NWProtocolOptions>? configureUdp = null)
 		{
@@ -251,6 +271,8 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern nw_parameters_t nw_parameters_create ();
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public NWParameters ()
 		{
 			InitializeHandle (nw_parameters_create ());
@@ -259,6 +281,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern nw_parameters_t nw_parameters_copy (nw_parameters_t handle);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NWParameters Clone ()
 		{
 			return new NWParameters (nw_parameters_copy (GetCheckedHandle ()), owns: true);
@@ -355,6 +380,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_prohibit_interface (nw_parameters_t parameters, IntPtr handleInterface);
 
+		/// <param name="iface">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void ProhibitInterface (NWInterface iface)
 		{
 			if (iface is null)
@@ -367,6 +395,8 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_clear_prohibited_interfaces (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void ClearProhibitedInterfaces ()
 		{
 			nw_parameters_clear_prohibited_interfaces (GetCheckedHandle ());
@@ -389,6 +419,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_prohibit_interface_type (nw_parameters_t parameters, NWInterfaceType type);
 
+		/// <param name="ifaceType">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void ProhibitInterfaceType (NWInterfaceType ifaceType)
 		{
 			nw_parameters_prohibit_interface_type (GetCheckedHandle (), ifaceType);
@@ -397,6 +430,8 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_clear_prohibited_interface_types (nw_parameters_t parameters);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void ClearProhibitedInterfaceTypes ()
 		{
 			nw_parameters_clear_prohibited_interface_types (GetCheckedHandle ());
@@ -425,6 +460,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_parameters_iterate_prohibited_interfaces (nw_parameters_t parameters, BlockLiteral* callback);
 
+		/// <param name="iterationCallback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void IterateProhibitedInterfaces (Func<NWInterface, bool> iterationCallback)
 		{
@@ -459,6 +497,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_parameters_iterate_prohibited_interface_types (IntPtr handle, BlockLiteral* callback);
 
+		/// <param name="callback">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void IterateProhibitedInterfaces (Func<NWInterfaceType, bool> callback)
 		{

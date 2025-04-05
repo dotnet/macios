@@ -213,6 +213,8 @@ namespace HomeKit {
 		AccessoryIsSuspended = 103,
 		// iOS 17.4
 		PartialCommunicationFailure = 104,
+		// iOS 18.4
+		HomeUpgradeRequired = 105,
 	}
 
 
@@ -383,66 +385,82 @@ namespace HomeKit {
 		[Field ("HMCharacteristicTypeAirParticulateSize")]
 		AirParticulateSize,
 
+		/// <summary>Measure of air quality. The value is an element in the <see cref="T:HomeKit.HMCharacteristicValueAirQuality" /> enum.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeAirQuality")]
 		AirQuality,
 
+		/// <summary>A power level. The result is a <see langword="byte" /> representing the percentage of charge in the range [0..100]</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeBatteryLevel")]
 		BatteryLevel,
 
+		/// <summary>Indicates the presence of CO2. The result is a <see langword="byte" /> where 0 indicates normal CO2 levels.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeCarbonDioxideDetected")]
 		CarbonDioxideDetected,
 
+		/// <summary>The measured level of CO2. The result is a <see langword="float" /> indicating CO2 parts-per-million.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeCarbonDioxideLevel")]
 		CarbonDioxideLevel,
 
+		/// <summary>The highest recorded CO2 level. The resultis a <see langword="float" /> indicating CO2 parts-per-million.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeCarbonDioxidePeakLevel")]
 		CarbonDioxidePeakLevel,
 
+		/// <summary>Indicates the presence of CO. The result is a <see langword="byte" /> where 0 indicates normal CO levels.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeCarbonMonoxideDetected")]
 		CarbonMonoxideDetected,
 
+		/// <summary>The measured level of CO. The result is a <see langword="float" /> indicating CO parts-per-million.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeCarbonMonoxideLevel")]
 		CarbonMonoxideLevel,
 
+		/// <summary>The highest measured level of CO. The result is a <see langword="float" /> indicating CO parts-per-million.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeCarbonMonoxidePeakLevel")]
 		CarbonMonoxidePeakLevel,
 
+		/// <summary>A value in <see cref="T:HomeKit.HMCharacteristicValueChargingState" />.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeChargingState")]
 		ChargingState,
 
+		/// <summary>A value in <see cref="T:HomeKit.HMCharacteristicValueContactState" />.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeContactState")]
 		ContactState,
 
+		/// <summary>The security system state. Will be a value in <see cref="T:HomeKit.HMCharacteristicValueCurrentSecuritySystemState" />.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeCurrentSecuritySystemState")]
 		CurrentSecuritySystemState,
 
+		/// <summary>A float measuring the tilt from horizontal in degrees.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeCurrentHorizontalTilt")]
 		CurrentHorizontalTilt,
 
+		/// <summary>The luminance, in lux.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeCurrentLightLevel")]
 		CurrentLightLevel,
 
+		/// <summary>A <see langword="byte" /> between 0 and 100, representing the percent a door or window is open.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeCurrentPosition")]
 		CurrentPosition,
 
+		/// <summary>The current tilt, in degrees.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeCurrentVerticalTilt")]
 		CurrentVerticalTilt,
 
+		/// <summary>Developers should not use this deprecated field. Developers should use 'HMAccessory.FirmwareVersion' instead.</summary>
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'HMAccessory.FirmwareVersion' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'HMAccessory.FirmwareVersion' instead.")]
 		[MacCatalyst (14, 0)]
@@ -450,274 +468,342 @@ namespace HomeKit {
 		[Field ("HMCharacteristicTypeFirmwareVersion")]
 		FirmwareVersion,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeHardwareVersion")]
 		HardwareVersion,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeHoldPosition")]
 		HoldPosition,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeInputEvent")]
 		InputEvent,
 
+		/// <summary>A <see langword="byte" /> whose value will be either 0 (no leak detected) or 1 (leak detected).</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeLeakDetected")]
 		LeakDetected,
 
+		/// <summary>A <see langword="byte" /> whose value will either be 0 (no occupancy detected) or 1 (occupancy detected).</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeOccupancyDetected")]
 		OccupancyDetected,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeOutputState")]
 		OutputState,
 
+		/// <summary>The result will be an element in the <see cref="T:HomeKit.HMCharacteristicValuePositionState" /> enum.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypePositionState")]
 		PositionState,
 
+		/// <summary>A <see langword="byte" /> that will either be 0 (no smoke detected) or 1 (smoke detected).</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeSmokeDetected")]
 		SmokeDetected,
 
+		/// <summary>Returns the accessory's software version in a <see langword="string" />.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeSoftwareVersion")]
 		SoftwareVersion,
 
+		/// <summary>A Boolean indicating whether a service is active.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeStatusActive")]
 		StatusActive,
 
+		/// <summary>A <see langword="byte" /> whose value will either be 0 (no fault) or 1 (the system is in a fault state).</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeStatusFault")]
 		StatusFault,
 
+		/// <summary>A <see langword="byte" /> whose value will either be 0 (not jammed) or 1 (jammed).</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeStatusJammed")]
 		StatusJammed,
 
+		/// <summary>A <see langword="byte" /> whose value will either be 0 (battery level is not low) or 1 (battery is low).</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeStatusLowBattery")]
 		StatusLowBattery,
 
+		/// <summary>A <see langword="byte" /> whose value will either be 0 (no tampering detected) or 1 (tampering detected).</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeStatusTampered")]
 		StatusTampered,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeTargetSecuritySystemState")]
 		TargetSecuritySystemState,
 
+		/// <summary>The desired horizontal tilt, in arc degrees.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeTargetHorizontalTilt")]
 		TargetHorizontalTilt,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeTargetPosition")]
 		TargetPosition,
 
+		/// <summary>The desired vertical tilt, in arc degrees.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeTargetVerticalTilt")]
 		TargetVerticalTilt,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeStreamingStatus")]
 		StreamingStatus,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeSetupStreamEndpoint")]
 		SetupStreamEndpoint,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeSupportedVideoStreamConfiguration")]
 		SupportedVideoStreamConfiguration,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeSupportedAudioStreamConfiguration")]
 		SupportedAudioStreamConfiguration,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeSupportedRTPConfiguration")]
 		SupportedRtpConfiguration,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeSelectedStreamConfiguration")]
 		SelectedStreamConfiguration,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeVolume")]
 		Volume,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeMute")]
 		Mute,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeNightVision")]
 		NightVision,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeOpticalZoom")]
 		OpticalZoom,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeDigitalZoom")]
 		DigitalZoom,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeImageRotation")]
 		ImageRotation,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeImageMirroring")]
 		ImageMirroring,
 
+		/// <summary>A Boolean that tells whether a service is active.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeActive")]
 		Active,
 
+		/// <summary>A <see cref="T:HomeKit.HMCharacteristicValueCurrentAirPurifierState" /> value that indicates the fan state state.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeCurrentAirPurifierState")]
 		CurrentAirPurifierState,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeTargetAirPurifierState")]
 		TargetAirPurifierState,
 
+		/// <summary>A <see cref="T:HomeKit.HMCharacteristicValueCurrentFanState" /> value that indicates the fan state state.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeCurrentFanState")]
 		CurrentFanState,
 
+		/// <summary>A <see cref="T:HomeKit.HMCharacteristicValueCurrentHeaterCoolerState" /> value that indicates the fan state state.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeCurrentHeaterCoolerState")]
 		CurrentHeaterCoolerState,
 
+		/// <summary>A <see cref="T:HomeKit.HMCharacteristicValueCurrentHumidifierDehumidifierState" /> value that indicates the fan state state.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeCurrentHumidifierDehumidifierState")]
 		CurrentHumidifierDehumidifierState,
 
+		/// <summary>A <see cref="T:HomeKit.HMCharacteristicValueCurrentSlatState" /> value that indicates the lock mechanism state.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeCurrentSlatState")]
 		CurrentSlatState,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeWaterLevel")]
 		WaterLevel,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeFilterChangeIndication")]
 		FilterChangeIndication,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeFilterLifeLevel")]
 		FilterLifeLevel,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeFilterResetChangeIndication")]
 		FilterResetChangeIndication,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeLockPhysicalControls")]
 		LockPhysicalControls,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeSwingMode")]
 		SwingMode,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeTargetHeaterCoolerState")]
 		TargetHeaterCoolerState,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeTargetHumidifierDehumidifierState")]
 		TargetHumidifierDehumidifierState,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeTargetFanState")]
 		TargetFanState,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeSlatType")]
 		SlatType,
 
+		/// <summary>The current tilt, in degrees.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeCurrentTilt")]
 		CurrentTilt,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeTargetTilt")]
 		TargetTilt,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeOzoneDensity")]
 		OzoneDensity,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeNitrogenDioxideDensity")]
 		NitrogenDioxideDensity,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeSulphurDioxideDensity")]
 		SulphurDioxideDensity,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypePM2_5Density")]
 		PM2_5Density,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypePM10Density")]
 		PM10Density,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeVolatileOrganicCompoundDensity")]
 		VolatileOrganicCompoundDensity,
 
+		/// <summary>The threshold relative humidity at which the dehumidifier starts.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeDehumidifierThreshold")]
 		DehumidifierThreshold,
 
+		/// <summary>The relative humidity threshold when the humidifier starts.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeHumidifierThreshold")]
 		HumidifierThreshold,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeSecuritySystemAlarmType")]
 		SecuritySystemAlarmType,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeLabelNamespace")]
 		LabelNamespace,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeLabelIndex")]
 		LabelIndex,
 
+		/// <summary>The color temperature of a light.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeColorTemperature")]
 		ColorTemperature,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeProgramMode")]
 		ProgramMode,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeInUse")]
 		InUse,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeSetDuration")]
 		SetDuration,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeRemainingDuration")]
 		RemainingDuration,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeValveType")]
 		ValveType,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicTypeIsConfigured")]
 		IsConfigured,
@@ -828,163 +914,206 @@ namespace HomeKit {
 	[MacCatalyst (14, 0)]
 	[Flags]
 	public enum HMServiceType {
+		/// <summary>Indicates the absence of a service.</summary>
 		None,
 
+		/// <summary>The service represents a light bulb.</summary>
 		[Field ("HMServiceTypeLightbulb")]
 		LightBulb,
 
+		/// <summary>The service represents a switch.</summary>
 		[Field ("HMServiceTypeSwitch")]
 		Switch,
 
+		/// <summary>The service represents a thermostat.</summary>
 		[Field ("HMServiceTypeThermostat")]
 		Thermostat,
 
+		/// <summary>The service represents a garage door opener.</summary>
 		[Field ("HMServiceTypeGarageDoorOpener")]
 		GarageDoorOpener,
 
+		/// <summary>Indicates accessory information.</summary>
 		[Field ("HMServiceTypeAccessoryInformation")]
 		AccessoryInformation,
 
+		/// <summary>The service represents a fan.</summary>
 		[Field ("HMServiceTypeFan")]
 		Fan,
 
+		/// <summary>The service represents an outlet.</summary>
 		[Field ("HMServiceTypeOutlet")]
 		Outlet,
 
+		/// <summary>The service represents a lock mechanism.</summary>
 		[Field ("HMServiceTypeLockMechanism")]
 		LockMechanism,
 
+		/// <summary>The service manages locks.</summary>
 		[Field ("HMServiceTypeLockManagement")]
 		LockManagement,
 
+		/// <summary>A sensor that monitors air quality.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeAirQualitySensor")]
 		AirQualitySensor,
 
+		/// <summary>An energy storage device.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeBattery")]
 		Battery,
 
+		/// <summary>A sensor that detects CO2.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeCarbonDioxideSensor")]
 		CarbonDioxideSensor,
 
+		/// <summary>A sensor that detects CO.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeCarbonMonoxideSensor")]
 		CarbonMonoxideSensor,
 
+		/// <summary>A sensor that detects physical contact.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeContactSensor")]
 		ContactSensor,
 
+		/// <summary>A door.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeDoor")]
 		Door,
 
+		/// <summary>A sensor that monitors the water content of the air.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeHumiditySensor")]
 		HumiditySensor,
 
+		/// <summary>A sensor for detecting seepage.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeLeakSensor")]
 		LeakSensor,
 
+		/// <summary>A sensor that monitors luminance.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeLightSensor")]
 		LightSensor,
 
+		/// <summary>A device that senses movement.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeMotionSensor")]
 		MotionSensor,
 
+		/// <summary>A device that detects occupancy using an unspecified technology.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeOccupancySensor")]
 		OccupancySensor,
 
+		/// <summary>A system that can be armed and will trigger alerts.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeSecuritySystem")]
 		SecuritySystem,
 
+		/// <summary>A switch that maintains internal state and rules.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeStatefulProgrammableSwitch")]
 		StatefulProgrammableSwitch,
 
+		/// <summary>A switch that does not maintain internal state.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeStatelessProgrammableSwitch")]
 		StatelessProgrammableSwitch,
 
+		/// <summary>A detector used to monitor smoke or fire.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeSmokeSensor")]
 		SmokeSensor,
 
+		/// <summary>A thermometer.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeTemperatureSensor")]
 		TemperatureSensor,
 
+		/// <summary>A pane of glass.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeWindow")]
 		Window,
 
+		/// <summary>Drapes or shades.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeWindowCovering")]
 		WindowCovering,
 
+		/// <summary>A camera management interface.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeCameraRTPStreamManagement")]
 		CameraRtpStreamManagement,
 
+		/// <summary>A video camera.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeCameraControl")]
 		CameraControl,
 
+		/// <summary>An audio sensor.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeMicrophone")]
 		Microphone,
 
+		/// <summary>A speaker.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeSpeaker")]
 		Speaker,
 
+		/// <summary>A doorbell.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeDoorbell")]
 		Doorbell,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeAirPurifier")]
 		AirPurifier,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeVentilationFan")]
 		VentilationFan,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeFilterMaintenance")]
 		FilterMaintenance,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeHeaterCooler")]
 		HeaterCooler,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeHumidifierDehumidifier")]
 		HumidifierDehumidifier,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeSlats")]
 		Slats,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeLabel")]
 		Label,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeIrrigationSystem")]
 		IrrigationSystem,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeValve")]
 		Valve,
 
+		/// <summary>To be added.</summary>
 		[MacCatalyst (14, 0)]
 		[Field ("HMServiceTypeFaucet")]
 		Faucet,
@@ -1487,9 +1616,11 @@ namespace HomeKit {
 	[MacCatalyst (14, 0)]
 	public enum HMSignificantEvent {
 
+		/// <summary>A rough estimate of the time of appearance above the horizon of the upper limb of the nearest star.</summary>
 		[Field ("HMSignificantEventSunrise")]
 		Sunrise,
 
+		/// <summary>A rough estimate of the time of disappearance below the horizon of the upper limb of the nearest star.</summary>
 		[Field ("HMSignificantEventSunset")]
 		Sunset,
 	}
@@ -1699,7 +1830,9 @@ namespace HomeKit {
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum HMCharacteristicValueActivationState : long {
+		/// <summary>To be added.</summary>
 		Inactive = 0,
+		/// <summary>To be added.</summary>
 		Active,
 	}
 
@@ -1745,8 +1878,11 @@ namespace HomeKit {
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum HMHomeHubState : ulong {
+		/// <summary>To be added.</summary>
 		NotAvailable = 0,
+		/// <summary>To be added.</summary>
 		Connected,
+		/// <summary>To be added.</summary>
 		Disconnected,
 	}
 
@@ -1754,11 +1890,17 @@ namespace HomeKit {
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum HMPresenceEventType : ulong {
+		/// <summary>To be added.</summary>
 		EveryEntry = 1,
+		/// <summary>To be added.</summary>
 		EveryExit = 2,
+		/// <summary>To be added.</summary>
 		FirstEntry = 3,
+		/// <summary>To be added.</summary>
 		LastExit = 4,
+		/// <summary>To be added.</summary>
 		AtHome = FirstEntry,
+		/// <summary>To be added.</summary>
 		NotAtHome = LastExit,
 	}
 
@@ -1766,8 +1908,11 @@ namespace HomeKit {
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum HMPresenceEventUserType : ulong {
+		/// <summary>To be added.</summary>
 		CurrentUser = 1,
+		/// <summary>To be added.</summary>
 		HomeUsers = 2,
+		/// <summary>To be added.</summary>
 		CustomUsers = 3,
 	}
 

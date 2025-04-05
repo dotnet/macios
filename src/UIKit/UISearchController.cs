@@ -24,6 +24,9 @@ namespace UIKit {
 			}
 		}
 
+		/// <param name="updateSearchResults">To be added.</param>
+		///         <summary>Assigns the <paramref name="updateSearchResults" /> search controller to update the search results.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetSearchResultsUpdater (Action<UISearchController> updateSearchResults)
 		{
 			if (updateSearchResults is null) {

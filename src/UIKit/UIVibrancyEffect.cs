@@ -22,6 +22,9 @@ namespace UIKit {
 		// https://trello.com/c/iQpXOxCd/227-category-and-static-methods-selectors
 		// note: we cannot reuse the same method name - as it would break compilation of existing apps
 #if NET
+		/// <summary>Developers should not use this deprecated method. Developers should use 'CreatePrimaryVibrancyEffectForNotificationCenter' instead.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -35,6 +38,9 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <summary>Static factory method that returns the primary vibrance effect for use with the notification center.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -48,6 +54,9 @@ namespace UIKit {
 		}
 
 #if NET
+		/// <summary>Static factory method that returns the secondary vibrance effect for use with the notification center.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]

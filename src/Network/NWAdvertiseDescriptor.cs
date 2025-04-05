@@ -24,6 +24,8 @@ using NativeHandle = System.IntPtr;
 
 namespace Network {
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
@@ -102,6 +104,12 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern IntPtr nw_advertise_descriptor_create_bonjour_service (IntPtr name, IntPtr type, IntPtr domain);
 
+		/// <param name="name">To be added.</param>
+		///         <param name="type">To be added.</param>
+		///         <param name="domain">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static NWAdvertiseDescriptor? CreateBonjourService (string name, string type, string? domain = null)
 		{
 			if (name is null)
@@ -122,6 +130,9 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_advertise_descriptor_set_txt_record (IntPtr handle, IntPtr txtRecord, nuint txtLen);
 
+		/// <param name="txt">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void SetTxtRecord (string txt)
 		{
 			if (txt is null)

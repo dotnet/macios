@@ -35,72 +35,117 @@ using ObjCRuntime;
 
 namespace ImageKit {
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum IKCameraDeviceViewDisplayMode : long {
 		None = -1,
+		/// <summary>To be added.</summary>
 		Table = 0,
+		/// <summary>To be added.</summary>
 		Icon = 1,
 	};
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum IKCameraDeviceViewTransferMode : long {
+		/// <summary>To be added.</summary>
 		File = 0,
+		/// <summary>To be added.</summary>
 		Memory = 1,
 	};
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum IKDeviceBrowserViewDisplayMode : long {
+		/// <summary>To be added.</summary>
 		Table = 0,
+		/// <summary>To be added.</summary>
 		Outline = 1,
+		/// <summary>To be added.</summary>
 		Icon = 2,
 	};
 
 	// Untyped enum in ObjC
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum IKImageBrowserCellState : int {
+		/// <summary>To be added.</summary>
 		NoImage = 0,
+		/// <summary>To be added.</summary>
 		Invalid = 1,
+		/// <summary>To be added.</summary>
 		Ready = 2,
 	};
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
 	public enum IKCellsStyle : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Shadowed = 1 << 0,
+		/// <summary>To be added.</summary>
 		Outlined = 1 << 1,
+		/// <summary>To be added.</summary>
 		Titled = 1 << 2,
+		/// <summary>To be added.</summary>
 		Subtitled = 1 << 3,
 	};
 
 	//used as a value for the IKImageBrowserGroupStyleKey in the NSDictionary that defines a group in IKImageBrowserView
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum IKGroupStyle : long {
+		/// <summary>To be added.</summary>
 		Bezel = 0,
+		/// <summary>To be added.</summary>
 		Disclosure = 1,
 	};
 
 	// Untyped enum in ObjC
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum IKImageBrowserDropOperation : int {
+		/// <summary>To be added.</summary>
 		On = 0,
+		/// <summary>To be added.</summary>
 		Before = 1,
 	};
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum IKScannerDeviceViewTransferMode : long {
+		/// <summary>To be added.</summary>
 		File = 0,
+		/// <summary>To be added.</summary>
 		Memory = 1,
 	};
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum IKScannerDeviceViewDisplayMode : long {
 		None = -1,
+		/// <summary>To be added.</summary>
 		Simple = 0,
+		/// <summary>To be added.</summary>
 		Advanced = 1,
 	};
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum IKFilterBrowserPanelStyleMask : uint {
+		/// <summary>To be added.</summary>
 		Normal = 0,
+		/// <summary>To be added.</summary>
 		Textured = 1 << 8,
 		// Other NSWindow Style Mask bit settings do not apply to this panel
 	}

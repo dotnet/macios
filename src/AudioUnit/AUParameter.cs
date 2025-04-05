@@ -6,6 +6,10 @@ using ObjCRuntime;
 
 namespace AudioUnit {
 	public partial class AUParameter {
+		/// <param name="value">The parameter value to represent as a string.</param>
+		///         <summary>Returns the string representation of the parameter value that corresponds to <paramref name="value" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public string GetString (float? value)
 		{
 			unsafe {

@@ -16,38 +16,6 @@ parameters:
       - ci
       - automatic
 
-  - name: testConfigurations
-    displayName: Test configurations to run
-    type: object
-    default: []
-
-  - name: supportedPlatforms
-    type: object
-    default: [
-      {
-        platform: iOS,
-        isDotNetPlatform: true,
-      },
-      {
-        platform: macOS,
-        isDotNetPlatform: true,
-      },
-      {
-        platform: tvOS,
-        isDotNetPlatform: true,
-      },
-      {
-        platform: MacCatalyst,
-        isDotNetPlatform: true,
-      },
-      {
-        # when running platform-specific test runs, we also need a special test run that executes tests that only runs when multiple platforms are enabled
-        platform: Multiple,
-        isDotNetPlatform: true,
-      }
-    ]
-
-
 resources:
   repositories:
     - repository: self
@@ -99,11 +67,9 @@ stages:
             parameters: 
               repositoryAlias: self
               commit: HEAD
-              testConfigurations: ${{ parameters.testConfigurations }}
-              supportedPlatforms: ${{ parameters.supportedPlatforms }}
-              testsLabels: '--label=skip-all-tests,run-ios-tests,run-ios-simulator-tests,run-tvos-tests,run-mac-tests,run-maccatalyst-tests,run-system-permission-tests'
               statusContext: 'VSTS: simulator tests' 
               uploadArtifacts: true
+              use1ES: false
 
   - template: ../governance/stage.yml
     parameters:

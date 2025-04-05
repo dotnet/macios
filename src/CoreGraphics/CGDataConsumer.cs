@@ -35,21 +35,11 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
-
 	// CGDataConsumer.h
+	/// <summary>Data sink for <see cref="T:CoreGraphics.CGContextPDF" /> or <see cref="T:ImageIO.CGImageDestination" /> to store data on.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class CGDataConsumer : NativeObject {
-#if !NET
-		public CGDataConsumer (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal CGDataConsumer (NativeHandle handle, bool owns)
 			: base (handle, owns)
@@ -85,6 +75,9 @@ namespace CoreGraphics {
 			return result;
 		}
 
+		/// <param name="data">To be added.</param>
+		///         <summary>Creates a data sink that saves the data on the specified NSData.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGDataConsumer (NSMutableData data)
 			: base (Create (data), true)
 		{
@@ -103,6 +96,9 @@ namespace CoreGraphics {
 			return result;
 		}
 
+		/// <param name="url">To be added.</param>
+		///         <summary>Creates a data sink that saves the data on a file specified by the url.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGDataConsumer (NSUrl url)
 			: base (Create (url), true)
 		{

@@ -35,29 +35,16 @@ using ObjCRuntime;
 using CoreFoundation;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
-
-
-#if NET
+	/// <summary>Color structure.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CGColor.h
 	public class CGColor : NativeObject {
 #if !COREBUILD
-#if !NET
-		public CGColor (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal CGColor (NativeHandle handle, bool owns)
 			: base (handle, owns)
@@ -139,6 +126,9 @@ namespace CoreGraphics {
 
 		}
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGColor (string name)
 			: base (Create (name), true)
 		{
@@ -161,16 +151,10 @@ namespace CoreGraphics {
 			return handle;
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("tvos14.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-#else
-		[iOS (14, 0)]
-		[TV (14, 0)]
-		[MacCatalyst (14, 0)]
-#endif
 		public CGColor (CGConstantColor color)
 			: base (Create (color), true)
 		{
@@ -237,6 +221,9 @@ namespace CoreGraphics {
 			return !color1.Equals (color2);
 		}
 
+		/// <summary>Get the hashcode for this color.</summary>
+		///         <returns>The hashcode.</returns>
+		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			// looks weird but it's valid
@@ -245,6 +232,11 @@ namespace CoreGraphics {
 			return 0;
 		}
 
+		/// <param name="o">The other object.</param>
+		///         <summary>Determines if the objects are equal.</summary>
+		///         <returns>
+		///           <see langword="true" /> if this color is equal to the specified object.</returns>
+		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? o)
 		{
 			var other = o as CGColor;
@@ -333,23 +325,19 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGColorRelease (/* CGColorRef */ IntPtr color);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern /* CGColorRef __nullable */ IntPtr CGColorCreateCopyByMatchingToColorSpace (
 			/* __nullable CGColorSpaceRef* */ IntPtr space, CGColorRenderingIntent intent,
 			/* CGColorRef __nullable */ IntPtr color, /* __nullable CFDictionaryRef */ IntPtr options);
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		static public CGColor? CreateByMatchingToColorSpace (CGColorSpace space, CGColorRenderingIntent intent,
 			CGColor color, NSDictionary options)
 		{
@@ -360,112 +348,68 @@ namespace CoreGraphics {
 			return h == IntPtr.Zero ? null : new CGColor (h, owns: true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (13, 0)]
-		[TV (13, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern /* CGColorRef* */ IntPtr CGColorCreateSRGB (nfloat red, nfloat green, nfloat blue, nfloat alpha);
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (13, 0)]
-		[TV (13, 0)]
-#endif
 		static public CGColor? CreateSrgb (nfloat red, nfloat green, nfloat blue, nfloat alpha)
 		{
 			var h = CGColorCreateSRGB (red, green, blue, alpha);
 			return h == IntPtr.Zero ? null : new CGColor (h, owns: true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (13, 0)]
-		[TV (13, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern /* CGColorRef* */ IntPtr CGColorCreateGenericGrayGamma2_2 (nfloat gray, nfloat alpha);
 
-#if NET
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (13, 0)]
-		[TV (13, 0)]
-#endif
 		static public CGColor? CreateGenericGrayGamma2_2 (nfloat gray, nfloat alpha)
 		{
 			var h = CGColorCreateGenericGrayGamma2_2 (gray, alpha);
 			return h == IntPtr.Zero ? null : new CGColor (h, owns: true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("tvos14.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (14, 0)]
-		[TV (14, 0)]
-		[MacCatalyst (14, 0)]
-#endif
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern /* CGColorRef */ IntPtr CGColorCreateGenericCMYK (nfloat cyan, nfloat magenta, nfloat yellow, nfloat black, nfloat alpha);
 
-#if NET
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("tvos14.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (14, 0)]
-		[TV (14, 0)]
-		[MacCatalyst (14, 0)]
-#endif
 		static public CGColor? CreateCmyk (nfloat cyan, nfloat magenta, nfloat yellow, nfloat black, nfloat alpha)
 		{
 			var h = CGColorCreateGenericCMYK (cyan, magenta, yellow, black, alpha);
 			return h == IntPtr.Zero ? null : new CGColor (h, owns: true);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("tvos14.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (14, 0)]
-		[TV (14, 0)]
-		[MacCatalyst (14, 0)]
-#endif
 		[DllImport (Constants.AccessibilityLibrary)]
 		static extern /* NSString */ IntPtr AXNameFromColor (/* CGColorRef */ IntPtr color);
 
-#if NET
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("tvos14.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (14, 0)]
-		[TV (14, 0)]
-		[MacCatalyst (14, 0)]
-#endif
 		public string? AXName => CFString.FromHandle (AXNameFromColor (Handle));
 
 

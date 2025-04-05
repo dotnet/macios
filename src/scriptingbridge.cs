@@ -46,10 +46,16 @@ namespace ScriptingBridge {
 		[Export ("initWithData:")]
 		NativeHandle Constructor (NSObject data);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("get")]
 		NSObject Get { get; }
 
 		// part of SBObject.h include file, not in the official documentation
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("lastError")]
 		NSError LastError { get; }
 	}
@@ -61,21 +67,45 @@ namespace ScriptingBridge {
 		[Export ("initWithCapacity:")]
 		NativeHandle Constructor (nuint capacity);
 
+		/// <param name="name">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("objectWithName:")]
 		NSObject ObjectWithName (string name);
 
+		/// <param name="identifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("objectWithID:")]
 		NSObject ObjectWithID (NSObject identifier);
 
+		/// <param name="location">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("objectAtLocation:")]
 		NSObject ObjectAtLocation (NSObject location);
 
+		/// <param name="selector">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("arrayByApplyingSelector:")]
 		NSObject [] ArrayByApplyingSelector (Selector selector);
 
+		/// <param name="aSelector">To be added.</param>
+		///         <param name="argument">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("arrayByApplyingSelector:withObject:")]
 		NSObject [] ArrayByApplyingSelector (Selector aSelector, NSObject argument);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("get")]
 		NSObject [] Get ();
 	}
@@ -131,27 +161,51 @@ namespace ScriptingBridge {
 		[Export ("applicationWithProcessIdentifier:")]
 		IntPtr _FromProcessIdentifier (int /* pid_t = int */ pid);
 
+		/// <param name="className">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("classForScriptingClass:")]
 		Class ClassForScripting (string className);
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("isRunning")]
 		bool IsRunning { get; }
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("activate")]
 		void Activate ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("delegate", ArgumentSemantic.Retain), NullAllowed]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		ISBApplicationDelegate Delegate { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("launchFlags")]
 		LSLaunchFlags LaunchFlags { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("sendMode")]
 		AESendMode SendMode { get; set; }
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("timeout")]
 		nint Timeout { get; set; }
 	}

@@ -36,10 +36,51 @@ using NativeHandle = System.IntPtr;
 namespace Foundation {
 
 	public partial class NSDictionary : NSObject, IDictionary, IDictionary<NSObject, NSObject> {
+		/// <param name="first">First key.</param>
+		///         <param name="second">First value.</param>
+		///         <param name="args">Remaining pais of keys and values.</param>
+		///         <summary>Creates an NSDictionary from a list of NSObject keys and NSObject values.</summary>
+		///         <remarks>
+		///           <para>
+		/// 	    The list of keys and values are used to create the dictionary.   The number of parameters passed to this function must be even.
+		/// 	  </para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// var key1 = new NSString ("key1");
+		/// var value1 = new NSNumber ((byte) 1);
+		/// var key2 = new NSString ("key2");
+		/// var value2 = new NSNumber ((byte) 2);
+		///
+		/// var dict2 = new NSDictionary (key1, value1, key2, value2);
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		public NSDictionary (NSObject first, NSObject second, params NSObject [] args) : this (PickOdd (second, args), PickEven (first, args))
 		{
 		}
 
+		/// <param name="first">First key.</param>
+		///         <param name="second">First value.</param>
+		///         <param name="args">Remaining pais of keys and values.</param>
+		///         <summary>Creates an NSDictionary from a list of keys and values.</summary>
+		///         <remarks>
+		///           <para>
+		/// 	    Each C# object is boxed as an NSObject by calling <see cref="M:Foundation.NSObject.FromObject(System.Object)" />.
+		/// 	  </para>
+		///           <para>
+		/// 	    The list of keys and values are used to create the dictionary.   The number of parameters passed to this function must be even.
+		/// 	  </para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// //
+		/// // Using C# objects, strings and ints, produces
+		/// // a dictionary with 2 NSString keys, "key1" and "key2"
+		/// // and two NSNumbers with the values 1 and 2
+		/// //
+		/// var dict = new NSDictionary ("key1", 1, "key2", 2);
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		public NSDictionary (object first, object second, params object [] args) : this (PickOdd (second, args), PickEven (first, args))
 		{
 		}
@@ -90,6 +131,13 @@ namespace Foundation {
 			return NSArray.FromObjects (ret);
 		}
 
+		/// <param name="objects">Array of values for the dictionary.</param>
+		///         <param name="keys">Array of keys for the dictionary.</param>
+		///         <summary>Creates a dictionary from a set of values and keys.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public static NSDictionary FromObjectsAndKeys (NSObject [] objects, NSObject [] keys)
 		{
 			if (objects is null)
@@ -104,6 +152,17 @@ namespace Foundation {
 				return FromObjectsAndKeysInternal (no, nk);
 		}
 
+		/// <param name="objects">Array of values for the dictionary.</param>
+		///         <param name="keys">Array of keys for the dictionary.</param>
+		///         <summary>Creates a dictionary from a set of values and keys.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///           <para>
+		/// 	    The keys and values will first be boxed into
+		/// 	    NSObjects using <see cref="M:Foundation.NSObject.FromObject(System.Object)" />.
+		/// 	  </para>
+		///         </remarks>
 		public static NSDictionary FromObjectsAndKeys (object [] objects, object [] keys)
 		{
 			if (objects is null)
@@ -160,6 +219,10 @@ namespace Foundation {
 		}
 
 		#region ICollection
+		/// <param name="array">To be added.</param>
+		///         <param name="arrayIndex">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		void ICollection.CopyTo (Array array, int arrayIndex)
 		{
 			if (array is null)
@@ -249,16 +312,26 @@ namespace Foundation {
 
 		#region IDictionary
 
+		/// <param name="key">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		void IDictionary.Add (object key, object value)
 		{
 			throw new NotSupportedException ();
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		void IDictionary.Clear ()
 		{
 			throw new NotSupportedException ();
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		bool IDictionary.Contains (object key)
 		{
 			if (key is null)
@@ -269,11 +342,17 @@ namespace Foundation {
 			return ContainsKey (_key);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		IDictionaryEnumerator IDictionary.GetEnumerator ()
 		{
 			return (IDictionaryEnumerator) ((IEnumerable<KeyValuePair<NSObject, NSObject>>) this).GetEnumerator ();
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		void IDictionary.Remove (object key)
 		{
 			throw new NotSupportedException ();
@@ -328,6 +407,12 @@ namespace Foundation {
 			throw new NotSupportedException ();
 		}
 
+		/// <param name="key">Key to lookup in the dictionary.</param>
+		///         <summary>Determines whether the specified key exists in the dictionary.</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public bool ContainsKey (NSObject key)
 		{
 			return ObjectForKey (key) is not null;
@@ -358,6 +443,11 @@ namespace Foundation {
 			return true;
 		}
 
+		/// <param name="key">To be added.</param>
+		///         <param name="value">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool TryGetValue (NSObject key, out NSObject value)
 		{
 			if (key is null)
@@ -412,6 +502,9 @@ namespace Foundation {
 
 		#endregion
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return GetEnumerator ();
@@ -426,6 +519,15 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="key">A handle to an NSObject that might be on the dictionary.</param>
+		///         <summary>Low-level key lookup.</summary>
+		///         <returns>Handle to an object, or IntPtr.Zero if the key does not exist in the dictionary.</returns>
+		///         <remarks>
+		/// 	  In some cases, where you might be iterating over a loop, or
+		/// 	  you have not surfaced a bound type, but you have the handle to
+		/// 	  the key, you can use the <see cref="M:Foundation.NSDictionary.LowlevelObjectForKey(System.IntPtr)" />
+		/// 	  which takes a handle for the key and returns a handle for the returned object. 
+		/// 	</remarks>
 		public IntPtr LowlevelObjectForKey (IntPtr key)
 		{
 #if MONOMAC
@@ -435,6 +537,9 @@ namespace Foundation {
 #endif
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public NSFileAttributes ToFileAttributes ()
 		{
 			return NSFileAttributes.FromDictionary (this);

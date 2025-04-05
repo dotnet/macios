@@ -21,11 +21,41 @@ using CoreGraphics;
 namespace UIKit {
 	public partial class UIView : IEnumerable {
 
+		/// <param name="view">The subview to add.</param>
+		///         <summary>This is an alias for <see cref="M:UIKit.UIView.AddSubview(UIKit.UIView)" />, but uses the Add pattern as it allows C# 3.0 constructs to add subviews after creating the object.</summary>
+		///         <remarks>
+		///           <para>
+		///             This method is equivalent to <see cref="M:UIKit.UIView.AddSubview(UIKit.UIView)" /> and is present to enable C# 3.0 to add subviews at creation time.
+		///           </para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		///               var myView = new MyView (new RectangleF (0, 0, 320, 320)){
+		///                 new ImageGallery (region [0]),
+		///                 new ImageGallery (region [1]),
+		///                 new UILabel (new RectangleF (10, 10, 200, 200)){
+		///                   Text = "Images from our Trip"
+		///                 }
+		///               };
+		///             ]]></code>
+		///           </example>
+		///         </remarks>
 		public void Add (UIView view)
 		{
 			AddSubview (view);
 		}
 
+		/// <param name="views">An array of zero or more <see cref="T:UIKit.UIView" />s.</param>
+		///         <summary>Convenience routine to add various views to a UIView.</summary>
+		///         <remarks>
+		///           <para>
+		///             This is merely a convenience routine that allows the application developer to add a number of views in a single call.
+		///           </para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// myView.AddSubviews (label, button, entry, image1, image2);
+		///             ]]></code>
+		///           </example>
+		///         </remarks>
 		public void AddSubviews (params UIView []? views)
 		{
 			if (views is null)
@@ -34,6 +64,11 @@ namespace UIKit {
 				AddSubview (v);
 		}
 
+		/// <summary>Returns an enumerator that lists all of the subviews in this view</summary>
+		///         <returns>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public IEnumerator GetEnumerator ()
 		{
 			UIView [] subviews = Subviews;
@@ -43,6 +78,7 @@ namespace UIKit {
 				yield return uiv;
 		}
 
+		/// <include file="../../docs/api/UIKit/UIView.xml" path="/Documentation/Docs[@DocId='M:UIKit.UIView.BeginAnimations(System.String)']/*" />
 		public static void BeginAnimations (string animation)
 		{
 			BeginAnimations (animation, IntPtr.Zero);
@@ -106,6 +142,22 @@ namespace UIKit {
 			}
 		}
 
+		/// <param name="duration">Duration in seconds for the animation.</param>
+		///         <param name="animation">Code containing the changes that you will apply to your view.</param>
+		///         <param name="completion">Code that is invoked when the animation completes.</param>
+		///         <summary>Animates the property changes that take place in the specified action and invokes a completion callback when the animation completes.</summary>
+		///         <remarks>
+		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+		///           <para>
+		///             This uses the CurveEaseOut and TransitionNone flags for the animation.
+		///           </para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// // Animates hiding the label by setting the alpha to zero over three seconds.
+		/// UIView.Animate (3, () => { label.Alpha = 0; });
+		///             ]]></code>
+		///           </example>
+		///         </remarks>
 		[Advice ("Use the *Notify method that has 'UICompletionHandler completion' parameter, the 'bool' will tell you if the operation finished.")]
 		public static void Animate (double duration, Action animation, Action completion)
 		{
@@ -116,6 +168,16 @@ namespace UIKit {
 			});
 		}
 
+		/// <param name="duration">Duration in seconds for the animation.</param>
+		///         <param name="delay">Delay before the animation begins.</param>
+		///         <param name="options">Animation options</param>
+		///         <param name="animation">Code containing the changes that you will apply to your view.</param>
+		///         <param name="completion">Code that is invoked when the animation completes.</param>
+		///         <summary>Invokes animation changes to one or more views by specifying duration, delay, options, and a completion handler.</summary>
+		///         <remarks>
+		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+		///           <para>This method initiates a set of animations that areto be performed on this view. The action indicated in the animations parameter contains the code for the animation of the properties of one or more views.</para>
+		///         </remarks>
 		[Advice ("Use the *Notify method that has 'UICompletionHandler completion' parameter, the 'bool' will tell you if the operation finished.")]
 		public static void Animate (double duration, double delay, UIViewAnimationOptions options, Action animation, Action completion)
 		{
@@ -126,6 +188,15 @@ namespace UIKit {
 			});
 		}
 
+		/// <param name="fromView">The initial view.</param>
+		///         <param name="toView">The final view.</param>
+		///         <param name="duration">The duration, in seconds, of the animation.</param>
+		///         <param name="options">A mask of options to be used with the animation.</param>
+		///         <param name="completion">An action to be executed at the end of the animation.</param>
+		///         <summary>Specifies a transition animation on the specified collection view.</summary>
+		///         <remarks>
+		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+		///         </remarks>
 		[Advice ("Use the *Notify method that has 'UICompletionHandler completion' parameter, the 'bool' will tell you if the operation finished.")]
 		public static void Transition (UIView fromView, UIView toView, double duration, UIViewAnimationOptions options, Action completion)
 		{
@@ -135,6 +206,15 @@ namespace UIKit {
 			});
 		}
 
+		/// <param name="withView">The view that performs the transition.</param>
+		///         <param name="duration">Duration set for transition animation.</param>
+		///         <param name="options">A mask of options defining animations performance.</param>
+		///         <param name="animation">Action object containing  changes to make to the specified view.</param>
+		///         <param name="completion">Action object for execution when the animation sequence completes.</param>
+		///         <summary>Specifies a transition animation on the specified collection view.</summary>
+		///         <remarks>
+		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+		///         </remarks>
 		[Advice ("Use the *Notify method that has 'UICompletionHandler completion' parameter, the 'bool' will tell you if the operation finished.")]
 		public static void Transition (UIView withView, double duration, UIViewAnimationOptions options, Action animation, Action completion)
 		{
@@ -145,11 +225,24 @@ namespace UIKit {
 			});
 		}
 
+		/// <param name="duration">Duration in seconds for the animation.</param>
+		///         <param name="animation">Code containing the changes that you will apply to your view.</param>
+		///         <summary>Animates the property changes that take place in the specified <paramref name="animation" /> as an asynchronous operation.</summary>
+		///         <returns>Indicates whether the animation ran to completion or not.</returns>
+		///         <remarks>
+		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+		///         </remarks>
 		public static Task<bool> AnimateAsync (double duration, Action animation)
 		{
 			return AnimateNotifyAsync (duration, animation);
 		}
 
+		/// <param name="afterScreenUpdates">If <see langword="true" />, the capture occurs after screen updating has finished.</param>
+		///         <summary>Performs a screen-capture of the <see cref="T:UIKit.UIView" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>This method is slower than <see cref="M:UIKit.UIView.SnapshotView(System.Boolean)" />.</para>
+		///         </remarks>
 		public UIImage Capture (bool afterScreenUpdates = true)
 		{
 			UIImage snapshot;

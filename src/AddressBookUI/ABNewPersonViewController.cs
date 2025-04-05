@@ -16,6 +16,9 @@ using ObjCRuntime;
 
 namespace AddressBookUI {
 
+	/// <summary>Provides data for the <see cref="E:AddressBookUI.ABNewPersonViewController.NewPersonComplete" /> event.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -24,6 +27,10 @@ namespace AddressBookUI {
 	[UnsupportedOSPlatform ("tvos")]
 	public class ABNewPersonCompleteEventArgs : EventArgs {
 
+		/// <param name="person">To be added.</param>
+		///         <summary>Initializes a new instance of the ABNewPersonCompleteEventArgs class.</summary>
+		///         <remarks>
+		///         </remarks>
 		public ABNewPersonCompleteEventArgs (ABPerson? person)
 		{
 			Person = person;
@@ -120,6 +127,9 @@ namespace AddressBookUI {
 			return d;
 		}
 
+		/// <param name="e">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal virtual void OnNewPersonComplete (ABNewPersonCompleteEventArgs e)
 		{
 			var h = EnsureEventDelegate ().newPersonComplete;

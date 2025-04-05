@@ -22,6 +22,21 @@ namespace AVFoundation {
 		SsmlRepresentation,
 	}
 
+	/// <summary>A spoken word, statement, or sound. Used with <see cref="T:AVFoundation.AVSpeechSynthesizer" />.</summary>
+	///     <remarks>
+	///       <para>In its simplest form, text-to-speech can be done with just two classes:</para>
+	///       <example>
+	///         <code lang="csharp lang-csharp"><![CDATA[
+	/// var ss = new AVSpeechSynthesizer();
+	/// var su = new AVSpeechUtterance("Microphone check. One, two, one two.") {
+	/// 	Rate = AVSpeechUtterance.DefaultSpeechRate
+	/// };
+	/// ss.SpeakUtterance(su);          
+	///           ]]></code>
+	///       </example>
+	///       <para>The <see cref="P:AVFoundation.AVSpeechUtterance.Rate" /> property specifies the speed with which the utterance is said. The rate does not appear to be processor-dependent and a rate of 1.0f is unnatural.</para>
+	///     </remarks>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVSpeechUtterance_Ref/index.html">Apple documentation for <c>AVSpeechUtterance</c></related>
 	public partial class AVSpeechUtterance {
 		/// <summary>Create a new <see cref="AVSpeechUtterance" /> instance for the specified string.</summary>
 		/// <param name="speechString">The text to speak.</param>

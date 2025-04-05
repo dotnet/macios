@@ -16,6 +16,8 @@ using ObjCRuntime;
 namespace OpenGLES {
 
 #if NET
+	/// <summary>EAGLDrawable properties.</summary>
+	///     <remarks>This class contains the keys for a few properties that can be get and set in EAGLDrawables.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("tvos12.0", "Use 'Metal' instead.")]
@@ -43,6 +45,8 @@ namespace OpenGLES {
 	}
 
 #if NET
+	/// <summary>The formats available for the <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.LayerColorFormat" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("tvos12.0", "Use 'Metal' instead.")]

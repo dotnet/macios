@@ -36,13 +36,11 @@ using ObjCRuntime;
 using CoreFoundation;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
 
 	// uint32_t -> CGGradient.h
+	/// <summary>Drawing location for gradients.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum CGGradientDrawingOptions : uint {
 		/// <summary>To be added.</summary>
@@ -53,12 +51,19 @@ namespace CoreGraphics {
 		DrawsAfterEndLocation = (1 << 1),
 	}
 
-#if NET
+	/// <summary>Gradient definitions.</summary>
+	///     <remarks>
+	///       <para>A <see cref="T:CoreGraphics.CGGradient" /> defines a smooth transition between colors. </para>
+	///       <para>To use a <see cref="T:CoreGraphics.CGGradient" />, application developers will typically have to create a custom <see cref="T:UIKit.UIView" /> and override its <see cref="M:UIKit.UIView.Draw(CoreGraphics.CGRect)" /> method. Application developers should consider a <see cref="T:CoreAnimation.CAGradientLayer" /> as a possible easier-to-use alternative.</para>
+	///     </remarks>
+	///     <altmember cref="M:CoreGraphics.CGContext.DrawLinearGradient" />
+	///     <altmember cref="M:CoreGraphics.CGContext.DrawRadialGradient" />
+	///     <altmember cref="T:CoreAnimation.CAGradientLayer" />
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/QuartzSample/">QuartzSample</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CGGradient : NativeObject {
 #if !COREBUILD
 		[Preserve (Conditional = true)]
@@ -176,6 +181,10 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <param name="colorspace">To be added.</param>
+		///         <param name="colors">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CGGradient (CGColorSpace? colorspace, CGColor [] colors)
 			: base (Create (colorspace, colors), true)
 		{

@@ -16,6 +16,8 @@ using Foundation;
 
 namespace Security {
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -35,6 +37,10 @@ namespace Security {
 			/* void * */ IntPtr reserved); /* always null */
 
 #if NET
+		/// <param name="status">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]

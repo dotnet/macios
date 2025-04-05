@@ -44,6 +44,25 @@ using NativeHandle = System.IntPtr;
 
 namespace AddressBook {
 
+	/// <summary>
+	///       Base type for
+	///       <see cref="T:AddressBook.ABGroup" /> and
+	///       <see cref="T:AddressBook.ABPerson" />.
+	///     </summary>
+	///     <remarks>
+	///       <para>
+	///         Supported operations:
+	///       </para>
+	///       <list type="bullet">
+	///         <item>
+	///           <term>
+	///             Getting record information:
+	///             <see cref="P:AddressBook.ABRecord.Id" />,
+	///             <see cref="P:AddressBook.ABRecord.Type" />.
+	///           </term>
+	///         </item>
+	///       </list>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -75,6 +94,10 @@ namespace AddressBook {
 		{
 		}
 
+		/// <param name="handle">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static ABRecord? FromHandle (IntPtr handle)
 		{
 			return FromHandle (handle, false);
@@ -114,6 +137,7 @@ namespace AddressBook {
 			return rec;
 		}
 
+		/// <include file="../../docs/api/AddressBook/ABRecord.xml" path="/Documentation/Docs[@DocId='M:AddressBook.ABRecord.Dispose(System.Boolean)']/*" />
 		protected override void Dispose (bool disposing)
 		{
 			AddressBook = null;
@@ -156,6 +180,15 @@ namespace AddressBook {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABRecordCopyCompositeName (IntPtr record);
+		/// <summary>
+		///           Returns the composite name of the <see cref="T:AddressBook.ABRecord" />.
+		///         </summary>
+		///         <returns>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20String&amp;scope=Xamarin" title="T:System.String">T:System.String</a></format> containing
+		///           the composite name of the <see cref="T:AddressBook.ABRecord" />.
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public override string? ToString ()
 		{
 			return CFString.FromHandle (ABRecordCopyCompositeName (Handle));

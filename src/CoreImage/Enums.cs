@@ -107,9 +107,13 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CIQRCodeErrorCorrectionLevel : long {
+		/// <summary>To be added.</summary>
 		L = 76,
+		/// <summary>To be added.</summary>
 		M = 77,
+		/// <summary>To be added.</summary>
 		Q = 81,
+		/// <summary>To be added.</summary>
 		H = 72,
 	}
 
@@ -134,8 +138,11 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CIRenderDestinationAlphaMode : ulong {
+		/// <summary>To be added.</summary>
 		None = 0,
+		/// <summary>To be added.</summary>
 		Premultiplied = 1,
+		/// <summary>To be added.</summary>
 		Unpremultiplied = 2,
 	}
 }

@@ -41,10 +41,18 @@ namespace QuartzComposer {
 	[Deprecated (PlatformName.MacOSX, 10, 15)]
 	[BaseType (typeof (NSObject))]
 	interface QCComposition : NSCopying {
+		/// <param name="path">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("compositionWithFile:")]
 		QCComposition GetComposition (string path);
 
+		/// <param name="data">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("compositionWithData:")]
 		QCComposition GetComposition (NSData data);
@@ -299,10 +307,18 @@ namespace QuartzComposer {
 	[DisableDefaultCtor] // return invalid handle
 	interface QCCompositionLayer {
 
+		/// <param name="path">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("compositionLayerWithFile:")]
 		QCCompositionLayer Create (string path);
 
+		/// <param name="composition">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("compositionLayerWithComposition:")]
 		QCCompositionLayer Create (QCComposition composition);
@@ -332,9 +348,18 @@ namespace QuartzComposer {
 		[Export ("sharedCompositionRepository")]
 		QCCompositionRepository SharedCompositionRepository { get; }
 
+		/// <param name="identifier">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("compositionWithIdentifier:")]
 		QCComposition GetComposition (string identifier);
 
+		/// <param name="protocols">To be added.</param>
+		///         <param name="attributes">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("compositionsWithProtocols:andAttributes:")]
 		QCComposition [] GetCompositions (NSArray protocols, NSDictionary attributes);
 

@@ -31,16 +31,28 @@ using System.Runtime.Versioning;
 namespace WebKit {
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class DomEventArgs : EventArgs {
+		/// <param name="evt">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public DomEventArgs (DomEvent evt)
 		{
 			Event = evt;
 		}
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public DomEvent Event { get; set; }
 	}
 
+	/// <param name="sender">To be added.</param>
+	///     <param name="args">To be added.</param>
+	///     <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public delegate void DomEventListenerHandler (object sender, DomEventArgs args);
 
 	public partial class DomNode {
@@ -76,6 +88,12 @@ namespace WebKit {
 		}
 
 #if NET
+		/// <param name="type">To be added.</param>
+		///         <param name="handler">To be added.</param>
+		///         <param name="useCapture">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public IDomEventListener AddEventListener (string type, DomEventListenerHandler handler, bool useCapture)
 #else
 		public DomEventListener AddEventListener (string type, DomEventListenerHandler handler, bool useCapture)
@@ -89,6 +107,12 @@ namespace WebKit {
 		}
 
 #if NET
+		/// <param name="type">To be added.</param>
+		///         <param name="callback">To be added.</param>
+		///         <param name="useCapture">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public IDomEventListener AddEventListener (string type, Action<DomEvent> callback, bool useCapture)
 #else
 		public DomEventListener AddEventListener (string type, Action<DomEvent> callback, bool useCapture)

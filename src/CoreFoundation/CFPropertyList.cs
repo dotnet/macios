@@ -16,6 +16,8 @@ using ObjCRuntime;
 using Foundation;
 
 namespace CoreFoundation {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -46,6 +48,11 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		unsafe static extern IntPtr CFPropertyListCreateWithData (IntPtr allocator, IntPtr dataRef, nuint options, nint* format, /* CFError * */ IntPtr* error);
 
+		/// <param name="data">To be added.</param>
+		///         <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static (CFPropertyList? PropertyList, CFPropertyListFormat Format, NSError? Error)
 			FromData (NSData data, CFPropertyListMutabilityOptions options = CFPropertyListMutabilityOptions.Immutable)
 		{
@@ -69,6 +76,10 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static IntPtr CFPropertyListCreateDeepCopy (IntPtr allocator, IntPtr propertyList, nuint mutabilityOption);
 
+		/// <param name="options">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CFPropertyList DeepCopy (CFPropertyListMutabilityOptions options = CFPropertyListMutabilityOptions.MutableContainersAndLeaves)
 		{
 			return new CFPropertyList (CFPropertyListCreateDeepCopy (IntPtr.Zero, Handle, (nuint) (ulong) options), owns: true);
@@ -77,6 +88,10 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		unsafe extern static /*CFDataRef*/IntPtr CFPropertyListCreateData (IntPtr allocator, IntPtr propertyList, nint format, nuint options, IntPtr* error);
 
+		/// <param name="format">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public (NSData? Data, NSError? Error) AsData (CFPropertyListFormat format = CFPropertyListFormat.BinaryFormat1)
 		{
 			IntPtr error;
@@ -92,6 +107,10 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static byte CFPropertyListIsValid (IntPtr plist, nint format);
 
+		/// <param name="format">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public bool IsValid (CFPropertyListFormat format)
 		{
 			return CFPropertyListIsValid (Handle, (nint) (long) format) != 0;
@@ -129,6 +148,8 @@ namespace CoreFoundation {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum CFPropertyListFormat : long {
 		/// <summary>To be added.</summary>
@@ -139,6 +160,8 @@ namespace CoreFoundation {
 		BinaryFormat1 = 200,
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
 	public enum CFPropertyListMutabilityOptions : ulong {

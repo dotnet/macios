@@ -11,14 +11,12 @@ using Foundation;
 namespace CoreMidi {
 
 #if !XAMCORE_5_0
-#if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[UnsupportedOSPlatform ("tvos")]
-#else
-	[NoTV]
-#endif
 	[NativeName ("MIDICIDeviceIdentification")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiCIDeviceIdentification {
@@ -45,14 +43,10 @@ namespace CoreMidi {
 	}
 #endif
 
-#if NET
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[UnsupportedOSPlatform ("tvos")]
-#else
-	[NoTV]
-#endif
 	[NativeName ("MIDICIDeviceIdentification")]
 	[StructLayout (LayoutKind.Sequential)]
 #if XAMCORE_5_0

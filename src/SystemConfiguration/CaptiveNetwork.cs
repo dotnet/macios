@@ -75,6 +75,11 @@ namespace SystemConfiguration {
 			/* CFStringRef __nonnull */ IntPtr interfaceName);
 
 #if NET
+		/// <param name="interfaceName">To be added.</param>
+		///         <param name="currentNetworkInfo">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("ios14.0")]
@@ -104,6 +109,10 @@ namespace SystemConfiguration {
 		extern static IntPtr /* CFArrayRef __nullable */ CNCopySupportedInterfaces ();
 
 #if NET
+		/// <param name="supportedInterfaces">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -150,6 +159,10 @@ namespace SystemConfiguration {
 		extern static byte CNMarkPortalOnline (IntPtr /* CFStringRef __nonnull */ interfaceName);
 
 #if NET
+		/// <param name="iface">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>This API is only available on devices. An EntryPointNotFoundException will be thrown on the simulator</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -168,6 +181,10 @@ namespace SystemConfiguration {
 		}
 
 #if NET
+		/// <param name="iface">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>This API is only available on devices. An EntryPointNotFoundException will be thrown on the simulator</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -198,6 +215,10 @@ namespace SystemConfiguration {
 		extern static byte CNSetSupportedSSIDs (IntPtr /* CFArrayRef __nonnull */ ssidArray);
 
 #if NET
+		/// <param name="ssids">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>This API is only available on devices. An EntryPointNotFoundException will be thrown on the simulator</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]

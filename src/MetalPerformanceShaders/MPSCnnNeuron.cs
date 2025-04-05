@@ -8,6 +8,10 @@ using ObjCRuntime;
 namespace MetalPerformanceShaders {
 	public partial class MPSCnnNeuronPReLU {
 #if NET
+		/// <param name="device">To be added.</param>
+		///         <param name="a">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]

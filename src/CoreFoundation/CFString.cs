@@ -43,7 +43,8 @@ using Foundation;
 #nullable enable
 
 namespace CoreFoundation {
-
+	/// <summary>Represents a range from two integers: location and length.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -81,12 +82,20 @@ namespace CoreFoundation {
 			get { return (long) len; }
 		}
 
+		/// <param name="loc">To be added.</param>
+		///         <param name="len">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CFRange (int loc, int len)
 		{
 			this.loc = loc;
 			this.len = len;
 		}
 
+		/// <param name="l">To be added.</param>
+		///         <param name="len">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CFRange (long l, long len)
 		{
 			this.loc = (nint) l;
@@ -99,6 +108,9 @@ namespace CoreFoundation {
 			this.len = len;
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return string.Format ("CFRange [Location: {0} Length: {1}]", loc, len);
@@ -106,6 +118,8 @@ namespace CoreFoundation {
 	}
 
 	// nothing is exposed publicly
+	/// <summary>Base class for CoreFoundation objects.</summary>
+	///     <remarks>To be added.</remarks>
 	internal static class CFObject {
 
 		[DllImport (Constants.CoreFoundationLibrary)]
@@ -113,8 +127,26 @@ namespace CoreFoundation {
 
 		[DllImport (Constants.CoreFoundationLibrary)]
 		internal extern static IntPtr CFRetain (IntPtr obj);
+
+		/// <summary>Does nothing if <paramref name="obj" /> is IntPtr.Zero, otherwise calls CFRelease.</summary>
+		internal static void SafeRelease (IntPtr obj)
+		{
+			if (obj == IntPtr.Zero)
+				return;
+			CFRelease (obj);
+		}
+
+		/// <summary>Does nothing if <paramref name="obj" /> is IntPtr.Zero, otherwise calls CFRetain.</summary>
+		internal static IntPtr SafeRetain (IntPtr obj)
+		{
+			if (obj == IntPtr.Zero)
+				return obj;
+			return CFRetain (obj);
+		}
 	}
 
+	/// <summary>String class used by C-only Cocoa APIs.</summary>
+	///     <remarks>Use this class for creating strings that must be passed to methods in the low-level MonoTouch.CoreGraphics API.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -127,6 +159,8 @@ namespace CoreFoundation {
 #if !COREBUILD
 		internal string? str;
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected CFString () { }
 
 		[DllImport (Constants.CoreFoundationLibrary, CharSet = CharSet.Unicode)]
@@ -156,6 +190,9 @@ namespace CoreFoundation {
 				CFObject.CFRelease (handle);
 		}
 
+		/// <param name="str">To be added.</param>
+		///         <summary>Creates a CFString from a C# string.</summary>
+		///         <remarks>To be added.</remarks>
 		public CFString (string str)
 		{
 			if (str is null)
@@ -166,6 +203,16 @@ namespace CoreFoundation {
 			this.str = str;
 		}
 
+		/// <summary>Type identifier for the CoreFoundation.CFString type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
+		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[bool isCFString = (CFType.GetTypeID (foo.Handle) == CFString.GetTypeID ());]]></code>
+		///           </example>
+		///         </remarks>
 		[DllImport (Constants.CoreFoundationLibrary, EntryPoint = "CFStringGetTypeID")]
 		public extern static nint GetTypeID ();
 
@@ -267,6 +314,9 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			if (str is null)

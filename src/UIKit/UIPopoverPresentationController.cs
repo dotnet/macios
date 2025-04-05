@@ -14,6 +14,9 @@ namespace UIKit {
 	public partial class UIPopoverPresentationController {
 
 		// cute helper to avoid using `Class` in the public API
+		/// <summary>Gets or sets the type that is used to display background content for the popover.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		public virtual Type PopoverBackgroundViewType {
 			get {
 				IntPtr p = PopoverBackgroundViewClass;

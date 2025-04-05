@@ -37,6 +37,8 @@ using CoreVideo;
 namespace AVFoundation {
 
 	// Convenience enum for native strings - AVVideoSettings.h
+	/// <summary>An enumeration that specifies whether the video code is H264 or JPEG</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AVVideoCodec : int {
 		/// <summary>To be added.</summary>
 		H264 = 1,
@@ -45,6 +47,9 @@ namespace AVFoundation {
 	}
 
 	// Convenience enum for native strings - AVVideoSettings.h
+	/// <summary>Specifies how video should be scaled to fit a given area.</summary>
+	///     <remarks>
+	///     </remarks>
 	public enum AVVideoScalingMode : int {
 		/// <summary>Crop to remove edge processing region.</summary>
 		///         <remarks>Preserves aspect ratio of cropped source by reducing specified width or height if necessary. This mode does not scale a small source up to larger dimensions.</remarks>
@@ -59,6 +64,9 @@ namespace AVFoundation {
 	}
 
 	// Convenience enum for native strings - AVVideoSettings.h
+	/// <summary>Video profile levels.</summary>
+	///     <remarks>
+	///     </remarks>
 	public enum AVVideoProfileLevelH264 : int {
 		/// <summary>Specifies a baseline level 3.0 profile.</summary>
 		Baseline30 = 1,
@@ -86,16 +94,25 @@ namespace AVFoundation {
 		HighAutoLevel,
 	}
 
+	/// <summary>Manages configuration for uncompressed video.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class AVVideoSettingsUncompressed : CVPixelBufferAttributes {
 #if !COREBUILD
+		/// <summary>Default constructor.</summary>
+		///         <remarks>
+		///         </remarks>
 		public AVVideoSettingsUncompressed ()
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVVideoSettingsUncompressed (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -158,6 +175,8 @@ namespace AVFoundation {
 
 #if !MONOMAC
 	// Convenience enum for native strings - AVVideoSettings.h
+	/// <summary>An enumeration whose values specify values for <see cref="P:AVFoundation.AVVideoSettingsCompressed.EntropyEncoding" />.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AVVideoH264EntropyMode {
 		/// <summary>To be added.</summary>
 		AdaptiveVariableLength,
@@ -166,17 +185,25 @@ namespace AVFoundation {
 	}
 #endif
 
+	/// <summary>Manages video compression configuring and compression settings for video assets.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class AVVideoSettingsCompressed : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVVideoSettingsCompressed ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVVideoSettingsCompressed (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -440,17 +467,25 @@ namespace AVFoundation {
 #endif
 	}
 
+	/// <summary>Manages video codec compression settings.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class AVVideoCodecSettings : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVVideoCodecSettings ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVVideoCodecSettings (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -630,17 +665,25 @@ namespace AVFoundation {
 #endif
 	}
 
+	/// <summary>Manages a pixel aspect settings.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class AVVideoPixelAspectRatioSettings : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVVideoPixelAspectRatioSettings ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVVideoPixelAspectRatioSettings (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -674,17 +717,25 @@ namespace AVFoundation {
 #endif
 	}
 
+	/// <summary>Manages clean aperture settings.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class AVVideoCleanApertureSettings : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVVideoCleanApertureSettings ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AVVideoCleanApertureSettings (NSDictionary dictionary)
 			: base (dictionary)
 		{

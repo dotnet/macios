@@ -51,6 +51,9 @@ namespace WatchConnectivity {
 		[NullAllowed]
 		IWCSessionDelegate Delegate { get; set; }
 
+		/// <summary>
+		///           <see cref="T:WatchConnectivity.WCSession" /> objects must be activated on both devices prior to data transfer.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("activateSession")]
 		void ActivateSession ();
 
@@ -89,9 +92,31 @@ namespace WatchConnectivity {
 		[Export ("iOSDeviceNeedsUnlockAfterRebootForReachability")]
 		bool iOSDeviceNeedsUnlockAfterRebootForReachability { get; }
 
+		/// <param name="message">To be added.</param>
+		///         <param name="replyHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="errorHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Sends the message to the active paired device.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("sendMessage:replyHandler:errorHandler:")]
 		void SendMessage (NSDictionary<NSString, NSObject> message, [NullAllowed] WCSessionReplyHandler replyHandler, [NullAllowed] Action<NSError> errorHandler);
 
+		/// <param name="data">To be added.</param>
+		///         <param name="replyHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="errorHandler">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Sends <paramref name="data" /> to the companion app.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("sendMessageData:replyHandler:errorHandler:")]
 		void SendMessage (NSData data, [NullAllowed] WCSessionReplyDataHandler replyHandler, [NullAllowed] Action<NSError> errorHandler);
 
@@ -101,6 +126,11 @@ namespace WatchConnectivity {
 		[Export ("applicationContext", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSObject> ApplicationContext { get; }
 
+		/// <param name="applicationContext">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>Sends the application context data to the device.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("updateApplicationContext:error:")]
 		bool UpdateApplicationContext (NSDictionary<NSString, NSObject> applicationContext, out NSError error);
 
@@ -110,9 +140,17 @@ namespace WatchConnectivity {
 		[Export ("receivedApplicationContext", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSObject> ReceivedApplicationContext { get; }
 
+		/// <param name="userInfo">To be added.</param>
+		///         <summary>Sends the provided user info to the peer.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("transferUserInfo:")]
 		WCSessionUserInfoTransfer TransferUserInfo (NSDictionary<NSString, NSObject> userInfo);
 
+		/// <param name="userInfo">To be added.</param>
+		///         <summary>Sends the complication user info data to the extension.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("transferCurrentComplicationUserInfo:")]
 		WCSessionUserInfoTransfer TransferCurrentComplicationUserInfo (NSDictionary<NSString, NSObject> userInfo);
 
@@ -122,6 +160,14 @@ namespace WatchConnectivity {
 		[Export ("outstandingUserInfoTransfers", ArgumentSemantic.Copy)]
 		WCSessionUserInfoTransfer [] OutstandingUserInfoTransfers { get; }
 
+		/// <param name="file">To be added.</param>
+		///         <param name="metadata">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Sends the file and metadata to the device.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("transferFile:metadata:")]
 		WCSessionFileTransfer TransferFile (NSUrl file, [NullAllowed] NSDictionary<NSString, NSObject> metadata);
 
@@ -174,52 +220,115 @@ namespace WatchConnectivity {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface WCSessionDelegate {
+		/// <param name="session">To be added.</param>
+		///         <summary>A feature has been enabled or disabled.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("sessionWatchStateDidChange:")]
 		void SessionWatchStateDidChange (WCSession session);
 
+		/// <param name="session">To be added.</param>
+		///         <summary>The reachability of the companion device has changed.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("sessionReachabilityDidChange:")]
 		void SessionReachabilityDidChange (WCSession session);
 
+		/// <param name="session">To be added.</param>
+		///         <param name="message">To be added.</param>
+		///         <summary>Method that is called after a message is received.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("session:didReceiveMessage:")]
 		void DidReceiveMessage (WCSession session, NSDictionary<NSString, NSObject> message);
 
+		/// <param name="session">To be added.</param>
+		///         <param name="message">To be added.</param>
+		///         <param name="replyHandler">To be added.</param>
+		///         <summary>Method that is called after a message is received.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("session:didReceiveMessage:replyHandler:")]
 		void DidReceiveMessage (WCSession session, NSDictionary<NSString, NSObject> message, WCSessionReplyHandler replyHandler);
 
+		/// <param name="session">To be added.</param>
+		///         <param name="messageData">To be added.</param>
+		///         <summary>An immediate data message was received.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("session:didReceiveMessageData:")]
 		void DidReceiveMessageData (WCSession session, NSData messageData);
 
+		/// <param name="session">To be added.</param>
+		///         <param name="messageData">To be added.</param>
+		///         <param name="replyHandler">To be added.</param>
+		///         <summary>An immediate data message was received and requires a response.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("session:didReceiveMessageData:replyHandler:")]
 		void DidReceiveMessageData (WCSession session, NSData messageData, WCSessionReplyDataHandler replyHandler);
 
+		/// <param name="session">To be added.</param>
+		///         <param name="applicationContext">To be added.</param>
+		///         <summary>Method that is called after an application context is received.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("session:didReceiveApplicationContext:")]
 		void DidReceiveApplicationContext (WCSession session, NSDictionary<NSString, NSObject> applicationContext);
 
+		/// <param name="session">To be added.</param>
+		///         <param name="userInfoTransfer">To be added.</param>
+		///         <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>A data transfer finished, either successfully or with an error.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("session:didFinishUserInfoTransfer:error:")]
 		void DidFinishUserInfoTransfer (WCSession session, WCSessionUserInfoTransfer userInfoTransfer, [NullAllowed] NSError error);
 
+		/// <param name="session">To be added.</param>
+		///         <param name="userInfo">To be added.</param>
+		///         <summary>Method that is called when a user info dictionary is received.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("session:didReceiveUserInfo:")]
 		void DidReceiveUserInfo (WCSession session, NSDictionary<NSString, NSObject> userInfo);
 
+		/// <param name="session">To be added.</param>
+		///         <param name="fileTransfer">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>A file transfer finished, either successfully or with an error.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("session:didFinishFileTransfer:error:")]
 		void DidFinishFileTransfer (WCSession session, WCSessionFileTransfer fileTransfer, [NullAllowed] NSError error);
 
+		/// <param name="session">To be added.</param>
+		///         <param name="file">To be added.</param>
+		///         <summary>A file was received successfully.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("session:didReceiveFile:")]
 		void DidReceiveFile (WCSession session, WCSessionFile file);
 
 #if NET
+		/// <param name="session">To be added.</param>
+		///         <param name="activationState">To be added.</param>
+		///         <param name="error">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>Method that is called when session activation completes.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract] // OS 10 beta 1 SDK made this required
 #endif
 		[Export ("session:activationDidCompleteWithState:error:")]
 		void ActivationDidComplete (WCSession session, WCSessionActivationState activationState, [NullAllowed] NSError error);
 
 #if NET
+		/// <param name="session">To be added.</param>
+		///         <summary>Method that is called when the session becomes inactive.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract] // OS 10 beta 1 SDK made this required
 #endif
 		[Export ("sessionDidBecomeInactive:")]
 		void DidBecomeInactive (WCSession session);
 
 #if NET
+		/// <param name="session">To be added.</param>
+		///         <summary>Method that is called after the session deactivates.</summary>
+		///         <remarks>To be added.</remarks>
 		[Abstract] // OS 10 beta 1 SDK made this required
 #endif
 		[Export ("sessionDidDeactivate:")]
@@ -273,6 +382,8 @@ namespace WatchConnectivity {
 		[Export ("transferring")]
 		bool Transferring { [Bind ("isTransferring")] get; }
 
+		/// <summary>Cancels the file transfer.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancel")]
 		void Cancel ();
 
@@ -308,6 +419,8 @@ namespace WatchConnectivity {
 		[Export ("transferring")]
 		bool Transferring { [Bind ("isTransferring")] get; }
 
+		/// <summary>Cancels the data transfer.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("cancel")]
 		void Cancel ();
 	}

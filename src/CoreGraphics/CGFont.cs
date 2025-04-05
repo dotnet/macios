@@ -38,19 +38,13 @@ using CoreFoundation;
 
 using CoreText;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
-
-
-#if NET
+	/// <summary>Font support.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CGFont.h
 	public class CGFont : NativeObject {
 #if !COREBUILD
@@ -86,6 +80,29 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGFontRef */ IntPtr CGFontCreateWithDataProvider (/* CGDataProviderRef __nullable */ IntPtr provider);
 
+		/// <param name="provider">Data provider that wraps the font.</param>
+		///         <summary>Creates a font from a data provider.</summary>
+		///         <returns>The constructed font.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    You can use this method to create CGFonts from an
+		/// 	    in-memory representation of the font (for example, to
+		/// 	    embed binary fonts into your application to prevent easy
+		/// 	    copying of licensed fonts, or when you fetch the font from
+		/// 	    a streaming source and do not want to store it on disk).
+		///
+		/// 	  </para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// // 
+		/// // Load font into byte array from a file.
+		/// //
+		/// byte [] myBuffer = File.ReadAllBytes ("demo.ttf"); 
+		/// CGFont font = CGFont.CreateFromProvider (new CGDataProvider (myBuffer, 0, myBuffer.Count));
+		///
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		public static CGFont? CreateFromProvider (CGDataProvider provider)
 		{
 			// the API accept a `nil` argument but returns `nil`, we take a shortcut (no native call)
@@ -100,6 +117,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGFontRef */ IntPtr CGFontCreateWithFontName (/* CFStringRef __nullable */ IntPtr name);
 
+		/// <param name="name">To be added.</param>
+		///         <summary>Creates a new CGFont representing the specified PostScript or full name.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CGFont? CreateWithFontName (string name)
 		{
 			// the API accept a `nil` argument but returns `nil`, we take a shortcut (no native call)
@@ -281,6 +302,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGGlyph */ ushort CGFontGetGlyphWithGlyphName (/* CGFontRef __nullable */ IntPtr font, /* CFStringRef __nullable */ IntPtr name);
 
+		/// <param name="s">To be added.</param>
+		///         <summary>Returns the glyph for the specified glyph name.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public ushort GetGlyphWithGlyphName (string s)
 		{
 			// note: the API is marked to accept a null CFStringRef but it currently (iOS9 beta 4) crash when provided one
@@ -297,6 +322,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CFStringRef __nullable */ IntPtr CGFontCopyGlyphNameForGlyph (/* CGFontRef __nullable */ IntPtr font, /* CGGlyph */ ushort glyph);
 
+		/// <param name="glyph">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public string? GlyphNameForGlyph (ushort glyph)
 		{
 			return CFString.FromHandle (CGFontCopyGlyphNameForGlyph (Handle, glyph), releaseHandle: true);
@@ -335,6 +364,16 @@ namespace CoreGraphics {
 		ToCTFont() overloads where attributes is CTFontDescriptorRef
 #endif // TODO
 
+		/// <summary>Type identifier for the CoreGraphics.CGFont type.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>
+		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
+		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>
+		///           <para>You can retrieve the type of a CoreFoundation object by invoking the <see cref="M:CoreFoundation.CFType.GetTypeID(System.IntPtr)" /> on the native handle of the object</para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[bool isCGFont = (CFType.GetTypeID (foo.Handle) == CGFont.GetTypeID ());]]></code>
+		///           </example>
+		///         </remarks>
 		[DllImport (Constants.CoreGraphicsLibrary, EntryPoint = "CGFontGetTypeID")]
 		public extern static /* CFTypeID */ nint GetTypeID ();
 #endif // !COREBUILD

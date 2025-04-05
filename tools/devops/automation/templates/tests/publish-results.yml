@@ -20,12 +20,6 @@ parameters:
   type: boolean
   default: true
 
-- name: testConfigurations
-  type: object
-
-- name: supportedPlatforms
-  type: object
-
 - name: isPR
   type: boolean
 
@@ -92,7 +86,6 @@ stages:
         isPR: ${{ parameters.isPR }}
         repositoryAlias: ${{ parameters.repositoryAlias }}
         commit: ${{ parameters.commit }}
-        testConfigurations: ${{ parameters.testConfigurations }}
         statusContext: ${{ parameters.statusContext }}
         vsdropsPrefix: ${{ parameters.vsdropsPrefix }}
 

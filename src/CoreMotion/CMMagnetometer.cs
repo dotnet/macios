@@ -15,6 +15,8 @@ namespace CoreMotion {
 
 	// CMMagnetometer.h
 #if NET
+	/// <summary>Represents the 3-axis magnetometer data in microteslas.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -31,6 +33,9 @@ namespace CoreMotion {
 		///         <remarks>To be added.</remarks>
 		public double Z;
 
+		/// <summary>String representation of the magnetometer reading.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return string.Format ("({0},{1},{2})", X, Y, Z);

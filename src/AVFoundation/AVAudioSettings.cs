@@ -35,6 +35,9 @@ using AudioToolbox;
 #nullable enable
 
 namespace AVFoundation {
+	/// <summary>Manages audio settings for players and recorders.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -42,11 +45,16 @@ namespace AVFoundation {
 	// Should be called AVAudioSetting but AVAudioSetting has been already used by keys class
 	public class AudioSettings : DictionaryContainer {
 #if !COREBUILD
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioSettings ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
+		/// <param name="dictionary">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public AudioSettings (NSDictionary dictionary)
 			: base (dictionary)
 		{

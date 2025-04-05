@@ -101,6 +101,20 @@ namespace AddressBook {
 		public static extern byte RemoveValueAndLabelAtIndex (IntPtr multiValue, nint index);
 	}
 
+	/// <typeparam name="T">
+	///       The type of the value to store.
+	///     </typeparam>
+	///     <summary>
+	///       A <see cref="T:AddressBook.ABMultiValue`1" /> entry.
+	///     </summary>
+	///     <remarks>
+	///       <para>
+	///         A "tuple" of
+	///         (<see cref="P:AddressBook.ABMultiValueEntry`1.Value" />,
+	///         <see cref="P:AddressBook.ABMultiValueEntry`1.Label" />,
+	///         <see cref="P:AddressBook.ABMultiValueEntry`1.Identifier" />).
+	///       </para>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -242,6 +256,7 @@ namespace AddressBook {
 		}
 	}
 
+	/// <include file="../../docs/api/AddressBook/ABMultiValue`1.xml" path="/Documentation/Docs[@DocId='T:AddressBook.ABMultiValue`1']/*" />
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -300,6 +315,16 @@ namespace AddressBook {
 			get { return ABMultiValue.GetPropertyType (Handle); }
 		}
 
+		/// <summary>
+		///           Gets all values within the collection.
+		///         </summary>
+		///         <returns>
+		///           A <typeparamref name="T" /> array containing all
+		///           <see cref="P:AddressBook.ABMultiValueEntry`1.Value" />s
+		///           within the collection.
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public T [] GetValues ()
 		{
 			return NSArray.ArrayFromHandle (ABMultiValue.CopyArrayOfAllValues (Handle), toManaged)
@@ -330,11 +355,35 @@ namespace AddressBook {
 			}
 		}
 
+		/// <summary>
+		///           Returns an enumerator that iterates through all entries in the
+		///           <see cref="T:AddressBook.ABMultiValue`1" />.
+		///         </summary>
+		///         <returns>
+		///           An
+		///           <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Collections%20IEnumerator&amp;scope=Xamarin" title="T:System.Collections.IEnumerator">T:System.Collections.IEnumerator</a></format>
+		///           which will return all entries in the
+		///           <see cref="T:AddressBook.ABMultiValue`1" />.
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return GetEnumerator ();
 		}
 
+		/// <summary>
+		///           Returns an enumerator that iterates through all entries in the
+		///           <see cref="T:AddressBook.ABMultiValue`1" />.
+		///         </summary>
+		///         <returns>
+		///           An
+		///           <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Collections%20Generic%20IEnumerator{%20Address%20Book%20ABMulti%20Value%20Entry`%201}&amp;scope=Xamarin" title="T:System.Collections.Generic.IEnumerator&lt;AddressBook.ABMultiValueEntry&lt;T&gt;&gt;">T:System.Collections.Generic.IEnumerator&lt;AddressBook.ABMultiValueEntry&lt;T&gt;&gt;</a></format>
+		///           which will return all entries in the
+		///           <see cref="T:AddressBook.ABMultiValue`1" />.
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public IEnumerator<ABMultiValueEntry<T>> GetEnumerator ()
 		{
 			nint c = Count;
@@ -342,6 +391,22 @@ namespace AddressBook {
 				yield return this [i];
 		}
 
+		/// <param name="value">
+		///           A <see cref="T:Foundation.NSObject" /> containing
+		///           the value to get the first index of.
+		///         </param>
+		///         <summary>
+		///           Gets the first index of <paramref name="value" /> within the collection.
+		///         </summary>
+		///         <returns>
+		///           <para>
+		///           A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Int%2032&amp;scope=Xamarin" title="T:System.Int32">T:System.Int32</a></format> containing the first index of
+		///           <paramref name="value" /> within the collection.
+		///           If <paramref name="value" /> isn't present, <c>-1</c> is returned.
+		///           </para>
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public nint GetFirstIndexOfValue (NSObject value)
 		{
 			nint index = ABMultiValue.GetFirstIndexOfValue (Handle, value.Handle);
@@ -349,17 +414,30 @@ namespace AddressBook {
 			return index;
 		}
 
+		/// <include file="../../docs/api/AddressBook/ABMultiValue`1.xml" path="/Documentation/Docs[@DocId='M:AddressBook.ABMultiValue`1.GetIndexForIdentifier(System.Int32)']/*" />
 		public nint GetIndexForIdentifier (int identifier)
 		{
 			return ABMultiValue.GetIndexForIdentifier (Handle, identifier);
 		}
 
+		/// <summary>
+		///           Returns an enumerator that iterates through all entries in the
+		///           <see cref="T:AddressBook.ABMultiValue`1" />.
+		///         </summary>
+		///         <returns>
+		///           An <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Collections%20IEnumerator&amp;scope=Xamarin" title="T:System.Collections.IEnumerator">T:System.Collections.IEnumerator</a></format>
+		///           which will return all entries in the
+		///           <see cref="T:AddressBook.ABMultiValue`1" />.
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public ABMutableMultiValue<T> ToMutableMultiValue ()
 		{
 			return new ABMutableMultiValue<T> (ABMultiValue.CreateMutableCopy (Handle), toManaged, toNative);
 		}
 	}
 
+	/// <include file="../../docs/api/AddressBook/ABMutableMultiValue`1.xml" path="/Documentation/Docs[@DocId='T:AddressBook.ABMutableMultiValue`1']/*" />
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -395,6 +473,24 @@ namespace AddressBook {
 			}
 		}
 
+		/// <param name="value">
+		///           A <typeparamref name="T" /> to add to the
+		///           <see cref="T:AddressBook.ABMutableMultiValue`1" />.
+		///         </param>
+		///         <param name="label">
+		///           A <see cref="T:Foundation.NSString" /> to use
+		///           as the label for <paramref name="value" />.
+		///         </param>
+		///         <summary>
+		///           Add <paramref name="value" /> with the label <paramref name="label" />
+		///           to a multivalue property.
+		///         </summary>
+		///         <returns>
+		///           <see langword="true" /> if the value was added;
+		///           otherwise, <see langword="false" />.
+		///         </returns>
+		///         <remarks>
+		///         </remarks>
 		public unsafe bool Add (T value, NSString? label)
 		{
 			int _;
@@ -424,6 +520,12 @@ namespace AddressBook {
 		}
 	}
 
+	/// <summary>
+	///       A <see cref="T:AddressBook.ABMultiValue{Foundation.NSDate}" />
+	///       which supports changing values.
+	///     </summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -431,12 +533,25 @@ namespace AddressBook {
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
 	public class ABMutableDateMultiValue : ABMutableMultiValue<NSDate> {
+		/// <summary>
+		///           Constructs and initializes a
+		///           <see cref="T:AddressBook.ABMutableDateMultiValue" />
+		///           instance.
+		///         </summary>
+		///         <remarks>
+		///         </remarks>
 		public ABMutableDateMultiValue ()
 			: base (ABMultiValue.CreateMutable (ABPropertyType.MultiDateTime), true)
 		{
 		}
 	}
 
+	/// <summary>
+	///       A <see cref="T:AddressBook.ABMultiValue{Foundation.NSDictionary}" />
+	///       which supports changing values.
+	///     </summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -444,12 +559,25 @@ namespace AddressBook {
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
 	public class ABMutableDictionaryMultiValue : ABMutableMultiValue<NSDictionary> {
+		/// <summary>
+		///           Constructs and initializes a
+		///           <see cref="T:AddressBook.ABMutableDictionaryMultiValue" />
+		///           instance.
+		///         </summary>
+		///         <remarks>
+		///         </remarks>
 		public ABMutableDictionaryMultiValue ()
 			: base (ABMultiValue.CreateMutable (ABPropertyType.MultiDictionary), true)
 		{
 		}
 	}
 
+	/// <summary>
+	///       A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:AddressBook.ABMultiValue{Foundation.NSString}&amp;scope=Xamarin" title="T:AddressBook.ABMultiValue{Foundation.NSString}">T:AddressBook.ABMultiValue{Foundation.NSString}</a></format>
+	///       which supports changing values.
+	///     </summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -457,6 +585,13 @@ namespace AddressBook {
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
 	public class ABMutableStringMultiValue : ABMutableMultiValue<string> {
+		/// <summary>
+		///           Constructs and initializes a
+		///           <see cref="T:AddressBook.ABMutableStringMultiValue" />
+		///           instance.
+		///         </summary>
+		///         <remarks>
+		///         </remarks>
 		public ABMutableStringMultiValue ()
 			: base (ABMultiValue.CreateMutable (ABPropertyType.MultiString),
 					ABPerson.ToString, CFString.CreateNative)

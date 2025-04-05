@@ -18,7 +18,8 @@ using Foundation;
 
 namespace CoreFoundation {
 #if !COREBUILD
-
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -30,22 +31,43 @@ namespace CoreFoundation {
 		{
 		}
 
+		/// <param name="action">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public DispatchBlock (Action action, DispatchBlockFlags flags = DispatchBlockFlags.None)
 			: base (create (action, flags), true)
 		{
 		}
 
+		/// <param name="action">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <param name="qosClass">To be added.</param>
+		///         <param name="relative_priority">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public DispatchBlock (Action action, DispatchBlockFlags flags, DispatchQualityOfService qosClass, int relative_priority)
 			: base (create (flags, qosClass, relative_priority, action), true)
 		{
 		}
 
+		/// <param name="dispatchBlock">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <param name="qosClass">To be added.</param>
+		///         <param name="relative_priority">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public DispatchBlock (DispatchBlock dispatchBlock, DispatchBlockFlags flags, DispatchQualityOfService qosClass, int relative_priority)
 			: base (dispatch_block_create_with_qos_class ((nuint) (ulong) flags, qosClass, relative_priority, dispatchBlock.GetNonNullHandle (nameof (dispatchBlock))), true)
 		{
 			GC.KeepAlive (dispatchBlock);
 		}
 
+		/// <param name="action">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static DispatchBlock Create (Action action, DispatchBlockFlags flags = DispatchBlockFlags.None)
 		{
 			if (action is null)
@@ -53,6 +75,13 @@ namespace CoreFoundation {
 			return new DispatchBlock (action, flags);
 		}
 
+		/// <param name="action">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <param name="qosClass">To be added.</param>
+		///         <param name="relative_priority">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static DispatchBlock Create (Action action, DispatchBlockFlags flags, DispatchQualityOfService qosClass, int relative_priority)
 		{
 			if (action is null)
@@ -60,6 +89,13 @@ namespace CoreFoundation {
 			return new DispatchBlock (action, flags, qosClass, relative_priority);
 		}
 
+		/// <param name="block">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <param name="qosClass">To be added.</param>
+		///         <param name="relative_priority">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static DispatchBlock Create (DispatchBlock block, DispatchBlockFlags flags, DispatchQualityOfService qosClass, int relative_priority)
 		{
 			if (block is null)
@@ -67,16 +103,26 @@ namespace CoreFoundation {
 			return block.Create (flags, qosClass, relative_priority);
 		}
 
+		/// <param name="flags">To be added.</param>
+		///         <param name="qosClass">To be added.</param>
+		///         <param name="relative_priority">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public DispatchBlock Create (DispatchBlockFlags flags, DispatchQualityOfService qosClass, int relative_priority)
 		{
 			return new DispatchBlock (dispatch_block_create_with_qos_class ((nuint) (ulong) flags, qosClass, relative_priority, GetCheckedHandle ()), true);
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal override void Retain ()
 		{
 			Handle = BlockLiteral._Block_copy (GetCheckedHandle ());
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		protected internal override void Release ()
 		{
 			BlockLiteral._Block_release (GetCheckedHandle ());
@@ -120,6 +166,8 @@ namespace CoreFoundation {
 		[DllImport (Constants.libcLibrary)]
 		extern static void dispatch_block_cancel (IntPtr block);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Cancel ()
 		{
 			dispatch_block_cancel (GetCheckedHandle ());
@@ -128,6 +176,10 @@ namespace CoreFoundation {
 		[DllImport (Constants.libcLibrary)]
 		extern static void dispatch_block_notify (IntPtr block, IntPtr queue, IntPtr notification);
 
+		/// <param name="queue">To be added.</param>
+		///         <param name="notification">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Notify (DispatchQueue queue, Action notification)
 		{
 			if (notification is null)
@@ -136,6 +188,10 @@ namespace CoreFoundation {
 				Notify (queue, block);
 		}
 
+		/// <param name="queue">To be added.</param>
+		///         <param name="notification">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Notify (DispatchQueue queue, DispatchBlock notification)
 		{
 			if (queue is null)
@@ -150,6 +206,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.libcLibrary)]
 		extern static nint dispatch_block_testcancel (IntPtr block);
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public nint TestCancel ()
 		{
 			return dispatch_block_testcancel (GetCheckedHandle ());
@@ -165,11 +224,19 @@ namespace CoreFoundation {
 		[DllImport (Constants.libcLibrary)]
 		extern static nint dispatch_block_wait (IntPtr block, DispatchTime time);
 
+		/// <param name="time">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public nint Wait (DispatchTime time)
 		{
 			return dispatch_block_wait (GetCheckedHandle (), time);
 		}
 
+		/// <param name="timeout">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public nint Wait (TimeSpan timeout)
 		{
 			return Wait (new DispatchTime (DispatchTime.Now, timeout));
@@ -192,12 +259,16 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public void Invoke ()
 		{
 			((Action) this!) ();
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
 	public enum DispatchBlockFlags : ulong {

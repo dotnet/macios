@@ -36,29 +36,16 @@ using CoreFoundation;
 using ObjCRuntime;
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
-
-
-#if NET
+	/// <summary>A type that represents a Quartz shading.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	// CGShading.h
 	public class CGShading : NativeObject {
 #if !COREBUILD
-#if !NET
-		public CGShading (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal CGShading (NativeHandle handle, bool owns)
 			: base (handle, owns)
@@ -79,6 +66,15 @@ namespace CoreGraphics {
 		extern static /* CGShadingRef */ IntPtr CGShadingCreateAxial (/* CGColorSpaceRef */ IntPtr space,
 			CGPoint start, CGPoint end, /* CGFunctionRef */ IntPtr functionHandle, byte extendStart, byte extendEnd);
 
+		/// <param name="colorspace">To be added.</param>
+		///         <param name="start">To be added.</param>
+		///         <param name="end">To be added.</param>
+		///         <param name="function">To be added.</param>
+		///         <param name="extendStart">To be added.</param>
+		///         <param name="extendEnd">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CGShading CreateAxial (CGColorSpace colorspace, CGPoint start, CGPoint end, CGFunction function, bool extendStart, bool extendEnd)
 		{
 			if (colorspace is null)

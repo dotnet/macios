@@ -9,6 +9,10 @@ using ObjCRuntime;
 namespace Intents {
 
 	public partial class INSetDefrosterSettingsInCarIntent {
+		/// <param name="enable">To be added.</param>
+		///         <param name="defroster">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("ios12.0", "Use the overload that takes 'INSpeakableString carName'.")]

@@ -32,19 +32,33 @@ using UIKit;
 using CoreVideo;
 #endif
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 namespace CoreImage {
-#if NET
+	/// <summary>When passed to <see cref="M:CoreImage.CIImage.GetAutoAdjustmentFilters(CoreImage.CIAutoAdjustmentFilterOptions)" />, limits the results.</summary>
+	///     <remarks>
+	///       <para>The sample below shows a typical use.</para>
+	///       <example>
+	///         <code lang="csharp lang-csharp"><![CDATA[
+	/// void PrepareFixes (CIImage img)
+	/// {
+	///     var opt = new CIAutoAdjustmentFilterOptions () {
+	///     	RedEye = true,
+	///     	AutoAdjustCrop = true
+	///     };
+	///     CIImage img = null;
+	///     foreach (var filter in img.GetAutoAdjustmentFilters (opt)) {
+	///     	filter.Image = img;
+	///     	img = filter.OutputImage;
+	///     }
+	/// }
+	/// ]]></code>
+	///       </example>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CIAutoAdjustmentFilterOptions {
 
 		// The default value is true.
@@ -75,23 +89,20 @@ namespace CoreImage {
 		///         <remarks>Some adjustments depend on image orientation to work, providing this hint helps the auto correction software pick the best results.</remarks>
 		public CIImageOrientation? ImageOrientation;
 
-#if NET
 		/// <summary>Whether or not to automatically crop the image.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public bool? AutoAdjustCrop;
-#if NET
+
 		/// <summary>Gets or sets the automatic adjustment level.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-#endif
 		public bool? AutoAdjustLevel;
 
 		internal NSDictionary? ToDictionary ()
@@ -162,6 +173,11 @@ namespace CoreImage {
 			return ret;
 		}
 
+		/// <param name="image">CoreGraphics image.</param>
+		///         <param name="colorSpace">Colorspace to use.</param>
+		///         <summary>Creates a <see cref="T:CoreImage.CIImage" /> in <paramref name="colorSpace" /> from a <see cref="T:CoreGraphics.CGImage" />.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public static CIImage FromCGImage (CGImage image, CGColorSpace colorSpace)
 		{
 			if (colorSpace is null)
@@ -180,11 +196,62 @@ namespace CoreImage {
 		}
 
 		// Apple removed this API in iOS9 SDK
+		/// <summary>Gets the filters that are required to perform some common image correction steps to an image.</summary>
+		///         <returns>Returns an array of configured filters to apply to the image to automatically adjust it.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    In general, you should try to use the <see cref="M:CoreImage.CIImage.GetAutoAdjustmentFilters(CoreImage.CIAutoAdjustmentFilterOptions)" />
+		/// 	    as that method allows you to customize which kind of filters you want to get.
+		///
+		/// 	  </para>
+		///           <para>
+		/// 	    This method is used to get a list of pre-configured
+		/// 	    filters to remedy various common problems found in photos.   
+		///
+		/// 	  </para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// void PrepareFixes (CIImage img)
+		/// {
+		///     foreach (var filter in img.GetAutoAdjustmentFilters ()) {
+		///     	filter.Image = img;
+		///     	img = filter.OutputImage;
+		///     }
+		/// }
+		/// ]]></code>
+		///           </example>
+		///         </remarks>
 		public CIFilter [] GetAutoAdjustmentFilters ()
 		{
 			return GetAutoAdjustmentFilters (null);
 		}
 
+		/// <param name="options">Options to initialize the image with.</param>
+		///         <summary>Gets the filters requires to perform some common image correction steps to an image.</summary>
+		///         <returns>Returns an array of configured filters to apply to the image to automatically adjust it.</returns>
+		///         <remarks>
+		///           <para>
+		/// 	    This method is used to get a list of pre-configured
+		/// 	    filters to remedy various common problems found in photos.   
+		///
+		/// 	  </para>
+		///           <example>
+		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// void PrepareFixes (CIImage img)
+		/// {
+		///     var opt = new CIAutoAdjustmentFilterOptions () {
+		///     	RedEye = true,
+		///     	AutoAdjustCrop = true
+		///     };
+		///     CIImage img = null;
+		///     foreach (var filter in img.GetAutoAdjustmentFilters (opt)) {
+		///     	filter.Image = img;
+		///     	img = filter.OutputImage;
+		///     }
+		/// }
+		/// 	    ]]></code>
+		///           </example>
+		///         </remarks>
 		public CIFilter [] GetAutoAdjustmentFilters (CIAutoAdjustmentFilterOptions? options)
 		{
 			var dict = options?.ToDictionary ();

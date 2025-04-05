@@ -34,13 +34,11 @@ using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreGraphics {
 
 	// untyped enum -> CGPDFPage.h
+	/// <summary>Type of box in a PDF document.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CGPDFBox {
 		/// <summary>To be added.</summary>
 		Media = 0,
@@ -55,15 +53,12 @@ namespace CoreGraphics {
 	}
 
 	// CGPDFPage.h
+	/// <summary>A PDF Page in a PDF Document.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/QuartzSample/">QuartzSample</related>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/ZoomingPdfViewer/">ZoomingPdfViewer</related>
 	public partial class CGPDFPage {
 #if !COREBUILD
-#if !NET
-		public CGPDFPage (NativeHandle handle)
-			: base (handle, false)
-		{
-		}
-#endif
-
 		[Preserve (Conditional = true)]
 		internal CGPDFPage (NativeHandle handle, bool owns)
 			: base (handle, owns)
@@ -97,6 +92,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGRect CGPDFPageGetBoxRect (/* CGPDFPageRef */ IntPtr page, CGPDFBox box);
 
+		/// <param name="box">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGRect GetBoxRect (CGPDFBox box)
 		{
 			return CGPDFPageGetBoxRect (Handle, box);
@@ -117,6 +116,13 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGAffineTransform CGPDFPageGetDrawingTransform (/* CGPDFPageRef */ IntPtr page, CGPDFBox box, CGRect rect, int rotate, byte preserveAspectRatio);
 
+		/// <param name="box">To be added.</param>
+		///         <param name="rect">To be added.</param>
+		///         <param name="rotate">To be added.</param>
+		///         <param name="preserveAspectRatio">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public CGAffineTransform GetDrawingTransform (CGPDFBox box, CGRect rect, int rotate, bool preserveAspectRatio)
 		{
 			return CGPDFPageGetDrawingTransform (Handle, box, rect, rotate, preserveAspectRatio.AsByte ());

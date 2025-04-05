@@ -37,13 +37,11 @@ using CoreFoundation;
 using CGGlyph = System.UInt16;
 using CGFontIndex = System.UInt16;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace CoreText {
 
 	#region Glyph Info Values
+	/// <summary>A class whose static fields specify character collections.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CTCharacterCollection : ushort {
 		/// <summary>The character identifier is the same as the glyph index.</summary>
 		IdentityMapping = 0,
@@ -60,12 +58,12 @@ namespace CoreText {
 	}
 	#endregion
 
-#if NET
+	/// <summary>Provides the ability to override the Unicode-to-glyph mapping for a <see cref="T:CoreText.CTFont" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public class CTGlyphInfo : NativeObject {
 		[Preserve (Conditional = true)]
 		internal CTGlyphInfo (NativeHandle handle, bool owns)
@@ -98,6 +96,11 @@ namespace CoreText {
 			}
 		}
 
+		/// <param name="glyphName">To be added.</param>
+		///         <param name="font">To be added.</param>
+		///         <param name="baseString">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTGlyphInfo (string glyphName, CTFont font, string baseString)
 			: base (Create (glyphName, font, baseString), true, verify: true)
 		{
@@ -123,6 +126,11 @@ namespace CoreText {
 			}
 		}
 
+		/// <param name="glyph">To be added.</param>
+		///         <param name="font">To be added.</param>
+		///         <param name="baseString">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTGlyphInfo (CGGlyph glyph, CTFont font, string baseString)
 			: base (Create (glyph, font, baseString), true, verify: true)
 		{
@@ -144,6 +152,11 @@ namespace CoreText {
 			}
 		}
 
+		/// <param name="cid">To be added.</param>
+		///         <param name="collection">To be added.</param>
+		///         <param name="baseString">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		public CTGlyphInfo (CGFontIndex cid, CTCharacterCollection collection, string baseString)
 			: base (Create (cid, collection, baseString), true, true)
 		{
@@ -181,33 +194,26 @@ namespace CoreText {
 			get { return CTGlyphInfoGetCharacterCollection (Handle); }
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (13, 0)]
-		[TV (13, 0)]
-#endif
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern ushort /* CGGlyph */ CTGlyphInfoGetGlyph (IntPtr /* CTGlyphInfoRef */ glyphInfo);
 
-#if NET
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[iOS (13, 0)]
-		[TV (13, 0)]
-#endif
 		public CGGlyph GetGlyph ()
 		{
 			return CTGlyphInfoGetGlyph (Handle);
 		}
 		#endregion
 
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		public override string? ToString ()
 		{
 			return GlyphName;

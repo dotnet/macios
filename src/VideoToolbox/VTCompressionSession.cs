@@ -26,6 +26,8 @@ using NativeHandle = System.IntPtr;
 namespace VideoToolbox {
 
 #if NET
+	/// <summary>Turns uncompressed frames into compressed video frames</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -59,6 +61,7 @@ namespace VideoToolbox {
 		}
 
 		// sourceFrame: It seems it's only used as a parameter to be passed into EncodeFrame so no need to strong type it
+		/// <include file="../../docs/api/VideoToolbox.VTCompressionSession/VTCompressionOutputCallback.xml" path="/Documentation/Docs[@DocId='T:VideoToolbox.VTCompressionSession.VTCompressionOutputCallback']/*" />
 		public delegate void VTCompressionOutputCallback (/* void* */ IntPtr sourceFrame, /* OSStatus */ VTStatus status, VTEncodeInfoFlags flags, CMSampleBuffer? buffer);
 #if !NET
 		delegate void CompressionOutputCallback (/* void* CM_NULLABLE */ IntPtr outputCallbackClosure, /* void* CM_NULLABLE */ IntPtr sourceFrame, /* OSStatus */ VTStatus status, VTEncodeInfoFlags infoFlags, /* CMSampleBufferRef CM_NULLABLE */ IntPtr cmSampleBufferPtr);

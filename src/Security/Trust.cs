@@ -43,6 +43,8 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace Security {
+	/// <summary>A trust level. A trust object combines a certificate with a policy or policies. </summary>
+	///     <remarks>To be added.</remarks>
 	public partial class SecTrust : NativeObject {
 #if !NET
 		public SecTrust (NativeHandle handle)

@@ -20,6 +20,8 @@ using UIKit;
 using System;
 
 namespace StoreKit {
+	/// <summary>Defines test properties for the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:StoreKit.SKReceiptRefreshRequest(Foundation.NSDictionary)&amp;scope=Xamarin" title="C:StoreKit.SKReceiptRefreshRequest(Foundation.NSDictionary)">C:StoreKit.SKReceiptRefreshRequest(Foundation.NSDictionary)</a></format> constructor.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class SKReceiptProperties : DictionaryContainer {
 #if !COREBUILD
 		/// <summary>To be added.</summary>

@@ -1,0 +1,34 @@
+<Documentation>
+  <Docs DocId="T:AddressBook.ABPersonInstantMessageKey">
+    <summary>
+      <see cref="T:Foundation.NSDictionary" /> keys for use
+      with <see cref="T:AddressBook.ABPerson" /> instant message
+      services.
+    </summary>
+    <remarks>
+      <para>
+        A single <see cref="T:Foundation.NSDictionary" /> instance
+        stores information regarding a single instant message service,
+        with the dictionary keys and values holding information about different
+        parts of the instant message service.
+      </para>
+      <code lang="csharp lang-csharp"><![CDATA[NSDictionary instantMessage = NSDictionary.FromObjectsAndKeys(
+    new NSObject[]{
+        ABPersonInstantMessageService.Jabber,
+        new NSString ("user@example.org"),
+    },
+    new NSObject[]{
+        ABPersonInstantMessageKey.Service,
+        ABPersonInstantMessageKey.Username,
+    }
+);
+ABMutableDictionaryMultiValue instantMessages = new ABMutableDictionaryMultiValue() {
+    { address, ABLabel.Home },
+};
+ABPerson person = GetMeSomePerson();
+person.SetInstantMessages(addresses);]]></code>
+    </remarks>
+    <altmember cref="M:AddressBook.ABPerson.GetInstantMessages" />
+    <altmember cref="M:AddressBook.ABPerson.SetInstantMessages(AddressBook.ABMultiValue{Foundation.NSDictionary})" />
+  </Docs>
+</Documentation>

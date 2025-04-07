@@ -19,6 +19,8 @@ using ObjCRuntime;
 namespace CoreMedia {
 
 	// CMSync.h
+	/// <summary>A source of time information, such as the system clock.</summary>
+	///     <remarks>Audio devices may also be treated as clocks, since they sample at a specific frequency. The <see cref="T:CoreMedia.CMClock" /> can calculate drift between instances. </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -138,6 +140,8 @@ namespace CoreMedia {
 #endif // !COREBUILD
 	}
 
+	/// <summary>Encapsulates an application-controlled timeline.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -851,6 +855,8 @@ namespace CoreMedia {
 #endif // !COREBUILD
 	}
 
+	/// <summary>The base class for <see cref="T:CoreMedia.CMClock" /> and <see cref="T:CoreMedia.CMTimebase" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

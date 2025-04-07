@@ -435,6 +435,8 @@ namespace MetalPerformanceShaders {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class MPSImageLaplacianPyramid {
 		[DesignatedInitializer]
 		public MPSImageLaplacianPyramid (IMTLDevice device, nuint kernelWidth, nuint kernelHeight, float [] kernelWeights) : base (NSObjectFlag.Empty)
@@ -451,6 +453,8 @@ namespace MetalPerformanceShaders {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class MPSImageLaplacianPyramidSubtract {
 		[DesignatedInitializer]
 		public MPSImageLaplacianPyramidSubtract (IMTLDevice device, nuint kernelWidth, nuint kernelHeight, float [] kernelWeights) : base (NSObjectFlag.Empty)
@@ -467,6 +471,8 @@ namespace MetalPerformanceShaders {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class MPSImageLaplacianPyramidAdd {
 		[DesignatedInitializer]
 		public MPSImageLaplacianPyramidAdd (IMTLDevice device, nuint kernelWidth, nuint kernelHeight, float [] kernelWeights) : base (NSObjectFlag.Empty)

@@ -11,4 +11,67 @@
       <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at https://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
     </remarks>
   </Docs>
+  <Docs DocId="T:AudioToolbox.SystemSound">
+    <summary>Provides methods for producing simple sounds.</summary>
+    <remarks>
+      <para>
+	This API is intended to be used to play sound effects or to
+	make the device vibrate.  You use <see cref="M:AudioToolbox.SystemSound.PlaySystemSoundAsync" />
+	to play short sounds and <see cref="M:AudioToolbox.SystemSound.PlayAlertSoundAsync" />
+	to play either the sound or vibrate (depending on the device
+	settings).
+      </para>
+      <para>
+	Unlike the <see cref="T:AVFoundation.AVAudioPlayer" /> which works
+	with the audio session and is able to dim your audio, play in
+	the background and interact with the system based on a set of
+	rules, the SystemSound does not support this.  So you should
+	in general avoid using it for anything but sound effects and
+	device vibration.
+      </para>
+      <para>
+	As of iOS 8, SystemSound has the following restrictions:
+      </para>
+      <list type="bullet">
+        <item>
+          <term>
+	    Audio Format: PCM or IMA4 (IMA/ADPCM).
+	  </term>
+        </item>
+        <item>
+          <term>
+	    Audio Container: .caf, .aif or .wav containers.
+	  </term>
+        </item>
+        <item>
+          <term>
+	    At most 30 seconds of duration.
+	  </term>
+        </item>
+        <item>
+          <term>
+	    There is no volume control, this uses the system volume.
+	  </term>
+        </item>
+        <item>
+          <term>
+	    Sound plays immediately.
+	  </term>
+        </item>
+        <item>
+          <term>
+	    Only one sound can be played at a time, there is no way to play more than one sound at a time.
+	  </term>
+        </item>
+      </list>
+      <para>
+	To play a sound, you first create an instance of the
+	SystemSound object, either via the constructor, or one of the
+	<see cref="M:AudioToolbox.SystemSound.FromFile(System.String)" />
+	methods.  Once this object has been created, you call one of
+	the playback methods <see cref="M:AudioToolbox.SystemSound.PlaySystemSoundAsync" />
+	to play short sounds and <see cref="M:AudioToolbox.SystemSound.PlayAlertSoundAsync" />.
+      </para>
+    </remarks>
+  </Docs>
 </Documentation>

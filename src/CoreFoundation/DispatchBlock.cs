@@ -18,7 +18,8 @@ using Foundation;
 
 namespace CoreFoundation {
 #if !COREBUILD
-
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -266,6 +267,8 @@ namespace CoreFoundation {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
 	public enum DispatchBlockFlags : ulong {

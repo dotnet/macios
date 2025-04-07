@@ -14,6 +14,9 @@ using ObjCRuntime;
 #nullable enable
 
 namespace MediaPlayer {
+	/// <summary>Additional information for the skip interval command properties defined in <see cref="T:MediaPlayer.MPRemoteCommandCenter" />.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPSkipIntervalCommand_Ref/index.html">Apple documentation for <c>MPSkipIntervalCommand</c></related>
 	public partial class MPSkipIntervalCommand {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

@@ -24,6 +24,8 @@ using NativeHandle = System.IntPtr;
 namespace VideoToolbox {
 
 #if NET
+	/// <summary>Class that provides a storage for encoding metadata.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]

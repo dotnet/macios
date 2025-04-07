@@ -42,6 +42,8 @@ using ObjCRuntime;
 
 namespace CoreFoundation {
 
+	/// <summary>An enumeration whose values can be used with the <see cref="M:CoreFoundation.CFSocket.DisableCallBacks(CoreFoundation.CFSocketCallBackType)" /> and <see cref="M:CoreFoundation.CFSocket.EnableCallBacks(CoreFoundation.CFSocketCallBackType)" /> methods.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
 	// defined as CFOptionFlags (unsigned long [long] = nuint) - System/Library/Frameworks/CoreFoundation.framework/Headers/CFSocket.h
@@ -61,6 +63,8 @@ namespace CoreFoundation {
 	}
 
 	// defined as CFIndex (long [long] = nint) - System/Library/Frameworks/CoreFoundation.framework/Headers/CFSocket.h
+	/// <summary>An enumeration whose values specify errors relating to <see cref="T:CoreFoundation.CFSocket" />s.</summary>
+	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum CFSocketError : long {
 		/// <summary>To be added.</summary>
@@ -71,6 +75,8 @@ namespace CoreFoundation {
 		Timeout = -2,
 	}
 
+	/// <summary>An enumeration whose values can be used with the <see cref="M:CoreFoundation.CFSocket.GetSocketFlags" /> and <see cref="M:CoreFoundation.CFSocket.SetSocketFlags(CoreFoundation.CFSocketFlags)" /> methods.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	// anonymous and typeless native enum - System/Library/Frameworks/CoreFoundation.framework/Headers/CFSocket.h
 	public enum CFSocketFlags {
@@ -88,6 +94,8 @@ namespace CoreFoundation {
 		CloseOnInvalidate = 128,
 	}
 
+	/// <summary>Type for the platform-specific native socket handle.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -110,6 +118,8 @@ namespace CoreFoundation {
 		}
 	}
 
+	/// <summary>An <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Exception&amp;scope=Xamarin" title="T:System.Exception">T:System.Exception</a></format> that is raised by various methods of the <see cref="T:CoreFoundation.CFSocket" /> class.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -285,6 +295,8 @@ namespace CoreFoundation {
 		}
 	}
 
+	/// <summary>CoreFoundation low-level Socket library - use the <see cref="N:Network" /> APIs instead.</summary>
+	///     <remarks />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -599,6 +611,11 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>
+		///       <format type="text/html">
+		///         <a href="https://docs.microsoft.com/en-us/search/index?search=System%20Event%20Args&amp;scope=Xamarin" title="T:System.EventArgs">T:System.EventArgs</a>
+		///       </format> for the <see cref="E:CoreFoundation.CFSocket.AcceptEvent" /> event.</summary>
+		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -644,6 +661,11 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>
+		///       <format type="text/html">
+		///         <a href="https://docs.microsoft.com/en-us/search/index?search=System%20Event%20Args&amp;scope=Xamarin" title="T:System.EventArgs">T:System.EventArgs</a>
+		///       </format> for the <see cref="E:CoreFoundation.CFSocket.ConnectEvent" /> event.</summary>
+		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -674,6 +696,8 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>Arguments for socket data events.</summary>
+		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -706,6 +730,8 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>Arguments for socket read events.</summary>
+		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -716,6 +742,8 @@ namespace CoreFoundation {
 			public CFSocketReadEventArgs () { }
 		}
 
+		/// <summary>Arguments for socket write events.</summary>
+		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]

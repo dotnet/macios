@@ -31,6 +31,8 @@ using System.Runtime.Versioning;
 namespace WebKit {
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class DomEventArgs : EventArgs {
@@ -47,6 +49,10 @@ namespace WebKit {
 		public DomEvent Event { get; set; }
 	}
 
+	/// <param name="sender">To be added.</param>
+	///     <param name="args">To be added.</param>
+	///     <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public delegate void DomEventListenerHandler (object sender, DomEventArgs args);
 
 	public partial class DomNode {

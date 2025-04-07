@@ -64,58 +64,58 @@ class MyInputQueue : InputAudioQueue {
     </remarks>
   </Docs>
   <Docs DocId="M:AudioToolbox.AudioQueue.Dispose(System.Boolean)">
-        <param name="disposing">
-          <para>If set to <see langword="true" />, the method is invoked directly and will dispose managed and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
-        </param>
-        <summary>Releases the resources used by the AudioQueue object.</summary>
-        <remarks>
-          <para>This Dispose method releases the resources used by the AudioQueue class.</para>
-          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
-          <para>Calling the Dispose method when the application is finished using the AudioQueue ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
-          <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at https://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
-        </remarks>
-      </Docs>
+    <param name="disposing">
+      <para>If set to <see langword="true" />, the method is invoked directly and will dispose managed and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
+    </param>
+    <summary>Releases the resources used by the AudioQueue object.</summary>
+    <remarks>
+      <para>This Dispose method releases the resources used by the AudioQueue class.</para>
+      <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
+      <para>Calling the Dispose method when the application is finished using the AudioQueue ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
+      <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at https://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
+    </remarks>
+  </Docs>
   <Docs DocId="M:AudioToolbox.AudioQueue.EnqueueBuffer(System.IntPtr,System.Int32,AudioToolbox.AudioStreamPacketDescription[],System.Int32,System.Int32,AudioToolbox.AudioQueueParameterEvent[],AudioToolbox.AudioTimeStamp@,AudioToolbox.AudioTimeStamp@)">
-        <param name="audioQueueBuffer">The audio queue buffer to add to the buffer queue.</param>
-        <param name="bytes">The number of bytes from the queue buffer to add to the buffer queue. The audioQueueBuffer parameter will be updated with this value.</param>
-        <param name="desc">An array of packet descriptors for the packets that will be added to the queue.</param>
-        <param name="trimFramesAtStart">The number of frames to skip at the start of the buffer. This value is ignored if startTime is specified.</param>
-        <param name="trimFramesAtEnd">The number of frames to skip at the end of the buffer.</param>
-        <param name="parameterEvents">An array of parameter events for the buffer.</param>
-        <param name="startTime">The time when the buffer should start playing.</param>
-        <param name="actualStartTime">The time when the buffer will start playing.</param>
-        <summary>Adds a buffer to the buffer queue of a playback audio queue, specifying start time and parameters.</summary>
-        <returns>AudioQueueStatus.Ok on success, otherwise the error.</returns>
-        <remarks>
-        </remarks>
-      </Docs>
+    <param name="audioQueueBuffer">The audio queue buffer to add to the buffer queue.</param>
+    <param name="bytes">The number of bytes from the queue buffer to add to the buffer queue. The audioQueueBuffer parameter will be updated with this value.</param>
+    <param name="desc">An array of packet descriptors for the packets that will be added to the queue.</param>
+    <param name="trimFramesAtStart">The number of frames to skip at the start of the buffer. This value is ignored if startTime is specified.</param>
+    <param name="trimFramesAtEnd">The number of frames to skip at the end of the buffer.</param>
+    <param name="parameterEvents">An array of parameter events for the buffer.</param>
+    <param name="startTime">The time when the buffer should start playing.</param>
+    <param name="actualStartTime">The time when the buffer will start playing.</param>
+    <summary>Adds a buffer to the buffer queue of a playback audio queue, specifying start time and parameters.</summary>
+    <returns>AudioQueueStatus.Ok on success, otherwise the error.</returns>
+    <remarks>
+    </remarks>
+  </Docs>
   <Docs DocId="M:AudioToolbox.AudioQueue.EnqueueBuffer(AudioToolbox.AudioQueueBuffer*,System.Int32,AudioToolbox.AudioStreamPacketDescription[],System.Int32,System.Int32,AudioToolbox.AudioQueueParameterEvent[],AudioToolbox.AudioTimeStamp@,AudioToolbox.AudioTimeStamp@)">
-        <param name="audioQueueBuffer">The audio queue buffer to add to the buffer queue.</param>
-        <param name="bytes">The number of bytes from the queue buffer to add to the buffer queue. The audioQueueBuffer parameter will be updated with this value.</param>
-        <param name="desc">An array of packet descriptors for the packets that will be added to the queue.</param>
-        <param name="trimFramesAtStart">The number of frames to skip at the start of the buffer. This value is ignored if startTime is specified.</param>
-        <param name="trimFramesAtEnd">The number of frames to skip at the end of the buffer.</param>
-        <param name="parameterEvents">An array of parameter events for the buffer.</param>
-        <param name="startTime">The time when the buffer should start playing.</param>
-        <param name="actualStartTime">The time when the buffer will start playing.</param>
-        <summary>Adds a buffer to the buffer queue of a playback audio queue, specifying start time and parameters.</summary>
-        <returns>AudioQueueStatus.Ok on success, otherwise the error.</returns>
-        <remarks>
-        </remarks>
-      </Docs>
+    <param name="audioQueueBuffer">The audio queue buffer to add to the buffer queue.</param>
+    <param name="bytes">The number of bytes from the queue buffer to add to the buffer queue. The audioQueueBuffer parameter will be updated with this value.</param>
+    <param name="desc">An array of packet descriptors for the packets that will be added to the queue.</param>
+    <param name="trimFramesAtStart">The number of frames to skip at the start of the buffer. This value is ignored if startTime is specified.</param>
+    <param name="trimFramesAtEnd">The number of frames to skip at the end of the buffer.</param>
+    <param name="parameterEvents">An array of parameter events for the buffer.</param>
+    <param name="startTime">The time when the buffer should start playing.</param>
+    <param name="actualStartTime">The time when the buffer will start playing.</param>
+    <summary>Adds a buffer to the buffer queue of a playback audio queue, specifying start time and parameters.</summary>
+    <returns>AudioQueueStatus.Ok on success, otherwise the error.</returns>
+    <remarks>
+    </remarks>
+  </Docs>
   <Docs DocId="M:AudioToolbox.AudioQueue.CreateProcessingTap(AudioToolbox.AudioQueueProcessingTapDelegate,AudioToolbox.AudioQueueProcessingTapFlags,AudioToolbox.AudioQueueStatus@)">
-        <param name="processingCallback">Tap handler to invoke.</param>
-        <param name="flags">Determines the kind of processing that this tap does (pre-process, post-process or siphon).</param>
-        <param name="status">Result code from creating the processing tap.</param>
-        <summary>Creates a processing tap in the AudioQueue.</summary>
-        <returns>Object that can be used to control the tap.   Disposing it terminates the tap.</returns>
-        <remarks>
-          <para>
+    <param name="processingCallback">Tap handler to invoke.</param>
+    <param name="flags">Determines the kind of processing that this tap does (pre-process, post-process or siphon).</param>
+    <param name="status">Result code from creating the processing tap.</param>
+    <summary>Creates a processing tap in the AudioQueue.</summary>
+    <returns>Object that can be used to control the tap.   Disposing it terminates the tap.</returns>
+    <remarks>
+      <para>
 	    Taps will receive the audio data once the buffer is
 	    decoded for output queues and input data before encoding
 	    for input queues.  The flags determine when the processing takes place. 
 	  </para>
-          <para>
+      <para>
 	    There are three types: pre-processing, post-processing and
 	    siphon.  The first two should provide the data requested
 	    during the callback, typically by calling the <see cref="T:AudioToolbox.AudioQueueProcessingTap" />'s
@@ -127,9 +127,79 @@ class MyInputQueue : InputAudioQueue {
 	    documentation for more information.
 
 	  </para>
-          <para>
+      <para>
 	    To establish a tap, the queue must be in the stopped state.
 	  </para>
-        </remarks>
-      </Docs>
+    </remarks>
+  </Docs>
+  <Docs DocId="T:AudioToolbox.AudioQueue">
+    <summary>Base class for Input and Output audio queues.</summary>
+    <remarks>
+      <para>
+	AudioQueues can be used to record audio from the system input
+	devices into a stream, and to play back audio.  They are
+	responsible for encoding your audio when recording or decoding
+	your compressed audio when playing back and interact directly
+	with the audio hardware and decoding hardware where
+	appropriate.
+
+      </para>
+      <para> AudioQueue is a base class for both the <see cref="T:AudioToolbox.InputAudioQueue" /> which is
+	used to record audio and the <see cref="T:AudioToolbox.OutputAudioQueue" /> which is
+	used to playback audio.  This class provides services to
+	start, prime, stop, pause the queues as well as volume
+	control, resource management and event notifications.
+
+      </para>
+      <para>
+	When you use AudioQueues, you must allocate buffers for
+	playback or recording.  You use the <see cref="M:AudioToolbox.AudioQueue.AllocateBuffer(System.Int32,AudioToolbox.AudioQueueBuffer*@)" /> method or the
+	<see cref="M:AudioToolbox.AudioQueue.AllocateBufferWithPacketDescriptors(System.Int32,System.Int32,System.IntPtr@)" />
+	to allocate them and you use the <see cref="M:AudioToolbox.AudioQueue.FreeBuffer(System.IntPtr)" /> to release them.
+	You keep a collection of buffers around that the underlying
+	hardware can use to either playback audio, or record into.  As
+	the buffers are used, a notification callback is invoked.  In
+	the OutputAudioQueue case, you connect to the OutputCompleted
+	event to be notified when a buffer has been fully played back,
+	and in the InputAudioQueue you use the InputCompleted event to
+	be notified when a recording has fully utilized a buffer.
+
+      </para>
+      <para>
+	Unless otherwise specified, the callbacks for processing a
+	filled audio buffer, or filling out an audio buffer are
+	invoked on an AudioQueue thread.  You can change this by
+	providing an instance of the CFRunLoop that you want to use
+	for processing the events in your queue.
+
+      </para>
+      <para> 
+	When processing an input or output queue, you might want to
+	listen to a few property changes raised by the queues during
+	their processing (See the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Tool%20Box%20Audio%20Queue%20Property&amp;scope=Xamarin" title="E:AudioToolBox.AudioQueueProperty">E:AudioToolBox.AudioQueueProperty</a></format> for a
+	list of events that you can listen to).  To do this, use the
+	<see cref="M:AudioToolbox.AudioQueue.AddListener(AudioToolbox.AudioQueueProperty,AudioToolbox.AudioQueue.AudioQueuePropertyChanged)" />
+	method to add a listener and use the <see cref="M:AudioToolbox.AudioQueue.RemoveListener(AudioToolbox.AudioQueueProperty,AudioToolbox.AudioQueue.AudioQueuePropertyChanged)" />
+	method to remove the listener.
+
+      </para>
+      <para>
+        <format type="text/html">
+          <span>You can see the <a href="https://github.com/xamarin/monotouch-samples/tree/master/StreamingAudio">StreamingAudio</a>
+	to see how to use AudioBuffers. </span>
+        </format>
+      </para>
+      <para>
+	The various AudioQueue properties are exposed as high-level C#
+	properties.  In addition to the high-level properties, a
+	low-level interface to the AudioQueue property system is
+	exposed in case Apple introduces a new property that was not
+	previously bound or if you need finer grained control.  The
+	low-level interface is provided by the GetProperty and
+	SetProperty family of methods.
+	
+      </para>
+    </remarks>
+    <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/StreamingAudio/">StreamingAudio</related>
+  </Docs>
 </Documentation>

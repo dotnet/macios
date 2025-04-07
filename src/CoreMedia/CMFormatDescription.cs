@@ -27,6 +27,8 @@ using AudioToolbox;
 
 namespace CoreMedia {
 
+	/// <summary>Describes media data for audio, video, text and time codes </summary>
+	///     <remarks>Some properties apply to all media types, while some others only apply to specific media types.   They are prefixed with Audio or Video in those cases.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -399,6 +401,8 @@ namespace CoreMedia {
 #endif
 	}
 
+	/// <summary>A <see cref="T:CoreMedia.CMFormatDescription" /> that describes an audio format.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -413,6 +417,8 @@ namespace CoreMedia {
 		// TODO: Move more audio specific methods here
 	}
 
+	/// <summary>A <see cref="T:CoreMedia.CMFormatDescription" /> that describes video.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

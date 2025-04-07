@@ -29,6 +29,10 @@ using System.Runtime.InteropServices;
 #nullable enable
 
 namespace AVFoundation {
+	/// <summary>An audio player that can play audio from memory or the local file system.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/AVTouchSample/">avTouch</related>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioPlayerClassReference/index.html">Apple documentation for <c>AVAudioPlayer</c></related>
 	public partial class AVAudioPlayer {
 		/// <summary>Create a new <see cref="AVAudioPlayer" /> from the specified url and hint for the file type.</summary>
 		/// <param name="url">The url of a local audio file.</param>

@@ -32,6 +32,7 @@ using System;
 
 namespace Foundation {
 
+	/// <include file="../../docs/api/Foundation/PreserveAttribute.xml" path="/Documentation/Docs[@DocId='T:Foundation.PreserveAttribute']/*" />
 	[AttributeUsage (
 		AttributeTargets.Assembly
 		| AttributeTargets.Class

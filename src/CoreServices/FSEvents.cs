@@ -20,6 +20,8 @@ using Foundation;
 
 namespace CoreServices {
 	// FSEvents.h: typedef UInt32                          FSEventStreamCreateFlags;
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum FSEventStreamCreateFlags : uint {
 		/// <summary>To be added.</summary>
@@ -48,6 +50,8 @@ namespace CoreServices {
 	}
 
 	// FSEvents.h: typedef UInt32                          FSEventStreamEventFlags;
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum FSEventStreamEventFlags : uint {
 		/// <summary>To be added.</summary>
@@ -103,6 +107,8 @@ namespace CoreServices {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public struct FSEvent {
@@ -203,9 +209,15 @@ namespace CoreServices {
 		IntPtr CopyDescription; /* CFAllocatorCopyDescriptionCallBack __nullable */
 	}
 
+	/// <param name="sender">To be added.</param>
+	///     <param name="args">To be added.</param>
+	///     <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public delegate void FSEventStreamEventsHandler (object sender, FSEventStreamEventsArgs args);
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public sealed class FSEventStreamEventsArgs : EventArgs {
@@ -299,6 +311,8 @@ namespace CoreServices {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class FSEventStream : NativeObject {

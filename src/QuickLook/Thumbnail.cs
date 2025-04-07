@@ -39,6 +39,8 @@ using CoreFoundation;
 using CoreGraphics;
 
 namespace QuickLook {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public static partial class QLThumbnailImage {
 
 		// QuickLook.framework/Versions/A/Headers/QLThumbnailImage.h

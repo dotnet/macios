@@ -3755,6 +3755,11 @@ namespace CoreData {
 		[Export ("tryLock")]
 		bool TryLock { get; }
 
+		/// <param name="url">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]

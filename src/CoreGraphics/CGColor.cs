@@ -36,6 +36,8 @@ using CoreFoundation;
 using Foundation;
 
 namespace CoreGraphics {
+	/// <summary>Color structure.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

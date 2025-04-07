@@ -38,6 +38,22 @@ using Registrar;
 
 namespace Foundation {
 
+	/// <summary>Exports a method or property to the Objective-C world.</summary>
+	///     <remarks>
+	///       <para>
+	/// This attribute is applied to properties and methods in classes that derive from <see cref="T:Foundation.NSObject" /> to export the value to the Objective-C world.    This can be used either to respond to messages or to override an Objective-C method.
+	/// </para>
+	///       <example>
+	///         <code lang="csharp lang-csharp"><![CDATA[
+	/// public class Test : SomeBaseClass {
+	///     [Export ("setText:withFont:")]
+	///     public void SetText (string text, string font)
+	///     {
+	///     }
+	/// }
+	///   ]]></code>
+	///       </example>
+	///     </remarks>
 	[AttributeUsage (AttributeTargets.Method | AttributeTargets.Constructor | AttributeTargets.Property)]
 	public class ExportAttribute : Attribute {
 		string? selector;
@@ -113,6 +129,22 @@ namespace Foundation {
 		}
 	}
 
+	/// <summary>Exposes the given property as an outlet to the Objective-C world.</summary>
+	///     <remarks>
+	///       <para> 
+	/// 	This property is used to flag properties that need to be
+	/// 	exposed as outlets to the Objective-C world.  This is used
+	/// 	both by the designer support as well connecting the managed
+	/// 	object with the unmanaged Objective-C outlet.
+	///
+	///       </para>
+	///       <example>
+	///         <code lang="csharp lang-csharp"><![CDATA[
+	/// 	    [Outlet ("mainWindow")]
+	/// 	    UIWindows mainWindow  { get; set; }
+	/// 	  ]]></code>
+	///       </example>
+	///     </remarks>
 	[AttributeUsage (AttributeTargets.Property)]
 	public sealed class OutletAttribute : ExportAttribute {
 		/// <summary>Default constructor</summary>
@@ -126,6 +158,21 @@ namespace Foundation {
 		public OutletAttribute (string name) : base (name) { }
 	}
 
+	/// <summary>Flags a method to respond to an Objective-C action</summary>
+	///     <remarks>
+	///       <para>
+	/// 	You can apply this attribute to a method, turning it into an action that can be invoked by the Objective-C world. 
+	///       </para>
+	///       <example>
+	///         <code lang="csharp lang-csharp"><![CDATA[
+	/// 	    [Action ("clicked:")]
+	/// 	    void Submit (NSObject sender)
+	/// 	    {
+	/// 		    // User has clicked on the Submit button, respond to this action
+	/// 	    }
+	/// 	  ]]></code>
+	///       </example>
+	///     </remarks>
 	[AttributeUsage (AttributeTargets.Method)]
 	public sealed class ActionAttribute : ExportAttribute {
 		/// <summary>Initializes a new instance of an Action attribute</summary>

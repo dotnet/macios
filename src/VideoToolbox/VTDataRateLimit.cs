@@ -18,6 +18,8 @@ using System.Runtime.Versioning;
 namespace VideoToolbox {
 
 #if NET
+	/// <summary>Strongly typed representation of bytes and seconds used in <see cref="P:VideoToolbox.VTCompressionProperties.DataRateLimits" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

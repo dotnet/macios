@@ -1,0 +1,49 @@
+<Documentation>
+  <Docs DocId="T:ObjCRuntime.Class">
+    <summary>Managed representation for an Objective-C class.</summary>
+    <remarks>
+      <para>
+	You can use the <see cref="P:ObjCRuntime.Class.Handle" /> family of
+	methods to turn either types-by-name or .NET types that
+	subclass NSObject into a Class instance.  
+
+      </para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+// 
+// If you know that the type subclasses NSObject, 
+// you can just call new Class (Type):
+//
+
+Class GetClassForType (Type type)
+{
+	return new Class (type);
+}
+]]></code>
+      </example>
+      <para>
+	  The following example shows how you can use the native
+	  handle to check whether the type subclasses NSObject, and
+	  thus whether obtaining an Objective-C class from a Type instance is valid:
+
+	</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+//
+// Using low-level handles, allows for error checking in case the 
+// type does not subclass NSObject:
+//
+Class GetClassForType (Type type)
+{
+    Type typeToLookup = typeof (type);
+    IntPtr myClassHandle = Class.GetHandle (typeToLookup);
+    if (myClassHandle != IntPtr.Zero)
+        return new Class (myClassHandle);
+    else
+        return null;
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+</Documentation>

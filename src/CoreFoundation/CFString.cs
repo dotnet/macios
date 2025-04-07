@@ -43,7 +43,8 @@ using Foundation;
 #nullable enable
 
 namespace CoreFoundation {
-
+	/// <summary>Represents a range from two integers: location and length.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -117,6 +118,8 @@ namespace CoreFoundation {
 	}
 
 	// nothing is exposed publicly
+	/// <summary>Base class for CoreFoundation objects.</summary>
+	///     <remarks>To be added.</remarks>
 	internal static class CFObject {
 
 		[DllImport (Constants.CoreFoundationLibrary)]
@@ -142,6 +145,8 @@ namespace CoreFoundation {
 		}
 	}
 
+	/// <summary>String class used by C-only Cocoa APIs.</summary>
+	///     <remarks>Use this class for creating strings that must be passed to methods in the low-level MonoTouch.CoreGraphics API.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

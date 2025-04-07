@@ -27,6 +27,7 @@ using System;
 
 namespace Foundation {
 
+	/// <include file="../../docs/api/Foundation/RegisterAttribute.xml" path="/Documentation/Docs[@DocId='T:Foundation.RegisterAttribute']/*" />
 	[AttributeUsage (AttributeTargets.Class)]
 	public sealed class RegisterAttribute : Attribute {
 		string? name;

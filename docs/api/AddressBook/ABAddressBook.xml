@@ -1,11 +1,11 @@
 <Documentation>
   <Docs DocId="M:AddressBook.ABAddressBook.RequestAccess(System.Action{System.Boolean,Foundation.NSError})">
-        <param name="onCompleted">Action called after the user has interacte with the permissions dialog.</param>
-        <summary>Presents the user with a standard permissions dialog, requesting access to the address book.</summary>
-        <remarks>
-          <para>User's must give applications permission to access the <see cref="T:AddressBook.ABAddressBook" />. This is done with a standard permissions dialog that is shown asynchronously (if necessary) by calling this asynchronous. The <paramref name="onCompleted" /> Action is called after the user has interacted with the dialog.</para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
+    <param name="onCompleted">Action called after the user has interacte with the permissions dialog.</param>
+    <summary>Presents the user with a standard permissions dialog, requesting access to the address book.</summary>
+    <remarks>
+      <para>User's must give applications permission to access the <see cref="T:AddressBook.ABAddressBook" />. This is done with a standard permissions dialog that is shown asynchronously (if necessary) by calling this asynchronous. The <paramref name="onCompleted" /> Action is called after the user has interacted with the dialog.</para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
 NSError error;
 addressBook = ABAddressBook.Create (out error);
 
@@ -15,20 +15,75 @@ if (addressBook != null) {
 	});
 }
           ]]></code>
-          </example>
-        </remarks>
-        <altmember cref="M:AddressBook.ABAddressBok.GetAuthorizationStatus" />
-      </Docs>
+      </example>
+    </remarks>
+    <altmember cref="M:AddressBook.ABAddressBok.GetAuthorizationStatus" />
+  </Docs>
   <Docs DocId="M:AddressBook.ABAddressBook.Dispose(System.Boolean)">
-        <param name="disposing">
-          <para>If set to <see langword="true" />, the method is invoked directly and will dispose managed and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
-        </param>
-        <summary>Releases the resources used by the ABAddressBook object.</summary>
-        <remarks>
-          <para>This Dispose method releases the resources used by the ABAddressBook class.</para>
-          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
-          <para>Calling the Dispose method when the application is finished using the ABAddressBook ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
-          <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at https://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
-        </remarks>
-      </Docs>
+    <param name="disposing">
+      <para>If set to <see langword="true" />, the method is invoked directly and will dispose managed and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
+    </param>
+    <summary>Releases the resources used by the ABAddressBook object.</summary>
+    <remarks>
+      <para>This Dispose method releases the resources used by the ABAddressBook class.</para>
+      <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
+      <para>Calling the Dispose method when the application is finished using the ABAddressBook ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
+      <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at https://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
+    </remarks>
+  </Docs>
+  <Docs DocId="T:AddressBook.ABAddressBook">
+    <summary>
+      Provides access to the system Address Book.
+    </summary>
+    <remarks>
+      <para>
+        The Address Book is a centralized database which stores information contacts,
+        such as people and businesses.  The notion of "groups" containing one or more
+        contacts is also supported.  <c>ABAddressBook</c> supports:
+      </para>
+      <list type="bullet">
+        <item>
+          <term>
+            Managing address books:
+            <see cref="C:AddressBook.ABAddressBook.#ctor" />,
+            <see cref="P:AddressBook.ABAddressBook.HasUnsavedChanges" />,
+            <see cref="M:AddressBook.ABAddressBook.Save" />,
+            <see cref="M:AddressBook.ABAddressBook.Revert" />.
+          </term>
+        </item>
+        <item>
+          <term>
+            Accessing an address book:
+            <see cref="M:AddressBook.ABAddressBook.RequestAccess(System.Action{System.Boolean,Foundation.NSError})" />.
+          </term>
+        </item>
+        <item>
+          <term>
+            Managing address books records:
+            <see cref="M:AddressBook.ABAddressBook.Add(AddressBook.ABRecord)" />,
+            <see cref="M:AddressBook.ABAddressBook.Remove(AddressBook.ABRecord)" />,
+            <see cref="P:AddressBook.ABAddressBook.PeopleCount" />,
+            <see cref="M:AddressBook.ABAddressBook.GetPeopleWithName(System.String)" />,
+            <see cref="M:AddressBook.ABAddressBook.GetPerson(System.Int32)" />,
+            <see cref="P:AddressBook.ABAddressBook.GroupCount" />,
+            <see cref="M:AddressBook.ABAddressBook.GetGroups(AddressBook.ABRecord)" />,
+            <see cref="M:AddressBook.ABAddressBook.GetGroup(System.Int32)" />,
+            <see cref="M:AddressBook.ABAddressBook.System#Collections#IEnumerable#GetEnumerator" />.
+          </term>
+        </item>
+        <item>
+          <term>
+            Change notifications
+            <see cref="E:AddressBook.ABAddressBook.ExternalChange" />.
+          </term>
+        </item>
+        <item>
+          <term>
+            Localizing Text:
+            <see cref="M:AddressBook.ABAddressBook.LocalizedLabel(Foundation.NSString)" />.
+          </term>
+        </item>
+      </list>
+    </remarks>
+  </Docs>
 </Documentation>

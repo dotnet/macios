@@ -1183,6 +1183,11 @@ namespace UserNotifications {
 		[Export ("region", ArgumentSemantic.Copy)]
 		CLRegion Region { get; }
 
+		/// <param name="region">To be added.</param>
+		///         <param name="repeats">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("triggerWithRegion:repeats:")]
 		UNLocationNotificationTrigger CreateTrigger (CLRegion region, bool repeats);

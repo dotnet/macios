@@ -19,6 +19,8 @@ using ObjCRuntime;
 namespace Metal {
 
 #if NET
+	/// <summary>The location of a pixel in an image or texture.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -52,6 +54,8 @@ namespace Metal {
 	}
 
 #if NET
+	/// <summary>The dimensions of a grid, image, texture, or threadgroup.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -78,6 +82,8 @@ namespace Metal {
 
 #if !COREBUILD
 #if NET
+	/// <summary>Extension methods for <see cref="T:Metal.MTLVertexFormat" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -113,6 +119,8 @@ namespace Metal {
 #endif
 
 #if NET
+	/// <summary>The retangle used for the scissor fragment test.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -150,6 +158,8 @@ namespace Metal {
 	}
 
 #if NET
+	/// <summary>Defines the clipping viewport.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -203,6 +213,8 @@ namespace Metal {
 	}
 
 #if NET
+	/// <summary>A sample position.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -231,6 +243,8 @@ namespace Metal {
 
 
 #if NET
+	/// <summary>An RGBA color representing a clear pixel.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -266,6 +280,8 @@ namespace Metal {
 	}
 
 #if NET
+	/// <summary>A rectangle of pixels in an image or texture.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -342,6 +358,8 @@ namespace Metal {
 	}
 
 #if NET
+	/// <summary>Struct that contains values that are used to clear various buffers and stencils.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -402,6 +420,8 @@ namespace Metal {
 	}
 
 #if NET
+	/// <summary>Represents the number of threadgroups in each grid dimension for indirectly dispatched threadgroups.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -420,6 +440,8 @@ namespace Metal {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
@@ -449,6 +471,8 @@ namespace Metal {
 	}
 
 #if NET
+	/// <summary>Represents the data layout needed to draw primitives.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -470,6 +494,8 @@ namespace Metal {
 	}
 
 #if NET
+	/// <summary>Represents the data layout needed to draw indexed primitives.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -494,6 +520,8 @@ namespace Metal {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
@@ -517,6 +545,8 @@ namespace Metal {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
@@ -554,6 +584,8 @@ namespace Metal {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
@@ -630,6 +662,8 @@ namespace Metal {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]

@@ -711,11 +711,21 @@ namespace FileProvider {
 		[Export ("documentStorageURL")]
 		NSUrl DocumentStorageUrl { get; }
 
+		/// <param name="placeholderUrl">To be added.</param>
+		///         <param name="metadata">To be added.</param>
+		///         <param name="error">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Static]
 		[Export ("writePlaceholderAtURL:withMetadata:error:")]
 		bool WritePlaceholder (NSUrl placeholderUrl, INSFileProviderItem metadata, out NSError error);
 
+		/// <param name="url">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Static]
 		[Export ("placeholderURLForURL:")]

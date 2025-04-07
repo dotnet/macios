@@ -21,6 +21,8 @@ using System.Runtime.Versioning;
 
 namespace CoreMidi {
 #if !COREBUILD
+	/// <summary>Manages MIDI play-through connections.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

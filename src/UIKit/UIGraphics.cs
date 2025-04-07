@@ -23,6 +23,10 @@ namespace UIKit {
 #error All PDF public name instances in this file need to be turned into Pdf. e.g. EndPDFContext into EndPdfContext.
 #endif
 
+	/// <summary>Helper methods to paint on the screen, PDF context or bitmaps.</summary>
+	///     <remarks>
+	///       <para>Methods in this class generally correspond to <c>UIGraphics*</c> and <c>UIRect*</c> methods in Apple's UIKit Framework.</para>
+	///     </remarks>
 	public static class UIGraphics {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static IntPtr UIGraphicsGetCurrentContext ();

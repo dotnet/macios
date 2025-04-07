@@ -50,6 +50,7 @@ using CoreGraphics;
 
 namespace Foundation {
 
+	/// <include file="../../docs/api/Foundation/NSObjectFlag.xml" path="/Documentation/Docs[@DocId='T:Foundation.NSObjectFlag']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -69,6 +70,7 @@ namespace Foundation {
 	}
 
 #if !COREBUILD
+	/// <include file="../../docs/api/Foundation/NSObject.xml" path="/Documentation/Docs[@DocId='T:Foundation.NSObject']/*" />
 	[ObjectiveCTrackedType]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -1147,6 +1149,7 @@ namespace Foundation {
 	}
 
 #if !COREBUILD
+	/// <include file="../../docs/api/Foundation/NSObservedChange.xml" path="/Documentation/Docs[@DocId='T:Foundation.NSObservedChange']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

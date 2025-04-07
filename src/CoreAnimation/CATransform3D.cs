@@ -20,6 +20,8 @@ namespace CoreAnimation {
 
 	// CATransform3D.h
 #if NET
+	/// <summary>3D transformation.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

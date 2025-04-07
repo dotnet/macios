@@ -33,6 +33,8 @@ using XColor = UIKit.UIColor;
 #endif
 
 namespace Foundation {
+	/// <summary>A <see cref="T:Foundation.DictionaryContainer" /> that provides document attributes for <see cref="T:Foundation.NSAttributedString" />s.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class NSAttributedStringDocumentAttributes : DictionaryContainer {
 #if !COREBUILD
 		/// <summary>To be added.</summary>

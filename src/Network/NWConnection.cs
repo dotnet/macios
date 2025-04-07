@@ -32,12 +32,25 @@ namespace Network {
 	// be present, and *also* the error will be set, indicating that some data was
 	// retrieved, before the error was raised.
 	//
+	/// <param name="data">To be added.</param>
+	///     <param name="dataSize">To be added.</param>
+	///     <param name="context">To be added.</param>
+	///     <param name="isComplete">To be added.</param>
+	///     <param name="error">To be added.</param>
+	///     <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public delegate void NWConnectionReceiveCompletion (IntPtr data, nuint dataSize, NWContentContext? context, bool isComplete, NWError? error);
 
 	//
 	// Signature for a method invoked on data received, same as NWConnectionReceiveCompletion,
 	// but they receive DispatchData instead of data + dataSize
 	//
+	/// <param name="data">To be added.</param>
+	///     <param name="context">To be added.</param>
+	///     <param name="isComplete">To be added.</param>
+	///     <param name="error">To be added.</param>
+	///     <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public delegate void NWConnectionReceiveDispatchDataCompletion (DispatchData? data, NWContentContext? context, bool isComplete, NWError? error);
 
 	//
@@ -47,6 +60,8 @@ namespace Network {
 	public delegate void NWConnectionReceiveReadOnlySpanCompletion (ReadOnlySpan<byte> data, NWContentContext? context, bool isComplete, NWError? error);
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]

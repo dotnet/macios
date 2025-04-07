@@ -45,6 +45,8 @@ using CGGlyph = System.UInt16;
 namespace CoreText {
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontManager.h
+	/// <summary>An enumeration whose values specify the scope for font registration.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CTFontManagerScope : uint {
 		/// <summary>To be added.</summary>
 		None = 0,
@@ -64,6 +66,8 @@ namespace CoreText {
 	}
 
 	// defined as uint32_t - /System/Library/Frameworks/CoreText.framework/Headers/CTFontManager.h
+	/// <summary>An enumeration whose values specify values for auto-activation of fonts.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CTFontManagerAutoActivation : uint {
 		/// <summary>To be added.</summary>
 		Default = 0,
@@ -83,6 +87,9 @@ namespace CoreText {
 		PromptUser = 3,
 	}
 
+	/// <summary>Manages the central CoreText Font System.</summary>
+	///     <remarks>
+	///     </remarks>
 	public partial class CTFontManager {
 
 #if MONOMAC
@@ -519,6 +526,8 @@ namespace CoreText {
 			}
 		}
 
+		/// <summary>Observer for receiving notifications when fonts are added to the registry.</summary>
+		///     <remarks>To be added.</remarks>
 		public static partial class Notifications {
 			/// <include file="../../docs/api/CoreText.CTFontManager/Notifications.xml" path="/Documentation/Docs[@DocId='M:CoreText.CTFontManager.Notifications.ObserveRegisteredFontsChanged(System.EventHandler{Foundation.NSNotificationEventArgs})']/*" />
 			public static NSObject ObserveRegisteredFontsChanged (EventHandler<NSNotificationEventArgs> handler)

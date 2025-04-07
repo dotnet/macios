@@ -35,7 +35,10 @@ using ObjCRuntime;
 #nullable enable
 
 namespace AVFoundation {
-
+	/// <summary>Provides data for the <see cref="E:AVFoundation.AVAudioRecorder.EncoderError" /> and <see cref="E:AVFoundation.AVAudioRecorder.EncoderError" /> events.</summary>
+	///     <remarks>
+	///     </remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/AVTouchSample/">avTouch</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -56,6 +59,10 @@ namespace AVFoundation {
 		public NSError Error { get; private set; }
 	}
 
+	/// <summary>Provides data for the <see cref="E:AVFoundation.AVAudioSession.InputAvailabilityChanged" /> and <see cref="E:AVFoundation.AVAudioSession.InputAvailabilityChanged" /> and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=AVFoundation%20AVStatus%20Event%20Args%20Input%20Availability%20Changed&amp;scope=Xamarin" title="E:AVFoundation.AVStatusEventArgs.InputAvailabilityChanged">E:AVFoundation.AVStatusEventArgs.InputAvailabilityChanged</a></format> events.</summary>
+	///     <remarks>
+	///     </remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/AVTouchSample/">avTouch</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -122,6 +129,10 @@ namespace AVFoundation {
 	}
 #pragma warning restore 672
 
+	/// <summary>An audio player that can play audio from memory or the local file system.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/AVTouchSample/">avTouch</related>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioPlayerClassReference/index.html">Apple documentation for <c>AVAudioPlayer</c></related>
 	public partial class AVAudioPlayer {
 		InternalAVAudioPlayerDelegate EnsureEventDelegate ()
 		{
@@ -277,6 +288,9 @@ namespace AVFoundation {
 	}
 #endif // !TVOS
 
+	/// <summary>Provides data for the <see cref="E:AVFoundation.AVAudioSession.SampleRateChanged" /> event.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -296,6 +310,9 @@ namespace AVFoundation {
 		public double SampleRate { get; private set; }
 	}
 
+	/// <summary>Provides data for the <see cref="E:AVFoundation.AVAudioSession.OutputChannelsChanged" /> and <see cref="E:AVFoundation.AVAudioSession.OutputChannelsChanged" /> events.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -315,6 +332,9 @@ namespace AVFoundation {
 		public int NumberOfChannels { get; private set; }
 	}
 
+	/// <summary>Provides data for the <see cref="E:AVFoundation.AVAudioSession.CategoryChanged" /> event.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -376,6 +396,7 @@ namespace AVFoundation {
 
 	}
 
+	/// <include file="../../docs/api/AVFoundation/AVAudioSession.xml" path="/Documentation/Docs[@DocId='T:AVFoundation.AVAudioSession']/*" />
 	public partial class AVAudioSession {
 		[UnsupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]

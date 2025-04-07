@@ -12,6 +12,9 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace NewsstandKit {
+	/// <summary>An asset is a downloadable component (text, media, an entire compressed issue, etc.) of a Newsstand application.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/StoreKit/Reference/NKAssetDownload_Class/index.html">Apple documentation for <c>NKAssetDownload</c></related>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("The NewsstandKit framework has been removed from iOS.")]
 	public unsafe partial class NKAssetDownload : NSObject {
@@ -86,6 +89,9 @@ namespace NewsstandKit {
 		}
 	} /* class NKAssetDownload */
 
+	/// <summary>A named and dated Newsstand product (e.g., an issue of a particular magazine).</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/StoreKit/Reference/NKIssue_Class/index.html">Apple documentation for <c>NKIssue</c></related>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("The NewsstandKit framework has been removed from iOS.")]
 	public unsafe partial class NKIssue : NSObject {
@@ -169,6 +175,11 @@ namespace NewsstandKit {
 		//
 		// Notifications
 		//
+		/// <summary>Notification posted by the <see cref="T:NewsstandKit.NKIssue" /> class.</summary>
+		///     <remarks>
+		///       <para>This is a static class which contains various helper methods that allow developers to observe events posted in the iOS notification hub (<see cref="T:Foundation.NSNotificationCenter" />).</para>
+		///       <para>The methods defined in this class post events invoke the provided method or lambda with a <see cref="T:Foundation.NSNotificationEventArgs" /> parameter which contains strongly typed properties for the notification arguments.</para>
+		///     </remarks>
 		public static partial class Notifications {
 			/// <include file="../../docs/api/NewsstandKit.NKIssue/Notifications.xml" path="/Documentation/Docs[@DocId='M:NewsstandKit.NKIssue.Notifications.ObserveDownloadCompleted(System.EventHandler{Foundation.NSNotificationEventArgs})']/*" />
 			public static NSObject ObserveDownloadCompleted (EventHandler<NSNotificationEventArgs> handler)
@@ -183,6 +194,8 @@ namespace NewsstandKit {
 		}
 	} /* class NKIssue */
 
+	/// <summary>An enumeration whose values specify the <see cref="P:NewsstandKit.NKIssue.Status" /> property of a <see cref="T:NewsstandKit.NKIssue" /> object.</summary>
+	///     <remarks>To be added.</remarks>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("The NewsstandKit framework has been removed from iOS.")]
 	public enum NKIssueContentStatus : long {
@@ -194,6 +207,9 @@ namespace NewsstandKit {
 		Available = 2,
 	}
 
+	/// <summary>A collection of <see cref="T:NewsstandKit.NKIssue" />s.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/StoreKit/Reference/NKLibrary_Class/index.html">Apple documentation for <c>NKLibrary</c></related>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("The NewsstandKit framework has been removed from iOS.")]
 	public unsafe partial class NKLibrary : NSObject {

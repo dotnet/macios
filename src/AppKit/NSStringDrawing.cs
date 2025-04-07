@@ -8,7 +8,8 @@ using CoreGraphics;
 #nullable enable
 
 namespace AppKit {
-
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("tvos")]

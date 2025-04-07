@@ -16,6 +16,21 @@ using ObjCRuntime;
 
 namespace CoreGraphics {
 
+	/// <summary>Structure defining a rectangle in terms of location and size.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	CGRects structures define a rectangle using floating point
+	/// 	values of type <see cref="T:System.nfloat" /> and are defined
+	/// 	using an initial location (X,Y) as well as a size (Width,
+	/// 	Height). 
+	///       </para>
+	///       <para>
+	/// 	You can save the CGRect into an <see cref="T:Foundation.NSDictionary" /> by calling the
+	/// 	<see cref="M:CoreGraphics.CGRect.ToDictionary" />
+	/// 	method.   You can also get an CGRect out a serialized
+	/// 	dictionary by using the <see cref="M:CoreGraphics.CGRect.TryParse(Foundation.NSDictionary,CoreGraphics.CGRect@)" /> method. 
+	///       </para>
+	///     </remarks>
 	[Serializable]
 	public struct CGRect : IEquatable<CGRect> {
 		nfloat x;

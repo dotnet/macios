@@ -179,6 +179,16 @@ namespace ExternalAccessory {
 		NSString DidDisconnectNotification { get; }
 
 		// [Introduced (PlatformName.MacCatalyst, 14, 0)]
+		/// <param name="predicate">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <param name="completion">
+		///           <para>To be added.</para>
+		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		///         </param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMacCatalyst] // selector does not respond
 		[NoMac]
 		[Export ("showBluetoothAccessoryPickerWithNameFilter:completion:")]

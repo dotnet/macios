@@ -37,6 +37,8 @@ using ObjCRuntime;
 namespace CoreGraphics {
 
 	// untyped enum -> CGPDFPage.h
+	/// <summary>Type of box in a PDF document.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CGPDFBox {
 		/// <summary>To be added.</summary>
 		Media = 0,
@@ -51,6 +53,10 @@ namespace CoreGraphics {
 	}
 
 	// CGPDFPage.h
+	/// <summary>A PDF Page in a PDF Document.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/QuartzSample/">QuartzSample</related>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/ZoomingPdfViewer/">ZoomingPdfViewer</related>
 	public partial class CGPDFPage {
 #if !COREBUILD
 		[Preserve (Conditional = true)]

@@ -10,6 +10,10 @@ using ObjCRuntime;
 namespace AppKit {
 
 	public partial class NSDocument {
+		/// <param name="document">To be added.</param>
+		///     <param name="didDuplicate">To be added.</param>
+		///     <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		public delegate void DuplicateCallback (NSDocument document, bool didDuplicate);
 
 		[Register ("__NSDocumentDuplicateCallback")]

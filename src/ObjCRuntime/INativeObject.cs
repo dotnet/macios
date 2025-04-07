@@ -10,6 +10,10 @@ using NativeHandle = System.IntPtr;
 
 namespace ObjCRuntime {
 
+	/// <summary>A simple interface that is used to expose the unmanaged object pointer in various classes in Xamarin.iOS.</summary>
+	///     <remarks>
+	///       <para>All this interface requires is for a class to expose an IntPtr that points to the unmanaged pointer to the actual object.</para>
+	///     </remarks>
 	public interface INativeObject {
 #if !COREBUILD
 		/// <summary>Handle (pointer) to the unmanaged object representation.</summary>

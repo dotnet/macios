@@ -43,6 +43,8 @@ using Quaterniond = global::OpenTK.Quaterniond;
 // https://github.com/apple/swift/blob/cbdf0ff1e7bfbd192c33d64c9c7d31fbb11f712c/stdlib/public/SDK/ModelIO/ModelIO.swift
 
 namespace ModelIO {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class MDLAnimatedValue {
 
 		/// <summary>To be added.</summary>
@@ -85,6 +87,8 @@ namespace ModelIO {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class MDLAnimatedScalarArray {
 
 		/// <param name="array">To be added.</param>
@@ -216,6 +220,8 @@ namespace ModelIO {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class MDLAnimatedVector3Array {
 
 		public virtual void SetValues (Vector3 [] array, double time)
@@ -341,6 +347,8 @@ namespace ModelIO {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class MDLAnimatedQuaternionArray {
 
 		public virtual void SetValues (Quaternion [] array, double time)
@@ -465,6 +473,8 @@ namespace ModelIO {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class MDLAnimatedScalar {
 
 		/// <param name="values">To be added.</param>
@@ -534,6 +544,8 @@ namespace ModelIO {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class MDLAnimatedVector2 {
 
 		public virtual void Reset (Vector2 [] values, double [] times)
@@ -603,6 +615,8 @@ namespace ModelIO {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class MDLAnimatedVector3 {
 
 		public virtual void Reset (Vector3 [] values, double [] times)
@@ -672,6 +686,8 @@ namespace ModelIO {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class MDLAnimatedVector4 {
 
 		public virtual void Reset (Vector4 [] values, double [] times)
@@ -741,6 +757,8 @@ namespace ModelIO {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class MDLAnimatedMatrix4x4 {
 
 		public virtual void Reset (Matrix4 [] values, double [] times)
@@ -810,6 +828,8 @@ namespace ModelIO {
 		}
 	}
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class MDLMatrix4x4Array {
 
 		public virtual void SetValues (Matrix4 [] array)

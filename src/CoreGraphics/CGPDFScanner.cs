@@ -18,6 +18,8 @@ using ObjCRuntime;
 using CoreFoundation;
 
 namespace CoreGraphics {
+	/// <summary>Class that enables app developers to parse values from a PDF stream.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

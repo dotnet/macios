@@ -24,8 +24,12 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace AppKit {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial interface INSAccessibility { }
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	public partial class NSAccessibility {
 #if !COREBUILD

@@ -18,6 +18,9 @@ using Foundation;
 
 namespace ImageIO {
 
+	/// <summary>Image Loader.</summary>
+	///     <remarks>
+	///     </remarks>
 	public partial class CGImageSource {
 
 		// CGImageSource.h

@@ -14,6 +14,8 @@ using System;
 #nullable enable
 
 namespace AppKit {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum NSStatusItemLength {
 		/// <summary>To be added.</summary>
 		Variable = -1,

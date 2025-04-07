@@ -37,6 +37,8 @@ using System.Runtime.Versioning;
 namespace CoreImage {
 
 	// convenience enum on kCISamplerWrap[Black|Clamp] fields -> CISampler.h (headers hidden under QuartzCore.framework)
+	/// <summary>Enumerates values that control how samples from outside the source image are treated.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CIWrapMode {
 		/// <summary>Areas outside the source image are treated as black.</summary>
 		Black,
@@ -45,6 +47,8 @@ namespace CoreImage {
 	}
 
 	// convenience enum on kCISamplerFilter[Nearest|Linear] fields -> CISampler.h (headers hidden under QuartzCore.framework)
+	/// <summary>Enumerates filter modes.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CIFilterMode {
 		/// <summary>Use the value of the nearest pixel.</summary>
 		Nearest,
@@ -52,6 +56,8 @@ namespace CoreImage {
 		Linear,
 	}
 
+	/// <summary>Options to conrol sampler operations for <see cref="T:CoreImage.CISampler" /> objects.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

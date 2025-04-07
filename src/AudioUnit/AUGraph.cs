@@ -48,6 +48,8 @@ using NativeHandle = System.IntPtr;
 #endif
 
 namespace AudioUnit {
+	/// <summary>Enumerates errors produced by AudioUnit functions.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AUGraphError // Implictly cast to OSType
 	{
 		/// <summary>To be added.</summary>
@@ -71,6 +73,7 @@ namespace AudioUnit {
 	}
 
 #if NET
+	/// <include file="../../docs/api/AudioUnit/AUGraph.xml" path="/Documentation/Docs[@DocId='T:AudioUnit.AUGraph']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

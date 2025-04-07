@@ -48,7 +48,7 @@ public class NativeObjectHandleAnalyzer : DiagnosticAnalyzer {
 
 	public override void Initialize (AnalysisContext context)
 	{
-		context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.None);
+		context.ConfigureGeneratedCodeAnalysis (GeneratedCodeAnalysisFlags.Analyze | GeneratedCodeAnalysisFlags.ReportDiagnostics);
 		context.EnableConcurrentExecution ();
 		context.RegisterSyntaxNodeAction (AnalyzeNode, SyntaxKind.SimpleMemberAccessExpression);
 	}

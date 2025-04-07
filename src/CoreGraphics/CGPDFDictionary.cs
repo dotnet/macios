@@ -39,6 +39,12 @@ using ObjCRuntime;
 using CoreFoundation;
 
 namespace CoreGraphics {
+	/// <summary>Represents a PDF Dictionary.</summary>
+	///     <remarks>Dictionaries are used extensively in the PDF file format.
+	///     Instances of this class represent dictionaries in your documents
+	///     and the methods in this class can be used to look up the values in
+	///     the dictionary or iterate over all of the elements of
+	///     it.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -222,6 +228,11 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static void CGPDFDictionaryApplyFunction (/* CGPDFDictionaryRef */ IntPtr dic, delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> function, /* void* */ IntPtr info);
 
+		/// <param name="key">To be added.</param>
+		///     <param name="value">To be added.</param>
+		///     <param name="info">To be added.</param>
+		///     <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		public delegate void ApplyCallback (string? key, object? value, object? info);
 
 		[UnmanagedCallersOnly]

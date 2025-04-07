@@ -349,6 +349,21 @@ namespace GLKit {
 	}
 
 #if NET
+	/// <summary>Strong type used to configure GLKTextureLoader operations.</summary>
+	///     <remarks>
+	///       <example>
+	///         <code lang="csharp lang-csharp"><![CDATA[
+	/// var operations = new GLKTextureOperations () {
+	///    ApplyPremultiplication = true,
+	///    GenerateMipmaps = true,
+	///    OriginBottomLeft = false
+	/// };
+	///
+	/// NSError error;
+	/// var texture = GLKTextureLoader.FromFile ("foo.png", operations, out error);
+	/// ]]></code>
+	///       </example>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]

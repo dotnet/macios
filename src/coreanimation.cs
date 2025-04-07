@@ -3208,27 +3208,60 @@ namespace CoreAnimation {
 	[NoMacCatalyst]
 	[BaseType (typeof (CALayer))]
 	interface CAOpenGLLayer {
+		/// <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("layer"), New, Static]
 		CALayer Create ();
 
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
 		[Export ("asynchronous")]
 		bool Asynchronous { [Bind ("isAsynchronous")] get; set; }
 
+		/// <param name="glContext">To be added.</param>
+		///         <param name="pixelFormat">To be added.</param>
+		///         <param name="timeInterval">To be added.</param>
+		///         <param name="timeStamp">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("canDrawInCGLContext:pixelFormat:forLayerTime:displayTime:")]
 		bool CanDrawInCGLContext (CGLContext glContext, CGLPixelFormat pixelFormat, double timeInterval, ref CVTimeStamp timeStamp);
 
+		/// <param name="glContext">To be added.</param>
+		///         <param name="pixelFormat">To be added.</param>
+		///         <param name="timeInterval">To be added.</param>
+		///         <param name="timeStamp">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("drawInCGLContext:pixelFormat:forLayerTime:displayTime:")]
 		void DrawInCGLContext (CGLContext glContext, CGLPixelFormat pixelFormat, double timeInterval, ref CVTimeStamp timeStamp);
 
+		/// <param name="mask">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("copyCGLPixelFormatForDisplayMask:")]
 		CGLPixelFormat CopyCGLPixelFormatForDisplayMask (UInt32 mask);
 
+		/// <param name="pixelFormat">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("releaseCGLPixelFormat:")]
 		void Release (CGLPixelFormat pixelFormat);
 
+		/// <param name="pixelFormat">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <returns>To be added.</returns>
+		///         <remarks>To be added.</remarks>
 		[Export ("copyCGLContextForPixelFormat:")]
 		CGLContext CopyContext (CGLPixelFormat pixelFormat);
 
+		/// <param name="glContext">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("releaseCGLContext:")]
 		void Release (CGLContext glContext);
 	}
@@ -3830,6 +3863,10 @@ namespace CoreAnimation {
 		[Export ("bounds", ArgumentSemantic.Assign)]
 		CGRect Bounds { get; set; }
 
+		/// <param name="timeInSeconds">To be added.</param>
+		///         <param name="ts">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("beginFrameAtTime:timeStamp:")]
 		void BeginFrame (double timeInSeconds, ref CVTimeStamp ts);
 

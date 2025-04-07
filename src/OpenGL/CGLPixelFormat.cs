@@ -42,6 +42,8 @@ using NativeHandle = System.IntPtr;
 
 namespace OpenGL {
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[ObsoletedOSPlatform ("macos10.14", "Use 'Metal' Framework instead.")]
 #else

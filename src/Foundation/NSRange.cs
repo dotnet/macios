@@ -29,6 +29,9 @@ using System.Runtime.Versioning;
 
 namespace Foundation {
 #if NET
+	/// <summary>Represents a range given by a location and length.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SimpleTextInput/">SimpleTextInput</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

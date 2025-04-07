@@ -14,7 +14,8 @@ using ObjCRuntime;
 using Foundation;
 
 namespace AudioToolbox {
-
+	/// <summary>Information on an instrument. Returned by <see cref="M:AudioToolbox.SoundBank.GetInstrumentInfo(Foundation.NSUrl)" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -75,6 +76,8 @@ namespace AudioToolbox {
 		public NSDictionary Dictionary { get; private set; }
 	}
 
+	/// <summary>A MIDI sound bank.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

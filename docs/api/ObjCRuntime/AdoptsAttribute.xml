@@ -1,0 +1,56 @@
+<Documentation>
+  <Docs DocId="T:ObjCRuntime.AdoptsAttribute">
+    <summary>An attribute used to specify that a class adopts a specific Objective-C protocol.</summary>
+    <remarks>
+      <para> 
+	You can use this attribute to decorate NSObject-derived
+	classes to report back to the Objective-C runtime that the
+	class adopts the specified Objective-C protocol.  
+
+      </para>
+      <para>
+	Unlike C# interfaces, Objective-C protocols have optional
+	components which means that they are not directly mapped to C#
+	constructs. In both the Xamarin.iOS and Xamarin.Mac Framework bindings,
+	protocols are usually inlined directly into the classes that adopt the
+	protocols. This allows developers to invoke any methods adopted
+	by the system classes.
+
+      </para>
+      <para>
+	User subclasses use this attribute when they want to
+	explicitly inform the Objective-C runtime that they adopt the
+	protocol.  This attribute is looked up by the
+	NSObject.ConformsToProtocol method.
+
+      </para>
+      <para>
+  An alternative method of specifying that a class adopts a specific
+  Objective-C protocol is to make the class implement the managed
+  interface for the protocol (usually the name of the protocol prefixed
+  by I).
+
+            <code lang="csharp lang-csharp"><![CDATA[
+//
+// The following examples are both equivalent
+//
+
+[Adopts ("UITableViewDelegate")]
+class MyTableViewA : UITableView
+{
+}
+
+class MyTableViewB : UITableView, IUITableViewDelegate
+{
+}
+
+]]></code>
+
+This has the advantage that the managed compiler will enforce
+the implementation of required protocol members, and the IDE
+will show intellisense to implement any protocol member.
+
+      </para>
+    </remarks>
+  </Docs>
+</Documentation>

@@ -30,6 +30,9 @@ using UIKit;
 
 namespace CoreMedia {
 
+	/// <summary>A container of zero-or-more samples of a particular media type.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/AVCaptureFrames/">avcaptureframes</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

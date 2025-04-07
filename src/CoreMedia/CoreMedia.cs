@@ -19,6 +19,8 @@ using ObjCRuntime;
 namespace CoreMedia {
 
 	// CMSampleBuffer.h
+	/// <summary>Timing information for a <see cref="T:CoreMedia.CMSampleBuffer" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -37,6 +39,8 @@ namespace CoreMedia {
 	}
 
 	// CMTimeRange.h
+	/// <summary>A duration of time.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -103,6 +107,8 @@ namespace CoreMedia {
 	}
 
 	// CMTimeRange.h
+	/// <summary>Specifies a mapping between a source <see cref="T:CoreMedia.CMTimeRange" /> and a target <see cref="T:CoreMedia.CMTimeRange" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -221,6 +227,8 @@ namespace CoreMedia {
 #endif // !COREBUILD
 	}
 
+	/// <summary>A value to be used as a denominator in a <see cref="T:CoreMedia.CMTime" /> calculation.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -250,6 +258,8 @@ namespace CoreMedia {
 	}
 
 	// CMVideoDimensions => int32_t width + int32_t height
+	/// <summary>Struct that contains the width and height of video media.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

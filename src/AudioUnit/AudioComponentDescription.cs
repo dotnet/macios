@@ -39,6 +39,11 @@ using AudioToolbox;
 using Foundation;
 
 namespace AudioUnit {
+	/// <summary>An enumeration whose values represent different types of audio components.</summary>
+	///     <remarks>
+	///       <para>Describes an audio unit component type.</para>
+	///       <para />
+	///     </remarks>
 	public enum AudioComponentType : uint { // OSType in AudioComponentDescription
 		/// <summary>An effect component, when set, you want to set a component subtype in the <see cref="F:AudioUnit.AudioComponentDescription.ComponentSubType" /> to one of the values from <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Audio%20Unit%20AUAudio%20Unit%20Sub%20Type%20Output&amp;scope=Xamarin" title="T:AudioUnit.AUAudioUnitSubType.Output">T:AudioUnit.AUAudioUnitSubType.Output</a></format></summary>
 		Output = 0x61756f75, //'auou',
@@ -108,6 +113,8 @@ namespace AudioUnit {
 #endif
 	}
 
+	/// <summary>An enumeration whose values specify the type of audio output.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioTypeOutput { // OSType in AudioComponentDescription
 		/// <summary>To be added.</summary>
 		Generic = 0x67656e72, // 'genr'
@@ -131,6 +138,8 @@ namespace AudioUnit {
 		VoiceProcessingIO = 0x7670696f, // 'vpio'
 	}
 
+	/// <summary>An enumeration whose values specify whether an audio music device is a sampler or not.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioTypeMusicDevice { // OSType in AudioComponentDescription
 #if MONOMAC
 		/// <summary>To be added.</summary>
@@ -149,6 +158,8 @@ namespace AudioUnit {
 		MidiSynth = 0x6d73796e, // 'msyn'
 	}
 
+	/// <summary>An enumeration whose values specify different audio unit format converters.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioTypeConverter { // OSType in AudioComponentDescription
 		/// <summary>Indicates a converter that does linear PCM conversions.</summary>
 		AU = 0x636f6e76, // 'conv'
@@ -189,6 +200,8 @@ namespace AudioUnit {
 #endif
 	}
 
+	/// <summary>An enumeration whose values specify different types of audio effects.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioTypeEffect { // OSType in AudioComponentDescription
 		/// <summary>To be added.</summary>
 		PeakLimiter = 0x6c6d7472, // 'lmtr'
@@ -278,6 +291,8 @@ namespace AudioUnit {
 		NBandEq = 0x6e626571, // 'nbeq'
 	}
 
+	/// <summary>An enumeration whose values specify whether the type of an audio mixer.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioTypeMixer { // OSType in AudioComponentDescription
 		/// <summary>To be added.</summary>
 		MultiChannel = 0x6d636d78, // 'mcmx'
@@ -312,6 +327,8 @@ namespace AudioUnit {
 #endif
 	}
 
+	/// <summary>An unimplemented enumeration.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioTypePanner { // OSType in AudioComponentDescription
 #if MONOMAC
 		/// <summary>To be added.</summary>
@@ -325,6 +342,8 @@ namespace AudioUnit {
 #endif
 	}
 
+	/// <summary>An enumeration whose values specify whether an audio generator is a file player or a scheduled sound player.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioTypeGenerator { // OSType in AudioComponentDescription
 #if MONOMAC
 		/// <summary>To be added.</summary>
@@ -336,12 +355,16 @@ namespace AudioUnit {
 		AudioFilePlayer = 0x6166706c, // 'afpl'
 	}
 
+	/// <summary>An enumeration that specifies that an audio component was manufactured by Apple.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioComponentManufacturerType : uint // OSType in AudioComponentDescription
 	{
 		/// <summary>To be added.</summary>
 		Apple = 0x6170706c, // little endian 0x6c707061 //'appl'
 	}
 
+	/// <summary>A flagging enumeration whose value specifies whether an audio component is searchable. Used with <see cref="F:AudioUnit.AudioComponentDescription.ComponentFlags" /></summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum AudioComponentFlag // UInt32 in AudioComponentDescription
 	{
@@ -358,6 +381,7 @@ namespace AudioUnit {
 	}
 
 #if NET
+	/// <include file="../../docs/api/AudioUnit/AudioComponentDescription.xml" path="/Documentation/Docs[@DocId='T:AudioUnit.AudioComponentDescription']/*" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

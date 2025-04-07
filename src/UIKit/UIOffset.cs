@@ -18,6 +18,8 @@ using ObjCRuntime;
 namespace UIKit {
 
 	// UIGeometry.h
+	/// <summary>A position offset.</summary>
+	///     <remarks>Represents a position offset. Positive values are to the right and down.</remarks>
 	public struct UIOffset {
 
 		// API match for UIOffsetZero field/constant

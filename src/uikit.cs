@@ -16429,11 +16429,13 @@ namespace UIKit {
 		[Export ("tableView:performAction:forRowAtIndexPath:withSender:")]
 		void PerformAction (UITableView tableView, Selector action, NSIndexPath indexPath, [NullAllowed] NSObject sender);
 
+		// The 'headerView' parameter can be null, even though the header claims otherwise: https://github.com/dotnet/macios/issues/9814
 		[Export ("tableView:willDisplayHeaderView:forSection:")]
-		void WillDisplayHeaderView (UITableView tableView, UIView headerView, nint section);
+		void WillDisplayHeaderView (UITableView tableView, [NullAllowed] UIView headerView, nint section);
 
+		// The 'footerView' parameter can be null, even though the header claims otherwise: https://github.com/dotnet/macios/issues/9814
 		[Export ("tableView:willDisplayFooterView:forSection:")]
-		void WillDisplayFooterView (UITableView tableView, UIView footerView, nint section);
+		void WillDisplayFooterView (UITableView tableView, [NullAllowed] UIView footerView, nint section);
 
 		[Export ("tableView:didEndDisplayingCell:forRowAtIndexPath:")]
 		void CellDisplayingEnded (UITableView tableView, UITableViewCell cell, NSIndexPath indexPath);
@@ -16925,11 +16927,13 @@ namespace UIKit {
 		[Export ("tableView:performAction:forRowAtIndexPath:withSender:")]
 		void PerformAction (UITableView tableView, Selector action, NSIndexPath indexPath, NSObject sender);
 
+		// The 'headerView' parameter can be null, even though the header claims otherwise: https://github.com/dotnet/macios/issues/9814
 		[Export ("tableView:willDisplayHeaderView:forSection:")]
-		void WillDisplayHeaderView (UITableView tableView, UIView headerView, nint section);
+		void WillDisplayHeaderView (UITableView tableView, [NullAllowed] UIView headerView, nint section);
 
+		// The 'footerView' parameter can be null, even though the header claims otherwise: https://github.com/dotnet/macios/issues/9814
 		[Export ("tableView:willDisplayFooterView:forSection:")]
-		void WillDisplayFooterView (UITableView tableView, UIView footerView, nint section);
+		void WillDisplayFooterView (UITableView tableView, [NullAllowed] UIView footerView, nint section);
 
 		[Export ("tableView:didEndDisplayingCell:forRowAtIndexPath:")]
 		void CellDisplayingEnded (UITableView tableView, UITableViewCell cell, NSIndexPath indexPath);

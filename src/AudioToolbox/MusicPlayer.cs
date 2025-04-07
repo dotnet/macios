@@ -21,6 +21,8 @@ using Foundation;
 namespace AudioToolbox {
 
 	// untyped enum (used as an OSStatus in the API) -> MusicPlayer.h
+	/// <summary>An enumeration whose values describe the status of a <see cref="T:AudioToolbox.MusicPlayer" />.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum MusicPlayerStatus {
 		/// <summary>To be added.</summary>
 		Success = 0,
@@ -49,6 +51,8 @@ namespace AudioToolbox {
 	}
 
 	// typedef UInt32 -> MusicPlayer.h
+	/// <summary>An enumeration whose values describe various music event types.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum MusicEventType : uint {
 		/// <summary>To be added.</summary>
 		Null,
@@ -73,6 +77,8 @@ namespace AudioToolbox {
 	}
 
 	// typedef UInt32 -> MusicPlayer.h
+	/// <summary>An enumeration that specifies the <c>loadFlags</c> values in the <see cref="M:AudioToolbox.MusicSequence.LoadData(Foundation.NSData,AudioToolbox.MusicSequenceFileTypeID,AudioToolbox.MusicSequenceLoadFlags)" /> and <see cref="M:AudioToolbox.MusicSequence.LoadFile(Foundation.NSUrl,AudioToolbox.MusicSequenceFileTypeID,AudioToolbox.MusicSequenceLoadFlags)" /> methods.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum MusicSequenceLoadFlags {
 		/// <summary>Indicates that the input tracks will be preserved in the output.</summary>
@@ -82,6 +88,8 @@ namespace AudioToolbox {
 	}
 
 	// typedef UInt32 -> MusicPlayer.h
+	/// <summary>An enumeration that specifies the type of a music sequence file.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum MusicSequenceFileTypeID : uint {
 		/// <summary>Indicates that the type is not specified.</summary>
 		Any = 0,
@@ -92,6 +100,8 @@ namespace AudioToolbox {
 	}
 
 	// typedef UInt32 -> MusicPlayer.h
+	/// <summary>Can be used to specify that an existing file should be erased when creating a new file. Used with the <see cref="M:AudioToolbox.MusicSequence.CreateFile(Foundation.NSUrl,AudioToolbox.MusicSequenceFileTypeID,AudioToolbox.MusicSequenceFileFlags,System.UInt16)" /> method.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum MusicSequenceFileFlags {
 		/// <summary>Indicates that the existing file should not be erased.</summary>
@@ -101,6 +111,8 @@ namespace AudioToolbox {
 	}
 
 
+	/// <summary>An object that plays a <see cref="T:AudioToolbox.MusicSequence" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

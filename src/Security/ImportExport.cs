@@ -36,6 +36,8 @@ using Foundation;
 
 namespace Security {
 
+	/// <summary>Encapsulates the import and export of identities and certificates.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class SecImportExport {
 
 		[DllImport (Constants.SecurityLibrary)]

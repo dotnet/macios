@@ -38,6 +38,8 @@ using NativeHandle = System.IntPtr;
 #nullable enable
 
 namespace AppKit {
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	public static class NSGraphics {
 		/// <summary>To be added.</summary>

@@ -27,6 +27,8 @@ using NativeHandle = System.IntPtr;
 
 namespace Security {
 
+	/// <summary>Contains access control flags for creating keychain entries.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
 #if NET
@@ -156,6 +158,8 @@ namespace Security {
 	}
 
 #if NET
+	/// <summary>Class that contains accessibility flags and access control object creation flags.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

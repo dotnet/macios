@@ -52,6 +52,8 @@ namespace CoreText {
 	}
 	#endregion
 
+	/// <summary>A class that represents the operations possible on a <see cref="T:CoreText.CTRunDelegate" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -184,6 +186,9 @@ namespace CoreText {
 		}
 	}
 
+	/// <summary>A delegate object that can be used to handle <see cref="T:CoreText.CTRunDelegateOperations" /> on a <see cref="T:CoreText.CTRun" />.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <altmember cref="P:CoreText.CTStringAttributes.RunDelegate" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

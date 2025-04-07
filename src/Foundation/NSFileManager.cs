@@ -38,6 +38,8 @@ using System.Runtime.Versioning;
 namespace Foundation {
 
 	// This is a convenience enum around a set of native strings.
+	/// <summary>File kind enumeration.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum NSFileType {
 		/// <summary>A directory</summary>
 		Directory,
@@ -56,6 +58,8 @@ namespace Foundation {
 	}
 
 #if !MONOMAC
+	/// <summary>Enumerates file protection levels.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum NSFileProtection {
 		/// <summary>To be added.</summary>
 		None,
@@ -69,6 +73,8 @@ namespace Foundation {
 #endif
 
 #if NET
+	/// <summary>Encapsulates file attributes for use with <see cref="T:Foundation.NSFileManager" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -377,6 +383,8 @@ namespace Foundation {
 	}
 
 #if NET
+	/// <summary>File system attributes (size, blocks and free information).</summary>
+	///     <remarks>This is a strong wrapper around the underlying NSDictionary returned by NSFileSystem APIs.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

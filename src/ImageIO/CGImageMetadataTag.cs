@@ -24,6 +24,8 @@ namespace ImageIO {
 
 	// CGImageMetadata.h
 #if NET
+	/// <summary>An EXIF, IPTC, or XMP property and value.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

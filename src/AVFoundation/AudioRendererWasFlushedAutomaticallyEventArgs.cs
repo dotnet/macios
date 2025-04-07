@@ -5,7 +5,9 @@ using ObjCRuntime;
 #nullable enable
 
 namespace AVFoundation {
-
+	/// <summary>Provides data for the  event.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]

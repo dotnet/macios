@@ -28,6 +28,8 @@ using NativeHandle = System.IntPtr;
 
 namespace PrintCore {
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class PMPrintCoreBase : NativeObject {
@@ -55,6 +57,8 @@ namespace PrintCore {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class PMPrintException : Exception {
@@ -65,6 +69,8 @@ namespace PrintCore {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class PMPrintSession : PMPrintCoreBase {
@@ -220,6 +226,8 @@ namespace PrintCore {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class PMPrintSettings : PMPrintCoreBase {
@@ -458,6 +466,8 @@ namespace PrintCore {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class PMPageFormat : PMPrintCoreBase {
@@ -586,6 +596,8 @@ namespace PrintCore {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class PMPaper : PMPrintCoreBase {
@@ -688,6 +700,8 @@ namespace PrintCore {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class PMPrinter : PMPrintCoreBase {
@@ -1100,6 +1114,8 @@ namespace PrintCore {
 	}
 
 #if NET
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 #endif
 	public class PMServer : PMPrintCoreBase {

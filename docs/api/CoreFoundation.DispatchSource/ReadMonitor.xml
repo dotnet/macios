@@ -1,0 +1,41 @@
+<Documentation>
+  <Docs DocId="T:CoreFoundation.DispatchSource.ReadMonitor">
+    <summary>Sources of this type monitor file descriptors for pending data.</summary>
+    <remarks>
+      <para>The data returned by <see cref="P:CoreFoundation.DispatchSource.ReadMonitor.BytesAvailable" /> is an estimated number of bytes available to be read from the descriptor. This estimate should be treated as a suggested minimum read buffer size.</para>
+      <para>
+      </para>
+      <para>There are no guarantees that a complete read of this size will be performed.</para>
+      <para>
+      </para>
+      <para>Users of this source type are strongly encouraged to perform non-blocking I/O and handle any truncated reads or error conditions that may occur. </para>
+      <example>
+        <code lang="c#"><![CDATA[
+var stream = File.OpenRead ("Demo.txt");
+
+// The the unix file handle
+var safeHandle = stream.SafeFileHandle;
+IntPtr descriptor = safeHandle.DangerousGetHandle ();
+int fileDescriptor = descriptor.ToInt32 ();
+
+dispatchSource = new DispatchSource.ReadMonitor (fileDescriptor, DispatchQueue.MainQueue);
+
+dispatchSource.SetRegistrationHandler (() => {
+    Console.WriteLine ("Read monitor registered");
+});
+
+dispatchSource.SetEventHandler (() => {
+    Console.WriteLine ("Read monitor: was opened in write mode")
+    dispatchSource.Cancel ();
+    stream.Close ();
+});
+
+dispatchSource.SetCancelHandler (() => {
+    Console.WriteLine ("Read monitor cancelled");
+});
+
+dispatchSource.Resume ();]]></code>
+      </example>
+    </remarks>
+  </Docs>
+</Documentation>

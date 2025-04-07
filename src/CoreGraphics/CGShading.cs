@@ -37,6 +37,8 @@ using ObjCRuntime;
 using Foundation;
 
 namespace CoreGraphics {
+	/// <summary>A type that represents a Quartz shading.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

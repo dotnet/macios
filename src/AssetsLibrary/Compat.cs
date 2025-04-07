@@ -20,10 +20,23 @@ using NativeHandle = System.IntPtr;
 
 namespace AssetsLibrary {
 
+	/// <param name="result">The asset.</param>
+	///     <param name="index">The index of this asset.</param>
+	///     <param name="stop">If set to true, the enumeration process will stop.</param>
+	///     <summary>Signature for delegates participating in asset enumeration.</summary>
+	///     <remarks>
+	///     </remarks>
 	public delegate void ALAssetsEnumerator (ALAsset result, nint index, ref bool stop);
 
+	/// <param name="group">To be added.</param>
+	///     <param name="stop">To be added.</param>
+	///     <summary>A delegate that is used as the <c>enumerationBlock</c> parameter in calls to the <see cref="M:AssetsLibrary.ALAssetsLibrary.Enumerate(AssetsLibrary.ALAssetsGroupType,AssetsLibrary.ALAssetsLibraryGroupsEnumerationResultsDelegate,System.Action{Foundation.NSError})" /> method.</summary>
+	///     <remarks>To be added.</remarks>
 	public delegate void ALAssetsLibraryGroupsEnumerationResultsDelegate (ALAssetsGroup group, ref bool stop);
 
+	/// <summary>An enumeration whose values specify various errors relating to <see cref="T:AssetsLibrary.ALAsset" />s.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <!-- TODO: Unused? -->
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete (Constants.AssetsLibraryRemoved)]
 	public enum ALAssetsError : int {
@@ -49,6 +62,10 @@ namespace AssetsLibrary {
 		AccessGloballyDeniedError = -3312,
 	}
 
+	/// <summary>Extension methods for the AssetsLibrary.ALAssetsError enumeration.</summary>
+	///     <remarks>
+	///       <para>The extension method for the AssetsLibrary.ALAssetsError enumeration can be used to fetch the error domain associated with these error codes.</para>
+	///     </remarks>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete (Constants.AssetsLibraryRemoved)]
 	static public partial class ALAssetsErrorExtensions {
@@ -64,6 +81,9 @@ namespace AssetsLibrary {
 		}
 	}
 
+	/// <summary>The orientation of the asset.</summary>
+	///     <remarks>
+	///     </remarks>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete (Constants.AssetsLibraryRemoved)]
 	[Native]
@@ -93,6 +113,9 @@ namespace AssetsLibrary {
 		RightMirrored = 7,
 	}
 
+	/// <summary>Describes the group type.</summary>
+	///     <remarks>
+	///     </remarks>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete (Constants.AssetsLibraryRemoved)]
 	[Flags]
@@ -114,6 +137,8 @@ namespace AssetsLibrary {
 		All = 4294967295,
 	}
 
+	/// <summary>The asset type.</summary>
+	///     <remarks>To be added.</remarks>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete (Constants.AssetsLibraryRemoved)]
 	public enum ALAssetType : int {
@@ -125,6 +150,8 @@ namespace AssetsLibrary {
 		Unknown = 2,
 	}
 
+	/// <summary>An enumeration whose values specify the authorization status of a <see cref="T:AssetsLibrary.ALAssetsLibrary" />. Retrieved by the <see cref="P:AssetsLibrary.ALAssetsLibrary.AuthorizationStatus" /> property.</summary>
+	///     <remarks>To be added.</remarks>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete (Constants.AssetsLibraryRemoved)]
 	[Native]
@@ -139,6 +166,10 @@ namespace AssetsLibrary {
 		Authorized = 3,
 	}
 
+	/// <summary>An asset managed by the Photo application (videos and photos).</summary>
+	///     <remarks>
+	///     </remarks>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AssetsLibrary/Reference/ALAsset_Class/index.html">Apple documentation for <c>ALAsset</c></related>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete (Constants.AssetsLibraryRemoved)]
 	public unsafe partial class ALAsset : NSObject {
@@ -479,6 +510,9 @@ namespace AssetsLibrary {
 		}
 	} /* class ALAsset */
 
+	/// <summary>A specific representation of an asset.</summary>
+	///     <remarks>Some assets can have more than one representation.   Consider images that are stored in two different formats for example, this class represents a particular reprensetation of the asset.</remarks>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AssetsLibrary/Reference/ALAssetRepresentation_Class/index.html">Apple documentation for <c>ALAssetRepresentation</c></related>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete (Constants.AssetsLibraryRemoved)]
 	public unsafe partial class ALAssetRepresentation : NSObject {
@@ -609,6 +643,10 @@ namespace AssetsLibrary {
 		}
 	} /* class ALAssetRepresentation */
 
+	/// <summary>Keys used to limit asset enumeration by a specific kind.</summary>
+	///     <remarks>
+	///     </remarks>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AssetsLibrary/Reference/ALAssetsFilter_Class/index.html">Apple documentation for <c>ALAssetsFilter</c></related>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete (Constants.AssetsLibraryRemoved)]
 	public unsafe partial class ALAssetsFilter : NSObject {
@@ -668,6 +706,9 @@ namespace AssetsLibrary {
 		}
 	} /* class ALAssetsFilter */
 
+	/// <summary>Sets of assets managed by the Photo application.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AssetsLibrary/Reference/ALAssetsGroup_Class/index.html">Apple documentation for <c>ALAssetsGroup</c></related>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete (Constants.AssetsLibraryRemoved)]
 	public unsafe partial class ALAssetsGroup : NSObject {
@@ -836,6 +877,9 @@ namespace AssetsLibrary {
 		}
 	} /* class ALAssetsGroup */
 
+	/// <summary>A class that encapsulates access to the video and media of the "Photos" application.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AssetsLibrary/Reference/ALAssetsLibrary_Class/index.html">Apple documentation for <c>ALAssetsLibrary</c></related>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete (Constants.AssetsLibraryRemoved)]
 	public unsafe partial class ALAssetsLibrary : NSObject {
@@ -1082,6 +1126,11 @@ namespace AssetsLibrary {
 		//
 		// Notifications
 		//
+		/// <summary>Notification posted by the <see cref="T:AssetsLibrary.ALAssetsLibrary" /> class.</summary>
+		///     <remarks>
+		///       <para>This is a static class which contains various helper methods that allow developers to observe events posted in the iOS notification hub (<see cref="T:Foundation.NSNotificationCenter" />).</para>
+		///       <para>The methods defined in this class post events invoke the provided method or lambda with a <see cref="T:Foundation.NSNotificationEventArgs" /> parameter which contains strongly typed properties for the notification arguments.</para>
+		///     </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete (Constants.AssetsLibraryRemoved)]
 		public static partial class Notifications {
@@ -1108,6 +1157,9 @@ namespace AssetsLibrary {
 		}
 	} /* class ALAssetsLibrary */
 
+	/// <summary>Provides data for the  event.</summary>
+	///     <remarks>
+	///     </remarks>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete (Constants.AssetsLibraryRemoved)]
 	public partial class ALAssetLibraryChangedEventArgs : NSNotificationEventArgs {

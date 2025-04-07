@@ -1,22 +1,22 @@
 <Documentation>
   <Docs DocId="M:UIKit.UIFontFeature.#ctor(CoreText.CTFontFeatureCharacterAlternatives.Selector)">
-        <param name="featureSelector">The value for this setting.</param>
-        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureCharacterAlternatives with the given value.</summary>
-        <remarks>
-          <para>
+    <param name="featureSelector">The value for this setting.</param>
+    <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureCharacterAlternatives with the given value.</summary>
+    <remarks>
+      <para>
 	    This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureCharacterAlternatives type using the <paramref name="featureSelector" /> as its parameter.
 	  </para>
-          <para>
+      <para>
 	    Character alternatives are font specific, and the only
 	    strongly typed value is the NoAlternatives value.  Any other
 	    integer above 0 is used to specify the specific character
 	    alternative that you want to use.
 	  </para>
-          <para>
+      <para>
 	    It is simpler to use the UIFontFeature constructor that just takes an integer:
 	  </para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
 UIFont CustomizeFont (UIFont font)
 {
     var originalDescriptor = font.FontDescriptor;
@@ -26,7 +26,38 @@ UIFont CustomizeFont (UIFont font)
     return UIFont.FromDescriptor (newDesc, 80);
 }
 ]]></code>
-          </example>
-        </remarks>
-      </Docs>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="T:UIKit.UIFontFeature">
+    <summary>Represents a single typographic or font layout feature.</summary>
+    <remarks>
+      <para>
+	The UIFontFeature represents a specific typographic or font
+	layout feature set to a particular value.  These objects are
+	both strongly typed and immutable and intended to assist
+	developers in choosing which features to enable in a font by
+	providing strong types for them.
+
+      </para>
+      <para>
+	Instances of these objects are created to be part of an array
+	of desired features when creating a <see cref="T:UIKit.UIFontAttributes" />.   For example:
+
+      </para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+UIFont CustomizeFont (UIFont font)
+{
+    var originalDescriptor = font.FontDescriptor;
+    var attributes = new UIFontAttributes (
+        new UIFontFeature (CTFontFeatureNumberSpacing.Selector.ProportionalNumbers),
+	new UIFontFeature ((CTFontFeatureCharacterAlternatives.Selector)1));
+    var newDesc = originalDescriptor.CreateWithAttributes (attributes);
+    return UIFont.FromDescriptor (newDesc, 80);
+}
+          ]]></code>
+      </example>
+    </remarks>
+  </Docs>
 </Documentation>

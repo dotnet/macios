@@ -23,12 +23,16 @@
 using System;
 
 namespace Foundation {
+	/// <summary>An convenience exception used in Model method implementations.</summary>
+	///     <remarks>To be added.</remarks>
 	public class ModelNotImplementedException : Exception {
 		/// <summary>Default constructor.</summary>
 		///         <remarks>To be added.</remarks>
 		public ModelNotImplementedException () { }
 	}
 
+	/// <summary>This class exits purely as a warning to future generations.   You called a method using “base”, but this was not required.</summary>
+	///     <remarks>To be added.</remarks>
 	public class You_Should_Not_Call_base_In_This_Method : Exception {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>

@@ -5,6 +5,8 @@ using ObjCRuntime;
 
 namespace Foundation {
 
+	/// <summary>An enumeration whose values specify the type of a <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:NSFoundation.NSUserDefaults&amp;scope=Xamarin" title="T:NSFoundation.NSUserDefaults">T:NSFoundation.NSUserDefaults</a></format> object.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum NSUserDefaultsType {
 		/// <summary>To be added.</summary>
 		UserName,

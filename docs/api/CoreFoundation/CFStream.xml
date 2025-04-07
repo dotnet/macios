@@ -33,4 +33,31 @@
       <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at https://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
     </remarks>
   </Docs>
+  <Docs DocId="T:CoreFoundation.CFStream">
+    <summary>An abstract class that defines a stream for reading or writing bytes - modern applications should use the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Network&amp;scope=Xamarin" title="N:Network">N:Network</a></format> APIs instead.</summary>
+    <remarks>
+      <format type="text/html">
+        <h2>Converting CFStreams to NSStreams</h2>
+      </format>
+      <para>
+	If you need to turn a CFStream into an NSStream, or an
+	NSStream subclass, you can do so by surfacing an NSStream
+	version of the method like this:
+      </para>
+      <example>
+        <code lang="c#"><![CDATA[
+CFReadStream readStream;
+CFWriteStream writeStream;
+CFStream.CreatePairWithSocketToHost("www.google.com", 80, out readStream, out writeStream);
+
+// 
+// Get NSStream variatns
+//
+_inputStream = ObjCRuntime.Runtime.GetNSObject<NSInputStream>(readStream.Handle);
+_outputStream =
+ObjCRuntime.Runtime.GetNSObject<NSOutputStream>(writeStream.Handle);
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
 </Documentation>

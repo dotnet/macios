@@ -43,6 +43,8 @@ using Foundation;
 using System.Runtime.Versioning;
 
 namespace AudioUnit {
+	/// <summary>An enumeration whose values indicate various errors relating to <see cref="T:AudioUnit.ExtAudioFile" />s.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum ExtAudioFileError // Implictly cast to OSType
 	{
 		/// <summary>To be added.</summary>
@@ -90,6 +92,10 @@ namespace AudioUnit {
 	}
 
 #if NET
+	/// <summary>The ExtendedAudioFile provides high-level audio file access. It provides a single unified interface to reading and writing both encoded and unencoded files with access to <see cref="T:AudioToolbox.AudioFile" /> and <see cref="T:AudioToolbox.AudioConverter" /> API. 
+	///     </summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

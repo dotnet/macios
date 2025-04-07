@@ -39,6 +39,8 @@ using ObjCRuntime;
 
 namespace Foundation {
 #if NET
+	/// <summary>Represents an immutable value that can range from mantissa*10^exponent where mantissa is a decimal integer of up to 38 digits length, and the exponent is an integer that can range from -128 through 127.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

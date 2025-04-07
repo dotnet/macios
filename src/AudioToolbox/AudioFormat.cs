@@ -42,6 +42,9 @@ using AudioFileID = System.IntPtr;
 namespace AudioToolbox {
 
 	// AudioFormatListItem
+	/// <summary>Tuple structure that encapsulates both an AudioChannelLayoutTag and an AudioStreamBasicDescription.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -87,6 +90,8 @@ namespace AudioToolbox {
 		}
 	}
 
+	/// <summary>An enumeration whose values specify various errors relating to audio formats.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioFormatError : int // Implictly cast to OSType
 	{
 		/// <summary>To be added.</summary>
@@ -108,6 +113,8 @@ namespace AudioToolbox {
 		// '!dat'
 	}
 
+	/// <summary>A struct that holds minimum and maximum float values, indicating a range.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -122,6 +129,8 @@ namespace AudioToolbox {
 		public double Maximum;
 	}
 
+	/// <summary>An enumeration whose values specify whether balance/fade manipulation should always have a gain of less than 1.0.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum AudioBalanceFadeType : uint // UInt32 in AudioBalanceFades
 	{
 		/// <summary>Overall gain is not allowed to exceed 1.0.</summary>
@@ -130,6 +139,8 @@ namespace AudioToolbox {
 		EqualPower = 1,
 	}
 
+	/// <summary>Holds left/right balance and front/back fade values.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -217,6 +228,8 @@ namespace AudioToolbox {
 #endif // !COREBUILD
 	}
 
+	/// <summary>An enumeration whose values specify the panning mode (sound-field vs. vector-based).</summary>
+	///     <remarks>To be added.</remarks>
 	public enum PanningMode : uint // UInt32 in AudioPanningInfo
 	{
 		/// <summary>To be added.</summary>
@@ -225,6 +238,8 @@ namespace AudioToolbox {
 		VectorBasedPanning = 4,
 	}
 
+	/// <summary>Information on audio panning.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

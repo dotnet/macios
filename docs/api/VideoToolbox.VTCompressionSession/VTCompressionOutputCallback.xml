@@ -1,0 +1,10 @@
+<Documentation>
+  <Docs DocId="T:VideoToolbox.VTCompressionSession.VTCompressionOutputCallback">
+    <param name="sourceFrame">The token passed to <see cref="M:VideoToolbox.VTCompressionSession.EncodeFrame(CoreVideo.CVImageBuffer,CoreMedia.CMTime,CoreMedia.CMTime,Foundation.NSDictionary,System.IntPtr,VideoToolbox.VTEncodeInfoFlags@)" /> method</param>
+    <param name="status">Status code indicating if the operation was successful or not.</param>
+    <param name="flags">Contains information about the encoding operation. </param>
+    <param name="buffer">Contains a pointer to the encoded buffer if successful and the frame was not dropped.  A value of null indicates either an error, or that the frame was dropped.</param>
+    <summary>Handler prototype to be called for each compressed frame</summary>
+    <remarks>The methods invoked as a result of calling <see cref="M:VideoToolbox.VTDecompressionSession.Create(VideoToolbox.VTDecompressionSession.VTDecompressionOutputCallback,CoreMedia.CMVideoFormatDescription,VideoToolbox.VTVideoDecoderSpecification,Foundation.NSDictionary)" /> will be invoked for each frame in decode order, not necessarily the display order.</remarks>
+  </Docs>
+</Documentation>

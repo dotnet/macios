@@ -1,0 +1,41 @@
+<Documentation>
+  <Docs DocId="T:CoreFoundation.DispatchSource.VnodeMonitor">
+    <summary>Sources of this type monitor the virtual filesystem nodes for state changes.</summary>
+    <remarks>
+      <para />
+      <example>
+        <code lang="c#"><![CDATA[
+var stream = File.Create ("Demo.txt");
+
+// Get the underlying Unix file descriptor
+var safeHandle = stream.SafeFileHandle;
+IntPtr descriptor = safeHandle.DangerousGetHandle ();
+int fileDescriptor = descriptor.ToInt32 ();
+
+var dispatchSource = new DispatchSource.VnodeMonitor (
+    fileDescriptor,
+    VnodeMonitorKind.Delete | VnodeMonitorKind.Extend | VnodeMonitorKind.Write,
+    DispatchQueue.MainQueue
+);
+
+dispatchSource.SetRegistrationHandler (() => {
+    Console.WriteLine ("Vnode monitor registered");
+});
+
+dispatchSource.SetEventHandler (() => {
+    var observedEvents = dispatchSource.ObservedEvents;
+    Console.WriteLine ("Vnode monitor event for file: {0}", observedEvents);
+    dispatchSource.Cancel ();
+    stream.Close ();
+});
+
+dispatchSource.SetCancelHandler (() => {
+    Console.WriteLine (textView, "Vnode monitor cancelled");
+});
+
+dispatchSource.Resume ();
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+</Documentation>

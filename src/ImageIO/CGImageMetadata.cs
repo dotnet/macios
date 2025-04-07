@@ -46,10 +46,17 @@ namespace ImageIO {
 		}
 	}
 
+	/// <param name="path">To be added.</param>
+	///     <param name="tag">To be added.</param>
+	///     <summary>Callback for the &lt;see cref=M:MonoTouch.ImageIO.CGImageMetadata.EnumerateTags/&gt; method.</summary>
+	///     <returns>To be added.</returns>
+	///     <remarks>To be added.</remarks>
 	public delegate bool CGImageMetadataTagBlock (NSString path, CGImageMetadataTag tag);
 
 	// CGImageMetadata.h
 #if NET
+	/// <summary>An immutable container for metadata. (See <see cref="T:ImageIO.CGMutableImageMetadata" />.)</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

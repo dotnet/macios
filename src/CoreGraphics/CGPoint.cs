@@ -15,6 +15,8 @@ using Foundation;
 using ObjCRuntime;
 
 namespace CoreGraphics {
+	/// <summary>Structure defining a 2D point.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

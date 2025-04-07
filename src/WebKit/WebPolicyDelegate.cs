@@ -31,6 +31,8 @@ using ObjCRuntime;
 
 namespace WebKit {
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class WebPolicyDelegate {
 		static IntPtr selUse = Selector.GetHandle ("use");
 		static IntPtr selDownload = Selector.GetHandle ("download");

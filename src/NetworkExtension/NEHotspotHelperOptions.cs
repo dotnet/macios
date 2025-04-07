@@ -6,6 +6,8 @@ using Foundation;
 
 namespace NetworkExtension {
 
+	/// <summary>Represents options for registering a Hotspot Helper.</summary>
+	///     <remarks>To be added.</remarks>
 	public class NEHotspotHelperOptions : DictionaryContainer {
 
 #if !COREBUILD

@@ -526,6 +526,11 @@ namespace PassKit {
 		[EventArgs ("PKPaymentRequestShippingMethodUpdate")]
 		void DidSelectShippingMethod2 (PKPaymentAuthorizationViewController controller, PKShippingMethod shippingMethod, Action<PKPaymentRequestShippingMethodUpdate> completion);
 
+		/// <param name="controller">To be added.</param>
+		///         <param name="address">To be added.</param>
+		///         <param name="completion">To be added.</param>
+		///         <summary>Indicates the user selected a shipping address.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMacCatalyst]
 		[Deprecated (PlatformName.iOS, 9, 0)]
 		[NoMac]

@@ -26,6 +26,8 @@ using NativeHandle = System.IntPtr;
 namespace VideoToolbox {
 
 #if NET
+	/// <summary>Turns compressed frames into uncompressed video frames.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -69,6 +71,14 @@ namespace VideoToolbox {
 		}
 
 		// sourceFrame: It seems it's only used as a parameter to be passed into DecodeFrame so no need to strong type it
+		/// <param name="sourceFrame">To be added.</param>
+		///     <param name="status">To be added.</param>
+		///     <param name="flags">To be added.</param>
+		///     <param name="buffer">To be added.</param>
+		///     <param name="presentationTimeStamp">To be added.</param>
+		///     <param name="presentationDuration">To be added.</param>
+		///     <summary>Handler prototype to be called for each decompressed frame.</summary>
+		///     <remarks>To be added.</remarks>
 		public delegate void VTDecompressionOutputCallback (/* void* */ IntPtr sourceFrame, /* OSStatus */ VTStatus status, VTDecodeInfoFlags flags, CVImageBuffer buffer, CMTime presentationTimeStamp, CMTime presentationDuration);
 #if !NET
 		delegate void DecompressionOutputCallback (/* void* */ IntPtr outputCallbackClosure, /* void* */ IntPtr sourceFrame, /* OSStatus */ VTStatus status,

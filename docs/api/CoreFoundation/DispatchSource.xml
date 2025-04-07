@@ -1,42 +1,169 @@
 <Documentation>
   <Docs DocId="M:CoreFoundation.DispatchSource.SetRegistrationHandler(System.Action)">
-        <param name="handler">Handler to invoke when the dispatch source has been registered and is ready to receive events.</param>
-        <summary>Provides a registration handler</summary>
-        <remarks>
-          <para>When <see cref="M:CoreFoundation.DispatchSource.Resume" /> is called on a suspended or newly created source, there may be a brief delay before the source is ready to receive events from the underlying system handle. During this delay, the event handler will not be invoked, and events will be missed.</para>
-          <para />
-          <para>Once the dispatch source is registered with the underlying system and is ready to process all events its optional registration handler will be submitted to its target queue. This registration handler may be specified via <see cref="M:CoreFoundation.DispatchSource.SetRegistrationHandler(System.Action)" /></para>
-          <para />
-          <para>The event handler will not be called until the registration handler finishes. If the source is canceled (see below) before it is registered, its registration handler will not be called.</para>
-          <para>
-          </para>
-        </remarks>
-      </Docs>
+    <param name="handler">Handler to invoke when the dispatch source has been registered and is ready to receive events.</param>
+    <summary>Provides a registration handler</summary>
+    <remarks>
+      <para>When <see cref="M:CoreFoundation.DispatchSource.Resume" /> is called on a suspended or newly created source, there may be a brief delay before the source is ready to receive events from the underlying system handle. During this delay, the event handler will not be invoked, and events will be missed.</para>
+      <para />
+      <para>Once the dispatch source is registered with the underlying system and is ready to process all events its optional registration handler will be submitted to its target queue. This registration handler may be specified via <see cref="M:CoreFoundation.DispatchSource.SetRegistrationHandler(System.Action)" /></para>
+      <para />
+      <para>The event handler will not be called until the registration handler finishes. If the source is canceled (see below) before it is registered, its registration handler will not be called.</para>
+      <para>
+      </para>
+    </remarks>
+  </Docs>
   <Docs DocId="M:CoreFoundation.DispatchSource.Cancel">
-        <summary>Asynchronously cancels the dispatch source.</summary>
-        <remarks>
-          <para>The <see cref="M:CoreFoundation.DispatchSource.Cancel" /> function asynchronously cancels the dispatch source, preventing any further invocation of its event handler block. Cancellation does not interrupt a currently executing handler block (non-preemptive). If a source is canceled before the first time it is resumed, its event handler will never be called.  (In this case, note that the source must be resumed before it can be released.)</para>
-          <para>
-          </para>
-          <para>The <see cref="P:CoreFoundation.DispatchSource.IsCanceled" /> function may be used to determine whether the specified source has been canceled. </para>
-          <para>
-          </para>
-          <para>When a dispatch source is canceled its optional cancellation handler will be submitted to its target queue. The cancellation handler may be specified via <see cref="M:CoreFoundation.DispatchSource.SetCancelHandler(System.Action)" />. This cancellation handler is invoked only once, and only as a direct consequence of calling <see cref="M:CoreFoundation.DispatchSource.Cancel" />.</para>
-          <para>
-          </para>
-          <para>Important: a cancellation handler is required for file descriptor and mach port based sources in order to safely close the descriptor or destroy the port. Closing the descriptor or port before the cancellation handler has run may result in a race condition: if a new descriptor is allocated with the same value as the recently closed descriptor while the source's event handler is still running, the event handler may read/write data to the wrong descriptor.</para>
-        </remarks>
-      </Docs>
+    <summary>Asynchronously cancels the dispatch source.</summary>
+    <remarks>
+      <para>The <see cref="M:CoreFoundation.DispatchSource.Cancel" /> function asynchronously cancels the dispatch source, preventing any further invocation of its event handler block. Cancellation does not interrupt a currently executing handler block (non-preemptive). If a source is canceled before the first time it is resumed, its event handler will never be called.  (In this case, note that the source must be resumed before it can be released.)</para>
+      <para>
+      </para>
+      <para>The <see cref="P:CoreFoundation.DispatchSource.IsCanceled" /> function may be used to determine whether the specified source has been canceled. </para>
+      <para>
+      </para>
+      <para>When a dispatch source is canceled its optional cancellation handler will be submitted to its target queue. The cancellation handler may be specified via <see cref="M:CoreFoundation.DispatchSource.SetCancelHandler(System.Action)" />. This cancellation handler is invoked only once, and only as a direct consequence of calling <see cref="M:CoreFoundation.DispatchSource.Cancel" />.</para>
+      <para>
+      </para>
+      <para>Important: a cancellation handler is required for file descriptor and mach port based sources in order to safely close the descriptor or destroy the port. Closing the descriptor or port before the cancellation handler has run may result in a race condition: if a new descriptor is allocated with the same value as the recently closed descriptor while the source's event handler is still running, the event handler may read/write data to the wrong descriptor.</para>
+    </remarks>
+  </Docs>
   <Docs DocId="M:CoreFoundation.DispatchSource.Dispose(System.Boolean)">
-        <param name="disposing">
-          <para>If set to <see langword="true" />, the method is invoked directly and will dispose managed and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
-        </param>
-        <summary>Releases the resources used by the DispatchSource object.</summary>
-        <remarks>
-          <para>This Dispose method releases the resources used by the DispatchSource class.</para>
-          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
-          <para>Calling the Dispose method when the application is finished using the DispatchSource ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
-          <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at https://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
-        </remarks>
-      </Docs>
+    <param name="disposing">
+      <para>If set to <see langword="true" />, the method is invoked directly and will dispose managed and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
+    </param>
+    <summary>Releases the resources used by the DispatchSource object.</summary>
+    <remarks>
+      <para>This Dispose method releases the resources used by the DispatchSource class.</para>
+      <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
+      <para>Calling the Dispose method when the application is finished using the DispatchSource ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
+      <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at https://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
+    </remarks>
+  </Docs>
+  <Docs DocId="T:CoreFoundation.DispatchSource">
+    <summary>DispatchSource is a base class used to reprenset event sources that can monitor a variety of system objects and events including file descriptors, mach ports, processes, virtual filesystem nodes, signal delivery and timers.</summary>
+    <remarks>
+      <para>Dispatch event sources may be used to monitor a variety of system objects and events including file descriptors, mach ports, processes, virtual filesystem nodes, signal delivery and timers.  To monitor a specific kind of source, you create an instance of one of the DispatchSource subclasses:</para>
+      <para>
+      </para>
+      <list type="bullet">
+        <item>
+          <term>
+            <see cref="T:CoreFoundation.DispatchSource.DataAdd" />
+          </term>
+        </item>
+        <item>
+          <term>
+            <see cref="T:CoreFoundation.DispatchSource.DataOr" />
+          </term>
+        </item>
+        <item>
+          <term>
+            <see cref="T:CoreFoundation.DispatchSource.MachReceive" />
+          </term>
+        </item>
+        <item>
+          <term>
+            <see cref="T:CoreFoundation.DispatchSource.MachSend" />
+          </term>
+        </item>
+        <item>
+          <term>
+            <see cref="T:CoreFoundation.DispatchSource.MemoryPressure" />
+          </term>
+        </item>
+        <item>
+          <term>
+            <see cref="T:CoreFoundation.DispatchSource.ProcessMonitor" />
+          </term>
+        </item>
+        <item>
+          <term>
+            <see cref="T:CoreFoundation.DispatchSource.ReadMonitor" />
+          </term>
+        </item>
+        <item>
+          <term>
+            <see cref="T:CoreFoundation.DispatchSource.SignalMonitor" />
+          </term>
+        </item>
+        <item>
+          <term>
+            <see cref="T:CoreFoundation.DispatchSource.Timer" />
+          </term>
+        </item>
+        <item>
+          <term>
+            <see cref="T:CoreFoundation.DispatchSource.VnodeMonitor" />
+          </term>
+        </item>
+        <item>
+          <term>
+            <see cref="T:CoreFoundation.DispatchSource.WriteMonitor" />
+          </term>
+        </item>
+      </list>
+      <para>
+      </para>
+      <para>
+      </para>
+      <para>When a state change occurs, the dispatch source will submit its event handler block to its target queue.</para>
+      <para>
+      </para>
+      <para>Newly created sources are created in a suspended state. After the source has been configured by setting an event handler, cancellation handler, registration handler, context, etc., the source must be activated by a call to <see cref="M:CoreFoundation.DispatchSource.Resume" /> before any events will be delivered.</para>
+      <para>
+      </para>
+      <format type="text/html">
+        <h2>Source Event Handlers</h2>
+        <div>
+          <div>To receive events from the dispatch source, an event handler should be specified via <see cref="M:CoreFoundation.DispatchSource.SetEventHandler(System.Action)" />. The event handler is submitted to the source's target queue when the state of the underlying system handle changes, or when an event occurs. If a source is resumed with no event handler block set, events will be quietly ignored.  If the event handler is changed while the source is suspended, or from a block running on a serial queue that is the source's target queue, then the next event handler invocation will use the new block.</div>
+          <div>
+            <br />
+          </div>
+          <div>Dispatch sources may be suspended or resumed independently of their target queues using <see cref="M:CoreFoundation.DispatchSource.Suspend" /> and <see cref="M:CoreFoundation.DispatchSource.Resume" /> on the dispatch source directly. The data describing events which occur while a source is suspended are coalesced and delivered once the source is resumed.</div>
+          <div>
+            <br />
+          </div>
+          <div>The handler does not need to be reentrant safe, as it is not resubmitted to the target queue until any prior invocation for that dispatch source has completed.  </div>
+          <div>
+            <br />
+          </div>
+          <div>To unset the event handler, call <see cref="M:CoreFoundation.DispatchSource.SetEventHandler(System.Action)" /> pass <see langword="null" /> as an argument. </div>
+        </div>
+      </format>
+      <format type="text/html">
+        <h2>Registration</h2>
+        <div>
+          <div>When <see cref="M:CoreFoundation.DispatchSource.Resume" /> is called on a suspended or newly created source, there may be a brief delay before the source is ready to receive events from the underlying system handle. During this delay, the event handler will not be invoked, and events will be missed.</div>
+          <div>
+            <br />
+          </div>
+          <div>Once the dispatch source is registered with the underlying system and is ready to process all events its optional registration handler will be submitted to its target queue. This registration handler may be specified via <see cref="M:CoreFoundation.DispatchSource.SetRegistrationHandler(System.Action)" />.</div>
+          <div>
+            <br />
+          </div>
+          <div>The event handler will not be called until the registration handler finishes. If the source is canceled (see below) before it is registered, its registration handler will not be called.</div>
+        </div>
+      </format>
+      <format type="text/html">
+        <h2>Cancellation</h2>
+        <div>
+          <div>
+            <div>The <see cref="M:CoreFoundation.DispatchSource.Cancel" /> function asynchronously cancels the dispatch source, preventing any further invocation of its event handler block. Cancellation does not interrupt a currently executing handler block (non-preemptive). If a source is canceled before the first time it is resumed, its event handler will never be called. (In this case, note that the source must be resumed before it can be released.)</div>
+            <div>
+              <br />
+            </div>
+            <div>The <see cref="P:CoreFoundation.DispatchSource.IsCanceled" /> function may be used to determine whether the specified source has been canceled.</div>
+            <div>
+              <br />
+            </div>
+            <div>When a dispatch source is canceled its optional cancellation handler will be submitted to its target queue. The cancellation handler may be specified via <see cref="M:CoreFoundation.DispatchSource.SetCancelHandler(System.Action)" />. This cancellation handler is invoked only once, and only as a direct consequence of calling <see cref="M:CoreFoundation.DispatchSource.Cancel" />.</div>
+            <div>
+              <br />
+            </div>
+            <div>Important: a cancellation handler is required for file descriptor and mach port based sources in order to safely close the descriptor or destroy the port. Closing the descriptor or port before the cancellation handler has run may result in a race condition: if a new descriptor is allocated with the same value as the recently closed descriptor while the source's event handler is still running, the event handler may read/write data to the wrong descriptor.</div>
+          </div>
+        </div>
+      </format>
+    </remarks>
+  </Docs>
 </Documentation>

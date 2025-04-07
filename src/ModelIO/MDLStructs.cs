@@ -30,6 +30,8 @@ namespace ModelIO {
 
 #if !COREBUILD
 #if NET
+	/// <summary>Extension methods for <see cref="T:ModelIO.MDLVertexFormat" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -65,6 +67,8 @@ namespace ModelIO {
 #endif
 
 #if NET
+	/// <summary>A bounding box whose axes are aligned with its coordinate system.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -102,6 +106,10 @@ namespace ModelIO {
 #endif
 
 #if NET
+	/// <summary>Provides the extent of voxel data.</summary>
+	///     <remarks>To be added.</remarks>
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

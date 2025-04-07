@@ -22,6 +22,9 @@ using System.Threading.Tasks;
 namespace UIKit {
 
 	// helper enum - not part of Apple API
+	/// <summary>Notification types for UIAccessibility's PostNotification method.</summary>
+	///     <remarks>
+	///     </remarks>
 	public enum UIAccessibilityPostNotification {
 		/// <summary>Inform the accessibility system that an announcement must be made to the user, use an NSString argument for this notification.</summary>
 		Announcement,
@@ -34,12 +37,16 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIAccessibilityZoom.h
+	/// <summary>An enumeration that specifies what elements (currently, only the insertion point) is involved in automatic accessibility zooming.</summary>
+	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum UIAccessibilityZoomType : long {
 		/// <summary>The system zoom type is the text insertion point.</summary>
 		InsertionPoint,
 	}
 
+	/// <summary>Provides access to the accessibility framework for UIKit.</summary>
+	///     <remarks>To be added.</remarks>
 	public static partial class UIAccessibility {
 		// UIAccessibility.h
 		[DllImport (Constants.UIKitLibrary)]

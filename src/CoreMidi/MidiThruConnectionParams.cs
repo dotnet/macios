@@ -22,6 +22,8 @@ using MidiEndpointRef = System.Int32;
 using MidiUniqueID = System.Int32;
 
 namespace CoreMidi {
+	/// <summary>MIDI transform types.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum MidiTransformType : ushort {
 		/// <summary>To be added.</summary>
 		None = 0,
@@ -41,6 +43,8 @@ namespace CoreMidi {
 		MapValue = 12,
 	}
 
+	/// <summary>MIDI Control Transformation Type.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum MidiTransformControlType : byte {
 		/// <summary>To be added.</summary>
 		SevenBit = 0,
@@ -56,6 +60,8 @@ namespace CoreMidi {
 		FourteenBitNRpn = 5,
 	}
 
+	/// <summary>Object that defines how a MIDI event is transformed.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -80,6 +86,8 @@ namespace CoreMidi {
 		}
 	}
 
+	/// <summary>MIDI Value map.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -104,6 +112,8 @@ namespace CoreMidi {
 		}
 	}
 
+	/// <summary>Represents a transformation of a MIDI control.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -146,6 +156,8 @@ namespace CoreMidi {
 		}
 	}
 
+	/// <summary>Source or Destination of a <see cref="T:CoreMidi.MidiThruConnection" />.</summary>
+	///     <remarks>When <see cref="F:CoreMidi.MidiThruConnectionEndpoint.EndpointRef" /> is zero it is because the endpoint does not exist so <see cref="F:CoreMidi.MidiThruConnectionEndpoint.UniqueID" /> will be greater than 0.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -350,6 +362,8 @@ namespace CoreMidi {
 	}
 
 #if !COREBUILD
+	/// <summary>MIDI transformations and routings.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

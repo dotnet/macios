@@ -37,6 +37,9 @@ using CoreFoundation;
 using CoreGraphics;
 
 namespace CoreText {
+	/// <summary>Lays out type in a rectangular frame.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SimpleTextInput/">SimpleTextInput</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

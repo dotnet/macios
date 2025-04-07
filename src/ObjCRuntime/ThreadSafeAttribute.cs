@@ -28,6 +28,15 @@ using System;
 
 namespace ObjCRuntime {
 
+	/// <summary>A <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Attribute&amp;scope=Xamarin" title="T:System.Attribute">T:System.Attribute</a></format> that indicates that a UIKit (for iOS) or AppKit (for macOS) method or class is thread-safe.</summary>
+	///     <remarks>
+	///       <para>
+	/// 	This attribute is used to signal that the methods in the class that this is applied to, or the method that this is applied to can safely be called from a background thread.
+	///       </para>
+	///       <para>
+	/// 	The attribute is only relevant to UIKit/AppKit classes and any subclass of UIKit/AppKit types.   The absence of this method in classes and methods outside of UIKit/AppKit is intentional.
+	///       </para>
+	///     </remarks>
 	public sealed class ThreadSafeAttribute : Attribute {
 
 		/// <summary>Initializes a new ThreadSafe attribute.</summary>

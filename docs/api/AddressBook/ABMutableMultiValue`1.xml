@@ -1,0 +1,45 @@
+<Documentation>
+  <Docs DocId="T:AddressBook.ABMutableMultiValue`1">
+    <typeparam name="T">
+      The type of the value to store.
+    </typeparam>
+    <summary>
+      A <see cref="T:AddressBook.ABMultiValue`1" /> that supports editing.
+    </summary>
+    <remarks>
+      <para>
+        "Editing" includes adding and removing
+        <see cref="T:AddressBook.ABMultiValueEntry`1" /> entries
+        and changing the
+        <see cref="P:AddressBook.ABMultiValueEntry`1.Value" /> and
+        <see cref="P:AddressBook.ABMultiValueEntry`1.Label" />
+        properties on those entries.
+      </para>
+      <para>
+        Supported operations include:
+      </para>
+      <list type="bullet">
+        <item>
+          <term>
+            Creating properties:
+            <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:AddressBook.ABMutableDateMultiValue.ctor&amp;scope=Xamarin" title="C:AddressBook.ABMutableDateMultiValue.ctor">C:AddressBook.ABMutableDateMultiValue.ctor</a></format>,
+            <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:AddressBook.ABMutableDictionaryMultiValue.ctor&amp;scope=Xamarin" title="C:AddressBook.ABMutableDictionaryMultiValue.ctor">C:AddressBook.ABMutableDictionaryMultiValue.ctor</a></format>,
+            <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:AddressBook.ABMutableStringMultiValue.ctor&amp;scope=Xamarin" title="C:AddressBook.ABMutableStringMultiValue.ctor">C:AddressBook.ABMutableStringMultiValue.ctor</a></format>.
+          </term>
+        </item>
+        <item>
+          <term>
+            Creating properties:
+            <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:AddressBook.ABMutableDateMultiValue.ctor&amp;scope=Xamarin" title="C:AddressBook.ABMutableDateMultiValue.ctor">C:AddressBook.ABMutableDateMultiValue.ctor</a></format>,
+            <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:AddressBook.ABMutableDictionaryMultiValue.ctor&amp;scope=Xamarin" title="C:AddressBook.ABMutableDictionaryMultiValue.ctor">C:AddressBook.ABMutableDictionaryMultiValue.ctor</a></format>,
+            <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=C:AddressBook.ABMutableStringMultiValue.ctor&amp;scope=Xamarin" title="C:AddressBook.ABMutableStringMultiValue.ctor">C:AddressBook.ABMutableStringMultiValue.ctor</a></format>.
+          </term>
+        </item>
+      </list>
+    </remarks>
+    <altmember cref="M:AddressBook.ABMultiValue`1.ToMutableMultiValue" />
+    <altmember cref="T:AddressBook.ABMutableDateMultiValue" />
+    <altmember cref="T:AddressBook.ABMutableDictionaryMultiValue" />
+    <altmember cref="T:AddressBook.ABMutableStringMultiValue" />
+  </Docs>
+</Documentation>

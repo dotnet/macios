@@ -39,6 +39,8 @@ using CoreFoundation;
 namespace CoreGraphics {
 
 	// untyped enum -> CGPDFStream.h
+	/// <summary>Enumerates values that indicate the data format of a PDF.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum CGPDFDataFormat {
 		/// <summary>To be added.</summary>
 		Raw,
@@ -48,7 +50,8 @@ namespace CoreGraphics {
 		JPEG2000,
 	};
 
-
+	/// <summary>A PDF Stream.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

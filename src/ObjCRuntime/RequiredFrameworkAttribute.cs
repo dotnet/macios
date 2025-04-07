@@ -29,6 +29,8 @@ using System.IO;
 
 namespace ObjCRuntime {
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	[AttributeUsage (AttributeTargets.Assembly, AllowMultiple = true)]
 	public class RequiredFrameworkAttribute : Attribute {
 		/// <summary>To be added.</summary>

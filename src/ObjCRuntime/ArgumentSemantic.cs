@@ -1,4 +1,8 @@
 namespace ObjCRuntime {
+	/// <summary>Represents the assignment semantics for properties.</summary>
+	///     <remarks>
+	///       <para>This is used to flag the behavior of properties when objects are assigned, these are used by the Xamarin.iOS / Xamarin.Mac runtime to properly track used objects and to garbage collect them when they are no longer required.</para>
+	///     </remarks>
 	public enum ArgumentSemantic : int {
 		/// <summary>No argument semantics is specified.</summary>
 		None = -1,

@@ -42,6 +42,11 @@ namespace CoreText {
 	#region Paragraph Style Values
 
 	// defined as uint8_t - /System/Library/Frameworks/CoreText.framework/Headers/CTParagraphStyle.h
+	/// <summary>An enumeration whose values specify options for text alignment.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <altmember cref="P:CoreText.CTParagraphStyle.Alignment" />
+	///     <altmember cref="P:CoreText.CTParagraphStyleSettings.Alignment" />
+	///     <altmember cref="C:CoreText.CTTextTab(CoreText.CTTextAlignment,System.Double)" />
 	public enum CTTextAlignment : byte {
 		/// <summary>To be added.</summary>
 		Left = 0,
@@ -56,6 +61,10 @@ namespace CoreText {
 	}
 
 	// defined as uint8_t - /System/Library/Frameworks/CoreText.framework/Headers/CTParagraphStyle.h
+	/// <summary>An enumeration whose values specify line-breaking options.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <altmember cref="P:CoreText.CTParagraphStyle.LineBreakMode" />
+	///     <altmember cref="P:CoreText.CTParagraphStyleSettings.LineBreakMode" />
 	public enum CTLineBreakMode : byte {
 		/// <summary>To be added.</summary>
 		WordWrapping = 0,
@@ -71,6 +80,8 @@ namespace CoreText {
 		TruncatingMiddle = 5,
 	}
 
+	/// <summary>An enumeration whose values can be used as flags indicating writing directions.</summary>
+	///     <remarks>To be added.</remarks>
 	[Flags]
 	// defined as int8_t - /System/Library/Frameworks/CoreText.framework/Headers/CTParagraphStyle.h
 	public enum CTWritingDirection : sbyte {
@@ -234,6 +245,8 @@ namespace CoreText {
 		}
 	}
 
+	/// <summary>A class that can be used to override elements of a <see cref="T:CoreText.CTParagraphStyle" />.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -394,6 +407,9 @@ namespace CoreText {
 		}
 	}
 
+	/// <summary>Describes the style of paragraphs.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <altmember cref="P:CoreText.CTStringAttributes.ParagraphStyle" />
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

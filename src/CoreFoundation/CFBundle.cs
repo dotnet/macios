@@ -14,8 +14,12 @@ using Foundation;
 
 namespace CoreFoundation {
 
+	/// <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public partial class CFBundle : NativeObject {
 
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		public enum PackageType {
 			/// <summary>To be added.</summary>
 			Application,
@@ -25,6 +29,8 @@ namespace CoreFoundation {
 			Bundle,
 		}
 
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]

@@ -30,11 +30,20 @@ using MidiEndpointRef = System.Int32;
 namespace AudioToolbox {
 
 #if !COREBUILD
+	/// <param name="track">To be added.</param>
+	///     <param name="inEventTime">To be added.</param>
+	///     <param name="inEventData">To be added.</param>
+	///     <param name="inStartSliceBeat">To be added.</param>
+	///     <param name="inEndSliceBeat">To be added.</param>
+	///     <summary>To be added.</summary>
+	///     <remarks>To be added.</remarks>
 	public delegate void MusicSequenceUserCallback (MusicTrack track, double inEventTime, MusicEventUserData inEventData, double inStartSliceBeat, double inEndSliceBeat);
 
 	delegate void MusicSequenceUserCallbackProxy (/* void * */ IntPtr inClientData, /* MusicSequence* */ IntPtr inSequence, /* MusicTrack* */ IntPtr inTrack, /* MusicTimeStamp */ double inEventTime, /* MusicEventUserData* */ IntPtr inEventData, /* MusicTimeStamp */ double inStartSliceBeat, /* MusicTimeStamp */ double inEndSliceBeat);
 #endif
 
+	/// <summary>A music sequence.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -515,6 +524,8 @@ namespace AudioToolbox {
 	}
 
 	// typedef UInt32 -> MusicPlayer.h
+	/// <summary>An enumeration whose values specify the <see cref="P:AudioToolbox.MusicSequence.SequenceType" /> property of a <see cref="T:AudioToolbox.MusicSequence" />.</summary>
+	///     <remarks>To be added.</remarks>
 	public enum MusicSequenceType : uint {
 		/// <summary>A normal MIDI music sequence. The tempo track defines beats-per-second.</summary>
 		Beats = 0x62656174,     // 'beat'

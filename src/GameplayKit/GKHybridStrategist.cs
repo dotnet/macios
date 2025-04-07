@@ -13,6 +13,9 @@ using NativeHandle = System.IntPtr;
 
 #if !XAMCORE_5_0 && !__MACOS__
 namespace GameplayKit {
+	/// <summary>A <see cref="T:GameplayKit.IGKStrategist" /> that combines Monte Carlo Tree Search and local search via MinMax.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/GameplayKit/GKHybridStrategist">Apple documentation for <c>GKHybridStrategist</c></related>
 	[Register ("GKHybridStrategist", SkipRegistration = true)]
 #if NET
 	[UnsupportedOSPlatform ("macos")]

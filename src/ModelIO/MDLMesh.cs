@@ -29,6 +29,8 @@ namespace ModelIO {
 
 	partial class MDLMesh {
 
+		/// <summary>To be added.</summary>
+		///     <remarks>To be added.</remarks>
 		public enum MDLMeshVectorType {
 			/// <summary>To be added.</summary>
 			Dimensions,

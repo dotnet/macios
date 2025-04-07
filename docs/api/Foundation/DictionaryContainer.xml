@@ -1,8 +1,8 @@
 <Documentation>
   <Docs DocId="M:Foundation.DictionaryContainer.#ctor">
-        <summary>When overridden, call the base-class constructor with a <see cref="T:Foundation.NSMutableDictionary" />.</summary>
-        <remarks>
-          <para>
+    <summary>When overridden, call the base-class constructor with a <see cref="T:Foundation.NSMutableDictionary" />.</summary>
+    <remarks>
+      <para>
 	When creating a strongly-typed wrapper for NSDictionary,
 	subclass the DicionaryContainer and provide two constructors:
 	one taking an NSDictionary (to create the wrapper) and one
@@ -12,8 +12,8 @@
 	how a sample class would work:
 
       </para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
 public class MyProperties : DicionaryContainer {
     public MyProperties () : base (new NSMutableDictionary ())
     {
@@ -35,14 +35,14 @@ public class MyProperties : DicionaryContainer {
     }
 }
 	]]></code>
-          </example>
-        </remarks>
-      </Docs>
+      </example>
+    </remarks>
+  </Docs>
   <Docs DocId="M:Foundation.DictionaryContainer.#ctor(Foundation.NSDictionary)">
-        <param name="dictionary">The dictionary to be wrapped.</param>
-        <summary>When overridden, call the base-class constructor, passing the <paramref name="dictionary" />.</summary>
-        <remarks>
-          <para>
+    <param name="dictionary">The dictionary to be wrapped.</param>
+    <summary>When overridden, call the base-class constructor, passing the <paramref name="dictionary" />.</summary>
+    <remarks>
+      <para>
 	When creating a strongly-typed wrapper for NSDictionary,
 	subclass the DicionaryContainer and provide two constructors:
 	one taking an NSDictionary (to create the wrapper) and one
@@ -52,8 +52,8 @@ public class MyProperties : DicionaryContainer {
 	how a sample class would work:
 
       </para>
-          <example>
-            <code lang="csharp lang-csharp"><![CDATA[
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
 public class MyProperties : DicionaryContainer {
     public MyProperties () : base (new NSMutableDictionary ())
     {
@@ -75,7 +75,58 @@ public class MyProperties : DicionaryContainer {
     }
 }
 	]]></code>
-          </example>
-        </remarks>
-      </Docs>
+      </example>
+    </remarks>
+  </Docs>
+  <Docs DocId="T:Foundation.DictionaryContainer">
+    <summary>Convenience base class used by strongly-typed classes that wrap NSDictionary-based settings.</summary>
+    <remarks>
+      <para>
+	Many iOS and OSX APIs accept configuration options as untyped
+	NSDictionary values, or return untyped NSDictionary values.
+	The C# bindings offer strong-typed versions of those
+	dictionaries, which allow developers to get code completion
+	while passing parameters, and to extract data from return
+	values.  The DicionaryContainer is an abstract base class that
+	encapsulates the common code to wrap NSDictionaries like this.
+
+      </para>
+      <para>
+	When creating a strongly-typed wrapper for NSDictionary,
+	subclass the DicionaryContainer and provide two constructors:
+	one taking an NSDictionary (to create the wrapper) and one
+	taking no arguments, which should call the base class with an
+	NSMutableDictionary.  Then use one of the various Get and Set
+	methods exposed by this class to get and set values.  This is
+	how a sample class would work:
+
+      </para>
+      <example>
+        <code lang="csharp lang-csharp"><![CDATA[
+public class MyProperties : DicionaryContainer {
+    public MyProperties () : base (new NSMutableDictionary ())
+    {
+    }
+    
+    public MyProperties (NSDictionary dict) : base (dict)
+    {
+    }
+
+    static NSString boolKey = new NSString ("SomeBoolKey");
+
+    public bool MyBool {
+        get {
+            return GetInt32Value (boolKey);
+        }
+	set {
+	    SetInt32Value (boolKey, value);
+        }
+    }
+}
+	]]></code>
+      </example>
+      <para>
+      </para>
+    </remarks>
+  </Docs>
 </Documentation>

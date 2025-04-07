@@ -20,13 +20,35 @@ using ObjCRuntime;
 
 namespace CoreMedia {
 
+	/// <param name="buffer">Buffer to probe.</param>
+	///     <summary>Returns the CMTime object for the specified buffer.</summary>
+	///     <returns>
+	///     </returns>
+	///     <remarks>The actual value to return will depend on which callback you have provided.</remarks>
 	public delegate CMTime CMBufferGetTime (INativeObject buffer);
+	/// <param name="buffer">Buffer to probe.</param>
+	///     <summary>Delegate signature to determine if the specified buffer that is about to be dequeued is ready.</summary>
+	///     <returns>
+	///     </returns>
+	///     <remarks>
+	///     </remarks>
 	public delegate bool CMBufferGetBool (INativeObject buffer);
+	/// <param name="first">The first object to compare.</param>
+	///     <param name="second">The second object to compare.</param>
+	///     <summary>Delegate signature to compare two CoreFoundation objects, used to sort objects in a CMBufferQueue.</summary>
+	///     <returns>Zero for the same object, -1 for first being sma</returns>
+	///     <remarks>The objects passed are the same ones that have been added to the CMBufferQueue object, it wont surface arbitrary objects.</remarks>
 	public delegate int CMBufferCompare (INativeObject first, INativeObject second);
 
 	// [SupportedOSPlatform ("ios")] -  SupportedOSPlatform is not valid on this declaration type "delegate" 
+	/// <param name="buffer">To be added.</param>
+	///     <summary>Delegate for getting media buffer sizes.</summary>
+	///     <returns>To be added.</returns>
+	///     <remarks>To be added.</remarks>
 	public delegate nint CMBufferGetSize (INativeObject buffer);
 
+	/// <summary>CoreMedia Buffer Queue.</summary>
+	///     <remarks>The CoreMedia queue exposes a thread-safe API to queue and dequeue buffers.   When you construct the CMBufferQueue, you can specific custom functions to sort the buffers by time, or you can use the convenience function CreateUnsorted to create a queue that behaves like a FIFO.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -420,6 +442,8 @@ namespace CoreMedia {
 		}
 #endif // !COREBUILD
 
+		/// <summary>Enumerates trigger conditions for a buffer queue trigger.</summary>
+		///     <remarks>To be added.</remarks>
 		public enum TriggerCondition {
 			/// <summary>The trigger is raised when the elapsed time becomes less than the specified value.</summary>
 			WhenDurationBecomesLessThan = 1,

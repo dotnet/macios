@@ -106,15 +106,29 @@ namespace ContactsUI {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface CNContactPickerDelegate {
+		/// <param name="picker">To be added.</param>
+		///         <param name="contact">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("contactPicker:didSelectContact:")]
 		void ContactSelected (CNContactPicker picker, CNContact contact);
 
+		/// <param name="picker">To be added.</param>
+		///         <param name="contactProperty">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("contactPicker:didSelectContactProperty:")]
 		void ContactPropertySelected (CNContactPicker picker, CNContactProperty contactProperty);
 
+		/// <param name="picker">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("contactPickerWillClose:")]
 		void WillClose (CNContactPicker picker);
 
+		/// <param name="picker">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("contactPickerDidClose:")]
 		void DidClose (CNContactPicker picker);
 	}
@@ -414,9 +428,16 @@ namespace ContactsUI {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		ICNContactPickerDelegate Delegate { get; set; }
 
+		/// <param name="positioningRect">To be added.</param>
+		///         <param name="positioningView">To be added.</param>
+		///         <param name="preferredEdge">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("showRelativeToRect:ofView:preferredEdge:")]
 		void Show (CGRect positioningRect, NSView positioningView, NSRectEdge preferredEdge);
 
+		/// <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[Export ("close")]
 		void Close ();
 	}

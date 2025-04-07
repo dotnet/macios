@@ -91,6 +91,10 @@ namespace NotificationCenter {
 		[Export ("widgetDidEndEditing")]
 		void WidgetDidEndEditing ();
 
+		/// <param name="activeDisplayMode">To be added.</param>
+		///         <param name="maxSize">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Export ("widgetActiveDisplayModeDidChange:withMaximumSize:")]
 		void WidgetActiveDisplayModeDidChange (NCWidgetDisplayMode activeDisplayMode, CGSize maxSize);

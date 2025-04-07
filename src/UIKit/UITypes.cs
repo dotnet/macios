@@ -20,6 +20,10 @@ using CoreGraphics;
 
 namespace UIKit {
 
+	/// <summary>Edge insets, used to reduce or expand rectangles.</summary>
+	///     <remarks>To be added.</remarks>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/RecipesAndPrinting">print</related>
+	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/RecipesAndPrinting/">RecipesAndPrinting</related>
 	[StructLayout (LayoutKind.Sequential)]
 	public struct UIEdgeInsets {
 
@@ -144,6 +148,8 @@ namespace UIKit {
 	}
 
 #if NET
+	/// <summary>A range of single-precision floating point numbers.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]

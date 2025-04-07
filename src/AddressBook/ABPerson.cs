@@ -178,6 +178,7 @@ namespace AddressBook {
 		}
 	}
 
+	/// <include file="../../docs/api/AddressBook/ABPersonAddressKey.xml" path="/Documentation/Docs[@DocId='T:AddressBook.ABPersonAddressKey']/*" />
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -259,6 +260,7 @@ namespace AddressBook {
 		}
 	}
 
+	/// <include file="../../docs/api/AddressBook/ABPersonDateLabel.xml" path="/Documentation/Docs[@DocId='T:AddressBook.ABPersonDateLabel']/*" />
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -349,6 +351,8 @@ namespace AddressBook {
 		}
 	}
 
+	/// <summary>A class whose static members define constant names for various social networks.</summary>
+	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -391,6 +395,7 @@ namespace AddressBook {
 		}
 	}
 
+	/// <include file="../../docs/api/AddressBook/ABPersonPhoneLabel.xml" path="/Documentation/Docs[@DocId='T:AddressBook.ABPersonPhoneLabel']/*" />
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -470,6 +475,29 @@ namespace AddressBook {
 		}
 	}
 
+	/// <summary>
+	///       Possible
+	///       <see cref="P:AddressBook.ABPersonInstantMessageKey.Service" />
+	///       key values.
+	///     </summary>
+	///     <remarks>
+	///       <para>
+	///         Instant message information is stored within
+	///         <see cref="T:Foundation.NSDictionary" /> instances where
+	///         the the
+	///         <see cref="P:AddressBook.ABPersonInstantMessageKey.Service" />
+	///         key is used to store the service name, and the
+	///         <see cref="P:AddressBook.ABPersonInstantMessageKey.Username" />
+	///         key is used to store the service login name.
+	///       </para>
+	///       <para>
+	///         The <c>ABPersonInstantMessageService</c> stores predefined
+	///         <see cref="P:AddressBook.ABPersonInstantMessageKey.Service" />
+	///         values.
+	///       </para>
+	///     </remarks>
+	///     <altmember cref="M:AddressBook.ABPerson.GetInstantMessages" />
+	///     <altmember cref="M:AddressBook.ABPerson.SetInstantMessages(AddressBook.ABMultiValue{Foundation.NSDictionary})" />
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -564,6 +592,7 @@ namespace AddressBook {
 		}
 	}
 
+	/// <include file="../../docs/api/AddressBook/ABPersonInstantMessageKey.xml" path="/Documentation/Docs[@DocId='T:AddressBook.ABPersonInstantMessageKey']/*" />
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -601,6 +630,7 @@ namespace AddressBook {
 		}
 	}
 
+	/// <include file="../../docs/api/AddressBook/ABPersonUrlLabel.xml" path="/Documentation/Docs[@DocId='T:AddressBook.ABPersonUrlLabel']/*" />
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -628,6 +658,7 @@ namespace AddressBook {
 		}
 	}
 
+	/// <include file="../../docs/api/AddressBook/ABPersonRelatedNamesLabel.xml" path="/Documentation/Docs[@DocId='T:AddressBook.ABPersonRelatedNamesLabel']/*" />
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -746,6 +777,18 @@ namespace AddressBook {
 		}
 	}
 
+	/// <summary>
+	///       Generic property labels.
+	///     </summary>
+	///     <remarks>
+	///       <para>
+	///         Labels are used with
+	///         <see cref="M:AddressBook.ABAddressBook.LocalizedLabel(Foundation.NSString)" />,
+	///         <see cref="P:AddressBook.ABMultiValueEntry`1.Label" />,
+	///         <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:AddressBook.ABMultiValue`1.Add(`0,Foundation.NSString)&amp;scope=Xamarin" title="M:AddressBook.ABMultiValue`1.Add(`0,Foundation.NSString)">M:AddressBook.ABMultiValue`1.Add(`0,Foundation.NSString)</a></format>, and
+	///         <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:AddressBook.ABMultiValue`1.Insert(System.Int32,`0,Foundation.NSString)&amp;scope=Xamarin" title="M:AddressBook.ABMultiValue`1.Insert(System.Int32,`0,Foundation.NSString)">M:AddressBook.ABMultiValue`1.Insert(System.Int32,`0,Foundation.NSString)</a></format>.
+	///       </para>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -792,6 +835,7 @@ namespace AddressBook {
 		}
 	}
 
+	/// <include file="../../docs/api/AddressBook/ABPerson.xml" path="/Documentation/Docs[@DocId='T:AddressBook.ABPerson']/*" />
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -1768,6 +1812,9 @@ namespace AddressBook {
 		}
 	}
 
+	/// <summary>Manages social profile configuration.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -1842,6 +1889,9 @@ namespace AddressBook {
 		}
 	}
 
+	/// <summary>Manages instance message service configuration.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -1893,6 +1943,9 @@ namespace AddressBook {
 		}
 	}
 
+	/// <summary>Manages the person address.</summary>
+	///     <remarks>
+	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[SupportedOSPlatform ("maccatalyst")]

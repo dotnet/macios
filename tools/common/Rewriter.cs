@@ -258,6 +258,28 @@ namespace ClassRedirector {
 					}
 				}
 			}
+			foreach (var eh in body.ExceptionHandlers) {
+				if (eh.TryStart == old) {
+					eh.TryStart = @new;
+					changed = true;
+				}
+				if (eh.TryEnd == old) {
+					eh.TryEnd = @new;
+					changed = true;
+				}
+				if (eh.FilterStart == old) {
+					eh.FilterStart = @new;
+					changed = true;
+				}
+				if (eh.HandlerStart == old) {
+					eh.HandlerStart = @new;
+					changed = true;
+				}
+				if (eh.HandlerEnd == old) {
+					eh.HandlerEnd = @new;
+					changed = true;
+				}
+			}
 			return changed;
 		}
 

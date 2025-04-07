@@ -19,7 +19,7 @@
 		<BundleOriginalResources>false</BundleOriginalResources>
 	</PropertyGroup>
 
-	<Target Name="ValidateTestVariation" Condition="'$(TestVariation)' != ''" BeforeTargets="Build">
+	<Target Name="ValidateTestVariation" Condition="'$(TestVariation)' != '' And '$(OutputType)' == 'exe'" BeforeTargets="Build">
 		<ItemGroup>
 			<_FilteredTestVariations Include="@(TestVariations)" Condition="'%(Identity)' == '$(TestVariation)'" />
 		</ItemGroup>

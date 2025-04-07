@@ -5436,15 +5436,6 @@ F:NetworkExtension.NEVpnIke2CertificateType.Rsapss
 F:NetworkExtension.NEVpnIke2DiffieHellman.Group31
 F:NetworkExtension.NEVpnIke2DiffieHellman.Group32
 F:NetworkExtension.NEVpnIke2EncryptionAlgorithm.ChaCha20Poly1305
-F:ObjCRuntime.Constants.AccelerateImageLibrary
-F:ObjCRuntime.Constants.ApplicationServicesCoreGraphicsLibrary
-F:ObjCRuntime.Constants.AssetsLibraryLibrary
-F:ObjCRuntime.Constants.InputMethodKitLibrary
-F:ObjCRuntime.Constants.libcompressionLibrary
-F:ObjCRuntime.Constants.NewsstandKitLibrary
-F:ObjCRuntime.Constants.QuartzLibrary
-F:ObjCRuntime.Constants.SdkVersion
-F:ObjCRuntime.Constants.Version
 F:ObjCRuntime.Dlfcn.Mode.First
 F:ObjCRuntime.Dlfcn.Mode.Global
 F:ObjCRuntime.Dlfcn.Mode.Lazy

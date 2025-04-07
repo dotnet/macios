@@ -3039,10 +3039,25 @@ namespace Foundation {
 		[Export ("initWithCoder:")]
 		NativeHandle Constructor (NSCoder decoder);
 
+		/// <summary>Encodes the state of the object using the provided encoder.</summary>
+		/// <param name="encoder">The encoder object where the state of the object will be stored</param>
+		/// <remarks>
+		///   <para>This method is part of the <see cref="INSCoding" /> protocol and is used by applications to preserve the state of the object into an archive.</para>
+		///   <para>Developers will typically create an <see cref="NSKeyedArchiver" /> and then invoke the <see cref="NSKeyedArchiver.ArchiveRootObjectToFile(Foundation.NSObject,System.String)" /> method which will call into this method.</para>
+		///   <para>If developers want to allow their object to be archived, they should override this method and store their state in using the provided <paramref name="encoder" /> parameter. In addition, developers should also implement a constructor that takes an NSCoder argument and is exported with <c>[Export ("initWithCoder:")]</c>.</para>
+		///   <example>
+		///   <code lang="csharp lang-csharp"><![CDATA[public void override EncodeTo (NSCoder coder) {
+		/// coder.Encode (1, key: "version");
+		/// coder.Encode (userName, key: "userName");
+		/// coder.Encode (hostName, key: "hostName");]]></code>
+		/// </example>
+		/// </remarks>
 		[Abstract]
 		[Export ("encodeWithCoder:")]
 		void EncodeTo (NSCoder encoder);
 	}
+
+	interface INSCoding { }
 
 	[Protocol]
 	interface NSSecureCoding : NSCoding {

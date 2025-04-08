@@ -49,7 +49,7 @@ static partial class BindingSyntaxFactory {
 		return default;
 	}
 
-	internal static (StatementSyntax Send, StatementSyntax SendSuper) GetGetterInvocations (in Property property,
+	internal static (ExpressionSyntax Send, ExpressionSyntax SendSuper) GetGetterInvocations (in Property property,
 		string? selector, string? sendMethod, string? superSendMethod)
 	{
 		// if any of the methods is null, return a throw statement for both
@@ -67,15 +67,15 @@ static partial class BindingSyntaxFactory {
 		if (property.UseTempReturn) {
 			// get the getter invocation and assign it to the return variable 
 			return (
-				Send: ExpressionStatement (AssignVariable (Nomenclator.GetReturnVariableName (property.ReturnType), getterSend)),
-				SendSuper: ExpressionStatement (AssignVariable (Nomenclator.GetReturnVariableName (property.ReturnType), getterSuperSend))
+				Send: AssignVariable (Nomenclator.GetReturnVariableName (property.ReturnType), getterSend),
+				SendSuper: AssignVariable (Nomenclator.GetReturnVariableName (property.ReturnType), getterSuperSend)
 			);
 		}
 		// this is the simplest case, we just need to call the method and return the result, for that we
 		// use the MessagingInvocation method for each of the methods
 		return (
-			Send: ExpressionStatement (getterSend),
-			SendSuper: ExpressionStatement (getterSuperSend)
+			Send: getterSend,
+			SendSuper: getterSuperSend
 		);
 
 #pragma warning disable format

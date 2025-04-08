@@ -1,10 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.DataModel;
+using Microsoft.Macios.Generator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Microsoft.Macios.Generator.Emitters;
@@ -22,21 +24,23 @@ static partial class BindingSyntaxFactory {
 		return Argument (LiteralExpression (kind, Literal (literal)));
 	}
 
-	static StatementSyntax StaticInvocationExpression (string staticClassName, string methodName,
-		SyntaxNodeOrToken [] argumentList, bool suppressNullableWarning = false)
+	static ExpressionSyntax StaticInvocationExpression (string staticClassName, string methodName,
+		ImmutableArray<ArgumentSyntax> arguments, bool suppressNullableWarning = false)
 	{
+		var argumentList = ArgumentList (
+			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
+		
 		var invocation = InvocationExpression (
 			MemberAccessExpression (
 				SyntaxKind.SimpleMemberAccessExpression,
 				IdentifierName (staticClassName),
 				IdentifierName (methodName).WithTrailingTrivia (Space)
 			)
-		).WithArgumentList (ArgumentList (SeparatedList<ArgumentSyntax> (argumentList)).NormalizeWhitespace ());
+		).WithArgumentList (argumentList.NormalizeWhitespace ());
 
-		return ExpressionStatement (
-			suppressNullableWarning
-				? PostfixUnaryExpression (SyntaxKind.SuppressNullableWarningExpression, invocation)
-				: invocation);
+		return suppressNullableWarning
+			? PostfixUnaryExpression (SyntaxKind.SuppressNullableWarningExpression, invocation)
+			: invocation;
 	}
 
 
@@ -61,7 +65,7 @@ static partial class BindingSyntaxFactory {
 			: invocation;
 	}
 
-	static StatementSyntax ThrowException (string type, string? message = null)
+	static ExpressionSyntax ThrowException (string type, string? message = null)
 	{
 		var throwExpression = ObjectCreationExpression (IdentifierName (type));
 
@@ -75,13 +79,13 @@ static partial class BindingSyntaxFactory {
 			throwExpression = throwExpression.WithArgumentList (ArgumentList ().WithLeadingTrivia (Space));
 		}
 
-		return ThrowStatement (throwExpression).NormalizeWhitespace ();
+		return ThrowExpression(throwExpression).NormalizeWhitespace ();
 	}
 
-	static StatementSyntax ThrowNotSupportedException (string message)
+	static ExpressionSyntax ThrowNotSupportedException (string message)
 		=> ThrowException (type: "NotSupportedException", message: message);
 
-	static StatementSyntax ThrowNotImplementedException ()
+	static ExpressionSyntax ThrowNotImplementedException ()
 		=> ThrowException (type: "NotImplementedException");
 
 	/// <summary>

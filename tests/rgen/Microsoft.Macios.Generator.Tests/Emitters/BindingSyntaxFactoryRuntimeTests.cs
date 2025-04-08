@@ -703,7 +703,66 @@ public class BindingSyntaxFactoryRuntimeTests {
 	void IntPtrZeroCheckTests (string variableName, ExpressionSyntax falseExpression, bool suppressNullableWarning, string expectedDeclaration)
 	{
 		var declaration = IntPtrZeroCheck (variableName, falseExpression, suppressNullableWarning);
-		var str = declaration.ToString ();
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+	
+	class TestDataRetainAndAutoreleaseNSObject : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return [
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))),
+				"Runtime.RetainAndAutoreleaseNSObject (arg1)",
+			];
+
+			yield return [
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2")),
+					Argument (IdentifierName ("arg3"))
+				),
+				"Runtime.RetainAndAutoreleaseNSObject (arg1, arg2, arg3)",
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+	
+	[Theory]
+	[ClassData (typeof (TestDataRetainAndAutoreleaseNSObject))]
+	void RetainAndAutoreleaseNSObjectTests (ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
+	{
+		var declaration = RetainAndAutoreleaseNSObject (arguments);
+		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
+	}
+	
+	class TestDataRetainAndAutoreleaseNativeObject : IEnumerable<object []> {
+		public IEnumerator<object []> GetEnumerator ()
+		{
+			yield return [
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1"))),
+				"Runtime.RetainAndAutoreleaseNativeObject (arg1)",
+			];
+
+			yield return [
+				ImmutableArray.Create (
+					Argument (IdentifierName ("arg1")),
+					Argument (IdentifierName ("arg2")),
+					Argument (IdentifierName ("arg3"))
+				),
+				"Runtime.RetainAndAutoreleaseNativeObject (arg1, arg2, arg3)",
+			];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
+	}
+	
+	[Theory]
+	[ClassData (typeof (TestDataRetainAndAutoreleaseNativeObject))]
+	void RetainAndAutoreleaseNativeObjectTests (ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
+	{
+		var declaration = RetainAndAutoreleaseNativeObject (arguments);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 

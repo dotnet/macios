@@ -525,4 +525,21 @@ static partial class BindingSyntaxFactory {
 			nullExpression.WithLeadingTrivia (Space).WithTrailingTrivia (Space),
 			expressionSyntax.WithLeadingTrivia (Space));
 	}
+
+	/// <summary>
+	/// Generate a call to Runtime.RetainAndAutoreleaseNSObject (args) statement.
+	/// </summary>
+	/// <param name="arguments">The arguments to use to call Runtime.RetainAndAutoreleaseNSObject.</param>
+	/// <returns>The C# expression for the call.</returns>
+	internal static ExpressionSyntax RetainAndAutoreleaseNSObject (ImmutableArray<ArgumentSyntax> arguments)
+		=> StaticInvocationExpression (Runtime, "RetainAndAutoreleaseNSObject", arguments);
+	
+	/// <summary>
+	/// Generate a call to Runtime.RetainAndAutoreleaseNativeObject (args) statement.
+	/// </summary>
+	/// <param name="arguments">The arguments to use to call Runtime.RetainAndAutoreleaseNSObject.</param>
+	/// <returns>The C# expression for the call.</returns>
+	internal static ExpressionSyntax RetainAndAutoreleaseNativeObject (ImmutableArray<ArgumentSyntax> arguments)
+		=> StaticInvocationExpression (Runtime, "RetainAndAutoreleaseNativeObject", arguments);
+	
 }

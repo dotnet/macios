@@ -6,10 +6,7 @@ using ObjCRuntime;
 #nullable enable
 
 namespace Metal {
-
-
 	public static partial class MTLArgumentEncoder_Extensions {
-#if NET
 		public static void SetBuffers (this IMTLArgumentEncoder encoder, IMTLBuffer [] buffers, nuint [] offsets, NSRange range)
 		{
 			if (buffers is null)
@@ -31,12 +28,5 @@ namespace Metal {
 			}
 			GC.KeepAlive (buffers);
 		}
-#else
-		public unsafe static void SetBuffers (this IMTLArgumentEncoder This, IMTLBuffer [] buffers, nint [] offsets, Foundation.NSRange range)
-		{
-			fixed (void* handle = offsets)
-				This.SetBuffers (buffers, (IntPtr) handle, range);
-		}
-#endif
 	}
 }

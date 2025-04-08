@@ -31,6 +31,11 @@ readonly partial struct Method {
 	public BindAsData? BindAs => BindAsAttribute;
 
 	/// <summary>
+	/// Returns the forced type data if present in the binding.
+	/// </summary>
+	public ForcedTypeData? ForcedType => ForcedTypeAttribute;
+
+	/// <summary>
 	/// True if the method was exported with the MarshalNativeExceptions flag allowing it to support native exceptions.
 	/// </summary>
 	public bool MarshalNativeExceptions => HasMarshalNativeExceptionsFlag;

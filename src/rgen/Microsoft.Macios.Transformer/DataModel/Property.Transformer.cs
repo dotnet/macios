@@ -70,6 +70,11 @@ readonly partial struct Property {
 	/// </summary>
 	public BindAsData? BindAs => BindAsAttribute;
 
+	/// <summary>
+	/// Returns the forced type data if present in the binding.
+	/// </summary>
+	public ForcedTypeData? ForcedType => ForcedTypeAttribute;
+
 	/// <inheritdoc />
 	public bool Equals (Property other) => CoreEquals (other);
 

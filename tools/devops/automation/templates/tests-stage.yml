@@ -29,6 +29,67 @@ parameters:
 - name: macOSName
   type: string
 
+- name: macTestsConfigurations
+  displayName: macOS test configurations to run
+  type: object
+  default: [
+    {
+      stageName: 'mac_12_m1',
+      displayName: 'M1 - Mac Ventura (12)',
+      macPool: 'VSEng-VSMac-Xamarin-Shared',
+      useImage: false,
+      statusContext: 'M1 - Mac Monterey (12)',
+      demands: [
+        "Agent.OS -equals Darwin",
+        "macOS.Name -equals Monterey",
+        "macOS.Architecture -equals arm64",
+        "Agent.HasDevices -equals False",
+        "Agent.IsPaired -equals False"
+      ]
+    },
+    {
+      stageName: 'mac_13_m1',
+      displayName: 'M1 - Mac Ventura (13)',
+      macPool: 'VSEng-VSMac-Xamarin-Shared',
+      useImage: false,
+      statusContext: 'M1 - Mac Ventura (13)',
+      demands: [
+        "Agent.OS -equals Darwin",
+        "macOS.Name -equals Ventura",
+        "macOS.Architecture -equals arm64",
+        "Agent.HasDevices -equals False",
+        "Agent.IsPaired -equals False"
+      ]
+    },
+    {
+      stageName: 'mac_14_x64',
+      displayName: 'X64 - Mac Sonoma (14)',
+      macPool: 'VSEng-Xamarin-RedmondMacBuildPool-iOS-Untrusted',
+      useImage: false,
+      statusContext: 'X64 - Mac Sonoma (14)',
+      demands: [
+        "Agent.OS -equals Darwin",
+        "macOS.Name -equals Sonoma",
+        "macOS.Architecture -equals x64",
+        "Agent.HasDevices -equals False",
+        "Agent.IsPaired -equals False"
+      ]
+    },
+    {
+      stageName: 'mac_15_arm64',
+      displayName: 'arm64 - Mac Sequoia (15)',
+      macPool: 'VSEng-VSMac-Xamarin-Shared',
+      useImage: false,
+      statusContext: 'arm64 - Mac Sequoia (15)',
+      demands: [
+        "Agent.OS -equals Darwin",
+        "macOS.Name -equals Sequoia",
+        "macOS.Architecture -equals arm64",
+        "Agent.HasDevices -equals False",
+        "Agent.IsPaired -equals False"
+      ]
+    }]
+
 - name: stageDisplayNamePrefix
   type: string
   default: ''
@@ -99,6 +160,7 @@ stages:
     repositoryAlias: ${{ parameters.repositoryAlias }}
     commit: ${{ parameters.commit }}
     postPipeline: true
+    macTestsConfigurations: ${{ parameters.macTestsConfigurations }}
 
 - ${{ if eq(parameters.runWindowsIntegration, true) }}:
   - template: ./windows/stage.yml
@@ -111,5 +173,38 @@ stages:
       pool: 'VSEng-Xamarin-Mac-Devices' # currently ignored until the VS team provides a real one
       statusContext: 'Windows Integration Tests'
       gitHubToken: $(Github.Token)
+      xqaCertPass: $(xqa--certificates--password)
+      postPipeline: true
+
+- stage: build_macos_tests
+  displayName: '${{ parameters.stageDisplayNamePrefix }}Build macOS tests'
+  dependsOn: [configure_build]
+  jobs:
+  - template: ./build/build-mac-tests-stage.yml
+    parameters:
+      xcodeChannel: ${{ parameters.xcodeChannel }}
+      macOSName: ${{ parameters.macOSName }}
+      isPR: ${{ parameters.isPR }}
+      repositoryAlias: ${{ parameters.repositoryAlias }}
+      commit: ${{ parameters.commit }}
+      vsdropsPrefix: ${{ variables.vsdropsPrefix }}
+      keyringPass: $(pass--lab--mac--builder--keychain)
+      gitHubToken: $(Github.Token)
+      xqaCertPass: $(xqa--certificates--password)
+      pool: $(PRBuildPool)
+
+- ${{ each config in parameters.macTestsConfigurations }}:
+  - template: ./mac/stage.yml
+    parameters:
+      isPR: ${{ parameters.isPR }}
+      repositoryAlias: ${{ parameters.repositoryAlias }}
+      commit: ${{ parameters.commit }}
+      stageName: ${{ config.stageName }}
+      displayName: ' ${{ parameters.stageDisplayNamePrefix }}${{ config.displayName }}'
+      macPool: ${{ config.macPool }}
+      useImage: ${{ config.useImage }}
+      statusContext: ${{ config.statusContext }}
+      keyringPass: $(pass--lab--mac--builder--keychain)
+      demands: ${{ config.demands }}
       xqaCertPass: $(xqa--certificates--password)
       postPipeline: true

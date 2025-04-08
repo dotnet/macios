@@ -15,23 +15,14 @@ using ObjCRuntime;
 #nullable enable
 
 namespace Metal {
-
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[UnsupportedOSPlatform ("macos")]
-#endif
 	public static partial class MTLResourceStateCommandEncoder_Extensions {
-
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
-#else
-		[NoMac]
-		[NoTV]
-#endif
 		public static void Update (this IMTLResourceStateCommandEncoder This, IMTLTexture texture, MTLSparseTextureMappingMode mode, MTLRegion [] regions, nuint [] mipLevels, nuint [] slices)
 		{
 			if (texture is null)

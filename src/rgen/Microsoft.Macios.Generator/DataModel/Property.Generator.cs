@@ -63,6 +63,11 @@ readonly partial struct Property {
 	public BindFromData? BindAs { get; init; }
 
 	/// <summary>
+	/// Returns the forced type data if present in the binding.
+	/// </summary>
+	public ForcedTypeData? ForcedType { get; init; }
+
+	/// <summary>
 	/// True if the property should be generated without a backing field.
 	/// </summary>
 	public bool IsTransient => IsProperty && ExportPropertyData.Value.Flags.HasFlag (ObjCBindings.Property.Transient);
@@ -253,6 +258,7 @@ readonly partial struct Property {
 			modifiers: [.. declaration.Modifiers],
 			accessors: accessorCodeChanges) {
 			BindAs = propertySymbol.GetBindFromData (),
+			ForcedType = propertySymbol.GetForceTypeData (),
 			ExportFieldData = GetFieldInfo (context, propertySymbol),
 			ExportPropertyData = propertySymbol.GetExportData<ObjCBindings.Property> (),
 		};
@@ -279,7 +285,8 @@ readonly partial struct Property {
 		sb.Append ($"IsTransient: '{IsTransient}', ");
 		sb.Append ($"NeedsBackingField: '{NeedsBackingField}', ");
 		sb.Append ($"RequiresDirtyCheck: '{RequiresDirtyCheck}', ");
-		sb.Append ($"BindAs: '{BindAs}', ");
+		sb.Append ($"BindAs: {BindAs?.ToString () ?? "null"}, ");
+		sb.Append ($"ForcedType: {ForcedType?.ToString () ?? "null"}, ");
 		sb.Append ("Attributes: [");
 		sb.AppendJoin (",", Attributes);
 		sb.Append ("], Modifiers: [");

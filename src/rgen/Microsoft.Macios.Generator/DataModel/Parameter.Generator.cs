@@ -18,6 +18,11 @@ readonly partial struct Parameter {
 	public BindFromData? BindAs { get; init; }
 
 	/// <summary>
+	/// Returns the forced type data if present in the binding.
+	/// </summary>
+	public ForcedTypeData? ForcedType { get; init; }
+
+	/// <summary>
 	/// Returns if the parameter needs a null check when the code is generated.
 	/// </summary>
 	public bool NeedsNullCheck {
@@ -35,6 +40,7 @@ readonly partial struct Parameter {
 	{
 		parameter = new (symbol.Ordinal, new (symbol.Type, context.Compilation), symbol.Name) {
 			BindAs = symbol.GetBindFromData (),
+			ForcedType = symbol.GetForceTypeData (),
 			IsOptional = symbol.IsOptional,
 			IsParams = symbol.IsParams,
 			IsThis = symbol.IsThis,

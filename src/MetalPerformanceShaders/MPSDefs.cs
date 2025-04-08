@@ -1,31 +1,20 @@
 #nullable enable
 
 using System;
+using System.Numerics;
 using System.Runtime.InteropServices;
 
 using Foundation;
 using ObjCRuntime;
 using Metal;
 
-#if NET
-using Vector3 = global::System.Numerics.Vector3;
-using Vector4 = global::System.Numerics.Vector4;
-#else
-using Vector3 = global::OpenTK.Vector3;
-using Vector4 = global::OpenTK.Vector4;
-#endif
-
 namespace MetalPerformanceShaders {
-
-	// uses NSInteger
-#if NET
 	/// <summary>A coordinate that represents an offset.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public struct MPSOffset {
 		/// <summary>The X coordinate.</summary>
 		///         <remarks>To be added.</remarks>
@@ -38,15 +27,12 @@ namespace MetalPerformanceShaders {
 		public nint Z;
 	}
 
-	// really use double, not CGFloat
-#if NET
 	/// <summary>A coordinate that represents the origin of a coordinate system.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public struct MPSOrigin {
 		/// <summary>The X coordinate.</summary>
 		///         <remarks>To be added.</remarks>
@@ -59,15 +45,12 @@ namespace MetalPerformanceShaders {
 		public double Z;
 	}
 
-	// really use double, not CGFloat
-#if NET
 	/// <summary>A structure that represents a width, height, and depth.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public struct MPSSize {
 		/// <summary>The width of the region.</summary>
 		///         <remarks>To be added.</remarks>
@@ -80,29 +63,21 @@ namespace MetalPerformanceShaders {
 		public double Depth;
 	}
 
-	// uses NSUInteger
-#if NET
 	[SupportedOSPlatform ("ios13.0")]
 	[SupportedOSPlatform ("tvos13.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[iOS (13, 0)]
-	[TV (13, 0)]
-#endif
 	public struct MPSDimensionSlice {
 		public nuint Start;
 		public nuint Length;
 	}
 
-#if NET
 	/// <summary>Structure that represents a region as an origin and a size.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public struct MPSRegion {
 		/// <summary>The origin of the region.</summary>
 		///         <remarks>To be added.</remarks>
@@ -112,15 +87,12 @@ namespace MetalPerformanceShaders {
 		public MPSSize Size;
 	}
 
-	// really use double, not CGFloat
-#if NET
 	/// <summary>A transformation for use with a Lanczos kernel.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public struct MPSScaleTransform {
 		/// <summary>The X direction scale factor.</summary>
 		///         <remarks>To be added.</remarks>
@@ -136,14 +108,12 @@ namespace MetalPerformanceShaders {
 		public double TranslateY;
 	}
 
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public struct MPSImageCoordinate {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
@@ -156,14 +126,12 @@ namespace MetalPerformanceShaders {
 		public nuint Channel;
 	}
 
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public struct MPSImageRegion {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
@@ -173,15 +141,12 @@ namespace MetalPerformanceShaders {
 		public MPSImageCoordinate Size;
 	}
 
-	// MPSImageHistogram.h
-#if NET
 	/// <summary>Specifies the range of histogram data in a histogram, the number of entries, and whether to encode the alpha channel.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	[StructLayout (LayoutKind.Explicit)]
 	public struct MPSImageHistogramInfo {
 		/// <summary>Specifies  the number of entries in a histogram.</summary>
@@ -213,14 +178,12 @@ namespace MetalPerformanceShaders {
 	public delegate NSObject MPSCopyAllocator (MPSKernel filter, NSObject commandBuffer, NSObject sourceTexture);
 	// https://trello.com/c/GqtNId1C/517-generator-our-block-delegates-needs-to-use-wrapper-for-protocols
 
-#if NET
 	/// <summary>Describes a copy operation that supports offsets.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public struct MPSMatrixCopyOffsets {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
@@ -236,14 +199,12 @@ namespace MetalPerformanceShaders {
 		public uint DestinationColumnOffset;
 	}
 
-#if NET
 	/// <summary>Options for the reading and writing of feature channels in an image.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public struct MPSImageReadWriteParams {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
@@ -253,14 +214,12 @@ namespace MetalPerformanceShaders {
 		public nuint NumberOfFeatureChannelsToReadWrite;
 	}
 
-#if NET
 	/// <summary>Options for the discovery of keypoints in an image.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public struct MPSImageKeypointRangeInfo {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
@@ -270,14 +229,12 @@ namespace MetalPerformanceShaders {
 		public float MinimumThresholdValue;
 	}
 
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public struct MPSStateTextureInfo {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
@@ -330,14 +287,12 @@ namespace MetalPerformanceShaders {
 #endif
 	}
 
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MPSAxisAlignedBoundingBox {
 		/// <summary>To be added.</summary>
@@ -348,12 +303,10 @@ namespace MetalPerformanceShaders {
 		public Vector3 Max;
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-#endif
 	public static class MPSConstants {
 		public const uint FunctionConstantIndex = 127;
 		public const uint BatchSizeIndex = 126;
@@ -363,12 +316,10 @@ namespace MetalPerformanceShaders {
 		// MaxTextures = 128 or 32,
 	}
 
-#if NET
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MPSMatrixOffset {
 		public uint RowOffset;

@@ -57,6 +57,9 @@
         <Compile Include="../Microsoft.Macios.Generator/Attributes/BindingTypeData.cs" >
             <Link>Generator/Attributes/BindingTypeData.cs</Link>
         </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/Attributes/ForcedTypeData.cs" >
+            <Link>Generator/Attributes/ForcedTypeData.cs</Link>
+        </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Attributes/ObsoletedOSPlatformData.cs" >
             <Link>Generator/Attributes/ObsoletedOSPlatformData.cs</Link>
         </Compile>

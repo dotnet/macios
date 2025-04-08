@@ -53,7 +53,7 @@ namespace NS {
 				nsObjectResult,
 				"Runtime.RetainAndAutoreleaseNSObject (auxVariable)"
 			];
-			
+
 			const string nativeObjectResult = @"
 using System;
 using Foundation;
@@ -72,7 +72,7 @@ namespace NS {
 				nativeObjectResult,
 				"Runtime.RetainAndAutoreleaseNativeObject (auxVariable)"
 			];
-			
+
 			const string protocolResult = @"
 using System;
 using Foundation;

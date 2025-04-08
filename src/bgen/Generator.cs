@@ -1809,8 +1809,15 @@ public partial class Generator : IMemberGatherer {
 				print ("public partial class {0} : DictionaryContainer {{", typeName);
 				indent++;
 				sw.WriteLine ("#if !COREBUILD");
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ($"/// <summary>Creates a new <see cref=\"{typeName}\" /> with default (empty) values.</summary>");
+				}
 				print ("[Preserve (Conditional = true)]");
 				print ("public {0} () : base (new NSMutableDictionary ()) {{}}\n", typeName);
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ($"/// <summary>Creates a new <see cref=\"{typeName}\" /> from the values that are specified in <paramref name=\"dictionary\" />.</summary>");
+					print ($"/// <param name=\"dictionary\">The dictionary to use to populate the properties of this type.</param>");
+				}
 				print ("[Preserve (Conditional = true)]");
 				print ("public {0} (NSDictionary? dictionary) : base (dictionary) {{}}\n", typeName);
 

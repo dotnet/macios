@@ -8614,7 +8614,6 @@ M:AppKit.NSAnimationDelegate_Extensions.AnimationDidStop(AppKit.INSAnimationDele
 M:AppKit.NSAnimationDelegate_Extensions.AnimationShouldStart(AppKit.INSAnimationDelegate,AppKit.NSAnimation)
 M:AppKit.NSAnimationDelegate_Extensions.ComputeAnimationCurve(AppKit.INSAnimationDelegate,AppKit.NSAnimation,System.Single)
 M:AppKit.NSAnimationEventArgs.#ctor(System.Single)
-M:AppKit.NSAnimationProgressMarkEventArgs.#ctor(Foundation.NSNotification)
 M:AppKit.NSApplication_NSServicesMenu.RegisterServicesMenu(AppKit.NSApplication,System.String[],System.String[])
 M:AppKit.NSApplication_NSStandardAboutPanel.OrderFrontStandardAboutPanel(AppKit.NSApplication,Foundation.NSObject)
 M:AppKit.NSApplication_NSStandardAboutPanel.OrderFrontStandardAboutPanelWithOptions(AppKit.NSApplication,Foundation.NSDictionary)
@@ -8718,7 +8717,6 @@ M:AppKit.NSApplicationDelegate_Extensions.WillResignActive(AppKit.INSApplication
 M:AppKit.NSApplicationDelegate_Extensions.WillTerminate(AppKit.INSApplicationDelegate,Foundation.NSNotification)
 M:AppKit.NSApplicationDelegate_Extensions.WillUnhide(AppKit.INSApplicationDelegate,Foundation.NSNotification)
 M:AppKit.NSApplicationDelegate_Extensions.WillUpdate(AppKit.INSApplicationDelegate,Foundation.NSNotification)
-M:AppKit.NSApplicationDidFinishLaunchingEventArgs.#ctor(Foundation.NSNotification)
 M:AppKit.NSApplicationFailedEventArgs.#ctor(System.String,Foundation.NSError)
 M:AppKit.NSApplicationFilesEventArgs.#ctor(System.String[])
 M:AppKit.NSApplicationOpenUrlsEventArgs.#ctor(Foundation.NSUrl[])
@@ -8900,7 +8898,6 @@ M:AppKit.NSControlTextEditingDelegate_Extensions.GetCompletions(AppKit.INSContro
 M:AppKit.NSControlTextEditingDelegate_Extensions.IsValidObject(AppKit.INSControlTextEditingDelegate,AppKit.NSControl,Foundation.NSObject)
 M:AppKit.NSControlTextEditingDelegate_Extensions.TextShouldBeginEditing(AppKit.INSControlTextEditingDelegate,AppKit.NSControl,AppKit.NSText)
 M:AppKit.NSControlTextEditingDelegate_Extensions.TextShouldEndEditing(AppKit.INSControlTextEditingDelegate,AppKit.NSControl,AppKit.NSText)
-M:AppKit.NSControlTextEditingEventArgs.#ctor(Foundation.NSNotification)
 M:AppKit.NSControlTextErrorEventArgs.#ctor(System.String,System.String)
 M:AppKit.NSCustomImageRep.Dispose(System.Boolean)
 M:AppKit.NSDataAsset.Copy(Foundation.NSZone)
@@ -8995,7 +8992,6 @@ M:AppKit.NSFontChanging_Extensions.ChangeFont(AppKit.INSFontChanging,AppKit.NSFo
 M:AppKit.NSFontChanging_Extensions.GetValidModes(AppKit.INSFontChanging,AppKit.NSFontPanel)
 M:AppKit.NSFontCollection.Copy(Foundation.NSZone)
 M:AppKit.NSFontCollection.MutableCopy(Foundation.NSZone)
-M:AppKit.NSFontCollectionChangedEventArgs.#ctor(Foundation.NSNotification)
 M:AppKit.NSFontDescriptor.Copy(Foundation.NSZone)
 M:AppKit.NSFontDescriptor.Create(AppKit.NSFontDescriptorSystemDesign)
 M:AppKit.NSFontManager.Dispose(System.Boolean)
@@ -9111,8 +9107,6 @@ M:AppKit.NSMenuItem.Copy(Foundation.NSZone)
 M:AppKit.NSMenuItem.Dispose(System.Boolean)
 M:AppKit.NSMenuItem.remove_Activated(System.EventHandler)
 M:AppKit.NSMenuItemBadge.Copy(Foundation.NSZone)
-M:AppKit.NSMenuItemEventArgs.#ctor(Foundation.NSNotification)
-M:AppKit.NSMenuItemIndexEventArgs.#ctor(Foundation.NSNotification)
 M:AppKit.NSMutableAttributedStringAppKitAddons.ApplyFontTraits(Foundation.NSMutableAttributedString,AppKit.NSFontTraitMask,Foundation.NSRange)
 M:AppKit.NSMutableAttributedStringAppKitAddons.FixAttachmentAttributeInRange(Foundation.NSMutableAttributedString,Foundation.NSRange)
 M:AppKit.NSMutableAttributedStringAppKitAddons.FixFontAttributeInRange(Foundation.NSMutableAttributedString,Foundation.NSRange)
@@ -9209,7 +9203,6 @@ M:AppKit.NSOutlineViewDelegate_Extensions.UserCanChangeVisibility(AppKit.INSOutl
 M:AppKit.NSOutlineViewDelegate_Extensions.UserDidChangeVisibility(AppKit.INSOutlineViewDelegate,AppKit.NSOutlineView,AppKit.NSTableColumn[])
 M:AppKit.NSOutlineViewDelegate_Extensions.WillDisplayCell(AppKit.INSOutlineViewDelegate,AppKit.NSOutlineView,Foundation.NSObject,AppKit.NSTableColumn,Foundation.NSObject)
 M:AppKit.NSOutlineViewDelegate_Extensions.WillDisplayOutlineCell(AppKit.INSOutlineViewDelegate,AppKit.NSOutlineView,Foundation.NSObject,AppKit.NSTableColumn,Foundation.NSObject)
-M:AppKit.NSOutlineViewItemEventArgs.#ctor(Foundation.NSNotification)
 M:AppKit.NSPageController.add_DidEndLiveTransition(System.EventHandler)
 M:AppKit.NSPageController.add_DidTransition(System.EventHandler{AppKit.NSPageControllerTransitionEventArgs})
 M:AppKit.NSPageController.add_PrepareViewController(System.EventHandler{AppKit.NSPageControllerPrepareViewControllerEventArgs})
@@ -9268,7 +9261,6 @@ M:AppKit.NSPathControlDelegate_Extensions.WillDisplayOpenPanel(AppKit.INSPathCon
 M:AppKit.NSPathControlDelegate_Extensions.WillPopUpMenu(AppKit.INSPathControlDelegate,AppKit.NSPathControl,AppKit.NSMenu)
 M:AppKit.NSPickerTouchBarItem.Dispose(System.Boolean)
 M:AppKit.NSPopover.Dispose(System.Boolean)
-M:AppKit.NSPopoverCloseEventArgs.#ctor(Foundation.NSNotification)
 M:AppKit.NSPopoverDelegate_Extensions.DidClose(AppKit.INSPopoverDelegate,Foundation.NSNotification)
 M:AppKit.NSPopoverDelegate_Extensions.DidDetach(AppKit.INSPopoverDelegate,AppKit.NSPopover)
 M:AppKit.NSPopoverDelegate_Extensions.DidShow(AppKit.INSPopoverDelegate,Foundation.NSNotification)
@@ -9404,7 +9396,6 @@ M:AppKit.NSSplitViewDelegate_Extensions.ShouldAdjustSize(AppKit.INSSplitViewDele
 M:AppKit.NSSplitViewDelegate_Extensions.ShouldCollapseForDoubleClick(AppKit.INSSplitViewDelegate,AppKit.NSSplitView,AppKit.NSView,System.IntPtr)
 M:AppKit.NSSplitViewDelegate_Extensions.ShouldHideDivider(AppKit.INSSplitViewDelegate,AppKit.NSSplitView,System.IntPtr)
 M:AppKit.NSSplitViewDelegate_Extensions.SplitViewWillResizeSubviews(AppKit.INSSplitViewDelegate,Foundation.NSNotification)
-M:AppKit.NSSplitViewDividerIndexEventArgs.#ctor(Foundation.NSNotification)
 M:AppKit.NSSpringLoadingDestination_Extensions.DraggingEnded(AppKit.INSSpringLoadingDestination,AppKit.INSDraggingInfo)
 M:AppKit.NSSpringLoadingDestination_Extensions.Entered(AppKit.INSSpringLoadingDestination,AppKit.INSDraggingInfo)
 M:AppKit.NSSpringLoadingDestination_Extensions.Exited(AppKit.INSSpringLoadingDestination,AppKit.INSDraggingInfo)
@@ -9623,7 +9614,6 @@ M:AppKit.NSText.remove_TextDidChange(System.EventHandler)
 M:AppKit.NSText.remove_TextDidEndEditing(System.EventHandler)
 M:AppKit.NSTextAlignmentExtensions.ToManaged(System.UIntPtr)
 M:AppKit.NSTextAlignmentExtensions.ToNative(AppKit.NSTextAlignment)
-M:AppKit.NSTextAlternativesSelectedAlternativeStringEventArgs.#ctor(Foundation.NSNotification)
 M:AppKit.NSTextAttachmentViewProvider.Dispose(System.Boolean)
 M:AppKit.NSTextBlock.Copy(Foundation.NSZone)
 M:AppKit.NSTextCheckingController.CheckText(Foundation.NSRange,Foundation.NSTextCheckingTypes,AppKit.NSTextCheckingOptions)
@@ -9642,7 +9632,6 @@ M:AppKit.NSTextDelegate_Extensions.TextDidChange(AppKit.INSTextDelegate,Foundati
 M:AppKit.NSTextDelegate_Extensions.TextDidEndEditing(AppKit.INSTextDelegate,Foundation.NSNotification)
 M:AppKit.NSTextDelegate_Extensions.TextShouldBeginEditing(AppKit.INSTextDelegate,AppKit.NSText)
 M:AppKit.NSTextDelegate_Extensions.TextShouldEndEditing(AppKit.INSTextDelegate,AppKit.NSText)
-M:AppKit.NSTextDidEndEditingEventArgs.#ctor(Foundation.NSNotification)
 M:AppKit.NSTextElement.Dispose(System.Boolean)
 M:AppKit.NSTextElementProvider_Extensions.AdjustedRange(AppKit.INSTextElementProvider,AppKit.NSTextRange,System.Boolean)
 M:AppKit.NSTextElementProvider_Extensions.GetLocation(AppKit.INSTextElementProvider,AppKit.INSTextLocation,System.IntPtr)
@@ -9806,13 +9795,11 @@ M:AppKit.NSTextViewDelegate_Extensions.WillDisplayToolTip(AppKit.INSTextViewDele
 M:AppKit.NSTextViewDelegate_Extensions.WriteCell(AppKit.INSTextViewDelegate,AppKit.NSTextView,AppKit.NSTextAttachmentCell,System.UIntPtr,AppKit.NSPasteboard,System.String)
 M:AppKit.NSTextViewDelegate_Extensions.WritingToolsDidEnd(AppKit.INSTextViewDelegate,AppKit.NSTextView)
 M:AppKit.NSTextViewDelegate_Extensions.WritingToolsWillBegin(AppKit.INSTextViewDelegate,AppKit.NSTextView)
-M:AppKit.NSTextViewDidChangeSelectionEventArgs.#ctor(Foundation.NSNotification)
 M:AppKit.NSTextViewDoubleClickEventArgs.#ctor(AppKit.NSTextAttachmentCell,CoreGraphics.CGRect,System.UIntPtr)
 M:AppKit.NSTextViewDraggedCellEventArgs.#ctor(AppKit.NSTextAttachmentCell,CoreGraphics.CGRect,AppKit.NSEvent,System.UIntPtr)
 M:AppKit.NSTextViewportLayoutController.Dispose(System.Boolean)
 M:AppKit.NSTextViewportLayoutControllerDelegate_Extensions.DidLayout(AppKit.INSTextViewportLayoutControllerDelegate,AppKit.NSTextViewportLayoutController)
 M:AppKit.NSTextViewportLayoutControllerDelegate_Extensions.WillLayout(AppKit.INSTextViewportLayoutControllerDelegate,AppKit.NSTextViewportLayoutController)
-M:AppKit.NSTextViewWillChangeNotifyingTextViewEventArgs.#ctor(Foundation.NSNotification)
 M:AppKit.NSTintConfiguration.Copy(Foundation.NSZone)
 M:AppKit.NSTokenField.Dispose(System.Boolean)
 M:AppKit.NSTokenFieldCell.Dispose(System.Boolean)
@@ -9854,7 +9841,6 @@ M:AppKit.NSToolbarItem.Copy(Foundation.NSZone)
 M:AppKit.NSToolbarItem.Dispose(System.Boolean)
 M:AppKit.NSToolbarItem.GetFrame(UIKit.UIView)
 M:AppKit.NSToolbarItem.remove_Activated(System.EventHandler)
-M:AppKit.NSToolbarItemEventArgs.#ctor(Foundation.NSNotification)
 M:AppKit.NSTouch_NSTouchBar.GetLocation(AppKit.NSTouch,AppKit.NSView)
 M:AppKit.NSTouch_NSTouchBar.GetPreviousLocation(AppKit.NSTouch,AppKit.NSView)
 M:AppKit.NSTouch_NSTouchBar.GetTouchType(AppKit.NSTouch)
@@ -9874,8 +9860,6 @@ M:AppKit.NSView.AddToolTip(CoreGraphics.CGRect,AppKit.INSToolTipOwner)
 M:AppKit.NSView.AddToolTip(CoreGraphics.CGRect,Foundation.NSObject)
 M:AppKit.NSView.Dispose(System.Boolean)
 M:AppKit.NSView.SortSubviews(System.Func{AppKit.NSView,AppKit.NSView,Foundation.NSComparisonResult})
-M:AppKit.NSViewColumnMoveEventArgs.#ctor(Foundation.NSNotification)
-M:AppKit.NSViewColumnResizeEventArgs.#ctor(Foundation.NSNotification)
 M:AppKit.NSViewController.BeginRequestWithExtensionContext(Foundation.NSExtensionContext)
 M:AppKit.NSViewController.Dispose(System.Boolean)
 M:AppKit.NSWindow.add_DidBecomeKey(System.EventHandler)
@@ -9954,7 +9938,6 @@ M:AppKit.NSWindow.SetIsMiniaturized(System.Boolean)
 M:AppKit.NSWindow.SetIsVisible(System.Boolean)
 M:AppKit.NSWindow.SetIsZoomed(System.Boolean)
 M:AppKit.NSWindow.TransferWindowSharingAsync(AppKit.NSWindow)
-M:AppKit.NSWindowBackingPropertiesEventArgs.#ctor(Foundation.NSNotification)
 M:AppKit.NSWindowCoderEventArgs.#ctor(Foundation.NSCoder)
 M:AppKit.NSWindowDelegate_Extensions.CustomWindowsToEnterFullScreen(AppKit.INSWindowDelegate,AppKit.NSWindow)
 M:AppKit.NSWindowDelegate_Extensions.CustomWindowsToExitFullScreen(AppKit.INSWindowDelegate,AppKit.NSWindow)
@@ -10007,7 +9990,6 @@ M:AppKit.NSWindowDelegate_Extensions.WillUseFullScreenPresentationOptions(AppKit
 M:AppKit.NSWindowDelegate_Extensions.WillUseStandardFrame(AppKit.INSWindowDelegate,AppKit.NSWindow,CoreGraphics.CGRect)
 M:AppKit.NSWindowDelegate_Extensions.WindowShouldClose(AppKit.INSWindowDelegate,Foundation.NSObject)
 M:AppKit.NSWindowDurationEventArgs.#ctor(System.Double)
-M:AppKit.NSWindowExposeEventArgs.#ctor(Foundation.NSNotification)
 M:AppKit.NSWindowTabGroup.Dispose(System.Boolean)
 M:AppKit.NSWorkspace.IconForFileType(AppKit.HfsTypeCode)
 M:AppKit.NSWorkspace.OpenApplicationAsync(Foundation.NSUrl,AppKit.NSWorkspaceOpenConfiguration)
@@ -10017,11 +9999,7 @@ M:AppKit.NSWorkspace.SetDefaultApplicationToOpenContentTypeAsync(Foundation.NSUr
 M:AppKit.NSWorkspace.SetDefaultApplicationToOpenContentTypeAsync(Foundation.NSUrl,UniformTypeIdentifiers.UTType)
 M:AppKit.NSWorkspace.SetDefaultApplicationToOpenFileAsync(Foundation.NSUrl,Foundation.NSUrl)
 M:AppKit.NSWorkspace.SetDefaultApplicationToOpenUrlsAsync(Foundation.NSUrl,System.String)
-M:AppKit.NSWorkspaceApplicationEventArgs.#ctor(Foundation.NSNotification)
-M:AppKit.NSWorkspaceFileOperationEventArgs.#ctor(Foundation.NSNotification)
-M:AppKit.NSWorkspaceMountEventArgs.#ctor(Foundation.NSNotification)
 M:AppKit.NSWorkspaceOpenConfiguration.Copy(Foundation.NSZone)
-M:AppKit.NSWorkspaceRenamedEventArgs.#ctor(Foundation.NSNotification)
 M:AppKit.NSWritingToolsCoordinator.Dispose(System.Boolean)
 M:AppTrackingTransparency.ATTrackingManager.RequestTrackingAuthorization(System.Action{AppTrackingTransparency.ATTrackingManagerAuthorizationStatus})
 M:AppTrackingTransparency.ATTrackingManager.RequestTrackingAuthorizationAsync
@@ -10499,7 +10477,6 @@ M:AutomaticAssessmentConfiguration.IAEAssessmentSessionDelegate.DidUpdate(Automa
 M:AutomaticAssessmentConfiguration.IAEAssessmentSessionDelegate.FailedToBegin(AutomaticAssessmentConfiguration.AEAssessmentSession,Foundation.NSError)
 M:AutomaticAssessmentConfiguration.IAEAssessmentSessionDelegate.FailedToUpdate(AutomaticAssessmentConfiguration.AEAssessmentSession,AutomaticAssessmentConfiguration.AEAssessmentConfiguration,Foundation.NSError)
 M:AutomaticAssessmentConfiguration.IAEAssessmentSessionDelegate.WasInterrupted(AutomaticAssessmentConfiguration.AEAssessmentSession,Foundation.NSError)
-M:AVFoundation.AudioRendererWasFlushedAutomaticallyEventArgs.#ctor(Foundation.NSNotification)
 M:AVFoundation.AVAsset.FindUnusedTrackIdAsync
 M:AVFoundation.AVAsset.LoadChapterMetadataGroupsAsync(Foundation.NSLocale,System.String[])
 M:AVFoundation.AVAsset.LoadChapterMetadataGroupsAsync(System.String[])
@@ -10703,9 +10680,6 @@ M:AVFoundation.AVAudioSession.SetPrefersNoInterruptionsFromSystemAlerts(System.B
 M:AVFoundation.AVAudioSession.SetSupportsMultichannelContent(System.Boolean,Foundation.NSError@)
 M:AVFoundation.AVAudioSessionDelegate_Extensions.EndInterruption(AVFoundation.IAVAudioSessionDelegate,AVFoundation.AVAudioSessionInterruptionOptions)
 M:AVFoundation.AVAudioSessionDelegate.EndInterruption(AVFoundation.AVAudioSessionInterruptionOptions)
-M:AVFoundation.AVAudioSessionInterruptionEventArgs.#ctor(Foundation.NSNotification)
-M:AVFoundation.AVAudioSessionRouteChangeEventArgs.#ctor(Foundation.NSNotification)
-M:AVFoundation.AVAudioSessionSecondaryAudioHintEventArgs.#ctor(Foundation.NSNotification)
 M:AVFoundation.AVAudioSinkNode.#ctor(AVFoundation.AVAudioSinkNodeReceiverHandler2)
 M:AVFoundation.AVAudioSinkNode.#ctor(AVFoundation.AVAudioSinkNodeReceiverHandlerRaw)
 M:AVFoundation.AVAudioSourceNode.DestinationForMixer(AVFoundation.AVAudioNode,System.UIntPtr)
@@ -10777,7 +10751,6 @@ M:AVFoundation.AVCapturePhotoOutputReadinessCoordinator.Dispose(System.Boolean)
 M:AVFoundation.AVCapturePhotoSettings.Dispose(System.Boolean)
 M:AVFoundation.AVCapturePhotoSettingsThumbnailFormat.#ctor
 M:AVFoundation.AVCapturePhotoSettingsThumbnailFormat.#ctor(Foundation.NSDictionary)
-M:AVFoundation.AVCaptureSessionRuntimeErrorEventArgs.#ctor(Foundation.NSNotification)
 M:AVFoundation.AVCaptureStillImageOutput.CaptureStillImageTaskAsync(AVFoundation.AVCaptureConnection)
 M:AVFoundation.AVCaptureVideoDataOutput.GetRecommendedVideoSettings(AVFoundation.AVVideoCodecType,AVFoundation.AVFileTypes,Foundation.NSUrl)
 M:AVFoundation.AVCaptureVideoDataOutputSampleBufferDelegate_Extensions.DidDropSampleBuffer(AVFoundation.IAVCaptureVideoDataOutputSampleBufferDelegate,AVFoundation.AVCaptureOutput,CoreMedia.CMSampleBuffer,AVFoundation.AVCaptureConnection)
@@ -10970,7 +10943,6 @@ M:AVFoundation.AVPlayerItem.SeekAsync(CoreMedia.CMTime,CoreMedia.CMTime,CoreMedi
 M:AVFoundation.AVPlayerItem.SeekAsync(CoreMedia.CMTime)
 M:AVFoundation.AVPlayerItem.SeekAsync(Foundation.NSDate,System.Boolean@)
 M:AVFoundation.AVPlayerItem.SeekAsync(Foundation.NSDate)
-M:AVFoundation.AVPlayerItemErrorEventArgs.#ctor(Foundation.NSNotification)
 M:AVFoundation.AVPlayerItemIntegratedTimeline.SeekToDateAsync(Foundation.NSDate)
 M:AVFoundation.AVPlayerItemIntegratedTimeline.SeekToTimeAsync(CoreMedia.CMTime,CoreMedia.CMTime,CoreMedia.CMTime)
 M:AVFoundation.AVPlayerItemLegibleOutputPushDelegate_Extensions.DidOutputAttributedStrings(AVFoundation.IAVPlayerItemLegibleOutputPushDelegate,AVFoundation.AVPlayerItemLegibleOutput,Foundation.NSAttributedString[],CoreMedia.CMSampleBuffer[],CoreMedia.CMTime)
@@ -10981,7 +10953,6 @@ M:AVFoundation.AVPlayerItemOutputPullDelegate_Extensions.OutputMediaDataWillChan
 M:AVFoundation.AVPlayerItemOutputPullDelegate_Extensions.OutputSequenceWasFlushed(AVFoundation.IAVPlayerItemOutputPullDelegate,AVFoundation.AVPlayerItemOutput)
 M:AVFoundation.AVPlayerItemOutputPushDelegate_Extensions.OutputSequenceWasFlushed(AVFoundation.IAVPlayerItemOutputPushDelegate,AVFoundation.AVPlayerItemOutput)
 M:AVFoundation.AVPlayerItemRenderedLegibleOutput.Dispose(System.Boolean)
-M:AVFoundation.AVPlayerItemTimeJumpedEventArgs.#ctor(Foundation.NSNotification)
 M:AVFoundation.AVPlayerItemVideoOutput.#ctor(AVFoundation.AVPlayerItemVideoOutputSettings)
 M:AVFoundation.AVPlayerItemVideoOutput.#ctor(CoreVideo.CVPixelBufferAttributes)
 M:AVFoundation.AVPlayerItemVideoOutput.Dispose(System.Boolean)
@@ -10990,7 +10961,6 @@ M:AVFoundation.AVPlayerItemVideoOutputSettings.#ctor(Foundation.NSDictionary)
 M:AVFoundation.AVPlayerPlaybackCoordinator.Dispose(System.Boolean)
 M:AVFoundation.AVPlayerPlaybackCoordinatorDelegate_Extensions.GetIdentifier(AVFoundation.IAVPlayerPlaybackCoordinatorDelegate,AVFoundation.AVPlayerPlaybackCoordinator,AVFoundation.AVPlayerItem)
 M:AVFoundation.AVPlayerPlaybackCoordinatorDelegate_Extensions.GetInterstitialTimeRanges(AVFoundation.IAVPlayerPlaybackCoordinatorDelegate,AVFoundation.AVPlayerPlaybackCoordinator,AVFoundation.AVPlayerItem)
-M:AVFoundation.AVPlayerRateDidChangeEventArgs.#ctor(Foundation.NSNotification)
 M:AVFoundation.AVPlayerVideoOutputConfiguration.Dispose(System.Boolean)
 M:AVFoundation.AVSampleBufferAudioRenderer.FlushAsync(CoreMedia.CMTime)
 M:AVFoundation.AVSampleBufferDisplayLayer_ProtectedContent.GetOutputObscuredDueToInsufficientExternalProtection(AVFoundation.AVSampleBufferDisplayLayer)
@@ -11149,9 +11119,6 @@ M:AVFoundation.IAVVideoCompositionValidationHandling.ShouldContinueValidatingAft
 M:AVFoundation.IAVVideoCompositionValidationHandling.ShouldContinueValidatingAfterFindingInvalidTimeRangeInInstruction(AVFoundation.AVVideoComposition,AVFoundation.AVVideoCompositionInstruction)
 M:AVFoundation.IAVVideoCompositionValidationHandling.ShouldContinueValidatingAfterFindingInvalidTrackIDInInstruction(AVFoundation.AVVideoComposition,AVFoundation.AVVideoCompositionInstruction,AVFoundation.AVVideoCompositionLayerInstruction,AVFoundation.AVAsset)
 M:AVFoundation.IAVVideoCompositionValidationHandling.ShouldContinueValidatingAfterFindingInvalidValueForKey(AVFoundation.AVVideoComposition,System.String)
-M:AVFoundation.MicrophoneInjectionCapabilitiesChangeEventArgs.#ctor(Foundation.NSNotification)
-M:AVFoundation.RenderingModeChangeNotificationEventArgs.#ctor(Foundation.NSNotification)
-M:AVFoundation.SpatialPlaybackCapabilitiesChangedEventArgs.#ctor(Foundation.NSNotification)
 M:AVKit.AVAudioSession_AVPlaybackRouteSelecting.PrepareRouteSelectionForPlayback(AVFoundation.AVAudioSession,System.Action{System.Boolean,AVKit.AVAudioSessionRouteSelection})
 M:AVKit.AVAudioSession_AVPlaybackRouteSelecting.PrepareRouteSelectionForPlaybackAsync(AVFoundation.AVAudioSession)
 M:AVKit.AVCaptureEventInteraction.DidMoveToView(UIKit.UIView)
@@ -12144,7 +12111,6 @@ M:CoreData.NSManagedObject.GetPrimitiveValue(System.String)
 M:CoreData.NSManagedObject.GetValue(System.String)
 M:CoreData.NSManagedObject.SetPrimitiveValue(Foundation.NSObject,System.String)
 M:CoreData.NSManagedObject.SetValue(Foundation.NSObject,System.String)
-M:CoreData.NSManagedObjectChangeEventArgs.#ctor(Foundation.NSNotification)
 M:CoreData.NSManagedObjectContext.#ctor
 M:CoreData.NSManagedObjectContext.#ctor(CoreData.NSManagedObjectContextConcurrencyType)
 M:CoreData.NSManagedObjectContext.AssignObject(Foundation.NSObject,CoreData.NSPersistentStore)
@@ -12171,7 +12137,6 @@ M:CoreData.NSManagedObjectModelReference.#ctor(CoreData.NSManagedObjectModel,Sys
 M:CoreData.NSManagedObjectModelReference.#ctor(Foundation.NSDictionary,Foundation.NSBundle,System.String)
 M:CoreData.NSManagedObjectModelReference.#ctor(Foundation.NSUrl,System.String)
 M:CoreData.NSManagedObjectModelReference.#ctor(System.String,Foundation.NSBundle,System.String)
-M:CoreData.NSManagedObjectsIdsChangedEventArgs.#ctor(Foundation.NSNotification)
 M:CoreData.NSMappingModel.#ctor(Foundation.NSUrl)
 M:CoreData.NSMappingModel.GetMappingModel(Foundation.NSBundle[],CoreData.NSManagedObjectModel,CoreData.NSManagedObjectModel)
 M:CoreData.NSMergeConflict.#ctor(CoreData.NSManagedObject,System.UIntPtr,System.UIntPtr,Foundation.NSDictionary,Foundation.NSDictionary)
@@ -12231,10 +12196,8 @@ M:CoreData.NSPersistentStoreCoordinator.GetCurrentPersistentHistoryToken(Foundat
 M:CoreData.NSPersistentStoreCoordinator.GetManagedObjectId(System.IntPtr,System.UIntPtr)
 M:CoreData.NSPersistentStoreCoordinator.GetManagedObjectId(System.String)
 M:CoreData.NSPersistentStoreCoordinator.GetMetadata(CoreData.NSPersistentStore)
-M:CoreData.NSPersistentStoreCoordinatorStoreChangeEventArgs.#ctor(Foundation.NSNotification)
 M:CoreData.NSPersistentStoreDescription.#ctor(Foundation.NSUrl)
 M:CoreData.NSPersistentStoreDescription.Copy(Foundation.NSZone)
-M:CoreData.NSPersistentStoreRemoteChangeEventArgs.#ctor(Foundation.NSNotification)
 M:CoreData.NSPersistentStoreRequest.Copy(Foundation.NSZone)
 M:CoreData.NSPropertyDescription.Copy(Foundation.NSZone)
 M:CoreData.NSQueryGenerationToken.Copy(Foundation.NSZone)
@@ -13800,7 +13763,6 @@ M:ExtensionKit.IEXHostViewControllerDelegate.WillDeactivate(ExtensionKit.EXHostV
 M:ExternalAccessory.EAAccessory.add_Disconnected(System.EventHandler)
 M:ExternalAccessory.EAAccessory.Dispose(System.Boolean)
 M:ExternalAccessory.EAAccessory.remove_Disconnected(System.EventHandler)
-M:ExternalAccessory.EAAccessoryEventArgs.#ctor(Foundation.NSNotification)
 M:ExternalAccessory.EAAccessoryManager.ShowBluetoothAccessoryPickerAsync(Foundation.NSPredicate)
 M:ExternalAccessory.EASession.#ctor(ExternalAccessory.EAAccessory,System.String)
 M:ExternalAccessory.EAWiFiUnconfiguredAccessoryBrowser.#ctor(ExternalAccessory.IEAWiFiUnconfiguredAccessoryBrowserDelegate,CoreFoundation.DispatchQueue)
@@ -14336,8 +14298,6 @@ M:Foundation.NSExceptionError.#ctor(System.Exception)
 M:Foundation.NSExtensionContext.CompleteRequestAsync(Foundation.NSExtensionItem[])
 M:Foundation.NSExtensionContext.OpenUrlAsync(Foundation.NSUrl)
 M:Foundation.NSFileAttributes.#ctor
-M:Foundation.NSFileHandleConnectionAcceptedEventArgs.#ctor(Foundation.NSNotification)
-M:Foundation.NSFileHandleReadEventArgs.#ctor(Foundation.NSNotification)
 M:Foundation.NSFileManager_NSUserInformation.GetHomeDirectory(Foundation.NSFileManager,System.String)
 M:Foundation.NSFileManager_NSUserInformation.GetHomeDirectoryForCurrentUser(Foundation.NSFileManager)
 M:Foundation.NSFileManager_NSUserInformation.GetTemporaryDirectory(Foundation.NSFileManager)
@@ -14673,8 +14633,6 @@ M:Foundation.NSTextCheckingAddressComponents.#ctor(Foundation.NSDictionary)
 M:Foundation.NSTextCheckingTransitComponents.#ctor
 M:Foundation.NSTextCheckingTransitComponents.#ctor(Foundation.NSDictionary)
 M:Foundation.NSTimer.Dispose(System.Boolean)
-M:Foundation.NSUbiquitousKeyValueStoreChangeEventArgs.#ctor(Foundation.NSNotification)
-M:Foundation.NSUndoManagerCloseUndoGroupEventArgs.#ctor(Foundation.NSNotification)
 M:Foundation.NSUrl_PromisedItems.CheckPromisedItemIsReachable(Foundation.NSUrl,Foundation.NSError@)
 M:Foundation.NSUrl_PromisedItems.GetPromisedItemResourceValue(Foundation.NSUrl,Foundation.NSObject@,Foundation.NSString,Foundation.NSError@)
 M:Foundation.NSUrl_PromisedItems.GetPromisedItemResourceValues(Foundation.NSUrl,Foundation.NSString[],Foundation.NSError@)
@@ -17827,10 +17785,6 @@ M:MediaPlayer.MPMoviePlayerController.Pause
 M:MediaPlayer.MPMoviePlayerController.Play
 M:MediaPlayer.MPMoviePlayerController.PrepareToPlay
 M:MediaPlayer.MPMoviePlayerController.Stop
-M:MediaPlayer.MPMoviePlayerFinishedEventArgs.#ctor(Foundation.NSNotification)
-M:MediaPlayer.MPMoviePlayerFullScreenEventArgs.#ctor(Foundation.NSNotification)
-M:MediaPlayer.MPMoviePlayerThumbnailEventArgs.#ctor(Foundation.NSNotification)
-M:MediaPlayer.MPMoviePlayerTimedMetadataEventArgs.#ctor(Foundation.NSNotification)
 M:MediaPlayer.MPMoviePlayerViewController.#ctor(Foundation.NSUrl)
 M:MediaPlayer.MPMusicPlayerApplicationController.PerformAsync(System.Action{MediaPlayer.MPMusicPlayerControllerMutableQueue})
 M:MediaPlayer.MPMusicPlayerController.#ctor
@@ -17896,7 +17850,6 @@ M:MessageUI.MFMailComposeViewController.InsertCollaborationItemProvider(Foundati
 M:MessageUI.MFMailComposeViewController.InsertCollaborationItemProviderAsync(Foundation.NSItemProvider)
 M:MessageUI.MFMailComposeViewController.MFMailComposeViewControllerAppearance.#ctor(System.IntPtr)
 M:MessageUI.MFMailComposeViewController.remove_Finished(System.EventHandler{MessageUI.MFComposeResultEventArgs})
-M:MessageUI.MFMessageAvailabilityChangedEventArgs.#ctor(Foundation.NSNotification)
 M:MessageUI.MFMessageComposeViewController.add_Finished(System.EventHandler{MessageUI.MFMessageComposeResultEventArgs})
 M:MessageUI.MFMessageComposeViewController.Dispose(System.Boolean)
 M:MessageUI.MFMessageComposeViewController.InsertCollaboration(Foundation.NSItemProvider)
@@ -21393,7 +21346,6 @@ M:PdfKit.PdfView.ShouldRecognizeSimultaneously(UIKit.UIGestureRecognizer,UIKit.U
 M:PdfKit.PdfView.ShouldRequireFailureOf(UIKit.UIGestureRecognizer,UIKit.UIGestureRecognizer)
 M:PdfKit.PdfView.UpdateItem(AppKit.NSMenu,AppKit.NSMenuItem,System.IntPtr,System.Boolean)
 M:PdfKit.PdfViewActionEventArgs.#ctor(PdfKit.PdfActionRemoteGoTo)
-M:PdfKit.PdfViewAnnotationHitEventArgs.#ctor(Foundation.NSNotification)
 M:PdfKit.PdfViewDelegate_Extensions.GetParentViewController(PdfKit.IPdfViewDelegate)
 M:PdfKit.PdfViewDelegate_Extensions.WillChangeScaleFactor(PdfKit.IPdfViewDelegate,PdfKit.PdfView,System.Runtime.InteropServices.NFloat)
 M:PdfKit.PdfViewDelegate.WillChangeScaleFactor(PdfKit.PdfView,System.Runtime.InteropServices.NFloat)
@@ -24113,7 +24065,6 @@ M:UIKit.UIAccelerometer.Dispose(System.Boolean)
 M:UIKit.UIAccelerometer.remove_Acceleration(System.EventHandler{UIKit.UIAccelerometerEventArgs})
 M:UIKit.UIAccelerometerDelegate_Extensions.DidAccelerate(UIKit.IUIAccelerometerDelegate,UIKit.UIAccelerometer,UIKit.UIAcceleration)
 M:UIKit.UIAccelerometerEventArgs.#ctor(UIKit.UIAcceleration)
-M:UIKit.UIAccessibilityAnnouncementFinishedEventArgs.#ctor(Foundation.NSNotification)
 M:UIKit.UIAccessibilityContainer_Extensions.AccessibilityElementCount(UIKit.IUIAccessibilityContainer)
 M:UIKit.UIAccessibilityContainer_Extensions.GetAccessibilityContainerType(UIKit.IUIAccessibilityContainer)
 M:UIKit.UIAccessibilityContainer_Extensions.GetAccessibilityElementAt(UIKit.IUIAccessibilityContainer,System.IntPtr)
@@ -24255,7 +24206,6 @@ M:UIKit.UIApplicationDelegate_Extensions.WillEncodeRestorableState(UIKit.IUIAppl
 M:UIKit.UIApplicationDelegate_Extensions.WillEnterForeground(UIKit.IUIApplicationDelegate,UIKit.UIApplication)
 M:UIKit.UIApplicationDelegate_Extensions.WillFinishLaunching(UIKit.IUIApplicationDelegate,UIKit.UIApplication,Foundation.NSDictionary)
 M:UIKit.UIApplicationDelegate_Extensions.WillTerminate(UIKit.IUIApplicationDelegate,UIKit.UIApplication)
-M:UIKit.UIApplicationLaunchEventArgs.#ctor(Foundation.NSNotification)
 M:UIKit.UIApplicationOpenUrlOptions.#ctor
 M:UIKit.UIApplicationOpenUrlOptions.#ctor(Foundation.NSDictionary)
 M:UIKit.UIApplicationShortcutIcon.Copy(Foundation.NSZone)
@@ -24440,7 +24390,6 @@ M:UIKit.UIColorPickerViewControllerDelegate_Extensions.DidSelectColor(UIKit.IUIC
 M:UIKit.UIColorPickerViewControllerDelegate_Extensions.DidSelectColor(UIKit.IUIColorPickerViewControllerDelegate,UIKit.UIColorPickerViewController)
 M:UIKit.UIColorWell.UIColorWellAppearance.#ctor(System.IntPtr)
 M:UIKit.UICommandAlternate.Copy(Foundation.NSZone)
-M:UIKit.UIContentSizeCategoryChangedEventArgs.#ctor(Foundation.NSNotification)
 M:UIKit.UIContentUnavailableButtonProperties.Copy(Foundation.NSZone)
 M:UIKit.UIContentUnavailableConfiguration.Copy(Foundation.NSZone)
 M:UIKit.UIContentUnavailableConfigurationState.Copy(Foundation.NSZone)
@@ -24729,7 +24678,6 @@ M:UIKit.UIInputViewAudioFeedback_Extensions.GetEnableInputClicksWhenVisible(UIKi
 M:UIKit.UIInputViewController.RequestSupplementaryLexiconAsync
 M:UIKit.UIKey.Copy(Foundation.NSZone)
 M:UIKit.UIKeyboard.#ctor
-M:UIKit.UIKeyboardEventArgs.#ctor(Foundation.NSNotification)
 M:UIKit.UILabel.UILabelAppearance.#ctor(System.IntPtr)
 M:UIKit.UILargeContentViewerInteraction.Dispose(System.Boolean)
 M:UIKit.UILargeContentViewerInteractionDelegate_Extensions.DidEnd(UIKit.IUILargeContentViewerInteractionDelegate,UIKit.UILargeContentViewerInteraction,UIKit.IUILargeContentViewerItem,CoreGraphics.CGPoint)
@@ -24804,7 +24752,6 @@ M:UIKit.UIPasteboard.DetectPatternsAsync(Foundation.NSSet{Foundation.NSString},F
 M:UIKit.UIPasteboard.DetectPatternsAsync(Foundation.NSSet{Foundation.NSString})
 M:UIKit.UIPasteboard.DetectValuesAsync(Foundation.NSSet{Foundation.NSString},Foundation.NSIndexSet)
 M:UIKit.UIPasteboard.DetectValuesAsync(Foundation.NSSet{Foundation.NSString})
-M:UIKit.UIPasteboardChangeEventArgs.#ctor(Foundation.NSNotification)
 M:UIKit.UIPasteboardOptions.#ctor
 M:UIKit.UIPasteboardOptions.#ctor(Foundation.NSDictionary)
 M:UIKit.UIPasteConfiguration.#ctor(System.Type)
@@ -24840,7 +24787,6 @@ M:UIKit.UIPointerInteractionDelegate_Extensions.GetRegionForRequest(UIKit.IUIPoi
 M:UIKit.UIPointerInteractionDelegate_Extensions.GetStyleForRegion(UIKit.IUIPointerInteractionDelegate,UIKit.UIPointerInteraction,UIKit.UIPointerRegion)
 M:UIKit.UIPointerInteractionDelegate_Extensions.WillEnterRegion(UIKit.IUIPointerInteractionDelegate,UIKit.UIPointerInteraction,UIKit.UIPointerRegion,UIKit.IUIPointerInteractionAnimating)
 M:UIKit.UIPointerInteractionDelegate_Extensions.WillExitRegion(UIKit.IUIPointerInteractionDelegate,UIKit.UIPointerInteraction,UIKit.UIPointerRegion,UIKit.IUIPointerInteractionAnimating)
-M:UIKit.UIPointerLockStateDidChangeEventArgs.#ctor(Foundation.NSNotification)
 M:UIKit.UIPointerRegion.Copy(Foundation.NSZone)
 M:UIKit.UIPointerShape.Copy(Foundation.NSZone)
 M:UIKit.UIPointerStyle.Copy(Foundation.NSZone)
@@ -25191,8 +25137,6 @@ M:UIKit.UIStateRestoring_Extensions.DecodeRestorableState(UIKit.IUIStateRestorin
 M:UIKit.UIStateRestoring_Extensions.EncodeRestorableState(UIKit.IUIStateRestoring,Foundation.NSCoder)
 M:UIKit.UIStateRestoring_Extensions.GetObjectRestorationClass(UIKit.IUIStateRestoring)
 M:UIKit.UIStateRestoring_Extensions.GetRestorationParent(UIKit.IUIStateRestoring)
-M:UIKit.UIStatusBarFrameChangeEventArgs.#ctor(Foundation.NSNotification)
-M:UIKit.UIStatusBarOrientationChangeEventArgs.#ctor(Foundation.NSNotification)
 M:UIKit.UIStepper.UIStepperAppearance.#ctor(System.IntPtr)
 M:UIKit.UIStepper.UIStepperAppearance.BackgroundImage(UIKit.UIControlState)
 M:UIKit.UIStepper.UIStepperAppearance.GetDecrementImage(UIKit.UIControlState)
@@ -37928,7 +37872,6 @@ T:AppKit.NSAnimationEffect
 T:AppKit.NSAnimationEventArgs
 T:AppKit.NSAnimationPredicate
 T:AppKit.NSAnimationProgress
-T:AppKit.NSAnimationProgressMarkEventArgs
 T:AppKit.NSAppearanceCustomization
 T:AppKit.NSApplication_NSServicesMenu
 T:AppKit.NSApplication_NSStandardAboutPanel
@@ -37938,7 +37881,6 @@ T:AppKit.NSApplicationActivationPolicy
 T:AppKit.NSApplicationContinueUserActivity
 T:AppKit.NSApplicationDelegate
 T:AppKit.NSApplicationDelegateReply
-T:AppKit.NSApplicationDidFinishLaunchingEventArgs
 T:AppKit.NSApplicationEnumerateWindowsHandler
 T:AppKit.NSApplicationError
 T:AppKit.NSApplicationFailedEventArgs
@@ -38021,7 +37963,6 @@ T:AppKit.NSControlCommand
 T:AppKit.NSControlSize
 T:AppKit.NSControlText
 T:AppKit.NSControlTextEditingDelegate
-T:AppKit.NSControlTextEditingEventArgs
 T:AppKit.NSControlTextError
 T:AppKit.NSControlTextErrorEventArgs
 T:AppKit.NSControlTextFilter
@@ -38144,8 +38085,6 @@ T:AppKit.NSMatrixDelegate
 T:AppKit.NSMatrixMode
 T:AppKit.NSMenuDelegate
 T:AppKit.NSMenuItemBadgeType
-T:AppKit.NSMenuItemEventArgs
-T:AppKit.NSMenuItemIndexEventArgs
 T:AppKit.NSMenuPresentationStyle
 T:AppKit.NSMenuProperty
 T:AppKit.NSMenuSelectionMode
@@ -38172,7 +38111,6 @@ T:AppKit.NSopenSavePanelUTTypeEventArgs
 T:AppKit.NSOpenSavePanelValidate
 T:AppKit.NSOutlineViewDataSource
 T:AppKit.NSOutlineViewDelegate
-T:AppKit.NSOutlineViewItemEventArgs
 T:AppKit.NSPageControllerDelegate
 T:AppKit.NSPageControllerGetFrame
 T:AppKit.NSPageControllerGetIdentifier
@@ -38290,7 +38228,6 @@ T:AppKit.NSSpellCheckerCandidates
 T:AppKit.NSSpellCheckerShowCorrectionIndicatorOfTypeHandler
 T:AppKit.NSSpellingState
 T:AppKit.NSSplitViewDelegate
-T:AppKit.NSSplitViewDividerIndexEventArgs
 T:AppKit.NSSplitViewDividerStyle
 T:AppKit.NSSplitViewItemBehavior
 T:AppKit.NSSpringLoadingDestination
@@ -38358,7 +38295,6 @@ T:AppKit.NSTabViewPredicate
 T:AppKit.NSTabViewType
 T:AppKit.NSTextAlignment
 T:AppKit.NSTextAlignmentExtensions
-T:AppKit.NSTextAlternativesSelectedAlternativeStringEventArgs
 T:AppKit.NSTextBlockDimension
 T:AppKit.NSTextBlockLayer
 T:AppKit.NSTextBlockValueType
@@ -38370,7 +38306,6 @@ T:AppKit.NSTextContentStorageDelegate
 T:AppKit.NSTextContentType
 T:AppKit.NSTextCursorAccessoryPlacement
 T:AppKit.NSTextDelegate
-T:AppKit.NSTextDidEndEditingEventArgs
 T:AppKit.NSTextField_NSTouchBar
 T:AppKit.NSTextFieldBezelStyle
 T:AppKit.NSTextFieldDelegate
@@ -38420,7 +38355,6 @@ T:AppKit.NSTextViewChangeText
 T:AppKit.NSTextViewClickedEventArgs
 T:AppKit.NSTextViewCompletion
 T:AppKit.NSTextViewDelegate
-T:AppKit.NSTextViewDidChangeSelectionEventArgs
 T:AppKit.NSTextViewDoubleClickEventArgs
 T:AppKit.NSTextViewDraggedCellEventArgs
 T:AppKit.NSTextViewEventMenu
@@ -38441,7 +38375,6 @@ T:AppKit.NSTextViewTextCheckingResults
 T:AppKit.NSTextViewTooltip
 T:AppKit.NSTextViewTypeAttribute
 T:AppKit.NSTextViewUpdateTouchBarItemIdentifiers
-T:AppKit.NSTextViewWillChangeNotifyingTextViewEventArgs
 T:AppKit.NSTickMarkPosition
 T:AppKit.NSTiffCompression
 T:AppKit.NSTitlebarSeparatorStyle
@@ -38454,7 +38387,6 @@ T:AppKit.NSToolbarDelegate
 T:AppKit.NSToolbarDisplayMode
 T:AppKit.NSToolbarIdentifiers
 T:AppKit.NSToolbarImmovableItemIdentifiers
-T:AppKit.NSToolbarItemEventArgs
 T:AppKit.NSToolbarItemGroupControlRepresentation
 T:AppKit.NSToolbarItemGroupSelectionMode
 T:AppKit.NSToolbarItemVisibilityPriority
@@ -38478,8 +38410,6 @@ T:AppKit.NSUserInterfaceLayoutOrientation
 T:AppKit.NSVerticalDirections
 T:AppKit.NSView_NSCandidateListTouchBarItem
 T:AppKit.NSView_NSTouchBar
-T:AppKit.NSViewColumnMoveEventArgs
-T:AppKit.NSViewColumnResizeEventArgs
 T:AppKit.NSViewControllerPresentationAnimator
 T:AppKit.NSViewControllerTransitionOptions
 T:AppKit.NSViewLayerContentsPlacement
@@ -38492,7 +38422,6 @@ T:AppKit.NSWindingRule
 T:AppKit.NSWindowAnimationBehavior
 T:AppKit.NSWindowApplicationPresentationOptions
 T:AppKit.NSWindowBackingLocation
-T:AppKit.NSWindowBackingPropertiesEventArgs
 T:AppKit.NSWindowButton
 T:AppKit.NSWindowClient
 T:AppKit.NSWindowCoderEventArgs
@@ -38502,7 +38431,6 @@ T:AppKit.NSWindowDelegate
 T:AppKit.NSWindowDepth
 T:AppKit.NSWindowDocumentDrag
 T:AppKit.NSWindowDurationEventArgs
-T:AppKit.NSWindowExposeEventArgs
 T:AppKit.NSWindowFrame
 T:AppKit.NSWindowFramePredicate
 T:AppKit.NSWindowLevel
@@ -38526,13 +38454,9 @@ T:AppKit.NSWindowTrackEventsMatchingCompletionHandler
 T:AppKit.NSWindowUndoManager
 T:AppKit.NSWindowUserTabbingPreference
 T:AppKit.NSWindowWindows
-T:AppKit.NSWorkspaceApplicationEventArgs
 T:AppKit.NSWorkspaceAuthorizationType
-T:AppKit.NSWorkspaceFileOperationEventArgs
 T:AppKit.NSWorkspaceIconCreationOptions
 T:AppKit.NSWorkspaceLaunchOptions
-T:AppKit.NSWorkspaceMountEventArgs
-T:AppKit.NSWorkspaceRenamedEventArgs
 T:AppKit.NSWorkspaceUrlHandler
 T:AppKit.NSWritingToolsBehavior
 T:AppKit.NSWritingToolsCoordinatorContextScope
@@ -38843,7 +38767,6 @@ T:AVFoundation.AVAudioSessionCategory
 T:AVFoundation.AVAudioSessionCategoryOptions
 T:AVFoundation.AVAudioSessionChannelDescription
 T:AVFoundation.AVAudioSessionErrorCode
-T:AVFoundation.AVAudioSessionInterruptionEventArgs
 T:AVFoundation.AVAudioSessionInterruptionOptions
 T:AVFoundation.AVAudioSessionInterruptionReason
 T:AVFoundation.AVAudioSessionInterruptionType
@@ -38854,11 +38777,9 @@ T:AVFoundation.AVAudioSessionPortOverride
 T:AVFoundation.AVAudioSessionPromptStyle
 T:AVFoundation.AVAudioSessionRecordPermission
 T:AVFoundation.AVAudioSessionRenderingMode
-T:AVFoundation.AVAudioSessionRouteChangeEventArgs
 T:AVFoundation.AVAudioSessionRouteChangeReason
 T:AVFoundation.AVAudioSessionRouteDescription
 T:AVFoundation.AVAudioSessionRouteSharingPolicy
-T:AVFoundation.AVAudioSessionSecondaryAudioHintEventArgs
 T:AVFoundation.AVAudioSessionSetActiveOptions
 T:AVFoundation.AVAudioSessionSilenceSecondaryAudioHintType
 T:AVFoundation.AVAudioSettings
@@ -38943,7 +38864,6 @@ T:AVFoundation.AVCaptureReactionType
 T:AVFoundation.AVCaptureReactionType_Extensions
 T:AVFoundation.AVCaptureSessionControlsDelegate
 T:AVFoundation.AVCaptureSessionInterruptionReason
-T:AVFoundation.AVCaptureSessionRuntimeErrorEventArgs
 T:AVFoundation.AVCaptureSliderCallback
 T:AVFoundation.AVCaptureSystemExposureBiasSliderCallback
 T:AVFoundation.AVCaptureSystemPressureFactors
@@ -39045,7 +38965,6 @@ T:AVFoundation.AVPlayerInterstitialEventTimelineOccupancy
 T:AVFoundation.AVPlayerItem_AVPlaybackRestrictions
 T:AVFoundation.AVPlayerItem_AVPlayerInterstitialSupport
 T:AVFoundation.AVPlayerItem_AVPlayerItemProtectedContent
-T:AVFoundation.AVPlayerItemErrorEventArgs
 T:AVFoundation.AVPlayerItemIntegratedTimelineAddBoundaryTimeObserverCallback
 T:AVFoundation.AVPlayerItemIntegratedTimelineAddPeriodicTimeObserverCallback
 T:AVFoundation.AVPlayerItemIntegratedTimelineSeekCallback
@@ -39057,12 +38976,10 @@ T:AVFoundation.AVPlayerItemOutputPushDelegate
 T:AVFoundation.AVPlayerItemRenderedLegibleOutputPushDelegate
 T:AVFoundation.AVPlayerItemSegmentType
 T:AVFoundation.AVPlayerItemStatus
-T:AVFoundation.AVPlayerItemTimeJumpedEventArgs
 T:AVFoundation.AVPlayerItemVideoOutputSettings
 T:AVFoundation.AVPlayerLooperItemOrdering
 T:AVFoundation.AVPlayerLooperStatus
 T:AVFoundation.AVPlayerPlaybackCoordinatorDelegate
-T:AVFoundation.AVPlayerRateDidChangeEventArgs
 T:AVFoundation.AVPlayerRateDidChangeReason
 T:AVFoundation.AVPlayerStatus
 T:AVFoundation.AVPlayerTimeControlStatus
@@ -39145,9 +39062,6 @@ T:AVFoundation.IAVQueuedSampleBufferRendering
 T:AVFoundation.IAVSpeechSynthesizerDelegate
 T:AVFoundation.IAVVideoCompositing
 T:AVFoundation.IAVVideoCompositionValidationHandling
-T:AVFoundation.MicrophoneInjectionCapabilitiesChangeEventArgs
-T:AVFoundation.RenderingModeChangeNotificationEventArgs
-T:AVFoundation.SpatialPlaybackCapabilitiesChangedEventArgs
 T:AVKit.AVAudioSession_AVPlaybackRouteSelecting
 T:AVKit.AVAudioSessionRouteSelection
 T:AVKit.AVCaptureEventPhase
@@ -39422,12 +39336,10 @@ T:CoreData.NSIncrementalStore
 T:CoreData.NSIncrementalStoreNode
 T:CoreData.NSLightweightMigrationStage
 T:CoreData.NSManagedObject
-T:CoreData.NSManagedObjectChangeEventArgs
 T:CoreData.NSManagedObjectContext
 T:CoreData.NSManagedObjectID
 T:CoreData.NSManagedObjectModel
 T:CoreData.NSManagedObjectModelReference
-T:CoreData.NSManagedObjectsIdsChangedEventArgs
 T:CoreData.NSMappingModel
 T:CoreData.NSMergeConflict
 T:CoreData.NSMergePolicy
@@ -39461,9 +39373,7 @@ T:CoreData.NSPersistentHistoryToken
 T:CoreData.NSPersistentHistoryTransaction
 T:CoreData.NSPersistentStore
 T:CoreData.NSPersistentStoreAsynchronousResult
-T:CoreData.NSPersistentStoreCoordinatorStoreChangeEventArgs
 T:CoreData.NSPersistentStoreDescription
-T:CoreData.NSPersistentStoreRemoteChangeEventArgs
 T:CoreData.NSPersistentStoreRequest
 T:CoreData.NSPersistentStoreResult
 T:CoreData.NSPropertyDescription
@@ -40132,7 +40042,6 @@ T:ExtensionKit.EXHostViewControllerDelegate
 T:ExtensionKit.IEXHostViewControllerDelegate
 T:ExternalAccessory.EAAccessory
 T:ExternalAccessory.EAAccessoryDelegate
-T:ExternalAccessory.EAAccessoryEventArgs
 T:ExternalAccessory.EAAccessoryManager
 T:ExternalAccessory.EABluetoothAccessoryPickerError
 T:ExternalAccessory.EASession
@@ -40316,8 +40225,6 @@ T:Foundation.NSExtensionRequestHandling
 T:Foundation.NSFileCoordinatorReadingOptions
 T:Foundation.NSFileCoordinatorWorkerRW
 T:Foundation.NSFileCoordinatorWritingOptions
-T:Foundation.NSFileHandleConnectionAcceptedEventArgs
-T:Foundation.NSFileHandleReadEventArgs
 T:Foundation.NSFileManager_NSUserInformation
 T:Foundation.NSFileManagerItemReplacementOptions
 T:Foundation.NSFileManagerUnmountOptions
@@ -40447,10 +40354,8 @@ T:Foundation.NSTextCheckingTransitComponents
 T:Foundation.NSTextCheckingType
 T:Foundation.NSTextCheckingTypes
 T:Foundation.NSTimeZoneNameStyle
-T:Foundation.NSUbiquitousKeyValueStoreChangeEventArgs
 T:Foundation.NSUbiquitousKeyValueStoreChangeReason
 T:Foundation.NSUnderlineStyle
-T:Foundation.NSUndoManagerCloseUndoGroupEventArgs
 T:Foundation.NSUrl_PromisedItems
 T:Foundation.NSUrlAsyncResult
 T:Foundation.NSUrlBookmarkCreationOptions
@@ -41395,10 +41300,6 @@ T:MediaPlayer.MPMediaItemEnumerator
 T:MediaPlayer.MPMediaPlaylistProperty
 T:MediaPlayer.MPMediaType
 T:MediaPlayer.MPMovieControlMode
-T:MediaPlayer.MPMoviePlayerFinishedEventArgs
-T:MediaPlayer.MPMoviePlayerFullScreenEventArgs
-T:MediaPlayer.MPMoviePlayerThumbnailEventArgs
-T:MediaPlayer.MPMoviePlayerTimedMetadataEventArgs
 T:MediaPlayer.MPMusicPlaybackState
 T:MediaPlayer.MPMusicPlayerApplicationController
 T:MediaPlayer.MPMusicPlayerController
@@ -41438,7 +41339,6 @@ T:Messages.MSMessagesAppPresentationStyle
 T:MessageUI.IMFMailComposeViewControllerDelegate
 T:MessageUI.MFMailComposeControllerDeferredAction
 T:MessageUI.MFMailComposeViewControllerDelegate
-T:MessageUI.MFMessageAvailabilityChangedEventArgs
 T:Metal.IMTLAccelerationStructure
 T:Metal.IMTLAccelerationStructureCommandEncoder
 T:Metal.IMTLAllocation
@@ -42412,7 +42312,6 @@ T:PdfKit.PdfSelectionGranularity
 T:PdfKit.PdfTextAnnotationIconType
 T:PdfKit.PdfThumbnailLayoutMode
 T:PdfKit.PdfViewActionEventArgs
-T:PdfKit.PdfViewAnnotationHitEventArgs
 T:PdfKit.PdfViewUrlEventArgs
 T:PdfKit.PdfWidgetCellState
 T:PdfKit.PdfWidgetControlType
@@ -43132,7 +43031,6 @@ T:UIKit.NSWritingDirectionFormatType
 T:UIKit.OptionsMenuProviderHandler
 T:UIKit.TransitionCoordinator_UIViewController
 T:UIKit.UIAccelerometerEventArgs
-T:UIKit.UIAccessibilityAnnouncementFinishedEventArgs
 T:UIKit.UIAccessibilityContainerDataTable
 T:UIKit.UIAccessibilityContainerType
 T:UIKit.UIAccessibilityContrast
@@ -43169,7 +43067,6 @@ T:UIKit.UIApplicationCategory
 T:UIKit.UIApplicationCategoryDefaultErrorCode
 T:UIKit.UIApplicationCategoryDefaultStatus
 T:UIKit.UIApplicationDelegate
-T:UIKit.UIApplicationLaunchEventArgs
 T:UIKit.UIApplicationOpenUrlOptions
 T:UIKit.UIApplicationRestorationHandler
 T:UIKit.UIApplicationState
@@ -43328,7 +43225,6 @@ T:UIKit.UIIndirectScribbleInteractionDelegate
 T:UIKit.UIInputViewStyle
 T:UIKit.UIInterpolatingMotionEffectType
 T:UIKit.UIKeyboardAppearance
-T:UIKit.UIKeyboardEventArgs
 T:UIKit.UIKeyboardHidUsage
 T:UIKit.UIKeyboardType
 T:UIKit.UIKeyModifierFlags
@@ -43384,7 +43280,6 @@ T:UIKit.UIPageViewFinishedAnimationEventArgs
 T:UIKit.UIPageViewGetNumber
 T:UIKit.UIPageViewGetViewController
 T:UIKit.UIPageViewSpineLocationCallback
-T:UIKit.UIPasteboardChangeEventArgs
 T:UIKit.UIPasteboardDetectionPattern
 T:UIKit.UIPasteboardOptionKeys
 T:UIKit.UIPasteControlDisplayMode
@@ -43395,7 +43290,6 @@ T:UIKit.UIPencilPreferredAction
 T:UIKit.UIPointerAccessoryPosition
 T:UIKit.UIPointerEffectTintMode
 T:UIKit.UIPointerInteractionDelegate
-T:UIKit.UIPointerLockStateDidChangeEventArgs
 T:UIKit.UIPopoverArrowDirection
 T:UIKit.UIPopoverControllerCondition
 T:UIKit.UIPopoverControllerDelegate
@@ -43476,8 +43370,6 @@ T:UIKit.UIStackViewAlignment
 T:UIKit.UIStackViewDistribution
 T:UIKit.UIStateRestoration
 T:UIKit.UIStateRestoring
-T:UIKit.UIStatusBarFrameChangeEventArgs
-T:UIKit.UIStatusBarOrientationChangeEventArgs
 T:UIKit.UIStoryboardViewControllerCreator
 T:UIKit.UIStringAttributeKey
 T:UIKit.UISwipeGestureRecognizerDirection

@@ -2012,7 +2012,15 @@ public partial class Generator : IMemberGatherer {
 				indent++;
 			}
 
+			if (BindingTouch.SupportsXmlDocumentation) {
+				print ($"/// <summary>Provides data for an event based on a posted <see cref=\"NSNotification\" /> object.</summary>");
+			}
 			print ("public partial class {0} : NSNotificationEventArgs {{", eventType.Name); indent++;
+
+			if (BindingTouch.SupportsXmlDocumentation) {
+				print ($"/// <summary>Initializes a new instance of the <see cref=\"{eventType.Name}\" /> class.</summary>");
+				print ($"/// <param name=\"notification\">The underlying <see cref=\"NSNotification\" /> object from the posted notification.</param>");
+			}
 			print ("public {0} (NSNotification notification) : base (notification) \n{{\n}}\n", eventType.Name);
 			int i = 0;
 			foreach (var prop in eventType.GetProperties (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {

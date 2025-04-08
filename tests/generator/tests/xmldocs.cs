@@ -30,6 +30,18 @@ namespace XmlDocumentation {
 		int Property { get; set; }
 
 		// can't apply xml docs to a getter/setter, only the property itself
+
+		/// <summary>T.TEventArgs</summary>
+		[Field ("TEventArgs", "__Internal")]
+		[Notification (typeof (TEventArgs))]
+		NSString TEventArgs { get; }
+	}
+
+	/// <summary>TEventArgs</summary>
+	interface TEventArgs {
+		/// <summary>TEventArgs.SomeValue</summary>
+		[Export ("TEventArgsSomeValueKey")]
+		nint SomeValue { get; }
 	}
 
 #if IOS

@@ -63,7 +63,7 @@ static partial class BindingSyntaxFactory {
 		if (getterSend is null || getterSuperSend is null) {
 			return (ThrowNotImplementedException (), ThrowNotImplementedException ());
 		}
-		
+
 		// get the getter invocation and assign it to the return variable 
 		return (
 			Send: ExpressionStatement (AssignVariable (Nomenclator.GetReturnVariableName (property.ReturnType), getterSend)),

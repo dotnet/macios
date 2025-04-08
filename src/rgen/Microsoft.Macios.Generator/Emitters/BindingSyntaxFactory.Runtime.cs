@@ -533,7 +533,7 @@ static partial class BindingSyntaxFactory {
 	/// <returns>The C# expression for the call.</returns>
 	internal static ExpressionSyntax RetainAndAutoreleaseNSObject (ImmutableArray<ArgumentSyntax> arguments)
 		=> StaticInvocationExpression (Runtime, "RetainAndAutoreleaseNSObject", arguments);
-	
+
 	/// <summary>
 	/// Generate a call to Runtime.RetainAndAutoreleaseNativeObject (args) statement.
 	/// </summary>
@@ -541,5 +541,5 @@ static partial class BindingSyntaxFactory {
 	/// <returns>The C# expression for the call.</returns>
 	internal static ExpressionSyntax RetainAndAutoreleaseNativeObject (ImmutableArray<ArgumentSyntax> arguments)
 		=> StaticInvocationExpression (Runtime, "RetainAndAutoreleaseNativeObject", arguments);
-	
+
 }

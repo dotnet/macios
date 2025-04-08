@@ -40,8 +40,8 @@ static partial class BindingSyntaxFactory {
 	internal static ExpressionSyntax CachePointer (string libraryName, string fieldName, string storageVariableName)
 	{
 		var arguments = ImmutableArray.Create (
-			GetLibraryArgument (libraryName), 
-			GetLiteralExpressionArgument (SyntaxKind.StringLiteralExpression, fieldName), 
+			GetLibraryArgument (libraryName),
+			GetLiteralExpressionArgument (SyntaxKind.StringLiteralExpression, fieldName),
 			Argument (IdentifierName (storageVariableName))
 		);
 		return StaticInvocationExpression (Dlfcn, "CachePointer", arguments);
@@ -62,7 +62,7 @@ static partial class BindingSyntaxFactory {
 			GetLibraryArgument (libraryName),
 			GetLiteralExpressionArgument (SyntaxKind.StringLiteralExpression, fieldName)
 		);
-		
+
 		return StaticInvocationExpression (Dlfcn, methodName, arguments, suppressNullableWarning: suppressNullableWarning);
 	}
 

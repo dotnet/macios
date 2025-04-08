@@ -124,7 +124,7 @@ return {backingField};
 ");
 					} else {
 						// directly return the call from the getter
-						getterBlock.WriteLine ($"return { ExpressionStatement (FieldConstantGetter (property))}");
+						getterBlock.WriteLine ($"return {ExpressionStatement (FieldConstantGetter (property))}");
 					}
 				}
 
@@ -141,7 +141,7 @@ return {backingField};
 						setterBlock.WriteLine ($"{backingField} = value;");
 					}
 					// call the native code
-					setterBlock.WriteLine ($"{ ExpressionStatement (FieldConstantSetter (property, "value"))}");
+					setterBlock.WriteLine ($"{ExpressionStatement (FieldConstantSetter (property, "value"))}");
 				}
 			}
 		}

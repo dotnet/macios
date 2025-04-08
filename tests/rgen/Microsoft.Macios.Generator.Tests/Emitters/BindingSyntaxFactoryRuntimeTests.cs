@@ -705,7 +705,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 		var declaration = IntPtrZeroCheck (variableName, falseExpression, suppressNullableWarning);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
-	
+
 	class TestDataRetainAndAutoreleaseNSObject : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -727,7 +727,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[ClassData (typeof (TestDataRetainAndAutoreleaseNSObject))]
 	void RetainAndAutoreleaseNSObjectTests (ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)
@@ -735,7 +735,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 		var declaration = RetainAndAutoreleaseNSObject (arguments);
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
-	
+
 	class TestDataRetainAndAutoreleaseNativeObject : IEnumerable<object []> {
 		public IEnumerator<object []> GetEnumerator ()
 		{
@@ -757,7 +757,7 @@ public class BindingSyntaxFactoryRuntimeTests {
 
 		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
-	
+
 	[Theory]
 	[ClassData (typeof (TestDataRetainAndAutoreleaseNativeObject))]
 	void RetainAndAutoreleaseNativeObjectTests (ImmutableArray<ArgumentSyntax> arguments, string expectedDeclaration)

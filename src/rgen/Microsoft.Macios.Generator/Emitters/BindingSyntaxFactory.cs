@@ -29,7 +29,7 @@ static partial class BindingSyntaxFactory {
 	{
 		var argumentList = ArgumentList (
 			SeparatedList<ArgumentSyntax> (arguments.ToSyntaxNodeOrTokenArray ()));
-		
+
 		var invocation = InvocationExpression (
 			MemberAccessExpression (
 				SyntaxKind.SimpleMemberAccessExpression,
@@ -79,7 +79,7 @@ static partial class BindingSyntaxFactory {
 			throwExpression = throwExpression.WithArgumentList (ArgumentList ().WithLeadingTrivia (Space));
 		}
 
-		return ThrowExpression(throwExpression).NormalizeWhitespace ();
+		return ThrowExpression (throwExpression).NormalizeWhitespace ();
 	}
 
 	static ExpressionSyntax ThrowNotSupportedException (string message)

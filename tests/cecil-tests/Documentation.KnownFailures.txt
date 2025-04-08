@@ -9335,7 +9335,6 @@ M:AppKit.NSSpellChecker.CheckString(System.String,Foundation.NSRange,Foundation.
 M:AppKit.NSSpellChecker.RequestCandidatesAsync(Foundation.NSRange,System.String,System.UInt64,Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject},System.IntPtr,System.IntPtr@)
 M:AppKit.NSSpellChecker.RequestCandidatesAsync(Foundation.NSRange,System.String,System.UInt64,Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject},System.IntPtr)
 M:AppKit.NSSpellChecker.RequestChecking(System.String,Foundation.NSRange,Foundation.NSTextCheckingTypes,AppKit.NSTextCheckingOptions,System.IntPtr,System.Action{System.IntPtr,Foundation.NSTextCheckingResult[],Foundation.NSOrthography,System.IntPtr})
-M:AppKit.NSSpellCheckerCandidates.#ctor(System.IntPtr,Foundation.NSTextCheckingResult[])
 M:AppKit.NSSplitView.Dispose(System.Boolean)
 M:AppKit.NSSplitViewDelegate_Extensions.CanCollapse(AppKit.INSSplitViewDelegate,AppKit.NSSplitView,AppKit.NSView)
 M:AppKit.NSSplitViewDelegate_Extensions.ConstrainSplitPosition(AppKit.INSSplitViewDelegate,AppKit.NSSplitView,System.Runtime.InteropServices.NFloat,System.IntPtr)
@@ -10006,7 +10005,6 @@ M:ARKit.ARSKViewDelegate_Extensions.WillUpdateNode(ARKit.IARSKViewDelegate,ARKit
 M:ARKit.ARSKViewDelegate.ShouldRender(SpriteKit.SKView,System.Double)
 M:ARKit.ARVideoFormat.Copy(Foundation.NSZone)
 M:ARKit.ARWorldMap.Copy(Foundation.NSZone)
-M:ARKit.GeoLocationForPoint.#ctor(CoreLocation.CLLocationCoordinate2D,System.Double)
 M:ARKit.IARCoachingOverlayViewDelegate.DidDeactivate(ARKit.ARCoachingOverlayView)
 M:ARKit.IARCoachingOverlayViewDelegate.DidRequestSessionReset(ARKit.ARCoachingOverlayView)
 M:ARKit.IARCoachingOverlayViewDelegate.WillActivate(ARKit.ARCoachingOverlayView)
@@ -11125,7 +11123,6 @@ M:AVKit.IAVPlayerViewPictureInPictureDelegate.WillStart(AVKit.AVPlayerView)
 M:AVKit.IAVPlayerViewPictureInPictureDelegate.WillStop(AVKit.AVPlayerView)
 M:AVKit.IAVRoutePickerViewDelegate.DidEndPresentingRoutes(AVKit.AVRoutePickerView)
 M:AVKit.IAVRoutePickerViewDelegate.WillBeginPresentingRoutes(AVKit.AVRoutePickerView)
-M:AVKit.PreparingRouteSelectionForPlayback.#ctor(System.Boolean,AVKit.AVAudioSessionRouteSelection)
 M:AVKit.UIWindow_AVAdditions.GetAVDisplayManager(UIKit.UIWindow)
 M:AVRouting.AVCustomRoutingController.Dispose(System.Boolean)
 M:BackgroundAssets.BADownload.Copy(Foundation.NSZone)
@@ -11953,17 +11950,12 @@ M:CoreData.NSPersistentCloudKitContainer.PurgeObjectsAndRecordsInZone(CloudKit.C
 M:CoreData.NSPersistentCloudKitContainer.PurgeObjectsAndRecordsInZoneAsync(CloudKit.CKRecordZoneID,CoreData.NSPersistentStore)
 M:CoreData.NSPersistentCloudKitContainer.ShareManagedObjects(CoreData.NSManagedObject[],CloudKit.CKShare,CoreData.NSPersistentCloudKitContainerShareManagedObjectsHandler)
 M:CoreData.NSPersistentCloudKitContainer.ShareManagedObjectsAsync(CoreData.NSManagedObject[],CloudKit.CKShare)
-M:CoreData.NSPersistentCloudKitContainerAcceptShareInvitationsResult.#ctor(Foundation.NSArray{CloudKit.CKShareMetadata})
 M:CoreData.NSPersistentCloudKitContainerEvent.Copy(Foundation.NSZone)
 M:CoreData.NSPersistentCloudKitContainerEventRequest.FetchEvents(CoreData.NSFetchRequest)
 M:CoreData.NSPersistentCloudKitContainerEventRequest.FetchEventsAfter(CoreData.NSPersistentCloudKitContainerEvent)
 M:CoreData.NSPersistentCloudKitContainerEventRequest.FetchEventsAfter(Foundation.NSDate)
 M:CoreData.NSPersistentCloudKitContainerEventRequest.FetchRequest
-M:CoreData.NSPersistentCloudKitContainerFetchParticipantsMatchingLookupInfosResult.#ctor(Foundation.NSArray{CloudKit.CKShareParticipant})
 M:CoreData.NSPersistentCloudKitContainerOptions.#ctor(System.String)
-M:CoreData.NSPersistentCloudKitContainerPersistUpdatedShareResult.#ctor(CloudKit.CKShare)
-M:CoreData.NSPersistentCloudKitContainerPurgeObjectsAndRecordsInZone.#ctor(CloudKit.CKRecordZoneID)
-M:CoreData.NSPersistentCloudKitContainerShareManagedObjectsResult.#ctor(Foundation.NSSet{CoreData.NSManagedObjectID},CloudKit.CKShare,CloudKit.CKContainer)
 M:CoreData.NSPersistentContainer.LoadPersistentStoresAsync
 M:CoreData.NSPersistentHistoryChange.Copy(Foundation.NSZone)
 M:CoreData.NSPersistentHistoryChange.GetEntityDescription(CoreData.NSManagedObjectContext)
@@ -12934,8 +12926,6 @@ M:CoreML.MLModelCollection.BeginAccessingModelCollectionAsync(System.String)
 M:CoreML.MLModelCollection.EndAccessingModelCollection(System.String,System.Action{System.Boolean,Foundation.NSError})
 M:CoreML.MLModelCollection.EndAccessingModelCollectionAsync(System.String)
 M:CoreML.MLModelCollectionEntry.IsEqual(CoreML.MLModelCollectionEntry)
-M:CoreML.MLModelCompilationLoadResult.#ctor(CoreML.MLModel)
-M:CoreML.MLModelCompilationResult.#ctor(Foundation.NSUrl)
 M:CoreML.MLModelConfiguration.Copy(Foundation.NSZone)
 M:CoreML.MLModelConfiguration.Dispose(System.Boolean)
 M:CoreML.MLModelStructure.Load(CoreML.MLModelAsset,System.Action{CoreML.MLModelStructure,Foundation.NSError})
@@ -12954,8 +12944,6 @@ M:CoreML.MLMultiArray.GetObject(System.IntPtr[])
 M:CoreML.MLMultiArray.SetObject(Foundation.NSNumber,System.IntPtr)
 M:CoreML.MLMultiArray.SetObject(Foundation.NSNumber,System.IntPtr[])
 M:CoreML.MLMultiArray.TransferToMultiArray(CoreML.MLMultiArray)
-M:CoreML.MLMultiArrayDataPointer.#ctor(System.IntPtr,System.IntPtr)
-M:CoreML.MLMultiArrayMutableDataPointer.#ctor(System.IntPtr,System.IntPtr,Foundation.NSArray{Foundation.NSNumber})
 M:CoreML.MLOptimizationHints.Copy(Foundation.NSZone)
 M:CoreML.MLParameterKey.GetScopedParameter(System.String)
 M:CoreML.MLSequenceConstraint.Copy(Foundation.NSZone)
@@ -13160,7 +13148,6 @@ M:CoreSpotlight.CSSearchableIndex.FetchDataAsync(System.String,System.String,Uni
 M:CoreSpotlight.CSSearchableIndex.IndexAsync(CoreSpotlight.CSSearchableItem[])
 M:CoreSpotlight.CSSearchableIndex.ProvideData(System.String,System.String,System.String,System.Action{Foundation.NSData,Foundation.NSError})
 M:CoreSpotlight.CSSearchableIndex.ProvideDataAsync(System.String,System.String,System.String)
-M:CoreSpotlight.CSSearchableIndexBundleDataResult.#ctor(Foundation.NSData)
 M:CoreSpotlight.CSSearchableIndexDelegate_Extensions.DidUpdate(CoreSpotlight.ICSSearchableIndexDelegate,CoreSpotlight.CSSearchableItem[])
 M:CoreSpotlight.CSSearchableIndexDelegate_Extensions.GetSearchableItems(CoreSpotlight.ICSSearchableIndexDelegate,System.String[],CoreSpotlight.CSSearchableIndexDelegateGetSearchableItemsHandler)
 M:CoreSpotlight.CSSearchableIndexDelegate.DidUpdate(CoreSpotlight.CSSearchableItem[])
@@ -13530,7 +13517,6 @@ M:FileProvider.NSFileProviderExtension.TrashItemAsync(System.String)
 M:FileProvider.NSFileProviderExtension.UntrashItem(System.String,System.String,System.Action{FileProvider.INSFileProviderItem,Foundation.NSError})
 M:FileProvider.NSFileProviderExtension.UntrashItemAsync(System.String,System.String)
 M:FileProvider.NSFileProviderExtension.WritePlaceholder(Foundation.NSUrl,Foundation.NSDictionary,Foundation.NSError@)
-M:FileProvider.NSFileProviderGetIdentifierResult.#ctor(Foundation.NSString,Foundation.NSString)
 M:FileProvider.NSFileProviderItem_Extensions.GetCapabilities(FileProvider.INSFileProviderItem)
 M:FileProvider.NSFileProviderItem_Extensions.GetChildItemCount(FileProvider.INSFileProviderItem)
 M:FileProvider.NSFileProviderItem_Extensions.GetContentModificationDate(FileProvider.INSFileProviderItem)
@@ -13608,7 +13594,6 @@ M:FileProvider.NSFileProviderManager.WaitForChangesOnItemsBelowItemAsync(System.
 M:FileProvider.NSFileProviderManager.WaitForStabilization(System.Action{Foundation.NSError})
 M:FileProvider.NSFileProviderManager.WaitForStabilizationAsync
 M:FileProvider.NSFileProviderPendingSetEnumerator_Extensions.GetMaximumSizeReached(FileProvider.INSFileProviderPendingSetEnumerator)
-M:FileProvider.NSFileProviderRemoveDomainResult.#ctor(Foundation.NSUrl)
 M:FileProvider.NSFileProviderReplicatedExtension_Extensions.ImportDidFinish(FileProvider.INSFileProviderReplicatedExtension,System.Action)
 M:FileProvider.NSFileProviderReplicatedExtension_Extensions.MaterializedItemsDidChange(FileProvider.INSFileProviderReplicatedExtension,System.Action)
 M:FileProvider.NSFileProviderReplicatedExtension_Extensions.PendingItemsDidChange(FileProvider.INSFileProviderReplicatedExtension,System.Action)
@@ -13818,7 +13803,6 @@ M:Foundation.INSUserNotificationCenterDelegate.DidActivateNotification(Foundatio
 M:Foundation.INSUserNotificationCenterDelegate.DidDeliverNotification(Foundation.NSUserNotificationCenter,Foundation.NSUserNotification)
 M:Foundation.INSUserNotificationCenterDelegate.ShouldPresentNotification(Foundation.NSUserNotificationCenter,Foundation.NSUserNotification)
 M:Foundation.INSXpcListenerDelegate.ShouldAcceptConnection(Foundation.NSXpcListener,Foundation.NSXpcConnection)
-M:Foundation.LoadInPlaceResult.#ctor(Foundation.NSUrl,System.Boolean)
 M:Foundation.NSArray.ArrayFromHandle``1(ObjCRuntime.NativeHandle,System.Converter{ObjCRuntime.NativeHandle,``0},System.Boolean)
 M:Foundation.NSArray.ArrayFromHandle``1(ObjCRuntime.NativeHandle,System.Converter{ObjCRuntime.NativeHandle,``0})
 M:Foundation.NSArray.ArrayFromHandle``1(ObjCRuntime.NativeHandle)
@@ -14050,7 +14034,6 @@ M:Foundation.NSKeyValueSorting_NSMutableOrderedSet.SortUsingDescriptors(Foundati
 M:Foundation.NSKeyValueSorting_NSOrderedSet.GetSortedArray(Foundation.NSOrderedSet,Foundation.NSSortDescriptor[])
 M:Foundation.NSLinguisticAnalysis.EnumerateLinguisticTags(Foundation.NSString,Foundation.NSRange,Foundation.NSLinguisticTagScheme,Foundation.NSLinguisticTaggerOptions,Foundation.NSOrthography,Foundation.NSEnumerateLinguisticTagsEnumerator)
 M:Foundation.NSLinguisticAnalysis.GetLinguisticTags(Foundation.NSString,Foundation.NSRange,Foundation.NSLinguisticTagScheme,Foundation.NSLinguisticTaggerOptions,Foundation.NSOrthography,Foundation.NSValue[]@)
-M:Foundation.NSLoadFromHtmlResult.#ctor(Foundation.NSAttributedString,Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject})
 M:Foundation.NSMachPort.Dispose(System.Boolean)
 M:Foundation.NSMachPortDelegate_Extensions.MachMessageReceived(Foundation.INSMachPortDelegate,System.IntPtr)
 M:Foundation.NSMetadataQuery.Dispose(System.Boolean)
@@ -14270,7 +14253,6 @@ M:Foundation.NSUrl.op_Equality(Foundation.NSUrl,Foundation.NSUrl)
 M:Foundation.NSUrl.op_Implicit(Foundation.NSUrl)~System.Uri
 M:Foundation.NSUrl.op_Implicit(System.Uri)~Foundation.NSUrl
 M:Foundation.NSUrl.op_Inequality(Foundation.NSUrl,Foundation.NSUrl)
-M:Foundation.NSUrlAsyncResult.#ctor(Foundation.NSUrlResponse,Foundation.NSData)
 M:Foundation.NSUrlAuthenticationChallengeSender_Extensions.PerformDefaultHandling(Foundation.INSUrlAuthenticationChallengeSender,Foundation.NSUrlAuthenticationChallenge)
 M:Foundation.NSUrlAuthenticationChallengeSender_Extensions.RejectProtectionSpaceAndContinue(Foundation.INSUrlAuthenticationChallengeSender,Foundation.NSUrlAuthenticationChallenge)
 M:Foundation.NSUrlCache.GetCachedResponseAsync(Foundation.NSUrlSessionDataTask)
@@ -14324,23 +14306,18 @@ M:Foundation.NSUrlSession.FlushAsync
 M:Foundation.NSUrlSession.GetAllTasksAsync
 M:Foundation.NSUrlSession.GetTasksAsync
 M:Foundation.NSUrlSession.ResetAsync
-M:Foundation.NSUrlSessionActiveTasks.#ctor(Foundation.NSUrlSessionTask[],Foundation.NSUrlSessionTask[],Foundation.NSUrlSessionTask[])
-M:Foundation.NSUrlSessionCombinedTasks.#ctor(Foundation.NSUrlSessionTask[])
 M:Foundation.NSUrlSessionConfiguration.Dispose(System.Boolean)
 M:Foundation.NSUrlSessionDataDelegate_Extensions.DidBecomeDownloadTask(Foundation.INSUrlSessionDataDelegate,Foundation.NSUrlSession,Foundation.NSUrlSessionDataTask,Foundation.NSUrlSessionDownloadTask)
 M:Foundation.NSUrlSessionDataDelegate_Extensions.DidBecomeStreamTask(Foundation.INSUrlSessionDataDelegate,Foundation.NSUrlSession,Foundation.NSUrlSessionDataTask,Foundation.NSUrlSessionStreamTask)
 M:Foundation.NSUrlSessionDataDelegate_Extensions.DidReceiveData(Foundation.INSUrlSessionDataDelegate,Foundation.NSUrlSession,Foundation.NSUrlSessionDataTask,Foundation.NSData)
 M:Foundation.NSUrlSessionDataDelegate_Extensions.DidReceiveResponse(Foundation.INSUrlSessionDataDelegate,Foundation.NSUrlSession,Foundation.NSUrlSessionDataTask,Foundation.NSUrlResponse,System.Action{Foundation.NSUrlSessionResponseDisposition})
 M:Foundation.NSUrlSessionDataDelegate_Extensions.WillCacheResponse(Foundation.INSUrlSessionDataDelegate,Foundation.NSUrlSession,Foundation.NSUrlSessionDataTask,Foundation.NSCachedUrlResponse,System.Action{Foundation.NSCachedUrlResponse})
-M:Foundation.NSUrlSessionDataTaskRequest.#ctor(Foundation.NSData,Foundation.NSUrlResponse)
 M:Foundation.NSUrlSessionDelegate_Extensions.DidBecomeInvalid(Foundation.INSUrlSessionDelegate,Foundation.NSUrlSession,Foundation.NSError)
 M:Foundation.NSUrlSessionDelegate_Extensions.DidFinishEventsForBackgroundSession(Foundation.INSUrlSessionDelegate,Foundation.NSUrlSession)
 M:Foundation.NSUrlSessionDelegate_Extensions.DidReceiveChallenge(Foundation.INSUrlSessionDelegate,Foundation.NSUrlSession,Foundation.NSUrlAuthenticationChallenge,System.Action{Foundation.NSUrlSessionAuthChallengeDisposition,Foundation.NSUrlCredential})
 M:Foundation.NSUrlSessionDownloadDelegate_Extensions.DidResume(Foundation.INSUrlSessionDownloadDelegate,Foundation.NSUrlSession,Foundation.NSUrlSessionDownloadTask,System.Int64,System.Int64)
 M:Foundation.NSUrlSessionDownloadDelegate_Extensions.DidWriteData(Foundation.INSUrlSessionDownloadDelegate,Foundation.NSUrlSession,Foundation.NSUrlSessionDownloadTask,System.Int64,System.Int64,System.Int64)
-M:Foundation.NSUrlSessionDownloadTaskRequest.#ctor(Foundation.NSUrl,Foundation.NSUrlResponse)
 M:Foundation.NSUrlSessionDownloadTaskRequest.Finalize
-M:Foundation.NSUrlSessionStreamDataRead.#ctor(Foundation.NSData,System.Boolean)
 M:Foundation.NSUrlSessionStreamDelegate_Extensions.BetterRouteDiscovered(Foundation.INSUrlSessionStreamDelegate,Foundation.NSUrlSession,Foundation.NSUrlSessionStreamTask)
 M:Foundation.NSUrlSessionStreamDelegate_Extensions.CompletedTaskCaptureStreams(Foundation.INSUrlSessionStreamDelegate,Foundation.NSUrlSession,Foundation.NSUrlSessionStreamTask,Foundation.NSInputStream,Foundation.NSOutputStream)
 M:Foundation.NSUrlSessionStreamDelegate_Extensions.ReadClosed(Foundation.INSUrlSessionStreamDelegate,Foundation.NSUrlSession,Foundation.NSUrlSessionStreamTask)
@@ -14359,7 +14336,6 @@ M:Foundation.NSUrlSessionTaskDelegate_Extensions.TaskIsWaitingForConnectivity(Fo
 M:Foundation.NSUrlSessionTaskDelegate_Extensions.WillBeginDelayedRequest(Foundation.INSUrlSessionTaskDelegate,Foundation.NSUrlSession,Foundation.NSUrlSessionTask,Foundation.NSUrlRequest,System.Action{Foundation.NSUrlSessionDelayedRequestDisposition,Foundation.NSUrlRequest})
 M:Foundation.NSUrlSessionTaskDelegate_Extensions.WillPerformHttpRedirection(Foundation.INSUrlSessionTaskDelegate,Foundation.NSUrlSession,Foundation.NSUrlSessionTask,Foundation.NSHttpUrlResponse,Foundation.NSUrlRequest,System.Action{Foundation.NSUrlRequest})
 M:Foundation.NSUrlSessionUploadTask.CancelByProducingResumeDataAsync
-M:Foundation.NSUrlSessionUploadTaskResumeRequest.#ctor(Foundation.NSData,Foundation.NSUrlResponse)
 M:Foundation.NSUrlSessionWebSocketDelegate_Extensions.DidClose(Foundation.INSUrlSessionWebSocketDelegate,Foundation.NSUrlSession,Foundation.NSUrlSessionWebSocketTask,Foundation.NSUrlSessionWebSocketCloseCode,Foundation.NSData)
 M:Foundation.NSUrlSessionWebSocketDelegate_Extensions.DidOpen(Foundation.INSUrlSessionWebSocketDelegate,Foundation.NSUrlSession,Foundation.NSUrlSessionWebSocketTask,System.String)
 M:Foundation.NSUrlSessionWebSocketTask.ReceiveMessageAsync
@@ -14375,7 +14351,6 @@ M:Foundation.NSUserActivity.Dispose(System.Boolean)
 M:Foundation.NSUserActivity.GetContinuationStreamsAsync
 M:Foundation.NSUserActivity.LoadDataAsync(System.String,Foundation.NSProgress@)
 M:Foundation.NSUserActivity.LoadDataAsync(System.String)
-M:Foundation.NSUserActivityContinuation.#ctor(Foundation.NSInputStream,Foundation.NSOutputStream)
 M:Foundation.NSUserActivityDelegate_Extensions.UserActivityReceivedData(Foundation.INSUserActivityDelegate,Foundation.NSUserActivity,Foundation.NSInputStream,Foundation.NSOutputStream)
 M:Foundation.NSUserActivityDelegate_Extensions.UserActivityWasContinued(Foundation.INSUserActivityDelegate,Foundation.NSUserActivity)
 M:Foundation.NSUserActivityDelegate_Extensions.UserActivityWillSave(Foundation.INSUserActivityDelegate,Foundation.NSUserActivity)
@@ -14478,12 +14453,7 @@ M:GameKit.GKAchievementViewController.add_DidFinish(System.EventHandler)
 M:GameKit.GKAchievementViewController.Dispose(System.Boolean)
 M:GameKit.GKAchievementViewController.GKAchievementViewControllerAppearance.#ctor(System.IntPtr)
 M:GameKit.GKAchievementViewController.remove_DidFinish(System.EventHandler)
-M:GameKit.GKCategoryResult.#ctor(System.String[],System.String[])
 M:GameKit.GKChallenge.LoadReceivedChallengesAsync
-M:GameKit.GKChallengeComposeControllerResult.#ctor(AppKit.NSViewController,System.Boolean,GameKit.GKPlayer[])
-M:GameKit.GKChallengeComposeControllerResult.#ctor(UIKit.UIViewController,System.Boolean,GameKit.GKPlayer[])
-M:GameKit.GKChallengeComposeResult.#ctor(AppKit.NSViewController,System.Boolean,System.String[])
-M:GameKit.GKChallengeComposeResult.#ctor(UIKit.UIViewController,System.Boolean,System.String[])
 M:GameKit.GKChallengeEventHandler.add_LocalPlayerCompletedChallenge(System.EventHandler)
 M:GameKit.GKChallengeEventHandler.add_LocalPlayerReceivedChallenge(System.EventHandler)
 M:GameKit.GKChallengeEventHandler.add_LocalPlayerSelectedChallenge(System.EventHandler)
@@ -14507,9 +14477,6 @@ M:GameKit.GKChallengeListener_Extensions.WantsToPlayChallenge(GameKit.IGKChallen
 M:GameKit.GKChallengesViewController.#ctor(System.String,Foundation.NSBundle)
 M:GameKit.GKChallengesViewController.Dispose(System.Boolean)
 M:GameKit.GKDialogController.Dispose(System.Boolean)
-M:GameKit.GKEntriesForPlayerScopeResult.#ctor(GameKit.GKLeaderboardEntry,GameKit.GKLeaderboardEntry[],System.IntPtr)
-M:GameKit.GKEntriesForPlayersResult.#ctor(GameKit.GKLeaderboardEntry,GameKit.GKLeaderboardEntry[])
-M:GameKit.GKFetchItemsForIdentityVerificationSignature.#ctor(Foundation.NSUrl,Foundation.NSData,Foundation.NSData,System.UInt64)
 M:GameKit.GKFriendRequestComposeViewController.#ctor(System.String,Foundation.NSBundle)
 M:GameKit.GKFriendRequestComposeViewController.add_DidFinish(System.EventHandler)
 M:GameKit.GKFriendRequestComposeViewController.Dispose(System.Boolean)
@@ -14538,7 +14505,6 @@ M:GameKit.GKGameSessionEventListener_Extensions.DidRemovePlayer(GameKit.IGKGameS
 M:GameKit.GKGameSessionEventListener_Extensions.DidSaveData(GameKit.IGKGameSessionEventListener,GameKit.GKGameSession,GameKit.GKCloudPlayer,Foundation.NSData)
 M:GameKit.GKGameSessionSharingViewController.#ctor(System.String,Foundation.NSBundle)
 M:GameKit.GKGameSessionSharingViewController.Dispose(System.Boolean)
-M:GameKit.GKIdentityVerificationSignatureResult.#ctor(Foundation.NSUrl,Foundation.NSData,Foundation.NSData,System.UInt64)
 M:GameKit.GKInviteEventListener_Extensions.DidAcceptInvite(GameKit.IGKInviteEventListener,GameKit.GKPlayer,GameKit.GKInvite)
 M:GameKit.GKInviteEventListener_Extensions.DidRequestMatch(GameKit.IGKInviteEventListener,GameKit.GKPlayer,GameKit.GKPlayer[])
 M:GameKit.GKInviteEventListener_Extensions.DidRequestMatch(GameKit.IGKInviteEventListener,GameKit.GKPlayer,System.String[])
@@ -18999,7 +18965,6 @@ M:MLCompute.MLCGraph.Select(MLCompute.MLCTensor[],MLCompute.MLCTensor)
 M:MLCompute.MLCGraph.Split(MLCompute.MLCTensor,System.UIntPtr,System.UIntPtr)
 M:MLCompute.MLCGraph.Split(MLCompute.MLCTensor,System.UIntPtr[],System.UIntPtr)
 M:MLCompute.MLCGraph.Transpose(System.IntPtr[],MLCompute.MLCTensor)
-M:MLCompute.MLCGraphCompletionResult.#ctor(MLCompute.MLCTensor,Foundation.NSError,System.Double)
 M:MLCompute.MLCGroupNormalizationLayer.Create(System.UIntPtr,System.UIntPtr,MLCompute.MLCTensor,MLCompute.MLCTensor,System.Single)
 M:MLCompute.MLCInferenceGraph.AddInputs(Foundation.NSDictionary{Foundation.NSString,MLCompute.MLCTensor},Foundation.NSDictionary{Foundation.NSString,MLCompute.MLCTensor},Foundation.NSDictionary{Foundation.NSString,MLCompute.MLCTensor})
 M:MLCompute.MLCInferenceGraph.AddInputs(Foundation.NSDictionary{Foundation.NSString,MLCompute.MLCTensor})
@@ -19733,8 +19698,6 @@ M:NetworkExtension.NEAppPushProvider.Stop(NetworkExtension.NEProviderStopReason,
 M:NetworkExtension.NEAppPushProvider.StopAsync(NetworkExtension.NEProviderStopReason)
 M:NetworkExtension.NEAppRule.#ctor(System.String,System.String)
 M:NetworkExtension.NEAppRule.Copy(Foundation.NSZone)
-M:NetworkExtension.NEDatagramAndFlowEndpointsReadResult.#ctor(Foundation.NSData[],Network.NWEndpoint[])
-M:NetworkExtension.NEDatagramReadResult.#ctor(Foundation.NSData[],NetworkExtension.NWEndpoint[])
 M:NetworkExtension.NEDnsProxyManager.LoadFromPreferencesAsync
 M:NetworkExtension.NEDnsProxyManager.RemoveFromPreferencesAsync
 M:NetworkExtension.NEDnsProxyManager.SaveToPreferencesAsync
@@ -20186,7 +20149,6 @@ M:PassKit.PKPaymentRequestMerchantSessionUpdate.#ctor(PassKit.PKPaymentAuthoriza
 M:PassKit.PKPaymentRequestPaymentMethodUpdate.#ctor(Foundation.NSError[],PassKit.PKPaymentSummaryItem[])
 M:PassKit.PKPaymentTokenContext.#ctor(System.String,System.String,System.String,System.String,Foundation.NSDecimalNumber)
 M:PassKit.PKRecurringPaymentRequest.#ctor(System.String,PassKit.PKRecurringPaymentSummaryItem,Foundation.NSUrl)
-M:PassKit.PKServiceProviderDataCompletionResult.#ctor(Foundation.NSData)
 M:PassKit.PKShareablePassMetadata.#ctor(System.String,System.String,CoreGraphics.CGImage,System.String,System.String,System.String,System.String,System.String,System.Boolean)
 M:PassKit.PKShareablePassMetadata.#ctor(System.String,System.String,System.String,CoreGraphics.CGImage,System.String,System.String)
 M:PassKit.PKShareablePassMetadataPreview.#ctor(CoreGraphics.CGImage,System.String)
@@ -20199,7 +20161,6 @@ M:PassKit.PKShareSecureElementPassViewController.Dispose(System.Boolean)
 M:PassKit.PKShareSecureElementPassViewControllerDelegate_Extensions.DidCreateShareUrl(PassKit.IPKShareSecureElementPassViewControllerDelegate,PassKit.PKShareSecureElementPassViewController,Foundation.NSUrl,System.String)
 M:PassKit.PKShareSecureElementPassViewControllerDelegate.DidCreateShareUrl(PassKit.PKShareSecureElementPassViewController,Foundation.NSUrl,System.String)
 M:PassKit.PKShareSecureElementPassViewControllerDelegate.DidFinish(PassKit.PKShareSecureElementPassViewController,PassKit.PKShareSecureElementPassResult)
-M:PassKit.PKSignDataCompletionResult.#ctor(Foundation.NSData,Foundation.NSData)
 M:PassKit.PKStoredValuePassBalance.IsEqual(PassKit.PKStoredValuePassBalance)
 M:PassKit.PKStoredValuePassProperties.GetPassProperties(PassKit.PKPass)
 M:PassKit.PKVehicleConnectionDelegate.SessionDidChangeConnectionState(PassKit.PKVehicleConnectionSessionConnectionState)
@@ -20816,7 +20777,6 @@ M:QuickLookThumbnailing.QLThumbnailGenerator.SaveBestRepresentation(QuickLookThu
 M:QuickLookThumbnailing.QLThumbnailGenerator.SaveBestRepresentationAsContent(QuickLookThumbnailing.QLThumbnailGenerationRequest,Foundation.NSUrl,System.String,System.Action{Foundation.NSError})
 M:QuickLookThumbnailing.QLThumbnailGenerator.SaveBestRepresentationAsContentAsync(QuickLookThumbnailing.QLThumbnailGenerationRequest,Foundation.NSUrl,System.String)
 M:QuickLookThumbnailing.QLThumbnailGenerator.SaveBestRepresentationAsync(QuickLookThumbnailing.QLThumbnailGenerationRequest,Foundation.NSUrl,System.String)
-M:QuickLookThumbnailing.QLThumbnailGeneratorResult.#ctor(QuickLookThumbnailing.QLThumbnailRepresentation,QuickLookThumbnailing.QLThumbnailRepresentationType)
 M:QuickLookThumbnailing.QLThumbnailProvider.ProvideThumbnail(QuickLookThumbnailing.QLFileThumbnailRequest,System.Action{QuickLookThumbnailing.QLThumbnailReply,Foundation.NSError})
 M:QuickLookThumbnailing.QLThumbnailReply.CreateReply(CoreGraphics.CGSize,System.Func{CoreGraphics.CGContext,System.Boolean})
 M:QuickLookThumbnailing.QLThumbnailReply.CreateReply(CoreGraphics.CGSize,System.Func{System.Boolean})
@@ -20977,7 +20937,6 @@ M:SafariServices.SFAddToHomeScreenInfo.#ctor(BrowserEngineKit.BEWebAppManifest)
 M:SafariServices.SFAddToHomeScreenInfo.Copy(Foundation.NSZone)
 M:SafariServices.SFContentBlockerManager.GetStateOfContentBlockerAsync(System.String)
 M:SafariServices.SFContentBlockerManager.ReloadContentBlockerAsync(System.String)
-M:SafariServices.SFExtensionValidationResult.#ctor(System.Boolean,Foundation.NSString)
 M:SafariServices.SFSafariApplication.DispatchMessageAsync(System.String,System.String,Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject})
 M:SafariServices.SFSafariApplication.GetActiveWindowAsync
 M:SafariServices.SFSafariApplication.GetAllWindows(System.Action{SafariServices.SFSafariWindow[]})
@@ -21050,7 +21009,6 @@ M:SafariServices.SFSafariWindow.GetAllTabsAsync
 M:SafariServices.SFSafariWindow.GetToolbarItemAsync
 M:SafariServices.SFSafariWindow.OpenTabAsync(Foundation.NSUrl,System.Boolean)
 M:SafariServices.SFUniversalLink.#ctor(Foundation.NSUrl)
-M:SafariServices.SFValidationResult.#ctor(System.Boolean,Foundation.NSString)
 M:SafetyKit.ISACrashDetectionDelegate.DidDetectEvent(SafetyKit.SACrashDetectionManager,SafetyKit.SACrashDetectionEvent)
 M:SafetyKit.ISAEmergencyResponseDelegate.DidUpdateVoiceCallStatus(SafetyKit.SAEmergencyResponseManager,SafetyKit.SAEmergencyResponseManagerVoiceCallStatus)
 M:SafetyKit.SACrashDetectionDelegate_Extensions.DidDetectEvent(SafetyKit.ISACrashDetectionDelegate,SafetyKit.SACrashDetectionManager,SafetyKit.SACrashDetectionEvent)
@@ -21512,7 +21470,6 @@ M:Social.SLComposeServiceViewController.WritingToolsDidEnd(UIKit.UITextView)
 M:Social.SLComposeServiceViewController.WritingToolsWillBegin(AppKit.NSTextView)
 M:Social.SLComposeServiceViewController.WritingToolsWillBegin(UIKit.UITextView)
 M:Social.SLRequest.PerformRequestAsync
-M:Social.SLRequestResult.#ctor(Foundation.NSData,Foundation.NSHttpUrlResponse)
 M:SoundAnalysis.ISNResultsObserving.DidComplete(SoundAnalysis.ISNRequest)
 M:SoundAnalysis.ISNResultsObserving.DidFail(SoundAnalysis.ISNRequest,Foundation.NSError)
 M:SoundAnalysis.ISNResultsObserving.DidProduceResult(SoundAnalysis.ISNRequest,SoundAnalysis.ISNResult)
@@ -21620,7 +21577,6 @@ M:SpriteKit.SKTexture.PreloadTexturesAsync(SpriteKit.SKTexture[])
 M:SpriteKit.SKTextureAtlas.PreloadAsync
 M:SpriteKit.SKTextureAtlas.PreloadTextureAtlasesAsync(System.String[])
 M:SpriteKit.SKTextureAtlas.PreloadTexturesAsync(SpriteKit.SKTextureAtlas[])
-M:SpriteKit.SKTextureAtlasLoadResult.#ctor(Foundation.NSError,SpriteKit.SKTextureAtlas)
 M:SpriteKit.SKTileDefinition.Copy(Foundation.NSZone)
 M:SpriteKit.SKTileGroup.Copy(Foundation.NSZone)
 M:SpriteKit.SKTileGroupRule.Copy(Foundation.NSZone)
@@ -21852,7 +21808,6 @@ M:TVUIKit.TVMonogramView.TVMonogramViewAppearance.#ctor(System.IntPtr)
 M:TVUIKit.TVPosterView.#ctor(CoreGraphics.CGRect)
 M:TVUIKit.TVPosterView.TVPosterViewAppearance.#ctor(System.IntPtr)
 M:Twitter.TWRequest.PerformRequestAsync
-M:Twitter.TWRequestResult.#ctor(Foundation.NSData,Foundation.NSHttpUrlResponse)
 M:UIKit.INSLayoutManagerDelegate.GetBoundingBox(UIKit.NSLayoutManager,System.UIntPtr,UIKit.NSTextContainer,CoreGraphics.CGRect,CoreGraphics.CGPoint,System.UIntPtr)
 M:UIKit.INSLayoutManagerDelegate.GetLineSpacingAfterGlyph(UIKit.NSLayoutManager,System.UIntPtr,CoreGraphics.CGRect)
 M:UIKit.INSLayoutManagerDelegate.GetParagraphSpacingAfterGlyph(UIKit.NSLayoutManager,System.UIntPtr,CoreGraphics.CGRect)
@@ -23241,7 +23196,6 @@ M:UIKit.UICollectionViewDropDelegate_Extensions.GetDropPreviewParameters(UIKit.I
 M:UIKit.UICollectionViewLayoutAttributes.Copy(Foundation.NSZone)
 M:UIKit.UICollectionViewListCell.UICollectionViewListCellAppearance.#ctor(System.IntPtr)
 M:UIKit.UICollectionViewSupplementaryRegistration.GetRegistration(System.Type,System.String,UIKit.UICollectionViewSupplementaryRegistrationConfigurationHandler)
-M:UIKit.UICollectionViewTransitionResult.#ctor(System.Boolean,System.Boolean)
 M:UIKit.UICollisionBehavior.add_BeganBoundaryContact(System.EventHandler{UIKit.UICollisionBeganBoundaryContactEventArgs})
 M:UIKit.UICollisionBehavior.add_BeganContact(System.EventHandler{UIKit.UICollisionBeganContactEventArgs})
 M:UIKit.UICollisionBehavior.add_EndedBoundaryContact(System.EventHandler{UIKit.UICollisionEndedBoundaryContactEventArgs})
@@ -23694,7 +23648,6 @@ M:UIKit.UIPreviewInteractionDelegate_Extensions.ShouldBegin(UIKit.IUIPreviewInte
 M:UIKit.UIPreviewParameters.Copy(Foundation.NSZone)
 M:UIKit.UIPreviewTarget.Copy(Foundation.NSZone)
 M:UIKit.UIPrinter.ContactPrinterAsync
-M:UIKit.UIPrinterPickerCompletionResult.#ctor(UIKit.UIPrinterPickerController,System.Boolean)
 M:UIKit.UIPrinterPickerController.Dispose(System.Boolean)
 M:UIKit.UIPrinterPickerController.PresentAsync(System.Boolean,System.Boolean@)
 M:UIKit.UIPrinterPickerController.PresentAsync(System.Boolean)
@@ -23712,7 +23665,6 @@ M:UIKit.UIPrinterPickerControllerDelegate_Extensions.WillPresent(UIKit.IUIPrinte
 M:UIKit.UIPrintFormatter.Copy(Foundation.NSZone)
 M:UIKit.UIPrintFormatter.Dispose(System.Boolean)
 M:UIKit.UIPrintInfo.Copy(Foundation.NSZone)
-M:UIKit.UIPrintInteractionCompletionResult.#ctor(UIKit.UIPrintInteractionController,System.Boolean)
 M:UIKit.UIPrintInteractionController.add_DidDismissPrinterOptions(System.EventHandler)
 M:UIKit.UIPrintInteractionController.add_DidFinishJob(System.EventHandler)
 M:UIKit.UIPrintInteractionController.add_DidPresentPrinterOptions(System.EventHandler)
@@ -23744,7 +23696,6 @@ M:UIKit.UIPrintInteractionControllerDelegate_Extensions.GetViewController(UIKit.
 M:UIKit.UIPrintInteractionControllerDelegate_Extensions.WillDismissPrinterOptions(UIKit.IUIPrintInteractionControllerDelegate,UIKit.UIPrintInteractionController)
 M:UIKit.UIPrintInteractionControllerDelegate_Extensions.WillPresentPrinterOptions(UIKit.IUIPrintInteractionControllerDelegate,UIKit.UIPrintInteractionController)
 M:UIKit.UIPrintInteractionControllerDelegate_Extensions.WillStartJob(UIKit.IUIPrintInteractionControllerDelegate,UIKit.UIPrintInteractionController)
-M:UIKit.UIPrintInteractionResult.#ctor(UIKit.UIPrintInteractionController,System.Boolean)
 M:UIKit.UIProgressView.UIProgressViewAppearance.#ctor(System.IntPtr)
 M:UIKit.UIRefreshControl.UIRefreshControlAppearance.#ctor(System.IntPtr)
 M:UIKit.UIRegion.Copy(Foundation.NSZone)
@@ -25901,8 +25852,6 @@ P:AppKit.NSSoundFinishedEventArgs.Finished
 P:AppKit.NSSpellChecker.DidChangeAutomaticInlinePredictionNotification
 P:AppKit.NSSpellChecker.IsAutomaticInlinePredictionEnabled
 P:AppKit.NSSpellChecker.TextCheckingGenerateInlinePredictionsKey
-P:AppKit.NSSpellCheckerCandidates.Arg1
-P:AppKit.NSSpellCheckerCandidates.Arg2
 P:AppKit.NSStringAttributeKey.AdaptiveImageGlyph
 P:AppKit.NSStringAttributeKey.TextHighlightColorScheme
 P:AppKit.NSStringAttributeKey.TextHighlightStyle
@@ -26172,8 +26121,6 @@ P:ARKit.ARSkeleton3D.JointLocalTransforms
 P:ARKit.ARSkeleton3D.JointModelTransforms
 P:ARKit.ARVideoFormat.IsVideoHdrSupported
 P:ARKit.ARWorldTrackingConfiguration.CollaborationEnabled
-P:ARKit.GeoLocationForPoint.Altitude
-P:ARKit.GeoLocationForPoint.Coordinate
 P:ARKit.IARSessionProviding.Session
 P:ARKit.IARTrackable.IsTracked
 P:AudioToolbox.AudioBuffers.Item(System.Int32)
@@ -27172,8 +27119,6 @@ P:AVKit.AVPlayerView.PictureInPictureDelegate
 P:AVKit.AVPlayerViewController.SkipBackwardEnabled
 P:AVKit.AVPlayerViewController.SkipForwardEnabled
 P:AVKit.AVRoutePickerView.RoutePickerButtonBordered
-P:AVKit.PreparingRouteSelectionForPlayback.Arg1
-P:AVKit.PreparingRouteSelectionForPlayback.Arg2
 P:AVRouting.AVCustomDeviceRoute.NetworkEndpoint
 P:AVRouting.AVCustomRoutingController.AuthorizedRoutesDidChangeNotification
 P:AVRouting.AVCustomRoutingController.Delegate
@@ -27632,7 +27577,6 @@ P:CoreData.NSManagedObjectsIdsChangedEventArgs.InvalidatedObjectIdsKey
 P:CoreData.NSManagedObjectsIdsChangedEventArgs.RefreshedObjectIdsKey
 P:CoreData.NSManagedObjectsIdsChangedEventArgs.UpdatedObjectIdsKey
 P:CoreData.NSMigrationStage.Label
-P:CoreData.NSPersistentCloudKitContainerAcceptShareInvitationsResult.AcceptedShareMetadatas
 P:CoreData.NSPersistentCloudKitContainerEvent.ChangedNotification
 P:CoreData.NSPersistentCloudKitContainerEvent.EndDate
 P:CoreData.NSPersistentCloudKitContainerEvent.Error
@@ -27645,14 +27589,8 @@ P:CoreData.NSPersistentCloudKitContainerEvent.UserInfoKey
 P:CoreData.NSPersistentCloudKitContainerEventRequest.ResultType
 P:CoreData.NSPersistentCloudKitContainerEventResult.Result
 P:CoreData.NSPersistentCloudKitContainerEventResult.ResultType
-P:CoreData.NSPersistentCloudKitContainerFetchParticipantsMatchingLookupInfosResult.FetchedParticipants
 P:CoreData.NSPersistentCloudKitContainerOptions.ContainerIdentifier
 P:CoreData.NSPersistentCloudKitContainerOptions.DatabaseScope
-P:CoreData.NSPersistentCloudKitContainerPersistUpdatedShareResult.PersistedShare
-P:CoreData.NSPersistentCloudKitContainerPurgeObjectsAndRecordsInZone.PurgedZoneId
-P:CoreData.NSPersistentCloudKitContainerShareManagedObjectsResult.Container
-P:CoreData.NSPersistentCloudKitContainerShareManagedObjectsResult.Share
-P:CoreData.NSPersistentCloudKitContainerShareManagedObjectsResult.SharedObjectIds
 P:CoreData.NSPersistentHistoryChange.EntityDescription
 P:CoreData.NSPersistentHistoryChange.FetchRequest
 P:CoreData.NSPersistentHistoryChangeRequest.FetchRequest
@@ -29713,8 +29651,6 @@ P:CoreML.MLModelCollection.Entries
 P:CoreML.MLModelCollection.Identifier
 P:CoreML.MLModelCollectionEntry.ModelIdentifier
 P:CoreML.MLModelCollectionEntry.ModelUrl
-P:CoreML.MLModelCompilationLoadResult.Arg1
-P:CoreML.MLModelCompilationResult.Arg1
 P:CoreML.MLModelConfiguration.AllowLowPrecisionAccumulationOnGpu
 P:CoreML.MLModelConfiguration.FunctionName
 P:CoreML.MLModelConfiguration.ModelDisplayName
@@ -29755,11 +29691,6 @@ P:CoreML.MLMultiArray.Item(Foundation.NSNumber[])
 P:CoreML.MLMultiArray.Item(System.IntPtr)
 P:CoreML.MLMultiArray.Item(System.IntPtr[])
 P:CoreML.MLMultiArray.PixelBuffer
-P:CoreML.MLMultiArrayDataPointer.Arg1
-P:CoreML.MLMultiArrayDataPointer.Arg2
-P:CoreML.MLMultiArrayMutableDataPointer.Arg1
-P:CoreML.MLMultiArrayMutableDataPointer.Arg2
-P:CoreML.MLMultiArrayMutableDataPointer.Arg3
 P:CoreML.MLNeuralEngineComputeDevice.TotalCoreCount
 P:CoreML.MLNumericConstraint.EnumeratedNumbers
 P:CoreML.MLNumericConstraint.MaxNumber
@@ -29904,7 +29835,6 @@ P:CoreServices.FSEventStream.DeviceBeingWatched
 P:CoreSpotlight.CoreSpotlightConstants.CoreSpotlightVersionNumber
 P:CoreSpotlight.CoreSpotlightConstants.CoreSpotlightVersionString
 P:CoreSpotlight.CSSearchableIndex.IndexDelegate
-P:CoreSpotlight.CSSearchableIndexBundleDataResult.Arg1
 P:CoreSpotlight.CSSearchableItem.IsUpdate
 P:CoreSpotlight.CSSearchableItem.UpdateListenerOptions
 P:CoreSpotlight.CSSearchableItemAttributeSet.ActionIdentifier
@@ -30148,8 +30078,6 @@ P:FileProvider.NSFileProviderErrorKeys.ItemKey
 P:FileProvider.NSFileProviderExtension.DocumentStorageUrl
 P:FileProvider.NSFileProviderExtension.Domain
 P:FileProvider.NSFileProviderExtension.ProviderIdentifier
-P:FileProvider.NSFileProviderGetIdentifierResult.DomainIdentifier
-P:FileProvider.NSFileProviderGetIdentifierResult.ItemIdentifier
 P:FileProvider.NSFileProviderItemIdentifier.TrashContainer
 P:FileProvider.NSFileProviderItemVersion.BeforeFirstSyncComponent
 P:FileProvider.NSFileProviderItemVersion.ContentVersion
@@ -30159,7 +30087,6 @@ P:FileProvider.NSFileProviderKnownFolderLocations.DocumentsLocation
 P:FileProvider.NSFileProviderKnownFolderLocations.ShouldCreateBinaryCompatibilitySymlink
 P:FileProvider.NSFileProviderManager.MaterializedSetDidChange
 P:FileProvider.NSFileProviderManager.PendingSetDidChange
-P:FileProvider.NSFileProviderRemoveDomainResult.Arg1
 P:FileProvider.NSFileProviderRequest.DomainVersion
 P:FileProvider.NSFileProviderRequest.IsFileViewerRequest
 P:FileProvider.NSFileProviderRequest.IsSystemRequest
@@ -30180,8 +30107,6 @@ P:Foundation.INSObjectProtocol.DebugDescription
 P:Foundation.INSObjectProtocol.Description
 P:Foundation.INSObjectProtocol.RetainCount
 P:Foundation.INSProgressReporting.Progress
-P:Foundation.LoadInPlaceResult.FileUrl
-P:Foundation.LoadInPlaceResult.IsInPlace
 P:Foundation.NSAppleEventManager.WillProcessFirstEventNotification
 P:Foundation.NSArchiveReplaceEventArgs.NewObject
 P:Foundation.NSArchiveReplaceEventArgs.OldObject
@@ -30248,8 +30173,6 @@ P:Foundation.NSItemProvider.RegisteredContentTypesForOpenInPlace
 P:Foundation.NSKeyedArchiver.WillEncode
 P:Foundation.NSKeyedUnarchiver.CannotDecodeClass
 P:Foundation.NSKeyedUnarchiver.DecodedObject
-P:Foundation.NSLoadFromHtmlResult.AttributedString
-P:Foundation.NSLoadFromHtmlResult.Attributes
 P:Foundation.NSMetadataItem.UbiquitousItemDownloadingStatus
 P:Foundation.NSMetadataQuery.ReplacementObjectForResultObject
 P:Foundation.NSMetadataQuery.ReplacementValueForAttributevalue
@@ -30321,21 +30244,11 @@ P:Foundation.NSUrl.VolumeMountFromLocationKey
 P:Foundation.NSUrl.VolumeSubtypeKey
 P:Foundation.NSUrl.VolumeSupportsFileProtectionKey
 P:Foundation.NSUrl.VolumeTypeNameKey
-P:Foundation.NSUrlAsyncResult.Data
-P:Foundation.NSUrlAsyncResult.Response
 P:Foundation.NSUrlRequest.Item(System.String)
-P:Foundation.NSUrlSessionActiveTasks.DataTasks
-P:Foundation.NSUrlSessionActiveTasks.DownloadTasks
-P:Foundation.NSUrlSessionActiveTasks.UploadTasks
-P:Foundation.NSUrlSessionCombinedTasks.Tasks
 P:Foundation.NSUrlSessionConfiguration.ProxyConfigurations
 P:Foundation.NSUrlSessionConfiguration.SessionType
 P:Foundation.NSUrlSessionConfiguration.StrongConnectionProxyDictionary
 P:Foundation.NSUrlSessionConfiguration.UsesClassicLoadingMode
-P:Foundation.NSUrlSessionDataTaskRequest.Data
-P:Foundation.NSUrlSessionDataTaskRequest.Response
-P:Foundation.NSUrlSessionDownloadTaskRequest.Location
-P:Foundation.NSUrlSessionDownloadTaskRequest.Response
 P:Foundation.NSUrlSessionHandler.AllowsCellularAccess
 P:Foundation.NSUrlSessionHandler.AutomaticDecompression
 P:Foundation.NSUrlSessionHandler.CookieContainer
@@ -30347,20 +30260,14 @@ P:Foundation.NSUrlSessionHandler.SupportsRedirectConfiguration
 P:Foundation.NSUrlSessionHandler.TrustOverrideForUrl
 P:Foundation.NSUrlSessionHandler.UseCookies
 P:Foundation.NSUrlSessionHandler.UseProxy
-P:Foundation.NSUrlSessionStreamDataRead.AtEof
-P:Foundation.NSUrlSessionStreamDataRead.Data
 P:Foundation.NSUrlSessionTask.Delegate
 P:Foundation.NSUrlSessionTaskTransactionMetrics.Cellular
 P:Foundation.NSUrlSessionTaskTransactionMetrics.Constrained
 P:Foundation.NSUrlSessionTaskTransactionMetrics.Expensive
 P:Foundation.NSUrlSessionTaskTransactionMetrics.Multipath
 P:Foundation.NSUrlSessionUploadTask.ResumeDataKey
-P:Foundation.NSUrlSessionUploadTaskResumeRequest.Arg1
-P:Foundation.NSUrlSessionUploadTaskResumeRequest.Arg2
 P:Foundation.NSUserActivity.AppClipActivationPayload
 P:Foundation.NSUserActivity.TargetContentIdentifier
-P:Foundation.NSUserActivityContinuation.Arg1
-P:Foundation.NSUserActivityContinuation.Arg2
 P:Foundation.NSUserDefaults.Item(System.String)
 P:Foundation.NSUserNotificationCenter.ShouldPresentNotification
 P:Foundation.NSValue.CMVideoDimensionsValue
@@ -30911,14 +30818,6 @@ P:GameController.IGCTouchedStateInput.TouchedDidChangeHandler
 P:GameKit.GKAccessPoint.Active
 P:GameKit.GKAccessPoint.Focused
 P:GameKit.GKAccessPoint.Visible
-P:GameKit.GKCategoryResult.Categories
-P:GameKit.GKCategoryResult.Titles
-P:GameKit.GKChallengeComposeControllerResult.ComposeController
-P:GameKit.GKChallengeComposeControllerResult.IssuedChallenge
-P:GameKit.GKChallengeComposeControllerResult.SentPlayers
-P:GameKit.GKChallengeComposeResult.ComposeController
-P:GameKit.GKChallengeComposeResult.IssuedChallenge
-P:GameKit.GKChallengeComposeResult.SentPlayerIDs
 P:GameKit.GKChallengeEventHandler.ShouldShowBannerForLocallyCompletedChallenge
 P:GameKit.GKChallengeEventHandler.ShouldShowBannerForLocallyReceivedChallenge
 P:GameKit.GKChallengeEventHandler.ShouldShowBannerForRemotelyCompletedChallenge
@@ -30927,20 +30826,7 @@ P:GameKit.GKDataEventArgs.PlayerId
 P:GameKit.GKDataReceivedForRecipientEventArgs.Data
 P:GameKit.GKDataReceivedForRecipientEventArgs.Player
 P:GameKit.GKDataReceivedForRecipientEventArgs.Recipient
-P:GameKit.GKEntriesForPlayerScopeResult.Entries
-P:GameKit.GKEntriesForPlayerScopeResult.LocalPlayerEntry
-P:GameKit.GKEntriesForPlayerScopeResult.TotalPlayerCount
-P:GameKit.GKEntriesForPlayersResult.Entries
-P:GameKit.GKEntriesForPlayersResult.LocalPlayerEntry
 P:GameKit.GKErrorEventArgs.Error
-P:GameKit.GKFetchItemsForIdentityVerificationSignature.PublicKeyUrl
-P:GameKit.GKFetchItemsForIdentityVerificationSignature.Salt
-P:GameKit.GKFetchItemsForIdentityVerificationSignature.Signature
-P:GameKit.GKFetchItemsForIdentityVerificationSignature.Timestamp
-P:GameKit.GKIdentityVerificationSignatureResult.PublicKeyUrl
-P:GameKit.GKIdentityVerificationSignatureResult.Salt
-P:GameKit.GKIdentityVerificationSignatureResult.Signature
-P:GameKit.GKIdentityVerificationSignatureResult.Timestamp
 P:GameKit.GKLocalPlayer.MultiplayerGamingRestricted
 P:GameKit.GKLocalPlayer.PersonalizedCommunicationRestricted
 P:GameKit.GKMatch.ShouldReinviteDisconnectedPlayer
@@ -33145,9 +33031,6 @@ P:MLCompute.MLCGramMatrixLayer.Scale
 P:MLCompute.MLCGraph.Device
 P:MLCompute.MLCGraph.Layers
 P:MLCompute.MLCGraph.SummarizedDotDescription
-P:MLCompute.MLCGraphCompletionResult.Error
-P:MLCompute.MLCGraphCompletionResult.ExecutionTime
-P:MLCompute.MLCGraphCompletionResult.ResultTensor
 P:MLCompute.MLCGroupNormalizationLayer.Beta
 P:MLCompute.MLCGroupNormalizationLayer.BetaParameter
 P:MLCompute.MLCGroupNormalizationLayer.FeatureChannelCount
@@ -33561,10 +33444,6 @@ P:NetworkExtension.NEAppPushManager.ProviderConfiguration
 P:NetworkExtension.NEAppPushManager.WeakDelegate
 P:NetworkExtension.NEAppPushProvider.ProviderConfiguration
 P:NetworkExtension.NEAppRule.MatchTools
-P:NetworkExtension.NEDatagramAndFlowEndpointsReadResult.Datagrams
-P:NetworkExtension.NEDatagramAndFlowEndpointsReadResult.RemoteEndpoints
-P:NetworkExtension.NEDatagramReadResult.Datagrams
-P:NetworkExtension.NEDatagramReadResult.RemoteEndpoints
 P:NetworkExtension.NEDnsOverHttpsSettings.IdentityReference
 P:NetworkExtension.NEDnsOverHttpsSettings.ServerUrl
 P:NetworkExtension.NEDnsOverTlsSettings.IdentityReference
@@ -33897,7 +33776,6 @@ P:PassKit.PKSecureElementPass.PairedTerminalIdentifier
 P:PassKit.PKSecureElementPass.PassActivationState
 P:PassKit.PKSecureElementPass.PrimaryAccountIdentifier
 P:PassKit.PKSecureElementPass.PrimaryAccountNumberSuffix
-P:PassKit.PKServiceProviderDataCompletionResult.Arg1
 P:PassKit.PKShareablePassMetadata.AccountHash
 P:PassKit.PKShareablePassMetadata.CardConfigurationIdentifier
 P:PassKit.PKShareablePassMetadata.CardTemplateIdentifier
@@ -33919,8 +33797,6 @@ P:PassKit.PKShareSecureElementPassViewController.Delegate
 P:PassKit.PKShareSecureElementPassViewController.PromptToShareUrl
 P:PassKit.PKShareSecureElementPassViewController.WeakDelegate
 P:PassKit.PKShippingMethod.DateComponentsRange
-P:PassKit.PKSignDataCompletionResult.Signature
-P:PassKit.PKSignDataCompletionResult.SignedData
 P:PassKit.PKStoredValuePassBalance.Amount
 P:PassKit.PKStoredValuePassBalance.BalanceType
 P:PassKit.PKStoredValuePassBalance.CurrencyCode
@@ -34381,8 +34257,6 @@ P:QuickLookThumbnailing.QLThumbnailGenerationRequest.RepresentationTypes
 P:QuickLookThumbnailing.QLThumbnailGenerationRequest.Scale
 P:QuickLookThumbnailing.QLThumbnailGenerationRequest.Size
 P:QuickLookThumbnailing.QLThumbnailGenerator.SharedGenerator
-P:QuickLookThumbnailing.QLThumbnailGeneratorResult.Arg1
-P:QuickLookThumbnailing.QLThumbnailGeneratorResult.Arg2
 P:QuickLookThumbnailing.QLThumbnailReply.ExtensionBadge
 P:QuickLookThumbnailing.QLThumbnailRepresentation.CGImage
 P:QuickLookThumbnailing.QLThumbnailRepresentation.ContentRect
@@ -34423,8 +34297,6 @@ P:SafariServices.SFAddToHomeScreenInfo.Manifest
 P:SafariServices.SFAddToHomeScreenInfo.WebsiteCookies
 P:SafariServices.SFExtension.MessageKey
 P:SafariServices.SFExtension.ProfileKey
-P:SafariServices.SFExtensionValidationResult.ShouldHide
-P:SafariServices.SFExtensionValidationResult.Text
 P:SafariServices.SFSafariExtensionHandler.PopoverViewController
 P:SafariServices.SFSafariViewController.PreferredBarTintColor
 P:SafariServices.SFSafariViewController.PreferredControlTintColor
@@ -34437,8 +34309,6 @@ P:SafariServices.SFSafariViewControllerDataStore.DefaultDataStore
 P:SafariServices.SFUniversalLink.ApplicationUrl
 P:SafariServices.SFUniversalLink.Enabled
 P:SafariServices.SFUniversalLink.WebpageUrl
-P:SafariServices.SFValidationResult.Arg1
-P:SafariServices.SFValidationResult.Arg2
 P:SafetyKit.SACrashDetectionManager.Available
 P:SafetyKit.SACrashDetectionManager.Delegate
 P:SafetyKit.SAEmergencyResponseManager.Delegate
@@ -34631,8 +34501,6 @@ P:SharedWithYouCore.SWUpdateCollaborationParticipantsAction.AddedIdentities
 P:SharedWithYouCore.SWUpdateCollaborationParticipantsAction.CollaborationMetadata
 P:SharedWithYouCore.SWUpdateCollaborationParticipantsAction.RemovedIdentities
 P:ShazamKit.SHSession.Delegate
-P:Social.SLRequestResult.Arg1
-P:Social.SLRequestResult.Arg2
 P:SoundAnalysis.SNClassification.Confidence
 P:SoundAnalysis.SNClassification.Identifier
 P:SoundAnalysis.SNClassificationResult.Classifications
@@ -34658,8 +34526,6 @@ P:SpriteKit.SKNode.IsTransparentFocusItem
 P:SpriteKit.SKNode.ParentFocusEnvironment
 P:SpriteKit.SKNode.PreferredFocusedView
 P:SpriteKit.SKNode.PreferredFocusEnvironments
-P:SpriteKit.SKTextureAtlasLoadResult.Error
-P:SpriteKit.SKTextureAtlasLoadResult.FoundAtlases
 P:StoreKit.SKOverlay.Delegate
 P:StoreKit.SKOverlayAppClipConfiguration.Item(System.String)
 P:StoreKit.SKOverlayAppConfiguration.Item(System.String)
@@ -34748,8 +34614,6 @@ P:TVServices.TVUserManager.ShouldStorePreferencesForCurrentUser
 P:TVServices.TVUserManager.UserIdentifiersForCurrentProfile
 P:TVUIKit.TVCollectionViewFullScreenLayout.TransitioningToCenterIndexPath
 P:TVUIKit.TVDigitEntryViewController.SecureDigitEntry
-P:Twitter.TWRequestResult.ResponseData
-P:Twitter.TWRequestResult.UrlResponse
 P:UIKit.DraggingEventArgs.Decelerate
 P:UIKit.INSCollectionLayoutContainer.ContentInsets
 P:UIKit.INSCollectionLayoutContainer.ContentSize
@@ -35155,8 +35019,6 @@ P:UIKit.UICollectionView.SpringLoaded
 P:UIKit.UICollectionViewCellRegistration.CellType
 P:UIKit.UICollectionViewLayout.AutomaticDimension
 P:UIKit.UICollectionViewSupplementaryRegistration.SupplementaryType
-P:UIKit.UICollectionViewTransitionResult.Completed
-P:UIKit.UICollectionViewTransitionResult.Finished
 P:UIKit.UICollisionBeganBoundaryContactEventArgs.AtPoint
 P:UIKit.UICollisionBeganBoundaryContactEventArgs.BoundaryIdentifier
 P:UIKit.UICollisionBeganBoundaryContactEventArgs.DynamicItem
@@ -35350,16 +35212,10 @@ P:UIKit.UIPopoverPresentationController.ShouldDismissPopover
 P:UIKit.UIPopoverPresentationControllerRepositionEventArgs.InView
 P:UIKit.UIPopoverPresentationControllerRepositionEventArgs.TargetRect
 P:UIKit.UIPreviewInteraction.ShouldBegin
-P:UIKit.UIPrinterPickerCompletionResult.PrinterPickerController
-P:UIKit.UIPrinterPickerCompletionResult.UserDidSelect
-P:UIKit.UIPrintInteractionCompletionResult.Completed
-P:UIKit.UIPrintInteractionCompletionResult.PrintInteractionController
 P:UIKit.UIPrintInteractionController.ChooseCutterBehavior
 P:UIKit.UIPrintInteractionController.ChoosePaper
 P:UIKit.UIPrintInteractionController.CutLengthForPaper
 P:UIKit.UIPrintInteractionController.GetViewController
-P:UIKit.UIPrintInteractionResult.Completed
-P:UIKit.UIPrintInteractionResult.PrintInteractionController
 P:UIKit.UIProgressView.UIProgressViewAppearance.ProgressImage
 P:UIKit.UIProgressView.UIProgressViewAppearance.ProgressTintColor
 P:UIKit.UIProgressView.UIProgressViewAppearance.TrackImage
@@ -36819,7 +36675,6 @@ T:AppKit.NSSoundDelegate
 T:AppKit.NSSpeechBoundary
 T:AppKit.NSSpeechRecognizerDelegate
 T:AppKit.NSSpeechSynthesizerDelegate
-T:AppKit.NSSpellCheckerCandidates
 T:AppKit.NSSpellCheckerShowCorrectionIndicatorOfTypeHandler
 T:AppKit.NSSpellingState
 T:AppKit.NSSplitViewDelegate
@@ -37082,7 +36937,6 @@ T:ARKit.ARRaycastTargetAlignment
 T:ARKit.ARSceneReconstruction
 T:ARKit.ARSegmentationClass
 T:ARKit.ARSkeletonJointName
-T:ARKit.GeoLocationForPoint
 T:ARKit.GetGeolocationCallback
 T:ARKit.IARAnchorCopying
 T:ARKit.IARCoachingOverlayViewDelegate
@@ -37669,7 +37523,6 @@ T:AVKit.IAVPlayerViewControllerAnimationCoordinator
 T:AVKit.IAVPlayerViewDelegate
 T:AVKit.IAVPlayerViewPictureInPictureDelegate
 T:AVKit.IAVRoutePickerViewDelegate
-T:AVKit.PreparingRouteSelectionForPlayback
 T:AVKit.UIWindow_AVAdditions
 T:AVRouting.AVCustomRoutingEventReason
 T:BackgroundAssets.BAAppExtensionInfo
@@ -37908,22 +37761,17 @@ T:CoreData.NSMigrationManager
 T:CoreData.NSMigrationStage
 T:CoreData.NSPersistentCloudKitContainer
 T:CoreData.NSPersistentCloudKitContainerAcceptShareInvitationsHandler
-T:CoreData.NSPersistentCloudKitContainerAcceptShareInvitationsResult
 T:CoreData.NSPersistentCloudKitContainerEvent
 T:CoreData.NSPersistentCloudKitContainerEventRequest
 T:CoreData.NSPersistentCloudKitContainerEventResult
 T:CoreData.NSPersistentCloudKitContainerEventResultType
 T:CoreData.NSPersistentCloudKitContainerEventType
 T:CoreData.NSPersistentCloudKitContainerFetchParticipantsMatchingLookupInfosHandler
-T:CoreData.NSPersistentCloudKitContainerFetchParticipantsMatchingLookupInfosResult
 T:CoreData.NSPersistentCloudKitContainerOptions
 T:CoreData.NSPersistentCloudKitContainerPersistUpdatedShareHandler
-T:CoreData.NSPersistentCloudKitContainerPersistUpdatedShareResult
-T:CoreData.NSPersistentCloudKitContainerPurgeObjectsAndRecordsInZone
 T:CoreData.NSPersistentCloudKitContainerPurgeObjectsAndRecordsInZoneHandler
 T:CoreData.NSPersistentCloudKitContainerSchemaInitializationOptions
 T:CoreData.NSPersistentCloudKitContainerShareManagedObjectsHandler
-T:CoreData.NSPersistentCloudKitContainerShareManagedObjectsResult
 T:CoreData.NSPersistentContainer
 T:CoreData.NSPersistentHistoryChange
 T:CoreData.NSPersistentHistoryChangeRequest
@@ -38388,8 +38236,6 @@ T:CoreML.MLModelAssetGetFunctionNamesCompletionHandler
 T:CoreML.MLModelAssetGetModelDescriptionCompletionHandler
 T:CoreML.MLModelCollection
 T:CoreML.MLModelCollectionEntry
-T:CoreML.MLModelCompilationLoadResult
-T:CoreML.MLModelCompilationResult
 T:CoreML.MLModelConfiguration
 T:CoreML.MLModelStructure
 T:CoreML.MLModelStructureNeuralNetwork
@@ -38404,8 +38250,6 @@ T:CoreML.MLModelStructureProgramNamedValueType
 T:CoreML.MLModelStructureProgramOperation
 T:CoreML.MLModelStructureProgramValue
 T:CoreML.MLModelStructureProgramValueType
-T:CoreML.MLMultiArrayDataPointer
-T:CoreML.MLMultiArrayMutableDataPointer
 T:CoreML.MLNeuralEngineComputeDevice
 T:CoreML.MLNumericConstraint
 T:CoreML.MLOptimizationHints
@@ -38493,7 +38337,6 @@ T:CoreNFC.NFCVasResponse
 T:CoreNFC.NSUserActivity_CoreNFC
 T:CoreSpotlight.CoreSpotlightConstants
 T:CoreSpotlight.CSImportExtension
-T:CoreSpotlight.CSSearchableIndexBundleDataResult
 T:CoreSpotlight.CSSearchableIndexDelegateGetSearchableItemsHandler
 T:CoreSpotlight.CSSearchableIndexEndIndexHandler
 T:CoreSpotlight.CSSearchableItemUpdateListenerOptions
@@ -38630,7 +38473,6 @@ T:FileProvider.NSFileProviderFetchContentsCompletionHandler
 T:FileProvider.NSFileProviderFetchContentsOptions
 T:FileProvider.NSFileProviderFileSystemFlags
 T:FileProvider.NSFileProviderGetIdentifierHandler
-T:FileProvider.NSFileProviderGetIdentifierResult
 T:FileProvider.NSFileProviderItemFields
 T:FileProvider.NSFileProviderItemVersion
 T:FileProvider.NSFileProviderKnownFolderLocation
@@ -38648,7 +38490,6 @@ T:FileProvider.NSFileProviderMaterializationFlags
 T:FileProvider.NSFileProviderModifyItemOptions
 T:FileProvider.NSFileProviderPartialContentFetchingCompletionHandler
 T:FileProvider.NSFileProviderPerThumbnailCompletionHandler
-T:FileProvider.NSFileProviderRemoveDomainResult
 T:FileProvider.NSFileProviderRequest
 T:FileProvider.NSFileProviderTestingOperationSide
 T:FileProvider.NSFileProviderTestingOperationType
@@ -38707,7 +38548,6 @@ T:Foundation.ItemProviderDataCompletionHandler
 T:Foundation.LinguisticTagEnumerator
 T:Foundation.LoadFileRepresentationHandler
 T:Foundation.LoadInPlaceFileRepresentationHandler
-T:Foundation.LoadInPlaceResult
 T:Foundation.NSActivityOptions
 T:Foundation.NSAlignmentOptions
 T:Foundation.NSAppleEventSendOptions
@@ -38815,7 +38655,6 @@ T:Foundation.NSLinguisticAnalysis
 T:Foundation.NSLinguisticTaggerOptions
 T:Foundation.NSLinguisticTaggerUnit
 T:Foundation.NSLingusticEnumerator
-T:Foundation.NSLoadFromHtmlResult
 T:Foundation.NSLocaleLanguageDirection
 T:Foundation.NSMachPortDelegate
 T:Foundation.NSMachPortRights
@@ -38893,7 +38732,6 @@ T:Foundation.NSTimeZoneNameStyle
 T:Foundation.NSUbiquitousKeyValueStoreChangeReason
 T:Foundation.NSUnderlineStyle
 T:Foundation.NSUrl_PromisedItems
-T:Foundation.NSUrlAsyncResult
 T:Foundation.NSUrlBookmarkCreationOptions
 T:Foundation.NSUrlBookmarkResolutionOptions
 T:Foundation.NSUrlCacheStoragePolicy
@@ -38911,14 +38749,11 @@ T:Foundation.NSUrlRelationship
 T:Foundation.NSURLRequestAttribution
 T:Foundation.NSUrlRequestCachePolicy
 T:Foundation.NSUrlRequestNetworkServiceType
-T:Foundation.NSUrlSessionActiveTasks
 T:Foundation.NSUrlSessionAllPendingTasks
 T:Foundation.NSUrlSessionAuthChallengeDisposition
-T:Foundation.NSUrlSessionCombinedTasks
 T:Foundation.NSUrlSessionConfiguration.SessionConfigurationType
 T:Foundation.NSUrlSessionDataDelegate
 T:Foundation.NSUrlSessionDataRead
-T:Foundation.NSUrlSessionDataTaskRequest
 T:Foundation.NSUrlSessionDelayedRequestDisposition
 T:Foundation.NSUrlSessionDelegate
 T:Foundation.NSUrlSessionDownloadDelegate
@@ -38927,20 +38762,17 @@ T:Foundation.NSUrlSessionMultipathServiceType
 T:Foundation.NSUrlSessionPendingTasks
 T:Foundation.NSUrlSessionResponse
 T:Foundation.NSUrlSessionResponseDisposition
-T:Foundation.NSUrlSessionStreamDataRead
 T:Foundation.NSUrlSessionStreamDelegate
 T:Foundation.NSUrlSessionTaskDelegate
 T:Foundation.NSUrlSessionTaskMetricsDomainResolutionProtocol
 T:Foundation.NSUrlSessionTaskMetricsResourceFetchType
 T:Foundation.NSUrlSessionTaskPriority
 T:Foundation.NSUrlSessionTaskState
-T:Foundation.NSUrlSessionUploadTaskResumeRequest
 T:Foundation.NSUrlSessionWebSocketCloseCode
 T:Foundation.NSUrlSessionWebSocketDelegate
 T:Foundation.NSUrlSessionWebSocketMessageType
 T:Foundation.NSUrlUtilities_NSCharacterSet
 T:Foundation.NSUrlUtilities_NSString
-T:Foundation.NSUserActivityContinuation
 T:Foundation.NSUserActivityDelegate
 T:Foundation.NSUserActivityType
 T:Foundation.NSUserNotificationActivationType
@@ -39032,22 +38864,16 @@ T:GameController.InputStateAvailableHandler
 T:GameController.UISceneConnectionOptions_GameController
 T:GameKit.GKAccessPointLocation
 T:GameKit.GKAchievementDescriptionHandler
-T:GameKit.GKCategoryResult
-T:GameKit.GKChallengeComposeControllerResult
 T:GameKit.GKChallengeComposeHandler
 T:GameKit.GKChallengeComposeHandler2
-T:GameKit.GKChallengeComposeResult
 T:GameKit.GKChallengeListener
 T:GameKit.GKChallengeState
 T:GameKit.GKChallengesViewControllerDelegate
 T:GameKit.GKCompletionHandler
 T:GameKit.GKConnectionState
 T:GameKit.GKEntriesForPlayerScopeHandler
-T:GameKit.GKEntriesForPlayerScopeResult
 T:GameKit.GKEntriesForPlayersHandler
-T:GameKit.GKEntriesForPlayersResult
 T:GameKit.GKError
-T:GameKit.GKFetchItemsForIdentityVerificationSignature
 T:GameKit.GKFetchItemsForIdentityVerificationSignatureCompletionHandler
 T:GameKit.GKFriendsAuthorizationStatus
 T:GameKit.GKGameCenterControllerDelegate
@@ -39055,7 +38881,6 @@ T:GameKit.GKGameCenterViewControllerState
 T:GameKit.GKGameSessionErrorCode
 T:GameKit.GKGameSessionSharingViewControllerDelegate
 T:GameKit.GKIdentityVerificationSignatureHandler
-T:GameKit.GKIdentityVerificationSignatureResult
 T:GameKit.GKImageLoadedHandler
 T:GameKit.GKInviteeResponse
 T:GameKit.GKInviteEventListener
@@ -40315,7 +40140,6 @@ T:MLCompute.MLCGramMatrixLayer
 T:MLCompute.MLCGraph
 T:MLCompute.MLCGraphCompilationOptions
 T:MLCompute.MLCGraphCompletionHandler
-T:MLCompute.MLCGraphCompletionResult
 T:MLCompute.MLCGroupNormalizationLayer
 T:MLCompute.MLCInferenceGraph
 T:MLCompute.MLCInstanceNormalizationLayer
@@ -40518,9 +40342,7 @@ T:NetworkExtension.NEAppPushManager
 T:NetworkExtension.NEAppPushManagerError
 T:NetworkExtension.NEAppPushProvider
 T:NetworkExtension.NEDatagramAndFlowEndpointsRead
-T:NetworkExtension.NEDatagramAndFlowEndpointsReadResult
 T:NetworkExtension.NEDatagramRead
-T:NetworkExtension.NEDatagramReadResult
 T:NetworkExtension.NEDatagramWriteResult
 T:NetworkExtension.NEDnsOverHttpsSettings
 T:NetworkExtension.NEDnsOverTlsSettings
@@ -40715,7 +40537,6 @@ T:PassKit.PKRecurringPaymentRequest
 T:PassKit.PKRecurringPaymentSummaryItem
 T:PassKit.PKSecureElementPass
 T:PassKit.PKSecureElementPassActivationState
-T:PassKit.PKServiceProviderDataCompletionResult
 T:PassKit.PKShareablePassMetadata
 T:PassKit.PKShareablePassMetadataPreview
 T:PassKit.PKShareSecureElementPassErrorCode
@@ -40724,7 +40545,6 @@ T:PassKit.PKShareSecureElementPassViewController
 T:PassKit.PKShareSecureElementPassViewControllerDelegate
 T:PassKit.PKShippingContactEditingMode
 T:PassKit.PKSignatureRequestCompletionBlock
-T:PassKit.PKSignDataCompletionResult
 T:PassKit.PKStoredValuePassBalance
 T:PassKit.PKStoredValuePassBalanceType
 T:PassKit.PKStoredValuePassProperties
@@ -40960,7 +40780,6 @@ T:QuickLookThumbnailing.QLThumbnailError
 T:QuickLookThumbnailing.QLThumbnailGenerationRequest
 T:QuickLookThumbnailing.QLThumbnailGenerationRequestRepresentationTypes
 T:QuickLookThumbnailing.QLThumbnailGenerator
-T:QuickLookThumbnailing.QLThumbnailGeneratorResult
 T:QuickLookThumbnailing.QLThumbnailProvider
 T:QuickLookThumbnailing.QLThumbnailReply
 T:QuickLookThumbnailing.QLThumbnailRepresentation
@@ -40998,7 +40817,6 @@ T:SafariServices.SFAuthenticationError
 T:SafariServices.SFContentBlockerErrorCode
 T:SafariServices.SFExtension
 T:SafariServices.SFExtensionValidationHandler
-T:SafariServices.SFExtensionValidationResult
 T:SafariServices.SFSafariApplication
 T:SafariServices.SFSafariExtension
 T:SafariServices.SFSafariExtensionHandler
@@ -41013,7 +40831,6 @@ T:SafariServices.SFSafariViewControllerDismissButtonStyle
 T:SafariServices.SFSafariViewControllerPrewarmingToken
 T:SafariServices.SFSafariWindow
 T:SafariServices.SFUniversalLink
-T:SafariServices.SFValidationResult
 T:SafetyKit.ISACrashDetectionDelegate
 T:SafetyKit.ISAEmergencyResponseDelegate
 T:SafetyKit.SAAuthorizationStatus
@@ -41177,7 +40994,6 @@ T:ShazamKit.ISHSessionDelegate
 T:ShazamKit.SHErrorCode
 T:ShazamKit.SHMediaItemProperty
 T:ShazamKit.SHSessionDelegate
-T:Social.SLRequestResult
 T:SoundAnalysis.ISNRequest
 T:SoundAnalysis.ISNResult
 T:SoundAnalysis.ISNResultsObserving
@@ -41195,7 +41011,6 @@ T:Speech.SFSpeechErrorCode
 T:Speech.SFSpeechRecognitionTaskHint
 T:SpriteKit.SKNodeEvent_NSEvent
 T:SpriteKit.SKTextureAtlasLoadCallback
-T:SpriteKit.SKTextureAtlasLoadResult
 T:StoreKit.ISKOverlayDelegate
 T:StoreKit.ISKPaymentQueueDelegate
 T:StoreKit.ISKPaymentTransactionObserver
@@ -41276,7 +41091,6 @@ T:TVUIKit.ITVLockupViewComponent
 T:TVUIKit.TVCaptionButtonViewMotionDirection
 T:TVUIKit.TVCollectionViewDelegateFullScreenLayout
 T:TVUIKit.TVMediaItemContentTextTransform
-T:Twitter.TWRequestResult
 T:UIKit.AXObjectReturnBlock
 T:UIKit.INSCollectionLayoutContainer
 T:UIKit.INSCollectionLayoutEnvironment
@@ -41588,7 +41402,6 @@ T:UIKit.UICollectionViewScrollPosition
 T:UIKit.UICollectionViewSelfSizingInvalidation
 T:UIKit.UICollectionViewSource
 T:UIKit.UICollectionViewSupplementaryRegistrationConfigurationHandler
-T:UIKit.UICollectionViewTransitionResult
 T:UIKit.UICollisionBehaviorDelegate
 T:UIKit.UICollisionBehaviorMode
 T:UIKit.UIColorPickerViewControllerDelegate
@@ -41737,9 +41550,6 @@ T:UIKit.UIPressPhase
 T:UIKit.UIPressType
 T:UIKit.UIPreviewActionStyle
 T:UIKit.UIPreviewHandler
-T:UIKit.UIPrinterPickerCompletionResult
-T:UIKit.UIPrintInteractionCompletionResult
-T:UIKit.UIPrintInteractionResult
 T:UIKit.UIPrintRenderingQuality
 T:UIKit.UIProgressViewStyle
 T:UIKit.UIPushBehaviorMode

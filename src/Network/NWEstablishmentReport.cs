@@ -23,21 +23,11 @@ using nw_report_protocol_enumerator_t = System.IntPtr;
 using nw_protocol_definition_t = System.IntPtr;
 using nw_resolution_report_t = System.IntPtr;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Network {
-
-#if NET
 	[SupportedOSPlatform ("tvos13.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios13.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[TV (13, 0)]
-	[iOS (13, 0)]
-#endif
 	public class NWEstablishmentReport : NativeObject {
 
 		[Preserve (Conditional = true)]
@@ -71,14 +61,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_establishment_report_enumerate_resolutions (OS_nw_establishment_report report, BlockLiteral* enumerate_block);
 
-#if !NET
-		delegate void nw_report_resolution_enumerator_t (IntPtr block, NWReportResolutionSource source, nuint milliseconds, int endpoint_count, nw_endpoint_t successful_endpoint, nw_endpoint_t preferred_endpoint);
-		static nw_report_resolution_enumerator_t static_ResolutionEnumeratorHandler = TrampolineResolutionEnumeratorHandler;
-
-		[MonoPInvokeCallback (typeof (nw_report_resolution_enumerator_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void TrampolineResolutionEnumeratorHandler (IntPtr block, NWReportResolutionSource source, nuint milliseconds, int endpoint_count, nw_endpoint_t successful_endpoint, nw_endpoint_t preferred_endpoint)
 		{
 			var del = BlockLiteral.GetTarget<Action<NWReportResolutionSource, TimeSpan, int, NWEndpoint, NWEndpoint>> (block);
@@ -96,13 +79,8 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
 
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, NWReportResolutionSource, nuint, int, nw_endpoint_t, nw_endpoint_t, void> trampoline = &TrampolineResolutionEnumeratorHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (NWEstablishmentReport), nameof (TrampolineResolutionEnumeratorHandler));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_ResolutionEnumeratorHandler, handler);
-#endif
 				nw_establishment_report_enumerate_resolutions (GetCheckedHandle (), &block);
 			}
 		}
@@ -110,14 +88,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_establishment_report_enumerate_protocols (OS_nw_establishment_report report, BlockLiteral* enumerate_block);
 
-#if !NET
-		delegate void nw_establishment_report_enumerate_protocols_t (IntPtr block, nw_protocol_definition_t protocol, nuint handshake_milliseconds, nuint handshake_rtt_milliseconds);
-		static nw_establishment_report_enumerate_protocols_t static_EnumerateProtocolsHandler = TrampolineEnumerateProtocolsHandler;
-
-		[MonoPInvokeCallback (typeof (nw_establishment_report_enumerate_protocols_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static void TrampolineEnumerateProtocolsHandler (IntPtr block, nw_protocol_definition_t protocol, nuint handshake_milliseconds, nuint handshake_rtt_milliseconds)
 		{
 			var del = BlockLiteral.GetTarget<Action<NWProtocolDefinition, TimeSpan, TimeSpan>> (block);
@@ -134,13 +105,8 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
 
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, nw_protocol_definition_t, nuint, nuint, void> trampoline = &TrampolineEnumerateProtocolsHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (NWEstablishmentReport), nameof (TrampolineEnumerateProtocolsHandler));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_EnumerateProtocolsHandler, handler);
-#endif
 				nw_establishment_report_enumerate_protocols (GetCheckedHandle (), &block);
 			}
 		}
@@ -155,27 +121,18 @@ namespace Network {
 			}
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_establishment_report_enumerate_resolution_reports (OS_nw_establishment_report report, BlockLiteral* enumerateBlock);
 
-#if !NET
-		delegate void nw_report_resolution_report_enumerator_t (IntPtr block, nw_resolution_report_t report);
-		static nw_report_resolution_report_enumerator_t static_EnumerateResolutionReport = TrampolineEnumerateResolutionReport;
-
-		[MonoPInvokeCallback (typeof (nw_report_resolution_report_enumerator_t))]
-#else
+		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[UnmanagedCallersOnly]
-#endif
 		static void TrampolineEnumerateResolutionReport (IntPtr block, nw_resolution_report_t report)
 		{
 			var del = BlockLiteral.GetTarget<Action<NWResolutionReport>> (block);
@@ -185,16 +142,10 @@ namespace Network {
 			del (nwReport);
 		}
 
-#if NET
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-#else
-		[TV (15, 0)]
-		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
-#endif
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void EnumerateResolutionReports (Action<NWResolutionReport> handler)
 		{
@@ -202,13 +153,8 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
 
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, nw_resolution_report_t, void> trampoline = &TrampolineEnumerateResolutionReport;
 				using var block = new BlockLiteral (trampoline, handler, typeof (NWEstablishmentReport), nameof (TrampolineEnumerateResolutionReport));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_EnumerateResolutionReport, handler);
-#endif
 				nw_establishment_report_enumerate_protocols (GetCheckedHandle (), &block);
 			}
 		}

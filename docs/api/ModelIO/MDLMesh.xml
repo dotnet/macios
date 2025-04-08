@@ -1,0 +1,18 @@
+<Documentation>
+  <Docs DocId="M:ModelIO.MDLMesh.CreateCapsule(System.Single,OpenTK.Vector2,System.nuint,System.nuint,System.nuint,ModelIO.MDLGeometryType,System.Boolean,ModelIO.IMDLMeshBufferAllocator)">
+        <param name="height">The height of the capsule.</param>
+        <param name="radii">The radii of the capsule.</param>
+        <param name="radialSegments">The number of radial segments to generate.</param>
+        <param name="verticalSegments">The number of vertical segments to generate in the cylinder.</param>
+        <param name="hemisphereSegments">The number segments to generate in the caps.</param>
+        <param name="geometryType">Whether to create triangles, quadrilaterals, or lines.</param>
+        <param name="inwardNormals">Whether to generate inward-pointing normals.</param>
+        <param name="allocator">
+          <para>The allocator to use instead of the default, internal allocator.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Creates a capsule from the width and radii, with the specified number of segments and geometry kind.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+</Documentation>

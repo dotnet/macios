@@ -478,6 +478,12 @@ namespace Foundation {
 			return value is not null;
 		}
 
+		/// <param name="key">Key to lookup</param>
+		/// <summary>Returns the value associated from a key in the dictionary, or null if the key is not found.</summary>
+		/// <value>
+		///         </value>
+		/// <remarks>
+		///         </remarks>
 		public virtual NSObject this [NSObject key] {
 			get {
 				return ObjectForKey (key);
@@ -487,6 +493,12 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="key">Key to lookup</param>
+		/// <summary>Returns the value associated from a key in the dictionary, or null if the key is not found.</summary>
+		/// <value>
+		///         </value>
+		/// <remarks>
+		///         </remarks>
 		public virtual NSObject this [NSString key] {
 			get {
 				return ObjectForKey (key);
@@ -496,6 +508,11 @@ namespace Foundation {
 			}
 		}
 
+		/// <param name="key">Key to lookup</param>
+		/// <summary>Returns the value associated from a key in the dictionary, or null if the key is not found.</summary>
+		/// <value>
+		///         </value>
+		/// <remarks>The string will be marshalled as an NSString before performing the lookup.</remarks>
 		public virtual NSObject this [string key] {
 			get {
 				if (key is null)

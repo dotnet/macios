@@ -742,9 +742,7 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[Category, BaseType (typeof (NSLayoutConstraint))]
 	interface NSIdentifier {
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Returns an identifier that can be used to request an item.</summary>
 		[Export ("identifier")]
 		string GetIdentifier ();
 
@@ -1036,70 +1034,121 @@ namespace UIKit {
 		[NullAllowed, Export ("accessibilityTextualContext", ArgumentSemantic.Strong)]
 		string AccessibilityTextualContext { get; set; }
 
+		/// <summary>Gets a trait that indicates that <c>this</c> <see cref="T:UIKit.IUIAccessibilityIdentification" /> element has no traits.</summary>
+		/// <value>The value to be set for the trait.</value>
+		/// <remarks>To be added.</remarks>
 		[Obsolete ("Use 'UIAccessibilityTraits' enum instead.")]
 		[Field ("UIAccessibilityTraitNone")]
 		long TraitNone { get; }
 
+		/// <summary>Gets a trait that indicates that <c>this</c> <see cref="T:UIKit.IUIAccessibilityIdentification" /> element should be treated as a button.</summary>
+		/// <value>The value to be set for the trait.</value>
+		/// <remarks>To be added.</remarks>
 		[Obsolete ("Use 'UIAccessibilityTraits' enum instead.")]
 		[Field ("UIAccessibilityTraitButton")]
 		long TraitButton { get; }
 
+		/// <summary>Gets a trait that indicates that <c>this</c> <see cref="T:UIKit.IUIAccessibilityIdentification" /> element should be considered a link.</summary>
+		/// <value>The value to be set for the trait.</value>
+		/// <remarks>To be added.</remarks>
 		[Obsolete ("Use 'UIAccessibilityTraits' enum instead.")]
 		[Field ("UIAccessibilityTraitLink")]
 		long TraitLink { get; }
 
+		/// <summary>Gets a trait that indicates that <c>this</c> <see cref="T:UIKit.IUIAccessibilityIdentification" /> element is a header that divides content into sections.</summary>
+		/// <value>The value to be set for the trait.</value>
+		/// <remarks>To be added.</remarks>
 		[Obsolete ("Use 'UIAccessibilityTraits' enum instead.")]
 		[Field ("UIAccessibilityTraitHeader")]
 		long TraitHeader { get; }
 
+		/// <summary>Gets a trait that indicates that <c>this</c> <see cref="T:UIKit.IUIAccessibilityIdentification" /> element should be considered a search field.</summary>
+		/// <value>The value to be set for the trait.</value>
+		/// <remarks>To be added.</remarks>
 		[Obsolete ("Use 'UIAccessibilityTraits' enum instead.")]
 		[Field ("UIAccessibilityTraitSearchField")]
 		long TraitSearchField { get; }
 
+		/// <summary>Gets a trait that indicates that <c>this</c> <see cref="T:UIKit.IUIAccessibilityIdentification" /> element should be treated as an image.</summary>
+		/// <value>The value to be set for the trait.</value>
+		/// <remarks>To be added.</remarks>
 		[Obsolete ("Use 'UIAccessibilityTraits' enum instead.")]
 		[Field ("UIAccessibilityTraitImage")]
 		long TraitImage { get; }
 
+		/// <summary>Gets a trait that indicates that <c>this</c> <see cref="T:UIKit.IUIAccessibilityIdentification" /> element is selected.</summary>
+		/// <value>The value to be set for the trait.</value>
+		/// <remarks>To be added.</remarks>
 		[Obsolete ("Use 'UIAccessibilityTraits' enum instead.")]
 		[Field ("UIAccessibilityTraitSelected")]
 		long TraitSelected { get; }
 
+		/// <summary>Gets a trait that indicates that <c>this</c> <see cref="T:UIKit.IUIAccessibilityIdentification" /> elements plays its own sound when activated.</summary>
+		/// <value>The value to be set for the trait.</value>
+		/// <remarks>To be added.</remarks>
 		[Obsolete ("Use 'UIAccessibilityTraits' enum instead.")]
 		[Field ("UIAccessibilityTraitPlaysSound")]
 		long TraitPlaysSound { get; }
 
+		/// <summary>Gets a trait that indicates that <c>this</c> <see cref="T:UIKit.IUIAccessibilityIdentification" /> element acts like a keyboard key.</summary>
+		/// <value>The value to be set for the trait.</value>
+		/// <remarks>To be added.</remarks>
 		[Obsolete ("Use 'UIAccessibilityTraits' enum instead.")]
 		[Field ("UIAccessibilityTraitKeyboardKey")]
 		long TraitKeyboardKey { get; }
 
+		/// <summary>Gets a trait that indicates that <c>this</c> <see cref="T:UIKit.IUIAccessibilityIdentification" /> element should be treated as static text.</summary>
+		/// <value>The value to be set for the trait.</value>
+		/// <remarks>To be added.</remarks>
 		[Obsolete ("Use 'UIAccessibilityTraits' enum instead.")]
 		[Field ("UIAccessibilityTraitStaticText")]
 		long TraitStaticText { get; }
 
+		/// <summary>Gets a trait that provides summary information when an application starts.</summary>
+		/// <value>The value to be set for the trait.</value>
+		/// <remarks>To be added.</remarks>
 		[Obsolete ("Use 'UIAccessibilityTraits' enum instead.")]
 		[Field ("UIAccessibilityTraitSummaryElement")]
 		long TraitSummaryElement { get; }
 
+		/// <summary>Gets a trait that indicates that <c>this</c> <see cref="T:UIKit.IUIAccessibilityIdentification" /> element is not enabled.</summary>
+		/// <value>The value to be set for the trait.</value>
+		/// <remarks>To be added.</remarks>
 		[Obsolete ("Use 'UIAccessibilityTraits' enum instead.")]
 		[Field ("UIAccessibilityTraitNotEnabled")]
 		long TraitNotEnabled { get; }
 
+		/// <summary>Gets a trait that indicates that <c>this</c> <see cref="T:UIKit.IUIAccessibilityIdentification" /> element updates its <see cref="P:UIKit.UIImage.AccessibilityLabel" /> or <see cref="P:UIKit.UIImage.AccessibilityValue" />.</summary>
+		/// <value>The value to be set for the trait.</value>
+		/// <remarks>To be added.</remarks>
 		[Obsolete ("Use 'UIAccessibilityTraits' enum instead.")]
 		[Field ("UIAccessibilityTraitUpdatesFrequently")]
 		long TraitUpdatesFrequently { get; }
 
+		/// <summary>Gets a trait that indicates that <c>this</c> <see cref="T:UIKit.IUIAccessibilityIdentification" /> element starts a media session when it is activated.</summary>
+		/// <value>The value to be set for the trait.</value>
+		/// <remarks>To be added.</remarks>
 		[Obsolete ("Use 'UIAccessibilityTraits' enum instead.")]
 		[Field ("UIAccessibilityTraitStartsMediaSession")]
 		long TraitStartsMediaSession { get; }
 
+		/// <summary>Gets a trait that allows continuous adjustment of an accessibility element through a range of values.</summary>
+		/// <value>The value to be set for the trait.</value>
+		/// <remarks>To be added.</remarks>
 		[Obsolete ("Use 'UIAccessibilityTraits' enum instead.")]
 		[Field ("UIAccessibilityTraitAdjustable")]
 		long TraitAdjustable { get; }
 
+		/// <summary>Gets a trait that allows direct touch interaction for users.</summary>
+		/// <value>The value to be set for the trait.</value>
+		/// <remarks>To be added.</remarks>
 		[Obsolete ("Use 'UIAccessibilityTraits' enum instead.")]
 		[Field ("UIAccessibilityTraitAllowsDirectInteraction")]
 		long TraitAllowsDirectInteraction { get; }
 
+		/// <summary>Gets a trait that indicates that <c>this</c> <see cref="T:UIKit.IUIAccessibilityIdentification" /> element should turn the page when VoiceOver finishes that page.</summary>
+		/// <value>The value to be set for the trait.</value>
+		/// <remarks>To be added.</remarks>
 		[Obsolete ("Use 'UIAccessibilityTraits' enum instead.")]
 		[Field ("UIAccessibilityTraitCausesPageTurn")]
 		long TraitCausesPageTurn { get; }
@@ -1109,46 +1158,68 @@ namespace UIKit {
 		[Field ("UIAccessibilityTraitTabBar")]
 		long TraitTabBar { get; }
 
+		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.AnnouncementDidFinishNotification']/*" />
 		[Field ("UIAccessibilityAnnouncementDidFinishNotification")]
 		[Notification (typeof (UIAccessibilityAnnouncementFinishedEventArgs))]
 		NSString AnnouncementDidFinishNotification { get; }
 
+		/// <summary>Developers should not use this deprecated property. Developers should use 'VoiceOverStatusDidChangeNotification' instead.</summary>
+		/// <value>
+		///         </value>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'VoiceOverStatusDidChangeNotification' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'VoiceOverStatusDidChangeNotification' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'VoiceOverStatusDidChangeNotification' instead.")]
 		[Field ("UIAccessibilityVoiceOverStatusChanged")]
 		NSString VoiceOverStatusChanged { get; }
 
+		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.VoiceOverStatusDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("UIAccessibilityVoiceOverStatusDidChangeNotification")]
 		[Notification]
 		NSString VoiceOverStatusDidChangeNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.MonoAudioStatusDidChangeNotification']/*" />
 		[Field ("UIAccessibilityMonoAudioStatusDidChangeNotification")]
 		[Notification]
 		NSString MonoAudioStatusDidChangeNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.ClosedCaptioningStatusDidChangeNotification']/*" />
 		[Field ("UIAccessibilityClosedCaptioningStatusDidChangeNotification")]
 		[Notification]
 		NSString ClosedCaptioningStatusDidChangeNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.InvertColorsStatusDidChangeNotification']/*" />
 		[Field ("UIAccessibilityInvertColorsStatusDidChangeNotification")]
 		[Notification]
 		NSString InvertColorsStatusDidChangeNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.GuidedAccessStatusDidChangeNotification']/*" />
 		[Field ("UIAccessibilityGuidedAccessStatusDidChangeNotification")]
 		[Notification]
 		NSString GuidedAccessStatusDidChangeNotification { get; }
 
+		/// <summary>Gets the notification posted by an application that a new view appears that includes a major portion of the screen.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Field ("UIAccessibilityScreenChangedNotification")]
 		int ScreenChangedNotification { get; } // This is int, not nint
 
+		/// <summary>Gets the notification posted by an application that the layout of a screen has changed.</summary>
+		/// <value>The layer that the view is being rendered on.</value>
+		/// <remarks>To be added.</remarks>
 		[Field ("UIAccessibilityLayoutChangedNotification")]
 		int LayoutChangedNotification { get; } // This is int, not nint
 
+		/// <summary>Gets the notification posted by an application that an announcement requires assistive technology.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Field ("UIAccessibilityAnnouncementNotification")]
 		int AnnouncementNotification { get; } // This is int, not nint
 
+		/// <summary>Gets the notification posted by an application that a scroll action has finished.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[Field ("UIAccessibilityPageScrolledNotification")]
 		int PageScrolledNotification { get; } // This is int, not nint
 
@@ -1159,12 +1230,21 @@ namespace UIKit {
 		[Export ("accessibilityActivate")]
 		bool AccessibilityActivate ();
 
+		/// <summary>Gets a value to be interpreted as a <see langword="bool" /> that determines whether the punctuation in a string is pronounced.</summary>
+		/// <value>String indicating whether punctuation is pronounced.</value>
+		/// <remarks>To be added.</remarks>
 		[Field ("UIAccessibilitySpeechAttributePunctuation")]
 		NSString SpeechAttributePunctuation { get; }
 
+		/// <summary>Gets a BCP-47 language code.</summary>
+		/// <value>A BCP-47 language code.</value>
+		/// <remarks>To be added.</remarks>
 		[Field ("UIAccessibilitySpeechAttributeLanguage")]
 		NSString SpeechAttributeLanguage { get; }
 
+		/// <summary>Gets the value from 0.0 to 2.0 that determines the pitch for a spoken string.</summary>
+		/// <value>Values range from 0.0 (low pitch) to 2.0 (high pitch).</value>
+		/// <remarks>To be added.</remarks>
 		[Field ("UIAccessibilitySpeechAttributePitch")]
 		NSString SpeechAttributePitch { get; }
 
@@ -1172,6 +1252,7 @@ namespace UIKit {
 		[Field ("UIAccessibilitySpeechAttributeAnnouncementPriority")]
 		NSString SpeechAttributeAnnouncementPriority { get; }
 
+		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.BoldTextStatusDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityBoldTextStatusDidChangeNotification")]
@@ -1183,16 +1264,19 @@ namespace UIKit {
 		[Field ("UIAccessibilityButtonShapesEnabledStatusDidChangeNotification")]
 		NSString ButtonShapesEnabledStatusDidChangeNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.DarkerSystemColorsStatusDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityDarkerSystemColorsStatusDidChangeNotification")]
 		NSString DarkerSystemColorsStatusDidChangeNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.GrayscaleStatusDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityGrayscaleStatusDidChangeNotification")]
 		NSString GrayscaleStatusDidChangeNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.ReduceMotionStatusDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityReduceMotionStatusDidChangeNotification")]
@@ -1210,16 +1294,19 @@ namespace UIKit {
 		[Field ("UIAccessibilityVideoAutoplayStatusDidChangeNotification")]
 		NSString VideoAutoplayStatusDidChangeNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.ReduceTransparencyStatusDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityReduceTransparencyStatusDidChangeNotification")]
 		NSString ReduceTransparencyStatusDidChangeNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.SwitchControlStatusDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilitySwitchControlStatusDidChangeNotification")]
 		NSString SwitchControlStatusDidChangeNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.NotificationSwitchControlIdentifier']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("UIAccessibilityNotificationSwitchControlIdentifier")]
 		NSString NotificationSwitchControlIdentifier { get; }
@@ -1227,6 +1314,9 @@ namespace UIKit {
 
 		// Chose int because this should be UIAccessibilityNotifications type
 		// just like UIAccessibilityAnnouncementNotification field
+		/// <summary>Pauses assistive technology notifications.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		//[Notification] // int ScreenChangedNotification doesn't use this attr either
 		[Field ("UIAccessibilityPauseAssistiveTechnologyNotification")]
@@ -1234,21 +1324,27 @@ namespace UIKit {
 
 		// Chose int because this should be UIAccessibilityNotifications type
 		// just like UIAccessibilityAnnouncementNotification field
+		/// <summary>Resumes assistive technology notifications.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		//[Notification] // int ScreenChangedNotification doesn't use this attr either
 		[Field ("UIAccessibilityResumeAssistiveTechnologyNotification")]
 		int ResumeAssistiveTechnologyNotification { get; } // UIAccessibilityNotifications => uint32_t
 
+		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.SpeakScreenStatusDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilitySpeakScreenStatusDidChangeNotification")]
 		NSString SpeakScreenStatusDidChangeNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.SpeakSelectionStatusDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilitySpeakSelectionStatusDidChangeNotification")]
 		NSString SpeakSelectionStatusDidChangeNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.ShakeToUndoDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityShakeToUndoDidChangeNotification")]
@@ -1261,36 +1357,49 @@ namespace UIKit {
 		[NullAllowed, Export ("accessibilityHeaderElements", ArgumentSemantic.Copy)]
 		NSObject [] AccessibilityHeaderElements { get; set; }
 
+		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.ElementFocusedNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityElementFocusedNotification")]
 		NSString ElementFocusedNotification { get; }
 
+		/// <summary>A string constant used by accessibility APIs (see <see cref="M:UIKit.UIAccessibility.FocusedElement(System.String)" />) to identify the focused element.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityFocusedElementKey")]
 		NSString FocusedElementKey { get; }
 
+		/// <summary>A string constant used by accessibility APIs (see <see cref="M:UIKit.UIAccessibility.FocusedElement(System.String)" />) to identify the previously focused element.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityUnfocusedElementKey")]
 		NSString UnfocusedElementKey { get; }
 
+		/// <summary>The string "UIAccessibilityAssistiveTechnologyKey" which can be used to distinguish accessibility notifications.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityAssistiveTechnologyKey")]
 		NSString AssistiveTechnologyKey { get; }
 
+		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.NotificationVoiceOverIdentifier']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("UIAccessibilityNotificationVoiceOverIdentifier")]
 		NSString NotificationVoiceOverIdentifier { get; }
 
+		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.HearingDevicePairedEarDidChangeNotification']/*" />
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityHearingDevicePairedEarDidChangeNotification")]
 		NSString HearingDevicePairedEarDidChangeNotification { get; }
 
+		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.AssistiveTouchStatusDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityAssistiveTouchStatusDidChangeNotification")]
@@ -1308,18 +1417,30 @@ namespace UIKit {
 		[Field ("UIAccessibilityOnOffSwitchLabelsDidChangeNotification")]
 		NSString OnOffSwitchLabelsDidChangeNotification { get; }
 
+		/// <summary>Key for option that spoken text interrupt existing spoken content.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UIAccessibilitySpeechAttributeQueueAnnouncement")]
 		NSString SpeechAttributeQueueAnnouncement { get; }
 
+		/// <summary>Returns the IPA notation for the accessibility attributed string.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UIAccessibilitySpeechAttributeIPANotation")]
 		NSString SpeechAttributeIpaNotation { get; }
 
+		/// <summary>Key for option of the accessibility text's heading level.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UIAccessibilityTextAttributeHeadingLevel")]
 		NSString TextAttributeHeadingLevel { get; }
 
+		/// <summary>Key for option that custom attributes be applied to the accessibility text.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("UIAccessibilityTextAttributeCustom")]
 		NSString TextAttributeCustom { get; }
@@ -1394,6 +1515,7 @@ namespace UIKit {
 		[Export ("setAccessibilityElements:")]
 		void SetAccessibilityElements ([NullAllowed] NSObject elements);
 
+		/// <summary>A value that tells whether the container is a table, or list, or etc.</summary>
 		[MacCatalyst (13, 1)]
 		[Export ("accessibilityContainerType", ArgumentSemantic.Assign)]
 		UIAccessibilityContainerType AccessibilityContainerType { get; set; }
@@ -2287,6 +2409,7 @@ namespace UIKit {
 		[Export ("initWithActivityItems:applicationActivities:")]
 		NativeHandle Constructor (NSObject [] activityItems, [NullAllowed] UIActivity [] applicationActivities);
 
+		/// <summary>The handler that runs when the activity view is dismissed.</summary>
 		[NullAllowed] // by default this property is null
 		[Export ("completionHandler", ArgumentSemantic.Copy)]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use the 'CompletionWithItemsHandler' property instead.")]
@@ -2661,9 +2784,11 @@ namespace UIKit {
 	[Model]
 	[Protocol]
 	interface UIStateRestoring {
+		/// <summary>Gets the parent of the object to restore.</summary>
 		[Export ("restorationParent")]
 		IUIStateRestoring RestorationParent { get; }
 
+		/// <summary>Gets the class that recreates the restored object.</summary>
 		[Export ("objectRestorationClass")]
 		[NullAllowed]
 		Class ObjectRestorationClass { get; }
@@ -4826,6 +4951,11 @@ namespace UIKit {
 		[Export ("application:continueUserActivity:restorationHandler:")]
 		bool ContinueUserActivity (UIApplication application, NSUserActivity userActivity, UIApplicationRestorationHandler completionHandler);
 
+		/// <param name="application">To be added.</param>
+		/// <param name="userActivityType">To be added.</param>
+		/// <param name="error">To be added.</param>
+		/// <summary>Informs the app that the activity of the <paramref name="userActivityType" /> type could not be continued, and specifies a <paramref name="error" /> as the reason for the failure.</summary>
+		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("application:didFailToContinueUserActivityWithType:error:")]
 #if NET
@@ -7076,6 +7206,7 @@ namespace UIKit {
 		UIColor DarkTextColor { get; }
 #endif
 
+		/// <summary>The system color for displaying text on a light background.</summary>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("darkTextColor")]
@@ -8272,10 +8403,12 @@ namespace UIKit {
 		[Export ("transform")]
 		CGAffineTransform Transform { get; set; }
 
+		/// <summary>Returns a value that tells how collision bounds are specified.</summary>
 		[MacCatalyst (13, 1)]
 		[Export ("collisionBoundsType")]
 		UIDynamicItemCollisionBoundsType CollisionBoundsType { get; }
 
+		/// <summary>Returns the closed path that is used for collision detection.</summary>
 		[MacCatalyst (13, 1)]
 		[Export ("collisionBoundingPath")]
 		UIBezierPath CollisionBoundingPath { get; }
@@ -9476,22 +9609,27 @@ namespace UIKit {
 		[Export ("spellCheckingType")]
 		UITextSpellCheckingType SpellCheckingType { get; set; }
 
+		/// <summary>The semantic of the expected input, which allows the system to, for example, provide custom keyboards.</summary>
 		[MacCatalyst (13, 1)]
 		[Export ("textContentType")]
 		NSString TextContentType { get; set; }
 
+		/// <summary>The smart quotes style.</summary>
 		[MacCatalyst (13, 1)]
 		[Export ("smartQuotesType", ArgumentSemantic.Assign)]
 		UITextSmartQuotesType SmartQuotesType { get; set; }
 
+		/// <summary>The smart dashes style.</summary>
 		[MacCatalyst (13, 1)]
 		[Export ("smartDashesType", ArgumentSemantic.Assign)]
 		UITextSmartDashesType SmartDashesType { get; set; }
 
+		/// <summary>The smart insert style.</summary>
 		[MacCatalyst (13, 1)]
 		[Export ("smartInsertDeleteType", ArgumentSemantic.Assign)]
 		UITextSmartInsertDeleteType SmartInsertDeleteType { get; set; }
 
+		/// <summary>The password entry rules.</summary>
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("passwordRules", ArgumentSemantic.Copy)]
 		UITextInputPasswordRules PasswordRules { get; set; }
@@ -9970,9 +10108,11 @@ namespace UIKit {
 		[Wrap ("WeakTokenizer")]
 		IUITextInputTokenizer Tokenizer { get; }
 
+		/// <summary>Returns the input view that provides the coordinate system for geometric operations within the text input.</summary>
 		[Export ("textInputView")]
 		UIView TextInputView { get; }
 
+		/// <summary>A value that controls whether the cursor is displayed at the start of the last line or end of the second-to-last line of a multiline selection.</summary>
 		[Export ("selectionAffinity")]
 		UITextStorageDirection SelectionAffinity { get; set; }
 
@@ -10086,9 +10226,17 @@ namespace UIKit {
 		[Export ("baseWritingDirectionForPosition:inDirection:")]
 		NSWritingDirection GetBaseWritingDirection (UITextPosition forPosition, UITextStorageDirection direction);
 
+		/// <param name="writingDirection">Constant indicating layout direction.</param>
+		/// <param name="range">A UITextRange object indicating the range of a document's text.</param>
+		/// <summary>Sets a base directon for writing in the specified range of text.</summary>
+		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setBaseWritingDirection:forRange:")]
+#if XAMCORE_5_0
+		void SetBaseWritingDirection (NSWritingDirection writingDirection, UITextRange range);
+#else
 		void SetBaseWritingDirectionforRange (NSWritingDirection writingDirection, UITextRange range);
+#endif
 
 		/// <param name="range">	
 		/// A UITextRange object indicating the range of a document's text.</param>
@@ -10156,6 +10304,10 @@ namespace UIKit {
 		[Export ("characterOffsetOfPosition:withinRange:")]
 		nint GetCharacterOffsetOfPosition (UITextPosition position, UITextRange range);
 
+		/// <summary>Developers should not use this deprecated property. Developers should use 'NSAttributedString.BackgroundColorAttributeName'.</summary>
+		/// <value>
+		///         </value>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'NSAttributedString.BackgroundColorAttributeName'.")]
 		[Field ("UITextInputTextBackgroundColorKey")]
 		[NoTV]
@@ -10163,6 +10315,10 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSAttributedString.BackgroundColorAttributeName'.")]
 		NSString TextBackgroundColorKey { get; }
 
+		/// <summary>The property holds the key that should be used to retrieve the value of the text color from a <see cref="T:Foundation.NSDictionary" />.</summary>
+		/// <value>
+		///         </value>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'NSAttributedString.ForegroundColorAttributeName'.")]
 		[Field ("UITextInputTextColorKey")]
 		[NoTV]
@@ -10170,6 +10326,10 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSAttributedString.ForegroundColorAttributeName'.")]
 		NSString TextColorKey { get; }
 
+		/// <summary>The property holds the key that should be used to retrieve the value of the font for the text from a <see cref="T:Foundation.NSDictionary" />.</summary>
+		/// <value>
+		///         </value>
+		/// <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'NSAttributedString.FontAttributeName'.")]
 		[Field ("UITextInputTextFontKey")]
 		[NoTV]
@@ -10177,6 +10337,7 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSAttributedString.FontAttributeName'.")]
 		NSString TextFontKey { get; }
 
+		/// <include file="../docs/api/UIKit/UITextField.xml" path="/Documentation/Docs[@DocId='P:UIKit.UITextField.CurrentInputModeDidChangeNotification']/*" />
 		[Field ("UITextInputCurrentInputModeDidChangeNotification")]
 		[Notification]
 		NSString CurrentInputModeDidChangeNotification { get; }
@@ -17585,6 +17746,12 @@ namespace UIKit {
 		[Appearance]
 		void SetDividerImage ([NullAllowed] UIImage dividerImage, UIControlState leftSegmentState, UIControlState rightSegmentState, UIBarMetrics barMetrics);
 
+		/// <param name="leftState">To be added.</param>
+		/// <param name="rightState">To be added.</param>
+		/// <param name="barMetrics">To be added.</param>
+		/// <summary>The divider image for the specified UIControlStates and UIBarMetrics.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("dividerImageForLeftSegmentState:rightSegmentState:barMetrics:")]
 		[Appearance]
 		[return: NullAllowed]
@@ -17594,6 +17761,12 @@ namespace UIKit {
 		UIImage DividerImageForLeftSegmentStaterightSegmentStatebarMetrics (UIControlState leftState, UIControlState rightState, UIBarMetrics barMetrics);
 #endif
 
+		/// <param name="attributes">rendering attributes for the text.</param>
+		/// <param name="state">The state to alter</param>
+		/// <summary>Sets the rendering text attributes for a specific state in the control.</summary>
+		/// <remarks>
+		///           <para id="tool-remark">This member participates in the <see cref="T:UIKit.UIAppearance" /> styling system.  See the <see cref="P:UIKit.UISegmentedControl.Appearance" /> property and the <see cref="M:UIKit.UISegmentedControl.AppearanceWhenContainedIn(System.Type[])" /> method.</para>
+		///         </remarks>
 		[Appearance]
 		[Wrap ("SetTitleTextAttributes (attributes?.GetDictionary (), state)")]
 		void SetTitleTextAttributes ([NullAllowed] UIStringAttributes attributes, UIControlState state);
@@ -23490,6 +23663,7 @@ namespace UIKit {
 		CGAffineTransform TargetTransform { get; }
 
 
+		/// <summary>Pauses the animations.</summary>
 #if NET // Can't break the world right now
 		[Abstract]
 #endif
@@ -23930,12 +24104,16 @@ namespace UIKit {
 		[Export ("startInteractiveTransition:")]
 		void StartInteractiveTransition (IUIViewControllerContextTransitioning transitionContext);
 
+		/// <summary>Returns the overall relative speed of an animation. The default value is 1.0.</summary>
 		[Export ("completionSpeed")]
 		nfloat CompletionSpeed { get; }
 
+		/// <summary>Returns the completion curve, which controls the speed of the animation as it progresses.</summary>
 		[Export ("completionCurve")]
 		UIViewAnimationCurve CompletionCurve { get; }
 
+		/// <summary>Gets whether the transition is interactive.</summary>
+		/// <returns>The default value is <see langword="true" />.</returns>
 		[MacCatalyst (13, 1)]
 		[Export ("wantsInteractiveStart")]
 		bool WantsInteractiveStart { get; }
@@ -24187,6 +24365,7 @@ namespace UIKit {
 		[Export ("notifyWhenInteractionEndsUsingBlock:")]
 		void NotifyWhenInteractionEndsUsingBlock (Action<IUIViewControllerTransitionCoordinatorContext> handler);
 
+		/// <summary>Registers <paramref name="handler" /> to be called when the transition changes from interactive to non-interactive or vice versa.</summary>
 #if NET // This is abstract in headers but is a breaking change
 		[Abstract]
 #endif
@@ -27002,6 +27181,7 @@ namespace UIKit {
 
 		// Another abstract that was introduced on this released, breaking ABI
 		// Radar: 26867207
+		/// <summary>Returns the keyboard input mode.</summary>
 #if NET
 		[Abstract]
 #endif
@@ -27011,6 +27191,7 @@ namespace UIKit {
 
 		// New abstract, breaks ABI
 		// Radar: 33685383
+		/// <summary>Returns the selected text.</summary>
 #if NET
 		[Abstract]
 #endif
@@ -27020,6 +27201,7 @@ namespace UIKit {
 
 		// New abstract, breaks ABI
 		// Radar: 33685383
+		/// <summary>Returns the unique ID for the document.</summary>
 #if NET
 		[Abstract]
 #endif
@@ -27087,6 +27269,7 @@ namespace UIKit {
 		[Abstract]
 		nfloat Length { get; }
 
+		/// <summary>Returns the top edge of the guide.</summary>
 		[MacCatalyst (13, 1)]
 		[Export ("topAnchor", ArgumentSemantic.Strong)]
 #if NET
@@ -27095,6 +27278,7 @@ namespace UIKit {
 #endif
 		NSLayoutYAxisAnchor TopAnchor { get; }
 
+		/// <summary>Returns the bottom edge of the guide</summary>
 		[MacCatalyst (13, 1)]
 		[Export ("bottomAnchor", ArgumentSemantic.Strong)]
 #if NET
@@ -27103,6 +27287,7 @@ namespace UIKit {
 #endif
 		NSLayoutYAxisAnchor BottomAnchor { get; }
 
+		/// <summary>Returns the height of the guide.</summary>
 		[MacCatalyst (13, 1)]
 		[Export ("heightAnchor", ArgumentSemantic.Strong)]
 #if NET
@@ -27810,6 +27995,8 @@ namespace UIKit {
 
 		// FIXME: declared as a @required, but this breaks compatibility
 		// Radar: 41121416
+		/// <summary>Returns the frame in the reference coordinate space of the containing <see cref="IUIFocusItemContainer" />.</summary>
+		/// <returns>The frame in the reference coordinate space of the containing <see cref="IUIFocusItemContainer" />.</returns>
 		[MacCatalyst (13, 1)]
 #if NET
 		[Abstract]
@@ -28029,6 +28216,7 @@ namespace UIKit {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		IUIPreviewInteractionDelegate Delegate { get; set; }
 
+		/// <summary>Returns the location of the touch location in the specified coordinate space.</summary>
 		[Export ("locationInCoordinateSpace:")]
 		CGPoint GetLocationInCoordinateSpace ([NullAllowed] IUICoordinateSpace coordinateSpace);
 
@@ -28179,9 +28367,7 @@ namespace UIKit {
 		// Radar: 26825293
 		//
 #if NET
-		/// <summary>To be added.</summary>
-		/// <value>To be added.</value>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Gets the list of focus environments, ordered by priority, that the environment prefers when updating the focus.</summary>
 		[Abstract]
 #endif
 		[MacCatalyst (13, 1)]

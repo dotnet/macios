@@ -99,6 +99,14 @@ namespace UIKit {
 		}
 #endif // !NET
 
+		/// <summary>Renders <paramref name="glyphs" /> at <paramref name="positions" /> into <paramref name="graphicsContext" />.</summary>
+		/// <param name="glyphs">To be added.</param>
+		/// <param name="positions">To be added.</param>
+		/// <param name="glyphCount">To be added.</param>
+		/// <param name="font">To be added.</param>
+		/// <param name="textMatrix">To be added.</param>
+		/// <param name="attributes">To be added.</param>
+		/// <param name="graphicsContext">To be added.</param>
 #if NET
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]

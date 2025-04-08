@@ -1398,6 +1398,9 @@ namespace AVFoundation {
 		[Export ("reverbParameters")]
 		AVAudioEnvironmentReverbParameters ReverbParameters { get; }
 
+		/// <summary>Returns an array of rendering algorithms that can be meaningfully applied to the node.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>To be added.</remarks>
 		[Export ("applicableRenderingAlgorithms")]
 		NSNumber [] ApplicableRenderingAlgorithms { get; }
 
@@ -4319,6 +4322,9 @@ namespace AVFoundation {
 		[Export ("inputIsAvailableChanged:")]
 		void InputIsAvailableChanged (bool isInputAvailable);
 
+		/// <param name="flags">To be added.</param>
+		/// <summary>Developers can override this method to react to the end of an interruption of an audio session.</summary>
+		/// <remarks>To be added.</remarks>
 		[Export ("endInterruptionWithFlags:")]
 		void EndInterruption (AVAudioSessionInterruptionOptions flags);
 	}
@@ -7391,6 +7397,8 @@ namespace AVFoundation {
 		[Export ("minFrameDuration")]
 		CMTime MinFrameDuration { get; }
 
+		/// <summary>Retrieves associated tracks whose relationship is the specified <paramref name="avAssetTrackTrackAssociationType" />.</summary>
+		/// <param name="avAssetTrackTrackAssociationType">Should be one of the constants defined by <see cref="T:AVFoundation.AVAssetTrackTrackAssociation" />.</param>
 		[Deprecated (PlatformName.MacOSX, 15, 0)]
 		[Deprecated (PlatformName.iOS, 18, 0)]
 		[Deprecated (PlatformName.TvOS, 18, 0)]

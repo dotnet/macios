@@ -530,6 +530,14 @@ namespace UIKit {
 			return ptr == IntPtr.Zero ? null : new UIFont (ptr);
 		}
 
+		/// <param name="f1">To be added.</param>
+		/// <param name="f2">To be added.</param>
+		/// <summary>Compares two <see cref="T:UIKit.UIFont" /> objects for value equality.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public static bool operator == (UIFont f1, UIFont f2)
 		{
 			if (((object) f1) is null)
@@ -539,6 +547,14 @@ namespace UIKit {
 			return f1.Handle == f2.Handle;
 		}
 
+		/// <param name="f1">To be added.</param>
+		/// <param name="f2">To be added.</param>
+		/// <summary>Compares two <see cref="T:UIKit.UIFont" /> objects for value inequality.</summary>
+		/// <returns>To be added.</returns>
+		/// <remarks>
+		///           <para>(More documentation for this node is coming)</para>
+		///           <para tool="threads">This can be used from a background thread.</para>
+		///         </remarks>
 		public static bool operator != (UIFont f1, UIFont f2)
 		{
 			return !(f1 == f2);

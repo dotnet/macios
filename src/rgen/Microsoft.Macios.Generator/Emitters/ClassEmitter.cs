@@ -180,26 +180,17 @@ return {backingField};
 					}
 					// depending on the property definition, we might need a temp variable to store
 					// the return value
-					if (property.UseTempReturn) {
-						var (tempVar, tempDeclaration) = GetReturnValueAuxVariable (property.ReturnType);
-						getterBlock.WriteRaw (
+					var (tempVar, tempDeclaration) = GetReturnValueAuxVariable (property.ReturnType);
+					getterBlock.WriteRaw (
 $@"{tempDeclaration}
 if (IsDirectBinding) {{
 	{invocations.Getter.Send}
 }} else {{
 	{invocations.Getter.SendSuper}
 }}
+GC.KeepAlive (this);
 return {tempVar};
 ");
-					} else {
-						getterBlock.WriteRaw (
-$@"if (IsDirectBinding) {{
-	return {invocations.Getter.Send}
-}} else {{
-	return {invocations.Getter.SendSuper}
-}}
-");
-					}
 				}
 
 				var setter = property.GetAccessor (AccessorKind.Setter);

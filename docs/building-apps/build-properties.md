@@ -480,7 +480,7 @@ Valid values:
 * `abort`: Abort the process.
 * `disable`: Disable intercepting any managed exceptions. For MonoVM this is equivalent to `unwindnativecode`, for CoreCLR this is equivalent to `abort`.
 
-For more information see the article about [Exception marshaling](todo)
+For more information see the article about [Exception marshaling](https://learn.microsoft.com/dotnet/ios/advanced-concepts/exception-marshaling)
 
 See also [MarshalObjectiveCExceptionMode](#marshalobjectivecexceptionmode)
 
@@ -497,7 +497,7 @@ Valid values:
 * `abort`: Abort the process.
 * `disable`: Disable intercepting any Objective-C exceptions.
 
-For more information see the article about [Exception marshaling](todo)
+For more information see the article about [Exception marshaling](https://learn.microsoft.com/dotnet/ios/advanced-concepts/exception-marshaling)
 
 See also [MarshalManagedExceptionMode](#marshalmanagedexceptionmode)
 

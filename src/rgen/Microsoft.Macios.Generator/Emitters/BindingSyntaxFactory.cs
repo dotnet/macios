@@ -36,7 +36,7 @@ static partial class BindingSyntaxFactory {
 				IdentifierName (staticClassName),
 				IdentifierName (methodName).WithTrailingTrivia (Space)
 			)
-		).WithArgumentList (argumentList.NormalizeWhitespace ());
+		).WithArgumentList (argumentList);
 
 		return suppressNullableWarning
 			? PostfixUnaryExpression (SyntaxKind.SuppressNullableWarningExpression, invocation)

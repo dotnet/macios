@@ -235,8 +235,7 @@ namespace ClassRedirector {
 			for (var i = 0; i < body.Instructions.Count; i++) {
 				var old = body.Instructions [i];
 				if (old.OpCode == OpCodes.Ldsfld && old.Operand == classPtr) {
-					var @new = Instruction.Create (OpCodes.Ldsfld, method.Module.ImportReference (classPtrField));
-					ReplaceAndPatch (body, il, i, @new);
+					old.Operand = method.Module.ImportReference (classPtrField);
 				}
 			}
 			body.OptimizeMacros ();

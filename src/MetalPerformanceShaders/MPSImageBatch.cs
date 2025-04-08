@@ -16,14 +16,12 @@ using Foundation;
 using Metal;
 
 namespace MetalPerformanceShaders {
-#if NET
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public static partial class MPSImageBatch {
 
 		[DllImport (Constants.MetalPerformanceShadersLibrary)]
@@ -60,17 +58,14 @@ namespace MetalPerformanceShaders {
 			GC.KeepAlive (commandBuffer);
 		}
 
-#if NET
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		[DllImport (Constants.MetalPerformanceShadersLibrary)]
 		static extern nuint MPSImageBatchResourceSize (IntPtr batch);
 
 		// Using 'NSArray<MPSImage>' instead of `MPSImage[]` because image array 'Handle' matters.
-#if NET
 		/// <param name="imageBatch">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
@@ -79,7 +74,6 @@ namespace MetalPerformanceShaders {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-#endif
 		public static nuint GetResourceSize (NSArray<MPSImage> imageBatch)
 		{
 			if (imageBatch is null)

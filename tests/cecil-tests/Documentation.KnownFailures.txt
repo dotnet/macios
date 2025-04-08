@@ -4262,8 +4262,6 @@ F:Intents.INMessageType.ThirdPartyAttachment
 F:Intents.INOutgoingMessageType.Audio
 F:Intents.INOutgoingMessageType.Text
 F:Intents.INOutgoingMessageType.Unknown
-F:Intents.INPerson.INPersonType.ContactSuggestion
-F:Intents.INPerson.INPersonType.Me
 F:Intents.INPersonHandleLabel.School
 F:Intents.INPersonRelationship.Daughter
 F:Intents.INPersonRelationship.Son
@@ -16804,8 +16802,6 @@ M:Intents.INPaymentStatusResolutionResult.GetConfirmationRequired(Intents.INPaym
 M:Intents.INPaymentStatusResolutionResult.GetSuccess(Intents.INPaymentStatus)
 M:Intents.INPaymentStatusResolutionResult.GetUnsupported(System.IntPtr)
 M:Intents.INPerson.#ctor(Intents.INPersonHandle,Foundation.NSPersonNameComponents,System.String,Intents.INImage,System.String,System.String,Intents.INPersonHandle[],Intents.INPersonSuggestionType)
-M:Intents.INPerson.#ctor(Intents.INPersonHandle,Foundation.NSPersonNameComponents,System.String,Intents.INImage,System.String,System.String,System.Boolean,Intents.INPersonSuggestionType,Intents.INPerson.INPersonType)
-M:Intents.INPerson.#ctor(Intents.INPersonHandle,Foundation.NSPersonNameComponents,System.String,Intents.INImage,System.String,System.String,System.Boolean,Intents.INPersonSuggestionType)
 M:Intents.INPerson.#ctor(Intents.INPersonHandle,Foundation.NSPersonNameComponents,System.String,Intents.INImage,System.String,System.String,System.Boolean)
 M:Intents.INPerson.#ctor(Intents.INPersonHandle,Foundation.NSPersonNameComponents,System.String,Intents.INImage,System.String,System.String,System.String)
 M:Intents.INPerson.#ctor(Intents.INPersonHandle,Foundation.NSPersonNameComponents,System.String,Intents.INImage,System.String,System.String)
@@ -41090,7 +41086,6 @@ T:Intents.INObjectSection`1
 T:Intents.INOutgoingMessageType
 T:Intents.INOutgoingMessageTypeResolutionResult
 T:Intents.INPaymentMethodResolutionResult
-T:Intents.INPerson.INPersonType
 T:Intents.INPlaybackQueueLocation
 T:Intents.INPlaybackQueueLocationResolutionResult
 T:Intents.INPlaybackRepeatMode

@@ -5405,12 +5405,12 @@ namespace Intents {
 		[Internal]
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("initWithPersonHandle:nameComponents:displayName:image:contactIdentifier:customIdentifier:isMe:suggestionType:")]
-		IntPtr InitWithMe (INPersonHandle personHandle, [NullAllowed] NSPersonNameComponents nameComponents, [NullAllowed] string displayName, [NullAllowed] INImage image, [NullAllowed] string contactIdentifier, [NullAllowed] string customIdentifier, bool isMe, INPersonSuggestionType suggestionType);
+		IntPtr _InitWithMe (INPersonHandle personHandle, [NullAllowed] NSPersonNameComponents nameComponents, [NullAllowed] string displayName, [NullAllowed] INImage image, [NullAllowed] string contactIdentifier, [NullAllowed] string customIdentifier, bool isMe, INPersonSuggestionType suggestionType);
 
 		[Internal]
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("initWithPersonHandle:nameComponents:displayName:image:contactIdentifier:customIdentifier:isContactSuggestion:suggestionType:")]
-		IntPtr InitWithContactSuggestion (INPersonHandle personHandle, [NullAllowed] NSPersonNameComponents nameComponents, [NullAllowed] string displayName, [NullAllowed] INImage image, [NullAllowed] string contactIdentifier, [NullAllowed] string customIdentifier, bool isContactSuggestion, INPersonSuggestionType suggestionType);
+		IntPtr _InitWithContactSuggestion (INPersonHandle personHandle, [NullAllowed] NSPersonNameComponents nameComponents, [NullAllowed] string displayName, [NullAllowed] INImage image, [NullAllowed] string contactIdentifier, [NullAllowed] string customIdentifier, bool isContactSuggestion, INPersonSuggestionType suggestionType);
 
 		[NullAllowed, Export ("personHandle", ArgumentSemantic.Copy)]
 		INPersonHandle PersonHandle { get; }

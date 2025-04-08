@@ -6,9 +6,6 @@ using ObjCRuntime;
 #nullable enable
 
 namespace Metal {
-
-#if NET
-
 	// add some extension methods to make the API of the protocol nicer
 	public static class IMTLComputeCommandEncoderExtensions {
 
@@ -34,5 +31,4 @@ namespace Metal {
 			GC.KeepAlive (buffers);
 		}
 	}
-#endif
 }

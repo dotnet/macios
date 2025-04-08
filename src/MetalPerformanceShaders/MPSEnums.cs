@@ -27,10 +27,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		Verbose = 1 << 4,
-#if !NET
-		[Obsolete ("Use 'AllowReducedPrecision' instead.")]
-		MPSKernelOptionsAllowReducedPrecision = AllowReducedPrecision,
-#endif
 	}
 
 	/// <summary>Enumerates shader behavior at the edges of regions and images.</summary>
@@ -240,10 +236,6 @@ namespace MetalPerformanceShaders {
 		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		GeLU,
-#if !NET
-		[Obsolete ("The value changes when newer versions are released. It will be removed in the future.")]
-		Count, // must always be last
-#endif
 	}
 
 	/// <summary>Flagging enumeration for options available to binary convolution kernels.</summary>

@@ -21,7 +21,6 @@ namespace Cecil.Tests {
 			"Foundation.NSAppleEventDescriptor::.ctor(Foundation.NSAppleEventDescriptorType)",
 			"Foundation.NSAsyncActionDispatcher::.ctor(System.Action)",
 			"Foundation.NSAsyncSynchronizationContextDispatcher::.ctor(System.Threading.SendOrPostCallback,System.Object)",
-			"Foundation.NSAttributedString::.ctor(Foundation.NSData,Foundation.NSAttributedStringDataType,Foundation.NSDictionary&)",
 			"Foundation.NSHttpCookie::.ctor(System.Net.Cookie)",
 			"Foundation.NSHttpCookie::.ctor(System.String,System.String,System.String,System.String)",
 			"Foundation.NSMutableArray`1::.ctor(TValue[])",

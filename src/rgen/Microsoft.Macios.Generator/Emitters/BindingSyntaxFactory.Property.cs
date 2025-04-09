@@ -63,19 +63,11 @@ static partial class BindingSyntaxFactory {
 		if (getterSend is null || getterSuperSend is null) {
 			return (ThrowNotImplementedException (), ThrowNotImplementedException ());
 		}
-		// the invocations depend on the property requiring a temp return variable or not
-		if (property.UseTempReturn) {
-			// get the getter invocation and assign it to the return variable 
-			return (
-				Send: AssignVariable (Nomenclator.GetReturnVariableName (property.ReturnType), getterSend),
-				SendSuper: AssignVariable (Nomenclator.GetReturnVariableName (property.ReturnType), getterSuperSend)
-			);
-		}
-		// this is the simplest case, we just need to call the method and return the result, for that we
-		// use the MessagingInvocation method for each of the methods
+
+		// get the getter invocation and assign it to the return variable 
 		return (
-			Send: getterSend,
-			SendSuper: getterSuperSend
+			Send: AssignVariable (Nomenclator.GetReturnVariableName (property.ReturnType), getterSend),
+			SendSuper: AssignVariable (Nomenclator.GetReturnVariableName (property.ReturnType), getterSuperSend)
 		);
 
 #pragma warning disable format

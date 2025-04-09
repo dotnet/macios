@@ -124,6 +124,7 @@ public partial class TrampolinePropertyTests
 			} else {
 				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("completionHandler"));
 			}
+			GC.KeepAlive (this);
 			return ret;
 		}
 

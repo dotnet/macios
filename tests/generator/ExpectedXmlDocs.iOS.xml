@@ -561,7 +561,7 @@
                 </para>
             </remarks>
         </member>
-        <member name="F:XmlDocumentation.TClass.__mt_WeakDelegate_var">
+        <member name="P:XmlDocumentation.TClass.WeakDelegate">
             <summary>TClass.WeakDelegate</summary>
         </member>
         <member name="T:XmlDocumentation.TUtteranceEventArgs">

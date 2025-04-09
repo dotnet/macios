@@ -48,6 +48,7 @@ CORETELEPHONY_HEADERS = \
 	-i CoreTelephony/CTSubscriberInfo.h \
 
 SWIFT_FRAMEWORKS = \
+	CoreTransferable \
 	LockedCameraCapture \
 	TranslationUIProvider \
 

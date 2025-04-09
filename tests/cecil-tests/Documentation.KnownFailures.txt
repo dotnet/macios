@@ -4567,8 +4567,6 @@ F:MapKit.MKPointOfInterestCategory.University
 F:MapKit.MKPointOfInterestCategory.Volleyball
 F:MapKit.MKPointOfInterestCategory.Winery
 F:MapKit.MKPointOfInterestCategory.Zoo
-F:MapKit.MKPointOfInterestFilterType.Excluding
-F:MapKit.MKPointOfInterestFilterType.Including
 F:MapKit.MKStandardMapEmphasisStyle.Default
 F:MapKit.MKStandardMapEmphasisStyle.Muted
 F:MediaExtension.MEDecodeFrameStatus.FrameDropped
@@ -17398,8 +17396,6 @@ M:MapKit.MKPitchControl.Dispose(System.Boolean)
 M:MapKit.MKPitchControl.MKPitchControlAppearance.#ctor(System.IntPtr)
 M:MapKit.MKPlacemark.#ctor(CoreLocation.CLLocationCoordinate2D,MapKit.MKPlacemarkAddress)
 M:MapKit.MKPlacemark.Copy(Foundation.NSZone)
-M:MapKit.MKPointOfInterestFilter.#ctor(MapKit.MKPointOfInterestCategory[],MapKit.MKPointOfInterestFilterType)
-M:MapKit.MKPointOfInterestFilter.#ctor(MapKit.MKPointOfInterestCategory[])
 M:MapKit.MKPointOfInterestFilter.Copy(Foundation.NSZone)
 M:MapKit.MKPolygonView.#ctor(CoreGraphics.CGRect)
 M:MapKit.MKPolygonView.MKPolygonViewAppearance.#ctor(System.IntPtr)
@@ -40631,7 +40627,6 @@ T:MapKit.MKMapViewOverlay
 T:MapKit.MKOverlay
 T:MapKit.MKOverlayLevel
 T:MapKit.MKPointOfInterestCategory
-T:MapKit.MKPointOfInterestFilterType
 T:MapKit.MKRendererForOverlayDelegate
 T:MapKit.MKScaleViewAlignment
 T:MapKit.MKSearchCompletionFilterType

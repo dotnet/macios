@@ -2355,11 +2355,11 @@ namespace MapKit {
 
 		[Internal]
 		[Export ("initIncludingCategories:")]
-		IntPtr InitIncludingCategories ([BindAs (typeof (MKPointOfInterestCategory []))] NSString [] categories);
+		IntPtr _InitIncludingCategories ([BindAs (typeof (MKPointOfInterestCategory []))] NSString [] categories);
 
 		[Internal]
 		[Export ("initExcludingCategories:")]
-		IntPtr InitExcludingCategories ([BindAs (typeof (MKPointOfInterestCategory []))] NSString [] categories);
+		IntPtr _InitExcludingCategories ([BindAs (typeof (MKPointOfInterestCategory []))] NSString [] categories);
 
 		[Export ("includesCategory:")]
 		bool IncludesCategory ([BindAs (typeof (MKPointOfInterestCategory))] NSString category);

@@ -252,5 +252,5 @@ namespace XmlDocumentation {
 		void DidChangeUtteringSpeed (TClass obj, double utteringSpeed);
 	}
 
-	interface ITClassDelegate {}
+	interface ITClassDelegate { }
 }

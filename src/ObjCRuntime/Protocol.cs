@@ -11,10 +11,6 @@ using System.Runtime.InteropServices;
 
 using Foundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace ObjCRuntime {
 	/// <summary>Representation of an Objective-C protocol.</summary>
 	///     <remarks>

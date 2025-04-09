@@ -6,11 +6,7 @@ namespace Registrar {
 	abstract partial class Registrar {
 		internal static string? CreateSetterSelector (string? getterSelector)
 		{
-#if NET
 			if (string.IsNullOrEmpty (getterSelector))
-#else
-			if (getterSelector is null || string.IsNullOrEmpty (getterSelector))
-#endif
 				return getterSelector;
 
 			var first = (int) getterSelector [0];

@@ -187,10 +187,8 @@ namespace ObjCRuntime {
 			return GetValueTypeSize (t, fieldTypes, true, generator) > 16;
 		}
 
-#if NET
 		// IL2070: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicFields', 'DynamicallyAccessedMemberTypes.NonPublicFields' in call to 'System.Type.GetFields(BindingFlags)'. The parameter 'type' of method 'ObjCRuntime.Stret.GetValueTypeSize(Type, List<Type>, Boolean, Object)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2070", Justification = "Computing the size of a struct is safe, because the trimmer can't remove fields that would affect the size of a marshallable struct (it could affect marshalling behavior).")]
-#endif
 		internal static int GetValueTypeSize (Type type, List<Type> fieldTypes, bool is_64_bits, Generator generator)
 		{
 			int size = 0;
@@ -238,7 +236,6 @@ namespace ObjCRuntime {
 			if (type.IsNested)
 				return false;
 
-#if NET
 			if (type.Namespace == "ObjCRuntime") {
 				switch (type.Name) {
 				case "NativeHandle":
@@ -254,7 +251,6 @@ namespace ObjCRuntime {
 				}
 				return false;
 			}
-#endif
 
 			if (type.Namespace != "System")
 				return false;
@@ -282,9 +278,6 @@ namespace ObjCRuntime {
 				return true;
 			case "IntPtr":
 			case "UIntPtr":
-#if !NET
-			case "nfloat":
-#endif
 			case "nuint":
 			case "nint":
 				type_size = is_64_bits ? 8 : 4;
@@ -296,10 +289,8 @@ namespace ObjCRuntime {
 			return false;
 		}
 
-#if NET
 		// IL2070: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicFields', 'DynamicallyAccessedMemberTypes.NonPublicFields' in call to 'System.Type.GetFields(BindingFlags)'. The parameter 'type' of method 'ObjCRuntime.Stret.GetValueTypeSize(Type, Type, List<Type>, Boolean, Int32&, Int32&, Object)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2070", Justification = "Computing the size of a struct is safe, because the trimmer can't remove fields that would affect the size of a marshallable struct (it could affect marshalling behavior).")]
-#endif
 		static void GetValueTypeSize (Type original_type, Type type, List<Type> field_types, bool is_64_bits, ref int size, ref int max_element_size, Generator generator)
 		{
 			// FIXME:

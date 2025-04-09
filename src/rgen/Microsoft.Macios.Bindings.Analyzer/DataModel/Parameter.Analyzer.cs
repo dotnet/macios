@@ -12,4 +12,9 @@ readonly partial struct Parameter {
 	/// </summary>
 	public BindFromData? BindAs { get; init; }
 
+	/// <summary>
+	/// Returns the forced type data if present in the binding.
+	/// </summary>
+	public ForcedTypeData? ForcedType { get; init; }
+
 }

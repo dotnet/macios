@@ -30,6 +30,18 @@ namespace XmlDocumentation {
 		int Property { get; set; }
 
 		// can't apply xml docs to a getter/setter, only the property itself
+
+		/// <summary>T.TEventArgs</summary>
+		[Field ("TEventArgs", "__Internal")]
+		[Notification (typeof (TEventArgs))]
+		NSString TEventArgs { get; }
+	}
+
+	/// <summary>TEventArgs</summary>
+	interface TEventArgs {
+		/// <summary>TEventArgs.SomeValue</summary>
+		[Export ("TEventArgsSomeValueKey")]
+		nint SomeValue { get; }
 	}
 
 #if IOS
@@ -217,4 +229,28 @@ namespace XmlDocumentation {
 		[Export ("staticProperty")]
 		int StaticProperty { get; set; }
 	}
+
+	/// <summary>TClass</summary>
+	[BaseType (typeof (NSObject), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (TClassDelegate) })]
+	interface TClass {
+		/// <summary>TClass.WeakDelegate</summary>
+		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
+		NSObject WeakDelegate { get; set; }
+
+		[Wrap ("WeakDelegate")]
+		[NullAllowed]
+		ITClassDelegate Delegate { get; set; }
+	}
+
+	/// <summary>TClassDelegate</summary>
+	[Model, Protocol]
+	[BaseType (typeof (NSObject))]
+	interface TClassDelegate {
+		/// <summary>TClassDelegate.DidChangeUtteringSpeed</summary>
+		[Export ("speechSynthesizer:didChangeUtteringSpeedTo:")]
+		[EventArgs ("TUtterance")]
+		void DidChangeUtteringSpeed (TClass obj, double utteringSpeed);
+	}
+
+	interface ITClassDelegate { }
 }

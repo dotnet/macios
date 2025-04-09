@@ -225,6 +225,7 @@ public partial class PropertyTests
 			} else {
 				ret = Runtime.GetNSObject<Foundation.NSCharacterSet> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("alphanumericCharacterSet")))!;
 			}
+			GC.KeepAlive (this);
 			return ret;
 		}
 	}
@@ -248,6 +249,7 @@ public partial class PropertyTests
 			} else {
 				ret = Runtime.GetNSObject<Foundation.NSAttributedString> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("attributedStringByInflectingString")))!;
 			}
+			GC.KeepAlive (this);
 			return ret;
 		}
 	}
@@ -265,11 +267,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			bool ret;
 			if (IsDirectBinding) {
-				return NSNumber.ToBool (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("canDraw")));
+				ret = NSNumber.ToBool (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("canDraw")));
 			} else {
-				return NSNumber.ToBool (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("canDraw")));
+				ret = NSNumber.ToBool (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("canDraw")));
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -301,6 +306,7 @@ public partial class PropertyTests
 			} else {
 				ret = NSValue.ToCGPoint (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_stret (this.Handle, Selector.GetHandle ("Center")));
 			}
+			GC.KeepAlive (this);
 			return ret;
 		}
 
@@ -327,11 +333,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			bool ret;
 			if (IsDirectBinding) {
-				return global::ObjCRuntime.Messaging.bool_objc_msgSend (this.Handle, Selector.GetHandle ("containsAttachments")) != 0;
+				ret = global::ObjCRuntime.Messaging.bool_objc_msgSend (this.Handle, Selector.GetHandle ("containsAttachments")) != 0;
 			} else {
-				return global::ObjCRuntime.Messaging.bool_objc_msgSendSuper (this.Handle, Selector.GetHandle ("containsAttachments")) != 0;
+				ret = global::ObjCRuntime.Messaging.bool_objc_msgSendSuper (this.Handle, Selector.GetHandle ("containsAttachments")) != 0;
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 	}
 
@@ -348,11 +357,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			UIntPtr ret;
 			if (IsDirectBinding) {
-				return global::ObjCRuntime.Messaging.UIntPtr_objc_msgSend (this.Handle, Selector.GetHandle ("count"));
+				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSend (this.Handle, Selector.GetHandle ("count"));
 			} else {
-				return global::ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper (this.Handle, Selector.GetHandle ("count"));
+				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper (this.Handle, Selector.GetHandle ("count"));
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 	}
 
@@ -369,11 +381,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			bool ret;
 			if (IsDirectBinding) {
-				return global::ObjCRuntime.Messaging.bool_objc_msgSend (this.Handle, Selector.GetHandle ("isForPersonMassUse")) != 0;
+				ret = global::ObjCRuntime.Messaging.bool_objc_msgSend (this.Handle, Selector.GetHandle ("isForPersonMassUse")) != 0;
 			} else {
-				return global::ObjCRuntime.Messaging.bool_objc_msgSendSuper (this.Handle, Selector.GetHandle ("isForPersonMassUse")) != 0;
+				ret = global::ObjCRuntime.Messaging.bool_objc_msgSendSuper (this.Handle, Selector.GetHandle ("isForPersonMassUse")) != 0;
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -399,11 +414,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			bool ret;
 			if (IsDirectBinding) {
-				return global::ObjCRuntime.Messaging.bool_objc_msgSend (this.Handle, Selector.GetHandle ("isLenient")) != 0;
+				ret = global::ObjCRuntime.Messaging.bool_objc_msgSend (this.Handle, Selector.GetHandle ("isLenient")) != 0;
 			} else {
-				return global::ObjCRuntime.Messaging.bool_objc_msgSendSuper (this.Handle, Selector.GetHandle ("isLenient")) != 0;
+				ret = global::ObjCRuntime.Messaging.bool_objc_msgSendSuper (this.Handle, Selector.GetHandle ("isLenient")) != 0;
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -429,11 +447,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			nfloat ret;
 			if (IsDirectBinding) {
-				return global::ObjCRuntime.Messaging.nfloat_objc_msgSend (this.Handle, Selector.GetHandle ("lineSpacing"));
+				ret = global::ObjCRuntime.Messaging.nfloat_objc_msgSend (this.Handle, Selector.GetHandle ("lineSpacing"));
 			} else {
-				return global::ObjCRuntime.Messaging.nfloat_objc_msgSendSuper (this.Handle, Selector.GetHandle ("lineSpacing"));
+				ret = global::ObjCRuntime.Messaging.nfloat_objc_msgSendSuper (this.Handle, Selector.GetHandle ("lineSpacing"));
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -465,6 +486,7 @@ public partial class PropertyTests
 			} else {
 				ret = Runtime.GetNSObject<Foundation.NSLocale> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("locale")))!;
 			}
+			GC.KeepAlive (this);
 			return ret;
 		}
 
@@ -491,11 +513,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			CoreGraphics.CGPoint[] ret;
 			if (IsDirectBinding) {
-				return NSArray.ArrayFromHandleFunc<CoreGraphics.CGPoint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("Center")), NSValue.ToCGPoint, false);
+				ret = NSArray.ArrayFromHandleFunc<CoreGraphics.CGPoint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("Center")), NSValue.ToCGPoint, false);
 			} else {
-				return NSArray.ArrayFromHandleFunc<CoreGraphics.CGPoint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("Center")), NSValue.ToCGPoint, false);
+				ret = NSArray.ArrayFromHandleFunc<CoreGraphics.CGPoint> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("Center")), NSValue.ToCGPoint, false);
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -521,11 +546,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			string ret;
 			if (IsDirectBinding) {
-				return CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("name")), false)!;
+				ret = CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("name")), false)!;
 			} else {
-				return CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("name")), false)!;
+				ret = CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("name")), false)!;
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -551,11 +579,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			string? ret;
 			if (IsDirectBinding) {
-				return CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("name")), false);
+				ret = CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("name")), false);
 			} else {
-				return CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("name")), false);
+				ret = CFString.FromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("name")), false);
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -581,11 +612,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			string[] ret;
 			if (IsDirectBinding) {
-				return CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("surnames")), false)!;
+				ret = CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("surnames")), false)!;
 			} else {
-				return CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("surnames")), false)!;
+				ret = CFArray.StringArrayFromHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("surnames")), false)!;
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -617,6 +651,7 @@ public partial class PropertyTests
 			} else {
 				ret = global::AVFoundation.AVCaptureReactionTypeExtensions.GetValue (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_stret (this.Handle, Selector.GetHandle ("canDraw")));
 			}
+			GC.KeepAlive (this);
 			return ret;
 		}
 
@@ -649,6 +684,7 @@ public partial class PropertyTests
 			} else {
 				ret = CFArray.ArrayFromHandle<Foundation.NSMetadataItem> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("results")))!;
 			}
+			GC.KeepAlive (this);
 			return ret;
 		}
 	}
@@ -672,6 +708,7 @@ public partial class PropertyTests
 			} else {
 				ret = global::ObjCRuntime.Messaging.CGSize_objc_msgSendSuper_stret (this.Handle, Selector.GetHandle ("size"));
 			}
+			GC.KeepAlive (this);
 			return ret;
 		}
 	}
@@ -689,11 +726,14 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			nuint[] ret;
 			if (IsDirectBinding) {
-				return global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("sizes"));
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("sizes"));
 			} else {
-				return global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("sizes"));
+				ret = global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("sizes"));
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 	}
 
@@ -716,6 +756,7 @@ public partial class PropertyTests
 			} else {
 				ret = Runtime.GetNSObject<Foundation.NSObject> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper (this.Handle, Selector.GetHandle ("delegate")));
 			}
+			GC.KeepAlive (this);
 			return ret;
 		}
 

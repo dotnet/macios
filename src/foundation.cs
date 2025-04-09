@@ -436,19 +436,19 @@ namespace Foundation {
 		[NoMacCatalyst]
 		[NoTV]
 		[Internal, Export ("initWithRTF:documentAttributes:")]
-		IntPtr InitWithRtf (NSData data, out NSDictionary resultDocumentAttributes);
+		IntPtr _InitWithRtf (NSData data, out NSDictionary resultDocumentAttributes);
 
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Internal, Export ("initWithRTFD:documentAttributes:")]
-		IntPtr InitWithRtfd (NSData data, out NSDictionary resultDocumentAttributes);
+		IntPtr _InitWithRtfd (NSData data, out NSDictionary resultDocumentAttributes);
 
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Internal, Export ("initWithHTML:documentAttributes:")]
-		IntPtr InitWithHTML (NSData data, out NSDictionary resultDocumentAttributes);
+		IntPtr _InitWithHTML (NSData data, out NSDictionary resultDocumentAttributes);
 
 		[NoiOS]
 		[NoMacCatalyst]

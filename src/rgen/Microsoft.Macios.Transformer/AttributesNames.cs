@@ -115,6 +115,9 @@ static class AttributesNames {
 	
 	[BindingFlag (AttributeTargets.Enum)]
 	public const string FlagsAttribute = "System.FlagsAttribute";
+	
+	[BindingAttribute(typeof(ForcedTypeData), AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
+	public const string ForcedTypeAttribute = "ForcedTypeAttribute";
 
 	/// <summary>
 	/// Sometimes it makes sense not to expose an event or delegate property from a Model class into the host class so

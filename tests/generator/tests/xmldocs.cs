@@ -229,4 +229,28 @@ namespace XmlDocumentation {
 		[Export ("staticProperty")]
 		int StaticProperty { get; set; }
 	}
+
+	/// <summary>TClass</summary>
+	[BaseType (typeof (NSObject), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (TClassDelegate) })]
+	interface TClass {
+		/// <summary>TClass.WeakDelegate</summary>
+		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
+		NSObject WeakDelegate { get; set; }
+
+		[Wrap ("WeakDelegate")]
+		[NullAllowed]
+		ITClassDelegate Delegate { get; set; }
+	}
+
+	/// <summary>TClassDelegate</summary>
+	[Model, Protocol]
+	[BaseType (typeof (NSObject))]
+	interface TClassDelegate {
+		/// <summary>TClassDelegate.DidChangeUtteringSpeed</summary>
+		[Export ("speechSynthesizer:didChangeUtteringSpeedTo:")]
+		[EventArgs ("TUtterance")]
+		void DidChangeUtteringSpeed (TClass obj, double utteringSpeed);
+	}
+
+	interface ITClassDelegate { }
 }

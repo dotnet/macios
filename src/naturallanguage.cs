@@ -26,10 +26,6 @@ using Foundation;
 using CoreML;
 using ObjCRuntime;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace NaturalLanguage {
 
 	/// <summary>Determines the most likely language in which a text is written.</summary>

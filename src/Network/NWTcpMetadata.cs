@@ -14,18 +14,11 @@ using ObjCRuntime;
 using Foundation;
 using CoreFoundation;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 namespace Network {
-
-#if NET
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-#endif
 	public class NWTcpMetadata : NWProtocolMetadata {
 
 		[Preserve (Conditional = true)]

@@ -18,7 +18,6 @@ namespace Cecil.Tests {
 			"CoreFoundation.DispatchBlock::Retain()",
 			"CoreFoundation.OSLog::.ctor(System.String,System.String)",
 			"CoreGraphics.CGPattern::.ctor(CoreGraphics.CGRect,CoreGraphics.CGAffineTransform,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,CoreGraphics.CGPatternTiling,System.Boolean,CoreGraphics.CGPattern/DrawPattern)",
-			"Foundation.NSAttributedString::.ctor(Foundation.NSData,Foundation.NSAttributedStringDataType,Foundation.NSDictionary&)",
 			"Foundation.NSHttpCookie::CreateCookie(System.String,System.String,System.String,System.String,System.String,System.String,System.Nullable`1<System.Boolean>,System.Nullable`1<System.DateTime>,System.Nullable`1<System.Int32>,System.String,System.Nullable`1<System.Boolean>,System.Nullable`1<System.Int32>)",
 			"Foundation.NSKeyedUnarchiver::.ctor(Foundation.NSData)",
 			"Foundation.NSString::.ctor(System.String,System.Int32,System.Int32)",

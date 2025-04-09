@@ -6,24 +6,13 @@ using CoreFoundation;
 using OS_nw_group_descriptor = System.IntPtr;
 using OS_nw_endpoint = System.IntPtr;
 
-#if !NET
-using NativeHandle = System.IntPtr;
-#endif
-
 #nullable enable
 
 namespace Network {
-
-#if NET
 	[SupportedOSPlatform ("tvos14.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios14.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-#else
-	[TV (14, 0)]
-	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
-#endif
 	public class NWMulticastGroup : NativeObject {
 		[Preserve (Conditional = true)]
 		internal NWMulticastGroup (NativeHandle handle, bool owns) : base (handle, owns) { }
@@ -76,14 +65,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_group_descriptor_enumerate_endpoints (OS_nw_group_descriptor descriptor, BlockLiteral* enumerate_block);
 
-#if !NET
-		delegate byte nw_group_descriptor_enumerate_endpoints_block_t (IntPtr block, OS_nw_endpoint endpoint);
-		static nw_group_descriptor_enumerate_endpoints_block_t static_EnumerateEndpointsHandler = TrampolineEnumerateEndpointsHandler;
-
-		[MonoPInvokeCallback (typeof (nw_group_descriptor_enumerate_endpoints_block_t))]
-#else
 		[UnmanagedCallersOnly]
-#endif
 		static byte TrampolineEnumerateEndpointsHandler (IntPtr block, OS_nw_endpoint endpoint)
 		{
 			var del = BlockLiteral.GetTarget<Func<NWEndpoint, bool>> (block);
@@ -101,13 +83,8 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
 
 			unsafe {
-#if NET
 				delegate* unmanaged<IntPtr, OS_nw_endpoint, byte> trampoline = &TrampolineEnumerateEndpointsHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (NWMulticastGroup), nameof (TrampolineEnumerateEndpointsHandler));
-#else
-				using var block = new BlockLiteral ();
-				block.SetupBlockUnsafe (static_EnumerateEndpointsHandler, handler);
-#endif
 				nw_group_descriptor_enumerate_endpoints (GetCheckedHandle (), &block);
 			}
 		}

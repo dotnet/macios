@@ -121,11 +121,14 @@ public partial class ThreadSafeUIKitPropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		get
 		{
+			UIntPtr ret;
 			if (IsDirectBinding) {
-				return global::ObjCRuntime.Messaging.UIntPtr_objc_msgSend (this.Handle, Selector.GetHandle ("count"));
+				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSend (this.Handle, Selector.GetHandle ("count"));
 			} else {
-				return global::ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper (this.Handle, Selector.GetHandle ("count"));
+				ret = global::ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper (this.Handle, Selector.GetHandle ("count"));
 			}
+			GC.KeepAlive (this);
+			return ret;
 		}
 	}
 	// TODO: add binding code here

@@ -106,36 +106,6 @@ readonly partial struct Property {
 	/// </summary>
 	public bool IsProxy => IsProperty && ExportPropertyData.Value.Flags.HasFlag (ObjCBindings.Property.Proxy);
 
-	/// <summary>
-	/// True if the generated property should use a temp return variable.
-	/// </summary>
-	public bool UseTempReturn {
-		get {
-			// based on the configuration flags of the method and the return type we can decide if we need a
-			// temp return type
-#pragma warning disable format
-			return this switch {
-				// focus first on the flags, since those are manually added and have more precedence
-				{ ReleaseReturnValue: true } => true, 
-				{ IsProxy: true } => true, 
-				{ MarshalNativeExceptions: true, ReturnType.IsVoid: false } => true, 
-				{ RequiresDirtyCheck: true } => true,
-
-				// focus on the return type
-				{ ReturnType: { IsVoid: false, NeedsStret: true } } => true, 
-				{ ReturnType: { IsVoid: false, IsWrapped: true } } => true, 
-				{ ReturnType.IsNativeEnum: true } => true, 
-				{ ReturnType.SpecialType: SpecialType.System_Char or SpecialType.System_Delegate } => true, 
-				{ ReturnType.IsDelegate: true } => true,
-				{ ReturnType.IsWrapped: true } => true,
-				// default will be false
-				_ => false
-			};
-#pragma warning restore format
-		}
-
-	}
-
 	readonly bool? needsBackingField = null;
 	/// <summary>
 	/// States if the property, when generated, needs a backing field.

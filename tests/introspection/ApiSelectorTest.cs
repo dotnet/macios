@@ -1340,12 +1340,6 @@ namespace Introspection {
 			// MPSGraphExecutable
 			case "initWithMPSGraphPackageAtURL:compilationDescriptor:":
 			case "initWithCoreMLPackageAtURL:compilationDescriptor:":
-			// NSAttributedString
-			case "initWithHTML:documentAttributes:":
-			case "initWithRTF:documentAttributes:":
-			case "initWithRTFD:documentAttributes:":
-			case "initWithURL:options:documentAttributes:error:":
-			case "initWithFileURL:options:documentAttributes:error:":
 			// NSUrlProtectionSpace
 			case "initWithHost:port:protocol:realm:authenticationMethod:":
 			case "initWithProxyHost:port:type:realm:authenticationMethod:":
@@ -1360,8 +1354,6 @@ namespace Introspection {
 			case "initWithProfileNumber:profileLabel:defaultProfile:":
 			case "initWithProfileNumber:profileName:":
 			case "initWithProfileNumber:profileLabel:":
-			// MPSCnnBinaryConvolutionNode and MPSCnnBinaryFullyConnectedNode
-			case "initWithSource:weights:outputBiasTerms:outputScaleTerms:inputBiasTerms:inputScaleTerms:type:flags:":
 			// UISegmentedControl
 			case "initWithItems:":
 			// CLBeaconRegion

@@ -7915,34 +7915,42 @@ namespace UIKit {
 	[BaseType (typeof (NSObject))]
 	[Abstract] // quote form headers "An abstract base class for creating graphics renderers. Do not use this class directly."
 	interface UIGraphicsRenderer {
+		[ThreadSafe]
 		[Export ("initWithBounds:")]
 		NativeHandle Constructor (CGRect bounds);
 
+		[ThreadSafe]
 		[Export ("initWithBounds:format:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (CGRect bounds, UIGraphicsRendererFormat format);
 
+		[ThreadSafe]
 		[Export ("format")]
 		UIGraphicsRendererFormat Format { get; }
 
+		[ThreadSafe]
 		[Export ("allowsImageOutput")]
 		bool AllowsImageOutput { get; }
 
 		// From UIGraphicsRenderer (UIGraphicsRendererProtected) category
 
+		[ThreadSafe]
 		[Static]
 		[Export ("rendererContextClass")]
 		Class RendererContextClass { get; }
 
+		[ThreadSafe]
 		[Static]
 		[Export ("contextWithFormat:")]
 		[return: NullAllowed]
 		CGContext GetContext (UIGraphicsRendererFormat format);
 
+		[ThreadSafe]
 		[Static]
 		[Export ("prepareCGContext:withRendererContext:")]
 		void PrepareContext (CGContext context, UIGraphicsRendererContext rendererContext);
 
+		[ThreadSafe]
 		[Export ("runDrawingActions:completionActions:error:")]
 		bool Run (Action<UIGraphicsRendererContext> drawingActions, [NullAllowed] Action<UIGraphicsRendererContext> completionActions, [NullAllowed] out NSError error);
 	}
@@ -7994,9 +8002,11 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIGraphicsRenderer))]
 	interface UIGraphicsImageRenderer {
+		[ThreadSafe]
 		[Export ("initWithSize:")]
 		NativeHandle Constructor (CGSize size);
 
+		[ThreadSafe]
 		[Export ("initWithSize:format:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (CGSize size, UIGraphicsImageRendererFormat format);
@@ -8005,12 +8015,15 @@ namespace UIKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (CGRect bounds, UIGraphicsImageRendererFormat format);
 
+		[ThreadSafe]
 		[Export ("imageWithActions:")]
 		UIImage CreateImage (Action<UIGraphicsImageRendererContext> actions);
 
+		[ThreadSafe]
 		[Export ("PNGDataWithActions:")]
 		NSData CreatePng (Action<UIGraphicsImageRendererContext> actions);
 
+		[ThreadSafe]
 		[Export ("JPEGDataWithCompressionQuality:actions:")]
 		NSData CreateJpeg (nfloat compressionQuality, Action<UIGraphicsImageRendererContext> actions);
 	}
@@ -8058,13 +8071,16 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIGraphicsRenderer), Name = "UIGraphicsPDFRenderer")]
 	interface UIGraphicsPdfRenderer {
+		[ThreadSafe]
 		[Export ("initWithBounds:format:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (CGRect bounds, UIGraphicsPdfRendererFormat format);
 
+		[ThreadSafe]
 		[Export ("writePDFToURL:withActions:error:")]
 		bool WritePdf (NSUrl url, Action<UIGraphicsPdfRendererContext> actions, out NSError error);
 
+		[ThreadSafe]
 		[Export ("PDFDataWithActions:")]
 		NSData CreatePdf (Action<UIGraphicsPdfRendererContext> actions);
 	}

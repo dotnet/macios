@@ -10328,11 +10328,11 @@ namespace Foundation {
 
 		[Internal]
 		[Export ("initWithHost:port:protocol:realm:authenticationMethod:")]
-		IntPtr Init (string host, nint port, [NullAllowed] string protocol, [NullAllowed] string realm, [NullAllowed] string authenticationMethod);
+		IntPtr _Init (string host, nint port, [NullAllowed] string protocol, [NullAllowed] string realm, [NullAllowed] string authenticationMethod);
 
 		[Internal]
 		[Export ("initWithProxyHost:port:type:realm:authenticationMethod:")]
-		IntPtr InitWithProxy (string host, nint port, [NullAllowed] string type, [NullAllowed] string realm, [NullAllowed] string authenticationMethod);
+		IntPtr _InitWithProxy (string host, nint port, [NullAllowed] string type, [NullAllowed] string realm, [NullAllowed] string authenticationMethod);
 
 		[Export ("realm")]
 		string Realm { get; }

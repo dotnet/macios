@@ -49,7 +49,8 @@ static partial class BindingSyntaxFactory {
 			{ SpecialType: SpecialType.System_Boolean } 
 				=> CastToByte (auxVariableName, typeInfo.Delegate.ReturnType),
 			
-			_ => null
+			// default case, return the value as is
+			_ => IdentifierName (auxVariableName),
 
 		};
 #pragma warning restore format

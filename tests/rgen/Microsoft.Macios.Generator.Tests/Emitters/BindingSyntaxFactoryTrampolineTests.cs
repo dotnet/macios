@@ -208,6 +208,22 @@ namespace NS {
 
 			yield return [
 				intReturnType,
+				"auxVariable"
+			];
+
+			const string voidReturnType = @"
+using System;
+
+namespace NS {
+	public delegate void Callback()
+	public class MyClass {
+		public void MyMethod (Callback cb) {}
+	}
+}
+";
+			
+			yield return [
+				voidReturnType,
 				null!
 			];
 		}

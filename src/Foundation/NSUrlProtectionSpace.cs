@@ -38,7 +38,7 @@ namespace Foundation {
 				InitializeHandle (_Init (host, port, protocol, realm, authenticationMethod), "initWithHost:port:protocol:realm:authenticationMethod:");
 		}
 
-// Disable until we get around to enable + fix any issues.
+		// Disable until we get around to enable + fix any issues.
 #nullable disable
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
